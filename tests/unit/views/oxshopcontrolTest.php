@@ -477,7 +477,6 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     public function testStartMonitorStopMonitor()
     {
         $this->getConfig()->setConfigParam("blUseContentCaching", true);
-        $this->getConfig()->setConfigParam("iDebug", 4);
 
         $oOut = $this->getMock("oxOutput", array('output'));
         $oOut->expects($this->never())->method('output');
@@ -493,9 +492,10 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oOut = $this->getMock("oxOutput", array('output'));
         $oOut->expects($this->once())->method('output')->with($this->equalTo('debuginfo'));
 
-        $oControl = $this->getMock("oxShopControl", array("isAdmin", '_getOutputManager'), array(), '', false);
+        $oControl = $this->getMock("oxShopControl", array("isAdmin", '_getOutputManager', '_isDebugMode'), array(), '', false);
         $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oControl->expects($this->once())->method('_getOutputManager')->will($this->returnValue($oOut));
+        $oControl->expects($this->any())->method('_isDebugMode')->will($this->returnValue(true));
         $oControl->UNITstartMonitor();
         $oControl->UNITstopMonitor();
     }

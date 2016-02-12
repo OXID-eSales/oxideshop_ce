@@ -78,7 +78,7 @@
                         [{if $submenuitem->nodeType == XML_ELEMENT_NODE}]
                             [{assign var='sm' value=$sm+1}]
                             [{if $submenuitem->getAttribute('linkicon')}] [{assign var='linkicon' value=$submenuitem->getAttribute('linkicon')}][{/if}]
-                            <li class="[{if $submenuitem->getAttribute('active')}]act[{assign var='sNavActId' value="nav-`$mh`-`$mn`-`$sm`"}][{/if}]" id="nav-[{$mh}]-[{$mn}]-[{$sm}]">
+                            <li class="[{if $submenuitem->getAttribute('active')}]act[{assign var='sNavActId' value="nav-`$mh`-`$mn`-`$sm`"}][{/if}]" id="nav-[{$mh}]-[{$mn}]-[{$sm}]" name="nav_[{$submenuitem->getAttribute('cl')}]" rel="nav-[{$mh}]-[{$mn}]">
                                 <a href="[{if $submenuitem->getAttribute('url')}][{$submenuitem->getAttribute('url')}][{else}][{$submenuitem->getAttribute('link')}][{/if}]" onclick="_navAct(this);" target="basefrm" class="rc"><b>[{if $linkicon}]<span class="[{$linkicon}]">[{/if}][{oxmultilang ident=$submenuitem->getAttribute('name')|default:$submenuitem->getAttribute('id') noerror=true}][{if $linkicon}]</span>[{/if}]</b></a>
                             </li>
                             [{assign var='linkicon' value=''}]
@@ -183,6 +183,23 @@
             var _mna = _mnli.getElementsByTagName("a");
             if(_mna.length) {
                 _navExp(_mna[0]);
+            }
+        }
+    }
+
+    function _navExtExpActByName(sbid){
+        var sbid = "nav_" + sbid;
+        var _sbli = document.getElementsByName(sbid)[0];
+        if(_sbli) {
+            var mnid = _sbli.getAttribute("rel");
+            var _mnli = document.getElementById(mnid);
+            if(_mnli){
+                var _mna = _mnli.getElementsByTagName("a");
+                var _sba = _sbli.getElementsByTagName("a");
+                if(_mna.length && _sba.length) {
+                    _navExp(_mna[0]);
+                    _navAct(_sba[0]);
+                }
             }
         }
     }

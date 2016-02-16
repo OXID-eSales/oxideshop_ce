@@ -660,6 +660,7 @@ class oxcmp_user extends oxView
         }
 
         if ($oBasket = $this->getSession()->getBasket()) {
+            $oBasket->setBasketUser(null);
             $oBasket->onUpdate();
         }
 

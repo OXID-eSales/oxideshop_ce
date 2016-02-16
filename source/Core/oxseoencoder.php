@@ -768,7 +768,7 @@ class oxSeoEncoder extends oxSuperCfg
                 values
                     ( {$sQtedObjectId}, {$sQtedIdent}, {$iQtedShopId}, {$iLang}, {$sQtedStdUrl}, {$sQtedSeoUrl}, {$sQtedType}, '$blFixed', '0', {$sParams} )
                 on duplicate key update
-                    oxident = {$sQtedIdent}, oxstdurl = {$sQtedStdUrl}, oxseourl = {$sQtedSeoUrl}, oxfixed = '$blFixed', oxexpired = '0'";
+                    oxobjectid = {$sQtedObjectId}, oxident = {$sQtedIdent}, oxstdurl = {$sQtedStdUrl}, oxseourl = {$sQtedSeoUrl}, oxfixed = '$blFixed', oxexpired = '0'";
 
         return $oDb->execute($sQ);
     }

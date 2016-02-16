@@ -1398,6 +1398,27 @@ class SeoEncoderTest extends \OxidTestCase
         $this->assertEquals(1, $oDb->affected_Rows());
     }
 
+    public function testSaveToDbKeyCollision()
+    {
+        $oEncoder = $this->getProxyClass('oxSeoEncoder');
+
+        //add entry
+        $oEncoder->UNITsaveToDb("static", 'test', 'http://std', 'http://seo', 0, 0);
+        //override entry by using the same url
+        $oEncoder->UNITsaveToDb("static", 'testOtherId', 'http://std', 'http://seo', 0, 0);
+
+        $oDb = oxDb::getDb();
+
+        $oDb->Execute('delete from oxseo where oxobjectid="test"');
+        //assert 0 rows to be found with oxobjectid = test because the entry was overridden
+        //by an other object with the same url
+        $this->assertEquals(0, $oDb->affected_Rows());
+
+        $oDb->Execute('delete from oxseo where oxobjectid="testOtherId"');
+        //assert 1 rows to be found with oxobjectid = testOtherId because the entry was saved
+        $this->assertEquals(1, $oDb->affected_Rows());
+    }
+    
     public function testTrimUrl()
     {
         $sBaseUrl = $this->getConfig()->getConfigParam("sShopURL");

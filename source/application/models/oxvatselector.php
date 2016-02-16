@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -52,12 +52,13 @@ class oxVatSelector extends oxSuperCfg
      */
     public function getUserVat(oxUser $oUser, $blCacheReset = false)
     {
+        $sCacheId = $oUser->getId() . '_' . $oUser->oxuser__oxcountryid->value;
+
         if (!$blCacheReset) {
-            $sId = $oUser->getId();
-            if (array_key_exists($sId, self::$_aUserVatCache) &&
-                self::$_aUserVatCache[$sId] !== null
+            if (array_key_exists($sCacheId, self::$_aUserVatCache) &&
+                self::$_aUserVatCache[$sCacheId] !== null
             ) {
-                return self::$_aUserVatCache[$sId];
+                return self::$_aUserVatCache[$sCacheId];
             }
         }
 
@@ -75,7 +76,7 @@ class oxVatSelector extends oxSuperCfg
             }
         }
 
-        self::$_aUserVatCache[$oUser->getId()] = $ret;
+        self::$_aUserVatCache[$sCacheId] = $ret;
 
         return $ret;
     }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -660,6 +660,7 @@ class oxcmp_user extends oxView
         }
 
         if ($oBasket = $this->getSession()->getBasket()) {
+            $oBasket->setBasketUser(null);
             $oBasket->onUpdate();
         }
 

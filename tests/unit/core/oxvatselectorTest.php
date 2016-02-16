@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -35,7 +35,7 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
     {
         parent::setUp();
         // demo article
-        $sId = '2077';
+            $sId = '2077';
         $sNewId = oxUtilsObject::getInstance()->generateUId();
 
         $this->oArticle = oxNew('oxarticle');
@@ -51,7 +51,7 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
         $this->oArticle->save();
 
         // demo category
-        $sId = '8a142c3e4143562a5.46426637';
+            $sId = '8a142c3e4143562a5.46426637';
 
         $sNewId = oxUtilsObject::getInstance()->generateUId();
 
@@ -108,8 +108,9 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
         $oUser->oxuser__oxcountryid = new oxField(null, oxField::T_RAW);
         $this->assertFalse($oVatSelector->getUserVat($oUser, true));
         // check cache
-        $oUser->oxuser__oxcountryid = new oxField('NoneExisting', oxField::T_RAW);
         $this->assertFalse($oVatSelector->getUserVat($oUser));
+
+        $oUser->oxuser__oxcountryid = new oxField('NoneExisting', oxField::T_RAW);
         try {
             $this->assertFalse($oVatSelector->getUserVat($oUser, true));
             $this->fail("This country shouldn't be loaded");

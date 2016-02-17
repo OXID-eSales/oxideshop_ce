@@ -18,6 +18,7 @@ OXID eShop is just e-commerce software for agencies with deadlines :-)
 ### Installation
 
 Please note: if you need a GUI for setup, please download the OXID eShop package from this place: http://ce-donwload.oxid-esales.com and follow the installation instruction at https://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-new-installation/server-and-system-requirements.html.
+
 When checking out this repository or downloading the zip file from this place, composer is required for setting up OXID eShop.
 
 1. make sure composer (https://getcomposer.org/) is installed on your system

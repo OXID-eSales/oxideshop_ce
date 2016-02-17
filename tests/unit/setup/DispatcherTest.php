@@ -30,11 +30,12 @@ class DispatcherTest extends OxidTestCase
      */
     public function testRun()
     {
-        $oView = $this->getMock('OxidEsales\\Eshop\\Setup\\View', array("display"));
+        $oView = $this->getMock('OxidEsales\\Eshop\\Setup\\View', array("sendHeaders", "display"));
+        $oView->expects($this->once())->method("sendHeaders");
         $oView->expects($this->once())->method("display");
 
         $oController = $this->getMock('OxidEsales\\Eshop\\Setup\\Controller', array("getView", "testAction"));
-        $oController->expects($this->once())->method("getView")->will($this->returnValue($oView));
+        $oController->expects($this->any())->method("getView")->will($this->returnValue($oView));
         $oController->expects($this->once())->method("testAction");
 
         $oDispatcher = $this->getMock('OxidEsales\\Eshop\\Setup\\Dispatcher', array("_chooseCurrentAction", "getInstance"));

@@ -270,4 +270,12 @@ class View extends Core
 
         return $blPrint ? print($sUrl) : $sUrl;
     }
+
+    /**
+     * Sends content headers.
+     */
+    public function sendHeaders()
+    {
+        header('Content-Type: text/html; charset=utf-8');
+    }
 }

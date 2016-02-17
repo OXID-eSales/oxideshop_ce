@@ -39,8 +39,9 @@ class Dispatcher extends Core
         /** @var Controller $oController */
         $oController = $this->getInstance("Controller");
 
-        // displaying output
-        $oController->getView()->display($oController->$sAction());
+        $view = $oController->getView();
+        $view->sendHeaders();
+        $view->display($oController->$sAction());
     }
 
     /**

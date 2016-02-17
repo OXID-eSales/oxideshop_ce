@@ -186,7 +186,7 @@ JS;
      */
     protected function sanitize($scripts)
     {
-        return strtr($scripts, array("'" => "\\'", "\r" => '', "\n" => '\n'));
+        return strtr($scripts, array('\\' => '\\\\', "'" => "\\'", "\r" => '', "\n" => '\n'));
     }
 
     /**

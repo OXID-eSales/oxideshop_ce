@@ -56,10 +56,10 @@ class Unit_Admin_CountryListTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oView = new Country_List();
+        $view = oxNew('Country_List');
 
-        $this->assertEquals(array('oxcountry' => array('oxactive' => 'asc', 'oxtitle' => 'asc')), $oView->getListSorting());
-        $this->assertEquals('country_list.tpl', $oView->render());
+        $this->assertEquals(array('oxcountry' => array('oxactive' => 'asc', 'oxtitle' => 'asc')), $view->getListSorting());
+        $this->assertEquals('country_list.tpl', $view->render());
     }
 
     /**
@@ -68,26 +68,51 @@ class Unit_Admin_CountryListTest extends OxidTestCase
      */
     public function testAddingSortingByTitleWhenOnlyActiveIsGiven()
     {
-        $oView = oxNew('Country_List');
+        $view = oxNew('Country_List');
 
-        $oList = $oView->getItemList();
-        $sFirstItem = null;
-        $sFirstInactiveItem = null;
+        $countryList = $view->getItemList();
+        $firstActiveTitle = null;
+        $firstInactiveTitle = null;
 
-        foreach ($oList as $oCountry) {
-            if ('1' === $oCountry->oxcountry__oxactive->value) {
-                if (is_null($sFirstItem)) {
-                    $sFirstItem = $oCountry->oxcountry__oxtitle->value;
-                }
-            } else {
-                if (is_null($sFirstInactiveItem)) {
-                    $sFirstInactiveItem = $oCountry->oxcountry__oxtitle->value;
-                }
-            }
+        foreach ($countryList as $country) {
+            $isCountryActive= $this->isCountryActive($country);
+
+            $firstActiveTitle = $this->getTitleIfUnset($firstActiveTitle, $country, $isCountryActive);
+            $firstInactiveTitle = $this->getTitleIfUnset($firstInactiveTitle, $country, !$isCountryActive);
         }
 
-        $this->assertEquals('Deutschland', $sFirstItem);
-        $this->assertEquals('Afghanistan', $sFirstInactiveItem);
+        $this->assertEquals('Deutschland', $firstActiveTitle);
+        $this->assertEquals('Afghanistan', $firstInactiveTitle);
+    }
+
+    /**
+     * Determine, if the given country is active.
+     *
+     * @param oxCountry $country The country we want to know, if it is activated.
+     *
+     * @return bool Is the given country active?
+     */
+    private function isCountryActive($country)
+    {
+        return '1' === $country->oxcountry__oxactive->value;
+    }
+
+    /**
+     * If the item title is not set yet, take it from the country object.
+     *
+     * @param null|string $countryTitle The title of the first country we process.
+     * @param oxCountry   $country      The first country we process.
+     * @param bool        $process      Should we take this country or not, cause it was not of the correct activation status.
+     *
+     * @return string The title of the first country we process.
+     */
+    private function getTitleIfUnset($countryTitle, $country, $process)
+    {
+        if (is_null($countryTitle) && $process) {
+            $countryTitle = $country->oxcountry__oxtitle->value;
+        }
+
+        return $countryTitle;
     }
 
 }

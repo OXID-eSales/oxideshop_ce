@@ -89,6 +89,17 @@ class Country_List extends oxAdminList
     /**
      * Getter for the second sort field name (for getting the expected oreder out of the databse).
      *
+     * @deprecated Use getSecondSortFild instead!
+     * @return string The name of the field we want to be the second order by argument.
+     */
+    protected function _getSecondSortFieldName()
+    {
+        return $this->sSecondDefSortField;
+    }
+
+    /**
+     * Getter for the second sort field name (for getting the expected oreder out of the databse).
+     *
      * @return string The name of the field we want to be the second order by argument.
      */
     protected function getSecondSortFieldName()

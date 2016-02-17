@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -56,11 +56,9 @@ class Unit_Admin_CountryListTest extends OxidTestCase
      */
     public function testRender()
     {
-        // testing..
-        $oView = $this->getProxyClass("Country_List");
-        $this->assertEquals(false, $oView->getNonPublicVar("_blDesc"));
-        $this->assertEquals(array('oxcountry' => array('oxactive' => "asc")), $oView->getListSorting());
-        $this->assertEquals("oxcountry", $oView->getNonPublicVar("_sListClass"));
+        $oView = new Country_List();
+
+        $this->assertEquals(array('oxcountry' => array('oxactive' => 'asc', 'oxtitle' => 'asc')), $oView->getListSorting());
         $this->assertEquals('country_list.tpl', $oView->render());
     }
 

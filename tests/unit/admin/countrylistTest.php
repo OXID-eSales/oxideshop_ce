@@ -62,4 +62,32 @@ class Unit_Admin_CountryListTest extends OxidTestCase
         $this->assertEquals('country_list.tpl', $oView->render());
     }
 
+    /**
+     * Test, that the country list adds the sorting by oxtitle, if there is only the oxactive sorting given.
+     * We do this, cause mysql sees the order of the remainder (after sorting by active) as undefined.
+     */
+    public function testAddingSortingByTitleWhenOnlyActiveIsGiven()
+    {
+        $oView = oxNew('Country_List');
+
+        $oList = $oView->getItemList();
+        $sFirstItem = null;
+        $sFirstInactiveItem = null;
+
+        foreach ($oList as $oCountry) {
+            if ('1' === $oCountry->oxcountry__oxactive->value) {
+                if (is_null($sFirstItem)) {
+                    $sFirstItem = $oCountry->oxcountry__oxtitle->value;
+                }
+            } else {
+                if (is_null($sFirstInactiveItem)) {
+                    $sFirstInactiveItem = $oCountry->oxcountry__oxtitle->value;
+                }
+            }
+        }
+
+        $this->assertEquals('Deutschland', $sFirstItem);
+        $this->assertEquals('Afghanistan', $sFirstInactiveItem);
+    }
+
 }

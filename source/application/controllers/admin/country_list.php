@@ -80,7 +80,7 @@ class Country_List extends oxAdminList
         $aListSorting = parent::getListSorting();
 
         if (array_keys($aListSorting['oxcountry']) === array('oxactive')) {
-            $aListSorting['oxcountry'][$this->_getSecondSortFieldName()] = 'asc';
+            $aListSorting['oxcountry'][$this->getSecondSortFieldName()] = 'asc';
         }
 
         return $aListSorting;
@@ -91,7 +91,7 @@ class Country_List extends oxAdminList
      *
      * @return string The name of the field we want to be the second order by argument.
      */
-    protected function _getSecondSortFieldName()
+    protected function getSecondSortFieldName()
     {
         return $this->sSecondDefSortField;
     }

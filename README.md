@@ -25,6 +25,7 @@ When checking out this repository or downloading the zip file from this place, c
 2. $ git clone https://github.com/OXID-eSales/oxideshop_ce.git
 3. $ cd oxideshop_ce/source
 4. $ composer install
+5. $ cp config.inc.php.dist config.inc.php
 
 
 ### Useful links

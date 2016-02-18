@@ -24,7 +24,7 @@ When checking out this repository or downloading the zip file from this place, c
 1. make sure composer (https://getcomposer.org/) is installed on your system
 2. $ git clone https://github.com/OXID-eSales/oxideshop_ce.git
 3. $ cd oxideshop_ce/source
-4. $ composer install
+4. $ composer dump-autoload --no-dev
 
 
 ### Useful links

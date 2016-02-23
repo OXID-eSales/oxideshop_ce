@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -150,12 +150,45 @@ class actions_main_ajax extends ajaxListComponent
     }
 
     /**
+     * Expire/remove the cache file for the given action rss feed.
+     *
+     * @param string $sName The name of the stream we want to remove from the file cache.
+     */
+    protected function _removeCacheFile($sName)
+    {
+        $oRssFeed = oxNew('oxrssfeed');
+        $sFileKey = $oRssFeed->mapOxActionToFileCache($sName);
+        $sFilePath = oxRegistry::getUtils()->getCacheFilePath($this->_getCacheId($sFileKey));
+
+        @unlink($sFilePath);
+    }
+
+    /**
+     * _getCacheId retrieve cache id
+     *
+     * @param string $name cache name
+     *
+     * @access protected
+     * @return string
+     */
+    protected function _getCacheId($name)
+    {
+        $oConfig = $this->getConfig();
+
+        return $name.'_'.$oConfig->getShopId().'_'.oxRegistry::getLang()->getBaseLanguage().'_'.(int)$oConfig->getShopCurrency();
+    }
+
+
+    /**
      * Removes article from Promotions list
      */
     public function removeArtFromAct()
     {
         $aChosenArt = $this->_getActionIds('oxactions2article.oxid');
         $sOxid = oxRegistry::getConfig()->getRequestParameter('oxid');
+
+        $this->_removeCacheFile($sOxid);
+
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sQ = parent::_addFilter("delete oxactions2article.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -174,6 +207,8 @@ class actions_main_ajax extends ajaxListComponent
         $myConfig = $this->getConfig();
         $aArticles = $this->_getActionIds('oxarticles.oxid');
         $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+
+        $this->_removeCacheFile($soxId);
 
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');

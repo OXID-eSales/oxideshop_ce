@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -50,6 +50,30 @@ class oxRssFeed extends oxSuperCfg
      * @access protected
      */
     protected $_aChannel = array();
+
+    /**
+     * Give back the cache file name for the given oxActionId.
+     *
+     * @param string $sOxActionId The oxaction we want the cache file name for.
+     *
+     * @return string The name of the corresponding file cache file.
+     */
+    public function mapOxActionToFileCache($sOxActionId)
+    {
+        $aOxActionToCacheIds = array(
+            'oxbargain' => 'RSS_BARGAIN',
+            'oxtop5' => 'RSS_TopShop',
+            'oxnewest' => 'RSS_NewArts'
+        );
+
+        $sFileCacheName = $aOxActionToCacheIds[$sOxActionId];
+
+        if (is_null($sFileCacheName)) {
+            $sFileCacheName = '';
+        }
+
+        return $sFileCacheName;
+    }
 
     /**
      * getChannel retrieve channel data

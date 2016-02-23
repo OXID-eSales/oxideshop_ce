@@ -1213,7 +1213,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         oxTestModules::addFunction('oxarticlelist', 'loadActionArticles', '{ $this->load5 = "loadbargainart"; }');
         oxTestModules::addFunction('oxrssfeed', '_getArticleItems', '{ return $aA[0]->load5; }');
 
-        $oRss = oxNew('oxrssfeed');
+        $oRss = oxNew('oxRssFeed');
         $oRss->loadBargain();
 
         $aChannel = array(
@@ -1228,5 +1228,30 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
 
         $this->assertEquals($aChannel, $oRss->getChannel());
     }
+
+    /**
+     * Check, that the method 'mapOxActionToFileCache' gives back an empty string, if we give in an empty action name.
+     */
+    public function testMapOxActionToFileCacheEmptyOxAction()
+    {
+        $oRssFeed = oxNew('oxRssFeed');
+
+        $sFilename = $oRssFeed->mapOxActionToFileCache('');
+
+        $this->assertSame('', $sFilename);
+    }
+
+    /**
+     * Check, that the method 'mapOxActionToFileCache' gives back the correct filename for oxnewest action.
+     */
+    public function testMapOxActionToFileCacheWithExampleOxAction()
+    {
+        $oRssFeed = oxNew('oxRssFeed');
+
+        $sFilename = $oRssFeed->mapOxActionToFileCache('oxnewest');
+
+        $this->assertSame(oxRssFeed::RSS_NEWARTS, $sFilename);
+    }
+
 }
 

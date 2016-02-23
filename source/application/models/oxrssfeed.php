@@ -52,6 +52,30 @@ class oxRssFeed extends oxSuperCfg
     protected $_aChannel = array();
 
     /**
+     * Give back the cache file name for the given oxActionId.
+     *
+     * @param string $sOxActionId The oxaction we want the cache file name for.
+     *
+     * @return string The name of the corresponding file cache file.
+     */
+    public function mapOxActionToFileCache($sOxActionId)
+    {
+        $aOxActionToCacheIds = array(
+            'oxbargain' => 'RSS_BARGAIN',
+            'oxtop5' => 'RSS_TopShop',
+            'oxnewest' => 'RSS_NewArts'
+        );
+
+        $sFileCacheName = $aOxActionToCacheIds[$sOxActionId];
+
+        if (is_null($sFileCacheName)) {
+            $sFileCacheName = '';
+        }
+
+        return $sFileCacheName;
+    }
+
+    /**
      * getChannel retrieve channel data
      *
      * @access public

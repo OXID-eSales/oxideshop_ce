@@ -273,6 +273,21 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
     }
 
     /**
+     * Check, that the method 'removeArtFromAct' expires the file cache.
+     */
+    public function testRemoveArtFromActExpiresFileCache()
+    {
+        $oActionsMainAjax = $this->getMockBuilder('actions_main_ajax')
+            ->setMethods(array('_removeCacheFile'))
+            ->getMock();
+
+        $oActionsMainAjax->expects($this->once())
+            ->method('_removeCacheFile');
+
+        $oActionsMainAjax->removeArtFromAct();
+    }
+
+    /**
      * ActionsMainAjax::addArtToAct() test case
      *
      * @return null
@@ -289,6 +304,21 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
 
         $oView->addarttoact();
         $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxactions2article where oxactionid='$sSynchoxid'"));
+    }
+
+    /**
+     * Check, that the method 'addArtToAct' expires the file cache.
+     */
+    public function testAddArtToActExpiresFileCache()
+    {
+        $oActionsMainAjax = $this->getMockBuilder('actions_main_ajax')
+            ->setMethods(array('addArtToAct'))
+            ->getMock();
+
+        $oActionsMainAjax->expects($this->once())
+            ->method('addArtToAct');
+
+        $oActionsMainAjax->addArtToAct();
     }
 
     /**

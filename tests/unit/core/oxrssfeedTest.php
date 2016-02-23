@@ -174,7 +174,6 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $this->assertLessThanOrEqual($end, $res[1]['timestamp']);
         $this->assertEquals('content', $res[1]['content']);
         $this->assertEquals('asdid', $res[0]);
-
     }
 
     public function testGetArticleItems()
@@ -405,7 +404,6 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oSAr2->description = "&lt;img src=&#039;" . $oArt2->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;shortdesc";
         $oSAr2->date = "Tue, 06 Sep 2011 09:46:42 +0200";
         $this->assertEquals(array($oSAr1, $oSAr2), $oRss->UNITgetArticleItems($oArr));
-
     }
 
     public function testPrepareUrlSeoOff()
@@ -920,7 +918,6 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
 
         $oRss = oxNew('oxrssfeed');
         $this->assertEquals(array($oSAr1, $oSAr2), $oRss->UNITgetRecommListItems($oArr));
-
     }
 
     public function testGetRecommListsTitle()
@@ -1251,6 +1248,20 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $sFilename = $oRssFeed->mapOxActionToFileCache('oxnewest');
 
         $this->assertSame(oxRssFeed::RSS_NEWARTS, $sFilename);
+    }
+
+    /**
+     * Check, that the method 'removeCacheFile' calls the delete file method.
+     */
+    public function testRemoveCacheFileDelegates()
+    {
+        $oRssFeed = $this->getMockBuilder('oxRssFeed')
+            ->setMethods(array('_deleteFile'))
+            ->getMock();
+
+        $oRssFeed->expects($this->once())->method('_deleteFile');
+
+        $oRssFeed->removeCacheFile('oxnewest');
     }
 
 }

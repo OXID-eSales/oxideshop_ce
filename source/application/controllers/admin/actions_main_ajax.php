@@ -150,20 +150,6 @@ class actions_main_ajax extends ajaxListComponent
     }
 
     /**
-     * Expire/remove the cache file for the given action rss feed.
-     *
-     * @param string $sName The name of the stream we want to remove from the file cache.
-     */
-    protected function _removeCacheFile($sName)
-    {
-        $oRssFeed = oxNew('oxrssfeed');
-        $sFileKey = $oRssFeed->mapOxActionToFileCache($sName);
-        $sFilePath = oxRegistry::getUtils()->getCacheFilePath($this->_getCacheId($sFileKey));
-
-        @unlink($sFilePath);
-    }
-
-    /**
      * _getCacheId retrieve cache id
      *
      * @param string $name cache name
@@ -175,9 +161,8 @@ class actions_main_ajax extends ajaxListComponent
     {
         $oConfig = $this->getConfig();
 
-        return $name.'_'.$oConfig->getShopId().'_'.oxRegistry::getLang()->getBaseLanguage().'_'.(int)$oConfig->getShopCurrency();
+        return $name . '_' . $oConfig->getShopId() . '_' . oxRegistry::getLang()->getBaseLanguage() . '_' . (int) $oConfig->getShopCurrency();
     }
-
 
     /**
      * Removes article from Promotions list
@@ -187,7 +172,7 @@ class actions_main_ajax extends ajaxListComponent
         $aChosenArt = $this->_getActionIds('oxactions2article.oxid');
         $sOxid = oxRegistry::getConfig()->getRequestParameter('oxid');
 
-        $this->_removeCacheFile($sOxid);
+        $this->_getOxRssFeed()->removeCacheFile($sOxid);
 
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sQ = parent::_addFilter("delete oxactions2article.* " . $this->_getQuery());
@@ -208,7 +193,7 @@ class actions_main_ajax extends ajaxListComponent
         $aArticles = $this->_getActionIds('oxarticles.oxid');
         $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
-        $this->_removeCacheFile($soxId);
+        $this->_getOxRssFeed()->removeCacheFile($soxId);
 
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
@@ -294,4 +279,15 @@ class actions_main_ajax extends ajaxListComponent
         $this->_outputResponse($this->_getData($sCountQ, $sQ));
 
     }
+
+    /**
+     * Getter for the rss feed handler.
+     *
+     * @return oxRssFeed The rss feed handler.
+     */
+    protected function _getOxRssFeed()
+    {
+        return oxNew('oxRssFeed');
+    }
+
 }

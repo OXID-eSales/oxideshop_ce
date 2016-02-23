@@ -87,6 +87,19 @@ class oxRssFeed extends oxSuperCfg
     }
 
     /**
+     * Expire/remove the cache file for the given action rss feed.
+     *
+     * @param string $sName The name of the stream we want to remove from the file cache.
+     */
+    public function removeCacheFile($sName)
+    {
+        $sFileKey = $this->mapOxActionToFileCache($sName);
+        $sFilePath = oxRegistry::getUtils()->getCacheFilePath($this->_getCacheId($sFileKey));
+
+        $this->_deleteFile($sFilePath);
+    }
+
+    /**
      * _loadBaseChannel loads basic channel data
      *
      * @access protected
@@ -927,5 +940,17 @@ class oxRssFeed extends oxSuperCfg
     public function getCacheTtl()
     {
         return self::CACHE_TTL;
+    }
+
+    /**
+     * Delete the file, given by its path.
+     *
+     * @param string $sFilePath The path of the file we want to delete.
+     *
+     * @return bool Went everything well?
+     */
+    protected function _deleteFile($sFilePath)
+    {
+        return @unlink($sFilePath);
     }
 }

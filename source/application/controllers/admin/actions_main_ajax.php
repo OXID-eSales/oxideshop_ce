@@ -150,20 +150,6 @@ class actions_main_ajax extends ajaxListComponent
     }
 
     /**
-     * Expire/remove the cache file for the given action rss feed.
-     *
-     * @param string $sName The name of the stream we want to remove from the file cache.
-     */
-    protected function _removeCacheFile($sName)
-    {
-        $oRssFeed = oxNew('oxrssfeed');
-        $sFileKey = $oRssFeed->mapOxActionToFileCache($sName);
-        $sFilePath = oxRegistry::getUtils()->getCacheFilePath($this->_getCacheId($sFileKey));
-
-        @unlink($sFilePath);
-    }
-
-    /**
      * _getCacheId retrieve cache id
      *
      * @param string $name cache name
@@ -175,9 +161,8 @@ class actions_main_ajax extends ajaxListComponent
     {
         $oConfig = $this->getConfig();
 
-        return $name.'_'.$oConfig->getShopId().'_'.oxRegistry::getLang()->getBaseLanguage().'_'.(int)$oConfig->getShopCurrency();
+        return $name . '_' . $oConfig->getShopId() . '_' . oxRegistry::getLang()->getBaseLanguage() . '_' . (int) $oConfig->getShopCurrency();
     }
-
 
     /**
      * Removes article from Promotions list

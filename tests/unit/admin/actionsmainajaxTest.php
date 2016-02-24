@@ -277,18 +277,14 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
      */
     public function testRemoveArtFromActExpiresFileCache()
     {
-        $oRssFeed = $this->getMockBuilder('oxRssFeed')
-            ->setMethods(array('removeCacheFile'))
-            ->getMock();
+        $oRssFeed = $this->getMock('oxRssFeed', array('removeCacheFile'));
         $oRssFeed->expects($this->once())->method('removeCacheFile');
 
-        $oActionsMainAjax = $this->getMockBuilder('actions_main_ajax')
-            ->setMethods(array('_getOxRssFeed'))
-            ->getMock();
+        $oActionsMainAjax = $this->getMock('actions_main_ajax', array('_getOxRssFeed'));
 
         $oActionsMainAjax->expects($this->once())
             ->method('_getOxRssFeed')
-            ->willReturn($oRssFeed);
+            ->will($this->returnValue($oRssFeed));
 
         $oActionsMainAjax->removeArtFromAct();
     }
@@ -317,9 +313,7 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
      */
     public function testAddArtToActExpiresFileCache()
     {
-        $oActionsMainAjax = $this->getMockBuilder('actions_main_ajax')
-            ->setMethods(array('addArtToAct'))
-            ->getMock();
+        $oActionsMainAjax = $this->getMock('actions_main_ajax', array('addArtToAct'));
 
         $oActionsMainAjax->expects($this->once())
             ->method('addArtToAct');

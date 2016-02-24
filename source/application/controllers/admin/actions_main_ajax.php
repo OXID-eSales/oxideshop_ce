@@ -150,21 +150,6 @@ class actions_main_ajax extends ajaxListComponent
     }
 
     /**
-     * _getCacheId retrieve cache id
-     *
-     * @param string $name cache name
-     *
-     * @access protected
-     * @return string
-     */
-    protected function _getCacheId($name)
-    {
-        $oConfig = $this->getConfig();
-
-        return $name . '_' . $oConfig->getShopId() . '_' . oxRegistry::getLang()->getBaseLanguage() . '_' . (int) $oConfig->getShopCurrency();
-    }
-
-    /**
      * Removes article from Promotions list
      */
     public function removeArtFromAct()

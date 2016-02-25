@@ -136,8 +136,6 @@ class Article_Files extends oxAdminDetails
         $aParams = $this->_processOptions($aParams);
         $aNewFile = $this->getConfig()->getUploadedFile("newArticleFile");
 
-        $sExistingFilename = trim(oxRegistry::getConfig()->getRequestParameter("existingFilename"));
-
         //uploading and processing supplied file
         $oArticleFile = oxNew("oxFile");
         $oArticleFile->assign($aParams);
@@ -153,6 +151,10 @@ class Article_Files extends oxAdminDetails
             } catch (Exception $e) {
                 return oxRegistry::get("oxUtilsView")->addErrorToDisplay($e->getMessage());
             }
+        }
+
+        if (!$oArticleFile->isUnderDownloadFolder()) {
+            return oxRegistry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_NOFILE');
         }
 
         //save media url

@@ -118,6 +118,35 @@ class Unit_Core_oxfileTest extends OxidTestCase
         $this->assertEquals(getShopBasePath() . '/out/downloads/fileName', $oFile->getStoreLocation());
     }
 
+    public function testStorageLocationIsUnderDownloadFolder()
+    {
+        $fileName = '../e4/e48a1b571bd2d2e60fb2d9b1b76b34d4';
+
+        $file = oxNew('oxFile');
+        $file->oxfiles__oxfilename = new oxField($fileName);
+
+        $this->assertTrue($file->isUnderDownloadFolder());
+    }
+
+    public function testStorageLocationIsNotUnderDownloadFolder()
+    {
+        $fileName = '../../../config.inc.php';
+
+        $file = oxNew('oxFile');
+        $file->oxfiles__oxfilename = new oxField($fileName);
+
+        $this->assertFalse($file->isUnderDownloadFolder());
+    }
+
+    public function testStorageLocationWithNotExistingFile()
+    {
+        $fileName = '../../../not_existing_file';
+
+        $file = oxNew('oxFile');
+        $file->oxfiles__oxfilename = new oxField($fileName);
+
+        $this->assertFalse($file->isUnderDownloadFolder());
+    }
 
     /**
      * Test for oxFiles::delete()

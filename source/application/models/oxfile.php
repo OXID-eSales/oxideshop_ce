@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -172,6 +172,25 @@ class oxFile extends oxBase
         $sPath .= DIR_SEP . $this->_getFileLocation();
 
         return $sPath;
+    }
+
+    /**
+     * Return true if file is under download folder.
+     * Return false if file is above download folder or if file does not exist.
+     *
+     * @return bool
+     */
+    public function isUnderDownloadFolder()
+    {
+        $storageLocation = realpath($this->getStoreLocation());
+
+        if ($storageLocation === false) {
+            return false;
+        }
+
+        $downloadFolder = realpath($this->_getBaseDownloadDirPath());
+
+        return strpos($storageLocation, $downloadFolder) !== false;
     }
 
     /**

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -138,8 +138,6 @@ class Article_Files extends oxAdminDetails
         $aParams  = $this->_processOptions($aParams);
         $aNewFile = $this->getConfig()->getUploadedFile( "newArticleFile");
 
-        $sExistingFilename = trim(oxConfig::getParameter( "existingFilename"));
-
         //uploading and processing supplied file
         $oArticleFile = oxNew( "oxFile" );
         $oArticleFile->assign($aParams);
@@ -155,6 +153,10 @@ class Article_Files extends oxAdminDetails
             } catch (Exception $e) {
                 return oxRegistry::get("oxUtilsView")->addErrorToDisplay( $e->getMessage() );
             }
+        }
+
+        if (!$oArticleFile->isUnderDownloadFolder()) {
+            return oxRegistry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_NOFILE');
         }
 
         //save media url

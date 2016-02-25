@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -187,7 +187,8 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
      */
     public function testUpload()
     {
-        oxTestModules::addFunction( 'oxfile', 'processFile', '{ return true; }');
+        oxTestModules::addFunction( 'oxfile', 'processFile', '{ return true; }' );
+        oxTestModules::addFunction( 'oxfile', 'isUnderDownloadFolder', '{ return true; }' );
         $oDb = oxDb::getDb();
         modConfig::setParameter( "oxid", '2000' );
         modConfig::setParameter( "newfile", array("oxfiles__oxid" => "_testFileId", "oxfiles__oxpurchasedonly" => 1) );
@@ -267,7 +268,23 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
         $aErr = oxSession::getVar( 'Errors' );
         $oErr = unserialize($aErr['default'][0]);
         $this->assertEquals( 'Keine Dateien hochgeladen', $oErr->getOxMessage());
+    }
 
+    public function testUploadExceptionIfAboveDownloadFolder()
+    {
+        $this->setRequestParam("newfile", array('oxfiles__oxfilename' => '../../some_file_name'));
+
+        $articleFiles = oxNew('article_files');
+        $articleFiles->upload();
+
+        $errors = oxRegistry::getSession()->getVariable('Errors');
+
+        if (!$errors) {
+            $this->fail('Should set exception: file above download folder.');
+        }
+
+        $error = unserialize($errors['default'][0]);
+        $this->assertEquals('Keine Dateien hochgeladen', $error->getOxMessage());
     }
 
     /**

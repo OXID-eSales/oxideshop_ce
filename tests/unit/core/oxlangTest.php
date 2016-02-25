@@ -1217,7 +1217,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         oxRegistry::getUtils()->oxResetFileCache();
 
         //writing a test file
-        $sFileContents = '<?php $aLang = array( "charset" => "testCharset", "TESTKEY" => "testVal");';
+        $sFileContents = '<?php $aLang = array( "charset" => "ISO-8859-15", "TESTKEY" => "testVal");';
         $sFileName = getShopBasePath() . "/application/views/azure/de/my_lang.php";
         $sShopId = modConfig::getInstance()->getShopId();
         $sCacheKey = "languagefiles__0_$sShopId";

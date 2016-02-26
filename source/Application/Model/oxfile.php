@@ -175,6 +175,25 @@ class oxFile extends oxBase
     }
 
     /**
+     * Return true if file is under download folder.
+     * Return false if file is above download folder or if file does not exist.
+     *
+     * @return bool
+     */
+    public function isUnderDownloadFolder()
+    {
+        $storageLocation = realpath($this->getStoreLocation());
+
+        if ($storageLocation === false) {
+            return false;
+        }
+
+        $downloadFolder = realpath($this->_getBaseDownloadDirPath());
+
+        return strpos($storageLocation, $downloadFolder) !== false;
+    }
+
+    /**
      * Returns relative file path from oxConfig 'sDownloadsDir' variable.
      *
      * @return string

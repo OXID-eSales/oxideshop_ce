@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -61,12 +61,14 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @param bool $blType - connection type
      *
+     * @deprecated since v5.3 (2016-02-25); Do not use this method at all, we want this class to be the only database access possibility.
+     *
      * @return object
      */
     public function getDb($blType = true)
     {
 
-        return $this->_oDb;
+            return $this->_oDb;
     }
 
     /**

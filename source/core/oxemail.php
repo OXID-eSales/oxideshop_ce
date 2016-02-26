@@ -23,6 +23,7 @@
  * Includes PHP mailer class.
  */
 require oxRegistry::getConfig()->getConfigParam('sCoreDir') . "/phpmailer/class.phpmailer.php";
+require oxRegistry::getConfig()->getConfigParam('sCoreDir') . "/phpmailer/class.smtp.php";
 
 
 /**
@@ -1667,23 +1668,22 @@ class oxEmail extends PHPMailer
     }
 
     /**
-     * Sets mail from address and name.
+     * Preventing possible email spam over php mail() exploit (http://www.securephpwiki.com/index.php/Email_Injection)
      *
-     * @param string $sFromAddress email address
-     * @param string $sFromName    user name
+     * {@inheritdoc}
      */
-    public function setFrom($sFromAddress, $sFromName = null)
+    public function setFrom($address, $name = null, $auto = true)
     {
-        // preventing possible email spam over php mail() exploit (http://www.securephpwiki.com/index.php/Email_Injection)
-        // this is simple but must work
-        // Task #1532 field "From" in emails from shops
-        $sFromAddress = substr($sFromAddress, 0, 150);
-        $sFromName = substr($sFromName, 0, 150);
+        $address = substr($address, 0, 150);
+        $name = substr($name, 0, 150);
 
+        $success = false;
         try {
-            parent::setFrom($sFromAddress, $sFromName);
-        } catch (Exception $oEx) {
+            $success = parent::setFrom($address, $name, $auto);
+        } catch (Exception $exception) {
         }
+
+        return $success;
     }
 
     /**
@@ -1784,44 +1784,49 @@ class oxEmail extends PHPMailer
     }
 
     /**
-     * Adds an attachment to mail from a path on the filesystem
-     *
-     * @param string $sAttPath  path to the attachment
-     * @param string $sAttFile  attachment name
-     * @param string $sEncoding attachment encoding
-     * @param string $sType     attachment type
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function addAttachment($sAttPath, $sAttFile = '', $sEncoding = 'base64', $sType = 'application/octet-stream')
-    {
-        $this->_aAttachments[] = array($sAttPath, $sAttFile, $sEncoding, $sType);
-        $blResult = false;
+    public function addAttachment(
+        $path,
+        $name = '',
+        $encoding = 'base64',
+        $type = 'application/octet-stream',
+        $disposition = 'attachment'
+    ) {
+        $this->_aAttachments[] = array($path, $name, $encoding, $type, $disposition);
+        $result = false;
 
         try {
-            $blResult = parent::addAttachment($sAttPath, $sAttFile, $sEncoding, $sType);
-        } catch (Exception $oEx) {
+            $result = parent::addAttachment($path, $name, $encoding, $type, $disposition);
+        } catch (Exception $exception) {
         }
 
-        return $blResult;
+        return $result;
     }
 
     /**
-     * Adds an embedded attachment (check phpmail documentation for more details)
-     *
-     * @param string $sFullPath Path to the attachment.
-     * @param string $sCid      Content ID of the attachment. Use this to identify the Id for accessing the image in an HTML form.
-     * @param string $sAttFile  Overrides the attachment name.
-     * @param string $sEncoding File encoding (see $Encoding).
-     * @param string $sType     File extension (MIME) type.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function addEmbeddedImage($sFullPath, $sCid, $sAttFile = '', $sEncoding = 'base64', $sType = 'application/octet-stream')
-    {
-        $this->_aAttachments[] = array($sFullPath, basename($sFullPath), $sAttFile, $sEncoding, $sType, false, 'inline', $sCid);
+    public function addEmbeddedImage(
+        $path,
+        $cid,
+        $name = '',
+        $encoding = 'base64',
+        $type = 'application/octet-stream',
+        $disposition = 'inline'
+    ) {
+        $this->_aAttachments[] = array(
+            $path,
+            basename($path),
+            $name,
+            $encoding,
+            $type,
+            false,
+            $disposition,
+            $cid
+        );
 
-        return parent::addEmbeddedImage($sFullPath, $sCid, $sAttFile, $sEncoding, $sType);
+        return parent::addEmbeddedImage($path, $cid, $name, $encoding, $type, $disposition);
     }
 
     /**

@@ -325,6 +325,7 @@ class oxDb
     protected function _sendMail($sEmail, $sSubject, $sBody)
     {
         include_once getShopBasePath() . 'core/phpmailer/class.phpmailer.php';
+        include_once getShopBasePath() . 'core/phpmailer/class.smtp.php';
         $oMailer = new phpmailer();
         $oMailer->isMail();
 

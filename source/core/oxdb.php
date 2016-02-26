@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -325,6 +325,7 @@ class oxDb
     protected function _sendMail($sEmail, $sSubject, $sBody)
     {
         include_once getShopBasePath() . 'core/phpmailer/class.phpmailer.php';
+        include_once getShopBasePath() . 'core/phpmailer/class.smtp.php';
         $oMailer = new phpmailer();
         $oMailer->isMail();
 
@@ -383,7 +384,7 @@ class oxDb
     protected function _onConnectionError($oDb)
     {
         $sVerPrefix = '';
-        $sVerPrefix = '_ce';
+            $sVerPrefix = '_ce';
 
 
         $sConfig = join('', file(getShopBasePath() . 'config.inc.php'));
@@ -424,11 +425,11 @@ class oxDb
         $oDb = ADONewConnection($sType, $this->_getModules());
 
 
-        try {
-            $oDb->connect($sHost, $sUser, $sPwd, $sName);
-        } catch (oxAdoDbException $e) {
-            $this->_onConnectionError($oDb);
-        }
+            try {
+                $oDb->connect($sHost, $sUser, $sPwd, $sName);
+            } catch (oxAdoDbException $e) {
+                $this->_onConnectionError($oDb);
+            }
 
         self::_setUp($oDb);
 
@@ -531,7 +532,7 @@ class oxDb
             return self::$_aTblDescCache[$sTableName];
         }
 
-        $aFields = self::getDb()->MetaColumns($sTableName);
+            $aFields = self::getDb()->MetaColumns($sTableName);
 
         self::$_aTblDescCache[$sTableName] = $aFields;
 

@@ -93,9 +93,12 @@ class oxFile extends oxBase
     }
 
     /**
-     * Sets oxefile__oxstorehash with file hash and moves file to desired location
+     * Sets oxefile__oxstorehash with file hash.
+     * Moves file to desired location and change its access rights.
      *
      * @param int $sFileIndex File index
+     *
+     * @throws oxException Throws exception if file wasn't moved or if rights wasn't changed.
      */
     public function processFile($sFileIndex)
     {
@@ -117,6 +120,8 @@ class oxFile extends oxBase
      * Checks if given file is valid upload file
      *
      * @param array $aFileInfo File info array
+     *
+     * @throws oxException Throws exception if file wasn't uploaded successfully.
      */
     protected function _checkArticleFile($aFileInfo)
     {
@@ -315,7 +320,7 @@ class oxFile extends oxBase
      * Checks if file is not used for  other objects.
      * If not used, unlink the file.
      *
-     * @return null
+     * @return null|false
      */
     protected function _deleteFile()
     {

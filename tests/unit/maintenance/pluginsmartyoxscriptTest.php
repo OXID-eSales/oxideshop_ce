@@ -32,6 +32,8 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
      */
     public function testSmartyFunctionOxScript_includeNotExist()
     {
+        $this->getConfig()->setConfigParam("iDebug", -1);
+
         $oSmarty = new Smarty();
         $this->assertEquals('', smarty_function_oxscript(array('include' => 'somescript.js'), $oSmarty));
     }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -32,6 +32,8 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
      */
     public function testSmartyFunctionOxScript_includeNotExist()
     {
+        $this->getConfig()->setConfigParam("iDebug", -1);
+
         $oSmarty = new Smarty();
         $this->assertEquals('', smarty_function_oxscript(array('include' => 'somescript.js'), $oSmarty));
     }

@@ -702,6 +702,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
         $myConfig = $this->getConfig();
         $myConfig->setConfigParam("sShopDir", $sMdir . "/");
+        $myConfig->setConfigParam("iDebug", -1);
 
         $oVC = $this->getMock('oxViewConfig', array('getConfig'));
         $oVC->expects($this->any())->method('getConfig')->will($this->returnValue($myConfig));

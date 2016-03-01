@@ -517,7 +517,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
             'compile_id'      => md5($config->getTemplateDir(false) . '__' . $config->getShopId()),
             'debugging'       => true,
             'compile_check'   => true,
-            'plugins_dir'     => array('plugins'),
+            'plugins_dir'     => array($this->getConfigParam('sShopDir') . 'Core/smarty/plugins', 'plugins'),
         );
 
         $oSmarty = $this->getMock('smarty', array('register_resource'));

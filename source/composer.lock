@@ -4,9 +4,61 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "02f320a03671de79cb0e17ddd2cc2986",
-    "content-hash": "af855e436b215fe20d897b5bf843bd61",
-    "packages": [],
+    "hash": "a1b0fb5bbea38e6572335e2d3cfbb8a4",
+    "content-hash": "ddc5ec576a6ae26e3e787962130f84ea",
+    "packages": [
+        {
+            "name": "smarty/smarty",
+            "version": "v2.6.29",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smarty-php/smarty.git",
+                "reference": "47fa66cdcf0bde5c44923fb0e15dd0921f8d3a83"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/47fa66cdcf0bde5c44923fb0e15dd0921f8d3a83",
+                "reference": "47fa66cdcf0bde5c44923fb0e15dd0921f8d3a83",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.6.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "libs/Smarty.class.php",
+                    "libs/Smarty_Compiler.class.php",
+                    "libs/Config_File.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Monte Ohrt",
+                    "email": "monte@ohrt.com"
+                },
+                {
+                    "name": "Uwe Tews",
+                    "email": "uwe.tews@googlemail.com"
+                }
+            ],
+            "description": "Smarty - the compiling PHP template engine",
+            "homepage": "http://www.smarty.net",
+            "keywords": [
+                "templating"
+            ],
+            "time": "2015-06-21 13:10:14"
+        }
+    ],
     "packages-dev": [
         {
             "name": "alexandresalome/php-selenium",
@@ -676,7 +728,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/coding_standards/zipball/ebe261d480234219b472e55d67a0cbd93fe53ce0",
+                "url": "https://api.github.com/repos/OXID-eSales/coding_standards/zipball/be47746bfd0d9cbc0b1c7b3ba27eb05214f6e811",
                 "reference": "dfe0b130d6d5ef41f2ac9b8c876bb391ebb061b8",
                 "shasum": ""
             },
@@ -712,7 +764,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/abd3c6b2c430f6e1b06b82fd018fdc8a26af245a",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/621969a91e843493c6e56af6c72cb00683d1cb7c",
                 "reference": "abd3c6b2c430f6e1b06b82fd018fdc8a26af245a",
                 "shasum": ""
             },

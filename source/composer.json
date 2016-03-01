@@ -26,6 +26,9 @@
             "url": "https://github.com/OXID-eSales/PHP_CodeSniffer.git"
         }
     },
+    "require": {
+        "smarty/smarty": "2.6.*"
+    },
     "require-dev": {
         "oxid-esales/testing-library": "dev-master",
         "oxid-esales/coding-standards": "dev-master",

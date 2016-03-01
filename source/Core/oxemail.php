@@ -19,10 +19,6 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-/**
- * Includes PHP mailer class.
- */
-require oxRegistry::getConfig()->getConfigParam('sCoreDir') . "/phpmailer/class.phpmailer.php";
 
 /**
  * Mailing manager.

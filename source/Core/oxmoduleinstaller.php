@@ -679,10 +679,16 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _filterModuleArray($aModules, $sModuleId)
     {
+        $aModulePaths = $this->getConfig()->getConfigParam('aModulePaths');
+        $sPath = $aModulePaths[$sModuleId];
+        if (!$sPath) {
+            $sPath = $sModuleId . "/";
+        }
+
         $aFilteredModules = array();
         foreach ($aModules as $sClass => $aExtend) {
             foreach ($aExtend as $sExtendPath) {
-                if (strpos($sExtendPath, $sModuleId . "/") === 0) {
+                if (strpos($sExtendPath, $sPath) === 0) {
                     $aFilteredModules[$sClass][] = $sExtendPath;
                 }
             }

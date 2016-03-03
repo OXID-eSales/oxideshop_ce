@@ -107,7 +107,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
 
         $oPdf->line(15, 272, 195, 272);
 
-        $oPdfBlock = new InvoicepdfBlock();
+        $oPdfBlock = oxNew('InvoicepdfBlock');
         /* column 1 - company name, shop owner info, shop address */
         $oPdf->setFont($oPdfBlock->getFont(), '', 7);
         $oPdf->text(15, 275, strip_tags($oShop->oxshops__oxcompany->getRawValue()));
@@ -143,7 +143,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         // new page with shop logo
         $this->pdfHeader($oPdf);
 
-        $oPdfBlock = new InvoicepdfBlock();
+        $oPdfBlock = oxNew(' InvoicepdfBlock');
         // column names
         $oPdf->setFont($oPdfBlock->getFont(), '', 8);
         $oPdf->text(15, 50, $this->translate('ORDER_OVERVIEW_PDF_AMOUNT'));
@@ -249,7 +249,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
             $sSal = $oLang->translateString($this->oxorder__oxbillsal->value, $this->getSelectedLang());
         } catch (Exception $e) {
         }
-        $oPdfBlock = new InvoicepdfBlock();
+        $oPdfBlock = oxNew('InvoicepdfBlock');
         $oPdf->setFont($oPdfBlock->getFont(), '', 10);
         $oPdf->text(15, 59, $sSal);
         $oPdf->text(15, 63, $this->oxorder__oxbillfname->getRawValue() . ' ' . $this->oxorder__oxbilllname->getRawValue());
@@ -274,7 +274,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
             $sSal = $oLang->translateString($this->oxorder__oxdelsal->value, $this->getSelectedLang());
         } catch (Exception $e) {
         }
-        $oPdfBlock = new InvoicepdfBlock();
+        $oPdfBlock = oxNew('InvoicepdfBlock');
         $oPdf->setFont($oPdfBlock->getFont(), '', 6);
         $oPdf->text(15, 87, $this->translate('ORDER_OVERVIEW_PDF_DELIVERYADDRESS'));
         $oPdf->setFont($oPdfBlock->getFont(), '', 10);
@@ -302,7 +302,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         }
 
         $oCurr = $this->getCurrency();
-        $oPdfBlock = new InvoicepdfBlock();
+        $oPdfBlock = oxNew('InvoicepdfBlock');
         // product list
         foreach ($this->_oArticles as $key => $oOrderArt) {
 
@@ -364,7 +364,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
     {
         // preparing order curency info
         $myConfig = $this->getConfig();
-        $oPdfBlock = new InvoicepdfBlock();
+        $oPdfBlock = oxNew('InvoicepdfBlock');
 
         $this->_oCur = $myConfig->getCurrencyObject($this->oxorder__oxcurrency->value);
         if (!$this->_oCur) {
@@ -463,7 +463,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $this->_setOrderArticlesToPdf($oPdf, $siteH, true);
 
         // generating pdf file
-        $oArtSumm = new InvoicepdfArticleSummary($this, $oPdf);
+        $oArtSumm = oxNew('InvoicepdfArticleSummary', $this, $oPdf);
         $iHeight = $oArtSumm->generate($siteH);
         if ($siteH + $iHeight > 258) {
             $this->pdfFooter($oPdf);
@@ -487,7 +487,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
     {
         $myConfig = $this->getConfig();
         $oShop = $this->_getActShop();
-        $oPdfBlock = new InvoicepdfBlock();
+        $oPdfBlock = oxNew('InvoicepdfBlock');
 
         $oLang = oxRegistry::getLang();
         $sSal = $this->oxorder__oxdelsal->value;

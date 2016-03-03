@@ -143,7 +143,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         // new page with shop logo
         $this->pdfHeader($oPdf);
 
-        $oPdfBlock = oxNew(' InvoicepdfBlock');
+        $oPdfBlock = oxNew('InvoicepdfBlock');
         // column names
         $oPdf->setFont($oPdfBlock->getFont(), '', 8);
         $oPdf->text(15, 50, $this->translate('ORDER_OVERVIEW_PDF_AMOUNT'));

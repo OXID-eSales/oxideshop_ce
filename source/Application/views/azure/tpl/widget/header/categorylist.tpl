@@ -5,7 +5,6 @@
 [{if $oViewConf->getTopActionClassName() == 'start'}]
     [{assign var="homeSelected" value="true"}]
 [{/if}]
-[{assign var="oxcmp_categories" value=$oxcmp_categories}]
 [{assign var="blShowMore" value=false}]
 [{assign var="iCatCnt" value=0}]
 <ul id="navigation" class="sf-menu">

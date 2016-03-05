@@ -126,7 +126,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
         $oShop = oxNew("oxshop");
         $oShop->load($this->getConfig()->getShopId());
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"), [], '', false);
+        $oEmail = $this->getMailerMock(array("_sendMail", "_getShop"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($oShop));
         $oEmail->expects($this->any())->method('getOrderFileList')->will($this->returnValue(false));

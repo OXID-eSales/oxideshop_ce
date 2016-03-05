@@ -2009,7 +2009,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     public function testSetNewsSubscriptionSubscribesWithOptInEmail_sendsOnlyOnce()
     {
         // email should be sent only once
-        $oEmail = $this->getMock('oxemail', array('sendNewsletterDBOptInMail'));
+        $oEmail = $this->getMailerMock(array('sendNewsletterDBOptInMail'));
         $oEmail->expects($this->once())->method('sendNewsletterDBOptInMail')->will($this->returnValue(true));
 
         oxTestModules::addModuleObject("oxemail", $oEmail);

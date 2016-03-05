@@ -33,8 +33,6 @@ class DiContainer implements ContainerInterface
      */
     private $container;
 
-    private $services;
-
     /**
      * @param ContainerBuilder $container
      */
@@ -43,11 +41,12 @@ class DiContainer implements ContainerInterface
         $this->container = $container;
 
         //basic setup
-        $container->register('core.mailclient', \OxidEsales\Eshop\Core\MailClient::class);
+        $container
+            ->register('core.mailclient', \OxidEsales\Eshop\Core\MailClient::class);
+
         $container
             ->register('core.mailer', \oxEmail::class)
             ->addArgument(new Reference('core.mailclient'));
-
     }
 
     /**

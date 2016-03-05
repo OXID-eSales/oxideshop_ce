@@ -43,12 +43,6 @@ class DiContainer implements ContainerInterface
 
         //basic setup
         $container->register('core.mailclient', \OxidEsales\Eshop\Core\MailClient::class);
-
-        $this->services['core.mailclient'] = new \OxidEsales\Eshop\Core\MailClient;
-
-
-
-
     }
 
     /**
@@ -56,10 +50,8 @@ class DiContainer implements ContainerInterface
      */
     public function get($id)
     {
-        return $this->services[$id];
-
         if ($this->has($id)) {
-            $this->container->get($id);
+            return $this->container->get($id);
         }
     }
 
@@ -68,7 +60,7 @@ class DiContainer implements ContainerInterface
      */
     public function has($id)
     {
-        $this->container->has($id);
+        return $this->container->has($id);
     }
 
 }

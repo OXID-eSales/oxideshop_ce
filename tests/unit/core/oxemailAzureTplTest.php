@@ -1,4 +1,6 @@
 <?php
+use OxidEsales\Eshop\Core\DiContainer;
+
 /**
  * This file is part of OXID eShop Community Edition.
  *

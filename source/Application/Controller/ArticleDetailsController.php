@@ -1195,7 +1195,7 @@ class ArticleDetailsController extends \oxUBase
         $priceAlarm->save();
 
         // Send Email
-        $email = oxNew('oxEmail', DiContainer::getInstance()->get('core.mailclient'));
+        $email = DiContainer::getInstance()->get('core.mailer');
         $this->_iPriceAlarmStatus = (int) $email->sendPricealarmNotification($parameters, $priceAlarm);
     }
 

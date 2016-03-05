@@ -1724,7 +1724,7 @@ class oxOrder extends oxBase
         $this->_oBasket = $oBasket;
         $this->_oPayment = $oPayment;
 
-        $oxEmail = oxNew('oxemail', DiContainer::getInstance()->get('core.mailclient'));
+        $oxEmail = DiContainer::getInstance()->get('core.mailer');
 
         // send order email to user
         if ($oxEmail->sendOrderEMailToUser($this)) {

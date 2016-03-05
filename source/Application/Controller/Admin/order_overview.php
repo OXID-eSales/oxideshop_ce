@@ -165,7 +165,7 @@ class Order_Overview extends oxAdminDetails
 
             if (($blMail = oxRegistry::getConfig()->getRequestParameter("sendmail"))) {
                 // send eMail
-                $oEmail = oxNew("oxemail", DiContainer::getInstance()->get('core.mailclient'));
+                $oEmail = DiContainer::getInstance()->get('core.mailer');
                 $oEmail->sendSendedNowMail($oOrder);
             }
         }

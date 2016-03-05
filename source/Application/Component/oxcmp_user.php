@@ -530,7 +530,7 @@ class oxcmp_user extends oxView
         // send register eMail
         //TODO: move into user
         if ((int) oxRegistry::getConfig()->getRequestParameter('option') == 3) {
-            $oxEMail = oxNew('oxemail', DiContainer::getInstance()->get('core.mailclient'));
+            $oxEMail = DiContainer::getInstance()->get('core.mailer');
             if ($blActiveLogin) {
                 $oxEMail->sendRegisterConfirmEmail($oUser);
             } else {

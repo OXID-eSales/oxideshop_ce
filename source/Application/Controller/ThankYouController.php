@@ -153,7 +153,7 @@ class ThankYouController extends oxUBase
         // loading order sometimes needed in template
         if ($this->_oBasket->getOrderId()) {
             // owners stock reminder
-            $oEmail = oxNew('oxEmail', DiContainer::getInstance()->get('core.mailclient'));
+            $oEmail = DiContainer::getInstance()->get('core.mailer');
             $oEmail->sendStockReminder($this->_oBasket->getContents());
         }
 

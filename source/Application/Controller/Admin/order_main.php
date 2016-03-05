@@ -180,7 +180,7 @@ class Order_Main extends oxAdminDetails
             $oOrderArticles = $oOrder->getOrderArticles(true);
             if (oxRegistry::getConfig()->getRequestParameter("sendmail")) {
                 // send eMail
-                $oEmail = oxNew("oxemail", DiContainer::getInstance()->get('core.mailclient'));
+                $oEmail = DiContainer::getInstance()->get('core.mailer');
                 $oEmail->sendSendedNowMail($oOrder);
             }
             $this->onOrderSend();
@@ -195,7 +195,7 @@ class Order_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $oOrder = oxNew("oxorder");
         if ($oOrder->load($soxId)) {
-            $oEmail = oxNew("oxemail", DiContainer::getInstance()->get('core.mailclient'));
+            $oEmail = DiContainer::getInstance()->get('core.mailer');
             $oEmail->sendDownloadLinksMail($oOrder);
         }
     }

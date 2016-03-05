@@ -5,6 +5,7 @@ use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Interop\Container\Exception\NotFoundException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Class DiContainer
@@ -43,6 +44,10 @@ class DiContainer implements ContainerInterface
 
         //basic setup
         $container->register('core.mailclient', \OxidEsales\Eshop\Core\MailClient::class);
+        $container
+            ->register('core.mailer', \oxEmail::class)
+            ->addArgument(new Reference('core.mailclient'));
+
     }
 
     /**

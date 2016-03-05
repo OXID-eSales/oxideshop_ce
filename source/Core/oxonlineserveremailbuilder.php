@@ -42,7 +42,7 @@ class oxOnlineServerEmailBuilder
     public function build($sBody)
     {
         /** @var oxEmail $oExpirationEmail */
-        $oExpirationEmail = oxNew('oxEmail', DiContainer::getInstance()->get('core.mailclient'));
+        $oExpirationEmail = DiContainer::getInstance()->get('core.mailer');
         $oExpirationEmail->setSubject(oxRegistry::getLang()->translateString('SUBJECT_UNABLE_TO_SEND_VIA_CURL', null, true));
         $oExpirationEmail->setRecipient('olc@oxid-esales.com');
         $oExpirationEmail->setFrom($this->_getShopInfoAddress());

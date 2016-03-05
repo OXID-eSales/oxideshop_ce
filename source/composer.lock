@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "06d393e3e4dd33d65fb9fbbb268c1284",
-    "content-hash": "5d50d53670ea8ea3dbb0bd2ac4f765bb",
+    "hash": "275bc73a0d8f7d26fd4c1a5dc5a861cb",
+    "content-hash": "033d757e2c8a2d4c88f121e57840bf7d",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -794,13 +794,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "621969a91e843493c6e56af6c72cb00683d1cb7c"
+                "url": "https://github.com/devbox123/testing_library.git",
+                "reference": "4109613eba9c480238585ca5aa85d38bf8562c83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/621969a91e843493c6e56af6c72cb00683d1cb7c",
-                "reference": "621969a91e843493c6e56af6c72cb00683d1cb7c",
+                "url": "https://api.github.com/repos/devbox123/testing_library/zipball/4109613eba9c480238585ca5aa85d38bf8562c83",
+                "reference": "4109613eba9c480238585ca5aa85d38bf8562c83",
                 "shasum": ""
             },
             "require": {
@@ -863,10 +863,9 @@
                 "testing"
             ],
             "support": {
-                "source": "https://github.com/OXID-eSales/testing_library/tree/master",
-                "issues": "https://github.com/OXID-eSales/testing_library/issues"
+                "source": "https://github.com/devbox123/testing_library/tree/master"
             },
-            "time": "2016-02-26 10:26:16"
+            "time": "2016-03-05 21:28:00"
         },
         {
             "name": "pdepend/pdepend",

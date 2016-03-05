@@ -26,6 +26,10 @@
             "url": "https://github.com/OXID-eSales/PHP_CodeSniffer.git"
         }
     },
+    "require": {
+        "symfony/dependency-injection": "~3.0",
+        "container-interop/container-interop": "~1.1"
+    },
     "require-dev": {
         "oxid-esales/testing-library": "dev-master",
         "oxid-esales/coding-standards": "dev-master",

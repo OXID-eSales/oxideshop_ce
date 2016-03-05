@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Controller;
 
+use OxidEsales\Eshop\Core\DiContainer;
 use oxRegistry;
 
 /**
@@ -80,7 +81,7 @@ class ForgotPasswordController extends \oxUBase
     {
         $sEmail = oxRegistry::getConfig()->getRequestParameter('lgn_usr');
         $this->_sForgotEmail = $sEmail;
-        $oEmail = oxNew('oxemail');
+        $oEmail = oxNew('oxemail', DiContainer::getInstance()->get('core.mailclient'));
 
         // problems sending passwd reminder ?
         $iSuccess = false;

@@ -23,6 +23,7 @@
 namespace OxidEsales\Eshop\Application\Controller;
 
 use oxField;
+use OxidEsales\Eshop\Core\DiContainer;
 use oxRegistry;
 
 /**
@@ -111,7 +112,7 @@ class PriceAlarmController extends \oxUBase
         $oAlarm->save();
 
         // Send Email
-        $oEmail = oxNew('oxemail');
+        $oEmail = oxNew('oxemail',DiContainer::getInstance()->get('core.mailclient'));
         $this->_iPriceAlarmStatus = (int) $oEmail->sendPricealarmNotification($aParams, $oAlarm);
     }
 

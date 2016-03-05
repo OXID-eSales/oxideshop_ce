@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Controller;
 
+use OxidEsales\Eshop\Core\DiContainer;
 use oxRegistry;
 
 /**
@@ -199,7 +200,7 @@ class InviteController extends \oxUBase
         }
 
         // sending invite email
-        $oEmail = oxNew('oxemail');
+        $oEmail = oxNew('oxemail', DiContainer::getInstance()->get('core.mailclient'));
 
         if ($oEmail->sendInviteMail($oParams)) {
             $this->_iMailStatus = 1;

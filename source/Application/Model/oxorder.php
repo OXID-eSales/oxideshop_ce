@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Order manager.
@@ -1723,7 +1724,7 @@ class oxOrder extends oxBase
         $this->_oBasket = $oBasket;
         $this->_oPayment = $oPayment;
 
-        $oxEmail = oxNew('oxemail');
+        $oxEmail = oxNew('oxemail', DiContainer::getInstance()->get('core.mailclient'));
 
         // send order email to user
         if ($oxEmail->sendOrderEMailToUser($this)) {

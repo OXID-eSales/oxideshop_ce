@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Admin order overview manager.
@@ -164,7 +165,7 @@ class Order_Overview extends oxAdminDetails
 
             if (($blMail = oxRegistry::getConfig()->getRequestParameter("sendmail"))) {
                 // send eMail
-                $oEmail = oxNew("oxemail");
+                $oEmail = oxNew("oxemail", DiContainer::getInstance()->get('core.mailclient'));
                 $oEmail->sendSendedNowMail($oOrder);
             }
         }

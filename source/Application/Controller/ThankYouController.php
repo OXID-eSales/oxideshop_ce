@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Controller;
 
+use OxidEsales\Eshop\Core\DiContainer;
 use oxRegistry;
 use oxUBase;
 use oxBasket;
@@ -152,7 +153,7 @@ class ThankYouController extends oxUBase
         // loading order sometimes needed in template
         if ($this->_oBasket->getOrderId()) {
             // owners stock reminder
-            $oEmail = oxNew('oxEmail');
+            $oEmail = oxNew('oxEmail', DiContainer::getInstance()->get('core.mailclient'));
             $oEmail->sendStockReminder($this->_oBasket->getContents());
         }
 

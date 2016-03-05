@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * pricealarm sending manager.
@@ -163,7 +164,7 @@ class PriceAlarm_Send extends oxAdminList
         $oldLanguageId = $language->getTplLanguage();
         $language->setTplLanguage($languageId);
 
-        $email = oxNew('oxEmail');
+        $email = oxNew('oxEmail', DiContainer::getInstance()->get('core.mailclient'));
         $success = (int) $email->sendPricealarmToCustomer($emailAddress, $alarm);
 
         $language->setTplLanguage($oldLanguageId);

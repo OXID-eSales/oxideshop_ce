@@ -29,6 +29,7 @@ use oxCaptcha;
 use oxCategory;
 use oxDeliveryList;
 use oxDeliverySetList;
+use OxidEsales\Eshop\Core\DiContainer;
 use oxPaymentList;
 use oxRegistry;
 use oxField;
@@ -1194,7 +1195,7 @@ class ArticleDetailsController extends \oxUBase
         $priceAlarm->save();
 
         // Send Email
-        $email = oxNew('oxEmail');
+        $email = oxNew('oxEmail', DiContainer::getInstance()->get('core.mailclient'));
         $this->_iPriceAlarmStatus = (int) $email->sendPricealarmNotification($parameters, $priceAlarm);
     }
 

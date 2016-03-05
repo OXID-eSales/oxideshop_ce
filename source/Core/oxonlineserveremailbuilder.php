@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Class oxOnlineServerEmailBuilder is responsible for email sending when it's not possible to make call via CURL.
@@ -41,7 +42,7 @@ class oxOnlineServerEmailBuilder
     public function build($sBody)
     {
         /** @var oxEmail $oExpirationEmail */
-        $oExpirationEmail = oxNew('oxEmail');
+        $oExpirationEmail = oxNew('oxEmail', DiContainer::getInstance()->get('core.mailclient'));
         $oExpirationEmail->setSubject(oxRegistry::getLang()->translateString('SUBJECT_UNABLE_TO_SEND_VIA_CURL', null, true));
         $oExpirationEmail->setRecipient('olc@oxid-esales.com');
         $oExpirationEmail->setFrom($this->_getShopInfoAddress());

@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Controller;
 
+use OxidEsales\Eshop\Core\DiContainer;
 use oxRegistry;
 
 /**
@@ -127,7 +128,7 @@ class ContactController extends \oxUBase
                     $aParams['oxuser__oxlname'] . "(" . $aParams['oxuser__oxusername'] . ")<br /><br />" .
                     nl2br(oxRegistry::getConfig()->getRequestParameter('c_message'));
 
-        $oEmail = oxNew('oxemail');
+        $oEmail = oxNew('oxemail', DiContainer::getInstance()->get('core.mailclient'));
         if ($oEmail->sendContactMail($aParams['oxuser__oxusername'], $sSubject, $sMessage)) {
             $this->_blContactSendStatus = 1;
         } else {

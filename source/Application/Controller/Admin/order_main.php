@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Admin article main order manager.
@@ -179,7 +180,7 @@ class Order_Main extends oxAdminDetails
             $oOrderArticles = $oOrder->getOrderArticles(true);
             if (oxRegistry::getConfig()->getRequestParameter("sendmail")) {
                 // send eMail
-                $oEmail = oxNew("oxemail");
+                $oEmail = oxNew("oxemail", DiContainer::getInstance()->get('core.mailclient'));
                 $oEmail->sendSendedNowMail($oOrder);
             }
             $this->onOrderSend();
@@ -194,7 +195,7 @@ class Order_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $oOrder = oxNew("oxorder");
         if ($oOrder->load($soxId)) {
-            $oEmail = oxNew("oxemail");
+            $oEmail = oxNew("oxemail", DiContainer::getInstance()->get('core.mailclient'));
             $oEmail->sendDownloadLinksMail($oOrder);
         }
     }

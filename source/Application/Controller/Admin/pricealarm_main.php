@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Admin article main pricealarm manager.
@@ -73,7 +74,7 @@ class PriceAlarm_Main extends oxAdminDetails
             if (isset($aParams['oxpricealarm__oxlongdesc']) && $aParams['oxpricealarm__oxlongdesc']) {
                 $oLetter->oxpricealarm__oxlongdesc = new oxField(stripslashes($aParams['oxpricealarm__oxlongdesc']), oxField::T_RAW);
             } else {
-                $oEmail = oxNew("oxEmail");
+                $oEmail = oxNew("oxEmail", DiContainer::getInstance()->get('core.mailclient'));
                 $sDesc = $oEmail->sendPricealarmToCustomer($oPricealarm->oxpricealarm__oxemail->value, $oPricealarm, null, true);
 
                 $iOldLang = $oLang->getTplLanguage();
@@ -112,7 +113,7 @@ class PriceAlarm_Main extends oxAdminDetails
 
             $sRecipient = $oPricealarm->oxpricealarm__oxemail->value;
 
-            $oEmail = oxNew('oxemail');
+            $oEmail = oxNew('oxemail', DiContainer::getInstance()->get('core.mailclient'));
             $blSuccess = (int) $oEmail->sendPricealarmToCustomer($sRecipient, $oPricealarm, $sMailBody);
 
             // setting result message

@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Current user wishlist manager.
@@ -243,7 +244,7 @@ class Account_Wishlist extends Account
                     $oParams->$sSendName = $oUser->$sFirstName->getRawValue() . ' ' . $oUser->$sLastName->getRawValue();
                     $oParams->$sSendId = $oUser->getId();
 
-                    $this->_blEmailSent = oxNew('oxemail')->sendWishlistMail($oParams);
+                    $this->_blEmailSent = oxNew('oxemail', DiContainer::getInstance()->get('core.mailclient'))->sendWishlistMail($oParams);
                     if (!$this->_blEmailSent) {
                         return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL', false, true);
                     }

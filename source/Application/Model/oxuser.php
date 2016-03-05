@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * User manager.
@@ -1119,7 +1120,7 @@ class oxUser extends oxBase
                     // double-opt-in check enabled - sending confirmation email and setting waiting status
                     if ($iOptInStatus != 2) {
                         // sending double-opt-in mail
-                        $oEmail = oxNew('oxemail');
+                        $oEmail = oxNew('oxemail', DiContainer::getInstance()->get('core.mailclient'));
                         $blSuccess = $oEmail->sendNewsletterDbOptInMail($this);
                     } else {
                         // mail already was sent, so just confirming that

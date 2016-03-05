@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Controller;
 
+use OxidEsales\Eshop\Core\DiContainer;
 use oxRegistry;
 
 /**
@@ -156,7 +157,7 @@ class SuggestController extends \oxUBase
         }
 
         // sending suggest email
-        $oEmail = oxNew('oxemail');
+        $oEmail = oxNew('oxemail', DiContainer::getInstance()->get('core.mailclient'));
         $oProduct = $this->getProduct();
         if ($oProduct && $oEmail->sendSuggestMail($oParams, $oProduct)) {
             return 'details?anid=' . $oProduct->getId() . $sReturn;

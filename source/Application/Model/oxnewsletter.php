@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Newsletter manager.
@@ -175,7 +176,7 @@ class oxNewsletter extends oxBase
      */
     public function send()
     {
-        $oxEMail = oxNew('oxemail');
+        $oxEMail = oxNew('oxemail', DiContainer::getInstance()->get('core.mailclient'));
         $blSend = $oxEMail->sendNewsletterMail($this, $this->_oUser, $this->oxnewsletter__oxsubject->value);
 
         return $blSend;

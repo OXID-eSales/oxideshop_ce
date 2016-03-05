@@ -198,6 +198,8 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
      */
     public function testSend()
     {
+        //$this->fail("Temporary failing!");
+
         $this->setRequestParameter("oxid", "testId");
         oxTestModules::addFunction('oxpricealarm', 'load', '{ return true; }');
         oxTestModules::addFunction('oxpricealarm', 'save', '{ return true; }');

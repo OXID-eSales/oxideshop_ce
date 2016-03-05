@@ -1,4 +1,6 @@
 <?php
+use OxidEsales\Eshop\Core\DiContainer;
+
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -84,7 +86,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         $oOutput = oxNew('oxOutput');
         $this->getConfig()->setConfigParam('blSkipEuroReplace', false);
         $this->getConfig()->setConfigParam('iUtfMode', 0);
-        $this->assertEquals('&euro;someting', $oOutput->process('¤someting', 'something'));
+        $this->assertEquals('&euro;someting', $oOutput->process('ï¿½someting', 'something'));
     }
 
     /**
@@ -95,7 +97,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         $oOutput = oxNew('oxOutput');
         $this->getConfig()->setConfigParam('blSkipEuroReplace', false);
         $this->getConfig()->setConfigParam('iUtfMode', 1);
-        $this->assertEquals('¤someting', $oOutput->process('¤someting', 'something'));
+        $this->assertEquals('ï¿½someting', $oOutput->process('ï¿½someting', 'something'));
     }
 
     /**
@@ -107,7 +109,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         $this->getConfig()->setConfigParam('blSkipEuroReplace', true);
         $this->getConfig()->setConfigParam('iUtfMode', 0);
 
-        $this->assertEquals('¤someting', $oOutput->process('¤someting', 'something'));
+        $this->assertEquals('ï¿½someting', $oOutput->process('ï¿½someting', 'something'));
     }
 
     public function testAddVersionTags()
@@ -169,7 +171,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
     public function testProcessEmail()
     {
         $oOutput = oxNew('oxOutput');
-        $oEmail = oxNew('oxEmail');
+        $oEmail = DiContainer::getInstance()->get('core.mailer');
         $oEmail->email = 1;
         $oEmail2 = clone $oEmail;
         $oOutput->processEmail($oEmail);

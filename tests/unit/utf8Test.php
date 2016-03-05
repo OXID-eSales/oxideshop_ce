@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Class Unit_utf8Test
@@ -1818,7 +1819,7 @@ class Unit_utf8Test extends OxidTestCase
         $sBodyToSet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;sid=somesid&amp;something=something\" title=\"agentūлитовfür\">";
         $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;shp=" . $this->getConfig()->getBaseShopId() . "&amp;something=something\" title=\"agentūлитовfür\">";
 
-        $oEmail = new oxEmail();
+        $oEmail = DiContainer::getInstance()->get('core.mailer');
         $oEmail->setBody($sBodyToSet);
         $this->assertEquals($sBodyWillGet, $oEmail->getBody());
     }
@@ -1828,7 +1829,7 @@ class Unit_utf8Test extends OxidTestCase
         $sBodyToSet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;sid=somesid&amp;something=something\" title=\"agentūлитовfür\">";
         $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&shp=" . $this->getConfig()->getBaseShopId() . "&something=something\" title=\"agentūлитовfür\">";
 
-        $oEmail = new oxEmail();
+        $oEmail = DiContainer::getInstance()->get('core.mailer');
         $oEmail->setAltBody($sBodyToSet);
         $this->assertEquals($sBodyWillGet, $oEmail->getAltBody());
     }
@@ -1839,7 +1840,7 @@ class Unit_utf8Test extends OxidTestCase
             $this->markTestSkipped("Function idn_to_ascii does not exists, cannot test.");
         }
 
-        $mail = oxNew('oxEmail');
+        $mail = DiContainer::getInstance()->get('core.mailer');
         $mail->setRecipient('müller@testuser.com', 'test user');
 
         $recipient = $mail->getRecipient();

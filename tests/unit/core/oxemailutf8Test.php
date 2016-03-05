@@ -50,7 +50,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
      */
     public function testGetCharset()
     {
-        $oEmail = oxNew('oxEmail');
+        $oEmail = DiContainer::getInstance()->get('core.mailer');
         $this->assertEquals("UTF-8", $oEmail->getCharset());
     }
 
@@ -61,7 +61,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
      */
     public function testGetCurrency()
     {
-        $oEmail = oxNew('oxEmail');
+        $oEmail = DiContainer::getInstance()->get('core.mailer');
         $this->assertEquals("€", $oEmail->getCurrency()->sign);
     }
 

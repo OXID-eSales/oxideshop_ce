@@ -1724,16 +1724,16 @@ class oxOrder extends oxBase
         $this->_oBasket = $oBasket;
         $this->_oPayment = $oPayment;
 
-        $oxEmail = DiContainer::getInstance()->get('core.mailer');
+        $mailer = DiContainer::getInstance()->get('core.mailer');
 
         // send order email to user
-        if ($oxEmail->sendOrderEMailToUser($this)) {
+        if ($mailer->sendOrderEMailToUser($this)) {
             // mail to user was successfully sent
             $iRet = self::ORDER_STATE_OK;
         }
 
         // send order email to shop owner
-        $oxEmail->sendOrderEMailToOwner($this);
+        $mailer->sendOrderEMailToOwner($this);
 
         return $iRet;
     }

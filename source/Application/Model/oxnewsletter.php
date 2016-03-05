@@ -176,8 +176,8 @@ class oxNewsletter extends oxBase
      */
     public function send()
     {
-        $oxEMail = DiContainer::getInstance()->get('core.mailer');
-        $blSend = $oxEMail->sendNewsletterMail($this, $this->_oUser, $this->oxnewsletter__oxsubject->value);
+        $mailer = DiContainer::getInstance()->get('core.mailer');
+        $blSend = $mailer->sendNewsletterMail($this, $this->_oUser, $this->oxnewsletter__oxsubject->value);
 
         return $blSend;
     }

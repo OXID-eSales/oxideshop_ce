@@ -1620,7 +1620,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(false));
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
+        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'), [], '', false);
         $oEmail->expects($this->never())->method('sendPricealarmNotification');
         oxTestModules::addModuleObject('oxEmail', $oEmail);
 
@@ -1639,7 +1639,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
+        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'), [], '', false);
         $oEmail->expects($this->never())->method('sendPricealarmNotification');
         oxTestModules::addModuleObject('oxEmail', $oEmail);
 
@@ -1667,7 +1667,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
+        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'), [], '', false);
         $oEmail->expects($this->once())->method('sendPricealarmNotification')->will($this->returnValue(123));
         oxTestModules::addModuleObject('oxEmail', $oEmail);
 

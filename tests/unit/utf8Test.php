@@ -1808,7 +1808,7 @@ class Unit_utf8Test extends OxidTestCase
         $sBodyToReturn = "agentūлитовfür <img src=\"__imagedir__/stars.jpg\" alt=\"agentūлитовfür\">";
         $sBodyToSet = "agentūлитовfür <img src=\"cid:xxx\" alt=\"agentūлитовfür\">";
 
-        $oEmail = $this->getMock('oxemail', array('getBody', 'setBody'));
+        $oEmail = $this->getMock('oxemail', array('getBody', 'setBody'), [], '', false);
         $oEmail->expects($this->once())->method('getBody')->will($this->returnValue($sBodyToReturn));
         $oEmail->expects($this->once())->method('setBody')->with($this->equalTo($sBodyToSet));
         $oEmail->UNITincludeImages("__imagedir__", null, null, $this->getConfig()->getImageDir());

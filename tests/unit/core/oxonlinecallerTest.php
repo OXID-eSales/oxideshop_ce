@@ -60,7 +60,7 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
 
     public function testCallWhenFailsAndThereAreNotAllowedCallsCount()
     {
-        $oEmail = $this->getMock('oxEmail', array('send'));
+        $oEmail = $this->getMock('oxEmail', array('send'), [], '', false);
         // Email send function must be called.
         $oEmail->expects($this->once())->method('send')->will($this->returnValue(true));
         $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder', array('build'));
@@ -158,7 +158,7 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
      */
     private function _getMockedEmailBuilder()
     {
-        $oEmail = $this->getMock('oxEmail', array('send'));
+        $oEmail = $this->getMock('oxEmail', array('send'), [], '', false);
         $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder', array('build'));
         $oEmailBuilder->expects($this->any())->method('build')->will($this->returnValue($oEmail));
 

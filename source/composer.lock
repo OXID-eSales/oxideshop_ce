@@ -795,12 +795,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/devbox123/testing_library.git",
-                "reference": "4109613eba9c480238585ca5aa85d38bf8562c83"
+                "reference": "0bad42a4ba55400a488b2e35abe5bdc959e4bbfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devbox123/testing_library/zipball/4109613eba9c480238585ca5aa85d38bf8562c83",
-                "reference": "4109613eba9c480238585ca5aa85d38bf8562c83",
+                "url": "https://api.github.com/repos/devbox123/testing_library/zipball/0bad42a4ba55400a488b2e35abe5bdc959e4bbfc",
+                "reference": "0bad42a4ba55400a488b2e35abe5bdc959e4bbfc",
                 "shasum": ""
             },
             "require": {
@@ -865,7 +865,7 @@
             "support": {
                 "source": "https://github.com/devbox123/testing_library/tree/master"
             },
-            "time": "2016-03-05 21:28:00"
+            "time": "2016-03-05 21:40:02"
         },
         {
             "name": "pdepend/pdepend",

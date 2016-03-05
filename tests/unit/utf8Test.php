@@ -1803,6 +1803,8 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testOxEmailIncludeImages()
     {
+        $this->fail('Temporary failing!');
+
         oxTestModules::addFunction('oxUtilsObject', 'generateUID', '{ return "xxx"; }');
 
         $sBodyToReturn = "agentūлитовfür <img src=\"__imagedir__/stars.jpg\" alt=\"agentūлитовfür\">";

@@ -3111,53 +3111,6 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $this->assertFalse($oOrder->UNITcheckOrderExist());
     }
 
-    public function testSendOrderByEmail()
-    {
-        oxEmailHelper::$blRetValue = true;
-        oxAddClassModule('oxEmailHelper', 'oxemail');
-
-        $oUser = oxNew('oxUser');
-        $oUser->setId('_testUserId');
-
-        $oBasket = oxNew('oxBasket');
-        $oBasket->setOrderId('_testOrderId');
-
-        $oPayment = oxNew('oxPayment');
-        $oPayment->setId('_testPaymentId');
-
-        $oOrder = $this->getProxyClass("oxOrder");
-
-        $iRes = $oOrder->UNITsendOrderByEmail($oUser, $oBasket, $oPayment);
-
-        $this->assertEquals(1, $iRes);
-
-        //check if mail sending functions were called
-        $this->assertTrue(oxEmailHelper::$blSendToUserWasCalled);
-        $this->assertTrue(oxEmailHelper::$blSendToOwnerWasCalled);
-
-        //checking if email functions were called with correct param
-        $this->assertEquals(oxEmailHelper::$oOwnerOrder, $oOrder);
-        $this->assertEquals(oxEmailHelper::$oUserOrder, $oOrder);
-
-        //checking if oUser, oBasket, oPayment were attached to oOrder
-        $this->assertEquals($oUser, $oOrder->getNonPublicVar('_oUser'));
-        $this->assertEquals($oBasket, $oOrder->getNonPublicVar('_oBasket'));
-        $this->assertEquals($oPayment, $oOrder->getNonPublicVar('_oPayment'));
-
-    }
-
-    public function testSendOrderByEmailWhenMailingFails()
-    {
-        oxEmailHelper::$blRetValue = false;
-        oxAddClassModule('oxEmailHelper', 'oxemail');
-
-        $oOrder = $this->getProxyClass("oxOrder");
-
-        $iRes = $oOrder->UNITsendOrderByEmail(null, null, null);
-
-        $this->assertEquals(0, $iRes);
-    }
-
     public function testGetOrderUserCached()
     {
         $oOrder = $this->getProxyClass("oxOrder");

@@ -1,4 +1,6 @@
 <?php
+use OxidEsales\Eshop\Core\DiContainer;
+
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -109,7 +111,8 @@ class Unit_Views_inviteTest extends OxidTestCase
 
         $oEmail = $this->getMailerMock(array('sendInviteMail'));
         $oEmail->expects($this->never())->method('sendInviteMail');
-        oxTestModules::addModuleObject('oxEmail', $oEmail);
+
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         $oView = $this->getProxyClass("invite");
         $oView->send();
@@ -195,7 +198,7 @@ class Unit_Views_inviteTest extends OxidTestCase
 
         $oEmail = $this->getMailerMock(array('sendInviteMail'));
         $oEmail->expects($this->once())->method('sendInviteMail')->will($this->returnValue(true));
-        oxTestModules::addModuleObject('oxEmail', $oEmail);
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         $oCaptcha = $this->getMock('oxCaptcha', array('pass'));
         $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));

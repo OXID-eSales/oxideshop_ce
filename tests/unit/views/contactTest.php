@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Tests for contact class
@@ -119,8 +120,12 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testSave()
     {
+        $oEmail = $this->getMailerMock(array('sendContactMail'));
+        $oEmail->expects($this->any())->method('sendContactMail')->will($this->returnValue(true));
+
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
+
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
-        oxTestModules::addFunction('oxemail', 'sendContactMail', '{return true;}');
 
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
         $aParams['oxuser__oxfname'] = 'first name';
@@ -227,7 +232,7 @@ class Unit_Views_contactTest extends OxidTestCase
         $oEmail = $this->getMailerMock(array("sendContactMail"));
         $oEmail->expects($this->once())->method('sendContactMail')->with($this->equalTo('info@oxid-esales.com'), $this->equalTo('subject'), $this->equalTo($sMessage))->will($this->returnValue(true));
 
-        oxTestModules::addModuleObject('oxemail', $oEmail);
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         /** @var oxCaptcha|PHPUnit_Framework_MockObject_MockObject $oCaptcha */
         $oCaptcha = $this->getMock("oxCaptcha", array("pass"));
@@ -264,7 +269,7 @@ class Unit_Views_contactTest extends OxidTestCase
         $oEmail = $this->getMailerMock(array("sendContactMail"));
         $oEmail->expects($this->once())->method('sendContactMail')->will($this->returnValue(false));
 
-        oxTestModules::addModuleObject('oxemail', $oEmail);
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         /** @var oxCaptcha|PHPUnit_Framework_MockObject_MockObject $oCaptcha */
         $oCaptcha = $this->getMock("oxCaptcha", array("pass"));

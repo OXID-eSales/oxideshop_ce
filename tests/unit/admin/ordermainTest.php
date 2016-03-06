@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Tests for Order_Main class
@@ -130,35 +131,6 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
         $this->fail("error in Order_Main::save()");
     }
 
-
-    /**
-     * Order_Main::Sendorder() test case
-     *
-     * @return null
-     */
-    public function testSendorder()
-    {
-        //
-        oxTestModules::addFunction('oxorder', 'load', '{ return true; }');
-        oxTestModules::addFunction('oxorder', 'save', '{}; }');
-        oxTestModules::addFunction('oxorder', 'getOrderArticles', '{ return array(); }');
-        oxTestModules::addFunction('oxemail', 'sendSendedNowMail', '{ throw new Exception( "sendSendedNowMail" ); }');
-
-        $this->setRequestParameter("sendmail", 1);
-        $this->setRequestParameter("oxid", "testId");
-
-        // testing..
-        try {
-            $oView = oxNew('Order_Main');
-            $oView->sendorder();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("sendSendedNowMail", $oExcp->getMessage(), "error in Order_Main::sendorder()");
-
-            return;
-        }
-        $this->fail("error in Order_Main::sendorder()");
-    }
-
     /**
      * Order_Main::senddownloadlinks() test case
      *
@@ -168,7 +140,11 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
     {
         //
         oxTestModules::addFunction('oxorder', 'load', '{ return true; }');
-        oxTestModules::addFunction('oxemail', 'sendDownloadLinksMail', '{ throw new Exception( "sendDownloadLinksMail" ); }');
+
+        $oEmail = $this->getMailerMock(array('send', 'sendDownloadLinksMail'));
+        $oEmail->expects($this->once())->method('sendInviteMail')->will($this->throwException(new Exception( "sendDownloadLinksMail" )));
+
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         $this->setRequestParameter("oxid", "testId");
 

@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Testing newsletter class.
@@ -397,8 +398,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
      */
     public function testNewsletterErrorOnFailedEmailSending()
     {
-        oxTestModules::addFunction("oxemail", "send", "{return false;}");
-        oxTestModules::addFunction("oxemail", "sendNewsletterDbOptInMail", "{return false;}");
+        $oEmail = $this->getMailerMock(array('send', 'sendNewsletterDbOptInMail'));
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         oxRegistry::getLang()->setBaseLanguage(1);
         $oTestNews = oxNew("NewsLetter");

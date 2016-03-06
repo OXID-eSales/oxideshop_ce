@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\DiContainer;
+
 require_once TEST_LIBRARY_HELPERS_PATH .'oxEmailHelper.php';
 
 /**
@@ -2011,8 +2013,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         // email should be sent only once
         $oEmail = $this->getMailerMock(array('sendNewsletterDBOptInMail'));
         $oEmail->expects($this->once())->method('sendNewsletterDBOptInMail')->will($this->returnValue(true));
-
-        oxTestModules::addModuleObject("oxemail", $oEmail);
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blOrderOptInEmail', true);

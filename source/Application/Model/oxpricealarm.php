@@ -208,7 +208,8 @@ class oxPricealarm extends oxBase
             if (!$oThisCurr) {
                 $oDefCurr = $myConfig->getActShopCurrencyObject();
                 $oThisCurr = $myConfig->getCurrencyObject($oDefCurr->name);
-                $this->oxpricealarm__oxcurrency->setValue($oDefCurr->name);
+                //$this->oxpricealarm__oxcurrency->setValue($oDefCurr->name);
+                $this->oxpricealarm__oxcurrency = new oxField($oDefCurr->name);
             }
             $this->_oCurrency = $oThisCurr;
         }

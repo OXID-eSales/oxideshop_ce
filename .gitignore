@@ -21,6 +21,7 @@
 
 # Composer
 /source/vendor/
+/source/composer.lock
 
 # Testing library
 /source/test_config.yml

@@ -21,11 +21,6 @@
  */
 
 /**
- * Includes Smarty engine class.
- */
-require_once getShopBasePath() . "Core/smarty/Smarty.class.php";
-
-/**
  * General utils class
  *
  */

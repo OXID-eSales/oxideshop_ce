@@ -116,8 +116,6 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $oBase->save();
 
         // testing..
-        $oView = oxNew('Order_Overview');
-
         $oView = $this->getMock("Order_Overview", array("getEditObjectId"));
         $oView->expects($this->any())->method('getEditObjectId')->will($this->returnValue('testOrderId'));
 

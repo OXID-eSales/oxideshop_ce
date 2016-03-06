@@ -81,4 +81,10 @@ class DiContainer implements ContainerInterface
         return $this->container->has($id);
     }
 
+    public function set($id, $class)
+    {
+        //basic setup
+        $this->container->register($id, $class);
+    }
+
 }

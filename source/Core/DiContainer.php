@@ -39,6 +39,8 @@ class DiContainer implements ContainerInterface
      */
     private $container;
 
+    private $hacks = [];
+
     /**
      * @param ContainerBuilder $container
      */
@@ -68,6 +70,11 @@ class DiContainer implements ContainerInterface
      */
     public function get($id)
     {
+        // hacks!
+        if (isset($this->hacks[$id])) {
+            return $this->hacks[$id];
+        }
+
         if ($this->has($id)) {
             return $this->container->get($id);
         }
@@ -81,10 +88,11 @@ class DiContainer implements ContainerInterface
         return $this->container->has($id);
     }
 
-    public function set($id, $class)
+    // Dirty...
+    public function set($id, $object)
     {
         //basic setup
-        $this->container->register($id, $class);
+        $this->hacks[$id] = $object;
     }
 
 }

@@ -22,62 +22,6 @@ use OxidEsales\Eshop\Core\DiContainer;
  * @version   OXID eShop CE
  */
 
-class modOxNewsLetter extends oxNewsLetter
-{
-
-    public function getSmarty()
-    {
-        return $this->_oSmarty;
-    }
-
-    public function getUser()
-    {
-        return $this->_oUser;
-    }
-
-    public function getShop()
-    {
-        return $this->_oShop;
-    }
-}
-
-class modEmailOxNewsLetter extends oxEmail
-{
-
-    public $Timeout = 2;
-
-    public function sendNewsletterMail($oNews, $oUser, $sSubject = null)
-    {
-        return false;
-    }
-}
-
-class modEmailOxNewsLetter2 extends oxEmail
-{
-
-    public $Timeout = 2;
-
-    public function sendNewsletterMail($oNews, $oUser, $sSubject = null)
-    {
-        return true;
-    }
-}
-
-/*
- * Dummy class for newsletter subject test.
- *
- */
-class modEmailOxNewsLetterSubject extends oxEmail
-{
-
-    public $Timeout = 2;
-
-    public function sendNewsletterMail($oNews, $oUser, $sSubject = null)
-    {
-        throw new oxexception($sSubject);
-    }
-}
-
 class oxnewsletterForUnit_oxnewsletterTest extends oxnewsletter
 {
 
@@ -195,9 +139,6 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
         $sSql = "update oxnewssubscribed set oxemailfailed = '0' where oxuserid = 'oxdefaultadmin' ";
         $oDB->Execute($sSql);
 
-        oxRemClassModule('modEmailOxNewsLetter');
-        oxRemClassModule('modEmailOxNewsLetter2');
-
         parent::tearDown();
     }
 
@@ -250,8 +191,6 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
 
     public function test_setParams()
     {
-        $myConfig = $this->getConfig();
-
         // preparing input
         $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
@@ -329,44 +268,10 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
     }
 
     /**
-     * Testing user setter
-     */
-    // setting by id
-    public function testSetUserId()
-    {
-        $oTestNews = oxNew('modOxNewsLetter');
-        $oTestNews->UNITsetUser('oxdefaultadmin');
-        $oUser = $oTestNews->getUser();
-        $this->assertEquals($oUser->oxuser__oxid->value, 'oxdefaultadmin');
-    }
-
-    // setting by object
-    public function testSetUserObject()
-    {
-        $oTestNews = oxNew('modOxNewsLetter');
-        $oUser = oxNew("oxUser");
-        $oUser->load('oxdefaultadmin');
-        $oTestNews->UNITsetUser($oUser);
-        $oNewsUser = $oTestNews->getUser();
-        $this->assertEquals($oNewsUser->oxuser__oxid->value, 'oxdefaultadmin');
-    }
-
-    // setting wrong id
-    public function testSetUserWrongId()
-    {
-        $oTestNews = oxNew('modOxNewsLetter');
-        $oTestNews->UNITsetUser('123');
-        $oUser = $oTestNews->getUser();
-        $this->assertEquals($oUser->oxuser__oxid->value, null);
-    }
-
-    /**
      * Testing smarty variables
      */
     public function testAssignProducts()
     {
-        $myConfig = $this->getConfig();
-
         $oView = oxNew('oxubase');
 
         $oUser = oxNew('oxuser');
@@ -389,56 +294,6 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
 
         $this->assertNotNull($oView->getViewDataElement('simarticle0'));
         $this->assertNotNull($oView->getViewDataElement('simarticle1'));
-    }
-
-    public function testSendMail()
-    {
-        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, modEmailOxNewsLetter2::class);
-
-        $oTestNews = oxNew("oxNewsLetter");
-        if (!$oTestNews->load('oxidnewsletter')) {
-            $this->fail('can not load news');
-        }
-
-        $oTestNews->UNITsetUser('oxdefaultadmin');
-        $blMailWasSent = $oTestNews->send();
-        $this->assertTrue($blMailWasSent);
-    }
-
-    /*
-     * oxNewsletter::send - Testing for correct subject value.
-     *
-     * @return null
-     */
-    public function testSendMail_Subject()
-    {
-        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, modEmailOxNewsLetterSubject::class);
-
-        $oTestNews = oxNew("oxNewsLetter");
-        if (!$oTestNews->load('oxidnewsletter')) {
-            $this->fail('can not load news');
-        }
-
-        $oTestNews->oxnewsletter__oxsubject->value = "TestSubject";
-
-        $this->setExpectedException('oxException', "TestSubject");
-
-        $oTestNews->UNITsetUser('oxdefaultadmin');
-        $blMailWasSent = $oTestNews->send();
-    }
-
-    public function testSendMailAndFail()
-    {
-        oxAddClassModule('modEmailOxNewsLetter', 'oxEmail');
-
-        $oTestNews = oxNew("oxNewsLetter");
-        if (!$oTestNews->load('oxidnewsletter')) {
-            $this->fail('can not load news');
-        }
-
-        $oTestNews->UNITsetUser('oxdefaultadmin');
-        $blMailWasSent = $oTestNews->send();
-        $this->assertFalse($blMailWasSent);
     }
 
     /**

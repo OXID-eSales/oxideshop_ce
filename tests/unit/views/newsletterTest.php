@@ -394,29 +394,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
     }
 
     /**
-     * Testing error message when sending email about subscribtion fails
-     */
-    public function testNewsletterErrorOnFailedEmailSending()
-    {
-        $oEmail = $this->getMailerMock(array('send', 'sendNewsletterDbOptInMail'));
-        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
-
-        oxRegistry::getLang()->setBaseLanguage(1);
-        $oTestNews = oxNew("NewsLetter");
-        $aParams = array();
-
-        $aParams['oxuser__oxusername'] = 'test@test.de';
-        $aParams['oxuser__oxfname'] = 'test';
-        $this->setRequestParameter('subscribeStatus', 1);
-        $this->setRequestParameter('editval', $aParams);
-        $oTestNews->send();
-
-        $aErrors = oxRegistry::getSession()->getVariable('Errors');
-        $oErr = unserialize($aErrors['default'][0]);
-        $this->assertEquals(oxRegistry::getLang()->translateString('MESSAGE_NOT_ABLE_TO_SEND_EMAIL'), $oErr->getOxMessage());
-    }
-
-    /**
      * Testing newsLetter::getBreadCrumb()
      */
     public function testGetBreadCrumb()

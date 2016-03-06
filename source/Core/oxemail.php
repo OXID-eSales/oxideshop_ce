@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-use OxidEsales\Eshop\Core\MailClient;
+use OxidEsales\Eshop\Core\MailClientInterface;
 
 /**
  * Mailing manager.
@@ -28,13 +28,6 @@ use OxidEsales\Eshop\Core\MailClient;
  */
 class oxEmail
 {
-    /**
-     * Default Smtp server port
-     *
-     * @var int
-     */
-    public $SMTP_PORT = 25;
-
     /**
      * Password reminder mail template
      *
@@ -268,33 +261,19 @@ class oxEmail
      */
     protected $_oShop;
 
-    /**
-     * Email charset
-     *
-     * @var string
-     */
-    protected $_sCharSet;
-
     /** @var oxConfig */
     protected $_oConfig;
 
-
     private $mailer;
+
     /**
      * Class constructor.
      */
-    public function __construct(MailClient $mailer)
+    public function __construct(MailClientInterface $mailer)
     {
         $this->mailer = $mailer;
 
-        $myConfig = $this->getConfig();
-
-        $this->_setMailerPluginDir();
-        $this->setSmtp();
-
-        $this->setUseInlineImages($myConfig->getConfigParam('blInlineImgEmail'));
-        $this->setMailWordWrap(100);
-
+        $this->setUseInlineImages(oxRegistry::getConfig()->getConfigParam('blInlineImgEmail'));
         $this->_getSmarty();
     }
 
@@ -380,7 +359,6 @@ class oxEmail
         }
 
         $myConfig = $this->getConfig();
-        $this->setCharSet();
 
         if ($this->_getUseInlineImages()) {
             $this->_includeImages(
@@ -419,94 +397,6 @@ class oxEmail
     }
 
     /**
-     * Sets smtp parameters depending on the protocol used
-     * returns smtp url which should be used for fsockopen
-     *
-     * @param string $sUrl initial smtp
-     *
-     * @return string
-     */
-    protected function _setSmtpProtocol($sUrl)
-    {
-        $sProtocol = '';
-        $sSmtpHost = $sUrl;
-        $aMatch = array();
-        if (getStr()->preg_match('@^([0-9a-z]+://)?(.*)$@i', $sUrl, $aMatch)) {
-            if ($aMatch[1]) {
-                if (($aMatch[1] == 'ssl://') || ($aMatch[1] == 'tls://')) {
-                    $this->mailer->set('SMTPSecure', substr($aMatch[1], 0, 3));
-                } else {
-                    $sProtocol = $aMatch[1];
-                }
-            }
-            $sSmtpHost = $aMatch[2];
-        }
-
-        return $sProtocol . $sSmtpHost;
-    }
-
-    /**
-     * Sets SMTP mailer parameters, such as user name, password, location.
-     *
-     * @param oxShop $oShop Object, that keeps base shop info
-     *
-     * @return null
-     */
-    public function setSmtp($oShop = null)
-    {
-        $myConfig = $this->getConfig();
-        $oShop = ($oShop) ? $oShop : $this->_getShop();
-
-        $sSmtpUrl = $this->_setSmtpProtocol($oShop->oxshops__oxsmtp->value);
-
-        if (!$this->_isValidSmtpHost($sSmtpUrl)) {
-            $this->setMailer('mail');
-
-            return;
-        }
-
-        $this->setHost($sSmtpUrl);
-        $this->setMailer('smtp');
-
-        if ($oShop->oxshops__oxsmtpuser->value) {
-            $this->_setSmtpAuthInfo($oShop->oxshops__oxsmtpuser->value, $oShop->oxshops__oxsmtppwd->value);
-        }
-
-        if ($myConfig->getConfigParam('iDebug') == 6) {
-            $this->_setSmtpDebug(true);
-        }
-    }
-
-    /**
-     * Checks if smtp host is valid (tries to connect to it)
-     *
-     * @param string $sSmtpHost currently used smtp server host name
-     *
-     * @return bool
-     */
-    protected function _isValidSmtpHost($sSmtpHost)
-    {
-        $blIsSmtp = false;
-        if ($sSmtpHost) {
-            $sSmtpPort = $this->SMTP_PORT;
-            $aMatch = array();
-            if (getStr()->preg_match('@^(.*?)(:([0-9]+))?$@i', $sSmtpHost, $aMatch)) {
-                $sSmtpHost = $aMatch[1];
-                $sSmtpPort = (int) $aMatch[3];
-                if (!$sSmtpPort) {
-                    $sSmtpPort = $this->SMTP_PORT;
-                }
-            }
-            if ($blIsSmtp = (bool) ($rHandle = @fsockopen($sSmtpHost, $sSmtpPort, $iErrNo, $sErrStr, 30))) {
-                // closing connection ..
-                fclose($rHandle);
-            }
-        }
-
-        return $blIsSmtp;
-    }
-
-    /**
      * Sets mailer additional settings and sends ordering mail to user.
      * Returns true on success.
      *
@@ -523,7 +413,6 @@ class oxEmail
         $oOrder = $this->_addUserInfoOrderEMail($oOrder);
 
         $oShop = $this->_getShop();
-        $this->_setMailParams($oShop);
 
         $oUser = $oOrder->getOrderUser();
         $this->setUser($oUser);
@@ -589,7 +478,7 @@ class oxEmail
 
         // send confirmation to shop owner
         // send not pretending from order user, as different email domain rise spam filters
-        $this->setFrom($shop->oxshops__oxowneremail->value);
+        $this->mailer->setFromAddress($shop->oxshops__oxowneremail->value);
 
         $language = oxRegistry::getLang();
         $orderLanguage = $language->getObjectTplLanguage();
@@ -599,8 +488,6 @@ class oxEmail
         if ($shop->getLanguage() != $orderLanguage) {
             $shop = $this->_getShop($orderLanguage);
         }
-
-        $this->setSmtp($shop);
 
         // create messages
         $smarty = $this->_getSmarty();
@@ -694,8 +581,6 @@ class oxEmail
         // shop info
         $oShop = $this->_getShop();
 
-        //set mail params (from, fromName, smtp )
-        $this->_setMailParams($oShop);
 
         // create messages
         $oSmarty = $this->_getSmarty();
@@ -737,8 +622,6 @@ class oxEmail
         // add user defined stuff if there is any
         $oShop = $this->_addForgotPwdEmail($oShop);
 
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
 
         // user
         $sWhere = 'oxuser.oxactive = 1 and oxuser.oxusername = ' . $oDb->quote($sEmailAddress) . ' and oxuser.oxpassword != ""';
@@ -799,14 +682,12 @@ class oxEmail
         // shop info
         $oShop = $this->_getShop();
 
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
 
         $this->setBody($sMessage);
         $this->setSubject($sSubject);
 
         $this->setRecipient($oShop->oxshops__oxinfoemail->value, '');
-        $this->setFrom($oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue());
+        $this->setFromAddress($oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue());
         $this->setReplyTo($sEmailAddress, '');
 
         return $this->send();
@@ -829,9 +710,6 @@ class oxEmail
         // shop info
         $oShop = $this->_getShop();
 
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
-
         // create messages
         $oSmarty = $this->_getSmarty();
         $sConfirmCode = md5($oUser->oxuser__oxusername->value . $oUser->oxuser__oxpasssalt->value);
@@ -848,7 +726,7 @@ class oxEmail
         $sFullName = $oUser->oxuser__oxfname->getRawValue() . ' ' . $oUser->oxuser__oxlname->getRawValue();
 
         $this->setRecipient($oUser->oxuser__oxusername->value, $sFullName);
-        $this->setFrom($oShop->oxshops__oxinfoemail->value, $oShop->oxshops__oxname->getRawValue());
+        $this->setFromAddress($oShop->oxshops__oxinfoemail->value, $oShop->oxshops__oxname->getRawValue());
         $this->setReplyTo($oShop->oxshops__oxinfoemail->value, $oShop->oxshops__oxname->getRawValue());
 
         return $this->send();
@@ -888,9 +766,6 @@ class oxEmail
     {
         // shop info
         $oShop = $this->_getShop();
-
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
 
         $sBody = $oNewsLetter->getHtmlText();
 
@@ -938,8 +813,7 @@ class oxEmail
 
         // mailer stuff
         // send not pretending from suggesting user, as different email domain rise spam filters
-        $this->setFrom($oShop->oxshops__oxinfoemail->value);
-        $this->setSMTP();
+        $this->mailer->setFromAddress($oShop->oxshops__oxinfoemail->value);
 
         // create messages
         $oSmarty = $this->_getSmarty();
@@ -988,8 +862,7 @@ class oxEmail
         $oShop = $this->_getShop($iCurrLang);
 
         // mailer stuff
-        $this->setFrom($oParams->send_email, $oParams->send_name);
-        $this->setSMTP();
+        $this->mailer->setFromAddress($oParams->send_email, $oParams->send_name);
 
         // create messages
         $oSmarty = oxRegistry::get('oxUtilsView')->getSmarty();
@@ -1049,9 +922,6 @@ class oxEmail
 
         // shop info
         $oShop = $this->_getShop($iOrderLang);
-
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
 
         //create messages
         $oLang = oxRegistry::getLang();
@@ -1116,9 +986,6 @@ class oxEmail
         // shop info
         $oShop = $this->_getShop($iOrderLang);
 
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
-
         //create messages
         $oLang = oxRegistry::getLang();
         $oSmarty = $this->_getSmarty();
@@ -1180,16 +1047,13 @@ class oxEmail
         // shop info
         $oShop = $this->_getShop();
 
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
-
         $this->setBody($sMessage);
         $this->setSubject($sSubject);
 
         $this->setRecipient($oShop->oxshops__oxinfoemail->value, '');
         $sEmailAddress = $sEmailAddress ? $sEmailAddress : $oShop->oxshops__oxowneremail->value;
 
-        $this->setFrom($sEmailAddress, '');
+        $this->mailer->setFromAddress($sEmailAddress, '');
         $this->setReplyTo($sEmailAddress, '');
 
         //attaching files
@@ -1231,9 +1095,6 @@ class oxEmail
      */
     public function sendEmail($sTo, $sSubject, $sBody)
     {
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams();
-
         if (is_array($sTo)) {
             foreach ($sTo as $sAddress) {
                 $this->setRecipient($sAddress, '');
@@ -1272,8 +1133,6 @@ class oxEmail
         if ($oArticleList->count()) {
             $oShop = $this->_getShop();
 
-            //set mail params (from, fromName, smtp... )
-            $this->_setMailParams($oShop);
             $oLang = oxRegistry::getLang();
 
             $oSmarty = $this->_getSmarty();
@@ -1283,7 +1142,7 @@ class oxEmail
             $this->_processViewArray();
 
             $this->setRecipient($oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue());
-            $this->setFrom($oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue());
+            $this->mailer->setFromAddress($oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue());
             $this->setBody($oSmarty->fetch($this->getConfig()->getTemplatePath($this->_sReminderMailTemplate, false)));
             $this->setAltBody('');
             $this->setSubject(($sSubject !== null) ? $sSubject : $oLang->translateString('STOCK_LOW'));
@@ -1307,8 +1166,7 @@ class oxEmail
         $this->_clearMailer();
 
         // mailer stuff
-        $this->setFrom($oParams->send_email, $oParams->send_name);
-        $this->setSMTP();
+        $this->mailer->setFromAddress($oParams->send_email, $oParams->send_name);
 
         // create messages
         $oSmarty = $this->_getSmarty();
@@ -1342,9 +1200,6 @@ class oxEmail
         $this->_clearMailer();
         $oShop = $this->_getShop();
 
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
-
         $iAlarmLang = $oAlarm->oxpricealarm__oxlang->value;
 
         $oArticle = oxNew('oxArticle');
@@ -1364,7 +1219,7 @@ class oxEmail
         $this->setRecipient($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
         $this->setSubject(($sSubject !== null) ? $sSubject : $oLang->translateString('PRICE_ALERT_FOR_PRODUCT', $iAlarmLang) . ' ' . $oArticle->oxarticles__oxtitle->getRawValue());
         $this->setBody($oSmarty->fetch($this->_sOwnerPricealarmTemplate));
-        $this->setFrom($aParams['email'], '');
+        $this->mailer->setFromAddress($aParams['email'], '');
         $this->setReplyTo($aParams['email'], '');
 
         return $this->send();
@@ -1392,9 +1247,6 @@ class oxEmail
             $oShop->load($oAlarm->oxpricealarm__oxshopid->value);
             $this->setShop($oShop);
         }
-
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
 
         // create messages
         $oSmarty = $this->_getSmarty();
@@ -1615,7 +1467,7 @@ class oxEmail
     public function clearAllRecipients()
     {
         $this->_aRecipients = array();
-        $this->mailer->clearAllRecipients();
+        //$this->mailer->clearAllRecipients();
     }
 
     /**
@@ -1657,32 +1509,7 @@ class oxEmail
     public function clearReplyTos()
     {
         $this->_aReplies = array();
-        $this->mailer->clearReplyTos();
-    }
-
-    /**
-     * Sets mail from address and name.
-     *
-     * Preventing possible email spam over php mail() exploit (http://www.securephpwiki.com/index.php/Email_Injection)
-     * this is simple but must work
-     *
-     * @param string $sFromAddress email address
-     * @param string $sFromName    user name
-     *
-     * @return bool
-     */
-    public function setFrom($sFromAddress, $sFromName = null)
-    {
-        $sFromAddress = substr($sFromAddress, 0, 150);
-        $sFromName = substr($sFromName, 0, 150);
-
-        $success = false;
-        try {
-            $success = $this->mailer->setFrom($sFromAddress, $sFromName);
-        } catch (Exception $oEx) {
-        }
-
-        return $success;
+        //$this->mailer->clearReplyTos();
     }
 
     /**
@@ -1706,22 +1533,6 @@ class oxEmail
     }
 
     /**
-     * Sets mail charset.
-     * If $sCharSet is not defined, sets charset from translation file.
-     *
-     * @param string $sCharSet email charset
-     */
-    public function setCharSet($sCharSet = null)
-    {
-        if ($sCharSet) {
-            $this->_sCharSet = $sCharSet;
-        } else {
-            $this->_sCharSet = oxRegistry::getLang()->translateString('charset');
-        }
-        $this->mailer->set('CharSet', $this->_sCharSet);
-    }
-
-    /**
      * Sets mail mailer. Set to send mail via smtp, mail() or sendmail.
      *
      * @param string $sMailer email mailer
@@ -1742,16 +1553,6 @@ class oxEmail
     }
 
     /**
-     * Sets smtp host.
-     *
-     * @param string $sHost smtp host
-     */
-    public function setHost($sHost = null)
-    {
-        $this->mailer->set('Host', $sHost);
-    }
-
-    /**
      * Gets mailing error info.
      *
      * @return string
@@ -1759,17 +1560,6 @@ class oxEmail
     public function getErrorInfo()
     {
         return $this->mailer->ErrorInfo;
-    }
-
-    /**
-     * Sets word wrapping on the body of the message to a given number of
-     * characters
-     *
-     * @param int $iWordWrap word wrap
-     */
-    public function setMailWordWrap($iWordWrap = null)
-    {
-        $this->mailer->set('WordWrap', $iWordWrap);
     }
 
     /**
@@ -1839,7 +1629,7 @@ class oxEmail
     public function clearAttachments()
     {
         $this->_aAttachments = array();
-        $this->mailer->clearAttachments();
+        //$this->mailer->clearAttachments();
     }
 
     /**
@@ -1962,7 +1752,7 @@ class oxEmail
         $this->clearReplyTos();
         $this->clearAttachments();
 
-        $this->mailer->ErrorInfo = '';
+        //$this->mailer->ErrorInfo = '';
     }
 
     /**
@@ -1978,8 +1768,7 @@ class oxEmail
             $oShop = $this->_getShop();
         }
 
-        $this->setFrom($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
-        $this->setSmtp($oShop);
+        $this->mailer->setFromAddress($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
     }
 
     /**
@@ -2013,37 +1802,6 @@ class oxEmail
         $oShop->load($myConfig->getShopId());
 
         return $oShop;
-    }
-
-    /**
-     * Sets smtp authentification parameters.
-     *
-     * @param string $sUserName     smtp user
-     * @param oxShop $sUserPassword smtp password
-     */
-    protected function _setSmtpAuthInfo($sUserName = null, $sUserPassword = null)
-    {
-        $this->mailer->set('SMTPAuth', true);
-        $this->mailer->set('Username', $sUserName);
-        $this->mailer->set('Password', $sUserPassword);
-    }
-
-    /**
-     * Sets SMTP class debugging on or off
-     *
-     * @param bool $blDebug show debug info or not
-     */
-    protected function _setSmtpDebug($blDebug = null)
-    {
-        $this->mailer->set('SMTPDebug', $blDebug);
-    }
-
-    /**
-     * Sets path to PHPMailer plugins
-     */
-    protected function _setMailerPluginDir()
-    {
-        $this->mailer->set('PluginDir', getShopBasePath() . 'Core/phpmailer/');
     }
 
     /**
@@ -2110,11 +1868,7 @@ class oxEmail
      */
     public function getCharset()
     {
-        if (!$this->_sCharSet) {
-            return oxRegistry::getLang()->translateString('charset');
-        } else {
-            return $this->mailer->CharSet;
-        }
+        return $this->mailer->CharSet;
     }
 
     /**

@@ -132,35 +132,6 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
     }
 
     /**
-     * Order_Main::senddownloadlinks() test case
-     *
-     * @return null
-     */
-    public function testSenddownloadlinks()
-    {
-        //
-        oxTestModules::addFunction('oxorder', 'load', '{ return true; }');
-
-        $oEmail = $this->getMailerMock(array('send', 'sendDownloadLinksMail'));
-        $oEmail->expects($this->once())->method('sendInviteMail')->will($this->throwException(new Exception( "sendDownloadLinksMail" )));
-
-        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
-
-        $this->setRequestParameter("oxid", "testId");
-
-        // testing..
-        try {
-            $oView = oxNew('Order_Main');
-            $oView->senddownloadlinks();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("sendDownloadLinksMail", $oExcp->getMessage(), "error in Order_Main::senddownloadlinks()");
-
-            return;
-        }
-        $this->fail("error in Order_Main::senddownloadlinks()");
-    }
-
-    /**
      * Order_Main::Resetorder() test case
      *
      * @return null

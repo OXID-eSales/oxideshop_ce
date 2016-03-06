@@ -127,8 +127,6 @@ class NewsletterController extends \oxUBase
         $oUser = oxNew('oxuser');
         $oUser->oxuser__oxusername = new oxField($aParams['oxuser__oxusername'], oxField::T_RAW);
 
-        $blUserLoaded = false;
-
         // if such user does not exist
         if (!$oUser->exists()) {
 

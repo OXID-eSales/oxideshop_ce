@@ -171,7 +171,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
     public function testProcessEmail()
     {
         $oOutput = oxNew('oxOutput');
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $oEmail->email = 1;
         $oEmail2 = clone $oEmail;
         $oOutput->processEmail($oEmail);

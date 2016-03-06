@@ -164,7 +164,7 @@ class PriceAlarm_Send extends oxAdminList
         $oldLanguageId = $language->getTplLanguage();
         $language->setTplLanguage($languageId);
 
-        $email = DiContainer::getInstance()->get('core.mailer');
+        $email = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $success = (int) $email->sendPricealarmToCustomer($emailAddress, $alarm);
 
         $language->setTplLanguage($oldLanguageId);

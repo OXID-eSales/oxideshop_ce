@@ -1,10 +1,7 @@
 <?php
 namespace OxidEsales\Eshop\Core\Event;
 
-// temporary extension
-use Symfony\Component\EventDispatcher\Event;
-
-class OrderCompleted extends Event
+class OrderCompleted extends AbstractEvent
 {
     // temporary!
     private $order;

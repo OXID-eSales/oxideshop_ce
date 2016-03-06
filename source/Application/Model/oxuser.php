@@ -20,6 +20,7 @@
  * @version   OXID eShop CE
  */
 use OxidEsales\Eshop\Core\DiContainer;
+use OxidEsales\Eshop\Core\Event\NewsletterSubscribed;
 
 /**
  * User manager.
@@ -1101,8 +1102,6 @@ class oxUser extends oxBase
     {
         // assigning to newsletter
         $blSuccess = false;
-        $myConfig = $this->getConfig();
-        $mySession = $this->getSession();
 
         // user wants to get newsletter messages or no ?
         $oNewsSubscription = $this->getNewsSubscription();
@@ -1119,14 +1118,14 @@ class oxUser extends oxBase
 
                     // double-opt-in check enabled - sending confirmation email and setting waiting status
                     if ($iOptInStatus != 2) {
-                        // sending double-opt-in mail
-                        $oEmail = DiContainer::getInstance()->get('core.mailer');
-                        $blSuccess = $oEmail->sendNewsletterDbOptInMail($this);
-                    } else {
-                        // mail already was sent, so just confirming that
-                        $blSuccess = true;
+                        DiContainer::getInstance()
+                            ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
+                            ->dispatch(
+                                'onNewsletterSubscribed',
+                                new NewsletterSubscribed($this)
+                            );
                     }
-
+                    $blSuccess = true;
                     $oNewsSubscription->setOptInStatus(2);
                 }
             } elseif (!$blSubscribe) {

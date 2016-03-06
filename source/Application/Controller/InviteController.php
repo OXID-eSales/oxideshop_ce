@@ -200,7 +200,7 @@ class InviteController extends \oxUBase
         }
 
         // sending invite email
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
 
         if ($oEmail->sendInviteMail($oParams)) {
             $this->_iMailStatus = 1;

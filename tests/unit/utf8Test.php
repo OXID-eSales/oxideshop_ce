@@ -1821,7 +1821,7 @@ class Unit_utf8Test extends OxidTestCase
         $sBodyToSet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;sid=somesid&amp;something=something\" title=\"agentūлитовfür\">";
         $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;shp=" . $this->getConfig()->getBaseShopId() . "&amp;something=something\" title=\"agentūлитовfür\">";
 
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $oEmail->setBody($sBodyToSet);
         $this->assertEquals($sBodyWillGet, $oEmail->getBody());
     }
@@ -1831,7 +1831,7 @@ class Unit_utf8Test extends OxidTestCase
         $sBodyToSet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;sid=somesid&amp;something=something\" title=\"agentūлитовfür\">";
         $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&shp=" . $this->getConfig()->getBaseShopId() . "&something=something\" title=\"agentūлитовfür\">";
 
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $oEmail->setAltBody($sBodyToSet);
         $this->assertEquals($sBodyWillGet, $oEmail->getAltBody());
     }
@@ -1842,7 +1842,7 @@ class Unit_utf8Test extends OxidTestCase
             $this->markTestSkipped("Function idn_to_ascii does not exists, cannot test.");
         }
 
-        $mail = DiContainer::getInstance()->get('core.mailer');
+        $mail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $mail->setRecipient('müller@testuser.com', 'test user');
 
         $recipient = $mail->getRecipient();

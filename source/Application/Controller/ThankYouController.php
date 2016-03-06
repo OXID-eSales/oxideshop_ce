@@ -150,13 +150,6 @@ class ThankYouController extends oxUBase
             oxRegistry::getSession()->deleteVariable('dynvalue');
         }
 
-        // loading order sometimes needed in template
-        if ($this->_oBasket->getOrderId()) {
-            // owners stock reminder
-            $oEmail = DiContainer::getInstance()->get('core.mailer');
-            $oEmail->sendStockReminder($this->_oBasket->getContents());
-        }
-
         // we must set active class as start
         $this->getViewConfig()->setViewConfigParam('cl', 'start');
 

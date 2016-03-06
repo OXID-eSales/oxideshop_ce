@@ -41,7 +41,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         // reload smarty
         oxRegistry::get("oxUtilsView")->getSmarty(true);
 
-        $this->_oEmail = DiContainer::getInstance()->get('core.mailer');
+        $this->_oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
 
         $this->cleanUpTable('oxuser');
         $this->cleanUpTable('oxorderarticles');

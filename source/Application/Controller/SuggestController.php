@@ -157,7 +157,7 @@ class SuggestController extends \oxUBase
         }
 
         // sending suggest email
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $oProduct = $this->getProduct();
         if ($oProduct && $oEmail->sendSuggestMail($oParams, $oProduct)) {
             return 'details?anid=' . $oProduct->getId() . $sReturn;

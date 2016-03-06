@@ -7,6 +7,8 @@ use Interop\Container\Exception\NotFoundException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
+use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
+
 /**
  * Class DiContainer
  */
@@ -48,12 +50,17 @@ class DiContainer implements ContainerInterface
         $container
             ->register(static::CONTAINER_CORE_MAILCLIENT, MailClient::class);
 
+        // hack!
+        $container
+            ->register('symfony.eventdispatcher', SymfonyEventDispatcher::class);
+
         $container
             ->register(static::CONTAINER_CORE_MAILER, \oxEmail::class)
             ->addArgument(new Reference(static::CONTAINER_CORE_MAILCLIENT));
 
         $container
-            ->register(static::CONTAINER_CORE_EVENT_DISPATCHER, EventDispatcher::class);
+            ->register(static::CONTAINER_CORE_EVENT_DISPATCHER, EventDispatcher::class)
+            ->addArgument(new Reference('symfony.eventdispatcher'));
     }
 
     /**

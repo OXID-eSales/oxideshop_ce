@@ -42,11 +42,11 @@ class oxOnlineServerEmailBuilder
     public function build($sBody)
     {
         /** @var oxEmail $oExpirationEmail */
-        $oExpirationEmail = DiContainer::getInstance()->get('core.mailer');
-        $oExpirationEmail->setSubject(oxRegistry::getLang()->translateString('SUBJECT_UNABLE_TO_SEND_VIA_CURL', null, true));
-        $oExpirationEmail->setRecipient('olc@oxid-esales.com');
-        $oExpirationEmail->setFrom($this->_getShopInfoAddress());
-        $oExpirationEmail->setBody($sBody);
+        //$oExpirationEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
+        //$oExpirationEmail->setSubject(oxRegistry::getLang()->translateString('SUBJECT_UNABLE_TO_SEND_VIA_CURL', null, true));
+        //$oExpirationEmail->setRecipient('olc@oxid-esales.com');
+        //$oExpirationEmail->setFrom($this->_getShopInfoAddress());
+        //$oExpirationEmail->setBody($sBody);
 
         return $oExpirationEmail;
     }

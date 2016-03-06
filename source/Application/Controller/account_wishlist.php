@@ -234,7 +234,6 @@ class Account_Wishlist extends Account
                 if ($oUser = $this->getUser()) {
                     $sFirstName = 'oxuser__oxfname';
                     $sLastName = 'oxuser__oxlname';
-                    $sSendName = 'send_name';
                     $sSendEmail = 'send_email';
                     $sUserNameField = 'oxuser__oxusername';
                     $sSendName = 'send_name';
@@ -244,7 +243,9 @@ class Account_Wishlist extends Account
                     $oParams->$sSendName = $oUser->$sFirstName->getRawValue() . ' ' . $oUser->$sLastName->getRawValue();
                     $oParams->$sSendId = $oUser->getId();
 
-                    $this->_blEmailSent = DiContainer::getInstance()->get('core.mailer');
+                    $this->_blEmailSent = DiContainer::getInstance()
+                        ->get(DiContainer::CONTAINER_CORE_MAILER)
+                        ->sendWishlistMail($oParams);
                     if (!$this->_blEmailSent) {
                         return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL', false, true);
                     }

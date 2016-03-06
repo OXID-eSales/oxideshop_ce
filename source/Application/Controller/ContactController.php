@@ -128,7 +128,7 @@ class ContactController extends \oxUBase
                     $aParams['oxuser__oxlname'] . "(" . $aParams['oxuser__oxusername'] . ")<br /><br />" .
                     nl2br(oxRegistry::getConfig()->getRequestParameter('c_message'));
 
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         if ($oEmail->sendContactMail($aParams['oxuser__oxusername'], $sSubject, $sMessage)) {
             $this->_blContactSendStatus = 1;
         } else {

@@ -20,6 +20,7 @@
  * @version   OXID eShop CE
  */
 use OxidEsales\Eshop\Core\DiContainer;
+use OxidEsales\Eshop\Core\Event\OrderSend;
 
 /**
  * Admin order overview manager.
@@ -164,9 +165,12 @@ class Order_Overview extends oxAdminDetails
             }
 
             if (($blMail = oxRegistry::getConfig()->getRequestParameter("sendmail"))) {
-                // send eMail
-                $oEmail = DiContainer::getInstance()->get('core.mailer');
-                $oEmail->sendSendedNowMail($oOrder);
+                DiContainer::getInstance()
+                    ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
+                    ->dispatch(
+                        'onOrderCompleted',
+                        new OrderSend($oOrder)
+                    );
             }
         }
     }

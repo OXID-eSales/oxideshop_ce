@@ -20,6 +20,7 @@
  * @version   OXID eShop CE
  */
 use OxidEsales\Eshop\Core\DiContainer;
+use OxidEsales\Eshop\Core\Event\OrderSend;
 
 /**
  * Admin article main order manager.
@@ -177,11 +178,13 @@ class Order_Main extends oxAdminDetails
             $oOrder->save();
 
             // #1071C
-            $oOrderArticles = $oOrder->getOrderArticles(true);
             if (oxRegistry::getConfig()->getRequestParameter("sendmail")) {
-                // send eMail
-                $oEmail = DiContainer::getInstance()->get('core.mailer');
-                $oEmail->sendSendedNowMail($oOrder);
+                DiContainer::getInstance()
+                    ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
+                    ->dispatch(
+                        'onOrderCompleted',
+                        new OrderSend($oOrder)
+                    );
             }
             $this->onOrderSend();
         }
@@ -195,7 +198,7 @@ class Order_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $oOrder = oxNew("oxorder");
         if ($oOrder->load($soxId)) {
-            $oEmail = DiContainer::getInstance()->get('core.mailer');
+            $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
             $oEmail->sendDownloadLinksMail($oOrder);
         }
     }

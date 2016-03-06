@@ -74,7 +74,7 @@ class PriceAlarm_Main extends oxAdminDetails
             if (isset($aParams['oxpricealarm__oxlongdesc']) && $aParams['oxpricealarm__oxlongdesc']) {
                 $oLetter->oxpricealarm__oxlongdesc = new oxField(stripslashes($aParams['oxpricealarm__oxlongdesc']), oxField::T_RAW);
             } else {
-                $oEmail = DiContainer::getInstance()->get('core.mailer');
+                $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
                 $sDesc = $oEmail->sendPricealarmToCustomer($oPricealarm->oxpricealarm__oxemail->value, $oPricealarm, null, true);
 
                 $iOldLang = $oLang->getTplLanguage();
@@ -113,7 +113,7 @@ class PriceAlarm_Main extends oxAdminDetails
 
             $sRecipient = $oPricealarm->oxpricealarm__oxemail->value;
 
-            $oEmail = DiContainer::getInstance()->get('core.mailer');
+            $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
             $blSuccess = (int) $oEmail->sendPricealarmToCustomer($sRecipient, $oPricealarm, $sMailBody);
 
             // setting result message

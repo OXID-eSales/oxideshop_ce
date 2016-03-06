@@ -22,6 +22,7 @@
 
 // defining login/logout states
 use OxidEsales\Eshop\Core\DiContainer;
+use OxidEsales\Eshop\Core\Event\UserCreated;
 
 define('USER_LOGIN_SUCCESS', 1);
 define('USER_LOGIN_FAIL', 2);
@@ -528,14 +529,13 @@ class oxcmp_user extends oxView
         }
 
         // send register eMail
-        //TODO: move into user
         if ((int) oxRegistry::getConfig()->getRequestParameter('option') == 3) {
-            $mailer = DiContainer::getInstance()->get('core.mailer');
-            if ($blActiveLogin) {
-                $mailer->sendRegisterConfirmEmail($oUser);
-            } else {
-                $mailer->sendRegisterEmail($oUser);
-            }
+            DiContainer::getInstance()
+                ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
+                ->dispatch(
+                    'onUserCreated',
+                    new UserCreated($oUser, $blActiveLogin)
+                );
         }
 
         // new registered

@@ -39,7 +39,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     {
         parent::setUp();
 
-        $this->_oEmail = DiContainer::getInstance()->get('core.mailer');
+        $this->_oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
 
         $this->cleanUpTable('oxuser');
         $this->cleanUpTable('oxorderarticles');
@@ -258,7 +258,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSetSmtpWithNoSmtpValues()
     {
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
 
         $this->_oShop->oxshops__oxsmtp = new oxField(null, oxField::T_RAW);
         $oEmail->setSmtp($this->_oShop);
@@ -516,7 +516,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $myConfig = $this->getConfig();
         $sImageDir = $myConfig->getImageDir();
 
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $oEmail->setBody("<img src='{$sImageDir}/logo.png'> --- <img src='{$sImageDir}/stars.jpg'>");
 
         $oEmail->UNITincludeImages(
@@ -535,7 +535,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSetGetSubject()
     {
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $oEmail->setSubject('testSubject');
         $this->assertEquals('testSubject', $oEmail->getSubject());
     }
@@ -545,7 +545,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSetGetBody()
     {
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $oEmail->setBody('testBody');
         $this->assertEquals('testBody', $oEmail->getBody());
     }
@@ -557,7 +557,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     {
         $sShopId = $this->getConfig()->getBaseShopId();
 
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
 
         $oEmail->setBody('testBody index.php?bonusid=111&sid=123456789 blabla', true);
         $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $oEmail->getBody());
@@ -577,7 +577,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSetGetAltBody()
     {
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
 
         $oEmail->setAltBody('testAltBody');
         $this->assertEquals('testAltBody', $oEmail->getAltBody());
@@ -739,15 +739,15 @@ class Unit_Core_oxemailTest extends OxidTestCase
     public function testGetUseInlineImagesFromConfig()
     {
         $this->getConfig()->setConfigParam("blInlineImgEmail", true);
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $this->assertTrue($oEmail->UNITgetUseInlineImages());
 
         $this->getConfig()->setConfigParam("blInlineImgEmail", false);
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $this->assertFalse($oEmail->UNITgetUseInlineImages());
 
         $this->getConfig()->setConfigParam("blInlineImgEmail", true);
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $this->assertTrue($oEmail->UNITgetUseInlineImages());
     }
 

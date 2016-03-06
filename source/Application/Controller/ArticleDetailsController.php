@@ -30,6 +30,7 @@ use oxCategory;
 use oxDeliveryList;
 use oxDeliverySetList;
 use OxidEsales\Eshop\Core\DiContainer;
+use OxidEsales\Eshop\Core\Event\PriceAlarmCreated;
 use oxPaymentList;
 use oxRegistry;
 use oxField;
@@ -1194,9 +1195,12 @@ class ArticleDetailsController extends \oxUBase
 
         $priceAlarm->save();
 
-        // Send Email
-        $email = DiContainer::getInstance()->get('core.mailer');
-        $this->_iPriceAlarmStatus = (int) $email->sendPricealarmNotification($parameters, $priceAlarm);
+        DiContainer::getInstance()
+            ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
+            ->dispatch(
+                'onOrderCompleted',
+                new PriceAlarmCreated($parameters, $priceAlarm)
+            );
     }
 
     /**

@@ -81,7 +81,7 @@ class ForgotPasswordController extends \oxUBase
     {
         $sEmail = oxRegistry::getConfig()->getRequestParameter('lgn_usr');
         $this->_sForgotEmail = $sEmail;
-        $oEmail = DiContainer::getInstance()->get('core.mailer');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
 
         // problems sending passwd reminder ?
         $iSuccess = false;

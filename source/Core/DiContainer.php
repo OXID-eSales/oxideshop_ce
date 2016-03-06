@@ -12,6 +12,10 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class DiContainer implements ContainerInterface
 {
+    const CONTAINER_CORE_MAILCLIENT = 'core.mailclient';
+    const CONTAINER_CORE_MAILER = 'core.mailer';
+    const CONTAINER_CORE_EVENT_DISPATCHER = 'core.eventdispatcher';
+
     /**
      * @var DiContainer
      */
@@ -42,11 +46,14 @@ class DiContainer implements ContainerInterface
 
         //basic setup
         $container
-            ->register('core.mailclient', \OxidEsales\Eshop\Core\MailClient::class);
+            ->register(static::CONTAINER_CORE_MAILCLIENT, MailClient::class);
 
         $container
-            ->register('core.mailer', \oxEmail::class)
-            ->addArgument(new Reference('core.mailclient'));
+            ->register(static::CONTAINER_CORE_MAILER, \oxEmail::class)
+            ->addArgument(new Reference(static::CONTAINER_CORE_MAILCLIENT));
+
+        $container
+            ->register(static::CONTAINER_CORE_EVENT_DISPATCHER, EventDispatcher::class);
     }
 
     /**

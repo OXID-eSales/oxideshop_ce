@@ -29,7 +29,9 @@
     "require": {
         "symfony/dependency-injection": "~3.0",
         "container-interop/container-interop": "~1.1",
-        "smarty/smarty": "^2.6.29"
+        "smarty/smarty": "^2.6.29",
+        "phpmailer/phpmailer": "~5.2",
+        "symfony/event-dispatcher": "~3.0"
     },
     "require-dev": {
         "oxid-esales/testing-library": "dev-master",

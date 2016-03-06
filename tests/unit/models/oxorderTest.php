@@ -1600,7 +1600,6 @@ class Unit_Models_oxorderTest extends OxidTestCase
                           '_updateWishlist',
                           '_updateNoticeList',
                           '_markVouchers',
-                          '_sendOrderByEmail',
                           '_updateOrderDate'
         );
 
@@ -1678,7 +1677,6 @@ class Unit_Models_oxorderTest extends OxidTestCase
                           '_updateWishlist',
                           '_updateNoticeList',
                           '_markVouchers',
-                          '_sendOrderByEmail',
                           'validateOrder'
         );
 
@@ -1694,7 +1692,6 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $oOrder->expects($this->atLeastOnce())->method('_setOrderStatus')->will($this->returnValue(true));
         $oOrder->expects($this->once())->method('_updateWishlist')->will($this->returnValue(true));
         $oOrder->expects($this->once())->method('_markVouchers')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('_sendOrderByEmail')->will($this->returnValue(1));
         $oOrder->expects($this->once())->method('validateOrder');
 
         $iRet = $oOrder->finalizeOrder($oBasket, null);

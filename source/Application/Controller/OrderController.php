@@ -253,6 +253,7 @@ class OrderController extends \oxUBase
         if ($oBasket->getProductsCount()) {
 
             try {
+                /* @var oxorder $oOrder */
                 $oOrder = oxNew('oxorder');
 
                 //finalizing ordering process (validating, storing order into DB, executing payment, setting status ...)

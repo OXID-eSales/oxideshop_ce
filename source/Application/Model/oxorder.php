@@ -20,6 +20,7 @@
  * @version   OXID eShop CE
  */
 use OxidEsales\Eshop\Core\DiContainer;
+use OxidEsales\Eshop\Core\Event\OrderCompleted;
 
 /**
  * Order manager.
@@ -601,12 +602,15 @@ class oxOrder extends oxBase
         // send order by email to shop owner and current user
         // skipping this action in case of order recalculation
         if (!$blRecalculatingOrder) {
-            $iRet = $this->_sendOrderByEmail($oUser, $oBasket, $oUserPayment);
-        } else {
-            $iRet = self::ORDER_STATE_OK;
+            DiContainer::getInstance()
+                ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
+                ->dispatch(
+                    'onOrderCompleted',
+                    new OrderCompleted($this, $oUser, $oBasket, $oUserPayment)
+                );
         }
 
-        return $iRet;
+        return self::ORDER_STATE_OK;
     }
 
     /**
@@ -1704,38 +1708,6 @@ class oxOrder extends oxBase
         }
 
         return false;
-    }
-
-    /**
-     * Send order to shop owner and user
-     *
-     * @param oxUser        $oUser    order user
-     * @param oxBasket      $oBasket  current order basket
-     * @param oxUserPayment $oPayment order payment
-     *
-     * @return bool
-     */
-    protected function _sendOrderByEmail($oUser = null, $oBasket = null, $oPayment = null)
-    {
-        $iRet = self::ORDER_STATE_MAILINGERROR;
-
-        // add user, basket and payment to order
-        $this->_oUser = $oUser;
-        $this->_oBasket = $oBasket;
-        $this->_oPayment = $oPayment;
-
-        $mailer = DiContainer::getInstance()->get('core.mailer');
-
-        // send order email to user
-        if ($mailer->sendOrderEMailToUser($this)) {
-            // mail to user was successfully sent
-            $iRet = self::ORDER_STATE_OK;
-        }
-
-        // send order email to shop owner
-        $mailer->sendOrderEMailToOwner($this);
-
-        return $iRet;
     }
 
     /**

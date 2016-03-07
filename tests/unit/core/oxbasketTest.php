@@ -4409,11 +4409,11 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testForBugEntries5795_6204_6283()
     {
-        $sRegularArticleId = '1952';
-        $sDiscArticleId = '2024';
+        $sRegularArticleId = '1951';
+        $sDiscArticleId = '2026';
         $this->oVoucherSerie->oxvoucherseries__oxdiscounttype = new oxField('percent', oxField::T_RAW);
         $this->oVoucherSerie->save();
-        // assigning voucher serie to Article 2024
+        // assigning voucher serie to Article 2026
         $oDisc2Art = oxNew("oxBase");
         $oDisc2Art->init("oxobject2discount");
         $oDisc2Art->setId("_dsci1");
@@ -4431,8 +4431,8 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $oBasket->addVoucher($oVoucher->oxvouchers__oxvouchernr->value); // 10 %
         $oBasket->calculateBasket(false);
         $aVats = $oBasket->getProductVats(false);
-        $this->assertEquals(2.54, $aVats[19]);
-        $this->assertEquals(13.36, $oBasket->getNettoSum());
+        $this->assertEquals(10.84, $aVats[19]);
+        $this->assertEquals(57.07, $oBasket->getNettoSum());
     }
 
     /**

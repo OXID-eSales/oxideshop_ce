@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * @group knorke
+ */
 class Unit_Models_oxrssfeedTest extends OxidTestCase
 {
 
@@ -376,7 +379,6 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
         $oSAr2->description = "&lt;img src=&#039;" . $oArt2->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;shortdesc";
         $oSAr2->date = "Tue, 06 Sep 2011 09:46:42 +0200";
         $this->assertEquals(array($oSAr1, $oSAr2), $oRss->UNITgetArticleItems($oArr));
-
     }
 
     public function testPrepareUrlSeoOff()
@@ -894,7 +896,6 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
 
         $oRss = oxNew('oxRssFeed');
         $this->assertEquals(array($oSAr1, $oSAr2), $oRss->UNITgetRecommListItems($oArr));
-
     }
 
     public function testGetRecommListsTitle()
@@ -1208,5 +1209,44 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
 
         $this->assertEquals($aChannel, $oRss->getChannel());
     }
+
+    /**
+     * Check, that the method 'mapOxActionToFileCache' gives back an empty string, if we give in an empty action name.
+     */
+    public function testMapOxActionToFileCacheEmptyOxAction()
+    {
+        $oRssFeed = oxNew('oxRssFeed');
+
+        $sFilename = $oRssFeed->mapOxActionToFileCache('');
+
+        $this->assertSame('', $sFilename);
+    }
+
+    /**
+     * Check, that the method 'mapOxActionToFileCache' gives back the correct filename for oxnewest action.
+     */
+    public function testMapOxActionToFileCacheWithExampleOxAction()
+    {
+        $oRssFeed = oxNew('oxRssFeed');
+
+        $sFilename = $oRssFeed->mapOxActionToFileCache('oxnewest');
+
+        $this->assertSame(oxRssFeed::RSS_NEWARTS, $sFilename);
+    }
+
+    /**
+     * Check, that the method 'removeCacheFile' calls the delete file method.
+     */
+    public function testRemoveCacheFileDelegates()
+    {
+        $oRssFeed = $this->getMockBuilder('oxRssFeed')
+            ->setMethods(array('_deleteFile'))
+            ->getMock();
+
+        $oRssFeed->expects($this->once())->method('_deleteFile');
+
+        $oRssFeed->removeCacheFile('oxnewest');
+    }
+
 }
 

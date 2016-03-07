@@ -22,7 +22,6 @@
 
 /**
  * Tests for Country_List class
- * @group knorke
  */
 class Unit_Admin_CountryListTest extends OxidTestCase
 {

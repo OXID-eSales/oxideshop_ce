@@ -899,4 +899,42 @@ EOD;
 
         return $msg;
     }
+
+    /**
+     * Look for language files that have undeclared encoding.
+     *
+     * @param string $languageCode Language code in form of ISO 639-1
+     * @param string $type Language file type
+     * @param string $filePattern File glob pattern to match
+     *
+     * @dataProvider providerLanguageFilesForInvalidEncoding
+     */
+    public function testLanguageFilesForUndeclaredEncoding($languageCode, $type, $filePattern)
+    {
+        $languageFiles = $this->_getLangFileContents($type, $languageCode, $filePattern);
+
+        foreach ($languageFiles as $filePath => $fileContent) {
+            $languageTranslation = $this->_getLanguage($type, $languageCode, $filePattern);
+
+            $isEncodingDeclared = $languageTranslation['charset'] ? true : false;
+
+            $errorMessage = <<<EOD
+Language file "$filePath" has an undeclared `charset` value, this could be due to:
+
+* The charset value being empty;
+* The charset value being missing.
+
+Language file with an empty/missing `charset` value is considered as invalid!
+
+Examples of valid `charset` entries:
+
+* 'charset' => 'UTF-8'
+* 'charset' => 'ISO-8859-15'
+
+Assert message:
+EOD;
+
+            $this->assertTrue($isEncodingDeclared, $errorMessage);
+        }
+    }
 }

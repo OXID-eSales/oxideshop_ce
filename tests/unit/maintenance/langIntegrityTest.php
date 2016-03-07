@@ -833,21 +833,70 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
     }
 
     /**
-     * Test if generic files don't have invalid encoding.
+     * Look for language files that are declared as being non UTF-8 (ASCII or ISO-8859-15) encoded files
+     * and check that they do not contain UTF-8 characters.
+     *
+     * @param string $languageCode Language code in form of ISO 639-1
+     * @param string $type Language file type
+     * @param string $filePattern File glob pattern to match
      *
      * @dataProvider providerLanguageFilesForInvalidEncoding
      */
-    public function testLanguageFilesForInvalidEncoding($sLanguage, $sType, $sFilePattern)
+    public function testLanguageFilesForInvalidEncoding($languageCode, $type, $filePattern)
     {
-        $aFileContent = $this->_getLangFileContents($sType, $sLanguage, $sFilePattern);
+        $languageFiles = $this->_getLangFileContents($type, $languageCode, $filePattern);
 
-        list($sFileName) = array_keys($aFileContent);
-        list($sFileContent) = array_values($aFileContent);
+        foreach ($languageFiles as $filePath => $fileContent) {
+            $languageTranslation = $this->_getLanguage($type, $languageCode, $filePattern);
 
-        foreach (array(0xEF, 0xBB, 0xBF, 0x9C) as $sCharacter) {
-            if (strpos($sFileContent, $sCharacter) !== false) {
-                $this->fail("Character with invalid encoding found in $sFileName file.");
-            }
+            $declaredEncoding = $languageTranslation['charset'];
+            $isDeclaredAsUTF8 = strtolower($declaredEncoding) === 'utf-8';
+
+            $isInvalidEncoding = !$isDeclaredAsUTF8 && static::isUTF8CharacterPresentInContent($fileContent);
+            $isValidEncoding = !$isInvalidEncoding;
+
+            $errorMessage = $this->getErrorMessageForTestLanguageFilesForInvalidEncoding($filePath, $declaredEncoding);
+            $this->assertTrue($isValidEncoding, $errorMessage);
         }
+    }
+
+    /**
+     * Helper function to detect UTF-8 character presence in given content.
+     *
+     * @TODO: Transfer to testing library
+     *
+     * @param string $content Content to be checked for UTF-8 characters
+     *
+     * @return bool True in case there is at least one UTF-8 character, false otherwise
+     */
+    public static function isUTF8CharacterPresentInContent($content)
+    {
+        return mb_detect_encoding($content, ['ASCII', 'UTF-8', 'ISO-8859-15']) === 'UTF-8';
+    }
+
+    /**
+     * Get error message for `testLanguageFilesForInvalidEncoding`.
+     *
+     * @param string $invalidFilePath Full path to the file which has wrong encoding
+     * @param string $declaredEncoding Declared content encoding within the file
+     *
+     * @return string Actual error message
+     */
+    protected function getErrorMessageForTestLanguageFilesForInvalidEncoding($invalidFilePath, $declaredEncoding)
+    {
+        $invalidFilePath = realpath($invalidFilePath);
+
+        $msg = <<<EOD
+UTF-8 characters were detected in "$invalidFilePath" which has "$declaredEncoding" encoding declared.
+This could be due to the following reasons:
+
+* The declared encoding within the `charset` key is wrong;
+* The file was unintentionally re-encoded as UTF-8;
+* The file was intentionally re-encoded as UTF-8 but the declared encoding was not updated.
+
+Assert message:
+EOD;
+
+        return $msg;
     }
 }

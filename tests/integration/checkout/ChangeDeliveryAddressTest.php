@@ -40,6 +40,8 @@ class Integration_Checkout_changeDeliveryAddressTest extends OxidTestCase
         $this->cleanUpTable('oxuser');
         $this->cleanUpTable('oxuserbaskets');
         $this->cleanUpTable('oxuserbasketitems');
+
+        parent::tearDown();
     }
 
     /**

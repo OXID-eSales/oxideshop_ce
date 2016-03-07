@@ -112,8 +112,9 @@ class Unit_Models_oxVatSelectorTest extends OxidTestCase
         $oUser->oxuser__oxcountryid = new oxField(null, oxField::T_RAW);
         $this->assertFalse($oVatSelector->getUserVat($oUser, true));
         // check cache
-        $oUser->oxuser__oxcountryid = new oxField('NoneExisting', oxField::T_RAW);
         $this->assertFalse($oVatSelector->getUserVat($oUser));
+
+        $oUser->oxuser__oxcountryid = new oxField('NoneExisting', oxField::T_RAW);
         try {
             $this->assertFalse($oVatSelector->getUserVat($oUser, true));
             $this->fail("This country shouldn't be loaded");

@@ -718,25 +718,30 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
     }
 
     /**
-     * Returns path to language file
+     * Generates the full absolute path to a language file.
      *
-     * @param string $sType
-     * @param string $sLang
-     * @param string $sFile
+     * @param string $type Language file type
+     * @param string $languageCode Language code in form of ISO 639-1
+     * @param string $fileName File name part for the language file (might include partial path)
      *
-     * @return string pathname
+     * @return string Full absolute path to a language file
      */
-    private function _getLanguageFilePath($sType, $sLang, $sFile)
+    private function _getLanguageFilePath($type, $languageCode, $fileName)
     {
-        if ($sType == '') {
-            $sDir = $this->getConfig()->getAppDir() . '/translations' . DIRECTORY_SEPARATOR . $sLang . DIRECTORY_SEPARATOR . $sFile;
-        } elseif ($sType == 'setup') {
-            $sDir = $this->getConfig()->getConfigParam('sShopDir') . '/Setup' . DIRECTORY_SEPARATOR . $sLang . DIRECTORY_SEPARATOR . $sFile;
+        $applicationDirectory = rtrim($this->getConfig()->getAppDir(), DIRECTORY_SEPARATOR);
+        $shopDirectory = rtrim($this->getConfig()->getConfigParam('sShopDir'), DIRECTORY_SEPARATOR);
+
+        if (empty($type)) {
+            $pathItems = [$applicationDirectory, 'translations', $languageCode, $fileName];
+        } elseif ($type === 'setup') {
+            $pathItems = [$shopDirectory, $type, $languageCode, $fileName];
         } else {
-            $sDir = $this->getConfig()->getAppDir() . '/views' . DIRECTORY_SEPARATOR . $sType . DIRECTORY_SEPARATOR . $sLang . DIRECTORY_SEPARATOR . $sFile;
+            $pathItems = [$applicationDirectory, 'views', $type, $languageCode, $fileName];
         }
 
-        return $sDir;
+        $filePath = implode(DIRECTORY_SEPARATOR, $pathItems);
+
+        return $filePath;
     }
 
     /**

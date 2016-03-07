@@ -937,4 +937,41 @@ EOD;
             $this->assertTrue($isEncodingDeclared, $errorMessage);
         }
     }
+
+    /**
+     * Look for language files that have declared invalid encoding.
+     *
+     * @param string $languageCode Language code in form of ISO 639-1
+     * @param string $type Language file type
+     * @param string $filePattern File glob pattern to match
+     *
+     * @dataProvider providerLanguageFilesForInvalidEncoding
+     */
+    public function testLanguageFilesForDeclaredInvalidEncoding($languageCode, $type, $filePattern)
+    {
+        $languageFiles = $this->_getLangFileContents($type, $languageCode, $filePattern);
+
+        foreach ($languageFiles as $filePath => $fileContent) {
+            $languageTranslation = $this->_getLanguage($type, $languageCode, $filePattern);
+
+            $declaredEncoding = strtolower($languageTranslation['charset']);
+            $validEncodings = ['utf-8', 'iso-8859-15'];
+            $isValidEncoding = in_array($declaredEncoding, $validEncodings);
+
+            $errorMessage = <<<EOD
+Language file "$filePath" has declared an invalid `charset` value: "$declaredEncoding".
+
+Language file with an invalid `charset` value is considered as invalid!
+
+Examples of valid `charset` entries:
+
+* 'charset' => 'UTF-8'
+* 'charset' => 'ISO-8859-15'
+
+Assert message:
+EOD;
+
+            $this->assertTrue($isValidEncoding, $errorMessage);
+        }
+    }
 }

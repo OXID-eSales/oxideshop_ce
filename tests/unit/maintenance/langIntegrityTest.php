@@ -733,7 +733,7 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
 
         if (empty($type)) {
             $pathItems = [$applicationDirectory, 'translations', $languageCode, $fileName];
-        } elseif ($type === 'setup') {
+        } elseif (strtolower($type) === 'setup') {
             $pathItems = [$shopDirectory, $type, $languageCode, $fileName];
         } else {
             $pathItems = [$applicationDirectory, 'views', $type, $languageCode, $fileName];
@@ -827,8 +827,8 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
             array('en', $this->getThemeName(), '*.php'),
             array('de', 'admin', '*.php'),
             array('en', 'admin', '*.php'),
-            array('de', 'setup', 'lang.php'),
-            array('en', 'setup', 'lang.php'),
+            array('De', 'Setup', 'lang.php'),
+            array('En', 'Setup', 'lang.php'),
         );
     }
 
@@ -973,5 +973,149 @@ EOD;
 
             $this->assertTrue($isValidEncoding, $errorMessage);
         }
+    }
+
+    /**
+     * dataProvider with a list of all language files for existence integrity check.
+     *
+     * @return array
+     */
+    public function providerAllLanguageFilesForExistence()
+    {
+        $themeName = $this->getThemeName();
+
+        return [
+            // LanguageCode, Type, FileName
+            ['en', '', 'translit_lang.php'],
+            ['en', '', 'lang.php'],
+            ['en', $themeName, 'cust_lang.php'],
+            ['en', $themeName, 'lang.php'],
+            ['en', $themeName, 'map.php'],
+            ['en', $themeName, 'theme_options.php'],
+            ['en', 'admin', 'cust_lang.php'],
+            ['en', 'admin', 'help_lang.php'],
+            ['en', 'admin', 'lang.php'],
+            ['En', 'Setup', 'lang.php'],
+
+            ['de', '', 'translit_lang.php'],
+            ['de', '', 'lang.php'],
+            ['de', $themeName, 'cust_lang.php'],
+            ['de', $themeName, 'lang.php'],
+            ['de', $themeName, 'map.php'],
+            ['de', $themeName, 'theme_options.php'],
+            ['de', 'admin', 'cust_lang.php'],
+            ['de', 'admin', 'help_lang.php'],
+            ['de', 'admin', 'lang.php'],
+            ['De', 'Setup', 'lang.php'],
+        ];
+    }
+
+    /**
+     * Test expected language files for their existence (OS independent case sensitive checks).
+     *
+     * @param string $languageCode Language code in form of ISO 639-1
+     * @param string $type Language file type
+     * @param string $fileName File name of a language file
+     *
+     * @dataProvider providerAllLanguageFilesForExistence
+     */
+    public function testAllLanguageFilesForExistence($languageCode, $type, $fileName)
+    {
+        $filePath = $this->_getLanguageFilePath($type, $languageCode, $fileName);
+        $isFilePathCorrect = static::file_exists_case_sensitive($filePath);
+
+        $errorMessage = $this->getErrorMessageForTestAllLanguageFilesForExistence($filePath);
+        $this->assertTrue($isFilePathCorrect, $errorMessage);
+    }
+
+    /**
+     * Get error message for `testAllLanguageFilesForExistence`.
+     *
+     * @param string $missingFilePath Full path to the file which is missing
+     *
+     * @return string
+     */
+    protected function getErrorMessageForTestAllLanguageFilesForExistence($missingFilePath)
+    {
+        $languageFilesProviderData = $this->providerAllLanguageFilesForExistence();
+
+        $filePaths = array_map(function($providerDataInput) {
+            list($languageCode, $type, $fileName) = $providerDataInput;
+
+            return realpath($this->_getLanguageFilePath($type, $languageCode, $fileName));
+        }, $languageFilesProviderData);
+
+        $filePathsMessage = implode("\n", $filePaths);
+
+        $missingFilePath = realpath($missingFilePath);
+
+        $errorMessage = <<<EOD
+The file "$missingFilePath" was not found. This could be due to the following reasons:
+
+* The file was renamed;
+* The file was removed;
+* One of path elements has it's casing changed, i.e. 'word' => 'Word';
+* The theme name (through `getThemeName()`) is wrong.
+
+This issue could also be caused by the behavior of non case-sensitive file system.
+
+If the change of file move/rename was intentional, don't forget to:
+* Update current test;
+* Double check the integrity test file - 'langIntegrityTest.php';
+* Double check the lower and UPPER case differences in path elements.
+
+The whole list of files that are being checked:
+$filePathsMessage
+
+Assert message:
+EOD;
+
+        return $errorMessage;
+    }
+
+    /**
+     * Helper function to do an OS independent case sensitive file_exists check.
+     *
+     * The function uses glob to extract real path for comparing against the given path.
+     * It does so by applying an adapted pattern, e.g.
+     *     given path: /var/www/oxideshop
+     *     pattern: /[Vv]ar/[Ww]ww/[Oo]xideshop
+     *
+     * Note: Case sensitivity check applies to the whole path, not only the file/directory part, i.e.
+     * There's a difference between '/a/b/c' and '/A/b/c' thus it will return different result.
+     *
+     * TODO: Transfer this to testing library
+     *
+     * @param string $filePath Given full path to check for case sensitive existence
+     *
+     * @return bool True in case the whole path matches as case sensitive file_exists, false otherwise
+     */
+    public static function file_exists_case_sensitive($filePath)
+    {
+        $filePath = realpath($filePath);
+
+        $pathItems = explode(DIRECTORY_SEPARATOR, $filePath);
+
+        $pathGlobItems = array_map(function($pathItem) {
+            $firstLetter = $pathItem[0];
+
+            if ($firstLetter) {
+                // Convert 'word' to '[Ww]ord'
+                $begin = '[' . strtoupper($firstLetter) . strtolower($firstLetter) . ']';
+                $end = substr($pathItem, 1);
+                $result = $begin . $end;
+            } else {
+                $result = '';
+            }
+
+            return $result;
+        }, $pathItems);
+
+        $globPath = implode(DIRECTORY_SEPARATOR, $pathGlobItems);
+        $searchResultItems = glob($globPath);
+
+        $isPathMatch = ($searchResultItems !== false) && ($searchResultItems[0] === $filePath);
+
+        return $isPathMatch;
     }
 }

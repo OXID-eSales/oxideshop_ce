@@ -718,25 +718,30 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
     }
 
     /**
-     * Returns path to language file
+     * Generates the full absolute path to a language file.
      *
-     * @param string $sType
-     * @param string $sLang
-     * @param string $sFile
+     * @param string $type Language file type
+     * @param string $languageCode Language code in form of ISO 639-1
+     * @param string $fileName File name part for the language file (might include partial path)
      *
-     * @return string pathname
+     * @return string Full absolute path to a language file
      */
-    private function _getLanguageFilePath($sType, $sLang, $sFile)
+    private function _getLanguageFilePath($type, $languageCode, $fileName)
     {
-        if ($sType == '') {
-            $sDir = $this->getConfig()->getAppDir() . '/translations' . DIRECTORY_SEPARATOR . $sLang . DIRECTORY_SEPARATOR . $sFile;
-        } elseif ($sType == 'setup') {
-            $sDir = $this->getConfig()->getConfigParam('sShopDir') . '/Setup' . DIRECTORY_SEPARATOR . $sLang . DIRECTORY_SEPARATOR . $sFile;
+        $applicationDirectory = rtrim($this->getConfig()->getAppDir(), DIRECTORY_SEPARATOR);
+        $shopDirectory = rtrim($this->getConfig()->getConfigParam('sShopDir'), DIRECTORY_SEPARATOR);
+
+        if (empty($type)) {
+            $pathItems = [$applicationDirectory, 'translations', $languageCode, $fileName];
+        } elseif (strtolower($type) === 'setup') {
+            $pathItems = [$shopDirectory, $type, $languageCode, $fileName];
         } else {
-            $sDir = $this->getConfig()->getAppDir() . '/views' . DIRECTORY_SEPARATOR . $sType . DIRECTORY_SEPARATOR . $sLang . DIRECTORY_SEPARATOR . $sFile;
+            $pathItems = [$applicationDirectory, 'views', $type, $languageCode, $fileName];
         }
 
-        return $sDir;
+        $filePath = implode(DIRECTORY_SEPARATOR, $pathItems);
+
+        return $filePath;
     }
 
     /**
@@ -822,27 +827,295 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
             array('en', $this->getThemeName(), '*.php'),
             array('de', 'admin', '*.php'),
             array('en', 'admin', '*.php'),
-            array('de', 'setup', 'lang.php'),
-            array('en', 'setup', 'lang.php'),
+            array('De', 'Setup', 'lang.php'),
+            array('En', 'Setup', 'lang.php'),
         );
     }
 
     /**
-     * Test if generic files don't have invalid encoding.
+     * Look for language files that are declared as being non UTF-8 (ASCII or ISO-8859-15) encoded files
+     * and check that they do not contain UTF-8 characters.
+     *
+     * @param string $languageCode Language code in form of ISO 639-1
+     * @param string $type Language file type
+     * @param string $filePattern File glob pattern to match
      *
      * @dataProvider providerLanguageFilesForInvalidEncoding
      */
-    public function testLanguageFilesForInvalidEncoding($sLanguage, $sType, $sFilePattern)
+    public function testLanguageFilesForInvalidEncoding($languageCode, $type, $filePattern)
     {
-        $aFileContent = $this->_getLangFileContents($sType, $sLanguage, $sFilePattern);
+        $languageFiles = $this->_getLangFileContents($type, $languageCode, $filePattern);
 
-        list($sFileName) = array_keys($aFileContent);
-        list($sFileContent) = array_values($aFileContent);
+        foreach ($languageFiles as $filePath => $fileContent) {
+            $languageTranslation = $this->_getLanguage($type, $languageCode, $filePattern);
 
-        foreach (array(0xEF, 0xBB, 0xBF, 0x9C) as $sCharacter) {
-            if (strpos($sFileContent, $sCharacter) !== false) {
-                $this->fail("Character with invalid encoding found in $sFileName file.");
-            }
+            $declaredEncoding = $languageTranslation['charset'];
+            $isDeclaredAsUTF8 = strtolower($declaredEncoding) === 'utf-8';
+
+            $isInvalidEncoding = !$isDeclaredAsUTF8 && static::isUTF8CharacterPresentInContent($fileContent);
+            $isValidEncoding = !$isInvalidEncoding;
+
+            $errorMessage = $this->getErrorMessageForTestLanguageFilesForInvalidEncoding($filePath, $declaredEncoding);
+            $this->assertTrue($isValidEncoding, $errorMessage);
         }
+    }
+
+    /**
+     * Helper function to detect UTF-8 character presence in given content.
+     *
+     * @TODO: Transfer to testing library
+     *
+     * @param string $content Content to be checked for UTF-8 characters
+     *
+     * @return bool True in case there is at least one UTF-8 character, false otherwise
+     */
+    public static function isUTF8CharacterPresentInContent($content)
+    {
+        return mb_detect_encoding($content, ['ASCII', 'UTF-8', 'ISO-8859-15']) === 'UTF-8';
+    }
+
+    /**
+     * Get error message for `testLanguageFilesForInvalidEncoding`.
+     *
+     * @param string $invalidFilePath Full path to the file which has wrong encoding
+     * @param string $declaredEncoding Declared content encoding within the file
+     *
+     * @return string Actual error message
+     */
+    protected function getErrorMessageForTestLanguageFilesForInvalidEncoding($invalidFilePath, $declaredEncoding)
+    {
+        $invalidFilePath = realpath($invalidFilePath);
+
+        $msg = <<<EOD
+UTF-8 characters were detected in "$invalidFilePath" which has "$declaredEncoding" encoding declared.
+This could be due to the following reasons:
+
+* The declared encoding within the `charset` key is wrong;
+* The file was unintentionally re-encoded as UTF-8;
+* The file was intentionally re-encoded as UTF-8 but the declared encoding was not updated.
+
+Assert message:
+EOD;
+
+        return $msg;
+    }
+
+    /**
+     * Look for language files that have undeclared encoding.
+     *
+     * @param string $languageCode Language code in form of ISO 639-1
+     * @param string $type Language file type
+     * @param string $filePattern File glob pattern to match
+     *
+     * @dataProvider providerLanguageFilesForInvalidEncoding
+     */
+    public function testLanguageFilesForUndeclaredEncoding($languageCode, $type, $filePattern)
+    {
+        $languageFiles = $this->_getLangFileContents($type, $languageCode, $filePattern);
+
+        foreach ($languageFiles as $filePath => $fileContent) {
+            $languageTranslation = $this->_getLanguage($type, $languageCode, $filePattern);
+
+            $isEncodingDeclared = $languageTranslation['charset'] ? true : false;
+
+            $errorMessage = <<<EOD
+Language file "$filePath" has an undeclared `charset` value, this could be due to:
+
+* The charset value being empty;
+* The charset value being missing.
+
+Language file with an empty/missing `charset` value is considered as invalid!
+
+Examples of valid `charset` entries:
+
+* 'charset' => 'UTF-8'
+* 'charset' => 'ISO-8859-15'
+
+Assert message:
+EOD;
+
+            $this->assertTrue($isEncodingDeclared, $errorMessage);
+        }
+    }
+
+    /**
+     * Look for language files that have declared invalid encoding.
+     *
+     * @param string $languageCode Language code in form of ISO 639-1
+     * @param string $type Language file type
+     * @param string $filePattern File glob pattern to match
+     *
+     * @dataProvider providerLanguageFilesForInvalidEncoding
+     */
+    public function testLanguageFilesForDeclaredInvalidEncoding($languageCode, $type, $filePattern)
+    {
+        $languageFiles = $this->_getLangFileContents($type, $languageCode, $filePattern);
+
+        foreach ($languageFiles as $filePath => $fileContent) {
+            $languageTranslation = $this->_getLanguage($type, $languageCode, $filePattern);
+
+            $declaredEncoding = strtolower($languageTranslation['charset']);
+            $validEncodings = ['utf-8', 'iso-8859-15'];
+            $isValidEncoding = in_array($declaredEncoding, $validEncodings);
+
+            $errorMessage = <<<EOD
+Language file "$filePath" has declared an invalid `charset` value: "$declaredEncoding".
+
+Language file with an invalid `charset` value is considered as invalid!
+
+Examples of valid `charset` entries:
+
+* 'charset' => 'UTF-8'
+* 'charset' => 'ISO-8859-15'
+
+Assert message:
+EOD;
+
+            $this->assertTrue($isValidEncoding, $errorMessage);
+        }
+    }
+
+    /**
+     * dataProvider with a list of all language files for existence integrity check.
+     *
+     * @return array
+     */
+    public function providerAllLanguageFilesForExistence()
+    {
+        $themeName = $this->getThemeName();
+
+        return [
+            // LanguageCode, Type, FileName
+            ['en', '', 'translit_lang.php'],
+            ['en', '', 'lang.php'],
+            ['en', $themeName, 'cust_lang.php'],
+            ['en', $themeName, 'lang.php'],
+            ['en', $themeName, 'map.php'],
+            ['en', $themeName, 'theme_options.php'],
+            ['en', 'admin', 'cust_lang.php'],
+            ['en', 'admin', 'help_lang.php'],
+            ['en', 'admin', 'lang.php'],
+            ['En', 'Setup', 'lang.php'],
+
+            ['de', '', 'translit_lang.php'],
+            ['de', '', 'lang.php'],
+            ['de', $themeName, 'cust_lang.php'],
+            ['de', $themeName, 'lang.php'],
+            ['de', $themeName, 'map.php'],
+            ['de', $themeName, 'theme_options.php'],
+            ['de', 'admin', 'cust_lang.php'],
+            ['de', 'admin', 'help_lang.php'],
+            ['de', 'admin', 'lang.php'],
+            ['De', 'Setup', 'lang.php'],
+        ];
+    }
+
+    /**
+     * Test expected language files for their existence (OS independent case sensitive checks).
+     *
+     * @param string $languageCode Language code in form of ISO 639-1
+     * @param string $type Language file type
+     * @param string $fileName File name of a language file
+     *
+     * @dataProvider providerAllLanguageFilesForExistence
+     */
+    public function testAllLanguageFilesForExistence($languageCode, $type, $fileName)
+    {
+        $filePath = $this->_getLanguageFilePath($type, $languageCode, $fileName);
+        $isFilePathCorrect = static::file_exists_case_sensitive($filePath);
+
+        $errorMessage = $this->getErrorMessageForTestAllLanguageFilesForExistence($filePath);
+        $this->assertTrue($isFilePathCorrect, $errorMessage);
+    }
+
+    /**
+     * Get error message for `testAllLanguageFilesForExistence`.
+     *
+     * @param string $missingFilePath Full path to the file which is missing
+     *
+     * @return string
+     */
+    protected function getErrorMessageForTestAllLanguageFilesForExistence($missingFilePath)
+    {
+        $languageFilesProviderData = $this->providerAllLanguageFilesForExistence();
+
+        $filePaths = array_map(function($providerDataInput) {
+            list($languageCode, $type, $fileName) = $providerDataInput;
+
+            return realpath($this->_getLanguageFilePath($type, $languageCode, $fileName));
+        }, $languageFilesProviderData);
+
+        $filePathsMessage = implode("\n", $filePaths);
+
+        $missingFilePath = realpath($missingFilePath);
+
+        $errorMessage = <<<EOD
+The file "$missingFilePath" was not found. This could be due to the following reasons:
+
+* The file was renamed;
+* The file was removed;
+* One of path elements has it's casing changed, i.e. 'word' => 'Word';
+* The theme name (through `getThemeName()`) is wrong.
+
+This issue could also be caused by the behavior of non case-sensitive file system.
+
+If the change of file move/rename was intentional, don't forget to:
+* Update current test;
+* Double check the integrity test file - 'langIntegrityTest.php';
+* Double check the lower and UPPER case differences in path elements.
+
+The whole list of files that are being checked:
+$filePathsMessage
+
+Assert message:
+EOD;
+
+        return $errorMessage;
+    }
+
+    /**
+     * Helper function to do an OS independent case sensitive file_exists check.
+     *
+     * The function uses glob to extract real path for comparing against the given path.
+     * It does so by applying an adapted pattern, e.g.
+     *     given path: /var/www/oxideshop
+     *     pattern: /[Vv]ar/[Ww]ww/[Oo]xideshop
+     *
+     * Note: Case sensitivity check applies to the whole path, not only the file/directory part, i.e.
+     * There's a difference between '/a/b/c' and '/A/b/c' thus it will return different result.
+     *
+     * TODO: Transfer this to testing library
+     *
+     * @param string $filePath Given full path to check for case sensitive existence
+     *
+     * @return bool True in case the whole path matches as case sensitive file_exists, false otherwise
+     */
+    public static function file_exists_case_sensitive($filePath)
+    {
+        $filePath = realpath($filePath);
+
+        $pathItems = explode(DIRECTORY_SEPARATOR, $filePath);
+
+        $pathGlobItems = array_map(function($pathItem) {
+            $firstLetter = $pathItem[0];
+
+            if ($firstLetter) {
+                // Convert 'word' to '[Ww]ord'
+                $begin = '[' . strtoupper($firstLetter) . strtolower($firstLetter) . ']';
+                $end = substr($pathItem, 1);
+                $result = $begin . $end;
+            } else {
+                $result = '';
+            }
+
+            return $result;
+        }, $pathItems);
+
+        $globPath = implode(DIRECTORY_SEPARATOR, $pathGlobItems);
+        $searchResultItems = glob($globPath);
+
+        $isPathMatch = ($searchResultItems !== false) && ($searchResultItems[0] === $filePath);
+
+        return $isPathMatch;
     }
 }

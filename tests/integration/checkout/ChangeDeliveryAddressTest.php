@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-class Integration_Checkout_changeDeliveryAddressTest extends OxidTestCase
+class Integration_Checkout_ChangeDeliveryAddressTest extends OxidTestCase
 {
     const TEST_ARTICLE_ID = '1127';
 
@@ -196,7 +196,7 @@ class Integration_Checkout_changeDeliveryAddressTest extends OxidTestCase
                             'oxuser__oxcity'      => 'Hamburg',
                             'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984');
 
-        $this->setRequestParameter('invadr', $aRawValues);
+        $this->setRequestParam('invadr', $aRawValues);
         $this->setRequestParam('stoken', $this->getSession()->getSessionChallengeToken());
 
         $oUserComponent = oxNew('oxcmp_user');

@@ -20,9 +20,6 @@
  * @version   OXID eShop CE
  */
 
-/**
- * @group knorke
- */
 class Unit_Models_oxrssfeedTest extends OxidTestCase
 {
 

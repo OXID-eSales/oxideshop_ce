@@ -22,7 +22,6 @@
 
 /**
  * Tests for Actions_List class
- * @group knorke
  */
 class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
 {

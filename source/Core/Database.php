@@ -550,6 +550,7 @@ class Database
      */
     protected function _sendMail($sEmail, $sSubject, $sBody)
     {
+        include_once getShopBasePath() . 'Core/phpmailer/class.phpmailer.php';
         $mailer = new PHPMailer();
         $mailer->isMail();
 

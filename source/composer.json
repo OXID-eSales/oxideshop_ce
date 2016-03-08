@@ -27,7 +27,6 @@
         }
     },
     "require": {
-        "phpmailer/phpmailer": "^5.2.14",
         "smarty/smarty": "^2.6.29"
     },
     "require-dev": {

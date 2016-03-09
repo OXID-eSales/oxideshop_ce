@@ -324,6 +324,8 @@ class oxcmp_user extends oxView
             $oBasket->resetUserInfo();
             $oBasket->onUpdate();
         }
+
+        oxRegistry::getSession()->delBasket();
     }
 
     /**

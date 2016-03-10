@@ -821,7 +821,7 @@ class oxConfig extends oxSuperCfg
     {
         $myUtilsServer = oxRegistry::get("oxUtilsServer");
         $aServerVars = $myUtilsServer->getServerVar();
-        $aHttpsServerVar = $myUtilsServer->getServerVar('HTTPS');
+        $aHttpsServerVar = ($myUtilsServer->getServerVar('HTTPS')) ?: $myUtilsServer->getServerVar('HTTP_HTTPS');
 
         $this->setIsSsl();
         if (isset($aHttpsServerVar) && ($aHttpsServerVar === 'on' || $aHttpsServerVar === 'ON' || $aHttpsServerVar == '1')) {

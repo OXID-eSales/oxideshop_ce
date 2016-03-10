@@ -44,24 +44,85 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSave()
+    public function testSaveWithDefaultValues()
     {
-        // testing..
-        oxTestModules::addFunction('oxarticle', 'save', '{ return true; }');
-        oxTestModules::addFunction('oxFile', 'save', '{ throw new Exception( "save" ); }');
+        $this->setRequestParameter('editval', array('oxarticles__oxisdownloadable' => 1));
+        $this->setRequestParameter('article_files', array("_testId" => "_testFile"));
+
+        $fileDefaultProperties = array(
+            'oxfiles__oxdownloadexptime' => -1,
+            'oxfiles__oxlinkexptime' => -1,
+            'oxfiles__oxmaxunregdownloads' => -1,
+            'oxfiles__oxmaxdownloads' => -1,
+        );
+
+        $file = $this->getMock('oxFile', array('load', 'assign', 'save'));
+        $file->expects($this->once())->method('load')->with('_testId');
+        $file->expects($this->once())->method('assign')->with($fileDefaultProperties);
+        $file->expects($this->once())->method('save');
+        oxTestModules::addModuleObject('oxFile', $file);
+
+        $articleFiles = oxNew('Article_Files');
+        $articleFiles->save();
+    }
+
+    public function testSaveWithSetValues()
+    {
+        $fileProperties = array(
+            'oxfiles__oxdownloadexptime' => 'oxdownloadexptime',
+            'oxfiles__oxlinkexptime' => 'oxlinkexptime',
+            'oxfiles__oxmaxunregdownloads' => 'oxmaxunregdownloads',
+            'oxfiles__oxmaxdownloads' => 'oxmaxdownloads',
+        );
+
+        $this->setRequestParameter('editval', array('oxarticles__oxisdownloadable' => 1));
+        $this->setRequestParameter('article_files', array( '_testId' => $fileProperties));
+
+        $file = $this->getMock('oxFile', array('load', 'assign', 'save'));
+        $file->expects($this->once())->method('load')->with('_testId');
+        $file->expects($this->once())->method('assign')->with($fileProperties);
+        $file->expects($this->once())->method('save');
+        oxTestModules::addModuleObject('oxFile', $file);
+
+        $articleFiles = oxNew('Article_Files');
+        $articleFiles->save();
+    }
+
+    public function providerSaveDoNotSaveIfWrongFileName()
+    {
+
+        return array(
+            array(array('oxfiles__oxfilename' => 'some__not_existing_file')),
+            array(array('oxfiles__oxfilename' => '../../../config.inc.php'))
+        );
+    }
+
+    /**
+     * @param array $fileProperties
+     *
+     * @dataProvider providerSaveDoNotSaveIfWrongFileName
+     */
+    public function testSaveDoNotSaveIfWrongFileName($fileProperties)
+    {
         $this->setRequestParameter("editval", array("oxarticles__oxisdownloadable" => 1));
-        $this->setRequestParameter("article_files", array("_testId" => "_testFile"));
+        $this->setRequestParameter("article_files", array('_testId' => $fileProperties));
 
-        // testing..
-        try {
-            $oView = oxNew('Article_Files');
-            $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Files::save()");
+        $file = $this->getMock('oxFile', array('load', 'save'));
+        $file->expects($this->once())->method('load');
+        $file->expects($this->never())->method('save');
+        oxTestModules::addModuleObject('oxFile', $file);
 
-            return;
+        $articleFiles = oxNew('Article_Files');
+        $articleFiles->save();
+
+        $errors = oxRegistry::getSession()->getVariable('Errors');
+
+        if (!$errors) {
+            $this->fail('Should set exception: file above download folder.');
         }
-        $this->fail("error in Article_Files::save()");
+
+        $error = unserialize($errors['default'][0]);
+        $this->assertEquals('Keine Dateien hochgeladen', $error->getOxMessage());
     }
 
     /**

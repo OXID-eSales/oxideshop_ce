@@ -54,8 +54,9 @@ class Unit_Models_oxfileTest extends OxidTestCase
         $sFilePath = $this->createFile('out/downloads/test.jpg', 'test jpg file');
 
         /** @var oxFile|PHPUnit_Framework_MockObject_MockObject $oFile */
-        $oFile = $this->getMock('oxFile', array('getStoreLocation'));
+        $oFile = $this->getMock('oxFile', array('getStoreLocation', 'isUnderDownloadFolder'));
         $oFile->expects($this->any())->method('getStoreLocation')->will($this->returnValue($sFilePath));
+        $oFile->expects($this->any())->method('isUnderDownloadFolder')->will($this->returnValue(true));
 
         /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $oUtils */
         $oUtils = $this->getMock('oxUtils', array('setHeader', 'showMessageAndExit'));
@@ -70,6 +71,42 @@ class Unit_Models_oxfileTest extends OxidTestCase
         ob_end_clean();
 
         $this->assertEquals('test jpg file', $content);
+    }
+
+    public function testDownloadThrowExceptionWhenAboveDownloadFolder()
+    {
+        $this->setExpectedException('oxException');
+
+        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utils */
+        $utils = $this->getMock('oxUtils');
+        $utils->expects($this->any())->method('setHeader')->will($this->returnValue(true));
+        $utils->expects($this->any())->method('showMessageAndExit')->will($this->returnValue(true));
+        oxRegistry::set('oxUtils', $utils);
+
+        $fileName = '../../../config.inc.php';
+
+        $file = oxNew('oxFile');
+        $file->oxfiles__oxfilename = new oxField($fileName);
+
+        $file->download();
+    }
+
+    public function testDownloadThrowExceptionWhenFileDoesNotExist()
+    {
+        $this->setExpectedException('oxException');
+
+        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utils */
+        $utils = $this->getMock('oxUtils');
+        $utils->expects($this->any())->method('setHeader')->will($this->returnValue(true));
+        $utils->expects($this->any())->method('showMessageAndExit')->will($this->returnValue(true));
+        oxRegistry::set('oxUtils', $utils);
+
+        $fileName = 'some_not_existing_file';
+
+        $file = oxNew('oxFile');
+        $file->oxfiles__oxfilename = new oxField($fileName);
+
+        $file->download();
     }
 
     /**

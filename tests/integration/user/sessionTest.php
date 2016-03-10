@@ -206,8 +206,8 @@ class Integration_User_SessionTest extends OxidTestCase
      */
     private function _fillBasketForLoggedInUser($oUsername, $password, $sArticleId)
     {
-        $this->setRequestParameter('lgn_usr', $oUsername);
-        $this->setRequestParameter('lgn_pwd', $password);
+        $this->setRequestParam('lgn_usr', $oUsername);
+        $this->setRequestParam('lgn_pwd', $password);
 
         $parent = $this->getMock('oxuser', array('isEnabledPrivateSales'));
         $parent->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(false));

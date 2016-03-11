@@ -41,8 +41,6 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         // reload smarty
         oxRegistry::get("oxUtilsView")->getSmarty(true);
 
-        $this->_oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
-
         $this->cleanUpTable('oxuser');
         $this->cleanUpTable('oxorderarticles');
 
@@ -74,8 +72,6 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $this->_oShop->oxshops__oxregistersubject = new oxField('testUserRegistrationSubject', oxField::T_RAW);
         $this->_oShop->oxshops__oxforgotpwdsubject = new oxField('testUserFogotPwdSubject', oxField::T_RAW);
 
-        // replace default shop
-        //$this->_oEmail->setShop( $this->_oShop );
 
         // insert test article
         $this->_oArticle = oxNew("oxArticle");

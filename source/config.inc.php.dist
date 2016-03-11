@@ -200,11 +200,6 @@
     $this->blSkipViewUsage = false;
 
     /**
-     * Captcha encryption key.
-     */
-    $this->captchaKey = '<captchaKey>';
-
-    /**
      * Enterprise Edition related config options.
      * This options have no effect on Community/Professional Editions.
      */

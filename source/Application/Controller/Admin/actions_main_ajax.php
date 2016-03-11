@@ -155,6 +155,9 @@ class actions_main_ajax extends ajaxListComponent
     public function removeArtFromAct()
     {
         $aChosenArt = $this->_getActionIds('oxactions2article.oxid');
+        $sOxid = oxRegistry::getConfig()->getRequestParameter('oxid');
+
+        $this->_getOxRssFeed()->removeCacheFile($sOxid);
 
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sQ = parent::_addFilter("delete oxactions2article.* " . $this->_getQuery());
@@ -176,6 +179,8 @@ class actions_main_ajax extends ajaxListComponent
         $myConfig = $this->getConfig();
         $aArticles = $this->_getActionIds('oxarticles.oxid');
         $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+
+        $this->_getOxRssFeed()->removeCacheFile($soxId);
 
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
@@ -264,4 +269,15 @@ class actions_main_ajax extends ajaxListComponent
 
         $this->_outputResponse($this->_getData($sCountQ, $sQ));
     }
+
+    /**
+     * Getter for the rss feed handler.
+     *
+     * @return oxRssFeed The rss feed handler.
+     */
+    protected function _getOxRssFeed()
+    {
+        return oxNew('oxRssFeed');
+    }
+
 }

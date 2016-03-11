@@ -75,13 +75,6 @@ class SuggestController extends \oxUBase
     protected $_aSuggestData = null;
 
     /**
-     * Class handling CAPTCHA image.
-     *
-     * @var object
-     */
-    protected $_oCaptcha = null;
-
-    /**
      * Sends product suggestion mail and returns a URL according to
      * URL formatting rules.
      *
@@ -101,18 +94,7 @@ class SuggestController extends \oxUBase
         $oParams = (object) $aParams;
         $this->setSuggestData((object) oxRegistry::getConfig()->getRequestParameter('editval'));
 
-        // spam spider prevension
-        $sMac = oxRegistry::getConfig()->getRequestParameter('c_mac');
-        $sMacHash = oxRegistry::getConfig()->getRequestParameter('c_mach');
-        $oCaptcha = $this->getCaptcha();
         $oUtilsView = oxRegistry::get("oxUtilsView");
-
-        if (!$oCaptcha->pass($sMac, $sMacHash)) {
-            // even if there is no exception, use this as a default display method
-            $oUtilsView->addErrorToDisplay('MESSAGE_WRONG_VERIFICATION_CODE');
-
-            return false;
-        }
 
         // filled not all fields ?
         foreach ($this->_aReqFields as $sFieldName) {
@@ -284,20 +266,6 @@ class SuggestController extends \oxUBase
         }
 
         return $sLink;
-    }
-
-    /**
-     * Template variable getter. Returns object of handling CAPTCHA image
-     *
-     * @return object
-     */
-    public function getCaptcha()
-    {
-        if ($this->_oCaptcha === null) {
-            $this->_oCaptcha = oxNew('oxCaptcha');
-        }
-
-        return $this->_oCaptcha;
     }
 
     /**

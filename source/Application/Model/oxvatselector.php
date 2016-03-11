@@ -52,12 +52,13 @@ class oxVatSelector extends oxSuperCfg
      */
     public function getUserVat(oxUser $oUser, $blCacheReset = false)
     {
+        $cacheId = $oUser->getId() . '_' . $oUser->oxuser__oxcountryid->value;
+
         if (!$blCacheReset) {
-            $sId = $oUser->getId();
-            if (array_key_exists($sId, self::$_aUserVatCache) &&
-                self::$_aUserVatCache[$sId] !== null
+            if (array_key_exists($cacheId, self::$_aUserVatCache) &&
+                self::$_aUserVatCache[$cacheId] !== null
             ) {
-                return self::$_aUserVatCache[$sId];
+                return self::$_aUserVatCache[$cacheId];
             }
         }
 
@@ -75,7 +76,7 @@ class oxVatSelector extends oxSuperCfg
             }
         }
 
-        self::$_aUserVatCache[$oUser->getId()] = $ret;
+        self::$_aUserVatCache[$cacheId] = $ret;
 
         return $ret;
     }

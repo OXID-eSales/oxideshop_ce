@@ -41,6 +41,13 @@ class Country_List extends oxAdminList
     protected $_sDefSortField = 'oxactive';
 
     /**
+     * Default second SQL sorting parameter.
+     *
+     * @var string
+     */
+    protected $sSecondDefSortField = 'oxtitle';
+
+    /**
      * Enable/disable sorting by DESC (SQL) (default false - disable).
      *
      * @var bool
@@ -59,4 +66,32 @@ class Country_List extends oxAdminList
 
         return "country_list.tpl";
     }
+
+    /**
+     * Returns sorting fields array. We extend this method for getting a second order by, which will give us not the
+     * undefined order behind the "active" countries.
+     *
+     * @return array
+     */
+    public function getListSorting()
+    {
+        $aListSorting = parent::getListSorting();
+
+        if (array_keys($aListSorting['oxcountry']) === array('oxactive')) {
+            $aListSorting['oxcountry'][$this->_getSecondSortFieldName()] = 'asc';
+        }
+
+        return $aListSorting;
+    }
+
+    /**
+     * Getter for the second sort field name (for getting the expected oreder out of the databse).
+     *
+     * @return string The name of the field we want to be the second order by argument.
+     */
+    protected function _getSecondSortFieldName()
+    {
+        return $this->sSecondDefSortField;
+    }
+
 }

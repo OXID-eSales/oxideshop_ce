@@ -147,13 +147,13 @@ class oxFile extends oxBase
         $sConfigValue = oxRegistry::getConfig()->getConfigParam('sDownloadsDir');
 
         //Unix full path is set
-        if ($sConfigValue && $sConfigValue[0] == DIR_SEP) {
+        if ($sConfigValue && $sConfigValue[0] == DIRECTORY_SEPARATOR) {
             return $sConfigValue;
         }
 
         //relative path is set
         if ($sConfigValue) {
-            $sPath = getShopBasePath() . DIR_SEP . $sConfigValue;
+            $sPath = getShopBasePath() . DIRECTORY_SEPARATOR . $sConfigValue;
 
             return $sPath;
         }
@@ -174,7 +174,7 @@ class oxFile extends oxBase
     public function getStoreLocation()
     {
         $sPath = $this->_getBaseDownloadDirPath();
-        $sPath .= DIR_SEP . $this->_getFileLocation();
+        $sPath .= DIRECTORY_SEPARATOR . $this->_getFileLocation();
 
         return $sPath;
     }
@@ -216,9 +216,9 @@ class oxFile extends oxBase
 
         if ($this->isUploaded()) {
             $this->_sRelativeFilePath = $this->_getHashedFileDir($sFileHash);
-            $this->_sRelativeFilePath .= DIR_SEP . $sFileHash;
+            $this->_sRelativeFilePath .= DIRECTORY_SEPARATOR . $sFileHash;
         } else {
-            $this->_sRelativeFilePath = DIR_SEP . $this->_sManualUploadDir . DIR_SEP . $sFileName;
+            $this->_sRelativeFilePath = DIRECTORY_SEPARATOR . $this->_sManualUploadDir . DIRECTORY_SEPARATOR . $sFileName;
         }
 
         return $this->_sRelativeFilePath;
@@ -236,7 +236,7 @@ class oxFile extends oxBase
     protected function _getHashedFileDir($sFileHash)
     {
         $sDir = substr($sFileHash, 0, 2);
-        $sAbsDir = $this->_getBaseDownloadDirPath() . DIR_SEP . $sDir;
+        $sAbsDir = $this->_getBaseDownloadDirPath() . DIRECTORY_SEPARATOR . $sDir;
 
         if (!is_dir($sAbsDir)) {
             mkdir($sAbsDir, 0755);

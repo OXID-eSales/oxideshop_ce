@@ -1316,21 +1316,29 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("%MR% %MRS%", $this->clearString($this->getText("editval[oxuser__oxsal]")));
         $this->select("editval[oxuser__oxsal]", "label=%MRS%");
         $this->type("editval[oxuser__oxfname]", "first name");
-        $this->type("editval[oxuser__oxlname]", "last name");
+        $this->type("editval[oxuser__oxlname]", "");
         $this->type("contactEmail", "example_test@oxid-esales.dev");
         $this->type("c_subject", "subject");
         $this->type("c_message", "message text");
-        $this->type("c_mac", "");
         $this->click("//button[text()='%SEND%']");
         $this->waitForText("%ERROR_MESSAGE_INPUT_NOTALLFIELDS%");
+
         $this->assertEquals("%MRS%", $this->getSelectedLabel("editval[oxuser__oxsal]"));
         $this->assertEquals("first name", $this->getValue("editval[oxuser__oxfname]"));
+        $this->type("editval[oxuser__oxfname]", "");
+        $this->type("editval[oxuser__oxlname]", "last name");
+        $this->assertEquals("example_test@oxid-esales.dev", $this->getValue("contactEmail"));
+        $this->assertEquals("subject", $this->getValue("c_subject"));
+        $this->assertEquals("message text", $this->getValue("c_message"));
+        $this->click("//button[text()='%SEND%']");
+        $this->waitForText("%ERROR_MESSAGE_INPUT_NOTALLFIELDS%");
+
+        $this->assertEquals("%MRS%", $this->getSelectedLabel("editval[oxuser__oxsal]"));
+        $this->type("editval[oxuser__oxfname]", "first name");
         $this->assertEquals("last name", $this->getValue("editval[oxuser__oxlname]"));
         $this->assertEquals("example_test@oxid-esales.dev", $this->getValue("contactEmail"));
         $this->assertEquals("subject", $this->getValue("c_subject"));
         $this->assertEquals("message text", $this->getValue("c_message"));
-        $this->assertElementPresent("c_mac");
-        $this->type("c_mac", $this->getText("verifyTextCode"));
         $this->clickAndWait("//button[text()='%SEND%']");
         $this->assertTextPresent("%THANK_YOU%.");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_CONTACT%", $this->getText("breadCrumb"));

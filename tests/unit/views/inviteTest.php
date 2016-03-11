@@ -89,17 +89,6 @@ class Unit_Views_inviteTest extends OxidTestCase
     }
 
     /**
-     * Testing method getCaptcha()
-     *
-     * @return null
-     */
-    public function testGetCaptcha()
-    {
-        $oView = $this->getProxyClass('invite');
-        $this->assertEquals(oxNew('oxCaptcha'), $oView->getCaptcha());
-    }
-
-    /**
      * Testing method send() - no user input
      *
      * @return null
@@ -158,10 +147,6 @@ class Unit_Views_inviteTest extends OxidTestCase
         $oEmail->expects($this->once())->method('sendInviteMail')->will($this->returnValue(true));
         oxTestModules::addModuleObject('oxEmail', $oEmail);
 
-        $oCaptcha = $this->getMock('oxCaptcha', array('pass'));
-        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
-        oxTestModules::addModuleObject('oxCaptcha', $oCaptcha);
-
         $oView = $this->getMock("invite", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(new oxUser()));
         $oView->send();
@@ -199,10 +184,6 @@ class Unit_Views_inviteTest extends OxidTestCase
         $oEmail = $this->getMailerMock(array('sendInviteMail'));
         $oEmail->expects($this->once())->method('sendInviteMail')->will($this->returnValue(true));
         DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
-
-        $oCaptcha = $this->getMock('oxCaptcha', array('pass'));
-        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
-        oxTestModules::addModuleObject('oxCaptcha', $oCaptcha);
 
         $oUser = $this->getMock('oxUser', array('updateInvitationStatistics'));
         $oUser->expects($this->once())->method('updateInvitationStatistics')->will($this->returnValue(true));

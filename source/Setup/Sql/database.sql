@@ -327,21 +327,6 @@ CREATE TABLE `oxattribute` (
   PRIMARY KEY  (`OXID`)
 ) ENGINE=MyISAM COMMENT 'Article attributes';
 
-#
-# Table structure for table `oxcaptcha`
-#
-
-DROP TABLE IF EXISTS `oxcaptcha`;
-
-CREATE TABLE IF NOT EXISTS `oxcaptcha` (
-  `OXID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Captcha id',
-  `OXHASH` char(32) NOT NULL default '' COMMENT 'Hash',
-  `OXTIME` int(11) NOT NULL COMMENT 'Validation time',
-  `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
-  PRIMARY KEY (`OXID`),
-  KEY `OXID` (`OXID`,`OXHASH`),
-  KEY `OXTIME` (`OXTIME`)
-) ENGINE=MEMORY AUTO_INCREMENT=1 COMMENT 'If session is not available, this is where captcha information is stored';
 
 #
 # Table structure for table `oxcategories`

@@ -25,7 +25,6 @@ namespace OxidEsales\Eshop\Application\Controller;
 use oxArticle;
 use oxArticleList;
 use oxArticleTagList;
-use oxCaptcha;
 use oxCategory;
 use oxDeliveryList;
 use oxDeliverySetList;
@@ -72,13 +71,6 @@ class ArticleDetailsController extends \oxUBase
      * @var array
      */
     protected $_aTags = null;
-
-    /**
-     * Class handling CAPTCHA image.
-     *
-     * @var object
-     */
-    protected $_oCaptcha = null;
 
     /**
      * Parent article name
@@ -1137,20 +1129,6 @@ class ArticleDetailsController extends \oxUBase
     }
 
     /**
-     * Template variable getter. Returns object of handling CAPTCHA image
-     *
-     * @return oxCaptcha|null
-     */
-    public function getCaptcha()
-    {
-        if ($this->_oCaptcha === null) {
-            $this->_oCaptcha = oxNew('oxCaptcha');
-        }
-
-        return $this->_oCaptcha;
-    }
-
-    /**
      * Validates email address.
      * If email address is OK - creates price alarm object and saves it (oxPriceAlarm::save()).
      * If email is wrong - returns false.
@@ -1162,15 +1140,6 @@ class ArticleDetailsController extends \oxUBase
     {
         $config = $this->getConfig();
         $utils = oxRegistry::getUtils();
-
-        //control captcha
-        $mac = $this->getConfig()->getRequestParameter('c_mac');
-        $macHash = $this->getConfig()->getRequestParameter('c_mach');
-        $captcha = $this->getCaptcha();
-        if (!$captcha->pass($mac, $macHash)) {
-            $this->_iPriceAlarmStatus = 2;
-            return;
-        }
 
         $parameters = $this->getConfig()->getRequestParameter('pa');
         if (!isset($parameters['email']) || !$utils->isValidEmail($parameters['email'])) {

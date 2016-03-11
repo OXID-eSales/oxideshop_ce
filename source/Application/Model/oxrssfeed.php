@@ -20,6 +20,7 @@
  * @version   OXID eShop CE
  */
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Rss feed manager
@@ -53,6 +54,30 @@ class oxRssFeed extends oxSuperCfg
     protected $_aChannel = array();
 
     /**
+     * Give back the cache file name for the given oxActionId.
+     *
+     * @param string $sOxActionId The oxaction we want the cache file name for.
+     *
+     * @return string The name of the corresponding file cache file.
+     */
+    public function mapOxActionToFileCache($sOxActionId)
+    {
+        $aOxActionToCacheIds = array(
+            'oxbargain' => 'RSS_BARGAIN',
+            'oxtop5' => 'RSS_TopShop',
+            'oxnewest' => 'RSS_NewArts'
+        );
+
+        $sFileCacheName = $aOxActionToCacheIds[$sOxActionId];
+
+        if (is_null($sFileCacheName)) {
+            $sFileCacheName = '';
+        }
+
+        return $sFileCacheName;
+    }
+
+    /**
      * getChannel retrieve channel data
      *
      * @access public
@@ -61,6 +86,19 @@ class oxRssFeed extends oxSuperCfg
     public function getChannel()
     {
         return $this->_aChannel;
+    }
+
+    /**
+     * Expire/remove the cache file for the given action rss feed.
+     *
+     * @param string $sName The name of the stream we want to remove from the file cache.
+     */
+    public function removeCacheFile($sName)
+    {
+        $sFileKey = $this->mapOxActionToFileCache($sName);
+        $sFilePath = Registry::getUtils()->getCacheFilePath($this->_getCacheId($sFileKey));
+
+        $this->_deleteFile($sFilePath);
     }
 
     /**
@@ -905,5 +943,17 @@ class oxRssFeed extends oxSuperCfg
     public function getCacheTtl()
     {
         return self::CACHE_TTL;
+    }
+
+    /**
+     * Delete the file, given by its path.
+     *
+     * @param string $sFilePath The path of the file we want to delete.
+     *
+     * @return bool Went everything well?
+     */
+    protected function _deleteFile($sFilePath)
+    {
+        return @unlink($sFilePath);
     }
 }

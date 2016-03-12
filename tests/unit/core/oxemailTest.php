@@ -24,14 +24,6 @@ use OxidEsales\Eshop\Core\MailClientInterface;
  * @version   OXID eShop CE
  */
 
-class dummyMailClient implements MailClientInterface
-{
-    public function __call($method, $params)
-    {
-
-    }
-}
-
 class Unit_Core_oxemailTest extends OxidTestCase
 {
 
@@ -226,7 +218,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $oOrder->oxorder__oxdeltype = new oxField("oxidstandard");
 
         $oEmail = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["_sendMail", "_getShop"])
             ->getMock();
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
@@ -260,7 +252,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     public function testSendForgotPwdEmailSendingFailed()
     {
         $oEmail = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["send", "_getShop"])
             ->getMock();
         $oEmail->expects($this->any())->method('send')->will($this->returnValue(false));
@@ -288,7 +280,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
         $email = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["_sendMail", "_getShop"])
             ->getMock();
         $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
@@ -316,7 +308,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
         $email = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["_sendMail", "_getShop"])
             ->getMock();
         $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
@@ -346,7 +338,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
         $oEmail = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["_sendMail", "_getShop"])
             ->getMock();
         $oEmail->expects($this->never())->method('_sendMail');
@@ -380,7 +372,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $aBasketContents[] = $oBasketItem;
 
         $oEmail = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["_sendMail", "_getShop"])
             ->getMock();
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
@@ -408,7 +400,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $aBasketContents[] = $oBasketItem;
 
         $oEmail = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["_sendMail", "_getShop"])
             ->getMock();
         $oEmail->expects($this->never())->method('_sendMail')->will($this->returnValue(true));
@@ -436,7 +428,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $aBasketContents[] = $oBasketItem;
 
         $oEmail = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["_sendMail", "_getShop"])
             ->getMock();
         $oEmail->expects($this->never())->method('_sendMail')->will($this->returnValue(true));
@@ -610,7 +602,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     public function testSetReplyToWithNoParams()
     {
         $oEmail = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["_getShop"])
             ->getMock();
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -705,7 +697,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     public function testSendMailErrorMsg()
     {
         $oEmail = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"])
             ->getMock();
         $oEmail->expects($this->at(0))->method('getRecipient')->will($this->returnValue(1));
@@ -725,7 +717,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     public function testSendMailErrorMsg_failsOnlySmtp()
     {
         $oEmail = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"])
             ->getMock();
         $oEmail->expects($this->at(0))->method('getRecipient')->will($this->returnValue(1));
@@ -745,7 +737,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     public function testSendMailErrorMsg_failsMail()
     {
         $oEmail = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"])
             ->getMock();
         $oEmail->expects($this->at(0))->method('getRecipient')->will($this->returnValue(1));
@@ -839,7 +831,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $oSmartyMock->expects($this->any())->method("fetch")->will($this->returnValue(true));
 
         $oEmail = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["_sendMail", "_getSmarty"])
             ->getMock();
         $oEmail->expects($this->once())->method("_sendMail")->will($this->returnValue(true));
@@ -873,7 +865,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $oSmartyMock->expects($this->any())->method("fetch")->will($this->returnValue(true));
 
         $oEmail = $this->getMockBuilder(oxEmail::class)
-            ->setConstructorArgs([new dummyMailClient()])
+            ->setConstructorArgs([$this->getMock(MailClientInterface::class)])
             ->setMethods(["send", "_getSmarty"])
             ->getMock();
         $oEmail->expects($this->once())->method("send")->will($this->returnValue(true));

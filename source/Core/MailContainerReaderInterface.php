@@ -10,7 +10,7 @@ interface MailContainerReaderInterface
     public function getRecipient();
     public function getReplyTo();
     public function getFromAddress();
-    public function isHtml($isHtml);
+    public function isHtml();
     public function getAddress();
     public function getEmbeddedImages();
     public function getAttachments();

@@ -1,121 +1,146 @@
 <?php
 namespace OxidEsales\Eshop\Core;
 
+/**
+ * Class MailContainer
+ */
 class MailContainer implements MailContainerSetterInterface, MailContainerReaderInterface
 {
+    private $body;
+    private $altBody;
+    private $subject;
+
     public function setBody($body)
     {
+        $this->body = $body;
         return $this;
     }
 
     public function getBody()
     {
-        return '';
+        return $this->body;
     }
 
     public function setAltBody($body)
     {
+        $this->altBody = $body;
         return $this;
     }
 
     public function getAltBody()
     {
-        return '';
+        return $this->altBody;
     }
 
     public function setSubject($subject)
     {
         // A. HTML entities in subjects must be replaced
-        $subject = str_replace(array('&amp;', '&quot;', '&#039;', '&lt;', '&gt;'), array('&', '"', "'", '<', '>'), $subject);
-
+        $this->subject = str_replace(array('&amp;', '&quot;', '&#039;', '&lt;', '&gt;'), array('&', '"', "'", '<', '>'), $subject);
         return $this;
     }
 
     public function getSubject()
     {
+        return $this->subject;
     }
 
+    private $recipients = [];
     public function setRecipient($address, $name = null)
     {
         $address = idn_to_ascii($address);
+        $this->recipients[$address] = $name;
 
         return $this;
     }
 
     public function getRecipient()
     {
+        return $this->recipients;
     }
 
+    private $replyTo = [];
     public function setReplyTo($address, $name = null)
     {
+        $address = idn_to_ascii($address);
+        $this->replyTo[$address] = $name;
         return $this;
     }
 
     public function getReplyTo()
     {
+        return $this->replyTo;
     }
 
-    public function setFromAddress($sFromAddress, $sFromName = null)
+    private $fromAddress;
+    public function setFromAddress($address, $name = null)
     {
+        $address = idn_to_ascii($address);
+        $this->fromAddress[$address] = $name;
         return $this;
     }
 
     public function getFromAddress()
     {
+        return $this->fromAddress;
     }
 
-    public function isHtml($isHtml)
+    private $isHtml = false;
+    public function isHtml()
     {
+        return $this->isHtml;
+    }
+
+    public function setHtmlMode($html)
+    {
+        $this->html = $html;
         return $this;
     }
 
+    private $addresses = [];
     public function addAddress($address, $name = '')
     {
+        $this->addresses[$address] = $name;
         return $this;
     }
 
     public function getAddress()
     {
+        return $this->addresses;
     }
 
-
-    /**
-     * Adds an embedded attachment (check phpmail documentation for more details)
-     *
-     * @param string $sFullPath Path to the attachment.
-     * @param string $sCid      Content ID of the attachment. Use this to identify the Id for accessing the image in an HTML form.
-     * @param string $sAttFile  Overrides the attachment name.
-     * @param string $sEncoding File encoding (see $Encoding).
-     * @param string $sType     File extension (MIME) type.
-     *
-     * @return bool
-     */
+    private $images = [];
     public function addEmbeddedImage($sFullPath, $sCid, $sAttFile = '', $sEncoding = 'base64', $sType = 'application/octet-stream')
     {
+        $image = new \stdclass();
+
+        $image->fullPath = $sFullPath;
+        $image->cid = $sCid;
+        $image->attFile = $sAttFile;
+        $image->encoding = $sEncoding;
+        $image->type = $sType;
+
+        $this->images[] = $image;
     }
 
     public function getEmbeddedImages()
     {
+        return $this->images;
     }
 
-    /**
-     * Adds an attachment to mail from a path on the filesystem
-     *
-     * @param string $sAttPath  path to the attachment
-     * @param string $sAttFile  attachment name
-     * @param string $sEncoding attachment encoding
-     * @param string $sType     attachment type
-     *
-     * @return bool
-     */
+    private $attachments = [];
     public function addAttachment($sAttPath, $sAttFile = '', $sEncoding = 'base64', $sType = 'application/octet-stream')
     {
-        //$this->_aAttachments[] = array($sAttPath, $sAttFile, $sEncoding, $sType);
+        $attachment = new \stdclass();
+        $attachment->attPath = $sAttPath;
+        $attachment->attFile = $sAttFile;
+        $attachment->encoding = $sEncoding;
+        $attachment->type = $sType;
+
+        $this->attachments[] = $attachment;
     }
 
     public function getAttachments()
     {
-        //$this->_aAttachments[] = array($sAttPath, $sAttFile, $sEncoding, $sType);
+        return $this->attachments;
     }
-
 }

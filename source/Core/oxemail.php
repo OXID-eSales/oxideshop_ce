@@ -741,7 +741,7 @@ class oxEmail
                 ->setAltBody($oNewsLetter->getPlainText());
         } else {
             $container
-                ->isHtml(false)
+                ->setHtmlMode(false)
                 ->setBody($oNewsLetter->getPlainText());
         }
 

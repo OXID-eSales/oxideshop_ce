@@ -4,7 +4,7 @@ namespace OxidEsales\Eshop\Core;
 /**
  * Class MailClient
  */
-class MailClient extends \PHPMailer implements MailClientInterface
+class MailClient implements MailClientInterface
 {
     /**
      * Default Smtp server port
@@ -22,19 +22,14 @@ class MailClient extends \PHPMailer implements MailClientInterface
 
     public function __construct()
     {
-        // proxy to the real PHPMailer
+        // !! proxy to the real PHPMailer !!
 
-
-
-
-        //enabling exception handling in phpMailer class
-        parent::__construct(true);
+        $this->mailer = new \PHPMailer(true);
 
         $this->setSmtp();
 
-        $this->isHtml(true);
-        $this->setLanguage('en', \oxRegistry::getConfig()->getConfigParam('sShopDir') . '/Core/phpmailer/language/');
-        $this->set('CharSet', \oxRegistry::getLang()->translateString('charset'));
+        $this->mailer->isHtml(true);
+        $this->mailer->set('CharSet', 'utf-8');
 
     }
 
@@ -66,27 +61,27 @@ class MailClient extends \PHPMailer implements MailClientInterface
         $oShop = $this->_getShop();
 
 
-        $this->setFromAddress($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
+        $this->mailer->setFrom($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
 
 
         $sSmtpUrl = $this->_setSmtpProtocol($oShop->oxshops__oxsmtp->value);
 
         if (!$this->_isValidSmtpHost($sSmtpUrl)) {
-            $this->set('mail', 'mail');
+            $this->mailer->set('mail', 'mail');
 
             return;
         }
 
-        $this->set('Host', $sSmtpUrl);
-        $this->set('mail', 'smtp');
-        $this->set('WordWrap', 100);
+        $this->mailer->set('Host', $sSmtpUrl);
+        $this->mailer->set('mail', 'smtp');
+        $this->mailer->set('WordWrap', 100);
 
         if ($oShop->oxshops__oxsmtpuser->value) {
             $this->_setSmtpAuthInfo($oShop->oxshops__oxsmtpuser->value, $oShop->oxshops__oxsmtppwd->value);
         }
 
         if ($myConfig->getConfigParam('iDebug') == 6) {
-            $this->set('SMTPDebug', true);
+            $this->mailer->set('SMTPDebug', true);
         }
     }
 
@@ -189,33 +184,49 @@ class MailClient extends \PHPMailer implements MailClientInterface
      */
     protected function _setSmtpAuthInfo($sUserName = null, $sUserPassword = null)
     {
-        $this->set('SMTPAuth', true);
-        $this->set('Username', $sUserName);
-        $this->set('Password', $sUserPassword);
+        $this->mailer->set('SMTPAuth', true);
+        $this->mailer->set('Username', $sUserName);
+        $this->mailer->set('Password', $sUserPassword);
     }
 
     /**
-     * Sets mail from address and name.
-     *
-     * Preventing possible email spam over php mail() exploit (http://www.securephpwiki.com/index.php/Email_Injection)
-     * this is simple but must work
-     *
-     * @param string $sFromAddress email address
-     * @param string $sFromName    user name
+     * Outputs email fields thought email output processor, includes images, and initiate email sending
+     * If fails to send mail via SMTP, tries to send via mail(). On failing to send, sends mail to
+     * shop administrator about failing mail sending
      *
      * @return bool
      */
-    public function setFromAddress($sFromAddress, $sFromName = null)
+    public function send(MailContainerReaderInterface $container)
     {
-        $sFromAddress = substr($sFromAddress, 0, 150);
-        $sFromName = substr($sFromName, 0, 150);
+        $this->mailer->isHTML($container->isHtml());
 
-        $success = false;
-        try {
-            $success = parent::setFrom($sFromAddress, $sFromName);
-        } catch (\Exception $oEx) {
+        $this->mailer->addAddress($address, $name = '');
+        $this->mailer->setSubject($container->getSubject());
+        $this->mailer->setBody($container->getBody());
+        $this->mailer->setAltBody($container->getAltBody());
+        $this->mailer->addReplyTo($sEmail, $sName);
+        $this->mailer->setFrom($container->getFrom(), $container->getFromName());
+        $this->mailer->addEmbeddedImage($sFullPath, $sCid, $sAttFile, $sEncoding, $sType);
+        $this->mailer->addAttachment($sAttPath, $sAttFile, $sEncoding, $sType);
+
+        $sent = $this->mailer->send();
+
+        // try to send mail via SMTP
+        if (false === $sent && $this->mailer->Mailer === 'smtp') {
+            $this->mailer->set('Mailer', 'mail');
+            $sent = $this->mailer->send();
         }
 
-        return $success;
+        return $sent;
+    }
+
+    /**
+     * Gets mailing error info.
+     *
+     * @return string
+     */
+    public function getErrorInfo()
+    {
+        return $this->mailer->ErrorInfo;
     }
 }

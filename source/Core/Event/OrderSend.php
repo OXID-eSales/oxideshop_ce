@@ -3,6 +3,8 @@ namespace OxidEsales\Eshop\Core\Event;
 
 class OrderSend extends AbstractEvent
 {
+    const NAME = 'OrderSend';
+    
     private $order;
     public function __construct($order)
     {

@@ -3,6 +3,8 @@ namespace OxidEsales\Eshop\Core\Event;
 
 class OrderCompleted extends AbstractEvent
 {
+    const NAME = 'OrderCompleted';
+
     // temporary!
     private $order;
 

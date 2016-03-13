@@ -3,6 +3,8 @@ namespace OxidEsales\Eshop\Core\Event;
 
 class PriceAlarmCreated extends AbstractEvent
 {
+    const NAME = 'PriceAlarmCreated';
+
     private $params;
     private $priceAlarm;
     public function __construct($parameters, $priceAlarm)

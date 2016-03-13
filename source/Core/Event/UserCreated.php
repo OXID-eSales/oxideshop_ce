@@ -3,6 +3,8 @@ namespace OxidEsales\Eshop\Core\Event;
 
 class UserCreated extends AbstractEvent
 {
+    const NAME = 'UserCreated';
+
     private $user;
     private $sendConfirmationEmail;
     public function __construct($user, $sendConfirmationEmail)

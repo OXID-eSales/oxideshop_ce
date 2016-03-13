@@ -605,7 +605,7 @@ class oxOrder extends oxBase
             DiContainer::getInstance()
                 ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
                 ->dispatch(
-                    'onOrderCompleted',
+                    OrderCompleted::NAME,
                     new OrderCompleted($this, $oUser, $oBasket, $oUserPayment)
                 );
         }

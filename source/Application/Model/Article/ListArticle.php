@@ -180,20 +180,6 @@ class ListArticle extends \oxI18n implements \oxIUrl
     protected $_blIsRangePrice = null;
 
     /**
-     * Array containing references to already loaded parent articles, in order for variant to skip parent data loading
-     *
-     * @var array
-     */
-    static protected $_aLoadedParents;
-
-    /**
-     * Cached select lists array
-     *
-     * @var array
-     */
-    static protected $_aSelList;
-
-    /**
      * Select lists for tpl
      *
      * @var array
@@ -316,27 +302,6 @@ class ListArticle extends \oxI18n implements \oxIUrl
     protected $_dAmountPrice = null;
 
     /**
-     * Articles manufacturer ids cache
-     *
-     * @var array
-     */
-    protected static $_aArticleManufacturers = array();
-
-    /**
-     * Articles vendor ids cache
-     *
-     * @var array
-     */
-    protected static $_aArticleVendors = array();
-
-    /**
-     * Articles category ids cache
-     *
-     * @var array
-     */
-    protected static $_aArticleCats = array();
-
-    /**
      * Do not copy certain parent fields to variant
      *
      * @var array
@@ -376,27 +341,6 @@ class ListArticle extends \oxI18n implements \oxIUrl
      * @var array
      */
     protected $_aVariantSelections = array();
-
-    /**
-     * Array of product selections
-     *
-     * @var array
-     */
-    protected static $_aSelections = array();
-
-    /**
-     * Category instance cache
-     *
-     * @var array
-     */
-    protected static $_aCategoryCache = null;
-
-    /**
-     * stores if are stored any amount price
-     *
-     * @var bool
-     */
-    protected static $_blHasAmountPrice = null;
 
     /**
      * stores downloadable file list
@@ -1283,24 +1227,15 @@ class ListArticle extends \oxI18n implements \oxIUrl
     /**
      * Get parent article
      *
-     * @return oxArticle
+     * @return ListArticle
      */
     public function getParentArticle()
     {
         if (($sParentId = $this->oxarticles__oxparentid->value)) {
-            $sIndex = $sParentId . "_" . $this->getLanguage();
-            if (!isset(self::$_aLoadedParents[$sIndex])) {
-                self::$_aLoadedParents[$sIndex] = oxNew('oxArticle');
-                self::$_aLoadedParents[$sIndex]->_blLoadPrice = false;
-                self::$_aLoadedParents[$sIndex]->_blLoadVariants = false;
+            $parent = new ListArticle();
+            $parent->loadInLang($this->getLanguage(), $sParentId);
 
-                if (!self::$_aLoadedParents[$sIndex]->loadInLang($this->getLanguage(), $sParentId)) {
-                    //return false in case parent product failed to load
-                    self::$_aLoadedParents[$sIndex] = false;
-                }
-            }
-
-            return self::$_aLoadedParents[$sIndex];
+            return $parent;
         }
     }
 
@@ -1339,9 +1274,6 @@ class ListArticle extends \oxI18n implements \oxIUrl
     {
         $variants = array();
         if (($articleId = $this->getId())) {
-            //do not load me as a parent later
-            self::$_aLoadedParents[$articleId . "_" . $this->getLanguage()] = $this;
-
             $config = $this->getConfig();
 
             if (!$this->_blLoadVariants ||
@@ -2156,5 +2088,46 @@ class ListArticle extends \oxI18n implements \oxIUrl
     protected function updateVariantsBaseObject($baseObject, $forceCoreTableUsage = null)
     {
         $baseObject->setLanguage($this->getLanguage());
+    }
+
+
+    /**
+     * Returns article icon picture url. If no index specified, will
+     * return main icon url.
+     *
+     * @param int $iIndex picture index
+     *
+     * @return string
+     */
+    public function getIconUrl($iIndex = 0)
+    {
+        $sImgName = false;
+        $sDirname = "product/1/";
+        if ($iIndex && !$this->_isFieldEmpty("oxarticles__oxpic{$iIndex}")) {
+            $sImgName = basename($this->{"oxarticles__oxpic$iIndex"}->value);
+            $sDirname = "product/{$iIndex}/";
+        } elseif (!$this->_isFieldEmpty("oxarticles__oxicon")) {
+            $sImgName = basename($this->oxarticles__oxicon->value);
+            $sDirname = "product/icon/";
+        } elseif (!$this->_isFieldEmpty("oxarticles__oxpic1")) {
+            $sImgName = basename($this->oxarticles__oxpic1->value);
+        }
+
+        $sSize = $this->getConfig()->getConfigParam('sIconsize');
+
+        $sIconUrl = \oxRegistry::get("oxPictureHandler")->getProductPicUrl($sDirname, $sImgName, $sSize, $iIndex);
+
+        return $sIconUrl;
+    }
+
+
+    /**
+     * Returns amount of variants article has
+     *
+     * @return mixed
+     */
+    public function getVariantsCount()
+    {
+        return $this->oxarticles__oxvarcount->value;
     }
 }

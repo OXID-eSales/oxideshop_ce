@@ -967,12 +967,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/devbox123/testing_library.git",
-                "reference": "fa8f251827dac0615ab05bf4605d75d545dfd66d"
+                "reference": "57697daab6b155aaa5d391ddd61236d4a318a1ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devbox123/testing_library/zipball/fa8f251827dac0615ab05bf4605d75d545dfd66d",
-                "reference": "fa8f251827dac0615ab05bf4605d75d545dfd66d",
+                "url": "https://api.github.com/repos/devbox123/testing_library/zipball/57697daab6b155aaa5d391ddd61236d4a318a1ff",
+                "reference": "57697daab6b155aaa5d391ddd61236d4a318a1ff",
                 "shasum": ""
             },
             "require": {
@@ -1037,7 +1037,7 @@
             "support": {
                 "source": "https://github.com/devbox123/testing_library/tree/master"
             },
-            "time": "2016-03-05 21:59:59"
+            "time": "2016-03-06 16:17:00"
         },
         {
             "name": "pdepend/pdepend",
@@ -2367,7 +2367,7 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",

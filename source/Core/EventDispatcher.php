@@ -2,12 +2,20 @@
 namespace OxidEsales\Eshop\Core;
 
 use OxidEsales\Eshop\Core\Event\AbstractEvent;
+use OxidEsales\Eshop\Core\Event\ArticleListener;
+use OxidEsales\Eshop\Core\Event\ArticleSaved;
 use OxidEsales\Eshop\Core\Event\MailerListener;
+use OxidEsales\Eshop\Core\Event\NewsletterSubscribed;
+use OxidEsales\Eshop\Core\Event\OrderCompleted;
+use OxidEsales\Eshop\Core\Event\OrderSend;
+use OxidEsales\Eshop\Core\Event\PriceAlarmCreated;
+use OxidEsales\Eshop\Core\Event\UserCreated;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 
 class EventDispatcher
 {
     const EVENTLISTENER_SENDMAIL = 'core.mailer';
+    const EVENTLISTENER_ARTICLE = 'core.article';
 
     private $dispatcher;
 
@@ -19,8 +27,10 @@ class EventDispatcher
             DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER)
         );
 
+        $articleListener = new ArticleListener();
+
         $dispatcher->addListener(
-            static::EVENTLISTENER_SENDMAIL,
+            OrderCompleted::NAME,
             array(
                 $mailerListener,
                 'onOrderCompleted'
@@ -28,7 +38,7 @@ class EventDispatcher
         );
 
         $dispatcher->addListener(
-            static::EVENTLISTENER_SENDMAIL,
+            PriceAlarmCreated::NAME,
             array(
                 $mailerListener,
                 'onPriceAlarmCreated'
@@ -36,7 +46,7 @@ class EventDispatcher
         );
 
         $dispatcher->addListener(
-            static::EVENTLISTENER_SENDMAIL,
+            OrderSend::NAME,
             array(
                 $mailerListener,
                 'onOrderSend'
@@ -44,7 +54,7 @@ class EventDispatcher
         );
 
         $dispatcher->addListener(
-            static::EVENTLISTENER_SENDMAIL,
+            NewsletterSubscribed::NAME,
             array(
                 $mailerListener,
                 'onNewsletterSubscribed'
@@ -52,10 +62,18 @@ class EventDispatcher
         );
 
         $dispatcher->addListener(
-            static::EVENTLISTENER_SENDMAIL,
+            UserCreated::NAME,
             array(
                 $mailerListener,
                 'onUserCreated'
+            )
+        );
+
+        $dispatcher->addListener(
+            ArticleSaved::NAME,
+            array(
+                $articleListener,
+                'onArticleSaved'
             )
         );
     }

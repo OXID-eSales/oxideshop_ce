@@ -1120,7 +1120,7 @@ class oxUser extends oxBase
                         DiContainer::getInstance()
                             ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
                             ->dispatch(
-                                'onNewsletterSubscribed',
+                                NewsletterSubscribed::NAME,
                                 new NewsletterSubscribed($this)
                             );
                     }

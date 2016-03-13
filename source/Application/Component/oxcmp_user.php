@@ -535,7 +535,7 @@ class oxcmp_user extends oxView
             DiContainer::getInstance()
                 ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
                 ->dispatch(
-                    'onUserCreated',
+                    UserCreated::NAME,
                     new UserCreated($oUser, $blActiveLogin)
                 );
         }

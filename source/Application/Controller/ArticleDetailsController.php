@@ -1161,7 +1161,7 @@ class ArticleDetailsController extends \oxUBase
         DiContainer::getInstance()
             ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
             ->dispatch(
-                'onOrderCompleted',
+                PriceAlarmCreated::NAME,
                 new PriceAlarmCreated($parameters, $priceAlarm)
             );
     }

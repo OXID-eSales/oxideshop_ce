@@ -182,7 +182,7 @@ class Order_Main extends oxAdminDetails
                 DiContainer::getInstance()
                     ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
                     ->dispatch(
-                        'onOrderCompleted',
+                        OrderSend::NAME,
                         new OrderSend($oOrder)
                     );
             }

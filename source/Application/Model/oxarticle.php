@@ -21,6 +21,8 @@
  */
 
 use OxidEsales\Eshop\Application\Model\Contract\ArticleInterface;
+use OxidEsales\Eshop\Core\DiContainer;
+use OxidEsales\Eshop\Core\Event\ArticleSaved;
 
 // defining supported link types
 define('OXARTICLE_LINKTYPE_CATEGORY', 0);
@@ -2197,6 +2199,13 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
             // saving long description
             $this->_saveArtLongDesc();
         }
+
+        DiContainer::getInstance()
+            ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
+            ->dispatch(
+                ArticleSaved::NAME,
+                new ArticleSaved($this->getId())
+            );
 
         return $blRet;
     }

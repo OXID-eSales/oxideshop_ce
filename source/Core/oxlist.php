@@ -24,7 +24,7 @@
  * List manager.
  * Collects list data (eg. from DB), performs list changes updating (to DB), etc.
  */
-class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
+class oxList extends oxSuperCfg implements IteratorAggregate, ArrayAccess, Countable
 {
 
     /**
@@ -55,6 +55,12 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      * @var boolean $_blValid
      */
     private $_blValid = true;
+
+
+    public function getIterator()
+    {
+        return new ArrayIterator($this->_aArray);
+    }
 
     /**
      * -----------------------------------------------------------------------------------------------------
@@ -118,7 +124,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
                 $this->_aArray[] = & $oBase;
             }
         }
-
     }
 
     /**
@@ -128,7 +133,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      */
     public function offsetUnset($offset)
     {
-        if (strcmp($offset, $this->key()) === 0) {
+        if (strcmp($offset, key($this)) === 0) {
             // #0002184: active element removed, next element will be prev / first
             $this->_blRemovedActive = true;
         }
@@ -144,35 +149,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
     public function arrayKeys()
     {
         return array_keys($this->_aArray);
-    }
-
-    /**
-     * rewind for SPL
-     */
-    public function rewind()
-    {
-        $this->_blRemovedActive = false;
-        $this->_blValid = (false !== reset($this->_aArray));
-    }
-
-    /**
-     * current for SPL
-     *
-     * @return null;
-     */
-    public function current()
-    {
-        return current($this->_aArray);
-    }
-
-    /**
-     * key for SPL
-     *
-     * @return mixed
-     */
-    public function key()
-    {
-        return key($this->_aArray);
     }
 
     /**
@@ -193,30 +169,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * next for SPL
-     */
-    public function next()
-    {
-        if ($this->_blRemovedActive === true && current($this->_aArray)) {
-            $oVar = $this->prev();
-        } else {
-            $oVar = next($this->_aArray);
-        }
-
-        $this->_blValid = (false !== $oVar);
-    }
-
-    /**
-     * valid for SPL
-     *
-     * @return boolean
-     */
-    public function valid()
-    {
-        return $this->_blValid;
-    }
-
-    /**
      * count for SPL
      *
      * @return integer
@@ -231,11 +183,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      */
     public function clear()
     {
-        /*
-        foreach ( $this->_aArray as $key => $sValue) {
-            unset( $this->_aArray[$key]);
-        }
-        reset( $this->_aArray);*/
         $this->_aArray = array();
     }
 

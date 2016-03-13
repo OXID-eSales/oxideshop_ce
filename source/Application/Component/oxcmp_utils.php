@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Action;
 
 /**
  * Transparent shop utilities class.
@@ -64,9 +65,8 @@ class oxcmp_utils extends oxView
             $oProduct = oxNew('oxArticle');
             $oProduct->load($sId);
         } elseif ($myConfig->getConfigParam('bl_perfLoadAktion')) {
-            $oArtList = oxNew('oxArticleList');
-            $oArtList->loadActionArticles('OXAFFILIATE');
-            $oProduct = $oArtList->current();
+            $list = (new Action())->getById('OXAFFILIATE');
+            $oProduct = current($list);
         }
 
         if ($oProduct) {

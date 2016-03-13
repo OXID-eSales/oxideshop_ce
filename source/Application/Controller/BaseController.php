@@ -28,6 +28,8 @@ use oxCategory;
 use oxCategoryList;
 use oxContent;
 use oxDb;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Action;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\TopFive;
 use oxManufacturer;
 use oxManufacturerList;
 use oxPrice;
@@ -2343,10 +2345,9 @@ class BaseController extends \oxView
                 $config = $this->getConfig();
                 if ($config->getConfigParam('bl_perfLoadAktion')) {
                     // top 5 articles
-                    $artList = oxNew('oxArticleList');
-                    $artList->loadTop5Articles($count);
-                    if ($artList->count()) {
-                        $this->_aTop5ArticleList = $artList;
+                    $list = (new TopFive())->getAll();
+                    if ($list) {
+                        $this->_aTop5ArticleList = $list;
                     }
                 }
             }
@@ -2363,20 +2364,7 @@ class BaseController extends \oxView
      */
     public function getBargainArticleList()
     {
-        if ($this->_blBargainAction) {
-            if ($this->_aBargainArticleList === null) {
-                $this->_aBargainArticleList = array();
-                if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
-                    $articleList = oxNew('oxArticleList');
-                    $articleList->loadActionArticles('OXBARGAIN');
-                    if ($articleList->count()) {
-                        $this->_aBargainArticleList = $articleList;
-                    }
-                }
-            }
-        }
-
-        return $this->_aBargainArticleList;
+        return (new Action())->getById('OXBARGAIN');
     }
 
     /**

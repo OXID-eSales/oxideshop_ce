@@ -19,6 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Accessoires;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\CrossSelling;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\History;
 
 /**
  * Article detailed information widget.
@@ -503,18 +506,12 @@ class oxwArticleDetails extends oxWidget
      */
     public function getLastProducts($iCnt = 4)
     {
-        if ($this->_aLastProducts === null) {
-            //last seen products for #768CA
-            $oProduct = $this->getProduct();
-            $sParentIdField = 'oxarticles__oxparentid';
-            $sArtId = $oProduct->$sParentIdField->value ? $oProduct->$sParentIdField->value : $oProduct->getId();
+        $oProduct = $this->getProduct();
+        $sParentIdField = 'oxarticles__oxparentid';
+        $sArtId = $oProduct->$sParentIdField->value ? $oProduct->$sParentIdField->value : $oProduct->getId();
 
-            $oHistoryArtList = oxNew('oxArticleList');
-            $oHistoryArtList->loadHistoryArticles($sArtId, $iCnt);
-            $this->_aLastProducts = $oHistoryArtList;
-        }
-
-        return $this->_aLastProducts;
+        $oHistoryArtList = new History();
+        return $oHistoryArtList->getById($sArtId);
     }
 
     /**
@@ -658,14 +655,8 @@ class oxwArticleDetails extends oxWidget
      */
     public function getCrossSelling()
     {
-        if ($this->_oCrossSelling === null) {
-            $this->_oCrossSelling = false;
-            if ($oProduct = $this->getProduct()) {
-                $this->_oCrossSelling = $oProduct->getCrossSelling();
-            }
-        }
-
-        return $this->_oCrossSelling;
+        $oProduct = $this->getProduct();
+        return (new CrossSelling())->getById($oProduct->getId());
     }
 
     /**
@@ -710,14 +701,8 @@ class oxwArticleDetails extends oxWidget
      */
     public function getAccessoires()
     {
-        if ($this->_oAccessoires === null) {
-            $this->_oAccessoires = false;
-            if ($oProduct = $this->getProduct()) {
-                $this->_oAccessoires = $oProduct->getAccessoires();
-            }
-        }
-
-        return $this->_oAccessoires;
+        $oProduct = $this->getProduct();
+        return (new Accessoires())->getById($oProduct->getId());
     }
 
     /**

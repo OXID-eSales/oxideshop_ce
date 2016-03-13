@@ -19,6 +19,8 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Action;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\TopFive;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\Registry;
 
@@ -216,12 +218,12 @@ class oxRssFeed extends oxSuperCfg
     /**
      * _getArticleItems create channel items from article list
      *
-     * @param oxArticleList $oList article list
+     * @param oxArticle[] $oList article list
      *
      * @access protected
      * @return array
      */
-    protected function _getArticleItems(oxArticleList $oList)
+    protected function _getArticleItems($oList)
     {
         $myUtilsUrl = oxRegistry::get("oxUtilsUrl");
         $aItems = array();
@@ -408,15 +410,14 @@ class oxRssFeed extends oxSuperCfg
             return;
         }
 
-        $oArtList = oxNew('oxArticleList');
-        $oArtList->loadTop5Articles($this->getConfig()->getConfigParam('iRssItemsCount'));
+        $list = (new TopFive())->getAll();
 
         $oLang = oxRegistry::getLang();
         $this->_loadData(
             self::RSS_TOPSHOP,
             $this->getTopInShopTitle(),
             $oLang->translateString('TOP_SHOP_PRODUCTS', $oLang->getBaseLanguage()),
-            $this->_getArticleItems($oArtList),
+            $this->_getArticleItems($list),
             $this->getTopInShopUrl()
         );
     }
@@ -922,15 +923,12 @@ class oxRssFeed extends oxSuperCfg
             return;
         }
 
-        $oArtList = oxNew('oxArticleList');
-        $oArtList->loadActionArticles('OXBARGAIN', $this->getConfig()->getConfigParam('iRssItemsCount'));
-
         $oLang = oxRegistry::getLang();
         $this->_loadData(
             self::RSS_BARGAIN,
             $this->getBargainTitle(),
             $oLang->translateString('BARGAIN_PRODUCTS', $oLang->getBaseLanguage()),
-            $this->_getArticleItems($oArtList),
+            $this->_getArticleItems((new Action())->getById('OXBARGAIN')),
             $this->getBargainUrl()
         );
     }

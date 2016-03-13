@@ -453,8 +453,7 @@ class oxUser extends oxBase
             // in case none is set - setting first one
             if (!$oSelectedAddress) {
                 if (!$sAddressId || $sAddressId >= 0) {
-                    $oAddresses->rewind();
-                    $oAddress = $oAddresses->current();
+                    $oAddress = reset($oAddresses);
                 } else {
                     $aAddresses = $oAddresses->getArray();
                     $oAddress = array_pop($aAddresses);

@@ -133,9 +133,8 @@ class oxRecommList extends oxBase implements oxIUrl
         $oArtList = oxNew('oxArticleList');
         $oArtList->setSqlLimit(0, 1);
         $oArtList->loadRecommArticles($this->getId(), $this->_sArticlesFilter);
-        $oArtList->rewind();
 
-        return $oArtList->current();
+        return reset($oArtList);
     }
 
     /**
@@ -303,8 +302,7 @@ class oxRecommList extends oxBase implements oxIUrl
             $oArtList->loadRecommArticles($oRecomm->getId(), $sArticlesFilter);
 
             if (count($oArtList) == 1) {
-                $oArtList->rewind();
-                $oArticle = $oArtList->current();
+                $oArticle = reset($oArtList);
                 $sId = $oArticle->getId();
                 $aPrevIds[$sId] = $sId;
                 unset($aIds[$sId]);

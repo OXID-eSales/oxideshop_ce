@@ -23,6 +23,7 @@
 namespace OxidEsales\Eshop\Application\Controller;
 
 use oxField;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Action;
 use oxRegistry;
 
 /**
@@ -229,19 +230,7 @@ class NewsletterController extends \oxUBase
      */
     public function getTopStartActionArticles()
     {
-        if ($this->_oActionArticles === null) {
-            $this->_oActionArticles = false;
-            if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
-                $oArtList = oxNew('oxArticleList');
-                $oArtList->loadActionArticles('OXTOPSTART');
-                if ($oArtList->count()) {
-                    $this->_oTopArticle = $oArtList->current();
-                    $this->_oActionArticles = $oArtList;
-                }
-            }
-        }
-
-        return $this->_oActionArticles;
+        return (new Action())->getById('OXTOPSTART');
     }
 
     /**

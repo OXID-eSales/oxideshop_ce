@@ -1295,43 +1295,6 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     }
 
     /**
-     * Loads and returns array with cross selling information.
-     *
-     * @return array
-     */
-    public function getCrossSelling()
-    {
-        $oCrosslist = oxNew("oxArticleList");
-        $oCrosslist->loadArticleCrossSell($this->oxarticles__oxid->value);
-        if ($oCrosslist->count()) {
-            return $oCrosslist;
-        }
-    }
-
-    /**
-     * Loads and returns array with accessories information.
-     *
-     * @return array
-     */
-    public function getAccessoires()
-    {
-        $myConfig = $this->getConfig();
-
-        // Performance
-        if (!$myConfig->getConfigParam('bl_perfLoadAccessoires')) {
-            return;
-        }
-
-        $oAcclist = oxNew("oxArticleList");
-        $oAcclist->setSqlLimit(0, $myConfig->getConfigParam('iNrofCrossellArticles'));
-        $oAcclist->loadArticleAccessoires($this->oxarticles__oxid->value);
-
-        if ($oAcclist->count()) {
-            return $oAcclist;
-        }
-    }
-
-    /**
      * Returns a list of similar products.
      *
      * @return array
@@ -3429,7 +3392,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
                 //if this is multidimensional variants, make additional processing
                 if ($config->getConfigParam('blUseMultidimensionVariants')) {
                     $oMdVariants = oxNew("oxVariantHandler");
-                    $this->_blHasMdVariants = $oMdVariants->isMdVariant($variants->current());
+                    $this->_blHasMdVariants = $oMdVariants->isMdVariant(current($variants));
                 }
                 stopProfile("selectVariants");
             }

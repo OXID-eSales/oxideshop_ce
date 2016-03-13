@@ -120,7 +120,7 @@ class oxDeliverySetList extends oxList
             $this->_sCountryId = $sCountryId;
         }
 
-        $this->rewind();
+        reset($this->_aArray);
 
         return $this;
     }

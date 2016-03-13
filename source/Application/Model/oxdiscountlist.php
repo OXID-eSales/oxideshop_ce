@@ -81,7 +81,7 @@ class oxDiscountList extends oxList
         }
 
         // resetting array pointer
-        $this->rewind();
+        reset($this->_aArray);
 
         return $this;
     }

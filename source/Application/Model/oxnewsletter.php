@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Action;
 use OxidEsales\Eshop\Core\DiContainer;
 
 /**
@@ -243,9 +244,7 @@ class oxNewsletter extends oxBase
     protected function _assignProducts($oView, $blPerfLoadAktion = false)
     {
         if ($blPerfLoadAktion) {
-            $oArtList = oxNew('oxArticleList');
-            $oArtList->loadActionArticles('OXNEWSLETTER');
-            $oView->addTplParam('articlelist', $oArtList);
+            $oView->addTplParam('articlelist', (new Action())->getById('OXNEWSLETTER'));
         }
 
         if ($this->_oUser->getId()) {

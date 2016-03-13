@@ -28,6 +28,7 @@ use oxArticleTagList;
 use oxCategory;
 use oxDeliveryList;
 use oxDeliverySetList;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Accessoires;
 use OxidEsales\Eshop\Core\DiContainer;
 use OxidEsales\Eshop\Core\Event\PriceAlarmCreated;
 use oxPaymentList;
@@ -936,14 +937,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getAccessoires()
     {
-        if ($this->_oAccessoires === null) {
-            $this->_oAccessoires = false;
-            if ($article = $this->getProduct()) {
-                $this->_oAccessoires = $article->getAccessoires();
-            }
-        }
-
-        return $this->_oAccessoires;
+        return (new Accessoires())->getById($this->getProduct()->getId());
     }
 
     /**

@@ -283,8 +283,8 @@ class AdminDetails extends \oxAdminView
             }
         } else {
             // no category selected - opening first available
-            $oCatTree->rewind();
-            if ($oCat = $oCatTree->current()) {
+            reset($oCatTree);
+            if ($oCat = current($oCatTree)) {
                 $oCat->selected = 1;
                 $sSelectedCatId = $oCat->getId();
             }

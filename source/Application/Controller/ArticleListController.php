@@ -25,6 +25,7 @@ use oxArticle;
 use oxArticleList;
 use oxCategory;
 use oxField;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Action;
 use oxRegistry;
 
 /**
@@ -996,18 +997,7 @@ class ArticleListController extends \oxUBase
      */
     public function getBargainArticleList()
     {
-        if ($this->_aBargainArticleList === null) {
-            $this->_aBargainArticleList = array();
-            if ($this->getConfig()->getConfigParam('bl_perfLoadAktion') && $this->_isActCategory()) {
-                $articleList = oxNew('oxArticleList');
-                $articleList->loadActionArticles('OXBARGAIN');
-                if ($articleList->count()) {
-                    $this->_aBargainArticleList = $articleList;
-                }
-            }
-        }
-
-        return $this->_aBargainArticleList;
+        return (new Action())->getById('OXBARGAIN');
     }
 
     /**

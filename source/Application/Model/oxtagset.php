@@ -26,7 +26,7 @@
  * Is responsible for saving, returning and adding tags for given article.
  *
  */
-class oxTagSet extends oxSuperCfg implements Iterator
+class oxTagSet extends oxSuperCfg implements IteratorAggregate
 {
 
     /**
@@ -49,6 +49,11 @@ class oxTagSet extends oxSuperCfg implements Iterator
      * @var array
      */
     protected $_aInvalidTags = array();
+
+    public function getIterator()
+    {
+        return new ArrayIterator($this->_aTags);
+    }
 
     /**
      * Sets tag separator
@@ -207,52 +212,6 @@ class oxTagSet extends oxSuperCfg implements Iterator
     public function sortByHitCount()
     {
         uasort($this->_aTags, array($this, '_tagHitsCmp'));
-    }
-
-    /**
-     * Return the current element
-     *
-     * @return oxTag
-     */
-    public function current()
-    {
-        return current($this->_aTags);
-    }
-
-    /**
-     * Return the key of the current element
-     */
-    public function next()
-    {
-        next($this->_aTags);
-    }
-
-    /**
-     * Return the key of the current element
-     *
-     * @return mixed scalar on success, or null on failure.
-     */
-    public function key()
-    {
-        return key($this->_aTags);
-    }
-
-    /**
-     * Checks if current position is valid
-     *
-     * @return boolean Returns true on success or false on failure.
-     */
-    public function valid()
-    {
-        return isset($this->_aTags[$this->key()]);
-    }
-
-    /**
-     * Rewind the Iterator to the first element
-     */
-    public function rewind()
-    {
-        reset($this->_aTags);
     }
 
     /**

@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Controller;
 
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\CrossSelling;
 use OxidEsales\Eshop\Core\DiContainer;
 use oxRegistry;
 
@@ -175,14 +176,8 @@ class SuggestController extends \oxUBase
      */
     public function getCrossSelling()
     {
-        if ($this->_oCrossSelling === null) {
-            $this->_oCrossSelling = false;
-            if ($oProduct = $this->getProduct()) {
-                $this->_oCrossSelling = $oProduct->getCrossSelling();
-            }
-        }
-
-        return $this->_oCrossSelling;
+        $oProduct = $this->getProduct();
+        return (new CrossSelling())->getById($oProduct->getId());
     }
 
     /**

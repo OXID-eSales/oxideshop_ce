@@ -137,7 +137,7 @@ class oxDeliveryList extends oxList
             $this->_sUserId = $sUserId . $sCountryId . $sDelSet;
         }
 
-        $this->rewind();
+        reset($this->_aArray);
 
         return $this;
     }

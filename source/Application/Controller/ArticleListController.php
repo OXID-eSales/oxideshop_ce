@@ -26,6 +26,7 @@ use oxArticleList;
 use oxCategory;
 use oxField;
 use OxidEsales\Eshop\Application\Model\Article\ArticleList\Action;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Category;
 use oxRegistry;
 
 /**
@@ -386,10 +387,10 @@ class ArticleListController extends \oxUBase
 
             $this->_iAllArtCnt = $articleList->loadPriceArticles($priceFrom, $priceTo, $category);
         } else {
-            $sessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
-
-            $activeCategoryId = $category->getId();
-            $this->_iAllArtCnt = $articleList->loadCategoryArticles($activeCategoryId, $sessionFilter);
+            //$sessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
+            $list = new Category();
+            $articleList = $list->getById($category->getId());
+            $this->_iAllArtCnt = $list->getCountById($category->getId());
         }
 
         $this->_iCntPages = ceil($this->_iAllArtCnt / $numberOfCategoryArticles);
@@ -811,16 +812,9 @@ class ArticleListController extends \oxUBase
      */
     public function getArticleList()
     {
-        if ($this->_aArticleList === null) {
             if ($category = $this->getActiveCategory()) {
-                $articleList = $this->_loadArticles($category);
-                if (count($articleList)) {
-                    $this->_aArticleList = $articleList;
-                }
+                return $this->_loadArticles($category);
             }
-        }
-
-        return $this->_aArticleList;
     }
 
     /**
@@ -840,15 +834,8 @@ class ArticleListController extends \oxUBase
      */
     public function getSimilarRecommListIds()
     {
-        if ($this->_aSimilarRecommListIds === null) {
-            $this->_aSimilarRecommListIds = false;
-
-            if ($categoryArticlesList = $this->getArticleList()) {
-                $this->_aSimilarRecommListIds = $categoryArticlesList->arrayKeys();
-            }
-        }
-
-        return $this->_aSimilarRecommListIds;
+        $category = $this->getActiveCategory();
+        return (new Category())->getIds($category->getId());
     }
 
     /**

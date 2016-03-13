@@ -3,7 +3,7 @@ namespace OxidEsales\Eshop\Application\Model\Article\ArticleList;
 
 use OxidEsales\Eshop\Application\Model\Article\ListArticle;
 
-class Abstract
+class AbstractList
 {
     protected function yieldByIds($ids)
     {

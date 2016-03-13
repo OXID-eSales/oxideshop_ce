@@ -3,7 +3,7 @@ namespace OxidEsales\Eshop\Application\Model\Article\ArticleList;
 
 use OxidEsales\Eshop\Application\Model\Article\ListArticle;
 
-class History
+class History extends AbstractList
 {
     public function getById($sArtId)
     {
@@ -26,11 +26,7 @@ class History
         }
 
         $ids = array_values($aHistoryArticles);
-        foreach ($ids as $id) {
-            $article = new ListArticle();
-            $article->load($id);
-            yield $article;
-        }
+        return $this->yieldByIds($ids);
     }
 
     /**

@@ -551,16 +551,12 @@ class oxRssFeed extends oxSuperCfg
             return;
         }
 
-        $oArtList = oxNew('oxArticleList');
-        $oArtList->setCustomSorting('oc.oxtime desc');
-        $oArtList->loadCategoryArticles($oCat->getId(), null, $this->getConfig()->getConfigParam('iRssItemsCount'));
-
         $oLang = oxRegistry::getLang();
         $this->_loadData(
             self::RSS_CATARTS . $sId,
             $this->getCategoryArticlesTitle($oCat),
             sprintf($oLang->translateString('S_CATEGORY_PRODUCTS', $oLang->getBaseLanguage()), $oCat->oxcategories__oxtitle->value),
-            $this->_getArticleItems($oArtList),
+            $this->_getArticleItems((new Category())->getById($oCat->getId())),
             $this->getCategoryArticlesUrl($oCat),
             $oCat->getLink()
         );

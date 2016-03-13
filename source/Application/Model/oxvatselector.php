@@ -109,7 +109,7 @@ class oxVatSelector extends oxSuperCfg
      *
      * @return float | false
      */
-    protected function _getVatForArticleCategory(oxArticle $oArticle)
+    protected function _getVatForArticleCategory($oArticle)
     {
         $oDb = oxDb::getDb();
         $sCatT = getViewName('oxcategories');
@@ -149,7 +149,7 @@ class oxVatSelector extends oxSuperCfg
      *
      * @return double
      */
-    public function getArticleVat(oxArticle $oArticle)
+    public function getArticleVat($oArticle)
     {
         startProfile("_assignPriceInternal");
         // article has its own VAT ?
@@ -192,7 +192,7 @@ class oxVatSelector extends oxSuperCfg
      *
      * @return double | false
      */
-    public function getArticleUserVat(oxArticle $oArticle)
+    public function getArticleUserVat($oArticle)
     {
         if (($oUser = $oArticle->getArticleUser())) {
             return $this->getUserVat($oUser);

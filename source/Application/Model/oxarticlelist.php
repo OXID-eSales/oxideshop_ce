@@ -98,42 +98,6 @@ class oxArticleList extends oxList
     }
 
     /**
-     * Loads articles for the give Category
-     *
-     * @param string $sCatId         Category tree ID
-     * @param array  $aSessionFilter Like array ( catid => array( attrid => value,...))
-     * @param int    $iLimit         Limit
-     *
-     * @return integer total Count of Articles in this Category
-     */
-    public function loadCategoryArticles($sCatId, $aSessionFilter, $iLimit = null)
-    {
-        $sArticleFields = $this->getBaseObject()->getSelectFields();
-
-        $sSelect = $this->_getCategorySelect($sArticleFields, $sCatId, $aSessionFilter);
-
-        // calc count - we can not use count($this) here as we might have paging enabled
-        // #1970C - if any filters are used, we can not use cached category article count
-        $iArticleCount = null;
-        if ($aSessionFilter) {
-            $iArticleCount = oxDb::getDb()->getOne($this->_getCategoryCountSelect($sCatId, $aSessionFilter));
-        }
-
-        if ($iLimit = (int) $iLimit) {
-            $sSelect .= " LIMIT $iLimit";
-        }
-
-        $this->selectString($sSelect);
-
-        if ($iArticleCount !== null) {
-            return $iArticleCount;
-        }
-
-        // this select is FAST so no need to hazzle here with getNrOfArticles()
-        return oxRegistry::get("oxUtilsCount")->getCatArticleCount($sCatId);
-    }
-
-    /**
      * Loads articles for the recommlist
      *
      * @param string $sRecommId       Recommlist ID

@@ -48,8 +48,8 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
      */
     public function testSaveWithDefaultValues()
     {
-        $this->setRequestParameter('editval', array('oxarticles__oxisdownloadable' => 1));
-        $this->setRequestParameter('article_files', array("_testId" => "_testFile"));
+        $this->setRequestParam('editval', array('oxarticles__oxisdownloadable' => 1));
+        $this->setRequestParam('article_files', array("_testId" => "_testFile"));
 
         $fileDefaultProperties = array(
             'oxfiles__oxdownloadexptime' => -1,
@@ -77,8 +77,8 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
             'oxfiles__oxmaxdownloads' => 'oxmaxdownloads',
         );
 
-        $this->setRequestParameter('editval', array('oxarticles__oxisdownloadable' => 1));
-        $this->setRequestParameter('article_files', array( '_testId' => $fileProperties));
+        $this->setRequestParam('editval', array('oxarticles__oxisdownloadable' => 1));
+        $this->setRequestParam('article_files', array( '_testId' => $fileProperties));
 
         $file = $this->getMock('oxFile', array('load', 'assign', 'save'));
         $file->expects($this->once())->method('load')->with('_testId');
@@ -106,8 +106,8 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
      */
     public function testSaveDoNotSaveIfWrongFileName($fileProperties)
     {
-        $this->setRequestParameter("editval", array("oxarticles__oxisdownloadable" => 1));
-        $this->setRequestParameter("article_files", array('_testId' => $fileProperties));
+        $this->setRequestParam("editval", array("oxarticles__oxisdownloadable" => 1));
+        $this->setRequestParam("article_files", array('_testId' => $fileProperties));
 
         $file = $this->getMock('oxFile', array('load', 'save'));
         $file->expects($this->once())->method('load');

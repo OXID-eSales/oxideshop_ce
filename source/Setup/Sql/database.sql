@@ -2397,6 +2397,7 @@ CREATE TABLE `oxtplblocks` (
   `OXID`        char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Block id',
   `OXACTIVE`    tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Is active',
   `OXSHOPID`    char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Shop id (oxshops)',
+  `OXTHEME`     char(128) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Shop theme id',
   `OXTEMPLATE`  char(255) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Template filename (with rel. path), where block is located',
   `OXBLOCKNAME` char(128) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Block name',
   `OXPOS`       int  NOT NULL COMMENT 'Sorting',

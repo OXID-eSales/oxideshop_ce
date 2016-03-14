@@ -19,10 +19,9 @@
  * @version   OXID eShop CE
  */
 ( function( $ ) {
-    oxPayment = {
+    var oxPayment = {
         _create: function(){
             var self = this,
-                options = self.options,
                 el = self.element;
 
             $("dl dt input[type=radio]", el).click(function(){

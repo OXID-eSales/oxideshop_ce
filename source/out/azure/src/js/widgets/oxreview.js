@@ -20,7 +20,7 @@
  */
 ( function( $ ) {
 
-    oxReview = {
+    var oxReview = {
         options: {
             reviewButton : "#writeNewReview",
             reviewForm   : "#writeReview"
@@ -30,7 +30,6 @@
 
             var self    = this;
             var options = self.options;
-            var el      = self.element;
 
             $( options.reviewButton ).click(function(){
                 $( options.reviewForm ).slideToggle();

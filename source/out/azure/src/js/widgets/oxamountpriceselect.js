@@ -27,8 +27,7 @@
         _create: function()
         {
             var self = this,
-                options = self.options,
-                el      = self.element;
+                el   = self.element;
 
             this.arrow             = this.element;
             this.arrowIcon         = this.arrow.children( 'img' );

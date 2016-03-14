@@ -20,7 +20,7 @@
  */
 ( function ( $ ) {
 
-    oxBlockDebug = {
+    var oxBlockDebug = {
 
         _create : function(){
 

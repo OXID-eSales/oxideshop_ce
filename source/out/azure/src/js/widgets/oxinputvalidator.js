@@ -131,20 +131,20 @@
                     }
 
                     if ( $( oInput ).hasClass( oOptions.methodValidateDate ) ) {
-                        oDay   = $( oInput ).parent().children( '.oxDay' );
-                        oMonth = $( oInput ).parent().children( '.oxMonth' );
-                        oYear  = $( oInput ).parent().children( '.oxYear' );
+                        var oDay   = $( oInput ).parent().children( '.oxDay' );
+                        var oMonth = $( oInput ).parent().children( '.oxMonth' );
+                        var oYear  = $( oInput ).parent().children( '.oxYear' );
                         
                         if ( !( oDay.val() && oMonth.val() && oYear.val() ) && !( !oDay.val() && !oMonth.val() && !oYear.val() ) ) {
                             return oOptions.errorMessageNotEmpty;
                         } else if ( oDay.val() && oMonth.val() && oYear.val() ) {
-                            RE = /^\d+$/;
-                            blDayOnlyDigits  = RE.test( oDay.val() );
-                            blYearOnlyDigits = RE.test( oYear.val() );
+                            var RE = /^\d+$/;
+                            var blDayOnlyDigits  = RE.test( oDay.val() );
+                            var blYearOnlyDigits = RE.test( oYear.val() );
                             if ( !blDayOnlyDigits || !blYearOnlyDigits ) {
                                 return oOptions.errorMessageIncorrectDate;
                             } else {
-                                iMonthDays = new Date((new Date(oYear.val(), oMonth.val(), 1))-1).getDate();
+                                var iMonthDays = new Date((new Date(oYear.val(), oMonth.val(), 1))-1).getDate();
                                 
                                 if ( oDay.val() <= 0 || oYear.val() <= 0 || oDay.val() > iMonthDays ) {
                                     return oOptions.errorMessageIncorrectDate;
@@ -177,7 +177,7 @@
                 var self = this;
                 var oOptions = this.options;
 
-                $( "." + oOptions.methodValidate, oForm).each(    function(index) {
+                $( "." + oOptions.methodValidate, oForm).each( function() {
 
                     if ( $( this ).is(oOptions.visible) ) {
 
@@ -206,7 +206,7 @@
                 var blIsValid = true;
                 var self = this;
                 var oOptions = this.options;
-                $("." + oOptions.methodValidate + ":not(:focus)", oFieldSet).each( function(index) {
+                $("." + oOptions.methodValidate + ":not(:focus)", oFieldSet).each( function() {
 
                     if ( $( this ).is(oOptions.visible) ) {
                         var tmpblIsValid = self.inputValidation( this, blCanSetDefaultState );
@@ -297,15 +297,15 @@
              */
             setDefaultState: function ( oObject )
             {
-                var oObject = $( oObject ).parent();
+                oObject = $( oObject ).parent();
 
                 oObject.removeClass(this.options.classInValid);
                 oObject.removeClass(this.options.classValid);
                 oObject.children(this.options.errorParagraph).hide();
 
-                oOptions = this.options;
+                var oOptions = this.options;
 
-                $( this.options.span, oObject.children( this.options.errorParagraph ) ).each( function(index) {
+                $( this.options.span, oObject.children( this.options.errorParagraph ) ).each( function() {
                     oObject.children( oOptions.errorParagraph ).children( oOptions.span ).hide();
                 });
 
@@ -319,7 +319,7 @@
              */
             getLength: function(oObject){
 
-                oOptions = this.options;
+                var oOptions = this.options;
 
                 return $( oOptions.idPasswordLength , oObject).val();
             },

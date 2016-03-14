@@ -20,7 +20,7 @@
  */
 ( function( $ ) {
 
-    oxCenterElementOnHover = {
+    var oxCenterElementOnHover = {
 
         _create: function(){
 

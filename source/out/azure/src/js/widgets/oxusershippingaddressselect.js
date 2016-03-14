@@ -22,11 +22,10 @@
     /**
      * User shipping address selector
      */
-    oxUserShippingAddressSelect = {
+    var oxUserShippingAddressSelect = {
         _create: function()
         {
             var self = this,
-                options = self.options,
                 el = self.element;
 
             el.change(function() {

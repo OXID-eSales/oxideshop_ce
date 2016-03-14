@@ -20,13 +20,12 @@
  */
 ( function( $ ) {
 
-    oxAGBCheck = {
+    var oxAGBCheck = {
 
         _create: function(){
 
             var self = this,
-                options = self.options,
-                el      = self.element;
+                el   = self.element;
 
              el.closest('form').submit(function() {
                 if( el.prop('checked') ){

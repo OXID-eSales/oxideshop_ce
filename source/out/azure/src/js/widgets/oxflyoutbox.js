@@ -20,19 +20,17 @@
  */
 ( function( $ ) {
 
-    oxFlyOutBox = {
+    var oxFlyOutBox = {
 
         _create: function(){
 
             var self = this,
-                options = self.options,
-                el      = self.element;
+                el   = self.element;
 
 
 
             $(document).click( function( e ){
-                if( $(e.target).parents("div").hasClass("topPopList") ){
-                }else{
+                if( !$(e.target).parents("div").hasClass("topPopList") ){
                     $("div.flyoutBox").hide();
                 }
             });

@@ -27,8 +27,7 @@
         _create: function()
         {
             var self = this,
-                options = self.options,
-                el      = self.element;
+                el   = self.element;
 
             var targetWidth  = $("span", el).width();
             var linkboxWidth = self.getLinkboxWidth( targetWidth, $("span", el));

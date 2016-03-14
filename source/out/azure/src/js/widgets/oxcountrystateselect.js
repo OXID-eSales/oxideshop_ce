@@ -77,7 +77,7 @@
          */
         getStateSelect: function(oCountrySelect)
         {
-            oOptions = this.options;
+            var oOptions = this.options;
             return     $( oCountrySelect ).parent(oOptions.listItem).next(oOptions.listItem).children(oOptions.span).children(oOptions.select);
         },
 
@@ -88,7 +88,7 @@
          */
         getStateSelectSpan: function(oStateSelect)
         {
-            oOptions = this.options;
+            var oOptions = this.options;
             return     $( oStateSelect ).parent(oOptions.span);
         },
 

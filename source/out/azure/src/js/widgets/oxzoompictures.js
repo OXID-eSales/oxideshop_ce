@@ -20,7 +20,7 @@
  */
 ( function( $ ) {
 
-    oxZoomPictures = {
+    var oxZoomPictures = {
 
         options: {
             sMorePicsContainerId     : "#morePicsContainer",
@@ -54,10 +54,9 @@
          */
         _beforeShow: function() {
             var self    = this,
-                options = self.options,
-                el      = self.element;
+                options = self.options;
 
-            iIndex = $(options.sMorePicsContainerId + " li a.selected").parent().index();
+            var iIndex = $(options.sMorePicsContainerId + " li a.selected").parent().index();
             $(options.sMoreZoomPicsContainerId).oxMorePictures({iDefaultIndex: iIndex});
         }
     };

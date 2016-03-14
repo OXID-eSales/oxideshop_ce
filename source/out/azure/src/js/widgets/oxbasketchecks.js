@@ -20,13 +20,12 @@
  */
 ( function( $ ) {
 
-    oxBasketChecks = {
+    var oxBasketChecks = {
 
         _create: function(){
 
             var self = this,
-                options = self.options,
-                el      = self.element;
+                el   = self.element;
 
             el.click(function(){
                 if(el.is('input')){

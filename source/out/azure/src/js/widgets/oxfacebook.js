@@ -21,7 +21,7 @@
     /*
      * Facebook related scripts
      */
-    oxFacebook = {
+    var oxFacebook = {
 
         /*
          * FB widgets/buttons array
@@ -37,7 +37,7 @@
             var self = this;
             self.key = null;
 
-            for ( key in this.buttons ) {
+            for ( var key in this.buttons ) {
                 if ( this.buttons[key].script ) {
                     self.key = key;
                     $.getScript( this.buttons[key].script, function () {

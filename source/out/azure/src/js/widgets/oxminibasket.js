@@ -18,15 +18,17 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function( $ ) {
+( function( $, window ) {
 
+    var oxAjax = window.oxAjax;
+    var WidgetsHandler = window.WidgetsHandler;
+        
     var oxMiniBasket = {
 
         _create: function(){
 
             var self = this,
-                options = self.options,
-                el      = self.element;
+                el   = self.element;
 
             var timeout;
 
@@ -135,4 +137,4 @@
 
     $.widget( "ui.oxMiniBasket", oxMiniBasket );
 
-} )( jQuery );
+} )( jQuery, window );

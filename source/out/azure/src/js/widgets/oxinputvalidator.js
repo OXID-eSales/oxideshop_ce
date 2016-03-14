@@ -18,9 +18,9 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function( $ ) {
+( function( $, window ) {
 
-    oxInputValidator = {
+    var oxInputValidator = {
             options: {
                 classValid                 : "oxValid",
                 classInValid               : "oxInValid",
@@ -379,6 +379,6 @@
      * Form Items validator
      */
     $.widget("ui.oxInputValidator", oxInputValidator );
+    window.oxInputValidator = oxInputValidator;
 
-
-} )( jQuery );
+} )( jQuery, window );

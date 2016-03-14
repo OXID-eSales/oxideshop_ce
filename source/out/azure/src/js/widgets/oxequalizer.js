@@ -18,14 +18,12 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function ( $ ) {
+( function ( $, window ) {
 
     /**
      * Equalize columns
-     *
-     * TODO: This variable is used globally
      */
-    oxEqualizer = {
+    var oxEqualizer = {
 
         /**
          * Gets tallest element value
@@ -60,5 +58,7 @@
             });
         }
     };
+    
+    window.oxEqualizer = oxEqualizer;
 
-})( jQuery );
+})( jQuery, window );

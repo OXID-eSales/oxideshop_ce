@@ -18,9 +18,9 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function( $ ) {
+( function( $, window ) {
 
-    oxInnerLabel = {
+    var oxInnerLabel = {
 
         options: {
                 sDefaultValue  : 'innerLabel',
@@ -67,5 +67,6 @@
     };
 
     $.widget( "ui.oxInnerLabel", oxInnerLabel );
+    window.oxInnerLabel = oxInnerLabel;
 
-} )( jQuery );
+} )( jQuery, window );

@@ -18,9 +18,9 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function( $ ) {
+( function( $, window ) {
 
-    oxRating = {
+    var oxRating = {
         options: {
             reviewButton         : "writeNewReview",
             articleRatingValue   : "productRating",
@@ -117,6 +117,6 @@
      * Rating widget
      */
     $.widget("ui.oxRating", oxRating );
+    window.oxRating = oxRating;
 
-
-} )( jQuery );
+} )( jQuery, window );

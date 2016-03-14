@@ -18,8 +18,12 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function ( $ ) {
+( function ( $, window ) {
 
+    var oxAjax = window.oxAjax;
+    var oxVariantSelections = window.oxVariantSelections;
+    var WidgetsHandler = window.WidgetsHandler;
+    
     var oxArticleVariant = {
 
         /**
@@ -77,7 +81,7 @@
      * Handles variant selection action
      * @returns {boolean}
      */
-    function variantSelectActionHandler( e ) {
+    function variantSelectActionHandler() {
         var obj = $( this );
         // resetting
         if ( obj.parents().hasClass("js-disabled") ) {
@@ -101,7 +105,7 @@
      * Handles variant reset action
      * @returns {boolean}
      */
-    function variantResetActionHandler( e ) {
+    function variantResetActionHandler() {
         resetVariantSelections();
         var form = $("form.js-oxWidgetReload");
         $('input[name=fnc]', form).val("");
@@ -154,4 +158,4 @@
 
     $.widget("ui.oxArticleVariant", oxArticleVariant );
 
-})( jQuery );
+})( jQuery, window );

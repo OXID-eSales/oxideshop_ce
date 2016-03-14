@@ -18,13 +18,13 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-(function ( $ )
+(function ( $, window )
 {
 
     /**
      * Compare list
      */
-    oxCompare = {
+    var oxCompare = {
         options: {
             browsers: {
                 chrome: "chrome",
@@ -170,5 +170,6 @@
      * Compare list widget
      */
     $.widget( "ui.oxCompare", oxCompare );
-
-})( jQuery );
+    window.oxCompare = oxCompare;
+    
+})( jQuery, window );

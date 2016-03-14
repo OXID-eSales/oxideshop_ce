@@ -18,9 +18,9 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function( $ ) {
+( function( $, window ) {
 
-    oxSlider = {
+    var oxSlider = {
             options: {
                 width                : 940,
                 height               : 220,
@@ -250,5 +250,6 @@
     };
 
     $.widget("ui.oxSlider", oxSlider );
+    window.oxSlider = oxSlider;
 
-} )( jQuery );
+} )( jQuery, window );

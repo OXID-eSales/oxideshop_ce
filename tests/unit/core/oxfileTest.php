@@ -69,6 +69,42 @@ class Unit_Core_oxfileTest extends OxidTestCase
         $oFile->download();
     }
 
+    public function testDownloadThrowExceptionWhenAboveDownloadFolder()
+    {
+        $this->setExpectedException('oxException');
+
+        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utils */
+        $utils = $this->getMock('oxUtils');
+        $utils->expects($this->any())->method('setHeader')->will($this->returnValue(true));
+        $utils->expects($this->any())->method('showMessageAndExit')->will($this->returnValue(true));
+        oxRegistry::set('oxUtils', $utils);
+
+        $fileName = '../../../config.inc.php';
+
+        $file = oxNew('oxFile');
+        $file->oxfiles__oxfilename = new oxField($fileName);
+
+        $file->download();
+    }
+
+    public function testDownloadThrowExceptionWhenFileDoesNotExist()
+    {
+        $this->setExpectedException('oxException');
+
+        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utils */
+        $utils = $this->getMock('oxUtils');
+        $utils->expects($this->any())->method('setHeader')->will($this->returnValue(true));
+        $utils->expects($this->any())->method('showMessageAndExit')->will($this->returnValue(true));
+        oxRegistry::set('oxUtils', $utils);
+
+        $fileName = 'some_not_existing_file';
+
+        $file = oxNew('oxFile');
+        $file->oxfiles__oxfilename = new oxField($fileName);
+
+        $file->download();
+    }
+
     /**
      * Test for oxFiles::getStoreLocation()
      */

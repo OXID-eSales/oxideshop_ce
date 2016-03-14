@@ -87,7 +87,12 @@ class Article_Files extends oxAdminDetails
                 $oArticleFile->load($sArticleFileId);
                 $aArticleFileUpdate = $this->_processOptions($aArticleFileUpdate);
                 $oArticleFile->assign($aArticleFileUpdate);
-                $oArticleFile->save();
+
+                if ($oArticleFile->isUnderDownloadFolder()) {
+                    $oArticleFile->save();
+                } else {
+                    oxRegistry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_NOFILE');
+                }
             }
         }
     }

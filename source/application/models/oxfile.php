@@ -93,9 +93,12 @@ class oxFile extends oxBase
     }
 
     /**
-     * Sets oxefile__oxstorehash with file hash and moves file to desired location
+     * Sets oxefile__oxstorehash with file hash.
+     * Moves file to desired location and change its access rights.
      *
      * @param int $sFileIndex File index
+     *
+     * @throws oxException Throws exception if file wasn't moved or if rights wasn't changed.
      */
     public function processFile($sFileIndex)
     {
@@ -117,6 +120,8 @@ class oxFile extends oxBase
      * Checks if given file is valid upload file
      *
      * @param array $aFileInfo File info array
+     *
+     * @throws oxException Throws exception if file wasn't uploaded successfully.
      */
     protected function _checkArticleFile($aFileInfo)
     {
@@ -142,13 +147,13 @@ class oxFile extends oxBase
         $sConfigValue = oxRegistry::getConfig()->getConfigParam('sDownloadsDir');
 
         //Unix full path is set
-        if ($sConfigValue && $sConfigValue[0] == DIR_SEP) {
+        if ($sConfigValue && $sConfigValue[0] == DIRECTORY_SEPARATOR) {
             return $sConfigValue;
         }
 
         //relative path is set
         if ($sConfigValue) {
-            $sPath = getShopBasePath() . DIR_SEP . $sConfigValue;
+            $sPath = getShopBasePath() . DIRECTORY_SEPARATOR . $sConfigValue;
 
             return $sPath;
         }
@@ -169,7 +174,7 @@ class oxFile extends oxBase
     public function getStoreLocation()
     {
         $sPath = $this->_getBaseDownloadDirPath();
-        $sPath .= DIR_SEP . $this->_getFileLocation();
+        $sPath .= DIRECTORY_SEPARATOR . $this->_getFileLocation();
 
         return $sPath;
     }
@@ -211,9 +216,9 @@ class oxFile extends oxBase
 
         if ($this->isUploaded()) {
             $this->_sRelativeFilePath = $this->_getHashedFileDir($sFileHash);
-            $this->_sRelativeFilePath .= DIR_SEP . $sFileHash;
+            $this->_sRelativeFilePath .= DIRECTORY_SEPARATOR . $sFileHash;
         } else {
-            $this->_sRelativeFilePath = DIR_SEP . $this->_sManualUploadDir . DIR_SEP . $sFileName;
+            $this->_sRelativeFilePath = DIRECTORY_SEPARATOR . $this->_sManualUploadDir . DIRECTORY_SEPARATOR . $sFileName;
         }
 
         return $this->_sRelativeFilePath;
@@ -231,7 +236,7 @@ class oxFile extends oxBase
     protected function _getHashedFileDir($sFileHash)
     {
         $sDir = substr($sFileHash, 0, 2);
-        $sAbsDir = $this->_getBaseDownloadDirPath() . DIR_SEP . $sDir;
+        $sAbsDir = $this->_getBaseDownloadDirPath() . DIRECTORY_SEPARATOR . $sDir;
 
         if (!is_dir($sAbsDir)) {
             mkdir($sAbsDir, 0755);
@@ -315,7 +320,7 @@ class oxFile extends oxBase
      * Checks if file is not used for  other objects.
      * If not used, unlink the file.
      *
-     * @return null
+     * @return null|false
      */
     protected function _deleteFile()
     {
@@ -353,7 +358,7 @@ class oxFile extends oxBase
         $sFileName = $this->_getFilenameForUrl();
         $sFileLocations = $this->getStoreLocation();
 
-        if (!$this->exist()) {
+        if (!$this->exist() || !$this->isUnderDownloadFolder()) {
             throw new oxException('EXCEPTION_NOFILE');
         }
 

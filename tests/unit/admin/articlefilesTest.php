@@ -46,8 +46,8 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
      */
     public function testSaveWithDefaultValues()
     {
-        $this->setRequestParameter('editval', array('oxarticles__oxisdownloadable' => 1));
-        $this->setRequestParameter('article_files', array("_testId" => "_testFile"));
+        $this->setRequestParam('editval', array('oxarticles__oxisdownloadable' => 1));
+        $this->setRequestParam('article_files', array("_testId" => "_testFile"));
 
         $fileDefaultProperties = array(
             'oxfiles__oxdownloadexptime' => -1,

@@ -1506,7 +1506,6 @@ class oxConfig extends oxSuperCfg
         $sTemplatePath = $this->getDir($sFile, $this->_sTemplateDir, $blAdmin);
 
         if (!$sTemplatePath) {
-            $sBasePath = getShopBasePath();
             $aModuleTemplates = $this->getConfigParam('aModuleTemplates');
 
             $oModulelist = oxNew('oxmodulelist');
@@ -1514,8 +1513,7 @@ class oxConfig extends oxSuperCfg
             if (is_array($aModuleTemplates) && is_array($aActiveModuleInfo)) {
                 foreach ($aModuleTemplates as $sModuleId => $aTemplates) {
                     if (isset($aTemplates[$sFile]) && isset($aActiveModuleInfo[$sModuleId])) {
-                        $sPath = $aTemplates[$sFile];
-                        $sPath = $sBasePath . 'modules/' . $sPath;
+                        $sPath = $this->getModulesDir() . $aTemplates[$sFile];
                         if (is_file($sPath) && is_readable($sPath)) {
                             $sTemplatePath = $sPath;
                         }

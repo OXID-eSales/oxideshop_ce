@@ -1202,6 +1202,42 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     }
 
     /**
+     * Test if correct template path is returned when the requested template is defined within a module.
+     */
+    public function testGetTemplatePathFromModule()
+    {
+        $requestTemplate = 'test_filename.tpl';
+        $templateFilePath = 'test_path/test_filename.tpl';
+        $modulesRootPrefix = 'root_module_path/';
+        $moduleId = 'moduleId';
+
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile($modulesRootPrefix . $templateFilePath);
+        $modulesRootPath = $vfsStreamWrapper->getRootPath() . $modulesRootPrefix;
+
+        $moduleListStub = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
+        $moduleListStub->method('getActiveModuleInfo')->willReturn([$moduleId => true]);
+        oxTestModules::addModuleObject(oxModuleList::class, $moduleListStub);
+
+        $templates = [
+            $moduleId => [
+                $requestTemplate => $templateFilePath
+            ]
+        ];
+
+        $config = $this->getMock(oxConfig::class, ['getModulesDir']);
+        $config->method('getModulesDir')->willReturn($modulesRootPath);
+
+        $config->init();
+        $config->setConfigParam('aModuleTemplates', $templates);
+
+        $actual = $config->getTemplatePath($requestTemplate, true);
+        $expected = $modulesRootPath . $templateFilePath;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
      * Testing getAbsDynImageDir getter
      */
     public function testGetTranslationsDir()

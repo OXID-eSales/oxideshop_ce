@@ -1238,6 +1238,110 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     }
 
     /**
+     * Test if getTemplatePath will return correct value if module overwrites template by theme
+     */
+    public function testGetModuleTemplateByThemePath()
+    {
+        $overwrittenTemplate = 'overwritenrequest.tpl';
+        $notOverwrittenTemplate = 'notoverwritenrequest.tpl';
+        $templateFilePathDefault = 'somepath/somefilename.tpl';
+        $templateFilePathOverwritten = 'somepathoverwritten/somefilenamebyTheme.tpl';
+        $templateFilePathStandard = 'standard.tpl';
+        $moduleId = 'moduleId';
+        $themeName = 'custom';
+        $possibleThemeName = 'custom';
+
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile($templateFilePathDefault, '');
+        $vfsStreamWrapper->createFile($templateFilePathOverwritten, '');
+        $vfsStreamWrapper->createFile($templateFilePathStandard, '');
+        $virtualDirectoryPath = $vfsStreamWrapper->getRootPath();
+
+        // mock active module list
+        $moduleListMock = $this->getMock('oxmodulelist', array('getActiveModuleInfo'));
+        $moduleListMock->expects($this->any())->method('getActiveModuleInfo')->will($this->returnValue([$moduleId => true]));
+        oxTestModules::addModuleObject('oxmodulelist', $moduleListMock);
+
+        // mock active theme
+        $themeMock = $this->getMock('oxTheme', array('getActiveThemeId'));
+        $themeMock->expects($this->any())->method('getActiveThemeId')->will($this->returnValue($themeName));
+        oxTestModules::addModuleObject('oxTheme', $themeMock);
+
+        $moduleTemplates = [
+            $moduleId => [
+                $overwrittenTemplate => $templateFilePathDefault,
+                $notOverwrittenTemplate => $templateFilePathStandard,
+                $possibleThemeName => [
+                    $overwrittenTemplate => $templateFilePathOverwritten,
+                ]
+            ]
+        ];
+
+        $config = $this->getMock('oxConfig', array('getModulesDir'));
+        $config->expects($this->any())->method('getModulesDir')->will($this->returnValue($virtualDirectoryPath));
+
+        $config->init();
+        $config->setConfigParam('aModuleTemplates', $moduleTemplates);
+
+        $realResult = $config->getTemplatePath($overwrittenTemplate, true);
+        $expected = $virtualDirectoryPath . $templateFilePathOverwritten;
+
+        $this->assertEquals($expected, $realResult);
+    }
+
+    /**
+     * Get default module template by not described theme override case
+     */
+    public function testGetModuleTemplateByOtherThemePath()
+    {
+        $overwrittenTemplate = 'overwritenrequest.tpl';
+        $notOverwrittenTemplate = 'notoverwritenrequest.tpl';
+        $templateFilePathDefault = 'somepath/somefilename.tpl';
+        $templateFilePathOverwritten = 'somepathoverwritten/somefilenamebyTheme.tpl';
+        $templateFilePathStandard = 'standard.tpl';
+        $moduleId = 'moduleId';
+        $themeName = 'other';
+        $possibleThemeName = 'custom';
+
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile($templateFilePathDefault, '');
+        $vfsStreamWrapper->createFile($templateFilePathOverwritten, '');
+        $vfsStreamWrapper->createFile($templateFilePathStandard, '');
+        $virtualDirectoryPath = $vfsStreamWrapper->getRootPath();
+
+        // mock active module list
+        $moduleListMock = $this->getMock('oxmodulelist', array('getActiveModuleInfo'));
+        $moduleListMock->expects($this->any())->method('getActiveModuleInfo')->will($this->returnValue([$moduleId => true]));
+        oxTestModules::addModuleObject('oxmodulelist', $moduleListMock);
+
+        // mock active theme
+        $themeMock = $this->getMock('oxTheme', array('getActiveThemeId'));
+        $themeMock->expects($this->any())->method('getActiveThemeId')->will($this->returnValue($themeName));
+        oxTestModules::addModuleObject('oxTheme', $themeMock);
+
+        $moduleTemplates = [
+            $moduleId => [
+                $overwrittenTemplate => $templateFilePathDefault,
+                $notOverwrittenTemplate => $templateFilePathStandard,
+                $possibleThemeName => [
+                    $overwrittenTemplate => $templateFilePathOverwritten,
+                ]
+            ]
+        ];
+
+        $config = $this->getMock('oxConfig', array('getModulesDir'));
+        $config->expects($this->any())->method('getModulesDir')->will($this->returnValue($virtualDirectoryPath));
+
+        $config->init();
+        $config->setConfigParam('aModuleTemplates', $moduleTemplates);
+
+        $realResult = $config->getTemplatePath($overwrittenTemplate, true);
+        $expected = $virtualDirectoryPath . $templateFilePathDefault;
+
+        $this->assertEquals($expected, $realResult);
+    }
+
+    /**
      * Testing getAbsDynImageDir getter
      */
     public function testGetTranslationsDir()

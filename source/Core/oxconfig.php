@@ -1503,26 +1503,39 @@ class oxConfig extends oxSuperCfg
      */
     public function getTemplatePath($sFile, $blAdmin)
     {
-        $sTemplatePath = $this->getDir($sFile, $this->_sTemplateDir, $blAdmin);
+        $finalTemplatePath = $this->getDir($sFile, $this->_sTemplateDir, $blAdmin);
 
-        if (!$sTemplatePath) {
+        if (!$finalTemplatePath) {
             $aModuleTemplates = $this->getConfigParam('aModuleTemplates');
 
             $oModulelist = oxNew('oxmodulelist');
             $aActiveModuleInfo = $oModulelist->getActiveModuleInfo();
             if (is_array($aModuleTemplates) && is_array($aActiveModuleInfo)) {
                 foreach ($aModuleTemplates as $sModuleId => $aTemplates) {
-                    if (isset($aTemplates[$sFile]) && isset($aActiveModuleInfo[$sModuleId])) {
-                        $sPath = $this->getModulesDir() . $aTemplates[$sFile];
-                        if (is_file($sPath) && is_readable($sPath)) {
-                            $sTemplatePath = $sPath;
+
+                    // check if module is active
+                    if (isset($aActiveModuleInfo[$sModuleId])) {
+
+                        $theme = oxNew('oxTheme');
+                        $activeThemeId = $theme->getActiveThemeId();
+
+                        // check if template for specific theme exists, else check default template
+                        $expectedTemplateFile = null;
+                        if (isset($aTemplates[$activeThemeId], $aTemplates[$activeThemeId][$sFile])) {
+                            $expectedTemplateFile = $this->getModulesDir() . $aTemplates[$activeThemeId][$sFile];
+                        } elseif (isset($aTemplates[$sFile])) {
+                            $expectedTemplateFile = $this->getModulesDir() . $aTemplates[$sFile];
+                        }
+
+                        if ($expectedTemplateFile && $this->checkIfReadable($expectedTemplateFile)) {
+                            $finalTemplatePath = $expectedTemplateFile;
                         }
                     }
                 }
             }
         }
 
-        return $sTemplatePath;
+        return $finalTemplatePath;
     }
 
     /**

@@ -83,8 +83,7 @@ class Doctrine extends oxLegacyDb
             'user'     => $config->getConfigParam('dbUser'),
             'password' => $config->getConfigParam('dbPwd'),
             'host'     => $config->getConfigParam('dbHost'),
-            // @todo: check, if it is necessary, to map the ADODbLite driver type into doctrine
-            'driver'   => 'pdo_' . $config->getConfigParam('dbType')
+            'driver'   => $this->mapConnectionParameterDriver($config->getConfigParam('dbType'))
         );
 
         if ($config->getConfigParam('iUtfMode')) {
@@ -94,6 +93,24 @@ class Doctrine extends oxLegacyDb
         }
 
         return $connectionParameters;
+    }
+
+    /**
+     * Map the driver name from the config to the doctrine driver name.
+     *
+     * @param string $configDriver The driver name from the config.
+     *
+     * @return string The doctrine driver name.
+     */
+    private function mapConnectionParameterDriver($configDriver)
+    {
+        $doctrineDriver = $configDriver;
+
+        if ('mysql' == $doctrineDriver) {
+            $doctrineDriver = 'pdo_' . $configDriver;
+        }
+
+        return $doctrineDriver;
     }
 
 }

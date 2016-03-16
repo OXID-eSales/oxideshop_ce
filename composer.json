@@ -15,6 +15,7 @@
         "oxid-esales/flow-theme": "dev-master",
         "oxid-esales/eshop-db-migration-wrapper": "dev-master",
         "oxid-esales/eshop-db-views-regenerator": "dev-master"
+        "doctrine/dbal": "v2.5.4"
     },
     "require-dev": {
         "oxid-esales/testing-library": "dev-master",

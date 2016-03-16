@@ -27,7 +27,8 @@
         }
     },
     "require": {
-        "smarty/smarty": "^2.6.29"
+        "smarty/smarty": "^2.6.29",
+        "doctrine/dbal": "v2.5.4"
     },
     "require-dev": {
         "oxid-esales/testing-library": "dev-master",

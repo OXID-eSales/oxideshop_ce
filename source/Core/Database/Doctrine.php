@@ -64,9 +64,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
      */
     protected function createConnection()
     {
-        $connection = DriverManager::getConnection($this->getConnectionParameters());
-
-        return $connection;
+        return DriverManager::getConnection($this->getConnectionParameters());
     }
 
     /**

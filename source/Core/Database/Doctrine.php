@@ -29,7 +29,7 @@ use oxLegacyDb;
  *
  * @package OxidEsales\Eshop\Core\Database
  */
-class Doctrine extends oxLegacyDb
+class Doctrine extends oxLegacyDb implements DatabaseInterface
 {
 
     /**

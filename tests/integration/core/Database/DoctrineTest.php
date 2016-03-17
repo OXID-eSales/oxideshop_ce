@@ -30,10 +30,78 @@ class DoctrineTest extends UnitTestCase
 {
 
     /**
+     * @var Doctrine The doctrine database we want to test in this class.
+     */
+    protected $database = null;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->database = new Doctrine();
+    }
+
+    /**
      * Test, that the creation of the database connection works.
      */
     public function testCreation()
     {
-        $database = new Doctrine();
+        new Doctrine();
     }
+
+    /**
+     * Test, that the method 'execute' works for insert and delete.
+     */
+    public function testExecuteWithInsertAndDelete()
+    {
+        $this->assureOrderFileIsEmpty();
+
+        $exampleOxId = 'XYZ';
+
+        $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ('$exampleOxId');");
+
+        $this->assertEquals(1, $this->database->affected_rows());
+        $this->assureOrderFileHasOnly($exampleOxId);
+
+        $this->database->execute("DELETE FROM oxorderfiles WHERE OXID = '$exampleOxId';");
+
+        $this->assertEquals(1, $this->database->affected_rows());
+        $this->assureOrderFileIsEmpty();
+    }
+
+    /**
+     * Assure, that the table oxorderfiles is empty.
+     */
+    private function assureOrderFileIsEmpty()
+    {
+        $orderFileIds = $this->fetchOrderFilesOxIds();
+
+        $this->assertEmpty($orderFileIds);
+    }
+
+    /**
+     * Assure, that the table oxorderfiles has only the given oxId.
+     */
+    private function assureOrderFileHasOnly($oxId)
+    {
+        $orderFileIds = $this->fetchOrderFilesOxIds();
+
+        $this->assertNotEmpty($orderFileIds);
+        $this->assertEquals(1, count($orderFileIds));
+        $this->assertArrayHasKey('0', $orderFileIds);
+        $this->assertArrayHasKey('OXID', $orderFileIds[0]);
+
+        $this->assertEquals($oxId, $orderFileIds[0]['OXID']);
+    }
+
+    /**
+     * Fetch the oxIds from the table oxorderfiles.
+     *
+     * @return array The oxIds of the table oxorderfiles.
+     */
+    private function fetchOrderFilesOxIds()
+    {
+        return $this->database->select('SELECT OXID FROM oxorderfiles;')->getAll();
+    }
+
 }

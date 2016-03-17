@@ -1516,8 +1516,7 @@ class oxConfig extends oxSuperCfg
                     // check if module is active
                     if (isset($aActiveModuleInfo[$sModuleId])) {
 
-                        $theme = oxNew('oxTheme');
-                        $activeThemeId = $theme->getActiveThemeId();
+                        $activeThemeId = $this->getActiveThemeId($blAdmin);
 
                         // check if template for specific theme exists, else check default template
                         $expectedTemplateFile = null;
@@ -2334,5 +2333,24 @@ class oxConfig extends oxSuperCfg
         } else {
             return false;
         }
+    }
+
+    /**
+     * Get active theme ID.
+     *
+     * @param bool $isAdmin
+     *
+     * @return string
+     */
+    public function getActiveThemeId($isAdmin = false)
+    {
+        $theme = oxNew('oxTheme');
+        $themeId = $theme->getActiveThemeId();
+
+        if ($isAdmin) {
+            $themeId = 'admin';
+        }
+
+        return $themeId;
     }
 }

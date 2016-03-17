@@ -66,6 +66,32 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                                                        'module2'
                                                     )"
             );
+            oxDb::getDb()->Execute(
+                "insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTHEME,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
+                                                       'test_3_2',
+                                                       '1',
+                                                       '15',
+                                                       'not_active_theme',
+                                                       'filename.tpl',
+                                                       'blockname2',
+                                                       1,
+                                                       'contentfile2_not_active_theme',
+                                                       'module2'
+                                                    )"
+            );
+            oxDb::getDb()->Execute(
+                "insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTHEME,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
+                                                       'test_3_3',
+                                                       '1',
+                                                       '15',
+                                                       'active_theme',
+                                                       'filename.tpl',
+                                                       'blockname2',
+                                                       1,
+                                                       'contentfile2_active_theme',
+                                                       'module2'
+                                                    )"
+            );
             // one non active - to be sure it is not loaded
             oxDb::getDb()->Execute(
                 "insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
@@ -589,11 +615,11 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $config = $this->getMock('oxConfig', array('getShopId', 'init'));
         $config->expects($this->any())->method('getShopId')->will($this->returnValue('15'));
 
-        $aInfo = array('module1' => 'module1', 'module2' => 'module2');
+        $activeModules = array('module1' => 'module1', 'module2' => 'module2');
 
         /** @var oxUtilsView|PHPUnit_Framework_MockObject_MockObject $utilsView */
         $utilsView = $this->getMock('oxUtilsView', array('_getActiveModuleInfo', '_getTemplateBlock'));
-        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($activeModules));
         $utilsView->expects($this->any())->method('_getTemplateBlock')->will($this->returnValueMap(array(
             array('module2', 'contentfile3', 'content3'),
             array('module1', 'contentfile1', 'content1'),
@@ -615,6 +641,35 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         );
     }
 
+    public function testGetTemplateBlocksForActiveTheme()
+    {
+        $config = $this->getMock('oxConfig', array('getShopId', 'init'));
+        $config->expects($this->any())->method('getShopId')->will($this->returnValue('15'));
+        $config->setConfigParam('sTheme', 'active_theme');
+
+        $activeModules = array('module1' => 'module1', 'module2' => 'module2');
+
+        $utilsView = $this->getMock('oxUtilsView', array('_getActiveModuleInfo', '_getTemplateBlock'));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($activeModules));
+        $utilsView->expects($this->any())->method('_getTemplateBlock')->will($this->returnValueMap(array(
+            array('module2', 'contentfile2_active_theme', 'content2_active_theme'),
+            array('module1', 'contentfile1', 'content1'),
+        )));
+        $utilsView->setConfig($config);
+
+        $this->assertEquals(
+            array(
+                'blockname1' => array(
+                    'content1',
+                ),
+                'blockname2' => array(
+                    'content2_active_theme',
+                ),
+            ),
+            $utilsView->getTemplateBlocks('filename.tpl')
+        );
+    }
+
     public function testGetTemplateBlocksForWrongShop()
     {
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
@@ -630,6 +685,42 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
 
         $this->assertEquals(
             array(),
+            $utilsView->getTemplateBlocks('filename.tpl')
+        );
+    }
+
+    public function testGetTemplateBlocksForAdmin()
+    {
+        $this->setAdminMode(true);
+
+        $config = $this->getMock('oxConfig', array('getShopId', 'init'));
+        $config->expects($this->any())->method('getShopId')->will($this->returnValue('15'));
+
+        $activeTheme = $this->getMock('oxTheme', array('getActiveThemeId'));
+        $activeTheme->expects($this->any())->method('getActiveThemeId')->will($this->returnValue('active_theme'));
+        oxTestModules::addModuleObject("oxTheme", $activeTheme);
+
+        $activeModules = array('module1' => 'module1', 'module2' => 'module2');
+
+        $utilsView = $this->getMock('oxUtilsView', array('_getActiveModuleInfo', '_getTemplateBlock'));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($activeModules));
+        $utilsView->expects($this->any())->method('_getTemplateBlock')->will($this->returnValueMap(array(
+            array('module2', 'contentfile3', 'content3'),
+            array('module1', 'contentfile1', 'content1'),
+            array('module2', 'contentfile2', 'content2'),
+        )));
+        $utilsView->setConfig($config);
+
+        $this->assertEquals(
+            array(
+                'blockname1' => array(
+                    'content1',
+                ),
+                'blockname2' => array(
+                    'content3',
+                    'content2',
+                ),
+            ),
             $utilsView->getTemplateBlocks('filename.tpl')
         );
     }

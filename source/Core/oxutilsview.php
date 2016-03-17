@@ -484,21 +484,28 @@ class oxUtilsView extends oxSuperCfg
         }
 
         if ($this->isShopTemplateBlockOverriddenByActiveModule()) {
+            $activeThemeId = $config->getActiveThemeId($this->isAdmin());
+
             $shopId = $config->getShopId();
+
             $ids = $this->_getActiveModuleInfo();
             $modulesId = implode(", ", oxDb::getInstance()->quoteArray(array_keys($ids)));
+
             $sql = "select *
                     from oxtplblocks
                     where oxactive=1
                         and oxshopid=?
                         and oxtemplate=?
                         and oxmodule in ( " . $modulesId . " )
+                        and oxtheme in ('', ?)
                         order by oxpos asc";
             $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-            $activeBlockTemplates = $db->getAll($sql, array($shopId, $templateFileName));
+            $activeBlockTemplates = $db->getAll($sql, array($shopId, $templateFileName, $activeThemeId));
 
             if ($activeBlockTemplates) {
-                $templateBlocksWithContent = $this->fillTemplateBlockWithContent($activeBlockTemplates);
+                $activeBlockTemplatesByTheme = $this->filterTemplateBlocks($activeBlockTemplates);
+
+                $templateBlocksWithContent = $this->fillTemplateBlockWithContent($activeBlockTemplatesByTheme);
             }
         }
 
@@ -540,18 +547,135 @@ class oxUtilsView extends oxSuperCfg
     }
 
     /**
+     * Leave only one element for items grouped by fields: OXTEMPLATE and OXBLOCKNAME
+     *
+     * Pick only one element from each group if OXTHEME contains (by following priority):
+     * - Active theme id
+     * - Parent theme id of active theme
+     * - Undefined
+     *
+     * Example of $activeBlockTemplates:
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a" (group a)
+     *  OXTHEME = ""
+     *  "content_a_default"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a" (group a)
+     *  OXTHEME = "parent_of_active_theme"
+     *  "content_a_parent"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a" (group a)
+     *  OXTHEME = "active_theme"
+     *  "content_a_active"
+     *
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b" (group b)
+     *  OXTHEME = ""
+     *  "content_b_default"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b" (group b)
+     *  OXTHEME = "parent_of_active_theme"
+     *  "content_b_parent"
+     *
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_c" (group c)
+     *  OXTHEME = ""
+     *  OXFILE = "x"
+     *  "content_c_x_default"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_c" (group c)
+     *  OXTHEME = ""
+     *  OXFILE = "y"
+     *  "content_c_y_default"
+     *
+     * Example of return:
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a" (group a)
+     *  OXTHEME = "active_theme"
+     *  "content_a_active"
+     *
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b" (group b)
+     *  OXTHEME = "parent_of_active_theme"
+     *  "content_b_parent"
+     *
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_c" (group c)
+     *  OXTHEME = ""
+     *  OXFILE = "x"
+     *  "content_c_x_default"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_c" (group c)
+     *  OXTHEME = ""
+     *  OXFILE = "y"
+     *  "content_c_y_default"
+     *
+     * @param array $activeBlockTemplates list of template blocks with all parameters.
+     *
+     * @return array list of blocks with their content.
+     */
+    private function filterTemplateBlocks($activeBlockTemplates)
+    {
+        $templateBlocksToExchange = array();
+        $templateBlocks = $activeBlockTemplates;
+
+        foreach ($activeBlockTemplates as $activeBlockTemplate) {
+            if ($activeBlockTemplate['OXTHEME']) {
+                $templateBlocksToExchange[] = $this->prepareBlockKey($activeBlockTemplate);
+            }
+        }
+
+        if ($templateBlocksToExchange) {
+            $templateBlocks = array();
+            foreach ($activeBlockTemplates as $activeBlockTemplate) {
+                if (!in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange)
+                    || $activeBlockTemplate['OXTHEME']) {
+                    $templateBlocks[] = $activeBlockTemplate;
+                }
+            }
+        }
+
+        return $templateBlocks;
+    }
+
+    /**
      * Fill array with template content or skip if template does not exist.
      * Logs error message if template does not exist.
      *
-     * @param array $formedActiveBlockTemplates
+     * Example of $activeBlockTemplates:
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a"
+     *  "content_a_active"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b"
+     *  OXFILE = "x"
+     *  "content_b_x_default"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b"
+     *  OXFILE = "y"
+     *  "content_b_y_default"
+     *
+     * Example of return:
+     *
+     * $templateBlocks = [
+     *   block_name_a = [
+     *     0 => "content_a_active"
+     *   ],
+     *   block_name_c = [
+     *     0 => "content_b_x_default",
+     *     1 => "content_b_y_default"
+     *   ]
+     * ]
+     *
+     * @param array $blockTemplates
      *
      * @return array
      */
-    private function fillTemplateBlockWithContent($formedActiveBlockTemplates)
+    private function fillTemplateBlockWithContent($blockTemplates)
     {
         $templateBlocksWithContent = array();
 
-        foreach ($formedActiveBlockTemplates as $activeBlockTemplate) {
+        foreach ($blockTemplates as $activeBlockTemplate) {
             try {
                 if (!is_array($templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']])) {
                     $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']] = array();
@@ -601,5 +725,18 @@ class oxUtilsView extends oxSuperCfg
         $this->_blIsTplBlocks = $moduleOverridesTemplate;
 
         return $moduleOverridesTemplate;
+    }
+
+    /**
+     * Prepare indicator for template block.
+     * This indicator might be used to identify same template block for different theme.
+     *
+     * @param $activeBlockTemplate
+     *
+     * @return string
+     */
+    private function prepareBlockKey($activeBlockTemplate)
+    {
+        return $activeBlockTemplate['OXTEMPLATE'] . $activeBlockTemplate['OXBLOCKNAME'];
     }
 }

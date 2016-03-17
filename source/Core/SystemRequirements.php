@@ -1143,7 +1143,7 @@ class SystemRequirements
         $analized = array();
 
         $sql = "select * from oxtplblocks where oxactive=1 and oxshopid=? and oxtheme in ('', ?)";
-        $blockRecords = $db->execute($sql, [$config->getShopId(), $activeThemeId]);
+        $blockRecords = $db->execute($sql, array($config->getShopId(), $activeThemeId));
 
         if ($blockRecords != false && $blockRecords->recordCount() > 0) {
             while (!$blockRecords->EOF) {

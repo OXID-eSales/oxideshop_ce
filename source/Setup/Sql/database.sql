@@ -2405,7 +2405,8 @@ CREATE TABLE `oxtplblocks` (
   `OXMODULE`    char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Module, which uses this template',
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
   PRIMARY KEY (`OXID`),
-  INDEX `search` (`OXACTIVE`, `OXTEMPLATE`, `OXPOS`)
+  INDEX `search` (`OXACTIVE`, `OXTEMPLATE`, `OXPOS`),
+  INDEX `oxtheme` (`OXTHEME`)
 ) ENGINE=MyISAM COMMENT 'Module template blocks';
 
 INSERT INTO `oxtplblocks` (`OXID`, `OXACTIVE`, `OXSHOPID`, `OXTEMPLATE`, `OXBLOCKNAME`, `OXPOS`, `OXFILE`, `OXMODULE`) VALUES

@@ -22,6 +22,7 @@
 namespace OxidEsales\Eshop\Core\Database;
 
 use Doctrine\DBAL\DriverManager;
+use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
 use oxLegacyDb;
 
 /**
@@ -53,6 +54,36 @@ class Doctrine extends oxLegacyDb
     public function setConnection($oConnection)
     {
         $this->connection = $oConnection;
+    }
+
+    /**
+     * Run a given select sql statement on the database.
+     *
+     * @param string $query The query we want to execute.
+     * @param bool   $parameters The parameters for the given query.
+     * @param bool   $type
+     *
+     * @throws \Doctrine\DBAL\DBALException The exception, that can occur while running the sql statement.
+     *
+     * @return DoctrineResultSet The result of the given query.
+     */
+    public function select($query, $parameters = false, $type = true)
+    {
+        if (!$parameters) {
+            $parameters = array();
+        }
+
+        return new DoctrineResultSet($this->getConnection()->executeQuery($query, $parameters));
+    }
+
+    /**
+     * Get the database connection.
+     *
+     * @return \Doctrine\DBAL\Connection $oConnection The database connection we want to use.
+     */
+    protected function getConnection()
+    {
+        return $this->connection;
     }
 
     /**

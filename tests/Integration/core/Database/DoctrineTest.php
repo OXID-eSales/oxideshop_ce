@@ -42,11 +42,48 @@ class DoctrineTest extends UnitTestCase
     }
 
     /**
-     * Test, that the creation of the database connection works.
+     * Test, that a rollback while a transaction cleans up the made changes.
      */
-    public function testCreation()
+    public function testTransactionRollbacked()
     {
-        new Doctrine();
+        $this->assureOrderFileIsEmpty();
+
+        $exampleOxId = 'XYZ';
+
+        $this->database->startTransaction();
+        $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ('$exampleOxId');", array());
+
+        // assure, that the changes are made in this transaction
+        $this->assureOrderFileHasOnly($exampleOxId);
+
+        $this->database->rollbackTransaction();
+
+        // assure, that the changes are reverted
+        $this->assureOrderFileIsEmpty();
+    }
+
+    /**
+     * Test, that the commit of a transaction works as expected.
+     */
+    public function testTransactionCommitted()
+    {
+        $exampleOxId = 'XYZ';
+
+        $this->deleteOrderFilesEntry($exampleOxId);
+
+        $this->assureOrderFileIsEmpty();
+        $this->database->startTransaction();
+        $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ('$exampleOxId');", array());
+
+        // assure, that the changes are made in this transaction
+        $this->assureOrderFileHasOnly($exampleOxId);
+        $this->database->commitTransaction();
+
+        // assure, that the changes persist the transaction
+        $this->assureOrderFileHasOnly($exampleOxId);
+
+        // clean up
+        $this->deleteOrderFilesEntry($exampleOxId);
     }
 
     /**
@@ -67,6 +104,11 @@ class DoctrineTest extends UnitTestCase
 
         $this->assertEquals(1, $this->database->affected_rows());
         $this->assureOrderFileIsEmpty();
+    }
+
+    protected function deleteOrderFilesEntry($oxId)
+    {
+        $this->database->execute("DELETE FROM oxorderfiles WHERE OXID = '$oxId';");
     }
 
     /**

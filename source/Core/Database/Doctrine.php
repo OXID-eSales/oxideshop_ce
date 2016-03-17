@@ -73,6 +73,42 @@ class Doctrine extends oxLegacyDb
     }
 
     /**
+     * Start a mysql transaction.
+     *
+     * @todo: find out what the return value means
+     *
+     * @return bool
+     */
+    public function startTransaction()
+    {
+        return $this->getConnection()->beginTransaction();
+    }
+
+    /**
+     * Commit a mysql transaction.
+     *
+     * @todo: find out what the return value means
+     *
+     * @return bool
+     */
+    public function commitTransaction()
+    {
+        return $this->getConnection()->commit();
+    }
+
+    /**
+     * Rollback a mysql transaction.
+     *
+     * @todo: find out what the return value means
+     *
+     * @return bool
+     */
+    public function rollbackTransaction()
+    {
+        return $this->getConnection()->rollBack();
+    }
+
+    /**
      * Execute the given query and return the corresponding result set.
      *
      * @todo: implement and test switch, so that SELECT gets handled different (no empty result set)!

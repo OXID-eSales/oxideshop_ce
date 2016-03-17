@@ -473,7 +473,7 @@ class oxUtilsView extends oxSuperCfg
      */
     public function getTemplateBlocks($templateFileName)
     {
-        $templateBlocks = array();
+        $templateBlocksWithContent = array();
 
         $config = $this->getConfig();
 
@@ -495,25 +495,14 @@ class oxUtilsView extends oxSuperCfg
                         and oxmodule in ( " . $modulesId . " )
                         order by oxpos asc";
             $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-            $rs = $db->select($sql, array($shopId, $templateFileName));
+            $activeBlockTemplates = $db->getAll($sql, array($shopId, $templateFileName));
 
-            if ($rs != false && $rs->recordCount() > 0) {
-                while (!$rs->EOF) {
-                    try {
-                        if (!is_array($templateBlocks[$rs->fields['OXBLOCKNAME']])) {
-                            $templateBlocks[$rs->fields['OXBLOCKNAME']] = array();
-                        }
-                        $templateBlocks[$rs->fields['OXBLOCKNAME']][] = $this->_getTemplateBlock($rs->fields['OXMODULE'], $rs->fields['OXFILE']);
-                    } catch (oxException $exception) {
-                        $exception->debugOut();
-                    }
-                    $rs->moveNext();
-                }
+            if ($activeBlockTemplates) {
+                $templateBlocksWithContent = $this->fillTemplateBlockWithContent($activeBlockTemplates);
             }
-
         }
 
-        return $templateBlocks;
+        return $templateBlocksWithContent;
     }
 
     /**
@@ -548,6 +537,32 @@ class oxUtilsView extends oxSuperCfg
         $fullThemePath = $themePath . $themeId . "/tpl/";
 
         return $fullThemePath;
+    }
+
+    /**
+     * Fill array with template content or skip if template does not exist.
+     * Logs error message if template does not exist.
+     *
+     * @param array $formedActiveBlockTemplates
+     *
+     * @return array
+     */
+    private function fillTemplateBlockWithContent($formedActiveBlockTemplates)
+    {
+        $templateBlocksWithContent = array();
+
+        foreach ($formedActiveBlockTemplates as $activeBlockTemplate) {
+            try {
+                if (!is_array($templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']])) {
+                    $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']] = array();
+                }
+                $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']][] = $this->_getTemplateBlock($activeBlockTemplate['OXMODULE'], $activeBlockTemplate['OXFILE']);
+            } catch (oxException $exception) {
+                $exception->debugOut();
+            }
+        }
+
+        return $templateBlocksWithContent;
     }
 
     /**

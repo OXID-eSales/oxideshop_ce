@@ -21,13 +21,13 @@
  */
 namespace OxidEsales\Eshop\Core\Database\Adapter;
 
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Driver\PDOStatement;
 
 class DoctrineResultSet
 {
 
     /**
-     * @var Statement The doctrine adapted statement.
+     * @var PDOStatement The doctrine adapted statement.
      */
     protected $adapted = null;
 
@@ -41,11 +41,15 @@ class DoctrineResultSet
     /**
      * DoctrineResultSet constructor.
      *
-     * @param $adapted
+     * @param PDOStatement $adapted The statement we want to wrap in this class.
      */
-    public function __construct($adapted)
+    public function __construct(PDOStatement $adapted)
     {
         $this->setAdapted($adapted);
+
+        if (0 < $this->getAdapted()->rowCount()) {
+            $this->EOF = false;
+        }
     }
 
     /**
@@ -79,6 +83,16 @@ class DoctrineResultSet
     }
 
     /**
+     * Check, if we already reached the end of the results.
+     *
+     * @return bool Is the end of the result set reached?
+     */
+    public function EOF()
+    {
+        return $this->EOF;
+    }
+
+    /**
      * @todo: implement and test
      *
      * @return mixed
@@ -91,13 +105,6 @@ class DoctrineResultSet
      * @todo: implement and test
      */
     public function Close()
-    {
-    }
-
-    /**
-     * @todo: implement and test
-     */
-    public function EOF()
     {
     }
 
@@ -160,7 +167,7 @@ class DoctrineResultSet
     /**
      * Getter for the adapted statement.
      *
-     * @return Statement The adapted statement.
+     * @return PDOStatement The adapted statement.
      */
     protected function getAdapted()
     {
@@ -170,7 +177,7 @@ class DoctrineResultSet
     /**
      * Setter for the adapted statement.
      *
-     * @param Statement $adapted The adapted statement.
+     * @param PDOStatement $adapted The adapted statement.
      */
     protected function setAdapted($adapted)
     {

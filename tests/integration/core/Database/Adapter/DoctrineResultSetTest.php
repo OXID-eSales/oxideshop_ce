@@ -21,6 +21,7 @@
  */
 
 use OxidEsales\TestingLibrary\UnitTestCase;
+use Doctrine\DBAL\Driver\PDOStatement;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
 use OxidEsales\Eshop\Core\Database\Doctrine;
 
@@ -39,14 +40,6 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
      * @var string The first OXID of the OXARTICLES
      */
     const FIRST_OXARTICLE_OXID = '09602cddb5af0aba745293d08ae6bcf6';
-
-    /**
-     * Test, that the creation of the doctrine result set works.
-     */
-    public function testCreation()
-    {
-        $resultSet = new DoctrineResultSet(null);
-    }
 
     /**
      * Test, that the result set of an empty select works as expected.
@@ -133,6 +126,29 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         $this->assertNotEmpty($rows);
         $this->assertGreaterThan(200, count($rows));
         $this->assertEquals(self::FIRST_OXARTICLE_OXID, $rows[0]['OXID']);
+    }
+
+    /**
+     * Test, that the attribute and method 'EOF' is true, for an empty result set.
+     */
+    public function testEofWithEmptyResultSet()
+    {
+        $resultSet = $this->testCreationWithRealEmptyResult();
+
+        $this->assertTrue($resultSet->EOF);
+        $this->assertTrue($resultSet->EOF());
+
+    }
+
+    /**
+     * Test, that the 'EOF' is true, for a non empty result set.
+     */
+    public function testEofWithNonEmptyResultSet()
+    {
+        $resultSet = $this->testCreationWithRealNonEmptyResult();
+
+        $this->assertFalse($resultSet->EOF);
+        $this->assertFalse($resultSet->EOF());
     }
 
 }

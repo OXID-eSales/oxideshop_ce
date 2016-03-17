@@ -587,9 +587,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     {
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
         $config = $this->getMock('oxConfig', array('getShopId', 'init'));
-        $config->expects($this->at(0))->method('getShopId')->will($this->returnValue('15'));
-        $config->expects($this->at(1))->method('getShopId')->will($this->returnValue('15'));
-        $config->expects($this->at(2))->method('getShopId')->will($this->returnValue('25'));
+        $config->expects($this->any())->method('getShopId')->will($this->returnValue('15'));
 
         $aInfo = array('module1' => 'module1', 'module2' => 'module2');
 
@@ -615,6 +613,20 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
             ),
             $utilsView->getTemplateBlocks('filename.tpl')
         );
+    }
+
+    public function testGetTemplateBlocksForWrongShop()
+    {
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        $config = $this->getMock('oxConfig', array('getShopId', 'init'));
+        $config->expects($this->any())->method('getShopId')->will($this->returnValue('25'));
+
+        $aInfo = array('module1' => 'module1', 'module2' => 'module2');
+
+        /** @var oxUtilsView|PHPUnit_Framework_MockObject_MockObject $utilsView */
+        $utilsView = $this->getMock('oxUtilsView', array('_getActiveModuleInfo'));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
+        $utilsView->setConfig($config);
 
         $this->assertEquals(
             array(),
@@ -628,9 +640,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     public function testGetTemplateBlocksLogsExceptions()
     {
         $config = $this->getMock('oxConfig', array('getShopId', 'init'));
-        $config->expects($this->at(0))->method('getShopId')->will($this->returnValue('15'));
-        $config->expects($this->at(1))->method('getShopId')->will($this->returnValue('15'));
-        $config->expects($this->at(2))->method('getShopId')->will($this->returnValue('25'));
+        $config->expects($this->atLeastOnce())->method('getShopId')->will($this->returnValue('15'));
         $aInfo = array('module1' => 'module1', 'module2' => 'module2');
 
         /** @var oxException|PHPUnit_Framework_MockObject_MockObject $exception */
@@ -641,15 +651,20 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $utilsView = $this->getMock('oxUtilsView', array('getConfig', '_getActiveModuleInfo', '_getTemplateBlock'));
         $utilsView->expects($this->any())->method('getConfig')->will($this->returnValue($config));
         $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
-        $utilsView->expects($this->at(3))->method('_getTemplateBlock')
-            ->with($this->equalTo('module2'), $this->equalTo('contentfile3'))
-            ->will($this->throwException($exception));
-        $utilsView->expects($this->at(4))->method('_getTemplateBlock')
-            ->with($this->equalTo('module1'), $this->equalTo('contentfile1'))
-            ->will($this->returnValue('content1'));
-        $utilsView->expects($this->at(5))->method('_getTemplateBlock')
-            ->with($this->equalTo('module2'), $this->equalTo('contentfile2'))
-            ->will($this->returnValue('content2'));
+
+        $utilsView->expects($this->any())->method('_getTemplateBlock')->will($this->returnCallback(
+            function ($param1, $param2) use ($exception) {
+                if ($param1 == "module2") {
+                    if ($param2 == "contentfile3") {
+                        throw $exception;
+                    } else {
+                        return "content2";
+                    }
+                }
+
+                return "content1";
+            }
+        ));
 
         $this->assertEquals(
             array(
@@ -662,6 +677,21 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
             ),
             $utilsView->getTemplateBlocks('filename.tpl')
         );
+    }
+
+    /**
+     * exception log test
+     */
+    public function testGetTemplateBlocksFromWrongShop()
+    {
+        $config = $this->getMock('oxConfig', array('getShopId', 'init'));
+        $config->expects($this->atLeastOnce())->method('getShopId')->will($this->returnValue('25'));
+        $aInfo = array('module1' => 'module1', 'module2' => 'module2');
+
+        /** @var oxUtilsView|PHPUnit_Framework_MockObject_MockObject $utilsView */
+        $utilsView = $this->getMock('oxUtilsView', array('getConfig', '_getActiveModuleInfo'));
+        $utilsView->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
 
         $this->assertEquals(
             array(),

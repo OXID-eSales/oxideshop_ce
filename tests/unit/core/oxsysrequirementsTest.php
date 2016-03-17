@@ -342,11 +342,6 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
      */
     public function testGetMissingTemplateBlocksIfNotFound()
     {
-        $oCfg = $this->getMock('oxconfig', array('getShopId'));
-        $oCfg->expects($this->exactly(1))->method('getShopId')
-            ->will($this->returnValue(15));
-        oxTestModules::addModuleObject('oxconfig', $oCfg);
-
         $oRs = $this->getMock('stdclass', array('moveNext', 'recordCount'));
         $oRs->expects($this->exactly(1))->method('moveNext')
             ->will($this->evalFunction('{$_this->EOF = true;}'));
@@ -361,7 +356,6 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->any())
             ->method('execute')
-            ->with($this->equalTo("select * from oxtplblocks where oxactive=1 and oxshopid='15'"))
             ->will($this->returnValue($oRs));
         oxDb::setDbObject($dbMock);
 
@@ -385,11 +379,6 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
      */
     public function testGetMissingTemplateBlocksIfFound()
     {
-        $oCfg = $this->getMock('oxconfig', array('getShopId'));
-        $oCfg->expects($this->exactly(1))->method('getShopId')
-            ->will($this->returnValue(15));
-        oxTestModules::addModuleObject('oxconfig', $oCfg);
-
         $oRs = $this->getMock('stdclass', array('moveNext', 'recordCount'));
         $oRs->expects($this->exactly(1))->method('moveNext')
             ->will($this->evalFunction('{$_this->EOF = true;}'));
@@ -404,7 +393,6 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->any())
             ->method('execute')
-            ->with($this->equalTo("select * from oxtplblocks where oxactive=1 and oxshopid='15'"))
             ->will($this->returnValue($oRs));
         oxDb::setDbObject($dbMock);
 

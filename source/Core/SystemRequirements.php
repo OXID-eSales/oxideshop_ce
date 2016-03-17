@@ -1136,12 +1136,14 @@ class SystemRequirements
     public function getMissingTemplateBlocks()
     {
         $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $result = array();
-        $analized = array();
+        $activeThemeId = oxNew('oxTheme')->getActiveThemeId();
         $config = $this->getConfig();
 
-        $sql = "select * from oxtplblocks where oxactive=1 and oxshopid=?";
-        $blockRecords = $db->execute($sql, [$config->getShopId()]);
+        $result = array();
+        $analized = array();
+
+        $sql = "select * from oxtplblocks where oxactive=1 and oxshopid=? and oxtheme in ('', ?)";
+        $blockRecords = $db->execute($sql, [$config->getShopId(), $activeThemeId]);
 
         if ($blockRecords != false && $blockRecords->recordCount() > 0) {
             while (!$blockRecords->EOF) {

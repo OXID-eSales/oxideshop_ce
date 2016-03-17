@@ -1135,41 +1135,39 @@ class SystemRequirements
      */
     public function getMissingTemplateBlocks()
     {
-        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $aCache = array();
-        $oConfig = $this->getConfig();
+        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $result = array();
+        $analized = array();
+        $config = $this->getConfig();
 
-        $sShpIdParam = $oDb->quote($oConfig->getShopId());
-        $sSql = "select * from oxtplblocks where oxactive=1 and oxshopid=$sShpIdParam";
-        $rs = $oDb->execute($sSql);
+        $sql = "select * from oxtplblocks where oxactive=1 and oxshopid=?";
+        $blockRecords = $db->execute($sql, [$config->getShopId()]);
 
+        if ($blockRecords != false && $blockRecords->recordCount() > 0) {
+            while (!$blockRecords->EOF) {
+                $template = $blockRecords->fields['OXTEMPLATE'];
+                $blockName = $blockRecords->fields['OXBLOCKNAME'];
 
-        $aRet = array();
-        if ($rs != false && $rs->recordCount() > 0) {
-            while (!$rs->EOF) {
-                $blStatus = false;
-                if (isset($aCache[$rs->fields['OXTEMPLATE']]) &&
-                    isset($aCache[$rs->fields['OXTEMPLATE']][$rs->fields['OXBLOCKNAME']])
-                ) {
-                    $blStatus = $aCache[$rs->fields['OXTEMPLATE']][$rs->fields['OXBLOCKNAME']];
+                if (isset($analized[$template], $analized[$template][$blockName])) {
+                    $blockExistsInTemplate = $analized[$template][$blockName];
                 } else {
-                    $blStatus = $this->_checkTemplateBlock($rs->fields['OXTEMPLATE'], $rs->fields['OXBLOCKNAME']);
-
-                    $aCache[$rs->fields['OXTEMPLATE']][$rs->fields['OXBLOCKNAME']] = $blStatus;
+                    $blockExistsInTemplate = $this->_checkTemplateBlock($template, $blockName);
+                    $analized[$template][$blockName] = $blockExistsInTemplate;
                 }
 
-                if (!$blStatus) {
-                    $aRet[] = array(
-                        'module'   => $rs->fields['OXMODULE'],
-                        'block'    => $rs->fields['OXBLOCKNAME'],
-                        'template' => $rs->fields['OXTEMPLATE'],
+                if (!$blockExistsInTemplate) {
+                    $result[] = array(
+                        'module'   => $blockRecords->fields['OXMODULE'],
+                        'block'    => $blockName,
+                        'template' => $template,
                     );
                 }
-                $rs->moveNext();
+
+                $blockRecords->moveNext();
             }
         }
 
-        return $aRet;
+        return $result;
     }
 
     /**

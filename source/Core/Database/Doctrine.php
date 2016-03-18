@@ -97,6 +97,30 @@ class Doctrine extends oxLegacyDb
     }
 
     /**
+     * Quote the given string.
+     *
+     * @param string $value The string we want to quote.
+     *
+     * @return string The given string in quotes.
+     */
+    public function qstr($value)
+    {
+        return $this->quote($value);
+    }
+
+    /**
+     * Quote the given string. Same as qstr.
+     *
+     * @param string $value The string we want to quote.
+     *
+     * @return string The given string in quotes.
+     */
+    public function quote($value)
+    {
+        return $this->getConnection()->quote($value);
+    }
+
+    /**
      * Start a mysql transaction.
      *
      * @todo: find out what the return value means

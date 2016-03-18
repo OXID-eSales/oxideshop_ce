@@ -197,11 +197,11 @@ interface DatabaseInterface
     /**
      * Quote the given string. Same as qstr.
      *
-     * @param string $sValue The string we want to quote.
+     * @param string $value The string we want to quote.
      *
      * @return string The given string in quotes.
      */
-    public function quote($sValue);
+    public function quote($value);
 
     /**
      * Quote every string in the given array.
@@ -225,11 +225,11 @@ interface DatabaseInterface
      * Returns meta data.
      *
      * @param string $table
-     * @param bool   $numberOfIndexes
+     * @param bool   $numberOfIndices
      *
      * @return array
      */
-    public function metaColumnNames($table, $numberOfIndexes = false);
+    public function metaColumnNames($table, $numberOfIndices = false);
 
     /**
      * Start the mysql transaction.

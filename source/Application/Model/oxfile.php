@@ -358,7 +358,7 @@ class oxFile extends oxBase
         $sFileName = $this->_getFilenameForUrl();
         $sFileLocations = $this->getStoreLocation();
 
-        if (!$this->exist()) {
+        if (!$this->exist() || !$this->isUnderDownloadFolder()) {
             throw new oxException('EXCEPTION_NOFILE');
         }
 

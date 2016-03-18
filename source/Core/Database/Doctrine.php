@@ -121,6 +121,24 @@ class Doctrine extends oxLegacyDb
     }
 
     /**
+     * Quote every string in the given array.
+     *
+     * @param array $arrayOfStrings The strings to quote as an array.
+     *
+     * @return array The given strings quoted.
+     */
+    public function quoteArray($arrayOfStrings)
+    {
+        $result = array();
+
+        foreach ($arrayOfStrings as $key => $item) {
+            $result[$key] = $this->quote($item);
+        }
+
+        return $result;
+    }
+
+    /**
      * Start a mysql transaction.
      *
      * @todo: find out what the return value means

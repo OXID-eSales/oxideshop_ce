@@ -25,6 +25,7 @@ use Doctrine\DBAL\DriverManager;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
 use OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet;
 use oxLegacyDb;
+use PDO;
 
 /**
  * The doctrine implementation of our database.
@@ -45,6 +46,11 @@ class Doctrine extends oxLegacyDb
     protected $affectedRows = 0;
 
     /**
+     * @var int The last fetch mode. We store the adodblite fetch mode here. See mapFetchMode method for further information.
+     */
+    protected $fetchMode = 2;
+
+    /**
      * The standard constructor.
      */
     public function __construct()
@@ -60,6 +66,29 @@ class Doctrine extends oxLegacyDb
     public function setConnection($oConnection)
     {
         $this->connection = $oConnection;
+    }
+
+    /**
+     * Set the fetch mode for future calls. Returns the old fetch mode.
+     *
+     * Hints:
+     *  - we map the adodb fetch mode to the pdo (used by doctrine) fetch mode here
+     *  - cause there is no getter in dbal or pdo we save the actual fetch mode in this object too
+     *
+     * @param int $fetchMode How do we want to get the results?
+     *
+     * @return int The previous fetch mode.
+     */
+    public function setFetchMode($fetchMode)
+    {
+        $lastFetchMode = $this->fetchMode;
+
+        $newFetchMode = $this->mapFetchMode($fetchMode);
+
+        $this->getConnection()->setFetchMode($newFetchMode);
+        $this->fetchMode = $newFetchMode;
+
+        return $lastFetchMode;
     }
 
     /**
@@ -256,7 +285,42 @@ class Doctrine extends oxLegacyDb
      */
     protected function createConnection()
     {
-        return DriverManager::getConnection($this->getConnectionParameters());
+        $connection = DriverManager::getConnection($this->getConnectionParameters());
+
+        $connection->setFetchMode($this->fetchMode);
+
+        return $connection;
+    }
+
+    /**
+     * Map the adodb lite fetch mode to the corresponding pdo fetch mode.
+     *
+     *  ADODB_FETCH_DEFAULT = 0
+     *  ADODB_FETCH_NUM = 1
+     *  ADODB_FETCH_ASSOC = 2
+     *  ADODB_FETCH_BOTH = 3
+     *
+     *  FETCH_LAZY = 1
+     *  FETCH_ASSOC = 2
+     *  FETCH_NUM = 3
+     *  FETCH_BOTH = 4
+     *
+     * @param int $fetchMode The adodb fetch mode.
+     *
+     * @return int The pdo fetch mode.
+     */
+    private function mapFetchMode($fetchMode)
+    {
+        $result = $fetchMode + 1;
+
+        if (1 === $fetchMode) {
+            $result = 3;
+        }
+        if (2 === $fetchMode) {
+            $result = 2;
+        }
+
+        return $result;
     }
 
     /**

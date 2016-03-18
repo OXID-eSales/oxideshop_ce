@@ -135,6 +135,28 @@ class DoctrineTest extends UnitTestCase
     }
 
     /**
+     * Test, that the fetch mode set works as expected and retrieves the last set fetch mode.
+     */
+    public function testSetFetchMode()
+    {
+        // check normal (associative array) case
+        $row = $this->fetchFirstProductOxId();
+        $this->assertInternalType('array', $row);
+        $this->assertEquals(array('OXID'), array_keys($row));
+
+        // check numeric array case
+        $previousFetchMode = $this->database->setFetchMode(1);
+        $row = $this->fetchFirstProductOxId();
+
+        // reset fetch mode to original setting
+        $this->database->setFetchMode($previousFetchMode);
+
+        // check result
+        $this->assertInternalType('array', $row);
+        $this->assertEquals(array(0), array_keys($row));
+    }
+
+    /**
      * Delete an entry from the database table oxorderfiles.
      *
      * @param string $oxId The oxId of the row to delete.
@@ -177,6 +199,17 @@ class DoctrineTest extends UnitTestCase
     private function fetchOrderFilesOxIds()
     {
         return $this->database->select('SELECT OXID FROM oxorderfiles;')->getAll();
+    }
+
+    /**
+     * @return array|false
+     */
+    private function fetchFirstProductOxId()
+    {
+        $rows = $this->database->select('SELECT OXID FROM oxarticles');
+        $row = $rows->fetchRow();
+
+        return $row;
     }
 
 }

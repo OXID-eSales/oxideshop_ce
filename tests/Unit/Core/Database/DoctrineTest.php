@@ -120,4 +120,16 @@ class DoctrineTest extends UnitTestCase
 
         $this->assertEquals($expectedQuotedArray, $quotedArray);
     }
+
+    /**
+     * Test, that the fetch mode set works as expected and retrieves the last set fetch mode.
+     */
+    public function testSetFetchMode()
+    {
+        $previousFetchMode = $this->database->setFetchMode(100);
+        $this->assertEquals(2, $previousFetchMode); // the default fetch mode
+
+        $previousFetchMode = $this->database->setFetchMode(2);
+        $this->assertEquals(100, $previousFetchMode); // the previous set fetch mode
+    }
 }

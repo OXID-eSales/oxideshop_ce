@@ -73,6 +73,30 @@ class Doctrine extends oxLegacyDb
     }
 
     /**
+     * Get the last error number, occurred while executing a sql statement through any of the methods in this class.
+     *
+     * @return int The last mysql error number.
+     */
+    public function errorNo()
+    {
+        $errorInformation = $this->getConnection()->errorInfo();
+
+        return $errorInformation[1];
+    }
+
+    /**
+     * Get the last error message, occurred while executing a sql statement through any of the methods in this class.
+     *
+     * @return string The last error message.
+     */
+    public function errorMsg()
+    {
+        $errorInformation = $this->getConnection()->errorInfo();
+
+        return $errorInformation[2];
+    }
+
+    /**
      * Start a mysql transaction.
      *
      * @todo: find out what the return value means

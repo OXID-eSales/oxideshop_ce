@@ -95,4 +95,29 @@ class DoctrineTest extends UnitTestCase
         $databaseMock->qstr($value);
     }
 
+    /**
+     * Test, that the method 'quoteArray' works with an empty array.
+     */
+    public function testQuoteArrayWithEmptyArray()
+    {
+        $originalArray = array();
+
+        $quotedArray = $this->database->quoteArray($originalArray);
+
+        $this->assertEquals($originalArray, $quotedArray);
+    }
+
+    /**
+     * Test, that the method 'quoteArray' works with a non empty array.
+     */
+    public function testQuoteArrayWithFilledArray()
+    {
+        $originalArray = array('Hello', 'quoteThis');
+
+        $quotedArray = $this->database->quoteArray($originalArray);
+
+        $expectedQuotedArray = array("'Hello'", "'quoteThis'");
+
+        $this->assertEquals($expectedQuotedArray, $quotedArray);
+    }
 }

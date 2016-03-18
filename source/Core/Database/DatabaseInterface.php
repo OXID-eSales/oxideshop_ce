@@ -39,9 +39,15 @@ interface DatabaseInterface
     public function setConnection($connection);
 
     /**
-     * Setter for the mysql fetch mode.
+     * Set the fetch mode for future calls. Returns the old fetch mode.
      *
-     * @param int $fetchMode Fetch mode
+     * Hints:
+     *  - we map the adodblite fetch mode to the pdo (used by doctrine) fetch mode here
+     *  - cause there is no getter in dbal or pdo we save the actual fetch mode in this object too
+     *
+     * @param int $fetchmode How do we want to get the results?
+     *
+     * @return int The previous fetch mode.
      */
     public function setFetchMode($fetchMode);
 

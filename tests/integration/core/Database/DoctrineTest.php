@@ -106,6 +106,27 @@ class DoctrineTest extends UnitTestCase
         $this->assureOrderFileIsEmpty();
     }
 
+    /**
+     * Test, that the methods 'errorNo' and 'errorMsg' work as expected.
+     */
+    public function testErrorNoAndErrorMsgWork()
+    {
+        try {
+            $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ;");
+        } catch (Exception $exception) {
+            $errorNumber = $this->database->errorNo();
+            $errorMessage = $this->database->errorMsg();
+
+            $this->assertEquals(1064, $errorNumber);
+            $this->assertEquals('You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1', $errorMessage);
+        }
+    }
+
+    /**
+     * Delete an entry from the database table oxorderfiles.
+     *
+     * @param string $oxId The oxId of the row to delete.
+     */
     protected function deleteOrderFilesEntry($oxId)
     {
         $this->database->execute("DELETE FROM oxorderfiles WHERE OXID = '$oxId';");

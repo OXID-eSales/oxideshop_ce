@@ -109,6 +109,18 @@ class DoctrineTest extends UnitTestCase
     /**
      * Test, that the methods 'errorNo' and 'errorMsg' work as expected.
      */
+    public function testErrorNoAndErrorMsgWithoutPriorError()
+    {
+        $errorNumber = $this->database->errorNo();
+        $errorMessage = $this->database->errorMsg();
+
+        $this->assertNull($errorNumber);
+        $this->assertNull($errorMessage);
+    }
+
+    /**
+     * Test, that the methods 'errorNo' and 'errorMsg' work as expected.
+     */
     public function testErrorNoAndErrorMsgWork()
     {
         try {

@@ -63,14 +63,15 @@ class oxUserBasketItem extends oxBase
      */
     protected $_aPersParam = null;
 
+    protected $_sCoreTable = 'oxuserbasketitems';
+
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */
-    public function __construct()
+    public function __construct($config)
     {
-        $this->setVariantParentBuyable($this->getConfig()->getConfigParam('blVariantParentBuyable'));
-        parent::__construct();
-        $this->init('oxuserbasketitems');
+        $this->setVariantParentBuyable($this->config->getConfigParam('blVariantParentBuyable'));
+        parent::__construct($config);
     }
 
     /**

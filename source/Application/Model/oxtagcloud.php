@@ -34,14 +34,6 @@ if (!defined('OXTAGCLOUD_MINFONT')) {
  */
 class oxTagCloud extends oxSuperCfg
 {
-
-    /**
-     * Cloud cache key
-     *
-     * @var string
-     */
-    protected $_sCacheKey = "tagcloud";
-
     /**
      * Max hit
      *
@@ -71,13 +63,6 @@ class oxTagCloud extends oxSuperCfg
      * @var int
      */
     protected $_iTagMaxLength = 60;
-
-    /**
-     * Object constructor. Initializes separator.
-     */
-    public function __construct()
-    {
-    }
 
     /**
      * Returns current maximum tag length
@@ -267,7 +252,7 @@ class oxTagCloud extends oxSuperCfg
     {
         $sExtended = $this->isExtended() ? '1' : '0';
 
-        return $this->_sCacheKey . "_" . $this->getConfig()->getShopId() . "_" . $sExtended . "_" . $sTagListCacheId;
+        return "_" . $this->config->getShopId() . "_" . $sExtended . "_" . $sTagListCacheId;
     }
 
     /**

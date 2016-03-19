@@ -34,14 +34,7 @@ class oxActions extends oxI18n
      */
     protected $_sClassName = "oxactions";
 
-    /**
-     * Class constructor. Executes oxActions::init(), initiates parent constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init("oxactions");
-    }
+    protected $_sCoreTable = "oxactions";
 
     /**
      * Adds an article to this actions
@@ -214,11 +207,6 @@ class oxActions extends oxI18n
 
         if ($sArtId) {
             $oArticle = oxNew('oxArticle');
-
-            if ($this->isAdmin()) {
-                $oArticle->setLanguage(oxRegistry::getLang()->getEditLanguage());
-            }
-
             if ($oArticle->load($sArtId)) {
                 return $oArticle;
             }
@@ -238,7 +226,7 @@ class oxActions extends oxI18n
         if (isset($this->oxactions__oxpic) && $this->oxactions__oxpic->value) {
             $sPromoDir = oxRegistry::get("oxUtilsFile")->normalizeDir(oxUtilsFile::PROMO_PICTURE_DIR);
 
-            return $this->getConfig()->getPictureUrl($sPromoDir . $this->oxactions__oxpic->value, false);
+            return $this->config->getPictureUrl($sPromoDir . $this->oxactions__oxpic->value, false);
         }
     }
 

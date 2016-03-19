@@ -220,7 +220,7 @@ class AccountController extends \oxUBase
             $this->_oaComponents['oxcmp_user']->getLoginStatus() === USER_LOGIN_SUCCESS
         ) {
 
-            $redirectUrl = $this->getConfig()->getShopUrl() . 'index.php?cl=' . rawurlencode($sourceClass);
+            $redirectUrl = $this->config->getShopUrl() . 'index.php?cl=' . rawurlencode($sourceClass);
 
             // building redirect link
             foreach ($this->getNavigationParams() as $key => $value) {
@@ -365,7 +365,7 @@ class AccountController extends \oxUBase
     {
         $title = parent::getTitle();
 
-        if ($this->getConfig()->getActiveView()->getClassName() == 'account') {
+        if ($this->config->getActiveView()->getClassName() == 'account') {
             $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
             $title = oxRegistry::getLang()->translateString('PAGE_TITLE_ACCOUNT', $baseLanguageId, false);
             if ($user = $this->getUser()) {

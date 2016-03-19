@@ -32,9 +32,11 @@ class Login extends oxAdminView
     /**
      * Sets value for _sThisAction to "login".
      */
-    public function __construct()
+    public function __construct($config)
     {
-        $this->getConfig()->setConfigParam('blAdmin', true);
+        parent::__construct($config);
+
+        $this->config->setConfigParam('blAdmin', true);
         $this->_sThisAction = "login";
     }
 
@@ -46,7 +48,7 @@ class Login extends oxAdminView
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         // automatically redirect to SSL login
         if (!$myConfig->isSsl() && strpos($myConfig->getConfigParam('sAdminSSLURL'), 'https://') === 0) {
@@ -88,7 +90,7 @@ class Login extends oxAdminView
      */
     protected function setShopConfigParameters()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $oBaseShop = oxNew("oxShop");
         $oBaseShop->load($myConfig->getBaseShopId());

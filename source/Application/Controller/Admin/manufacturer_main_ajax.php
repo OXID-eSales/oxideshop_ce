@@ -67,7 +67,7 @@ class manufacturer_main_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         // looking for table/view
         $articlesViewName = $this->_getViewName('oxarticles');
@@ -109,7 +109,7 @@ class manufacturer_main_ajax extends ajaxListComponent
         $query = parent::_addFilter($query);
 
         // display variants or not ?
-        $query .= $this->getConfig()->getRequestParameter('blVariantsSelection') ? ' group by ' . $articleViewName . '.oxid ' : '';
+        $query .= $this->config->getRequestParameter('blVariantsSelection') ? ' group by ' . $articleViewName . '.oxid ' : '';
 
         return $query;
     }
@@ -119,11 +119,11 @@ class manufacturer_main_ajax extends ajaxListComponent
      */
     public function removeManufacturer()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $articleIds = $this->_getActionIds('oxarticles.oxid');
         $manufacturerId = $config->getRequestParameter('oxid');
 
-        if ($this->getConfig()->getRequestParameter("all")) {
+        if ($this->config->getRequestParameter("all")) {
             $articleViewTable = $this->_getViewName('oxarticles');
             $articleIds = $this->_getAll($this->_addFilter("select $articleViewTable.oxid " . $this->_getQuery()));
         }
@@ -156,7 +156,7 @@ class manufacturer_main_ajax extends ajaxListComponent
      */
     public function addManufacturer()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $articleIds = $this->_getActionIds('oxarticles.oxid');
         $manufacturerId = $config->getRequestParameter('synchoxid');

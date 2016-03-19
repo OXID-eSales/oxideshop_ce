@@ -45,28 +45,7 @@ class oxAddress extends oxBase
      */
     protected $_oStateObject = null;
 
-    /**
-     * Returns oxState object
-     *
-     * @return oxState
-     */
-    protected function _getStateObject()
-    {
-        if (is_null($this->_oStateObject)) {
-            $this->_oStateObject = oxNew('oxState');
-        }
-
-        return $this->_oStateObject;
-    }
-
-    /**
-     * Class constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxaddress');
-    }
+    protected $_sCoreTable = "oxaddress";
 
     /**
      * Magic getter returns address as a single line string
@@ -133,25 +112,6 @@ class oxAddress extends oxBase
     public function getStateId()
     {
         return $this->oxaddress__oxstateid->value;
-    }
-
-
-    /**
-     * Get state title
-     *
-     * @param string $sId state ID
-     *
-     * @return string
-     */
-    public function getStateTitle($sId = null)
-    {
-        $oState = $this->_getStateObject();
-
-        if (is_null($sId)) {
-            $sId = $this->getStateId();
-        }
-
-        return $oState->getTitleById($sId);
     }
 
     /**

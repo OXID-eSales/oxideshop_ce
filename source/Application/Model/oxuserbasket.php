@@ -59,14 +59,7 @@ class oxUserBasket extends oxBase
      */
     protected $_blNewBasket = false;
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxuserbaskets');
-    }
+    protected $_sCoreTable = 'oxuserbaskets';
 
     /**
      * Inserts object data to DB, returns true on success.
@@ -351,7 +344,7 @@ class oxUserBasket extends oxBase
      */
     public function isVisible()
     {
-        $oActivUser = $this->getConfig()->getUser();
+        $oActivUser = $this->config->getUser();
         $sActivUserId = null;
         if ($oActivUser) {
             $sActivUserId = $oActivUser->getId();

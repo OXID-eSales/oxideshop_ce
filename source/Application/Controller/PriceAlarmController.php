@@ -76,7 +76,7 @@ class PriceAlarmController extends \oxUBase
      */
     public function addme()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myUtils = oxRegistry::getUtils();
 
         $aParams = oxRegistry::getConfig()->getRequestParameter('pa');
@@ -121,7 +121,7 @@ class PriceAlarmController extends \oxUBase
             $this->_sBidPrice = false;
 
             $aParams = $this->_getParams();
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
             $iPrice = oxRegistry::getUtils()->currency2Float($aParams['price']);
             $this->_sBidPrice = oxRegistry::getLang()->formatCurrency($iPrice, $oCur);
         }

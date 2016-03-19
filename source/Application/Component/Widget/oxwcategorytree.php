@@ -55,7 +55,7 @@ class oxwCategoryTree extends oxWidget
 
         if ($sTpl = $this->getViewParameter("sWidgetType")) {
             $sTemplateName = 'widget/' . basename($sTpl) . '/categorylist.tpl';
-            if ($this->getConfig()->getTemplatePath($sTemplateName, $this->isAdmin())) {
+            if ($this->config->getTemplatePath($sTemplateName, $this->isAdmin())) {
                 $this->_sThisTemplate = $sTemplateName;
             }
         }

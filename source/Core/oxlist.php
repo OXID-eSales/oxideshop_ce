@@ -241,16 +241,15 @@ class oxList extends oxSuperCfg implements IteratorAggregate, ArrayAccess, Count
      *
      * @param string $sObjectName Associated list item object type
      */
-    public function __construct($sObjectName = null)
+    public function __construct($config, $sObjectName = null)
     {
-        $myConfig = $this->getConfig();
+        parent::__construct($config);
+
         $this->_aSqlLimit[0] = 0;
         $this->_aSqlLimit[1] = 0;
-        $this->_sShopID = $myConfig->getShopId();
+        $this->_sShopID = $this->config->getShopId();
 
-        if ($sObjectName) {
-            $this->init($sObjectName);
-        }
+        $this->init($this->_sObjectsInListName, $this->_sCoreTable);
     }
 
     /**

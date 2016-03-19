@@ -150,7 +150,7 @@ class oxEmosAdapter extends oxSuperCfg
             $this->_oEmos->addLangId(oxRegistry::getLang()->getBaseLanguage());
 
             // set site ID
-            $this->_oEmos->addSiteId($this->getConfig()->getShopId());
+            $this->_oEmos->addSiteId($this->config->getShopId());
         }
 
         return $this->_oEmos;
@@ -182,7 +182,7 @@ class oxEmosAdapter extends oxSuperCfg
      */
     protected function _getScriptPath()
     {
-        $sShopUrl = $this->getConfig()->getCurrentShopUrl();
+        $sShopUrl = $this->config->getCurrentShopUrl();
         return "{$sShopUrl}modules/econda/out/";
     }
 
@@ -205,7 +205,7 @@ class oxEmosAdapter extends oxSuperCfg
      */
     protected function _convertToUtf($sContent)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         if (!$myConfig->isUtf()) {
             $sContent = iconv(oxRegistry::getLang()->translateString('charset'), 'UTF-8', $sContent);
         }
@@ -248,7 +248,7 @@ class oxEmosAdapter extends oxSuperCfg
         $oItem->productName = $this->_prepareProductTitle($oProduct);
 
         // #810A
-        $oCur = $this->getConfig()->getActShopCurrencyObject();
+        $oCur = $this->config->getActShopCurrencyObject();
         $oItem->price = $oProduct->getPrice()->getBruttoPrice() * (1 / $oCur->rate);
         $oItem->productGroup = "{$sCatPath}/{$this->_convertToUtf($oProduct->oxarticles__oxtitle->value)}";
         $oItem->quantity = $iQty;
@@ -279,7 +279,7 @@ class oxEmosAdapter extends oxSuperCfg
      */
     protected function _getEmosCl()
     {
-        $oActView = $this->getConfig()->getActiveView();
+        $oActView = $this->config->getActiveView();
         // showLogin function is deprecated, but just in case if it is called
         if (strcasecmp('showLogin', (string)$oActView->getFncName()) == 0) {
             $sCl = 'account';
@@ -299,7 +299,7 @@ class oxEmosAdapter extends oxSuperCfg
         // #4016: econda: json function returns null if title has an umlaut
         if ($this->_sEmosCatPath === null) {
             $aCatTitle = array();
-            if ($aCatPath = $this->getConfig()->getActiveView()->getBreadCrumb()) {
+            if ($aCatPath = $this->config->getActiveView()->getBreadCrumb()) {
                 foreach ($aCatPath as $aCatPathParts) {
                     $aCatTitle[] = $aCatPathParts['title'];
                 }
@@ -354,7 +354,7 @@ class oxEmosAdapter extends oxSuperCfg
      */
     protected function _getEmosPageId($sTplName)
     {
-        $sPageId = $this->getConfig()->getShopId() .
+        $sPageId = $this->config->getShopId() .
             $this->_getEmosCl() .
             $sTplName .
             oxRegistry::getConfig()->getRequestParameter('cnid') .
@@ -373,7 +373,7 @@ class oxEmosAdapter extends oxSuperCfg
     {
         if (!($sCurrTpl = basename(( string )oxRegistry::getConfig()->getRequestParameter('tpl')))) {
             // in case template was not defined in request
-            $sCurrTpl = $this->getConfig()->getActiveView()->getTemplateName();
+            $sCurrTpl = $this->config->getActiveView()->getTemplateName();
         }
         return $sCurrTpl;
     }
@@ -411,7 +411,7 @@ class oxEmosAdapter extends oxSuperCfg
         $aContent = $this->_getPagesContent();
         $aOrderSteps = $this->_getOrderStepNames();
 
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $oCurrentView = $oConfig->getActiveView();
         $sFunction = $oCurrentView->getFncName();
         /** @var oxStrRegular $oStr */
@@ -426,7 +426,7 @@ class oxEmosAdapter extends oxSuperCfg
 
         switch ($sControllerName) {
             case 'user':
-                $sOption = $this->getConfig()->getRequestParameter('option');
+                $sOption = $this->config->getRequestParameter('option');
                 $sOption = (isset($sOption)) ? $sOption : $this->getSession()->getVariable('option');
 
                 if (isset($sOption) && array_key_exists('user_' . $sOption, $aContent)) {
@@ -438,7 +438,7 @@ class oxEmosAdapter extends oxSuperCfg
                 }
                 break;
             case 'payment':
-                if ($this->getConfig()->getRequestParameter('new_user')) {
+                if ($this->config->getRequestParameter('new_user')) {
                     $this->_setUserRegistration($oEmos, $oUser);
                 }
                 break;
@@ -529,7 +529,7 @@ class oxEmosAdapter extends oxSuperCfg
      */
     private function _setSearchInformation($oEmos, $oSmarty)
     {
-        $iPage = $this->getConfig()->getRequestParameter('pgNr');
+        $iPage = $this->config->getRequestParameter('pgNr');
         if (!$iPage) {
             $sSearchParamForLink = oxRegistry::getConfig()->getRequestParameter('searchparam', true);
             $iSearchCount = 0;
@@ -551,7 +551,7 @@ class oxEmosAdapter extends oxSuperCfg
      */
     private function _setBasketInformation($oEmos, $oUser, $oOrder, $oBasket)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $oCur = $oConfig->getActShopCurrencyObject();
 
         $oEmos->addEmosBillingPageArray($this->_convertToUtf($oOrder->oxorder__oxordernr->value),

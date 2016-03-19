@@ -71,7 +71,7 @@ class Category_List extends oxAdminList
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 

@@ -61,7 +61,7 @@ class oxTableViewNameGenerator
      */
     public function getViewName($table, $languageId = null, $shopId = null)
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         if (!$config->getConfigParam('blSkipViewUsage')) {
             $language = $this->getLanguage();

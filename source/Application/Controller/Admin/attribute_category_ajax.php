@@ -58,7 +58,7 @@ class attribute_category_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oDb = oxDb::getDb();
 
         $sCatTable = $this->_getViewName('oxcategories');

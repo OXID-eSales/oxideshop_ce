@@ -65,7 +65,7 @@ class category_main_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $sArticleTable = $this->_getViewName('oxarticles');
         $sO2CView = $this->_getViewName('oxobject2category');
@@ -116,7 +116,7 @@ class category_main_ajax extends ajaxListComponent
         $sQ = parent::_addFilter($sQ);
 
         // display variants or not ?
-        if (!$this->getConfig()->getConfigParam('blVariantsSelection')) {
+        if (!$this->config->getConfigParam('blVariantsSelection')) {
             $sQ .= " and {$sArtTable}.oxparentid = '' ";
         }
 
@@ -129,7 +129,7 @@ class category_main_ajax extends ajaxListComponent
      */
     public function addArticle()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $aArticles = $this->_getActionIds('oxarticles.oxid');
         $sCategoryID = $myConfig->getRequestParameter('synchoxid');
@@ -286,7 +286,7 @@ class category_main_ajax extends ajaxListComponent
         $where = "where oxcatnid=" . $db->quote($categoryID);
 
         $whereProductIdIn = " oxobjectid in ( {$prodIds} )";
-        if (!$this->getConfig()->getConfigParam('blVariantsSelection')) {
+        if (!$this->config->getConfigParam('blVariantsSelection')) {
             $whereProductIdIn = "( " . $whereProductIdIn . " OR oxobjectid in (
                                         select oxid from oxarticles where oxparentid in ({$prodIds})
                                         )

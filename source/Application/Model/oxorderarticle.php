@@ -92,14 +92,7 @@ class oxOrderArticle extends oxBase implements ArticleInterface
      */
     protected $_aSkipSaveFields = array('oxtimestamp');
 
-    /**
-     * Class constructor, initiates class constructor (parent::oxbase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxorderarticles');
-    }
+    protected $_sCoreTable = "oxorderarticles";
 
     /**
      * Copies passed to method product into $this.
@@ -117,7 +110,7 @@ class oxOrderArticle extends oxBase implements ArticleInterface
                     $this->$sFieldName = $oProduct->$sName;
                 }
                 // formatting view
-                if (!$this->getConfig()->getConfigParam('blSkipFormatConversion')) {
+                if (!$this->config->getConfigParam('blSkipFormatConversion')) {
                     if ($sFieldName == "oxorderarticles__oxinsert") {
                         oxRegistry::get("oxUtilsDate")->convertDBDate($this->$sFieldName, true);
                     }
@@ -154,7 +147,7 @@ class oxOrderArticle extends oxBase implements ArticleInterface
         $oArticle->load($this->oxorderarticles__oxartid->value);
         $oArticle->beforeUpdate();
 
-        if ($this->getConfig()->getConfigParam('blUseStock')) {
+        if ($this->config->getConfigParam('blUseStock')) {
             // get real article stock count
             $iStockCount = $this->_getArtStock($dAddAmount, $blAllowNegativeStock);
             $oDb = oxDb::getDb();
@@ -593,7 +586,7 @@ class oxOrderArticle extends oxBase implements ArticleInterface
                     }
                 }
 
-                $this->updateArticleStock($iStockChange * -1, $this->getConfig()->getConfigParam('blAllowNegativeStock'));
+                $this->updateArticleStock($iStockChange * -1, $this->config->getConfigParam('blAllowNegativeStock'));
 
                 // updating self
                 $this->oxorderarticles__oxamount = new oxField($iNewAmount, oxField::T_RAW);
@@ -619,7 +612,7 @@ class oxOrderArticle extends oxBase implements ArticleInterface
     public function cancelOrderArticle()
     {
         if ($this->oxorderarticles__oxstorno->value == 0) {
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
             $this->oxorderarticles__oxstorno = new oxField(1);
             if ($this->save()) {
                 $this->updateArticleStock($this->oxorderarticles__oxamount->value, $myConfig->getConfigParam('blAllowNegativeStock'));
@@ -638,7 +631,7 @@ class oxOrderArticle extends oxBase implements ArticleInterface
     public function delete($sOXID = null)
     {
         if ($blDelete = parent::delete($sOXID)) {
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
             if ($this->oxorderarticles__oxstorno->value != 1) {
                 $this->updateArticleStock($this->oxorderarticles__oxamount->value, $myConfig->getConfigParam('blAllowNegativeStock'));
             }
@@ -658,7 +651,7 @@ class oxOrderArticle extends oxBase implements ArticleInterface
     {
         // ordered articles
         if (($blSave = parent::save()) && $this->isNewOrderItem()) {
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
             if ($myConfig->getConfigParam('blUseStock') &&
                 $myConfig->getConfigParam('blPsBasketReservationEnabled')
             ) {
@@ -718,7 +711,7 @@ class oxOrderArticle extends oxBase implements ArticleInterface
     {
         $oLang = oxRegistry::getLang();
         $oOrder = $this->getOrder();
-        $oCurrency = $this->getConfig()->getCurrencyObject($oOrder->oxorder__oxcurrency->value);
+        $oCurrency = $this->config->getCurrencyObject($oOrder->oxorder__oxcurrency->value);
 
         return $oLang->formatCurrency($this->oxorderarticles__oxbrutprice->value, $oCurrency);
     }
@@ -732,7 +725,7 @@ class oxOrderArticle extends oxBase implements ArticleInterface
     {
         $oLang = oxRegistry::getLang();
         $oOrder = $this->getOrder();
-        $oCurrency = $this->getConfig()->getCurrencyObject($oOrder->oxorder__oxcurrency->value);
+        $oCurrency = $this->config->getCurrencyObject($oOrder->oxorder__oxcurrency->value);
 
         return $oLang->formatCurrency($this->oxorderarticles__oxbprice->value, $oCurrency);
     }
@@ -746,7 +739,7 @@ class oxOrderArticle extends oxBase implements ArticleInterface
     {
         $oLang = oxRegistry::getLang();
         $oOrder = $this->getOrder();
-        $oCurrency = $this->getConfig()->getCurrencyObject($oOrder->oxorder__oxcurrency->value);
+        $oCurrency = $this->config->getCurrencyObject($oOrder->oxorder__oxcurrency->value);
 
         return $oLang->formatCurrency($this->oxorderarticles__oxnprice->value, $oCurrency);
     }
@@ -827,7 +820,7 @@ class oxOrderArticle extends oxBase implements ArticleInterface
 
         if ($oArticle->oxarticles__oxisdownloadable->value) {
 
-            $oConfig = $this->getConfig();
+            $oConfig = $this->config;
             $sOrderId = $this->oxorderarticles__oxorderid->value;
             $sOrderArticleId = $this->getId();
             $sShopId = $oConfig->getShopId();
@@ -866,7 +859,7 @@ class oxOrderArticle extends oxBase implements ArticleInterface
     {
         $oLang = oxRegistry::getLang();
         $oOrder = $this->getOrder();
-        $oCurrency = $this->getConfig()->getCurrencyObject($oOrder->oxorder__oxcurrency->value);
+        $oCurrency = $this->config->getCurrencyObject($oOrder->oxorder__oxcurrency->value);
 
         return $oLang->formatCurrency($this->oxorderarticles__oxnetprice->value, $oCurrency);
     }

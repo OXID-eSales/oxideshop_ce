@@ -39,7 +39,7 @@ class oxPictureHandler extends oxSuperCfg
      */
     public function deleteArticleMasterPicture($oObject, $iIndex, $blDeleteMasterPicture = true)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myUtilsPic = oxRegistry::get("oxUtilsPic");
         $oUtilsFile = oxRegistry::get("oxUtilsFile");
         $blGeneratedImagesOnly = !$blDeleteMasterPicture;
@@ -100,7 +100,7 @@ class oxPictureHandler extends oxSuperCfg
     public function deleteMainIcon($oObject)
     {
         if (($sMainIcon = $oObject->oxarticles__oxicon->value)) {
-            $sPath = $this->getConfig()->getPictureDir(false) . oxRegistry::get("oxUtilsFile")->getImageDirByType("ICO");
+            $sPath = $this->config->getPictureDir(false) . oxRegistry::get("oxUtilsFile")->getImageDirByType("ICO");
             oxRegistry::get("oxUtilsPic")->safePictureDelete($sMainIcon, $sPath, "oxarticles", "oxicon");
         }
     }
@@ -114,7 +114,7 @@ class oxPictureHandler extends oxSuperCfg
     {
         if (($sThumb = $oObject->oxarticles__oxthumb->value)) {
             // deleting article main icon and thumb picture
-            $sPath = $this->getConfig()->getPictureDir(false) . oxRegistry::get("oxUtilsFile")->getImageDirByType("TH");
+            $sPath = $this->config->getPictureDir(false) . oxRegistry::get("oxUtilsFile")->getImageDirByType("TH");
             oxRegistry::get("oxUtilsPic")->safePictureDelete($sThumb, $sPath, "oxarticles", "oxthumb");
         }
     }
@@ -131,7 +131,7 @@ class oxPictureHandler extends oxSuperCfg
     {
         // checking if oxzoom field exists
         $oDbHandler = oxNew("oxDbMetaDataHandler");
-        $iZoomPicCount = (int) $this->getConfig()->getConfigParam('iZoomPicCount');
+        $iZoomPicCount = (int) $this->config->getConfigParam('iZoomPicCount');
 
         if ($iIndex > $iZoomPicCount || !$oDbHandler->fieldExists("oxzoom" . $iIndex, "oxarticles")) {
             if ($sZoomPicName = $this->getZoomName($oObject->{"oxarticles__oxpic" . $iIndex}->value, $iIndex)) {
@@ -146,7 +146,7 @@ class oxPictureHandler extends oxSuperCfg
 
         if ($sZoomPicName && $sZoomPicName != "nopic.jpg") {
             // deleting zoom picture
-            $sPath = $this->getConfig()->getPictureDir(false) . oxRegistry::get("oxUtilsFile")->getImageDirByType("Z" . $iIndex);
+            $sPath = $this->config->getPictureDir(false) . oxRegistry::get("oxUtilsFile")->getImageDirByType("Z" . $iIndex);
             oxRegistry::get("oxUtilsPic")->safePictureDelete($sZoomPicName, $sPath, "oxarticles", $sFieldToCheck);
         }
     }
@@ -257,7 +257,7 @@ class oxPictureHandler extends oxSuperCfg
             return array('path' => false, 'url' => $sAltUrl);
         }
 
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $sPath = $oConfig->getPicturePath($sFilePath . $sFile, $blAdmin, $iLang, $iShopId);
         if (!$sPath) {
             return array('path' => false, 'url' => false);
@@ -280,7 +280,7 @@ class oxPictureHandler extends oxSuperCfg
      */
     public function getAltImageUrl($sFilePath, $sFile, $blSSL = null)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         $sAltUrl = $oConfig->getConfigParam('sAltImageUrl');
         if (!$sAltUrl) {
@@ -327,7 +327,7 @@ class oxPictureHandler extends oxSuperCfg
 
             $aPicInfo = $this->_getPictureInfo("master/" . ($sAltPath ? $sAltPath : $sPath), $sFile, $this->isAdmin(), $bSsl);
             if ($aPicInfo['url'] && $aSize[0] && $aSize[1]) {
-                $sDirName = "{$aSize[0]}_{$aSize[1]}_" . $this->getConfig()->getConfigParam('sDefaultImageQuality');
+                $sDirName = "{$aSize[0]}_{$aSize[1]}_" . $this->config->getConfigParam('sDefaultImageQuality');
                 $sUrl = str_replace("/master/" . ($sAltPath ? $sAltPath : $sPath), "/generated/{$sPath}{$sDirName}/", $aPicInfo['url']);
             }
         }

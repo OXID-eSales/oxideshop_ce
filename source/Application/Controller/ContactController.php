@@ -193,6 +193,6 @@ class ContactController extends \oxUBase
      */
     public function getTitle()
     {
-        return $this->getConfig()->getActiveShop()->oxshops__oxcompany->value;
+        return $this->config->getActiveShop()->oxshops__oxcompany->value;
     }
 }

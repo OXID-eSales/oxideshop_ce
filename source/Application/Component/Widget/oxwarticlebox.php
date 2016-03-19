@@ -56,7 +56,7 @@ class oxwArticleBox extends oxWidget
      */
     public function getActiveCategory()
     {
-        $oCategory = $this->getConfig()->getTopActiveView()->getActiveCategory();
+        $oCategory = $this->config->getTopActiveView()->getActiveCategory();
         if ($oCategory) {
             $this->setActiveCategory($oCategory);
         }
@@ -110,7 +110,7 @@ class oxwArticleBox extends oxWidget
             if ($this->getViewParameter('_object')) {
                 $oArticle = $this->getViewParameter('_object');
             } else {
-                $sAddDynParams = $this->getConfig()->getTopActiveView()->getAddUrlParams();
+                $sAddDynParams = $this->config->getTopActiveView()->getAddUrlParams();
 
                 $sAddDynParams = $this->updateDynamicParameters($sAddDynParams);
 
@@ -133,7 +133,7 @@ class oxwArticleBox extends oxWidget
      */
     public function getLink($iLang = null)
     {
-        return $this->getConfig()->getTopActiveView()->getLink($iLang);
+        return $this->config->getTopActiveView()->getLink($iLang);
     }
 
     /**

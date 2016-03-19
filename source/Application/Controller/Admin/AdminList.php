@@ -173,7 +173,7 @@ class AdminList extends \oxAdminView
     protected function _getViewListSize()
     {
         if (!$this->_iViewListSize) {
-            $config = $this->getConfig();
+            $config = $this->config;
             if ($profile = oxRegistry::getSession()->getVariable('profile')) {
                 if (isset($profile[1])) {
                     $config->setConfigParam('iAdminListSize', (int)$profile[1]);
@@ -514,7 +514,7 @@ class AdminList extends \oxAdminView
 
                 $listItem = $this->getItemListBaseObject();
                 $languageId = $listItem->isMultilang() ? $listItem->getLanguage() : oxRegistry::getLang()->getBaseLanguage();
-                $localDateFormat = $this->getConfig()->getConfigParam('sLocalDateFormat');
+                $localDateFormat = $this->config->getConfigParam('sLocalDateFormat');
 
                 foreach ($filter as $table => $filterData) {
                     foreach ($filterData as $name => $value) {
@@ -793,7 +793,7 @@ class AdminList extends \oxAdminView
 
             oxRegistry::getSession()->setVariable('tabelle', $this->_sListClass);
             $this->_aViewData['listTable'] = getViewName($listObject->getCoreTableName());
-            $this->getConfig()->setGlobalParameter('ListCoreTable', $listObject->getCoreTableName());
+            $this->config->setGlobalParameter('ListCoreTable', $listObject->getCoreTableName());
 
             if ($listObject->isMultilang()) {
                 // is the object multilingual?

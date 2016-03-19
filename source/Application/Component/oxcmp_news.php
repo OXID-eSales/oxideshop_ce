@@ -46,7 +46,7 @@ class oxcmp_news extends oxView
     {
         parent::render();
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oActView = $myConfig->getActiveView();
 
         // news loading is disabled

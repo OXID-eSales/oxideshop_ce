@@ -56,8 +56,8 @@ class delivery_main_ajax extends ajaxListComponent
     {
         $sCountryTable = $this->_getViewName('oxcountry');
         $oDb = oxDb::getDb();
-        $sId = $this->getConfig()->getRequestParameter('oxid');
-        $sSynchId = $this->getConfig()->getRequestParameter('synchoxid');
+        $sId = $this->config->getRequestParameter('oxid');
+        $sSynchId = $this->config->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sId) {
@@ -86,7 +86,7 @@ class delivery_main_ajax extends ajaxListComponent
     public function removeCountryFromDel()
     {
         $aChosenCntr = $this->_getActionIds('oxobject2delivery.oxid');
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->config->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -103,10 +103,10 @@ class delivery_main_ajax extends ajaxListComponent
     public function addCountryToDel()
     {
         $aChosenCntr = $this->_getActionIds('oxcountry.oxid');
-        $soxId = $this->getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->config->getRequestParameter('synchoxid');
 
         // adding
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->config->getRequestParameter('all')) {
             $sCountryTable = $this->_getViewName('oxcountry');
             $aChosenCntr = $this->_getAll($this->_addFilter("select $sCountryTable.oxid " . $this->_getQuery()));
         }

@@ -189,7 +189,7 @@ class ArticleListController extends \oxUBase
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $category = $this->getCategoryToRender();
 
@@ -232,7 +232,7 @@ class ArticleListController extends \oxUBase
      */
     protected function getCategoryToRender()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $this->_blIsCat = false;
 
@@ -371,7 +371,7 @@ class ArticleListController extends \oxUBase
      */
     protected function _loadArticles($category)
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $numberOfCategoryArticles = (int) $config->getConfigParam('iNrofCatArticles');
         $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 1;
@@ -500,7 +500,7 @@ class ArticleListController extends \oxUBase
 
         // and final component ..
         //changed for #2776
-        if (($suffix = $this->getConfig()->getActiveShop()->oxshops__oxtitleprefix->value)) {
+        if (($suffix = $this->config->getActiveShop()->oxshops__oxtitleprefix->value)) {
             $description .= " {$suffix}";
         }
 
@@ -756,7 +756,7 @@ class ArticleListController extends \oxUBase
     public function getTitleSuffix()
     {
         if ($this->getActiveCategory()->oxcategories__oxshowsuffix->value) {
-            return $this->getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
+            return $this->config->getActiveShop()->oxshops__oxtitlesuffix->value;
         }
     }
 
@@ -1035,7 +1035,7 @@ class ArticleListController extends \oxUBase
      */
     public function canSelectDisplayType()
     {
-        return $this->getConfig()->getConfigParam('blShowListDisplayType');
+        return $this->config->getConfigParam('blShowListDisplayType');
     }
 
     /**

@@ -99,15 +99,16 @@ class oxUserPayment extends oxBase
         return parent::__get($sName);
     }
 
+    protected $_sCoreTable = 'oxuserpayments';
+
     /**
      * Class constructor. Sets payment key for encoding sensitive data and
      */
-    public function __construct()
+    public function __construct($config)
     {
-        parent::__construct();
-        $this->init('oxuserpayments');
+        parent::__construct($config);
         $this->_sPaymentKey = oxRegistry::getUtils()->strRot13($this->_sPaymentKey);
-        $this->setStoreCreditCardInfo($this->getConfig()->getConfigParam('blStoreCreditCardInfo'));
+        $this->setStoreCreditCardInfo($this->config->getConfigParam('blStoreCreditCardInfo'));
     }
 
     /**

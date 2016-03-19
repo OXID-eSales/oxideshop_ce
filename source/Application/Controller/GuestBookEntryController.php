@@ -60,7 +60,7 @@ class GuestBookEntryController extends \GuestBook
         }
 
         $sReviewText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('rvw_txt', true));
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = $this->config->getShopId();
         $sUserId = oxRegistry::getSession()->getVariable('usr');
 
         // guest book`s entry is validated

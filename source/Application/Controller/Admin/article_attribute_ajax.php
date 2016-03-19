@@ -131,7 +131,7 @@ class article_attribute_ajax extends ajaxListComponent
         $articleId = oxRegistry::getConfig()->getRequestParameter("oxid");
         $attributeId = oxRegistry::getConfig()->getRequestParameter("attr_oxid");
         $attributeValue = oxRegistry::getConfig()->getRequestParameter("attr_value");
-        if (!$this->getConfig()->isUtf()) {
+        if (!$this->config->isUtf()) {
             $attributeValue = iconv('UTF-8', oxRegistry::getLang()->translateString("charset"), $attributeValue);
         }
 

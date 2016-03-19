@@ -39,7 +39,7 @@ class Article_Main extends oxAdminDetails
     {
         parent::render();
 
-        $this->getConfig()->setConfigParam('bl_perfLoadPrice', true);
+        $this->config->setConfigParam('bl_perfLoadPrice', true);
 
         $oArticle = oxNew('oxArticle');
         $oArticle->enablePriceLoad();
@@ -47,8 +47,8 @@ class Article_Main extends oxAdminDetails
         $this->_aViewData['edit'] = $oArticle;
 
         $sOxId = $this->getEditObjectId();
-        $sVoxId = $this->getConfig()->getRequestParameter("voxid");
-        $sOxParentId = $this->getConfig()->getRequestParameter("oxparentid");
+        $sVoxId = $this->config->getRequestParameter("voxid");
+        $sOxParentId = $this->config->getRequestParameter("oxparentid");
 
         // new variant ?
         if (isset($sVoxId) && $sVoxId == "-1" && isset($sOxParentId) && $sOxParentId && $sOxParentId != "-1") {
@@ -108,7 +108,7 @@ class Article_Main extends oxAdminDetails
             "oxarticles__oxlongdesc",
             "details.tpl.css"
         );
-        $this->_aViewData["blUseTimeCheck"] = $this->getConfig()->getConfigParam('blUseTimeCheck');
+        $this->_aViewData["blUseTimeCheck"] = $this->config->getConfigParam('blUseTimeCheck');
 
         return "article_main.tpl";
     }
@@ -140,7 +140,7 @@ class Article_Main extends oxAdminDetails
     {
         parent::save();
 
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $soxId = $this->getEditObjectId();
         $aParams = $oConfig->getRequestParameter("editval");
 
@@ -311,7 +311,7 @@ class Article_Main extends oxAdminDetails
      */
     public function copyArticle($sOldId = null, $sNewId = null, $sParentId = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $sOldId = $sOldId ? $sOldId : $this->getEditObjectId();
         $sNewId = $sNewId ? $sNewId : oxUtilsObject::getInstance()->generateUID();
@@ -569,7 +569,7 @@ class Article_Main extends oxAdminDetails
      */
     protected function _copyStaffelpreis($sOldId, $sNewId)
     {
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = $this->config->getShopId();
         $oPriceList = oxNew("oxlist");
         $oPriceList->init("oxbase", "oxprice2article");
         $sQ = "select * from oxprice2article where oxartid = '{$sOldId}' and oxshopid = '{$sShopId}' " .

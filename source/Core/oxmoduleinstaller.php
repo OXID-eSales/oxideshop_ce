@@ -39,8 +39,9 @@ class oxModuleInstaller extends oxSuperCfg
      *
      * @param oxModuleCache $oxModuleCache
      */
-    public function __construct(oxModuleCache $oxModuleCache = null)
+    public function __construct($config, oxModuleCache $oxModuleCache = null)
     {
+        parent::__construct($config);
         $this->setModuleCache($oxModuleCache);
     }
 
@@ -139,7 +140,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     public function getModulesWithExtendedClass()
     {
-        return $this->getConfig()->getModulesWithExtendedClass();
+        return $this->config->getModulesWithExtendedClass();
     }
 
     /**
@@ -207,7 +208,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _addToDisabledList($sModuleId)
     {
-        $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
+        $aDisabledModules = (array) $this->config->getConfigParam('aDisabledModules');
 
         $aModules = array_merge($aDisabledModules, array($sModuleId));
         $aModules = array_unique($aModules);
@@ -222,12 +223,12 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _deleteModule($sModuleId)
     {
-        $aExt = $this->getConfig()->getModulesWithExtendedClass();
+        $aExt = $this->config->getModulesWithExtendedClass();
 
         $aUpdatedExt = $this->diffModuleArrays($aExt, $sModuleId);
         $aUpdatedExt = $this->buildModuleChains($aUpdatedExt);
 
-        $this->getConfig()->saveShopConfVar('aarr', 'aModules', $aUpdatedExt);
+        $this->config->saveShopConfVar('aarr', 'aModules', $aUpdatedExt);
     }
 
     /**
@@ -238,7 +239,7 @@ class oxModuleInstaller extends oxSuperCfg
     protected function _deleteBlock($sModuleId)
     {
         $oDb = oxDb::getDb();
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = $this->config->getShopId();
         $oDb->execute("DELETE FROM `oxtplblocks` WHERE `oxmodule` =" . $oDb->quote($sModuleId) . " AND `oxshopid` = " . $oDb->quote($sShopId));
     }
 
@@ -249,7 +250,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _deleteTemplateFiles($sModuleId)
     {
-        $aTemplates = (array) $this->getConfig()->getConfigParam('aModuleTemplates');
+        $aTemplates = (array) $this->config->getConfigParam('aModuleTemplates');
         unset($aTemplates[$sModuleId]);
 
         $this->_saveToConfig('aModuleTemplates', $aTemplates);
@@ -262,7 +263,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _deleteModuleFiles($sModuleId)
     {
-        $aFiles = (array) $this->getConfig()->getConfigParam('aModuleFiles');
+        $aFiles = (array) $this->config->getConfigParam('aModuleFiles');
         unset($aFiles[$sModuleId]);
 
         $this->_saveToConfig('aModuleFiles', $aFiles);
@@ -275,7 +276,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _deleteModuleEvents($sModuleId)
     {
-        $aEvents = (array) $this->getConfig()->getConfigParam('aModuleEvents');
+        $aEvents = (array) $this->config->getConfigParam('aModuleEvents');
         unset($aEvents[$sModuleId]);
 
         $this->_saveToConfig('aModuleEvents', $aEvents);
@@ -288,7 +289,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _deleteModuleVersions($sModuleId)
     {
-        $aVersions = (array) $this->getConfig()->getConfigParam('aModuleVersions');
+        $aVersions = (array) $this->config->getConfigParam('aModuleVersions');
         unset($aVersions[$sModuleId]);
 
         $this->_saveToConfig('aModuleVersions', $aVersions);
@@ -351,7 +352,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _removeFromDisabledList($sModuleId)
     {
-        $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
+        $aDisabledModules = (array) $this->config->getConfigParam('aDisabledModules');
 
         if (isset($aDisabledModules) && is_array($aDisabledModules)) {
             $aDisabledModules = array_diff($aDisabledModules, array($sModuleId));
@@ -367,7 +368,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _addTemplateBlocks($aModuleBlocks, $sModuleId)
     {
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = $this->config->getShopId();
         $oDb = oxDb::getDb();
 
         if (is_array($aModuleBlocks)) {
@@ -396,7 +397,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _addModuleFiles($aModuleFiles, $sModuleId)
     {
-        $aFiles = (array) $this->getConfig()->getConfigParam('aModuleFiles');
+        $aFiles = (array) $this->config->getConfigParam('aModuleFiles');
 
         if (is_array($aModuleFiles)) {
             $aFiles[$sModuleId] = array_change_key_case($aModuleFiles, CASE_LOWER);
@@ -413,7 +414,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _addTemplateFiles($aModuleTemplates, $sModuleId)
     {
-        $aTemplates = (array) $this->getConfig()->getConfigParam('aModuleTemplates');
+        $aTemplates = (array) $this->config->getConfigParam('aModuleTemplates');
         if (is_array($aModuleTemplates)) {
             $aTemplates[$sModuleId] = $aModuleTemplates;
         }
@@ -430,7 +431,7 @@ class oxModuleInstaller extends oxSuperCfg
     protected function _addModuleSettings($aModuleSettings, $sModuleId)
     {
         $this->_removeNotUsedSettings($aModuleSettings, $sModuleId);
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $sShopId = $oConfig->getShopId();
         $oDb = oxDb::getDb();
 
@@ -475,7 +476,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _addModuleEvents($aModuleEvents, $sModuleId)
     {
-        $aEvents = (array) $this->getConfig()->getConfigParam('aModuleEvents');
+        $aEvents = (array) $this->config->getConfigParam('aModuleEvents');
         if (is_array($aEvents)) {
             $aEvents[$sModuleId] = $aModuleEvents;
         }
@@ -491,7 +492,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _addModuleVersion($sModuleVersion, $sModuleId)
     {
-        $aVersions = (array) $this->getConfig()->getConfigParam('aModuleVersions');
+        $aVersions = (array) $this->config->getConfigParam('aModuleVersions');
         if (is_array($aVersions)) {
             $aVersions[$sModuleId] = $sModuleVersion;
         }
@@ -507,7 +508,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _callEvent($sEvent, $sModuleId)
     {
-        $aModuleEvents = (array) $this->getConfig()->getConfigParam('aModuleEvents');
+        $aModuleEvents = (array) $this->config->getConfigParam('aModuleEvents');
 
         if (isset($aModuleEvents[$sModuleId], $aModuleEvents[$sModuleId][$sEvent])) {
             $mEvent = $aModuleEvents[$sModuleId][$sEvent];
@@ -619,7 +620,7 @@ class oxModuleInstaller extends oxSuperCfg
     protected function _getModuleConfigs($sModuleId)
     {
         $oDb = oxDb::getDb();
-        $sQuotedShopId = $oDb->quote($this->getConfig()->getShopId());
+        $sQuotedShopId = $oDb->quote($this->config->getShopId());
         $sQuotedModuleId = $oDb->quote('module:' . $sModuleId);
 
         $sModuleConfigsQuery = "SELECT oxvarname FROM oxconfig WHERE oxmodule = $sQuotedModuleId AND oxshopid = $sQuotedShopId";
@@ -656,7 +657,7 @@ class oxModuleInstaller extends oxSuperCfg
     protected function _removeModuleConfigs($sModuleId, $aConfigsToRemove)
     {
         $oDb = oxDb::getDb();
-        $sQuotedShopId = $oDb->quote($this->getConfig()->getShopId());
+        $sQuotedShopId = $oDb->quote($this->config->getShopId());
         $sQuotedModuleId = $oDb->quote('module:' . $sModuleId);
 
         $aQuotedConfigsToRemove = array_map(array($oDb, 'quote'), $aConfigsToRemove);
@@ -700,7 +701,7 @@ class oxModuleInstaller extends oxSuperCfg
      */
     protected function _saveToConfig($sVariableName, $sVariableValue, $sVariableType = 'aarr')
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $oConfig->setConfigParam($sVariableName, $sVariableValue);
         $oConfig->saveShopConfVar($sVariableType, $sVariableName, $sVariableValue);
     }

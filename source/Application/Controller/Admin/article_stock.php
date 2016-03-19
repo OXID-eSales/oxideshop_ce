@@ -37,7 +37,7 @@ class Article_Stock extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 
@@ -136,7 +136,7 @@ class Article_Stock extends oxAdminDetails
      */
     public function addprice($sOXID = null, $aUpdateParams = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $this->resetContentCache();
 

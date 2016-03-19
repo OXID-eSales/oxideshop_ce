@@ -64,7 +64,7 @@ class Content_List extends oxAdminList
         $sFolder = $sFolder ? $sFolder : -1;
 
         $this->_aViewData["folder"] = $sFolder;
-        $this->_aViewData["afolder"] = $this->getConfig()->getConfigParam('aCMSfolder');
+        $this->_aViewData["afolder"] = $this->config->getConfigParam('aCMSfolder');
 
         return $this->_sThisTemplate;
     }

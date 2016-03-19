@@ -173,7 +173,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
         $sTableSet = getLangTableName($sTable, $iLang);
 
         $aRes = oxDb::getDb()->getAll("show create table {$sTable}");
-        $collation = $this->getConfig()->isUtf() ? '' : 'COLLATE latin1_general_ci';
+        $collation = $this->config->isUtf() ? '' : 'COLLATE latin1_general_ci';
         $sSql = "CREATE TABLE `{$sTableSet}` (" .
                 "`OXID` char(32) $collation NOT NULL, " .
                 "PRIMARY KEY (`OXID`)" .
@@ -543,7 +543,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
     protected function safeGuardAdditionalMultiLanguageTables()
     {
         $maxLang = $this->getCurrentMaxLangId();
-        $multiLanguageTables = $this->getConfig()->getConfigParam('aMultiLangTables');
+        $multiLanguageTables = $this->config->getConfigParam('aMultiLangTables');
 
         if (!is_array($multiLanguageTables) || empty($multiLanguageTables)) {
             return; //nothing to do

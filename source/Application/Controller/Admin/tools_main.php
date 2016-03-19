@@ -36,7 +36,7 @@ class Tools_Main extends oxAdminDetails
      */
     public function render()
     {
-        if ($this->getConfig()->isDemoShop()) {
+        if ($this->config->isDemoShop()) {
             oxRegistry::getUtils()->showMessageAndExit("Access denied !");
         }
 
@@ -46,7 +46,7 @@ class Tools_Main extends oxAdminDetails
         $oAuthUser->loadAdminUser();
         $this->_aViewData["blIsMallAdmin"] = $oAuthUser->oxuser__oxrights->value == "malladmin";
 
-        $blShowUpdateViews = $this->getConfig()->getConfigParam('blShowUpdateViews');
+        $blShowUpdateViews = $this->config->getConfigParam('blShowUpdateViews');
         $this->_aViewData['showViewUpdate'] = (isset($blShowUpdateViews) && !$blShowUpdateViews) ? false : true;
 
         return "tools_main.tpl";

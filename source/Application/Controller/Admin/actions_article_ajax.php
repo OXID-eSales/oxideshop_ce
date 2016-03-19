@@ -56,7 +56,7 @@ class actions_article_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oDb = oxDb::getDb();
         $sArticleTable = $this->_getViewName('oxarticles');
         $sViewName = $this->_getViewName('oxobject2category');
@@ -102,7 +102,7 @@ class actions_article_ajax extends ajaxListComponent
         $sQ = parent::_addFilter($sQ);
 
         // display variants or not ?
-        $sQ .= $this->getConfig()->getConfigParam('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';
+        $sQ .= $this->config->getConfigParam('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';
 
         return $sQ;
     }
@@ -113,7 +113,7 @@ class actions_article_ajax extends ajaxListComponent
     public function removeActionArticle()
     {
         $sActionId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        //$sActionId = $this->getConfig()->getConfigParam( 'oxid' );
+        //$sActionId = $this->config->getConfigParam( 'oxid' );
 
         $oDb = oxDb::getDb();
 

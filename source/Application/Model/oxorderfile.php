@@ -41,18 +41,6 @@ class oxOrderFile extends oxBase
      */
     protected $_sClassName = 'oxorderfile';
 
-
-    /**
-     * Initialises the instance
-     *
-     * @return oxOrderFile
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxorderfiles');
-    }
-
     /**
      * reset order files downloadcount and / or expration times
      */

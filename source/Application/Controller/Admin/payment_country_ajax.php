@@ -57,8 +57,8 @@ class payment_country_ajax extends ajaxListComponent
         // looking for table/view
         $sCountryTable = $this->_getViewName('oxcountry');
         $oDb = oxDb::getDb();
-        $sCountryId = $this->getConfig()->getRequestParameter('oxid');
-        $sSynchCountryId = $this->getConfig()->getRequestParameter('synchoxid');
+        $sCountryId = $this->config->getRequestParameter('oxid');
+        $sSynchCountryId = $this->config->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sCountryId) {
@@ -85,9 +85,9 @@ class payment_country_ajax extends ajaxListComponent
     public function addPayCountry()
     {
         $aChosenCntr = $this->_getActionIds('oxcountry.oxid');
-        $soxId = $this->getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->config->getRequestParameter('synchoxid');
 
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->config->getRequestParameter('all')) {
             $sCountryTable = $this->_getViewName('oxcountry');
             $aChosenCntr = $this->_getAll($this->_addFilter("select $sCountryTable.oxid " . $this->_getQuery()));
         }
@@ -109,7 +109,7 @@ class payment_country_ajax extends ajaxListComponent
     public function removePayCountry()
     {
         $aChosenCntr = $this->_getActionIds('oxobject2payment.oxid');
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->config->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxobject2payment.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);

@@ -39,7 +39,7 @@ class Module_SortList extends oxAdminDetails
 
         $oModuleList = oxNew("oxModuleList");
 
-        $this->_aViewData["aExtClasses"] = $this->getConfig()->getModulesWithExtendedClass();
+        $this->_aViewData["aExtClasses"] = $this->config->getModulesWithExtendedClass();
         $this->_aViewData["aDisabledModules"] = $oModuleList->getDisabledModuleClasses();
 
         // checking if there are any deleted extensions
@@ -66,7 +66,7 @@ class Module_SortList extends oxAdminDetails
         $oModuleInstaller = oxNew('oxModuleInstaller');
         $aModules = $oModuleInstaller->buildModuleChains($aModules);
 
-        $this->getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
+        $this->config->saveShopConfVar("aarr", "aModules", $aModules);
     }
 
     /**

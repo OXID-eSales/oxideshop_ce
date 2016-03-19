@@ -167,7 +167,7 @@ class Shop_Seo extends Shop_Config
      */
     public function dropSeoIds()
     {
-        $this->resetSeoData($this->getConfig()->getShopId());
+        $this->resetSeoData($this->config->getShopId());
     }
 
     /**

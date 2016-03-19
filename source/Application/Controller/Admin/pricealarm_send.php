@@ -46,7 +46,7 @@ class PriceAlarm_Send extends oxAdminList
     {
         parent::render();
 
-        $config = $this->getConfig();
+        $config = $this->config;
 
         ini_set("session.gc_maxlifetime", 36000);
 
@@ -93,7 +93,7 @@ class PriceAlarm_Send extends oxAdminList
     protected function countActivePriceAlerts()
     {
         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $config = $this->getConfig();
+        $config = $this->config;
         $shopId = $config->getShopId();
 
         $activeAlarmsQuery =
@@ -122,7 +122,7 @@ class PriceAlarm_Send extends oxAdminList
      */
     protected function sendPriceChangeNotifications($start, $limit)
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $shopId = $config->getShopId();
 

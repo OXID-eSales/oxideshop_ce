@@ -117,7 +117,7 @@ class BasketController extends \oxUBase
      */
     public function render()
     {
-        if ($this->getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+        if ($this->config->getConfigParam('blPsBasketReservationEnabled')) {
             $this->getSession()->getBasketReservations()->renewExpiration();
         }
 
@@ -208,7 +208,7 @@ class BasketController extends \oxUBase
      */
     public function showBackToShop()
     {
-        $iNewBasketItemMessage = $this->getConfig()->getConfigParam('iNewBasketItemMessage');
+        $iNewBasketItemMessage = $this->config->getConfigParam('iNewBasketItemMessage');
         $sBackToShop = oxRegistry::getSession()->getVariable('_backtoshop');
 
         return ($iNewBasketItemMessage == 3 && $sBackToShop);
@@ -253,7 +253,7 @@ class BasketController extends \oxUBase
      */
     public function backToShop()
     {
-        if ($this->getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
+        if ($this->config->getConfigParam('iNewBasketItemMessage') == 3) {
             $oSession = oxRegistry::getSession();
             if ($sBackLink = $oSession->getVariable('_backtoshop')) {
                 $oSession->deleteVariable('_backtoshop');

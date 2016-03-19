@@ -148,7 +148,7 @@ class ContentController extends \oxUBase
 
         $oContent = $this->getContent();
         if ($oContent && !$this->_canShowContent($oContent->oxcontents__oxloadid->value)) {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeURL() . 'cl=account');
+            oxRegistry::getUtils()->redirect($this->config->getShopHomeURL() . 'cl=account');
         }
 
         $sTpl = false;
@@ -410,7 +410,7 @@ class ContentController extends \oxUBase
      */
     public function showRdfa()
     {
-        return $this->getConfig()->getConfigParam('blRDFaEmbedding');
+        return $this->config->getConfigParam('blRDFaEmbedding');
     }
 
     /**
@@ -423,7 +423,7 @@ class ContentController extends \oxUBase
     {
         $aTemplate = array();
         $sContentId = $this->getContent()->oxcontents__oxloadid->value;
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         if ($sContentId == $myConfig->getConfigParam('sRDFaBusinessEntityLoc')) {
             $aTemplate[] = $this->_sBusinessTemplate;
         }
@@ -444,7 +444,7 @@ class ContentController extends \oxUBase
      */
     public function getBusinessEntityExtends()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $aExtends = array();
 
         foreach ($this->_aBusinessEntityExtends as $sExtend) {
@@ -527,7 +527,7 @@ class ContentController extends \oxUBase
      */
     public function getRdfaVAT()
     {
-        return $this->getConfig()->getConfigParam('iRDFaVAT');
+        return $this->config->getConfigParam('iRDFaVAT');
     }
 
     /**
@@ -537,7 +537,7 @@ class ContentController extends \oxUBase
      */
     public function getRdfaPriceValidity()
     {
-        $iDays = $this->getConfig()->getConfigParam('iRDFaPriceValidity');
+        $iDays = $this->config->getConfigParam('iRDFaPriceValidity');
         $iFrom = oxRegistry::get("oxUtilsDate")->getTime();
         $iThrough = $iFrom + ($iDays * 24 * 60 * 60);
         $oPriceValidity = array();

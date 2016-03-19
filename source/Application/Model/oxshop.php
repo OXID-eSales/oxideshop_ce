@@ -96,23 +96,7 @@ class oxShop extends oxI18n
         $this->_aQueries[] = $sQuery;
     }
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        if (!$this->isShopValid()) {
-            return;
-        }
-
-        $this->init('oxshops');
-
-        if ($iMax = $this->getConfig()->getConfigParam('iMaxShopId')) {
-            $this->setMaxShopId($iMax);
-        }
-    }
+    protected $_sCoreTable = 'oxshops';
 
     /**
      * Sets multi shop tables

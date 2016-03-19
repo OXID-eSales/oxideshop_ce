@@ -93,13 +93,6 @@ class oxCategory extends oxI18n implements oxIUrl
     protected $_blIsSeoObject = true;
 
     /**
-     * Set $_blUseLazyLoading to true if you want to load only actually used fields not full object, depending on views.
-     *
-     * @var bool
-     */
-    protected $_blUseLazyLoading = false;
-
-    /**
      * Dyn image dir
      *
      * @var string
@@ -141,14 +134,7 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     protected $_oParent = null;
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxI18n()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxcategories');
-    }
+    protected $_sCoreTable = "oxcategories";
 
     /**
      * Gets default sorting value
@@ -278,7 +264,7 @@ class oxCategory extends oxI18n implements oxIUrl
 
         $sOXID = isset($sOXID) ? $sOXID : $this->getId();
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oDb = oxDb::getDb();
         $blRet = false;
 
@@ -434,7 +420,7 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function getNrOfArticles()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if (!isset($this->_iNrOfArticles)
             && !$this->isAdmin()
@@ -473,7 +459,7 @@ class oxCategory extends oxI18n implements oxIUrl
     {
         if (!isset($this->_blIsVisible)) {
 
-            if ($this->getConfig()->getConfigParam('blDontShowEmptyCategories')) {
+            if ($this->config->getConfigParam('blDontShowEmptyCategories')) {
                 $blEmpty = ($this->getNrOfArticles() < 1) && !$this->getHasVisibleSubCats();
             } else {
                 $blEmpty = false;
@@ -504,7 +490,7 @@ class oxCategory extends oxI18n implements oxIUrl
     {
         if ($this->_sDynImageDir === null) {
             $sThisShop = $this->oxcategories__oxshopid->value;
-            $this->_sDynImageDir = $this->getConfig()->getPictureUrl(null, false, null, null, $sThisShop);
+            $this->_sDynImageDir = $this->config->getPictureUrl(null, false, null, null, $sThisShop);
         }
 
         return $this->_sDynImageDir;
@@ -616,7 +602,7 @@ class oxCategory extends oxI18n implements oxIUrl
         $sUrl = '';
         if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
+            $sUrl = $this->config->getShopUrl($iLang, false);
         }
 
         //always returns shop url, not admin
@@ -1012,7 +998,7 @@ class oxCategory extends oxI18n implements oxIUrl
     public function getIconUrl()
     {
         if (($sIcon = $this->oxcategories__oxicon->value)) {
-            $oConfig = $this->getConfig();
+            $oConfig = $this->config;
             $sSize = $oConfig->getConfigParam('sCatIconsize');
             if (!isset($sSize)) {
                 $sSize = $oConfig->getConfigParam('sIconsize');
@@ -1030,7 +1016,7 @@ class oxCategory extends oxI18n implements oxIUrl
     public function getThumbUrl()
     {
         if (($sIcon = $this->oxcategories__oxthumb->value)) {
-            $sSize = $this->getConfig()->getConfigParam('sCatThumbnailsize');
+            $sSize = $this->config->getConfigParam('sCatThumbnailsize');
 
             return oxRegistry::get("oxPictureHandler")->getPicUrl("category/thumb/", $sIcon, $sSize);
         }
@@ -1044,7 +1030,7 @@ class oxCategory extends oxI18n implements oxIUrl
     public function getPromotionIconUrl()
     {
         if (($sIcon = $this->oxcategories__oxpromoicon->value)) {
-            $sSize = $this->getConfig()->getConfigParam('sCatPromotionsize');
+            $sSize = $this->config->getConfigParam('sCatPromotionsize');
 
             return oxRegistry::get("oxPictureHandler")->getPicUrl("category/promo_icon/", $sIcon, $sSize);
         }

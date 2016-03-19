@@ -179,7 +179,7 @@ class GuestbookController extends \oxUBase
     {
         if ($this->_aEntries === null) {
             $this->_aEntries = false;
-            $numberOfCategoryArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+            $numberOfCategoryArticles = (int) $this->config->getConfigParam('iNrofCatArticles');
             $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 10;
 
             // loading only if there is some data
@@ -211,7 +211,7 @@ class GuestbookController extends \oxUBase
             $userId = $userId ? $userId : 0;
 
             $entries = oxNew('oxGbEntry');
-            $this->_blFloodProtection = $entries->floodProtection($this->getConfig()->getShopId(), $userId);
+            $this->_blFloodProtection = $entries->floodProtection($this->config->getShopId(), $userId);
         }
 
         return $this->_blFloodProtection;
@@ -288,7 +288,7 @@ class GuestbookController extends \oxUBase
         }
 
         $reviewText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('rvw_txt', true));
-        $shopId = $this->getConfig()->getShopId();
+        $shopId = $this->config->getShopId();
         $userId = oxRegistry::getSession()->getVariable('usr');
 
         // guest book`s entry is validated

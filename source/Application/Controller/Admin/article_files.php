@@ -52,7 +52,7 @@ class Article_Files extends oxAdminDetails
     {
         parent::render();
 
-        if (!$this->getConfig()->getConfigParam('blEnableDownloads')) {
+        if (!$this->config->getConfigParam('blEnableDownloads')) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_DISABLED_DOWNLOADABLE_PRODUCTS');
         }
         $oArticle = $this->getArticle();
@@ -125,7 +125,7 @@ class Article_Files extends oxAdminDetails
      */
     public function upload()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($myConfig->isDemoShop()) {
             $oEx = oxNew("oxExceptionToDisplay");
@@ -139,7 +139,7 @@ class Article_Files extends oxAdminDetails
 
         $aParams = oxRegistry::getConfig()->getRequestParameter("newfile");
         $aParams = $this->_processOptions($aParams);
-        $aNewFile = $this->getConfig()->getUploadedFile("newArticleFile");
+        $aNewFile = $this->config->getUploadedFile("newArticleFile");
 
         //uploading and processing supplied file
         $oArticleFile = oxNew("oxFile");
@@ -174,7 +174,7 @@ class Article_Files extends oxAdminDetails
      */
     public function deletefile()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($myConfig->isDemoShop()) {
             $oEx = oxNew("oxExceptionToDisplay");

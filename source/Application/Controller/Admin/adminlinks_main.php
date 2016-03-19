@@ -36,7 +36,7 @@ class Adminlinks_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 

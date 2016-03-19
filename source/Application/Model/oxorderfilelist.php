@@ -43,7 +43,7 @@ class oxOrderFileList extends oxList
     {
         $oOrderFile = $this->getBaseObject();
         $sFields = $oOrderFile->getSelectFields();
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = $this->config->getShopId();
 
         $oOrderFile->addFieldName('oxorderfiles__oxarticletitle');
         $oOrderFile->addFieldName('oxorderfiles__oxarticleartnum');
@@ -79,7 +79,7 @@ class oxOrderFileList extends oxList
     {
         $oOrderFile = $this->getBaseObject();
         $sFields = $oOrderFile->getSelectFields();
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = $this->config->getShopId();
 
         $oOrderFile->addFieldName('oxorderfiles__oxarticletitle');
         $oOrderFile->addFieldName('oxorderfiles__oxarticleartnum');

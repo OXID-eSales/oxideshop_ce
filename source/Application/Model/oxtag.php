@@ -79,9 +79,9 @@ class oxTag extends oxSuperCfg
      *
      * @param string $sTag tag value
      */
-    public function __construct($sTag = null)
+    public function __construct($config, $sTag = null)
     {
-        parent::__construct();
+        parent::__construct($config);
         if ($sTag !== null) {
             $this->set($sTag);
         }
@@ -274,7 +274,7 @@ class oxTag extends oxSuperCfg
             $sUrl = $oSeoEncoderTag->getTagUrl($sTag, $iLang);
         }
 
-        return $sUrl ? $sUrl : $this->getConfig()->getShopUrl() . $oSeoEncoderTag->getStdTagUri($sTag) . "&amp;lang=" . $iLang;
+        return $sUrl ? $sUrl : $this->config->getShopUrl() . $oSeoEncoderTag->getStdTagUri($sTag) . "&amp;lang=" . $iLang;
     }
 
     /**

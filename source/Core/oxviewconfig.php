@@ -124,7 +124,7 @@ class oxViewConfig extends oxSuperCfg
     protected function isStartClassRequired()
     {
         $baseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $shopConfig = $this->getConfig();
+        $shopConfig = $this->config;
         $isSeoActive = oxRegistry::getUtils()->seoIsActive();
 
         $isStartRequired = $isSeoActive && ($baseLanguage != $shopConfig->getConfigParam('sDefaultLang'));
@@ -141,8 +141,8 @@ class oxViewConfig extends oxSuperCfg
     {
         $sTplName = oxRegistry::getConfig()->getRequestParameter('oxloadid');
         // #M1176: Logout from CMS page
-        if (!$sTplName && $this->getConfig()->getTopActiveView()) {
-            $sTplName = $this->getConfig()->getTopActiveView()->getViewConfig()->getViewConfigParam('oxloadid');
+        if (!$sTplName && $this->config->getTopActiveView()) {
+            $sTplName = $this->config->getTopActiveView()->getViewConfig()->getViewConfigParam('oxloadid');
         }
 
         return $sTplName ? basename($sTplName) : null;
@@ -165,7 +165,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getActCurrency()
     {
-        return $this->getConfig()->getShopCurrency();
+        return $this->config->getShopCurrency();
     }
 
     /**
@@ -186,7 +186,7 @@ class oxViewConfig extends oxSuperCfg
         $sRecommId = $this->getActRecommendationId();
         $sListType = $this->getActListType();
 
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         return ($oConfig->isSsl() ? $oConfig->getShopSecureHomeUrl() : $oConfig->getShopHomeUrl())
                . "cl={$sClass}"
@@ -429,7 +429,7 @@ class oxViewConfig extends oxSuperCfg
     public function getSelfLink()
     {
         if (($sValue = $this->getViewConfigParam('selflink')) === null) {
-            $sValue = $this->getConfig()->getShopHomeURL();
+            $sValue = $this->config->getShopHomeURL();
             $this->setViewConfigParam('selflink', $sValue);
         }
 
@@ -449,7 +449,7 @@ class oxViewConfig extends oxSuperCfg
         }
 
         if (($sValue = $this->getViewConfigParam('sslselflink')) === null) {
-            $sValue = $this->getConfig()->getShopSecureHomeURL();
+            $sValue = $this->config->getShopSecureHomeURL();
             $this->setViewConfigParam('sslselflink', $sValue);
         }
 
@@ -465,10 +465,10 @@ class oxViewConfig extends oxSuperCfg
     {
         if (($sValue = $this->getViewConfigParam('basedir')) === null) {
 
-            if ($this->getConfig()->isSsl()) {
-                $sValue = $this->getConfig()->getSSLShopURL();
+            if ($this->config->isSsl()) {
+                $sValue = $this->config->getSSLShopURL();
             } else {
-                $sValue = $this->getConfig()->getShopURL();
+                $sValue = $this->config->getShopURL();
             }
 
             $this->setViewConfigParam('basedir', $sValue);
@@ -485,7 +485,7 @@ class oxViewConfig extends oxSuperCfg
     public function getCoreUtilsDir()
     {
         if (($sValue = $this->getViewConfigParam('coreutilsdir')) === null) {
-            $sValue = $this->getConfig()->getCoreUtilsURL();
+            $sValue = $this->config->getCoreUtilsURL();
             $this->setViewConfigParam('coreutilsdir', $sValue);
         }
 
@@ -500,7 +500,7 @@ class oxViewConfig extends oxSuperCfg
     public function getSelfActionLink()
     {
         if (($sValue = $this->getViewConfigParam('selfactionlink')) === null) {
-            $sValue = $this->getConfig()->getShopCurrentUrl();
+            $sValue = $this->config->getShopCurrentUrl();
             $this->setViewConfigParam('selfactionlink', $sValue);
         }
 
@@ -515,7 +515,7 @@ class oxViewConfig extends oxSuperCfg
     public function getCurrentHomeDir()
     {
         if (($sValue = $this->getViewConfigParam('currenthomedir')) === null) {
-            $sValue = $this->getConfig()->getCurrentShopUrl();
+            $sValue = $this->config->getCurrentShopUrl();
             $this->setViewConfigParam('currenthomedir', $sValue);
         }
 
@@ -530,7 +530,7 @@ class oxViewConfig extends oxSuperCfg
     public function getBasketLink()
     {
         if (($sValue = $this->getViewConfigParam('basketlink')) === null) {
-            $sValue = $this->getConfig()->getShopHomeURL() . 'cl=basket';
+            $sValue = $this->config->getShopHomeURL() . 'cl=basket';
             $this->setViewConfigParam('basketlink', $sValue);
         }
 
@@ -545,7 +545,7 @@ class oxViewConfig extends oxSuperCfg
     public function getOrderLink()
     {
         if (($sValue = $this->getViewConfigParam('orderlink')) === null) {
-            $sValue = $this->getConfig()->getShopSecureHomeUrl() . 'cl=user';
+            $sValue = $this->config->getShopSecureHomeUrl() . 'cl=user';
             $this->setViewConfigParam('orderlink', $sValue);
         }
 
@@ -560,7 +560,7 @@ class oxViewConfig extends oxSuperCfg
     public function getPaymentLink()
     {
         if (($sValue = $this->getViewConfigParam('paymentlink')) === null) {
-            $sValue = $this->getConfig()->getShopSecureHomeUrl() . 'cl=payment';
+            $sValue = $this->config->getShopSecureHomeUrl() . 'cl=payment';
             $this->setViewConfigParam('paymentlink', $sValue);
         }
 
@@ -575,7 +575,7 @@ class oxViewConfig extends oxSuperCfg
     public function getExeOrderLink()
     {
         if (($sValue = $this->getViewConfigParam('exeorderlink')) === null) {
-            $sValue = $this->getConfig()->getShopSecureHomeUrl() . 'cl=order&amp;fnc=execute';
+            $sValue = $this->config->getShopSecureHomeUrl() . 'cl=order&amp;fnc=execute';
             $this->setViewConfigParam('exeorderlink', $sValue);
         }
 
@@ -590,7 +590,7 @@ class oxViewConfig extends oxSuperCfg
     public function getOrderConfirmLink()
     {
         if (($sValue = $this->getViewConfigParam('orderconfirmlink')) === null) {
-            $sValue = $this->getConfig()->getShopSecureHomeUrl() . 'cl=order';
+            $sValue = $this->config->getShopSecureHomeUrl() . 'cl=order';
             $this->setViewConfigParam('orderconfirmlink', $sValue);
         }
 
@@ -607,9 +607,9 @@ class oxViewConfig extends oxSuperCfg
     public function getResourceUrl($sFile = null)
     {
         if ($sFile) {
-            $sValue = $this->getConfig()->getResourceUrl($sFile, $this->isAdmin());
+            $sValue = $this->config->getResourceUrl($sFile, $this->isAdmin());
         } elseif (($sValue = $this->getViewConfigParam('basetpldir')) === null) {
-            $sValue = $this->getConfig()->getResourceUrl('', $this->isAdmin());
+            $sValue = $this->config->getResourceUrl('', $this->isAdmin());
             $this->setViewConfigParam('basetpldir', $sValue);
         }
 
@@ -624,7 +624,7 @@ class oxViewConfig extends oxSuperCfg
     public function getTemplateDir()
     {
         if (($sValue = $this->getViewConfigParam('templatedir')) === null) {
-            $sValue = $this->getConfig()->getTemplateDir($this->isAdmin());
+            $sValue = $this->config->getTemplateDir($this->isAdmin());
             $this->setViewConfigParam('templatedir', $sValue);
         }
 
@@ -639,7 +639,7 @@ class oxViewConfig extends oxSuperCfg
     public function getUrlTemplateDir()
     {
         if (($sValue = $this->getViewConfigParam('urltemplatedir')) === null) {
-            $sValue = $this->getConfig()->getTemplateUrl($this->isAdmin());
+            $sValue = $this->config->getTemplateUrl($this->isAdmin());
             $this->setViewConfigParam('urltemplatedir', $sValue);
         }
 
@@ -657,9 +657,9 @@ class oxViewConfig extends oxSuperCfg
     public function getImageUrl($sFile = null, $bSsl = null)
     {
         if ($sFile) {
-            $sValue = $this->getConfig()->getImageUrl($this->isAdmin(), $bSsl, null, $sFile);
+            $sValue = $this->config->getImageUrl($this->isAdmin(), $bSsl, null, $sFile);
         } elseif (($sValue = $this->getViewConfigParam('imagedir')) === null) {
-            $sValue = $this->getConfig()->getImageUrl($this->isAdmin(), $bSsl);
+            $sValue = $this->config->getImageUrl($this->isAdmin(), $bSsl);
             $this->setViewConfigParam('imagedir', $sValue);
         }
 
@@ -674,7 +674,7 @@ class oxViewConfig extends oxSuperCfg
     public function getNoSslImageDir()
     {
         if (($sValue = $this->getViewConfigParam('nossl_imagedir')) === null) {
-            $sValue = $this->getConfig()->getImageUrl($this->isAdmin(), false);
+            $sValue = $this->config->getImageUrl($this->isAdmin(), false);
             $this->setViewConfigParam('nossl_imagedir', $sValue);
         }
 
@@ -690,7 +690,7 @@ class oxViewConfig extends oxSuperCfg
     public function getPictureDir()
     {
         if (($sValue = $this->getViewConfigParam('picturedir')) === null) {
-            $sValue = $this->getConfig()->getPictureUrl(null, $this->isAdmin());
+            $sValue = $this->config->getPictureUrl(null, $this->isAdmin());
             $this->setViewConfigParam('picturedir', $sValue);
         }
 
@@ -705,7 +705,7 @@ class oxViewConfig extends oxSuperCfg
     public function getAdminDir()
     {
         if (($sValue = $this->getViewConfigParam('sAdminDir')) === null) {
-            $sValue = $this->getConfig()->getConfigParam('sAdminDir');
+            $sValue = $this->config->getConfigParam('sAdminDir');
             $this->setViewConfigParam('sAdminDir', $sValue);
         }
 
@@ -720,7 +720,7 @@ class oxViewConfig extends oxSuperCfg
     public function getActiveShopId()
     {
         if (($sValue = $this->getViewConfigParam('shopid')) === null) {
-            $sValue = $this->getConfig()->getShopId();
+            $sValue = $this->config->getShopId();
             $this->setViewConfigParam('shopid', $sValue);
         }
 
@@ -735,7 +735,7 @@ class oxViewConfig extends oxSuperCfg
     public function isSsl()
     {
         if (($sValue = $this->getViewConfigParam('isssl')) === null) {
-            $sValue = $this->getConfig()->isSsl();
+            $sValue = $this->config->isSsl();
             $this->setViewConfigParam('isssl', $sValue);
         }
 
@@ -765,7 +765,7 @@ class oxViewConfig extends oxSuperCfg
     public function getPopupIdent()
     {
         if (($sValue = $this->getViewConfigParam('popupident')) === null) {
-            $sValue = md5($this->getConfig()->getShopUrl());
+            $sValue = md5($this->config->getShopUrl());
             $this->setViewConfigParam('popupident', $sValue);
         }
 
@@ -795,7 +795,7 @@ class oxViewConfig extends oxSuperCfg
     public function getArtPerPageForm()
     {
         if (($sValue = $this->getViewConfigParam('artperpageform')) === null) {
-            $sValue = $this->getConfig()->getShopCurrentUrl();
+            $sValue = $this->config->getShopCurrentUrl();
             $this->setViewConfigParam('artperpageform', $sValue);
         }
 
@@ -809,7 +809,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function isBuyableParent()
     {
-        return $this->getConfig()->getConfigParam('blVariantParentBuyable');
+        return $this->config->getConfigParam('blVariantParentBuyable');
     }
 
     /**
@@ -819,7 +819,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function showBirthdayFields()
     {
-        return $this->getConfig()->getConfigParam('blShowBirthdayFields');
+        return $this->config->getConfigParam('blShowBirthdayFields');
     }
 
     /**
@@ -863,7 +863,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getShowWishlist()
     {
-        return $this->getConfig()->getConfigParam('bl_showWishlist');
+        return $this->config->getConfigParam('bl_showWishlist');
     }
 
     /**
@@ -873,7 +873,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getShowCompareList()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $blShowCompareList = true;
 
         if (!$myConfig->getConfigParam('bl_showCompareList') ||
@@ -892,7 +892,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getShowListmania()
     {
-        return $this->getConfig()->getConfigParam('bl_showListmania');
+        return $this->config->getConfigParam('bl_showListmania');
     }
 
     /**
@@ -902,7 +902,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getShowVouchers()
     {
-        return $this->getConfig()->getConfigParam('bl_showVouchers');
+        return $this->config->getConfigParam('bl_showVouchers');
     }
 
     /**
@@ -912,7 +912,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getShowGiftWrapping()
     {
-        return $this->getConfig()->getConfigParam('bl_showGiftWrapping');
+        return $this->config->getConfigParam('bl_showGiftWrapping');
     }
 
     /**
@@ -948,7 +948,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getActiveClassName()
     {
-        return $this->getConfig()->getActiveView()->getClassName();
+        return $this->config->getActiveView()->getClassName();
     }
 
     /**
@@ -959,7 +959,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getTopActiveClassName()
     {
-        return $this->getConfig()->getTopActiveView()->getClassName();
+        return $this->config->getTopActiveView()->getClassName();
     }
 
     /**
@@ -981,7 +981,7 @@ class oxViewConfig extends oxSuperCfg
     {
         if (($sParams = $this->getViewConfigParam('navurlparams')) === null) {
             $sParams = '';
-            $aNavParams = $this->getConfig()->getActiveView()->getNavigationParams();
+            $aNavParams = $this->config->getActiveView()->getNavigationParams();
             foreach ($aNavParams as $sName => $sValue) {
                 if (isset($sValue)) {
                     if ($sParams) {
@@ -1010,7 +1010,7 @@ class oxViewConfig extends oxSuperCfg
         if (($sParams = $this->getViewConfigParam('navformparams')) === null) {
             $oStr = getStr();
             $sParams = '';
-            $aNavParams = $this->getConfig()->getTopActiveView()->getNavigationParams();
+            $aNavParams = $this->config->getTopActiveView()->getNavigationParams();
             foreach ($aNavParams as $sName => $sValue) {
                 if (isset($sValue)) {
                     $sParams .= "<input type=\"hidden\" name=\"{$sName}\" value=\"";
@@ -1030,7 +1030,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getStockOnDefaultMessage()
     {
-        return $this->getConfig()->getConfigParam('blStockOnDefaultMessage');
+        return $this->config->getConfigParam('blStockOnDefaultMessage');
     }
 
     /**
@@ -1040,7 +1040,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getStockOffDefaultMessage()
     {
-        return $this->getConfig()->getConfigParam('blStockOffDefaultMessage');
+        return $this->config->getConfigParam('blStockOffDefaultMessage');
     }
 
     /**
@@ -1070,7 +1070,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function isMultiShop()
     {
-        $oShop = $this->getConfig()->getActiveShop();
+        $oShop = $this->config->getActiveShop();
 
         return isset($oShop->oxshops__oxismultishop) ? ((bool) $oShop->oxshops__oxismultishop->value) : false;
     }
@@ -1106,7 +1106,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getActionClassName()
     {
-        return $this->getConfig()->getActiveView()->getActionClassName();
+        return $this->config->getActiveView()->getActionClassName();
     }
 
     /**
@@ -1117,7 +1117,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getTopActionClassName()
     {
-        return $this->getConfig()->getTopActiveView()->getActionClassName();
+        return $this->config->getTopActiveView()->getActionClassName();
     }
 
     /**
@@ -1127,7 +1127,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getFbAppId()
     {
-        return $this->getConfig()->getConfigParam('sFbAppId');
+        return $this->config->getConfigParam('sFbAppId');
     }
 
     /**
@@ -1137,7 +1137,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getShowBasketTimeout()
     {
-        return $this->getConfig()->getConfigParam('blPsBasketReservationEnabled')
+        return $this->config->getConfigParam('blPsBasketReservationEnabled')
                && ($this->getSession()->getBasketReservations()->getTimeLeft() > 0);
     }
 
@@ -1163,7 +1163,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getShowFbConnect()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($myConfig->getConfigParam('bl_showFbConnect')) {
             if ($myConfig->getConfigParam("sFbAppId") && $myConfig->getConfigParam("sFbSecretKey")) {
@@ -1182,7 +1182,7 @@ class oxViewConfig extends oxSuperCfg
     public function getTsDomain()
     {
         $sDomain = false;
-        $aTsConfig = $this->getConfig()->getConfigParam("aTsConfig");
+        $aTsConfig = $this->config->getConfigParam("aTsConfig");
         if (is_array($aTsConfig)) {
             $sDomain = $aTsConfig["blTestMode"] ? $aTsConfig["sTsTestUrl"] : $aTsConfig["sTsUrl"];
         }
@@ -1224,7 +1224,7 @@ class oxViewConfig extends oxSuperCfg
             $sTsUrl = $this->getTsDomain();
 
             $sLangId = oxRegistry::getLang()->getLanguageAbbr();
-            $aTsConfig = $this->getConfig()->getConfigParam("aTsConfig");
+            $aTsConfig = $this->config->getConfigParam("aTsConfig");
             if (isset($aTsConfig["sTsRatingUri"]) && isset($aTsConfig["sTsRatingUri"][$sLangId])) {
                 $sTsRateUri = $aTsConfig["sTsRatingUri"][$sLangId];
             } else {
@@ -1251,16 +1251,16 @@ class oxViewConfig extends oxSuperCfg
         $blShow = false;
         switch ($sType) {
             case "WIDGET":
-                $blShow = (bool) $this->getConfig()->getConfigParam("blTsWidget");
+                $blShow = (bool) $this->config->getConfigParam("blTsWidget");
                 break;
             case "THANKYOU":
-                $blShow = (bool) $this->getConfig()->getConfigParam("blTsThankyouReview");
+                $blShow = (bool) $this->config->getConfigParam("blTsThankyouReview");
                 break;
             case "ORDEREMAIL":
-                $blShow = (bool) $this->getConfig()->getConfigParam("blTsOrderEmailReview");
+                $blShow = (bool) $this->config->getConfigParam("blTsOrderEmailReview");
                 break;
             case "ORDERCONFEMAIL":
-                $blShow = (bool) $this->getConfig()->getConfigParam("blTsOrderSendEmailReview");
+                $blShow = (bool) $this->config->getConfigParam("blTsOrderSendEmailReview");
                 break;
         }
 
@@ -1275,7 +1275,7 @@ class oxViewConfig extends oxSuperCfg
     public function getTsId()
     {
         $sTsId = false;
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $aLangIds = $oConfig->getConfigParam("aTsLangIds");
         $aActInfo = $oConfig->getConfigParam("aTsActiveLangIds");
 
@@ -1297,7 +1297,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function isTplBlocksDebugMode()
     {
-        return (bool) $this->getConfig()->getConfigParam('blDebugTemplateBlocks');
+        return (bool) $this->config->getConfigParam('blDebugTemplateBlocks');
     }
 
     /**
@@ -1309,7 +1309,7 @@ class oxViewConfig extends oxSuperCfg
     {
         $iPasswordLength = 6;
 
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         if ($oConfig->getConfigParam("iPasswordLength")) {
             $iPasswordLength = $oConfig->getConfigParam("iPasswordLength");
@@ -1352,14 +1352,14 @@ class oxViewConfig extends oxSuperCfg
         }
         $oModule = oxNew("oxmodule");
         $sModulePath = $oModule->getModulePath($sModule);
-        $sFile = $this->getConfig()->getModulesDir() . $sModulePath . $sFile;
+        $sFile = $this->config->getModulesDir() . $sModulePath . $sFile;
         if (file_exists($sFile) || is_dir($sFile)) {
             return $sFile;
         } else {
             /** @var oxFileException $oEx */
             $oEx = oxNew("oxFileException", "Requested file not found for module $sModule ($sFile)");
             $oEx->debugOut();
-            if (!$this->getConfig()->getConfigParam('iDebug')) {
+            if (!$this->config->getConfigParam('iDebug')) {
                 return '';
             }
             throw $oEx;
@@ -1379,8 +1379,8 @@ class oxViewConfig extends oxSuperCfg
     public function getModuleUrl($sModule, $sFile = '')
     {
         $sUrl = str_replace(
-            rtrim($this->getConfig()->getConfigParam('sShopDir'), '/'),
-            rtrim($this->getConfig()->getCurrentShopUrl(false), '/'),
+            rtrim($this->config->getConfigParam('sShopDir'), '/'),
+            rtrim($this->config->getCurrentShopUrl(false), '/'),
             $this->getModulePath($sModule, $sFile)
         );
 
@@ -1402,7 +1402,7 @@ class oxViewConfig extends oxSuperCfg
         $blModuleIsActive = false;
 
         // use aModuleVersions instead of aModules, because aModules gives only modules which extend oxid classes
-        $aModuleVersions = $this->getConfig()->getConfigParam('aModuleVersions');
+        $aModuleVersions = $this->config->getConfigParam('aModuleVersions');
 
         if (is_array($aModuleVersions)) {
             $blModuleIsActive = $this->_moduleExists($sModuleId, $aModuleVersions);
@@ -1426,8 +1426,8 @@ class oxViewConfig extends oxSuperCfg
     {
         $sValue = false;
 
-        if ($this->getConfig()->isThemeOption($sName)) {
-            $sValue = $this->getConfig()->getConfigParam($sName);
+        if ($this->config->isThemeOption($sName)) {
+            $sValue = $this->config->getConfigParam($sName);
         }
 
         return $sValue;
@@ -1441,7 +1441,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function showSelectLists()
     {
-        return (bool) $this->getConfig()->getConfigParam('bl_perfLoadSelectLists');
+        return (bool) $this->config->getConfigParam('bl_perfLoadSelectLists');
     }
 
     /**
@@ -1451,7 +1451,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function showSelectListsInList()
     {
-        return $this->showSelectLists() && (bool) $this->getConfig()->getConfigParam('bl_perfLoadSelectListsInAList');
+        return $this->showSelectLists() && (bool) $this->config->getConfigParam('bl_perfLoadSelectListsInAList');
     }
 
     /**
@@ -1461,7 +1461,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function isAltImageServerConfigured()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         return $oConfig->getConfigParam('sAltImageUrl') || $oConfig->getConfigParam('sSSLAltImageUrl') ||
                $oConfig->getConfigParam('sAltImageDir') || $oConfig->getConfigParam('sSSLAltImageDir');
@@ -1476,7 +1476,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function isFunctionalityEnabled($sParamName)
     {
-        return (bool) $this->getConfig()->getConfigParam($sParamName);
+        return (bool) $this->config->getConfigParam($sParamName);
     }
 
     /**
@@ -1502,7 +1502,7 @@ class oxViewConfig extends oxSuperCfg
     public function getShopLogo()
     {
         if (is_null($this->_sShopLogo)) {
-            $sLogoImage = $this->getConfig()->getConfigParam('sShopLogo');
+            $sLogoImage = $this->config->getConfigParam('sShopLogo');
             if (empty($sLogoImage)) {
                 $editionSelector = new EditionSelector();
                 $sLogoImage = "logo_" . strtolower($editionSelector->getEdition()) . ".png";
@@ -1570,7 +1570,7 @@ class oxViewConfig extends oxSuperCfg
     {
         $blModuleIsActive = false;
 
-        $aDisabledModules = $this->getConfig()->getConfigParam('aDisabledModules');
+        $aDisabledModules = $this->config->getConfigParam('aDisabledModules');
         if (!(is_array($aDisabledModules) && in_array($sModuleId, $aDisabledModules))) {
             $blModuleIsActive = true;
         }
@@ -1590,7 +1590,7 @@ class oxViewConfig extends oxSuperCfg
     {
         $blModuleIsActive = true;
 
-        $aModuleVersions = $this->getConfig()->getConfigParam('aModuleVersions');
+        $aModuleVersions = $this->config->getConfigParam('aModuleVersions');
 
         if ($sVersionFrom && !version_compare($aModuleVersions[$sModuleId], $sVersionFrom, '>=')) {
             $blModuleIsActive = false;
@@ -1610,6 +1610,6 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getEdition()
     {
-        return $this->getConfig()->getEdition();
+        return $this->config->getEdition();
     }
 }

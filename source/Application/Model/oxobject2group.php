@@ -39,14 +39,15 @@ class oxObject2Group extends oxBase
      */
     protected $_sClassName = 'oxobject2group';
 
+    protected $_sCoreTable = "oxobject2group";
+
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */
-    public function __construct()
+    public function __construct($config)
     {
-        parent::__construct();
-        $this->init('oxobject2group');
-        $this->oxobject2group__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
+        parent::__construct($config);
+        $this->oxobject2group__oxshopid = new oxField($this->config->getShopId(), oxField::T_RAW);
     }
 
     /**

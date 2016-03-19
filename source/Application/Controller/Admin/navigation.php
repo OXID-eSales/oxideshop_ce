@@ -126,19 +126,13 @@ class Navigation extends oxAdminView
     public function logout()
     {
         $mySession = $this->getSession();
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $oUser = oxNew("oxUser");
         $oUser->logout();
 
         // kill session
         $mySession->destroy();
-
-        // delete also, this is usually not needed but for security reasons we execute still
-        if ($myConfig->getConfigParam('blAdodbSessionHandler')) {
-            $oDb = oxDb::getDb();
-            $oDb->execute("delete from oxsessions where SessionID = " . $oDb->quote($mySession->getId()));
-        }
 
         //resetting content cache if needed
         if ($myConfig->getConfigParam('blClearCacheOnLogout')) {
@@ -157,7 +151,7 @@ class Navigation extends oxAdminView
         if ($sUrl = oxRegistry::getConfig()->getRequestParameter("url")) {
 
             // Limit external url's only allowed host
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
             if ($myConfig->getConfigParam('blLoadDynContents') && strpos($sUrl, $this->_sAllowedHost) === 0) {
 
                 $sPath = $myConfig->getConfigParam('sCompileDir') . "/" . md5($sUrl) . '.html';
@@ -196,7 +190,7 @@ class Navigation extends oxAdminView
     {
         $aMessage = array();
 
-        if ($this->getConfig()->getConfigParam('blCheckSysReq') !== false) {
+        if ($this->config->getConfigParam('blCheckSysReq') !== false) {
             // check if system reguirements are ok
             $oSysReq = new oxSysRequirements();
             if (!$oSysReq->getSysReqStatus()) {
@@ -211,7 +205,7 @@ class Navigation extends oxAdminView
         }
 
         // version check
-        if ($this->getConfig()->getConfigParam('blCheckForUpdates')) {
+        if ($this->config->getConfigParam('blCheckForUpdates')) {
             if ($sVersionNotice = $this->_checkVersion()) {
                 $aMessage['message'] .= $sVersionNotice;
             }
@@ -219,18 +213,18 @@ class Navigation extends oxAdminView
 
 
         // check if setup dir is deleted
-        if (file_exists($this->getConfig()->getConfigParam('sShopDir') . '/Setup/index.php')) {
+        if (file_exists($this->config->getConfigParam('sShopDir') . '/Setup/index.php')) {
             $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . oxRegistry::getLang()->translateString('SETUP_DIRNOTDELETED_WARNING');
         }
 
         // check if updateApp dir is deleted or empty
-        $sUpdateDir = $this->getConfig()->getConfigParam('sShopDir') . '/updateApp/';
+        $sUpdateDir = $this->config->getConfigParam('sShopDir') . '/updateApp/';
         if (file_exists($sUpdateDir) && !(count(glob("$sUpdateDir/*")) === 0)) {
             $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . oxRegistry::getLang()->translateString('UPDATEAPP_DIRNOTDELETED_WARNING');
         }
 
         // check if config file is writable
-        $sConfPath = $this->getConfig()->getConfigParam('sShopDir') . "/config.inc.php";
+        $sConfPath = $this->config->getConfigParam('sShopDir') . "/config.inc.php";
         if (!is_readable($sConfPath) || is_writable($sConfPath)) {
             $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . oxRegistry::getLang()->translateString('SETUP_CONFIGPERMISSIONS_WARNING');
         }
@@ -245,11 +239,11 @@ class Navigation extends oxAdminView
      */
     protected function _checkVersion()
     {
-        $edition = $this->getConfig()->getEdition();
+        $edition = $this->config->getEdition();
         $query = 'http://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';
         if ($version = oxRegistry::get("oxUtilsFile")->readRemoteFileAsString($query)) {
             // current version is older ..
-            if (version_compare($this->getConfig()->getVersion(), $version) == '-1') {
+            if (version_compare($this->config->getVersion(), $version) == '-1') {
                 return sprintf(oxRegistry::getLang()->translateString('NAVIGATION_NEWVERSIONAVAILABLE'), $version);
             }
         }

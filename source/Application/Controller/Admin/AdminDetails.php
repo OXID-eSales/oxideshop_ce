@@ -49,7 +49,7 @@ class AdminDetails extends \oxAdminView
         $sReturn = parent::render();
 
         // generate help link
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $sDir = $myConfig->getConfigParam('sShopDir') . '/documentation/admin';
         if (is_dir($sDir)) {
             $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
@@ -130,9 +130,9 @@ class AdminDetails extends \oxAdminView
         // A. replace ONLY if long description is not processed by smarty, or users will not be able to
         // store smarty tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
         // descriptions, which are filled dynamically
-        if (!$this->getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
+        if (!$this->config->getConfigParam('bl_perfParseLongDescinSmarty')) {
             $aReplace = array('[{$shop->currenthomedir}]', '[{$oViewConf->getCurrentHomeDir()}]');
-            $sValue = str_replace($aReplace, $this->getConfig()->getCurrentShopURL(false), $sValue);
+            $sValue = str_replace($aReplace, $this->config->getCurrentShopURL(false), $sValue);
         }
 
         return $sValue;

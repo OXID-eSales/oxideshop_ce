@@ -63,8 +63,9 @@ class oxOutput extends oxSuperCfg
      *
      * @return null
      */
-    public function __construct()
+    public function __construct($config)
     {
+        parent::__construct($config);
         $this->setIsSearchEngine(oxRegistry::getUtils()->isSearchEngine());
     }
 
@@ -89,11 +90,11 @@ class oxOutput extends oxSuperCfg
      */
     public function process($sValue, $sClassName)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         //fix for euro currency problem (it's invisible in some older browsers)
         if (!$myConfig->getConfigParam('blSkipEuroReplace') && !$myConfig->isUtf()) {
-            $sValue = str_replace('¤', '&euro;', $sValue);
+            $sValue = str_replace('ï¿½', '&euro;', $sValue);
         }
 
         return $sValue;
@@ -109,8 +110,8 @@ class oxOutput extends oxSuperCfg
     final public function addVersionTags($sOutput)
     {
         // DISPLAY IT
-        $sVersion = $this->getConfig()->getVersion();
-        $sEdition = $this->getConfig()->getFullEdition();
+        $sVersion = $this->config->getVersion();
+        $sEdition = $this->config->getFullEdition();
         $sCurYear = date("Y");
         $sShopMode = "";
 

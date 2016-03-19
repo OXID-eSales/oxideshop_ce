@@ -80,7 +80,7 @@ class Category_Text extends oxAdminDetails
     {
         parent::save();
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");

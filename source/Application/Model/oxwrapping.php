@@ -56,17 +56,18 @@ class oxWrapping extends oxI18n
      */
     protected $_blWrappingVatOnTop = false;
 
+    protected $_sCoreTable = 'oxwrapping';
+
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()), loads
      * base shop objects.
      */
-    public function __construct()
+    public function __construct($config)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $this->setWrappingVat($oConfig->getConfigParam('dDefaultVAT'));
         $this->setWrappingVatOnTop($oConfig->getConfigParam('blWrappingVatOnTop'));
-        parent::__construct();
-        $this->init('oxwrapping');
+        parent::__construct($config);
     }
 
     /**
@@ -107,7 +108,7 @@ class oxWrapping extends oxI18n
                 $this->_oPrice->setNettoPriceMode();
             }
 
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
             $this->_oPrice->setPrice($this->oxwrapping__oxprice->value * $oCur->rate, $this->_dVat);
             $this->_oPrice->multiply($dAmount);
         }
@@ -157,11 +158,7 @@ class oxWrapping extends oxI18n
      */
     protected function _isPriceViewModeNetto()
     {
-        $blResult = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
-        $oUser = $this->getUser();
-        if ($oUser) {
-            $blResult = $oUser->isPriceViewModeNetto();
-        }
+        $blResult = (bool) $this->config->getConfigParam('blShowNetPrice');
 
         return $blResult;
     }
@@ -177,7 +174,7 @@ class oxWrapping extends oxI18n
     {
         $dPrice = $this->getPrice();
 
-        return oxRegistry::getLang()->formatCurrency($dPrice, $this->getConfig()->getActShopCurrencyObject());
+        return oxRegistry::getLang()->formatCurrency($dPrice, $this->config->getActShopCurrencyObject());
     }
 
     /**
@@ -203,7 +200,7 @@ class oxWrapping extends oxI18n
      */
     public function getNoSslDynImageDir()
     {
-        return $this->getConfig()->getPictureUrl(null, false, false, null, $this->oxwrapping__oxshopid->value);
+        return $this->config->getPictureUrl(null, false, false, null, $this->oxwrapping__oxshopid->value);
     }
 
     /**
@@ -214,7 +211,7 @@ class oxWrapping extends oxI18n
     public function getPictureUrl()
     {
         if ($this->oxwrapping__oxpic->value) {
-            return $this->getConfig()->getPictureUrl("master/wrapping/" . $this->oxwrapping__oxpic->value, false, $this->getConfig()->isSsl(), null, $this->oxwrapping__oxshopid->value);
+            return $this->config->getPictureUrl("master/wrapping/" . $this->oxwrapping__oxpic->value, false, $this->config->isSsl(), null, $this->oxwrapping__oxshopid->value);
         }
     }
 }

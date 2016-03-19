@@ -113,14 +113,15 @@ class oxPayment extends oxI18n
      */
     protected $_oPrice = null;
 
+    protected $_sCoreTable = 'oxpayments';
+
     /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
      */
-    public function __construct()
+    public function __construct($config)
     {
-        $this->setPaymentVatOnTop($this->getConfig()->getConfigParam('blPaymentVatOnTop'));
-        parent::__construct();
-        $this->init('oxpayments');
+        $this->setPaymentVatOnTop($this->config->getConfigParam('blPaymentVatOnTop'));
+        parent::__construct($config);
     }
 
     /**
@@ -210,7 +211,7 @@ class oxPayment extends oxI18n
         if ($this->oxpayments__oxaddsumtype->value == "%") {
             $dRet = $dBasePrice * $this->oxpayments__oxaddsum->value / 100;
         } else {
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
             $dRet = $this->oxpayments__oxaddsum->value * $oCur->rate;
         }
 
@@ -420,7 +421,7 @@ class oxPayment extends oxI18n
      */
     public function isValidPayment($aDynValue, $sShopId, $oUser, $dBasketPrice, $sShipSetId)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         if ($this->oxpayments__oxid->value == 'oxempty') {
             // inactive or blOtherCountryOrder is off
             if (!$this->oxpayments__oxactive->value || !$myConfig->getConfigParam("blOtherCountryOrder")) {

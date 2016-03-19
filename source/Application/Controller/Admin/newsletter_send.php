@@ -73,7 +73,7 @@ class Newsletter_Send extends Newsletter_Selection
             $sQGroups = " oxobject2group.oxobjectid is null ";
         }
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $iSendCnt = 0;
         $iMaxCnt = (int) $myConfig->getConfigParam('iCntofMails');

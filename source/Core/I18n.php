@@ -54,21 +54,6 @@ class I18n extends \oxBase
     protected $_blEmployMultilanguage = true;
 
     /**
-     * Class constructor, initiates parent constructor (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        //T2008-02-22
-        //lets try to differentiate cache keys for oxI18n and oxBase
-        //in order not to load cached structure for the instances of oxbase classe called on same table
-        if ($this->_sCacheKey) {
-            $this->_sCacheKey .= "_i18n";
-        }
-    }
-
-    /**
      * Sets object language.
      *
      * @param string $iLang string (default null)
@@ -104,10 +89,6 @@ class I18n extends \oxBase
     {
         if ($this->_blEmployMultilanguage != $blEmployMultilanguage) {
             $this->_blEmployMultilanguage = $blEmployMultilanguage;
-            if (!$blEmployMultilanguage) {
-                //#63T
-                $this->modifyCacheKey("_nonml");
-            }
             // reset
             $this->_sViewTable = false;
             if (count($this->_aFieldNames) > 1) {
@@ -167,25 +148,6 @@ class I18n extends \oxBase
         $this->_sViewTable = false;
 
         return $this->load($sOxid);
-    }
-
-    /**
-     * Lazy loading cache key modifier.
-     *
-     * @param string $sCacheKey  kache  key
-     * @param bool   $blOverride marker to force override cache key
-     */
-    public function modifyCacheKey($sCacheKey, $blOverride = false)
-    {
-        if ($blOverride) {
-            $this->_sCacheKey = $sCacheKey . "|i18n";
-        } else {
-            $this->_sCacheKey .= $sCacheKey;
-        }
-
-        if (!$sCacheKey) {
-            $this->_sCacheKey = null;
-        }
     }
 
     /**

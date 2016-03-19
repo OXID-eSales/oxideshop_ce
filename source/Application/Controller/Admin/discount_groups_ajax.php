@@ -54,7 +54,7 @@ class discount_groups_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         // active AJAX component
         $sGroupTable = $this->_getViewName('oxgroups');
         $oDb = oxDb::getDb();
@@ -85,7 +85,7 @@ class discount_groups_ajax extends ajaxListComponent
      */
     public function removeDiscGroup()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $groupIds = $this->_getActionIds('oxobject2discount.oxid');
         if ($config->getRequestParameter('all')) {
@@ -105,7 +105,7 @@ class discount_groups_ajax extends ajaxListComponent
      */
     public function addDiscGroup()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $groupIds = $this->_getActionIds('oxgroups.oxid');
         $discountId = $config->getRequestParameter('synchoxid');
 

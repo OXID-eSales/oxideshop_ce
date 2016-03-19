@@ -50,7 +50,7 @@ class oxcmp_utils extends oxView
      */
     public function getArticle()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myUtils = oxRegistry::getUtils();
 
         if (!$myConfig->getConfigParam("blAllowRemoteArticleInfo")) {
@@ -230,7 +230,7 @@ class oxcmp_utils extends oxView
 
             // processing amounts
             $dAmount = str_replace(',', '.', $dAmount);
-            if (!$this->getConfig()->getConfigParam('blAllowUnevenAmounts')) {
+            if (!$this->config->getConfigParam('blAllowUnevenAmounts')) {
                 $dAmount = round(( string ) $dAmount);
             }
 
@@ -251,7 +251,7 @@ class oxcmp_utils extends oxView
     {
         parent::render();
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oParentView = $this->getParent();
 
         // add content for main menu

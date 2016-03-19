@@ -46,11 +46,11 @@ class oxcmp_lang extends oxView
         parent::render();
 
         // Performance
-        if ($this->getConfig()->getConfigParam('bl_perfLoadLanguages')) {
+        if ($this->config->getConfigParam('bl_perfLoadLanguages')) {
             $aLanguages = oxRegistry::getLang()->getLanguageArray(null, true, true);
             reset($aLanguages);
             while (list($sKey, $oVal) = each($aLanguages)) {
-                $aLanguages[$sKey]->link = $this->getConfig()->getTopActiveView()->getLink($oVal->id);
+                $aLanguages[$sKey]->link = $this->config->getTopActiveView()->getLink($oVal->id);
             }
 
             return $aLanguages;

@@ -26,15 +26,7 @@
  */
 class oxUserList extends oxList
 {
-
-    /**
-     * Class constructor
-     */
-    public function __construct()
-    {
-        parent::__construct('oxuser');
-    }
-
+    protected $_sObjectsInListName = 'oxuser';
 
     /**
      * Load searched user list with wishlist

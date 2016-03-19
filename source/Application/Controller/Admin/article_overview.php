@@ -37,7 +37,7 @@ class Article_Overview extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 

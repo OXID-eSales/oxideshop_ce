@@ -78,13 +78,6 @@ class oxSeoEncoder extends oxSuperCfg
     protected static $_aFixedCache = array();
 
     /**
-     * SEO Cache key for active view
-     *
-     * @var string
-     */
-    protected static $_sCacheKey = null;
-
-    /**
      * SEO cache array
      *
      * @var array
@@ -109,7 +102,7 @@ class oxSeoEncoder extends oxSuperCfg
     public function addLanguageParam($sSeoUrl, $iLang)
     {
         $iLang = (int) $iLang;
-        $iDefLang = (int) $this->getConfig()->getConfigParam('iDefSeoLang');
+        $iDefLang = (int) $this->config->getConfigParam('iDefSeoLang');
         $aLangIds = oxRegistry::getLang()->getLanguageIds();
 
         if ($iLang != $iDefLang && isset($aLangIds[$iLang]) && getStr()->strpos($sSeoUrl, $aLangIds[$iLang] . '/') !== 0) {
@@ -143,16 +136,18 @@ class oxSeoEncoder extends oxSuperCfg
     /**
      * SEO encoder constructor
      */
-    public function __construct()
+    public function __construct($config)
     {
-        $myConfig = $this->getConfig();
-        if (!self::$_sSeparator) {
-            $this->setSeparator($myConfig->getConfigParam('sSEOSeparator'));
-        }
-        if (!self::$_sPrefix) {
-            $this->setPrefix($myConfig->getConfigParam('sSEOuprefix'));
-        }
-        $this->setReservedWords($myConfig->getConfigParam('aSEOReservedWords'));
+        parent::__construct($config);
+
+        //$myConfig = $this->config;
+        //if (!self::$_sSeparator) {
+        //    $this->setSeparator($myConfig->getConfigParam('sSEOSeparator'));
+        //}
+        //if (!self::$_sPrefix) {
+        //    $this->setPrefix($myConfig->getConfigParam('sSEOuprefix'));
+        //}
+        //$this->setReservedWords($myConfig->getConfigParam('aSEOReservedWords'));
     }
 
     /**
@@ -203,7 +198,7 @@ class oxSeoEncoder extends oxSuperCfg
      */
     protected function _getDynamicUri($sStdUrl, $sSeoUrl, $iLang)
     {
-        $iShopId = $this->getConfig()->getShopId();
+        $iShopId = $this->config->getShopId();
 
         $sStdUrl = $this->_trimUrl($sStdUrl);
         $sObjectId = $this->getDynamicObjectId($iShopId, $sStdUrl);
@@ -242,7 +237,7 @@ class oxSeoEncoder extends oxSuperCfg
     protected function _getFullUrl($sSeoUrl, $iLang = null, $blSsl = false)
     {
         if ($sSeoUrl) {
-            $sFullUrl = ($blSsl ? $this->getConfig()->getSslShopUrl($iLang) : $this->getConfig()->getShopUrl($iLang, false)) . $sSeoUrl;
+            $sFullUrl = ($blSsl ? $this->config->getSslShopUrl($iLang) : $this->config->getShopUrl($iLang, false)) . $sSeoUrl;
 
             return oxRegistry::get("oxUtilsUrl")->processSeoUrl($sFullUrl);
         }
@@ -315,7 +310,7 @@ class oxSeoEncoder extends oxSuperCfg
             $sBaseSeoUrl = $oStr->substr($sSeoUrl, 0, $oStr->strlen($sSeoUrl) - $oStr->strlen($sExt));
         }
 
-        $iShopId = $this->getConfig()->getShopId();
+        $iShopId = $this->config->getShopId();
         $iCnt = 0;
         $sCheckSeoUrl = $this->_trimUrl($sSeoUrl);
         $sQ = "select 1 from oxseo where oxshopid = '{$iShopId}'";
@@ -361,7 +356,7 @@ class oxSeoEncoder extends oxSuperCfg
     protected function _isFixed($sType, $sId, $iLang, $iShopId = null, $sParams = null, $blStrictParamsCheck = true)
     {
         if ($iShopId === null) {
-            $iShopId = $this->getConfig()->getShopId();
+            $iShopId = $this->config->getShopId();
         }
         $iLang = (int) $iLang;
 
@@ -390,100 +385,6 @@ class oxSeoEncoder extends oxSuperCfg
     }
 
     /**
-     * Returns cache key (in non admin mode)
-     *
-     * @param string $sType   object type
-     * @param int    $iLang   active language id
-     * @param mixed  $iShopId active shop id
-     * @param string $sParams additional seo params. optional (mostly used for db indexing)
-     *
-     * @return string
-     */
-    protected function _getCacheKey($sType, $iLang = null, $iShopId = null, $sParams = null)
-    {
-        $blAdmin = $this->isAdmin();
-        if (!$blAdmin && $sType !== "oxarticle") {
-            return $sType . ((int) $iLang) . ((int) $iShopId) . "seo";
-        }
-
-        // use cache in non admin mode
-        if (self::$_sCacheKey === null) {
-            self::$_sCacheKey = false;
-            if (!$blAdmin && ($oView = $this->getConfig()->getActiveView())) {
-                self::$_sCacheKey = md5($oView->getViewId()) . "seo";
-            }
-        }
-
-        return self::$_sCacheKey;
-    }
-
-    /**
-     * Loads seo data from cache for active view (in non admin mode)
-     *
-     * @param string $sCacheIdent cache identifier
-     * @param string $sType       object type
-     * @param int    $iLang       active language id
-     * @param mixed  $iShopId     active shop id
-     * @param string $sParams     additional seo params. optional (mostly used for db indexing)
-     *
-     * @return string
-     */
-    protected function _loadFromCache($sCacheIdent, $sType, $iLang = null, $iShopId = null, $sParams = null)
-    {
-        if (!$this->getConfig()->getConfigParam('blEnableSeoCache')) {
-            return false;
-        }
-
-        startProfile("seoencoder_loadFromCache");
-
-        $sCacheKey = $this->_getCacheKey($sType, $iLang, $iShopId, $sParams);
-        $sCache = false;
-
-        if ($sCacheKey && !isset(self::$_aCache[$sCacheKey])) {
-            self::$_aCache[$sCacheKey] = oxRegistry::getUtils()->fromFileCache($sCacheKey);
-        }
-
-        if (isset(self::$_aCache[$sCacheKey]) && isset(self::$_aCache[$sCacheKey][$sCacheIdent])) {
-            $sCache = self::$_aCache[$sCacheKey][$sCacheIdent];
-        }
-
-        stopProfile("seoencoder_loadFromCache");
-
-        return $sCache;
-    }
-
-    /**
-     * Saves seo cache data for active view (in non admin mode)
-     *
-     * @param string $sCacheIdent cache identifier
-     * @param string $sCache      cacheable data
-     * @param string $sType       object type
-     * @param int    $iLang       active language id
-     * @param mixed  $iShopId     active shop id
-     * @param string $sParams     additional seo params. optional (mostly used for db indexing)
-     *
-     * @return bool
-     */
-    protected function _saveInCache($sCacheIdent, $sCache, $sType, $iLang = null, $iShopId = null, $sParams = null)
-    {
-        if (!$this->getConfig()->getConfigParam('blEnableSeoCache')) {
-            return false;
-        }
-
-        startProfile("seoencoder_saveInCache");
-
-        $blSaved = false;
-        if ($sCache && ($sCacheKey = $this->_getCacheKey($sType, $iLang, $iShopId, $sParams)) !== false) {
-            self::$_aCache[$sCacheKey][$sCacheIdent] = $sCache;
-            $blSaved = oxRegistry::getUtils()->toFileCache($sCacheKey, self::$_aCache[$sCacheKey]);
-        }
-
-        stopProfile("seoencoder_saveInCache");
-
-        return $blSaved;
-    }
-
-    /**
      * _loadFromDb loads data from oxseo table if exists
      * returns oxseo url
      *
@@ -502,7 +403,7 @@ class oxSeoEncoder extends oxSuperCfg
     {
 
         if ($iShopId === null) {
-            $iShopId = $this->getConfig()->getShopId();
+            $iShopId = $this->config->getShopId();
         }
 
         $iLang = (int) $iLang;
@@ -529,27 +430,18 @@ class oxSeoEncoder extends oxSuperCfg
         $sQ .= " LIMIT 1";
 
 
-        // caching to avoid same queries..
-        $sIdent = md5($sQ);
+        $oRs = $oDb->select($sQ);
 
-        // looking in cache
-        if (($sSeoUrl = $this->_loadFromCache($sIdent, $sType, $iLang, $iShopId, $sParams)) === false) {
-            $oRs = $oDb->select($sQ);
-
-            if ($oRs && $oRs->recordCount() > 0 && !$oRs->EOF) {
-                // moving expired static urls to history ..
-                if ($oRs->fields['oxexpired'] && ($oRs->fields['oxtype'] == 'static' || $oRs->fields['oxtype'] == 'dynamic')) {
-                    // if expired - copying to history, marking as not expired
-                    $this->_copyToHistory($sId, $iShopId, $iLang);
-                    $oDb->execute("update oxseo set oxexpired = 0 where oxobjectid = " . $oDb->quote($sId) . " and oxlang = '{$iLang}'");
-                    $sSeoUrl = $oRs->fields['oxseourl'];
-                } elseif (!$oRs->fields['oxexpired'] || $oRs->fields['oxfixed']) {
-                    // if seo url is available and is valid
-                    $sSeoUrl = $oRs->fields['oxseourl'];
-                }
-
-                // storing in cache
-                $this->_saveInCache($sIdent, $sSeoUrl, $sType, $iLang, $iShopId, $sParams);
+        if ($oRs && $oRs->recordCount() > 0 && !$oRs->EOF) {
+            // moving expired static urls to history ..
+            if ($oRs->fields['oxexpired'] && ($oRs->fields['oxtype'] == 'static' || $oRs->fields['oxtype'] == 'dynamic')) {
+                // if expired - copying to history, marking as not expired
+                $this->_copyToHistory($sId, $iShopId, $iLang);
+                $oDb->execute("update oxseo set oxexpired = 0 where oxobjectid = " . $oDb->quote($sId) . " and oxlang = '{$iLang}'");
+                $sSeoUrl = $oRs->fields['oxseourl'];
+            } elseif (!$oRs->fields['oxexpired'] || $oRs->fields['oxfixed']) {
+                // if seo url is available and is valid
+                $sSeoUrl = $oRs->fields['oxseourl'];
             }
         }
 
@@ -715,7 +607,7 @@ class oxSeoEncoder extends oxSuperCfg
     {
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         if ($iShopId === null) {
-            $iShopId = $this->getConfig()->getShopId();
+            $iShopId = $this->config->getShopId();
         }
 
         $iLang = (int) $iLang;
@@ -785,7 +677,7 @@ class oxSeoEncoder extends oxSuperCfg
      */
     protected function _trimUrl($sUrl, $iLang = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oStr = getStr();
         $sUrl = str_replace(array($myConfig->getShopUrl($iLang, false), $myConfig->getSslShopUrl($iLang)), '', $sUrl);
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[a-z0-9\.]+&?(amp;)?/i', '\1', $sUrl);
@@ -815,7 +707,7 @@ class oxSeoEncoder extends oxSuperCfg
     {
         if ($this->_iMaxUrlLength === null) {
             // max length <= 2048 / custom
-            $this->_iMaxUrlLength = $this->getConfig()->getConfigParam("iMaxSeoUrlLength");
+            $this->_iMaxUrlLength = $this->config->getConfigParam("iMaxSeoUrlLength");
             if (!$this->_iMaxUrlLength) {
                 $this->_iMaxUrlLength = 2048;
             }
@@ -945,7 +837,7 @@ class oxSeoEncoder extends oxSuperCfg
         if (!isset($iLang)) {
             $iLang = $oObject->getLanguage();
         }
-        $iShopId = $this->getConfig()->getShopId();
+        $iShopId = $this->config->getShopId();
 
         //load page link from DB
         $sOldSeoUrl = $this->_loadFromDb($sType, $oObject->getId(), $iLang, $iShopId, $sParams);
@@ -1058,7 +950,7 @@ class oxSeoEncoder extends oxSuperCfg
      */
     public function copyStaticUrls($iShopId)
     {
-        $iBaseShopId = $this->getConfig()->getBaseShopId();
+        $iBaseShopId = $this->config->getBaseShopId();
         if ($iShopId != $iBaseShopId) {
             $oDb = oxDb::getDb();
             foreach (array_keys(oxRegistry::getLang()->getLanguageIds()) as $iLang) {
@@ -1082,7 +974,7 @@ class oxSeoEncoder extends oxSuperCfg
     public function getStaticUrl($sStdUrl, $iLang = null, $iShopId = null)
     {
         if (!isset($iShopId)) {
-            $iShopId = $this->getConfig()->getShopId();
+            $iShopId = $this->config->getShopId();
         }
         if (!isset($iLang)) {
             $iLang = oxRegistry::getLang()->getEditLanguage();
@@ -1188,7 +1080,7 @@ class oxSeoEncoder extends oxSuperCfg
     {
         $oDb = oxDb::getDb();
 
-        $iShopId = (!isset($iShopId)) ? $this->getConfig()->getShopId() : $iShopId;
+        $iShopId = (!isset($iShopId)) ? $this->config->getShopId() : $iShopId;
         $iLang = (!isset($iLang)) ? oxRegistry::getLang()->getObjectTplLanguage() : ((int) $iLang);
 
         return $oDb->getOne("select {$sMetaType} from oxobject2seodata where oxobjectid = " . $oDb->quote($sObjectId) . " and oxshopid = " . $oDb->quote($iShopId) . " and oxlang = '{$iLang}'");
@@ -1229,7 +1121,7 @@ class oxSeoEncoder extends oxSuperCfg
         $database = oxDb::getDb();
         $languageId = isset($languageId) ? ((int) $languageId) : oxRegistry::getLang()->getBaseLanguage();
 
-        $shopId = $this->getConfig()->getShopId();
+        $shopId = $this->config->getShopId();
 
         $query = "SELECT `oxseourl` FROM `oxseo` WHERE `oxstdurl` = ? AND `oxlang` = ? AND `oxshopid` = ? LIMIT 1";
 

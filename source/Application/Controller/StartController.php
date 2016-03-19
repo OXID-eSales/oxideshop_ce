@@ -139,7 +139,7 @@ class StartController extends oxUBase
             return 'message/exception.tpl';
         }
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $oRss = oxNew('oxrssfeed');
         if ($myConfig->getConfigParam('iTop5Mode') && $myConfig->getConfigParam('bl_rssTopShop')) {
@@ -171,7 +171,7 @@ class StartController extends oxUBase
     protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
     {
         if (!$sMeta &&
-            $this->getConfig()->getConfigParam('bl_perfLoadAktion') &&
+            $this->config->getConfigParam('bl_perfLoadAktion') &&
             $oArt = $this->getFirstArticle()
         ) {
             $oDescField = $oArt->getLongDescription();
@@ -194,7 +194,7 @@ class StartController extends oxUBase
     protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
     {
         if (!$sKeywords &&
-            $this->getConfig()->getConfigParam('bl_perfLoadAktion') &&
+            $this->config->getConfigParam('bl_perfLoadAktion') &&
             $oArt = $this->getFirstArticle()
         ) {
             $oDescField = $oArt->getLongDescription();
@@ -213,7 +213,7 @@ class StartController extends oxUBase
     {
         if ($this->_blLoadActions === null) {
             $this->_blLoadActions = false;
-            if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
+            if ($this->config->getConfigParam('bl_perfLoadAktion')) {
                 $this->_blLoadActions = true;
             }
         }
@@ -307,7 +307,7 @@ class StartController extends oxUBase
      */
     public function getTitleSuffix()
     {
-        return $this->getConfig()->getActiveShop()->oxshops__oxstarttitle->value;
+        return $this->config->getActiveShop()->oxshops__oxstarttitle->value;
     }
 
     /**
@@ -333,7 +333,7 @@ class StartController extends oxUBase
 
         $oBannerList = null;
 
-        if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
+        if ($this->config->getConfigParam('bl_perfLoadAktion')) {
             $oBannerList = oxNew('oxActionList');
             $oBannerList->loadBanners();
         }
@@ -351,7 +351,7 @@ class StartController extends oxUBase
 
         $oList = null;
 
-        if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
+        if ($this->config->getConfigParam('bl_perfLoadAktion')) {
             $oList = $this->getManufacturerlist();
         }
 

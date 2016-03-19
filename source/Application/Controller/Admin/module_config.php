@@ -34,9 +34,9 @@ class Module_Config extends Shop_Config
     /**
      * Add additional config type for modules.
      */
-    public function __construct()
+    public function __construct($config)
     {
-        parent::__construct();
+        parent::__construct($config);
         $this->_aConfParams['password'] = 'confpassword';
     }
 
@@ -99,7 +99,7 @@ class Module_Config extends Shop_Config
      */
     public function _loadMetadataConfVars($aModuleSettings)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         $aConfVars = array(
             "bool"     => array(),
@@ -174,7 +174,7 @@ class Module_Config extends Shop_Config
      */
     public function saveConfVars()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         $this->resetContentCache();
 

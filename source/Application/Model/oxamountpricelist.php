@@ -26,12 +26,7 @@
  */
 class oxAmountPriceList extends oxList
 {
-    /**
-     * List Object class name
-     *
-     * @var string
-     */
-    protected $_sObjectsInListName = 'oxprice2article';
+    protected $_sCoreTable = 'oxprice2article';
 
     /**
      * oxArticle object
@@ -39,15 +34,6 @@ class oxAmountPriceList extends oxList
      * @var oxArticle
      */
     protected $_oArticle = null;
-
-    /**
-     * Class constructor
-     */
-    public function __construct()
-    {
-        parent::__construct('oxbase');
-        $this->init('oxbase', 'oxprice2article');
-    }
 
     /**
      *  Article getter
@@ -92,14 +78,14 @@ class oxAmountPriceList extends oxList
     {
         $sArticleId = $this->getArticle()->getId();
 
-        if (!$this->isAdmin() && $this->getConfig()->getConfigParam('blVariantInheritAmountPrice') && $this->getArticle()->getParentId()) {
+        if (!$this->isAdmin() && $this->config->getConfigParam('blVariantInheritAmountPrice') && $this->getArticle()->getParentId()) {
             $sArticleId = $this->getArticle()->getParentId();
         }
 
-        if ($this->getConfig()->getConfigParam('blMallInterchangeArticles')) {
+        if ($this->config->getConfigParam('blMallInterchangeArticles')) {
             $sShopSelect = '1';
         } else {
-            $sShopSelect = " `oxshopid` = " . oxDb::getDb()->quote($this->getConfig()->getShopId()) . " ";
+            $sShopSelect = " `oxshopid` = " . oxDb::getDb()->quote($this->config->getShopId()) . " ";
         }
 
         $sSql = "SELECT * FROM `oxprice2article` WHERE `oxartid` = " . oxDb::getDb()->quote($sArticleId) . " AND $sShopSelect ORDER BY `oxamount` ";

@@ -83,16 +83,6 @@ class oxFile extends oxBase
     protected $_sManualUploadDir = "uploads";
 
     /**
-     * Initialises the instance
-     *
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init();
-    }
-
-    /**
      * Sets oxefile__oxstorehash with file hash.
      * Moves file to desired location and change its access rights.
      *
@@ -102,7 +92,7 @@ class oxFile extends oxBase
      */
     public function processFile($sFileIndex)
     {
-        $aFileInfo = $this->getConfig()->getUploadedFile($sFileIndex);
+        $aFileInfo = $this->config->getUploadedFile($sFileIndex);
 
         $this->_checkArticleFile($aFileInfo);
 
@@ -210,7 +200,7 @@ class oxFile extends oxBase
         $sFileName = $this->oxfiles__oxfilename->value;
 
         //security check for demo shops
-        if ($this->getConfig()->isDemoShop()) {
+        if ($this->config->isDemoShop()) {
             $sFileName = basename($sFileName);
         }
 
@@ -427,7 +417,7 @@ class oxFile extends oxBase
         $iMaxCount = $this->oxfiles__oxmaxdownloads->value;
         //if value is -1, takes global options
         if ($iMaxCount < 0) {
-            $iMaxCount = $this->getConfig()->getConfigParam("iMaxDownloadsCount");
+            $iMaxCount = $this->config->getConfigParam("iMaxDownloadsCount");
         }
 
         return $iMaxCount;
@@ -443,7 +433,7 @@ class oxFile extends oxBase
         $iMaxCount = $this->oxfiles__oxmaxunregdownloads->value;
         //if value is -1, takes global options
         if ($iMaxCount < 0) {
-            $iMaxCount = $this->getConfig()->getConfigParam("iMaxDownloadsCountUnregistered");
+            $iMaxCount = $this->config->getConfigParam("iMaxDownloadsCountUnregistered");
         }
 
         return $iMaxCount;
@@ -459,7 +449,7 @@ class oxFile extends oxBase
         $iExpTime = $this->oxfiles__oxlinkexptime->value;
         //if value is -1, takes global options
         if ($iExpTime < 0) {
-            $iExpTime = $this->getConfig()->getConfigParam("iLinkExpirationTime");
+            $iExpTime = $this->config->getConfigParam("iLinkExpirationTime");
         }
 
         return $iExpTime;
@@ -475,7 +465,7 @@ class oxFile extends oxBase
         $iExpTime = $this->oxfiles__oxdownloadexptime->value;
         //if value is -1, takes global options
         if ($iExpTime < 0) {
-            $iExpTime = $this->getConfig()->getConfigParam("iDownloadExpirationTime");
+            $iExpTime = $this->config->getConfigParam("iDownloadExpirationTime");
         }
 
         return $iExpTime;

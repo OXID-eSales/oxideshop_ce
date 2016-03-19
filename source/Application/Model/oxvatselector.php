@@ -167,7 +167,7 @@ class oxVatSelector extends oxSuperCfg
 
         stopProfile("_assignPriceInternal");
 
-        return $this->getConfig()->getConfigParam('dDefaultVAT');
+        return $this->config->getConfigParam('dDefaultVAT');
     }
 
     /**
@@ -212,7 +212,7 @@ class oxVatSelector extends oxSuperCfg
      */
     protected function _getVatCountry(oxUser $oUser)
     {
-        $blUseShippingCountry = $this->getConfig()->getConfigParam("blShippingCountryVat");
+        $blUseShippingCountry = $this->config->getConfigParam("blShippingCountryVat");
 
         if ($blUseShippingCountry) {
             $aAddresses = $oUser->getUserAddresses($oUser->getId());

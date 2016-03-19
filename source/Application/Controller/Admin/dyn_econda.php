@@ -38,7 +38,7 @@ class dyn_econda extends Shop_Config
     public function render()
     {
         parent::render();
-        $this->_aViewData['oxid'] = $this->getConfig()->getShopId();
+        $this->_aViewData['oxid'] = $this->config->getShopId();
 
         return "dyn_econda.tpl";
     }

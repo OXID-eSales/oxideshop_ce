@@ -21,6 +21,8 @@
  */
 
 //max integer
+use OxidEsales\Eshop\Core\oxconfiginterface;
+
 define('MAX_64BIT_INTEGER', '18446744073709551615');
 
 /**
@@ -29,7 +31,7 @@ define('MAX_64BIT_INTEGER', '18446744073709551615');
  * @mixin \OxidEsales\EshopEnterprise\Core\Config
  * @mixin \OxidEsales\EshopProfessional\Core\Config
  */
-class oxConfig extends oxSuperCfg
+class oxConfig implements oxconfiginterface
 {
 
     // this column of params are defined in config.inc.php file,
@@ -437,7 +439,7 @@ class oxConfig extends oxSuperCfg
     protected function initializeShop()
     {
         $this->_processSeoCall();
-        $this->getSession()->start();
+        //$this->getSession()->start();
     }
 
     /**
@@ -591,7 +593,7 @@ class oxConfig extends oxSuperCfg
     protected function _setConfVarFromDb($sVarName, $sVarType, $sVarVal)
     {
         if (($sVarName == 'sShopURL' || $sVarName == 'sSSLShopURL') &&
-            (!$sVarVal || $this->isAdmin() === true)
+            (!$sVarVal /*|| $this->isAdmin() === true*/)
         ) {
             return;
         }
@@ -663,7 +665,7 @@ class oxConfig extends oxSuperCfg
         $value = $this->getRequestRawParameter($name, $defaultValue);
 
         // TODO: remove this after special chars concept implementation
-        $isAdmin = $this->isAdmin() && $this->getSession()->getVariable("blIsAdmin");
+        $isAdmin = false;//$this->isAdmin() && $this->getSession()->getVariable("blIsAdmin");
         if ($value !== null && !$isAdmin) {
             $this->checkParamSpecialChars($value);
         }
@@ -780,7 +782,7 @@ class oxConfig extends oxSuperCfg
      */
     public function setShopId($shopId)
     {
-        $this->getSession()->setVariable('actshop', $shopId);
+        //$this->getSession()->setVariable('actshop', $shopId);
         $this->_iShopId = $shopId;
     }
 
@@ -827,10 +829,10 @@ class oxConfig extends oxSuperCfg
         if (isset($aHttpsServerVar) && ($aHttpsServerVar === 'on' || $aHttpsServerVar === 'ON' || $aHttpsServerVar == '1')) {
             // "1&1" hoster provides "1"
             $this->setIsSsl($this->getConfigParam('sSSLShopURL') || $this->getConfigParam('sMallSSLShopURL'));
-            if ($this->isAdmin() && !$this->_blIsSsl) {
-                //#4026
-                $this->setIsSsl(!is_null($this->getConfigParam('sAdminSSLURL')));
-            }
+            //if ($this->isAdmin() && !$this->_blIsSsl) {
+            //    //#4026
+            //    $this->setIsSsl(!is_null($this->getConfigParam('sAdminSSLURL')));
+            //}
         }
 
         //additional special handling for profihost customers
@@ -899,7 +901,7 @@ class oxConfig extends oxSuperCfg
     public function getShopUrl($iLang = null, $blAdmin = null)
     {
         $sUrl = null;
-        $blAdmin = isset($blAdmin) ? $blAdmin : $this->isAdmin();
+        $blAdmin = isset($blAdmin) ? $blAdmin : false;//$this->isAdmin();
 
         if (!$blAdmin) {
             $sUrl = $this->getShopUrlByLanguage($iLang);
@@ -971,7 +973,7 @@ class oxConfig extends oxSuperCfg
     public function getCurrentShopUrl($blAdmin = null)
     {
         if ($blAdmin === null) {
-            $blAdmin = $this->isAdmin();
+            $blAdmin = false;//$this->isAdmin();
         }
         if ($blAdmin) {
             if ($this->isSsl()) {
@@ -1068,7 +1070,7 @@ class oxConfig extends oxSuperCfg
         $iCurr = null;
         if ((null === ($iCurr = $this->getRequestParameter('cur')))) {
             if (null === ($iCurr = $this->getRequestParameter('currency'))) {
-                $iCurr = $this->getSession()->getVariable('currency');
+                //$iCurr = $this->getSession()->getVariable('currency');
             }
         }
 
@@ -1100,7 +1102,7 @@ class oxConfig extends oxSuperCfg
     {
         $aCurrencies = $this->getCurrencyArray();
         if (isset($aCurrencies[$iCur])) {
-            $this->getSession()->setVariable('currency', $iCur);
+            //$this->getSession()->setVariable('currency', $iCur);
             $this->_oActCurrencyObject = null;
         }
     }
@@ -1185,7 +1187,7 @@ class oxConfig extends oxSuperCfg
     public function getOutUrl($blSSL = null, $blAdmin = null, $blNativeImg = false)
     {
         $blSSL = is_null($blSSL) ? $this->isSsl() : $blSSL;
-        $blAdmin = is_null($blAdmin) ? $this->isAdmin() : $blAdmin;
+        $blAdmin = is_null($blAdmin) ? false/*$this->isAdmin()*/ : $blAdmin;
 
         if ($blSSL) {
             if ($blNativeImg && !$blAdmin) {
@@ -2235,7 +2237,7 @@ class oxConfig extends oxSuperCfg
         $this->_processSeoCall();
 
         //starting up the session
-        $this->getSession()->start();
+        //$this->getSession()->start();
 
         // redirect to start page and display the error
         oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);

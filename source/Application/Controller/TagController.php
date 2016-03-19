@@ -138,7 +138,7 @@ class TagController extends \AList
     protected function _loadArticles($category)
     {
         // load only articles which we show on screen
-        $numberOfCategoryArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+        $numberOfCategoryArticles = (int) $this->config->getConfigParam('iNrofCatArticles');
         $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 1;
         $articleList = oxNew('oxArticleList');
         $articleList->setSqlLimit($numberOfCategoryArticles * $this->_getRequestPageNr(), $numberOfCategoryArticles);

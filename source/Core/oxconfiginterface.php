@@ -4,7 +4,7 @@
 namespace OxidEsales\Eshop\Core;
 
 
-interface oxConfigInterface
+interface oxconfiginterface
 {
 
 }

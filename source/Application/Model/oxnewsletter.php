@@ -66,15 +66,7 @@ class oxNewsletter extends oxBase
      */
     protected $_sClassName = 'oxnewsletter';
 
-    /**
-     * Class constructor, initiates Smarty engine object, parent constructor
-     * (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxnewsletter');
-    }
+    protected $_sCoreTable = "oxnewsletter";
 
     /**
      * Deletes object information from DB, returns true on success.
@@ -158,14 +150,10 @@ class oxNewsletter extends oxBase
     {
         // switching off admin
         $blAdmin = $this->isAdmin();
-        $this->setAdminMode(false);
 
         // add currency
         $this->_setUser($sUserid);
         $this->_setParams($blPerfLoadAktion);
-
-        // restoring mode ..
-        $this->setAdminMode($blAdmin);
     }
 
     /**
@@ -192,7 +180,7 @@ class oxNewsletter extends oxBase
      */
     protected function _setParams($blPerfLoadAktion = false)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $oShop = oxNew('oxShop');
         $oShop->load($myConfig->getShopId());

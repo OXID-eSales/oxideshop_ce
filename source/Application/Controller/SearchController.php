@@ -157,7 +157,7 @@ class SearchController extends oxUBase
     {
         parent::init();
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         // #1184M - special char search
         $oConfig = oxRegistry::getConfig();
@@ -227,7 +227,7 @@ class SearchController extends oxUBase
     {
         parent::render();
 
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         if ($oConfig->getConfigParam('bl_rssSearch')) {
             $oRss = oxNew('oxrssfeed');
             $sSearch = $oConfig->getRequestParameter('searchparam', true);
@@ -274,7 +274,7 @@ class SearchController extends oxUBase
     {
         $sAddParams = parent::getAddUrlParams();
         $sAddParams .= ($sAddParams ? '&amp;' : '') . "listtype={$this->_sListType}";
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         if ($sParam = $oConfig->getRequestParameter('searchparam', true)) {
             $sAddParams .= "&amp;searchparam=" . rawurlencode($sParam);
@@ -304,7 +304,7 @@ class SearchController extends oxUBase
     {
         if ($this->_blSearchClass === null) {
             $this->_blSearchClass = false;
-            if (strtolower($this->getConfig()->getRequestParameter('cl')) == 'search') {
+            if (strtolower($this->config->getRequestParameter('cl')) == 'search') {
                 $this->_blSearchClass = true;
             }
         }
@@ -361,7 +361,7 @@ class SearchController extends oxUBase
         if ($this->_sSearchParamForHtml === null) {
             $this->_sSearchParamForHtml = false;
             if ($this->_isSearchClass()) {
-                $this->_sSearchParamForHtml = $this->getConfig()->getRequestParameter('searchparam');
+                $this->_sSearchParamForHtml = $this->config->getRequestParameter('searchparam');
             }
         }
 
@@ -378,7 +378,7 @@ class SearchController extends oxUBase
         if ($this->_sSearchParam === null) {
             $this->_sSearchParam = false;
             if ($this->_isSearchClass()) {
-                $this->_sSearchParam = rawurlencode($this->getConfig()->getRequestParameter('searchparam', true));
+                $this->_sSearchParam = rawurlencode($this->config->getRequestParameter('searchparam', true));
             }
         }
 
@@ -395,7 +395,7 @@ class SearchController extends oxUBase
         if ($this->_sSearchCatId === null) {
             $this->_sSearchCatId = false;
             if ($this->_isSearchClass()) {
-                $this->_sSearchCatId = rawurldecode($this->getConfig()->getRequestParameter('searchcnid'));
+                $this->_sSearchCatId = rawurldecode($this->config->getRequestParameter('searchcnid'));
             }
         }
 
@@ -413,7 +413,7 @@ class SearchController extends oxUBase
             $this->_sSearchVendor = false;
             if ($this->_isSearchClass()) {
                 // searching in vendor #671
-                $this->_sSearchVendor = rawurldecode($this->getConfig()->getRequestParameter('searchvendor'));
+                $this->_sSearchVendor = rawurldecode($this->config->getRequestParameter('searchvendor'));
             }
         }
 
@@ -431,7 +431,7 @@ class SearchController extends oxUBase
             $this->_sSearchManufacturer = false;
             if ($this->_isSearchClass()) {
                 // searching in Manufacturer #671
-                $sManufacturerParameter = $this->getConfig()->getRequestParameter('searchmanufacturer');
+                $sManufacturerParameter = $this->config->getRequestParameter('searchmanufacturer');
                 $this->_sSearchManufacturer = rawurldecode($sManufacturerParameter);
             }
         }
@@ -490,7 +490,7 @@ class SearchController extends oxUBase
      */
     public function canSelectDisplayType()
     {
-        return $this->getConfig()->getConfigParam('blShowListDisplayType');
+        return $this->config->getConfigParam('blShowListDisplayType');
     }
 
     /**

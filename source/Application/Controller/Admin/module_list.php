@@ -43,7 +43,7 @@ class Module_List extends oxAdminList
      */
     public function render()
     {
-        $sModulesDir = $this->getConfig()->getModulesDir();
+        $sModulesDir = $this->config->getModulesDir();
 
         $oModuleList = oxNew("oxModuleList");
         $aModules = $oModuleList->getModulesFromDir($sModulesDir);

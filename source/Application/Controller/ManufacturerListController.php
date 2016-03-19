@@ -153,7 +153,7 @@ class ManufacturerListController extends \AList
         $sManufacturerId = $oManufacturer->getId();
 
         // load only articles which we show on screen
-        $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+        $iNrofCatArticles = (int) $this->config->getConfigParam('iNrofCatArticles');
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
 
         $oArtList = oxNew('oxArticleList');
@@ -360,7 +360,7 @@ class ManufacturerListController extends \AList
     {
         $sSuffix = null;
         if ($this->getActManufacturer()->oxmanufacturers__oxshowsuffix->value) {
-            $sSuffix = $this->getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
+            $sSuffix = $this->config->getActiveShop()->oxshops__oxtitlesuffix->value;
         }
 
         return $sSuffix;

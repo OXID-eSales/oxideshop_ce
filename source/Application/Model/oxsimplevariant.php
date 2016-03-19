@@ -26,14 +26,6 @@
  */
 class oxSimpleVariant extends oxI18n implements oxIUrl
 {
-
-    /**
-     * Use lazy loading for this item
-     *
-     * @var bool
-     */
-    protected $_blUseLazyLoading = true;
-
     /**
      * Variant price
      *
@@ -76,16 +68,7 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
      */
     protected $_oUser = null;
 
-    /**
-     * Initializes instance
-     *
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->_sCacheKey = "simplevariants";
-        $this->init('oxarticles');
-    }
+    protected $_sCoreTable = 'oxarticles';
 
     /**
      * Implementing (fakeing) performance friendly method from oxArticle
@@ -99,20 +82,6 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
     }
 
     /**
-     * Returns article user
-     *
-     * @return oxUser
-     */
-    public function getArticleUser()
-    {
-        if ($this->_oUser === null) {
-            $this->_oUser = $this->getUser();
-        }
-
-        return $this->_oUser;
-    }
-
-    /**
      * get user Group A, B or C price, returns db price if user is not in groups
      *
      * @return double
@@ -120,18 +89,9 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
     protected function _getGroupPrice()
     {
         $dPrice = $this->oxarticles__oxprice->value;
-        if ($oUser = $this->getArticleUser()) {
-            if ($oUser->inGroup('oxidpricea')) {
-                $dPrice = $this->oxarticles__oxpricea->value;
-            } elseif ($oUser->inGroup('oxidpriceb')) {
-                $dPrice = $this->oxarticles__oxpriceb->value;
-            } elseif ($oUser->inGroup('oxidpricec')) {
-                $dPrice = $this->oxarticles__oxpricec->value;
-            }
-        }
 
         // #1437/1436C - added config option, and check for zero A,B,C price values
-        if ($this->getConfig()->getConfigParam('blOverrideZeroABCPrices') && (double) $dPrice == 0) {
+        if ($this->config->getConfigParam('blOverrideZeroABCPrices') && (double) $dPrice == 0) {
             $dPrice = $this->oxarticles__oxprice->value;
         }
 
@@ -145,7 +105,7 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
      */
     public function getPrice()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         // 0002030 No need to return price if it disabled for better performance.
         if (!$myConfig->getConfigParam('bl_perfLoadPrice')) {
             return;
@@ -189,7 +149,7 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
     protected function _applyCurrency(oxPrice $oPrice, $oCur = null)
     {
         if (!$oCur) {
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
         }
 
         $oPrice->multiply($oCur->rate);
@@ -214,7 +174,7 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
      */
     protected function _applyParentVat($oPrice)
     {
-        if (($oParent = $this->getParent()) && !$this->getConfig()->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
+        if (($oParent = $this->getParent()) && !$this->config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
             $oParent->applyVats($oPrice);
         }
     }

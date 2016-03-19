@@ -152,7 +152,7 @@ class VendorListController extends \AList
         $sVendorId = $oVendor->getId();
 
         // load only articles which we show on screen
-        $iNrOfCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+        $iNrOfCatArticles = (int) $this->config->getConfigParam('iNrofCatArticles');
         $iNrOfCatArticles = $iNrOfCatArticles ? $iNrOfCatArticles : 1;
 
         $oArtList = oxNew('oxArticleList');
@@ -360,7 +360,7 @@ class VendorListController extends \AList
     public function getTitleSuffix()
     {
         if ($this->getActVendor()->oxvendor__oxshowsuffix->value) {
-            return $this->getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
+            return $this->config->getActiveShop()->oxshops__oxtitlesuffix->value;
         }
     }
 
@@ -460,7 +460,7 @@ class VendorListController extends \AList
             $oVendorTree->buildVendorTree(
                 'vendorlist',
                 $this->getActVendor()->getId(),
-                $this->getConfig()->getShopHomeURL()
+                $this->config->getShopHomeURL()
             );
             $this->_oVendorTree = $oVendorTree;
         }

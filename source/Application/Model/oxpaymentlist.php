@@ -33,12 +33,14 @@ class oxPaymentList extends oxList
      */
     protected $_sHomeCountry = null;
 
+    protected $_sObjectsInListName = 'oxpayment';
+
     /**
      * Class Constructor
      */
-    public function __construct()
+    public function __construct($config)
     {
-        $this->setHomeCountry($this->getConfig()->getConfigParam('aHomeCountry'));
+        $this->setHomeCountry($this->config->getConfigParam('aHomeCountry'));
         parent::__construct('oxpayment');
     }
 

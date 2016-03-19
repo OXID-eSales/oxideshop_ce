@@ -46,7 +46,7 @@ class Shop_Main extends oxAdminDetails
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         parent::render();
 
         $shopId = $this->_aViewData["oxid"] = $this->getEditObjectId();
@@ -98,7 +98,7 @@ class Shop_Main extends oxAdminDetails
     {
         parent::save();
 
-        $config = $this->getConfig();
+        $config = $this->config;
         $shopId = $this->getEditObjectId();
 
         $parameters = oxRegistry::getConfig()->getRequestParameter("editval");
@@ -161,7 +161,7 @@ class Shop_Main extends oxAdminDetails
     {
         $nonCopyVars = array("aSerials", "IMS", "IMD", "IMA", "sBackTag", "sUtilModule", "aModulePaths", "aModuleFiles", "aModuleEvents", "aModuleVersions", "aModuleTemplates", "aModules", "aDisabledModules");
         //adding non copable multishop field options
-        $multiShopTables = $this->getConfig()->getConfigParam('aMultiShopTables');
+        $multiShopTables = $this->config->getConfigParam('aMultiShopTables');
         foreach ($multiShopTables as $multishopTable) {
             $nonCopyVars[] = 'blMallInherit_' . strtolower($multishopTable);
         }
@@ -176,7 +176,7 @@ class Shop_Main extends oxAdminDetails
      */
     protected function _copyConfigVars($shop)
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $utilsObject = oxUtilsObject::getInstance();
         $db = oxDb::getDb();
 

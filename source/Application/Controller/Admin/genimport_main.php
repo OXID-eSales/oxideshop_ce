@@ -91,7 +91,7 @@ class GenImport_Main extends oxAdminDetails
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $genericImport = oxNew('OxidEsales\Eshop\Core\GenericImport\GenericImport');
         $this->_sCsvFilePath = null;
@@ -193,7 +193,7 @@ class GenImport_Main extends oxAdminDetails
      */
     protected function _getCsvFieldsNames()
     {
-        $blCsvContainsHeader = $this->getConfig()->getRequestParameter('blContainsHeader');
+        $blCsvContainsHeader = $this->config->getRequestParameter('blContainsHeader');
         oxRegistry::getSession()->setVariable('blCsvContainsHeader', $blCsvContainsHeader);
         $sCsvPath = $this->_getUploadedCsvFilePath();
 
@@ -265,7 +265,7 @@ class GenImport_Main extends oxAdminDetails
 
         if ($iNavStep == 3) {
             $blIsEmpty = true;
-            $aCsvFields = $this->getConfig()->getRequestParameter('aCsvFields');
+            $aCsvFields = $this->config->getRequestParameter('aCsvFields');
             foreach ($aCsvFields as $sValue) {
                 if ($sValue) {
                     $blIsEmpty = false;
@@ -299,7 +299,7 @@ class GenImport_Main extends oxAdminDetails
             return $this->_sCsvFilePath;
         }
 
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $aFile = $oConfig->getUploadedFile('csvfile');
         if (isset($aFile['name']) && $aFile['name']) {
             $this->_sCsvFilePath = $oConfig->getConfigParam('sCompileDir') . basename($aFile['tmp_name']);
@@ -336,7 +336,7 @@ class GenImport_Main extends oxAdminDetails
     {
         if ($this->_sStringTerminator === null) {
             $this->_sStringTerminator = $this->_sDefaultStringTerminator;
-            if ($char = $this->getConfig()->getConfigParam('sGiCsvFieldTerminator')) {
+            if ($char = $this->config->getConfigParam('sGiCsvFieldTerminator')) {
                 $this->_sStringTerminator = $char;
             }
         }
@@ -353,7 +353,7 @@ class GenImport_Main extends oxAdminDetails
     {
         if ($this->_sStringEncloser === null) {
             $this->_sStringEncloser = $this->_sDefaultStringEncloser;
-            if ($char = $this->getConfig()->getConfigParam('sGiCsvFieldEncloser')) {
+            if ($char = $this->config->getConfigParam('sGiCsvFieldEncloser')) {
                 $this->_sStringEncloser = $char;
             }
         }

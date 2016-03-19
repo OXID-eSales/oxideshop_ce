@@ -55,7 +55,7 @@ class Article_Pictures extends oxAdminDetails
             }
         }
 
-        $this->_aViewData["iPicCount"] = $this->getConfig()->getConfigParam('iPicCount');
+        $this->_aViewData["iPicCount"] = $this->config->getConfigParam('iPicCount');
 
         return "article_pictures.tpl";
     }
@@ -67,7 +67,7 @@ class Article_Pictures extends oxAdminDetails
      */
     public function save()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($myConfig->isDemoShop()) {
             // disabling uploading pictures if this is demo shop
@@ -105,7 +105,7 @@ class Article_Pictures extends oxAdminDetails
      */
     public function deletePicture()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($myConfig->isDemoShop()) {
             // disabling uploading pictures if this is demo shop

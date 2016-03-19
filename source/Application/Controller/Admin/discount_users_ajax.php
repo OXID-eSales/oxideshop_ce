@@ -64,7 +64,7 @@ class discount_users_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         $sUserTable = $this->_getViewName('oxuser');
         $oDb = oxDb::getDb();
@@ -104,7 +104,7 @@ class discount_users_ajax extends ajaxListComponent
      */
     public function removeDiscUser()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $aRemoveGroups = $this->_getActionIds('oxobject2discount.oxid');
         if ($oConfig->getRequestParameter('all')) {
 
@@ -122,7 +122,7 @@ class discount_users_ajax extends ajaxListComponent
      */
     public function addDiscUser()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $aChosenUsr = $this->_getActionIds('oxuser.oxid');
         $soxId = $oConfig->getRequestParameter('synchoxid');
 

@@ -66,7 +66,7 @@ class actions_main_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oDb = oxDb::getDb();
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
@@ -120,7 +120,7 @@ class actions_main_ajax extends ajaxListComponent
         $sQ = parent::_addFilter($sQ);
 
         // display variants or not ?
-        if ($this->getConfig()->getConfigParam('blVariantsSelection')) {
+        if ($this->config->getConfigParam('blVariantsSelection')) {
             $sQ .= ' group by ' . $this->_getViewName('oxarticles') . '.oxid ';
 
             $oStr = getStr();
@@ -176,7 +176,7 @@ class actions_main_ajax extends ajaxListComponent
      */
     public function addArtToAct()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $aArticles = $this->_getActionIds('oxarticles.oxid');
         $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
@@ -219,7 +219,7 @@ class actions_main_ajax extends ajaxListComponent
      */
     public function setSorting()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $sArtTable = $this->_getViewName('oxarticles');
         $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
         $sSelect = "select * from $sArtTable left join oxactions2article on $sArtTable.oxid=oxactions2article.oxartid ";

@@ -66,7 +66,7 @@ class deliveryset_users_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oDb = oxDb::getDb();
         $sId = $myConfig->getRequestParameter('oxid');
         $sSynchId = $myConfig->getRequestParameter('synchoxid');
@@ -108,7 +108,7 @@ class deliveryset_users_ajax extends ajaxListComponent
     public function removeUserFromSet()
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2delivery.oxid');
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->config->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -125,10 +125,10 @@ class deliveryset_users_ajax extends ajaxListComponent
     public function addUserToSet()
     {
         $aChosenUsr = $this->_getActionIds('oxuser.oxid');
-        $soxId = $this->getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->config->getRequestParameter('synchoxid');
 
         // adding
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->config->getRequestParameter('all')) {
             $sUserTable = $this->_getViewName('oxuser');
             $aChosenUsr = $this->_getAll($this->_addFilter("select $sUserTable.oxid " . $this->_getQuery()));
         }

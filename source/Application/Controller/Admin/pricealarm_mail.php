@@ -37,7 +37,7 @@ class PriceAlarm_Mail extends oxAdminDetails
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         parent::render();
 

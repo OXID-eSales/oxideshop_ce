@@ -67,7 +67,7 @@ class oxcmp_basket extends oxView
      */
     public function init()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         if ($oConfig->getConfigParam('blPsBasketReservationEnabled')) {
             if ($oReservations = $this->getSession()->getBasketReservations()) {
                 if (!$oReservations->getTimeLeft()) {
@@ -87,7 +87,7 @@ class oxcmp_basket extends oxView
         parent::init();
 
         // Basket exclude
-        if ($this->getConfig()->getConfigParam('blBasketExcludeEnabled')) {
+        if ($this->config->getConfigParam('blBasketExcludeEnabled')) {
             if ($oBasket = $this->getSession()->getBasket()) {
                 $this->getParent()->setRootCatChanged($this->isRootCatChanged() && $oBasket->getContents());
             }
@@ -130,7 +130,7 @@ class oxcmp_basket extends oxView
     public function toBasket($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false)
     {
         // adding to basket is not allowed ?
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         if (oxRegistry::getUtils()->isSearchEngine()) {
             return;
         }
@@ -245,7 +245,7 @@ class oxcmp_basket extends oxView
         $sPosition .= ($iPageNr > 0) ? 'pgNr=' . $iPageNr . '&' : '';
 
         // reload and backbutton blocker
-        if ($this->getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
+        if ($this->config->getConfigParam('iNewBasketItemMessage') == 3) {
 
             // saving return to shop link to session
             oxRegistry::getSession()->setVariable('_backtoshop', $sClass . $sPosition);
@@ -349,7 +349,7 @@ class oxcmp_basket extends oxView
      */
     protected function _addItems($products)
     {
-        $activeView = $this->getConfig()->getActiveView();
+        $activeView = $this->config->getActiveView();
         $errorDestination = $activeView->getErrorDestination();
 
         $basket = $this->getSession()->getBasket();
@@ -534,7 +534,7 @@ class oxcmp_basket extends oxView
         } catch (oxOutOfStockException $exception) {
             $exception->setDestination($errorDestination);
             // #950 Change error destination to basket popup
-            if (!$errorDestination && $this->getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
+            if (!$errorDestination && $this->config->getConfigParam('iNewBasketItemMessage') == 2) {
                 $errorDestination = 'popup';
             }
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);

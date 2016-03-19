@@ -152,7 +152,7 @@ class OrderController extends \oxUBase
     public function init()
     {
         // disabling performance control variable
-        $this->getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', false);
+        $this->config->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', false);
 
         // recalc basket cause of payment stuff
         if ($oBasket = $this->getBasket()) {
@@ -176,7 +176,7 @@ class OrderController extends \oxUBase
     {
         if ($this->getIsOrderStep()) {
             $oBasket = $this->getBasket();
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
 
             if ($myConfig->getConfigParam('blPsBasketReservationEnabled')) {
                 $this->getSession()->getBasketReservations()->renewExpiration();
@@ -234,7 +234,7 @@ class OrderController extends \oxUBase
         }
 
         /* @deprecated since v5.1.6 (2014-05-28); Not used anymore */
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $sOrderCustomerInfo = $oConfig->getRequestParameter('ord_custinfo');
         if ($sOrderCustomerInfo !== null && !$sOrderCustomerInfo && $this->isConfirmCustInfoActive()) {
             $this->_blConfirmCustInfoError = 1;
@@ -295,7 +295,7 @@ class OrderController extends \oxUBase
             if ($sPaymentid && $oPayment->load($sPaymentid) &&
                 $oPayment->isValidPayment(
                     oxRegistry::getSession()->getVariable('dynvalue'),
-                    $this->getConfig()->getShopId(),
+                    $this->config->getShopId(),
                     $oUser,
                     $oBasket->getPriceForPayment(),
                     oxRegistry::getSession()->getVariable('sShipSet')
@@ -414,7 +414,7 @@ class OrderController extends \oxUBase
     {
         if ($this->_blConfirmAGB === null) {
             $this->_blConfirmAGB = false;
-            $this->_blConfirmAGB = $this->getConfig()->getConfigParam('blConfirmAGB');
+            $this->_blConfirmAGB = $this->config->getConfigParam('blConfirmAGB');
         }
 
         return $this->_blConfirmAGB;
@@ -431,9 +431,9 @@ class OrderController extends \oxUBase
     {
         if ($this->_blConfirmCustInfo === null) {
             $this->_blConfirmCustInfo = false;
-            $sConf = $this->getConfig()->getConfigParam('blConfirmCustInfo');
+            $sConf = $this->config->getConfigParam('blConfirmCustInfo');
             if ($sConf != null) {
-                $this->_blConfirmCustInfo = $this->getConfig()->getConfigParam('blConfirmCustInfo');
+                $this->_blConfirmCustInfo = $this->config->getConfigParam('blConfirmCustInfo');
             }
         }
 
@@ -471,7 +471,7 @@ class OrderController extends \oxUBase
     {
         if ($this->_blShowOrderButtonOnTop === null) {
             $this->_blShowOrderButtonOnTop = false;
-            $this->_blShowOrderButtonOnTop = $this->getConfig()->getConfigParam('blShowOrderButtonOnTop');
+            $this->_blShowOrderButtonOnTop = $this->config->getConfigParam('blShowOrderButtonOnTop');
         }
 
         return $this->_blShowOrderButtonOnTop;
@@ -619,7 +619,7 @@ class OrderController extends \oxUBase
     protected function _validateTermsAndConditions()
     {
         $blValid = true;
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         if ($oConfig->getConfigParam('blConfirmAGB') && !$oConfig->getRequestParameter('ord_agb')) {
             $blValid = false;

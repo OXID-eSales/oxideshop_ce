@@ -70,7 +70,7 @@ class OxidStartController extends \oxUBase
      */
     public function pageStart()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $config->setConfigParam('iMaxMandates', $config->getConfigParam('IMS'));
         $config->setConfigParam('iMaxArticles', $config->getConfigParam('IMA'));

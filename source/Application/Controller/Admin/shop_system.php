@@ -43,7 +43,7 @@ class Shop_System extends Shop_Config
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         parent::render();
 
         $aConfArrs = array();

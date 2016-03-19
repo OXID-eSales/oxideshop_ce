@@ -63,7 +63,7 @@ class oxcmp_cur extends oxView
     public function init()
     {
         // Performance
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         if (!$myConfig->getConfigParam('bl_perfLoadCurrency')) {
             //#861C -  show first currency
             $aCurrencies = $myConfig->getCurrencyArray();
@@ -116,9 +116,9 @@ class oxcmp_cur extends oxView
         $oParentView->setActCurrency($this->_oActCur);
 
         $oUrlUtils = oxRegistry::get("oxUtilsUrl");
-        $sUrl = $oUrlUtils->cleanUrl($this->getConfig()->getTopActiveView()->getLink(), array("cur"));
+        $sUrl = $oUrlUtils->cleanUrl($this->config->getTopActiveView()->getLink(), array("cur"));
 
-        if ($this->getConfig()->getConfigParam('bl_perfLoadCurrency')) {
+        if ($this->config->getConfigParam('bl_perfLoadCurrency')) {
             reset($this->aCurrencies);
             while (list(, $oItem) = each($this->aCurrencies)) {
                 $oItem->link = $oUrlUtils->processUrl($sUrl, true, array("cur" => $oItem->id));

@@ -73,12 +73,12 @@ class oxSeoDecoder extends oxSuperCfg
     public function decodeUrl($sSeoUrl)
     {
         $oStr = getStr();
-        $sBaseUrl = $this->getConfig()->getShopURL();
+        $sBaseUrl = $this->config->getShopURL();
         if ($oStr->strpos($sSeoUrl, $sBaseUrl) === 0) {
             $sSeoUrl = $oStr->substr($sSeoUrl, $oStr->strlen($sBaseUrl));
         }
         $sSeoUrl = rawurldecode($sSeoUrl);
-        $iShopId = $this->getConfig()->getShopId();
+        $iShopId = $this->config->getShopId();
 
         $sKey = $this->_getIdent($sSeoUrl);
         $aRet = false;
@@ -107,11 +107,11 @@ class oxSeoDecoder extends oxSuperCfg
     {
         $oStr = getStr();
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $sBaseUrl = $this->getConfig()->getShopURL();
+        $sBaseUrl = $this->config->getShopURL();
         if ($oStr->strpos($sSeoUrl, $sBaseUrl) === 0) {
             $sSeoUrl = $oStr->substr($sSeoUrl, $oStr->strlen($sBaseUrl));
         }
-        $iShopId = $this->getConfig()->getShopId();
+        $iShopId = $this->config->getShopId();
         $sSeoUrl = rawurldecode($sSeoUrl);
 
         $sKey = $this->_getIdent($sSeoUrl, true);
@@ -208,10 +208,10 @@ class oxSeoDecoder extends oxSuperCfg
                 oxRegistry::getLang()->resetBaseLanguage();
             } elseif (($sRedirectUrl = $this->_decodeOldUrl($sParams))) {
                 // in case SEO url was changed - redirecting to new location
-                oxRegistry::getUtils()->redirect($this->getConfig()->getShopURL() . $sRedirectUrl, false, 301);
+                oxRegistry::getUtils()->redirect($this->config->getShopURL() . $sRedirectUrl, false, 301);
             } elseif (($sRedirectUrl = $this->_decodeSimpleUrl($sParams))) {
                 // old type II seo urls
-                oxRegistry::getUtils()->redirect($this->getConfig()->getShopURL() . $sRedirectUrl, false, 301);
+                oxRegistry::getUtils()->redirect($this->config->getShopURL() . $sRedirectUrl, false, 301);
             } else {
                 oxRegistry::getSession()->start();
                 // unrecognized url
@@ -306,7 +306,7 @@ class oxSeoDecoder extends oxSuperCfg
 
         // this should not happen on most cases, because this redirect is handled by .htaccess
         if ($sParams && !$oStr->preg_match('/\.html$/', $sParams) && !$oStr->preg_match('/\/$/', $sParams)) {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopURL() . $sParams . '/', false);
+            oxRegistry::getUtils()->redirect($this->config->getShopURL() . $sParams . '/', false);
         }
 
         return $sParams;

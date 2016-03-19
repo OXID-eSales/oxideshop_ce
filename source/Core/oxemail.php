@@ -351,7 +351,7 @@ class oxEmail
      */
     public function send(MailContainer $container)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($this->_blInlineImgEmail) {
             $this->_includeImages(
@@ -394,7 +394,7 @@ class oxEmail
      */
     public function sendOrderEmailToUser($oOrder, $sSubject = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $oShop = $this->_getShop();
 
@@ -445,7 +445,7 @@ class oxEmail
      */
     public function sendOrderEmailToOwner($order, $subject = null)
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $shop = $this->_getShop();
 
@@ -583,7 +583,7 @@ class oxEmail
      */
     public function sendForgotPwdEmail($sEmailAddress, $sSubject = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oDb = oxDb::getDb();
 
         // shop info
@@ -702,7 +702,7 @@ class oxEmail
      */
     protected function _getNewsSubsLink($sId, $sConfirmCode = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $iActShopLang = $myConfig->getActiveShop()->getLanguage();
 
         $sUrl = $myConfig->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=' . $sId;
@@ -759,7 +759,7 @@ class oxEmail
      */
     public function sendSuggestMail($oParams, $oProduct)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         //sets language of shop
         $iCurrLang = $myConfig->getActiveShop()->getLanguage();
@@ -812,7 +812,7 @@ class oxEmail
      */
     public function sendInviteMail($oParams)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         //sets language of shop
         $iCurrLang = $myConfig->getActiveShop()->getLanguage();
@@ -872,7 +872,7 @@ class oxEmail
      */
     public function sendSendedNowMail($oOrder, $sSubject = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $iOrderLang = (int) (isset($oOrder->oxorder__oxlang->value) ? $oOrder->oxorder__oxlang->value : 0);
 
@@ -904,7 +904,6 @@ class oxEmail
 
         $oSmarty->security_settings['INCLUDE_ANY'] = true;
         // force non admin to get correct paths (tpl, img)
-        $myConfig->setAdminMode(false);
         $oLang->setTplLanguage($iOldTplLang);
         $oLang->setBaseLanguage($iOldBaseLang);
         // set it back
@@ -935,7 +934,7 @@ class oxEmail
      */
     public function sendDownloadLinksMail($oOrder, $sSubject = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $iOrderLang = (int) (isset($oOrder->oxorder__oxlang->value) ? $oOrder->oxorder__oxlang->value : 0);
 
@@ -964,7 +963,6 @@ class oxEmail
 
         $oSmarty->security_settings['INCLUDE_ANY'] = true;
         // force non admin to get correct paths (tpl, img)
-        $myConfig->setAdminMode(false);
         $oLang->setTplLanguage($iOldTplLang);
         $oLang->setBaseLanguage($iOldBaseLang);
         // set it back
@@ -1011,7 +1009,7 @@ class oxEmail
             $container = (new MailContainer())
                 ->setRecipient($oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue())
                 ->setFromAddress($oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue())
-                ->setBody($oSmarty->fetch($this->getConfig()->getTemplatePath($this->_sReminderMailTemplate, false)))
+                ->setBody($oSmarty->fetch($this->config->getTemplatePath($this->_sReminderMailTemplate, false)))
                 ->setAltBody('')
                 ->setSubject(($sSubject !== null) ? $sSubject : $oLang->translateString('STOCK_LOW'));
 
@@ -1276,11 +1274,11 @@ class oxEmail
             if (isset($this->_oShop)) {
                 return $this->_oShop;
             } else {
-                return $this->_oShop = $this->getConfig()->getActiveShop();
+                return $this->_oShop = $this->config->getActiveShop();
             }
         }
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $oShop = oxNew('oxShop');
         if ($iShopId !== null) {
@@ -1332,7 +1330,7 @@ class oxEmail
      */
     public function getViewConfig()
     {
-        return $this->getConfig()->getActiveView()->getViewConfig();
+        return $this->config->getActiveView()->getViewConfig();
     }
 
     /**
@@ -1342,7 +1340,7 @@ class oxEmail
      */
     public function getView()
     {
-        return $this->getConfig()->getActiveView();
+        return $this->config->getActiveView();
     }
 
     /**
@@ -1418,6 +1416,6 @@ class oxEmail
      */
     private function _clearSidFromBody($sAltBody)
     {
-        return oxStr::getStr()->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[A-Z0-9\.]+/i', '\1shp=' . $this->getConfig()->getShopId(), $sAltBody);
+        return oxStr::getStr()->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[A-Z0-9\.]+/i', '\1shp=' . $this->config->getShopId(), $sAltBody);
     }
 }

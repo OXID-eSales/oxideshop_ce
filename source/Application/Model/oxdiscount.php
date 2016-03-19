@@ -62,14 +62,7 @@ class oxDiscount extends oxI18n
      */
     protected $_aHasArticleDiscounts = array();
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxdiscount');
-    }
+    protected $_sCoreTable = "oxdiscount";
 
     /**
      * Delete this object from the database, returns true on success.
@@ -331,7 +324,7 @@ class oxDiscount extends oxI18n
         if ($this->oxdiscount__oxaddsumtype->value == '%') {
             return $dPrice * ($this->oxdiscount__oxaddsum->value / 100);
         } else {
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
 
             return $this->oxdiscount__oxaddsum->value * $dAmount * $oCur->rate;
         }
@@ -362,7 +355,7 @@ class oxDiscount extends oxI18n
     public function getAddSum()
     {
         if ($this->oxdiscount__oxaddsumtype->value == 'abs') {
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
 
             return $this->oxdiscount__oxaddsum->value * $oCur->rate;
         } else {

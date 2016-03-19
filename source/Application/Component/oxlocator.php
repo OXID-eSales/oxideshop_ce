@@ -57,8 +57,10 @@ class oxLocator extends oxSuperCfg
      *
      * @param string $sType locator type
      */
-    public function __construct($sType = null)
+    public function __construct($config, $sType = null)
     {
+        parent::__construct($config);
+
         // setting locator type
         if ($sType) {
             $this->_sType = trim($sType);
@@ -477,7 +479,7 @@ class oxLocator extends oxSuperCfg
 
         // maybe there is no page number passed, but we still can find the position in id's list
         if (!$iPageNr && $oIdList && $oArticle) {
-            $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+            $iNrofCatArticles = (int) $this->config->getConfigParam('iNrofCatArticles');
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
             $sParentIdField = 'oxarticles__oxparentid';
             $sArticleId = $oArticle->$sParentIdField->value ? $oArticle->$sParentIdField->value : $oArticle->getId();
@@ -526,7 +528,6 @@ class oxLocator extends oxSuperCfg
 
             if (array_key_exists($iPos - 1, $aIds)) {
                 $oBackProduct = oxNew('oxArticle');
-                $oBackProduct->modifyCacheKey('_locator');
                 $oBackProduct->setNoVariantLoading(true);
                 if ($oBackProduct->load($aIds[$iPos - 1])) {
                     $oBackProduct->setLinkType($oLocatorTarget->getLinkType());
@@ -536,7 +537,6 @@ class oxLocator extends oxSuperCfg
 
             if (array_key_exists($iPos + 1, $aIds)) {
                 $oNextProduct = oxNew('oxArticle');
-                $oNextProduct->modifyCacheKey('_locator');
                 $oNextProduct->setNoVariantLoading(true);
                 if ($oNextProduct->load($aIds[$iPos + 1])) {
                     $oNextProduct->setLinkType($oLocatorTarget->getLinkType());

@@ -87,10 +87,10 @@ class JavaScriptRegistrator
     {
         $config = oxRegistry::getConfig();
         $parts = explode('?', $file);
-        $url = $config->getResourceUrl($parts[0], $config->isAdmin());
+        $url = $config->getResourceUrl($parts[0], false);
         $parameters = $parts[1];
         if (empty($parameters)) {
-            $path = $config->getResourcePath($file, $config->isAdmin());
+            $path = $config->getResourcePath($file, false);
             $parameters = filemtime($path);
         }
 

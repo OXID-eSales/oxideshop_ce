@@ -83,7 +83,7 @@ class actions_groups_ajax extends ajaxListComponent
     public function removePromotionGroup()
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2action.oxid');
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->config->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2action.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
@@ -101,9 +101,9 @@ class actions_groups_ajax extends ajaxListComponent
     public function addPromotionGroup()
     {
         $aChosenGroup = $this->_getActionIds('oxgroups.oxid');
-        $soxId = $this->getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->config->getRequestParameter('synchoxid');
 
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->config->getRequestParameter('all')) {
             $sGroupTable = $this->_getViewName('oxgroups');
             $aChosenGroup = $this->_getAll($this->_addFilter("select $sGroupTable.oxid " . $this->_getQuery()));
         }

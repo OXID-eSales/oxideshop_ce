@@ -123,7 +123,7 @@ class oxTsProtection extends oxSuperCfg
      */
     public function requestForTsProtection($aValues, $sPaymentId)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $iLangId = (int) oxRegistry::getLang()->getBaseLanguage();
         $blTsTestMode = $oConfig->getConfigParam('tsTestMode');
         $aTsUser = $oConfig->getConfigParam('aTsUser');
@@ -137,8 +137,8 @@ class oxTsProtection extends oxSuperCfg
                     $sSoapUrl = $oConfig->getConfigParam('sTsProtectionUrl');
                 }
                 $sFunction = 'requestForProtectionV2';
-                $sVersion = $this->getConfig()->getVersion();
-                $sEdition = $this->getConfig()->getFullEdition();
+                $sVersion = $this->config->getVersion();
+                $sEdition = $this->config->getFullEdition();
                 $sTsPaymentId = $this->_getTsPaymentId($sPaymentId);
                 $tsProductId = $this->_getTsProductCurrId($aValues['tsProductId'], $aValues['currency']);
                 $aValues['tsId'] = $aTrustedShopIds[$iLangId];

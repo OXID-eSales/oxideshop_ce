@@ -65,7 +65,7 @@ class article_accessories_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
         $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
         $oDb = oxDb::getDb();

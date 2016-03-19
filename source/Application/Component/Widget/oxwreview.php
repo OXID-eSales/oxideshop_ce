@@ -122,7 +122,7 @@ class oxwReview extends oxWidget
      */
     public function getReviews()
     {
-        $oReview = $this->getConfig()->getTopActiveView();
+        $oReview = $this->config->getTopActiveView();
 
         return $oReview->getReviews();
     }

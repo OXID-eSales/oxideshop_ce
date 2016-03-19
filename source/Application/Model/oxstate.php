@@ -33,14 +33,7 @@ class oxState extends oxI18n
      */
     protected $_sClassName = 'oxstate';
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxI18n()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init("oxstates");
-    }
+    protected $_sCoreTable = 'oxstates';
 
     /**
      * Returns country id by code

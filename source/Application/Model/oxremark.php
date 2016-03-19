@@ -41,14 +41,7 @@ class oxRemark extends oxBase
      */
     protected $_aSkipSaveFields = array('oxtimestamp');
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxremark');
-    }
+    protected $_sCoreTable = 'oxremark';
 
     /**
      * Loads object information from DB. Returns true on success.

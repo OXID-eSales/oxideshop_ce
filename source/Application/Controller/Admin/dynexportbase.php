@@ -124,12 +124,12 @@ class DynExportBase extends oxAdminDetails
     /**
      * Calls parent costructor and initializes $this->_sFilePath parameter
      */
-    public function __construct()
+    public function __construct($config)
     {
-        parent::__construct();
+        parent::__construct($config);
 
         // set generic frame template
-        $this->_sFilePath = $this->getConfig()->getConfigParam('sShopDir') . "/" . $this->sExportPath . $this->sExportFileName . "." . $this->sExportFileType;
+        $this->_sFilePath = $this->config->getConfigParam('sShopDir') . "/" . $this->sExportPath . $this->sExportFileName . "." . $this->sExportFileType;
     }
 
     /**
@@ -149,7 +149,7 @@ class DynExportBase extends oxAdminDetails
         }
 
         $this->_aViewData['sOutputFile'] = $this->_sFilePath;
-        $this->_aViewData['sDownloadFile'] = $this->getConfig()->getConfigParam('sShopURL') . $this->sExportPath . $this->sExportFileName . "." . $this->sExportFileType;
+        $this->_aViewData['sDownloadFile'] = $this->config->getConfigParam('sShopURL') . $this->sExportPath . $this->sExportFileName . "." . $this->sExportFileType;
 
         return $this->_sThisTemplate;
     }
@@ -500,7 +500,7 @@ class DynExportBase extends oxAdminDetails
      */
     public function getOneArticle($iCnt, & $blContinue)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         //[Alfonsas 2006-05-31] setting specific parameter
         //to be checked in oxarticle.php init() method
@@ -686,7 +686,7 @@ class DynExportBase extends oxAdminDetails
         }
 
         // add minimum stock value
-        if ($this->getConfig()->getConfigParam('blUseStock') && ($dMinStock = oxRegistry::getConfig()->getRequestParameter("sExportMinStock"))) {
+        if ($this->config->getConfigParam('blUseStock') && ($dMinStock = oxRegistry::getConfig()->getRequestParameter("sExportMinStock"))) {
             $dMinStock = str_replace(array(";", " ", "/", "'"), "", $dMinStock);
             $sSelect .= " and {$sArticleTable}.oxstock >= " . $oDB->quote($dMinStock);
         }

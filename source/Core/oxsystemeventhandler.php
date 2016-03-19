@@ -297,6 +297,6 @@ class oxSystemEventHandler
 
         /** @var oxServerProcessor $oProcessor */
 
-        return oxNew('oxServerProcessor', $oServerNodesManager, $oServerNodeChecker, $oUtilsServer, $oUtilsDate);
+        return oxNew('oxServerProcessor', \OxidEsales\Eshop\Core\DiContainer::getInstance()->get(\OxidEsales\Eshop\Core\DiContainer::CONTAINER_CORE_CONFIG), $oServerNodesManager, $oServerNodeChecker, $oUtilsServer, $oUtilsDate);
     }
 }

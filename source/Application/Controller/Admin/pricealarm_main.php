@@ -38,7 +38,7 @@ class PriceAlarm_Main extends oxAdminDetails
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $this->_aViewData['iAllCnt'] = $this->getActivePriceAlarmsCount();
 

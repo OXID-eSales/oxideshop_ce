@@ -340,7 +340,7 @@ class SystemRequirements
 
         $sTmp = "$sPath/tmp/";
         if (class_exists('oxConfig')) {
-            $sCfgTmp = $this->getConfig()->getConfigParam('sCompileDir');
+            $sCfgTmp = $this->config->getConfigParam('sCompileDir');
             if (strpos($sCfgTmp, '<sCompileDir_') === false) {
                 $sTmp = $sCfgTmp;
             }
@@ -396,7 +396,7 @@ class SystemRequirements
      */
     protected function _getShopHostInfoFromConfig()
     {
-        $sShopURL = $this->getConfig()->getConfigParam('sShopURL');
+        $sShopURL = $this->config->getConfigParam('sShopURL');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sShopURL, $m)) {
             $sHost = $m[2];
             $iPort = (int) $m[4];
@@ -425,7 +425,7 @@ class SystemRequirements
      */
     protected function _getShopSSLHostInfoFromConfig()
     {
-        $sSSLShopURL = $this->getConfig()->getConfigParam('sSSLShopURL');
+        $sSSLShopURL = $this->config->getConfigParam('sSSLShopURL');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sSSLShopURL, $m)) {
             $sHost = $m[2];
             $iPort = (int) $m[4];
@@ -915,7 +915,7 @@ class SystemRequirements
      */
     public function checkCollation()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $aCollations = array();
         $sCollation = '';
@@ -1109,10 +1109,10 @@ class SystemRequirements
      */
     protected function _checkTemplateBlock($sTemplate, $sBlockName)
     {
-        $sTplFile = $this->getConfig()->getTemplatePath($sTemplate, false);
+        $sTplFile = $this->config->getTemplatePath($sTemplate, false);
         if (!$sTplFile || !file_exists($sTplFile)) {
             // check if file is in admin theme
-            $sTplFile = $this->getConfig()->getTemplatePath($sTemplate, true);
+            $sTplFile = $this->config->getTemplatePath($sTemplate, true);
             if (!$sTplFile || !file_exists($sTplFile)) {
                 return false;
             }
@@ -1137,7 +1137,7 @@ class SystemRequirements
     {
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $aCache = array();
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         $sShpIdParam = $oDb->quote($oConfig->getShopId());
         $sSql = "select * from oxtplblocks where oxactive=1 and oxshopid=$sShpIdParam";

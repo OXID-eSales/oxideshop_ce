@@ -87,14 +87,6 @@ class oxInputValidator extends oxSuperCfg
     );
 
     /**
-     * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
-     *
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * Validates basket amount
      *
      * @param float $dAmount amount of article

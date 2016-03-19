@@ -70,7 +70,7 @@ class oxcmp_categories extends oxView
         parent::init();
 
         // Performance
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         if ($myConfig->getConfigParam('blDisableNavBars') &&
             $myConfig->getTopActiveView()->getIsOrderStep()
         ) {
@@ -126,7 +126,7 @@ class oxcmp_categories extends oxView
         // loaded article - then checking additional parameters
         $oProduct = $this->getProduct();
         if ($oProduct) {
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
 
             $sActManufacturer = $myConfig->getConfigParam('bl_perfLoadManufacturerTree') ? $sActManufacturer : null;
 
@@ -138,7 +138,7 @@ class oxcmp_categories extends oxView
         // Checking for the default category
         if ($sActCat === null && !$oProduct && !$sActManufacturer && !$sActTag) {
             // set remote cat
-            $sActCat = $this->getConfig()->getActiveShop()->oxshops__oxdefcat->value;
+            $sActCat = $this->config->getActiveShop()->oxshops__oxdefcat->value;
             if ($sActCat == 'oxrootid') {
                 // means none selected
                 $sActCat = null;
@@ -176,7 +176,7 @@ class oxcmp_categories extends oxView
      */
     protected function _loadManufacturerTree($sActManufacturer)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
             $oManufacturerTree = oxNew('oxmanufacturerlist');
             $shopHomeURL = $myConfig->getShopHomeURL();
@@ -206,7 +206,7 @@ class oxcmp_categories extends oxView
         parent::render();
 
         // Performance
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oParentView = $this->getParent();
 
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree') && $this->_oManufacturerTree) {

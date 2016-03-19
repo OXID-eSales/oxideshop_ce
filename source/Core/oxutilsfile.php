@@ -128,15 +128,16 @@ class oxUtilsFile extends oxSuperCfg
      *
      * @return null
      */
-    public function __construct()
+    public function __construct($config)
     {
-        $myConfig = $this->getConfig();
+        parent::__construct($config);
+        //$myConfig = $this->config;
 
-        if ($iPicCount = $myConfig->getConfigParam('iPicCount')) {
-            $this->_iMaxPicImgCount = $iPicCount;
-        }
+        //if ($iPicCount = $myConfig->getConfigParam('iPicCount')) {
+        //    $this->_iMaxPicImgCount = $iPicCount;
+        //}
 
-        $this->_iMaxZoomImgCount = $this->_iMaxPicImgCount;
+        //$this->_iMaxZoomImgCount = $this->_iMaxPicImgCount;
     }
 
     /**
@@ -321,7 +322,7 @@ class oxUtilsFile extends oxSuperCfg
     protected function _getImagePath($sType)
     {
         $sFolder = array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
-        $sPath = $this->normalizeDir($this->getConfig()->getPictureDir(false)) . "{$sFolder}/";
+        $sPath = $this->normalizeDir($this->config->getPictureDir(false)) . "{$sFolder}/";
 
         return $sPath;
     }
@@ -338,7 +339,7 @@ class oxUtilsFile extends oxSuperCfg
      */
     protected function _getImageSize($sImgType, $iImgNum, $sImgConf)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $sSize = false;
 
         switch ($sImgConf) {
@@ -426,7 +427,7 @@ class oxUtilsFile extends oxSuperCfg
         $aFiles = $aFiles ? $aFiles : $_FILES;
         if (isset($aFiles['myfile']['name'])) {
 
-            $oConfig = $this->getConfig();
+            $oConfig = $this->config;
             $oStr = getStr();
 
             // A. protection for demoshops - strictly defining allowed file extensions
@@ -572,7 +573,7 @@ class oxUtilsFile extends oxSuperCfg
     {
         $aFileInfo = $_FILES[$sFileName];
 
-        $sBasePath = $this->getConfig()->getConfigParam('sShopDir');
+        $sBasePath = $this->config->getConfigParam('sShopDir');
 
         //checking params
         if (!isset($aFileInfo['name']) || !isset($aFileInfo['tmp_name'])) {
@@ -594,7 +595,7 @@ class oxUtilsFile extends oxSuperCfg
         $sExt = $aPathInfo['extension'];
         $sFileName = $aPathInfo['filename'];
 
-        $aAllowedUploadTypes = (array) $this->getConfig()->getConfigParam('aAllowedUploadTypes');
+        $aAllowedUploadTypes = (array) $this->config->getConfigParam('aAllowedUploadTypes');
         $aAllowedUploadTypes = array_map("strtolower", $aAllowedUploadTypes);
 
         if (!in_array(strtolower($sExt), $aAllowedUploadTypes)) {

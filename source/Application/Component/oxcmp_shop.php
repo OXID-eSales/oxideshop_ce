@@ -45,7 +45,7 @@ class oxcmp_shop extends oxView
     {
         parent::render();
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         // is shop active?
         $oShop = $myConfig->getActiveShop();

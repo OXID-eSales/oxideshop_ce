@@ -67,7 +67,7 @@ class Language_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 
@@ -166,10 +166,10 @@ class Language_Main extends oxAdminDetails
 
         if ($this->isValidLanguageData($this->_aLangData)) {
             //saving languages info
-            $this->getConfig()->saveShopConfVar('aarr', 'aLanguageParams', $this->_aLangData['params']);
-            $this->getConfig()->saveShopConfVar('aarr', 'aLanguages', $this->_aLangData['lang']);
-            $this->getConfig()->saveShopConfVar('arr', 'aLanguageURLs', $this->_aLangData['urls']);
-            $this->getConfig()->saveShopConfVar('arr', 'aLanguageSSLURLs', $this->_aLangData['sslUrls']);
+            $this->config->saveShopConfVar('aarr', 'aLanguageParams', $this->_aLangData['params']);
+            $this->config->saveShopConfVar('aarr', 'aLanguages', $this->_aLangData['lang']);
+            $this->config->saveShopConfVar('arr', 'aLanguageURLs', $this->_aLangData['urls']);
+            $this->config->saveShopConfVar('arr', 'aLanguageSSLURLs', $this->_aLangData['sslUrls']);
             //checking if added language already has created multilang fields
             //with new base ID - if not, creating new fields
             if ($blNewLanguage) {
@@ -197,7 +197,7 @@ class Language_Main extends oxAdminDetails
      */
     protected function _getLanguageInfo($sOxId)
     {
-        $sDefaultLang = $this->getConfig()->getConfigParam('sDefaultLang');
+        $sDefaultLang = $this->config->getConfigParam('sDefaultLang');
 
         $aLangData = $this->_aLangData['params'][$sOxId];
         $aLangData['abbr'] = $sOxId;
@@ -228,10 +228,10 @@ class Language_Main extends oxAdminDetails
      */
     protected function _getLanguages()
     {
-        $aLangData['params'] = $this->getConfig()->getConfigParam('aLanguageParams');
-        $aLangData['lang'] = $this->getConfig()->getConfigParam('aLanguages');
-        $aLangData['urls'] = $this->getConfig()->getConfigParam('aLanguageURLs');
-        $aLangData['sslUrls'] = $this->getConfig()->getConfigParam('aLanguageSSLURLs');
+        $aLangData['params'] = $this->config->getConfigParam('aLanguageParams');
+        $aLangData['lang'] = $this->config->getConfigParam('aLanguages');
+        $aLangData['urls'] = $this->config->getConfigParam('aLanguageURLs');
+        $aLangData['sslUrls'] = $this->config->getConfigParam('aLanguageSSLURLs');
 
         // empty languages parameters array - creating new one with default values
         if (!is_array($aLangData['params'])) {
@@ -323,7 +323,7 @@ class Language_Main extends oxAdminDetails
     protected function _setDefaultLang($sOxId)
     {
         $sDefaultId = $this->_aLangData['params'][$sOxId]['baseId'];
-        $this->getConfig()->saveShopConfVar('str', 'sDefaultLang', $sDefaultId);
+        $this->config->saveShopConfVar('str', 'sDefaultLang', $sDefaultId);
     }
 
     /**
@@ -361,7 +361,7 @@ class Language_Main extends oxAdminDetails
      */
     protected function _checkLangTranslations($sOxId)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $sDir = dirname($myConfig->getTranslationsDir('lang.php', $sOxId));
 
@@ -430,7 +430,7 @@ class Language_Main extends oxAdminDetails
      */
     protected function _checkLangExists($sAbbr)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $aAbbrs = array_keys($this->_aLangData['lang']);
 
         if (in_array($sAbbr, $aAbbrs)) {

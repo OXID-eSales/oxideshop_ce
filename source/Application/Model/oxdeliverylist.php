@@ -70,16 +70,17 @@ class oxDeliveryList extends oxList
      */
     protected $_blCollectFittingDeliveriesSets = false;
 
+    protected $_sObjectsInListName = 'oxdelivery';
 
     /**
      * Calls parent constructor and sets home country
      */
-    public function __construct()
+    public function __construct($config)
     {
-        parent::__construct('oxdelivery');
+        parent::__construct($config, 'oxdelivery');
 
         // load or not delivery list
-        $this->setHomeCountry($this->getConfig()->getConfigParam('aHomeCountry'));
+        $this->setHomeCountry($this->config->getConfigParam('aHomeCountry'));
     }
 
     /**
@@ -112,14 +113,6 @@ class oxDeliveryList extends oxList
      */
     protected function _getList($oUser = null, $sCountryId = null, $sDelSet = null)
     {
-        // checking for current session user which gives additional restrictions for user itself, users group and country
-        if ($oUser === null) {
-            $oUser = $this->getUser();
-        } else {
-            //set user
-            $this->setUser($oUser);
-        }
-
         $sUserId = $oUser ? $oUser->getId() : '';
 
         // choosing delivery country if it is not set yet
@@ -296,7 +289,6 @@ class oxDeliveryList extends oxList
             $this->_blCollectFittingDeliveriesSets = false;
 
             //reset cache and list
-            $this->setUser(null);
             $this->clear();
 
             return $aFittingDelSets;

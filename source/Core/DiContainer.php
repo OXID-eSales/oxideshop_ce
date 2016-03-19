@@ -15,6 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 class DiContainer implements ContainerInterface
 {
     const CONTAINER_CORE_MAILCLIENT = 'core.mailclient';
+    const CONTAINER_CORE_CONFIG = 'core.config';
     const CONTAINER_CORE_MAILER = 'core.mailer';
     const CONTAINER_CORE_EVENT_DISPATCHER = 'core.eventdispatcher';
 
@@ -63,6 +64,10 @@ class DiContainer implements ContainerInterface
         $container
             ->register(static::CONTAINER_CORE_EVENT_DISPATCHER, EventDispatcher::class)
             ->addArgument(new Reference('symfony.eventdispatcher'));
+
+        //basic setup
+        $container
+            ->register(static::CONTAINER_CORE_CONFIG, \oxConfig::class);
     }
 
     /**

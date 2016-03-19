@@ -261,7 +261,7 @@ class oxUtilsCount extends oxSuperCfg
     public function resetCatArticleCount($sCatId = null)
     {
         if (!$sCatId) {
-            $this->getConfig()->setGlobalParameter('aLocalCatCache', null);
+            $this->config->setGlobalParameter('aLocalCatCache', null);
             oxRegistry::getUtils()->toFileCache('aLocalCatCache', '');
         } else {
             // loading from cache
@@ -333,7 +333,7 @@ class oxUtilsCount extends oxSuperCfg
     public function resetVendorArticleCount($sVendorId = null)
     {
         if (!$sVendorId) {
-            $this->getConfig()->setGlobalParameter('aLocalVendorCache', null);
+            $this->config->setGlobalParameter('aLocalVendorCache', null);
             oxRegistry::getUtils()->toFileCache('aLocalVendorCache', '');
         } else {
             // loading from cache
@@ -353,7 +353,7 @@ class oxUtilsCount extends oxSuperCfg
     public function resetManufacturerArticleCount($sManufacturerId = null)
     {
         if (!$sManufacturerId) {
-            $this->getConfig()->setGlobalParameter('aLocalManufacturerCache', null);
+            $this->config->setGlobalParameter('aLocalManufacturerCache', null);
             oxRegistry::getUtils()->toFileCache('aLocalManufacturerCache', '');
         } else {
             // loading from cache
@@ -372,7 +372,7 @@ class oxUtilsCount extends oxSuperCfg
      */
     protected function _getCatCache()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         // first look at the local cache
         $aLocalCatCache = $myConfig->getGlobalParameter('aLocalCatCache');
@@ -398,7 +398,7 @@ class oxUtilsCount extends oxSuperCfg
      */
     protected function _setCatCache($aCache)
     {
-        $this->getConfig()->setGlobalParameter('aLocalCatCache', $aCache);
+        $this->config->setGlobalParameter('aLocalCatCache', $aCache);
         oxRegistry::getUtils()->toFileCache('aLocalCatCache', $aCache);
     }
 
@@ -409,7 +409,7 @@ class oxUtilsCount extends oxSuperCfg
      */
     protected function _setVendorCache($aCache)
     {
-        $this->getConfig()->setGlobalParameter('aLocalVendorCache', $aCache);
+        $this->config->setGlobalParameter('aLocalVendorCache', $aCache);
         oxRegistry::getUtils()->toFileCache('aLocalVendorCache', $aCache);
     }
 
@@ -420,7 +420,7 @@ class oxUtilsCount extends oxSuperCfg
      */
     protected function _setManufacturerCache($aCache)
     {
-        $this->getConfig()->setGlobalParameter('aLocalManufacturerCache', $aCache);
+        $this->config->setGlobalParameter('aLocalManufacturerCache', $aCache);
         oxRegistry::getUtils()->toFileCache('aLocalManufacturerCache', $aCache);
     }
 
@@ -431,7 +431,7 @@ class oxUtilsCount extends oxSuperCfg
      */
     protected function _getVendorCache()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         // first look at the local cache
         $aLocalVendorCache = $myConfig->getGlobalParameter('aLocalVendorCache');
@@ -456,7 +456,7 @@ class oxUtilsCount extends oxSuperCfg
      */
     protected function _getManufacturerCache()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         // first look at the local cache
         $aLocalManufacturerCache = $myConfig->getGlobalParameter('aLocalManufacturerCache');
@@ -489,7 +489,7 @@ class oxUtilsCount extends oxSuperCfg
 
         // loading R&R data from session
         $userSessionGroups = $this->getCurrentUserSessionGroups();
-        $this->_sUserViewId = md5($this->getConfig()->getShopID() . oxRegistry::getLang()->getLanguageTag() . serialize($userSessionGroups) . (int) $this->isAdmin());
+        $this->_sUserViewId = md5($this->config->getShopID() . oxRegistry::getLang()->getLanguageTag() . serialize($userSessionGroups) . (int) $this->isAdmin());
 
         return $this->_sUserViewId;
     }

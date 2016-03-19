@@ -55,14 +55,7 @@ class oxRecommList extends oxBase implements oxIUrl
      */
     protected $_aSeoUrls = array();
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxrecommlists');
-    }
+    protected $_sCoreTable = 'oxrecommlists';
 
     /**
      * Returns list of recommendation list items
@@ -242,8 +235,8 @@ class oxRecommList extends oxBase implements oxIUrl
             $oRecommList = oxNew('oxlist');
             $oRecommList->init('oxrecommlist');
 
-            $iShopId = $this->getConfig()->getShopId();
-            $iCnt = $this->getConfig()->getConfigParam('iNrofCrossellArticles');
+            $iShopId = $this->config->getShopId();
+            $iCnt = $this->config->getConfigParam('iNrofCrossellArticles');
 
             $oRecommList->setSqlLimit(0, $iCnt);
 
@@ -328,7 +321,7 @@ class oxRecommList extends oxBase implements oxIUrl
             $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
             // load only lists which we show on screen
-            $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
+            $iNrofCatArticles = $this->config->getConfigParam('iNrofCatArticles');
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
             $oRecommList = oxNew('oxlist');
@@ -371,7 +364,7 @@ class oxRecommList extends oxBase implements oxIUrl
      */
     protected function _getSearchSelect($sSearchStr)
     {
-        $iShopId = $this->getConfig()->getShopId();
+        $iShopId = $this->config->getShopId();
         $sSearchStrQuoted = oxDb::getDb()->quote("%$sSearchStr%");
 
         $sSelect = "select distinct rl.* from oxrecommlists as rl";
@@ -486,7 +479,7 @@ class oxRecommList extends oxBase implements oxIUrl
         $sUrl = '';
         if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
+            $sUrl = $this->config->getShopUrl($iLang, false);
         }
 
         return $sUrl . "index.php?cl=recommlist" . ($blAddId ? "&amp;recommid=" . $this->getId() : "");

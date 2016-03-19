@@ -137,7 +137,7 @@ class ThankYouController extends oxUBase
     public function render()
     {
         if (!$this->_oBasket || !$this->_oBasket->getProductsCount()) {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeURL() . '&cl=start', true, 302);
+            oxRegistry::getUtils()->redirect($this->config->getShopHomeURL() . '&cl=start', true, 302);
         }
 
         parent::render();
@@ -196,7 +196,7 @@ class ThankYouController extends oxUBase
     {
         if ($this->_dConvIndex === null) {
             // currency conversion index value
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
             $this->_dConvIndex = 1 / $oCur->rate;
         }
 
@@ -226,7 +226,7 @@ class ThankYouController extends oxUBase
     {
         if ($this->_sIPaymentAccount === null) {
             $this->_sIPaymentAccount = false;
-            $this->_sIPaymentAccount = $this->getConfig()->getConfigParam('iShopID_iPayment_Account');
+            $this->_sIPaymentAccount = $this->config->getConfigParam('iShopID_iPayment_Account');
         }
 
         return $this->_sIPaymentAccount;
@@ -241,7 +241,7 @@ class ThankYouController extends oxUBase
     {
         if ($this->_sIPaymentUser === null) {
             $this->_sIPaymentUser = false;
-            $this->_sIPaymentUser = $this->getConfig()->getConfigParam('iShopID_iPayment_User');
+            $this->_sIPaymentUser = $this->config->getConfigParam('iShopID_iPayment_User');
         }
 
         return $this->_sIPaymentUser;
@@ -256,7 +256,7 @@ class ThankYouController extends oxUBase
     {
         if ($this->_sIPaymentPassword === null) {
             $this->_sIPaymentPassword = false;
-            $this->_sIPaymentPassword = $this->getConfig()->getConfigParam('iShopID_iPayment_Passwort');
+            $this->_sIPaymentPassword = $this->config->getConfigParam('iShopID_iPayment_Passwort');
         }
 
         return $this->_sIPaymentPassword;

@@ -62,7 +62,7 @@ class dyn_trusted extends Shop_Config
     public function render()
     {
         parent::render();
-        $this->_aViewData['oxid'] = $this->getConfig()->getShopId();
+        $this->_aViewData['oxid'] = $this->config->getShopId();
         $aConfStr = array();
         $aConfBool = array();
         $aIds = $this->_aViewData["confaarrs"]['iShopID_TrustedShops'];
@@ -120,7 +120,7 @@ class dyn_trusted extends Shop_Config
         }
 
         if ($blSave) {
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
             $sShopId = $myConfig->getShopId();
             $myConfig->saveShopConfVar("aarr", 'iShopID_TrustedShops', $aConfStr, $sShopId);
             $myConfig->saveShopConfVar("aarr", 'aTsUser', oxRegistry::getConfig()->getRequestParameter("aTsUser"), $sShopId);

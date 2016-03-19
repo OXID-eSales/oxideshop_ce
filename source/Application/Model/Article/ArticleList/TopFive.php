@@ -9,7 +9,7 @@ class TopFive extends AbstractList
     {
         /*
          *         //has module?
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if (!$myConfig->getConfigParam('bl_perfLoadPriceForAddList')) {
             $this->getBaseObject()->disablePriceLoad();

@@ -218,7 +218,7 @@ class Order_Article extends oxAdminDetails
 
         // order and order article exits?
         if ($oOrderArticle->load($sOrderArtId) && $oOrder->load($sOrderId)) {
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
 
             // deleting record
             $oOrderArticle->delete();
@@ -233,7 +233,7 @@ class Order_Article extends oxAdminDetails
      */
     public function storno()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $sOrderArtId = oxRegistry::getConfig()->getRequestParameter('sArtID');
         $oArticle = oxNew('oxorderarticle');
@@ -276,7 +276,7 @@ class Order_Article extends oxAdminDetails
         $oOrder = oxNew('oxorder');
         if (is_array($aOrderArticles) && $oOrder->load($this->getEditObjectId())) {
 
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
             $oOrderArticles = $oOrder->getOrderArticles(true);
 
             $blUseStock = $myConfig->getConfigParam('blUseStock');

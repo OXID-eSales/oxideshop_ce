@@ -159,7 +159,7 @@ class SuggestController extends \oxUBase
         if ($this->_oProduct === null) {
             $this->_oProduct = false;
 
-            if ($sProductId = $this->getConfig()->getRequestParameter('anid')) {
+            if ($sProductId = $this->config->getRequestParameter('anid')) {
                 $oProduct = oxNew('oxArticle');
                 $oProduct->load($sProductId);
                 $this->_oProduct = $oProduct;

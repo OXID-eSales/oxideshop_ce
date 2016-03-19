@@ -34,16 +34,7 @@ class oxLinks extends oxI18n
      */
     protected $_sClassName = 'oxlinks';
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxI18n()).
-     *
-     * @return oxLinks
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxlinks');
-    }
+    protected $_sCoreTable = "oxlinks";
 
     /**
      * Sets data field value

@@ -148,7 +148,7 @@ class ReviewController extends \Details
     public function init()
     {
         if (oxRegistry::getConfig()->getRequestParameter('recommid') && !$this->getActiveRecommList()) {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeURL(), true, 302);
+            oxRegistry::getUtils()->redirect($this->config->getShopHomeURL(), true, 302);
         }
 
         oxUBase::init();
@@ -164,7 +164,7 @@ class ReviewController extends \Details
      */
     public function render()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         if (!$oConfig->getConfigParam("bl_perfLoadReviews")) {
             oxRegistry::getUtils()->redirect($oConfig->getShopHomeURL());
@@ -183,7 +183,7 @@ class ReviewController extends \Details
                     $this->_iAllArtCnt = $oActiveRecommList->getArtCount();
                 }
                 // load only lists which we show on screen
-                $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
+                $iNrofCatArticles = $this->config->getConfigParam('iNrofCatArticles');
                 $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
                 $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
             }
@@ -417,7 +417,7 @@ class ReviewController extends \Details
                 $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
                 // load only lists which we show on screen
-                $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
+                $iNrofCatArticles = $this->config->getConfigParam('iNrofCatArticles');
                 $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
                 $oList = $oActiveRecommList->getArticles($iNrofCatArticles * $iActPage, $iNrofCatArticles);

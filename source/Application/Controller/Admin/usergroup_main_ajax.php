@@ -64,7 +64,7 @@ class usergroup_main_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         // looking for table/view
         $sUserTable = $this->_getViewName('oxuser');

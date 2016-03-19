@@ -281,7 +281,7 @@ class oxMdVariant extends oxSuperCfg
      */
     public function getFPrice()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         // 0002030 No need to return price if it disabled for better performance.
         if (!$myConfig->getConfigParam('bl_perfLoadPrice')) {
             return;
@@ -299,7 +299,7 @@ class oxMdVariant extends oxSuperCfg
 
         $dMinPrice = $this->getMinDPrice();
         $sFMinPrice = oxRegistry::getLang()->formatCurrency($dMinPrice);
-        $sCurrency = ' ' . $this->getConfig()->getActShopCurrencyObject()->sign;
+        $sCurrency = ' ' . $this->config->getActShopCurrencyObject()->sign;
         $this->_sFPrice = $sFromPrefix . $sFMinPrice . $sCurrency;
 
         return $this->_sFPrice;

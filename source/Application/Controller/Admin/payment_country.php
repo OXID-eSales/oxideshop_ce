@@ -37,7 +37,7 @@ class Payment_Country extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         parent::render();
 
         // remove itm from list

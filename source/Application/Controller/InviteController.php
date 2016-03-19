@@ -95,7 +95,7 @@ class InviteController extends \oxUBase
      */
     public function render()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         if (!$oConfig->getConfigParam("blInvitationsEnabled")) {
             oxRegistry::getUtils()->redirect($oConfig->getShopHomeURL());
@@ -116,7 +116,7 @@ class InviteController extends \oxUBase
      */
     public function send()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         if (!$oConfig->getConfigParam("blInvitationsEnabled")) {
             oxRegistry::getUtils()->redirect($oConfig->getShopHomeURL());

@@ -106,7 +106,7 @@ class vendor_main_ajax extends ajaxListComponent
         $sQ = parent::_addFilter($sQ);
 
         // display variants or not ?
-        $sQ .= $this->getConfig()->getConfigParam('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';
+        $sQ .= $this->config->getConfigParam('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';
 
         return $sQ;
     }
@@ -116,7 +116,7 @@ class vendor_main_ajax extends ajaxListComponent
      */
     public function removeVendor()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $aRemoveArt = $this->_getActionIds('oxarticles.oxid');
 
         if ($oConfig->getRequestParameter('all')) {
@@ -140,7 +140,7 @@ class vendor_main_ajax extends ajaxListComponent
      */
     public function addVendor()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         $aAddArticle = $this->_getActionIds('oxarticles.oxid');
         $soxId = $oConfig->getRequestParameter('synchoxid');

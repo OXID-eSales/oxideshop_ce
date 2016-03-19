@@ -123,7 +123,7 @@ class AccountPasswordController extends \Account
         if ($oUser->save()) {
             $this->_blPasswordChanged = true;
             // deleting user autologin cookies.
-            oxRegistry::get("oxUtilsServer")->deleteUserCookie($this->getConfig()->getShopId());
+            oxRegistry::get("oxUtilsServer")->deleteUserCookie($this->config->getShopId());
         }
     }
 

@@ -26,12 +26,5 @@
  */
 class oxVoucherList extends oxList
 {
-
-    /**
-     * Calls parent constructor
-     */
-    public function __construct()
-    {
-        parent::__construct('oxvoucher');
-    }
+    protected $_sObjectsInListName = 'oxvoucher';
 }

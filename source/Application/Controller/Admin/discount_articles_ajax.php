@@ -69,7 +69,7 @@ class discount_articles_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         $sArticleTable = $this->_getViewName('oxarticles');
         $sO2CView = $this->_getViewName('oxobject2category');
@@ -120,7 +120,7 @@ class discount_articles_ajax extends ajaxListComponent
     {
         $aChosenArt = $this->_getActionIds('oxobject2discount.oxid');
 
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->config->getRequestParameter('all')) {
 
             $sQ = parent::_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             oxDb::getDb()->execute($sQ);
@@ -136,7 +136,7 @@ class discount_articles_ajax extends ajaxListComponent
      */
     public function addDiscArt()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $articleIds = $this->_getActionIds('oxarticles.oxid');
         $discountListId = $config->getRequestParameter('synchoxid');
 

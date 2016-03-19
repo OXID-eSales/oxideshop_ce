@@ -35,14 +35,7 @@ class oxGroups extends oxI18n
      */
     protected $_sClassName = 'oxgroups';
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxgroups');
-    }
+    protected $_sCoreTable = "oxgroups";
 
     /**
      * Deletes user group from database. Returns true/false, according to deleting status.

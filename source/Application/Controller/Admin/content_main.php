@@ -36,7 +36,7 @@ class Content_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 
@@ -103,7 +103,7 @@ class Content_Main extends oxAdminDetails
     {
         parent::save();
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
@@ -170,7 +170,7 @@ class Content_Main extends oxAdminDetails
     {
         parent::save();
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
@@ -232,7 +232,7 @@ class Content_Main extends oxAdminDetails
         // null not allowed
         if (!strlen($sIdent)) {
             $blAllow = true;
-        } elseif ($oDb->getOne("select oxid from oxcontents where oxloadid = " . $oDb->quote($sIdent) . " and oxid != " . $oDb->quote($sOxId) . " and oxshopid = '" . $this->getConfig()->getShopId() . "'", false, false)) {
+        } elseif ($oDb->getOne("select oxid from oxcontents where oxloadid = " . $oDb->quote($sIdent) . " and oxid != " . $oDb->quote($sOxId) . " and oxshopid = '" . $this->config->getShopId() . "'", false, false)) {
             $blAllow = true;
         }
 

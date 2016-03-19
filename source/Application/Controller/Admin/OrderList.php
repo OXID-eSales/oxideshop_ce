@@ -63,7 +63,7 @@ class OrderList extends \oxAdminList
     {
         parent::render();
 
-        $folders = $this->getConfig()->getConfigParam('aOrderfolder');
+        $folders = $this->config->getConfigParam('aOrderfolder');
         $folder = oxRegistry::getConfig()->getRequestParameter("folder");
         // first display new orders
         if (!$folder && is_array($folders)) {
@@ -137,7 +137,7 @@ class OrderList extends \oxAdminList
     {
         $database = oxDb::getDb();
         $query = parent::_prepareWhereQuery($whereQuery, $fullQuery);
-        $config = $this->getConfig();
+        $config = $this->config;
         $folders = $config->getConfigParam('aOrderfolder');
         $folder = oxRegistry::getConfig()->getRequestParameter('folder');
         // Searching for empty oxfolder fields

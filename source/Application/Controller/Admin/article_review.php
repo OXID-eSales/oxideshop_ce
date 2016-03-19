@@ -36,7 +36,7 @@ class Article_Review extends oxAdminDetails
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         parent::render();
 
@@ -97,7 +97,7 @@ class Article_Review extends oxAdminDetails
 
         $variantList = $article->getVariants();
 
-        if ($this->getConfig()->getConfigParam('blShowVariantReviews') && count($variantList)) {
+        if ($this->config->getConfigParam('blShowVariantReviews') && count($variantList)) {
 
             // verifying rights
             foreach ($variantList as $variant) {
@@ -127,7 +127,7 @@ class Article_Review extends oxAdminDetails
 
         $parameters = oxRegistry::getConfig()->getRequestParameter("editval");
         // checkbox handling
-        if ($this->getConfig()->getConfigParam('blGBModerate') && !isset($parameters['oxreviews__oxactive'])) {
+        if ($this->config->getConfigParam('blGBModerate') && !isset($parameters['oxreviews__oxactive'])) {
             $parameters['oxreviews__oxactive'] = 0;
         }
 

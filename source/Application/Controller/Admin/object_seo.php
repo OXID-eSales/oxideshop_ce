@@ -72,7 +72,7 @@ class Object_Seo extends oxAdminDetails
         // saving/updating seo params
         if (($sOxid = $this->_getSaveObjectId())) {
             $aSeoData = oxRegistry::getConfig()->getRequestParameter('aSeoData');
-            $iShopId = $this->getConfig()->getShopId();
+            $iShopId = $this->config->getShopId();
             $iLang = $this->getEditLang();
 
             // checkbox handling
@@ -133,7 +133,7 @@ class Object_Seo extends oxAdminDetails
      */
     public function getEntryMetaData($sMetaType)
     {
-        return $this->_getEncoder()->getMetaData($this->getEditObjectId(), $sMetaType, $this->getConfig()->getShopId(), $this->getEditLang());
+        return $this->_getEncoder()->getMetaData($this->getEditObjectId(), $sMetaType, $this->config->getShopId(), $this->getEditLang());
     }
 
     /**
@@ -144,7 +144,7 @@ class Object_Seo extends oxAdminDetails
     public function isEntryFixed()
     {
         $iLang = (int) $this->getEditLang();
-        $iShopId = $this->getConfig()->getShopId();
+        $iShopId = $this->config->getShopId();
 
         $sQ = "select oxfixed from oxseo where
                    oxseo.oxobjectid = " . oxDb::getDb()->quote($this->getEditObjectId()) . " and

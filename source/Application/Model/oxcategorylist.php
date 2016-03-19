@@ -84,10 +84,10 @@ class oxCategoryList extends oxList
      *
      * @param string $sObjectsInListName optional parameter, the objects contained in the list, always oxCategory
      */
-    public function __construct($sObjectsInListName = 'oxcategory')
+    public function __construct($config, $sObjectsInListName = 'oxcategory')
     {
-        $this->_blHideEmpty = $this->getConfig()->getConfigParam('blDontShowEmptyCategories');
-        parent::__construct($sObjectsInListName);
+        $this->_blHideEmpty = $config->getConfigParam('blDontShowEmptyCategories');
+        parent::__construct($config, $sObjectsInListName);
     }
 
     /**

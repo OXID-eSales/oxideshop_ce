@@ -281,7 +281,7 @@ class oxwArticleDetails extends oxWidget
      */
     public function ratingIsActive()
     {
-        return $this->getConfig()->getConfigParam('bl_perfLoadReviews');
+        return $this->config->getConfigParam('bl_perfLoadReviews');
     }
 
     /**
@@ -446,7 +446,7 @@ class oxwArticleDetails extends oxWidget
 
             //if we are child and do not have any variants then let's load all parent variants as ours
             if ($oParent = $oProduct->getParentArticle()) {
-                $myConfig = $this->getConfig();
+                $myConfig = $this->config;
 
                 $oParent->setNoVariantLoading(false);
                 $this->_aVariantList = $oParent->getFullVariants(false);
@@ -640,7 +640,7 @@ class oxwArticleDetails extends oxWidget
     {
         if ($this->_aReviews === null) {
             $this->_aReviews = false;
-            if ($this->getConfig()->getConfigParam('bl_perfLoadReviews')) {
+            if ($this->config->getConfigParam('bl_perfLoadReviews')) {
                 $this->_aReviews = $this->getProduct()->getReviews();
             }
         }
@@ -805,7 +805,7 @@ class oxwArticleDetails extends oxWidget
         if ($this->_dRatingValue === null) {
             $this->_dRatingValue = (double) 0;
             if ($this->isReviewActive() && ($oDetailsProduct = $this->getProduct())) {
-                $blShowVariantsReviews = $this->getConfig()->getConfigParam('blShowVariantReviews');
+                $blShowVariantsReviews = $this->config->getConfigParam('blShowVariantReviews');
                 $this->_dRatingValue = round($oDetailsProduct->getArticleRatingAverage($blShowVariantsReviews), 1);
             }
         }
@@ -820,7 +820,7 @@ class oxwArticleDetails extends oxWidget
      */
     public function isReviewActive()
     {
-        return $this->getConfig()->getConfigParam('bl_perfLoadReviews');
+        return $this->config->getConfigParam('bl_perfLoadReviews');
     }
 
     /**
@@ -833,7 +833,7 @@ class oxwArticleDetails extends oxWidget
         if ($this->_iRatingCnt === null) {
             $this->_iRatingCnt = false;
             if ($this->isReviewActive() && ($oDetailsProduct = $this->getProduct())) {
-                $blShowVariantsReviews = $this->getConfig()->getConfigParam('blShowVariantReviews');
+                $blShowVariantsReviews = $this->config->getConfigParam('blShowVariantReviews');
                 $this->_iRatingCnt = $oDetailsProduct->getArticleRatingCount($blShowVariantsReviews);
             }
         }
@@ -862,7 +862,7 @@ class oxwArticleDetails extends oxWidget
             $this->_sBidPrice = false;
 
             $aParams = oxRegistry::getConfig()->getRequestParameter('pa');
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
             $iPrice = oxRegistry::getUtils()->currency2Float($aParams['price']);
             $this->_sBidPrice = oxRegistry::getLang()->formatCurrency($iPrice, $oCur);
         }
@@ -910,7 +910,7 @@ class oxwArticleDetails extends oxWidget
      */
     public function getProduct()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myUtils = oxRegistry::getUtils();
 
         if ($this->_oProduct === null) {
@@ -1003,7 +1003,7 @@ class oxwArticleDetails extends oxWidget
     {
         if ($this->_blMdView === null) {
             $this->_blMdView = false;
-            if ($this->getConfig()->getConfigParam('blUseMultidimensionVariants')) {
+            if ($this->config->getConfigParam('blUseMultidimensionVariants')) {
                 $iMaxMdDepth = $this->getProduct()->getMdVariants()->getMaxDepth();
                 $this->_blMdView = ($iMaxMdDepth > 1);
             }
@@ -1019,7 +1019,7 @@ class oxwArticleDetails extends oxWidget
      */
     public function getTagSeparator()
     {
-        $sSeparator = $this->getConfig()->getConfigParam("sTagSeparator");
+        $sSeparator = $this->config->getConfigParam("sTagSeparator");
 
         return $sSeparator;
     }

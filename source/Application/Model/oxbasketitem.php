@@ -449,7 +449,7 @@ class oxBasketItem extends oxSuperCfg
     public function getIconUrl()
     {
         // icon url must be (re)loaded in case icon is not set or shop was switched between ssl/nonssl
-        if ($this->_sIconUrl === null || $this->_blSsl != $this->getConfig()->isSsl()) {
+        if ($this->_sIconUrl === null || $this->_blSsl != $this->config->isSsl()) {
             $this->_sIconUrl = $this->getArticle()->getIconUrl();
         }
 
@@ -462,7 +462,6 @@ class oxBasketItem extends oxSuperCfg
      *
      * @param bool   $blCheckProduct       checks if product is buyable and visible
      * @param string $sProductId           product id
-     * @param bool   $blDisableLazyLoading disable lazy loading
      *
      * @throws oxArticleException exception in case of no current object product id is set
      * @throws oxNoArticleException exception in case if product not exitst or not visible
@@ -470,9 +469,9 @@ class oxBasketItem extends oxSuperCfg
      *
      * @return oxArticle|oxOrderArticle
      */
-    public function getArticle($blCheckProduct = false, $sProductId = null, $blDisableLazyLoading = false)
+    public function getArticle($blCheckProduct = false, $sProductId = null)
     {
-        if ($this->_oArticle === null || (!$this->_oArticle->isOrderArticle() && $blDisableLazyLoading)) {
+        if ($this->_oArticle === null || (!$this->_oArticle->isOrderArticle())) {
             $sProductId = $sProductId ? $sProductId : $this->_sProductId;
             if (!$sProductId) {
                 //this exception may not be caught, anyhow this is a critical exception
@@ -483,11 +482,6 @@ class oxBasketItem extends oxSuperCfg
             }
 
             $this->_oArticle = oxNew('oxArticle');
-            // #M773 Do not use article lazy loading on order save
-            if ($blDisableLazyLoading) {
-                $this->_oArticle->modifyCacheKey('_allviews');
-                $this->_oArticle->disableLazyLoading();
-            }
 
             // performance:
             // - skipping variants loading
@@ -724,7 +718,7 @@ class oxBasketItem extends oxSuperCfg
      */
     protected function _setArticle($sProductId)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $oArticle = $this->getArticle(true, $sProductId);
 
         // product ID
@@ -772,7 +766,7 @@ class oxBasketItem extends oxSuperCfg
         $this->_sTitle = $oOrderArticle->oxarticles__oxtitle->value;
 
         // shop Ids
-        $this->_sShopId = $this->getConfig()->getShopId();
+        $this->_sShopId = $this->config->getShopId();
         $this->_sNativeShopId = $oOrderArticle->oxarticles__oxshopid->value;
     }
 

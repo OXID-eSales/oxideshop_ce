@@ -39,13 +39,13 @@ class Theme_Config extends Shop_Config
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $sTheme = $this->_sTheme = $this->getEditObjectId();
         $sShopId = $myConfig->getShopId();
 
         if (!isset($sTheme)) {
-            $sTheme = $this->_sTheme = $this->getConfig()->getConfigParam('sTheme');
+            $sTheme = $this->_sTheme = $this->config->getConfigParam('sTheme');
         }
 
         $oTheme = oxNew('oxTheme');
@@ -89,7 +89,7 @@ class Theme_Config extends Shop_Config
      */
     public function saveConfVars()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         oxAdminDetails::save();
 

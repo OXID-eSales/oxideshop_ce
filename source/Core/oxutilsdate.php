@@ -588,7 +588,7 @@ class oxUtilsDate extends oxSuperCfg
      */
     public function shiftServerTime($iTime)
     {
-        $iServerTimeShift = $this->getConfig()->getConfigParam('iServerTimeShift');
+        $iServerTimeShift = $this->config->getConfigParam('iServerTimeShift');
         if ($iServerTimeShift) {
             $iTime = $iTime + ((int) $iServerTimeShift * 3600);
         }

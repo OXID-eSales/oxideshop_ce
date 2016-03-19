@@ -73,7 +73,7 @@ class selectlist_main_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');

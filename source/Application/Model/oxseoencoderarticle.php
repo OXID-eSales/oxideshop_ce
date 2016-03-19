@@ -120,7 +120,7 @@ class oxSeoEncoderArticle extends oxSeoEncoder
     protected function _getRecomm($oArticle, $iLang)
     {
         $oList = null;
-        $oView = $this->getConfig()->getActiveView();
+        $oView = $this->config->getActiveView();
         if ($oView instanceof oxView) {
             $oList = $oView->getActiveRecommList();
         }
@@ -135,7 +135,7 @@ class oxSeoEncoderArticle extends oxSeoEncoder
      */
     protected function _getListType()
     {
-        return $this->getConfig()->getActiveView()->getListType();
+        return $this->config->getActiveView()->getListType();
     }
 
     /**
@@ -151,7 +151,7 @@ class oxSeoEncoderArticle extends oxSeoEncoder
     {
         $sSeoUri = null;
         if ($sTag = $this->_getTag($oArticle, $iLang)) {
-            $iShopId = $this->getConfig()->getShopId();
+            $iShopId = $this->config->getShopId();
 
             $oArticleTags = oxNew('oxArticleTagList');
             $oArticleTags->setArticleId($oArticle->getId());
@@ -182,7 +182,7 @@ class oxSeoEncoderArticle extends oxSeoEncoder
     protected function _getTag($oArticle, $iLang)
     {
         $sTag = null;
-        $oView = $this->getConfig()->getTopActiveView();
+        $oView = $this->config->getTopActiveView();
         if ($oView instanceof oxView) {
             $sTag = $oView->getTag();
         }
@@ -286,7 +286,7 @@ class oxSeoEncoderArticle extends oxSeoEncoder
     protected function _getCategory($oArticle, $iLang)
     {
         $oCat = null;
-        $oView = $this->getConfig()->getActiveView();
+        $oView = $this->config->getActiveView();
         if ($oView instanceof oxUBase) {
             $oCat = $oView->getActiveCategory();
         } elseif ($oView instanceof oxView) {
@@ -316,13 +316,8 @@ class oxSeoEncoderArticle extends oxSeoEncoder
         $oDb = oxDb::getDb();
         // add main category caching;
         $sQ = "select oxcatnid from " . getViewName("oxobject2category") . " where oxobjectid = " . $oDb->quote($sArtId) . " order by oxtime";
-        $sIdent = md5($sQ);
 
-        if (($sMainCatId = $this->_loadFromCache($sIdent, "oxarticle")) === false) {
-            $sMainCatId = $oDb->getOne($sQ);
-            // storing in cache
-            $this->_saveInCache($sIdent, $sMainCatId, "oxarticle");
-        }
+        $sMainCatId = $oDb->getOne($sQ);
 
         if ($sMainCatId) {
             $oMainCat = oxNew("oxCategory");
@@ -475,7 +470,7 @@ class oxSeoEncoderArticle extends oxSeoEncoder
      */
     protected function _getVendor($oArticle, $iLang)
     {
-        $oView = $this->getConfig()->getActiveView();
+        $oView = $this->config->getActiveView();
 
         $oVendor = null;
         if ($sActVendorId = $oArticle->oxarticles__oxvendorid->value) {
@@ -555,7 +550,7 @@ class oxSeoEncoderArticle extends oxSeoEncoder
     {
         $oManufacturer = null;
         if ($sActManufacturerId = $oArticle->oxarticles__oxmanufacturerid->value) {
-            $oView = $this->getConfig()->getActiveView();
+            $oView = $this->config->getActiveView();
 
             if ($oView instanceof oxView && ($oActManufacturer = $oView->getActManufacturer())) {
                 $oManufacturer = $oActManufacturer;

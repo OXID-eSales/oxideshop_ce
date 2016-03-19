@@ -223,7 +223,7 @@ class View extends \oxSuperCfg
      */
     public function getViewParameter($sKey)
     {
-        $sValue = (isset($this->_aViewParams[$sKey])) ? $this->_aViewParams[$sKey] : $this->getConfig()->getRequestParameter($sKey);
+        $sValue = (isset($this->_aViewParams[$sKey])) ? $this->_aViewParams[$sKey] : $this->config->getRequestParameter($sKey);
 
         return $sValue;
     }
@@ -317,7 +317,7 @@ class View extends \oxSuperCfg
         if ($sBelboon = $this->getSession()->getVariable('belboon')) {
             return $sBelboon;
         }
-        if (($sBelboon = $this->getConfig()->getRequestParameter('belboon'))) {
+        if (($sBelboon = $this->config->getRequestParameter('belboon'))) {
             $this->getSession()->setVariable('belboon', $sBelboon);
         }
 
@@ -556,7 +556,7 @@ class View extends \oxSuperCfg
     protected function _executeNewAction($sNewAction)
     {
         if ($sNewAction) {
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
 
             // page parameters is the part which goes after '?'
             $aParams = explode('?', $sNewAction);
@@ -627,7 +627,7 @@ class View extends \oxSuperCfg
     {
         if ($this->_sTrustedShopId == null) {
             $this->_sTrustedShopId = false;
-            $oConfig = $this->getConfig();
+            $oConfig = $this->config;
             $aTsType = $oConfig->getConfigParam('tsSealType');
             $sTsActive = $oConfig->getConfigParam('tsSealActive');
             $aTrustedShopIds = $oConfig->getConfigParam('iShopID_TrustedShops');
@@ -658,7 +658,7 @@ class View extends \oxSuperCfg
     {
         if ($this->_sTSExcellenceId == null) {
             $this->_sTSExcellenceId = false;
-            $oConfig = $this->getConfig();
+            $oConfig = $this->config;
             $aTsType = $oConfig->getConfigParam('tsSealType');
             $sTsActive = $oConfig->getConfigParam('tsSealActive');
             $aTrustedShopIds = $oConfig->getConfigParam('iShopID_TrustedShops');
@@ -693,7 +693,7 @@ class View extends \oxSuperCfg
     public function getShopVersion()
     {
         if ($this->_sVersion == null) {
-            $this->_sVersion = $this->getConfig()->getActiveShop()->oxshops__oxversion->value;
+            $this->_sVersion = $this->config->getActiveShop()->oxshops__oxversion->value;
         }
 
         return $this->_sVersion;
@@ -706,7 +706,7 @@ class View extends \oxSuperCfg
      */
     public function getShopEdition()
     {
-        return $this->getConfig()->getActiveShop()->oxshops__oxedition->value;
+        return $this->config->getActiveShop()->oxshops__oxedition->value;
     }
 
     /**
@@ -716,7 +716,7 @@ class View extends \oxSuperCfg
      */
     public function getRevision()
     {
-        return $this->getConfig()->getRevision();
+        return $this->config->getRevision();
     }
 
     /**
@@ -726,7 +726,7 @@ class View extends \oxSuperCfg
      */
     public function getPackageInfo()
     {
-        return $this->getConfig()->getPackageInfo();
+        return $this->config->getPackageInfo();
     }
 
     /**
@@ -758,7 +758,7 @@ class View extends \oxSuperCfg
     public function isDemoVersion()
     {
         if ($this->_blDemoVersion == null) {
-            $this->_blDemoVersion = $this->getConfig()->detectVersion() == 1;
+            $this->_blDemoVersion = $this->config->detectVersion() == 1;
         }
 
         return $this->_blDemoVersion;
@@ -773,7 +773,7 @@ class View extends \oxSuperCfg
     {
         $blBetaVersion = false;
 
-        if (stripos($this->getConfig()->getVersion(), 'beta') !== false) {
+        if (stripos($this->config->getVersion(), 'beta') !== false) {
             $blBetaVersion = true;
         }
 
@@ -789,7 +789,7 @@ class View extends \oxSuperCfg
     {
         $blRCVersion = false;
 
-        if (stripos($this->getConfig()->getVersion(), 'rc') !== false) {
+        if (stripos($this->config->getVersion(), 'rc') !== false) {
             $blRCVersion = true;
         }
 
@@ -820,7 +820,7 @@ class View extends \oxSuperCfg
     public function isDemoShop()
     {
         if ($this->_blDemoShop == null) {
-            $this->_blDemoShop = $this->getConfig()->isDemoShop();
+            $this->_blDemoShop = $this->config->isDemoShop();
         }
 
         return $this->_blDemoShop;
@@ -860,7 +860,7 @@ class View extends \oxSuperCfg
     public function getShopLogo()
     {
         if ($this->_sShopLogo === null) {
-            $this->setShopLogo($this->getConfig()->getConfigParam('sShopLogo'));
+            $this->setShopLogo($this->config->getConfigParam('sShopLogo'));
         }
 
         return $this->_sShopLogo;
@@ -919,7 +919,7 @@ class View extends \oxSuperCfg
      */
     public function getCategoryId()
     {
-        if ($this->_sCategoryId == null && ($sCatId = $this->getConfig()->getRequestParameter('cnid'))) {
+        if ($this->_sCategoryId == null && ($sCatId = $this->config->getRequestParameter('cnid'))) {
             $this->_sCategoryId = $sCatId;
         }
 
@@ -961,7 +961,7 @@ class View extends \oxSuperCfg
      */
     public function isConnectedWithFb()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($myConfig->getConfigParam("bl_showFbConnect")) {
             $oFb = oxRegistry::get("oxFb");
@@ -979,7 +979,7 @@ class View extends \oxSuperCfg
      */
     public function getFbUserId()
     {
-        if ($this->getConfig()->getConfigParam("bl_showFbConnect")) {
+        if ($this->config->getConfigParam("bl_showFbConnect")) {
             $oFb = oxRegistry::get("oxFb");
 
             return $oFb->getUser();
@@ -994,7 +994,7 @@ class View extends \oxSuperCfg
      */
     public function showFbConnectToAccountMsg()
     {
-        if ($this->getConfig()->getRequestParameter("fblogin")) {
+        if ($this->config->getRequestParameter("fblogin")) {
             if (!$this->getUser() || ($this->getUser() && $this->getSession()->getVariable('_blFbUserIdUpdated'))) {
                 return true;
             } else {

@@ -34,14 +34,7 @@ class oxMediaUrl extends oxI18n
      */
     protected $_sClassName = 'oxmediaurls';
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxI18n()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxmediaurls');
-    }
+    protected $_sCoreTable = "oxmediaurls";
 
     /**
      * Return HTML code depending on current URL
@@ -86,7 +79,7 @@ class oxMediaUrl extends oxI18n
     public function getLink()
     {
         if ($this->oxmediaurls__oxisuploaded->value) {
-            $sUrl = $this->getConfig()->isSsl() ? $this->getConfig()->getSslShopUrl() : $this->getConfig()->getShopUrl();
+            $sUrl = $this->config->isSsl() ? $this->config->getSslShopUrl() : $this->config->getShopUrl();
             $sUrl .= 'out/media/';
             $sUrl .= basename($this->oxmediaurls__oxurl->value);
         } else {
@@ -115,7 +108,7 @@ class oxMediaUrl extends oxI18n
      */
     public function delete($sOXID = null)
     {
-        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . "/out/media/" .
+        $sFilePath = $this->config->getConfigParam('sShopDir') . "/out/media/" .
                      basename($this->oxmediaurls__oxurl->value);
 
         if ($this->oxmediaurls__oxisuploaded->value) {

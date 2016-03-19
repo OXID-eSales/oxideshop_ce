@@ -36,7 +36,7 @@ class Discount_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         parent::render();
 
         $sOxId = $this->_aViewData["oxid"] = $this->getEditObjectId();

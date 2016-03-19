@@ -159,7 +159,7 @@ class PaymentController extends \oxUBase
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($myConfig->getConfigParam('blPsBasketReservationEnabled')) {
             $this->getSession()->getBasketReservations()->renewExpiration();
@@ -223,7 +223,7 @@ class PaymentController extends \oxUBase
     protected function _setDefaultEmptyPayment()
     {
         // no shipping method there !!
-        if ($this->getConfig()->getConfigParam('blOtherCountryOrder')) {
+        if ($this->config->getConfigParam('blOtherCountryOrder')) {
             $oPayment = oxNew('oxpayment');
             if ($oPayment->load('oxempty')) {
                 $this->_oEmptyPayment = $oPayment;
@@ -270,7 +270,7 @@ class PaymentController extends \oxUBase
         $oBasket = $oSession->getBasket();
         $oBasket->setShipping(null);
         $oBasket->onUpdate();
-        $oSession->setVariable('sShipSet', $this->getConfig()->getRequestParameter('sShipSet'));
+        $oSession->setVariable('sShipSet', $this->config->getRequestParameter('sShipSet'));
     }
 
     /**
@@ -286,7 +286,7 @@ class PaymentController extends \oxUBase
      */
     public function validatePayment()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oSession = $this->getSession();
 
         //#1308C - check user. Function is executed before render(), and oUser is not set!
@@ -499,7 +499,7 @@ class PaymentController extends \oxUBase
      */
     public function isOldDebitValidationEnabled()
     {
-        return !$this->getConfig()->getConfigParam('blSkipDebitOldBankInfo');
+        return !$this->config->getConfigParam('blSkipDebitOldBankInfo');
     }
 
     /**
@@ -786,6 +786,6 @@ class PaymentController extends \oxUBase
      */
     public function isPaymentVatSplitted()
     {
-        return $this->getConfig()->getConfigParam('blShowVATForPayCharge');
+        return $this->config->getConfigParam('blShowVATForPayCharge');
     }
 }

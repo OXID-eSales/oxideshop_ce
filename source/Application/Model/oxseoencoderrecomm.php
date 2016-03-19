@@ -36,7 +36,7 @@ class oxSeoEncoderRecomm extends oxSeoEncoder
     public function getRecommUri($oRecomm, $iLang = null)
     {
         if (!($sSeoUrl = $this->_loadFromDb('dynamic', $oRecomm->getId(), $iLang))) {
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
 
             // fetching part of base url
             $sSeoUrl = $this->_getStaticUri(

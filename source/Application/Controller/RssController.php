@@ -88,7 +88,7 @@ class RssController extends oxUBase
 
         // #2873: In demoshop for RSS we set php_handling to SMARTY_PHP_PASSTHRU
         // as SMARTY_PHP_REMOVE removes not only php tags, but also xml
-        if ($this->getConfig()->isDemoShop()) {
+        if ($this->config->isDemoShop()) {
             $oSmarty->php_handling = SMARTY_PHP_PASSTHRU;
         }
 
@@ -125,7 +125,7 @@ class RssController extends oxUBase
      */
     public function topshop()
     {
-        if ($this->getConfig()->getConfigParam('bl_rssTopShop')) {
+        if ($this->config->getConfigParam('bl_rssTopShop')) {
             $this->_getRssFeed()->loadTopInShop();
         } else {
             error_404_handler();
@@ -139,7 +139,7 @@ class RssController extends oxUBase
      */
     public function newarts()
     {
-        if ($this->getConfig()->getConfigParam('bl_rssNewest')) {
+        if ($this->config->getConfigParam('bl_rssNewest')) {
             $this->_getRssFeed()->loadNewestArticles();
         } else {
             error_404_handler();
@@ -153,7 +153,7 @@ class RssController extends oxUBase
      */
     public function catarts()
     {
-        if ($this->getConfig()->getConfigParam('bl_rssCategories')) {
+        if ($this->config->getConfigParam('bl_rssCategories')) {
             $oCat = oxNew('oxCategory');
             if ($oCat->load(oxRegistry::getConfig()->getRequestParameter('cat'))) {
                 $this->_getRssFeed()->loadCategoryArticles($oCat);
@@ -170,7 +170,7 @@ class RssController extends oxUBase
      */
     public function searcharts()
     {
-        if ($this->getConfig()->getConfigParam('bl_rssSearch')) {
+        if ($this->config->getConfigParam('bl_rssSearch')) {
             $sSearchParameter = oxRegistry::getConfig()->getRequestParameter('searchparam', true);
             $sCatId = oxRegistry::getConfig()->getRequestParameter('searchcnid');
             $sVendorId = oxRegistry::getConfig()->getRequestParameter('searchvendor');
@@ -190,7 +190,7 @@ class RssController extends oxUBase
      */
     public function recommlists()
     {
-        if ($this->getViewConfig()->getShowListmania() && $this->getConfig()->getConfigParam('bl_rssRecommLists')) {
+        if ($this->getViewConfig()->getShowListmania() && $this->config->getConfigParam('bl_rssRecommLists')) {
             $oArticle = oxNew('oxArticle');
             if ($oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'))) {
                 $this->_getRssFeed()->loadRecommLists($oArticle);
@@ -209,7 +209,7 @@ class RssController extends oxUBase
      */
     public function recommlistarts()
     {
-        if ($this->getConfig()->getConfigParam('bl_rssRecommListArts')) {
+        if ($this->config->getConfigParam('bl_rssRecommListArts')) {
             $oRecommList = oxNew('oxrecommlist');
             if ($oRecommList->load(oxRegistry::getConfig()->getRequestParameter('recommid'))) {
                 $this->_getRssFeed()->loadRecommListArticles($oRecommList);
@@ -227,7 +227,7 @@ class RssController extends oxUBase
      */
     public function bargain()
     {
-        if ($this->getConfig()->getConfigParam('bl_rssBargain')) {
+        if ($this->config->getConfigParam('bl_rssBargain')) {
             $this->_getRssFeed()->loadBargain();
         } else {
             error_404_handler();

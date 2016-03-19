@@ -43,14 +43,7 @@ class oxNews extends oxI18n
      */
     protected $_sClassName = 'oxnews';
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxI18n()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxnews');
-    }
+    protected $_sCoreTable = "oxnews";
 
     /**
      * Assigns object data.

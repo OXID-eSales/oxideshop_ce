@@ -44,7 +44,7 @@ class oxwVendorList extends oxWidget
     {
         if ($this->_aVendorlist === null) {
             $oVendorTree = oxNew('oxvendorlist');
-            $oVendorTree->buildVendorTree('vendorlist', null, $this->getConfig()->getShopHomeURL());
+            $oVendorTree->buildVendorTree('vendorlist', null, $this->config->getShopHomeURL());
             $this->_aVendorlist = $oVendorTree;
         }
 

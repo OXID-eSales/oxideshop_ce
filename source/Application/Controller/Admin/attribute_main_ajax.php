@@ -65,7 +65,7 @@ class attribute_main_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oDb = oxDb::getDb();
 
         $sArticleTable = $this->_getViewName('oxarticles');
@@ -116,7 +116,7 @@ class attribute_main_ajax extends ajaxListComponent
         $sQ = parent::_addFilter($sQ);
 
         // display variants or not ?
-        if ($this->getConfig()->getConfigParam('blVariantsSelection')) {
+        if ($this->config->getConfigParam('blVariantsSelection')) {
             $sQ .= ' group by ' . $this->_getViewName('oxarticles') . '.oxid ';
 
             $oStr = getStr();

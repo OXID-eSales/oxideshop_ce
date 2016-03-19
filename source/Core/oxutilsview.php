@@ -86,7 +86,7 @@ class oxUtilsView extends oxSuperCfg
     public function getTemplateOutput($templateName, $oObject)
     {
         $smarty = $this->getSmarty();
-        $debugMode = $this->getConfig()->getConfigParam('iDebug');
+        $debugMode = $this->config->getConfigParam('iDebug');
 
         // assign
         $viewData = $oObject->getViewData();
@@ -300,7 +300,7 @@ class oxUtilsView extends oxSuperCfg
      */
     public function getTemplateCompileId()
     {
-        $shopId = $this->getConfig()->getShopId();
+        $shopId = $this->config->getShopId();
         $templateDirectories = $this->getTemplateDirs();
         $templateDirectory = reset($templateDirectories);
 
@@ -314,7 +314,7 @@ class oxUtilsView extends oxSuperCfg
      */
     public function getSmartyDir()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         //check for the Smarty dir
         $compileDir = $config->getConfigParam('sCompileDir');
@@ -337,7 +337,7 @@ class oxUtilsView extends oxSuperCfg
      */
     protected function _fillCommonSmartyProperties($smarty)
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $smarty->left_delimiter = '[{';
         $smarty->right_delimiter = '}]';
 
@@ -400,7 +400,7 @@ class oxUtilsView extends oxSuperCfg
      */
     protected function _smartyCompileCheck($smarty)
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $smarty->compile_check = $config->getConfigParam('blCheckTemplates');
     }
 
@@ -452,7 +452,7 @@ class oxUtilsView extends oxSuperCfg
         if (basename($fileName) == $fileName) {
             $fileName = "out/blocks/$fileName";
         }
-        $filePath = $this->getConfig()->getConfigParam('sShopDir') . "/modules/$modulePath/$fileName";
+        $filePath = $this->config->getConfigParam('sShopDir') . "/modules/$modulePath/$fileName";
         if (file_exists($filePath) && is_readable($filePath)) {
             return file_get_contents($filePath);
         } else {
@@ -473,7 +473,7 @@ class oxUtilsView extends oxSuperCfg
      */
     public function getTemplateBlocks($fileName)
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $tplDir = trim($config->getConfigParam('_sTemplateDir'), '/\\');
         $fileName = str_replace(array('\\', '//'), '/', $fileName);
@@ -548,7 +548,7 @@ class oxUtilsView extends oxSuperCfg
      */
     protected function addActiveThemeId($themePath)
     {
-        $themeId = $this->getConfig()->getConfigParam('sTheme');
+        $themeId = $this->config->getConfigParam('sTheme');
         if ($this->isAdmin()) {
             $themeId = 'admin';
         }

@@ -62,7 +62,7 @@ class oxwActions extends oxWidget
      */
     protected function _getLoadActionsParam()
     {
-        $this->_blLoadActions = $this->getConfig()->getConfigParam('bl_perfLoadAktion');
+        $this->_blLoadActions = $this->config->getConfigParam('bl_perfLoadAktion');
 
         return $this->_blLoadActions;
     }

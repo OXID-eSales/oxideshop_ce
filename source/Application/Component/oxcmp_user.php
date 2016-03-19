@@ -131,7 +131,7 @@ class oxcmp_user extends oxView
      */
     protected function _checkPsState()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         if ($this->getParent()->isEnabledPrivateSales()) {
             // load session user
             $oUser = $this->getUser();
@@ -155,7 +155,7 @@ class oxcmp_user extends oxView
      */
     protected function _loadSessionUser()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oUser = $this->getUser();
 
         // no session user
@@ -246,7 +246,7 @@ class oxcmp_user extends oxView
             $oSession->regenerateSessionId();
         }
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         // this user is blocked, deny him
         if ($oUser->inGroup('oxidblocked')) {
@@ -269,7 +269,7 @@ class oxcmp_user extends oxView
     public function login_noredirect()
     {
         $blAgb = oxRegistry::getConfig()->getRequestParameter('ord_agb');
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         if ($this->getParent()->isEnabledPrivateSales() && $blAgb !== null && ($oUser = $this->getUser())) {
             if ($blAgb) {
                 $oUser->acceptTerms();
@@ -277,7 +277,7 @@ class oxcmp_user extends oxView
         } else {
             $this->login();
 
-            if (!$this->isAdmin() && !$this->getConfig()->getConfigParam('blPerfNoBasketSaving')) {
+            if (!$this->isAdmin() && !$this->config->getConfigParam('blPerfNoBasketSaving')) {
                 //load basket from the database
                 try {
                     if ($oBasket = $this->getSession()->getBasket()) {
@@ -340,7 +340,7 @@ class oxcmp_user extends oxView
      */
     public function logout()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oUser = oxNew('oxuser');
 
         if ($oUser->logout()) {
@@ -431,7 +431,7 @@ class oxcmp_user extends oxView
     {
         $blActiveLogin = $this->getParent()->isEnabledPrivateSales();
 
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         if ($blActiveLogin && !$oConfig->getRequestParameter('ord_agb') && $oConfig->getConfigParam('blConfirmAGB')) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('READ_AND_CONFIRM_TERMS', false, true);
@@ -480,7 +480,7 @@ class oxcmp_user extends oxView
 
             $sUserId = oxRegistry::getSession()->getVariable("su");
             $sRecEmail = oxRegistry::getSession()->getVariable("re");
-            if ($this->getConfig()->getConfigParam('blInvitationsEnabled') && $sUserId && $sRecEmail) {
+            if ($this->config->getConfigParam('blInvitationsEnabled') && $sUserId && $sRecEmail) {
                 // setting registration credit points..
                 $oUser->setCreditPointsForRegistrant($sUserId, $sRecEmail);
             }
@@ -495,7 +495,7 @@ class oxcmp_user extends oxView
                 $oUser->addToGroup('oxidnewsletter');
                 $this->_blNewsSubscriptionStatus = 1;
             } else {
-                $blOrderOptInEmailParam = $this->getConfig()->getConfigParam('blOrderOptInEmail');
+                $blOrderOptInEmailParam = $this->config->getConfigParam('blOrderOptInEmail');
                 $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $blOrderOptInEmailParam);
             }
 
@@ -586,7 +586,7 @@ class oxcmp_user extends oxView
      */
     protected function _saveInvitor()
     {
-        if ($this->getConfig()->getConfigParam('blInvitationsEnabled')) {
+        if ($this->config->getConfigParam('blInvitationsEnabled')) {
             $this->getInvitor();
             $this->setRecipient();
         }
@@ -650,7 +650,7 @@ class oxcmp_user extends oxView
             // check if email address changed, if so, force check news subscription settings.
             $sBillingUsername = $aInvAdress['oxuser__oxusername'];
             $blForceCheckOptIn = ($sBillingUsername !== null && $sBillingUsername !== $sUserName);
-            $blEmailParam = $this->getConfig()->getConfigParam('blOrderOptInEmail');
+            $blEmailParam = $this->config->getConfigParam('blOrderOptInEmail');
             $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $blEmailParam, $blForceCheckOptIn);
 
         } catch (oxUserException $oEx) { // errors in input
@@ -726,7 +726,7 @@ class oxcmp_user extends oxView
      */
     protected function _getLogoutLink()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         $sLogoutLink = $oConfig->isSsl() ? $oConfig->getShopSecureHomeUrl() : $oConfig->getShopHomeUrl();
         $sLogoutLink .= 'cl=' . $oConfig->getRequestParameter('cl') . $this->getParent()->getDynUrlParams();

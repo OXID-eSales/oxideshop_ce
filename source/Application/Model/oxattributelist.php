@@ -26,14 +26,7 @@
  */
 class oxAttributeList extends oxList
 {
-
-    /**
-     * Class constructor
-     */
-    public function __construct()
-    {
-        parent::__construct('oxattribute');
-    }
+    protected $_sObjectsInListName = 'oxattribute';
 
     /**
      * Load all attributes by article Id's

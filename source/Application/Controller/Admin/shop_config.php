@@ -49,7 +49,7 @@ class Shop_Config extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 
@@ -127,7 +127,7 @@ class Shop_Config extends oxAdminDetails
      */
     public function saveConfVars()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $this->resetContentCache();
 
@@ -193,7 +193,7 @@ class Shop_Config extends oxAdminDetails
      */
     public function loadConfVars($sShopId, $sModule)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $aConfVars = array(
             "bool"   => array(),
             "str"    => array(),
@@ -462,7 +462,7 @@ class Shop_Config extends oxAdminDetails
     {
         $sEditId = parent::getEditObjectId();
         if (!$sEditId) {
-            return $this->getConfig()->getShopId();
+            return $this->config->getShopId();
         } else {
             return $sEditId;
         }

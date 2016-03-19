@@ -57,7 +57,7 @@ class ArticleList extends \oxAdminList
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $sPwrSearchFld = oxRegistry::getConfig()->getRequestParameter("pwrsearchfld");
         $sPwrSearchFld = $sPwrSearchFld ? strtolower($sPwrSearchFld) : "oxtitle";
 

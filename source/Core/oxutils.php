@@ -105,7 +105,7 @@ class oxUtils extends oxSuperCfg
     public function strMan($sVal, $sKey = null)
     {
         $oEncryptor = oxNew('oxEncryptor');
-        $sKey = $sKey ? $sKey : $this->getConfig()->getConfigParam('sConfigKey');
+        $sKey = $sKey ? $sKey : $this->config->getConfigParam('sConfigKey');
 
         return $oEncryptor->encrypt($sVal, $sKey);
     }
@@ -123,7 +123,7 @@ class oxUtils extends oxSuperCfg
     public function strRem($sVal, $sKey = null)
     {
         $oDecryptor = oxNew('oxDecryptor');
-        $sKey = $sKey ? $sKey : $this->getConfig()->getConfigParam('sConfigKey');
+        $sKey = $sKey ? $sKey : $this->config->getConfigParam('sConfigKey');
 
         return $oDecryptor->decrypt($sVal, $sKey);
     }
@@ -271,7 +271,7 @@ class oxUtils extends oxSuperCfg
         }
         startProfile("isSearchEngine");
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $blIsSe = false;
 
         if (!($myConfig->getConfigParam('iDebug') && $this->isAdmin())) {
@@ -368,7 +368,7 @@ class oxUtils extends oxSuperCfg
 
         if (is_null($iCurPrecision)) {
             if (!$oCur) {
-                $oCur = $this->getConfig()->getActShopCurrencyObject();
+                $oCur = $this->config->getActShopCurrencyObject();
             }
 
             $iCurPrecision = $oCur->decimal;
@@ -916,10 +916,7 @@ class oxUtils extends oxSuperCfg
      */
     public function getPreviewId()
     {
-        $sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie('admin_sid');
-        if (($oUser = $this->getUser())) {
-            return md5($sAdminSid . $oUser->getId() . $oUser->oxuser__oxpassword->value . $oUser->oxuser__oxrights->value);
-        }
+        return oxRegistry::get("oxUtilsServer")->getOxCookie('admin_sid');
     }
 
     /**
@@ -929,7 +926,7 @@ class oxUtils extends oxSuperCfg
      */
     public function checkAccessRights()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $blIsAuth = false;
 
@@ -1015,7 +1012,7 @@ class oxUtils extends oxSuperCfg
             return $this->_blSeoIsActive;
         }
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if (($this->_blSeoIsActive = $myConfig->getConfigParam('blSeoMode')) === null) {
             $this->_blSeoIsActive = true;
@@ -1068,7 +1065,7 @@ class oxUtils extends oxSuperCfg
      */
     public function redirectOffline($iHeaderCode = 302)
     {
-        $sUrl = $this->getConfig()->getShopUrl() . 'offline.html';
+        $sUrl = $this->config->getShopUrl() . 'offline.html';
         $this->redirect($sUrl, false, $iHeaderCode);
     }
 
@@ -1184,7 +1181,7 @@ class oxUtils extends oxSuperCfg
      */
     protected function _fillExplodeArray($aName, $dVat = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oObject = new stdClass();
         $aPrice = explode('!P!', $aName[0]);
 
@@ -1250,9 +1247,9 @@ class oxUtils extends oxSuperCfg
     {
         $blCalculationModeNetto = $this->_isPriceViewModeNetto();
 
-        $oCurrency = $this->getConfig()->getActShopCurrencyObject();
+        $oCurrency = $this->config->getActShopCurrencyObject();
 
-        $blEnterNetPrice = $this->getConfig()->getConfigParam('blEnterNetPrice');
+        $blEnterNetPrice = $this->config->getConfigParam('blEnterNetPrice');
         if ($blCalculationModeNetto && !$blEnterNetPrice) {
             $dPrice = round(oxPrice::brutto2Netto($dPrice, $dVat), $oCurrency->decimal);
         } elseif (!$blCalculationModeNetto && $blEnterNetPrice) {
@@ -1269,27 +1266,9 @@ class oxUtils extends oxSuperCfg
      */
     protected function _isPriceViewModeNetto()
     {
-        $blResult = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
-        $oUser = $this->_getArticleUser();
-        if ($oUser) {
-            $blResult = $oUser->isPriceViewModeNetto();
-        }
+        $blResult = (bool) $this->config->getConfigParam('blShowNetPrice');
 
         return $blResult;
-    }
-
-    /**
-     * Return article user.
-     *
-     * @return oxUser
-     */
-    protected function _getArticleUser()
-    {
-        if ($this->_oUser) {
-            return $this->_oUser;
-        }
-
-        return $this->getUser();
     }
 
     /**
@@ -1334,7 +1313,7 @@ class oxUtils extends oxSuperCfg
      */
     public function logger($sText, $blNewline = false)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($myConfig->getConfigParam('iDebug') == -2) {
             if (gettype($sText) != 'string') {
@@ -1376,7 +1355,7 @@ class oxUtils extends oxSuperCfg
     {
         $versionPrefix = $this->getEditionCacheFilePrefix();
 
-        $sPath = realpath($this->getConfig()->getConfigParam('sCompileDir'));
+        $sPath = realpath($this->config->getConfigParam('sCompileDir'));
 
         if (!$sPath) {
             return false;
@@ -1454,7 +1433,7 @@ class oxUtils extends oxSuperCfg
      */
     public function writeToLog($sLogMessage, $sLogFileName)
     {
-        $sLogDist = $this->getConfig()->getLogsDir() . $sLogFileName;
+        $sLogDist = $this->config->getLogsDir() . $sLogFileName;
         $blOk = false;
 
         if (($oHandle = fopen($sLogDist, 'a')) !== false) {

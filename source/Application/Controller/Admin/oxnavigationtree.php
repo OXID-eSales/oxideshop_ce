@@ -144,7 +144,7 @@ class OxNavigationTree extends oxSuperCfg
      */
     protected function _addDynLinks($oDom)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myUtilsFile = oxRegistry::get("oxUtilsFile");
 
         $sURL = 'index.php?'; // session parameters will be included later (after cache processor)
@@ -300,7 +300,7 @@ class OxNavigationTree extends oxSuperCfg
      */
     protected function _checkDemoShopDenials($oDom)
     {
-        if (!$this->getConfig()->isDemoShop()) {
+        if (!$this->config->isDemoShop()) {
             // nothing to check for non demo shop
             return;
         }
@@ -457,7 +457,7 @@ class OxNavigationTree extends oxSuperCfg
      */
     protected function _getMenuFiles()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myOxUtlis = oxRegistry::getUtils();
 
         $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector()));
@@ -586,7 +586,7 @@ class OxNavigationTree extends oxSuperCfg
                 $blReload = false;
                 $sDynLang = $this->_getDynMenuLang();
 
-                $sShopId = $this->getConfig()->getActiveShop()->getShopId();
+                $sShopId = $this->config->getActiveShop()->getShopId();
                 $sCacheName = 'menu_' . $sDynLang . $sShopId . '_xml';
                 $sCacheFile = $myOxUtlis->getCacheFilePath($sCacheName);
                 $sCacheContents = $myOxUtlis->fromFileCache($sCacheName);
@@ -758,7 +758,7 @@ class OxNavigationTree extends oxSuperCfg
      */
     protected function _getAdminUrl()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if (($sAdminSslUrl = $myConfig->getConfigParam('sAdminSSLURL'))) {
             $sURL = trim($sAdminSslUrl, '/');
@@ -844,7 +844,7 @@ class OxNavigationTree extends oxSuperCfg
      */
     protected function _getDynMenuLang()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oLang = oxRegistry::getLang();
 
         $iDynLang = $myConfig->getConfigParam('iDynInterfaceLanguage');

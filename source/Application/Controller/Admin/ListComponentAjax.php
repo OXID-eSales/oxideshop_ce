@@ -392,7 +392,7 @@ class ListComponentAjax extends \oxSuperCfg
     protected function _getFilter()
     {
         $sQ = '';
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $aFilter = $oConfig->getRequestParameter('aFilter');
         if (is_array($aFilter) && count($aFilter)) {
             $aCols = $this->_getVisibleColNames();
@@ -535,7 +535,7 @@ class ListComponentAjax extends \oxSuperCfg
      */
     protected function _outputResponse($aData)
     {
-        if (!$this->getConfig()->isUtf()) {
+        if (!$this->config->isUtf()) {
             // TODO: improve this
             if (is_array($aData['records']) && ($iRecSize = count($aData['records']))) {
                 $aKeys = array_keys(current($aData['records']));
@@ -592,7 +592,7 @@ class ListComponentAjax extends \oxSuperCfg
         $aResponse['sort'] = '_' . $this->_getSortCol();
         $aResponse['dir'] = $this->_getSortDir();
 
-        $iDebug = $this->getConfig()->getConfigParam('iDebug');
+        $iDebug = $this->config->getConfigParam('iDebug');
         if ($iDebug) {
             $aResponse['countsql'] = $sCountQ;
         }
@@ -634,7 +634,7 @@ class ListComponentAjax extends \oxSuperCfg
             $aArtIds = array($aArtIds);
         }
 
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = $this->config->getShopId();
         foreach ($aArtIds as $sArtId) {
             /** @var oxSeoEncoder $oSeoEncoder */
             oxRegistry::get("oxSeoEncoder")->markAsExpired($sArtId, $sShopId, 1, null, "oxtype='oxarticle'");
@@ -646,7 +646,7 @@ class ListComponentAjax extends \oxSuperCfg
      */
     public function resetContentCache()
     {
-        $blDeleteCacheOnLogout = $this->getConfig()->getConfigParam('blClearCacheOnLogout');
+        $blDeleteCacheOnLogout = $this->config->getConfigParam('blClearCacheOnLogout');
 
         if (!$blDeleteCacheOnLogout) {
             $this->_resetCaches();
@@ -664,7 +664,7 @@ class ListComponentAjax extends \oxSuperCfg
      */
     public function resetCounter($sCounterType, $sValue = null)
     {
-        $blDeleteCacheOnLogout = $this->getConfig()->getConfigParam('blClearCacheOnLogout');
+        $blDeleteCacheOnLogout = $this->config->getConfigParam('blClearCacheOnLogout');
 
         if (!$blDeleteCacheOnLogout) {
             $myUtilsCount = oxRegistry::get("oxUtilsCount");

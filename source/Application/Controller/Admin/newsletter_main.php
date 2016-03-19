@@ -63,7 +63,7 @@ class Newsletter_Main extends oxAdminDetails
      */
     public function save()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");

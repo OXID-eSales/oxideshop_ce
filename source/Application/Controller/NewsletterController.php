@@ -141,7 +141,7 @@ class NewsletterController extends \oxUBase
             } else {
                 $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
                 $oUser->oxuser__oxrights = new oxField('user', oxField::T_RAW);
-                $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
+                $oUser->oxuser__oxshopid = new oxField($this->config->getShopId(), oxField::T_RAW);
                 $oUser->oxuser__oxfname = new oxField($aParams['oxuser__oxfname'], oxField::T_RAW);
                 $oUser->oxuser__oxlname = new oxField($aParams['oxuser__oxlname'], oxField::T_RAW);
                 $oUser->oxuser__oxsal = new oxField($aParams['oxuser__oxsal'], oxField::T_RAW);
@@ -159,7 +159,7 @@ class NewsletterController extends \oxUBase
             //removing user from subscribe list before adding
             $oUser->setNewsSubscription(false, false);
 
-            $blOrderOptInEmail = $this->getConfig()->getConfigParam('blOrderOptInEmail');
+            $blOrderOptInEmail = $this->config->getConfigParam('blOrderOptInEmail');
             if ($oUser->setNewsSubscription(true, $blOrderOptInEmail)) {
                 // done, confirmation required?
                 if ($blOrderOptInEmail) {
@@ -259,7 +259,7 @@ class NewsletterController extends \oxUBase
     {
         if ($this->_sHomeCountryId === null) {
             $this->_sHomeCountryId = false;
-            $aHomeCountry = $this->getConfig()->getConfigParam('aHomeCountry');
+            $aHomeCountry = $this->config->getConfigParam('aHomeCountry');
             if (is_array($aHomeCountry)) {
                 $this->_sHomeCountryId = current($aHomeCountry);
             }

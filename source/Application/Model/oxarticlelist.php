@@ -172,7 +172,7 @@ class oxArticleList extends oxList
         // longdesc field now is kept on different table
         $sDescTable = '';
         $sDescJoin = '';
-        if (is_array($aSearchCols = $this->getConfig()->getConfigParam('aSearchCols'))) {
+        if (is_array($aSearchCols = $this->config->getConfigParam('aSearchCols'))) {
             if (in_array('oxlongdesc', $aSearchCols) || in_array('oxtags', $aSearchCols)) {
                 $sDescView = getViewName('oxartextends');
                 $sDescJoin = " LEFT JOIN $sDescView ON {$sDescView}.oxid={$sArticleTable}.oxid ";
@@ -506,7 +506,7 @@ class oxArticleList extends oxList
             $iTimeToUpdate = $iNextUpdateTime;
         }
 
-        $this->getConfig()->saveShopConfVar("num", "iTimeToUpdatePrices", $iTimeToUpdate);
+        $this->config->saveShopConfVar("num", "iTimeToUpdatePrices", $iTimeToUpdate);
 
         return $iTimeToUpdate;
     }
@@ -737,7 +737,7 @@ class oxArticleList extends oxList
         }
 
         $oDb = oxDb::getDb();
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myUtils = oxRegistry::getUtils();
         $sArticleTable = $this->getBaseObject()->getViewName();
 
@@ -880,7 +880,7 @@ class oxArticleList extends oxList
      */
     protected function _canUpdatePrices()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $blCan = false;
 
         // crontab is off?

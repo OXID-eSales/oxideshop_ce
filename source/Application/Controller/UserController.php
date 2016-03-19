@@ -97,7 +97,7 @@ class UserController extends \oxUBase
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         if ($this->getIsOrderStep()) {
             if ($config->getConfigParam('blPsBasketReservationEnabled')) {
@@ -129,7 +129,7 @@ class UserController extends \oxUBase
     public function getShowNoRegOption()
     {
         if ($this->_blShowNoRegOpt === null) {
-            $this->_blShowNoRegOpt = !$this->getConfig()->getConfigParam('blOrderDisWithoutReg');
+            $this->_blShowNoRegOpt = !$this->config->getConfigParam('blOrderDisWithoutReg');
         }
 
         return $this->_blShowNoRegOpt;
@@ -278,7 +278,7 @@ class UserController extends \oxUBase
     public function isDownloadableProductWarning()
     {
         $basket = $this->getSession()->getBasket();
-        if ($basket && $this->getConfig()->getConfigParam("blEnableDownloads")) {
+        if ($basket && $this->config->getConfigParam("blEnableDownloads")) {
             if ($basket->hasDownloadableProducts()) {
                 return true;
             }

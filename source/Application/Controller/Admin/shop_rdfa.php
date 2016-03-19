@@ -71,7 +71,7 @@ class shop_rdfa extends Shop_Config
      */
     public function getCustomers()
     {
-        $aCustomersConf = $this->getConfig()->getShopConfVar("aRDFaCustomers");
+        $aCustomersConf = $this->config->getShopConfVar("aRDFaCustomers");
         if (isset($aCustomersConf)) {
             foreach ($this->_aCustomers as $sCustomer => $iValue) {
                 $aCustomers[$sCustomer] = (in_array($sCustomer, $aCustomersConf)) ? 1 : 0;

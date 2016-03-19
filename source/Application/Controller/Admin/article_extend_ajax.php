@@ -154,7 +154,7 @@ class article_extend_ajax extends ajaxListComponent
      */
     public function addCat()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $categoriesToAdd = $this->_getActionIds('oxcategories.oxid');
         $oxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
         $shopId = $config->getShopId();

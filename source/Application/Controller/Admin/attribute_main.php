@@ -39,7 +39,7 @@ class Attribute_Main extends oxAdminDetails
     {
         parent::render();
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $oAttr = oxNew("oxattribute");
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();

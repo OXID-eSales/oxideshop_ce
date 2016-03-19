@@ -36,9 +36,9 @@ class oxArticleTagList extends oxI18n implements oxITagList
     /**
      * Instantiates oxTagSet object.
      */
-    public function __construct()
+    public function __construct($config)
     {
-        parent::__construct();
+        parent::__construct($config);
         $this->_oTagSet = oxNew('oxTagSet');
     }
 
@@ -205,7 +205,7 @@ class oxArticleTagList extends oxI18n implements oxITagList
      */
     public function getStdTagLink($tag)
     {
-        $stdTagLink = $this->getConfig()->getShopHomeURL($this->getLanguage(), false);
+        $stdTagLink = $this->config->getShopHomeURL($this->getLanguage(), false);
 
         return $stdTagLink . "cl=details&amp;anid=" . $this->getId() . "&amp;listtype=tag&amp;searchtag=" . rawurlencode($tag);
     }

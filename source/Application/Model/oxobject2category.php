@@ -33,14 +33,7 @@ class oxObject2Category extends oxBase
      */
     protected $_sClassName = 'oxobject2category';
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxBase()) and sets table name.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxobject2category');
-    }
+    protected $_sCoreTable = "oxobject2category";
 
     /**
      * Returns assigned product id

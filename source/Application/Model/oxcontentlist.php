@@ -83,13 +83,7 @@ class oxContentList extends oxList
         return $this->_aServiceKeys;
     }
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxList()).
-     */
-    public function __construct()
-    {
-        parent::__construct('oxcontent');
-    }
+    protected $_sObjectsInListName = 'oxcontent';
 
     /**
      * Loads main menue entries and generates list with links

@@ -118,11 +118,12 @@ class AdminView extends \oxView
     /**
      * Creates oxshop object and loads shop data, sets title of shop
      */
-    public function __construct()
+    public function __construct($config)
     {
-        $myConfig = $this->getConfig();
+        parent::__construct($config);
+
+        $myConfig = $this->config;
         $myConfig->setConfigParam('blAdmin', true);
-        $this->setAdminMode(true);
 
         if ($oShop = $this->_getEditShop($myConfig->getShopId())) {
             // passing shop info
@@ -141,7 +142,7 @@ class AdminView extends \oxView
     protected function _getEditShop($sShopId)
     {
         if (!$this->_oEditShop) {
-            $this->_oEditShop = $this->getConfig()->getActiveShop();
+            $this->_oEditShop = $this->config->getActiveShop();
             if ($this->_oEditShop->getId() != $sShopId) {
                 $oEditShop = oxNew('oxShop');
                 if ($oEditShop->load($sShopId)) {
@@ -160,7 +161,7 @@ class AdminView extends \oxView
      */
     public function init()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         // authorization check
         if (!$this->_authorize()) {
@@ -190,7 +191,7 @@ class AdminView extends \oxView
     public function addGlobalParams($oShop = null)
     {
         $mySession = $this->getSession();
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oLang = oxRegistry::getLang();
 
         $oShop = parent::addGlobalParams($oShop);
@@ -228,7 +229,7 @@ class AdminView extends \oxView
      */
     protected function _getServiceProtocol()
     {
-        return $this->getConfig()->isSsl() ? 'https' : 'http';
+        return $this->config->isSsl() ? 'https' : 'http';
     }
 
     /**
@@ -247,7 +248,7 @@ class AdminView extends \oxView
             $editionSelector = new EditionSelector();
             $sUrl = $sProtocol . '://admin.oxid-esales.com/' . $editionSelector->getEdition() . '/';
 
-            $sCountry = $this->_getCountryByCode($this->getConfig()->getConfigParam('sShopCountry'));
+            $sCountry = $this->_getCountryByCode($this->config->getConfigParam('sShopCountry'));
 
             if (!$sLangAbbr) {
                 $oLang = oxRegistry::getLang();
@@ -271,7 +272,7 @@ class AdminView extends \oxView
      */
     protected function _getShopVersionNr()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($sShopID = $myConfig->getShopId()) {
             $sQ = "select oxversion from oxshops where oxid = '$sShopID' ";
@@ -344,7 +345,7 @@ class AdminView extends \oxView
     {
         $sReturn = parent::render();
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oLang = oxRegistry::getLang();
 
         // sets up navigation data
@@ -437,7 +438,7 @@ class AdminView extends \oxView
      */
     public function resetContentCache($blForceReset = null)
     {
-        $blDeleteCacheOnLogout = $this->getConfig()->getConfigParam('blClearCacheOnLogout');
+        $blDeleteCacheOnLogout = $this->config->getConfigParam('blClearCacheOnLogout');
         if (!$blDeleteCacheOnLogout || $blForceReset) {
             oxRegistry::getUtils()->oxResetFileCache();
         }
@@ -452,7 +453,7 @@ class AdminView extends \oxView
      */
     public function resetCounter($sCounterType, $sValue = null)
     {
-        $blDeleteCacheOnLogout = $this->getConfig()->getConfigParam('blClearCacheOnLogout');
+        $blDeleteCacheOnLogout = $this->config->getConfigParam('blClearCacheOnLogout');
         $myUtilsCount = oxRegistry::get("oxUtilsCount");
 
         if (!$blDeleteCacheOnLogout) {
@@ -503,7 +504,7 @@ class AdminView extends \oxView
      */
     protected function _getCountryByCode($sCountryCode)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         //default country
         $sCountry = 'international';

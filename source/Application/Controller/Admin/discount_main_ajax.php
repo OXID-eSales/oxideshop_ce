@@ -54,7 +54,7 @@ class discount_main_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $sCountryTable = $this->_getViewName('oxcountry');
         $oDb = oxDb::getDb();
         $sId = $oConfig->getRequestParameter('oxid');
@@ -81,7 +81,7 @@ class discount_main_ajax extends ajaxListComponent
      */
     public function removeDiscCountry()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $aChosenCntr = $this->_getActionIds('oxobject2discount.oxid');
         if ($oConfig->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
@@ -98,7 +98,7 @@ class discount_main_ajax extends ajaxListComponent
      */
     public function addDiscCountry()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $aChosenCntr = $this->_getActionIds('oxcountry.oxid');
         $soxId = $oConfig->getRequestParameter('synchoxid');
 

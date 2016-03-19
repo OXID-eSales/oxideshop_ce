@@ -56,8 +56,8 @@ class delivery_categories_ajax extends ajaxListComponent
         // looking for table/view
         $sCatTable = $this->_getViewName('oxcategories');
         $oDb = oxDb::getDb();
-        $sDelId = $this->getConfig()->getRequestParameter('oxid');
-        $sSynchDelId = $this->getConfig()->getRequestParameter('synchoxid');
+        $sDelId = $this->config->getRequestParameter('oxid');
+        $sSynchDelId = $this->config->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sDelId) {
@@ -94,7 +94,7 @@ class delivery_categories_ajax extends ajaxListComponent
         $aChosenCat = $this->_getActionIds('oxobject2delivery.oxid');
 
         // removing all
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->config->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -112,10 +112,10 @@ class delivery_categories_ajax extends ajaxListComponent
     public function addCatToDel()
     {
         $aChosenCat = $this->_getActionIds('oxcategories.oxid');
-        $soxId = $this->getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->config->getRequestParameter('synchoxid');
 
         // adding
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->config->getRequestParameter('all')) {
             $sCatTable = $this->_getViewName('oxcategories');
             $aChosenCat = $this->_getAll($this->_addFilter("select $sCatTable.oxid " . $this->_getQuery()));
         }

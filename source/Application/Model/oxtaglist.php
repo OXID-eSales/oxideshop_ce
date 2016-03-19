@@ -50,9 +50,9 @@ class oxTagList extends oxI18n implements oxITagList
     /**
      * Instantiates oxtagset object
      */
-    public function __construct()
+    public function __construct($config)
     {
-        parent::__construct();
+        parent::__construct($config);
         $this->_oTagSet = oxNew('oxtagset');
     }
 

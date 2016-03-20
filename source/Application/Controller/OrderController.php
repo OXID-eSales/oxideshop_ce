@@ -234,8 +234,7 @@ class OrderController extends \oxUBase
         }
 
         /* @deprecated since v5.1.6 (2014-05-28); Not used anymore */
-        $oConfig = $this->config;
-        $sOrderCustomerInfo = $oConfig->getRequestParameter('ord_custinfo');
+        $sOrderCustomerInfo = $this->request->getRequestParameter('ord_custinfo');
         if ($sOrderCustomerInfo !== null && !$sOrderCustomerInfo && $this->isConfirmCustInfoActive()) {
             $this->_blConfirmCustInfoError = 1;
 
@@ -525,7 +524,7 @@ class OrderController extends \oxUBase
      */
     public function getAddressError()
     {
-        return oxRegistry::getConfig()->getRequestParameter('iAddressError');
+        return $this->request->getRequestParameter('iAddressError');
     }
 
     /**
@@ -621,19 +620,19 @@ class OrderController extends \oxUBase
         $blValid = true;
         $oConfig = $this->config;
 
-        if ($oConfig->getConfigParam('blConfirmAGB') && !$oConfig->getRequestParameter('ord_agb')) {
+        if ($oConfig->getConfigParam('blConfirmAGB') && !$this->request->getRequestParameter('ord_agb')) {
             $blValid = false;
         }
 
         if ($oConfig->getConfigParam('blEnableIntangibleProdAgreement')) {
             $oBasket = $this->getBasket();
 
-            $blDownloadableProductsAgreement = $oConfig->getRequestParameter('oxdownloadableproductsagreement');
+            $blDownloadableProductsAgreement = $this->request->getRequestParameter('oxdownloadableproductsagreement');
             if ($blValid && $oBasket->hasArticlesWithDownloadableAgreement() && !$blDownloadableProductsAgreement) {
                 $blValid = false;
             }
 
-            $blServiceProductsAgreement = $oConfig->getRequestParameter('oxserviceproductsagreement');
+            $blServiceProductsAgreement = $this->request->getRequestParameter('oxserviceproductsagreement');
             if ($blValid && $oBasket->hasArticlesWithIntangibleAgreement() && !$blServiceProductsAgreement) {
                 $blValid = false;
             }

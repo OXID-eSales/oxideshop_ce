@@ -53,7 +53,7 @@ class VoucherSerie_Groups extends oxAdminDetails
                 $this->_aViewData['readonly'] = true;
             }
         }
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+        if ($this->request->getRequestParameter("aoc")) {
             $oVoucherSerieGroupsAjax = oxNew('voucherserie_groups_ajax');
             $this->_aViewData['oxajax'] = $oVoucherSerieGroupsAjax->getColumns();
 

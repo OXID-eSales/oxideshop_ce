@@ -16,6 +16,7 @@ class DiContainer implements ContainerInterface
 {
     const CONTAINER_CORE_MAILCLIENT = 'core.mailclient';
     const CONTAINER_CORE_CONFIG = 'core.config';
+    const CONTAINER_CORE_REQUEST = 'core.request';
     const CONTAINER_CORE_MAILER = 'core.mailer';
     const CONTAINER_CORE_EVENT_DISPATCHER = 'core.eventdispatcher';
 
@@ -68,6 +69,10 @@ class DiContainer implements ContainerInterface
         //basic setup
         $container
             ->register(static::CONTAINER_CORE_CONFIG, \oxConfig::class);
+
+        //basic setup
+        $container
+            ->register(static::CONTAINER_CORE_REQUEST, Request::class);
     }
 
     /**

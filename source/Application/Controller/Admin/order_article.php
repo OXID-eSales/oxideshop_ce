@@ -100,7 +100,7 @@ class Order_Article extends oxAdminDetails
      */
     public function getSearchProductArtNr()
     {
-        return oxRegistry::getConfig()->getRequestParameter('sSearchArtNum');
+        return $this->request->getRequestParameter('sSearchArtNum');
     }
 
     /**
@@ -185,8 +185,8 @@ class Order_Article extends oxAdminDetails
      */
     public function addThisArticle()
     {
-        $sOxid = oxRegistry::getConfig()->getRequestParameter('aid');
-        $dAmount = oxRegistry::getConfig()->getRequestParameter('am');
+        $sOxid = $this->request->getRequestParameter('aid');
+        $dAmount = $this->request->getRequestParameter('am');
         $oProduct = oxNew("oxArticle");
 
         if ($sOxid && $dAmount && $oProduct->load($sOxid)) {
@@ -198,7 +198,7 @@ class Order_Article extends oxAdminDetails
                 $oOrderArticle->oxorderarticles__oxartid = new oxField($oProduct->getId());
                 $oOrderArticle->oxorderarticles__oxartnum = new oxField($oProduct->oxarticles__oxartnum->value);
                 $oOrderArticle->oxorderarticles__oxamount = new oxField($dAmount);
-                $oOrderArticle->oxorderarticles__oxselvariant = new oxField(oxRegistry::getConfig()->getRequestParameter('sel'));
+                $oOrderArticle->oxorderarticles__oxselvariant = new oxField($this->request->getRequestParameter('sel'));
                 $oOrder->recalculateOrder(array($oOrderArticle));
             }
         }
@@ -210,7 +210,7 @@ class Order_Article extends oxAdminDetails
     public function deleteThisArticle()
     {
         // get article id
-        $sOrderArtId = oxRegistry::getConfig()->getRequestParameter('sArtID');
+        $sOrderArtId = $this->request->getRequestParameter('sArtID');
         $sOrderId = $this->getEditObjectId();
 
         $oOrderArticle = oxNew('oxorderarticle');
@@ -235,7 +235,7 @@ class Order_Article extends oxAdminDetails
     {
         $myConfig = $this->config;
 
-        $sOrderArtId = oxRegistry::getConfig()->getRequestParameter('sArtID');
+        $sOrderArtId = $this->request->getRequestParameter('sArtID');
         $oArticle = oxNew('oxorderarticle');
         $oArticle->load($sOrderArtId);
 
@@ -271,7 +271,7 @@ class Order_Article extends oxAdminDetails
      */
     public function updateOrder()
     {
-        $aOrderArticles = oxRegistry::getConfig()->getRequestParameter('aOrderArticles');
+        $aOrderArticles = $this->request->getRequestParameter('aOrderArticles');
 
         $oOrder = oxNew('oxorder');
         if (is_array($aOrderArticles) && $oOrder->load($this->getEditObjectId())) {

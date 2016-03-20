@@ -51,8 +51,8 @@ class deliveryset_groups_ajax extends ajaxListComponent
     protected function _getQuery()
     {
         $oDb = oxDb::getDb();
-        $sId = $this->config->getRequestParameter('oxid');
-        $sSynchId = $this->config->getRequestParameter('synchoxid');
+        $sId = $this->request->getRequestParameter('oxid');
+        $sSynchId = $this->request->getRequestParameter('synchoxid');
 
         $sgroupTable = $this->_getViewName('oxgroups');
 
@@ -83,7 +83,7 @@ class deliveryset_groups_ajax extends ajaxListComponent
     public function removeGroupFromSet()
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2delivery.oxid');
-        if ($this->config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -101,10 +101,10 @@ class deliveryset_groups_ajax extends ajaxListComponent
     public function addGroupToSet()
     {
         $aChosenCat = $this->_getActionIds('oxgroups.oxid');
-        $soxId = $this->config->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
         // adding
-        if ($this->config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sGroupTable = $this->_getViewName('oxgroups');
             $aChosenCat = $this->_getAll($this->_addFilter("select $sGroupTable.oxid " . $this->_getQuery()));
         }

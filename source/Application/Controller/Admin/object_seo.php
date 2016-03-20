@@ -71,7 +71,7 @@ class Object_Seo extends oxAdminDetails
     {
         // saving/updating seo params
         if (($sOxid = $this->_getSaveObjectId())) {
-            $aSeoData = oxRegistry::getConfig()->getRequestParameter('aSeoData');
+            $aSeoData = $this->request->getRequestParameter('aSeoData');
             $iShopId = $this->config->getShopId();
             $iLang = $this->getEditLang();
 

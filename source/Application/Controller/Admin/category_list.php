@@ -50,7 +50,7 @@ class Category_List extends oxAdminList
      */
     public function getListSorting()
     {
-        $sSortParameter = oxRegistry::getConfig()->getRequestParameter('sort');
+        $sSortParameter = $this->request->getRequestParameter('sort');
         if ($this->_aCurrSorting === null && !$sSortParameter && ($oBaseObject = $this->getItemListBaseObject())) {
             $sCatView = $oBaseObject->getCoreTableName();
 

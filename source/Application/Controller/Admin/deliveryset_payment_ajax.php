@@ -53,8 +53,8 @@ class deliveryset_payment_ajax extends ajaxListComponent
     protected function _getQuery()
     {
         $oDb = oxDb::getDb();
-        $sId = $this->config->getRequestParameter('oxid');
-        $sSynchId = $this->config->getRequestParameter('synchoxid');
+        $sId = $this->request->getRequestParameter('oxid');
+        $sSynchId = $this->request->getRequestParameter('synchoxid');
 
         $sPayTable = $this->_getViewName('oxpayments');
 
@@ -80,7 +80,7 @@ class deliveryset_payment_ajax extends ajaxListComponent
     public function removePayFromSet()
     {
         $aChosenCntr = $this->_getActionIds('oxobject2payment.oxid');
-        if ($this->config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxobject2payment.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -97,10 +97,10 @@ class deliveryset_payment_ajax extends ajaxListComponent
     public function addPayToSet()
     {
         $aChosenSets = $this->_getActionIds('oxpayments.oxid');
-        $soxId = $this->config->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
         // adding
-        if ($this->config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sPayTable = $this->_getViewName('oxpayments');
             $aChosenSets = $this->_getAll($this->_addFilter("select $sPayTable.oxid " . $this->_getQuery()));
         }

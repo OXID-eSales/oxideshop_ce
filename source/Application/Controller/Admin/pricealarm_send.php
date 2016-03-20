@@ -50,9 +50,9 @@ class PriceAlarm_Send extends oxAdminList
 
         ini_set("session.gc_maxlifetime", 36000);
 
-        $start = (int) $config->getRequestParameter("iStart");
+        $start = (int) $this->request->getRequestParameter("iStart");
         $limit = $config->getConfigParam('iCntofMails');
-        $activeAlertsAmount = $config->getRequestParameter("iAllCnt");
+        $activeAlertsAmount = $this->request->getRequestParameter("iAllCnt");
         if (!isset($activeAlertsAmount)) {
             $activeAlertsAmount = $this->countActivePriceAlerts();
         }

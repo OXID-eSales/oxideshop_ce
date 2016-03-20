@@ -54,12 +54,11 @@ class discount_groups_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $oConfig = $this->config;
         // active AJAX component
         $sGroupTable = $this->_getViewName('oxgroups');
         $oDb = oxDb::getDb();
-        $sId = $oConfig->getRequestParameter('oxid');
-        $sSynchId = $oConfig->getRequestParameter('synchoxid');
+        $sId = $this->request->getRequestParameter('oxid');
+        $sSynchId = $this->request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sId) {
@@ -85,10 +84,8 @@ class discount_groups_ajax extends ajaxListComponent
      */
     public function removeDiscGroup()
     {
-        $config = $this->config;
-
         $groupIds = $this->_getActionIds('oxobject2discount.oxid');
-        if ($config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
 
             $query = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             oxDb::getDb()->Execute($query);
@@ -105,11 +102,10 @@ class discount_groups_ajax extends ajaxListComponent
      */
     public function addDiscGroup()
     {
-        $config = $this->config;
         $groupIds = $this->_getActionIds('oxgroups.oxid');
-        $discountId = $config->getRequestParameter('synchoxid');
+        $discountId = $this->request->getRequestParameter('synchoxid');
 
-        if ($config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $groupTable = $this->_getViewName('oxgroups');
             $groupIds = $this->_getAll($this->_addFilter("select $groupTable.oxid " . $this->_getQuery()));
         }

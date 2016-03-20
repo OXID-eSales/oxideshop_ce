@@ -146,7 +146,7 @@ class Account_Wishlist extends Account
     public function showSuggest()
     {
         if ($this->_blShowSuggest === null) {
-            $this->_blShowSuggest = ( bool ) oxRegistry::getConfig()->getRequestParameter('blshowsuggest');
+            $this->_blShowSuggest = ( bool ) $this->request->getRequestParameter('blshowsuggest');
         }
 
         return $this->_blShowSuggest;
@@ -219,11 +219,11 @@ class Account_Wishlist extends Account
             return false;
         }
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter('editval', true);
+        $aParams = $this->request->getRequestParameter('editval', true);
         if (is_array($aParams)) {
             $oUtilsView = oxRegistry::get("oxUtilsView");
             $oParams = ( object ) $aParams;
-            $this->setEnteredData(( object ) oxRegistry::getConfig()->getRequestParameter('editval'));
+            $this->setEnteredData(( object ) $this->request->getRequestParameter('editval'));
 
             if (!isset($aParams['rec_name']) || !isset($aParams['rec_email']) ||
                 !$aParams['rec_name'] || !$aParams['rec_email']
@@ -298,7 +298,7 @@ class Account_Wishlist extends Account
 
         if ($oUser = $this->getUser()) {
 
-            $blPublic = (int) oxRegistry::getConfig()->getRequestParameter('blpublic');
+            $blPublic = (int) $this->request->getRequestParameter('blpublic');
             $oBasket = $oUser->getBasket('wishlist');
             $oBasket->oxuserbaskets__oxpublic = new oxField(($blPublic == 1) ? $blPublic : 0);
             $oBasket->save();
@@ -311,7 +311,7 @@ class Account_Wishlist extends Account
      */
     public function searchForWishList()
     {
-        if ($sSearch = oxRegistry::getConfig()->getRequestParameter('search')) {
+        if ($sSearch = $this->request->getRequestParameter('search')) {
 
             // search for baskets
             $oUserList = oxNew('oxuserlist');

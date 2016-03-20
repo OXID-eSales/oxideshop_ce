@@ -59,7 +59,7 @@ class GuestBookEntryController extends \GuestBook
             return;
         }
 
-        $sReviewText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('rvw_txt', true));
+        $sReviewText = trim(( string ) $this->request->getRequestParameter('rvw_txt', true));
         $sShopId = $this->config->getShopId();
         $sUserId = oxRegistry::getSession()->getVariable('usr');
 

@@ -79,7 +79,7 @@ class ForgotPasswordController extends \oxUBase
      */
     public function forgotPassword()
     {
-        $sEmail = oxRegistry::getConfig()->getRequestParameter('lgn_usr');
+        $sEmail = $this->request->getRequestParameter('lgn_usr');
         $this->_sForgotEmail = $sEmail;
         $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
 
@@ -103,8 +103,8 @@ class ForgotPasswordController extends \oxUBase
      */
     public function updatePassword()
     {
-        $sNewPass = oxRegistry::getConfig()->getRequestParameter('password_new', true);
-        $sConfPass = oxRegistry::getConfig()->getRequestParameter('password_new_confirm', true);
+        $sNewPass = $this->request->getRequestParameter('password_new', true);
+        $sConfPass = $this->request->getRequestParameter('password_new_confirm', true);
 
         $oUser = oxNew('oxuser');
 
@@ -145,7 +145,7 @@ class ForgotPasswordController extends \oxUBase
      */
     public function updateSuccess()
     {
-        return (bool) oxRegistry::getConfig()->getRequestParameter('success');
+        return (bool) $this->request->getRequestParameter('success');
     }
 
     /**
@@ -165,7 +165,7 @@ class ForgotPasswordController extends \oxUBase
      */
     public function getUpdateId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('uid');
+        return $this->request->getRequestParameter('uid');
     }
 
     /**

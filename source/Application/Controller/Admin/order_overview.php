@@ -132,7 +132,7 @@ class Order_Overview extends oxAdminDetails
                 $sFilename = $oOrder->oxorder__oxordernr->value . "_" . $sTrimmedBillName . ".pdf";
                 $sFilename = $this->makeValidFileName($sFilename);
                 ob_start();
-                $oOrder->genPDF($sFilename, oxRegistry::getConfig()->getRequestParameter("pdflanguage"));
+                $oOrder->genPDF($sFilename, $this->request->getRequestParameter("pdflanguage"));
                 $sPDF = ob_get_contents();
                 ob_end_clean();
                 $oUtils->setHeader("Pragma: public");
@@ -164,7 +164,7 @@ class Order_Overview extends oxAdminDetails
                 }
             }
 
-            if (($blMail = oxRegistry::getConfig()->getRequestParameter("sendmail"))) {
+            if (($blMail = $this->request->getRequestParameter("sendmail"))) {
                 DiContainer::getInstance()
                     ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
                     ->dispatch(

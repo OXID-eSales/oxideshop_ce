@@ -60,7 +60,7 @@ class Content_List extends oxAdminList
     {
         parent::render();
 
-        $sFolder = oxRegistry::getConfig()->getRequestParameter("folder");
+        $sFolder = $this->request->getRequestParameter("folder");
         $sFolder = $sFolder ? $sFolder : -1;
 
         $this->_aViewData["folder"] = $sFolder;
@@ -80,7 +80,7 @@ class Content_List extends oxAdminList
     protected function _prepareWhereQuery($aWhere, $sqlFull)
     {
         $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
-        $sFolder = oxRegistry::getConfig()->getRequestParameter('folder');
+        $sFolder = $this->request->getRequestParameter('folder');
         $sViewName = getviewName("oxcontents");
 
         //searchong for empty oxfolder fields

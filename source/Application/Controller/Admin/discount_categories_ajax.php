@@ -58,9 +58,8 @@ class discount_categories_ajax extends ajaxListComponent
     protected function _getQuery()
     {
         $oDb = oxDb::getDb();
-        $oConfig = $this->config;
-        $sId = $oConfig->getRequestParameter('oxid');
-        $sSynchId = $oConfig->getRequestParameter('synchoxid');
+        $sId = $this->request->getRequestParameter('oxid');
+        $sSynchId = $this->request->getRequestParameter('synchoxid');
 
         $sCategoryTable = $this->_getViewName('oxcategories');
 
@@ -96,10 +95,9 @@ class discount_categories_ajax extends ajaxListComponent
      */
     public function removeDiscCat()
     {
-        $config = $this->config;
         $categoryIds = $this->_getActionIds('oxobject2discount.oxid');
 
-        if ($config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $query = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             oxDb::getDb()->Execute($query);
 
@@ -115,11 +113,10 @@ class discount_categories_ajax extends ajaxListComponent
      */
     public function addDiscCat()
     {
-        $config = $this->config;
         $categoryIds = $this->_getActionIds('oxcategories.oxid');
-        $discountId = $config->getRequestParameter('synchoxid');
+        $discountId = $this->request->getRequestParameter('synchoxid');
 
-        if ($config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $categoryTable = $this->_getViewName('oxcategories');
             $categoryIds = $this->_getAll($this->_addFilter("select $categoryTable.oxid " . $this->_getQuery()));
         }

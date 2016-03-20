@@ -156,7 +156,7 @@ class Article_Overview extends oxAdminDetails
      */
     protected function updateArticle($article, $oxId)
     {
-        $article->loadInLang(oxRegistry::getConfig()->getRequestParameter("editlanguage"), $oxId);
+        $article->loadInLang($this->request->getRequestParameter("editlanguage"), $oxId);
 
         return $article;
     }

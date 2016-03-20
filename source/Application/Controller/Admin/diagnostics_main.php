@@ -344,6 +344,6 @@ class Diagnostics_Main extends oxAdminDetails
      */
     public function getParam($sParam)
     {
-        return $this->config->getRequestParameter($sParam);
+        return $this->request->getRequestParameter($sParam);
     }
 }

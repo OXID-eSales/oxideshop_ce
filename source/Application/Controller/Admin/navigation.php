@@ -43,11 +43,11 @@ class Navigation extends oxAdminView
         parent::render();
         $myUtilsServer = oxRegistry::get("oxUtilsServer");
 
-        $sItem = oxRegistry::getConfig()->getRequestParameter("item");
+        $sItem = $this->request->getRequestParameter("item");
         $sItem = $sItem ? basename($sItem) : false;
         if (!$sItem) {
             $sItem = "nav_frame.tpl";
-            $aFavorites = oxRegistry::getConfig()->getRequestParameter("favorites");
+            $aFavorites = $this->request->getRequestParameter("favorites");
             if (is_array($aFavorites)) {
                 $myUtilsServer->setOxCookie('oxidadminfavorites', implode('|', $aFavorites));
             }
@@ -62,7 +62,7 @@ class Navigation extends oxAdminView
             $this->_aViewData["sVersion"] = trim($sVersion);
 
             //checking requirements if this is not nav frame reload
-            if (!oxRegistry::getConfig()->getRequestParameter("navReload")) {
+            if (!$this->request->getRequestParameter("navReload")) {
                 // #661 execute stuff we run each time when we start admin once
                 if ('home.tpl' == $sItem) {
                     $this->_aViewData['aMessage'] = $this->_doStartUpChecks();
@@ -87,7 +87,7 @@ class Navigation extends oxAdminView
             }
 
             // open history node ?
-            $this->_aViewData["blOpenHistory"] = oxRegistry::getConfig()->getRequestParameter('openHistory');
+            $this->_aViewData["blOpenHistory"] = $this->request->getRequestParameter('openHistory');
         }
 
         $blisMallAdmin = oxRegistry::getSession()->getVariable('malladmin');
@@ -115,9 +115,9 @@ class Navigation extends oxAdminView
 
         // informing about basefrm parameters
         $this->_aViewData['loadbasefrm'] = true;
-        $this->_aViewData['listview'] = oxRegistry::getConfig()->getRequestParameter('listview');
-        $this->_aViewData['editview'] = oxRegistry::getConfig()->getRequestParameter('editview');
-        $this->_aViewData['actedit'] = oxRegistry::getConfig()->getRequestParameter('actedit');
+        $this->_aViewData['listview'] = $this->request->getRequestParameter('listview');
+        $this->_aViewData['editview'] = $this->request->getRequestParameter('editview');
+        $this->_aViewData['actedit'] = $this->request->getRequestParameter('actedit');
     }
 
     /**
@@ -148,7 +148,7 @@ class Navigation extends oxAdminView
     public function exturl()
     {
         $myUtils = oxRegistry::getUtils();
-        if ($sUrl = oxRegistry::getConfig()->getRequestParameter("url")) {
+        if ($sUrl = $this->request->getRequestParameter("url")) {
 
             // Limit external url's only allowed host
             $myConfig = $this->config;

@@ -160,17 +160,16 @@ class SearchController extends oxUBase
         $myConfig = $this->config;
 
         // #1184M - special char search
-        $oConfig = oxRegistry::getConfig();
-        $sSearchParamForQuery = trim($oConfig->getRequestParameter('searchparam', true));
+        $sSearchParamForQuery = trim($this->request->getRequestParameter('searchparam', true));
 
         // searching in category ?
-        $sInitialSearchCat = $this->_sSearchCatId = rawurldecode($oConfig->getRequestParameter('searchcnid'));
+        $sInitialSearchCat = $this->_sSearchCatId = rawurldecode($this->request->getRequestParameter('searchcnid'));
 
         // searching in vendor #671
-        $sInitialSearchVendor = rawurldecode($oConfig->getRequestParameter('searchvendor'));
+        $sInitialSearchVendor = rawurldecode($this->request->getRequestParameter('searchvendor'));
 
         // searching in Manufacturer #671
-        $sManufacturerParameter = $oConfig->getRequestParameter('searchmanufacturer');
+        $sManufacturerParameter = $this->request->getRequestParameter('searchmanufacturer');
         $sInitialSearchManufacturer = $this->_sSearchManufacturer = rawurldecode($sManufacturerParameter);
 
         $this->_blEmptySearch = false;
@@ -195,7 +194,8 @@ class SearchController extends oxUBase
             $sInitialSearchCat,
             $sInitialSearchVendor,
             $sInitialSearchManufacturer,
-            $this->getSortingSql($this->getSortIdent())
+            $this->getSortingSql($this->getSortIdent()),
+            $this->request->getRequestParameter('pgNr')
         );
 
         // list of found articles
@@ -230,10 +230,10 @@ class SearchController extends oxUBase
         $oConfig = $this->config;
         if ($oConfig->getConfigParam('bl_rssSearch')) {
             $oRss = oxNew('oxrssfeed');
-            $sSearch = $oConfig->getRequestParameter('searchparam', true);
-            $sCnid = $oConfig->getRequestParameter('searchcnid', true);
-            $sVendor = $oConfig->getRequestParameter('searchvendor', true);
-            $sManufacturer = $oConfig->getRequestParameter('searchmanufacturer', true);
+            $sSearch = $this->request->getRequestParameter('searchparam', true);
+            $sCnid = $this->request->getRequestParameter('searchcnid', true);
+            $sVendor = $this->request->getRequestParameter('searchvendor', true);
+            $sManufacturer = $this->request->getRequestParameter('searchmanufacturer', true);
             $sSearchArticlesTitle = $oRss->getSearchArticlesTitle($sSearch, $sCnid, $sVendor, $sManufacturer);
             $sSearchArticlesUrl = $oRss->getSearchArticlesUrl($sSearch, $sCnid, $sVendor, $sManufacturer);
             $this->addRssFeed($sSearchArticlesTitle, $sSearchArticlesUrl, 'searchArticles');
@@ -274,21 +274,20 @@ class SearchController extends oxUBase
     {
         $sAddParams = parent::getAddUrlParams();
         $sAddParams .= ($sAddParams ? '&amp;' : '') . "listtype={$this->_sListType}";
-        $oConfig = $this->config;
 
-        if ($sParam = $oConfig->getRequestParameter('searchparam', true)) {
+        if ($sParam = $this->request->getRequestParameter('searchparam', true)) {
             $sAddParams .= "&amp;searchparam=" . rawurlencode($sParam);
         }
 
-        if ($sParam = $oConfig->getRequestParameter('searchcnid')) {
+        if ($sParam = $this->request->getRequestParameter('searchcnid')) {
             $sAddParams .= "&amp;searchcnid=$sParam";
         }
 
-        if ($sParam = rawurldecode($oConfig->getRequestParameter('searchvendor'))) {
+        if ($sParam = rawurldecode($this->request->getRequestParameter('searchvendor'))) {
             $sAddParams .= "&amp;searchvendor=$sParam";
         }
 
-        if ($sParam = rawurldecode($oConfig->getRequestParameter('searchmanufacturer'))) {
+        if ($sParam = rawurldecode($this->request->getRequestParameter('searchmanufacturer'))) {
             $sAddParams .= "&amp;searchmanufacturer=$sParam";
         }
 
@@ -304,7 +303,7 @@ class SearchController extends oxUBase
     {
         if ($this->_blSearchClass === null) {
             $this->_blSearchClass = false;
-            if (strtolower($this->config->getRequestParameter('cl')) == 'search') {
+            if (strtolower($this->request->getRequestParameter('cl')) == 'search') {
                 $this->_blSearchClass = true;
             }
         }
@@ -361,7 +360,7 @@ class SearchController extends oxUBase
         if ($this->_sSearchParamForHtml === null) {
             $this->_sSearchParamForHtml = false;
             if ($this->_isSearchClass()) {
-                $this->_sSearchParamForHtml = $this->config->getRequestParameter('searchparam');
+                $this->_sSearchParamForHtml = $this->request->getRequestParameter('searchparam');
             }
         }
 
@@ -378,7 +377,7 @@ class SearchController extends oxUBase
         if ($this->_sSearchParam === null) {
             $this->_sSearchParam = false;
             if ($this->_isSearchClass()) {
-                $this->_sSearchParam = rawurlencode($this->config->getRequestParameter('searchparam', true));
+                $this->_sSearchParam = rawurlencode($this->request->getRequestParameter('searchparam', true));
             }
         }
 
@@ -395,7 +394,7 @@ class SearchController extends oxUBase
         if ($this->_sSearchCatId === null) {
             $this->_sSearchCatId = false;
             if ($this->_isSearchClass()) {
-                $this->_sSearchCatId = rawurldecode($this->config->getRequestParameter('searchcnid'));
+                $this->_sSearchCatId = rawurldecode($this->request->getRequestParameter('searchcnid'));
             }
         }
 
@@ -413,7 +412,7 @@ class SearchController extends oxUBase
             $this->_sSearchVendor = false;
             if ($this->_isSearchClass()) {
                 // searching in vendor #671
-                $this->_sSearchVendor = rawurldecode($this->config->getRequestParameter('searchvendor'));
+                $this->_sSearchVendor = rawurldecode($this->request->getRequestParameter('searchvendor'));
             }
         }
 
@@ -431,7 +430,7 @@ class SearchController extends oxUBase
             $this->_sSearchManufacturer = false;
             if ($this->_isSearchClass()) {
                 // searching in Manufacturer #671
-                $sManufacturerParameter = $this->config->getRequestParameter('searchmanufacturer');
+                $sManufacturerParameter = $this->request->getRequestParameter('searchmanufacturer');
                 $this->_sSearchManufacturer = rawurldecode($sManufacturerParameter);
             }
         }

@@ -417,8 +417,8 @@ class oxConfig implements oxconfiginterface
             $this->_loadVarsFromFile();
 
             //application initialization
-            $this->_oStart = oxNew('oxStart');
-            $this->_oStart->appInit();
+            //$this->_oStart = oxNew('oxStart');
+            //$this->_oStart->appInit();
         } catch (oxConnectionException $oEx) {
             $this->_handleDbConnectionException($oEx);
         } catch (oxCookieException $oEx) {
@@ -439,7 +439,6 @@ class oxConfig implements oxconfiginterface
     protected function initializeShop()
     {
         $this->_processSeoCall();
-        //$this->getSession()->start();
     }
 
     /**

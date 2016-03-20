@@ -184,7 +184,7 @@ class Module_Config extends Shop_Config
         $sModuleId = $this->_getModuleForConfigVars();
 
         foreach ($this->_aConfParams as $sType => $sParam) {
-            $aConfVars = $oConfig->getRequestParameter($sParam);
+            $aConfVars = $this->request->getRequestParameter($sParam);
             if (is_array($aConfVars)) {
                 foreach ($aConfVars as $sName => $sValue) {
                     $sDbType = $this->_getDbConfigTypeName($sType);

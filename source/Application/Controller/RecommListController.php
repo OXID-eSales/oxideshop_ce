@@ -197,7 +197,7 @@ class RecommListController extends \AList
     public function getAddSeoUrlParams()
     {
         $sAddParams = parent::getAddSeoUrlParams();
-        if ($sParam = oxRegistry::getConfig()->getRequestParameter("searchrecomm", true)) {
+        if ($sParam = $this->request->getRequestParameter("searchrecomm", true)) {
             $sAddParams .= "&amp;searchrecomm=" . rawurlencode($sParam);
         }
 
@@ -220,7 +220,7 @@ class RecommListController extends \AList
         ) {
 
             //save rating
-            $dRating = oxRegistry::getConfig()->getRequestParameter('recommlistrating');
+            $dRating = $this->request->getRequestParameter('recommlistrating');
             if ($dRating !== null) {
                 $dRating = (int) $dRating;
             }
@@ -237,7 +237,7 @@ class RecommListController extends \AList
                 }
             }
 
-            if (($sReviewText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('rvw_txt', true)))) {
+            if (($sReviewText = trim(( string ) $this->request->getRequestParameter('rvw_txt', true)))) {
                 $oReview = oxNew('oxreview');
                 $oReview->oxreviews__oxobjectid = new oxField($oRecommList->getId());
                 $oReview->oxreviews__oxtype = new oxField('oxrecommlist');
@@ -258,7 +258,7 @@ class RecommListController extends \AList
     public function getNavigationParams()
     {
         $aParams = oxUBase::getNavigationParams();
-        $aParams['recommid'] = oxRegistry::getConfig()->getRequestParameter('recommid');
+        $aParams['recommid'] = $this->request->getRequestParameter('recommid');
 
         return $aParams;
     }
@@ -274,7 +274,7 @@ class RecommListController extends \AList
             $this->_aArticleList = false;
             if ($oActiveRecommList = $this->getActiveRecommList()) {
                 // sets active page
-                $iActPage = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+                $iActPage = (int) $this->request->getRequestParameter('pgNr');
                 $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
                 // load only lists which we show on screen
@@ -409,7 +409,10 @@ class RecommListController extends \AList
             if (!$this->getActiveRecommList()) {
                 // list of found oxrecommlists
                 $oRecommList = oxNew('oxrecommlist');
-                $oList = $oRecommList->getSearchRecommLists($this->getRecommSearch());
+                $oList = $oRecommList->getSearchRecommLists(
+                    $this->getRecommSearch(),
+                    (int) $this->request->getRequestParameter('pgNr')
+                );
                 if ($oList && $oList->count()) {
                     $this->_oSearchRecommLists = $oList;
                 }
@@ -428,7 +431,7 @@ class RecommListController extends \AList
     {
         if ($this->_sSearch === null) {
             $this->_sSearch = false;
-            if ($sSearch = oxRegistry::getConfig()->getRequestParameter('searchrecomm', false)) {
+            if ($sSearch = $this->request->getRequestParameter('searchrecomm', false)) {
                 $this->_sSearch = $sSearch;
             }
         }
@@ -474,7 +477,7 @@ class RecommListController extends \AList
             return $oActiveRecommList->oxrecommlists__oxtitle->value;
         }
 
-        return oxRegistry::getConfig()->getRequestParameter('searchrecomm');
+        return $this->request->getRequestParameter('searchrecomm');
     }
 
     /**
@@ -550,7 +553,7 @@ class RecommListController extends \AList
         } else {
             $sLink = oxUBase::getLink($iLang);
         }
-        $sSearch = oxRegistry::getConfig()->getRequestParameter('searchrecomm');
+        $sSearch = $this->request->getRequestParameter('searchrecomm');
         if ($sSearch) {
             $sLink .= ((strpos($sLink, '?') === false) ? '?' : '&amp;') . "searchrecomm={$sSearch}";
         }

@@ -45,10 +45,10 @@ class Dynscreen extends oxAdminList
     protected function _setupNavigation($sNode)
     {
         $myAdminNavig = $this->getNavigation();
-        $sNode = oxRegistry::getConfig()->getRequestParameter("menu");
+        $sNode = $this->request->getRequestParameter("menu");
 
         // active tab
-        $iActTab = oxRegistry::getConfig()->getRequestParameter('actedit');
+        $iActTab = $this->request->getRequestParameter('actedit');
         $iActTab = $iActTab ? $iActTab : $this->_iDefEdit;
 
         $sActTab = $iActTab ? "&actedit=$iActTab" : '';

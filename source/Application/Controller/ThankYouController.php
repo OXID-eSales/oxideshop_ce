@@ -271,7 +271,7 @@ class ThankYouController extends oxUBase
     {
         if ($this->_sMailError === null) {
             $this->_sMailError = false;
-            $this->_sMailError = oxRegistry::getConfig()->getRequestParameter('mailerror');
+            $this->_sMailError = $this->request->getRequestParameter('mailerror');
         }
 
         return $this->_sMailError;

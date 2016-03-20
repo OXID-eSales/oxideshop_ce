@@ -126,6 +126,6 @@ class AccountDownloadsController extends \Account
      */
     public function getDownloadError()
     {
-        return $this->config->getRequestParameter('download_error');
+        return $this->request->getRequestParameter('download_error');
     }
 }

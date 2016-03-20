@@ -287,7 +287,7 @@ class GuestbookController extends \oxUBase
             return;
         }
 
-        $reviewText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('rvw_txt', true));
+        $reviewText = trim(( string ) $this->request->getRequestParameter('rvw_txt', true));
         $shopId = $this->config->getShopId();
         $userId = oxRegistry::getSession()->getVariable('usr');
 

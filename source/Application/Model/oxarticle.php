@@ -2222,10 +2222,6 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl, ListArticleI
         $iActPicId = 1;
         $sActPic = $this->getPictureUrl($iActPicId);
 
-        if (oxRegistry::getConfig()->getRequestParameter('actpicid')) {
-            $iActPicId = oxRegistry::getConfig()->getRequestParameter('actpicid');
-        }
-
         $oStr = getStr();
         $iCntr = 0;
         $iPicCount = $myConfig->getConfigParam('iPicCount');
@@ -2730,9 +2726,9 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl, ListArticleI
             $this->_sMoreDetailLink = $this->config->getShopHomeURL() . 'cl=moredetails';
 
             // not always it is okey, as not all the time active category is the same as primary article cat.
-            if ($sActCat = oxRegistry::getConfig()->getRequestParameter('cnid')) {
-                $this->_sMoreDetailLink .= '&amp;cnid=' . $sActCat;
-            }
+            //if ($sActCat = oxRegistry::getConfig()->getRequestParameter('cnid')) {
+            //    $this->_sMoreDetailLink .= '&amp;cnid=' . $sActCat;
+            //}
             $this->_sMoreDetailLink .= '&amp;anid=' . $this->getId();
             $this->_sMoreDetailLink = $this->_sMoreDetailLink;
         }

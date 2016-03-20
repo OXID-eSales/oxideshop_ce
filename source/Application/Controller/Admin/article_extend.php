@@ -84,7 +84,7 @@ class Article_Extend extends oxAdminDetails
 
         $this->prepareBundledArticlesDataForView($article);
 
-        $iAoc = $this->config->getRequestParameter("aoc");
+        $iAoc = $this->request->getRequestParameter("aoc");
         if ($iAoc == 1) {
             $oArticleExtendAjax = oxNew('article_extend_ajax');
             $this->_aViewData['oxajax'] = $oArticleExtendAjax->getColumns();
@@ -126,7 +126,7 @@ class Article_Extend extends oxAdminDetails
         }
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
         // checkbox handling
         if (!isset($aParams['oxarticles__oxissearch'])) {
             $aParams['oxarticles__oxissearch'] = 0;
@@ -158,8 +158,8 @@ class Article_Extend extends oxAdminDetails
         $oArticle->save();
 
         //saving media file
-        $sMediaUrl = $this->config->getRequestParameter("mediaUrl");
-        $sMediaDesc = $this->config->getRequestParameter("mediaDesc");
+        $sMediaUrl = $this->request->getRequestParameter("mediaUrl");
+        $sMediaDesc = $this->request->getRequestParameter("mediaDesc");
 
         if (($sMediaUrl && $sMediaUrl != 'http://') || $aMediaFile['name'] || $sMediaDesc) {
 
@@ -202,7 +202,7 @@ class Article_Extend extends oxAdminDetails
     public function deletemedia()
     {
         $soxId = $this->getEditObjectId();
-        $sMediaId = $this->config->getRequestParameter("mediaid");
+        $sMediaId = $this->request->getRequestParameter("mediaid");
         if ($sMediaId && $soxId) {
             $oMediaUrl = oxNew("oxMediaUrl");
             $oMediaUrl->load($sMediaId);
@@ -230,7 +230,7 @@ class Article_Extend extends oxAdminDetails
      */
     public function updateMedia()
     {
-        $aMediaUrls = $this->config->getRequestParameter('aMediaUrls');
+        $aMediaUrls = $this->request->getRequestParameter('aMediaUrls');
         if (is_array($aMediaUrls)) {
             foreach ($aMediaUrls as $sMediaId => $aMediaParams) {
                 $oMedia = oxNew("oxMediaUrl");

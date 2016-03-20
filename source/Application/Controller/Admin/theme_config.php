@@ -98,7 +98,7 @@ class Theme_Config extends Shop_Config
         $sModule = $this->_getModuleForConfigVars();
 
         foreach ($this->_aConfParams as $sType => $sParam) {
-            $aConfVars = $myConfig->getRequestParameter($sParam);
+            $aConfVars = $this->request->getRequestParameter($sParam);
             if (is_array($aConfVars)) {
                 foreach ($aConfVars as $sName => $sValue) {
                     $myConfig->saveShopConfVar(

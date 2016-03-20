@@ -92,7 +92,7 @@ class NewsletterController extends \oxUBase
     public function fill()
     {
         // loads submited values
-        $this->_aRegParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $this->_aRegParams = $this->request->getRequestParameter("editval");
     }
 
     /**
@@ -107,7 +107,7 @@ class NewsletterController extends \oxUBase
      */
     public function send()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         // loads submited values
         $this->_aRegParams = $aParams;
@@ -123,7 +123,7 @@ class NewsletterController extends \oxUBase
             return;
         }
 
-        $blSubscribe = oxRegistry::getConfig()->getRequestParameter("subscribeStatus");
+        $blSubscribe = $this->request->getRequestParameter("subscribeStatus");
 
         $oUser = oxNew('oxuser');
         $oUser->oxuser__oxusername = new oxField($aParams['oxuser__oxusername'], oxField::T_RAW);
@@ -187,10 +187,10 @@ class NewsletterController extends \oxUBase
     {
         // user exists ?
         $oUser = oxNew('oxuser');
-        if ($oUser->load(oxRegistry::getConfig()->getRequestParameter('uid'))) {
+        if ($oUser->load($this->request->getRequestParameter('uid'))) {
             $sConfirmCode = md5($oUser->oxuser__oxusername->value . $oUser->oxuser__oxpasssalt->value);
             // is confirm code ok?
-            if (oxRegistry::getConfig()->getRequestParameter('confirm') == $sConfirmCode) {
+            if ($this->request->getRequestParameter('confirm') == $sConfirmCode) {
                 $oUser->getNewsSubscription()->setOptInStatus(1);
                 $oUser->addToGroup('oxidnewsletter');
                 $this->_iNewsletterStatus = 2;
@@ -205,7 +205,7 @@ class NewsletterController extends \oxUBase
     {
         // existing user ?
         $oUser = oxNew('oxuser');
-        if ($oUser->load(oxRegistry::getConfig()->getRequestParameter('uid'))) {
+        if ($oUser->load($this->request->getRequestParameter('uid'))) {
             $oUser->getNewsSubscription()->setOptInStatus(0);
 
             // removing from group ..

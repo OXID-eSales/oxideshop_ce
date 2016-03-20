@@ -79,7 +79,7 @@ class PriceAlarmController extends \oxUBase
         $myConfig = $this->config;
         $myUtils = oxRegistry::getUtils();
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter('pa');
+        $aParams = $this->request->getRequestParameter('pa');
         if (!isset($aParams['email']) || !$myUtils->isValidEmail($aParams['email'])) {
             $this->_iPriceAlarmStatus = 0;
 
@@ -154,7 +154,7 @@ class PriceAlarmController extends \oxUBase
      */
     private function _getParams()
     {
-        return oxRegistry::getConfig()->getRequestParameter('pa');
+        return $this->request->getRequestParameter('pa');
     }
 
     /**

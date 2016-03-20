@@ -53,7 +53,7 @@ class Newsletter_Selection extends oxAdminDetails
             if ($oNewsletter->load($soxId)) {
                 $this->_aViewData["edit"] = $oNewsletter;
 
-                if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+                if ($this->request->getRequestParameter("aoc")) {
                     $oNewsletterSelectionAjax = oxNew('newsletter_selection_ajax');
                     $this->_aViewData['oxajax'] = $oNewsletterSelectionAjax->getColumns();
 
@@ -121,7 +121,7 @@ class Newsletter_Selection extends oxAdminDetails
     public function save()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
         $aParams['oxnewsletter__oxshopid'] = $this->config->getShopId();
 
         $oNewsletter = oxNew("oxNewsLetter");

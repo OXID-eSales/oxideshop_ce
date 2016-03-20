@@ -72,7 +72,7 @@ class oxcmp_cur extends oxView
             return;
         }
 
-        $iCur = oxRegistry::getConfig()->getRequestParameter('cur');
+        $iCur = $this->request->getRequestParameter('cur');
         if (isset($iCur)) {
             $aCurrencies = $myConfig->getCurrencyArray();
             if (!isset($aCurrencies[$iCur])) {

@@ -59,7 +59,7 @@ class Module_SortList extends oxAdminDetails
      */
     public function save()
     {
-        $aModule = oxRegistry::getConfig()->getRequestParameter("aModules");
+        $aModule = $this->request->getRequestParameter("aModules");
 
         $aModules = json_decode($aModule, true);
 
@@ -77,7 +77,7 @@ class Module_SortList extends oxAdminDetails
     public function remove()
     {
         //if user selected not to update modules, skipping all updates
-        if (oxRegistry::getConfig()->getRequestParameter("noButton")) {
+        if ($this->request->getRequestParameter("noButton")) {
             oxRegistry::getSession()->setVariable("blSkipDeletedExtChecking", true);
 
             return;

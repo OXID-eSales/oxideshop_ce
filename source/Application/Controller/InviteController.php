@@ -122,7 +122,7 @@ class InviteController extends \oxUBase
             oxRegistry::getUtils()->redirect($oConfig->getShopHomeURL());
         }
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter('editval', true);
+        $aParams = $this->request->getRequestParameter('editval', true);
         $oUser = $this->getUser();
         if (!is_array($aParams) || !$oUser) {
             return;
@@ -130,7 +130,7 @@ class InviteController extends \oxUBase
 
         // storing used written values
         $oParams = (object) $aParams;
-        $this->setInviteData((object) oxRegistry::getConfig()->getRequestParameter('editval'));
+        $this->setInviteData((object) $this->request->getRequestParameter('editval'));
 
         $oUtilsView = oxRegistry::get("oxUtilsView");
 

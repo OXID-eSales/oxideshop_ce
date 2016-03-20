@@ -61,8 +61,8 @@ class article_bundle_ajax extends ajaxListComponent
         $sArticleTable = $this->_getViewName('oxarticles');
         $sView = $this->_getViewName('oxobject2category');
 
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sSelId = $this->request->getRequestParameter('oxid');
+        $sSynchSelId = $this->request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sSelId) {
@@ -114,7 +114,7 @@ class article_bundle_ajax extends ajaxListComponent
     public function removeArticleBundle()
     {
         $oDb = oxDb::getDb();
-        $sQuotedChosenArt = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxid'));
+        $sQuotedChosenArt = $oDb->quote($this->request->getRequestParameter('oxid'));
 
         $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid  =  {$sQuotedChosenArt} ";
         $oDb->Execute($sQ);
@@ -126,8 +126,8 @@ class article_bundle_ajax extends ajaxListComponent
     public function addArticleBundle()
     {
         $oDb = oxDb::getDb();
-        $sQuotedChosenArt = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxbundleid'));
-        $sQuotedOxId = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxid'));
+        $sQuotedChosenArt = $oDb->quote($this->request->getRequestParameter('oxbundleid'));
+        $sQuotedOxId = $oDb->quote($this->request->getRequestParameter('oxid'));
 
         $sQ = "update oxarticles set oxarticles.oxbundleid =  {$sQuotedChosenArt} " .
               "where oxarticles.oxid  =  {$sQuotedOxId} ";

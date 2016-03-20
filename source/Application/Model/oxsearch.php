@@ -68,10 +68,10 @@ class oxSearch extends oxSuperCfg
      *
      * @return oxarticlelist
      */
-    public function getSearchArticles($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false)
+    public function getSearchArticles($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false, $iActPage = null)
     {
         // sets active page
-        $this->iActPage = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+        $this->iActPage = (int) $iActPage;
         $this->iActPage = ($this->iActPage < 0) ? 0 : $this->iActPage;
 
         // load only articles which we show on screen

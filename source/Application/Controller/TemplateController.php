@@ -41,7 +41,7 @@ class TemplateController extends \oxUBase
         parent::render();
 
         // security fix so that you cant access files from outside template dir
-        $sTplName = basename((string) oxRegistry::getConfig()->getRequestParameter("tpl"));
+        $sTplName = basename((string) $this->request->getRequestParameter("tpl"));
         if ($sTplName) {
             $sTplName = 'custom/' . $sTplName;
         }

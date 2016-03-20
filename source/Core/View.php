@@ -34,7 +34,7 @@ use oxViewConfig;
  * Base view class. Collects and passes data to template engine, sets some global
  * configuration parameters.
  */
-class View extends \oxSuperCfg
+class View extends \oxSuperCfg implements ViewInterface
 {
     /**
      * Array of data that is passed to template engine - array( "varName" => "varValue").
@@ -191,6 +191,18 @@ class View extends \oxSuperCfg
     protected $_oViewConf = null;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    public function __construct($config, $request)
+    {
+        parent::__construct($config);
+
+        $this->request = $request;
+    }
+
+    /**
      * Initiates all components stored, executes oxView::addGlobalParams.
      */
     public function init()
@@ -223,7 +235,7 @@ class View extends \oxSuperCfg
      */
     public function getViewParameter($sKey)
     {
-        $sValue = (isset($this->_aViewParams[$sKey])) ? $this->_aViewParams[$sKey] : $this->config->getRequestParameter($sKey);
+        $sValue = (isset($this->_aViewParams[$sKey])) ? $this->_aViewParams[$sKey] : $this->request->getRequestParameter($sKey);
 
         return $sValue;
     }
@@ -317,7 +329,7 @@ class View extends \oxSuperCfg
         if ($sBelboon = $this->getSession()->getVariable('belboon')) {
             return $sBelboon;
         }
-        if (($sBelboon = $this->config->getRequestParameter('belboon'))) {
+        if (($sBelboon = $this->request->getRequestParameter('belboon'))) {
             $this->getSession()->setVariable('belboon', $sBelboon);
         }
 
@@ -597,7 +609,7 @@ class View extends \oxSuperCfg
             $this->onExecuteNewAction();
 
             //#M341 do not add redirect parameter
-            oxRegistry::getUtils()->redirect($sUrl, (bool) $myConfig->getRequestParameter('redirected'), 302);
+            oxRegistry::getUtils()->redirect($sUrl, (bool) $this->request->getRequestParameter('redirected'), 302);
         }
     }
 
@@ -919,7 +931,7 @@ class View extends \oxSuperCfg
      */
     public function getCategoryId()
     {
-        if ($this->_sCategoryId == null && ($sCatId = $this->config->getRequestParameter('cnid'))) {
+        if ($this->_sCategoryId == null && ($sCatId = $this->request->getRequestParameter('cnid'))) {
             $this->_sCategoryId = $sCatId;
         }
 
@@ -994,7 +1006,7 @@ class View extends \oxSuperCfg
      */
     public function showFbConnectToAccountMsg()
     {
-        if ($this->config->getRequestParameter("fblogin")) {
+        if ($this->request->getRequestParameter("fblogin")) {
             if (!$this->getUser() || ($this->getUser() && $this->getSession()->getVariable('_blFbUserIdUpdated'))) {
                 return true;
             } else {

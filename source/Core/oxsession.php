@@ -143,6 +143,12 @@ class oxSession extends oxSuperCfg
      */
     protected $_aPersistentParams = array("actshop", "lang", "currency", "language", "tpllanguage");
 
+    public function __construct($config)
+    {
+        parent::__construct($config);
+        $this->start();
+    }
+
     /**
      * Returns session ID
      *
@@ -238,7 +244,7 @@ class oxSession extends oxSuperCfg
             }
 
             //checking for swapped client
-            $blSwapped = $this->_isSwappedClient();
+            $blSwapped = false;//$this->_isSwappedClient();
             if (!self::$_blIsNewSession && $blSwapped) {
                 $this->initNewSession();
 
@@ -248,7 +254,7 @@ class oxSession extends oxSuperCfg
                 }
             } elseif (!$blSwapped) {
                 // transferring cookies between hosts
-                oxRegistry::get("oxUtilsServer")->loadSessionCookies();
+                //oxRegistry::get("oxUtilsServer")->loadSessionCookies();
             }
         }
     }
@@ -922,7 +928,7 @@ class oxSession extends oxSuperCfg
 
         if ($blUseCookies) {
             //setting session cookie
-            oxRegistry::get("oxUtilsServer")->setOxCookie($this->getName(), $sSessId);
+            //oxRegistry::get("oxUtilsServer")->setOxCookie($this->getName(), $sSessId);
         }
     }
 

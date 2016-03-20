@@ -86,14 +86,14 @@ class SuggestController extends \oxUBase
      */
     public function send()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter('editval', true);
+        $aParams = $this->request->getRequestParameter('editval', true);
         if (!is_array($aParams)) {
             return;
         }
 
         // storing used written values
         $oParams = (object) $aParams;
-        $this->setSuggestData((object) oxRegistry::getConfig()->getRequestParameter('editval'));
+        $this->setSuggestData((object) $this->request->getRequestParameter('editval'));
 
         $oUtilsView = oxRegistry::get("oxUtilsView");
 
@@ -115,26 +115,26 @@ class SuggestController extends \oxUBase
 
         $sReturn = "";
         // #1834M - specialchar search
-        $sSearchParamForLink = rawurlencode(oxRegistry::getConfig()->getRequestParameter('searchparam', true));
+        $sSearchParamForLink = rawurlencode($this->request->getRequestParameter('searchparam', true));
         if ($sSearchParamForLink) {
             $sReturn .= "&searchparam=$sSearchParamForLink";
         }
 
-        $sSearchCatId = oxRegistry::getConfig()->getRequestParameter('searchcnid');
+        $sSearchCatId = $this->request->getRequestParameter('searchcnid');
         if ($sSearchCatId) {
             $sReturn .= "&searchcnid=$sSearchCatId";
         }
 
-        $sSearchVendor = oxRegistry::getConfig()->getRequestParameter('searchvendor');
+        $sSearchVendor = $this->request->getRequestParameter('searchvendor');
         if ($sSearchVendor) {
             $sReturn .= "&searchvendor=$sSearchVendor";
         }
 
-        if (($sSearchManufacturer = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer'))) {
+        if (($sSearchManufacturer = $this->request->getRequestParameter('searchmanufacturer'))) {
             $sReturn .= "&searchmanufacturer=$sSearchManufacturer";
         }
 
-        $sListType = oxRegistry::getConfig()->getRequestParameter('listtype');
+        $sListType = $this->request->getRequestParameter('listtype');
         if ($sListType) {
             $sReturn .= "&listtype=$sListType";
         }
@@ -159,7 +159,7 @@ class SuggestController extends \oxUBase
         if ($this->_oProduct === null) {
             $this->_oProduct = false;
 
-            if ($sProductId = $this->config->getRequestParameter('anid')) {
+            if ($sProductId = $this->request->getRequestParameter('anid')) {
                 $oProduct = oxNew('oxArticle');
                 $oProduct->load($sProductId);
                 $this->_oProduct = $oProduct;
@@ -251,12 +251,12 @@ class SuggestController extends \oxUBase
         $sLink = parent::getLink($iLang);
 
         // active category
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('cnid')) {
+        if ($sVal = $this->request->getRequestParameter('cnid')) {
             $sLink .= ((strpos($sLink, '?') === false) ? '?' : '&amp;') . "cnid={$sVal}";
         }
 
         // active article
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('anid')) {
+        if ($sVal = $this->request->getRequestParameter('anid')) {
             $sLink .= ((strpos($sLink, '?') === false) ? '?' : '&amp;') . "anid={$sVal}";
         }
 

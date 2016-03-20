@@ -81,7 +81,7 @@ class oxcmp_categories extends oxView
 
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
             // building Manufacturer tree
-            $sActManufacturer = oxRegistry::getConfig()->getRequestParameter('mnid');
+            $sActManufacturer = $this->request->getRequestParameter('mnid');
             $this->_loadManufacturerTree($sActManufacturer);
         }
 
@@ -96,7 +96,7 @@ class oxcmp_categories extends oxView
      */
     public function getProduct()
     {
-        if (($sActProduct = oxRegistry::getConfig()->getRequestParameter('anid'))) {
+        if (($sActProduct = $this->request->getRequestParameter('anid'))) {
             $oParentView = $this->getParent();
             if (($oProduct = $oParentView->getViewProduct())) {
                 return $oProduct;
@@ -119,9 +119,9 @@ class oxcmp_categories extends oxView
      */
     protected function _getActCat()
     {
-        $sActManufacturer = oxRegistry::getConfig()->getRequestParameter('mnid');
-        $sActTag = oxRegistry::getConfig()->getRequestParameter('searchtag');
-        $sActCat = $sActManufacturer ? null : oxRegistry::getConfig()->getRequestParameter('cnid');
+        $sActManufacturer = $this->request->getRequestParameter('mnid');
+        $sActTag = $this->request->getRequestParameter('searchtag');
+        $sActCat = $sActManufacturer ? null : $this->request->getRequestParameter('cnid');
 
         // loaded article - then checking additional parameters
         $oProduct = $this->getProduct();
@@ -232,11 +232,11 @@ class oxcmp_categories extends oxView
      */
     protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActTag, $sActVendor)
     {
-        $sSearchPar = oxRegistry::getConfig()->getRequestParameter('searchparam');
-        $sSearchCat = oxRegistry::getConfig()->getRequestParameter('searchcnid');
-        $sSearchVnd = oxRegistry::getConfig()->getRequestParameter('searchvendor');
-        $sSearchMan = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer');
-        $sListType = oxRegistry::getConfig()->getRequestParameter('listtype');
+        $sSearchPar = $this->request->getRequestParameter('searchparam');
+        $sSearchCat = $this->request->getRequestParameter('searchcnid');
+        $sSearchVnd = $this->request->getRequestParameter('searchvendor');
+        $sSearchMan = $this->request->getRequestParameter('searchmanufacturer');
+        $sListType = $this->request->getRequestParameter('listtype');
 
         // search ?
         if ((!$sListType || $sListType == 'search') && ($sSearchPar || $sSearchCat || $sSearchVnd || $sSearchMan)) {

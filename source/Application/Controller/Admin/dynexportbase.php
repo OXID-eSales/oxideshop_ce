@@ -246,9 +246,9 @@ class DynExportBase extends oxAdminDetails
             $this->stop(ERR_FILEIO);
         } else {
             // file is open
-            $iStart = oxRegistry::getConfig()->getRequestParameter("iStart");
+            $iStart = $this->request->getRequestParameter("iStart");
             // load from session
-            $this->_aExportResultset = oxRegistry::getConfig()->getRequestParameter("aExportResultset");
+            $this->_aExportResultset = $this->request->getRequestParameter("aExportResultset");
             $iExportPerTick = $this->getExportPerTick();
             for ($i = $iStart; $i < $iStart + $iExportPerTick; $i++) {
                 if (($iExportedItems = $this->nextTick($i)) === false) {
@@ -478,7 +478,7 @@ class DynExportBase extends oxAdminDetails
             oxRegistry::getUtils()->showMessageAndExit("Could not create HEAP Table {$sHeapTable}\n<br>");
         }
 
-        $sCatAdd = $this->_getCatAdd(oxRegistry::getConfig()->getRequestParameter("acat"));
+        $sCatAdd = $this->_getCatAdd($this->request->getRequestParameter("acat"));
         if (!$this->_insertArticles($sHeapTable, $sCatAdd)) {
             oxRegistry::getUtils()->showMessageAndExit("Could not insert Articles in Table {$sHeapTable}\n<br>");
         }
@@ -654,7 +654,7 @@ class DynExportBase extends oxAdminDetails
     {
         $oDB = oxDb::getDb();
 
-        $iExpLang = oxRegistry::getConfig()->getRequestParameter("iExportLanguage");
+        $iExpLang = $this->request->getRequestParameter("iExportLanguage");
         if (!isset($iExpLang)) {
             $iExpLang = oxRegistry::getSession()->getVariable("iExportLanguage");
         }
@@ -668,13 +668,13 @@ class DynExportBase extends oxAdminDetails
         $sSelect = "insert into {$sHeapTable} select {$sArticleTable}.oxid from {$sArticleTable}, {$sO2CView} as oxobject2category where ";
         $sSelect .= $oArticle->getSqlActiveSnippet();
 
-        if (!oxRegistry::getConfig()->getRequestParameter("blExportVars")) {
+        if (!$this->request->getRequestParameter("blExportVars")) {
             $sSelect .= " and {$sArticleTable}.oxid = oxobject2category.oxobjectid and {$sArticleTable}.oxparentid = '' ";
         } else {
             $sSelect .= " and ( {$sArticleTable}.oxid = oxobject2category.oxobjectid or {$sArticleTable}.oxparentid = oxobject2category.oxobjectid ) ";
         }
 
-        $sSearchString = oxRegistry::getConfig()->getRequestParameter("search");
+        $sSearchString = $this->request->getRequestParameter("search");
         if (isset($sSearchString)) {
             $sSelect .= "and ( {$sArticleTable}.OXTITLE like " . $oDB->quote("%{$sSearchString}%");
             $sSelect .= " or {$sArticleTable}.OXSHORTDESC like " . $oDB->quote("%$sSearchString%");
@@ -686,7 +686,7 @@ class DynExportBase extends oxAdminDetails
         }
 
         // add minimum stock value
-        if ($this->config->getConfigParam('blUseStock') && ($dMinStock = oxRegistry::getConfig()->getRequestParameter("sExportMinStock"))) {
+        if ($this->config->getConfigParam('blUseStock') && ($dMinStock = $this->request->getRequestParameter("sExportMinStock"))) {
             $dMinStock = str_replace(array(";", " ", "/", "'"), "", $dMinStock);
             $sSelect .= " and {$sArticleTable}.oxstock >= " . $oDB->quote($dMinStock);
         }
@@ -703,7 +703,7 @@ class DynExportBase extends oxAdminDetails
      */
     protected function _removeParentArticles($sHeapTable)
     {
-        if (!(oxRegistry::getConfig()->getRequestParameter("blExportMainVars"))) {
+        if (!($this->request->getRequestParameter("blExportMainVars"))) {
 
             $oDB = oxDb::getDb();
             $sArticleTable = getViewName('oxarticles');
@@ -737,7 +737,7 @@ class DynExportBase extends oxAdminDetails
     {
         // reset it from session
         oxRegistry::getSession()->deleteVariable("sExportDelCost");
-        $dDelCost = oxRegistry::getConfig()->getRequestParameter("sExportDelCost");
+        $dDelCost = $this->request->getRequestParameter("sExportDelCost");
         if (isset($dDelCost)) {
             $dDelCost = str_replace(array(";", " ", "/", "'"), "", $dDelCost);
             $dDelCost = str_replace(",", ".", $dDelCost);
@@ -745,7 +745,7 @@ class DynExportBase extends oxAdminDetails
         }
 
         oxRegistry::getSession()->deleteVariable("sExportMinPrice");
-        $dMinPrice = oxRegistry::getConfig()->getRequestParameter("sExportMinPrice");
+        $dMinPrice = $this->request->getRequestParameter("sExportMinPrice");
         if (isset($dMinPrice)) {
             $dMinPrice = str_replace(array(";", " ", "/", "'"), "", $dMinPrice);
             $dMinPrice = str_replace(",", ".", $dMinPrice);
@@ -754,7 +754,7 @@ class DynExportBase extends oxAdminDetails
 
         // #827
         oxRegistry::getSession()->deleteVariable("sExportCampaign");
-        $sCampaign = oxRegistry::getConfig()->getRequestParameter("sExportCampaign");
+        $sCampaign = $this->request->getRequestParameter("sExportCampaign");
         if (isset($sCampaign)) {
             $sCampaign = str_replace(array(";", " ", "/", "'"), "", $sCampaign);
             oxRegistry::getSession()->setVariable("sExportCampaign", $sCampaign);
@@ -763,17 +763,17 @@ class DynExportBase extends oxAdminDetails
         // reset it from session
         oxRegistry::getSession()->deleteVariable("blAppendCatToCampaign");
         // now retrieve it from get or post.
-        $blAppendCatToCampaign = oxRegistry::getConfig()->getRequestParameter("blAppendCatToCampaign");
+        $blAppendCatToCampaign = $this->request->getRequestParameter("blAppendCatToCampaign");
         if ($blAppendCatToCampaign) {
             oxRegistry::getSession()->setVariable("blAppendCatToCampaign", $blAppendCatToCampaign);
         }
 
         // reset it from session
         oxRegistry::getSession()->deleteVariable("iExportLanguage");
-        oxRegistry::getSession()->setVariable("iExportLanguage", oxRegistry::getConfig()->getRequestParameter("iExportLanguage"));
+        oxRegistry::getSession()->setVariable("iExportLanguage", $this->request->getRequestParameter("iExportLanguage"));
 
         //setting the custom header
-        oxRegistry::getSession()->setVariable("sExportCustomHeader", oxRegistry::getConfig()->getRequestParameter("sExportCustomHeader"));
+        oxRegistry::getSession()->setVariable("sExportCustomHeader", $this->request->getRequestParameter("sExportCustomHeader"));
     }
 
     /**
@@ -884,7 +884,7 @@ class DynExportBase extends oxAdminDetails
                 // if article exists, do not stop export
                 $blContinue = true;
                 // check price
-                $dMinPrice = oxRegistry::getConfig()->getRequestParameter("sExportMinPrice");
+                $dMinPrice = $this->request->getRequestParameter("sExportMinPrice");
                 if (!isset($dMinPrice) || (isset($dMinPrice) && ($oArticle->getPrice()->getBruttoPrice() >= $dMinPrice))) {
 
                     //Saulius: variant title added
@@ -909,12 +909,12 @@ class DynExportBase extends oxAdminDetails
     protected function _setCampaignDetailLink($oArticle)
     {
         // #827
-        if ($sCampaign = oxRegistry::getConfig()->getRequestParameter("sExportCampaign")) {
+        if ($sCampaign = $this->request->getRequestParameter("sExportCampaign")) {
             // modify detaillink
             //#1166R - pangora - campaign
             $oArticle->appendLink("campaign={$sCampaign}");
 
-            if (oxRegistry::getConfig()->getRequestParameter("blAppendCatToCampaign") &&
+            if ($this->request->getRequestParameter("blAppendCatToCampaign") &&
                 ($sCat = $this->getCategoryString($oArticle))
             ) {
                 $oArticle->appendLink("/$sCat");

@@ -313,11 +313,10 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return object oxlist with oxrecommlist objects
      */
-    public function getSearchRecommLists($sSearchStr)
+    public function getSearchRecommLists($sSearchStr, $iActPage)
     {
         if ($sSearchStr) {
             // sets active page
-            $iActPage = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
             $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
             // load only lists which we show on screen

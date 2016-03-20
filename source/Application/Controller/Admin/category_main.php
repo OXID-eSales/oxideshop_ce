@@ -94,7 +94,7 @@ class Category_Main extends oxAdminDetails
 
         $this->_aViewData["sortableFields"] = $this->getSortableFields();
 
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+        if ($this->request->getRequestParameter("aoc")) {
             /** @var category_main_ajax $oCategoryMainAjax */
             $oCategoryMainAjax = oxNew('category_main_ajax');
             $this->_aViewData['oxajax'] = $oCategoryMainAjax->getColumns();
@@ -142,12 +142,10 @@ class Category_Main extends oxAdminDetails
     {
         parent::save();
 
-        $myConfig = $this->config;
-
         $soxId = $this->getEditObjectId();
 
         $aParams = $this->_parseRequestParametersForSave(
-            $myConfig->getRequestParameter("editval")
+            $this->request->getRequestParameter("editval")
         );
 
         /** @var oxCategory $oCategory */
@@ -214,7 +212,7 @@ class Category_Main extends oxAdminDetails
         }
 
         $sOxId = $this->getEditObjectId();
-        $sField = oxRegistry::getConfig()->getRequestParameter('masterPicField');
+        $sField = $this->request->getRequestParameter('masterPicField');
         if (empty($sField)) {
             return;
         }

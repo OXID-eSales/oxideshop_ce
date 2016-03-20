@@ -54,11 +54,10 @@ class discount_main_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $oConfig = $this->config;
         $sCountryTable = $this->_getViewName('oxcountry');
         $oDb = oxDb::getDb();
-        $sId = $oConfig->getRequestParameter('oxid');
-        $sSynchId = $oConfig->getRequestParameter('synchoxid');
+        $sId = $this->request->getRequestParameter('oxid');
+        $sSynchId = $this->request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sId) {
@@ -81,9 +80,8 @@ class discount_main_ajax extends ajaxListComponent
      */
     public function removeDiscCountry()
     {
-        $oConfig = $this->config;
         $aChosenCntr = $this->_getActionIds('oxobject2discount.oxid');
-        if ($oConfig->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
 
@@ -98,11 +96,10 @@ class discount_main_ajax extends ajaxListComponent
      */
     public function addDiscCountry()
     {
-        $oConfig = $this->config;
         $aChosenCntr = $this->_getActionIds('oxcountry.oxid');
-        $soxId = $oConfig->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
-        if ($oConfig->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sCountryTable = $this->_getViewName('oxcountry');
             $aChosenCntr = $this->_getAll($this->_addFilter("select $sCountryTable.oxid " . $this->_getQuery()));
         }

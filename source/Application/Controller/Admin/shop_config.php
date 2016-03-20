@@ -73,7 +73,7 @@ class Shop_Config extends oxAdminDetails
                 $this->_aViewData["updateViews"] = 1;
             }
 
-            $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+            $iAoc = $this->request->getRequestParameter("aoc");
             if ($iAoc == 1) {
                 $oShopDefaultCategoryAjax = oxNew('shop_default_category_ajax');
                 $this->_aViewData['oxajax'] = $oShopDefaultCategoryAjax->getColumns();
@@ -136,7 +136,7 @@ class Shop_Config extends oxAdminDetails
 
         $configValidator = oxNew('oxNoJsValidator');
         foreach ($this->_aConfParams as $sType => $sParam) {
-            $aConfVars = oxRegistry::getConfig()->getRequestParameter($sParam, true);
+            $aConfVars = $this->request->getRequestParameter($sParam, true);
             if (is_array($aConfVars)) {
                 foreach ($aConfVars as $sName => $sValue) {
                     $oldValue = $myConfig->getConfigParam($sName);
@@ -174,7 +174,7 @@ class Shop_Config extends oxAdminDetails
         /** @var oxShop $oShop */
         $oShop = oxNew("oxshop");
         if ($oShop->load($this->getEditObjectId())) {
-            $oShop->assign(oxRegistry::getConfig()->getRequestParameter("editval"));
+            $oShop->assign($this->request->getRequestParameter("editval"));
             $oShop->save();
         }
     }

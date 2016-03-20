@@ -168,7 +168,7 @@ class AccountController extends \oxUBase
      */
     public function confirmTerms()
     {
-        $termsConfirmation = oxRegistry::getConfig()->getRequestParameter("term");
+        $termsConfirmation = $this->request->getRequestParameter("term");
         if (!$termsConfirmation && $this->isEnabledPrivateSales()) {
             $user = $this->getUser();
             if ($user && !$user->isTermsAccepted()) {
@@ -191,11 +191,11 @@ class AccountController extends \oxUBase
     {
         $parameters = parent::getNavigationParams();
 
-        if ($sourceClass = oxRegistry::getConfig()->getRequestParameter("sourcecl")) {
+        if ($sourceClass = $this->request->getRequestParameter("sourcecl")) {
             $parameters['sourcecl'] = $sourceClass;
         }
 
-        if ($articleId = oxRegistry::getConfig()->getRequestParameter("anid")) {
+        if ($articleId = $this->request->getRequestParameter("anid")) {
             $parameters['anid'] = $articleId;
         }
 
@@ -216,7 +216,7 @@ class AccountController extends \oxUBase
     public function redirectAfterLogin()
     {
         // in case source class is provided - redirecting back to it with all default parameters
-        if (($sourceClass = oxRegistry::getConfig()->getRequestParameter("sourcecl")) &&
+        if (($sourceClass = $this->request->getRequestParameter("sourcecl")) &&
             $this->_oaComponents['oxcmp_user']->getLoginStatus() === USER_LOGIN_SUCCESS
         ) {
 
@@ -261,7 +261,7 @@ class AccountController extends \oxUBase
     {
         if ($this->_sArticleId === null) {
             // passing wishlist information
-            if ($articleId = oxRegistry::getConfig()->getRequestParameter('aid')) {
+            if ($articleId = $this->request->getRequestParameter('aid')) {
                 $this->_sArticleId = $articleId;
             }
         }
@@ -279,7 +279,7 @@ class AccountController extends \oxUBase
         if ($this->_sSearchParamForHtml === null) {
             $this->_sSearchParamForHtml = false;
             if ($this->getArticleId()) {
-                $this->_sSearchParamForHtml = oxRegistry::getConfig()->getRequestParameter('searchparam');
+                $this->_sSearchParamForHtml = $this->request->getRequestParameter('searchparam');
             }
         }
 
@@ -296,7 +296,7 @@ class AccountController extends \oxUBase
         if ($this->_sSearchParam === null) {
             $this->_sSearchParam = false;
             if ($this->getArticleId()) {
-                $this->_sSearchParam = rawurlencode(oxRegistry::getConfig()->getRequestParameter('searchparam', true));
+                $this->_sSearchParam = rawurlencode($this->request->getRequestParameter('searchparam', true));
             }
         }
 
@@ -314,7 +314,7 @@ class AccountController extends \oxUBase
             $this->_sListType = false;
             if ($this->getArticleId()) {
                 // searching in vendor #671
-                $this->_sListType = oxRegistry::getConfig()->getRequestParameter('listtype');
+                $this->_sListType = $this->request->getRequestParameter('listtype');
             }
         }
 

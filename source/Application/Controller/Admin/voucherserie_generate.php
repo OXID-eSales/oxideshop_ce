@@ -119,7 +119,7 @@ class VoucherSerie_Generate extends VoucherSerie_Main
         $iExportedItems = 0;
 
         // file is open
-        $iStart = oxRegistry::getConfig()->getRequestParameter("iStart");
+        $iStart = $this->request->getRequestParameter("iStart");
 
         for ($i = $iStart; $i < $iStart + $this->iGeneratePerTick; $i++) {
             if (($iExportedItems = $this->nextTick($i)) === false) {

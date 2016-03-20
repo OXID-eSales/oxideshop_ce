@@ -66,8 +66,8 @@ class discount_item_ajax extends ajaxListComponent
         $sO2CView = $this->_getViewName('oxobject2category');
         $sDiscTable = $this->_getViewName('oxdiscount');
         $oDb = oxDb::getDb();
-        $sOxid = $oConfig->getRequestParameter('oxid');
-        $sSynchOxid = $oConfig->getRequestParameter('synchoxid');
+        $sOxid = $this->request->getRequestParameter('oxid');
+        $sSynchOxid = $this->request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sOxid && $sSynchOxid) {
@@ -109,7 +109,7 @@ class discount_item_ajax extends ajaxListComponent
      */
     public function removeDiscArt()
     {
-        $soxId = $this->config->getRequestParameter('oxid');
+        $soxId = $this->request->getRequestParameter('oxid');
         $aChosenArt = $this->_getActionIds('oxdiscount.oxitmartid');
         if (is_array($aChosenArt)) {
             $sQ = "update oxdiscount set oxitmartid = '' where oxid = ? and oxitmartid = ?";
@@ -123,7 +123,7 @@ class discount_item_ajax extends ajaxListComponent
     public function addDiscArt()
     {
         $aChosenArt = $this->_getActionIds('oxarticles.oxid');
-        $soxId = $this->config->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
         if ($soxId && $soxId != "-1" && is_array($aChosenArt)) {
             $sQ = "update oxdiscount set oxitmartid = ? where oxid = ?";
             oxDb::getDb()->execute($sQ, array(reset($aChosenArt), $soxId));

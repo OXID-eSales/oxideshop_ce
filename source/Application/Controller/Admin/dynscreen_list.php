@@ -38,7 +38,7 @@ class Dynscreen_List extends Dynscreen
     public function render()
     {
         parent::render();
-        $this->_aViewData['menu'] = basename(oxRegistry::getConfig()->getRequestParameter("menu"));
+        $this->_aViewData['menu'] = basename($this->request->getRequestParameter("menu"));
 
         return "dynscreen_list.tpl";
     }

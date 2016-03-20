@@ -194,10 +194,10 @@ class oxcmp_user extends oxView
      */
     public function login()
     {
-        $sUser = oxRegistry::getConfig()->getRequestParameter('lgn_usr');
-        $sPassword = oxRegistry::getConfig()->getRequestParameter('lgn_pwd', true);
-        $sCookie = oxRegistry::getConfig()->getRequestParameter('lgn_cook');
-        //$blFbLogin = oxRegistry::getConfig()->getRequestParameter( 'fblogin' );
+        $sUser = $this->request->getRequestParameter('lgn_usr');
+        $sPassword = $this->request->getRequestParameter('lgn_pwd', true);
+        $sCookie = $this->request->getRequestParameter('lgn_cook');
+        //$blFbLogin = $this->request->getRequestParameter( 'fblogin' );
 
         $this->setLoginStatus(USER_LOGIN_FAIL);
 
@@ -268,7 +268,7 @@ class oxcmp_user extends oxView
      */
     public function login_noredirect()
     {
-        $blAgb = oxRegistry::getConfig()->getRequestParameter('ord_agb');
+        $blAgb = $this->request->getRequestParameter('ord_agb');
         $oConfig = $this->config;
         if ($this->getParent()->isEnabledPrivateSales() && $blAgb !== null && ($oUser = $this->getUser())) {
             if ($blAgb) {
@@ -357,7 +357,7 @@ class oxcmp_user extends oxView
             }
 
             // redirecting if user logs out in SSL mode
-            if (oxRegistry::getConfig()->getRequestParameter('redirect') && $myConfig->getConfigParam('sSSLShopURL')) {
+            if ($this->request->getRequestParameter('redirect') && $myConfig->getConfigParam('sSSLShopURL')) {
                 oxRegistry::getUtils()->redirect($this->_getLogoutLink());
             }
         }
@@ -433,22 +433,22 @@ class oxcmp_user extends oxView
 
         $oConfig = $this->config;
 
-        if ($blActiveLogin && !$oConfig->getRequestParameter('ord_agb') && $oConfig->getConfigParam('blConfirmAGB')) {
+        if ($blActiveLogin && !$this->request->getRequestParameter('ord_agb') && $oConfig->getConfigParam('blConfirmAGB')) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('READ_AND_CONFIRM_TERMS', false, true);
 
             return;
         }
 
         // collecting values to check
-        $sUser = $oConfig->getRequestParameter('lgn_usr');
+        $sUser = $this->request->getRequestParameter('lgn_usr');
 
         // first pass
-        $sPassword = $oConfig->getRequestParameter('lgn_pwd', true);
+        $sPassword = $this->request->getRequestParameter('lgn_pwd', true);
 
         // second pass
-        $sPassword2 = $oConfig->getRequestParameter('lgn_pwd2', true);
+        $sPassword2 = $this->request->getRequestParameter('lgn_pwd2', true);
 
-        $aInvAdress = $oConfig->getRequestParameter('invadr', true);
+        $aInvAdress = $this->request->getRequestParameter('invadr', true);
         $aDelAdress = $this->_getDelAddressData();
 
         /** @var oxUser $oUser */
@@ -486,7 +486,7 @@ class oxcmp_user extends oxView
             }
 
             // assigning to newsletter
-            $blOptin = oxRegistry::getConfig()->getRequestParameter('blnewssubscribed');
+            $blOptin = $this->request->getRequestParameter('blnewssubscribed');
             if ($blOptin && $iSubscriptionStatus == 1) {
                 // if user was assigned to newsletter
                 // and is creating account with newsletter checked,
@@ -524,14 +524,14 @@ class oxcmp_user extends oxView
 
             // order remark
             //V #427: order remark for new users
-            $sOrderRemark = oxRegistry::getConfig()->getRequestParameter('order_remark', true);
+            $sOrderRemark = $this->request->getRequestParameter('order_remark', true);
             if ($sOrderRemark) {
                 oxRegistry::getSession()->setVariable('ordrem', $sOrderRemark);
             }
         }
 
         // send register eMail
-        if ((int) oxRegistry::getConfig()->getRequestParameter('option') == 3) {
+        if ((int) $this->request->getRequestParameter('option') == 3) {
             DiContainer::getInstance()
                 ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
                 ->dispatch(
@@ -599,7 +599,7 @@ class oxcmp_user extends oxView
     {
         $oSession = oxRegistry::getSession();
 
-        $blShow = oxRegistry::getConfig()->getRequestParameter('blshowshipaddress');
+        $blShow = $this->request->getRequestParameter('blshowshipaddress');
         if (!isset($blShow)) {
             $blShow = $oSession->getVariable('blshowshipaddress');
         }
@@ -636,7 +636,7 @@ class oxcmp_user extends oxView
         $aDelAdress = $this->_getDelAddressData();
 
         // if user company name, user name and additional info has special chars
-        $aInvAdress = oxRegistry::getConfig()->getRequestParameter('invadr', true);
+        $aInvAdress = $this->request->getRequestParameter('invadr', true);
 
         $sUserName = $oUser->oxuser__oxusername->value;
         $sPassword = $sPassword2 = $oUser->oxuser__oxpassword->value;
@@ -644,7 +644,7 @@ class oxcmp_user extends oxView
         try { // testing user input
             $oUser->changeUserData($sUserName, $sPassword, $sPassword2, $aInvAdress, $aDelAdress);
             // assigning to newsletter
-            if (($blOptin = oxRegistry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
+            if (($blOptin = $this->request->getRequestParameter('blnewssubscribed')) === null) {
                 $blOptin = $oUser->getNewsSubscription()->getOptInStatus();
             }
             // check if email address changed, if so, force check news subscription settings.
@@ -674,7 +674,7 @@ class oxcmp_user extends oxView
         $this->resetPermissions();
 
         // order remark
-        $sOrderRemark = oxRegistry::getConfig()->getRequestParameter('order_remark', true);
+        $sOrderRemark = $this->request->getRequestParameter('order_remark', true);
 
         if ($sOrderRemark) {
             oxRegistry::getSession()->setVariable('ordrem', $sOrderRemark);
@@ -699,9 +699,9 @@ class oxcmp_user extends oxView
     protected function _getDelAddressData()
     {
         // if user company name, user name and additional info has special chars
-        $blShowShipAddressParameter = oxRegistry::getConfig()->getRequestParameter('blshowshipaddress');
+        $blShowShipAddressParameter = $this->request->getRequestParameter('blshowshipaddress');
         $blShowShipAddressVariable = oxRegistry::getSession()->getVariable('blshowshipaddress');
-        $sDeliveryAddressParameter = oxRegistry::getConfig()->getRequestParameter('deladr', true);
+        $sDeliveryAddressParameter = $this->request->getRequestParameter('deladr', true);
         $aDeladr = ($blShowShipAddressParameter || $blShowShipAddressVariable) ? $sDeliveryAddressParameter : array();
         $aDelAdress = $aDeladr;
 
@@ -729,23 +729,23 @@ class oxcmp_user extends oxView
         $oConfig = $this->config;
 
         $sLogoutLink = $oConfig->isSsl() ? $oConfig->getShopSecureHomeUrl() : $oConfig->getShopHomeUrl();
-        $sLogoutLink .= 'cl=' . $oConfig->getRequestParameter('cl') . $this->getParent()->getDynUrlParams();
-        if ($sParam = $oConfig->getRequestParameter('anid')) {
+        $sLogoutLink .= 'cl=' . $this->request->getRequestParameter('cl') . $this->getParent()->getDynUrlParams();
+        if ($sParam = $this->request->getRequestParameter('anid')) {
             $sLogoutLink .= '&amp;anid=' . $sParam;
         }
-        if ($sParam = $oConfig->getRequestParameter('cnid')) {
+        if ($sParam = $this->request->getRequestParameter('cnid')) {
             $sLogoutLink .= '&amp;cnid=' . $sParam;
         }
-        if ($sParam = $oConfig->getRequestParameter('mnid')) {
+        if ($sParam = $this->request->getRequestParameter('mnid')) {
             $sLogoutLink .= '&amp;mnid=' . $sParam;
         }
-        if ($sParam = $oConfig->getRequestParameter('tpl')) {
+        if ($sParam = $this->request->getRequestParameter('tpl')) {
             $sLogoutLink .= '&amp;tpl=' . $sParam;
         }
-        if ($sParam = $oConfig->getRequestParameter('oxloadid')) {
+        if ($sParam = $this->request->getRequestParameter('oxloadid')) {
             $sLogoutLink .= '&amp;oxloadid=' . $sParam;
         }
-        if ($sParam = $oConfig->getRequestParameter('recommid')) {
+        if ($sParam = $this->request->getRequestParameter('recommid')) {
             $sLogoutLink .= '&amp;recommid=' . $sParam;
         }
 
@@ -782,7 +782,7 @@ class oxcmp_user extends oxView
     {
         $sSu = oxRegistry::getSession()->getVariable('su');
 
-        if (!$sSu && ($sSuNew = oxRegistry::getConfig()->getRequestParameter('su'))) {
+        if (!$sSu && ($sSuNew = $this->request->getRequestParameter('su'))) {
             oxRegistry::getSession()->setVariable('su', $sSuNew);
         }
     }
@@ -793,7 +793,7 @@ class oxcmp_user extends oxView
     public function setRecipient()
     {
         $sRe = oxRegistry::getSession()->getVariable('re');
-        if (!$sRe && ($sReNew = oxRegistry::getConfig()->getRequestParameter('re'))) {
+        if (!$sRe && ($sReNew = $this->request->getRequestParameter('re'))) {
             oxRegistry::getSession()->setVariable('re', $sReNew);
         }
     }

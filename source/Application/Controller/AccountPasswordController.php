@@ -87,9 +87,9 @@ class AccountPasswordController extends \Account
             return;
         }
 
-        $sOldPass = oxRegistry::getConfig()->getRequestParameter('password_old', true);
-        $sNewPass = oxRegistry::getConfig()->getRequestParameter('password_new', true);
-        $sConfPass = oxRegistry::getConfig()->getRequestParameter('password_new_confirm', true);
+        $sOldPass = $this->request->getRequestParameter('password_old', true);
+        $sNewPass = $this->request->getRequestParameter('password_new', true);
+        $sConfPass = $this->request->getRequestParameter('password_new_confirm', true);
 
         /** @var oxInputValidator $oInputValidator */
         $oInputValidator = oxRegistry::get('oxInputValidator');

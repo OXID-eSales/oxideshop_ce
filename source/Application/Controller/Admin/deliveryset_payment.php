@@ -62,7 +62,7 @@ class DeliverySet_Payment extends oxAdminDetails
             }
         }
 
-        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+        $iAoc = $this->request->getRequestParameter("aoc");
         if ($iAoc == 1) {
             $oDeliverysetPaymentAjax = oxNew('deliveryset_payment_ajax');
             $this->_aViewData['oxajax'] = $oDeliverysetPaymentAjax->getColumns();

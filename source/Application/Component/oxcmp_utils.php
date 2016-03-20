@@ -61,7 +61,7 @@ class oxcmp_utils extends oxView
         $sOutput = 'OXID__Problem : no valid oxid !';
         $oProduct = null;
 
-        if (($sId = oxRegistry::getConfig()->getRequestParameter('oxid'))) {
+        if (($sId = $this->request->getRequestParameter('oxid'))) {
             $oProduct = oxNew('oxArticle');
             $oProduct->load($sId);
         } elseif ($myConfig->getConfigParam('bl_perfLoadAktion')) {
@@ -128,9 +128,9 @@ class oxcmp_utils extends oxView
 
 
             // #657 special treatment if we want to put on comparelist
-            $blAddCompare = oxRegistry::getConfig()->getRequestParameter('addcompare');
-            $blRemoveCompare = oxRegistry::getConfig()->getRequestParameter('removecompare');
-            $sProductId = $sProductId ? $sProductId : oxRegistry::getConfig()->getRequestParameter('aid');
+            $blAddCompare = $this->request->getRequestParameter('addcompare');
+            $blRemoveCompare = $this->request->getRequestParameter('removecompare');
+            $sProductId = $sProductId ? $sProductId : $this->request->getRequestParameter('aid');
             if (($blAddCompare || $blRemoveCompare) && $sProductId) {
 
                 // toggle state in session array
@@ -223,10 +223,10 @@ class oxcmp_utils extends oxView
         // only if user is logged in
         if ($oUser = $this->getUser()) {
 
-            $sProductId = ($sProductId) ? $sProductId : oxRegistry::getConfig()->getRequestParameter('itmid');
-            $sProductId = ($sProductId) ? $sProductId : oxRegistry::getConfig()->getRequestParameter('aid');
-            $dAmount = isset($dAmount) ? $dAmount : oxRegistry::getConfig()->getRequestParameter('am');
-            $aSel = $aSel ? $aSel : oxRegistry::getConfig()->getRequestParameter('sel');
+            $sProductId = ($sProductId) ? $sProductId : $this->request->getRequestParameter('itmid');
+            $sProductId = ($sProductId) ? $sProductId : $this->request->getRequestParameter('aid');
+            $dAmount = isset($dAmount) ? $dAmount : $this->request->getRequestParameter('am');
+            $aSel = $aSel ? $aSel : $this->request->getRequestParameter('sel');
 
             // processing amounts
             $dAmount = str_replace(',', '.', $dAmount);

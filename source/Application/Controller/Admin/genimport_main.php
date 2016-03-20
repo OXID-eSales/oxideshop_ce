@@ -96,7 +96,7 @@ class GenImport_Main extends oxAdminDetails
         $genericImport = oxNew('OxidEsales\Eshop\Core\GenericImport\GenericImport');
         $this->_sCsvFilePath = null;
 
-        $navigationStep = $config->getRequestParameter('sNavStep');
+        $navigationStep = $this->request->getRequestParameter('sNavStep');
 
         if (!$navigationStep) {
             $navigationStep = 1;
@@ -114,7 +114,7 @@ class GenImport_Main extends oxAdminDetails
         if ($navigationStep == 2) {
             $noJsValidator = oxNew('oxNoJsValidator');
             //saving csv field terminator and encloser to config
-            $terminator = $config->getRequestParameter('sGiCsvFieldTerminator');
+            $terminator = $this->request->getRequestParameter('sGiCsvFieldTerminator');
             if ($terminator && !$noJsValidator->isValid($terminator)) {
                 $this->setErrorToView($terminator);
             } else {
@@ -122,7 +122,7 @@ class GenImport_Main extends oxAdminDetails
                 $config->saveShopConfVar('str', 'sGiCsvFieldTerminator', $terminator);
             }
 
-            $encloser = $config->getRequestParameter('sGiCsvFieldEncloser');
+            $encloser = $this->request->getRequestParameter('sGiCsvFieldEncloser');
             if ($encloser && !$noJsValidator->isValid($encloser)) {
                 $this->setErrorToView($encloser);
             } else {
@@ -130,7 +130,7 @@ class GenImport_Main extends oxAdminDetails
                 $config->saveShopConfVar('str', 'sGiCsvFieldEncloser', $encloser);
             }
 
-            $type = $config->getRequestParameter('sType');
+            $type = $this->request->getRequestParameter('sType');
             $importObject = $genericImport->getImportObject($type);
             $this->_aViewData['sType'] = $type;
             $this->_aViewData['sImportTable'] = $importObject->getBaseTableName();
@@ -139,8 +139,8 @@ class GenImport_Main extends oxAdminDetails
         }
 
         if ($navigationStep == 3) {
-            $csvFields = $config->getRequestParameter('aCsvFields');
-            $type = $config->getRequestParameter('sType');
+            $csvFields = $this->request->getRequestParameter('aCsvFields');
+            $type = $this->request->getRequestParameter('sType');
 
             $genericImport = oxNew('OxidEsales\Eshop\Core\GenericImport\GenericImport');
             $genericImport->setImportType($type);
@@ -157,7 +157,7 @@ class GenImport_Main extends oxAdminDetails
             $this->_deleteCsvFile();
 
             //check if repeating import - then forsing first step
-            if ($config->getRequestParameter('iRepeatImport')) {
+            if ($this->request->getRequestParameter('iRepeatImport')) {
                 $this->_aViewData['iRepeatImport'] = 1;
                 $navigationStep = 1;
             }
@@ -193,7 +193,7 @@ class GenImport_Main extends oxAdminDetails
      */
     protected function _getCsvFieldsNames()
     {
-        $blCsvContainsHeader = $this->config->getRequestParameter('blContainsHeader');
+        $blCsvContainsHeader = $this->request->getRequestParameter('blContainsHeader');
         oxRegistry::getSession()->setVariable('blCsvContainsHeader', $blCsvContainsHeader);
         $sCsvPath = $this->_getUploadedCsvFilePath();
 
@@ -265,7 +265,7 @@ class GenImport_Main extends oxAdminDetails
 
         if ($iNavStep == 3) {
             $blIsEmpty = true;
-            $aCsvFields = $this->config->getRequestParameter('aCsvFields');
+            $aCsvFields = $this->request->getRequestParameter('aCsvFields');
             foreach ($aCsvFields as $sValue) {
                 if ($sValue) {
                     $blIsEmpty = false;

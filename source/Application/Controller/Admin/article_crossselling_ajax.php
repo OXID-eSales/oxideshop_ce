@@ -69,8 +69,8 @@ class article_crossselling_ajax extends ajaxListComponent
         $sArticleTable = $this->_getViewName('oxarticles');
         $sView = $this->_getViewName('oxobject2category');
 
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sSelId = $this->request->getRequestParameter('oxid');
+        $sSynchSelId = $this->request->getRequestParameter('synchoxid');
         $oDb = oxDb::getDb();
 
         // category selected or not ?
@@ -134,7 +134,7 @@ class article_crossselling_ajax extends ajaxListComponent
     {
         $aChosenArt = $this->_getActionIds('oxobject2article.oxid');
         // removing all
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2article.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
@@ -150,10 +150,10 @@ class article_crossselling_ajax extends ajaxListComponent
     public function addArticleCross()
     {
         $aChosenArt = $this->_getActionIds('oxarticles.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
         // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
             $aChosenArt = $this->_getAll(parent::_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }

@@ -121,8 +121,8 @@ class Article_Variant extends oxAdminDetails
     public function savevariant($sOXID = null, $aParams = null)
     {
         if (!isset($sOXID) && !isset($aParams)) {
-            $sOXID = oxRegistry::getConfig()->getRequestParameter("voxid");
-            $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+            $sOXID = $this->request->getRequestParameter("voxid");
+            $aParams = $this->request->getRequestParameter("editval");
         }
 
         // varianthandling
@@ -217,7 +217,7 @@ class Article_Variant extends oxAdminDetails
      */
     public function savevariants()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
         if (is_array($aParams)) {
             foreach ($aParams as $soxId => $aVarParams) {
                 $this->savevariant($soxId, $aVarParams);
@@ -243,7 +243,7 @@ class Article_Variant extends oxAdminDetails
 
         $this->resetContentCache();
 
-        $variantOxid = oxRegistry::getConfig()->getRequestRawParameter("voxid");
+        $variantOxid = $this->request->getRequestRawParameter("voxid");
         $variant = oxNew("oxArticle");
         $variant->delete($variantOxid);
     }
@@ -254,7 +254,7 @@ class Article_Variant extends oxAdminDetails
     public function changename()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         $this->resetContentCache();
 
@@ -287,7 +287,7 @@ class Article_Variant extends oxAdminDetails
 
             $this->resetContentCache();
 
-            if ($aSels = oxRegistry::getConfig()->getRequestParameter("allsel")) {
+            if ($aSels = $this->request->getRequestParameter("allsel")) {
                 $oVariantHandler = oxNew("oxVariantHandler");
                 $oVariantHandler->genVariantFromSell($aSels, $oArticle);
             }

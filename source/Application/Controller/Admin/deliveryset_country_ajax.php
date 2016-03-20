@@ -55,8 +55,8 @@ class deliveryset_country_ajax extends ajaxListComponent
     protected function _getQuery()
     {
         $oDb = oxDb::getDb();
-        $sId = $this->config->getRequestParameter('oxid');
-        $sSynchId = $this->config->getRequestParameter('synchoxid');
+        $sId = $this->request->getRequestParameter('oxid');
+        $sSynchId = $this->request->getRequestParameter('synchoxid');
 
         $sCountryTable = $this->_getViewName('oxcountry');
 
@@ -88,7 +88,7 @@ class deliveryset_country_ajax extends ajaxListComponent
     {
         $aChosenCntr = $this->_getActionIds('oxobject2delivery.oxid');
         // removing all
-        if ($this->config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -106,10 +106,10 @@ class deliveryset_country_ajax extends ajaxListComponent
     public function addCountryToSet()
     {
         $aChosenCntr = $this->_getActionIds('oxcountry.oxid');
-        $soxId = $this->config->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
         // adding
-        if ($this->config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sCountryTable = $this->_getViewName('oxcountry');
             $aChosenCntr = $this->_getAll($this->_addFilter("select $sCountryTable.oxid " . $this->_getQuery()));
         }

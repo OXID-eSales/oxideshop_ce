@@ -49,7 +49,7 @@ class DownloadController extends \oxUBase
      */
     public function render()
     {
-        $sFileOrderId = oxRegistry::getConfig()->getRequestParameter('sorderfileid');
+        $sFileOrderId = $this->request->getRequestParameter('sorderfileid');
 
         if ($sFileOrderId) {
             $oArticleFile = oxNew('oxFile');

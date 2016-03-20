@@ -73,8 +73,8 @@ class delivery_articles_ajax extends ajaxListComponent
         $sCatTable = $this->_getViewName('oxcategories');
         $sO2CView = $this->_getViewName('oxobject2category');
 
-        $sDelId = $this->config->getRequestParameter('oxid');
-        $sSynchDelId = $this->config->getRequestParameter('synchoxid');
+        $sDelId = $this->request->getRequestParameter('oxid');
+        $sSynchDelId = $this->request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sDelId) {
@@ -126,7 +126,7 @@ class delivery_articles_ajax extends ajaxListComponent
     {
         $aChosenArt = $this->_getActionIds('oxobject2delivery.oxid');
         // removing all
-        if ($this->config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
 
             $sQ = parent::_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -143,10 +143,10 @@ class delivery_articles_ajax extends ajaxListComponent
     public function addArtToDel()
     {
         $aChosenArt = $this->_getActionIds('oxarticles.oxid');
-        $soxId = $this->config->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
         // adding
-        if ($this->config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
             $aChosenArt = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }

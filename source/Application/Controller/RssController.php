@@ -155,7 +155,7 @@ class RssController extends oxUBase
     {
         if ($this->config->getConfigParam('bl_rssCategories')) {
             $oCat = oxNew('oxCategory');
-            if ($oCat->load(oxRegistry::getConfig()->getRequestParameter('cat'))) {
+            if ($oCat->load($this->request->getRequestParameter('cat'))) {
                 $this->_getRssFeed()->loadCategoryArticles($oCat);
             }
         } else {
@@ -171,10 +171,10 @@ class RssController extends oxUBase
     public function searcharts()
     {
         if ($this->config->getConfigParam('bl_rssSearch')) {
-            $sSearchParameter = oxRegistry::getConfig()->getRequestParameter('searchparam', true);
-            $sCatId = oxRegistry::getConfig()->getRequestParameter('searchcnid');
-            $sVendorId = oxRegistry::getConfig()->getRequestParameter('searchvendor');
-            $sManufacturerId = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer');
+            $sSearchParameter = $this->request->getRequestParameter('searchparam', true);
+            $sCatId = $this->request->getRequestParameter('searchcnid');
+            $sVendorId = $this->request->getRequestParameter('searchvendor');
+            $sManufacturerId = $this->request->getRequestParameter('searchmanufacturer');
 
             $this->_getRssFeed()->loadSearchArticles($sSearchParameter, $sCatId, $sVendorId, $sManufacturerId);
         } else {
@@ -192,7 +192,7 @@ class RssController extends oxUBase
     {
         if ($this->getViewConfig()->getShowListmania() && $this->config->getConfigParam('bl_rssRecommLists')) {
             $oArticle = oxNew('oxArticle');
-            if ($oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'))) {
+            if ($oArticle->load($this->request->getRequestParameter('anid'))) {
                 $this->_getRssFeed()->loadRecommLists($oArticle);
 
                 return;
@@ -211,7 +211,7 @@ class RssController extends oxUBase
     {
         if ($this->config->getConfigParam('bl_rssRecommListArts')) {
             $oRecommList = oxNew('oxrecommlist');
-            if ($oRecommList->load(oxRegistry::getConfig()->getRequestParameter('recommid'))) {
+            if ($oRecommList->load($this->request->getRequestParameter('recommid'))) {
                 $this->_getRssFeed()->loadRecommListArticles($oRecommList);
 
                 return;

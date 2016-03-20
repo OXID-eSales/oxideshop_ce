@@ -226,7 +226,7 @@ class BasketController extends \oxUBase
         }
 
         $oBasket = $this->getSession()->getBasket();
-        $oBasket->addVoucher(oxRegistry::getConfig()->getRequestParameter('voucherNr'));
+        $oBasket->addVoucher($this->request->getRequestParameter('voucherNr'));
     }
 
     /**
@@ -241,7 +241,7 @@ class BasketController extends \oxUBase
         }
 
         $oBasket = $this->getSession()->getBasket();
-        $oBasket->removeVoucher(oxRegistry::getConfig()->getRequestParameter('voucherId'));
+        $oBasket->removeVoucher($this->request->getRequestParameter('voucherId'));
     }
 
     /**
@@ -343,15 +343,13 @@ class BasketController extends \oxUBase
      */
     public function changeWrapping()
     {
-        $oConfig = oxRegistry::getConfig();
-
         if ($this->getViewConfig()->getShowGiftWrapping()) {
             $oBasket = $this->getSession()->getBasket();
 
-            $this->_setWrappingInfo($oBasket, $oConfig->getRequestParameter('wrapping'));
+            $this->_setWrappingInfo($oBasket, $this->request->getRequestParameter('wrapping'));
 
-            $oBasket->setCardMessage($oConfig->getRequestParameter('giftmessage'));
-            $oBasket->setCardId($oConfig->getRequestParameter('chosencard'));
+            $oBasket->setCardMessage($this->request->getRequestParameter('giftmessage'));
+            $oBasket->setCardId($this->request->getRequestParameter('chosencard'));
             $oBasket->onUpdate();
         }
     }

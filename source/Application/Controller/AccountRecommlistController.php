@@ -196,7 +196,7 @@ class AccountRecommlistController extends \Account
             $this->_oActRecommList = false;
 
             if (($oUser = $this->getUser()) &&
-                ($sRecommId = oxRegistry::getConfig()->getRequestParameter('recommid'))
+                ($sRecommId = $this->request->getRequestParameter('recommid'))
             ) {
 
                 $oRecommList = oxNew('oxrecommlist');
@@ -244,9 +244,9 @@ class AccountRecommlistController extends \Account
                 $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
             }
 
-            $sTitle = trim(( string ) oxRegistry::getConfig()->getRequestParameter('recomm_title', true));
-            $sAuthor = trim(( string ) oxRegistry::getConfig()->getRequestParameter('recomm_author', true));
-            $sText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('recomm_desc', true));
+            $sTitle = trim(( string ) $this->request->getRequestParameter('recomm_title', true));
+            $sAuthor = trim(( string ) $this->request->getRequestParameter('recomm_author', true));
+            $sText = trim(( string ) $this->request->getRequestParameter('recomm_desc', true));
 
             $oRecommList->oxrecommlists__oxtitle = new oxField($sTitle);
             $oRecommList->oxrecommlists__oxauthor = new oxField($sAuthor);
@@ -289,7 +289,7 @@ class AccountRecommlistController extends \Account
         }
 
         // deleting on demand
-        if (($sAction = oxRegistry::getConfig()->getRequestParameter('deleteList')) &&
+        if (($sAction = $this->request->getRequestParameter('deleteList')) &&
             ($oRecommList = $this->getActiveRecommList())
         ) {
             $oRecommList->delete();
@@ -314,7 +314,7 @@ class AccountRecommlistController extends \Account
             return;
         }
 
-        if (($sArtId = oxRegistry::getConfig()->getRequestParameter('aid')) &&
+        if (($sArtId = $this->request->getRequestParameter('aid')) &&
             ($oRecommList = $this->getActiveRecommList())
         ) {
             $oRecommList->removeArticle($sArtId);

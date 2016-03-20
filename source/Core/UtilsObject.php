@@ -290,9 +290,16 @@ class UtilsObject
         try {
             // unlimited constructor arguments support
             $reflection = new ReflectionClass($className);
-            if ($reflection->isSubclassOf(SuperConfig::class) && $reflection->hasMethod('__construct')) {
-                $config = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_CONFIG);
-                $arguments = [$config] + $arguments;
+            if ($reflection->hasMethod('__construct')) {
+                if ($reflection->isSubclassOf(ViewInterface::class)) {
+                    $request = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_REQUEST);
+                    $arguments = array_merge([$request], $arguments);
+                }
+
+                if ($reflection->isSubclassOf(SuperConfig::class)) {
+                    $config = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_CONFIG);
+                    $arguments = array_merge([$config], $arguments);
+                }
             }
             $object = $reflection->newInstanceArgs($arguments);
         } catch (ReflectionException $reflectionException) {

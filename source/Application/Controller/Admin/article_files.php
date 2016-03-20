@@ -74,13 +74,13 @@ class Article_Files extends oxAdminDetails
     public function save()
     {
         // save article changes
-        $aArticleChanges = oxRegistry::getConfig()->getRequestParameter('editval');
+        $aArticleChanges = $this->request->getRequestParameter('editval');
         $oArticle = $this->getArticle();
         $oArticle->assign($aArticleChanges);
         $oArticle->save();
 
         //update article files
-        $aArticleFiles = oxRegistry::getConfig()->getRequestParameter('article_files');
+        $aArticleFiles = $this->request->getRequestParameter('article_files');
         if (count($aArticleFiles) > 0) {
             foreach ($aArticleFiles as $sArticleFileId => $aArticleFileUpdate) {
                 $oArticleFile = oxNew('oxFile');
@@ -137,7 +137,7 @@ class Article_Files extends oxAdminDetails
 
         $soxId = $this->getEditObjectId();
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter("newfile");
+        $aParams = $this->request->getRequestParameter("newfile");
         $aParams = $this->_processOptions($aParams);
         $aNewFile = $this->config->getUploadedFile("newArticleFile");
 
@@ -185,7 +185,7 @@ class Article_Files extends oxAdminDetails
         }
 
         $sArticleId = $this->getEditObjectId();
-        $sArticleFileId = oxRegistry::getConfig()->getRequestParameter('fileid');
+        $sArticleFileId = $this->request->getRequestParameter('fileid');
         $oArticleFile = oxNew('oxFile');
         $oArticleFile->load($sArticleFileId);
         if ($oArticleFile->hasValidDownloads()) {

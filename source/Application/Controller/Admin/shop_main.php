@@ -63,7 +63,7 @@ class Shop_Main extends oxAdminDetails
         if (isset($shopId) && $shopId != self::NEW_SHOP_ID) {
             // load object
             $shop = oxNew("oxshop");
-            $subjLang = oxRegistry::getConfig()->getRequestParameter("subjlang");
+            $subjLang = $this->request->getRequestParameter("subjlang");
             if (!isset($subjLang)) {
                 $subjLang = $this->_iEditLang;
             }
@@ -83,7 +83,7 @@ class Shop_Main extends oxAdminDetails
 
         $this->_aViewData['IsOXDemoShop'] = $config->isDemoShop();
         if (!isset($this->_aViewData['updatenav'])) {
-            $this->_aViewData['updatenav'] = oxRegistry::getConfig()->getRequestParameter('updatenav');
+            $this->_aViewData['updatenav'] = $this->request->getRequestParameter('updatenav');
         }
 
         return "shop_main.tpl";
@@ -101,7 +101,7 @@ class Shop_Main extends oxAdminDetails
         $config = $this->config;
         $shopId = $this->getEditObjectId();
 
-        $parameters = oxRegistry::getConfig()->getRequestParameter("editval");
+        $parameters = $this->request->getRequestParameter("editval");
 
         $user = $this->getUser();
         $shopId = $this->updateShopIdByUser($user, $shopId, false);
@@ -111,7 +111,7 @@ class Shop_Main extends oxAdminDetails
         $parameters['oxshops__oxactive'] = (isset($parameters['oxshops__oxactive']) && $parameters['oxshops__oxactive'] == true) ? 1 : 0;
         $parameters['oxshops__oxproductive'] = (isset($parameters['oxshops__oxproductive']) && $parameters['oxshops__oxproductive'] == true) ? 1 : 0;
 
-        $subjLang = oxRegistry::getConfig()->getRequestParameter("subjlang");
+        $subjLang = $this->request->getRequestParameter("subjlang");
         $shopLanguageId = ($subjLang && $subjLang > 0) ? $subjLang : 0;
 
         $shop = oxNew("oxshop");
@@ -129,7 +129,7 @@ class Shop_Main extends oxAdminDetails
         $shop->assign($parameters);
         $shop->setLanguage($shopLanguageId);
 
-        if (($newSMPTPass = oxRegistry::getConfig()->getRequestParameter("oxsmtppwd"))) {
+        if (($newSMPTPass = $this->request->getRequestParameter("oxsmtppwd"))) {
             $shop->oxshops__oxsmtppwd->setValue($newSMPTPass == '-' ? "" : $newSMPTPass);
         }
 

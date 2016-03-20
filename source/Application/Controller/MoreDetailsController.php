@@ -93,7 +93,7 @@ class MoreDetailsController extends \Details
             $aPicGallery = $this->getProduct()->getPictureGallery();
 
             if ($aPicGallery['ZoomPic']) {
-                $sActPicId = oxRegistry::getConfig()->getRequestParameter('actpicid');
+                $sActPicId = $this->request->getRequestParameter('actpicid');
                 $this->_sActPicId = $sActPicId ? $sActPicId : 1;
             }
         }
@@ -132,7 +132,7 @@ class MoreDetailsController extends \Details
     {
         if ($this->_oProduct === null) {
             $oArticle = oxNew('oxArticle');
-            $oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'));
+            $oArticle->load($this->request->getRequestParameter('anid'));
             $this->_oProduct = $oArticle;
         }
 

@@ -164,7 +164,7 @@ class ArticleListController extends \oxUBase
      */
     protected function generateViewId()
     {
-        $categoryId = oxRegistry::getConfig()->getRequestParameter('cnid');
+        $categoryId = $this->request->getRequestParameter('cnid');
         $activePage = $this->getActPage();
         $articlesPerPage = oxRegistry::getSession()->getVariable('_artperpage');
         $listDisplayType = $this->_getListDisplayType();
@@ -237,7 +237,7 @@ class ArticleListController extends \oxUBase
         $this->_blIsCat = false;
 
         // A. checking for fake "more" category
-        if ('oxmore' == $config->getRequestParameter('cnid')) {
+        if ('oxmore' == $this->request->getRequestParameter('cnid')) {
             // overriding some standard value and parameters
             $this->_sThisTemplate = $this->_sThisMoreTemplate;
             $category = oxNew('oxCategory');
@@ -303,7 +303,7 @@ class ArticleListController extends \oxUBase
     {
         $dynamicParameters = parent::getAddUrlParams();
         if (!oxRegistry::getUtils()->seoIsActive()) {
-            $pageNumber = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+            $pageNumber = (int) $this->request->getRequestParameter('pgNr');
             if ($pageNumber > 0) {
                 $dynamicParameters .= ($dynamicParameters ? '&amp;' : '') . "pgNr={$pageNumber}";
             }
@@ -349,8 +349,8 @@ class ArticleListController extends \oxUBase
     {
         $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
         // store this into session
-        $attributeFilter = oxRegistry::getConfig()->getRequestParameter('attrfilter', true);
-        $activeCategory = oxRegistry::getConfig()->getRequestParameter('cnid');
+        $attributeFilter = $this->request->getRequestParameter('attrfilter', true);
+        $activeCategory = $this->request->getRequestParameter('cnid');
 
         if (!empty($attributeFilter)) {
             $sessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
@@ -669,7 +669,7 @@ class ArticleListController extends \oxUBase
     public function getTemplateName()
     {
         // assign template name
-        if (($templateName = basename(oxRegistry::getConfig()->getRequestParameter('tpl')))) {
+        if (($templateName = basename($this->request->getRequestParameter('tpl')))) {
             $this->_sThisTemplate = 'custom/' . $templateName;
         } elseif (($category = $this->getActiveCategory()) && $category->oxcategories__oxtemplate->value) {
             $this->_sThisTemplate = $category->oxcategories__oxtemplate->value;
@@ -877,7 +877,7 @@ class ArticleListController extends \oxUBase
     {
         $paths = array();
 
-        if ('oxmore' == oxRegistry::getConfig()->getRequestParameter('cnid')) {
+        if ('oxmore' == $this->request->getRequestParameter('cnid')) {
             $path = array();
             $path['title'] = oxRegistry::getLang()->translateString(
                 'CATEGORY_OVERVIEW',

@@ -68,8 +68,8 @@ class discount_users_ajax extends ajaxListComponent
 
         $sUserTable = $this->_getViewName('oxuser');
         $oDb = oxDb::getDb();
-        $sId = $oConfig->getRequestParameter('oxid');
-        $sSynchId = $oConfig->getRequestParameter('synchoxid');
+        $sId = $this->request->getRequestParameter('oxid');
+        $sSynchId = $this->request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sId) {
@@ -104,9 +104,8 @@ class discount_users_ajax extends ajaxListComponent
      */
     public function removeDiscUser()
     {
-        $oConfig = $this->config;
         $aRemoveGroups = $this->_getActionIds('oxobject2discount.oxid');
-        if ($oConfig->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -122,11 +121,10 @@ class discount_users_ajax extends ajaxListComponent
      */
     public function addDiscUser()
     {
-        $oConfig = $this->config;
         $aChosenUsr = $this->_getActionIds('oxuser.oxid');
-        $soxId = $oConfig->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
-        if ($oConfig->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sUserTable = $this->_getViewName('oxuser');
             $aChosenUsr = $this->_getAll($this->_addFilter("select $sUserTable.oxid " . $this->_getQuery()));
         }

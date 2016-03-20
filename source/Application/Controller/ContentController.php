@@ -129,7 +129,7 @@ class ContentController extends \oxUBase
     public function getViewId()
     {
         if (!isset($this->_sViewId)) {
-            $this->_sViewId = parent::getViewId() . '|' . oxRegistry::getConfig()->getRequestParameter('oxcid');
+            $this->_sViewId = parent::getViewId() . '|' . $this->request->getRequestParameter('oxcid');
         }
 
         return $this->_sViewId;
@@ -256,7 +256,7 @@ class ContentController extends \oxUBase
      */
     public function showPlainTemplate()
     {
-        $blPlain = (bool) oxRegistry::getConfig()->getRequestParameter('plain');
+        $blPlain = (bool) $this->request->getRequestParameter('plain');
         if ($blPlain === false) {
             $oUser = $this->getUser();
             if ($this->isEnabledPrivateSales() &&
@@ -276,7 +276,7 @@ class ContentController extends \oxUBase
      */
     protected function _getSeoObjectId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('oxcid');
+        return $this->request->getRequestParameter('oxcid');
     }
 
     /**
@@ -289,8 +289,8 @@ class ContentController extends \oxUBase
     {
         if ($this->_sContentId === null) {
 
-            $sContentId = oxRegistry::getConfig()->getRequestParameter('oxcid');
-            $sLoadId = oxRegistry::getConfig()->getRequestParameter('oxloadid');
+            $sContentId = $this->request->getRequestParameter('oxcid');
+            $sLoadId = $this->request->getRequestParameter('oxloadid');
 
             $this->_sContentId = false;
             $oContent = oxNew('oxContent');
@@ -352,7 +352,7 @@ class ContentController extends \oxUBase
     protected function _getTplName()
     {
         // assign template name
-        $sTplName = oxRegistry::getConfig()->getRequestParameter('tpl');
+        $sTplName = $this->request->getRequestParameter('tpl');
 
         if ($sTplName) {
             // security fix so that you cant access files from outside template dir

@@ -61,8 +61,8 @@ class actions_article_ajax extends ajaxListComponent
         $sArticleTable = $this->_getViewName('oxarticles');
         $sViewName = $this->_getViewName('oxobject2category');
 
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sSelId = $this->request->getRequestParameter('oxid');
+        $sSynchSelId = $this->request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sSelId) {
@@ -112,7 +112,7 @@ class actions_article_ajax extends ajaxListComponent
      */
     public function removeActionArticle()
     {
-        $sActionId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sActionId = $this->request->getRequestParameter('oxid');
         //$sActionId = $this->config->getConfigParam( 'oxid' );
 
         $oDb = oxDb::getDb();
@@ -129,8 +129,8 @@ class actions_article_ajax extends ajaxListComponent
      */
     public function setActionArticle()
     {
-        $sArticleId = oxRegistry::getConfig()->getRequestParameter('oxarticleid');
-        $sActionId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sArticleId = $this->request->getRequestParameter('oxarticleid');
+        $sActionId = $this->request->getRequestParameter('oxid');
         $oDb = oxDb::getDb();
 
         $oDb->Execute(

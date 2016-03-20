@@ -135,7 +135,7 @@ class StartController extends oxUBase
     public function render()
     {
 
-        if (oxRegistry::getConfig()->getRequestParameter('showexceptionpage') == '1') {
+        if ($this->request->getRequestParameter('showexceptionpage') == '1') {
             return 'message/exception.tpl';
         }
 

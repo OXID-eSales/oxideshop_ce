@@ -40,7 +40,7 @@ class Delivery_Users extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        $sSelGroup = oxRegistry::getConfig()->getRequestParameter("selgroup");
+        $sSelGroup = $this->request->getRequestParameter("selgroup");
 
         $sViewName = getViewName("oxgroups", $this->_iEditLang);
         // all usergroups
@@ -75,7 +75,7 @@ class Delivery_Users extends oxAdminDetails
 
         $this->_aViewData["allgroups2"] = $oGroups;
 
-        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+        $iAoc = $this->request->getRequestParameter("aoc");
         if ($iAoc == 1) {
             $oDeliveryUsersAjax = oxNew('delivery_users_ajax');
             $this->_aViewData['oxajax'] = $oDeliveryUsersAjax->getColumns();

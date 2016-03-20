@@ -48,7 +48,7 @@ class Article_Seo extends Object_Seo
     public function getActCatType()
     {
         $sType = false;
-        $aData = oxRegistry::getConfig()->getRequestParameter("aSeoData");
+        $aData = $this->request->getRequestParameter("aSeoData");
         if ($aData && isset($aData["oxparams"])) {
             $oStr = getStr();
             $iEndPos = $oStr->strpos($aData["oxparams"], "#");
@@ -68,12 +68,12 @@ class Article_Seo extends Object_Seo
      */
     public function getActCatLang()
     {
-        if (oxRegistry::getConfig()->getRequestParameter("editlanguage") !== null) {
+        if ($this->request->getRequestParameter("editlanguage") !== null) {
             return $this->_iEditLang;
         }
 
         $iLang = false;
-        $aData = oxRegistry::getConfig()->getRequestParameter("aSeoData");
+        $aData = $this->request->getRequestParameter("aSeoData");
         if ($aData && isset($aData["oxparams"])) {
             $oStr = getStr();
             $iStartPos = $oStr->strpos($aData["oxparams"], "#");
@@ -95,7 +95,7 @@ class Article_Seo extends Object_Seo
     public function getActCatId()
     {
         $sId = false;
-        $aData = oxRegistry::getConfig()->getRequestParameter("aSeoData");
+        $aData = $this->request->getRequestParameter("aSeoData");
         if ($aData && isset($aData["oxparams"])) {
             $oStr = getStr();
             $iStartPos = $oStr->strpos($aData["oxparams"], "#");

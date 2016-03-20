@@ -85,7 +85,7 @@ class WishListController extends oxUBase
         if ($this->_oWishUser === null) {
             $this->_oWishUser = false;
 
-            $sWishIdParameter = oxRegistry::getConfig()->getRequestParameter('wishid');
+            $sWishIdParameter = $this->request->getRequestParameter('wishid');
             $sUserId = $sWishIdParameter ? $sWishIdParameter : oxRegistry::getSession()->getVariable('wishid');
             if ($sUserId) {
                 $oUser = oxNew('oxuser');
@@ -140,7 +140,7 @@ class WishListController extends oxUBase
      */
     public function searchForWishList()
     {
-        if ($sSearch = oxRegistry::getConfig()->getRequestParameter('search')) {
+        if ($sSearch = $this->request->getRequestParameter('search')) {
 
             // search for baskets
             $oUserList = oxNew('oxuserlist');

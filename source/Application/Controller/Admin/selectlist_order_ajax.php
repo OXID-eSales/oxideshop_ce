@@ -48,7 +48,7 @@ class selectlist_order_ajax extends ajaxListComponent
     protected function _getQuery()
     {
         $sSelTable = $this->_getViewName('oxselectlist');
-        $sArtId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sArtId = $this->request->getRequestParameter('oxid');
 
         $sQAdd = " from $sSelTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sSelTable.oxid " .
                  "where oxobjectid = '$sArtId' ";
@@ -71,7 +71,7 @@ class selectlist_order_ajax extends ajaxListComponent
      */
     public function setSorting()
     {
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sSelId = $this->request->getRequestParameter('oxid');
         $sSelect = "select * from oxobject2selectlist where oxobjectid='$sSelId' order by oxsort";
 
         $oList = oxNew("oxlist");
@@ -94,8 +94,8 @@ class selectlist_order_ajax extends ajaxListComponent
         }
 
         //
-        if (($iKey = array_search(oxRegistry::getConfig()->getRequestParameter('sortoxid'), $aIdx2Id)) !== false) {
-            $iDir = (oxRegistry::getConfig()->getRequestParameter('direction') == 'up') ? ($iKey - 1) : ($iKey + 1);
+        if (($iKey = array_search($this->request->getRequestParameter('sortoxid'), $aIdx2Id)) !== false) {
+            $iDir = ($this->request->getRequestParameter('direction') == 'up') ? ($iKey - 1) : ($iKey + 1);
             if (isset($aIdx2Id[$iDir])) {
                 // exchanging indexes
                 $oDir1 = $oList->offsetGet($aIdx2Id[$iDir]);

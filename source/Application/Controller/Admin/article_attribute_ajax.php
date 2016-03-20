@@ -51,8 +51,8 @@ class article_attribute_ajax extends ajaxListComponent
     protected function _getQuery()
     {
         $oDb = oxDb::getDb();
-        $sArtId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchArtId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sArtId = $this->request->getRequestParameter('oxid');
+        $sSynchArtId = $this->request->getRequestParameter('synchoxid');
 
         $sAttrViewName = $this->_getViewName('oxattribute');
         $sO2AViewName = $this->_getViewName('oxobject2attribute');
@@ -77,8 +77,8 @@ class article_attribute_ajax extends ajaxListComponent
     public function removeAttr()
     {
         $aChosenArt = $this->_getActionIds('oxobject2attribute.oxid');
-        $sOxid = oxRegistry::getConfig()->getRequestParameter('oxid');
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        $sOxid = $this->request->getRequestParameter('oxid');
+        if ($this->request->getRequestParameter('all')) {
             $sO2AViewName = $this->_getViewName('oxobject2attribute');
             $sQ = $this->_addFilter("delete $sO2AViewName.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -98,9 +98,9 @@ class article_attribute_ajax extends ajaxListComponent
     public function addAttr()
     {
         $aAddCat = $this->_getActionIds('oxattribute.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sAttrViewName = $this->_getViewName('oxattribute');
             $aAddCat = $this->_getAll($this->_addFilter("select $sAttrViewName.oxid " . $this->_getQuery()));
         }
@@ -128,9 +128,9 @@ class article_attribute_ajax extends ajaxListComponent
         $database = oxDb::getDb();
         $this->resetContentCache();
 
-        $articleId = oxRegistry::getConfig()->getRequestParameter("oxid");
-        $attributeId = oxRegistry::getConfig()->getRequestParameter("attr_oxid");
-        $attributeValue = oxRegistry::getConfig()->getRequestParameter("attr_value");
+        $articleId = $this->request->getRequestParameter("oxid");
+        $attributeId = $this->request->getRequestParameter("attr_oxid");
+        $attributeValue = $this->request->getRequestParameter("attr_value");
         if (!$this->config->isUtf()) {
             $attributeValue = iconv('UTF-8', oxRegistry::getLang()->translateString("charset"), $attributeValue);
         }
@@ -150,7 +150,7 @@ class article_attribute_ajax extends ajaxListComponent
                 $select = "select * from {$viewName} where {$viewName}.oxobjectid= {$quotedArticleId} and
                             {$viewName}.oxattrid= " . $database->quote($attributeId);
                 $objectToAttribute = oxNew("oxi18n");
-                $objectToAttribute->setLanguage(oxRegistry::getConfig()->getRequestParameter('editlanguage'));
+                $objectToAttribute->setLanguage($this->request->getRequestParameter('editlanguage'));
                 $objectToAttribute->init("oxobject2attribute");
                 if ($objectToAttribute->assignRecord($select)) {
                     $objectToAttribute->oxobject2attribute__oxvalue->setValue($attributeValue);

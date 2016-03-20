@@ -64,7 +64,7 @@ class OrderList extends \oxAdminList
         parent::render();
 
         $folders = $this->config->getConfigParam('aOrderfolder');
-        $folder = oxRegistry::getConfig()->getRequestParameter("folder");
+        $folder = $this->request->getRequestParameter("folder");
         // first display new orders
         if (!$folder && is_array($folders)) {
             $names = array_keys($folders);
@@ -72,8 +72,8 @@ class OrderList extends \oxAdminList
         }
 
         $search = array('oxorderarticles' => 'ARTID', 'oxpayments' => 'PAYMENT');
-        $searchQuery = oxRegistry::getConfig()->getRequestParameter("addsearch");
-        $searchField = oxRegistry::getConfig()->getRequestParameter("addsearchfld");
+        $searchQuery = $this->request->getRequestParameter("addsearch");
+        $searchField = $this->request->getRequestParameter("addsearchfld");
 
         $this->_aViewData["folder"] = $folder ? $folder : -1;
         $this->_aViewData["addsearchfld"] = $searchField ? $searchField : -1;
@@ -139,7 +139,7 @@ class OrderList extends \oxAdminList
         $query = parent::_prepareWhereQuery($whereQuery, $fullQuery);
         $config = $this->config;
         $folders = $config->getConfigParam('aOrderfolder');
-        $folder = oxRegistry::getConfig()->getRequestParameter('folder');
+        $folder = $this->request->getRequestParameter('folder');
         // Searching for empty oxfolder fields
         if ($folder && $folder != '-1') {
             $query .= " and ( oxorder.oxfolder = " . $database->quote($folder) . " )";
@@ -163,9 +163,9 @@ class OrderList extends \oxAdminList
         $query = parent::_buildSelectString($listObject);
         $database = oxDb::getDb();
 
-        $searchQuery = oxRegistry::getConfig()->getRequestParameter('addsearch');
+        $searchQuery = $this->request->getRequestParameter('addsearch');
         $searchQuery = trim($searchQuery);
-        $searchField = oxRegistry::getConfig()->getRequestParameter('addsearchfld');
+        $searchField = $this->request->getRequestParameter('addsearchfld');
 
         if ($searchQuery) {
             switch ($searchField) {

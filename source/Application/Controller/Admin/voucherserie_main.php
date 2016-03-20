@@ -88,7 +88,7 @@ class VoucherSerie_Main extends DynExportBase
 
         // Parameter Processing
         $soxId = $this->getEditObjectId();
-        $aSerieParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aSerieParams = $this->request->getRequestParameter("editval");
 
         // Voucher Serie Processing
         $oVoucherSerie = oxNew("oxvoucherserie");
@@ -142,7 +142,7 @@ class VoucherSerie_Main extends DynExportBase
     {
         if ($this->_oVoucherSerie == null) {
             $oVoucherSerie = oxNew("oxvoucherserie");
-            $sId = oxRegistry::getConfig()->getRequestParameter("voucherid");
+            $sId = $this->request->getRequestParameter("voucherid");
             if ($oVoucherSerie->load($sId ? $sId : oxRegistry::getSession()->getVariable("voucherid"))) {
                 $this->_oVoucherSerie = $oVoucherSerie;
             }
@@ -156,9 +156,9 @@ class VoucherSerie_Main extends DynExportBase
      */
     public function start()
     {
-        $sVoucherNr = trim(oxRegistry::getConfig()->getRequestParameter("voucherNr"));
-        $bRandomNr = oxRegistry::getConfig()->getRequestParameter("randomVoucherNr");
-        $sClass = oxRegistry::getConfig()->getRequestParameter("cl");
+        $sVoucherNr = trim($this->request->getRequestParameter("voucherNr"));
+        $bRandomNr = $this->request->getRequestParameter("randomVoucherNr");
+        $sClass = $this->request->getRequestParameter("cl");
 
         if ($sClass == 'voucherserie_generate' && !$bRandomNr && empty($sVoucherNr)) {
             return;
@@ -171,8 +171,8 @@ class VoucherSerie_Main extends DynExportBase
         $this->_aViewData['iEnd'] = $iEnd;
 
         // saving export info
-        oxRegistry::getSession()->setVariable("voucherid", oxRegistry::getConfig()->getRequestParameter("voucherid"));
-        oxRegistry::getSession()->setVariable("voucherAmount", abs((int) oxRegistry::getConfig()->getRequestParameter("voucherAmount")));
+        oxRegistry::getSession()->setVariable("voucherid", $this->request->getRequestParameter("voucherid"));
+        oxRegistry::getSession()->setVariable("voucherAmount", abs((int) $this->request->getRequestParameter("voucherAmount")));
         oxRegistry::getSession()->setVariable("randomVoucherNr", $bRandomNr);
         oxRegistry::getSession()->setVariable("voucherNr", $sVoucherNr);
     }

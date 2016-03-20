@@ -74,23 +74,23 @@ class manufacturer_main_ajax extends ajaxListComponent
         $objectToCategoryViewName = $this->_getViewName('oxobject2category');
         $database = oxDb::getDb();
 
-        $manufacturerId = $config->getRequestParameter('oxid');
-        $syncedManufacturerId = $config->getRequestParameter('synchoxid');
+        $manufacturerId = $this->request->getRequestParameter('oxid');
+        $syncedManufacturerId = $this->request->getRequestParameter('synchoxid');
 
         // Manufacturer selected or not ?
         if (!$manufacturerId) {
             // performance
             $query = ' from ' . $articlesViewName . ' where ' . $articlesViewName . '.oxshopid="' . $config->getShopId() . '" and 1 ';
-            $query .= $config->getRequestParameter('blVariantsSelection') ? '' : " and $articlesViewName.oxparentid = '' and $articlesViewName.oxmanufacturerid != " . $database->quote($syncedManufacturerId);
+            $query .= $this->request->getRequestParameter('blVariantsSelection') ? '' : " and $articlesViewName.oxparentid = '' and $articlesViewName.oxmanufacturerid != " . $database->quote($syncedManufacturerId);
         } elseif ($syncedManufacturerId && $syncedManufacturerId != $manufacturerId) {
             // selected category ?
             $query = " from $objectToCategoryViewName left join $articlesViewName on ";
-            $query .= $config->getRequestParameter('blVariantsSelection') ? " ( $articlesViewName.oxid = $objectToCategoryViewName.oxobjectid or $articlesViewName.oxparentid = $objectToCategoryViewName.oxobjectid )" : " $articlesViewName.oxid = $objectToCategoryViewName.oxobjectid ";
+            $query .= $this->request->getRequestParameter('blVariantsSelection') ? " ( $articlesViewName.oxid = $objectToCategoryViewName.oxobjectid or $articlesViewName.oxparentid = $objectToCategoryViewName.oxobjectid )" : " $articlesViewName.oxid = $objectToCategoryViewName.oxobjectid ";
             $query .= 'where ' . $articlesViewName . '.oxshopid="' . $config->getShopId() . '" and ' . $objectToCategoryViewName . '.oxcatnid = ' . $database->quote($manufacturerId) . ' and ' . $articlesViewName . '.oxmanufacturerid != ' . $database->quote($syncedManufacturerId);
-            $query .= $config->getRequestParameter('blVariantsSelection') ? '' : " and $articlesViewName.oxparentid = '' ";
+            $query .= $this->request->getRequestParameter('blVariantsSelection') ? '' : " and $articlesViewName.oxparentid = '' ";
         } else {
             $query = " from $articlesViewName where $articlesViewName.oxmanufacturerid = " . $database->quote($manufacturerId);
-            $query .= $config->getRequestParameter('blVariantsSelection') ? '' : " and $articlesViewName.oxparentid = '' ";
+            $query .= $this->request->getRequestParameter('blVariantsSelection') ? '' : " and $articlesViewName.oxparentid = '' ";
         }
 
         return $query;
@@ -109,7 +109,7 @@ class manufacturer_main_ajax extends ajaxListComponent
         $query = parent::_addFilter($query);
 
         // display variants or not ?
-        $query .= $this->config->getRequestParameter('blVariantsSelection') ? ' group by ' . $articleViewName . '.oxid ' : '';
+        $query .= $this->requestg->getRequestParameter('blVariantsSelection') ? ' group by ' . $articleViewName . '.oxid ' : '';
 
         return $query;
     }
@@ -119,11 +119,10 @@ class manufacturer_main_ajax extends ajaxListComponent
      */
     public function removeManufacturer()
     {
-        $config = $this->config;
         $articleIds = $this->_getActionIds('oxarticles.oxid');
-        $manufacturerId = $config->getRequestParameter('oxid');
+        $manufacturerId = $this->request->getRequestParameter('oxid');
 
-        if ($this->config->getRequestParameter("all")) {
+        if ($this->request->getRequestParameter("all")) {
             $articleViewTable = $this->_getViewName('oxarticles');
             $articleIds = $this->_getAll($this->_addFilter("select $articleViewTable.oxid " . $this->_getQuery()));
         }
@@ -156,12 +155,10 @@ class manufacturer_main_ajax extends ajaxListComponent
      */
     public function addManufacturer()
     {
-        $config = $this->config;
-
         $articleIds = $this->_getActionIds('oxarticles.oxid');
-        $manufacturerId = $config->getRequestParameter('synchoxid');
+        $manufacturerId = $this->request->getRequestParameter('synchoxid');
 
-        if ($config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $articleViewName = $this->_getViewName('oxarticles');
             $articleIds = $this->_getAll($this->_addFilter("select $articleViewName.oxid " . $this->_getQuery()));
         }

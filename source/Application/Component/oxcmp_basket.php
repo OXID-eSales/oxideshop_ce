@@ -183,7 +183,7 @@ class oxcmp_basket extends oxView
 
         // fetching item ID
         if (!$sProductId) {
-            $sBasketItemId = oxRegistry::getConfig()->getRequestParameter('bindex');
+            $sBasketItemId = $this->request->getRequestParameter('bindex');
 
             if ($sBasketItemId) {
                 $oBasket = $this->getSession()->getBasket();
@@ -193,14 +193,14 @@ class oxcmp_basket extends oxView
 
                 $sProductId = isset($oItem) ? $oItem->getProductId() : null;
             } else {
-                $sProductId = oxRegistry::getConfig()->getRequestParameter('aid');
+                $sProductId = $this->request->getRequestParameter('aid');
             }
         }
 
         // fetching other needed info
-        $dAmount = isset($dAmount) ? $dAmount : oxRegistry::getConfig()->getRequestParameter('am');
-        $aSel = isset($aSel) ? $aSel : oxRegistry::getConfig()->getRequestParameter('sel');
-        $aPersParam = $aPersParam ? $aPersParam : oxRegistry::getConfig()->getRequestParameter('persparam');
+        $dAmount = isset($dAmount) ? $dAmount : $this->request->getRequestParameter('am');
+        $aSel = isset($aSel) ? $aSel : $this->request->getRequestParameter('sel');
+        $aPersParam = $aPersParam ? $aPersParam : $this->request->getRequestParameter('persparam');
 
         // adding articles
         if ($aProducts = $this->_getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
@@ -225,23 +225,23 @@ class oxcmp_basket extends oxView
     {
 
         // active class
-        $sClass = oxRegistry::getConfig()->getRequestParameter('cl');
+        $sClass = $this->request->getRequestParameter('cl');
         $sClass = $sClass ? $sClass . '?' : 'start?';
         $sPosition = '';
 
         // setting redirect parameters
         foreach ($this->aRedirectParams as $sParamName) {
-            $sParamVal = oxRegistry::getConfig()->getRequestParameter($sParamName);
+            $sParamVal = $this->request->getRequestParameter($sParamName);
             $sPosition .= $sParamVal ? $sParamName . '=' . $sParamVal . '&' : '';
         }
 
         // special treatment
         // search param
-        $sParam = rawurlencode(oxRegistry::getConfig()->getRequestParameter('searchparam', true));
+        $sParam = rawurlencode($this->request->getRequestParameter('searchparam', true));
         $sPosition .= $sParam ? 'searchparam=' . $sParam . '&' : '';
 
         // current page number
-        $iPageNr = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+        $iPageNr = (int) $this->request->getRequestParameter('pgNr');
         $sPosition .= ($iPageNr > 0) ? 'pgNr=' . $iPageNr . '&' : '';
 
         // reload and backbutton blocker
@@ -266,7 +266,7 @@ class oxcmp_basket extends oxView
      */
     protected function getPersistedParameters($persistedParameters = null)
     {
-        $persistedParameters = ($persistedParameters ?: oxRegistry::getConfig()->getRequestParameter('persparam'));
+        $persistedParameters = ($persistedParameters ?: $this->request->getRequestParameter('persparam'));
         if (!is_array($persistedParameters)) {
             return null;
         }
@@ -293,24 +293,24 @@ class oxcmp_basket extends oxView
         $blOverride = false
     ) {
         // collecting items to add
-        $aProducts = oxRegistry::getConfig()->getRequestParameter('aproducts');
+        $aProducts = $this->request->getRequestParameter('aproducts');
 
         // collecting specified item
-        $sProductId = $sProductId ? $sProductId : oxRegistry::getConfig()->getRequestParameter('aid');
+        $sProductId = $sProductId ? $sProductId : $this->request->getRequestParameter('aid');
         if ($sProductId) {
 
             // additionally fetching current product info
-            $dAmount = isset($dAmount) ? $dAmount : oxRegistry::getConfig()->getRequestParameter('am');
+            $dAmount = isset($dAmount) ? $dAmount : $this->request->getRequestParameter('am');
 
             // select lists
-            $aSel = isset($aSel) ? $aSel : oxRegistry::getConfig()->getRequestParameter('sel');
+            $aSel = isset($aSel) ? $aSel : $this->request->getRequestParameter('sel');
 
             // persistent parameters
             if (empty($aPersParam)) {
                 $aPersParam = $this->getPersistedParameters();
             }
 
-            $sBasketItemId = oxRegistry::getConfig()->getRequestParameter('bindex');
+            $sBasketItemId = $this->request->getRequestParameter('bindex');
 
             $aProducts[$sProductId] = array('am'           => $dAmount,
                                             'sel'          => $aSel,
@@ -322,7 +322,7 @@ class oxcmp_basket extends oxView
 
         if (is_array($aProducts) && count($aProducts)) {
 
-            if (oxRegistry::getConfig()->getRequestParameter('removeBtn') !== null) {
+            if ($this->request->getRequestParameter('removeBtn') !== null) {
                 //setting amount to 0 if removing article from basket
                 foreach ($aProducts as $sProductId => $aProduct) {
                     if (isset($aProduct['remove']) && $aProduct['remove']) {
@@ -442,7 +442,7 @@ class oxcmp_basket extends oxView
 
         // in Category, only then category is empty ant not equal to default category
         $sDefCat = oxRegistry::getConfig()->getActiveShop()->oxshops__oxdefcat->value;
-        $sActCat = oxRegistry::getConfig()->getRequestParameter('cnid');
+        $sActCat = $this->request->getRequestParameter('cnid');
         $oActCat = oxnew('oxcategory');
         if ($sActCat && $sActCat != $sDefCat && $oActCat->load($sActCat)) {
             $sActRoot = $oActCat->oxcategories__oxrootid->value;
@@ -465,7 +465,7 @@ class oxcmp_basket extends oxView
     public function executeUserChoice()
     {
         // redirect to basket
-        if (oxRegistry::getConfig()->getRequestParameter("tobasket")) {
+        if ($this->request->getRequestParameter("tobasket")) {
             return "basket";
         } else {
             // clear basket

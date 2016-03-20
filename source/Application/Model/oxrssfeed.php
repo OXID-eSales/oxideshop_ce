@@ -681,7 +681,7 @@ class oxRssFeed extends oxSuperCfg
         $oConfig = $this->config;
         $oConfig->setConfigParam('iNrofCatArticles', $oConfig->getConfigParam('iRssItemsCount'));
 
-        $oArtList = oxNew('oxsearch')->getSearchArticles($sSearch, $sCatId, $sVendorId, $sManufacturerId, oxNew('oxArticle')->getViewName() . '.oxtimestamp desc');
+        $oArtList = oxNew('oxsearch')->getSearchArticles($sSearch, $sCatId, $sVendorId, $sManufacturerId, oxNew('oxArticle')->getViewName() . '.oxtimestamp desc', null);
 
         $this->_loadData(
             // dont use cache for search

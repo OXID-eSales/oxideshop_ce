@@ -454,7 +454,7 @@ class BaseController extends \oxView
                 self::$_aCollectedComponentNames = array_merge(self::$_aCollectedComponentNames, $userComponentNames);
             }
 
-            if (oxRegistry::getConfig()->getRequestParameter('_force_no_basket_cmp')) {
+            if ($this->request->getRequestParameter('_force_no_basket_cmp')) {
                 unset(self::$_aCollectedComponentNames['oxcmp_basket']);
             }
         }
@@ -698,7 +698,7 @@ class BaseController extends \oxView
     public function getListType()
     {
         if ($this->_sListType == null) {
-            if ($listType = $this->config->getRequestParameter('listtype')) {
+            if ($listType = $this->request->getRequestParameter('listtype')) {
                 $this->_sListType = $listType;
             } elseif ($listType = $this->config->getGlobalParameter('listtype')) {
                 $this->_sListType = $listType;
@@ -726,7 +726,7 @@ class BaseController extends \oxView
                 $this->_sListDisplayType : 'infogrid';
 
             // writing to session
-            if ($this->config->getRequestParameter('ldtype')) {
+            if ($this->request->getRequestParameter('ldtype')) {
                 oxRegistry::getSession()->setVariable('ldtype', $this->_sListDisplayType);
             }
         }
@@ -742,7 +742,7 @@ class BaseController extends \oxView
     public function getCustomListDisplayType()
     {
         if ($this->_sCustomListDisplayType == null) {
-            $this->_sCustomListDisplayType = $this->config->getRequestParameter('ldtype');
+            $this->_sCustomListDisplayType = $this->request->getRequestParameter('ldtype');
 
             if (!$this->_sCustomListDisplayType) {
                 $this->_sCustomListDisplayType = oxRegistry::getSession()->getVariable('ldtype');
@@ -911,11 +911,10 @@ class BaseController extends \oxView
     {
         $sorting = null;
         $stringModifier = getStr();
-        $config = oxRegistry::getConfig();
         $sortDirections = array('desc', 'asc');
 
-        $sortBy = $config->getRequestParameter($this->getSortOrderByParameterName());
-        $sortOrder = $config->getRequestParameter($this->getSortOrderParameterName());
+        $sortBy = $this->request->getRequestParameter($this->getSortOrderByParameterName());
+        $sortOrder = $this->request->getRequestParameter($this->getSortOrderParameterName());
 
         if ($sortBy && oxDb::getInstance()->isValidFieldName($sortBy) && $sortOrder &&
             oxRegistry::getUtils()->isValidAlpha($sortOrder) && in_array($stringModifier->strtolower($sortOrder), $sortDirections)
@@ -1151,10 +1150,10 @@ class BaseController extends \oxView
     {
         if ($this->_blForceNoIndex) {
             $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
-        } elseif ($this->config->getRequestParameter('cur')) {
+        } elseif ($this->request->getRequestParameter('cur')) {
             $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
         } else {
-            switch ($this->config->getRequestParameter('fnc')) {
+            switch ($this->request->getRequestParameter('fnc')) {
                 case 'tocomparelist':
                 case 'tobasket':
                     $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
@@ -1218,7 +1217,7 @@ class BaseController extends \oxView
         $viewConfig = $this->getViewConfig();
         //value from user input
         $session = oxRegistry::getSession();
-        if (($articlesPerPage = (int) oxRegistry::getConfig()->getRequestParameter('_artperpage'))) {
+        if (($articlesPerPage = (int) $this->request->getRequestParameter('_artperpage'))) {
             // M45 Possibility to push any "Show articles per page" number parameter
             $numberOfCategoryArticles = (in_array($articlesPerPage, $numbersOfCategoryArticles)) ? $articlesPerPage : $numberOfCategoryArticles;
             $viewConfig->setViewConfigParam('iartPerPage', $numberOfCategoryArticles);
@@ -1358,23 +1357,22 @@ class BaseController extends \oxView
      */
     public function getNavigationParams()
     {
-        $config = $this->config;
         $params['cnid'] = $this->getCategoryId();
-        $params['mnid'] = $config->getRequestParameter('mnid');
+        $params['mnid'] = $this->request->getRequestParameter('mnid');
 
         $params['listtype'] = $this->getListType();
         $params['ldtype'] = $this->getCustomListDisplayType();
         $params['actcontrol'] = $this->getClassName();
 
-        $params['recommid'] = $config->getRequestParameter('recommid');
+        $params['recommid'] = $this->request->getRequestParameter('recommid');
 
-        $params['searchrecomm'] = $config->getRequestParameter('searchrecomm', true);
-        $params['searchparam'] = $config->getRequestParameter('searchparam', true);
-        $params['searchtag'] = $config->getRequestParameter('searchtag', true);
+        $params['searchrecomm'] = $this->request->getRequestParameter('searchrecomm', true);
+        $params['searchparam'] = $this->request->getRequestParameter('searchparam', true);
+        $params['searchtag'] = $this->request->getRequestParameter('searchtag', true);
 
-        $params['searchvendor'] = $config->getRequestParameter('searchvendor');
-        $params['searchcnid'] = $config->getRequestParameter('searchcnid');
-        $params['searchmanufacturer'] = $config->getRequestParameter('searchmanufacturer');
+        $params['searchvendor'] = $this->request->getRequestParameter('searchvendor');
+        $params['searchcnid'] = $this->request->getRequestParameter('searchcnid');
+        $params['searchmanufacturer'] = $this->request->getRequestParameter('searchmanufacturer');
 
         return $params;
     }
@@ -1511,30 +1509,29 @@ class BaseController extends \oxView
     {
         $result = '';
         $listType = $this->getListType();
-        $config = $this->config;
 
         switch ($listType) {
             default:
                 break;
             case 'search':
                 $result .= "&amp;listtype={$listType}";
-                if ($searchParamForLink = rawurlencode($config->getRequestParameter('searchparam', true))) {
+                if ($searchParamForLink = rawurlencode($this->request->getRequestParameter('searchparam', true))) {
                     $result .= "&amp;searchparam={$searchParamForLink}";
                 }
 
-                if (($var = $config->getRequestParameter('searchcnid', true))) {
+                if (($var = $this->request->getRequestParameter('searchcnid', true))) {
                     $result .= '&amp;searchcnid=' . rawurlencode(rawurldecode($var));
                 }
-                if (($var = $config->getRequestParameter('searchvendor', true))) {
+                if (($var = $this->request->getRequestParameter('searchvendor', true))) {
                     $result .= '&amp;searchvendor=' . rawurlencode(rawurldecode($var));
                 }
-                if (($var = $config->getRequestParameter('searchmanufacturer', true))) {
+                if (($var = $this->request->getRequestParameter('searchmanufacturer', true))) {
                     $result .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($var));
                 }
                 break;
             case 'tag':
                 $result .= "&amp;listtype={$listType}";
-                if ($param = rawurlencode($config->getRequestParameter('searchtag', true))) {
+                if ($param = rawurlencode($this->request->getRequestParameter('searchtag', true))) {
                     $result .= "&amp;searchtag={$param}";
                 }
                 break;
@@ -1637,29 +1634,29 @@ class BaseController extends \oxView
         if ($function) {
             $url .= "&amp;fnc={$function}";
         }
-        if ($value = oxRegistry::getConfig()->getRequestParameter('cnid')) {
+        if ($value = $this->request->getRequestParameter('cnid')) {
             $url .= "&amp;cnid={$value}";
         }
-        if ($value = oxRegistry::getConfig()->getRequestParameter('mnid')) {
+        if ($value = $this->request->getRequestParameter('mnid')) {
             $url .= "&amp;mnid={$value}";
         }
-        if ($value = oxRegistry::getConfig()->getRequestParameter('anid')) {
+        if ($value = $this->request->getRequestParameter('anid')) {
             $url .= "&amp;anid={$value}";
         }
 
-        if ($value = basename(oxRegistry::getConfig()->getRequestParameter('page'))) {
+        if ($value = basename($this->request->getRequestParameter('page'))) {
             $url .= "&amp;page={$value}";
         }
 
-        if ($value = basename(oxRegistry::getConfig()->getRequestParameter('tpl'))) {
+        if ($value = basename($this->request->getRequestParameter('tpl'))) {
             $url .= "&amp;tpl={$value}";
         }
 
-        if ($value = oxRegistry::getConfig()->getRequestParameter('oxloadid')) {
+        if ($value = $this->request->getRequestParameter('oxloadid')) {
             $url .= "&amp;oxloadid={$value}";
         }
 
-        $pageNumber = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+        $pageNumber = (int) $this->request->getRequestParameter('pgNr');
         // don't include page number for navigation
         // it will be done in oxubase::generatePageNavigation
         if ($addPageNumber && $pageNumber > 0) {
@@ -1667,31 +1664,31 @@ class BaseController extends \oxView
         }
 
         // #1184M - specialchar search
-        if ($value = rawurlencode(oxRegistry::getConfig()->getRequestParameter('searchparam', true))) {
+        if ($value = rawurlencode($this->request->getRequestParameter('searchparam', true))) {
             $url .= "&amp;searchparam={$value}";
         }
 
-        if ($value = oxRegistry::getConfig()->getRequestParameter('searchcnid')) {
+        if ($value = $this->request->getRequestParameter('searchcnid')) {
             $url .= "&amp;searchcnid={$value}";
         }
 
-        if ($value = oxRegistry::getConfig()->getRequestParameter('searchvendor')) {
+        if ($value = $this->request->getRequestParameter('searchvendor')) {
             $url .= "&amp;searchvendor={$value}";
         }
 
-        if ($value = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer')) {
+        if ($value = $this->request->getRequestParameter('searchmanufacturer')) {
             $url .= "&amp;searchmanufacturer={$value}";
         }
 
-        if ($value = oxRegistry::getConfig()->getRequestParameter('searchrecomm')) {
+        if ($value = $this->request->getRequestParameter('searchrecomm')) {
             $url .= "&amp;searchrecomm={$value}";
         }
 
-        if ($value = oxRegistry::getConfig()->getRequestParameter('searchtag')) {
+        if ($value = $this->request->getRequestParameter('searchtag')) {
             $url .= "&amp;searchtag={$value}";
         }
 
-        if ($value = oxRegistry::getConfig()->getRequestParameter('recommid')) {
+        if ($value = $this->request->getRequestParameter('recommid')) {
             $url .= "&amp;recommid={$value}";
         }
 
@@ -1719,19 +1716,19 @@ class BaseController extends \oxView
         if ($function) {
             $url .= "&amp;fnc={$function}";
         }
-        if ($value = basename(oxRegistry::getConfig()->getRequestParameter('page'))) {
+        if ($value = basename($this->request->getRequestParameter('page'))) {
             $url .= "&amp;page={$value}";
         }
 
-        if ($value = basename(oxRegistry::getConfig()->getRequestParameter('tpl'))) {
+        if ($value = basename($this->request->getRequestParameter('tpl'))) {
             $url .= "&amp;tpl={$value}";
         }
 
-        if ($value = oxRegistry::getConfig()->getRequestParameter('oxloadid')) {
+        if ($value = $this->request->getRequestParameter('oxloadid')) {
             $url .= "&amp;oxloadid={$value}";
         }
 
-        $pageNumber = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+        $pageNumber = (int) $this->request->getRequestParameter('pgNr');
         if ($pageNumber > 0) {
             $url .= "&amp;pgNr={$pageNumber}";
         }
@@ -1819,7 +1816,7 @@ class BaseController extends \oxView
     {
         if ($this->_oActiveRecommList === null) {
             $this->_oActiveRecommList = false;
-            if ($recommendationListId = $this->config->getRequestParameter('recommid')) {
+            if ($recommendationListId = $this->request->getRequestParameter('recommid')) {
                 $this->_oActiveRecommList = oxNew('oxrecommlist');
                 $this->_oActiveRecommList->load($recommendationListId);
             }
@@ -1931,26 +1928,26 @@ class BaseController extends \oxView
             $this->_sAdditionalParams .= 'cl=' . $this->config->getTopActiveView()->getClassName();
 
             // #1834M - special char search
-            $searchParamForLink = rawurlencode(oxRegistry::getConfig()->getRequestParameter('searchparam', true));
+            $searchParamForLink = rawurlencode($this->request->getRequestParameter('searchparam', true));
             if (isset($searchParamForLink)) {
                 $this->_sAdditionalParams .= "&amp;searchparam={$searchParamForLink}";
             }
-            if (($value = oxRegistry::getConfig()->getRequestParameter('searchtag'))) {
+            if (($value = $this->request->getRequestParameter('searchtag'))) {
                 $this->_sAdditionalParams .= '&amp;searchtag=' . rawurlencode(rawurldecode($value));
             }
-            if (($value = oxRegistry::getConfig()->getRequestParameter('searchcnid'))) {
+            if (($value = $this->request->getRequestParameter('searchcnid'))) {
                 $this->_sAdditionalParams .= '&amp;searchcnid=' . rawurlencode(rawurldecode($value));
             }
-            if (($value = oxRegistry::getConfig()->getRequestParameter('searchvendor'))) {
+            if (($value = $this->request->getRequestParameter('searchvendor'))) {
                 $this->_sAdditionalParams .= '&amp;searchvendor=' . rawurlencode(rawurldecode($value));
             }
-            if (($value = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer'))) {
+            if (($value = $this->request->getRequestParameter('searchmanufacturer'))) {
                 $this->_sAdditionalParams .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($value));
             }
-            if (($value = oxRegistry::getConfig()->getRequestParameter('cnid'))) {
+            if (($value = $this->request->getRequestParameter('cnid'))) {
                 $this->_sAdditionalParams .= '&amp;cnid=' . rawurlencode(rawurldecode($value));
             }
-            if (($value = oxRegistry::getConfig()->getRequestParameter('mnid'))) {
+            if (($value = $this->request->getRequestParameter('mnid'))) {
                 $this->_sAdditionalParams .= '&amp;mnid=' . rawurlencode(rawurldecode($value));
             }
         }
@@ -2163,7 +2160,7 @@ class BaseController extends \oxView
     public function getActPage()
     {
         if ($this->_iActPage === null) {
-            $this->_iActPage = ( int ) $this->config->getRequestParameter('pgNr');
+            $this->_iActPage = ( int ) $this->request->getRequestParameter('pgNr');
             $this->_iActPage = ($this->_iActPage < 0) ? 0 : $this->_iActPage;
         }
 
@@ -2181,7 +2178,7 @@ class BaseController extends \oxView
     {
         if ($this->_oActTag === null) {
             $this->_oActTag = new stdClass();
-            $this->_oActTag->sTag = $tag = $this->config->getRequestParameter("searchtag", 1);
+            $this->_oActTag->sTag = $tag = $this->request->getRequestParameter("searchtag", 1);
             $seoEncoderTag = oxRegistry::get("oxSeoEncoderTag");
 
             $link = false;
@@ -2210,7 +2207,7 @@ class BaseController extends \oxView
         // and we still need some object to mount navigation info
         if ($this->_oActVendor === null) {
             $this->_oActVendor = false;
-            $vendorId = $this->config->getRequestParameter('cnid');
+            $vendorId = $this->request->getRequestParameter('cnid');
             $vendorId = $vendorId ? str_replace('v_', '', $vendorId) : $vendorId;
             $vendor = oxNew('oxVendor');
             if ($vendor->load($vendorId)) {
@@ -2236,7 +2233,7 @@ class BaseController extends \oxView
         if ($this->_oActManufacturer === null) {
 
             $this->_oActManufacturer = false;
-            $manufacturerId = $this->config->getRequestParameter('mnid');
+            $manufacturerId = $this->request->getRequestParameter('mnid');
             $manufacturer = oxNew('oxManufacturer');
             if ($manufacturer->load($manufacturerId)) {
                 $this->_oActManufacturer = $manufacturer;
@@ -2419,7 +2416,7 @@ class BaseController extends \oxView
     protected function _canRedirect()
     {
         foreach ($this->_aBlockRedirectParams as $param) {
-            if ($this->config->getRequestParameter($param) !== null) {
+            if ($this->request->getRequestParameter($param) !== null) {
                 return false;
             }
         }
@@ -2638,7 +2635,7 @@ class BaseController extends \oxView
         if ($this->_blCanAcceptFormData === null) {
             $this->_blCanAcceptFormData = false;
 
-            $formId = $this->config->getRequestParameter("uformid");
+            $formId = $this->request->getRequestParameter("uformid");
             $sessionFormId = oxRegistry::getSession()->getVariable("sessionuformid");
 
             // testing if form and session ids matches
@@ -2785,7 +2782,7 @@ class BaseController extends \oxView
     public function getInvoiceAddress()
     {
         if ($this->_aInvoiceAddress == null) {
-            $invoiceAddress = $this->config->getRequestParameter('invadr');
+            $invoiceAddress = $this->request->getRequestParameter('invadr');
             if ($invoiceAddress) {
                 $this->_aInvoiceAddress = $invoiceAddress;
             }
@@ -2802,10 +2799,9 @@ class BaseController extends \oxView
     public function getDeliveryAddress()
     {
         if ($this->_aDeliveryAddress == null) {
-            $config = $this->config;
             //do not show deladr if address was reloaded
-            if (!$config->getRequestParameter('reloadaddress')) {
-                $this->_aDeliveryAddress = $config->getRequestParameter('deladr');
+            if (!$this->request->getRequestParameter('reloadaddress')) {
+                $this->_aDeliveryAddress = $this->request->getRequestParameter('deladr');
             }
         }
 
@@ -2841,7 +2837,7 @@ class BaseController extends \oxView
     {
         if ($this->_sActiveUsername == null) {
             $this->_sActiveUsername = false;
-            $username = $this->config->getRequestParameter('lgn_usr');
+            $username = $this->request->getRequestParameter('lgn_usr');
             if ($username) {
                 $this->_sActiveUsername = $username;
             } elseif ($user = $this->getUser()) {
@@ -2859,7 +2855,7 @@ class BaseController extends \oxView
      */
     public function getWishlistUserId()
     {
-        return $this->config->getRequestParameter('wishid');
+        return $this->request->getRequestParameter('wishid');
     }
 
     /**
@@ -3000,7 +2996,7 @@ class BaseController extends \oxView
     public function getWishlistName()
     {
         if ($this->getUser()) {
-            $wishId = $this->config->getRequestParameter('wishid');
+            $wishId = $this->request->getRequestParameter('wishid');
             $userId = ($wishId) ? $wishId : oxRegistry::getSession()->getVariable('wishid');
             if ($userId) {
                 $wishUser = oxNew('oxUser');

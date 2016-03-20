@@ -58,7 +58,7 @@ class Article_Crossselling extends oxAdminDetails
             }
         }
 
-        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+        $iAoc = $this->request->getRequestParameter("aoc");
         if ($iAoc == 1) {
             $oArticleCrossellingAjax = oxNew('article_crossselling_ajax');
             $this->_aViewData['oxajax'] = $oArticleCrossellingAjax->getColumns();

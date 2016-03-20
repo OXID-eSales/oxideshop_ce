@@ -130,7 +130,7 @@ class WrappingController extends oxUBase
      */
     public function changeWrapping()
     {
-        $aWrapping = oxRegistry::getConfig()->getRequestParameter('wrapping');
+        $aWrapping = $this->request->getRequestParameter('wrapping');
 
         if ($this->getViewConfig()->getShowGiftWrapping()) {
             $oBasket = $this->getSession()->getBasket();
@@ -144,8 +144,8 @@ class WrappingController extends oxUBase
                 }
             }
 
-            $oBasket->setCardMessage(oxRegistry::getConfig()->getRequestParameter('giftmessage'));
-            $oBasket->setCardId(oxRegistry::getConfig()->getRequestParameter('chosencard'));
+            $oBasket->setCardMessage($this->request->getRequestParameter('giftmessage'));
+            $oBasket->setCardId($this->request->getRequestParameter('chosencard'));
             $oBasket->onUpdate();
 
         }

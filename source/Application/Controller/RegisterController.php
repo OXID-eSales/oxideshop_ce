@@ -96,7 +96,7 @@ class RegisterController extends \User
      */
     public function getRegistrationError()
     {
-        return oxRegistry::getConfig()->getRequestParameter('newslettererror');
+        return $this->request->getRequestParameter('newslettererror');
     }
 
     /**
@@ -106,7 +106,7 @@ class RegisterController extends \User
      */
     public function getRegistrationStatus()
     {
-        return oxRegistry::getConfig()->getRequestParameter('success');
+        return $this->request->getRequestParameter('success');
     }
 
     /**
@@ -167,7 +167,7 @@ class RegisterController extends \User
      */
     public function getUpdateId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('uid');
+        return $this->request->getRequestParameter('uid');
     }
 
     /**
@@ -177,7 +177,7 @@ class RegisterController extends \User
      */
     public function isConfirmed()
     {
-        return (bool) oxRegistry::getConfig()->getRequestParameter("confirmstate");
+        return (bool) $this->request->getRequestParameter("confirmstate");
     }
 
     /**

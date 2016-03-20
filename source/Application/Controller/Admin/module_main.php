@@ -37,8 +37,8 @@ class Module_Main extends oxAdminDetails
      */
     public function render()
     {
-        if (oxRegistry::getConfig()->getRequestParameter("moduleId")) {
-            $sModuleId = oxRegistry::getConfig()->getRequestParameter("moduleId");
+        if ($this->request->getRequestParameter("moduleId")) {
+            $sModuleId = $this->request->getRequestParameter("moduleId");
         } else {
             $sModuleId = $this->getEditObjectId();
         }

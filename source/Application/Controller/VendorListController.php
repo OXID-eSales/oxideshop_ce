@@ -313,7 +313,7 @@ class VendorListController extends \AList
      */
     protected function _getVendorId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('cnid');
+        return $this->request->getRequestParameter('cnid');
     }
 
     /**

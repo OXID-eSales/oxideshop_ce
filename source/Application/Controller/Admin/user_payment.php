@@ -104,8 +104,8 @@ class User_Payment extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         if ($this->_allowAdminEdit($soxId)) {
 
-            $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
-            $aDynvalues = oxRegistry::getConfig()->getRequestParameter("dynvalue");
+            $aParams = $this->request->getRequestParameter("editval");
+            $aDynvalues = $this->request->getRequestParameter("dynvalue");
 
             if (isset($aDynvalues)) {
                 // store the dynvalues
@@ -127,7 +127,7 @@ class User_Payment extends oxAdminDetails
      */
     public function delPayment()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
         $soxId = $this->getEditObjectId();
         if ($this->_allowAdminEdit($soxId)) {
             if ($aParams['oxuserpayments__oxid'] != "-1") {
@@ -167,7 +167,7 @@ class User_Payment extends oxAdminDetails
     public function getPaymentId()
     {
         if ($this->_sPaymentId == null) {
-            $this->_sPaymentId = oxRegistry::getConfig()->getRequestParameter("oxpaymentid");
+            $this->_sPaymentId = $this->request->getRequestParameter("oxpaymentid");
             if (!$this->_sPaymentId || $this->_blDelete) {
                 if ($oUser = $this->getUser()) {
                     $oUserPayments = $oUser->getUserPayments();

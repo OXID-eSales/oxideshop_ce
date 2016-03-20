@@ -48,7 +48,7 @@ class Newsletter_Send extends Newsletter_Selection
         // calculating
         $iUserCount = $this->getUserCount();
 
-        $iStart = (int) oxRegistry::getConfig()->getRequestParameter("iStart");
+        $iStart = (int) $this->request->getRequestParameter("iStart");
 
         $oNewsletter = oxNew("oxNewsLetter");
         $oNewsletter->load($this->getEditObjectId());

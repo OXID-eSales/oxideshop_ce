@@ -39,8 +39,6 @@ class Attribute_Main extends oxAdminDetails
     {
         parent::render();
 
-        $myConfig = $this->config;
-
         $oAttr = oxNew("oxattribute");
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
 
@@ -78,7 +76,7 @@ class Attribute_Main extends oxAdminDetails
 
         $this->_aViewData["edit"] = $oAttr;
 
-        if ($myConfig->getRequestParameter("aoc")) {
+        if ($this->request->getRequestParameter("aoc")) {
             $oAttributeMainAjax = oxNew('attribute_main_ajax');
             $this->_aViewData['oxajax'] = $oAttributeMainAjax->getColumns();
 
@@ -98,7 +96,7 @@ class Attribute_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         $oAttr = oxNew("oxattribute");
 
@@ -133,7 +131,7 @@ class Attribute_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         $oAttr = oxNew("oxattribute");
 
@@ -152,7 +150,7 @@ class Attribute_Main extends oxAdminDetails
         $oAttr->assign($aParams);
 
         // apply new language
-        $oAttr->setLanguage(oxRegistry::getConfig()->getRequestParameter("new_lang"));
+        $oAttr->setLanguage($this->request->getRequestParameter("new_lang"));
         $oAttr->save();
 
         // set oxid if inserted

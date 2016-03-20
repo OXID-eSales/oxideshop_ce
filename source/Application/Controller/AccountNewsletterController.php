@@ -108,7 +108,7 @@ class AccountNewsletterController extends \Account
             return false;
         }
 
-        $iStatus = $this->config->getRequestParameter('status');
+        $iStatus = $this->request->getRequestParameter('status');
         if ($oUser->setNewsSubscription($iStatus, $this->config->getConfigParam('blOrderOptInEmail'))) {
             $this->_iSubscriptionStatus = ($iStatus == 0 && $iStatus !== null) ? -1 : 1;
         }

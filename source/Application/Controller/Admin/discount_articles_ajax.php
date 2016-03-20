@@ -75,8 +75,8 @@ class discount_articles_ajax extends ajaxListComponent
         $sO2CView = $this->_getViewName('oxobject2category');
 
         $oDb = oxDb::getDb();
-        $sOxid = $oConfig->getRequestParameter('oxid');
-        $sSynchOxid = $oConfig->getRequestParameter('synchoxid');
+        $sOxid = $this->request->getRequestParameter('oxid');
+        $sSynchOxid = $this->request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sOxid && $sSynchOxid) {
@@ -120,7 +120,7 @@ class discount_articles_ajax extends ajaxListComponent
     {
         $aChosenArt = $this->_getActionIds('oxobject2discount.oxid');
 
-        if ($this->config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
 
             $sQ = parent::_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             oxDb::getDb()->execute($sQ);
@@ -136,12 +136,11 @@ class discount_articles_ajax extends ajaxListComponent
      */
     public function addDiscArt()
     {
-        $config = $this->config;
         $articleIds = $this->_getActionIds('oxarticles.oxid');
-        $discountListId = $config->getRequestParameter('synchoxid');
+        $discountListId = $this->request->getRequestParameter('synchoxid');
 
         // adding
-        if ($config->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $articleTable = $this->_getViewName('oxarticles');
             $articleIds = $this->_getAll(parent::_addFilter("select $articleTable.oxid " . $this->_getQuery()));
         }

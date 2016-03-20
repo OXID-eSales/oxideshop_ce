@@ -117,7 +117,7 @@ class ListComponentAjax extends \oxSuperCfg
         $aColumns = $this->_getColNames();
         foreach ($aColumns as $iPos => $aCol) {
             if (isset($aCol[4]) && $aCol[4] == 1 && $sId == $aCol[1] . '.' . $aCol[0]) {
-                return oxRegistry::getConfig()->getRequestParameter('_' . $iPos);
+                return $this->request->getRequestParameter('_' . $iPos);
             }
         }
     }
@@ -194,7 +194,7 @@ class ListComponentAjax extends \oxSuperCfg
     protected function _getSortCol()
     {
         $aVisibleNames = $this->_getVisibleColNames();
-        $iCol = oxRegistry::getConfig()->getRequestParameter('sort');
+        $iCol = $this->request->getRequestParameter('sort');
         $iCol = $iCol ? (( int ) str_replace('_', '', $iCol)) : 0;
         $iCol = (!isset($aVisibleNames[$iCol])) ? 0 : $iCol;
 
@@ -213,7 +213,7 @@ class ListComponentAjax extends \oxSuperCfg
     protected function _getColNames($sId = null)
     {
         if ($sId === null) {
-            $sId = oxRegistry::getConfig()->getRequestParameter('cmpid');
+            $sId = $this->request->getRequestParameter('cmpid');
         }
 
         if ($sId && isset($this->_aColumns[$sId])) {
@@ -251,7 +251,7 @@ class ListComponentAjax extends \oxSuperCfg
     protected function _getVisibleColNames()
     {
         $aColNames = $this->_getColNames();
-        $aUserCols = oxRegistry::getConfig()->getRequestParameter('aCols');
+        $aUserCols = $this->request->getRequestParameter('aCols');
         $aVisibleCols = array();
 
         // user defined some cols to load ?
@@ -329,7 +329,7 @@ class ListComponentAjax extends \oxSuperCfg
     protected function _isExtendedColumn($sColumn)
     {
         $blBuild = false;
-        $blVariantsSelectionParameter = oxRegistry::getConfig()->getConfigParam('blVariantsSelection');
+        $blVariantsSelectionParameter = $this->config->getConfigParam('blVariantsSelection');
         if ($this->_blAllowExtColumns && $blVariantsSelectionParameter && $sColumn == 'oxtitle') {
             $blBuild = true;
         }
@@ -378,7 +378,7 @@ class ListComponentAjax extends \oxSuperCfg
      */
     protected function _getLimit($iStart)
     {
-        $iLimit = (int) oxRegistry::getConfig()->getRequestParameter("results");
+        $iLimit = (int) $this->request->getRequestParameter("results");
         $iLimit = $iLimit ? $iLimit : $this->_iSqlLimit;
 
         return " limit $iStart, $iLimit ";
@@ -392,8 +392,8 @@ class ListComponentAjax extends \oxSuperCfg
     protected function _getFilter()
     {
         $sQ = '';
-        $oConfig = $this->getConfig();
-        $aFilter = $oConfig->getRequestParameter('aFilter');
+        $oConfig = $this->config;
+        $aFilter = $this->request->getRequestParameter('aFilter');
         if (is_array($aFilter) && count($aFilter)) {
             $aCols = $this->_getVisibleColNames();
             $oDb = oxDb::getDb();
@@ -480,7 +480,7 @@ class ListComponentAjax extends \oxSuperCfg
      */
     protected function _getSortDir()
     {
-        $sDir = oxRegistry::getConfig()->getRequestParameter('dir');
+        $sDir = $this->request->getRequestParameter('dir');
         if (!in_array($sDir, $this->_aPosDir)) {
             $sDir = $this->_aPosDir[0];
         }
@@ -495,7 +495,7 @@ class ListComponentAjax extends \oxSuperCfg
      */
     protected function _getStartIndex()
     {
-        return (int) oxRegistry::getConfig()->getRequestParameter('startIndex');
+        return (int) $this->request->getRequestParameter('startIndex');
     }
 
     /**
@@ -535,7 +535,7 @@ class ListComponentAjax extends \oxSuperCfg
      */
     protected function _outputResponse($aData)
     {
-        if (!$this->getConfig()->isUtf()) {
+        if (!$this->config->isUtf()) {
             // TODO: improve this
             if (is_array($aData['records']) && ($iRecSize = count($aData['records']))) {
                 $aKeys = array_keys(current($aData['records']));
@@ -572,7 +572,7 @@ class ListComponentAjax extends \oxSuperCfg
      */
     protected function _getViewName($sTable)
     {
-        return getViewName($sTable, oxRegistry::getConfig()->getRequestParameter('editlanguage'));
+        return getViewName($sTable, $this->request->getRequestParameter('editlanguage'));
     }
 
     /**
@@ -592,7 +592,7 @@ class ListComponentAjax extends \oxSuperCfg
         $aResponse['sort'] = '_' . $this->_getSortCol();
         $aResponse['dir'] = $this->_getSortDir();
 
-        $iDebug = $this->getConfig()->getConfigParam('iDebug');
+        $iDebug = $this->config->getConfigParam('iDebug');
         if ($iDebug) {
             $aResponse['countsql'] = $sCountQ;
         }
@@ -634,7 +634,7 @@ class ListComponentAjax extends \oxSuperCfg
             $aArtIds = array($aArtIds);
         }
 
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = $this->config->getShopId();
         foreach ($aArtIds as $sArtId) {
             /** @var oxSeoEncoder $oSeoEncoder */
             oxRegistry::get("oxSeoEncoder")->markAsExpired($sArtId, $sShopId, 1, null, "oxtype='oxarticle'");
@@ -646,7 +646,7 @@ class ListComponentAjax extends \oxSuperCfg
      */
     public function resetContentCache()
     {
-        $blDeleteCacheOnLogout = $this->getConfig()->getConfigParam('blClearCacheOnLogout');
+        $blDeleteCacheOnLogout = $this->config->getConfigParam('blClearCacheOnLogout');
 
         if (!$blDeleteCacheOnLogout) {
             $this->_resetCaches();
@@ -664,7 +664,7 @@ class ListComponentAjax extends \oxSuperCfg
      */
     public function resetCounter($sCounterType, $sValue = null)
     {
-        $blDeleteCacheOnLogout = $this->getConfig()->getConfigParam('blClearCacheOnLogout');
+        $blDeleteCacheOnLogout = $this->config->getConfigParam('blClearCacheOnLogout');
 
         if (!$blDeleteCacheOnLogout) {
             $myUtilsCount = oxRegistry::get("oxUtilsCount");

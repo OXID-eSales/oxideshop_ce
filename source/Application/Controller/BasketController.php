@@ -117,8 +117,8 @@ class BasketController extends \oxUBase
      */
     public function render()
     {
-        if ($this->getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
-            $this->getSession()->getBasketReservations()->renewExpiration();
+        if ($this->config->getConfigParam('blPsBasketReservationEnabled')) {
+            $this->session->getBasketReservations()->renewExpiration();
         }
 
         parent::render();
@@ -137,7 +137,7 @@ class BasketController extends \oxUBase
             $this->_oBasketArticles = false;
 
             // passing basket articles
-            if ($oBasket = $this->getSession()->getBasket()) {
+            if ($oBasket = $this->session->getBasket()) {
                 $this->_oBasketArticles = $oBasket->getBasketArticles();
             }
         }
@@ -208,8 +208,8 @@ class BasketController extends \oxUBase
      */
     public function showBackToShop()
     {
-        $iNewBasketItemMessage = $this->getConfig()->getConfigParam('iNewBasketItemMessage');
-        $sBackToShop = oxRegistry::getSession()->getVariable('_backtoshop');
+        $iNewBasketItemMessage = $this->config->getConfigParam('iNewBasketItemMessage');
+        $sBackToShop = $this->session->getVariable('_backtoshop');
 
         return ($iNewBasketItemMessage == 3 && $sBackToShop);
     }
@@ -225,8 +225,8 @@ class BasketController extends \oxUBase
             return;
         }
 
-        $oBasket = $this->getSession()->getBasket();
-        $oBasket->addVoucher(oxRegistry::getConfig()->getRequestParameter('voucherNr'));
+        $oBasket = $this->session->getBasket();
+        $oBasket->addVoucher($this->request->getRequestParameter('voucherNr'));
     }
 
     /**
@@ -240,8 +240,8 @@ class BasketController extends \oxUBase
             return;
         }
 
-        $oBasket = $this->getSession()->getBasket();
-        $oBasket->removeVoucher(oxRegistry::getConfig()->getRequestParameter('voucherId'));
+        $oBasket = $this->session->getBasket();
+        $oBasket->removeVoucher($this->request->getRequestParameter('voucherId'));
     }
 
     /**
@@ -253,8 +253,8 @@ class BasketController extends \oxUBase
      */
     public function backToShop()
     {
-        if ($this->getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
-            $oSession = oxRegistry::getSession();
+        if ($this->config->getConfigParam('iNewBasketItemMessage') == 3) {
+            $oSession = $this->session;
             if ($sBackLink = $oSession->getVariable('_backtoshop')) {
                 $oSession->deleteVariable('_backtoshop');
 
@@ -343,15 +343,13 @@ class BasketController extends \oxUBase
      */
     public function changeWrapping()
     {
-        $oConfig = oxRegistry::getConfig();
-
         if ($this->getViewConfig()->getShowGiftWrapping()) {
-            $oBasket = $this->getSession()->getBasket();
+            $oBasket = $this->session->getBasket();
 
-            $this->_setWrappingInfo($oBasket, $oConfig->getRequestParameter('wrapping'));
+            $this->_setWrappingInfo($oBasket, $this->request->getRequestParameter('wrapping'));
 
-            $oBasket->setCardMessage($oConfig->getRequestParameter('giftmessage'));
-            $oBasket->setCardId($oConfig->getRequestParameter('chosencard'));
+            $oBasket->setCardMessage($this->request->getRequestParameter('giftmessage'));
+            $oBasket->setCardId($this->request->getRequestParameter('chosencard'));
             $oBasket->onUpdate();
         }
     }
@@ -382,7 +380,7 @@ class BasketController extends \oxUBase
     public function getBasketContentMarkGenerator()
     {
         /** @var oxBasketContentMarkGenerator $oBasketContentMarkGenerator */
-        $oBasketContentMarkGenerator = oxNew('oxBasketContentMarkGenerator', $this->getSession()->getBasket());
+        $oBasketContentMarkGenerator = oxNew('oxBasketContentMarkGenerator', $this->session->getBasket());
 
         return $oBasketContentMarkGenerator;
     }

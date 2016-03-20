@@ -36,7 +36,7 @@ class Article_Review extends oxAdminDetails
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         parent::render();
 
@@ -44,7 +44,7 @@ class Article_Review extends oxAdminDetails
         $this->_aViewData["edit"] = $article;
 
         $articleId = $this->getEditObjectId();
-        $reviewId = oxRegistry::getConfig()->getRequestParameter('rev_oxid');
+        $reviewId = $this->request->getRequestParameter('rev_oxid');
         if (isset($articleId) && $articleId != "-1") {
 
             // load object
@@ -97,7 +97,7 @@ class Article_Review extends oxAdminDetails
 
         $variantList = $article->getVariants();
 
-        if ($this->getConfig()->getConfigParam('blShowVariantReviews') && count($variantList)) {
+        if ($this->config->getConfigParam('blShowVariantReviews') && count($variantList)) {
 
             // verifying rights
             foreach ($variantList as $variant) {
@@ -125,14 +125,14 @@ class Article_Review extends oxAdminDetails
     {
         parent::save();
 
-        $parameters = oxRegistry::getConfig()->getRequestParameter("editval");
+        $parameters = $this->request->getRequestParameter("editval");
         // checkbox handling
-        if ($this->getConfig()->getConfigParam('blGBModerate') && !isset($parameters['oxreviews__oxactive'])) {
+        if ($this->config->getConfigParam('blGBModerate') && !isset($parameters['oxreviews__oxactive'])) {
             $parameters['oxreviews__oxactive'] = 0;
         }
 
         $review = oxNew("oxreview");
-        $review->load(oxRegistry::getConfig()->getRequestParameter("rev_oxid"));
+        $review->load($this->request->getRequestParameter("rev_oxid"));
         $review->assign($parameters);
         $review->save();
     }
@@ -144,7 +144,7 @@ class Article_Review extends oxAdminDetails
     {
         $this->resetContentCache();
 
-        $reviewId = oxRegistry::getConfig()->getRequestParameter("rev_oxid");
+        $reviewId = $this->request->getRequestParameter("rev_oxid");
         $review = oxNew("oxreview");
         $review->load($reviewId);
         $review->delete();

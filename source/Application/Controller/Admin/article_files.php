@@ -52,7 +52,7 @@ class Article_Files extends oxAdminDetails
     {
         parent::render();
 
-        if (!$this->getConfig()->getConfigParam('blEnableDownloads')) {
+        if (!$this->config->getConfigParam('blEnableDownloads')) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_DISABLED_DOWNLOADABLE_PRODUCTS');
         }
         $oArticle = $this->getArticle();
@@ -74,13 +74,13 @@ class Article_Files extends oxAdminDetails
     public function save()
     {
         // save article changes
-        $aArticleChanges = oxRegistry::getConfig()->getRequestParameter('editval');
+        $aArticleChanges = $this->request->getRequestParameter('editval');
         $oArticle = $this->getArticle();
         $oArticle->assign($aArticleChanges);
         $oArticle->save();
 
         //update article files
-        $aArticleFiles = oxRegistry::getConfig()->getRequestParameter('article_files');
+        $aArticleFiles = $this->request->getRequestParameter('article_files');
         if (count($aArticleFiles) > 0) {
             foreach ($aArticleFiles as $sArticleFileId => $aArticleFileUpdate) {
                 $oArticleFile = oxNew('oxFile');
@@ -125,7 +125,7 @@ class Article_Files extends oxAdminDetails
      */
     public function upload()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($myConfig->isDemoShop()) {
             $oEx = oxNew("oxExceptionToDisplay");
@@ -137,9 +137,9 @@ class Article_Files extends oxAdminDetails
 
         $soxId = $this->getEditObjectId();
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter("newfile");
+        $aParams = $this->request->getRequestParameter("newfile");
         $aParams = $this->_processOptions($aParams);
-        $aNewFile = $this->getConfig()->getUploadedFile("newArticleFile");
+        $aNewFile = $this->config->getUploadedFile("newArticleFile");
 
         //uploading and processing supplied file
         $oArticleFile = oxNew("oxFile");
@@ -174,7 +174,7 @@ class Article_Files extends oxAdminDetails
      */
     public function deletefile()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($myConfig->isDemoShop()) {
             $oEx = oxNew("oxExceptionToDisplay");
@@ -185,7 +185,7 @@ class Article_Files extends oxAdminDetails
         }
 
         $sArticleId = $this->getEditObjectId();
-        $sArticleFileId = oxRegistry::getConfig()->getRequestParameter('fileid');
+        $sArticleFileId = $this->request->getRequestParameter('fileid');
         $oArticleFile = oxNew('oxFile');
         $oArticleFile->load($sArticleFileId);
         if ($oArticleFile->hasValidDownloads()) {

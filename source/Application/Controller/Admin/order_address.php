@@ -106,7 +106,7 @@ class Order_Address extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = (array) oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = (array) $this->request->getRequestParameter("editval");
 
         $oOrder = oxNew("oxorder");
         if ($soxId != "-1") {

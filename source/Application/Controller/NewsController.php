@@ -75,7 +75,7 @@ class NewsController extends \oxUBase
         if ($this->_oNewsList === null) {
             $this->_oNewsList = false;
 
-            $iPerPage = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+            $iPerPage = (int) $this->config->getConfigParam('iNrofCatArticles');
             $iPerPage = $iPerPage ? $iPerPage : 10;
 
             $oActNews = oxNew('oxnewslist');
@@ -105,7 +105,7 @@ class NewsController extends \oxUBase
         $iBaseLanguage = $oLang->getBaseLanguage();
         $sTranslatedString = $oLang->translateString('LATEST_NEWS_AND_UPDATES_AT', $iBaseLanguage, false);
 
-        $aPath['title'] = $sTranslatedString . ' ' . $this->getConfig()->getActiveShop()->oxshops__oxname->value;
+        $aPath['title'] = $sTranslatedString . ' ' . $this->config->getActiveShop()->oxshops__oxname->value;
         $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;
@@ -139,6 +139,6 @@ class NewsController extends \oxUBase
         $iBaseLanguage = $oLang->getBaseLanguage();
         $sTranslatedString = $oLang->translateString('LATEST_NEWS_AND_UPDATES_AT', $iBaseLanguage, false);
 
-        return $sTranslatedString . ' ' . $this->getConfig()->getActiveShop()->oxshops__oxname->value;
+        return $sTranslatedString . ' ' . $this->config->getActiveShop()->oxshops__oxname->value;
     }
 }

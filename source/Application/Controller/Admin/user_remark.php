@@ -40,7 +40,7 @@ class User_Remark extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        $sRemoxId = oxRegistry::getConfig()->getRequestParameter("rem_oxid");
+        $sRemoxId = $this->request->getRequestParameter("rem_oxid");
         if (isset($soxId) && $soxId != "-1") {
             // load object
             $oUser = oxNew("oxuser");
@@ -84,10 +84,10 @@ class User_Remark extends oxAdminDetails
         $oRemark = oxNew("oxremark");
 
         // try to load if exists
-        $oRemark->load(oxRegistry::getConfig()->getRequestParameter("rem_oxid"));
+        $oRemark->load($this->request->getRequestParameter("rem_oxid"));
 
-        $oRemark->oxremark__oxtext = new oxField(oxRegistry::getConfig()->getRequestParameter("remarktext"));
-        $oRemark->oxremark__oxheader = new oxField(oxRegistry::getConfig()->getRequestParameter("remarkheader"));
+        $oRemark->oxremark__oxtext = new oxField($this->request->getRequestParameter("remarktext"));
+        $oRemark->oxremark__oxheader = new oxField($this->request->getRequestParameter("remarkheader"));
         $oRemark->oxremark__oxparentid = new oxField($this->getEditObjectId());
         $oRemark->oxremark__oxtype = new oxField("r");
         $oRemark->save();
@@ -99,6 +99,6 @@ class User_Remark extends oxAdminDetails
     public function delete()
     {
         $oRemark = oxNew("oxRemark");
-        $oRemark->delete(oxRegistry::getConfig()->getRequestParameter("rem_oxid"));
+        $oRemark->delete($this->request->getRequestParameter("rem_oxid"));
     }
 }

@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Admin article main pricealarm manager.
@@ -37,7 +38,7 @@ class PriceAlarm_Main extends oxAdminDetails
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $this->_aViewData['iAllCnt'] = $this->getActivePriceAlarmsCount();
 
@@ -69,11 +70,11 @@ class PriceAlarm_Main extends oxAdminDetails
             $this->_aViewData["edit_lang"] = $aLanguages[$iLang];
             // rendering mail message text
             $oLetter = new stdClass();
-            $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+            $aParams = $this->request->getRequestParameter("editval");
             if (isset($aParams['oxpricealarm__oxlongdesc']) && $aParams['oxpricealarm__oxlongdesc']) {
                 $oLetter->oxpricealarm__oxlongdesc = new oxField(stripslashes($aParams['oxpricealarm__oxlongdesc']), oxField::T_RAW);
             } else {
-                $oEmail = oxNew("oxEmail");
+                $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
                 $sDesc = $oEmail->sendPricealarmToCustomer($oPricealarm->oxpricealarm__oxemail->value, $oPricealarm, null, true);
 
                 $iOldLang = $oLang->getTplLanguage();
@@ -104,7 +105,7 @@ class PriceAlarm_Main extends oxAdminDetails
             $oPricealarm = oxNew("oxpricealarm");
             $oPricealarm->load($sOxid);
 
-            $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+            $aParams = $this->request->getRequestParameter("editval");
             $sMailBody = isset($aParams['oxpricealarm__oxlongdesc']) ? stripslashes($aParams['oxpricealarm__oxlongdesc']) : '';
             if ($sMailBody) {
                 $sMailBody = oxRegistry::get("oxUtilsView")->parseThroughSmarty($sMailBody, $oPricealarm->getId());
@@ -112,7 +113,7 @@ class PriceAlarm_Main extends oxAdminDetails
 
             $sRecipient = $oPricealarm->oxpricealarm__oxemail->value;
 
-            $oEmail = oxNew('oxemail');
+            $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
             $blSuccess = (int) $oEmail->sendPricealarmToCustomer($sRecipient, $oPricealarm, $sMailBody);
 
             // setting result message

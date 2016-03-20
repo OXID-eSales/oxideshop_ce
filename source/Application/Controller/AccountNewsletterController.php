@@ -98,7 +98,7 @@ class AccountNewsletterController extends \Account
      */
     public function subscribe()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return false;
         }
 
@@ -108,8 +108,8 @@ class AccountNewsletterController extends \Account
             return false;
         }
 
-        $iStatus = $this->getConfig()->getRequestParameter('status');
-        if ($oUser->setNewsSubscription($iStatus, $this->getConfig()->getConfigParam('blOrderOptInEmail'))) {
+        $iStatus = $this->request->getRequestParameter('status');
+        if ($oUser->setNewsSubscription($iStatus, $this->config->getConfigParam('blOrderOptInEmail'))) {
             $this->_iSubscriptionStatus = ($iStatus == 0 && $iStatus !== null) ? -1 : 1;
         }
     }

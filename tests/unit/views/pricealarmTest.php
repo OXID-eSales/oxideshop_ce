@@ -1,4 +1,5 @@
 <?php
+use OxidEsales\Eshop\Core\DiContainer;
 
 
 /**
@@ -73,7 +74,10 @@ class Unit_Views_pricealarmTest extends OxidTestCase
     public function testAddme_savesAndSendsPriceAlarm()
     {
         $oPriceAlarm = $this->getProxyClass('pricealarm');
-        oxTestModules::addFunction('oxEmail', 'sendPricealarmNotification', '{return 999;}');
+
+        $oEmail = $this->getMailerMock(array('sendPricealarmNotification'));
+        $oEmail->expects($this->once())->method('sendPricealarmNotification')->will($this->returnValue(999));
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         $this->getSession()->setVariable('usr', "testUserId");
         $aParams["email"] = "goodemail@ladyGagaFans.lt";

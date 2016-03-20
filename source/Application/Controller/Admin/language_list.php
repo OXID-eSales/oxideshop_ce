@@ -47,7 +47,7 @@ class Language_List extends oxAdminList
      */
     public function deleteEntry()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $sOxId = $this->getEditObjectId();
 
         $aLangData['params'] = $myConfig->getConfigParam('aLanguageParams');
@@ -105,9 +105,9 @@ class Language_List extends oxAdminList
      */
     protected function _getLanguagesList()
     {
-        $aLangParams = $this->getConfig()->getConfigParam('aLanguageParams');
+        $aLangParams = $this->config->getConfigParam('aLanguageParams');
         $aLanguages = oxRegistry::getLang()->getLanguageArray();
-        $sDefaultLang = $this->getConfig()->getConfigParam('sDefaultLang');
+        $sDefaultLang = $this->config->getConfigParam('sDefaultLang');
 
         foreach ($aLanguages as $sKey => $sValue) {
             $sOxId = $sValue->oxid;

@@ -37,7 +37,7 @@ class DeliverySet_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
@@ -72,7 +72,7 @@ class DeliverySet_Main extends oxAdminDetails
             }
         }
 
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+        if ($this->request->getRequestParameter("aoc")) {
             $oDeliverysetMainAjax = oxNew('deliveryset_main_ajax');
             $this->_aViewData['oxajax'] = $oDeliverysetMainAjax->getColumns();
 
@@ -92,7 +92,7 @@ class DeliverySet_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         $oDelSet = oxNew("oxdeliveryset");
 
@@ -131,7 +131,7 @@ class DeliverySet_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
         // checkbox handling
         if (!isset($aParams['oxdeliveryset__oxactive'])) {
             $aParams['oxdeliveryset__oxactive'] = 0;
@@ -155,7 +155,7 @@ class DeliverySet_Main extends oxAdminDetails
         }
 
         // apply new language
-        $oDelSet->setLanguage(oxRegistry::getConfig()->getRequestParameter("new_lang"));
+        $oDelSet->setLanguage($this->request->getRequestParameter("new_lang"));
         $oDelSet->save();
 
         // set oxid if inserted

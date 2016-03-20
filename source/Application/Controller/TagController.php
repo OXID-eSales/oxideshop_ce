@@ -121,7 +121,7 @@ class TagController extends \AList
     {
         $sAddParams = parent::getAddUrlParams();
         $sAddParams .= ($sAddParams ? '&amp;' : '') . "listtype={$this->_sListType}";
-        if ($sParam = oxRegistry::getConfig()->getRequestParameter('searchtag', true)) {
+        if ($sParam = $this->request->getRequestParameter('searchtag', true)) {
             $sAddParams .= "&amp;searchtag=" . rawurlencode($sParam);
         }
 
@@ -138,7 +138,7 @@ class TagController extends \AList
     protected function _loadArticles($category)
     {
         // load only articles which we show on screen
-        $numberOfCategoryArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+        $numberOfCategoryArticles = (int) $this->config->getConfigParam('iNrofCatArticles');
         $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 1;
         $articleList = oxNew('oxArticleList');
         $articleList->setSqlLimit($numberOfCategoryArticles * $this->_getRequestPageNr(), $numberOfCategoryArticles);
@@ -230,7 +230,7 @@ class TagController extends \AList
     public function getTag()
     {
         if ($this->_sTag === null) {
-            $this->_sTag = oxRegistry::getConfig()->getRequestParameter("searchtag", false);
+            $this->_sTag = $this->request->getRequestParameter("searchtag", false);
         }
 
         return $this->_sTag;

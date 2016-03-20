@@ -84,7 +84,7 @@ class Article_Extend extends oxAdminDetails
 
         $this->prepareBundledArticlesDataForView($article);
 
-        $iAoc = $this->getConfig()->getRequestParameter("aoc");
+        $iAoc = $this->request->getRequestParameter("aoc");
         if ($iAoc == 1) {
             $oArticleExtendAjax = oxNew('article_extend_ajax');
             $this->_aViewData['oxajax'] = $oArticleExtendAjax->getColumns();
@@ -112,10 +112,10 @@ class Article_Extend extends oxAdminDetails
     {
         parent::save();
 
-        $aMyFile = $this->getConfig()->getUploadedFile("myfile");
-        $aMediaFile = $this->getConfig()->getUploadedFile("mediaFile");
+        $aMyFile = $this->config->getUploadedFile("myfile");
+        $aMediaFile = $this->config->getUploadedFile("mediaFile");
         if (is_array($aMyFile['name']) && reset($aMyFile['name']) || $aMediaFile['name']) {
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
             if ($myConfig->isDemoShop()) {
                 $oEx = oxNew("oxExceptionToDisplay");
                 $oEx->setMessage('ARTICLE_EXTEND_UPLOADISDISABLED');
@@ -126,7 +126,7 @@ class Article_Extend extends oxAdminDetails
         }
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
         // checkbox handling
         if (!isset($aParams['oxarticles__oxissearch'])) {
             $aParams['oxarticles__oxissearch'] = 0;
@@ -158,8 +158,8 @@ class Article_Extend extends oxAdminDetails
         $oArticle->save();
 
         //saving media file
-        $sMediaUrl = $this->getConfig()->getRequestParameter("mediaUrl");
-        $sMediaDesc = $this->getConfig()->getRequestParameter("mediaDesc");
+        $sMediaUrl = $this->request->getRequestParameter("mediaUrl");
+        $sMediaDesc = $this->request->getRequestParameter("mediaDesc");
 
         if (($sMediaUrl && $sMediaUrl != 'http://') || $aMediaFile['name'] || $sMediaDesc) {
 
@@ -202,7 +202,7 @@ class Article_Extend extends oxAdminDetails
     public function deletemedia()
     {
         $soxId = $this->getEditObjectId();
-        $sMediaId = $this->getConfig()->getRequestParameter("mediaid");
+        $sMediaId = $this->request->getRequestParameter("mediaid");
         if ($sMediaId && $soxId) {
             $oMediaUrl = oxNew("oxMediaUrl");
             $oMediaUrl->load($sMediaId);
@@ -230,7 +230,7 @@ class Article_Extend extends oxAdminDetails
      */
     public function updateMedia()
     {
-        $aMediaUrls = $this->getConfig()->getRequestParameter('aMediaUrls');
+        $aMediaUrls = $this->request->getRequestParameter('aMediaUrls');
         if (is_array($aMediaUrls)) {
             foreach ($aMediaUrls as $sMediaId => $aMediaParams) {
                 $oMedia = oxNew("oxMediaUrl");
@@ -278,7 +278,7 @@ class Article_Extend extends oxAdminDetails
     protected function prepareBundledArticlesDataForView($article)
     {
         $database = oxDb::getDB();
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $articleTable = getViewName('oxarticles', $this->_iEditLang);
         $query = "select {$articleTable}.oxtitle, {$articleTable}.oxartnum, {$articleTable}.oxvarselect " .

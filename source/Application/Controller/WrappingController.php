@@ -23,7 +23,6 @@
 namespace OxidEsales\Eshop\Application\Controller;
 
 use oxList;
-use oxRegistry;
 use oxUBase;
 
 /**
@@ -71,7 +70,7 @@ class WrappingController extends oxUBase
             $this->_aBasketItemList = false;
 
             // passing basket articles
-            if ($oBasket = $this->getSession()->getBasket()) {
+            if ($oBasket = $this->session->getBasket()) {
                 $this->_aBasketItemList = $oBasket->getBasketArticles();
             }
         }
@@ -130,10 +129,10 @@ class WrappingController extends oxUBase
      */
     public function changeWrapping()
     {
-        $aWrapping = oxRegistry::getConfig()->getRequestParameter('wrapping');
+        $aWrapping = $this->request->getRequestParameter('wrapping');
 
         if ($this->getViewConfig()->getShowGiftWrapping()) {
-            $oBasket = $this->getSession()->getBasket();
+            $oBasket = $this->session->getBasket();
             // setting wrapping info
             if (is_array($aWrapping) && count($aWrapping)) {
                 foreach ($oBasket->getContents() as $sKey => $oBasketItem) {
@@ -144,8 +143,8 @@ class WrappingController extends oxUBase
                 }
             }
 
-            $oBasket->setCardMessage(oxRegistry::getConfig()->getRequestParameter('giftmessage'));
-            $oBasket->setCardId(oxRegistry::getConfig()->getRequestParameter('chosencard'));
+            $oBasket->setCardMessage($this->request->getRequestParameter('giftmessage'));
+            $oBasket->setCardId($this->request->getRequestParameter('chosencard'));
             $oBasket->onUpdate();
 
         }

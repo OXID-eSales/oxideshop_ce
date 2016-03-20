@@ -57,8 +57,8 @@ class ArticleList extends \oxAdminList
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
-        $sPwrSearchFld = oxRegistry::getConfig()->getRequestParameter("pwrsearchfld");
+        $myConfig = $this->config;
+        $sPwrSearchFld = $this->request->getRequestParameter("pwrsearchfld");
         $sPwrSearchFld = $sPwrSearchFld ? strtolower($sPwrSearchFld) : "oxtitle";
 
         $oArticle = null;
@@ -100,7 +100,7 @@ class ArticleList extends \oxAdminList
         $sType = '';
         $sValue = '';
 
-        $sArtCat = oxRegistry::getConfig()->getRequestParameter("art_category");
+        $sArtCat = $this->request->getRequestParameter("art_category");
         if ($sArtCat && strstr($sArtCat, "@@") !== false) {
             list($sType, $sValue) = explode("@@", $sArtCat);
         }
@@ -220,7 +220,7 @@ class ArticleList extends \oxAdminList
             $sQ .= " and $sTable.oxparentid = '' ";
 
             $sType = false;
-            $sArtCat = oxRegistry::getConfig()->getRequestParameter("art_category");
+            $sArtCat = $this->request->getRequestParameter("art_category");
             if ($sArtCat && strstr($sArtCat, "@@") !== false) {
                 list($sType, $sValue) = explode("@@", $sArtCat);
             }
@@ -259,7 +259,7 @@ class ArticleList extends \oxAdminList
         $this->_aWhere = parent::buildWhere();
 
         // adding folder check
-        $sFolder = oxRegistry::getConfig()->getRequestParameter('folder');
+        $sFolder = $this->request->getRequestParameter('folder');
         if ($sFolder && $sFolder != '-1') {
             $this->_aWhere[getViewName("oxarticles") . ".oxfolder"] = $sFolder;
         }

@@ -11,7 +11,7 @@
     "repositories": {
         "oxid-esales/testing-library": {
             "type": "vcs",
-            "url": "https://github.com/OXID-eSales/testing_library.git"
+            "url": "https://github.com/devbox123/testing_library.git"
         },
         "alexandresalome/php-selenium": {
             "type": "vcs",
@@ -28,7 +28,11 @@
     },
     "require": {
         "phpmailer/phpmailer": "^5.2.14",
-        "smarty/smarty": "^2.6.29"
+        "smarty/smarty": "^2.6.29",
+        "symfony/dependency-injection": "~3.0",
+        "container-interop/container-interop": "~1.1",
+        "symfony/event-dispatcher": "~3.0",
+        "tecnickcom/tcpdf": "~6.2"
     },
     "require-dev": {
         "oxid-esales/testing-library": "dev-master",

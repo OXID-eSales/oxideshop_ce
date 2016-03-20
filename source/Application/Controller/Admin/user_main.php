@@ -99,7 +99,7 @@ class User_Main extends oxAdminDetails
         if (!$this->_allowAdminEdit($soxId)) {
             $this->_aViewData['readonly'] = true;
         }
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+        if ($this->request->getRequestParameter("aoc")) {
             $oUserMainAjax = oxNew('user_main_ajax');
             $this->_aViewData['oxajax'] = $oUserMainAjax->getColumns();
 
@@ -122,7 +122,7 @@ class User_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         if ($this->_allowAdminEdit($soxId)) {
 
-            $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+            $aParams = $this->request->getRequestParameter("editval");
 
             // checkbox handling
             if (!isset($aParams['oxuser__oxactive'])) {
@@ -137,7 +137,7 @@ class User_Main extends oxAdminDetails
             }
 
             //setting new password
-            if (($sNewPass = oxRegistry::getConfig()->getRequestParameter("newPassword"))) {
+            if (($sNewPass = $this->request->getRequestParameter("newPassword"))) {
                 $oUser->setPassword($sNewPass);
             }
 

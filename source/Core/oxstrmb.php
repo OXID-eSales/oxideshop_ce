@@ -219,7 +219,7 @@ class oxStrMb
             $aPattern = $aPattern . 'u';
         }
 
-        return preg_replace($aPattern, $sString, $sSubject, $iLimit, $iCount);
+        return @preg_replace($aPattern, $sString, $sSubject, $iLimit, $iCount);
     }
 
     /**
@@ -339,8 +339,8 @@ class oxStrMb
 
     /**
      * Recodes and returns passed input:
-     * if $blToHtmlEntities == true  ä -> &auml;
-     * if $blToHtmlEntities == false &auml; -> ä
+     * if $blToHtmlEntities == true  ï¿½ -> &auml;
+     * if $blToHtmlEntities == false &auml; -> ï¿½
      *
      * @param string $sInput           text to recode
      * @param bool   $blToHtmlEntities recode direction

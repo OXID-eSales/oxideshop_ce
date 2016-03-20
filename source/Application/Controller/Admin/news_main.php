@@ -68,7 +68,7 @@ class News_Main extends oxAdminDetails
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
         }
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+        if ($this->request->getRequestParameter("aoc")) {
             $oNewsMainAjax = oxNew('news_main_ajax');
             $this->_aViewData['oxajax'] = $oNewsMainAjax->getColumns();
 
@@ -88,7 +88,7 @@ class News_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
         // checkbox handling
         if (!isset($aParams['oxnews__oxactive'])) {
             $aParams['oxnews__oxactive'] = 0;
@@ -136,7 +136,7 @@ class News_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
         // checkbox handling
         if (!isset($aParams['oxnews__oxactive'])) {
             $aParams['oxnews__oxactive'] = 0;
@@ -173,7 +173,7 @@ class News_Main extends oxAdminDetails
         $oNews->assign($aParams);
 
         // apply new language
-        $oNews->setLanguage(oxRegistry::getConfig()->getRequestParameter("new_lang"));
+        $oNews->setLanguage($this->request->getRequestParameter("new_lang"));
         $oNews->save();
 
         // set oxid if inserted

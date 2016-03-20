@@ -1,4 +1,6 @@
 <?php
+use OxidEsales\Eshop\Core\DiContainer;
+
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -50,7 +52,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
      */
     public function testGetCharset()
     {
-        $oEmail = oxNew('oxEmail');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $this->assertEquals("UTF-8", $oEmail->getCharset());
     }
 
@@ -61,7 +63,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
      */
     public function testGetCurrency()
     {
-        $oEmail = oxNew('oxEmail');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $this->assertEquals("€", $oEmail->getCurrency()->sign);
     }
 
@@ -124,7 +126,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
         $oShop = oxNew("oxshop");
         $oShop->load($this->getConfig()->getShopId());
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
+        $oEmail = $this->getMailerMock(array("_sendMail", "_getShop"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($oShop));
         $oEmail->expects($this->any())->method('getOrderFileList')->will($this->returnValue(false));

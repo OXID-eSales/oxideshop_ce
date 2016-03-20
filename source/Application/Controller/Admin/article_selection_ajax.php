@@ -56,8 +56,8 @@ class article_selection_ajax extends ajaxListComponent
         $sArtViewName = $this->_getViewName('oxarticles');
         $oDb = oxDb::getDb();
 
-        $sArtId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchArtId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sArtId = $this->request->getRequestParameter('oxid');
+        $sSynchArtId = $this->request->getRequestParameter('synchoxid');
 
         $sOxid = ($sArtId) ? $sArtId : $sSynchArtId;
         $sQ = "select oxparentid from {$sArtViewName} where oxid = " . $oDb->quote($sOxid) . " and oxparentid != '' ";
@@ -87,7 +87,7 @@ class article_selection_ajax extends ajaxListComponent
     public function removeSel()
     {
         $aChosenArt = $this->_getActionIds('oxobject2selectlist.oxid');
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -98,7 +98,7 @@ class article_selection_ajax extends ajaxListComponent
             oxDb::getDb()->Execute($sQ);
         }
 
-        $articleId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $articleId = $this->request->getRequestParameter('oxid');
         $this->onArticleSelectionListChange($articleId);
     }
 
@@ -108,10 +108,10 @@ class article_selection_ajax extends ajaxListComponent
     public function addSel()
     {
         $aAddSel = $this->_getActionIds('oxselectlist.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
         // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sSLViewName = $this->_getViewName('oxselectlist');
             $aAddSel = $this->_getAll($this->_addFilter("select $sSLViewName.oxid " . $this->_getQuery()));
         }

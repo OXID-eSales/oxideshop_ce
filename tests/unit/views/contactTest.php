@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Tests for contact class
@@ -94,8 +95,11 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testSave()
     {
-        oxTestModules::addFunction('oxemail', 'sendContactMail', '{return true;}');
+        $oEmail = $this->getMailerMock(array('sendContactMail'));
+        $oEmail->expects($this->any())->method('sendContactMail')->will($this->returnValue(true));
 
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
+        
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
         $aParams['oxuser__oxfname'] = 'first name';
         $aParams['oxuser__oxlname'] = 'last name';
@@ -187,10 +191,10 @@ class Unit_Views_contactTest extends OxidTestCase
         $sMessage = $oLang->translateString('MESSAGE_FROM') . " " . $oLang->translateString('MR') . " admin admin(info@oxid-esales.com)<br /><br />message";
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock("oxemail", array("sendContactMail"));
+        $oEmail = $this->getMailerMock(array("sendContactMail"));
         $oEmail->expects($this->once())->method('sendContactMail')->with($this->equalTo('info@oxid-esales.com'), $this->equalTo('subject'), $this->equalTo($sMessage))->will($this->returnValue(true));
 
-        oxTestModules::addModuleObject('oxemail', $oEmail);
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         /** @var Contact|PHPUnit_Framework_MockObject_MockObject $oContact */
         $oContact = oxNew('Contact');
@@ -219,10 +223,10 @@ class Unit_Views_contactTest extends OxidTestCase
         $this->setRequestParameter("c_subject", "subject");
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock("oxemail", array("sendContactMail"));
+        $oEmail = $this->getMailerMock(array("sendContactMail"));
         $oEmail->expects($this->once())->method('sendContactMail')->will($this->returnValue(false));
 
-        oxTestModules::addModuleObject('oxemail', $oEmail);
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         /** @var Contact|PHPUnit_Framework_MockObject_MockObject $oContact */
         $oContact = oxNew('Contact');

@@ -46,7 +46,7 @@ class Shop_Main extends oxAdminDetails
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         parent::render();
 
         $shopId = $this->_aViewData["oxid"] = $this->getEditObjectId();
@@ -63,7 +63,7 @@ class Shop_Main extends oxAdminDetails
         if (isset($shopId) && $shopId != self::NEW_SHOP_ID) {
             // load object
             $shop = oxNew("oxshop");
-            $subjLang = oxRegistry::getConfig()->getRequestParameter("subjlang");
+            $subjLang = $this->request->getRequestParameter("subjlang");
             if (!isset($subjLang)) {
                 $subjLang = $this->_iEditLang;
             }
@@ -76,14 +76,14 @@ class Shop_Main extends oxAdminDetails
 
             $this->_aViewData["edit"] = $shop;
             //oxSession::setVar( "actshop", $soxId);//echo "<h2>$soxId</h2>";
-            oxRegistry::getSession()->setVariable("shp", $shopId);
+            $this->session->setVariable("shp", $shopId);
         }
 
         $this->checkParent($shop);
 
         $this->_aViewData['IsOXDemoShop'] = $config->isDemoShop();
         if (!isset($this->_aViewData['updatenav'])) {
-            $this->_aViewData['updatenav'] = oxRegistry::getConfig()->getRequestParameter('updatenav');
+            $this->_aViewData['updatenav'] = $this->request->getRequestParameter('updatenav');
         }
 
         return "shop_main.tpl";
@@ -98,10 +98,10 @@ class Shop_Main extends oxAdminDetails
     {
         parent::save();
 
-        $config = $this->getConfig();
+        $config = $this->config;
         $shopId = $this->getEditObjectId();
 
-        $parameters = oxRegistry::getConfig()->getRequestParameter("editval");
+        $parameters = $this->request->getRequestParameter("editval");
 
         $user = $this->getUser();
         $shopId = $this->updateShopIdByUser($user, $shopId, false);
@@ -111,7 +111,7 @@ class Shop_Main extends oxAdminDetails
         $parameters['oxshops__oxactive'] = (isset($parameters['oxshops__oxactive']) && $parameters['oxshops__oxactive'] == true) ? 1 : 0;
         $parameters['oxshops__oxproductive'] = (isset($parameters['oxshops__oxproductive']) && $parameters['oxshops__oxproductive'] == true) ? 1 : 0;
 
-        $subjLang = oxRegistry::getConfig()->getRequestParameter("subjlang");
+        $subjLang = $this->request->getRequestParameter("subjlang");
         $shopLanguageId = ($subjLang && $subjLang > 0) ? $subjLang : 0;
 
         $shop = oxNew("oxshop");
@@ -129,7 +129,7 @@ class Shop_Main extends oxAdminDetails
         $shop->assign($parameters);
         $shop->setLanguage($shopLanguageId);
 
-        if (($newSMPTPass = oxRegistry::getConfig()->getRequestParameter("oxsmtppwd"))) {
+        if (($newSMPTPass = $this->request->getRequestParameter("oxsmtppwd"))) {
             $shop->oxshops__oxsmtppwd->setValue($newSMPTPass == '-' ? "" : $newSMPTPass);
         }
 
@@ -149,7 +149,7 @@ class Shop_Main extends oxAdminDetails
 
         $this->updateShopInformation($config, $shop, $shopId);
 
-        oxRegistry::getSession()->setVariable("actshop", $shopId);
+        $this->session->setVariable("actshop", $shopId);
     }
 
     /**
@@ -161,7 +161,7 @@ class Shop_Main extends oxAdminDetails
     {
         $nonCopyVars = array("aSerials", "IMS", "IMD", "IMA", "sBackTag", "sUtilModule", "aModulePaths", "aModuleFiles", "aModuleEvents", "aModuleVersions", "aModuleTemplates", "aModules", "aDisabledModules");
         //adding non copable multishop field options
-        $multiShopTables = $this->getConfig()->getConfigParam('aMultiShopTables');
+        $multiShopTables = $this->config->getConfigParam('aMultiShopTables');
         foreach ($multiShopTables as $multishopTable) {
             $nonCopyVars[] = 'blMallInherit_' . strtolower($multishopTable);
         }
@@ -176,7 +176,7 @@ class Shop_Main extends oxAdminDetails
      */
     protected function _copyConfigVars($shop)
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $utilsObject = oxUtilsObject::getInstance();
         $db = oxDb::getDb();
 

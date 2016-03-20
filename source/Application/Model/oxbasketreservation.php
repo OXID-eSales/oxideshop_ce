@@ -176,7 +176,7 @@ class oxBasketReservation extends oxSuperCfg
      */
     protected function _reserveArticles($aBasketDiff)
     {
-        $blAllowNegativeStock = $this->getConfig()->getConfigParam('blAllowNegativeStock');
+        $blAllowNegativeStock = $this->config->getConfigParam('blAllowNegativeStock');
 
         $oReserved = $this->getReservations();
         foreach ($aBasketDiff as $sId => $dAmount) {
@@ -273,7 +273,7 @@ class oxBasketReservation extends oxSuperCfg
     public function discardUnusedReservations($iLimit)
     {
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $iStartTime = oxRegistry::get("oxUtilsDate")->getTime() - (int) $this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
+        $iStartTime = oxRegistry::get("oxUtilsDate")->getTime() - (int) $this->config->getConfigParam('iPsBasketReservationTimeout');
         $oRs = $oDb->select("select oxid from oxuserbaskets where oxtitle = 'reservations' and oxupdate <= $iStartTime limit $iLimit", false, false);
         if ($oRs->EOF) {
             return;
@@ -307,7 +307,7 @@ class oxBasketReservation extends oxSuperCfg
      */
     public function getTimeLeft()
     {
-        $iTimeout = $this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
+        $iTimeout = $this->config->getConfigParam('iPsBasketReservationTimeout');
         if ($iTimeout > 0) {
             $oRev = $this->getReservations();
             if ($oRev && $oRev->getId()) {

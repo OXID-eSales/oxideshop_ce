@@ -94,11 +94,11 @@ class Diagnostics_Main extends oxAdminDetails
      * Calls parent costructor and initializes checker object
      *
      */
-    public function __construct()
+    public function __construct($config, $request, $session)
     {
-        parent::__construct();
+        parent::__construct($config, $request, $session);
 
-        $this->_sShopDir = $this->getConfig()->getConfigParam('sShopDir');
+        $this->_sShopDir = $this->config->getConfigParam('sShopDir');
         $this->_oOutput = oxNew("oxDiagnosticsOutput");
         $this->_oRenderer = oxNew("oxSmartyRenderer");
     }
@@ -155,9 +155,9 @@ class Diagnostics_Main extends oxAdminDetails
     {
         $oFileChecker = oxNew("oxFileChecker");
         $oFileChecker->setBaseDirectory($this->_sShopDir);
-        $oFileChecker->setVersion($this->getConfig()->getVersion());
-        $oFileChecker->setEdition($this->getConfig()->getEdition());
-        $oFileChecker->setRevision($this->getConfig()->getRevision());
+        $oFileChecker->setVersion($this->config->getVersion());
+        $oFileChecker->setEdition($this->config->getEdition());
+        $oFileChecker->setRevision($this->config->getRevision());
 
         if (!$oFileChecker->init()) {
             $this->_blError = true;
@@ -189,9 +189,9 @@ class Diagnostics_Main extends oxAdminDetails
     protected function _getFileCheckReport($oFileCheckerResult)
     {
         $aViewData = array(
-            "sVersion"       => $this->getConfig()->getVersion(),
-            "sEdition"       => $this->getConfig()->getEdition(),
-            "sRevision"      => $this->getConfig()->getRevision(),
+            "sVersion"       => $this->config->getVersion(),
+            "sEdition"       => $this->config->getEdition(),
+            "sRevision"      => $this->config->getRevision(),
             "aResultSummary" => $oFileCheckerResult->getResultSummary(),
             "aResultOutput"  => $oFileCheckerResult->getResult(),
         );
@@ -239,10 +239,10 @@ class Diagnostics_Main extends oxAdminDetails
         $aViewData = array();
         $oDiagnostics = oxNew('oxDiagnostics');
 
-        $oDiagnostics->setShopLink(oxRegistry::getConfig()->getConfigParam('sShopURL'));
-        $oDiagnostics->setEdition(oxRegistry::getConfig()->getFullEdition());
-        $oDiagnostics->setVersion(oxRegistry::getConfig()->getVersion());
-        $oDiagnostics->setRevision(oxRegistry::getConfig()->getRevision());
+        $oDiagnostics->setShopLink($this->config->getConfigParam('sShopURL'));
+        $oDiagnostics->setEdition($this->config->getFullEdition());
+        $oDiagnostics->setVersion($this->config->getVersion());
+        $oDiagnostics->setRevision($this->config->getRevision());
 
         /**
          * Shop
@@ -257,7 +257,7 @@ class Diagnostics_Main extends oxAdminDetails
          */
         if ($this->getParam('oxdiag_frm_modules')) {
 
-            $sModulesDir = $this->getConfig()->getModulesDir();
+            $sModulesDir = $this->config->getModulesDir();
             $oModuleList = oxNew('oxModuleList');
             $aModules = $oModuleList->getModulesFromDir($sModulesDir);
 
@@ -344,6 +344,6 @@ class Diagnostics_Main extends oxAdminDetails
      */
     public function getParam($sParam)
     {
-        return $this->getConfig()->getRequestParameter($sParam);
+        return $this->request->getRequestParameter($sParam);
     }
 }

@@ -48,7 +48,7 @@ class Newsletter_Send extends Newsletter_Selection
         // calculating
         $iUserCount = $this->getUserCount();
 
-        $iStart = (int) oxRegistry::getConfig()->getRequestParameter("iStart");
+        $iStart = (int) $this->request->getRequestParameter("iStart");
 
         $oNewsletter = oxNew("oxNewsLetter");
         $oNewsletter->load($this->getEditObjectId());
@@ -73,7 +73,7 @@ class Newsletter_Send extends Newsletter_Selection
             $sQGroups = " oxobject2group.oxobjectid is null ";
         }
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $iSendCnt = 0;
         $iMaxCnt = (int) $myConfig->getConfigParam('iCntofMails');
@@ -157,10 +157,10 @@ class Newsletter_Send extends Newsletter_Selection
      */
     public function getUserCount()
     {
-        $iCnt = oxRegistry::getSession()->getVariable("iUserCount");
+        $iCnt = $this->session->getVariable("iUserCount");
         if ($iCnt === null) {
             $iCnt = parent::getUserCount();
-            oxRegistry::getSession()->setVariable("iUserCount", $iCnt);
+            $this->session->setVariable("iUserCount", $iCnt);
         }
 
         return $iCnt;
@@ -171,7 +171,7 @@ class Newsletter_Send extends Newsletter_Selection
      */
     public function resetUserCount()
     {
-        oxRegistry::getSession()->deleteVariable("iUserCount");
+        $this->session->deleteVariable("iUserCount");
         $this->_iUserCount = null;
     }
 

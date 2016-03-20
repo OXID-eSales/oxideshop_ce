@@ -179,7 +179,7 @@ class GuestbookController extends \oxUBase
     {
         if ($this->_aEntries === null) {
             $this->_aEntries = false;
-            $numberOfCategoryArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+            $numberOfCategoryArticles = (int) $this->config->getConfigParam('iNrofCatArticles');
             $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 10;
 
             // loading only if there is some data
@@ -207,11 +207,11 @@ class GuestbookController extends \oxUBase
         if ($this->_blFloodProtection === null) {
             $this->_blFloodProtection = false;
             // is user logged in ?
-            $userId = oxRegistry::getSession()->getVariable('usr');
+            $userId = $this->session->getVariable('usr');
             $userId = $userId ? $userId : 0;
 
             $entries = oxNew('oxGbEntry');
-            $this->_blFloodProtection = $entries->floodProtection($this->getConfig()->getShopId(), $userId);
+            $this->_blFloodProtection = $entries->floodProtection($this->config->getShopId(), $userId);
         }
 
         return $this->_blFloodProtection;
@@ -283,13 +283,13 @@ class GuestbookController extends \oxUBase
      */
     public function saveEntry()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
-        $reviewText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('rvw_txt', true));
-        $shopId = $this->getConfig()->getShopId();
-        $userId = oxRegistry::getSession()->getVariable('usr');
+        $reviewText = trim(( string ) $this->request->getRequestParameter('rvw_txt', true));
+        $shopId = $this->config->getShopId();
+        $userId = $this->session->getVariable('usr');
 
         // guest book`s entry is validated
         $utilsView = oxRegistry::get("oxUtilsView");

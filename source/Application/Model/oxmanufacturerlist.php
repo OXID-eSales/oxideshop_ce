@@ -56,14 +56,7 @@ class oxManufacturerList extends oxList
      */
     protected $_oClickedManufacturer = null;
 
-    /**
-     * Calls parent constructor and defines if Article vendor count is shown
-     */
-    public function __construct()
-    {
-        $this->setShowManufacturerArticleCnt($this->getConfig()->getConfigParam('bl_perfShowActionCatArticleCnt'));
-        parent::__construct('oxmanufacturer');
-    }
+    protected $_sObjectsInListName = 'oxmanufacturer';
 
     /**
      * Enables/disables manufacturer article count calculation

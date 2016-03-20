@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * pricealarm sending manager.
@@ -45,13 +46,13 @@ class PriceAlarm_Send extends oxAdminList
     {
         parent::render();
 
-        $config = $this->getConfig();
+        $config = $this->config;
 
         ini_set("session.gc_maxlifetime", 36000);
 
-        $start = (int) $config->getRequestParameter("iStart");
+        $start = (int) $this->request->getRequestParameter("iStart");
         $limit = $config->getConfigParam('iCntofMails');
-        $activeAlertsAmount = $config->getRequestParameter("iAllCnt");
+        $activeAlertsAmount = $this->request->getRequestParameter("iAllCnt");
         if (!isset($activeAlertsAmount)) {
             $activeAlertsAmount = $this->countActivePriceAlerts();
         }
@@ -92,7 +93,7 @@ class PriceAlarm_Send extends oxAdminList
     protected function countActivePriceAlerts()
     {
         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $config = $this->getConfig();
+        $config = $this->config;
         $shopId = $config->getShopId();
 
         $activeAlarmsQuery =
@@ -121,7 +122,7 @@ class PriceAlarm_Send extends oxAdminList
      */
     protected function sendPriceChangeNotifications($start, $limit)
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $shopId = $config->getShopId();
 
@@ -163,7 +164,7 @@ class PriceAlarm_Send extends oxAdminList
         $oldLanguageId = $language->getTplLanguage();
         $language->setTplLanguage($languageId);
 
-        $email = oxNew('oxEmail');
+        $email = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         $success = (int) $email->sendPricealarmToCustomer($emailAddress, $alarm);
 
         $language->setTplLanguage($oldLanguageId);

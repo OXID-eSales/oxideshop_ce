@@ -33,27 +33,12 @@ use oxUser;
  */
 class SuperConfig
 {
-
-    /**
-     * oxconfig instance
-     *
-     * @var oxconfig
-     */
-    protected static $_oConfig = null;
-
     /**
      * oxsession instance
      *
      * @var oxsession
      */
     protected static $_oSession = null;
-
-    /**
-     * oxrights instance
-     *
-     * @var oxrights
-     */
-    protected static $_oRights = null;
 
     /**
      * oxuser object
@@ -99,39 +84,19 @@ class SuperConfig
      *
      * @return null
      */
-    public function __construct()
+    public function __construct($config)
     {
+        $this->config = $config;
     }
 
     /**
-     * oxConfig instance getter
-     *
-     * @return oxConfig
+     * @var oxConfig
      */
-    public function getConfig()
-    {
-        if (self::$_oConfig == null) {
-            self::$_oConfig = oxRegistry::getConfig();
-        }
-
-        return self::$_oConfig;
-    }
-
-    /**
-     * oxConfig instance setter
-     *
-     * @param oxConfig $config config object
-     *
-     * @return null
-     */
-    public function setConfig($config)
-    {
-        self::$_oConfig = $config;
-    }
+    protected $config;
 
     /**
      * oxSession instance getter
-     *
+     * @deprecated
      * @return oxsession
      */
     public function getSession()
@@ -144,20 +109,8 @@ class SuperConfig
     }
 
     /**
-     * oxSession instance setter
-     *
-     * @param oxsession $session session object
-     *
-     * @return null
-     */
-    public function setSession($session)
-    {
-        self::$_oSession = $session;
-    }
-
-    /**
      * Active user getter
-     *
+     * @deprecated
      * @return oxUser
      */
     public function getUser()
@@ -174,20 +127,8 @@ class SuperConfig
     }
 
     /**
-     * Active oxuser object setter
-     *
-     * @param oxuser $user user object
-     *
-     * @return null
-     */
-    public function setUser($user)
-    {
-        self::$_oActUser = $user;
-    }
-
-    /**
      * Admin mode status getter
-     *
+     * @deprecated
      * @return bool
      */
     public function isAdmin()
@@ -197,15 +138,5 @@ class SuperConfig
         }
 
         return self::$_blIsAdmin;
-    }
-
-    /**
-     * Admin mode setter
-     *
-     * @param bool $isAdmin admin mode
-     */
-    public function setAdminMode($isAdmin)
-    {
-        self::$_blIsAdmin = $isAdmin;
     }
 }

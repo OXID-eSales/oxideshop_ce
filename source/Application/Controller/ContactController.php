@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Controller;
 
+use OxidEsales\Eshop\Core\DiContainer;
 use oxRegistry;
 
 /**
@@ -84,7 +85,7 @@ class ContactController extends \oxUBase
      */
     public function send()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter('editval');
+        $aParams = $this->request->getRequestParameter('editval');
 
         // checking email address
         if (!oxRegistry::getUtils()->isValidEmail($aParams['oxuser__oxusername'])) {
@@ -93,7 +94,7 @@ class ContactController extends \oxUBase
             return false;
         }
 
-        $sSubject = oxRegistry::getConfig()->getRequestParameter('c_subject');
+        $sSubject = $this->request->getRequestParameter('c_subject');
         if (!$aParams['oxuser__oxfname'] || !$aParams['oxuser__oxlname'] || !$aParams['oxuser__oxusername'] || !$sSubject) {
             // even if there is no exception, use this as a default display method
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOTALLFIELDS');
@@ -106,9 +107,9 @@ class ContactController extends \oxUBase
                     $oLang->translateString($aParams['oxuser__oxsal']) . " " .
                     $aParams['oxuser__oxfname'] . " " .
                     $aParams['oxuser__oxlname'] . "(" . $aParams['oxuser__oxusername'] . ")<br /><br />" .
-                    nl2br(oxRegistry::getConfig()->getRequestParameter('c_message'));
+                    nl2br($this->request->getRequestParameter('c_message'));
 
-        $oEmail = oxNew('oxemail');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
         if ($oEmail->sendContactMail($aParams['oxuser__oxusername'], $sSubject, $sMessage)) {
             $this->_blContactSendStatus = 1;
         } else {
@@ -124,7 +125,7 @@ class ContactController extends \oxUBase
     public function getUserData()
     {
         if ($this->_oUserData === null) {
-            $this->_oUserData = oxRegistry::getConfig()->getRequestParameter('editval');
+            $this->_oUserData = $this->request->getRequestParameter('editval');
         }
 
         return $this->_oUserData;
@@ -138,7 +139,7 @@ class ContactController extends \oxUBase
     public function getContactSubject()
     {
         if ($this->_sContactSubject === null) {
-            $this->_sContactSubject = oxRegistry::getConfig()->getRequestParameter('c_subject');
+            $this->_sContactSubject = $this->request->getRequestParameter('c_subject');
         }
 
         return $this->_sContactSubject;
@@ -152,7 +153,7 @@ class ContactController extends \oxUBase
     public function getContactMessage()
     {
         if ($this->_sContactMessage === null) {
-            $this->_sContactMessage = oxRegistry::getConfig()->getRequestParameter('c_message');
+            $this->_sContactMessage = $this->request->getRequestParameter('c_message');
         }
 
         return $this->_sContactMessage;
@@ -192,6 +193,6 @@ class ContactController extends \oxUBase
      */
     public function getTitle()
     {
-        return $this->getConfig()->getActiveShop()->oxshops__oxcompany->value;
+        return $this->config->getActiveShop()->oxshops__oxcompany->value;
     }
 }

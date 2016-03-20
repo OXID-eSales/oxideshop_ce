@@ -57,9 +57,9 @@ class VoucherSerie_Export extends VoucherSerie_Main
     /**
      * Calls parent costructor and initializes $this->_sFilePath parameter
      */
-    public function __construct()
+    public function __construct($config)
     {
-        parent::__construct();
+        parent::__construct($config);
 
         // export file name
         $this->sExportFileName = $this->_getExportFileName();
@@ -75,7 +75,7 @@ class VoucherSerie_Export extends VoucherSerie_Main
      */
     public function getDownloadUrl()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         // override cause of admin dir
         $sUrl = $myConfig->getConfigParam('sShopURL') . $myConfig->getConfigParam('sAdminDir');
@@ -97,8 +97,8 @@ class VoucherSerie_Export extends VoucherSerie_Main
     {
         $sSessionFileName = oxRegistry::getSession()->getVariable("sExportFileName");
         if (!$sSessionFileName) {
-            $sSessionFileName = md5($this->getSession()->getId() . oxUtilsObject::getInstance()->generateUId());
-            oxRegistry::getSession()->setVariable("sExportFileName", $sSessionFileName);
+            $sSessionFileName = md5($this->session->getId() . oxUtilsObject::getInstance()->generateUId());
+            $this->session->setVariable("sExportFileName", $sSessionFileName);
         }
 
         return $sSessionFileName;
@@ -111,7 +111,7 @@ class VoucherSerie_Export extends VoucherSerie_Main
      */
     protected function _getExportFilePath()
     {
-        return $this->getConfig()->getConfigParam('sShopDir') . "/export/" . $this->_getExportFileName();
+        return $this->config->getConfigParam('sShopDir') . "/export/" . $this->_getExportFileName();
     }
 
     /**
@@ -146,7 +146,7 @@ class VoucherSerie_Export extends VoucherSerie_Main
             $this->stop(ERR_FILEIO);
         } else {
             // file is open
-            $iStart = oxRegistry::getConfig()->getRequestParameter("iStart");
+            $iStart = $this->request->getRequestParameter("iStart");
             if (!$iStart) {
                 ftruncate($this->fpFile, 0);
             }

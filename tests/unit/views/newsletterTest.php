@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Testing newsletter class.
@@ -390,29 +391,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aErrors = oxRegistry::getSession()->getVariable('Errors');
         $oErr = unserialize($aErrors['default'][0]);
         $this->assertEquals(oxRegistry::getLang()->translateString('MESSAGE_INVALID_EMAIL'), $oErr->getOxMessage());
-    }
-
-    /**
-     * Testing error message when sending email about subscribtion fails
-     */
-    public function testNewsletterErrorOnFailedEmailSending()
-    {
-        oxTestModules::addFunction("oxemail", "send", "{return false;}");
-        oxTestModules::addFunction("oxemail", "sendNewsletterDbOptInMail", "{return false;}");
-
-        oxRegistry::getLang()->setBaseLanguage(1);
-        $oTestNews = oxNew("NewsLetter");
-        $aParams = array();
-
-        $aParams['oxuser__oxusername'] = 'test@test.de';
-        $aParams['oxuser__oxfname'] = 'test';
-        $this->setRequestParameter('subscribeStatus', 1);
-        $this->setRequestParameter('editval', $aParams);
-        $oTestNews->send();
-
-        $aErrors = oxRegistry::getSession()->getVariable('Errors');
-        $oErr = unserialize($aErrors['default'][0]);
-        $this->assertEquals(oxRegistry::getLang()->translateString('MESSAGE_NOT_ABLE_TO_SEND_EMAIL'), $oErr->getOxMessage());
     }
 
     /**

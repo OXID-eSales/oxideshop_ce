@@ -87,7 +87,7 @@ class VoucherSerie_Generate extends VoucherSerie_Main
      */
     public function generateVoucher($iCnt)
     {
-        $iAmount = abs((int) oxRegistry::getSession()->getVariable("voucherAmount"));
+        $iAmount = abs((int) $this->session->getVariable("voucherAmount"));
 
         // creating new vouchers
         if ($iCnt < $iAmount && ($oVoucherSerie = $this->_getVoucherSerie())) {
@@ -96,7 +96,7 @@ class VoucherSerie_Generate extends VoucherSerie_Main
                 $this->_iGenerated = $iCnt;
             }
 
-            $blRandomNr = ( bool ) oxRegistry::getSession()->getVariable("randomVoucherNr");
+            $blRandomNr = ( bool ) $this->session->getVariable("randomVoucherNr");
             $sVoucherNr = $blRandomNr ? oxUtilsObject::getInstance()->generateUID() : oxRegistry::getSession()->getVariable("voucherNr");
 
             $oNewVoucher = oxNew("oxvoucher");
@@ -119,7 +119,7 @@ class VoucherSerie_Generate extends VoucherSerie_Main
         $iExportedItems = 0;
 
         // file is open
-        $iStart = oxRegistry::getConfig()->getRequestParameter("iStart");
+        $iStart = $this->request->getRequestParameter("iStart");
 
         for ($i = $iStart; $i < $iStart + $this->iGeneratePerTick; $i++) {
             if (($iExportedItems = $this->nextTick($i)) === false) {

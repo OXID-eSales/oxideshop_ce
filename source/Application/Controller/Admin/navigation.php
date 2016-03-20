@@ -43,11 +43,11 @@ class Navigation extends oxAdminView
         parent::render();
         $myUtilsServer = oxRegistry::get("oxUtilsServer");
 
-        $sItem = oxRegistry::getConfig()->getRequestParameter("item");
+        $sItem = $this->request->getRequestParameter("item");
         $sItem = $sItem ? basename($sItem) : false;
         if (!$sItem) {
             $sItem = "nav_frame.tpl";
-            $aFavorites = oxRegistry::getConfig()->getRequestParameter("favorites");
+            $aFavorites = $this->request->getRequestParameter("favorites");
             if (is_array($aFavorites)) {
                 $myUtilsServer->setOxCookie('oxidadminfavorites', implode('|', $aFavorites));
             }
@@ -62,7 +62,7 @@ class Navigation extends oxAdminView
             $this->_aViewData["sVersion"] = trim($sVersion);
 
             //checking requirements if this is not nav frame reload
-            if (!oxRegistry::getConfig()->getRequestParameter("navReload")) {
+            if (!$this->request->getRequestParameter("navReload")) {
                 // #661 execute stuff we run each time when we start admin once
                 if ('home.tpl' == $sItem) {
                     $this->_aViewData['aMessage'] = $this->_doStartUpChecks();
@@ -87,14 +87,14 @@ class Navigation extends oxAdminView
             }
 
             // open history node ?
-            $this->_aViewData["blOpenHistory"] = oxRegistry::getConfig()->getRequestParameter('openHistory');
+            $this->_aViewData["blOpenHistory"] = $this->request->getRequestParameter('openHistory');
         }
 
-        $blisMallAdmin = oxRegistry::getSession()->getVariable('malladmin');
+        $blisMallAdmin = $this->session->getVariable('malladmin');
         $oShoplist = oxNew('oxShopList');
         if (!$blisMallAdmin) {
             // we only allow to see our shop
-            $iShopId = oxRegistry::getSession()->getVariable("actshop");
+            $iShopId = $this->session->getVariable("actshop");
             $oShop = oxNew('oxShop');
             $oShop->load($iShopId);
             $oShoplist->add($oShop);
@@ -115,9 +115,9 @@ class Navigation extends oxAdminView
 
         // informing about basefrm parameters
         $this->_aViewData['loadbasefrm'] = true;
-        $this->_aViewData['listview'] = oxRegistry::getConfig()->getRequestParameter('listview');
-        $this->_aViewData['editview'] = oxRegistry::getConfig()->getRequestParameter('editview');
-        $this->_aViewData['actedit'] = oxRegistry::getConfig()->getRequestParameter('actedit');
+        $this->_aViewData['listview'] = $this->request->getRequestParameter('listview');
+        $this->_aViewData['editview'] = $this->request->getRequestParameter('editview');
+        $this->_aViewData['actedit'] = $this->request->getRequestParameter('actedit');
     }
 
     /**
@@ -125,20 +125,14 @@ class Navigation extends oxAdminView
      */
     public function logout()
     {
-        $mySession = $this->getSession();
-        $myConfig = $this->getConfig();
+        $mySession = $this->session;
+        $myConfig = $this->config;
 
         $oUser = oxNew("oxUser");
         $oUser->logout();
 
         // kill session
         $mySession->destroy();
-
-        // delete also, this is usually not needed but for security reasons we execute still
-        if ($myConfig->getConfigParam('blAdodbSessionHandler')) {
-            $oDb = oxDb::getDb();
-            $oDb->execute("delete from oxsessions where SessionID = " . $oDb->quote($mySession->getId()));
-        }
 
         //resetting content cache if needed
         if ($myConfig->getConfigParam('blClearCacheOnLogout')) {
@@ -154,10 +148,10 @@ class Navigation extends oxAdminView
     public function exturl()
     {
         $myUtils = oxRegistry::getUtils();
-        if ($sUrl = oxRegistry::getConfig()->getRequestParameter("url")) {
+        if ($sUrl = $this->request->getRequestParameter("url")) {
 
             // Limit external url's only allowed host
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
             if ($myConfig->getConfigParam('blLoadDynContents') && strpos($sUrl, $this->_sAllowedHost) === 0) {
 
                 $sPath = $myConfig->getConfigParam('sCompileDir') . "/" . md5($sUrl) . '.html';
@@ -196,22 +190,22 @@ class Navigation extends oxAdminView
     {
         $aMessage = array();
 
-        if ($this->getConfig()->getConfigParam('blCheckSysReq') !== false) {
+        if ($this->config->getConfigParam('blCheckSysReq') !== false) {
             // check if system reguirements are ok
-            $oSysReq = new oxSysRequirements();
+            $oSysReq = oxnew("oxSysRequirements");
             if (!$oSysReq->getSysReqStatus()) {
                 $aMessage['warning'] = oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE');
-                $aMessage['warning'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->getSession()->getSessionChallengeToken() . '" target="basefrm">';
+                $aMessage['warning'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->session->getSessionChallengeToken() . '" target="basefrm">';
                 $aMessage['warning'] .= oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
             }
         } else {
             $aMessage['message'] = oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE_INACTIVE');
-            $aMessage['message'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->getSession()->getSessionChallengeToken() . '" target="basefrm">';
+            $aMessage['message'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->session->getSessionChallengeToken() . '" target="basefrm">';
             $aMessage['message'] .= oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
         }
 
         // version check
-        if ($this->getConfig()->getConfigParam('blCheckForUpdates')) {
+        if ($this->config->getConfigParam('blCheckForUpdates')) {
             if ($sVersionNotice = $this->_checkVersion()) {
                 $aMessage['message'] .= $sVersionNotice;
             }
@@ -219,18 +213,18 @@ class Navigation extends oxAdminView
 
 
         // check if setup dir is deleted
-        if (file_exists($this->getConfig()->getConfigParam('sShopDir') . '/Setup/index.php')) {
+        if (file_exists($this->config->getConfigParam('sShopDir') . '/Setup/index.php')) {
             $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . oxRegistry::getLang()->translateString('SETUP_DIRNOTDELETED_WARNING');
         }
 
         // check if updateApp dir is deleted or empty
-        $sUpdateDir = $this->getConfig()->getConfigParam('sShopDir') . '/updateApp/';
+        $sUpdateDir = $this->config->getConfigParam('sShopDir') . '/updateApp/';
         if (file_exists($sUpdateDir) && !(count(glob("$sUpdateDir/*")) === 0)) {
             $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . oxRegistry::getLang()->translateString('UPDATEAPP_DIRNOTDELETED_WARNING');
         }
 
         // check if config file is writable
-        $sConfPath = $this->getConfig()->getConfigParam('sShopDir') . "/config.inc.php";
+        $sConfPath = $this->config->getConfigParam('sShopDir') . "/config.inc.php";
         if (!is_readable($sConfPath) || is_writable($sConfPath)) {
             $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . oxRegistry::getLang()->translateString('SETUP_CONFIGPERMISSIONS_WARNING');
         }
@@ -245,11 +239,11 @@ class Navigation extends oxAdminView
      */
     protected function _checkVersion()
     {
-        $edition = $this->getConfig()->getEdition();
+        $edition = $this->config->getEdition();
         $query = 'http://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';
         if ($version = oxRegistry::get("oxUtilsFile")->readRemoteFileAsString($query)) {
             // current version is older ..
-            if (version_compare($this->getConfig()->getVersion(), $version) == '-1') {
+            if (version_compare($this->config->getVersion(), $version) == '-1') {
                 return sprintf(oxRegistry::getLang()->translateString('NAVIGATION_NEWVERSIONAVAILABLE'), $version);
             }
         }

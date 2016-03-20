@@ -55,7 +55,7 @@ class oxRequiredAddressFields
     {
         $this->setRequiredFields($this->_aDefaultRequiredFields);
 
-        $aRequiredFields = oxRegistry::getConfig()->getConfigParam('aMustFillFields');
+        $aRequiredFields = $this->config->getConfigParam('aMustFillFields');
         if (is_array($aRequiredFields)) {
             $this->setRequiredFields($aRequiredFields);
         }

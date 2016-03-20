@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Tests for Order_Main class
@@ -128,60 +129,6 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
             return;
         }
         $this->fail("error in Order_Main::save()");
-    }
-
-
-    /**
-     * Order_Main::Sendorder() test case
-     *
-     * @return null
-     */
-    public function testSendorder()
-    {
-        //
-        oxTestModules::addFunction('oxorder', 'load', '{ return true; }');
-        oxTestModules::addFunction('oxorder', 'save', '{}; }');
-        oxTestModules::addFunction('oxorder', 'getOrderArticles', '{ return array(); }');
-        oxTestModules::addFunction('oxemail', 'sendSendedNowMail', '{ throw new Exception( "sendSendedNowMail" ); }');
-
-        $this->setRequestParameter("sendmail", 1);
-        $this->setRequestParameter("oxid", "testId");
-
-        // testing..
-        try {
-            $oView = oxNew('Order_Main');
-            $oView->sendorder();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("sendSendedNowMail", $oExcp->getMessage(), "error in Order_Main::sendorder()");
-
-            return;
-        }
-        $this->fail("error in Order_Main::sendorder()");
-    }
-
-    /**
-     * Order_Main::senddownloadlinks() test case
-     *
-     * @return null
-     */
-    public function testSenddownloadlinks()
-    {
-        //
-        oxTestModules::addFunction('oxorder', 'load', '{ return true; }');
-        oxTestModules::addFunction('oxemail', 'sendDownloadLinksMail', '{ throw new Exception( "sendDownloadLinksMail" ); }');
-
-        $this->setRequestParameter("oxid", "testId");
-
-        // testing..
-        try {
-            $oView = oxNew('Order_Main');
-            $oView->senddownloadlinks();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("sendDownloadLinksMail", $oExcp->getMessage(), "error in Order_Main::senddownloadlinks()");
-
-            return;
-        }
-        $this->fail("error in Order_Main::senddownloadlinks()");
     }
 
     /**

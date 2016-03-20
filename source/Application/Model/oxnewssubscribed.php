@@ -50,15 +50,7 @@ class oxNewsSubscribed extends oxBase
      */
     protected $_sClassName = 'oxnewssubscribed';
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->init('oxnewssubscribed');
-    }
+    protected $_sCoreTable = "oxnewssubscribed";
 
     /**
      * Loads object (newssubscription) details from DB. Returns true on success.
@@ -119,7 +111,7 @@ class oxNewsSubscribed extends oxBase
     public function loadFromUserId($sOxUserId)
     {
         $oDb = oxDb::getDb();
-        $sOxId = $oDb->getOne("select oxid from oxnewssubscribed where oxuserid = {$oDb->quote($sOxUserId)} and oxshopid = {$oDb->quote($this->getConfig()->getShopId())}");
+        $sOxId = $oDb->getOne("select oxid from oxnewssubscribed where oxuserid = {$oDb->quote($sOxUserId)} and oxshopid = {$oDb->quote($this->config->getShopId())}");
 
         return $this->load($sOxId);
     }

@@ -54,8 +54,8 @@ class payment_main_ajax extends ajaxListComponent
     {
         // looking for table/view
         $sGroupTable = $this->_getViewName('oxgroups');
-        $sGroupId = $this->getConfig()->getRequestParameter('oxid');
-        $sSynchGroupId = $this->getConfig()->getRequestParameter('synchoxid');
+        $sGroupId = $this->request->getRequestParameter('oxid');
+        $sSynchGroupId = $this->request->getRequestParameter('synchoxid');
         $oDb = oxDb::getDb();
 
         // category selected or not ?
@@ -68,7 +68,7 @@ class payment_main_ajax extends ajaxListComponent
         }
 
         if (!$sSynchGroupId) {
-            $sSynchGroupId = $this->getConfig()->getRequestParameter('oxajax_synchfid');
+            $sSynchGroupId = $this->request->getRequestParameter('oxajax_synchfid');
         }
         if ($sSynchGroupId && $sSynchGroupId != $sGroupId) {
             if (!$sGroupId) {
@@ -90,7 +90,7 @@ class payment_main_ajax extends ajaxListComponent
     public function removePayGroup()
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2group.oxid');
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxobject2group.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -108,9 +108,9 @@ class payment_main_ajax extends ajaxListComponent
     public function addPayGroup()
     {
         $aAddGroups = $this->_getActionIds('oxgroups.oxid');
-        $soxId = $this->getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sGroupTable = $this->_getViewName('oxgroups');
             $aAddGroups = $this->_getAll($this->_addFilter("select $sGroupTable.oxid " . $this->_getQuery()));
         }

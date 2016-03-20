@@ -42,14 +42,7 @@ class oxCountry extends oxI18n
      */
     protected $_aStates = null;
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxI18n()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxcountry');
-    }
+    protected $_sCoreTable = "oxcountry";
 
     /**
      * returns true if this country is a foreign country
@@ -58,7 +51,7 @@ class oxCountry extends oxI18n
      */
     public function isForeignCountry()
     {
-        return !in_array($this->getId(), $this->getConfig()->getConfigParam('aHomeCountry'));
+        return !in_array($this->getId(), $this->config->getConfigParam('aHomeCountry'));
     }
 
     /**

@@ -41,7 +41,7 @@ class Tools_List extends oxAdminList
     public function updateViews()
     {
         //preventing edit for anyone except malladmin
-        if (oxRegistry::getSession()->getVariable("malladmin")) {
+        if ($this->session->getVariable("malladmin")) {
             $oMetaData = oxNew('oxDbMetaDataHandler');
             $this->_aViewData["blViewSuccess"] = $oMetaData->updateViews();
         }
@@ -56,7 +56,7 @@ class Tools_List extends oxAdminList
         $oAuthUser->loadAdminUser();
         if ($oAuthUser->oxuser__oxrights->value === "malladmin") {
 
-            $sUpdateSQL = oxRegistry::getConfig()->getRequestParameter("updatesql");
+            $sUpdateSQL = $this->request->getRequestParameter("updatesql");
             $sUpdateSQLFile = $this->_processFiles();
 
             if ($sUpdateSQLFile && strlen($sUpdateSQLFile) > 0) {

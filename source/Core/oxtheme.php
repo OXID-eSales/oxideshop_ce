@@ -52,7 +52,7 @@ class oxTheme extends oxSuperCfg
      */
     public function load($sOXID)
     {
-        $sFilePath = $this->getConfig()->getViewsDir() . $sOXID . "/theme.php";
+        $sFilePath = $this->config->getViewsDir() . $sOXID . "/theme.php";
         if (file_exists($sFilePath) && is_readable($sFilePath)) {
             $aTheme = array();
             include $sFilePath;
@@ -79,11 +79,11 @@ class oxTheme extends oxSuperCfg
         }
         $sParent = $this->getInfo('parentTheme');
         if ($sParent) {
-            $this->getConfig()->saveShopConfVar("str", 'sTheme', $sParent);
-            $this->getConfig()->saveShopConfVar("str", 'sCustomTheme', $this->getId());
+            $this->config->saveShopConfVar("str", 'sTheme', $sParent);
+            $this->config->saveShopConfVar("str", 'sCustomTheme', $this->getId());
         } else {
-            $this->getConfig()->saveShopConfVar("str", 'sTheme', $this->getId());
-            $this->getConfig()->saveShopConfVar("str", 'sCustomTheme', '');
+            $this->config->saveShopConfVar("str", 'sTheme', $this->getId());
+            $this->config->saveShopConfVar("str", 'sCustomTheme', '');
         }
     }
 
@@ -95,7 +95,7 @@ class oxTheme extends oxSuperCfg
     public function getList()
     {
         $this->_aThemeList = array();
-        $sOutDir = $this->getConfig()->getViewsDir();
+        $sOutDir = $this->config->getViewsDir();
         foreach (glob($sOutDir . "*", GLOB_ONLYDIR) as $sDir) {
             $oTheme = oxNew('oxTheme');
             if ($oTheme->load(basename($sDir))) {
@@ -129,12 +129,12 @@ class oxTheme extends oxSuperCfg
      */
     public function getActiveThemeId()
     {
-        $sCustTheme = $this->getConfig()->getConfigParam('sCustomTheme');
+        $sCustTheme = $this->config->getConfigParam('sCustomTheme');
         if ($sCustTheme) {
             return $sCustTheme;
         }
 
-        return $this->getConfig()->getConfigParam('sTheme');
+        return $this->config->getConfigParam('sTheme');
     }
 
     /**

@@ -91,12 +91,12 @@ class GenImport_Main extends oxAdminDetails
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $genericImport = oxNew('OxidEsales\Eshop\Core\GenericImport\GenericImport');
         $this->_sCsvFilePath = null;
 
-        $navigationStep = $config->getRequestParameter('sNavStep');
+        $navigationStep = $this->request->getRequestParameter('sNavStep');
 
         if (!$navigationStep) {
             $navigationStep = 1;
@@ -114,7 +114,7 @@ class GenImport_Main extends oxAdminDetails
         if ($navigationStep == 2) {
             $noJsValidator = oxNew('oxNoJsValidator');
             //saving csv field terminator and encloser to config
-            $terminator = $config->getRequestParameter('sGiCsvFieldTerminator');
+            $terminator = $this->request->getRequestParameter('sGiCsvFieldTerminator');
             if ($terminator && !$noJsValidator->isValid($terminator)) {
                 $this->setErrorToView($terminator);
             } else {
@@ -122,7 +122,7 @@ class GenImport_Main extends oxAdminDetails
                 $config->saveShopConfVar('str', 'sGiCsvFieldTerminator', $terminator);
             }
 
-            $encloser = $config->getRequestParameter('sGiCsvFieldEncloser');
+            $encloser = $this->request->getRequestParameter('sGiCsvFieldEncloser');
             if ($encloser && !$noJsValidator->isValid($encloser)) {
                 $this->setErrorToView($encloser);
             } else {
@@ -130,7 +130,7 @@ class GenImport_Main extends oxAdminDetails
                 $config->saveShopConfVar('str', 'sGiCsvFieldEncloser', $encloser);
             }
 
-            $type = $config->getRequestParameter('sType');
+            $type = $this->request->getRequestParameter('sType');
             $importObject = $genericImport->getImportObject($type);
             $this->_aViewData['sType'] = $type;
             $this->_aViewData['sImportTable'] = $importObject->getBaseTableName();
@@ -139,13 +139,13 @@ class GenImport_Main extends oxAdminDetails
         }
 
         if ($navigationStep == 3) {
-            $csvFields = $config->getRequestParameter('aCsvFields');
-            $type = $config->getRequestParameter('sType');
+            $csvFields = $this->request->getRequestParameter('aCsvFields');
+            $type = $this->request->getRequestParameter('sType');
 
             $genericImport = oxNew('OxidEsales\Eshop\Core\GenericImport\GenericImport');
             $genericImport->setImportType($type);
             $genericImport->setCsvFileFieldsOrder($csvFields);
-            $genericImport->setCsvContainsHeader(oxRegistry::getSession()->getVariable('blCsvContainsHeader'));
+            $genericImport->setCsvContainsHeader($this->session->getVariable('blCsvContainsHeader'));
 
             $genericImport->importFile($this->_getUploadedCsvFilePath());
             $this->_aViewData['iTotalRows'] = $genericImport->getImportedRowCount();
@@ -157,7 +157,7 @@ class GenImport_Main extends oxAdminDetails
             $this->_deleteCsvFile();
 
             //check if repeating import - then forsing first step
-            if ($config->getRequestParameter('iRepeatImport')) {
+            if ($this->request->getRequestParameter('iRepeatImport')) {
                 $this->_aViewData['iRepeatImport'] = 1;
                 $navigationStep = 1;
             }
@@ -193,8 +193,8 @@ class GenImport_Main extends oxAdminDetails
      */
     protected function _getCsvFieldsNames()
     {
-        $blCsvContainsHeader = $this->getConfig()->getRequestParameter('blContainsHeader');
-        oxRegistry::getSession()->setVariable('blCsvContainsHeader', $blCsvContainsHeader);
+        $blCsvContainsHeader = $this->request->getRequestParameter('blContainsHeader');
+        $this->session->setVariable('blCsvContainsHeader', $blCsvContainsHeader);
         $sCsvPath = $this->_getUploadedCsvFilePath();
 
         $aFirstRow = $this->_getCsvFirstRow();
@@ -240,8 +240,8 @@ class GenImport_Main extends oxAdminDetails
     protected function _resetUploadedCsvData()
     {
         $this->_sCsvFilePath = null;
-        oxRegistry::getSession()->setVariable('sCsvFilePath', null);
-        oxRegistry::getSession()->setVariable('blCsvContainsHeader', null);
+        $this->session->setVariable('sCsvFilePath', null);
+        $this->session->setVariable('blCsvContainsHeader', null);
     }
 
     /**
@@ -265,7 +265,7 @@ class GenImport_Main extends oxAdminDetails
 
         if ($iNavStep == 3) {
             $blIsEmpty = true;
-            $aCsvFields = $this->getConfig()->getRequestParameter('aCsvFields');
+            $aCsvFields = $this->request->getRequestParameter('aCsvFields');
             foreach ($aCsvFields as $sValue) {
                 if ($sValue) {
                     $blIsEmpty = false;
@@ -295,16 +295,16 @@ class GenImport_Main extends oxAdminDetails
         //try to get uploaded csv file path
         if ($this->_sCsvFilePath !== null) {
             return $this->_sCsvFilePath;
-        } elseif ($this->_sCsvFilePath = oxRegistry::getSession()->getVariable('sCsvFilePath')) {
+        } elseif ($this->_sCsvFilePath = $this->session->getVariable('sCsvFilePath')) {
             return $this->_sCsvFilePath;
         }
 
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $aFile = $oConfig->getUploadedFile('csvfile');
         if (isset($aFile['name']) && $aFile['name']) {
             $this->_sCsvFilePath = $oConfig->getConfigParam('sCompileDir') . basename($aFile['tmp_name']);
             move_uploaded_file($aFile['tmp_name'], $this->_sCsvFilePath);
-            oxRegistry::getSession()->setVariable('sCsvFilePath', $this->_sCsvFilePath);
+            $this->session->setVariable('sCsvFilePath', $this->_sCsvFilePath);
 
             return $this->_sCsvFilePath;
         }
@@ -336,7 +336,7 @@ class GenImport_Main extends oxAdminDetails
     {
         if ($this->_sStringTerminator === null) {
             $this->_sStringTerminator = $this->_sDefaultStringTerminator;
-            if ($char = $this->getConfig()->getConfigParam('sGiCsvFieldTerminator')) {
+            if ($char = $this->config->getConfigParam('sGiCsvFieldTerminator')) {
                 $this->_sStringTerminator = $char;
             }
         }
@@ -353,7 +353,7 @@ class GenImport_Main extends oxAdminDetails
     {
         if ($this->_sStringEncloser === null) {
             $this->_sStringEncloser = $this->_sDefaultStringEncloser;
-            if ($char = $this->getConfig()->getConfigParam('sGiCsvFieldEncloser')) {
+            if ($char = $this->config->getConfigParam('sGiCsvFieldEncloser')) {
                 $this->_sStringEncloser = $char;
             }
         }

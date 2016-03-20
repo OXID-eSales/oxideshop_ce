@@ -19,11 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\Request;
+use OxidEsales\Eshop\Core\ViewInterface;
 
 /**
  * Locator controller for: category, vendor, manufacturers and search lists.
  */
-class oxLocator extends oxSuperCfg
+class oxLocator extends oxSuperCfg implements ViewInterface
 {
 
     /**
@@ -52,13 +54,28 @@ class oxLocator extends oxSuperCfg
     protected $_sErrorMessage = null;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * @var \oxSession
+     */
+    protected $session;
+
+    /**
      * Class constructor - sets locator type and parameters posted or loaded
      * from GET/Session
      *
      * @param string $sType locator type
      */
-    public function __construct($sType = null)
+    public function __construct($config, $request, $session, $sType = null)
     {
+        parent::__construct($config);
+
+        $this->request = $request;
+        $this->session = $session;
+
         // setting locator type
         if ($sType) {
             $this->_sType = trim($sType);
@@ -241,17 +258,17 @@ class oxLocator extends oxSuperCfg
         if (($oSearchCat = $oLocatorTarget->getActSearch())) {
 
             // #1834/1184M - specialchar search
-            $sSearchParam = oxRegistry::getConfig()->getRequestParameter('searchparam', true);
-            $sSearchFormParam = oxRegistry::getConfig()->getRequestParameter('searchparam');
+            $sSearchParam = $this->request->getRequestParameter('searchparam', true);
+            $sSearchFormParam = $this->request->getRequestParameter('searchparam');
             $sSearchLinkParam = rawurlencode($sSearchParam);
 
-            $sSearchCat = oxRegistry::getConfig()->getRequestParameter('searchcnid');
+            $sSearchCat = $this->request->getRequestParameter('searchcnid');
             $sSearchCat = $sSearchCat ? rawurldecode($sSearchCat) : $sSearchCat;
 
-            $sSearchVendor = oxRegistry::getConfig()->getRequestParameter('searchvendor');
+            $sSearchVendor = $this->request->getRequestParameter('searchvendor');
             $sSearchVendor = $sSearchVendor ? rawurldecode($sSearchVendor) : $sSearchVendor;
 
-            $sSearchManufacturer = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer');
+            $sSearchManufacturer = $this->request->getRequestParameter('searchmanufacturer');
             $sSearchManufacturer = $sSearchManufacturer ? rawurldecode($sSearchManufacturer) : $sSearchManufacturer;
 
             // loading data for article navigation
@@ -336,7 +353,7 @@ class oxLocator extends oxSuperCfg
             $sAddSearch = '';
             // setting parameters when seo is Off
             if (!$myUtils->seoIsActive()) {
-                $sSearchTagParameter = oxRegistry::getConfig()->getRequestParameter('searchtag', true);
+                $sSearchTagParameter = $this->request->getRequestParameter('searchtag', true);
                 $sAddSearch = 'searchtag=' . rawurlencode($sSearchTagParameter);
                 $sAddSearch .= '&amp;listtype=tag';
             }
@@ -372,10 +389,10 @@ class oxLocator extends oxSuperCfg
             //page number
             $iPage = $this->_findActPageNumber($oLocatorTarget->getActPage(), $oIdList, $oCurrArticle);
 
-            $sSearchRecomm = oxRegistry::getConfig()->getRequestParameter('searchrecomm', true);
+            $sSearchRecomm = $this->request->getRequestParameter('searchrecomm', true);
 
             if ($sSearchRecomm !== null) {
-                $sSearchFormRecomm = oxRegistry::getConfig()->getRequestParameter('searchrecomm');
+                $sSearchFormRecomm = $this->request->getRequestParameter('searchrecomm');
                 $sSearchLinkRecomm = rawurlencode($sSearchRecomm);
                 $sAddSearch = 'searchrecomm=' . $sSearchLinkRecomm;
             }
@@ -433,7 +450,7 @@ class oxLocator extends oxSuperCfg
             $oIdList->loadPriceIds($oCategory->oxcategories__oxpricefrom->value, $oCategory->oxcategories__oxpriceto->value);
         } else {
             $sActCat = $oCategory->getId();
-            $oIdList->loadCategoryIDs($sActCat, oxRegistry::getSession()->getVariable('session_attrfilter'));
+            $oIdList->loadCategoryIDs($sActCat, $this->session->getVariable('session_attrfilter'));
             // if not found - reloading with empty filter
             if (!isset($oIdList[$oCurrArticle->getId()])) {
                 $oIdList->loadCategoryIDs($sActCat, null);
@@ -477,7 +494,7 @@ class oxLocator extends oxSuperCfg
 
         // maybe there is no page number passed, but we still can find the position in id's list
         if (!$iPageNr && $oIdList && $oArticle) {
-            $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+            $iNrofCatArticles = (int) $this->config->getConfigParam('iNrofCatArticles');
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
             $sParentIdField = 'oxarticles__oxparentid';
             $sArticleId = $oArticle->$sParentIdField->value ? $oArticle->$sParentIdField->value : $oArticle->getId();
@@ -526,7 +543,6 @@ class oxLocator extends oxSuperCfg
 
             if (array_key_exists($iPos - 1, $aIds)) {
                 $oBackProduct = oxNew('oxArticle');
-                $oBackProduct->modifyCacheKey('_locator');
                 $oBackProduct->setNoVariantLoading(true);
                 if ($oBackProduct->load($aIds[$iPos - 1])) {
                     $oBackProduct->setLinkType($oLocatorTarget->getLinkType());
@@ -536,7 +552,6 @@ class oxLocator extends oxSuperCfg
 
             if (array_key_exists($iPos + 1, $aIds)) {
                 $oNextProduct = oxNew('oxArticle');
-                $oNextProduct->modifyCacheKey('_locator');
                 $oNextProduct->setNoVariantLoading(true);
                 if ($oNextProduct->load($aIds[$iPos + 1])) {
                     $oNextProduct->setLinkType($oLocatorTarget->getLinkType());

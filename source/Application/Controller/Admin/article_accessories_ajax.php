@@ -65,9 +65,9 @@ class article_accessories_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $myConfig = $this->config;
+        $sSelId = $this->request->getRequestParameter('oxid');
+        $sSynchSelId = $this->request->getRequestParameter('synchoxid');
         $oDb = oxDb::getDb();
 
         $sArticleTable = $this->_getViewName('oxarticles');
@@ -117,7 +117,7 @@ class article_accessories_ajax extends ajaxListComponent
     {
         $aChosenArt = $this->_getActionIds('oxaccessoire2article.oxid');
         // removing all
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxaccessoire2article.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -136,10 +136,10 @@ class article_accessories_ajax extends ajaxListComponent
     {
         $oArticle = oxNew("oxArticle");
         $aChosenArt = $this->_getActionIds('oxarticles.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
         // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
             $aChosenArt = $this->_getAll(parent::_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }

@@ -67,8 +67,8 @@ class Theme_Main extends oxAdminDetails
      */
     public function themeInConfigFile()
     {
-        $blThemeSet = isset($this->getConfig()->sTheme);
-        $blCustomThemeSet = isset($this->getConfig()->sCustomTheme);
+        $blThemeSet = isset($this->config->sTheme);
+        $blCustomThemeSet = isset($this->config->sCustomTheme);
 
         if ($blThemeSet || $blCustomThemeSet) {
             return true;

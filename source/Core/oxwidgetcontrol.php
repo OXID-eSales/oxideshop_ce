@@ -56,8 +56,8 @@ class oxWidgetControl extends oxShopControl
     {
         //$aParams = ( isset($aParams) ) ? $aParams : oxRegistry::getConfig()->getRequestParameter( 'oxwparams' );
 
-        if (!isset($viewsChain) && oxRegistry::getConfig()->getRequestParameter('oxwparent')) {
-            $viewsChain = explode("|", oxRegistry::getConfig()->getRequestParameter('oxwparent'));
+        if (!isset($viewsChain) && $this->config->getRequestParameter('oxwparent')) {
+            $viewsChain = explode("|", $this->config->getRequestParameter('oxwparent'));
         }
 
         parent::start($class, $function, $parameters, $viewsChain);
@@ -71,7 +71,7 @@ class oxWidgetControl extends oxShopControl
      */
     protected function _runLast()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         if ($oConfig->hasActiveViewsChain()) {
             // Removing current active view.
@@ -95,7 +95,7 @@ class oxWidgetControl extends oxShopControl
      */
     protected function _initializeViewObject($sClass, $sFunction, $aParams = null, $aViewsChain = null)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $aActiveViewsNames = $oConfig->getActiveViewsNames();
         $aActiveViewsNames = array_map("strtolower", $aActiveViewsNames);
 

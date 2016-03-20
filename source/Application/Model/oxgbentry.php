@@ -43,15 +43,7 @@ class oxGbEntry extends oxBase
      */
     protected $_sClassName = 'oxgbentry';
 
-    /**
-     * Class constructor, executes parent method parent::oxI18n().
-     *
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxgbentries');
-    }
+    protected $_sCoreTable = "oxgbentries";
 
     /**
      * Calls parent::assign and assigns gb entry writer data
@@ -96,7 +88,7 @@ class oxGbEntry extends oxBase
      */
     public function getAllEntries($iStart, $iNrofCatArticles, $sSortBy)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         // loading entries
         $sSelect = 'select oxgbentries.*, oxuser.oxfname,
@@ -134,7 +126,7 @@ class oxGbEntry extends oxBase
      */
     public function getEntryCount()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oDb = oxDb::getDb();
 
         // loading entries
@@ -176,7 +168,7 @@ class oxGbEntry extends oxBase
             $sSelect .= "and oxgbentries.oxcreate >= '$sToday 00:00:00' and oxgbentries.oxcreate <= '$sToday 23:59:59' ";
             $iCnt = $oDb->getOne($sSelect);
 
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
             if ((!$myConfig->getConfigParam('iMaxGBEntriesPerDay')) || ($iCnt < $myConfig->getConfigParam('iMaxGBEntriesPerDay'))) {
                 $result = false;
             }

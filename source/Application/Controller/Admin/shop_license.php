@@ -45,7 +45,7 @@ class Shop_License extends Shop_Config
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         if ($myConfig->isDemoShop()) {
             /** @var oxSystemComponentException $oSystemComponentException */
             $oSystemComponentException = oxNew("oxSystemComponentException", "license");
@@ -80,9 +80,9 @@ class Shop_License extends Shop_Config
      */
     protected function _canUpdate()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
-        $blIsMallAdmin = oxRegistry::getSession()->getVariable('malladmin');
+        $blIsMallAdmin = $this->session->getVariable('malladmin');
         if (!$blIsMallAdmin) {
             return false;
         }
@@ -103,7 +103,7 @@ class Shop_License extends Shop_Config
      */
     protected function _fetchCurVersionInfo($sUrl)
     {
-        $aParams = array("myversion" => $this->getConfig()->getVersion());
+        $aParams = array("myversion" => $this->config->getVersion());
         $oLang = oxRegistry::getLang();
         $iLang = $oLang->getTplLanguage();
         $sLang = $oLang->getLanguageAbbr($iLang);

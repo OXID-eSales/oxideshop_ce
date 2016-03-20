@@ -69,9 +69,9 @@ class vendor_main_ajax extends ajaxListComponent
         $sArtTable = $this->_getViewName('oxarticles');
         $sO2CView = $this->_getViewName('oxobject2category');
         $oDb = oxDb::getDb();
-        $oConfig = oxRegistry::getConfig();
-        $sVendorId = $oConfig->getRequestParameter('oxid');
-        $sSynchVendorId = $oConfig->getRequestParameter('synchoxid');
+        $oConfig = $this->config;
+        $sVendorId = $this->request->getRequestParameter('oxid');
+        $sSynchVendorId = $this->request->getRequestParameter('synchoxid');
 
         // vendor selected or not ?
         if (!$sVendorId) {
@@ -106,7 +106,7 @@ class vendor_main_ajax extends ajaxListComponent
         $sQ = parent::_addFilter($sQ);
 
         // display variants or not ?
-        $sQ .= $this->getConfig()->getConfigParam('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';
+        $sQ .= $this->config->getConfigParam('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';
 
         return $sQ;
     }
@@ -116,10 +116,9 @@ class vendor_main_ajax extends ajaxListComponent
      */
     public function removeVendor()
     {
-        $oConfig = $this->getConfig();
         $aRemoveArt = $this->_getActionIds('oxarticles.oxid');
 
-        if ($oConfig->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
             $aRemoveArt = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
@@ -129,9 +128,9 @@ class vendor_main_ajax extends ajaxListComponent
                 . $this->onVendorActionArticleUpdateConditions($aRemoveArt);
             oxDb::getDb()->Execute($sSelect);
 
-            $this->resetCounter("vendorArticle", $oConfig->getRequestParameter('oxid'));
+            $this->resetCounter("vendorArticle", $this->request->getRequestParameter('oxid'));
 
-            $this->onVendorAction($oConfig->getRequestParameter('oxid'));
+            $this->onVendorAction($this->request->getRequestParameter('oxid'));
         }
     }
 
@@ -140,12 +139,10 @@ class vendor_main_ajax extends ajaxListComponent
      */
     public function addVendor()
     {
-        $oConfig = $this->getConfig();
-
         $aAddArticle = $this->_getActionIds('oxarticles.oxid');
-        $soxId = $oConfig->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
-        if ($oConfig->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
             $aAddArticle = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }

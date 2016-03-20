@@ -37,8 +37,9 @@ class oxSearch extends oxSuperCfg
     /**
      * Class constructor. Executes search lenguage setter
      */
-    public function __construct()
+    public function __construct($config)
     {
+        parent::__construct($config);
         $this->setLanguage();
     }
 
@@ -67,15 +68,15 @@ class oxSearch extends oxSuperCfg
      *
      * @return oxarticlelist
      */
-    public function getSearchArticles($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false)
+    public function getSearchArticles($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false, $iActPage = null)
     {
         // sets active page
-        $this->iActPage = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+        $this->iActPage = (int) $iActPage;
         $this->iActPage = ($this->iActPage < 0) ? 0 : $this->iActPage;
 
         // load only articles which we show on screen
         //setting default values to avoid possible errors showing article list
-        $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
+        $iNrofCatArticles = $this->config->getConfigParam('iNrofCatArticles');
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
         $oArtList = oxNew('oxArticleList');
@@ -186,7 +187,7 @@ class oxSearch extends oxSuperCfg
 
         // longdesc field now is kept on different table
         $sDescJoin = '';
-        if (is_array($aSearchCols = $this->getConfig()->getConfigParam('aSearchCols'))) {
+        if (is_array($aSearchCols = $this->config->getConfigParam('aSearchCols'))) {
             if (in_array('oxlongdesc', $aSearchCols) || in_array('oxtags', $aSearchCols)) {
                 $sDescView = getViewName('oxartextends', $this->_iLanguage);
                 $sDescJoin = " LEFT JOIN {$sDescView} ON {$sArticleTable}.oxid={$sDescView}.oxid ";
@@ -243,7 +244,7 @@ class oxSearch extends oxSuperCfg
     protected function _getWhere($sSearchString)
     {
         $oDb = oxDb::getDb();
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $blSep = false;
         $sArticleTable = getViewName('oxarticles', $this->_iLanguage);
 

@@ -23,6 +23,8 @@
 namespace OxidEsales\Eshop\Application\Controller;
 
 use oxField;
+use OxidEsales\Eshop\Core\DiContainer;
+use OxidEsales\Eshop\Core\Event\PriceAlarmCreated;
 use oxRegistry;
 
 /**
@@ -74,10 +76,10 @@ class PriceAlarmController extends \oxUBase
      */
     public function addme()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myUtils = oxRegistry::getUtils();
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter('pa');
+        $aParams = $this->request->getRequestParameter('pa');
         if (!isset($aParams['email']) || !$myUtils->isValidEmail($aParams['email'])) {
             $this->_iPriceAlarmStatus = 0;
 
@@ -89,7 +91,7 @@ class PriceAlarmController extends \oxUBase
         $dPrice = $myUtils->currency2Float($aParams['price']);
 
         $oAlarm = oxNew("oxpricealarm");
-        $oAlarm->oxpricealarm__oxuserid = new oxField(oxRegistry::getSession()->getVariable('usr'));
+        $oAlarm->oxpricealarm__oxuserid = new oxField($this->session->getVariable('usr'));
         $oAlarm->oxpricealarm__oxemail = new oxField($aParams['email']);
         $oAlarm->oxpricealarm__oxartid = new oxField($aParams['aid']);
         $oAlarm->oxpricealarm__oxprice = new oxField($myUtils->fRound($dPrice, $oCur));
@@ -100,9 +102,12 @@ class PriceAlarmController extends \oxUBase
 
         $oAlarm->save();
 
-        // Send Email
-        $oEmail = oxNew('oxemail');
-        $this->_iPriceAlarmStatus = (int) $oEmail->sendPricealarmNotification($aParams, $oAlarm);
+        DiContainer::getInstance()
+            ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
+            ->dispatch(
+                PriceAlarmCreated::NAME,
+                new PriceAlarmCreated($aParams, $oAlarm)
+            );
     }
 
     /**
@@ -116,7 +121,7 @@ class PriceAlarmController extends \oxUBase
             $this->_sBidPrice = false;
 
             $aParams = $this->_getParams();
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
             $iPrice = oxRegistry::getUtils()->currency2Float($aParams['price']);
             $this->_sBidPrice = oxRegistry::getLang()->formatCurrency($iPrice, $oCur);
         }
@@ -149,7 +154,7 @@ class PriceAlarmController extends \oxUBase
      */
     private function _getParams()
     {
-        return oxRegistry::getConfig()->getRequestParameter('pa');
+        return $this->request->getRequestParameter('pa');
     }
 
     /**

@@ -14,8 +14,6 @@
     </h3>
 
     [{if $_oRecommendationList}]
-        [{$_oRecommendationList->rewind()}]
-
         [{if $_oRecommendationList->current()}]
                [{assign var="_oFirstRecommendationList" value=$_oRecommendationList->current()}]
             [{assign var="_oBoxTopProduct" value=$_oFirstRecommendationList->getFirstArticle()}]

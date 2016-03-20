@@ -39,11 +39,11 @@ class Module_SortList extends oxAdminDetails
 
         $oModuleList = oxNew("oxModuleList");
 
-        $this->_aViewData["aExtClasses"] = $this->getConfig()->getModulesWithExtendedClass();
+        $this->_aViewData["aExtClasses"] = $this->config->getModulesWithExtendedClass();
         $this->_aViewData["aDisabledModules"] = $oModuleList->getDisabledModuleClasses();
 
         // checking if there are any deleted extensions
-        if (oxRegistry::getSession()->getVariable("blSkipDeletedExtChecking") == false) {
+        if ($this->session->getVariable("blSkipDeletedExtChecking") == false) {
             $aDeletedExt = $oModuleList->getDeletedExtensions();
         }
 
@@ -59,14 +59,14 @@ class Module_SortList extends oxAdminDetails
      */
     public function save()
     {
-        $aModule = oxRegistry::getConfig()->getRequestParameter("aModules");
+        $aModule = $this->request->getRequestParameter("aModules");
 
         $aModules = json_decode($aModule, true);
 
         $oModuleInstaller = oxNew('oxModuleInstaller');
         $aModules = $oModuleInstaller->buildModuleChains($aModules);
 
-        $this->getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
+        $this->config->saveShopConfVar("aarr", "aModules", $aModules);
     }
 
     /**
@@ -77,8 +77,8 @@ class Module_SortList extends oxAdminDetails
     public function remove()
     {
         //if user selected not to update modules, skipping all updates
-        if (oxRegistry::getConfig()->getRequestParameter("noButton")) {
-            oxRegistry::getSession()->setVariable("blSkipDeletedExtChecking", true);
+        if ($this->request->getRequestParameter("noButton")) {
+            $this->session->setVariable("blSkipDeletedExtChecking", true);
 
             return;
         }

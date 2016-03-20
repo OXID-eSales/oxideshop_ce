@@ -36,7 +36,7 @@ class SystemInfo extends oxAdminView
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 

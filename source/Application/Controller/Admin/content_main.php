@@ -36,7 +36,7 @@ class Content_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 
@@ -103,10 +103,10 @@ class Content_Main extends oxAdminDetails
     {
         parent::save();
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         if (isset($aParams['oxcontents__oxloadid'])) {
             $aParams['oxcontents__oxloadid'] = $this->_prepareIdent($aParams['oxcontents__oxloadid']);
@@ -170,10 +170,10 @@ class Content_Main extends oxAdminDetails
     {
         parent::save();
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         if (isset($aParams['oxcontents__oxloadid'])) {
             $aParams['oxcontents__oxloadid'] = $this->_prepareIdent($aParams['oxcontents__oxloadid']);
@@ -196,7 +196,7 @@ class Content_Main extends oxAdminDetails
         $oContent->assign($aParams);
 
         // apply new language
-        $oContent->setLanguage(oxRegistry::getConfig()->getRequestParameter("new_lang"));
+        $oContent->setLanguage($this->request->getRequestParameter("new_lang"));
         $oContent->save();
 
         // set oxid if inserted
@@ -232,7 +232,7 @@ class Content_Main extends oxAdminDetails
         // null not allowed
         if (!strlen($sIdent)) {
             $blAllow = true;
-        } elseif ($oDb->getOne("select oxid from oxcontents where oxloadid = " . $oDb->quote($sIdent) . " and oxid != " . $oDb->quote($sOxId) . " and oxshopid = '" . $this->getConfig()->getShopId() . "'", false, false)) {
+        } elseif ($oDb->getOne("select oxid from oxcontents where oxloadid = " . $oDb->quote($sIdent) . " and oxid != " . $oDb->quote($sOxId) . " and oxshopid = '" . $this->config->getShopId() . "'", false, false)) {
             $blAllow = true;
         }
 

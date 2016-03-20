@@ -100,7 +100,7 @@ class oxUtilsServer extends oxSuperCfg
         if ($this->_blSaveToSession === null) {
             $this->_blSaveToSession = false;
 
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
             if ($sSslUrl = $myConfig->getSslShopUrl()) {
                 $sUrl = $myConfig->getShopUrl();
 
@@ -127,7 +127,7 @@ class oxUtilsServer extends oxSuperCfg
      */
     protected function _getSessionCookieKey($blGet)
     {
-        $blSsl = $this->getConfig()->isSsl();
+        $blSsl = $this->config->isSsl();
         $sKey = $blSsl ? 'nossl' : 'ssl';
 
         if ($blGet) {
@@ -191,9 +191,9 @@ class oxUtilsServer extends oxSuperCfg
      */
     protected function _getCookiePath($sPath)
     {
-        if ($aCookiePaths = $this->getConfig()->getConfigParam('aCookiePaths')) {
+        if ($aCookiePaths = $this->config->getConfigParam('aCookiePaths')) {
             // in case user wants to have shop specific setup
-            $sShopId = $this->getConfig()->getShopId();
+            $sShopId = $this->config->getShopId();
             $sPath = isset($aCookiePaths[$sShopId]) ? $aCookiePaths[$sShopId] : $sPath;
         }
 
@@ -218,9 +218,9 @@ class oxUtilsServer extends oxSuperCfg
         // on special cases, like separate domain for SSL, cookies must be defined on domain specific path
         // please have a look at
         if (!$sDomain) {
-            if ($aCookieDomains = $this->getConfig()->getConfigParam('aCookieDomains')) {
+            if ($aCookieDomains = $this->config->getConfigParam('aCookieDomains')) {
                 // in case user wants to have shop specific setup
-                $sShopId = $this->getConfig()->getShopId();
+                $sShopId = $this->config->getShopId();
                 $sDomain = isset($aCookieDomains[$sShopId]) ? $aCookieDomains[$sShopId] : $sDomain;
             }
         }
@@ -240,7 +240,7 @@ class oxUtilsServer extends oxSuperCfg
     {
         $sValue = null;
         if ($sName && isset($_COOKIE[$sName])) {
-            $sValue = oxRegistry::getConfig()->checkParamSpecialChars($_COOKIE[$sName]);
+            $sValue = $this->config->checkParamSpecialChars($_COOKIE[$sName]);
         } elseif ($sName && !isset($_COOKIE[$sName])) {
             $sValue = isset($this->_sSessionCookies[$sName]) ? $this->_sSessionCookies[$sName] : null;
         } elseif (!$sName && isset($_COOKIE)) {
@@ -301,7 +301,7 @@ class oxUtilsServer extends oxSuperCfg
      */
     public function setUserCookie($sUser, $sPassword, $sShopId = null, $iTimeout = 31536000, $sSalt = 'ox')
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $sShopId = (!$sShopId) ? $myConfig->getShopId() : $sShopId;
         $sSslUrl = $myConfig->getSslShopUrl();
         if (stripos($sSslUrl, 'https') === 0) {
@@ -322,8 +322,8 @@ class oxUtilsServer extends oxSuperCfg
      */
     public function deleteUserCookie($sShopId = null)
     {
-        $myConfig = $this->getConfig();
-        $sShopId = (!$sShopId) ? $this->getConfig()->getShopId() : $sShopId;
+        $myConfig = $this->config;
+        $sShopId = (!$sShopId) ? $this->config->getShopId() : $sShopId;
         $sSslUrl = $myConfig->getSslShopUrl();
         if (stripos($sSslUrl, 'https') === 0) {
             $blSsl = true;
@@ -345,7 +345,7 @@ class oxUtilsServer extends oxSuperCfg
      */
     public function getUserCookie($sShopId = null)
     {
-        $myConfig = parent::getConfig();
+        $myConfig = $this->config;
         $sShopId = (!$sShopId) ? $myConfig->getShopId() : $sShopId;
         // check for SSL connection
         if (!$myConfig->isSsl() && $this->getOxCookie('oxid_' . $sShopId . '_autologin') == '1') {
@@ -371,7 +371,7 @@ class oxUtilsServer extends oxSuperCfg
     public function isTrustedClientIp()
     {
         $blTrusted = false;
-        $aTrustedIPs = ( array ) $this->getConfig()->getConfigParam("aTrustedIPs");
+        $aTrustedIPs = ( array ) $this->config->getConfigParam("aTrustedIPs");
         if (count($aTrustedIPs)) {
             $blTrusted = in_array($this->getRemoteAddress(), $aTrustedIPs);
         }

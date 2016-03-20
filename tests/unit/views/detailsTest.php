@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Testing details class
@@ -1605,7 +1606,7 @@ class Unit_Views_detailsTest extends OxidTestCase
     public function testAddme_invalidEmail()
     {
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
+        $oEmail = $this->getMailerMock(array('sendPricealarmNotification'));
         $oEmail->expects($this->never())->method('sendPricealarmNotification');
         oxTestModules::addModuleObject('oxEmail', $oEmail);
 
@@ -1628,9 +1629,9 @@ class Unit_Views_detailsTest extends OxidTestCase
     public function testAddme_mailsent()
     {
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
+        $oEmail = $this->getMailerMock(array('sendPricealarmNotification'));
         $oEmail->expects($this->once())->method('sendPricealarmNotification')->will($this->returnValue(123));
-        oxTestModules::addModuleObject('oxEmail', $oEmail);
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         /** @var oxPriceAlarm|PHPUnit_Framework_MockObject_MockObject $oPriceAlarm */
         $oPriceAlarm = $this->getMock('oxPriceAlarm', array('save'));

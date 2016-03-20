@@ -73,7 +73,7 @@ class DeliverySet_Users extends oxAdminDetails
 
         $this->_aViewData["allgroups2"] = $oGroups;
 
-        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+        $iAoc = $this->request->getRequestParameter("aoc");
         if ($iAoc == 1) {
             $oDeliverysetGroupsAjax = oxNew('deliveryset_groups_ajax');
             $this->_aViewData['oxajax'] = $oDeliverysetGroupsAjax->getColumns();

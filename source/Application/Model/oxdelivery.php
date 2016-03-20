@@ -130,14 +130,15 @@ class oxDelivery extends oxI18n
      */
     protected $_aRDFaDeliverySet = null;
 
+    protected $_sCoreTable = "oxdelivery";
+
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */
-    public function __construct()
+    public function __construct($config)
     {
-        parent::__construct();
-        $this->init('oxdelivery');
-        $this->setDelVatOnTop($this->getConfig()->getConfigParam('blDeliveryVatOnTop'));
+        parent::__construct($config);
+        $this->setDelVatOnTop($this->config->getConfigParam('blDeliveryVatOnTop'));
     }
 
     /**
@@ -220,7 +221,7 @@ class oxDelivery extends oxI18n
             $oProduct = $oProduct->getArticle();
         }
 
-        $blExclNonMaterial = $this->getConfig()->getConfigParam('blExclNonMaterialFromDelivery');
+        $blExclNonMaterial = $this->config->getConfigParam('blExclNonMaterialFromDelivery');
 
         // mark free shipping products
         if ($oProduct->oxarticles__oxfreeshipping->value || ($oProduct->oxarticles__oxnonmaterial->value && $blExclNonMaterial)) {
@@ -471,7 +472,7 @@ class oxDelivery extends oxI18n
         $blResult = false;
 
         if ($this->getConditionType() == self::CONDITION_TYPE_PRICE) {
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
             $iAmount /= $oCur->rate;
         }
 
@@ -614,7 +615,7 @@ class oxDelivery extends oxI18n
     protected function _getCostSum()
     {
         if ($this->getAddSumType() == 'abs') {
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
             $dPrice = $this->getAddSum() * $oCur->rate * $this->_getMultiplier();
         } else {
             $dPrice = $this->_dPrice / 100 * $this->getAddSum();

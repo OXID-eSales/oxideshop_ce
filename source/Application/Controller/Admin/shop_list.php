@@ -66,7 +66,7 @@ class Shop_List extends oxAdminList
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 
@@ -89,13 +89,13 @@ class Shop_List extends oxAdminList
 
         if ($this->_aViewData['updatenav']) {
             //skipping requirements checking when reloading nav frame
-            oxRegistry::getSession()->setVariable("navReload", true);
+            $this->session->setVariable("navReload", true);
         }
 
         //making sure we really change shops on low level
         if ($soxId && $soxId != self::NEW_SHOP_ID) {
             $myConfig->setShopId($soxId);
-            oxRegistry::getSession()->setVariable('currentadminshop', $soxId);
+            $this->session->setVariable('currentadminshop', $soxId);
         }
 
         return 'shop_list.tpl';
@@ -110,9 +110,9 @@ class Shop_List extends oxAdminList
     {
         // we override this to add our shop if we are not malladmin
         $this->_aWhere = parent::buildWhere();
-        if (!oxRegistry::getSession()->getVariable('malladmin')) {
+        if (!$this->session->getVariable('malladmin')) {
             // we only allow to see our shop
-            $this->_aWhere[getViewName("oxshops") . ".oxid"] = oxRegistry::getSession()->getVariable("actshop");
+            $this->_aWhere[getViewName("oxshops") . ".oxid"] = $this->session->getVariable("actshop");
         }
 
         return $this->_aWhere;

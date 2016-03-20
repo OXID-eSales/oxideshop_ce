@@ -37,7 +37,7 @@ class Article_Stock extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 
@@ -101,7 +101,7 @@ class Article_Stock extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         $oArticle = oxNew("oxArticle");
         $oArticle->loadInLang($this->_iEditLang, $soxId);
@@ -136,14 +136,14 @@ class Article_Stock extends oxAdminDetails
      */
     public function addprice($sOXID = null, $aUpdateParams = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $this->resetContentCache();
 
         $sOxArtId = $this->getEditObjectId();
         $this->onArticleAmountPriceChange($sOxArtId);
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         if (!is_array($aParams)) {
             return;
@@ -214,7 +214,7 @@ class Article_Stock extends oxAdminDetails
      */
     public function updateprices()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter("updateval");
+        $aParams = $this->request->getRequestParameter("updateval");
         if (is_array($aParams)) {
             foreach ($aParams as $soxId => $aStockParams) {
                 $this->addprice($soxId, $aStockParams);
@@ -234,7 +234,7 @@ class Article_Stock extends oxAdminDetails
         $this->resetContentCache();
 
         $oDb = oxDb::getDb();
-        $sPriceId = $oDb->quote(oxRegistry::getConfig()->getRequestParameter("priceid"));
+        $sPriceId = $oDb->quote($this->request->getRequestParameter("priceid"));
         $articleId = $this->getEditObjectId();
         $sId = $oDb->quote($articleId);
         $oDb->execute("delete from oxprice2article where oxid = {$sPriceId} and oxartid = {$sId}");

@@ -28,6 +28,9 @@ use oxArticleTagList;
 use oxCategory;
 use oxDeliveryList;
 use oxDeliverySetList;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Accessoires;
+use OxidEsales\Eshop\Core\DiContainer;
+use OxidEsales\Eshop\Core\Event\PriceAlarmCreated;
 use oxPaymentList;
 use oxRegistry;
 use oxField;
@@ -236,8 +239,8 @@ class ArticleDetailsController extends \oxUBase
     {
         $parameters = parent::getNavigationParams();
 
-        $variantSelectionListId = oxRegistry::getConfig()->getRequestParameter('varselid');
-        $selectListParameters = oxRegistry::getConfig()->getRequestParameter('sel');
+        $variantSelectionListId = $this->request->getRequestParameter('varselid');
+        $selectListParameters = $this->request->getRequestParameter('sel');
         if (!$variantSelectionListId && !$selectListParameters) {
             return $parameters;
         }
@@ -278,7 +281,7 @@ class ArticleDetailsController extends \oxUBase
      */
     protected function generateViewId()
     {
-        return parent::generateViewId() . '|' . $this->getConfig()->getRequestParameter('anid') . '|';
+        return parent::generateViewId() . '|' . $this->request->getRequestParameter('anid') . '|';
     }
 
     /**
@@ -294,7 +297,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $article = $this->getProduct();
 
@@ -303,13 +306,13 @@ class ArticleDetailsController extends \oxUBase
             $this->_sThisTemplate = $article->oxarticles__oxtemplate->value;
         }
 
-        if (($templateName = oxRegistry::getConfig()->getRequestParameter('tpl'))) {
+        if (($templateName = $this->request->getRequestParameter('tpl'))) {
             $this->_sThisTemplate = 'custom/' . basename($templateName);
         }
 
         parent::render();
 
-        $renderPartial = $this->getConfig()->getRequestParameter('renderPartial');
+        $renderPartial = $this->request->getRequestParameter('renderPartial');
         $this->addTplParam('renderPartial', $renderPartial);
 
         switch ($renderPartial) {
@@ -351,7 +354,7 @@ class ArticleDetailsController extends \oxUBase
         if (!$meta) {
             $article = $this->getProduct();
 
-            if ($this->getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
+            if ($this->config->getConfigParam('bl_perfParseLongDescinSmarty')) {
                 $meta = $article->getLongDesc();
             } else {
                 $meta = $article->getLongDescription()->value;
@@ -405,14 +408,14 @@ class ArticleDetailsController extends \oxUBase
      */
     public function saveReview()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
         if ($this->canAcceptFormData() &&
             ($user = $this->getUser()) && ($article = $this->getProduct())
         ) {
-            $articleRating = $this->getConfig()->getRequestParameter('artrating');
+            $articleRating = $this->request->getRequestParameter('artrating');
             if ($articleRating !== null) {
                 $articleRating = (int) $articleRating;
             }
@@ -430,7 +433,7 @@ class ArticleDetailsController extends \oxUBase
                 }
             }
 
-            if (($reviewText = trim(( string ) $this->getConfig()->getRequestParameter('rvw_txt', true)))) {
+            if (($reviewText = trim(( string ) $this->request->getRequestParameter('rvw_txt', true)))) {
                 $review = oxNew('oxReview');
                 $review->oxreviews__oxobjectid = new oxField($article->getId());
                 $review->oxreviews__oxtype = new oxField('oxarticle');
@@ -450,7 +453,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function addToRecomm()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -458,8 +461,8 @@ class ArticleDetailsController extends \oxUBase
             return;
         }
 
-        $recommendationText = trim(( string ) $this->getConfig()->getRequestParameter('recomm_txt'));
-        $recommendationListId = $this->getConfig()->getRequestParameter('recomm');
+        $recommendationText = trim(( string ) $this->request->getRequestParameter('recomm_txt'));
+        $recommendationListId = $this->request->getRequestParameter('recomm');
         $articleId = $this->getProduct()->getId();
 
         if ($articleId) {
@@ -476,12 +479,12 @@ class ArticleDetailsController extends \oxUBase
      */
     public function addTags()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
-        $tags = $this->getConfig()->getRequestParameter('newTags', true);
-        $highTag = $this->getConfig()->getRequestParameter('highTags', true);
+        $tags = $this->request->getRequestParameter('newTags', true);
+        $highTag = $this->request->getRequestParameter('highTags', true);
         if (!$tags && !$highTag) {
             return;
         }
@@ -491,7 +494,7 @@ class ArticleDetailsController extends \oxUBase
         $article = $this->getProduct();
 
         // set current user added tags for this article for later checking
-        $taggedArticles = oxRegistry::getSession()->getVariable("aTaggedProducts");
+        $taggedArticles = $this->session->getVariable("aTaggedProducts");
         $addedTags = $taggedArticles ? $taggedArticles[$article->getId()] : array();
 
         $articleTagList = oxNew("oxArticleTagList");
@@ -507,10 +510,10 @@ class ArticleDetailsController extends \oxUBase
                 $addedTags[$tag] = 1;
             }
             $taggedArticles[$article->getId()] = $addedTags;
-            oxRegistry::getSession()->setVariable('aTaggedProducts', $taggedArticles);
+            $this->session->setVariable('aTaggedProducts', $taggedArticles);
         }
         // for ajax call
-        if ($this->getConfig()->getRequestParameter('blAjax', true)) {
+        if ($this->request->getRequestParameter('blAjax', true)) {
             oxRegistry::getUtils()->showMessageAndExit(json_encode($result));
         }
     }
@@ -562,7 +565,7 @@ class ArticleDetailsController extends \oxUBase
         $this->_blEditTags = true;
 
         // for ajax call
-        if ($this->getConfig()->getRequestParameter('blAjax', true)) {
+        if ($this->request->getRequestParameter('blAjax', true)) {
             $charset = oxRegistry::getLang()->translateString('charset');
             oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . $charset);
             $smarty = oxRegistry::get("oxUtilsView")->getSmarty();
@@ -586,7 +589,7 @@ class ArticleDetailsController extends \oxUBase
         $this->_blEditTags = false;
 
         // for ajax call
-        if (oxRegistry::getConfig()->getRequestParameter('blAjax', true)) {
+        if ($this->request->getRequestParameter('blAjax', true)) {
             $charset = oxRegistry::getLang()->translateString('charset');
             oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . $charset);
             $smarty = oxRegistry::get("oxUtilsView")->getSmarty();
@@ -637,7 +640,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getProduct()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $utils = oxRegistry::getUtils();
 
         if ($this->_oProduct === null) {
@@ -645,7 +648,7 @@ class ArticleDetailsController extends \oxUBase
             //as blLoadVariants = false affect "ab price" functionality
             $config->setConfigParam('blLoadVariants', true);
 
-            $articleId = $this->getConfig()->getRequestParameter('anid');
+            $articleId = $this->request->getRequestParameter('anid');
 
             // object is not yet loaded
             $this->_oProduct = oxNew('oxArticle');
@@ -655,7 +658,7 @@ class ArticleDetailsController extends \oxUBase
                 $utils->showMessageAndExit('');
             }
 
-            $variantSelectionId = $this->getConfig()->getRequestParameter("varselid");
+            $variantSelectionId = $this->request->getRequestParameter("varselid");
             $variantSelections = $this->_oProduct->getVariantSelections($variantSelectionId);
             if ($variantSelections && $variantSelections['oActiveVariant'] && $variantSelections['blPerfectFit']) {
                 $this->_oProduct = $variantSelections['oActiveVariant'];
@@ -675,7 +678,7 @@ class ArticleDetailsController extends \oxUBase
      */
     protected function _additionalChecksForArticle()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $utils = oxRegistry::getUtils();
 
         $shouldContinue = true;
@@ -705,7 +708,7 @@ class ArticleDetailsController extends \oxUBase
     public function getLinkType()
     {
         if ($this->_iLinkType === null) {
-            $listType = $this->getConfig()->getRequestParameter('listtype');
+            $listType = $this->request->getRequestParameter('listtype');
             if ('vendor' == $listType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $listType) {
@@ -850,7 +853,7 @@ class ArticleDetailsController extends \oxUBase
     {
         if ($this->_aSelectLists === null) {
             $this->_aSelectLists = false;
-            if ($this->getConfig()->getConfigParam('bl_perfLoadSelectLists')) {
+            if ($this->config->getConfigParam('bl_perfLoadSelectLists')) {
                 $this->_aSelectLists = $this->getProduct()->getSelectLists();
             }
         }
@@ -867,7 +870,7 @@ class ArticleDetailsController extends \oxUBase
     {
         if ($this->_aReviews === null) {
             $this->_aReviews = false;
-            if ($this->getConfig()->getConfigParam('bl_perfLoadReviews')) {
+            if ($this->config->getConfigParam('bl_perfLoadReviews')) {
                 $this->_aReviews = $this->getProduct()->getReviews();
             }
         }
@@ -934,14 +937,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getAccessoires()
     {
-        if ($this->_oAccessoires === null) {
-            $this->_oAccessoires = false;
-            if ($article = $this->getProduct()) {
-                $this->_oAccessoires = $article->getAccessoires();
-            }
-        }
-
-        return $this->_oAccessoires;
+        return (new Accessoires())->getById($this->getProduct()->getId());
     }
 
     /**
@@ -1028,7 +1024,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function noIndex()
     {
-        $listType = $this->getConfig()->getRequestParameter('listtype');
+        $listType = $this->request->getRequestParameter('listtype');
         if ($listType && ('vendor' == $listType || 'manufacturer' == $listType)) {
             return $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
         }
@@ -1078,7 +1074,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getTag()
     {
-        return oxRegistry::getConfig()->getRequestParameter("searchtag");
+        return $this->request->getRequestParameter("searchtag");
     }
 
     /**
@@ -1136,10 +1132,10 @@ class ArticleDetailsController extends \oxUBase
      */
     public function addMe()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $utils = oxRegistry::getUtils();
 
-        $parameters = $this->getConfig()->getRequestParameter('pa');
+        $parameters = $this->request->getRequestParameter('pa');
         if (!isset($parameters['email']) || !$utils->isValidEmail($parameters['email'])) {
             $this->_iPriceAlarmStatus = 0;
             return;
@@ -1162,9 +1158,12 @@ class ArticleDetailsController extends \oxUBase
 
         $priceAlarm->save();
 
-        // Send Email
-        $email = oxNew('oxEmail');
-        $this->_iPriceAlarmStatus = (int) $email->sendPricealarmNotification($parameters, $priceAlarm);
+        DiContainer::getInstance()
+            ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
+            ->dispatch(
+                PriceAlarmCreated::NAME,
+                new PriceAlarmCreated($parameters, $priceAlarm)
+            );
     }
 
     /**
@@ -1187,8 +1186,8 @@ class ArticleDetailsController extends \oxUBase
         if ($this->_sBidPrice === null) {
             $this->_sBidPrice = false;
 
-            $parameters = $this->getConfig()->getRequestParameter('pa');
-            $activeCurrency = $this->getConfig()->getActShopCurrencyObject();
+            $parameters = $this->request->getRequestParameter('pa');
+            $activeCurrency = $this->config->getActShopCurrencyObject();
             $price = oxRegistry::getUtils()->currency2Float($parameters['price']);
             $this->_sBidPrice = oxRegistry::getLang()->formatCurrency($price, $activeCurrency);
         }
@@ -1204,7 +1203,7 @@ class ArticleDetailsController extends \oxUBase
     public function getVariantSelections()
     {
         $article = $this->getProduct();
-        $variantSelectionListId = $this->getConfig()->getRequestParameter("varselid");
+        $variantSelectionListId = $this->request->getRequestParameter("varselid");
         if (($articleParent = $this->_getParentProduct($article->oxarticles__oxparentid->value))) {
             return $articleParent->getVariantSelections($variantSelectionListId, $article->getId());
         }
@@ -1235,7 +1234,7 @@ class ArticleDetailsController extends \oxUBase
     public function getSearchParamForHtml()
     {
         if ($this->_sSearchParamForHtml === null) {
-            $this->_sSearchParamForHtml = $this->getConfig()->getRequestParameter('searchparam');
+            $this->_sSearchParamForHtml = $this->request->getRequestParameter('searchparam');
         }
 
         return $this->_sSearchParamForHtml;
@@ -1248,7 +1247,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function showRdfa()
     {
-        return $this->getConfig()->getConfigParam('blRDFaEmbedding');
+        return $this->config->getConfigParam('blRDFaEmbedding');
     }
 
     /**
@@ -1258,7 +1257,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getRDFaNormalizedRating()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $minRating = $config->getConfigParam("iRDFaMinRating");
         $maxRating = $config->getConfigParam("iRDFaMaxRating");
 
@@ -1287,7 +1286,7 @@ class ArticleDetailsController extends \oxUBase
     {
         if ($configVariableName) {
             $validity = array();
-            $days = $this->getConfig()->getConfigParam($configVariableName);
+            $days = $this->config->getConfigParam($configVariableName);
             $from = oxRegistry::get("oxUtilsDate")->getTime();
 
             $through = $from + ($days * 24 * 60 * 60);
@@ -1307,7 +1306,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getRDFaBusinessFnc()
     {
-        return $this->getConfig()->getConfigParam("sRDFaBusinessFnc");
+        return $this->config->getConfigParam("sRDFaBusinessFnc");
     }
 
     /**
@@ -1317,7 +1316,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getRDFaCustomers()
     {
-        return $this->getConfig()->getConfigParam("aRDFaCustomers");
+        return $this->config->getConfigParam("aRDFaCustomers");
     }
 
     /**
@@ -1327,7 +1326,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getRDFaVAT()
     {
-        return $this->getConfig()->getConfigParam("iRDFaVAT");
+        return $this->config->getConfigParam("iRDFaVAT");
     }
 
     /**
@@ -1337,7 +1336,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getRDFaGenericCondition()
     {
-        return $this->getConfig()->getConfigParam("iRDFaCondition");
+        return $this->config->getConfigParam("iRDFaCondition");
     }
 
     /**
@@ -1406,7 +1405,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getRDFaDeliveryChargeSpecLoc()
     {
-        return $this->getConfig()->getConfigParam("sRDFaDeliveryChargeSpecLoc");
+        return $this->config->getConfigParam("sRDFaDeliveryChargeSpecLoc");
     }
 
     /**
@@ -1416,7 +1415,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getRDFaPaymentChargeSpecLoc()
     {
-        return $this->getConfig()->getConfigParam("sRDFaPaymentChargeSpecLoc");
+        return $this->config->getConfigParam("sRDFaPaymentChargeSpecLoc");
     }
 
     /**
@@ -1426,7 +1425,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getRDFaBusinessEntityLoc()
     {
-        return $this->getConfig()->getConfigParam("sRDFaBusinessEntityLoc");
+        return $this->config->getConfigParam("sRDFaBusinessEntityLoc");
     }
 
     /**
@@ -1436,7 +1435,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function showRDFaProductStock()
     {
-        return $this->getConfig()->getConfigParam("blShowRDFaProductStock");
+        return $this->config->getConfigParam("blShowRDFaProductStock");
     }
 
     /**
@@ -1488,7 +1487,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function isReviewActive()
     {
-        return $this->getConfig()->getConfigParam('bl_perfLoadReviews');
+        return $this->config->getConfigParam('bl_perfLoadReviews');
     }
 
     /**
@@ -1587,7 +1586,7 @@ class ArticleDetailsController extends \oxUBase
         $tagPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($selfLink . 'cl=tags');
         $paths[] = $tagPath;
 
-        $searchTagParameter = oxRegistry::getConfig()->getRequestParameter('searchtag');
+        $searchTagParameter = $this->request->getRequestParameter('searchtag');
         $stringModifier = getStr();
         $tagPath['title'] = $stringModifier->ucfirst($searchTagParameter);
         $tagPath['link'] = oxRegistry::get("oxSeoEncoderTag")->getTagUrl($searchTagParameter);
@@ -1609,7 +1608,7 @@ class ArticleDetailsController extends \oxUBase
         $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
         $translatedString = oxRegistry::getLang()->translateString('SEARCH_RESULT', $baseLanguageId, false);
         $selfLink = $this->getViewConfig()->getSelfLink();
-        $sessionToken = oxRegistry::getSession()->getVariable('sess_stoken');
+        $sessionToken = $this->session->getVariable('sess_stoken');
 
         $searchPath['title'] = sprintf($translatedString, $this->getSearchParamForHtml());
         $searchPath['link'] = $selfLink . 'stoken=' . $sessionToken . "&amp;cl=search&amp;".

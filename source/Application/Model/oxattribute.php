@@ -55,14 +55,7 @@ class oxAttribute extends oxI18n
      */
     protected $_aValues = null;
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxattribute');
-    }
+    protected $_sCoreTable = "oxattribute";
 
     /**
      * Removes attributes from articles, returns true on success.

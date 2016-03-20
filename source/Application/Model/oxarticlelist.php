@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Application\Model\Article\ListArticle;
 
 /**
  * Article list manager.
@@ -38,7 +39,7 @@ class oxArticleList extends oxList
      *
      * @var string
      */
-    protected $_sObjectsInListName = 'oxarticle';
+    protected $_sObjectsInListName = ListArticle::class;//'oxarticle';
 
     /**
      * Set to true if Select Lists should be laoded
@@ -83,315 +84,6 @@ class oxArticleList extends oxList
     }
 
     /**
-     * Get history article id's from session or cookie.
-     *
-     * @return array
-     */
-    public function getHistoryArticles()
-    {
-        if ($aArticlesIds = $this->getSession()->getVariable('aHistoryArticles')) {
-            return $aArticlesIds;
-        } elseif ($sArticlesIds = oxRegistry::get("oxUtilsServer")->getOxCookie('aHistoryArticles')) {
-            return explode('|', $sArticlesIds);
-        }
-    }
-
-    /**
-     * Set history article id's to session or cookie
-     *
-     * @param array $aArticlesIds array history article ids
-     */
-    public function setHistoryArticles($aArticlesIds)
-    {
-        if ($this->getSession()->getId()) {
-            oxRegistry::getSession()->setVariable('aHistoryArticles', $aArticlesIds);
-            // clean cookie, if session started
-            oxRegistry::get("oxUtilsServer")->setOxCookie('aHistoryArticles', '');
-        } else {
-            oxRegistry::get("oxUtilsServer")->setOxCookie('aHistoryArticles', implode('|', $aArticlesIds));
-        }
-    }
-
-    /**
-     * Loads up to 4 history (normally recently seen) articles from session, and adds $sArtId to history.
-     * Returns article id array.
-     *
-     * @param string $sArtId Article ID
-     * @param int    $iCnt   product count
-     */
-    public function loadHistoryArticles($sArtId, $iCnt = 4)
-    {
-        $aHistoryArticles = $this->getHistoryArticles();
-        $aHistoryArticles[] = $sArtId;
-
-        // removing duplicates
-        $aHistoryArticles = array_unique($aHistoryArticles);
-        if (count($aHistoryArticles) > ($iCnt + 1)) {
-            array_shift($aHistoryArticles);
-        }
-
-        $this->setHistoryArticles($aHistoryArticles);
-
-        //remove current article and return array
-        //asignment =, not ==
-        if (($iCurrentArt = array_search($sArtId, $aHistoryArticles)) !== false) {
-            unset($aHistoryArticles[$iCurrentArt]);
-        }
-
-        $aHistoryArticles = array_values($aHistoryArticles);
-        $this->loadIds($aHistoryArticles);
-        $this->sortByIds($aHistoryArticles);
-    }
-
-    /**
-     * sort this list by given order.
-     *
-     * @param array $aIds ordered ids
-     */
-    public function sortByIds($aIds)
-    {
-        $this->_aOrderMap = array_flip($aIds);
-        uksort($this->_aArray, array($this, '_sortByOrderMapCallback'));
-    }
-
-    /**
-     * callback function only used from sortByIds
-     *
-     * @param string $key1 1st key
-     * @param string $key2 2nd key
-     *
-     * @see oxArticleList::sortByIds
-     *
-     * @return int
-     */
-    protected function _sortByOrderMapCallback($key1, $key2)
-    {
-        if (isset($this->_aOrderMap[$key1])) {
-            if (isset($this->_aOrderMap[$key2])) {
-                $iDiff = $this->_aOrderMap[$key2] - $this->_aOrderMap[$key1];
-                if ($iDiff > 0) {
-                    return -1;
-                } elseif ($iDiff < 0) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            } else {
-                // first is here, but 2nd is not - 1st gets more priority
-                return -1;
-            }
-        } elseif (isset($this->_aOrderMap[$key2])) {
-            // first is not here, but 2nd is - 2nd gets more priority
-            return 1;
-        } else {
-            // both unset, equal
-            return 0;
-        }
-    }
-
-    /**
-     * Loads newest shops articles from DB.
-     *
-     * @param int $iLimit Select limit
-     */
-    public function loadNewestArticles($iLimit = null)
-    {
-        //has module?
-        $myConfig = $this->getConfig();
-
-        if (!$myConfig->getConfigParam('bl_perfLoadPriceForAddList')) {
-            $this->getBaseObject()->disablePriceLoad();
-        }
-
-        $this->_aArray = array();
-        switch ($myConfig->getConfigParam('iNewestArticlesMode')) {
-            case 0:
-                // switched off, do nothing
-                break;
-            case 1:
-                // manually entered
-                $this->loadActionArticles('oxnewest', $iLimit);
-                break;
-            case 2:
-                $sArticleTable = getViewName('oxarticles');
-                if ($myConfig->getConfigParam('blNewArtByInsert')) {
-                    $sType = 'oxinsert';
-                } else {
-                    $sType = 'oxtimestamp';
-                }
-                $sSelect = "select * from $sArticleTable ";
-                $sSelect .= "where oxparentid = '' and " . $this->getBaseObject()->getSqlActiveSnippet() . " and oxissearch = 1 order by $sType desc ";
-                if (!($iLimit = (int) $iLimit)) {
-                    $iLimit = $myConfig->getConfigParam('iNrofNewcomerArticles');
-                }
-                $sSelect .= "limit " . $iLimit;
-
-                $this->selectString($sSelect);
-                break;
-        }
-
-    }
-
-    /**
-     * Load top 5 articles
-     *
-     * @param int $iLimit Select limit
-     */
-    public function loadTop5Articles($iLimit = null)
-    {
-        //has module?
-        $myConfig = $this->getConfig();
-
-        if (!$myConfig->getConfigParam('bl_perfLoadPriceForAddList')) {
-            $this->getBaseObject()->disablePriceLoad();
-        }
-
-        switch ($myConfig->getConfigParam('iTop5Mode')) {
-            case 0:
-                // switched off, do nothing
-                break;
-            case 1:
-                // manually entered
-                $this->loadActionArticles('oxtop5', $iLimit);
-                break;
-            case 2:
-                $sArticleTable = getViewName('oxarticles');
-
-                //by default limit 5
-                $sLimit = ($iLimit > 0) ? "limit " . $iLimit : 'limit 5';
-
-                $sSelect = "select * from $sArticleTable ";
-                $sSelect .= "where " . $this->getBaseObject()->getSqlActiveSnippet() . " and $sArticleTable.oxissearch = 1 ";
-                $sSelect .= "and $sArticleTable.oxparentid = '' and $sArticleTable.oxsoldamount>0 ";
-                $sSelect .= "order by $sArticleTable.oxsoldamount desc $sLimit";
-
-                $this->selectString($sSelect);
-                break;
-        }
-    }
-
-    /**
-     * Loads shop AktionArticles.
-     *
-     * @param string $sActionID Action id
-     * @param int    $iLimit    Select limit
-     *
-     * @return null
-     */
-    public function loadActionArticles($sActionID, $iLimit = null)
-    {
-        // Performance
-        if (!trim($sActionID)) {
-            return;
-        }
-
-        $sShopID = $this->getConfig()->getShopId();
-        $sActionID = oxDb::getDb()->quote(strtolower($sActionID));
-
-        //echo $sSelect;
-        $oBaseObject = $this->getBaseObject();
-        $sArticleTable = $oBaseObject->getViewName();
-        $sArticleFields = $oBaseObject->getSelectFields();
-
-        $oBase = oxNew("oxActions");
-        $sActiveSql = $oBase->getSqlActiveSnippet();
-        $sViewName = $oBase->getViewName();
-
-        $sLimit = ($iLimit > 0) ? "limit " . $iLimit : '';
-
-        $sSelect = "select $sArticleFields from oxactions2article
-                              left join $sArticleTable on $sArticleTable.oxid = oxactions2article.oxartid
-                              left join $sViewName on $sViewName.oxid = oxactions2article.oxactionid
-                              where oxactions2article.oxshopid = '$sShopID' and oxactions2article.oxactionid = $sActionID and $sActiveSql
-                              and $sArticleTable.oxid is not null and " . $oBaseObject->getSqlActiveSnippet() . "
-                              order by oxactions2article.oxsort $sLimit";
-
-        $this->selectString($sSelect);
-    }
-
-    /**
-     * Loads article cross selling
-     *
-     * @param string $sArticleId Article id
-     *
-     * @return null
-     */
-    public function loadArticleCrossSell($sArticleId)
-    {
-        $myConfig = $this->getConfig();
-
-        // Performance
-        if (!$myConfig->getConfigParam('bl_perfLoadCrossselling')) {
-            return null;
-        }
-
-        $oBaseObject = $this->getBaseObject();
-        $sArticleTable = $oBaseObject->getViewName();
-
-        $sArticleId = oxDb::getDb()->quote($sArticleId);
-
-        $sSelect = "SELECT $sArticleTable.*
-                        FROM $sArticleTable INNER JOIN oxobject2article ON oxobject2article.oxobjectid=$sArticleTable.oxid ";
-        $sSelect .= "WHERE oxobject2article.oxarticlenid = $sArticleId ";
-        $sSelect .= " AND " . $oBaseObject->getSqlActiveSnippet();
-
-        // #525 bidirectional cross selling
-        if ($myConfig->getConfigParam('blBidirectCross')) {
-            $sSelect = "
-                (
-                    SELECT $sArticleTable.* FROM $sArticleTable
-                        INNER JOIN oxobject2article AS O2A1 on
-                            ( O2A1.oxobjectid = $sArticleTable.oxid AND O2A1.oxarticlenid = $sArticleId )
-                    WHERE 1
-                    AND " . $oBaseObject->getSqlActiveSnippet() . "
-                    AND ($sArticleTable.oxid != $sArticleId)
-                )
-                UNION
-                (
-                    SELECT $sArticleTable.* FROM $sArticleTable
-                        INNER JOIN oxobject2article AS O2A2 ON
-                            ( O2A2.oxarticlenid = $sArticleTable.oxid AND O2A2.oxobjectid = $sArticleId )
-                    WHERE 1
-                    AND " . $oBaseObject->getSqlActiveSnippet() . "
-                    AND ($sArticleTable.oxid != $sArticleId)
-                )";
-        }
-
-        $this->setSqlLimit(0, $myConfig->getConfigParam('iNrofCrossellArticles'));
-        $this->selectString($sSelect);
-    }
-
-    /**
-     * Loads article accessories
-     *
-     * @param string $sArticleId Article id
-     *
-     * @return null
-     */
-    public function loadArticleAccessoires($sArticleId)
-    {
-        $myConfig = $this->getConfig();
-
-        // Performance
-        if (!$myConfig->getConfigParam('bl_perfLoadAccessoires')) {
-            return;
-        }
-
-        $sArticleId = oxDb::getDb()->quote($sArticleId);
-
-        $oBaseObject = $this->getBaseObject();
-        $sArticleTable = $oBaseObject->getViewName();
-
-        $sSelect = "select $sArticleTable.* from oxaccessoire2article left join $sArticleTable on oxaccessoire2article.oxobjectid=$sArticleTable.oxid ";
-        $sSelect .= "where oxaccessoire2article.oxarticlenid = $sArticleId ";
-        $sSelect .= " and $sArticleTable.oxid is not null and " . $oBaseObject->getSqlActiveSnippet();
-        //sorting articles
-        $sSelect .= " order by oxaccessoire2article.oxsort";
-
-        $this->selectString($sSelect);
-    }
-
-    /**
      * Loads only ID's and create Fake objects for cmp_categories.
      *
      * @param string $sCatId         Category tree ID
@@ -403,42 +95,6 @@ class oxArticleList extends oxList
         $sSelect = $this->_getCategorySelect($sArticleTable . '.oxid as oxid', $sCatId, $aSessionFilter);
 
         $this->_createIdListFromSql($sSelect);
-    }
-
-    /**
-     * Loads articles for the give Category
-     *
-     * @param string $sCatId         Category tree ID
-     * @param array  $aSessionFilter Like array ( catid => array( attrid => value,...))
-     * @param int    $iLimit         Limit
-     *
-     * @return integer total Count of Articles in this Category
-     */
-    public function loadCategoryArticles($sCatId, $aSessionFilter, $iLimit = null)
-    {
-        $sArticleFields = $this->getBaseObject()->getSelectFields();
-
-        $sSelect = $this->_getCategorySelect($sArticleFields, $sCatId, $aSessionFilter);
-
-        // calc count - we can not use count($this) here as we might have paging enabled
-        // #1970C - if any filters are used, we can not use cached category article count
-        $iArticleCount = null;
-        if ($aSessionFilter) {
-            $iArticleCount = oxDb::getDb()->getOne($this->_getCategoryCountSelect($sCatId, $aSessionFilter));
-        }
-
-        if ($iLimit = (int) $iLimit) {
-            $sSelect .= " LIMIT $iLimit";
-        }
-
-        $this->selectString($sSelect);
-
-        if ($iArticleCount !== null) {
-            return $iArticleCount;
-        }
-
-        // this select is FAST so no need to hazzle here with getNrOfArticles()
-        return oxRegistry::get("oxUtilsCount")->getCatArticleCount($sCatId);
     }
 
     /**
@@ -516,7 +172,7 @@ class oxArticleList extends oxList
         // longdesc field now is kept on different table
         $sDescTable = '';
         $sDescJoin = '';
-        if (is_array($aSearchCols = $this->getConfig()->getConfigParam('aSearchCols'))) {
+        if (is_array($aSearchCols = $this->config->getConfigParam('aSearchCols'))) {
             if (in_array('oxlongdesc', $aSearchCols) || in_array('oxtags', $aSearchCols)) {
                 $sDescView = getViewName('oxartextends');
                 $sDescJoin = " LEFT JOIN $sDescView ON {$sDescView}.oxid={$sArticleTable}.oxid ";
@@ -850,7 +506,7 @@ class oxArticleList extends oxList
             $iTimeToUpdate = $iNextUpdateTime;
         }
 
-        $this->getConfig()->saveShopConfVar("num", "iTimeToUpdatePrices", $iTimeToUpdate);
+        $this->config->saveShopConfVar("num", "iTimeToUpdatePrices", $iTimeToUpdate);
 
         return $iTimeToUpdate;
     }
@@ -1081,7 +737,7 @@ class oxArticleList extends oxList
         }
 
         $oDb = oxDb::getDb();
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myUtils = oxRegistry::getUtils();
         $sArticleTable = $this->getBaseObject()->getViewName();
 
@@ -1224,7 +880,7 @@ class oxArticleList extends oxList
      */
     protected function _canUpdatePrices()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $blCan = false;
 
         // crontab is off?

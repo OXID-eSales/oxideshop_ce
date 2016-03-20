@@ -87,14 +87,7 @@ class oxContent extends oxI18n implements oxIUrl
         return parent::__get($sName);
     }
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxI18n()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxcontents');
-    }
+    protected $_sCoreTable = "oxcontents";
 
     /**
      * Returns the expanded state of the content category.
@@ -104,7 +97,7 @@ class oxContent extends oxI18n implements oxIUrl
     public function getExpanded()
     {
         if (!isset($this->_blExpanded)) {
-            $this->_blExpanded = ($this->getId() == oxRegistry::getConfig()->getRequestParameter('oxcid'));
+            //$this->_blExpanded = ($this->getId() == $this->config->getRequestParameter('oxcid'));
         }
 
         return $this->_blExpanded;
@@ -277,7 +270,7 @@ class oxContent extends oxI18n implements oxIUrl
         $sUrl = '';
         if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
+            $sUrl = $this->config->getShopUrl($iLang, false);
         }
 
         if ($this->oxcontents__oxloadid->value === 'oxcredits') {
@@ -389,7 +382,7 @@ class oxContent extends oxI18n implements oxIUrl
     {
         $blSaved = parent::save();
         if ($blSaved && $this->oxcontents__oxloadid->value === 'oxagb') {
-            $sShopId = $this->getConfig()->getShopId();
+            $sShopId = $this->config->getShopId();
             $sVersion = $this->oxcontents__oxtermversion->value;
 
             $oDb = oxDb::getDb();

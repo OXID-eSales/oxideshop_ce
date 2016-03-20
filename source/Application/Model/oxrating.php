@@ -42,14 +42,7 @@ class oxRating extends oxBase
      */
     protected $_sClassName = 'oxrating';
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxratings');
-    }
+    protected $_sCoreTable = 'oxratings';
 
     /**
      * Checks if user can rate product.
@@ -63,7 +56,7 @@ class oxRating extends oxBase
     public function allowRating($sUserId, $sType, $sObjectId)
     {
         $oDb = oxDb::getDb();
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($iRatingLogsTimeout = $myConfig->getConfigParam('iRatingLogsTimeout')) {
             $sExpDate = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() - $iRatingLogsTimeout * 24 * 60 * 60);

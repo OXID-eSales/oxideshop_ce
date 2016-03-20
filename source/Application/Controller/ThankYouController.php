@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Controller;
 
+use OxidEsales\Eshop\Core\DiContainer;
 use oxRegistry;
 use oxUBase;
 use oxBasket;
@@ -115,15 +116,15 @@ class ThankYouController extends oxUBase
         parent::init();
 
         // get basket we might need some information from it here
-        $oBasket = $this->getSession()->getBasket();
-        $oBasket->setOrderId(oxRegistry::getSession()->getVariable('sess_challenge'));
+        $oBasket = $this->session->getBasket();
+        $oBasket->setOrderId($this->session->getVariable('sess_challenge'));
 
         // copying basket object
         $this->_oBasket = clone $oBasket;
 
         // delete it from the session
         $oBasket->deleteBasket();
-        oxRegistry::getSession()->deleteVariable('sess_challenge');
+        $this->session->deleteVariable('sess_challenge');
     }
 
     /**
@@ -136,7 +137,7 @@ class ThankYouController extends oxUBase
     public function render()
     {
         if (!$this->_oBasket || !$this->_oBasket->getProductsCount()) {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeURL() . '&cl=start', true, 302);
+            oxRegistry::getUtils()->redirect($this->config->getShopHomeURL() . '&cl=start', true, 302);
         }
 
         parent::render();
@@ -145,15 +146,8 @@ class ThankYouController extends oxUBase
 
         // removing also unregistered user info (#2580)
         if (!$oUser || !$oUser->oxuser__oxpassword->value) {
-            oxRegistry::getSession()->deleteVariable('usr');
-            oxRegistry::getSession()->deleteVariable('dynvalue');
-        }
-
-        // loading order sometimes needed in template
-        if ($this->_oBasket->getOrderId()) {
-            // owners stock reminder
-            $oEmail = oxNew('oxEmail');
-            $oEmail->sendStockReminder($this->_oBasket->getContents());
+            $this->session->deleteVariable('usr');
+            $this->session->deleteVariable('dynvalue');
         }
 
         // we must set active class as start
@@ -202,7 +196,7 @@ class ThankYouController extends oxUBase
     {
         if ($this->_dConvIndex === null) {
             // currency conversion index value
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
             $this->_dConvIndex = 1 / $oCur->rate;
         }
 
@@ -232,7 +226,7 @@ class ThankYouController extends oxUBase
     {
         if ($this->_sIPaymentAccount === null) {
             $this->_sIPaymentAccount = false;
-            $this->_sIPaymentAccount = $this->getConfig()->getConfigParam('iShopID_iPayment_Account');
+            $this->_sIPaymentAccount = $this->config->getConfigParam('iShopID_iPayment_Account');
         }
 
         return $this->_sIPaymentAccount;
@@ -247,7 +241,7 @@ class ThankYouController extends oxUBase
     {
         if ($this->_sIPaymentUser === null) {
             $this->_sIPaymentUser = false;
-            $this->_sIPaymentUser = $this->getConfig()->getConfigParam('iShopID_iPayment_User');
+            $this->_sIPaymentUser = $this->config->getConfigParam('iShopID_iPayment_User');
         }
 
         return $this->_sIPaymentUser;
@@ -262,7 +256,7 @@ class ThankYouController extends oxUBase
     {
         if ($this->_sIPaymentPassword === null) {
             $this->_sIPaymentPassword = false;
-            $this->_sIPaymentPassword = $this->getConfig()->getConfigParam('iShopID_iPayment_Passwort');
+            $this->_sIPaymentPassword = $this->config->getConfigParam('iShopID_iPayment_Passwort');
         }
 
         return $this->_sIPaymentPassword;
@@ -277,7 +271,7 @@ class ThankYouController extends oxUBase
     {
         if ($this->_sMailError === null) {
             $this->_sMailError = false;
-            $this->_sMailError = oxRegistry::getConfig()->getRequestParameter('mailerror');
+            $this->_sMailError = $this->request->getRequestParameter('mailerror');
         }
 
         return $this->_sMailError;

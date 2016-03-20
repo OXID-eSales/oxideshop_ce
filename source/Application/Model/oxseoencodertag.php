@@ -55,7 +55,7 @@ class oxSeoEncoderTag extends oxSeoEncoder
      */
     protected function _getDynamicTagUri($tag, $stdUrl, $seoUrl, $languageId, $articleId = null)
     {
-        $shopId = $this->getConfig()->getShopId();
+        $shopId = $this->config->getShopId();
 
         $stdUrl = $this->_trimUrl($stdUrl);
         $objectId = $this->getDynamicObjectId($shopId, $stdUrl);

@@ -84,10 +84,10 @@ class oxCategoryList extends oxList
      *
      * @param string $sObjectsInListName optional parameter, the objects contained in the list, always oxCategory
      */
-    public function __construct($sObjectsInListName = 'oxcategory')
+    public function __construct($config, $sObjectsInListName = 'oxcategory')
     {
-        $this->_blHideEmpty = $this->getConfig()->getConfigParam('blDontShowEmptyCategories');
-        parent::__construct($sObjectsInListName);
+        $this->_blHideEmpty = $config->getConfigParam('blDontShowEmptyCategories');
+        parent::__construct($config, $sObjectsInListName);
     }
 
     /**
@@ -466,8 +466,8 @@ class oxCategoryList extends oxList
         $aPath = array();
         $sCurrentCat = $this->_sActCat;
 
-        while ($sCurrentCat != 'oxrootid' && isset($this[$sCurrentCat])) {
-            $oCat = $this[$sCurrentCat];
+        while ($sCurrentCat != 'oxrootid' && isset($this->_aArray[$sCurrentCat])) {
+            $oCat = $this->_aArray[$sCurrentCat];
             $oCat->setExpanded(true);
             $aPath[$sCurrentCat] = $oCat;
             $sCurrentCat = $oCat->oxcategories__oxparentid->value;

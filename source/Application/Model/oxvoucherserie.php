@@ -40,14 +40,7 @@ class oxVoucherSerie extends oxBase
      */
     protected $_sClassName = 'oxvoucherserie';
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxvoucherseries');
-    }
+    protected $_sCoreTable = 'oxvoucherseries';
 
     /**
      * Override delete function so we can delete user group and article or category relations first.

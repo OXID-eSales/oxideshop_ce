@@ -58,7 +58,7 @@ class PriceAlarm_List extends oxAdminList
      */
     protected function _buildSelectString($oListObject = null)
     {
-        $sViewName = getViewName("oxarticles", (int) $this->getConfig()->getConfigParam("sDefaultLang"));
+        $sViewName = getViewName("oxarticles", (int) $this->config->getConfigParam("sDefaultLang"));
         $sSql = "select oxpricealarm.*, {$sViewName}.oxtitle AS articletitle, ";
         $sSql .= "oxuser.oxlname as userlname, oxuser.oxfname as userfname ";
         $sSql .= "from oxpricealarm left join {$sViewName} on {$sViewName}.oxid = oxpricealarm.oxartid ";

@@ -19,167 +19,162 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\MailClientInterface;
+use OxidEsales\Eshop\Core\MailContainer;
 
 /**
  * Mailing manager.
  * Collects mailing configuration, other parameters, performs mailing functions
  * (newsletters, ordering, registration emails, etc.).
  */
-class oxEmail extends PHPMailer
+class oxEmail
 {
-    /**
-     * Default Smtp server port
-     *
-     * @var int
-     */
-    public $SMTP_PORT = 25;
-
     /**
      * Password reminder mail template
      *
      * @var string
      */
-    protected $_sForgotPwdTemplate = "email/html/forgotpwd.tpl";
+    protected $_sForgotPwdTemplate = 'email/html/forgotpwd.tpl';
 
     /**
      * Password reminder plain mail template
      *
      * @var string
      */
-    protected $_sForgotPwdTemplatePlain = "email/plain/forgotpwd.tpl";
+    protected $_sForgotPwdTemplatePlain = 'email/plain/forgotpwd.tpl';
 
     /**
      * Newsletter registration mail template
      *
      * @var string
      */
-    protected $_sNewsletterOptInTemplate = "email/html/newsletteroptin.tpl";
+    protected $_sNewsletterOptInTemplate = 'email/html/newsletteroptin.tpl';
 
     /**
      * Newsletter registration plain mail template
      *
      * @var string
      */
-    protected $_sNewsletterOptInTemplatePlain = "email/plain/newsletteroptin.tpl";
+    protected $_sNewsletterOptInTemplatePlain = 'email/plain/newsletteroptin.tpl';
 
     /**
      * Product suggest mail template
      *
      * @var string
      */
-    protected $_sSuggestTemplate = "email/html/suggest.tpl";
+    protected $_sSuggestTemplate = 'email/html/suggest.tpl';
 
     /**
      * Product suggest plain mail template
      *
      * @var string
      */
-    protected $_sSuggestTemplatePlain = "email/plain/suggest.tpl";
+    protected $_sSuggestTemplatePlain = 'email/plain/suggest.tpl';
 
     /**
      * Product suggest mail template
      *
      * @var string
      */
-    protected $_sInviteTemplate = "email/html/invite.tpl";
+    protected $_sInviteTemplate = 'email/html/invite.tpl';
 
     /**
      * Product suggest plain mail template
      *
      * @var string
      */
-    protected $_sInviteTemplatePlain = "email/plain/invite.tpl";
+    protected $_sInviteTemplatePlain = 'email/plain/invite.tpl';
 
     /**
      * Send order notification mail template
      *
      * @var string
      */
-    protected $_sSenedNowTemplate = "email/html/ordershipped.tpl";
+    protected $_sSenedNowTemplate = 'email/html/ordershipped.tpl';
 
     /**
      * Send order notification plain mail template
      *
      * @var string
      */
-    protected $_sSenedNowTemplatePlain = "email/plain/ordershipped.tpl";
+    protected $_sSenedNowTemplatePlain = 'email/plain/ordershipped.tpl';
 
     /**
      * Send ordered download links mail template
      *
      * @var string
      */
-    protected $_sSendDownloadsTemplate = "email/html/senddownloadlinks.tpl";
+    protected $_sSendDownloadsTemplate = 'email/html/senddownloadlinks.tpl';
 
     /**
      * Send ordered download links plain mail template
      *
      * @var string
      */
-    protected $_sSendDownloadsTemplatePlain = "email/plain/senddownloadlinks.tpl";
+    protected $_sSendDownloadsTemplatePlain = 'email/plain/senddownloadlinks.tpl';
 
     /**
      * Wishlist mail template
      *
      * @var string
      */
-    protected $_sWishListTemplate = "email/html/wishlist.tpl";
+    protected $_sWishListTemplate = 'email/html/wishlist.tpl';
 
     /**
      * Wishlist plain mail template
      *
      * @var string
      */
-    protected $_sWishListTemplatePlain = "email/plain/wishlist.tpl";
+    protected $_sWishListTemplatePlain = 'email/plain/wishlist.tpl';
 
     /**
      * Name of template used during registration
      *
      * @var string
      */
-    protected $_sRegisterTemplate = "email/html/register.tpl";
+    protected $_sRegisterTemplate = 'email/html/register.tpl';
 
     /**
      * Name of plain template used during registration
      *
      * @var string
      */
-    protected $_sRegisterTemplatePlain = "email/plain/register.tpl";
+    protected $_sRegisterTemplatePlain = 'email/plain/register.tpl';
 
     /**
      * Name of template used by reminder function (article).
      *
      * @var string
      */
-    protected $_sReminderMailTemplate = "email/html/owner_reminder.tpl";
+    protected $_sReminderMailTemplate = 'email/html/owner_reminder.tpl';
 
     /**
      * Order e-mail for customer HTML template
      *
      * @var string
      */
-    protected $_sOrderUserTemplate = "email/html/order_cust.tpl";
+    protected $_sOrderUserTemplate = 'email/html/order_cust.tpl';
 
     /**
      * Order e-mail for customer plain text template
      *
      * @var string
      */
-    protected $_sOrderUserPlainTemplate = "email/plain/order_cust.tpl";
+    protected $_sOrderUserPlainTemplate = 'email/plain/order_cust.tpl';
 
     /**
      * Order e-mail for shop owner HTML template
      *
      * @var string
      */
-    protected $_sOrderOwnerTemplate = "email/html/order_owner.tpl";
+    protected $_sOrderOwnerTemplate = 'email/html/order_owner.tpl';
 
     /**
      * Order e-mail for shop owner plain text template
      *
      * @var string
      */
-    protected $_sOrderOwnerPlainTemplate = "email/plain/order_owner.tpl";
+    protected $_sOrderOwnerPlainTemplate = 'email/plain/order_owner.tpl';
 
     // #586A - additional templates for more customizable subjects
 
@@ -188,28 +183,28 @@ class oxEmail extends PHPMailer
      *
      * @var string
      */
-    protected $_sOrderUserSubjectTemplate = "email/html/order_cust_subj.tpl";
+    protected $_sOrderUserSubjectTemplate = 'email/html/order_cust_subj.tpl';
 
     /**
      * Order e-mail subject for shop owner template
      *
      * @var string
      */
-    protected $_sOrderOwnerSubjectTemplate = "email/html/order_owner_subj.tpl";
+    protected $_sOrderOwnerSubjectTemplate = 'email/html/order_owner_subj.tpl';
 
     /**
      * Price alarm e-mail for shop owner template
      *
      * @var string
      */
-    protected $_sOwnerPricealarmTemplate = "email/html/pricealarm_owner.tpl";
+    protected $_sOwnerPricealarmTemplate = 'email/html/pricealarm_owner.tpl';
 
     /**
      * Price alarm e-mail for shop owner template
      *
      * @var string
      */
-    protected $_sPricealamrCustomerTemplate = "email_pricealarm_customer.tpl";
+    protected $_sPricealamrCustomerTemplate = 'email_pricealarm_customer.tpl';
 
     /**
      * Language specific viewconfig object array containing view data, view config and shop object
@@ -223,7 +218,7 @@ class oxEmail extends PHPMailer
      *
      * @var bool
      */
-    protected $_blInlineImgEmail = null;
+    protected $_blInlineImgEmail;
 
     /**
      * Array of recipient email addresses
@@ -251,7 +246,7 @@ class oxEmail extends PHPMailer
      *
      * @var smarty
      */
-    protected $_oSmarty = null;
+    protected $_oSmarty;
 
     /**
      * Email view data
@@ -265,38 +260,20 @@ class oxEmail extends PHPMailer
      *
      * @var object
      */
-    protected $_oShop = null;
-
-    /**
-     * Email charset
-     *
-     * @var string
-     */
-    protected $_sCharSet = null;
+    protected $_oShop;
 
     /** @var oxConfig */
-    protected $_oConfig = null;
+    protected $_oConfig;
+
+    private $mailer;
 
     /**
      * Class constructor.
      */
-    public function __construct()
+    public function __construct(MailClientInterface $mailer)
     {
-        //enabling exception handling in phpMailer class
-        parent::__construct(true);
-
-        $myConfig = $this->getConfig();
-
-        $this->_setMailerPluginDir();
-        $this->setSmtp();
-
-        $this->setUseInlineImages($myConfig->getConfigParam('blInlineImgEmail'));
-        $this->setMailWordWrap(100);
-
-        $this->isHtml(true);
-        $this->setLanguage("en", $myConfig->getConfigParam('sShopDir') . "/Core/phpmailer/language/");
-
-        $this->_getSmarty();
+        $this->mailer = $mailer;
+        $this->_blInlineImgEmail = $this->config->getConfigParam('blInlineImgEmail');
     }
 
     /**
@@ -313,15 +290,15 @@ class oxEmail extends PHPMailer
     public function __call($sMethod, $aArgs)
     {
         if (defined('OXID_PHP_UNIT')) {
-            if (substr($sMethod, 0, 4) == "UNIT") {
-                $sMethod = str_replace("UNIT", "_", $sMethod);
+            if (substr($sMethod, 0, 4) == 'UNIT') {
+                $sMethod = str_replace('UNIT', '_', $sMethod);
             }
             if (method_exists($this, $sMethod)) {
                 return call_user_func_array(array(& $this, $sMethod), $aArgs);
             }
         }
 
-        throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ')' . PHP_EOL);
     }
 
     /**
@@ -332,7 +309,7 @@ class oxEmail extends PHPMailer
     public function getConfig()
     {
         if ($this->_oConfig == null) {
-            $this->_oConfig = oxRegistry::getConfig();
+            $this->_oConfig = $this->config;
         }
 
         return $this->_oConfig;
@@ -348,20 +325,19 @@ class oxEmail extends PHPMailer
         $this->_oConfig = $oConfig;
     }
 
-
     /**
-     * Smarty instance getter, assigns this oxEmail instance to "oEmailView" variable
+     * Smarty instance getter, assigns this oxEmail instance to 'oEmailView' variable
      *
      * @return smarty
      */
     protected function _getSmarty()
     {
         if ($this->_oSmarty === null) {
-            $this->_oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+            $this->_oSmarty = oxRegistry::get('oxUtilsView')->getSmarty();
         }
 
         //setting default view
-        $this->_oSmarty->assign("oEmailView", $this);
+        $this->_oSmarty->assign('oEmailView', $this);
 
         return $this->_oSmarty;
     }
@@ -373,138 +349,38 @@ class oxEmail extends PHPMailer
      *
      * @return bool
      */
-    public function send()
+    public function send(MailContainer $container)
     {
-        // if no recipients found, skipping sending
-        if (count($this->getRecipient()) < 1) {
-            return false;
-        }
+        $myConfig = $this->config;
 
-        $myConfig = $this->getConfig();
-        $this->setCharSet();
-
-        if ($this->_getUseInlineImages()) {
+        if ($this->_blInlineImgEmail) {
             $this->_includeImages(
-                $myConfig->getImageDir(), $myConfig->getImageUrl(false, false), $myConfig->getPictureUrl(null, false),
-                $myConfig->getImageDir(), $myConfig->getPictureDir(false)
+                $container,
+                $myConfig->getImageDir(),
+                $myConfig->getImageUrl(false, false),
+                $myConfig->getPictureUrl(null, false),
+                $myConfig->getImageDir(),
+                $myConfig->getPictureDir(false)
             );
         }
 
-        $this->_makeOutputProcessing();
+        $oOutput = oxNew('oxOutput');
 
-        // try to send mail via SMTP
-        if ($this->getMailer() == 'smtp') {
-            $blRet = $this->_sendMail();
+        $container
+            ->setBody($this->_clearSidFromBody($container->getBody()))
+            ->setBody($oOutput->process($container->getBody(), 'oxemail'))
+            ->setAltBody($this->_clearSidFromBody($container->getAltBody()))
+            ->setAltBody(str_replace(array('&amp;', '&quot;', '&#039;', '&lt;', '&gt;'), array('&', '"', "'", '<', '>'), $container->getAltBody()))
+            ->setAltBody($oOutput->process($container->getAltBody(), 'oxemail'));
 
-            // if sending failed, try to send via mail()
-            if (!$blRet) {
-                // failed sending via SMTP, sending notification to shop owner
-                $this->_sendMailErrorMsg();
-
-                // trying to send using standard mailer
-                $this->setMailer('mail');
-                $blRet = $this->_sendMail();
-            }
-        } else {
-            // sending mail via mail()
-            $this->setMailer('mail');
-            $blRet = $this->_sendMail();
-        }
+        $blRet = $this->mailer->send($container);
 
         if (!$blRet) {
             // failed sending, giving up, trying to send notification to shop owner
-            $this->_sendMailErrorMsg();
+            $this->_sendMailErrorMsg($container);
         }
 
         return $blRet;
-    }
-
-    /**
-     * Sets smtp parameters depending on the protocol used
-     * returns smtp url which should be used for fsockopen
-     *
-     * @param string $sUrl initial smtp
-     *
-     * @return string
-     */
-    protected function _setSmtpProtocol($sUrl)
-    {
-        $sProtocol = '';
-        $sSmtpHost = $sUrl;
-        $aMatch = array();
-        if (getStr()->preg_match('@^([0-9a-z]+://)?(.*)$@i', $sUrl, $aMatch)) {
-            if ($aMatch[1]) {
-                if (($aMatch[1] == 'ssl://') || ($aMatch[1] == 'tls://')) {
-                    $this->set("SMTPSecure", substr($aMatch[1], 0, 3));
-                } else {
-                    $sProtocol = $aMatch[1];
-                }
-            }
-            $sSmtpHost = $aMatch[2];
-        }
-
-        return $sProtocol . $sSmtpHost;
-    }
-
-    /**
-     * Sets SMTP mailer parameters, such as user name, password, location.
-     *
-     * @param oxShop $oShop Object, that keeps base shop info
-     *
-     * @return null
-     */
-    public function setSmtp($oShop = null)
-    {
-        $myConfig = $this->getConfig();
-        $oShop = ($oShop) ? $oShop : $this->_getShop();
-
-        $sSmtpUrl = $this->_setSmtpProtocol($oShop->oxshops__oxsmtp->value);
-
-        if (!$this->_isValidSmtpHost($sSmtpUrl)) {
-            $this->setMailer("mail");
-
-            return;
-        }
-
-        $this->setHost($sSmtpUrl);
-        $this->setMailer("smtp");
-
-        if ($oShop->oxshops__oxsmtpuser->value) {
-            $this->_setSmtpAuthInfo($oShop->oxshops__oxsmtpuser->value, $oShop->oxshops__oxsmtppwd->value);
-        }
-
-        if ($myConfig->getConfigParam('iDebug') == 6) {
-            $this->_setSmtpDebug(true);
-        }
-    }
-
-    /**
-     * Checks if smtp host is valid (tries to connect to it)
-     *
-     * @param string $sSmtpHost currently used smtp server host name
-     *
-     * @return bool
-     */
-    protected function _isValidSmtpHost($sSmtpHost)
-    {
-        $blIsSmtp = false;
-        if ($sSmtpHost) {
-            $sSmtpPort = $this->SMTP_PORT;
-            $aMatch = array();
-            if (getStr()->preg_match('@^(.*?)(:([0-9]+))?$@i', $sSmtpHost, $aMatch)) {
-                $sSmtpHost = $aMatch[1];
-                $sSmtpPort = (int) $aMatch[3];
-                if (!$sSmtpPort) {
-                    $sSmtpPort = $this->SMTP_PORT;
-                }
-            }
-            if ($blIsSmtp = (bool) ($rHandle = @fsockopen($sSmtpHost, $sSmtpPort, $iErrNo, $sErrStr, 30))) {
-                // closing connection ..
-                fclose($rHandle);
-            }
-        }
-
-        return $blIsSmtp;
     }
 
     /**
@@ -518,50 +394,44 @@ class oxEmail extends PHPMailer
      */
     public function sendOrderEmailToUser($oOrder, $sSubject = null)
     {
-        $myConfig = $this->getConfig();
-
-        // add user defined stuff if there is any
-        $oOrder = $this->_addUserInfoOrderEMail($oOrder);
+        $myConfig = $this->config;
 
         $oShop = $this->_getShop();
-        $this->_setMailParams($oShop);
 
         $oUser = $oOrder->getOrderUser();
         $this->setUser($oUser);
 
         // create messages
         $oSmarty = $this->_getSmarty();
-        $this->setViewData("order", $oOrder);
+        $this->setViewData('order', $oOrder);
 
-        if ($myConfig->getConfigParam("bl_perfLoadReviews")) {
-            $this->setViewData("blShowReviewLink", true);
+        if ($myConfig->getConfigParam('bl_perfLoadReviews')) {
+            $this->setViewData('blShowReviewLink', true);
         }
 
         // Process view data array through oxOutput processor
         $this->_processViewArray();
-
-        $this->setBody($oSmarty->fetch($this->_sOrderUserTemplate));
-        $this->setAltBody($oSmarty->fetch($this->_sOrderUserPlainTemplate));
 
         // #586A
         if ($sSubject === null) {
             if ($oSmarty->template_exists($this->_sOrderUserSubjectTemplate)) {
                 $sSubject = $oSmarty->fetch($this->_sOrderUserSubjectTemplate);
             } else {
-                $sSubject = $oShop->oxshops__oxordersubject->getRawValue() . " (#" . $oOrder->oxorder__oxordernr->value . ")";
+                $sSubject = $oShop->oxshops__oxordersubject->getRawValue() . ' (#' . $oOrder->oxorder__oxordernr->value . ')';
             }
         }
 
-        $this->setSubject($sSubject);
+        $sFullName = $oUser->oxuser__oxfname->getRawValue() . ' ' . $oUser->oxuser__oxlname->getRawValue();
 
-        $sFullName = $oUser->oxuser__oxfname->getRawValue() . " " . $oUser->oxuser__oxlname->getRawValue();
+        $container = new MailContainer();
+        $container
+            ->setBody($oSmarty->fetch($this->_sOrderUserTemplate))
+            ->setAltBody($oSmarty->fetch($this->_sOrderUserPlainTemplate))
+            ->setSubject($sSubject)
+            ->setRecipient($oUser->oxuser__oxusername->value, $sFullName)
+            ->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
 
-        $this->setRecipient($oUser->oxuser__oxusername->value, $sFullName);
-        $this->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
-
-        $blSuccess = $this->send();
-
-        return $blSuccess;
+        return $this->send($container);
     }
 
     /**
@@ -575,22 +445,12 @@ class oxEmail extends PHPMailer
      */
     public function sendOrderEmailToOwner($order, $subject = null)
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $shop = $this->_getShop();
 
-        // cleanup
-        $this->_clearMailer();
-
-        // add user defined stuff if there is any
-        $order = $this->_addUserInfoOrderEMail($order);
-
         $user = $order->getOrderUser();
         $this->setUser($user);
-
-        // send confirmation to shop owner
-        // send not pretending from order user, as different email domain rise spam filters
-        $this->setFrom($shop->oxshops__oxowneremail->value);
 
         $language = oxRegistry::getLang();
         $orderLanguage = $language->getObjectTplLanguage();
@@ -601,17 +461,12 @@ class oxEmail extends PHPMailer
             $shop = $this->_getShop($orderLanguage);
         }
 
-        $this->setSmtp($shop);
-
         // create messages
         $smarty = $this->_getSmarty();
-        $this->setViewData("order", $order);
+        $this->setViewData('order', $order);
 
         // Process view data array through oxoutput processor
         $this->_processViewArray();
-
-        $this->setBody($smarty->fetch($config->getTemplatePath($this->_sOrderOwnerTemplate, false)));
-        $this->setAltBody($smarty->fetch($config->getTemplatePath($this->_sOrderOwnerPlainTemplate, false)));
 
         //Sets subject to email
         // #586A
@@ -619,24 +474,29 @@ class oxEmail extends PHPMailer
             if ($smarty->template_exists($this->_sOrderOwnerSubjectTemplate)) {
                 $subject = $smarty->fetch($this->_sOrderOwnerSubjectTemplate);
             } else {
-                $subject = $shop->oxshops__oxordersubject->getRawValue() . " (#" . $order->oxorder__oxordernr->value . ")";
+                $subject = $shop->oxshops__oxordersubject->getRawValue() . ' (#' . $order->oxorder__oxordernr->value . ')';
             }
         }
 
-        $this->setSubject($subject);
-        $this->setRecipient($shop->oxshops__oxowneremail->value, $language->translateString("order"));
+        $container = new MailContainer();
+        $container
+            ->setFromAddress($shop->oxshops__oxowneremail->value)
+            ->setBody($smarty->fetch($config->getTemplatePath($this->_sOrderOwnerTemplate, false)))
+            ->setAltBody($smarty->fetch($config->getTemplatePath($this->_sOrderOwnerPlainTemplate, false)))
+            ->setSubject($subject)
+            ->setRecipient($shop->oxshops__oxowneremail->value, $language->translateString('order'));
 
-        if ($user->oxuser__oxusername->value != "admin") {
-            $fullName = $user->oxuser__oxfname->getRawValue() . " " . $user->oxuser__oxlname->getRawValue();
-            $this->setReplyTo($user->oxuser__oxusername->value, $fullName);
+        if ($user->oxuser__oxusername->value !== 'admin') {
+            $fullName = $user->oxuser__oxfname->getRawValue() . ' ' . $user->oxuser__oxlname->getRawValue();
+            $container->setReplyTo($user->oxuser__oxusername->value, $fullName);
         }
 
-        $result = $this->send();
+        $result = $this->send($container);
 
-        $this->onOrderEmailToOwnerSent($user, $order);
+        $this->onOrderEmailToOwnerSent($user, $container);
 
         if ($config->getConfigParam('iDebug') == 6) {
-            oxRegistry::getUtils()->showMessageAndExit("");
+            oxRegistry::getUtils()->showMessageAndExit('');
         }
 
         return $result;
@@ -648,13 +508,13 @@ class oxEmail extends PHPMailer
      * @param oxUser  $user
      * @param oxOrder $order
      */
-    protected function onOrderEmailToOwnerSent($user, $order)
+    protected function onOrderEmailToOwnerSent($user, MailContainer $container)
     {
         // add user history
-        $remark = oxNew("oxRemark");
-        $remark->oxremark__oxtext = new oxField($this->getAltBody(), oxField::T_RAW);
+        $remark = oxNew('oxRemark');
+        $remark->oxremark__oxtext = new oxField($container->getAltBody(), oxField::T_RAW);
         $remark->oxremark__oxparentid = new oxField($user->getId(), oxField::T_RAW);
-        $remark->oxremark__oxtype = new oxField("o", oxField::T_RAW);
+        $remark->oxremark__oxtype = new oxField('o', oxField::T_RAW);
         $remark->save();
     }
 
@@ -671,8 +531,8 @@ class oxEmail extends PHPMailer
     {
         // setting content ident
 
-        $this->setViewData("contentident", "oxregisteraltemail");
-        $this->setViewData("contentplainident", "oxregisterplainaltemail");
+        $this->setViewData('contentident', 'oxregisteraltemail');
+        $this->setViewData('contentplainident', 'oxregisterplainaltemail');
 
         // sending email
         return $this->sendRegisterEmail($oUser, $sSubject);
@@ -689,14 +549,8 @@ class oxEmail extends PHPMailer
      */
     public function sendRegisterEmail($oUser, $sSubject = null)
     {
-        // add user defined stuff if there is any
-        $oUser = $this->_addUserRegisterEmail($oUser);
-
         // shop info
         $oShop = $this->_getShop();
-
-        //set mail params (from, fromName, smtp )
-        $this->_setMailParams($oShop);
 
         // create messages
         $oSmarty = $this->_getSmarty();
@@ -705,21 +559,21 @@ class oxEmail extends PHPMailer
         // Process view data array through oxOutput processor
         $this->_processViewArray();
 
-        $this->setBody($oSmarty->fetch($this->_sRegisterTemplate));
-        $this->setAltBody($oSmarty->fetch($this->_sRegisterTemplatePlain));
+        $sFullName = $oUser->oxuser__oxfname->getRawValue() . ' ' . $oUser->oxuser__oxlname->getRawValue();
 
-        $this->setSubject(($sSubject !== null) ? $sSubject : $oShop->oxshops__oxregistersubject->getRawValue());
+        $container = new MailContainer();
+        $container
+            ->setBody($oSmarty->fetch($this->_sRegisterTemplate))
+            ->setAltBody($oSmarty->fetch($this->_sRegisterTemplatePlain))
+            ->setSubject(($sSubject !== null) ? $sSubject : $oShop->oxshops__oxregistersubject->getRawValue())
+            ->setRecipient($oUser->oxuser__oxusername->value, $sFullName)
+            ->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
 
-        $sFullName = $oUser->oxuser__oxfname->getRawValue() . " " . $oUser->oxuser__oxlname->getRawValue();
-
-        $this->setRecipient($oUser->oxuser__oxusername->value, $sFullName);
-        $this->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
-
-        return $this->send();
+        return $this->send($container);
     }
 
     /**
-     * Sets mailer additional settings and sends "forgot password" mail to user.
+     * Sets mailer additional settings and sends 'forgot password' mail to user.
      * Returns true on success.
      *
      * @param string $sEmailAddress user email address
@@ -729,25 +583,19 @@ class oxEmail extends PHPMailer
      */
     public function sendForgotPwdEmail($sEmailAddress, $sSubject = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oDb = oxDb::getDb();
 
         // shop info
         $oShop = $this->_getShop();
 
-        // add user defined stuff if there is any
-        $oShop = $this->_addForgotPwdEmail($oShop);
-
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
-
         // user
-        $sWhere = "oxuser.oxactive = 1 and oxuser.oxusername = " . $oDb->quote($sEmailAddress) . " and oxuser.oxpassword != ''";
-        $sOrder = "";
+        $sWhere = 'oxuser.oxactive = 1 and oxuser.oxusername = ' . $oDb->quote($sEmailAddress) . ' and oxuser.oxpassword != ""';
+        $sOrder = '';
         if ($myConfig->getConfigParam('blMallUsers')) {
-            $sOrder = "order by oxshopid = '" . $oShop->getId() . "' desc";
+            $sOrder = 'order by oxshopid = "' . $oShop->getId() . '" desc';
         } else {
-            $sWhere .= " and oxshopid = '" . $oShop->getId() . "'";
+            $sWhere .= ' and oxshopid = "' . $oShop->getId() . '"';
         }
 
         $sSelect = "select oxid from oxuser where $sWhere $sOrder";
@@ -761,19 +609,17 @@ class oxEmail extends PHPMailer
                 // Process view data array through oxoutput processor
                 $this->_processViewArray();
 
-                $this->setBody($oSmarty->fetch($this->_sForgotPwdTemplate));
+                $sFullName = $oUser->oxuser__oxfname->getRawValue() . ' ' . $oUser->oxuser__oxlname->getRawValue();
 
-                $this->setAltBody($oSmarty->fetch($this->_sForgotPwdTemplatePlain));
+                $container = new MailContainer();
+                $container
+                    ->setBody($oSmarty->fetch($this->_sForgotPwdTemplate))
+                    ->setAltBody($oSmarty->fetch($this->_sForgotPwdTemplatePlain))
+                    ->setSubject(($sSubject !== null) ? $sSubject : $oShop->oxshops__oxforgotpwdsubject->getRawValue())
+                    ->setRecipient($sEmailAddress, $sFullName)
+                    ->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
 
-                //sets subject of email
-                $this->setSubject(($sSubject !== null) ? $sSubject : $oShop->oxshops__oxforgotpwdsubject->getRawValue());
-
-                $sFullName = $oUser->oxuser__oxfname->getRawValue() . " " . $oUser->oxuser__oxlname->getRawValue();
-
-                $this->setRecipient($sEmailAddress, $sFullName);
-                $this->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
-
-                if (!$this->send()) {
+                if (!$this->send($container)) {
                     return -1; // failed to send
                 }
 
@@ -796,25 +642,22 @@ class oxEmail extends PHPMailer
      */
     public function sendContactMail($sEmailAddress = null, $sSubject = null, $sMessage = null)
     {
-
         // shop info
         $oShop = $this->_getShop();
 
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
+        $container = new MailContainer();
+        $container
+            ->setBody($sMessage)
+            ->setSubject($sSubject)
+            ->setRecipient($oShop->oxshops__oxinfoemail->value, '')
+            ->setFromAddress($oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue())
+            ->setReplyTo($this->ensureEmail($sEmailAddress));
 
-        $this->setBody($sMessage);
-        $this->setSubject($sSubject);
-
-        $this->setRecipient($oShop->oxshops__oxinfoemail->value, "");
-        $this->setFrom($oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue());
-        $this->setReplyTo($sEmailAddress, "");
-
-        return $this->send();
+        return $this->send($container);
     }
 
     /**
-     * Sets mailer additional settings and sends "NewsletterDBOptInMail" mail to user.
+     * Sets mailer additional settings and sends 'NewsletterDBOptInMail' mail to user.
      * Returns true on success.
      *
      * @param oxUser $oUser    user object
@@ -824,37 +667,29 @@ class oxEmail extends PHPMailer
      */
     public function sendNewsletterDbOptInMail($oUser, $sSubject = null)
     {
-        $oLang = oxRegistry::getLang();
-
-        // add user defined stuff if there is any
-        $oUser = $this->_addNewsletterDbOptInMail($oUser);
-
         // shop info
         $oShop = $this->_getShop();
-
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
 
         // create messages
         $oSmarty = $this->_getSmarty();
         $sConfirmCode = md5($oUser->oxuser__oxusername->value . $oUser->oxuser__oxpasssalt->value);
-        $this->setViewData("subscribeLink", $this->_getNewsSubsLink($oUser->oxuser__oxid->value, $sConfirmCode));
+        $this->setViewData('subscribeLink', $this->_getNewsSubsLink($oUser->oxuser__oxid->value, $sConfirmCode));
         $this->setUser($oUser);
 
         // Process view data array through oxOutput processor
         $this->_processViewArray();
 
-        $this->setBody($oSmarty->fetch($this->_sNewsletterOptInTemplate));
-        $this->setAltBody($oSmarty->fetch($this->_sNewsletterOptInTemplatePlain));
-        $this->setSubject(($sSubject !== null) ? $sSubject : oxRegistry::getLang()->translateString("NEWSLETTER") . " " . $oShop->oxshops__oxname->getRawValue());
+        $sFullName = $oUser->oxuser__oxfname->getRawValue() . ' ' . $oUser->oxuser__oxlname->getRawValue();
 
-        $sFullName = $oUser->oxuser__oxfname->getRawValue() . " " . $oUser->oxuser__oxlname->getRawValue();
+        $container = (new MailContainer())
+            ->setBody($oSmarty->fetch($this->_sNewsletterOptInTemplate))
+            ->setAltBody($oSmarty->fetch($this->_sNewsletterOptInTemplatePlain))
+            ->setSubject(($sSubject !== null) ? $sSubject : oxRegistry::getLang()->translateString('NEWSLETTER') . ' ' . $oShop->oxshops__oxname->getRawValue())
+            ->setRecipient($oUser->oxuser__oxusername->value, $sFullName)
+            ->setFromAddress($oShop->oxshops__oxinfoemail->value, $oShop->oxshops__oxname->getRawValue())
+            ->setReplyTo($oShop->oxshops__oxinfoemail->value, $oShop->oxshops__oxname->getRawValue());
 
-        $this->setRecipient($oUser->oxuser__oxusername->value, $sFullName);
-        $this->setFrom($oShop->oxshops__oxinfoemail->value, $oShop->oxshops__oxname->getRawValue());
-        $this->setReplyTo($oShop->oxshops__oxinfoemail->value, $oShop->oxshops__oxname->getRawValue());
-
-        return $this->send();
+        return $this->send($container);
     }
 
     /**
@@ -867,18 +702,18 @@ class oxEmail extends PHPMailer
      */
     protected function _getNewsSubsLink($sId, $sConfirmCode = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $iActShopLang = $myConfig->getActiveShop()->getLanguage();
 
         $sUrl = $myConfig->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=' . $sId;
         $sUrl .= '&amp;lang=' . $iActShopLang;
-        $sUrl .= ($sConfirmCode) ? '&amp;confirm=' . $sConfirmCode : "";
+        $sUrl .= ($sConfirmCode) ? '&amp;confirm=' . $sConfirmCode : '';
 
         return $sUrl;
     }
 
     /**
-     * Sets mailer additional settings and sends "newsletter" mail to user.
+     * Sets mailer additional settings and sends 'newsletter' mail to user.
      * Returns true on success.
      *
      * @param oxNewsletter $oNewsLetter newsletter object
@@ -892,30 +727,29 @@ class oxEmail extends PHPMailer
         // shop info
         $oShop = $this->_getShop();
 
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
-
         $sBody = $oNewsLetter->getHtmlText();
+        $sFullName = $oUser->oxuser__oxfname->getRawValue() . ' ' . $oUser->oxuser__oxlname->getRawValue();
+
+        $container = (new MailContainer())
+            ->setRecipient($oUser->oxuser__oxusername->value, $sFullName)
+            ->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue())
+            ->setSubject(($sSubject !== null) ? $sSubject : $oNewsLetter->oxnewsletter__oxtitle->getRawValue());
 
         if (!empty($sBody)) {
-            $this->setBody($sBody);
-            $this->setAltBody($oNewsLetter->getPlainText());
+            $container
+                ->setBody($sBody)
+                ->setAltBody($oNewsLetter->getPlainText());
         } else {
-            $this->isHtml(false);
-            $this->setBody($oNewsLetter->getPlainText());
+            $container
+                ->setHtmlMode(false)
+                ->setBody($oNewsLetter->getPlainText());
         }
 
-        $this->setSubject(($sSubject !== null) ? $sSubject : $oNewsLetter->oxnewsletter__oxtitle->getRawValue());
-
-        $sFullName = $oUser->oxuser__oxfname->getRawValue() . " " . $oUser->oxuser__oxlname->getRawValue();
-        $this->setRecipient($oUser->oxuser__oxusername->value, $sFullName);
-        $this->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
-
-        return $this->send();
+        return $this->send($container);
     }
 
     /**
-     * Sets mailer additional settings and sends "SuggestMail" mail to user.
+     * Sets mailer additional settings and sends 'SuggestMail' mail to user.
      * Returns true on success.
      *
      * @param object $oParams  Mailing parameters object
@@ -925,7 +759,7 @@ class oxEmail extends PHPMailer
      */
     public function sendSuggestMail($oParams, $oProduct)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         //sets language of shop
         $iCurrLang = $myConfig->getActiveShop()->getLanguage();
@@ -939,41 +773,37 @@ class oxEmail extends PHPMailer
             $oProduct->load($oProduct->getId());
         }
 
-        // mailer stuff
-        // send not pretending from suggesting user, as different email domain rise spam filters
-        $this->setFrom($oShop->oxshops__oxinfoemail->value);
-        $this->setSMTP();
-
         // create messages
         $oSmarty = $this->_getSmarty();
-        $this->setViewData("product", $oProduct);
+        $this->setViewData('product', $oProduct);
         $this->setUser($oParams);
 
         $sArticleUrl = $oProduct->getLink();
 
         //setting recommended user id
         if ($myConfig->getActiveView()->isActive('Invitations') && $oActiveUser = $oShop->getUser()) {
-            $sArticleUrl = oxRegistry::get("oxUtilsUrl")->appendParamSeparator($sArticleUrl);
-            $sArticleUrl .= "su=" . $oActiveUser->getId();
+            $sArticleUrl = oxRegistry::get('oxUtilsUrl')->appendParamSeparator($sArticleUrl);
+            $sArticleUrl .= 'su=' . $oActiveUser->getId();
         }
 
-        $this->setViewData("sArticleUrl", $sArticleUrl);
+        $this->setViewData('sArticleUrl', $sArticleUrl);
 
         // Process view data array through oxOutput processor
         $this->_processViewArray();
 
-        $this->setBody($oSmarty->fetch($this->_sSuggestTemplate));
-        $this->setAltBody($oSmarty->fetch($this->_sSuggestTemplatePlain));
-        $this->setSubject($oParams->send_subject);
+        $container = (new MailContainer())
+            ->setRecipient($oParams->rec_email, $oParams->rec_name)
+            ->setReplyTo($this->ensureEmail($oParams->send_email), $oParams->send_name)
+            ->setBody($oSmarty->fetch($this->_sSuggestTemplate))
+            ->setAltBody($oSmarty->fetch($this->_sSuggestTemplatePlain))
+            ->setSubject($oParams->send_subject)
+            ->setFromAddress($oShop->oxshops__oxinfoemail->value);
 
-        $this->setRecipient($oParams->rec_email, $oParams->rec_name);
-        $this->setReplyTo($oParams->send_email, $oParams->send_name);
-
-        return $this->send();
+        return $this->send($container);
     }
 
     /**
-     * Sets mailer additional settings and sends "InviteMail" mail to user.
+     * Sets mailer additional settings and sends 'InviteMail' mail to user.
      * Returns true on success.
      *
      * @param object $oParams Mailing parameters object
@@ -982,7 +812,7 @@ class oxEmail extends PHPMailer
      */
     public function sendInviteMail($oParams)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         //sets language of shop
         $iCurrLang = $myConfig->getActiveShop()->getLanguage();
@@ -990,42 +820,38 @@ class oxEmail extends PHPMailer
         // shop info
         $oShop = $this->_getShop($iCurrLang);
 
-        // mailer stuff
-        $this->setFrom($oParams->send_email, $oParams->send_name);
-        $this->setSMTP();
-
         // create messages
-        $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+        $oSmarty = oxRegistry::get('oxUtilsView')->getSmarty();
         $this->setUser($oParams);
 
         $sHomeUrl = $this->getViewConfig()->getHomeLink();
 
         //setting recommended user id
         if ($myConfig->getActiveView()->isActive('Invitations') && $oActiveUser = $oShop->getUser()) {
-            $sHomeUrl = oxRegistry::get("oxUtilsUrl")->appendParamSeparator($sHomeUrl);
-            $sHomeUrl .= "su=" . $oActiveUser->getId();
+            $sHomeUrl = oxRegistry::get('oxUtilsUrl')->appendParamSeparator($sHomeUrl);
+            $sHomeUrl .= 'su=' . $oActiveUser->getId();
         }
 
         if (is_array($oParams->rec_email) && count($oParams->rec_email) > 0) {
             foreach ($oParams->rec_email as $sEmail) {
                 if (!empty($sEmail)) {
-                    $sRegisterUrl = oxRegistry::get("oxUtilsUrl")->appendParamSeparator($sHomeUrl);
+                    $sRegisterUrl = oxRegistry::get('oxUtilsUrl')->appendParamSeparator($sHomeUrl);
                     //setting recipient user email
-                    $sRegisterUrl .= "re=" . md5($sEmail);
-                    $this->setViewData("sHomeUrl", $sRegisterUrl);
+                    $sRegisterUrl .= 're=' . md5($sEmail);
+                    $this->setViewData('sHomeUrl', $sRegisterUrl);
 
                     // Process view data array through oxoutput processor
                     $this->_processViewArray();
 
-                    $this->setBody($oSmarty->fetch($this->_sInviteTemplate));
+                    $container = (new MailContainer())
+                        ->setBody($oSmarty->fetch($this->_sInviteTemplate))
+                        ->setAltBody($oSmarty->fetch($this->_sInviteTemplatePlain))
+                        ->setSubject($oParams->send_subject)
+                        ->setRecipient($sEmail)
+                        ->setReplyTo($this->ensureEmail($oParams->send_email), $oParams->send_name)
+                        ->setFromAddress($oParams->send_email, $oParams->send_name);
 
-                    $this->setAltBody($oSmarty->fetch($this->_sInviteTemplatePlain));
-                    $this->setSubject($oParams->send_subject);
-
-                    $this->setRecipient($sEmail);
-                    $this->setReplyTo($oParams->send_email, $oParams->send_name);
-                    $this->send();
-                    $this->clearAllRecipients();
+                    $this->send($container);
                 }
             }
 
@@ -1036,7 +862,7 @@ class oxEmail extends PHPMailer
     }
 
     /**
-     * Sets mailer additional settings and sends "SendedNowMail" mail to user.
+     * Sets mailer additional settings and sends 'SendedNowMail' mail to user.
      * Returns true on success.
      *
      * @param oxOrder $oOrder   order object
@@ -1046,26 +872,23 @@ class oxEmail extends PHPMailer
      */
     public function sendSendedNowMail($oOrder, $sSubject = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $iOrderLang = (int) (isset($oOrder->oxorder__oxlang->value) ? $oOrder->oxorder__oxlang->value : 0);
 
         // shop info
         $oShop = $this->_getShop($iOrderLang);
 
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
-
         //create messages
         $oLang = oxRegistry::getLang();
         $oSmarty = $this->_getSmarty();
-        $this->setViewData("order", $oOrder);
-        $this->setViewData("shopTemplateDir", $myConfig->getTemplateDir(false));
+        $this->setViewData('order', $oOrder);
+        $this->setViewData('shopTemplateDir', $myConfig->getTemplateDir(false));
 
-        if ($myConfig->getConfigParam("bl_perfLoadReviews")) {
-            $this->setViewData("blShowReviewLink", true);
+        if ($myConfig->getConfigParam('bl_perfLoadReviews')) {
+            $this->setViewData('blShowReviewLink', true);
             $oUser = oxNew('oxuser');
-            $this->setViewData("reviewuserhash", $oUser->getReviewUserHash($oOrder->oxorder__oxuserid->value));
+            $this->setViewData('reviewuserhash', $oUser->getReviewUserHash($oOrder->oxorder__oxuserid->value));
         }
 
         // Process view data array through oxoutput processor
@@ -1081,28 +904,27 @@ class oxEmail extends PHPMailer
 
         $oSmarty->security_settings['INCLUDE_ANY'] = true;
         // force non admin to get correct paths (tpl, img)
-        $myConfig->setAdminMode(false);
-        $this->setBody($oSmarty->fetch($this->_sSenedNowTemplate));
-        $this->setAltBody($oSmarty->fetch($this->_sSenedNowTemplatePlain));
-        $myConfig->setAdminMode(true);
         $oLang->setTplLanguage($iOldTplLang);
         $oLang->setBaseLanguage($iOldBaseLang);
         // set it back
         $oSmarty->security_settings['INCLUDE_ANY'] = $aStore['INCLUDE_ANY'];
 
+
+        $sFullName = $oOrder->oxorder__oxbillfname->getRawValue() . ' ' . $oOrder->oxorder__oxbilllname->getRawValue();
+
         //Sets subject to email
-        $this->setSubject(($sSubject !== null) ? $sSubject : $oShop->oxshops__oxsendednowsubject->getRawValue());
+        $container = (new MailContainer())
+            ->setSubject(($sSubject !== null) ? $sSubject : $oShop->oxshops__oxsendednowsubject->getRawValue())
+            ->setRecipient($oOrder->oxorder__oxbillemail->value, $sFullName)
+            ->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue())
+            ->setBody($oSmarty->fetch($this->_sSenedNowTemplate))
+            ->setAltBody($oSmarty->fetch($this->_sSenedNowTemplatePlain));
 
-        $sFullName = $oOrder->oxorder__oxbillfname->getRawValue() . " " . $oOrder->oxorder__oxbilllname->getRawValue();
-
-        $this->setRecipient($oOrder->oxorder__oxbillemail->value, $sFullName);
-        $this->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
-
-        return $this->send();
+        return $this->send($container);
     }
 
     /**
-     * Sets mailer additional settings and sends "SendDownloadLinks" mail to user.
+     * Sets mailer additional settings and sends 'SendDownloadLinks' mail to user.
      * Returns true on success.
      *
      * @param oxOrder $oOrder   order object
@@ -1112,24 +934,21 @@ class oxEmail extends PHPMailer
      */
     public function sendDownloadLinksMail($oOrder, $sSubject = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $iOrderLang = (int) (isset($oOrder->oxorder__oxlang->value) ? $oOrder->oxorder__oxlang->value : 0);
 
         // shop info
         $oShop = $this->_getShop($iOrderLang);
 
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
-
         //create messages
         $oLang = oxRegistry::getLang();
         $oSmarty = $this->_getSmarty();
-        $this->setViewData("order", $oOrder);
-        $this->setViewData("shopTemplateDir", $myConfig->getTemplateDir(false));
+        $this->setViewData('order', $oOrder);
+        $this->setViewData('shopTemplateDir', $myConfig->getTemplateDir(false));
 
         $oUser = oxNew('oxuser');
-        $this->setViewData("reviewuserhash", $oUser->getReviewUserHash($oOrder->oxorder__oxuserid->value));
+        $this->setViewData('reviewuserhash', $oUser->getReviewUserHash($oOrder->oxorder__oxuserid->value));
 
         // Process view data array through oxoutput processor
         $this->_processViewArray();
@@ -1144,116 +963,20 @@ class oxEmail extends PHPMailer
 
         $oSmarty->security_settings['INCLUDE_ANY'] = true;
         // force non admin to get correct paths (tpl, img)
-        $myConfig->setAdminMode(false);
-        $this->setBody($oSmarty->fetch($this->_sSendDownloadsTemplate));
-        $this->setAltBody($oSmarty->fetch($this->_sSendDownloadsTemplatePlain));
-        $myConfig->setAdminMode(true);
         $oLang->setTplLanguage($iOldTplLang);
         $oLang->setBaseLanguage($iOldBaseLang);
         // set it back
         $oSmarty->security_settings['INCLUDE_ANY'] = $aStore['INCLUDE_ANY'];
+        $sFullName = $oOrder->oxorder__oxbillfname->getRawValue() . ' ' . $oOrder->oxorder__oxbilllname->getRawValue();
 
-        //Sets subject to email
-        $this->setSubject(($sSubject !== null) ? $sSubject : $oLang->translateString("DOWNLOAD_LINKS", null, false));
+        $container = (new MailContainer())
+            ->setSubject(($sSubject !== null) ? $sSubject : $oLang->translateString('DOWNLOAD_LINKS', null, false))
+            ->setRecipient($oOrder->oxorder__oxbillemail->value, $sFullName)
+            ->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue())
+            ->setBody($oSmarty->fetch($this->_sSendDownloadsTemplate))
+            ->setAltBody($oSmarty->fetch($this->_sSendDownloadsTemplatePlain));
 
-        $sFullName = $oOrder->oxorder__oxbillfname->getRawValue() . " " . $oOrder->oxorder__oxbilllname->getRawValue();
-
-        $this->setRecipient($oOrder->oxorder__oxbillemail->value, $sFullName);
-        $this->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
-
-        return $this->send();
-    }
-
-    /**
-     * Sets mailer additional settings and sends backup data to user.
-     * Returns true on success.
-     *
-     * @param array  $aAttFiles     Array of file names to attach
-     * @param string $sAttPath      Path to files to attach
-     * @param string $sEmailAddress Email address
-     * @param string $sSubject      Email subject
-     * @param string $sMessage      Email body message
-     * @param array  $aStatus       Pointer to mailing status array
-     * @param array  $aError        Pointer to error status array
-     *
-     * @return bool
-     */
-    public function sendBackupMail($aAttFiles, $sAttPath, $sEmailAddress, $sSubject, $sMessage, &$aStatus, &$aError)
-    {
-        // shop info
-        $oShop = $this->_getShop();
-
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
-
-        $this->setBody($sMessage);
-        $this->setSubject($sSubject);
-
-        $this->setRecipient($oShop->oxshops__oxinfoemail->value, "");
-        $sEmailAddress = $sEmailAddress ? $sEmailAddress : $oShop->oxshops__oxowneremail->value;
-
-        $this->setFrom($sEmailAddress, "");
-        $this->setReplyTo($sEmailAddress, "");
-
-        //attaching files
-        $blAttashSucc = true;
-        $sAttPath = oxRegistry::get("oxUtilsFile")->normalizeDir($sAttPath);
-        foreach ($aAttFiles as $iNum => $sAttFile) {
-            $sFullPath = $sAttPath . $sAttFile;
-            if (@is_readable($sFullPath) && @is_file($sFullPath)) {
-                $blAttashSucc = $this->addAttachment($sFullPath, $sAttFile);
-            } else {
-                $blAttashSucc = false;
-                $aError[] = array(5, $sAttFile); //"Error: backup file $sAttFile not found";
-            }
-        }
-
-        if (!$blAttashSucc) {
-            $aError[] = array(4, ""); //"Error: backup files was not sent to email ...";
-            $this->clearAttachments();
-
-            return false;
-        }
-
-        $aStatus[] = 3; //"Mailing backup files ...";
-        $blSend = $this->send();
-        $this->clearAttachments();
-
-        return $blSend;
-    }
-
-    /**
-     * Basic wrapper for email message sending with default parameters from the oxBaseShop.
-     * Returns true on success.
-     *
-     * @param mixed  $sTo      Recipient or an array of the recipients
-     * @param string $sSubject Mail subject
-     * @param string $sBody    Mail body
-     *
-     * @return bool
-     */
-    public function sendEmail($sTo, $sSubject, $sBody)
-    {
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams();
-
-        if (is_array($sTo)) {
-            foreach ($sTo as $sAddress) {
-                $this->setRecipient($sAddress, "");
-                $this->setReplyTo($sAddress, "");
-            }
-        } else {
-            $this->setRecipient($sTo, "");
-            $this->setReplyTo($sTo, "");
-        }
-
-        //may be changed later
-        $this->isHtml(false);
-
-        $this->setSubject($sSubject);
-        $this->setBody($sBody);
-
-        return $this->send();
+        return $this->send($container);
     }
 
     /**
@@ -1268,37 +991,36 @@ class oxEmail extends PHPMailer
     {
         $blSend = false;
 
-        $oArticleList = oxNew("oxArticleList");
+        $oArticleList = oxNew('oxArticleList');
         $oArticleList->loadStockRemindProducts($aBasketContents);
 
         // nothing to remind?
         if ($oArticleList->count()) {
             $oShop = $this->_getShop();
 
-            //set mail params (from, fromName, smtp... )
-            $this->_setMailParams($oShop);
             $oLang = oxRegistry::getLang();
 
             $oSmarty = $this->_getSmarty();
-            $this->setViewData("articles", $oArticleList);
+            $this->setViewData('articles', $oArticleList);
 
             // Process view data array through oxOutput processor
             $this->_processViewArray();
 
-            $this->setRecipient($oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue());
-            $this->setFrom($oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue());
-            $this->setBody($oSmarty->fetch($this->getConfig()->getTemplatePath($this->_sReminderMailTemplate, false)));
-            $this->setAltBody("");
-            $this->setSubject(($sSubject !== null) ? $sSubject : $oLang->translateString('STOCK_LOW'));
+            $container = (new MailContainer())
+                ->setRecipient($oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue())
+                ->setFromAddress($oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue())
+                ->setBody($oSmarty->fetch($this->config->getTemplatePath($this->_sReminderMailTemplate, false)))
+                ->setAltBody('')
+                ->setSubject(($sSubject !== null) ? $sSubject : $oLang->translateString('STOCK_LOW'));
 
-            $blSend = $this->send();
+            $blSend = $this->send($container);
         }
 
         return $blSend;
     }
 
     /**
-     * Sets mailer additional settings and sends "WishlistMail" mail to user.
+     * Sets mailer additional settings and sends 'WishlistMail' mail to user.
      * Returns true on success.
      *
      * @param oxUser|object $oParams Mailing parameters object
@@ -1307,12 +1029,6 @@ class oxEmail extends PHPMailer
      */
     public function sendWishlistMail($oParams)
     {
-        $this->_clearMailer();
-
-        // mailer stuff
-        $this->setFrom($oParams->send_email, $oParams->send_name);
-        $this->setSMTP();
-
         // create messages
         $oSmarty = $this->_getSmarty();
         $this->setUser($oParams);
@@ -1320,14 +1036,15 @@ class oxEmail extends PHPMailer
         // Process view data array through oxoutput processor
         $this->_processViewArray();
 
-        $this->setBody($oSmarty->fetch($this->_sWishListTemplate));
-        $this->setAltBody($oSmarty->fetch($this->_sWishListTemplatePlain));
-        $this->setSubject($oParams->send_subject);
+        $container = (new MailContainer())
+            ->setFromAddress($oParams->send_email, $oParams->send_name)
+            ->setBody($oSmarty->fetch($this->_sWishListTemplate))
+            ->setAltBody($oSmarty->fetch($this->_sWishListTemplatePlain))
+            ->setSubject($oParams->send_subject)
+            ->setRecipient($oParams->rec_email, $oParams->rec_name)
+            ->setReplyTo($this->ensureEmail($oParams->send_email), $oParams->send_name);
 
-        $this->setRecipient($oParams->rec_email, $oParams->rec_name);
-        $this->setReplyTo($oParams->send_email, $oParams->send_name);
-
-        return $this->send();
+        return $this->send($container);
     }
 
     /**
@@ -1342,35 +1059,31 @@ class oxEmail extends PHPMailer
      */
     public function sendPriceAlarmNotification($aParams, $oAlarm, $sSubject = null)
     {
-        $this->_clearMailer();
         $oShop = $this->_getShop();
-
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
 
         $iAlarmLang = $oAlarm->oxpricealarm__oxlang->value;
 
-        $oArticle = oxNew("oxArticle");
-        //$oArticle->setSkipAbPrice( true );
+        $oArticle = oxNew('oxArticle');
         $oArticle->loadInLang($iAlarmLang, $aParams['aid']);
         $oLang = oxRegistry::getLang();
 
         // create messages
         $oSmarty = $this->_getSmarty();
-        $this->setViewData("product", $oArticle);
-        $this->setViewData("email", $aParams['email']);
-        $this->setViewData("bidprice", $oLang->formatCurrency($oAlarm->oxpricealarm__oxprice->value));
+        $this->setViewData('product', $oArticle);
+        $this->setViewData('email', $aParams['email']);
+        $this->setViewData('bidprice', $oLang->formatCurrency($oAlarm->oxpricealarm__oxprice->value));
 
         // Process view data array through oxOutput processor
         $this->_processViewArray();
 
-        $this->setRecipient($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
-        $this->setSubject(($sSubject !== null) ? $sSubject : $oLang->translateString('PRICE_ALERT_FOR_PRODUCT', $iAlarmLang) . " " . $oArticle->oxarticles__oxtitle->getRawValue());
-        $this->setBody($oSmarty->fetch($this->_sOwnerPricealarmTemplate));
-        $this->setFrom($aParams['email'], "");
-        $this->setReplyTo($aParams['email'], "");
+        $container = (new MailContainer())
+            ->setRecipient($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue())
+            ->setSubject(($sSubject !== null) ? $sSubject : $oLang->translateString('PRICE_ALERT_FOR_PRODUCT', $iAlarmLang) . ' ' . $oArticle->oxarticles__oxtitle->getRawValue())
+            ->setBody($oSmarty->fetch($this->_sOwnerPricealarmTemplate))
+            ->setFromAddress($aParams['email'])
+            ->setReplyTo($this->ensureEmail($aParams['email']));
 
-        return $this->send();
+        return $this->send($container);
     }
 
     /**
@@ -1386,46 +1099,40 @@ class oxEmail extends PHPMailer
      */
     public function sendPricealarmToCustomer($sRecipient, $oAlarm, $sBody = null, $sReturnMailBody = null)
     {
-        $this->_clearMailer();
-
         $oShop = $this->_getShop();
 
         if ($oShop->getId() != $oAlarm->oxpricealarm__oxshopid->value) {
-            $oShop = oxNew("oxshop");
+            $oShop = oxNew('oxshop');
             $oShop->load($oAlarm->oxpricealarm__oxshopid->value);
             $this->setShop($oShop);
         }
 
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($oShop);
-
         // create messages
         $oSmarty = $this->_getSmarty();
 
-        $this->setViewData("product", $oAlarm->getArticle());
-        $this->setViewData("oPriceAlarm", $oAlarm);
-        $this->setViewData("bidprice", $oAlarm->getFProposedPrice());
-        $this->setViewData("currency", $oAlarm->getPriceAlarmCurrency());
+        $this->setViewData('product', $oAlarm->getArticle());
+        $this->setViewData('oPriceAlarm', $oAlarm);
+        $this->setViewData('bidprice', $oAlarm->getFProposedPrice());
+        $this->setViewData('currency', $oAlarm->getPriceAlarmCurrency());
 
         // Process view data array through oxoutput processor
         $this->_processViewArray();
-
-        $this->setRecipient($sRecipient, $sRecipient);
-        $this->setSubject($oShop->oxshops__oxname->value);
 
         if ($sBody === null) {
             $sBody = $oSmarty->fetch($this->_sPricealamrCustomerTemplate);
         }
 
-        $this->setBody($sBody);
-
-        $this->addAddress($sRecipient, $sRecipient);
-        $this->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
+        $container = (new MailContainer())
+            ->setRecipient($sRecipient, $sRecipient)
+            ->setSubject($oShop->oxshops__oxname->value)
+            ->setBody($sBody)
+            ->addAddress($sRecipient, $sRecipient)
+            ->setReplyTo($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
 
         if ($sReturnMailBody) {
-            return $this->getBody();
+            return $sBody;
         } else {
-            return $this->send();
+            return $this->send($container);
         }
     }
 
@@ -1438,11 +1145,17 @@ class oxEmail extends PHPMailer
      * @param string $sAbsImageDir    Absolute path to images
      * @param string $sAbsDynImageDir Absolute path to Dyn images
      */
-    protected function _includeImages($sImageDir = null, $sImageDirNoSSL = null, $sDynImageDir = null, $sAbsImageDir = null, $sAbsDynImageDir = null)
-    {
-        $sBody = $this->getBody();
+    protected function _includeImages(
+        MailContainer $container,
+        $sImageDir = null,
+        $sImageDirNoSSL = null,
+        $sDynImageDir = null,
+        $sAbsImageDir = null,
+        $sAbsDynImageDir = null
+    ) {
+        $sBody = $container->getBody();
         if (preg_match_all('/<\s*img\s+[^>]*?src[\s]*=[\s]*[\'"]?([^[\'">]]+|.*?)?[\'">]/i', $sBody, $matches, PREG_SET_ORDER)) {
-            $oFileUtils = oxRegistry::get("oxUtilsFile");
+            $oFileUtils = oxRegistry::get('oxUtilsFile');
             $blReSetBody = false;
 
             // preparing imput
@@ -1454,7 +1167,7 @@ class oxEmail extends PHPMailer
                 $aImageCache = array();
                 $myUtils = oxRegistry::getUtils();
                 $myUtilsObject = oxUtilsObject::getInstance();
-                $oImgGenerator = oxNew("oxDynImgGenerator");
+                $oImgGenerator = oxNew('oxDynImgGenerator');
 
                 foreach ($matches as $aImage) {
                     $image = $aImage[1];
@@ -1472,14 +1185,13 @@ class oxEmail extends PHPMailer
                     }
 
                     if ($sFileName) {
-                        $sCId = '';
                         if (isset($aImageCache[$sFileName]) && $aImageCache[$sFileName]) {
                             $sCId = $aImageCache[$sFileName];
                         } else {
                             $sCId = $myUtilsObject->generateUID();
                             $sMIME = $myUtils->oxMimeContentType($sFileName);
                             if ($sMIME == 'image/jpeg' || $sMIME == 'image/gif' || $sMIME == 'image/png') {
-                                if ($this->addEmbeddedImage($sFileName, $sCId, "image", "base64", $sMIME)) {
+                                if ($container->addEmbeddedImage($sFileName, $sCId, 'image', 'base64', $sMIME)) {
                                     $aImageCache[$sFileName] = $sCId;
                                 } else {
                                     $sCId = '';
@@ -1497,133 +1209,13 @@ class oxEmail extends PHPMailer
             }
 
             if ($blReSetBody) {
-                $this->setBody($sBody);
+                $container->setBody($sBody);
             }
         }
     }
 
     /**
-     * Sets mail subject
-     *
-     * @param string $sSubject mail subject
-     */
-    public function setSubject($sSubject = null)
-    {
-        // A. HTML entities in subjects must be replaced
-        $sSubject = str_replace(array('&amp;', '&quot;', '&#039;', '&lt;', '&gt;'), array('&', '"', "'", '<', '>'), $sSubject);
-
-        $this->set("Subject", $sSubject);
-    }
-
-    /**
-     * Gets mail subject
-     *
-     * @return string
-     */
-    public function getSubject()
-    {
-        return $this->Subject;
-    }
-
-    /**
-     * Set mail body. If second parameter (default value is true) is set to true,
-     * performs search for "sid", removes it and adds shop id to string.
-     *
-     * @param string $sBody      mail body
-     * @param bool   $blClearSid clear sid in mail body
-     */
-    public function setBody($sBody = null, $blClearSid = true)
-    {
-        if ($blClearSid) {
-            $sBody = $this->_clearSidFromBody($sBody);
-        }
-
-        $this->set("Body", $sBody);
-    }
-
-    /**
-     * Gets mail body
-     *
-     * @return string
-     */
-    public function getBody()
-    {
-        return $this->Body;
-    }
-
-    /**
-     * Sets text-only body of the message. If second parameter is set to true,
-     * performs search for "sid", removes it and adds shop id to string.
-     *
-     * @param string $sAltBody   mail subject
-     * @param bool   $blClearSid clear sid in mail body (default value is true)
-     */
-    public function setAltBody($sAltBody = null, $blClearSid = true)
-    {
-        if ($blClearSid) {
-            $sAltBody = $this->_clearSidFromBody($sAltBody);
-        }
-
-        // A. alt body is used for plain text emails so we should eliminate HTML entities
-        $sAltBody = str_replace(array('&amp;', '&quot;', '&#039;', '&lt;', '&gt;'), array('&', '"', "'", '<', '>'), $sAltBody);
-
-        $this->set("AltBody", $sAltBody);
-    }
-
-    /**
-     * Gets mail text-only body
-     *
-     * @return string
-     */
-    public function getAltBody()
-    {
-        return $this->AltBody;
-    }
-
-    /**
-     * Sets mail recipient to recipients array
-     *
-     * @param string $address recipient email address
-     * @param string $name    recipient name
-     */
-    public function setRecipient($address = null, $name = null)
-    {
-        try {
-            if ($this->getConfig()->isUtf() && function_exists('idn_to_ascii') ) {
-                $address = idn_to_ascii($address);
-            }
-
-            parent::AddAddress($address, $name);
-
-            // copying values as original class does not allow to access recipients array
-            $this->_aRecipients[] = array($address, $name);
-        } catch (Exception $exception) {
-        }
-    }
-
-    /**
-     * Gets recipients array.
-     * Returns array of recipients
-     * f.e. array( array('mail1@mail1.com', 'user1Name'), array('mail2@mail2.com', 'user2Name') )
-     *
-     * @return array
-     */
-    public function getRecipient()
-    {
-        return $this->_aRecipients;
-    }
-
-    /**
-     * Clears all recipients assigned in the TO, CC and BCC array.
-     */
-    public function clearAllRecipients()
-    {
-        $this->_aRecipients = array();
-        parent::clearAllRecipients();
-    }
-
-    /**
-     * Sets user address and name to "reply to" array.
+     * Sets user address and name to 'reply to' array.
      * On error (wrong email) default shop email is added as a reply address.
      * Returns array of recipients
      * f.e. array( array('mail1@mail1.com', 'user1Name'), array('mail2@mail2.com', 'user2Name') )
@@ -1631,246 +1223,13 @@ class oxEmail extends PHPMailer
      * @param string $sEmail email address
      * @param string $sName  user name
      */
-    public function setReplyTo($sEmail = null, $sName = null)
+    protected function ensureEmail($sEmail)
     {
         if (!oxRegistry::getUtils()->isValidEmail($sEmail)) {
-            $sEmail = $this->_getShop()->oxshops__oxorderemail->value;
+            return $this->_getShop()->oxshops__oxorderemail->value;
         }
 
-        $this->_aReplies[] = array($sEmail, $sName);
-
-        try {
-            parent::addReplyTo($sEmail, $sName);
-        } catch (Exception $oEx) {
-        }
-    }
-
-    /**
-     * Gets array of users for which reply is used.
-     *
-     * @return array
-     */
-    public function getReplyTo()
-    {
-        return $this->_aReplies;
-    }
-
-    /**
-     * Clears all recipients assigned in the ReplyTo array.  Returns void.
-     */
-    public function clearReplyTos()
-    {
-        $this->_aReplies = array();
-        parent::clearReplyTos();
-    }
-
-    /**
-     * Preventing possible email spam over php mail() exploit (http://www.securephpwiki.com/index.php/Email_Injection)
-     *
-     * {@inheritdoc}
-     */
-    public function setFrom($address, $name = null, $auto = true)
-    {
-        $address = substr($address, 0, 150);
-        $name = substr($name, 0, 150);
-
-        $success = false;
-        try {
-            $success = parent::setFrom($address, $name, $auto);
-        } catch (Exception $exception) {
-        }
-
-        return $success;
-    }
-
-    /**
-     * Gets mail "from address" field.
-     *
-     * @return string
-     */
-    public function getFrom()
-    {
-        return $this->From;
-    }
-
-    /**
-     * Gets mail "from name" field.
-     *
-     * @return string
-     */
-    public function getFromName()
-    {
-        return $this->FromName;
-    }
-
-    /**
-     * Sets mail charset.
-     * If $sCharSet is not defined, sets charset from translation file.
-     *
-     * @param string $sCharSet email charset
-     */
-    public function setCharSet($sCharSet = null)
-    {
-        if ($sCharSet) {
-            $this->_sCharSet = $sCharSet;
-        } else {
-            $this->_sCharSet = oxRegistry::getLang()->translateString("charset");
-        }
-        $this->set("CharSet", $this->_sCharSet);
-    }
-
-    /**
-     * Sets mail mailer. Set to send mail via smtp, mail() or sendmail.
-     *
-     * @param string $sMailer email mailer
-     */
-    public function setMailer($sMailer = null)
-    {
-        $this->set("Mailer", $sMailer);
-    }
-
-    /**
-     * Gets mail mailer.
-     *
-     * @return string
-     */
-    public function getMailer()
-    {
-        return $this->Mailer;
-    }
-
-    /**
-     * Sets smtp host.
-     *
-     * @param string $sHost smtp host
-     */
-    public function setHost($sHost = null)
-    {
-        $this->set("Host", $sHost);
-    }
-
-    /**
-     * Gets mailing error info.
-     *
-     * @return string
-     */
-    public function getErrorInfo()
-    {
-        return $this->ErrorInfo;
-    }
-
-    /**
-     * Sets word wrapping on the body of the message to a given number of
-     * characters
-     *
-     * @param int $iWordWrap word wrap
-     */
-    public function setMailWordWrap($iWordWrap = null)
-    {
-        $this->set("WordWrap", $iWordWrap);
-    }
-
-    /**
-     * Sets use inline images. If true, images will be embedded into mail.
-     *
-     * @param bool $blUseImages embed or not images into mail
-     */
-    public function setUseInlineImages($blUseImages = null)
-    {
-        $this->_blInlineImgEmail = $blUseImages;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addAttachment(
-        $path,
-        $name = '',
-        $encoding = 'base64',
-        $type = 'application/octet-stream',
-        $disposition = 'attachment'
-    ) {
-        $this->_aAttachments[] = array($path, $name, $encoding, $type, $disposition);
-        $result = false;
-
-        try {
-            $result = parent::addAttachment($path, $name, $encoding, $type, $disposition);
-        } catch (Exception $exception) {
-        }
-
-        return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addEmbeddedImage(
-        $path,
-        $cid,
-        $name = '',
-        $encoding = 'base64',
-        $type = 'application/octet-stream',
-        $disposition = 'inline'
-    ) {
-        $this->_aAttachments[] = array(
-            $path,
-            basename($path),
-            $name,
-            $encoding,
-            $type,
-            false,
-            $disposition,
-            $cid
-        );
-
-        return parent::addEmbeddedImage($path, $cid, $name, $encoding, $type, $disposition);
-    }
-
-    /**
-     * Gets mail attachment.
-     *
-     * @return array
-     */
-    public function getAttachments()
-    {
-        return $this->_aAttachments;
-    }
-
-    /**
-     * Clears all attachments from mail.
-     */
-    public function clearAttachments()
-    {
-        $this->_aAttachments = array();
-        parent::clearAttachments();
-    }
-
-    /**
-     * Inherited phpMailer function adding a header to email message.
-     * We override it to skip X-Mailer header.
-     *
-     * @param string $sName  header name
-     * @param string $sValue header value
-     *
-     * @return string|null
-     */
-    public function headerLine($sName, $sValue)
-    {
-        if (stripos($sName, 'X-') !== false) {
-            return null;
-        }
-
-        return parent::headerLine($sName, $sValue);
-    }
-
-    /**
-     * Gets use inline images.
-     *
-     * @return bool
-     */
-    protected function _getUseInlineImages()
-    {
-        return $this->_blInlineImgEmail;
+        return $sEmail;
     }
 
     /**
@@ -1878,111 +1237,26 @@ class oxEmail extends PHPMailer
      *
      * @return bool
      */
-    protected function _sendMailErrorMsg()
+    protected function _sendMailErrorMsg(MailContainer $container)
     {
         // build addresses
-        $aRecipients = $this->getRecipient();
+        $aRecipients = $container->getRecipient();
 
-        $sOwnerMessage = "Error sending eMail(" . $this->getSubject() . ") to: \n\n";
+        $sOwnerMessage = 'Error sending eMail(' . $container->getSubject() . ') to: \n\n';
 
         foreach ($aRecipients as $aEMail) {
             $sOwnerMessage .= $aEMail[0];
             $sOwnerMessage .= (!empty($aEMail[1])) ? ' (' . $aEMail[1] . ')' : '';
             $sOwnerMessage .= " \n ";
         }
-        $sOwnerMessage .= "\n\nError : " . $this->getErrorInfo();
+        $sOwnerMessage .= "\n\nError : " . $this->mailer->getErrorInfo();;
 
         // shop info
         $oShop = $this->_getShop();
 
-        $blRet = @mail($oShop->oxshops__oxorderemail->value, "eMail problem in shop!", $sOwnerMessage);
+        $blRet = @mail($oShop->oxshops__oxorderemail->value, 'eMail problem in shop!', $sOwnerMessage);
 
         return $blRet;
-    }
-
-    /**
-     * Does nothing, returns same object as passed to method.
-     * This method is called from oxEmail::sendOrderEMailToUser() to do
-     * additional operation with order object before sending email
-     *
-     * @param oxOrder $oOrder Ordering object
-     *
-     * @return oxOrder
-     */
-    protected function _addUserInfoOrderEMail($oOrder)
-    {
-        return $oOrder;
-    }
-
-    /**
-     * Does nothing, returns same object as passed to method.
-     * This method is called from oxEmail::SendRegisterEMail() to do
-     * additional operation with user object before sending email
-     *
-     * @param oxUser $oUser User object
-     *
-     * @return oxUser
-     */
-    protected function _addUserRegisterEmail($oUser)
-    {
-        return $oUser;
-    }
-
-    /**
-     * Does nothing, returns same object as passed to method.
-     * This method is called from oxemail::SendForgotPWDEMail() to do
-     * additional operation with shop object before sending email
-     *
-     * @param oxShop $oShop Shop object
-     *
-     * @return oxShop
-     */
-    protected function _addForgotPwdEmail($oShop)
-    {
-        return $oShop;
-    }
-
-    /**
-     * Does nothing, returns same object as passed to method.
-     * This method is called from oxEmail::SendNewsletterDBOptInMail() to do
-     * additional operation with user object before sending email
-     *
-     * @param oxUser $oUser User object
-     *
-     * @return oxUser
-     */
-    protected function _addNewsletterDbOptInMail($oUser)
-    {
-        return $oUser;
-    }
-
-    /**
-     * Clears mailer settings (AllRecipients, ReplyTos, Attachments, Errors)
-     */
-    protected function _clearMailer()
-    {
-        $this->clearAllRecipients();
-        $this->clearReplyTos();
-        $this->clearAttachments();
-
-        $this->ErrorInfo = '';
-    }
-
-    /**
-     * Set mail From, FromName, SMTP values
-     *
-     * @param oxShop $oShop Shop object
-     */
-    protected function _setMailParams($oShop = null)
-    {
-        $this->_clearMailer();
-
-        if (!$oShop) {
-            $oShop = $this->_getShop();
-        }
-
-        $this->setFrom($oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue());
-        $this->setSmtp($oShop);
     }
 
     /**
@@ -2000,11 +1274,11 @@ class oxEmail extends PHPMailer
             if (isset($this->_oShop)) {
                 return $this->_oShop;
             } else {
-                return $this->_oShop = $this->getConfig()->getActiveShop();
+                return $this->_oShop = $this->config->getActiveShop();
             }
         }
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $oShop = oxNew('oxShop');
         if ($iShopId !== null) {
@@ -2019,78 +1293,12 @@ class oxEmail extends PHPMailer
     }
 
     /**
-     * Sets smtp authentification parameters.
-     *
-     * @param string $sUserName     smtp user
-     * @param oxShop $sUserPassword smtp password
-     */
-    protected function _setSmtpAuthInfo($sUserName = null, $sUserPassword = null)
-    {
-        $this->set("SMTPAuth", true);
-        $this->set("Username", $sUserName);
-        $this->set("Password", $sUserPassword);
-    }
-
-    /**
-     * Sets SMTP class debugging on or off
-     *
-     * @param bool $blDebug show debug info or not
-     */
-    protected function _setSmtpDebug($blDebug = null)
-    {
-        $this->set("SMTPDebug", $blDebug);
-    }
-
-    /**
-     * Sets path to PHPMailer plugins
-     */
-    protected function _setMailerPluginDir()
-    {
-        $this->set("PluginDir", getShopBasePath() . "Core/phpmailer/");
-    }
-
-    /**
-     * Process email body and alt body thought oxOutput.
-     * Calls oxOutput::processEmail() on class instance.
-     */
-    protected function _makeOutputProcessing()
-    {
-        $oOutput = oxNew("oxOutput");
-        $this->setBody($oOutput->process($this->getBody(), "oxemail"));
-        $this->setAltBody($oOutput->process($this->getAltBody(), "oxemail"));
-        $oOutput->processEmail($this);
-    }
-
-    /**
-     * Sends email via phpmailer.
-     *
-     * @return bool
-     */
-    protected function _sendMail()
-    {
-        $blResult = false;
-        try {
-            $blResult = parent::send();
-        } catch (Exception $oException) {
-            $oEx = oxNew("oxException");
-            $oEx->setMessage($oException->getMessage());
-            $oEx->debugOut();
-            if ($this->getConfig()->getConfigParam('iDebug') != 0) {
-                throw $oEx;
-            }
-        }
-
-        return $blResult;
-    }
-
-
-    /**
      * Process view data array through oxOutput processor
      */
     protected function _processViewArray()
     {
         $oSmarty = $this->_getSmarty();
-        $oOutputProcessor = oxNew("oxOutput");
+        $oOutputProcessor = oxNew('oxOutput');
 
         // processing all view data
         foreach ($this->_aViewData as $sKey => $sValue) {
@@ -2098,35 +1306,11 @@ class oxEmail extends PHPMailer
         }
 
         // processing assigned smarty variables
-        $aNewSmartyArray = $oOutputProcessor->processViewArray($oSmarty->get_template_vars(), "oxemail");
+        $aNewSmartyArray = $oOutputProcessor->processViewArray($oSmarty->get_template_vars(), 'oxemail');
 
         foreach ($aNewSmartyArray as $key => $val) {
             $oSmarty->assign($key, $val);
         }
-    }
-
-    /**
-     * Get mail charset
-     *
-     * @return string
-     */
-    public function getCharset()
-    {
-        if (!$this->_sCharSet) {
-            return oxRegistry::getLang()->translateString("charset");
-        } else {
-            return $this->CharSet;
-        }
-    }
-
-    /**
-     * Get shop object
-     *
-     * @return oxShop
-     */
-    public function getShop()
-    {
-        return $this->_getShop();
     }
 
     /**
@@ -2146,7 +1330,7 @@ class oxEmail extends PHPMailer
      */
     public function getViewConfig()
     {
-        return $this->getConfig()->getActiveView()->getViewConfig();
+        return $this->config->getActiveView()->getViewConfig();
     }
 
     /**
@@ -2156,7 +1340,7 @@ class oxEmail extends PHPMailer
      */
     public function getView()
     {
-        return $this->getConfig()->getActiveView();
+        return $this->config->getActiveView();
     }
 
     /**
@@ -2166,9 +1350,7 @@ class oxEmail extends PHPMailer
      */
     public function getCurrency()
     {
-        $oConfig = oxRegistry::getConfig();
-
-        return $oConfig->getActShopCurrencyObject();
+        return $this->config->getActShopCurrencyObject();
     }
 
     /**
@@ -2180,16 +1362,6 @@ class oxEmail extends PHPMailer
     public function setViewData($sKey, $sValue)
     {
         $this->_aViewData[$sKey] = $sValue;
-    }
-
-    /**
-     * Get view data
-     *
-     * @return array
-     */
-    public function getViewData()
-    {
-        return $this->_aViewData;
     }
 
     /**
@@ -2213,17 +1385,7 @@ class oxEmail extends PHPMailer
      */
     public function setUser($oUser)
     {
-        $this->_aViewData["oUser"] = $oUser;
-    }
-
-    /**
-     * Get user
-     *
-     * @return oxUser
-     */
-    public function getUser()
-    {
-        return $this->_aViewData["oUser"];
+        $this->_aViewData['oUser'] = $oUser;
     }
 
     /**
@@ -2246,7 +1408,7 @@ class oxEmail extends PHPMailer
     }
 
     /**
-     * Performs search for "sid", removes it and adds shop id to string.
+     * Performs search for 'sid', removes it and adds shop id to string.
      *
      * @param string $sAltBody Body.
      *
@@ -2254,6 +1416,6 @@ class oxEmail extends PHPMailer
      */
     private function _clearSidFromBody($sAltBody)
     {
-        return oxStr::getStr()->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[A-Z0-9\.]+/i', '\1shp=' . $this->getConfig()->getShopId(), $sAltBody);
+        return oxStr::getStr()->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[A-Z0-9\.]+/i', '\1shp=' . $this->config->getShopId(), $sAltBody);
     }
 }

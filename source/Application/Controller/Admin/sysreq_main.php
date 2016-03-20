@@ -37,7 +37,7 @@ class sysreq_main extends oxAdminDetails
     {
         parent::render();
 
-        $oSysReq = new oxSysRequirements();
+        $oSysReq = oxnew("oxSysRequirements");
 
         $this->_aViewData['aInfo'] = $oSysReq->getSystemInfo();
         $this->_aViewData['aCollations'] = $oSysReq->checkCollation();
@@ -80,7 +80,7 @@ class sysreq_main extends oxAdminDetails
      */
     public function getReqInfoUrl($sIdent)
     {
-        $oSysReq = new oxSysRequirements();
+        $oSysReq = oxnew("oxSysRequirements");
         $sUrl = $oSysReq->getReqInfoUrl($sIdent);
 
         return $sUrl;

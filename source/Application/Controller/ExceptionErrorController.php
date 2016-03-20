@@ -57,7 +57,7 @@ class ExceptionErrorController extends \oxUBase
         $oSmarty->assign_by_ref("Errors", $aViewData["Errors"]);
 
         // resetting errors from session
-        oxRegistry::getSession()->setVariable('Errors', array());
+        $this->session->setVariable('Errors', array());
     }
 
     /**
@@ -67,7 +67,7 @@ class ExceptionErrorController extends \oxUBase
      */
     protected function _getErrors()
     {
-        $aErrors = oxRegistry::getSession()->getVariable('Errors');
+        $aErrors = $this->session->getVariable('Errors');
 
         if (null === $aErrors) {
             $aErrors = array();

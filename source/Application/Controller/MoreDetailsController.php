@@ -22,8 +22,6 @@
 
 namespace OxidEsales\Eshop\Application\Controller;
 
-use oxRegistry;
-
 /**
  * Article images gallery popup window.
  * If chosen article has more pictures there is ability to create
@@ -93,7 +91,7 @@ class MoreDetailsController extends \Details
             $aPicGallery = $this->getProduct()->getPictureGallery();
 
             if ($aPicGallery['ZoomPic']) {
-                $sActPicId = oxRegistry::getConfig()->getRequestParameter('actpicid');
+                $sActPicId = $this->request->getRequestParameter('actpicid');
                 $this->_sActPicId = $sActPicId ? $sActPicId : 1;
             }
         }
@@ -132,7 +130,7 @@ class MoreDetailsController extends \Details
     {
         if ($this->_oProduct === null) {
             $oArticle = oxNew('oxArticle');
-            $oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'));
+            $oArticle->load($this->request->getRequestParameter('anid'));
             $this->_oProduct = $oArticle;
         }
 

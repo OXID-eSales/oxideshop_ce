@@ -76,31 +76,6 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
     }
 
     /**
-     * Order_Overview::Sendorder() test case
-     *
-     * @return null
-     */
-    public function testSendorder()
-    {
-        $this->setRequestParameter("sendmail", true);
-        oxTestModules::addFunction('oxemail', 'sendSendedNowMail', '{ throw new Exception( "sendSendedNowMail" ); }');
-        oxTestModules::addFunction('oxorder', 'load', '{ return true; }');
-        oxTestModules::addFunction('oxorder', 'save', '{ return true; }');
-        oxTestModules::addFunction('oxorder', 'getOrderArticles', '{ return array(); }');
-
-        // testing..
-        try {
-            $oView = oxNew('Order_Overview');
-            $oView->sendorder();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("sendSendedNowMail", $oExcp->getMEssage(), "Error in Order_Overview::sendorder()");
-
-            return;
-        }
-        $this->fail("Error in Order_Overview::sendorder()");
-    }
-
-    /**
      * Order_Overview::Resetorder() test case
      *
      * @return null
@@ -141,8 +116,6 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $oBase->save();
 
         // testing..
-        $oView = oxNew('Order_Overview');
-
         $oView = $this->getMock("Order_Overview", array("getEditObjectId"));
         $oView->expects($this->any())->method('getEditObjectId')->will($this->returnValue('testOrderId'));
 

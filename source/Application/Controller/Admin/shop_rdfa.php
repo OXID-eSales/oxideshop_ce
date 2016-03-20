@@ -59,7 +59,7 @@ class shop_rdfa extends Shop_Config
         $oContentList->selectString(
             "SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXTYPE = 0
                                     AND OXLOADID IN ('oxagb', 'oxdeliveryinfo', 'oximpressum', 'oxrightofwithdrawal')
-                                    AND OXSHOPID = '" . oxRegistry::getConfig()->getRequestParameter("oxid") . "'"
+                                    AND OXSHOPID = '" . $this->request->getRequestParameter("oxid") . "'"
         ); // $this->getEditObjectId()
         return $oContentList;
     }
@@ -71,7 +71,7 @@ class shop_rdfa extends Shop_Config
      */
     public function getCustomers()
     {
-        $aCustomersConf = $this->getConfig()->getShopConfVar("aRDFaCustomers");
+        $aCustomersConf = $this->config->getShopConfVar("aRDFaCustomers");
         if (isset($aCustomersConf)) {
             foreach ($this->_aCustomers as $sCustomer => $iValue) {
                 $aCustomers[$sCustomer] = (in_array($sCustomer, $aCustomersConf)) ? 1 : 0;
@@ -88,7 +88,7 @@ class shop_rdfa extends Shop_Config
      */
     public function submitUrl()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter("aSubmitUrl");
+        $aParams = $this->request->getRequestParameter("aSubmitUrl");
         if ($aParams['url']) {
             $sNotificationUrl = "http://gr-notify.appspot.com/submit?uri=" . urlencode($aParams['url']) . "&agent=oxid";
             if ($aParams['email']) {

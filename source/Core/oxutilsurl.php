@@ -62,7 +62,7 @@ class oxUtilsUrl extends oxSuperCfg
             $this->_aAddUrlParams = $this->getBaseAddUrlParams();
 
             // appending currency
-            if (($iCur = $this->getConfig()->getShopCurrency())) {
+            if (($iCur = $this->config->getShopCurrency())) {
                 $this->_aAddUrlParams['cur'] = $iCur;
             }
         }
@@ -107,7 +107,7 @@ class oxUtilsUrl extends oxSuperCfg
             $sSep = '&amp;';
         }
 
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         if (!$oStr->preg_match('/[&?](amp;)?cur=[0-9]+/i', $sUrl)) {
             $iCur = (int) $oConfig->getShopCurrency();
             if ($iCur) {
@@ -129,7 +129,7 @@ class oxUtilsUrl extends oxSuperCfg
      */
     public function prepareCanonicalUrl($sUrl)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         /** @var oxStrRegular $oStr */
         $oStr = getStr();
 
@@ -226,7 +226,7 @@ class oxUtilsUrl extends oxSuperCfg
     public function addShopHost($sUrl)
     {
         if (!preg_match("#^https?://#i", $sUrl)) {
-            $sShopUrl = $this->getConfig()->getSslShopUrl();
+            $sShopUrl = $this->config->getSslShopUrl();
             $sUrl = $sShopUrl . $sUrl;
         }
 
@@ -285,7 +285,7 @@ class oxUtilsUrl extends oxSuperCfg
      */
     public function getActiveShopHost()
     {
-        $shopUrl = $this->getConfig()->getShopUrl();
+        $shopUrl = $this->config->getShopUrl();
         return $this->extractHost($shopUrl);
     }
 
@@ -315,7 +315,7 @@ class oxUtilsUrl extends oxSuperCfg
      */
     public function getActiveShopUrlPath()
     {
-        $shopUrl = oxRegistry::getConfig()->getShopUrl();
+        $shopUrl = $this->config->getShopUrl();
 
         return $this->extractUrlPath($shopUrl);
     }
@@ -558,7 +558,7 @@ class oxUtilsUrl extends oxSuperCfg
     {
         if ($this->_aHosts === null) {
             $this->_aHosts = array();
-            $oConfig = $this->getConfig();
+            $oConfig = $this->config;
 
             $this->_addMallHosts($this->_aHosts);
 

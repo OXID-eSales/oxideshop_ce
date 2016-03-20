@@ -61,14 +61,7 @@ class oxSelectlist extends oxI18n implements oxISelectList
      */
     protected $_oActiveSelection = null;
 
-    /**
-     * Calls parent constructor and initializes selection list
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxselectlist');
-    }
+    protected $_sCoreTable = 'oxselectlist';
 
     /**
      * Returns select list value list.

@@ -25,14 +25,7 @@
  */
 class oxUserAddressList extends oxList
 {
-
-    /**
-     * Call parent class constructor
-     */
-    public function __construct()
-    {
-        parent::__construct('oxaddress');
-    }
+    protected $_sObjectsInListName = 'oxaddress';
 
     /**
      * Selects and loads all address for particular user.

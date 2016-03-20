@@ -38,7 +38,7 @@ class Category_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 
@@ -94,7 +94,7 @@ class Category_Main extends oxAdminDetails
 
         $this->_aViewData["sortableFields"] = $this->getSortableFields();
 
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+        if ($this->request->getRequestParameter("aoc")) {
             /** @var category_main_ajax $oCategoryMainAjax */
             $oCategoryMainAjax = oxNew('category_main_ajax');
             $this->_aViewData['oxajax'] = $oCategoryMainAjax->getColumns();
@@ -142,12 +142,10 @@ class Category_Main extends oxAdminDetails
     {
         parent::save();
 
-        $myConfig = $this->getConfig();
-
         $soxId = $this->getEditObjectId();
 
         $aParams = $this->_parseRequestParametersForSave(
-            $myConfig->getRequestParameter("editval")
+            $this->request->getRequestParameter("editval")
         );
 
         /** @var oxCategory $oCategory */
@@ -198,7 +196,7 @@ class Category_Main extends oxAdminDetails
      */
     public function deletePicture()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($myConfig->isDemoShop()) {
             // disabling uploading pictures if this is demo shop
@@ -214,7 +212,7 @@ class Category_Main extends oxAdminDetails
         }
 
         $sOxId = $this->getEditObjectId();
-        $sField = oxRegistry::getConfig()->getRequestParameter('masterPicField');
+        $sField = $this->request->getRequestParameter('masterPicField');
         if (empty($sField)) {
             return;
         }
@@ -239,7 +237,7 @@ class Category_Main extends oxAdminDetails
             return;
         }
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $sItemKey = 'oxcategories__' . $field;
 
         switch ($field) {
@@ -328,7 +326,7 @@ class Category_Main extends oxAdminDetails
      */
     protected function resetCategoryPictures($category, $params, $categoryId)
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $category->load($categoryId);
         $category->loadInLang($this->_iEditLang, $categoryId);
 

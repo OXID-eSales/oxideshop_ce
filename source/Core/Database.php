@@ -398,7 +398,7 @@ class Database
         $ADODB_SESSION_CONNECT = self::_getConfigParam('_dbHost');
         $ADODB_SESS_DEBUG = false;
 
-        $database = new oxLegacyDb();
+        $database = new oxLegacyDb(DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_CONFIG));
         $databaseConnection = $databaseFactory->_getDbInstance();
         $database->setConnection($databaseConnection);
 

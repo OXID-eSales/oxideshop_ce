@@ -199,11 +199,6 @@ define('K_SMALL_RATIO', 2 / 3);
 require_once $sTcPdfPath . "config/lang/eng.php";
 
 /**
- * Including parent class
- */
-require_once $sTcPdfPath . "tcpdf.php";
-
-/**
  * TCPDF class wrapper, set/overrides oxid specific functionality
  */
 class oxPDF extends TCPDF

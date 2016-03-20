@@ -37,7 +37,7 @@ class Delivery_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 
@@ -91,7 +91,7 @@ class Delivery_Main extends oxAdminDetails
 
         $this->_aViewData["deltypes"] = $aDelTypes;
 
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+        if ($this->request->getRequestParameter("aoc")) {
             $oDeliveryMainAjax = oxNew('delivery_main_ajax');
             $this->_aViewData['oxajax'] = $oDeliveryMainAjax->getColumns();
 
@@ -111,7 +111,7 @@ class Delivery_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         $oDelivery = oxNew("oxdelivery");
 
@@ -161,7 +161,7 @@ class Delivery_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         $oDelivery = oxNew("oxdelivery");
 

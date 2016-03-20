@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Tests for PriceAlarm_Send class
@@ -81,12 +82,12 @@ class Unit_Admin_PriceAlarmSendTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxpricealarm', $oAlarm);
 
-        $oEmail = $this->getMock('oxemail', array('sendPricealarmToCustomer'));
+        $oEmail = $this->getMailerMock(array('sendPricealarmToCustomer'));
         $oEmail->expects($this->once())->method('sendPricealarmToCustomer')
             ->with($this->equalTo("info@example.com"), $this->isInstanceOf('oxpricealarm'))
             ->will($this->returnValue(true));
 
-        oxTestModules::addModuleObject('oxemail', $oEmail);
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         // testing..
         $oView = oxNew('PriceAlarm_Send');

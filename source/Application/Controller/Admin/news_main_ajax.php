@@ -55,8 +55,8 @@ class news_main_ajax extends ajaxListComponent
         // active AJAX component
         $sGroupTable = $this->_getViewName('oxgroups');
         $oDb = oxDb::getDb();
-        $sDiscountId = $this->getConfig()->getRequestParameter('oxid');
-        $sSynchDiscountId = $this->getConfig()->getRequestParameter('synchoxid');
+        $sDiscountId = $this->request->getRequestParameter('oxid');
+        $sSynchDiscountId = $this->request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sDiscountId) {
@@ -80,7 +80,7 @@ class news_main_ajax extends ajaxListComponent
     public function removeGroupFromNews()
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2group.oxid');
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxobject2group.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -97,9 +97,9 @@ class news_main_ajax extends ajaxListComponent
     public function addGroupToNews()
     {
         $aAddGroups = $this->_getActionIds('oxgroups.oxid');
-        $soxId = $this->getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sGroupTable = $this->_getViewName('oxgroups');
             $aAddGroups = $this->_getAll($this->_addFilter("select $sGroupTable.oxid " . $this->_getQuery()));
         }

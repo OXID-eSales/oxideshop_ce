@@ -55,13 +55,13 @@ class GuestBookEntryController extends \GuestBook
      */
     public function saveEntry()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
-        $sReviewText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('rvw_txt', true));
-        $sShopId = $this->getConfig()->getShopId();
-        $sUserId = oxRegistry::getSession()->getVariable('usr');
+        $sReviewText = trim(( string ) $this->request->getRequestParameter('rvw_txt', true));
+        $sShopId = $this->config->getShopId();
+        $sUserId = $this->session->getVariable('usr');
 
         // guest book`s entry is validated
         if (!$sUserId) {

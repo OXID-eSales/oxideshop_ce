@@ -49,13 +49,13 @@ class AdminDetails extends \oxAdminView
         $sReturn = parent::render();
 
         // generate help link
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $sDir = $myConfig->getConfigParam('sShopDir') . '/documentation/admin';
         if (is_dir($sDir)) {
             $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
         } else {
             $languageId = $this->getDocumentationLanguageId();
-            $oShop = $this->_getEditShop(oxRegistry::getSession()->getVariable('actshop'));
+            $oShop = $this->_getEditShop($this->session->getVariable('actshop'));
             $sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $languageId . '/admin';
         }
 
@@ -130,9 +130,9 @@ class AdminDetails extends \oxAdminView
         // A. replace ONLY if long description is not processed by smarty, or users will not be able to
         // store smarty tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
         // descriptions, which are filled dynamically
-        if (!$this->getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
+        if (!$this->config->getConfigParam('bl_perfParseLongDescinSmarty')) {
             $aReplace = array('[{$shop->currenthomedir}]', '[{$oViewConf->getCurrentHomeDir()}]');
-            $sValue = str_replace($aReplace, $this->getConfig()->getCurrentShopURL(false), $sValue);
+            $sValue = str_replace($aReplace, $this->config->getCurrentShopURL(false), $sValue);
         }
 
         return $sValue;
@@ -283,8 +283,8 @@ class AdminDetails extends \oxAdminView
             }
         } else {
             // no category selected - opening first available
-            $oCatTree->rewind();
-            if ($oCat = $oCatTree->current()) {
+            reset($oCatTree);
+            if ($oCat = current($oCatTree)) {
                 $oCat->selected = 1;
                 $sSelectedCatId = $oCat->getId();
             }
@@ -301,8 +301,8 @@ class AdminDetails extends \oxAdminView
      */
     public function changeFolder()
     {
-        $sFolder = oxRegistry::getConfig()->getRequestParameter('setfolder');
-        $sFolderClass = oxRegistry::getConfig()->getRequestParameter('folderclass');
+        $sFolder = $this->request->getRequestParameter('setfolder');
+        $sFolderClass = $this->request->getRequestParameter('folderclass');
 
         if ($sFolderClass == 'oxcontent' && $sFolder == 'CMSFOLDER_NONE') {
             $sFolder = '';

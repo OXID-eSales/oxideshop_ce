@@ -50,13 +50,7 @@ class oxDiscountList extends oxList
      */
     protected $_hasSkipDiscountCategories = null;
 
-    /**
-     * Class Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct('oxdiscount');
-    }
+    protected $_sObjectsInListName = 'oxdiscount';
 
     /**
      * Initializes current state discount list
@@ -81,7 +75,7 @@ class oxDiscountList extends oxList
         }
 
         // resetting array pointer
-        $this->rewind();
+        reset($this->_aArray);
 
         return $this;
     }

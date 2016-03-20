@@ -55,13 +55,15 @@ class oxDeliverySetList extends oxList
      */
     protected $_sHomeCountry = null;
 
+    protected $_sObjectsInListName = 'oxdeliveryset';
+
     /**
      * Calls parent constructor and sets home country
      */
-    public function __construct()
+    public function __construct($config)
     {
-        $this->setHomeCountry($this->getConfig()->getConfigParam('aHomeCountry'));
-        parent::__construct('oxdeliveryset');
+        parent::__construct($config, 'oxdeliveryset');
+        $this->setHomeCountry($this->config->getConfigParam('aHomeCountry'));
     }
 
     /**
@@ -93,14 +95,6 @@ class oxDeliverySetList extends oxList
      */
     protected function _getList($oUser = null, $sCountryId = null)
     {
-        // checking for current session user which gives additional restrictions for user itself, users group and country
-        if ($oUser === null) {
-            $oUser = $this->getUser();
-        } else {
-            //set user
-            $this->setUser($oUser);
-        }
-
         $sUserId = $oUser ? $oUser->getId() : '';
 
         if ($sUserId !== $this->_sUserId || $sCountryId !== $this->_sCountryId) {
@@ -120,7 +114,7 @@ class oxDeliverySetList extends oxList
             $this->_sCountryId = $sCountryId;
         }
 
-        $this->rewind();
+        reset($this->_aArray);
 
         return $this;
     }
@@ -254,7 +248,7 @@ class oxDeliverySetList extends oxList
             $oPayList = oxRegistry::get("oxPaymentList");
             $oDelList = oxRegistry::get("oxDeliveryList");
 
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
             $dBasketPrice = $oBasket->getPriceForPayment() / $oCur->rate;
 
             // checking if these ship sets available (number of possible payment methods > 0)

@@ -20,7 +20,10 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Application\Model\Article\ListArticleInterface;
 use OxidEsales\Eshop\Application\Model\Contract\ArticleInterface;
+use OxidEsales\Eshop\Core\DiContainer;
+use OxidEsales\Eshop\Core\Event\ArticleSaved;
 
 // defining supported link types
 define('OXARTICLE_LINKTYPE_CATEGORY', 0);
@@ -36,7 +39,7 @@ define('OXARTICLE_LINKTYPE_RECOMM', 5);
  * discounts, etc.
  *
  */
-class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
+class oxArticle extends oxI18n implements ArticleInterface, oxIUrl, ListArticleInterface
 {
 
     /**
@@ -46,12 +49,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     protected $_sClassName = 'oxarticle';
 
-    /**
-     * Set $_blUseLazyLoading to true if you want to load only actually used fields not full object, depending on views.
-     *
-     * @var bool
-     */
-    protected $_blUseLazyLoading = true;
+    protected $_sCoreTable = "oxarticles";
 
     /**
      * item key the usage with oxuserbasketitem
@@ -466,23 +464,6 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     protected $_blCanUpdateAnyField = null;
 
     /**
-     * Constructor, sets shop ID for article (oxconfig::getShopId()),
-     * initiates parent constructor (parent::oxI18n()).
-     *
-     * @param array $aParams The array of names and values of oxArticle instance properties to be set on object instantiation
-     */
-    public function __construct($aParams = null)
-    {
-        if ($aParams && is_array($aParams)) {
-            foreach ($aParams as $sParam => $mValue) {
-                $this->$sParam = $mValue;
-            }
-        }
-        parent::__construct();
-        $this->init('oxarticles');
-    }
-
-    /**
      * Magic getter, deals with values which are loaded on demand.
      * Additionally it sets default value for unknown picture fields
      *
@@ -575,7 +556,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         $sQ .= " and $sTable.oxhidden = 0 ";
 
         // enabled time range check ?
-        if ($this->getConfig()->getConfigParam('blUseTimeCheck')) {
+        if ($this->config->getConfigParam('blUseTimeCheck')) {
             $sDate = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
             $sQ = "( $sQ or ( $sTable.oxactivefrom < '$sDate' and $sTable.oxactiveto > '$sDate' ) ) ";
         }
@@ -598,7 +579,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     public function getStockCheckQuery($blForceCoreTable = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $sTable = $this->getViewName($blForceCoreTable);
 
         $sQ = "";
@@ -637,7 +618,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         $sQ = " and $sTable.oxparentid = '" . $this->getId() . "' ";
 
         //checking if variant is active and stock status
-        if ($this->getConfig()->getConfigParam('blUseStock')) {
+        if ($this->config->getConfigParam('blUseStock')) {
             $sQ .= " and ( $sTable.oxstock > 0 or ( $sTable.oxstock <= 0 and $sTable.oxstockflag != 2 ";
             if ($blRemoveNotOrderables) {
                 $sQ .= " and $sTable.oxstockflag != 3 ";
@@ -881,7 +862,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     public function getUnitPrice()
     {
         // Performance
-        if (!$this->getConfig()->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
+        if (!$this->config->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
             return;
         }
 
@@ -937,7 +918,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     public function getVarMinPrice()
     {
-        if (!$this->getConfig()->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
+        if (!$this->config->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
             return;
         }
 
@@ -971,7 +952,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     public function getMinPrice()
     {
-        if (!$this->getConfig()->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
+        if (!$this->config->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
             return;
         }
 
@@ -1064,9 +1045,9 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         }
 
         // stock flags
-        if ($this->getConfig()->getConfigParam('blUseStock') && $this->oxarticles__oxstockflag->value == 2) {
+        if ($this->config->getConfigParam('blUseStock') && $this->oxarticles__oxstockflag->value == 2) {
             $iOnStock = $this->oxarticles__oxstock->value + $this->oxarticles__oxvarstock->value;
-            if ($this->getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+            if ($this->config->getConfigParam('blPsBasketReservationEnabled')) {
                 $iOnStock += $this->getSession()->getBasketReservations()->getReservedAmount($this->getId());
             }
             if ($iOnStock <= 0) {
@@ -1173,7 +1154,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     public function hasSortingFieldsChanged()
     {
-        $aSortingFields = oxRegistry::getConfig()->getConfigParam('aSortCols');
+        $aSortingFields = $this->config->getConfigParam('aSortCols');
         $aSortingFields = !empty($aSortingFields) ? (array) $aSortingFields : array();
         $blChanged = false;
         foreach ($aSortingFields as $sField) {
@@ -1276,7 +1257,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         }
 
         // showing variant reviews ..
-        if ($this->getConfig()->getConfigParam('blShowVariantReviews')) {
+        if ($this->config->getConfigParam('blShowVariantReviews')) {
             $aAdd = $this->_getVariantsIds();
             if (is_array($aAdd)) {
                 $aIds = array_merge($aIds, $aAdd);
@@ -1295,43 +1276,6 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     }
 
     /**
-     * Loads and returns array with cross selling information.
-     *
-     * @return array
-     */
-    public function getCrossSelling()
-    {
-        $oCrosslist = oxNew("oxArticleList");
-        $oCrosslist->loadArticleCrossSell($this->oxarticles__oxid->value);
-        if ($oCrosslist->count()) {
-            return $oCrosslist;
-        }
-    }
-
-    /**
-     * Loads and returns array with accessories information.
-     *
-     * @return array
-     */
-    public function getAccessoires()
-    {
-        $myConfig = $this->getConfig();
-
-        // Performance
-        if (!$myConfig->getConfigParam('bl_perfLoadAccessoires')) {
-            return;
-        }
-
-        $oAcclist = oxNew("oxArticleList");
-        $oAcclist->setSqlLimit(0, $myConfig->getConfigParam('iNrofCrossellArticles'));
-        $oAcclist->loadArticleAccessoires($this->oxarticles__oxid->value);
-
-        if ($oAcclist->count()) {
-            return $oAcclist;
-        }
-    }
-
-    /**
      * Returns a list of similar products.
      *
      * @return array
@@ -1339,7 +1283,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     public function getSimilarProducts()
     {
         // Performance
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         if (!$myConfig->getConfigParam('bl_perfLoadSimilar')) {
             return;
         }
@@ -1377,7 +1321,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     public function getCustomerAlsoBoughtThisProducts()
     {
         // Performance
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         if (!$myConfig->getConfigParam('bl_perfLoadCustomerWhoBoughtThis')) {
             return;
         }
@@ -1401,7 +1345,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     public function loadAmountPriceInfo()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         if (!$myConfig->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice || !$this->_blCalcPrice || !$this->hasAmountPrice()) {
             return array();
         }
@@ -1581,7 +1525,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
 
         if (self::$_aSelections[$sId]) {
             // marking active from filter
-            $aFilter = ($aFilter === null) ? oxRegistry::getConfig()->getRequestParameter("sel") : $aFilter;
+            $aFilter = ($aFilter === null) ? $this->config->getRequestParameter("sel") : $aFilter;
             if ($aFilter) {
                 $iSelIdx = 0;
                 foreach (self::$_aSelections[$sId] as $oSelection) {
@@ -1660,7 +1604,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
             $oVariants->selectString($sSql);
 
             //if we have variants then depending on config option the parent may be non buyable
-            if (!$this->getConfig()->getConfigParam('blVariantParentBuyable') && ($oVariants->count() > 0)) {
+            if (!$this->config->getConfigParam('blVariantParentBuyable') && ($oVariants->count() > 0)) {
                 //$this->blNotBuyable = true;
                 $this->_blNotBuyableParent = true;
             }
@@ -1834,7 +1778,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         }
 
         if ($sManufacturerId && $oManufacturer->load($sManufacturerId)) {
-            if (!$this->getConfig()->getConfigParam('bl_perfLoadManufacturerTree')) {
+            if (!$this->config->getConfigParam('bl_perfLoadManufacturerTree')) {
                 $oManufacturer->setReadOnly(true);
             }
             $oManufacturer = $oManufacturer->oxmanufacturers__oxactive->value ? $oManufacturer : null;
@@ -1882,7 +1826,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         }
 
         // maybe this category is price category ?
-        if ($this->getConfig()->getConfigParam('bl_perfLoadPrice') && $this->_blLoadPrice) {
+        if ($this->config->getConfigParam('bl_perfLoadPrice') && $this->_blLoadPrice) {
             $dPriceFromTo = $this->getPrice()->getBruttoPrice();
             if ($dPriceFromTo > 0) {
                 $sSelect = $this->_generateSelectCatStr($sOXID, $sCatId, $dPriceFromTo);
@@ -1904,7 +1848,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     public function getTPrice()
     {
-        if (!$this->getConfig()->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
+        if (!$this->config->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
             return;
         }
 
@@ -1995,7 +1939,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         // for diff. user groups.
 
         // Performance
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         if (!$myConfig->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
             return;
         }
@@ -2029,7 +1973,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     public function getPrice($dAmount = 1)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         // Performance
         if (!$myConfig->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
             return;
@@ -2235,6 +2179,13 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
             $this->_saveArtLongDesc();
         }
 
+        DiContainer::getInstance()
+            ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
+            ->dispatch(
+                ArticleSaved::NAME,
+                new ArticleSaved($this->getId())
+            );
+
         return $blRet;
     }
 
@@ -2262,7 +2213,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     public function getPictureGallery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         //initialize
         $blMorePic = false;
@@ -2270,10 +2221,6 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         $aArtIcons = array();
         $iActPicId = 1;
         $sActPic = $this->getPictureUrl($iActPicId);
-
-        if (oxRegistry::getConfig()->getRequestParameter('actpicid')) {
-            $iActPicId = oxRegistry::getConfig()->getRequestParameter('actpicid');
-        }
 
         $oStr = getStr();
         $iCntr = 0;
@@ -2351,7 +2298,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     public function onChange($action = null, $articleId = null, $parentArticleId = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if (!isset($articleId)) {
             if ($this->getId()) {
@@ -2424,7 +2371,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     public function checkForStock($dAmount, $dArtStockAmount = 0)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         if (!$myConfig->getConfigParam('blUseStock')) {
             return true;
         }
@@ -2448,7 +2395,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
                 $iOnStock = floor($iOnStock);
             }
         }
-        if ($this->getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+        if ($this->config->getConfigParam('blPsBasketReservationEnabled')) {
             $iOnStock += $this->getSession()->getBasketReservations()->getReservedAmount($this->getId());
         }
         if ($iOnStock >= $dAmount) {
@@ -2692,7 +2639,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         $sUrl = '';
         if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
+            $sUrl = $this->config->getShopUrl($iLang, false);
         }
 
         $sUrl .= "index.php?cl=details" . ($blAddId ? "&amp;anid=" . $this->getId() : "");
@@ -2759,7 +2706,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     public function getDispSelList()
     {
         if ($this->_aDispSelList === null) {
-            if ($this->getConfig()->getConfigParam('bl_perfLoadSelectLists') && $this->getConfig()->getConfigParam('bl_perfLoadSelectListsInAList')) {
+            if ($this->config->getConfigParam('bl_perfLoadSelectLists') && $this->config->getConfigParam('bl_perfLoadSelectListsInAList')) {
                 $this->_aDispSelList = $this->getSelectLists();
             }
         }
@@ -2776,12 +2723,12 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     {
         if ($this->_sMoreDetailLink == null) {
             // and assign special article values
-            $this->_sMoreDetailLink = $this->getConfig()->getShopHomeURL() . 'cl=moredetails';
+            $this->_sMoreDetailLink = $this->config->getShopHomeURL() . 'cl=moredetails';
 
             // not always it is okey, as not all the time active category is the same as primary article cat.
-            if ($sActCat = oxRegistry::getConfig()->getRequestParameter('cnid')) {
-                $this->_sMoreDetailLink .= '&amp;cnid=' . $sActCat;
-            }
+            //if ($sActCat = $this->config->getRequestParameter('cnid')) {
+            //    $this->_sMoreDetailLink .= '&amp;cnid=' . $sActCat;
+            //}
             $this->_sMoreDetailLink .= '&amp;anid=' . $this->getId();
             $this->_sMoreDetailLink = $this->_sMoreDetailLink;
         }
@@ -2797,7 +2744,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     public function getToBasketLink()
     {
         if ($this->_sToBasketLink == null) {
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
 
             if (oxRegistry::getUtils()->isSearchEngine()) {
                 $this->_sToBasketLink = $this->getLink();
@@ -2806,20 +2753,20 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
                 $this->_sToBasketLink = $myConfig->getShopHomeURL();
 
                 // override some classes as these should never showup
-                $sActClass = oxRegistry::getConfig()->getRequestParameter('cl');
+                $sActClass = $this->config->getRequestParameter('cl');
                 if ($sActClass == 'thankyou') {
                     $sActClass = 'basket';
                 }
                 $this->_sToBasketLink .= 'cl=' . $sActClass;
 
                 // this is not very correct
-                if ($sActCat = oxRegistry::getConfig()->getRequestParameter('cnid')) {
+                if ($sActCat = $this->config->getRequestParameter('cnid')) {
                     $this->_sToBasketLink .= '&amp;cnid=' . $sActCat;
                 }
 
                 $this->_sToBasketLink .= '&amp;fnc=tobasket&amp;aid=' . $this->getId() . '&amp;anid=' . $this->getId();
 
-                if ($sTpl = basename(oxRegistry::getConfig()->getRequestParameter('tpl'))) {
+                if ($sTpl = basename($this->config->getRequestParameter('tpl'))) {
                     $this->_sToBasketLink .= '&amp;tpl=' . $sTpl;
                 }
             }
@@ -2967,7 +2914,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
                 $sImgName = basename($this->{"oxarticles__oxpic$iIndex"}->value);
             }
 
-            $sSize = $this->getConfig()->getConfigParam('aDetailImageSizes');
+            $sSize = $this->config->getConfigParam('aDetailImageSizes');
 
             return oxRegistry::get("oxPictureHandler")
                 ->getProductPicUrl("product/{$iIndex}/", $sImgName, $sSize, 'oxpic' . $iIndex);
@@ -2996,7 +2943,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
             $sImgName = basename($this->oxarticles__oxpic1->value);
         }
 
-        $sSize = $this->getConfig()->getConfigParam('sIconsize');
+        $sSize = $this->config->getConfigParam('sIconsize');
 
         $sIconUrl = oxRegistry::get("oxPictureHandler")->getProductPicUrl($sDirname, $sImgName, $sSize, $iIndex);
 
@@ -3021,7 +2968,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
             $sImgName = basename($this->oxarticles__oxpic1->value);
         }
 
-        $sSize = $this->getConfig()->getConfigParam('sThumbnailsize');
+        $sSize = $this->config->getConfigParam('sThumbnailsize');
 
         return oxRegistry::get("oxPictureHandler")->getProductPicUrl($sDirname, $sImgName, $sSize, 0, $bSsl);
     }
@@ -3038,7 +2985,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         $iIndex = (int) $iIndex;
         if ($iIndex > 0 && !$this->_isFieldEmpty("oxarticles__oxpic" . $iIndex)) {
             $sImgName = basename($this->{"oxarticles__oxpic" . $iIndex}->value);
-            $sSize = $this->getConfig()->getConfigParam("sZoomImageSize");
+            $sSize = $this->config->getConfigParam("sZoomImageSize");
 
             return oxRegistry::get("oxPictureHandler")->getProductPicUrl("product/{$iIndex}/", $sImgName, $sSize,
                 'oxpic' . $iIndex);
@@ -3281,7 +3228,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         $sPicName = basename($this->{"oxarticles__oxpic" . $iIndex}->value);
 
         if ($sPicName && $sPicName != "nopic.jpg") {
-            $sPicUrl = $this->getConfig()->getPictureUrl("master/product/" . $iIndex . "/" . $sPicName);
+            $sPicUrl = $this->config->getPictureUrl("master/product/" . $iIndex . "/" . $sPicName);
             if (!$sPicUrl || basename($sPicUrl) == "nopic.jpg") {
                 $sPicUrl = false;
             }
@@ -3317,7 +3264,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
 
             $sQ = "SELECT * FROM `oxfiles` WHERE `oxartid` = '" . $this->getId() . "'";
 
-            if (!$this->getConfig()->getConfigParam('blVariantParentBuyable') && $blAddFromParent) {
+            if (!$this->config->getConfigParam('blVariantParentBuyable') && $blAddFromParent) {
                 $sQ .= " OR `oxartId` = '" . $this->oxarticles__oxparentid->value . "'";
             }
 
@@ -3378,7 +3325,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
             //do not load me as a parent later
             self::$_aLoadedParents[$articleId . "_" . $this->getLanguage()] = $this;
 
-            $config = $this->getConfig();
+            $config = $this->config;
 
             if (!$this->_blLoadVariants ||
                 (!$this->isAdmin() && !$config->getConfigParam('blLoadVariants')) ||
@@ -3412,7 +3359,6 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
                 } else {
                     //loading variants
                     $variants = oxNew('oxArticleList');
-                    $variants->getBaseObject()->modifyCacheKey('_variants');
                 }
 
                 startProfile("selectVariants");
@@ -3429,7 +3375,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
                 //if this is multidimensional variants, make additional processing
                 if ($config->getConfigParam('blUseMultidimensionVariants')) {
                     $oMdVariants = oxNew("oxVariantHandler");
-                    $this->_blHasMdVariants = $oMdVariants->isMdVariant($variants->current());
+                    $this->_blHasMdVariants = $oMdVariants->isMdVariant(current($variants));
                 }
                 stopProfile("selectVariants");
             }
@@ -3547,7 +3493,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     protected function _calculatePrice($oPrice, $dVat = null)
     {
         // apply VAT only if configuration requires it
-        if (isset($dVat) || !$this->getConfig()->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
+        if (isset($dVat) || !$this->config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
             $this->_applyVAT($oPrice, isset($dVat) ? $dVat : $this->getArticleVat());
         }
 
@@ -3579,7 +3525,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     {
         $blHas = false;
         if (($sId = $this->getId())) {
-            if ($this->oxarticles__oxshopid->value == $this->getConfig()->getShopId()) {
+            if ($this->oxarticles__oxshopid->value == $this->config->getShopId()) {
                 $blHas = (bool) $this->oxarticles__oxvarcount->value;
             } else {
                 $sArticleTable = $this->getViewName($blForceCoreTable);
@@ -3716,7 +3662,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         $dPrice = $this->$sVarName->value;
 
         // #1437/1436C - added config option, and check for zero A,B,C price values
-        if ($this->getConfig()->getConfigParam('blOverrideZeroABCPrices') && (double) $dPrice == 0) {
+        if ($this->config->getConfigParam('blOverrideZeroABCPrices') && (double) $dPrice == 0) {
             $dPrice = $this->oxarticles__oxprice->value;
         }
 
@@ -3761,7 +3707,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     protected function _modifySelectListPrice($dPrice, $aChosenList = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         // #690
         if ($myConfig->getConfigParam('bl_perfLoadSelectLists') && $myConfig->getConfigParam('bl_perfUseSelectlistPrice')) {
             $aSelLists = $this->getSelectLists();
@@ -3904,7 +3850,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     protected function _applyCurrency(oxPrice $oPrice, $oCur = null)
     {
         if (!$oCur) {
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
         }
 
         $oPrice->multiply($oCur->rate);
@@ -3944,7 +3890,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     protected function _getSimList($sAttributeSql, $iCnt)
     {
         // #523A
-        $iAttrPercent = $this->getConfig()->getConfigParam('iAttributesPercent') / 100;
+        $iAttrPercent = $this->config->getConfigParam('iAttributesPercent') / 100;
         // 70% same attributes
         if (!$iAttrPercent || $iAttrPercent < 0 || $iAttrPercent > 1) {
             $iAttrPercent = 0.70;
@@ -3978,7 +3924,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     protected function _generateSimListSearchStr($sArticleTable, $aList)
     {
         $sFieldList = $this->getSelectFields();
-        $aList = array_slice($aList, 0, $this->getConfig()->getConfigParam('iNrofSimilarArticles'));
+        $aList = array_slice($aList, 0, $this->config->getConfigParam('iNrofSimilarArticles'));
 
         $sSearch = "select $sFieldList from $sArticleTable where " . $this->getSqlActiveSnippet() . "  and $sArticleTable.oxissearch = 1 and $sArticleTable.oxid in ( ";
 
@@ -4049,7 +3995,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
             }
         }
 
-        $iLimit = (int) $this->getConfig()->getConfigParam('iNrofCustomerWhoArticles');
+        $iLimit = (int) $this->config->getConfigParam('iNrofCustomerWhoArticles');
         $iLimit = $iLimit ? ($iLimit * 10) : 50;
 
         // building sql (optimized)
@@ -4277,7 +4223,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     protected function _assignNotBuyableParent()
     {
-        if (!$this->getConfig()->getConfigParam('blVariantParentBuyable') &&
+        if (!$this->config->getConfigParam('blVariantParentBuyable') &&
             ($this->_blHasVariants || $this->oxarticles__oxvarstock->value || $this->oxarticles__oxvarcount->value)
         ) {
             $this->_blNotBuyableParent = true;
@@ -4289,7 +4235,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     protected function _assignStock()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         // -----------------------------------
         // stock
         // -----------------------------------
@@ -4327,7 +4273,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         // stock
         if ($myConfig->getConfigParam('blUseStock') && ($this->oxarticles__oxstockflag->value == 3 || $this->oxarticles__oxstockflag->value == 2)) {
             $iOnStock = $this->oxarticles__oxstock->value;
-            if ($this->getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+            if ($this->config->getConfigParam('blPsBasketReservationEnabled')) {
                 $iOnStock += $this->getSession()->getBasketReservations()->getReservedAmount($this->getId());
             }
             if ($iOnStock <= 0) {
@@ -4374,7 +4320,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     protected function _assignDynImageDir()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $sThisShop = $this->oxarticles__oxshopid->value;
 
@@ -4521,7 +4467,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     protected function _deletePics()
     {
         $myUtilsPic = oxRegistry::get("oxUtilsPic");
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oPictureHandler = oxRegistry::get("oxPictureHandler");
 
         //deleting custom main icon
@@ -4610,7 +4556,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     protected function _onChangeStockResetCount($sOxid)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if ($myConfig->getConfigParam('blUseStock') && $this->oxarticles__oxstockflag->value == 2 &&
             ($this->oxarticles__oxstock->value + $this->oxarticles__oxvarstock->value) <= 0
@@ -4702,7 +4648,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
 
         $sMasterPic = 'product/' . $iIndex . "/" . $sPicName;
 
-        if ($this->getConfig()->getMasterPicturePath($sMasterPic)) {
+        if ($this->config->getMasterPicturePath($sMasterPic)) {
             return true;
         }
 
@@ -4716,7 +4662,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     protected function _isPriceViewModeNetto()
     {
-        $blResult = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
+        $blResult = (bool) $this->config->getConfigParam('blShowNetPrice');
         $oUser = $this->getArticleUser();
         if ($oUser) {
             $blResult = $oUser->isPriceViewModeNetto();
@@ -4786,9 +4732,9 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
             $blCalculationModeNetto = $this->_isPriceViewModeNetto();
         }
 
-        $oCurrency = $this->getConfig()->getActShopCurrencyObject();
+        $oCurrency = $this->config->getActShopCurrencyObject();
 
-        $blEnterNetPrice = $this->getConfig()->getConfigParam('blEnterNetPrice');
+        $blEnterNetPrice = $this->config->getConfigParam('blEnterNetPrice');
         if ($blCalculationModeNetto && !$blEnterNetPrice) {
             $dPrice = round(oxPrice::brutto2Netto($dPrice, $dVat), $oCurrency->decimal);
         } elseif (!$blCalculationModeNetto && $blEnterNetPrice) {
@@ -4833,7 +4779,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         if ($sPriceSuffix === '') {
             $dPrice = $this->oxarticles__oxprice->value;
         } else {
-            if ($this->getConfig()->getConfigParam('blOverrideZeroABCPrices')) {
+            if ($this->config->getConfigParam('blOverrideZeroABCPrices')) {
                 $dPrice = ($this->{oxarticles__oxprice . $sPriceSuffix}->value != 0) ? $this->{oxarticles__oxprice . $sPriceSuffix}->value : $this->oxarticles__oxprice->value;
             } else {
                 $dPrice = $this->{oxarticles__oxprice . $sPriceSuffix}->value;
@@ -4860,7 +4806,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
                     $dPrice = $this->oxarticles__oxvarminprice->value;
                 } else {
                     $sSql = 'SELECT ';
-                    if ($this->getConfig()->getConfigParam('blOverrideZeroABCPrices')) {
+                    if ($this->config->getConfigParam('blOverrideZeroABCPrices')) {
                         $sSql .= 'MIN( IF(`oxprice' . $sPriceSuffix . '` = 0, `oxprice`, `oxprice' . $sPriceSuffix . '`) ) AS `varminprice` ';
                     } else {
                         $sSql .= 'MIN(`oxprice' . $sPriceSuffix . '`) AS `varminprice` ';
@@ -4896,7 +4842,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
                     $dPrice = $this->oxarticles__oxvarmaxprice->value;
                 } else {
                     $sSql = 'SELECT ';
-                    if ($this->getConfig()->getConfigParam('blOverrideZeroABCPrices')) {
+                    if ($this->config->getConfigParam('blOverrideZeroABCPrices')) {
                         $sSql .= 'MAX( IF(`oxprice' . $sPriceSuffix . '` = 0, `oxprice`, `oxprice' . $sPriceSuffix . '`) ) AS `varmaxprice` ';
                     } else {
                         $sSql .= 'MAX(`oxprice' . $sPriceSuffix . '`) AS `varmaxprice` ';
@@ -5016,7 +4962,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     protected function _saveSortingFieldValuesOnLoad()
     {
-        $aSortingFields = oxRegistry::getConfig()->getConfigParam('aSortCols');
+        $aSortingFields = $this->config->getConfigParam('aSortCols');
         $aSortingFields = !empty($aSortingFields) ? (array) $aSortingFields : array();
 
         foreach ($aSortingFields as $sField) {

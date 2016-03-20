@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Current user wishlist manager.
@@ -145,7 +146,7 @@ class Account_Wishlist extends Account
     public function showSuggest()
     {
         if ($this->_blShowSuggest === null) {
-            $this->_blShowSuggest = ( bool ) oxRegistry::getConfig()->getRequestParameter('blshowsuggest');
+            $this->_blShowSuggest = ( bool ) $this->request->getRequestParameter('blshowsuggest');
         }
 
         return $this->_blShowSuggest;
@@ -214,15 +215,15 @@ class Account_Wishlist extends Account
      */
     public function sendWishList()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return false;
         }
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter('editval', true);
+        $aParams = $this->request->getRequestParameter('editval', true);
         if (is_array($aParams)) {
             $oUtilsView = oxRegistry::get("oxUtilsView");
             $oParams = ( object ) $aParams;
-            $this->setEnteredData(( object ) oxRegistry::getConfig()->getRequestParameter('editval'));
+            $this->setEnteredData(( object ) $this->request->getRequestParameter('editval'));
 
             if (!isset($aParams['rec_name']) || !isset($aParams['rec_email']) ||
                 !$aParams['rec_name'] || !$aParams['rec_email']
@@ -233,7 +234,6 @@ class Account_Wishlist extends Account
                 if ($oUser = $this->getUser()) {
                     $sFirstName = 'oxuser__oxfname';
                     $sLastName = 'oxuser__oxlname';
-                    $sSendName = 'send_name';
                     $sSendEmail = 'send_email';
                     $sUserNameField = 'oxuser__oxusername';
                     $sSendName = 'send_name';
@@ -243,7 +243,9 @@ class Account_Wishlist extends Account
                     $oParams->$sSendName = $oUser->$sFirstName->getRawValue() . ' ' . $oUser->$sLastName->getRawValue();
                     $oParams->$sSendId = $oUser->getId();
 
-                    $this->_blEmailSent = oxNew('oxemail')->sendWishlistMail($oParams);
+                    $this->_blEmailSent = DiContainer::getInstance()
+                        ->get(DiContainer::CONTAINER_CORE_MAILER)
+                        ->sendWishlistMail($oParams);
                     if (!$this->_blEmailSent) {
                         return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL', false, true);
                     }
@@ -290,13 +292,13 @@ class Account_Wishlist extends Account
      */
     public function togglePublic()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return false;
         }
 
         if ($oUser = $this->getUser()) {
 
-            $blPublic = (int) oxRegistry::getConfig()->getRequestParameter('blpublic');
+            $blPublic = (int) $this->request->getRequestParameter('blpublic');
             $oBasket = $oUser->getBasket('wishlist');
             $oBasket->oxuserbaskets__oxpublic = new oxField(($blPublic == 1) ? $blPublic : 0);
             $oBasket->save();
@@ -309,7 +311,7 @@ class Account_Wishlist extends Account
      */
     public function searchForWishList()
     {
-        if ($sSearch = oxRegistry::getConfig()->getRequestParameter('search')) {
+        if ($sSearch = $this->request->getRequestParameter('search')) {
 
             // search for baskets
             $oUserList = oxNew('oxuserlist');

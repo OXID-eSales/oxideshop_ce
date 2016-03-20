@@ -128,7 +128,7 @@ class CompareController extends \oxUBase
      */
     public function moveLeft() //#777C
     {
-        $sArticleId = oxRegistry::getConfig()->getRequestParameter('aid');
+        $sArticleId = $this->request->getRequestParameter('aid');
         if ($sArticleId && ($aItems = $this->getCompareItems())) {
             $sPrevArticleId = null;
 
@@ -165,7 +165,7 @@ class CompareController extends \oxUBase
      */
     public function moveRight() //#777C
     {
-        $sArticleId = oxRegistry::getConfig()->getRequestParameter('aid');
+        $sArticleId = $this->request->getRequestParameter('aid');
         if ($sArticleId && ($aItems = $this->getCompareItems())) {
             $sNextArticleId = 0;
 
@@ -241,7 +241,7 @@ class CompareController extends \oxUBase
     public function getCompareItems()
     {
         if ($this->_aCompItems === null) {
-            $aItems = oxRegistry::getSession()->getVariable('aFiltcompproducts');
+            $aItems = $this->session->getVariable('aFiltcompproducts');
             if (is_array($aItems) && count($aItems)) {
                 $this->_aCompItems = $aItems;
             }
@@ -258,7 +258,7 @@ class CompareController extends \oxUBase
     public function setCompareItems($aItems)
     {
         $this->_aCompItems = $aItems;
-        oxRegistry::getSession()->setVariable('aFiltcompproducts', $aItems);
+        $this->session->setVariable('aFiltcompproducts', $aItems);
     }
 
     /**

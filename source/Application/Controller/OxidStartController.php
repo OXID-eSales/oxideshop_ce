@@ -38,7 +38,7 @@ class OxidStartController extends \oxUBase
     {
         $this->pageStart();
 
-        if ('oxstart' == oxRegistry::getConfig()->getRequestParameter('cl') || $this->isAdmin()) {
+        if ('oxstart' == $this->request->getRequestParameter('cl') || $this->isAdmin()) {
             return;
         }
 
@@ -55,7 +55,7 @@ class OxidStartController extends \oxUBase
     {
         parent::render();
 
-        $errorNumber = oxRegistry::getConfig()->getRequestParameter('execerror');
+        $errorNumber = $this->request->getRequestParameter('execerror');
         $templates = $this->getErrorTemplates();
 
         if (array_key_exists($errorNumber, $templates)) {
@@ -70,7 +70,7 @@ class OxidStartController extends \oxUBase
      */
     public function pageStart()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $config->setConfigParam('iMaxMandates', $config->getConfigParam('IMS'));
         $config->setConfigParam('iMaxArticles', $config->getConfigParam('IMA'));
@@ -81,7 +81,7 @@ class OxidStartController extends \oxUBase
      */
     public function pageClose()
     {
-        $mySession = $this->getSession();
+        $mySession = $this->session;
 
         if (isset($mySession)) {
             $mySession->freeze();
@@ -98,7 +98,7 @@ class OxidStartController extends \oxUBase
      */
     public function getErrorNumber()
     {
-        return oxRegistry::getConfig()->getRequestParameter('errornr');
+        return $this->request->getRequestParameter('errornr');
     }
 
     /**

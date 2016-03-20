@@ -26,14 +26,7 @@
  */
 class oxAttributeList extends oxList
 {
-
-    /**
-     * Class constructor
-     */
-    public function __construct()
-    {
-        parent::__construct('oxattribute');
-    }
+    protected $_sObjectsInListName = 'oxattribute';
 
     /**
      * Load all attributes by article Id's
@@ -165,10 +158,8 @@ class oxAttributeList extends oxList
      * @return object;
      */
 
-    public function getCategoryAttributes($sCategoryId, $iLang)
+    public function getCategoryAttributes($sCategoryId, $iLang, $aSessionFilter)
     {
-        $aSessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
-
         $oArtList = oxNew("oxArticleList");
         $oArtList->loadCategoryIDs($sCategoryId, $aSessionFilter);
 

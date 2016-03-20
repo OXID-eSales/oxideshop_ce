@@ -76,15 +76,7 @@ class oxManufacturer extends oxI18n implements oxIUrl
      */
     protected $_aSeoUrls = array();
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxI18n()).
-     */
-    public function __construct()
-    {
-        $this->setShowArticleCnt($this->getConfig()->getConfigParam('bl_perfShowActionCatArticleCnt'));
-        parent::__construct();
-        $this->init('oxmanufacturers');
-    }
+    protected $_sCoreTable = "oxmanufacturers";
 
     /**
      * Extra getter to guarantee compatibility with templates
@@ -233,7 +225,7 @@ class oxManufacturer extends oxI18n implements oxIUrl
         $sUrl = '';
         if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
+            $sUrl = $this->config->getShopUrl($iLang, false);
         }
 
         return $sUrl . "index.php?cl=manufacturerlist" . ($blAddId ? "&amp;mnid=" . $this->getId() : "");
@@ -354,7 +346,7 @@ class oxManufacturer extends oxI18n implements oxIUrl
     public function getIconUrl()
     {
         if (($sIcon = $this->oxmanufacturers__oxicon->value)) {
-            $oConfig = $this->getConfig();
+            $oConfig = $this->config;
             $sSize = $oConfig->getConfigParam('sManufacturerIconsize');
             if (!$sSize) {
                 $sSize = $oConfig->getConfigParam('sIconsize');

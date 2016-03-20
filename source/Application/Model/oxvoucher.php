@@ -44,14 +44,7 @@ class oxVoucher extends oxBase
      */
     protected $_sClassName = 'oxvoucher';
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxvouchers');
-    }
+    protected $_sCoreTable = 'oxvouchers';
 
     /**
      * Gets voucher from db by given number.
@@ -230,7 +223,7 @@ class oxVoucher extends oxBase
     protected function _isAvailablePrice($dPrice)
     {
         $oSeries = $this->getSerie();
-        $oCur = $this->getConfig()->getActShopCurrencyObject();
+        $oCur = $this->config->getActShopCurrencyObject();
         if ($oSeries->oxvoucherseries__oxminimumvalue->value && $dPrice < ($oSeries->oxvoucherseries__oxminimumvalue->value * $oCur->rate)) {
             $oEx = oxNew('oxVoucherException');
             $oEx->setMessage('ERROR_MESSAGE_VOUCHER_INCORRECTPRICE');
@@ -667,7 +660,7 @@ class oxVoucher extends oxBase
     {
         $oSeries = $this->getSerie();
         if ($oSeries->oxvoucherseries__oxdiscounttype->value == 'absolute') {
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = $this->config->getActShopCurrencyObject();
             $dDiscount = $oSeries->oxvoucherseries__oxdiscount->value * $oCur->rate;
         } else {
             $dDiscount = $oSeries->oxvoucherseries__oxdiscount->value / 100 * $dPrice;
@@ -873,8 +866,8 @@ class oxVoucher extends oxBase
      */
     protected function _getVoucherTimeout()
     {
-        $iVoucherTimeout = intval(oxRegistry::getConfig()->getConfigParam('iVoucherTimeout')) ?
-            intval(oxRegistry::getConfig()->getConfigParam('iVoucherTimeout')) :
+        $iVoucherTimeout = intval($this->config->getConfigParam('iVoucherTimeout')) ?
+            intval($this->config->getConfigParam('iVoucherTimeout')) :
             3 * 3600;
 
         return $iVoucherTimeout;

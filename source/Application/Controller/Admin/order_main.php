@@ -19,6 +19,8 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
+use OxidEsales\Eshop\Core\Event\OrderSend;
 
 /**
  * Admin article main order manager.
@@ -100,7 +102,7 @@ class Order_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         $oOrder = oxNew("oxorder");
         if ($soxId != "-1") {
@@ -122,7 +124,7 @@ class Order_Main extends oxAdminDetails
         }
 
         //change payment
-        $sPayId = oxRegistry::getConfig()->getRequestParameter("setPayment");
+        $sPayId = $this->request->getRequestParameter("setPayment");
         if (!empty($sPayId) && ($sPayId != $oOrder->oxorder__oxpaymenttype->value)) {
             $aParams['oxorder__oxpaymenttype'] = $sPayId;
             $needOrderRecalculate = true;
@@ -130,7 +132,7 @@ class Order_Main extends oxAdminDetails
 
         $oOrder->assign($aParams);
 
-        $aDynvalues = oxRegistry::getConfig()->getRequestParameter("dynvalue");
+        $aDynvalues = $this->request->getRequestParameter("dynvalue");
         if (isset($aDynvalues)) {
             $oPayment = oxNew("oxuserpayment");
             $oPayment->load($oOrder->oxorder__oxpaymentid->value);
@@ -139,7 +141,7 @@ class Order_Main extends oxAdminDetails
             $needOrderRecalculate = true;
         }
         //change delivery set
-        $sDelSetId = oxRegistry::getConfig()->getRequestParameter("setDelSet");
+        $sDelSetId = $this->request->getRequestParameter("setDelSet");
         if (!empty($sDelSetId) && ($sDelSetId != $oOrder->oxorder__oxdeltype->value)) {
             $oOrder->oxorder__oxpaymenttype->setValue("oxempty");
             $oOrder->setDelivery($sDelSetId);
@@ -176,11 +178,13 @@ class Order_Main extends oxAdminDetails
             $oOrder->save();
 
             // #1071C
-            $oOrderArticles = $oOrder->getOrderArticles(true);
-            if (oxRegistry::getConfig()->getRequestParameter("sendmail")) {
-                // send eMail
-                $oEmail = oxNew("oxemail");
-                $oEmail->sendSendedNowMail($oOrder);
+            if ($this->request->getRequestParameter("sendmail")) {
+                DiContainer::getInstance()
+                    ->get(DiContainer::CONTAINER_CORE_EVENT_DISPATCHER)
+                    ->dispatch(
+                        OrderSend::NAME,
+                        new OrderSend($oOrder)
+                    );
             }
             $this->onOrderSend();
         }
@@ -194,7 +198,7 @@ class Order_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $oOrder = oxNew("oxorder");
         if ($oOrder->load($soxId)) {
-            $oEmail = oxNew("oxemail");
+            $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
             $oEmail->sendDownloadLinksMail($oOrder);
         }
     }

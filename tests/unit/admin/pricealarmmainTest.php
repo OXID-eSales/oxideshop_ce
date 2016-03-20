@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * ext Smarty class for testing
@@ -37,6 +38,11 @@ class Unit_Admin_PriceAlarmMainTest_smarty
     public function __call($sName, $aParams)
     {
     }
+}
+
+class dummyMailer
+{
+
 }
 
 /**
@@ -81,11 +87,12 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         oxTestModules::addFunction('oxpricealarm', 'load', '{ $this->oxpricealarm__oxuserid = new oxField( "oxdefaultadmin" ); return true; }');
         oxTestModules::addFunction('oxUtilsView', 'getSmarty', '{ return new Unit_Admin_PriceAlarmMainTest_smarty(); }');
         oxTestModules::addFunction('oxarticle', 'load', '{ $this->oxarticles__oxparentid = new oxField( "parentid" ); $this->oxarticles__oxtitle = new oxField(""); return true; }');
-        $this->setRequestParameter("oxid", "testId");
+        $this->setRequestParameter('oxid', 'testId');
 
-        $oEmail = $this->getMock('oxEmail', array("sendPricealarmToCustomer"));
+        $oEmail = $this->getMock(dummyMailer::class, ['sendPricealarmToCustomer'], [], '', false);
         $oEmail->expects($this->once())->method('sendPricealarmToCustomer')->will($this->returnValue(true));
-        oxTestModules::addModuleObject("oxEmail", $oEmail);
+
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         // testing..
         $oView = oxNew('PriceAlarm_Main');
@@ -201,12 +208,12 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
         oxTestModules::addFunction('oxpricealarm', 'load', '{ return true; }');
         oxTestModules::addFunction('oxpricealarm', 'save', '{ return true; }');
-        oxTestModules::addFunction('oxemail', 'send', '{ return true; }');
 
-        $oEmail = $this->getMock('oxEmail', array("sendPricealarmToCustomer"));
+        $oEmail = $this->getMailerMock(array('sendPricealarmToCustomer', 'send'));
         $oEmail->expects($this->once())->method('sendPricealarmToCustomer')->will($this->returnValue(true));
+        $oEmail->expects($this->any())->method('send')->will($this->returnValue(true));
 
-        oxTestModules::addModuleObject("oxEmail", $oEmail);
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         $oPriceAlarm = $this->getMock('oxpricealarm', array("load", "save"));
         $oPriceAlarm->expects($this->once())->method('load');
@@ -250,10 +257,10 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "_testAlarmId1");
         $this->setRequestParameter("editval", array("oxpricealarm__oxlongdesc" => "test Mail Body"));
 
-        $oEmail = $this->getMock('oxEmail', array("sendPricealarmToCustomer"));
+        $oEmail = $this->getMailerMock(array("sendPricealarmToCustomer"));
         $oEmail->expects($this->once())->method('sendPricealarmToCustomer')->will($this->returnValue(true));
 
-        oxTestModules::addModuleObject("oxEmail", $oEmail);
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         // testing..
         $oView = oxNew('PriceAlarm_Main');

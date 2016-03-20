@@ -90,10 +90,8 @@ class Integration_Price_OrderNumberingTest extends Integration_Price_BaseTestCas
 
         $user = $basket->getBasketUser();
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $order1 */
-        $order1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order1->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
+        $order1 = $this->getMock('oxOrder', array('validateDeliveryAddress', 'validateDelivery'));
         $order1->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order1->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
 
@@ -102,10 +100,8 @@ class Integration_Price_OrderNumberingTest extends Integration_Price_BaseTestCas
             $order1->finalizeOrder($basket, $user);
         }
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $order2 */
-        $order2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order2->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
+        $order2 = $this->getMock('oxOrder', array('validateDeliveryAddress', 'validateDelivery'));
         $order2->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order2->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
         // If separate numbering, then it must be restarted.
@@ -146,10 +142,8 @@ class Integration_Price_OrderNumberingTest extends Integration_Price_BaseTestCas
 
         $user = $basket->getBasketUser();
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $order1 */
-        $order1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order1->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
+        $order1 = $this->getMock('oxOrder', array('validateDeliveryAddress', 'validateDelivery'));
         $order1->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order1->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
 
@@ -158,10 +152,8 @@ class Integration_Price_OrderNumberingTest extends Integration_Price_BaseTestCas
             $order1->finalizeOrder($basket, $user);
         }
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $order2 */
-        $order2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order2->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
+        $order2 = $this->getMock('oxOrder', array('validateDeliveryAddress', 'validateDelivery'));
         $order2->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order2->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
 
@@ -172,10 +164,8 @@ class Integration_Price_OrderNumberingTest extends Integration_Price_BaseTestCas
 
         $order2->delete();
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $order3 */
-        $order3 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order3->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
+        $order3 = $this->getMock('oxOrder', array('validateDeliveryAddress', 'validateDelivery'));
         $order3->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order3->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
         // If separate numbering, then it must be restarted.
@@ -216,10 +206,8 @@ class Integration_Price_OrderNumberingTest extends Integration_Price_BaseTestCas
 
         $user = $basket->getBasketUser();
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $order1 */
-        $order1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order1->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
+        $order1 = $this->getMock('oxOrder', array('validateDeliveryAddress', 'validateDelivery'));
         $order1->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order1->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
 
@@ -228,18 +216,14 @@ class Integration_Price_OrderNumberingTest extends Integration_Price_BaseTestCas
             $order1->finalizeOrder($basket, $user);
         }
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $order2 */
-        $order2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order2->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
+        $order2 = $this->getMock('oxOrder', array('validateDeliveryAddress', 'validateDelivery'));
         $order2->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order2->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
         $order2->save();
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $order3 */
-        $order3 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order3->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
+        $order3 = $this->getMock('oxOrder', array('validateDeliveryAddress', 'validateDelivery'));
         $order3->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order3->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
         // If separate numbering, then it must be restarted.

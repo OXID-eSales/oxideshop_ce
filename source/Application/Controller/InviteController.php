@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Controller;
 
+use OxidEsales\Eshop\Core\DiContainer;
 use oxRegistry;
 
 /**
@@ -94,7 +95,7 @@ class InviteController extends \oxUBase
      */
     public function render()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         if (!$oConfig->getConfigParam("blInvitationsEnabled")) {
             oxRegistry::getUtils()->redirect($oConfig->getShopHomeURL());
@@ -115,13 +116,13 @@ class InviteController extends \oxUBase
      */
     public function send()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         if (!$oConfig->getConfigParam("blInvitationsEnabled")) {
             oxRegistry::getUtils()->redirect($oConfig->getShopHomeURL());
         }
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter('editval', true);
+        $aParams = $this->request->getRequestParameter('editval', true);
         $oUser = $this->getUser();
         if (!is_array($aParams) || !$oUser) {
             return;
@@ -129,7 +130,7 @@ class InviteController extends \oxUBase
 
         // storing used written values
         $oParams = (object) $aParams;
-        $this->setInviteData((object) oxRegistry::getConfig()->getRequestParameter('editval'));
+        $this->setInviteData((object) $this->request->getRequestParameter('editval'));
 
         $oUtilsView = oxRegistry::get("oxUtilsView");
 
@@ -180,7 +181,7 @@ class InviteController extends \oxUBase
         }
 
         // sending invite email
-        $oEmail = oxNew('oxemail');
+        $oEmail = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
 
         if ($oEmail->sendInviteMail($oParams)) {
             $this->_iMailStatus = 1;

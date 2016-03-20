@@ -78,7 +78,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         }
 
         $this->_oActShop = oxNew('oxShop');
-        $this->_oActShop->load($this->getConfig()->getShopId());
+        $this->_oActShop->load($this->config->getShopId());
 
         return $this->_oActShop;
     }
@@ -175,7 +175,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $oShop = $this->_getActShop();
 
         //logo
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $aSize = getimagesize($myConfig->getImageDir() . '/pdf_logo.jpg');
         $iMargin = 195 - $aSize[0] * 0.2;
         $oPdf->setLink($oShop->oxshops__oxurl->value);
@@ -363,7 +363,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
     public function exportStandart($oPdf)
     {
         // preparing order curency info
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oPdfBlock = new InvoicepdfBlock();
 
         $this->_oCur = $myConfig->getCurrencyObject($this->oxorder__oxcurrency->value);
@@ -485,7 +485,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
      */
     public function exportDeliveryNote($oPdf)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oShop = $this->_getActShop();
         $oPdfBlock = new InvoicepdfBlock();
 
@@ -618,7 +618,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         if ($blReverse) {
             // replace now
             if (version_compare(PHP_VERSION, '5.3.4') >= 0) {
-                $encoding = $this->getConfig()->isUtf() ? 'UTF-8' : 'ISO-8859-1';
+                $encoding = $this->config->isUtf() ? 'UTF-8' : 'ISO-8859-1';
                 $aTransTbl = get_html_translation_table(HTML_ENTITIES, ENT_COMPAT, $encoding);
             } else {
                 $aTransTbl = get_html_translation_table(HTML_ENTITIES, ENT_COMPAT);
@@ -670,7 +670,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
      */
     public function getPaymentTerm()
     {
-        if (null === $iPaymentTerm = $this->getConfig()->getConfigParam('iPaymentTerm')) {
+        if (null === $iPaymentTerm = $this->config->getConfigParam('iPaymentTerm')) {
             $iPaymentTerm = 7;
         }
 

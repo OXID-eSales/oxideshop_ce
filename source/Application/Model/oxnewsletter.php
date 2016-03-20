@@ -19,6 +19,8 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Action;
+use OxidEsales\Eshop\Core\DiContainer;
 
 /**
  * Newsletter manager.
@@ -64,15 +66,7 @@ class oxNewsletter extends oxBase
      */
     protected $_sClassName = 'oxnewsletter';
 
-    /**
-     * Class constructor, initiates Smarty engine object, parent constructor
-     * (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxnewsletter');
-    }
+    protected $_sCoreTable = "oxnewsletter";
 
     /**
      * Deletes object information from DB, returns true on success.
@@ -156,14 +150,10 @@ class oxNewsletter extends oxBase
     {
         // switching off admin
         $blAdmin = $this->isAdmin();
-        $this->setAdminMode(false);
 
         // add currency
         $this->_setUser($sUserid);
         $this->_setParams($blPerfLoadAktion);
-
-        // restoring mode ..
-        $this->setAdminMode($blAdmin);
     }
 
     /**
@@ -175,8 +165,8 @@ class oxNewsletter extends oxBase
      */
     public function send()
     {
-        $oxEMail = oxNew('oxemail');
-        $blSend = $oxEMail->sendNewsletterMail($this, $this->_oUser, $this->oxnewsletter__oxsubject->value);
+        $mailer = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_MAILER);
+        $blSend = $mailer->sendNewsletterMail($this, $this->_oUser, $this->oxnewsletter__oxsubject->value);
 
         return $blSend;
     }
@@ -190,7 +180,7 @@ class oxNewsletter extends oxBase
      */
     protected function _setParams($blPerfLoadAktion = false)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $oShop = oxNew('oxShop');
         $oShop->load($myConfig->getShopId());
@@ -242,9 +232,7 @@ class oxNewsletter extends oxBase
     protected function _assignProducts($oView, $blPerfLoadAktion = false)
     {
         if ($blPerfLoadAktion) {
-            $oArtList = oxNew('oxArticleList');
-            $oArtList->loadActionArticles('OXNEWSLETTER');
-            $oView->addTplParam('articlelist', $oArtList);
+            $oView->addTplParam('articlelist', (new Action())->getById('OXNEWSLETTER'));
         }
 
         if ($this->_oUser->getId()) {

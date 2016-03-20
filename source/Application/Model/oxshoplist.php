@@ -26,13 +26,7 @@
  */
 class oxShopList extends oxList
 {
-    /**
-     * Calls parent constructor
-     */
-    public function __construct()
-    {
-        return parent::__construct('oxshop');
-    }
+    protected $_sObjectsInListName = 'oxshop';
 
     /**
      * Loads all shops to list

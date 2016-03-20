@@ -36,7 +36,7 @@ class Category_Seo extends Object_Seo
         $sOxid = $this->getEditObjectId();
         $oCategory = oxNew('oxCategory');
         if ($oCategory->load($sOxid)) {
-            $blShowSuffixParameter = oxRegistry::getConfig()->getRequestParameter('blShowSuffix');
+            $blShowSuffixParameter = $this->request->getRequestParameter('blShowSuffix');
             $sShowSuffixField = 'oxcategories__oxshowsuffix';
             $oCategory->$sShowSuffixField = new oxField((int) $blShowSuffixParameter);
             $oCategory->save();

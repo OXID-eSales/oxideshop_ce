@@ -97,14 +97,14 @@ class UserController extends \oxUBase
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         if ($this->getIsOrderStep()) {
             if ($config->getConfigParam('blPsBasketReservationEnabled')) {
-                $this->getSession()->getBasketReservations()->renewExpiration();
+                $this->session->getBasketReservations()->renewExpiration();
             }
 
-            $basket = $this->getSession()->getBasket();
+            $basket = $this->session->getBasket();
             $isPsBasketReservationsEnabled = $config->getConfigParam('blPsBasketReservationEnabled');
             if ($this->_blIsOrderStep && $isPsBasketReservationsEnabled &&
                 (!$basket || ($basket && !$basket->getProductsCount()))) {
@@ -129,7 +129,7 @@ class UserController extends \oxUBase
     public function getShowNoRegOption()
     {
         if ($this->_blShowNoRegOpt === null) {
-            $this->_blShowNoRegOpt = !$this->getConfig()->getConfigParam('blOrderDisWithoutReg');
+            $this->_blShowNoRegOpt = !$this->config->getConfigParam('blOrderDisWithoutReg');
         }
 
         return $this->_blShowNoRegOpt;
@@ -144,7 +144,7 @@ class UserController extends \oxUBase
     {
         if ($this->_iOption === null) {
             // passing user chosen option value to display correct content
-            $option = oxRegistry::getConfig()->getRequestParameter('option');
+            $option = $this->request->getRequestParameter('option');
             // if user chosen "Option 2"" - we should show user details only if he is authorized
             if ($option == 2 && !$this->getUser()) {
                 $option = 0;
@@ -162,17 +162,16 @@ class UserController extends \oxUBase
      */
     public function getOrderRemark()
     {
-        $config = oxRegistry::getConfig();
         if ($this->_sOrderRemark === null) {
             // if already connected, we can use the session
             if ($this->getUser()) {
-                $orderRemark = oxRegistry::getSession()->getVariable('ordrem');
+                $orderRemark = $this->session->getVariable('ordrem');
             } else {
                 // not connected so nowhere to save, we're gonna use what we get from post
-                $orderRemark = $config->getRequestParameter('order_remark', true);
+                $orderRemark = $this->request->getRequestParameter('order_remark', true);
             }
 
-            $this->_sOrderRemark = $orderRemark ? $config->checkParamSpecialChars($orderRemark) : false;
+            $this->_sOrderRemark = $orderRemark ? $this->config->checkParamSpecialChars($orderRemark) : false;
         }
 
         return $this->_sOrderRemark;
@@ -186,7 +185,7 @@ class UserController extends \oxUBase
     public function isNewsSubscribed()
     {
         if ($this->_blNewsSubscribed === null) {
-            if (($isSubscribedToNews = oxRegistry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
+            if (($isSubscribedToNews = $this->request->getRequestParameter('blnewssubscribed')) === null) {
                 $isSubscribedToNews = false;
             }
             if (($user = $this->getUser())) {
@@ -209,7 +208,7 @@ class UserController extends \oxUBase
      */
     public function showShipAddress()
     {
-        return oxRegistry::getSession()->getVariable('blshowshipaddress');
+        return $this->session->getVariable('blshowshipaddress');
     }
 
     /**
@@ -248,7 +247,7 @@ class UserController extends \oxUBase
      */
     public function modifyBillAddress()
     {
-        return oxRegistry::getConfig()->getRequestParameter('blnewssubscribed');
+        return $this->request->getRequestParameter('blnewssubscribed');
     }
 
     /**
@@ -277,8 +276,8 @@ class UserController extends \oxUBase
      */
     public function isDownloadableProductWarning()
     {
-        $basket = $this->getSession()->getBasket();
-        if ($basket && $this->getConfig()->getConfigParam("blEnableDownloads")) {
+        $basket = $this->session->getBasket();
+        if ($basket && $this->config->getConfigParam("blEnableDownloads")) {
             if ($basket->hasDownloadableProducts()) {
                 return true;
             }

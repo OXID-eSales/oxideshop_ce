@@ -156,16 +156,16 @@ class oxLang extends oxSuperCfg
     {
         if ($this->_iBaseLanguageId === null) {
 
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
             $blAdmin = $this->isAdmin();
 
             // languages and search engines
-            if ($blAdmin && (($iSeLang = oxRegistry::getConfig()->getRequestParameter('changelang')) !== null)) {
+            if ($blAdmin && (($iSeLang = $this->config->getRequestParameter('changelang')) !== null)) {
                 $this->_iBaseLanguageId = $iSeLang;
             }
 
             if (is_null($this->_iBaseLanguageId)) {
-                $this->_iBaseLanguageId = oxRegistry::getConfig()->getRequestParameter('lang');
+                $this->_iBaseLanguageId = $this->config->getRequestParameter('lang');
             }
 
             //or determining by domain
@@ -181,7 +181,7 @@ class oxLang extends oxSuperCfg
             }
 
             if (is_null($this->_iBaseLanguageId)) {
-                $this->_iBaseLanguageId = oxRegistry::getConfig()->getRequestParameter('language');
+                $this->_iBaseLanguageId = $this->config->getRequestParameter('language');
                 if (!isset($this->_iBaseLanguageId)) {
                     $this->_iBaseLanguageId = oxRegistry::getSession()->getVariable('language');
                 }
@@ -268,10 +268,10 @@ class oxLang extends oxSuperCfg
                 $iLang = null;
                 // choosing language ident
                 // check if we really need to set the new language
-                if ("saveinnlang" == $this->getConfig()->getActiveView()->getFncName()) {
-                    $iLang = oxRegistry::getConfig()->getRequestParameter("new_lang");
+                if ("saveinnlang" == $this->config->getActiveView()->getFncName()) {
+                    $iLang = $this->config->getRequestParameter("new_lang");
                 }
-                $iLang = ($iLang === null) ? oxRegistry::getConfig()->getRequestParameter('editlanguage') : $iLang;
+                $iLang = ($iLang === null) ? $this->config->getRequestParameter('editlanguage') : $iLang;
                 $iLang = ($iLang === null) ? oxRegistry::getSession()->getVariable('editlanguage') : $iLang;
                 $iLang = ($iLang === null) ? $this->getBaseLanguage() : $iLang;
 
@@ -297,7 +297,7 @@ class oxLang extends oxSuperCfg
      */
     public function getLanguageArray($iLanguage = null, $blOnlyActive = false, $blSort = false)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if (is_null($iLanguage)) {
             $iLanguage = $this->_iBaseLanguageId;
@@ -354,7 +354,7 @@ class oxLang extends oxSuperCfg
     public function getAdminTplLanguageArray()
     {
         if ($this->_aAdminTplLanguageArray === null) {
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
 
             $aLangArray = $this->getLanguageArray();
             $this->_aAdminTplLanguageArray = array();
@@ -403,7 +403,7 @@ class oxLang extends oxSuperCfg
      */
     public function getLanguageNames()
     {
-        $aConfLanguages = $this->getConfig()->getConfigParam('aLanguages');
+        $aConfLanguages = $this->config->getConfigParam('aLanguages');
         $aLangIds = $this->getLanguageIds();
         $aLanguages = array();
         foreach ($aLangIds as $iId => $sValue) {
@@ -519,7 +519,7 @@ class oxLang extends oxSuperCfg
     public function formatCurrency($dValue, $oActCur = null)
     {
         if (!$oActCur) {
-            $oActCur = $this->getConfig()->getActShopCurrencyObject();
+            $oActCur = $this->config->getActShopCurrencyObject();
         }
         $sValue = oxRegistry::getUtils()->fRound($dValue, $oActCur);
 
@@ -544,7 +544,7 @@ class oxLang extends oxSuperCfg
             $iDecPos = $oStr->strlen($oStr->substr($sValue, $iDotPos + 1));
         }
 
-        $oActCur = $oActCur ? $oActCur : $this->getConfig()->getActShopCurrencyObject();
+        $oActCur = $oActCur ? $oActCur : $this->config->getActShopCurrencyObject();
         $iDecPos = ($iDecPos < $oActCur->decimal) ? $iDecPos : $oActCur->decimal;
 
         return number_format((double) $dValue, $iDecPos, $oActCur->dec, $oActCur->thousand);
@@ -667,7 +667,7 @@ class oxLang extends oxSuperCfg
      */
     protected function getTranslationsExpectedEncoding()
     {
-        $shopConfig = $this->getConfig();
+        $shopConfig = $this->config;
 
         $newEncoding = 'ISO-8859-15';
         if ($shopConfig->isUtf()) {
@@ -686,7 +686,7 @@ class oxLang extends oxSuperCfg
      */
     protected function _getLangFilesPathArray($iLang)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $aLangFiles = array();
 
         $sAppDir = $oConfig->getAppDir();
@@ -728,7 +728,7 @@ class oxLang extends oxSuperCfg
      */
     protected function getCustomThemeLanguageFiles($language)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $sCustomTheme = $oConfig->getConfigParam("sCustomTheme");
         $sAppDir = $oConfig->getAppDir();
         $sLang = oxRegistry::getLang()->getLanguageAbbr($language);
@@ -752,7 +752,7 @@ class oxLang extends oxSuperCfg
      */
     protected function _getAdminLangFilesPathArray($iLang)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $aLangFiles = array();
 
         $sAppDir = $oConfig->getAppDir();
@@ -815,7 +815,7 @@ class oxLang extends oxSuperCfg
      */
     protected function _appendCustomLangFiles($aLangFiles, $sLang, $blForAdmin = false)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $sAppDir = $oConfig->getAppDir();
         $sTheme = $oConfig->getConfigParam("sTheme");
         $sCustomTheme = $oConfig->getConfigParam("sCustomTheme");
@@ -847,7 +847,7 @@ class oxLang extends oxSuperCfg
     protected function _appendModuleLangFiles($aLangFiles, $aModulePaths, $sLang, $blForAdmin = false)
     {
         if (is_array($aModulePaths)) {
-            $oConfig = $this->getConfig();
+            $oConfig = $this->config;
             foreach ($aModulePaths as $sPath) {
                 $sFullPath = $oConfig->getModulesDir() . $sPath;
                 if (file_exists($sFullPath . '/Application/')) {
@@ -877,7 +877,7 @@ class oxLang extends oxSuperCfg
      */
     protected function _getLangFileCacheName($blAdmin, $iLang, $aLangFiles = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $sLangFilesIdent = '_default';
         if (is_array($aLangFiles) && $aLangFiles) {
             $sLangFilesIdent = '_' . md5(implode('+', $aLangFiles));
@@ -897,7 +897,7 @@ class oxLang extends oxSuperCfg
      */
     protected function _getLanguageFileData($blAdmin = false, $iLang = 0, $aLangFiles = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myUtils = oxRegistry::getUtils();
 
         $sCacheName = $this->_getLangFileCacheName($blAdmin, $iLang, $aLangFiles);
@@ -963,7 +963,7 @@ class oxLang extends oxSuperCfg
         $sKey = $iLang . ((int) $blAdmin);
         if (!isset($this->_aLangMap[$sKey])) {
             $this->_aLangMap[$sKey] = array();
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
 
             $sMapFile = '';
             $sParentMapFile = $myConfig->getAppDir() . '/views/' . ($blAdmin ? 'admin' : $myConfig->getConfigParam("sTheme")) . '/' . oxRegistry::getLang()->getLanguageAbbr($iLang) . '/map.php';
@@ -1108,7 +1108,7 @@ class oxLang extends oxSuperCfg
     public function processUrl($sUrl, $iLang = null)
     {
         $iLang = isset($iLang) ? $iLang : $this->getBaseLanguage();
-        $iDefaultLang = intval(oxRegistry::getConfig()->getConfigParam('sDefaultLang'));
+        $iDefaultLang = intval($this->config->getConfigParam('sDefaultLang'));
         $iBrowserLanguage = intval($this->detectLanguageByBrowser());
         /** @var oxStrRegular $oStr */
         $oStr = getStr();
@@ -1171,7 +1171,7 @@ class oxLang extends oxSuperCfg
                          "oxvendor", "oxmanufacturers", "oxmediaurls",
                          "oxstates");
 
-        $aMultiLangTables = $this->getConfig()->getConfigParam('aMultiLangTables');
+        $aMultiLangTables = $this->config->getConfigParam('aMultiLangTables');
 
         if (is_array($aMultiLangTables)) {
             $aTables = array_merge($aTables, $aMultiLangTables);
@@ -1264,7 +1264,7 @@ class oxLang extends oxSuperCfg
      */
     public function getLanguageIds($iShopId = null)
     {
-        if (empty($iShopId) || $iShopId == $this->getConfig()->getShopId()) {
+        if (empty($iShopId) || $iShopId == $this->config->getShopId()) {
             $aLanguages = $this->getActiveShopLanguageIds();
         } else {
             $aLanguages = $this->_getLanguageIdsFromDatabase($iShopId);
@@ -1280,7 +1280,7 @@ class oxLang extends oxSuperCfg
      */
     public function getActiveShopLanguageIds()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         //if exists language parameters array, extract lang id's from there
         $aLangParams = $oConfig->getConfigParam('aLanguageParams');
@@ -1345,7 +1345,7 @@ class oxLang extends oxSuperCfg
     protected function _selectLanguageParamValues($sParamName, $sShopId = null)
     {
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->config;
 
         $sQuery = "
             select " . $oConfig->getDecodeValueQuery() . " as oxvarvalue

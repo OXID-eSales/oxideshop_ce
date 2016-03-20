@@ -64,7 +64,7 @@ if (!function_exists("getConfig")) {
         include_once getShopBasePath() . 'Core/oxfunctions.php';
 
         // initializes singleton config class
-        return oxRegistry::getConfig();
+        return $this->config;
     }
 }
 

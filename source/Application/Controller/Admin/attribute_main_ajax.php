@@ -65,15 +65,15 @@ class attribute_main_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oDb = oxDb::getDb();
 
         $sArticleTable = $this->_getViewName('oxarticles');
         $sOCatView = $this->_getViewName('oxobject2category');
         $sOAttrView = $this->_getViewName('oxobject2attribute');
 
-        $sDelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchDelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sDelId = $this->request->getRequestParameter('oxid');
+        $sSynchDelId = $this->request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sDelId) {
@@ -116,7 +116,7 @@ class attribute_main_ajax extends ajaxListComponent
         $sQ = parent::_addFilter($sQ);
 
         // display variants or not ?
-        if ($this->getConfig()->getConfigParam('blVariantsSelection')) {
+        if ($this->config->getConfigParam('blVariantsSelection')) {
             $sQ .= ' group by ' . $this->_getViewName('oxarticles') . '.oxid ';
 
             $oStr = getStr();
@@ -135,7 +135,7 @@ class attribute_main_ajax extends ajaxListComponent
     {
         $aChosenCat = $this->_getActionIds('oxobject2attribute.oxid');
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sO2AttributeView = $this->_getViewName('oxobject2attribute');
 
             $sQ = parent::_addFilter("delete $sO2AttributeView.* " . $this->_getQuery());
@@ -153,10 +153,10 @@ class attribute_main_ajax extends ajaxListComponent
     public function addAttrArticle()
     {
         $aAddArticle = $this->_getActionIds('oxarticles.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
         // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sArticleTable = $this->_getViewName('oxarticles');
             $aAddArticle = $this->_getAll($this->_addFilter("select $sArticleTable.oxid " . $this->_getQuery()));
         }

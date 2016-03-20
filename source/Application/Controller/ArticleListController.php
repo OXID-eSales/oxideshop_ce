@@ -25,6 +25,8 @@ use oxArticle;
 use oxArticleList;
 use oxCategory;
 use oxField;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Action;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Category;
 use oxRegistry;
 
 /**
@@ -162,9 +164,9 @@ class ArticleListController extends \oxUBase
      */
     protected function generateViewId()
     {
-        $categoryId = oxRegistry::getConfig()->getRequestParameter('cnid');
+        $categoryId = $this->request->getRequestParameter('cnid');
         $activePage = $this->getActPage();
-        $articlesPerPage = oxRegistry::getSession()->getVariable('_artperpage');
+        $articlesPerPage = $this->session->getVariable('_artperpage');
         $listDisplayType = $this->_getListDisplayType();
         $parentViewId = parent::generateViewId();
 
@@ -187,7 +189,7 @@ class ArticleListController extends \oxUBase
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $category = $this->getCategoryToRender();
 
@@ -230,12 +232,12 @@ class ArticleListController extends \oxUBase
      */
     protected function getCategoryToRender()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $this->_blIsCat = false;
 
         // A. checking for fake "more" category
-        if ('oxmore' == $config->getRequestParameter('cnid')) {
+        if ('oxmore' == $this->request->getRequestParameter('cnid')) {
             // overriding some standard value and parameters
             $this->_sThisTemplate = $this->_sThisMoreTemplate;
             $category = oxNew('oxCategory');
@@ -301,7 +303,7 @@ class ArticleListController extends \oxUBase
     {
         $dynamicParameters = parent::getAddUrlParams();
         if (!oxRegistry::getUtils()->seoIsActive()) {
-            $pageNumber = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+            $pageNumber = (int) $this->request->getRequestParameter('pgNr');
             if ($pageNumber > 0) {
                 $dynamicParameters .= ($dynamicParameters ? '&amp;' : '') . "pgNr={$pageNumber}";
             }
@@ -347,16 +349,16 @@ class ArticleListController extends \oxUBase
     {
         $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
         // store this into session
-        $attributeFilter = oxRegistry::getConfig()->getRequestParameter('attrfilter', true);
-        $activeCategory = oxRegistry::getConfig()->getRequestParameter('cnid');
+        $attributeFilter = $this->request->getRequestParameter('attrfilter', true);
+        $activeCategory = $this->request->getRequestParameter('cnid');
 
         if (!empty($attributeFilter)) {
-            $sessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
+            $sessionFilter = $this->session->getVariable('session_attrfilter');
             //fix for #2904 - if language will be changed attributes of this category will be deleted from session
             //and new filters for active language set.
             $sessionFilter[$activeCategory] = null;
             $sessionFilter[$activeCategory][$baseLanguageId] = $attributeFilter;
-            oxRegistry::getSession()->setVariable('session_attrfilter', $sessionFilter);
+            $this->session->setVariable('session_attrfilter', $sessionFilter);
         }
     }
 
@@ -369,7 +371,7 @@ class ArticleListController extends \oxUBase
      */
     protected function _loadArticles($category)
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         $numberOfCategoryArticles = (int) $config->getConfigParam('iNrofCatArticles');
         $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 1;
@@ -385,10 +387,10 @@ class ArticleListController extends \oxUBase
 
             $this->_iAllArtCnt = $articleList->loadPriceArticles($priceFrom, $priceTo, $category);
         } else {
-            $sessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
-
-            $activeCategoryId = $category->getId();
-            $this->_iAllArtCnt = $articleList->loadCategoryArticles($activeCategoryId, $sessionFilter);
+            //$sessionFilter = $this->session->getVariable('session_attrfilter');
+            $list = new Category();
+            $articleList = $list->getById($category->getId());
+            $this->_iAllArtCnt = $list->getCountById($category->getId());
         }
 
         $this->_iCntPages = ceil($this->_iAllArtCnt / $numberOfCategoryArticles);
@@ -426,10 +428,10 @@ class ArticleListController extends \oxUBase
      */
     protected function _getListDisplayType()
     {
-        $listDisplayType = oxRegistry::getSession()->getVariable('ldtype');
+        $listDisplayType = $this->session->getVariable('ldtype');
 
         if (is_null($listDisplayType)) {
-            $listDisplayType = oxRegistry::getConfig()->getConfigParam('sDefaultListDisplayType');
+            $listDisplayType = $this->config->getConfigParam('sDefaultListDisplayType');
         }
 
         return $listDisplayType;
@@ -498,7 +500,7 @@ class ArticleListController extends \oxUBase
 
         // and final component ..
         //changed for #2776
-        if (($suffix = $this->getConfig()->getActiveShop()->oxshops__oxtitleprefix->value)) {
+        if (($suffix = $this->config->getActiveShop()->oxshops__oxtitleprefix->value)) {
             $description .= " {$suffix}";
         }
 
@@ -667,7 +669,7 @@ class ArticleListController extends \oxUBase
     public function getTemplateName()
     {
         // assign template name
-        if (($templateName = basename(oxRegistry::getConfig()->getRequestParameter('tpl')))) {
+        if (($templateName = basename($this->request->getRequestParameter('tpl')))) {
             $this->_sThisTemplate = 'custom/' . $templateName;
         } elseif (($category = $this->getActiveCategory()) && $category->oxcategories__oxtemplate->value) {
             $this->_sThisTemplate = $category->oxcategories__oxtemplate->value;
@@ -754,7 +756,7 @@ class ArticleListController extends \oxUBase
     public function getTitleSuffix()
     {
         if ($this->getActiveCategory()->oxcategories__oxshowsuffix->value) {
-            return $this->getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
+            return $this->config->getActiveShop()->oxshops__oxtitlesuffix->value;
         }
     }
 
@@ -794,7 +796,7 @@ class ArticleListController extends \oxUBase
         $this->_aAttributes = false;
 
         if (($category = $this->getActiveCategory())) {
-            $attributes = $category->getAttributes();
+            $attributes = $category->getAttributes(oxRegistry::getSession()->getVariable('session_attrfilter'));
             if (count($attributes)) {
                 $this->_aAttributes = $attributes;
             }
@@ -810,16 +812,9 @@ class ArticleListController extends \oxUBase
      */
     public function getArticleList()
     {
-        if ($this->_aArticleList === null) {
             if ($category = $this->getActiveCategory()) {
-                $articleList = $this->_loadArticles($category);
-                if (count($articleList)) {
-                    $this->_aArticleList = $articleList;
-                }
+                return $this->_loadArticles($category);
             }
-        }
-
-        return $this->_aArticleList;
     }
 
     /**
@@ -839,15 +834,8 @@ class ArticleListController extends \oxUBase
      */
     public function getSimilarRecommListIds()
     {
-        if ($this->_aSimilarRecommListIds === null) {
-            $this->_aSimilarRecommListIds = false;
-
-            if ($categoryArticlesList = $this->getArticleList()) {
-                $this->_aSimilarRecommListIds = $categoryArticlesList->arrayKeys();
-            }
-        }
-
-        return $this->_aSimilarRecommListIds;
+        $category = $this->getActiveCategory();
+        return (new Category())->getIds($category->getId());
     }
 
     /**
@@ -889,7 +877,7 @@ class ArticleListController extends \oxUBase
     {
         $paths = array();
 
-        if ('oxmore' == oxRegistry::getConfig()->getRequestParameter('cnid')) {
+        if ('oxmore' == $this->request->getRequestParameter('cnid')) {
             $path = array();
             $path['title'] = oxRegistry::getLang()->translateString(
                 'CATEGORY_OVERVIEW',
@@ -996,18 +984,7 @@ class ArticleListController extends \oxUBase
      */
     public function getBargainArticleList()
     {
-        if ($this->_aBargainArticleList === null) {
-            $this->_aBargainArticleList = array();
-            if ($this->getConfig()->getConfigParam('bl_perfLoadAktion') && $this->_isActCategory()) {
-                $articleList = oxNew('oxArticleList');
-                $articleList->loadActionArticles('OXBARGAIN');
-                if ($articleList->count()) {
-                    $this->_aBargainArticleList = $articleList;
-                }
-            }
-        }
-
-        return $this->_aBargainArticleList;
+        return (new Action())->getById('OXBARGAIN');
     }
 
     /**
@@ -1058,7 +1035,7 @@ class ArticleListController extends \oxUBase
      */
     public function canSelectDisplayType()
     {
-        return $this->getConfig()->getConfigParam('blShowListDisplayType');
+        return $this->config->getConfigParam('blShowListDisplayType');
     }
 
     /**

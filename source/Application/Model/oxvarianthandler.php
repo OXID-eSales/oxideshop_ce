@@ -79,7 +79,7 @@ class oxVariantHandler extends oxSuperCfg
             $oMdVariants->addNames(
                 $sKey,
                 $aNames,
-                ($this->getConfig()->getConfigParam('bl_perfLoadPrice')) ? $oVariant->getPrice()->getBruttoPrice() : null,
+                ($this->config->getConfigParam('bl_perfLoadPrice')) ? $oVariant->getPrice()->getBruttoPrice() : null,
                 $oVariant->getLink()
             );
         }
@@ -96,7 +96,7 @@ class oxVariantHandler extends oxSuperCfg
     public function genVariantFromSell($aSels, $oArticle)
     {
         $oVariants = $oArticle->getAdminVariants();
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myUtils = oxRegistry::getUtils();
         $myLang = oxRegistry::getLang();
         $aConfLanguages = $myLang->getLanguageIds();
@@ -142,7 +142,7 @@ class oxVariantHandler extends oxSuperCfg
      */
     protected function _assignValues($aValues, $oVariants, $oArticle, $aConfLanguages)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myLang = oxRegistry::getLang();
         $iCounter = 0;
         $aVarselect = array(); //multilanguage names of existing variants
@@ -228,7 +228,7 @@ class oxVariantHandler extends oxSuperCfg
      */
     protected function _getValuePrice($oValue, $dParentPrice)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $dPriceMod = 0;
         if ($myConfig->getConfigParam('bl_perfLoadSelectLists') && $myConfig->getConfigParam('bl_perfUseSelectlistPrice')) {
             if ($oValue->priceUnit == 'abs') {
@@ -260,7 +260,7 @@ class oxVariantHandler extends oxSuperCfg
         $aParams['oxarticles__oxactive'] = 0;
 
         // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $sShopID = $this->config->getShopId();
         $aParams['oxarticles__oxshopid'] = $sShopID;
 
         // varianthandling
@@ -296,7 +296,7 @@ class oxVariantHandler extends oxSuperCfg
      */
     public function isMdVariant($oArticle)
     {
-        if ($this->getConfig()->getConfigParam('blUseMultidimensionVariants')) {
+        if ($this->config->getConfigParam('blUseMultidimensionVariants')) {
             if (strpos($oArticle->oxarticles__oxvarselect->value, trim($this->_sMdSeparator)) !== false) {
                 return true;
             }
@@ -450,7 +450,7 @@ class oxVariantHandler extends oxSuperCfg
     protected function _getSelections($sTitle)
     {
 
-        if ($this->getConfig()->getConfigParam('blUseMultidimensionVariants')) {
+        if ($this->config->getConfigParam('blUseMultidimensionVariants')) {
             $aSelections = explode($this->_sMdSeparator, $sTitle);
         } else {
             $aSelections = array($sTitle);

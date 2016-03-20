@@ -48,7 +48,7 @@ class Article_Seo extends Object_Seo
     public function getActCatType()
     {
         $sType = false;
-        $aData = oxRegistry::getConfig()->getRequestParameter("aSeoData");
+        $aData = $this->request->getRequestParameter("aSeoData");
         if ($aData && isset($aData["oxparams"])) {
             $oStr = getStr();
             $iEndPos = $oStr->strpos($aData["oxparams"], "#");
@@ -68,12 +68,12 @@ class Article_Seo extends Object_Seo
      */
     public function getActCatLang()
     {
-        if (oxRegistry::getConfig()->getRequestParameter("editlanguage") !== null) {
+        if ($this->request->getRequestParameter("editlanguage") !== null) {
             return $this->_iEditLang;
         }
 
         $iLang = false;
-        $aData = oxRegistry::getConfig()->getRequestParameter("aSeoData");
+        $aData = $this->request->getRequestParameter("aSeoData");
         if ($aData && isset($aData["oxparams"])) {
             $oStr = getStr();
             $iStartPos = $oStr->strpos($aData["oxparams"], "#");
@@ -95,7 +95,7 @@ class Article_Seo extends Object_Seo
     public function getActCatId()
     {
         $sId = false;
-        $aData = oxRegistry::getConfig()->getRequestParameter("aSeoData");
+        $aData = $this->request->getRequestParameter("aSeoData");
         if ($aData && isset($aData["oxparams"])) {
             $oStr = getStr();
             $iStartPos = $oStr->strpos($aData["oxparams"], "#");
@@ -240,7 +240,7 @@ class Article_Seo extends Object_Seo
         $oArticleTagList->load($oArticle->getId());
         $aTagsList = array();
         if (count($aTags = $oArticleTagList->getArray())) {
-            $sShopId = $this->getConfig()->getShopId();
+            $sShopId = $this->config->getShopId();
             $iProdId = $oArticle->getId();
             foreach ($aTags as $sTitle => $oTagObject) {
                 // A. we do not have oxTag object yet, so reusing manufacturers for general interface
@@ -495,7 +495,7 @@ class Article_Seo extends Object_Seo
     {
         $sId = $this->getEditObjectId();
         if ($this->getActCatType() == 'oxtag') {
-            $sId = $this->_getEncoder()->getDynamicObjectId($this->getConfig()->getShopId(), $this->_getStdUrl($sId));
+            $sId = $this->_getEncoder()->getDynamicObjectId($this->config->getShopId(), $this->_getStdUrl($sId));
         }
 
         return $sId;
@@ -512,7 +512,7 @@ class Article_Seo extends Object_Seo
 
         $sId = $this->_getSaveObjectId();
         $iLang = (int) $this->getEditLang();
-        $iShopId = $this->getConfig()->getShopId();
+        $iShopId = $this->config->getShopId();
         $sParam = $this->processParam($this->getActCatId());
 
         $sQ = "select oxfixed from oxseo where

@@ -53,7 +53,7 @@ class Newsletter_Selection extends oxAdminDetails
             if ($oNewsletter->load($soxId)) {
                 $this->_aViewData["edit"] = $oNewsletter;
 
-                if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+                if ($this->request->getRequestParameter("aoc")) {
                     $oNewsletterSelectionAjax = oxNew('newsletter_selection_ajax');
                     $this->_aViewData['oxajax'] = $oNewsletterSelectionAjax->getColumns();
 
@@ -99,7 +99,7 @@ class Newsletter_Selection extends oxAdminDetails
                 if (!$blSep) {
                     $sSelectGroups = " oxobject2group.oxobjectid is null ";
                 }
-                $sShopId = $this->getConfig()->getShopID();
+                $sShopId = $this->config->getShopID();
                 $sQ = "select count(*) from ( select oxnewssubscribed.oxemail as _icnt from oxnewssubscribed left join
                    oxobject2group on oxobject2group.oxobjectid = oxnewssubscribed.oxuserid
                    where ( oxobject2group.oxshopid = '{$sShopId}'
@@ -121,8 +121,8 @@ class Newsletter_Selection extends oxAdminDetails
     public function save()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
-        $aParams['oxnewsletter__oxshopid'] = $this->getConfig()->getShopId();
+        $aParams = $this->request->getRequestParameter("editval");
+        $aParams['oxnewsletter__oxshopid'] = $this->config->getShopId();
 
         $oNewsletter = oxNew("oxNewsLetter");
         if ($soxId != "-1") {

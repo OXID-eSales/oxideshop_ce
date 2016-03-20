@@ -287,34 +287,30 @@ class UtilsObject
      */
     protected function _getObject($className, $argumentsCount, $arguments)
     {
-        // dynamic creation (if parameter count < 4) gives more performance for regular objects
-        switch ($argumentsCount) {
-            case 0:
-                $object = new $className();
-                break;
-            case 1:
-                $object = new $className($arguments[0]);
-                break;
-            case 2:
-                $object = new $className($arguments[0], $arguments[1]);
-                break;
-            case 3:
-                $object = new $className($arguments[0], $arguments[1], $arguments[2]);
-                break;
-            default:
-                try {
-                    // unlimited constructor arguments support
-                    $reflection = new ReflectionClass($className);
-                    $object = $reflection->newInstanceArgs($arguments);
-                } catch (ReflectionException $reflectionException) {
-                    // something went wrong?
-                    $systemComponentException = oxNew("oxSystemComponentException");
-                    $systemComponentException->setMessage($reflectionException->getMessage());
-                    $systemComponentException->setComponent($className);
-                    $systemComponentException->debugOut();
-
-                    throw $systemComponentException;
+        try {
+            // unlimited constructor arguments support
+            $reflection = new ReflectionClass($className);
+            if ($reflection->hasMethod('__construct')) {
+                if ($reflection->isSubclassOf(ViewInterface::class)) {
+                    $request = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_REQUEST);
+                    $session = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_SESSION);
+                    $arguments = array_merge([$request, $session], $arguments);
                 }
+
+                if ($reflection->isSubclassOf(SuperConfig::class)) {
+                    $config = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_CONFIG);
+                    $arguments = array_merge([$config], $arguments);
+                }
+            }
+            $object = $reflection->newInstanceArgs($arguments);
+        } catch (ReflectionException $reflectionException) {
+            // something went wrong?
+            $systemComponentException = oxNew("oxSystemComponentException");
+            $systemComponentException->setMessage($reflectionException->getMessage());
+            $systemComponentException->setComponent($className);
+            $systemComponentException->debugOut();
+
+            throw $systemComponentException;
         }
 
         return $object;

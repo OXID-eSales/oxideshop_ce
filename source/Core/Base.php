@@ -92,20 +92,6 @@ class Base extends \oxSuperCfg
     protected $_aFieldNames = array('oxid' => 0);
 
     /**
-     * Cache key. Assigned to object depending on active view. Is used for object caching identification in lazy loading mechanism.
-     *
-     * @var string
-     */
-    protected $_sCacheKey = null;
-
-    /**
-     * Set $_blUseLazyLoading to true if you want to load only actually used fields not full objet, depending on views.
-     *
-     * @var bool
-     */
-    protected $_blUseLazyLoading = false;
-
-    /**
      * Field name array of ignored fields when doing record update() (eg. oxarticles__oxtime)
      *
      * @var array
@@ -217,27 +203,18 @@ class Base extends \oxSuperCfg
     /**
      * Class constructor, sets active shop.
      */
-    public function __construct()
+    public function __construct($config)
     {
+        parent::__construct($config);
+
         // set active shop
-        $myConfig = $this->getConfig();
-        $this->_sCacheKey = $this->getViewName();
+        $myConfig = $this->config;
 
         $this->_addSkippedSaveFieldsForMapping();
-        $this->_disableLazyLoadingForCaching();
-
-        if ($this->_blUseLazyLoading) {
-            $this->_sCacheKey .= $myConfig->getActiveView()->getClassName();
-        } else {
-            $this->_sCacheKey .= 'allviews';
-        }
-
-        //do not cache for admin?
-        if ($this->isAdmin()) {
-            $this->_sCacheKey = null;
-        }
 
         $this->setShopId($myConfig->getShopId());
+
+        $this->init($this->_sCoreTable);
     }
 
     /**
@@ -249,18 +226,6 @@ class Base extends \oxSuperCfg
     public function __set($fieldName, $fieldValue)
     {
         $this->$fieldName = $fieldValue;
-        if ($this->_blUseLazyLoading && strpos($fieldName, $this->_sCoreTable . '__') === 0) {
-            $preparedFieldName = str_replace($this->_sCoreTable . '__', '', $fieldName);
-            if ($preparedFieldName !== 'oxnid'
-                && (!isset($this->_aFieldNames[$preparedFieldName]) || !$this->_aFieldNames[$preparedFieldName])
-            ) {
-                $allFieldsList = $this->_getAllFields(true);
-                if (isset($allFieldsList[strtolower($preparedFieldName)])) {
-                    $fieldStatus = $this->_getFieldStatus($preparedFieldName);
-                    $this->_addField($preparedFieldName, $fieldStatus);
-                }
-            }
-        }
     }
 
     /**
@@ -282,64 +247,6 @@ class Base extends \oxSuperCfg
             case 'blReadOnly':
                 return $this->isReadOnly();
                 break;
-        }
-
-        // implementing lazy loading fields
-        // This part of the code is slow and normally is called before field cache is built.
-        // Make sure it is not called after first page is loaded and cache data is fully built.
-        if ($this->_blUseLazyLoading && stripos($variableName, $this->_sCoreTable . "__") === 0) {
-            if ($this->getId()) {
-                //lazy load it
-                $fieldName = str_replace($this->_sCoreTable . '__', '', $variableName);
-                $cacheFieldName = strtoupper($fieldName);
-
-                $fieldStatus = $this->_getFieldStatus($fieldName);
-
-                $viewName = $this->getGetterViewName();
-                $id = $this->getId();
-
-                try {
-                    if ($this->_aInnerLazyCache === null) {
-                        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-                        $query = 'SELECT * FROM ' . $viewName . ' WHERE `oxid` = ' . $database->quote($id);
-                        $queryResult = $database->select($query);
-                        if ($queryResult && $queryResult->RecordCount()) {
-                            $this->_aInnerLazyCache = array_change_key_case($queryResult->fields, CASE_UPPER);
-                            if (array_key_exists($cacheFieldName, $this->_aInnerLazyCache)) {
-                                $fieldValue = $this->_aInnerLazyCache[$cacheFieldName];
-                            } else {
-                                return null;
-                            }
-                        } else {
-                            return null;
-                        }
-                    } elseif (array_key_exists($cacheFieldName, $this->_aInnerLazyCache)) {
-                        $fieldValue = $this->_aInnerLazyCache[$cacheFieldName];
-                    } else {
-                        return null;
-                    }
-
-                    $this->_addField($fieldName, $fieldStatus);
-                    $this->_setFieldData($fieldName, $fieldValue);
-
-                    //save names to cache for next loading
-                    if ($this->_sCacheKey) {
-                        $myUtils = oxRegistry::getUtils();
-                        $cacheKey = 'fieldnames_' . $this->_sCoreTable . '_' . $this->_sCacheKey;
-                        $fieldNames = $myUtils->fromFileCache($cacheKey);
-                        $fieldNames[$fieldName] = $fieldStatus;
-                        $myUtils->toFileCache($cacheKey, $fieldNames);
-                    }
-                } catch (Exception $e) {
-                    return null;
-                }
-
-                //do not use field cache for this page
-                //as if we use it for lists then objects are loaded empty instead of lazy loading.
-                self::$_blDisableFieldCaching[get_class($this)] = true;
-            }
-
-            oxUtilsObject::getInstance()->resetInstanceCache(get_class($this));
         }
 
         //returns stdClass implementing __toString() method due to uknown scenario where this var should be used.
@@ -587,7 +494,7 @@ class Base extends \oxSuperCfg
             if (($forceCoreTableUsage !== null) && $forceCoreTableUsage) {
                 $shopId = -1;
             } else {
-                $shopId = oxRegistry::getConfig()->getShopId();
+                $shopId = $this->config->getShopId();
             }
 
             $viewName = getViewName($this->getCoreTableName(), $this->_blEmployMultilanguage == false ? -1 : $this->getLanguage(), $shopId);
@@ -609,30 +516,6 @@ class Base extends \oxSuperCfg
     protected function checkIfCoreTableNeeded($forceCoreTableUsage)
     {
         return $forceCoreTableUsage;
-    }
-
-    /**
-     * Lazy loading cache key modifier.
-     *
-     * @param string $cacheKey Cache  key
-     * @param bool   $override Marker to force override cache key
-     */
-    public function modifyCacheKey($cacheKey, $override = false)
-    {
-        if ($override) {
-            $this->_sCacheKey = $cacheKey;
-        } else {
-            $this->_sCacheKey .= $cacheKey;
-        }
-    }
-
-    /**
-     * Disables lazy loading mechanism and init object fully
-     */
-    public function disableLazyLoading()
-    {
-        $this->_blUseLazyLoading = false;
-        $this->_initDataStructure(true);
     }
 
     /**
@@ -841,7 +724,7 @@ class Base extends \oxSuperCfg
         }
 
         // #739A - should be executed here because of date/time formatting feature
-        if ($this->isAdmin() && !$this->getConfig()->getConfigParam('blSkipFormatConversion')) {
+        if ($this->isAdmin() && !$this->config->getConfigParam('blSkipFormatConversion')) {
             foreach ($this->_aFieldNames as $name => $value) {
                 $longName = $this->_getFieldLongName($name);
                 if (isset($this->$longName->fldtype) && $this->$longName->fldtype == 'datetime') {
@@ -1070,21 +953,8 @@ class Base extends \oxSuperCfg
      */
     protected function _initDataStructure($forceFullStructure = false)
     {
-        $myUtils = oxRegistry::getUtils();
-
         //get field names from cache
-        $fieldNamesList = null;
-        $fullCacheKey = 'fieldnames_' . $this->getCoreTableName() . '_' . $this->_sCacheKey;
-        if ($this->_sCacheKey && !$this->_isDisabledFieldCache()) {
-            $fieldNamesList = $myUtils->fromFileCache($fullCacheKey);
-        }
-
-        if (!$fieldNamesList) {
-            $fieldNamesList = $this->_getNonCachedFieldNames($forceFullStructure);
-            if ($this->_sCacheKey && !$this->_isDisabledFieldCache()) {
-                $myUtils->toFileCache($fullCacheKey, $fieldNamesList);
-            }
-        }
+        $fieldNamesList = $this->_getNonCachedFieldNames($forceFullStructure);
 
         if ($fieldNamesList !== false) {
             foreach ($fieldNamesList as $field => $status) {
@@ -1420,7 +1290,7 @@ class Base extends \oxSuperCfg
     protected function _insert()
     {
         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myUtils = oxRegistry::getUtils();
 
         // let's get a new ID

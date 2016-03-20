@@ -84,15 +84,7 @@ class oxPricealarm extends oxBase
      */
     protected $_iStatus = null;
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxBase()), loads
-     * base shop objects.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxpricealarm');
-    }
+    protected $_sCoreTable = 'oxpricealarm';
 
     /**
      * Inserts object data into DB, returns true on success.
@@ -200,7 +192,7 @@ class oxPricealarm extends oxBase
     {
         if ($this->_oCurrency == null) {
             $this->_oCurrency = false;
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
             $oThisCurr = $myConfig->getCurrencyObject($this->oxpricealarm__oxcurrency->value);
 
             // #869A we should perform currency conversion
@@ -208,7 +200,8 @@ class oxPricealarm extends oxBase
             if (!$oThisCurr) {
                 $oDefCurr = $myConfig->getActShopCurrencyObject();
                 $oThisCurr = $myConfig->getCurrencyObject($oDefCurr->name);
-                $this->oxpricealarm__oxcurrency->setValue($oDefCurr->name);
+                //$this->oxpricealarm__oxcurrency->setValue($oDefCurr->name);
+                $this->oxpricealarm__oxcurrency = new oxField($oDefCurr->name);
             }
             $this->_oCurrency = $oThisCurr;
         }

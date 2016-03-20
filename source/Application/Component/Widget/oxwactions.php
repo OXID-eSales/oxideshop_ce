@@ -20,6 +20,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Action;
 
 /**
  * Actions widget.
@@ -50,11 +51,7 @@ class oxwActions extends oxWidget
     {
         $actionId = $this->getViewParameter('action');
         if ($actionId && $this->_getLoadActionsParam()) {
-            $artList = oxNew('oxarticlelist');
-            $artList->loadActionArticles($actionId);
-            if ($artList->count()) {
-                return $artList;
-            }
+            return (new Action())->getById($actionId);
         }
     }
 
@@ -65,7 +62,7 @@ class oxwActions extends oxWidget
      */
     protected function _getLoadActionsParam()
     {
-        $this->_blLoadActions = $this->getConfig()->getConfigParam('bl_perfLoadAktion');
+        $this->_blLoadActions = $this->config->getConfigParam('bl_perfLoadAktion');
 
         return $this->_blLoadActions;
     }

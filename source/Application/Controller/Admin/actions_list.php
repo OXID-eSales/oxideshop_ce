@@ -60,7 +60,7 @@ class Actions_List extends oxAdminList
         parent::render();
 
         // passing display type back to view
-        $this->_aViewData["displaytype"] = oxRegistry::getConfig()->getRequestParameter("displaytype");
+        $this->_aViewData["displaytype"] = $this->request->getRequestParameter("displaytype");
 
         return $this->_sThisTemplate;
     }
@@ -76,7 +76,7 @@ class Actions_List extends oxAdminList
     protected function _prepareWhereQuery($aWhere, $sqlFull)
     {
         $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
-        $sDisplayType = (int) oxRegistry::getConfig()->getRequestParameter('displaytype');
+        $sDisplayType = (int) $this->request->getRequestParameter('displaytype');
         $sTable = getViewName("oxactions");
 
         // searching for empty oxfolder fields

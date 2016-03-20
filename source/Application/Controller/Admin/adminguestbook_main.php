@@ -36,7 +36,7 @@ class Adminguestbook_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         parent::render();
 
@@ -68,7 +68,7 @@ class Adminguestbook_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         // checkbox handling
         if (!isset($aParams['oxgbentries__oxactive'])) {
@@ -82,7 +82,7 @@ class Adminguestbook_Main extends oxAdminDetails
             $aParams['oxgbentries__oxid'] = null;
 
             // author
-            $aParams['oxgbentries__oxuserid'] = oxRegistry::getSession()->getVariable('auth');
+            $aParams['oxgbentries__oxuserid'] = $this->session->getVariable('auth');
         }
 
         $aParams = $this->appendAdditionalParametersForSave($aParams);

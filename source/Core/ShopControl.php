@@ -130,7 +130,7 @@ class ShopControl extends \oxSuperCfg
         try {
             $this->_runOnce();
 
-            $function = !is_null($function) ? $function : oxRegistry::getConfig()->getRequestParameter('fnc');
+            $function = !is_null($function) ? $function : $this->config->getRequestParameter('fnc');
             $class = !is_null($class) ? $class : $this->_getStartController();
 
             $this->_process($class, $function, $parameters, $viewsChain);
@@ -182,7 +182,7 @@ class ShopControl extends \oxSuperCfg
      */
     protected function _getStartController()
     {
-        $class = oxRegistry::getConfig()->getRequestParameter('cl');
+        $class = $this->config->getRequestParameter('cl');
 
         if (!$class) {
             $session = oxRegistry::getSession();
@@ -226,7 +226,7 @@ class ShopControl extends \oxSuperCfg
     protected function _process($class, $function, $parameters = null, $viewsChain = null)
     {
         startProfile('process');
-        $config = $this->getConfig();
+        $config = $this->config;
 
         // executing maintenance tasks
         $this->_executeMaintenanceTasks();
@@ -338,7 +338,7 @@ class ShopControl extends \oxSuperCfg
         $view->setFncName($function);
         $view->setViewParameters($parameters);
 
-        $this->getConfig()->setActiveView($view);
+        $this->config->setActiveView($view);
 
         $this->onViewCreation($view);
 
@@ -417,7 +417,7 @@ class ShopControl extends \oxSuperCfg
         $templateName = $view->render();
 
         // check if template dir exists
-        $templateFile = $this->getConfig()->getTemplatePath($templateName, $this->isAdmin());
+        $templateFile = $this->config->getTemplatePath($templateName, $this->isAdmin());
         if (!file_exists($templateFile)) {
             $ex = oxNew('oxSystemComponentException');
             $ex->setMessage('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND');
@@ -513,7 +513,7 @@ class ShopControl extends \oxSuperCfg
      */
     protected function _runOnce()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
 
         error_reporting($this->_getErrorReportingLevel());
 
@@ -550,7 +550,7 @@ class ShopControl extends \oxSuperCfg
             $errorReporting = $errorReporting ^ E_DEPRECATED;
         }
 
-        if ($this->getConfig()->isProductiveMode() && !ini_get('log_errors')) {
+        if ($this->config->isProductiveMode() && !ini_get('log_errors')) {
             $errorReporting = 0;
         }
 
@@ -609,7 +609,7 @@ class ShopControl extends \oxSuperCfg
     protected function stopMonitoring($view)
     {
         if ($this->_isDebugMode() && !$this->isAdmin()) {
-            $debugLevel = $this->getConfig()->getConfigParam('iDebug');
+            $debugLevel = $this->config->getConfigParam('iDebug');
             $debugInfo = oxNew('oxDebugInfo');
 
             $logId = md5(time() . rand() . rand());
@@ -648,7 +648,7 @@ class ShopControl extends \oxSuperCfg
     {
         $debugInfo = oxNew('oxDebugInfo');
 
-        $debugLevel = $this->getConfig()->getConfigParam('iDebug');
+        $debugLevel = $this->config->getConfigParam('iDebug');
 
         $message = '';
 
@@ -689,7 +689,7 @@ class ShopControl extends \oxSuperCfg
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception);
             $this->_process('exceptionError', 'displayExceptionError');
         } else {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
+            oxRegistry::getUtils()->redirect($this->config->getShopHomeUrl() . 'cl=start', true, 302);
         }
     }
 
@@ -703,7 +703,7 @@ class ShopControl extends \oxSuperCfg
         if ($this->_isDebugMode()) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception);
         }
-        oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
+        oxRegistry::getUtils()->redirect($this->config->getShopHomeUrl() . 'cl=start', true, 302);
     }
 
     /**

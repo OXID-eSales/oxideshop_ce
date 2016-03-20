@@ -27,14 +27,7 @@
  */
 class oxCountryList extends oxList
 {
-
-    /**
-     * Call parent class constructor
-     */
-    public function __construct()
-    {
-        parent::__construct('oxcountry');
-    }
+    protected $_sObjectsInListName = 'oxcountry';
 
     /**
      * Selects and loads all active countries

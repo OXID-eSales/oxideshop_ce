@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Action;
 
 /**
  * Transparent shop utilities class.
@@ -49,7 +50,7 @@ class oxcmp_utils extends oxView
      */
     public function getArticle()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $myUtils = oxRegistry::getUtils();
 
         if (!$myConfig->getConfigParam("blAllowRemoteArticleInfo")) {
@@ -60,13 +61,12 @@ class oxcmp_utils extends oxView
         $sOutput = 'OXID__Problem : no valid oxid !';
         $oProduct = null;
 
-        if (($sId = oxRegistry::getConfig()->getRequestParameter('oxid'))) {
+        if (($sId = $this->request->getRequestParameter('oxid'))) {
             $oProduct = oxNew('oxArticle');
             $oProduct->load($sId);
         } elseif ($myConfig->getConfigParam('bl_perfLoadAktion')) {
-            $oArtList = oxNew('oxArticleList');
-            $oArtList->loadActionArticles('OXAFFILIATE');
-            $oProduct = $oArtList->current();
+            $list = (new Action())->getById('OXAFFILIATE');
+            $oProduct = current($list);
         }
 
         if ($oProduct) {
@@ -128,13 +128,13 @@ class oxcmp_utils extends oxView
 
 
             // #657 special treatment if we want to put on comparelist
-            $blAddCompare = oxRegistry::getConfig()->getRequestParameter('addcompare');
-            $blRemoveCompare = oxRegistry::getConfig()->getRequestParameter('removecompare');
-            $sProductId = $sProductId ? $sProductId : oxRegistry::getConfig()->getRequestParameter('aid');
+            $blAddCompare = $this->request->getRequestParameter('addcompare');
+            $blRemoveCompare = $this->request->getRequestParameter('removecompare');
+            $sProductId = $sProductId ? $sProductId : $this->request->getRequestParameter('aid');
             if (($blAddCompare || $blRemoveCompare) && $sProductId) {
 
                 // toggle state in session array
-                $aItems = oxRegistry::getSession()->getVariable('aFiltcompproducts');
+                $aItems = $this->session->getVariable('aFiltcompproducts');
                 if ($blAddCompare && !isset($aItems[$sProductId])) {
                     $aItems[$sProductId] = true;
                 }
@@ -143,7 +143,7 @@ class oxcmp_utils extends oxView
                     unset($aItems[$sProductId]);
                 }
 
-                oxRegistry::getSession()->setVariable('aFiltcompproducts', $aItems);
+                $this->session->setVariable('aFiltcompproducts', $aItems);
                 $oParentView = $this->getParent();
 
                 // #843C there was problem then field "blIsOnComparisonList" was not set to article object
@@ -181,7 +181,7 @@ class oxcmp_utils extends oxView
      */
     public function toNoticeList($sProductId = null, $dAmount = null, $aSel = null)
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -200,7 +200,7 @@ class oxcmp_utils extends oxView
      */
     public function toWishList($sProductId = null, $dAmount = null, $aSel = null)
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -223,14 +223,14 @@ class oxcmp_utils extends oxView
         // only if user is logged in
         if ($oUser = $this->getUser()) {
 
-            $sProductId = ($sProductId) ? $sProductId : oxRegistry::getConfig()->getRequestParameter('itmid');
-            $sProductId = ($sProductId) ? $sProductId : oxRegistry::getConfig()->getRequestParameter('aid');
-            $dAmount = isset($dAmount) ? $dAmount : oxRegistry::getConfig()->getRequestParameter('am');
-            $aSel = $aSel ? $aSel : oxRegistry::getConfig()->getRequestParameter('sel');
+            $sProductId = ($sProductId) ? $sProductId : $this->request->getRequestParameter('itmid');
+            $sProductId = ($sProductId) ? $sProductId : $this->request->getRequestParameter('aid');
+            $dAmount = isset($dAmount) ? $dAmount : $this->request->getRequestParameter('am');
+            $aSel = $aSel ? $aSel : $this->request->getRequestParameter('sel');
 
             // processing amounts
             $dAmount = str_replace(',', '.', $dAmount);
-            if (!$this->getConfig()->getConfigParam('blAllowUnevenAmounts')) {
+            if (!$this->config->getConfigParam('blAllowUnevenAmounts')) {
                 $dAmount = round(( string ) $dAmount);
             }
 
@@ -251,7 +251,7 @@ class oxcmp_utils extends oxView
     {
         parent::render();
 
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oParentView = $this->getParent();
 
         // add content for main menu

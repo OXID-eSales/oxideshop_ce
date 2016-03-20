@@ -84,7 +84,7 @@ class Wrapping_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         // checkbox handling
         if (!isset($aParams['oxwrapping__oxactive'])) {
@@ -96,7 +96,7 @@ class Wrapping_Main extends oxAdminDetails
         if ($soxId != "-1") {
             $oWrapping->loadInLang($this->_iEditLang, $soxId);
             // #1173M - not all pic are deleted, after article is removed
-            oxRegistry::get("oxUtilsPic")->overwritePic($oWrapping, 'oxwrapping', 'oxpic', 'WP', '0', $aParams, $this->getConfig()->getPictureDir(false));
+            oxRegistry::get("oxUtilsPic")->overwritePic($oWrapping, 'oxwrapping', 'oxpic', 'WP', '0', $aParams, $this->config->getPictureDir(false));
         } else {
             $aParams['oxwrapping__oxid'] = null;
             //$aParams = $oWrapping->ConvertNameArray2Idx( $aParams);
@@ -126,7 +126,7 @@ class Wrapping_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         // checkbox handling
         if (!isset($aParams['oxwrapping__oxactive'])) {

@@ -82,7 +82,7 @@ class oxNewslist extends oxList
      */
     public function getCount()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oDb = oxDb::getDb();
 
         $sNewsViewName = getViewName('oxnews');

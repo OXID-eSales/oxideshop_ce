@@ -19,6 +19,8 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Action;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\TopFive;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\Registry;
 
@@ -108,9 +110,9 @@ class oxRssFeed extends oxSuperCfg
      */
     protected function _loadBaseChannel()
     {
-        $oShop = $this->getConfig()->getActiveShop();
+        $oShop = $this->config->getActiveShop();
         $this->_aChannel['title'] = $oShop->oxshops__oxname->value;
-        $this->_aChannel['link'] = oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession($this->getConfig()->getShopUrl());
+        $this->_aChannel['link'] = oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession($this->config->getShopUrl());
         $this->_aChannel['description'] = '';
         $oLang = oxRegistry::getLang();
         $aLangIds = $oLang->getLanguageIds();
@@ -127,7 +129,7 @@ class oxRssFeed extends oxSuperCfg
         $this->_aChannel['generator'] = $oShop->oxshops__oxname->value;
 
         $editionSelector = new EditionSelector();
-        $this->_aChannel['image']['url'] = $this->getConfig()->getImageUrl()
+        $this->_aChannel['image']['url'] = $this->config->getImageUrl()
             . 'logo_' . strtolower($editionSelector->getEdition()) . '.png';
 
         $this->_aChannel['image']['title'] = $this->_aChannel['title'];
@@ -144,30 +146,10 @@ class oxRssFeed extends oxSuperCfg
      */
     protected function _getCacheId($name)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
 
         return $name . '_' . $oConfig->getShopId() . '_' . oxRegistry::getLang()->getBaseLanguage() . '_' . (int) $oConfig->getShopCurrency();
     }
-
-    /**
-     * _loadFromCache load data from cache, requires Rss data Id
-     *
-     * @param string $name Rss data Id
-     *
-     * @access protected
-     * @return array
-     */
-    protected function _loadFromCache($name)
-    {
-        if ($aRes = oxRegistry::getUtils()->fromFileCache($this->_getCacheId($name))) {
-            if ($aRes['timestamp'] > time() - self::CACHE_TTL) {
-                return $aRes['content'];
-            }
-        }
-
-        return false;
-    }
-
 
     /**
      * _getLastBuildDate check if changed data and renew last build date if needed
@@ -216,12 +198,12 @@ class oxRssFeed extends oxSuperCfg
     /**
      * _getArticleItems create channel items from article list
      *
-     * @param oxArticleList $oList article list
+     * @param oxArticle[] $oList article list
      *
      * @access protected
      * @return array
      */
-    protected function _getArticleItems(oxArticleList $oList)
+    protected function _getArticleItems($oList)
     {
         $myUtilsUrl = oxRegistry::get("oxUtilsUrl");
         $aItems = array();
@@ -230,7 +212,7 @@ class oxRssFeed extends oxSuperCfg
 
         foreach ($oList as $oArticle) {
             $oItem = new stdClass();
-            $oActCur = $this->getConfig()->getActShopCurrencyObject();
+            $oActCur = $this->config->getActShopCurrencyObject();
             $sPrice = '';
             if ($oPrice = $oArticle->getPrice()) {
                 $sFrom = ($oArticle->isRangePrice()) ? oxRegistry::getLang()->translateString('PRICE_FROM') : '';
@@ -241,7 +223,7 @@ class oxRssFeed extends oxSuperCfg
             $oItem->isGuidPermalink = true;
             // $oItem->description             = $oArticle->getLongDescription()->value; //oxarticles__oxshortdesc->value;
             //#4038: Smarty not parsed in RSS, although smarty parsing activated for longdescriptions
-            if (oxRegistry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
+            if ($this->config->getConfigParam('bl_perfParseLongDescinSmarty')) {
                 $oItem->description = $oArticle->getLongDesc();
             } else {
                 $oItem->description = $oArticle->getLongDescription()->value;
@@ -307,7 +289,7 @@ class oxRssFeed extends oxSuperCfg
      */
     protected function _prepareFeedName($sTitle)
     {
-        $oShop = $this->getConfig()->getActiveShop();
+        $oShop = $this->config->getActiveShop();
 
         return $oShop->oxshops__oxname->value . "/" . $sTitle;
     }
@@ -320,7 +302,7 @@ class oxRssFeed extends oxSuperCfg
      */
     protected function _getShopUrl()
     {
-        $sUrl = $this->getConfig()->getShopUrl();
+        $sUrl = $this->config->getShopUrl();
         $oStr = getStr();
         if ($oStr->strpos($sUrl, '?') !== false) {
             if (!$oStr->preg_match('/[?&](amp;)?$/i', $sUrl)) {
@@ -404,19 +386,14 @@ class oxRssFeed extends oxSuperCfg
      */
     public function loadTopInShop()
     {
-        if (($this->_aChannel = $this->_loadFromCache(self::RSS_TOPSHOP))) {
-            return;
-        }
-
-        $oArtList = oxNew('oxArticleList');
-        $oArtList->loadTop5Articles($this->getConfig()->getConfigParam('iRssItemsCount'));
+        $list = (new TopFive())->getAll();
 
         $oLang = oxRegistry::getLang();
         $this->_loadData(
             self::RSS_TOPSHOP,
             $this->getTopInShopTitle(),
             $oLang->translateString('TOP_SHOP_PRODUCTS', $oLang->getBaseLanguage()),
-            $this->_getArticleItems($oArtList),
+            $this->_getArticleItems($list),
             $this->getTopInShopUrl()
         );
     }
@@ -458,11 +435,8 @@ class oxRssFeed extends oxSuperCfg
      */
     public function loadNewestArticles()
     {
-        if (($this->_aChannel = $this->_loadFromCache(self::RSS_NEWARTS))) {
-            return;
-        }
         $oArtList = oxNew('oxArticleList');
-        $oArtList->loadNewestArticles($this->getConfig()->getConfigParam('iRssItemsCount'));
+        $oArtList->loadNewestArticles($this->config->getConfigParam('iRssItemsCount'));
 
         $oLang = oxRegistry::getLang();
         $this->_loadData(
@@ -546,20 +520,13 @@ class oxRssFeed extends oxSuperCfg
     public function loadCategoryArticles(oxCategory $oCat)
     {
         $sId = $oCat->getId();
-        if (($this->_aChannel = $this->_loadFromCache(self::RSS_CATARTS . $sId))) {
-            return;
-        }
-
-        $oArtList = oxNew('oxArticleList');
-        $oArtList->setCustomSorting('oc.oxtime desc');
-        $oArtList->loadCategoryArticles($oCat->getId(), null, $this->getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = oxRegistry::getLang();
         $this->_loadData(
             self::RSS_CATARTS . $sId,
             $this->getCategoryArticlesTitle($oCat),
             sprintf($oLang->translateString('S_CATEGORY_PRODUCTS', $oLang->getBaseLanguage()), $oCat->oxcategories__oxtitle->value),
-            $this->_getArticleItems($oArtList),
+            $this->_getArticleItems((new Category())->getById($oCat->getId())),
             $this->getCategoryArticlesUrl($oCat),
             $oCat->getLink()
         );
@@ -711,15 +678,10 @@ class oxRssFeed extends oxSuperCfg
      */
     public function loadSearchArticles($sSearch, $sCatId, $sVendorId, $sManufacturerId)
     {
-        // dont use cache for search
-        //if ($this->_aChannel = $this->_loadFromCache(self::RSS_SEARCHARTS.md5($sSearch.$sCatId.$sVendorId))) {
-        //    return;
-        //}
-
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $oConfig->setConfigParam('iNrofCatArticles', $oConfig->getConfigParam('iRssItemsCount'));
 
-        $oArtList = oxNew('oxsearch')->getSearchArticles($sSearch, $sCatId, $sVendorId, $sManufacturerId, oxNew('oxArticle')->getViewName() . '.oxtimestamp desc');
+        $oArtList = oxNew('oxsearch')->getSearchArticles($sSearch, $sCatId, $sVendorId, $sManufacturerId, oxNew('oxArticle')->getViewName() . '.oxtimestamp desc', null);
 
         $this->_loadData(
             // dont use cache for search
@@ -799,11 +761,7 @@ class oxRssFeed extends oxSuperCfg
      */
     public function loadRecommLists(oxArticle $oArticle)
     {
-        if (($this->_aChannel = $this->_loadFromCache(self::RSS_ARTRECOMMLISTS . $oArticle->getId()))) {
-            return;
-        }
-
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $oConfig->setConfigParam('iNrofCrossellArticles', $oConfig->getConfigParam('iRssItemsCount'));
 
         $oList = oxNew('oxrecommlist')->getRecommListsByIds(array($oArticle->getId()));
@@ -864,12 +822,8 @@ class oxRssFeed extends oxSuperCfg
      */
     public function loadRecommListArticles(oxRecommList $oRecommList)
     {
-        if (($this->_aChannel = $this->_loadFromCache(self::RSS_RECOMMLISTARTS . $oRecommList->getId()))) {
-            return;
-        }
-
         $oList = oxNew('oxArticleList');
-        $oList->loadRecommArticles($oRecommList->getId(), ' order by oxobject2list.oxtimestamp desc limit ' . $this->getConfig()->getConfigParam('iRssItemsCount'));
+        $oList->loadRecommArticles($oRecommList->getId(), ' order by oxobject2list.oxtimestamp desc limit ' . $this->config->getConfigParam('iRssItemsCount'));
 
         $oLang = oxRegistry::getLang();
         $this->_loadData(
@@ -918,19 +872,12 @@ class oxRssFeed extends oxSuperCfg
      */
     public function loadBargain()
     {
-        if (($this->_aChannel = $this->_loadFromCache(self::RSS_BARGAIN))) {
-            return;
-        }
-
-        $oArtList = oxNew('oxArticleList');
-        $oArtList->loadActionArticles('OXBARGAIN', $this->getConfig()->getConfigParam('iRssItemsCount'));
-
         $oLang = oxRegistry::getLang();
         $this->_loadData(
             self::RSS_BARGAIN,
             $this->getBargainTitle(),
             $oLang->translateString('BARGAIN_PRODUCTS', $oLang->getBaseLanguage()),
-            $this->_getArticleItems($oArtList),
+            $this->_getArticleItems((new Action())->getById('OXBARGAIN')),
             $this->getBargainUrl()
         );
     }

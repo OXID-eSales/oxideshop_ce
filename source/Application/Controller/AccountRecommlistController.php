@@ -107,7 +107,7 @@ class AccountRecommlistController extends \Account
         // list of found oxrecommlists
         if (!$oActList && $oLists->count()) {
             $this->_iAllArtCnt = $oUser->getRecommListsCount();
-            $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+            $iNrofCatArticles = (int) $this->config->getConfigParam('iNrofCatArticles');
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
             $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
         }
@@ -196,7 +196,7 @@ class AccountRecommlistController extends \Account
             $this->_oActRecommList = false;
 
             if (($oUser = $this->getUser()) &&
-                ($sRecommId = oxRegistry::getConfig()->getRequestParameter('recommid'))
+                ($sRecommId = $this->request->getRequestParameter('recommid'))
             ) {
 
                 $oRecommList = oxNew('oxrecommlist');
@@ -227,7 +227,7 @@ class AccountRecommlistController extends \Account
      */
     public function saveRecommList()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -239,14 +239,14 @@ class AccountRecommlistController extends \Account
             if (!($oRecommList = $this->getActiveRecommList())) {
                 $oRecommList = oxNew('oxrecommlist');
                 $oRecommList->oxrecommlists__oxuserid = new oxField($oUser->getId());
-                $oRecommList->oxrecommlists__oxshopid = new oxField($this->getConfig()->getShopId());
+                $oRecommList->oxrecommlists__oxshopid = new oxField($this->config->getShopId());
             } else {
                 $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
             }
 
-            $sTitle = trim(( string ) oxRegistry::getConfig()->getRequestParameter('recomm_title', true));
-            $sAuthor = trim(( string ) oxRegistry::getConfig()->getRequestParameter('recomm_author', true));
-            $sText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('recomm_desc', true));
+            $sTitle = trim(( string ) $this->request->getRequestParameter('recomm_title', true));
+            $sAuthor = trim(( string ) $this->request->getRequestParameter('recomm_author', true));
+            $sText = trim(( string ) $this->request->getRequestParameter('recomm_desc', true));
 
             $oRecommList->oxrecommlists__oxtitle = new oxField($sTitle);
             $oRecommList->oxrecommlists__oxauthor = new oxField($sAuthor);
@@ -280,7 +280,7 @@ class AccountRecommlistController extends \Account
      */
     public function editList()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -289,7 +289,7 @@ class AccountRecommlistController extends \Account
         }
 
         // deleting on demand
-        if (($sAction = oxRegistry::getConfig()->getRequestParameter('deleteList')) &&
+        if (($sAction = $this->request->getRequestParameter('deleteList')) &&
             ($oRecommList = $this->getActiveRecommList())
         ) {
             $oRecommList->delete();
@@ -306,7 +306,7 @@ class AccountRecommlistController extends \Account
      */
     public function removeArticle()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -314,7 +314,7 @@ class AccountRecommlistController extends \Account
             return;
         }
 
-        if (($sArtId = oxRegistry::getConfig()->getRequestParameter('aid')) &&
+        if (($sArtId = $this->request->getRequestParameter('aid')) &&
             ($oRecommList = $this->getActiveRecommList())
         ) {
             $oRecommList->removeArticle($sArtId);

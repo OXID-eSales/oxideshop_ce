@@ -57,8 +57,8 @@ class article_extend_ajax extends ajaxListComponent
         $objectToCategoryView = $this->_getViewName('oxobject2category');
         $database = oxDb::getDb();
 
-        $oxId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $synchOxid = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $oxId = $this->request->getRequestParameter('oxid');
+        $synchOxid = $this->request->getRequestParameter('synchoxid');
 
         if ($oxId) {
             // all categories article is in
@@ -86,7 +86,7 @@ class article_extend_ajax extends ajaxListComponent
     protected function _getDataFields($sQ)
     {
         $dataFields = parent::_getDataFields($sQ);
-        if (oxRegistry::getConfig()->getRequestParameter('oxid') && is_array($dataFields) && count($dataFields)) {
+        if ($this->request->getRequestParameter('oxid') && is_array($dataFields) && count($dataFields)) {
             // looking for smallest time value to mark record as main category ..
             $minimalPosition = null;
             $minimalValue = null;
@@ -122,11 +122,11 @@ class article_extend_ajax extends ajaxListComponent
     {
         $categoriesToRemove = $this->_getActionIds('oxcategories.oxid');
 
-        $oxId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $oxId = $this->request->getRequestParameter('oxid');
         $dataBase = oxDb::getDb();
 
         // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $categoriesTable = $this->_getViewName('oxcategories');
             $categoriesToRemove = $this->_getAll($this->_addFilter("select {$categoriesTable}.oxid " . $this->_getQuery()));
         }
@@ -154,14 +154,14 @@ class article_extend_ajax extends ajaxListComponent
      */
     public function addCat()
     {
-        $config = $this->getConfig();
+        $config = $this->config;
         $categoriesToAdd = $this->_getActionIds('oxcategories.oxid');
-        $oxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $oxId = $this->request->getRequestParameter('synchoxid');
         $shopId = $config->getShopId();
         $objectToCategoryView = $this->_getViewName('oxobject2category');
 
         // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $categoriesTable = $this->_getViewName('oxcategories');
             $categoriesToAdd = $this->_getAll($this->_addFilter("select $categoriesTable.oxid " . $this->_getQuery()));
         }
@@ -221,8 +221,8 @@ class article_extend_ajax extends ajaxListComponent
      */
     public function setAsDefault()
     {
-        $defCat = oxRegistry::getConfig()->getRequestParameter("defcat");
-        $oxId = oxRegistry::getConfig()->getRequestParameter("oxid");
+        $defCat = $this->request->getRequestParameter("defcat");
+        $oxId = $this->request->getRequestParameter("oxid");
         $database = oxDb::getDb();
 
         $quotedOxId = $database->quote($oxId);

@@ -76,14 +76,15 @@ class oxVendor extends oxI18n implements oxIUrl
      */
     protected $_aSeoUrls = array();
 
+    protected $_sCoreTable = 'oxvendor';
+
     /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
      */
-    public function __construct()
+    public function __construct($config)
     {
-        $this->setShowArticleCnt($this->getConfig()->getConfigParam('bl_perfShowActionCatArticleCnt'));
-        parent::__construct();
-        $this->init('oxvendor');
+        parent::__construct($config);
+        $this->setShowArticleCnt($this->config->getConfigParam('bl_perfShowActionCatArticleCnt'));
     }
 
     /**
@@ -201,7 +202,7 @@ class oxVendor extends oxI18n implements oxIUrl
         $sUrl = '';
         if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
+            $sUrl = $this->config->getShopUrl($iLang, false);
         }
 
         return $sUrl . "index.php?cl=vendorlist" . ($blAddId ? "&amp;cnid=v_" . $this->getId() : "");
@@ -323,7 +324,7 @@ class oxVendor extends oxI18n implements oxIUrl
     public function getIconUrl()
     {
         if (($sIcon = $this->oxvendor__oxicon->value)) {
-            $oConfig = $this->getConfig();
+            $oConfig = $this->config;
             $sSize = $oConfig->getConfigParam('sManufacturerIconsize');
             if (!isset($sSize)) {
                 $sSize = $oConfig->getConfigParam('sIconsize');

@@ -23,6 +23,7 @@
 namespace OxidEsales\Eshop\Application\Controller;
 
 use oxField;
+use OxidEsales\Eshop\Application\Model\Article\ArticleList\Action;
 use oxRegistry;
 
 /**
@@ -91,7 +92,7 @@ class NewsletterController extends \oxUBase
     public function fill()
     {
         // loads submited values
-        $this->_aRegParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $this->_aRegParams = $this->request->getRequestParameter("editval");
     }
 
     /**
@@ -106,7 +107,7 @@ class NewsletterController extends \oxUBase
      */
     public function send()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         // loads submited values
         $this->_aRegParams = $aParams;
@@ -122,12 +123,10 @@ class NewsletterController extends \oxUBase
             return;
         }
 
-        $blSubscribe = oxRegistry::getConfig()->getRequestParameter("subscribeStatus");
+        $blSubscribe = $this->request->getRequestParameter("subscribeStatus");
 
         $oUser = oxNew('oxuser');
         $oUser->oxuser__oxusername = new oxField($aParams['oxuser__oxusername'], oxField::T_RAW);
-
-        $blUserLoaded = false;
 
         // if such user does not exist
         if (!$oUser->exists()) {
@@ -142,7 +141,7 @@ class NewsletterController extends \oxUBase
             } else {
                 $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
                 $oUser->oxuser__oxrights = new oxField('user', oxField::T_RAW);
-                $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
+                $oUser->oxuser__oxshopid = new oxField($this->config->getShopId(), oxField::T_RAW);
                 $oUser->oxuser__oxfname = new oxField($aParams['oxuser__oxfname'], oxField::T_RAW);
                 $oUser->oxuser__oxlname = new oxField($aParams['oxuser__oxlname'], oxField::T_RAW);
                 $oUser->oxuser__oxsal = new oxField($aParams['oxuser__oxsal'], oxField::T_RAW);
@@ -160,7 +159,7 @@ class NewsletterController extends \oxUBase
             //removing user from subscribe list before adding
             $oUser->setNewsSubscription(false, false);
 
-            $blOrderOptInEmail = $this->getConfig()->getConfigParam('blOrderOptInEmail');
+            $blOrderOptInEmail = $this->config->getConfigParam('blOrderOptInEmail');
             if ($oUser->setNewsSubscription(true, $blOrderOptInEmail)) {
                 // done, confirmation required?
                 if ($blOrderOptInEmail) {
@@ -188,10 +187,10 @@ class NewsletterController extends \oxUBase
     {
         // user exists ?
         $oUser = oxNew('oxuser');
-        if ($oUser->load(oxRegistry::getConfig()->getRequestParameter('uid'))) {
+        if ($oUser->load($this->request->getRequestParameter('uid'))) {
             $sConfirmCode = md5($oUser->oxuser__oxusername->value . $oUser->oxuser__oxpasssalt->value);
             // is confirm code ok?
-            if (oxRegistry::getConfig()->getRequestParameter('confirm') == $sConfirmCode) {
+            if ($this->request->getRequestParameter('confirm') == $sConfirmCode) {
                 $oUser->getNewsSubscription()->setOptInStatus(1);
                 $oUser->addToGroup('oxidnewsletter');
                 $this->_iNewsletterStatus = 2;
@@ -206,7 +205,7 @@ class NewsletterController extends \oxUBase
     {
         // existing user ?
         $oUser = oxNew('oxuser');
-        if ($oUser->load(oxRegistry::getConfig()->getRequestParameter('uid'))) {
+        if ($oUser->load($this->request->getRequestParameter('uid'))) {
             $oUser->getNewsSubscription()->setOptInStatus(0);
 
             // removing from group ..
@@ -231,19 +230,7 @@ class NewsletterController extends \oxUBase
      */
     public function getTopStartActionArticles()
     {
-        if ($this->_oActionArticles === null) {
-            $this->_oActionArticles = false;
-            if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
-                $oArtList = oxNew('oxArticleList');
-                $oArtList->loadActionArticles('OXTOPSTART');
-                if ($oArtList->count()) {
-                    $this->_oTopArticle = $oArtList->current();
-                    $this->_oActionArticles = $oArtList;
-                }
-            }
-        }
-
-        return $this->_oActionArticles;
+        return (new Action())->getById('OXTOPSTART');
     }
 
     /**
@@ -272,7 +259,7 @@ class NewsletterController extends \oxUBase
     {
         if ($this->_sHomeCountryId === null) {
             $this->_sHomeCountryId = false;
-            $aHomeCountry = $this->getConfig()->getConfigParam('aHomeCountry');
+            $aHomeCountry = $this->config->getConfigParam('aHomeCountry');
             if (is_array($aHomeCountry)) {
                 $this->_sHomeCountryId = current($aHomeCountry);
             }

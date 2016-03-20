@@ -36,7 +36,7 @@ class Tools extends oxAdminView
      */
     public function render()
     {
-        if ($this->getConfig()->isDemoShop()) {
+        if ($this->config->isDemoShop()) {
             return oxRegistry::getUtils()->showMessageAndExit("Access denied !");
         }
 

@@ -173,7 +173,7 @@ class oxModule extends oxSuperCfg
      */
     public function getIdByPath($sModule)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $aModulePaths = $myConfig->getConfigParam('aModulePaths');
         $sModuleId = null;
         if (is_array($aModulePaths)) {
@@ -315,7 +315,7 @@ class oxModule extends oxSuperCfg
         $sModulePath = (isset($aModulePaths[$sModuleId])) ? $aModulePaths[$sModuleId] : '';
 
         // if still no module dir, try using module ID as dir name
-        if (!$sModulePath && is_dir($this->getConfig()->getModulesDir() . $sModuleId)) {
+        if (!$sModulePath && is_dir($this->config->getModulesDir() . $sModuleId)) {
             $sModulePath = $sModuleId;
         }
 
@@ -336,7 +336,7 @@ class oxModule extends oxSuperCfg
         }
 
         if ($sModuleDir = $this->getModulePath($sModuleId)) {
-            return $this->getConfig()->getModulesDir() . $sModuleDir;
+            return $this->config->getModulesDir() . $sModuleDir;
         }
 
         return false;
@@ -349,7 +349,7 @@ class oxModule extends oxSuperCfg
      */
     public function getModulePaths()
     {
-        return $this->getConfig()->getConfigParam('aModulePaths');
+        return $this->config->getConfigParam('aModulePaths');
     }
 
     /**
@@ -369,7 +369,7 @@ class oxModule extends oxSuperCfg
             return array();
         }
 
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = $this->config->getShopId();
 
         $aTemplates = oxDb::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = '$sModuleId' AND oxshopid = '$sShopId'");
 
@@ -432,7 +432,7 @@ class oxModule extends oxSuperCfg
     {
         $aModuleExtensions = $this->getExtensions();
 
-        $aInstalledExtensions = $this->getConfig()->getModulesWithExtendedClass();
+        $aInstalledExtensions = $this->config->getModulesWithExtendedClass();
         $iModuleExtensionsCount = $this->_countExtensions($aModuleExtensions);
         $iActivatedModuleExtensionsCount = $this->_countActivatedExtensions($aModuleExtensions, $aInstalledExtensions);
         $blActive = $iModuleExtensionsCount > 0 && $iActivatedModuleExtensionsCount == $iModuleExtensionsCount;
@@ -451,7 +451,7 @@ class oxModule extends oxSuperCfg
     {
         $blInDisabledList = false;
 
-        $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
+        $aDisabledModules = (array) $this->config->getConfigParam('aDisabledModules');
         if (in_array($sId, $aDisabledModules)) {
             $blInDisabledList = true;
         }

@@ -108,10 +108,8 @@ class Integration_Price_OrderTest extends Integration_Price_BaseTestCase
 
         $user = $basket->getBasketUser();
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $order */
-        $order = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
+        $order = $this->getMock('oxOrder', array('validateDeliveryAddress', 'validateDelivery'));
         $order->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
 

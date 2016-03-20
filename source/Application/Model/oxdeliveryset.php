@@ -35,15 +35,6 @@ class oxDeliverySet extends oxI18n
     protected $_sClassName = 'oxdeliveryset';
 
     /**
-     * Class constructor, initiates parent constructor (parent::oxBase()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxdeliveryset');
-    }
-
-    /**
      * Delete this object from the database, returns true on success.
      *
      * @param string $sOxId Object ID(default null)

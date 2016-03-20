@@ -57,7 +57,7 @@ class oxUtilsPic extends oxSuperCfg
             file_exists($sSrc) && ($aImageInfo = @getimagesize($sSrc))
         ) {
 
-            $myConfig = $this->getConfig();
+            $myConfig = $this->config;
             list($iWidth, $iHeight) = calcImageSize($iDesiredWidth, $iDesiredHeight, $aImageInfo[0], $aImageInfo[1]);
             $blResize = $this->_resize($aImageInfo, $sSrc, null, $sTarget, $iWidth, $iHeight, $iUseGDVersion, $myConfig->getConfigParam('blDisableTouch'), $myConfig->getConfigParam('sDefaultImageQuality'));
         }
@@ -97,7 +97,7 @@ class oxUtilsPic extends oxSuperCfg
     protected function _deletePicture($sPicName, $sAbsDynImageDir)
     {
         $blDeleted = false;
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         if (!$myConfig->isDemoShop() && (strpos($sPicName, 'nopic.jpg') === false ||
                                          strpos($sPicName, 'nopic_ico.jpg') === false)

@@ -39,7 +39,7 @@ class Article_Main extends oxAdminDetails
     {
         parent::render();
 
-        $this->getConfig()->setConfigParam('bl_perfLoadPrice', true);
+        $this->config->setConfigParam('bl_perfLoadPrice', true);
 
         $oArticle = oxNew('oxArticle');
         $oArticle->enablePriceLoad();
@@ -47,8 +47,8 @@ class Article_Main extends oxAdminDetails
         $this->_aViewData['edit'] = $oArticle;
 
         $sOxId = $this->getEditObjectId();
-        $sVoxId = $this->getConfig()->getRequestParameter("voxid");
-        $sOxParentId = $this->getConfig()->getRequestParameter("oxparentid");
+        $sVoxId = $this->request->getRequestParameter("voxid");
+        $sOxParentId = $this->request->getRequestParameter("oxparentid");
 
         // new variant ?
         if (isset($sVoxId) && $sVoxId == "-1" && isset($sOxParentId) && $sOxParentId && $sOxParentId != "-1") {
@@ -108,7 +108,7 @@ class Article_Main extends oxAdminDetails
             "oxarticles__oxlongdesc",
             "details.tpl.css"
         );
-        $this->_aViewData["blUseTimeCheck"] = $this->getConfig()->getConfigParam('blUseTimeCheck');
+        $this->_aViewData["blUseTimeCheck"] = $this->config->getConfigParam('blUseTimeCheck');
 
         return "article_main.tpl";
     }
@@ -140,9 +140,9 @@ class Article_Main extends oxAdminDetails
     {
         parent::save();
 
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $soxId = $this->getEditObjectId();
-        $aParams = $oConfig->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         // default values
         $aParams = $this->addDefaultValues($aParams);
@@ -153,7 +153,7 @@ class Article_Main extends oxAdminDetails
         }
 
         // varianthandling
-        $soxparentId = $oConfig->getRequestParameter("oxparentid");
+        $soxparentId = $this->request->getRequestParameter("oxparentid");
         if (isset($soxparentId) && $soxparentId && $soxparentId != "-1") {
             $aParams['oxarticles__oxparentid'] = $soxparentId;
         } else {
@@ -205,7 +205,7 @@ class Article_Main extends oxAdminDetails
 
         // set oxid if inserted
         if ($soxId == "-1") {
-            $sFastCat = $oConfig->getRequestParameter("art_category");
+            $sFastCat = $this->request->getRequestParameter("art_category");
             if ($sFastCat != "-1") {
                 $this->addToCategory($sFastCat, $oArticle->getId());
             }
@@ -311,7 +311,7 @@ class Article_Main extends oxAdminDetails
      */
     public function copyArticle($sOldId = null, $sNewId = null, $sParentId = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $sOldId = $sOldId ? $sOldId : $this->getEditObjectId();
         $sNewId = $sNewId ? $sNewId : oxUtilsObject::getInstance()->generateUID();
@@ -387,7 +387,7 @@ class Article_Main extends oxAdminDetails
                 $this->setEditObjectId($oArticle->getId());
 
                 //article number handling, warns for artnum duplicates
-                $sFncParameter = oxRegistry::getConfig()->getRequestParameter('fnc');
+                $sFncParameter = $this->request->getRequestParameter('fnc');
                 $sArtNumField = 'oxarticles__oxartnum';
                 if ($myConfig->getConfigParam('blWarnOnSameArtNums') &&
                     $oArticle->$sArtNumField->value && $sFncParameter == 'copyArticle'
@@ -569,7 +569,7 @@ class Article_Main extends oxAdminDetails
      */
     protected function _copyStaffelpreis($sOldId, $sNewId)
     {
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = $this->config->getShopId();
         $oPriceList = oxNew("oxlist");
         $oPriceList->init("oxbase", "oxprice2article");
         $sQ = "select * from oxprice2article where oxartid = '{$sOldId}' and oxshopid = '{$sShopId}' " .
@@ -633,7 +633,7 @@ class Article_Main extends oxAdminDetails
         $sOxIdField = 'oxarticles__oxid';
         if (isset($oParentArticle)) {
             $aJumpList[] = array($oParentArticle->$sOxIdField->value, $this->_getTitle($oParentArticle));
-            $sEditLanguageParameter = oxRegistry::getConfig()->getRequestParameter("editlanguage");
+            $sEditLanguageParameter = $this->request->getRequestParameter("editlanguage");
             $oParentVariants = $oParentArticle->getAdminVariants($sEditLanguageParameter);
             if ($oParentVariants->count()) {
                 foreach ($oParentVariants as $oVar) {
@@ -651,7 +651,7 @@ class Article_Main extends oxAdminDetails
         } else {
             $aJumpList[] = array($oArticle->$sOxIdField->value, $this->_getTitle($oArticle));
             //fetching this article variants data
-            $oVariants = $oArticle->getAdminVariants(oxRegistry::getConfig()->getRequestParameter("editlanguage"));
+            $oVariants = $oArticle->getAdminVariants($this->request->getRequestParameter("editlanguage"));
             if ($oVariants && $oVariants->count()) {
                 foreach ($oVariants as $oVar) {
                     $aJumpList[] = array($oVar->$sOxIdField->value, " - " . $this->_getTitle($oVar));

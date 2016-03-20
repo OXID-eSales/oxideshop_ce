@@ -42,14 +42,7 @@ class oxReview extends oxBase
      */
     protected $_sClassName = 'oxreview';
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxI18n()).
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init('oxreviews');
-    }
+    protected $_sCoreTable = 'oxreviews';
 
     /**
      * Calls parent::assign and assigns review writer data
@@ -134,7 +127,7 @@ class oxReview extends oxBase
             $sSelect .= ' and oxreviews.oxtext != "" ';
         }
 
-        if ($this->getConfig()->getConfigParam('blGBModerate')) {
+        if ($this->config->getConfigParam('blGBModerate')) {
             $sSelect .= ' and ( oxreviews.oxactive = "1" ';
             $sSelect .= ($oUser = $this->getUser()) ? 'or  oxreviews.oxuserid = ' . $oDb->quote($oUser->getId()) . ' )' : ')';
         }

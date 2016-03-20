@@ -78,7 +78,7 @@ class AccountPasswordController extends \Account
      */
     public function changePassword()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -87,9 +87,9 @@ class AccountPasswordController extends \Account
             return;
         }
 
-        $sOldPass = oxRegistry::getConfig()->getRequestParameter('password_old', true);
-        $sNewPass = oxRegistry::getConfig()->getRequestParameter('password_new', true);
-        $sConfPass = oxRegistry::getConfig()->getRequestParameter('password_new_confirm', true);
+        $sOldPass = $this->request->getRequestParameter('password_old', true);
+        $sNewPass = $this->request->getRequestParameter('password_new', true);
+        $sConfPass = $this->request->getRequestParameter('password_new_confirm', true);
 
         /** @var oxInputValidator $oInputValidator */
         $oInputValidator = oxRegistry::get('oxInputValidator');
@@ -123,7 +123,7 @@ class AccountPasswordController extends \Account
         if ($oUser->save()) {
             $this->_blPasswordChanged = true;
             // deleting user autologin cookies.
-            oxRegistry::get("oxUtilsServer")->deleteUserCookie($this->getConfig()->getShopId());
+            oxRegistry::get("oxUtilsServer")->deleteUserCookie($this->config->getShopId());
         }
     }
 

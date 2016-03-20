@@ -64,13 +64,13 @@ class usergroup_main_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         // looking for table/view
         $sUserTable = $this->_getViewName('oxuser');
         $oDb = oxDb::getDb();
-        $sRoleId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchRoleId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sRoleId = $this->request->getRequestParameter('oxid');
+        $sSynchRoleId = $this->request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sRoleId) {
@@ -103,7 +103,7 @@ class usergroup_main_ajax extends ajaxListComponent
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2group.oxid');
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxobject2group.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -120,9 +120,9 @@ class usergroup_main_ajax extends ajaxListComponent
     public function addUserToUGroup()
     {
         $aAddUsers = $this->_getActionIds('oxuser.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sUserTable = $this->_getViewName('oxuser');
             $aAddUsers = $this->_getAll($this->_addFilter("select $sUserTable.oxid " . $this->_getQuery()));
         }

@@ -58,12 +58,12 @@ class attribute_category_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $oDb = oxDb::getDb();
 
         $sCatTable = $this->_getViewName('oxcategories');
-        $sDiscountId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchDiscountId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sDiscountId = $this->request->getRequestParameter('oxid');
+        $sSynchDiscountId = $this->request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sDiscountId) {
@@ -96,7 +96,7 @@ class attribute_category_ajax extends ajaxListComponent
     {
         $aChosenCat = $this->_getActionIds('oxcategory2attribute.oxid');
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxcategory2attribute.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
@@ -114,11 +114,11 @@ class attribute_category_ajax extends ajaxListComponent
     public function addCatToAttr()
     {
         $aAddCategory = $this->_getActionIds('oxcategories.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
         $oAttribute = oxNew("oxattribute");
         // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sCatTable = $this->_getViewName('oxcategories');
             $aAddCategory = $this->_getAll($this->_addFilter("select $sCatTable.oxid " . $this->_getQuery()));
         }

@@ -63,13 +63,13 @@ class Newsletter_Main extends oxAdminDetails
      */
     public function save()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = $this->request->getRequestParameter("editval");
 
         // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $sShopID = $this->session->getVariable("actshop");
         $aParams['oxnewsletter__oxshopid'] = $sShopID;
 
         $oNewsletter = oxNew("oxnewsletter");

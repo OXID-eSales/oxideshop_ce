@@ -46,7 +46,7 @@ class dyn_trusted_ratings extends Shop_Config
     {
         parent::render();
 
-        $this->_aViewData['oxid'] = $this->getConfig()->getShopId();
+        $this->_aViewData['oxid'] = $this->config->getShopId();
         $this->_aViewData["alllang"] = oxRegistry::getLang()->getLanguageArray();
 
         return "dyn_trusted_ratings.tpl";
@@ -57,13 +57,13 @@ class dyn_trusted_ratings extends Shop_Config
      */
     public function save()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = $this->config;
         $sOxId = $this->getEditObjectId();
 
         // base parameters
-        $aConfStrs = oxRegistry::getConfig()->getRequestParameter("confstrs");
-        $aConfAArs = oxRegistry::getConfig()->getRequestParameter("confaarrs");
-        $aConfBools = oxRegistry::getConfig()->getRequestParameter("confbools");
+        $aConfStrs = $this->request->getRequestParameter("confstrs");
+        $aConfAArs = $this->request->getRequestParameter("confaarrs");
+        $aConfBools = $this->request->getRequestParameter("confbools");
 
         // validating language Ids
         if (is_array($aConfAArs['aTsLangIds'])) {
@@ -104,7 +104,7 @@ class dyn_trusted_ratings extends Shop_Config
     protected function _getServiceWsdl()
     {
         $sWsdl = false;
-        $oConfig = $this->getConfig();
+        $oConfig = $this->config;
         $aTsConfig = $oConfig->getConfigParam("aTsConfig");
         if (is_array($aTsConfig)) {
             $sWsdl = $aTsConfig["blTestMode"] ? $oConfig->getConfigParam("sTsServiceTestWsdl") : $oConfig->getConfigParam("sTsServiceWsdl");

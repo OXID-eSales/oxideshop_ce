@@ -52,8 +52,8 @@ class deliveryset_main_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $sId = $this->getConfig()->getRequestParameter('oxid');
-        $sSynchId = $this->getConfig()->getRequestParameter('synchoxid');
+        $sId = $this->request->getRequestParameter('oxid');
+        $sSynchId = $this->request->getRequestParameter('synchoxid');
         $oDb = oxDb::getDb();
 
         $sDeliveryViewName = $this->_getViewName('oxdelivery');
@@ -80,7 +80,7 @@ class deliveryset_main_ajax extends ajaxListComponent
     public function removeFromSet()
     {
         $aRemoveGroups = $this->_getActionIds('oxdel2delset.oxid');
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
 
             $sQ = $this->_addFilter("delete oxdel2delset.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -97,10 +97,10 @@ class deliveryset_main_ajax extends ajaxListComponent
     public function addToSet()
     {
         $aChosenSets = $this->_getActionIds('oxdelivery.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = $this->request->getRequestParameter('synchoxid');
 
         // adding
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if ($this->request->getRequestParameter('all')) {
             $sDeliveryViewName = $this->_getViewName('oxdelivery');
             $aChosenSets = $this->_getAll($this->_addFilter("select $sDeliveryViewName.oxid " . $this->_getQuery()));
         }

@@ -26,14 +26,7 @@
  */
 class oxOrderArticleList extends oxList
 {
-
-    /**
-     * Class constructor, initiates class constructor (parent::oxbase()).
-     */
-    public function __construct()
-    {
-        parent::__construct('oxorderarticle');
-    }
+    protected $_sObjectsInListName = 'oxorderarticle';
 
     /**
      * Copies passed to method product into $this.

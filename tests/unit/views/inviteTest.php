@@ -1,4 +1,6 @@
 <?php
+use OxidEsales\Eshop\Core\DiContainer;
+
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -96,14 +98,39 @@ class Unit_Views_inviteTest extends OxidTestCase
         $this->setRequestParameter('editval', null);
         $this->getConfig()->setConfigParam("blInvitationsEnabled", true);
 
-        $oEmail = $this->getMock('oxEmail', array('sendInviteMail'));
+        $oEmail = $this->getMailerMock(array('sendInviteMail'));
         $oEmail->expects($this->never())->method('sendInviteMail');
-        oxTestModules::addModuleObject('oxEmail', $oEmail);
+
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         $oView = $this->getProxyClass("invite");
         $oView->send();
 
         $this->assertNull($oView->getNonPublicVar("_iMailStatus"));
+    }
+
+    /**
+     * Testing method send() - no captcha text
+     *
+     * @return null
+     */
+    public function testSend_withoutCaptcha()
+    {
+        $this->setRequestParameter('editval', array('rec_email' => 'testRecEmail@oxid-esales.com', 'send_name' => 'testSendName', 'send_email' => 'testSendEmail@oxid-esales.com', 'send_message' => 'testSendMessage', 'send_subject' => 'testSendSubject'));
+        $this->getConfig()->setConfigParam("blInvitationsEnabled", true);
+
+        $oEmail = $this->getMailerMock(array('sendInviteMail'));
+        $oEmail->expects($this->never())->method('sendInviteMail');
+        oxTestModules::addModuleObject('oxEmail', $oEmail);
+
+        $oCaptcha = $this->getMock('oxCaptcha', array('pass'));
+        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(false));
+        oxTestModules::addModuleObject('oxCaptcha', $oCaptcha);
+
+        $oView = $this->getMock("invite", array("getUser"));
+        $oView->expects($this->once())->method('getUser')->will($this->returnValue(true));
+        $oView->send();
+        $this->assertFalse($oView->getInviteSendStatus());
     }
 
     /**
@@ -116,7 +143,7 @@ class Unit_Views_inviteTest extends OxidTestCase
         $this->setRequestParameter('editval', array('rec_email' => array('testRecEmail@oxid-esales.com'), 'send_name' => 'testSendName', 'send_email' => 'testSendEmail@oxid-esales.com', 'send_message' => 'testSendMessage', 'send_subject' => 'testSendSubject'));
         $this->getConfig()->setConfigParam("blInvitationsEnabled", true);
 
-        $oEmail = $this->getMock('oxEmail', array('sendInviteMail'));
+        $oEmail = $this->getMailerMock(array('sendInviteMail'));
         $oEmail->expects($this->once())->method('sendInviteMail')->will($this->returnValue(true));
         oxTestModules::addModuleObject('oxEmail', $oEmail);
 
@@ -154,9 +181,9 @@ class Unit_Views_inviteTest extends OxidTestCase
         $this->setRequestParameter('editval', array('rec_email' => array('testRecEmail@oxid-esales.com'), 'send_name' => 'testSendName', 'send_email' => 'testSendEmail@oxid-esales.com', 'send_message' => 'testSendMessage', 'send_subject' => 'testSendSubject'));
         $this->getConfig()->setConfigParam("blInvitationsEnabled", true);
 
-        $oEmail = $this->getMock('oxEmail', array('sendInviteMail'));
+        $oEmail = $this->getMailerMock(array('sendInviteMail'));
         $oEmail->expects($this->once())->method('sendInviteMail')->will($this->returnValue(true));
-        oxTestModules::addModuleObject('oxEmail', $oEmail);
+        DiContainer::getInstance()->set(DiContainer::CONTAINER_CORE_MAILER, $oEmail);
 
         $oUser = $this->getMock('oxUser', array('updateInvitationStatistics'));
         $oUser->expects($this->once())->method('updateInvitationStatistics')->will($this->returnValue(true));

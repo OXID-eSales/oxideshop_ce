@@ -47,7 +47,7 @@ class Newsletter_Preview extends oxAdminDetails
             $this->_aViewData["edit"] = $oNewsletter;
 
             // user
-            $sUserID = oxRegistry::getSession()->getVariable("auth");
+            $sUserID = $this->session->getVariable("auth");
 
             // assign values to the newsletter and show it
             $oNewsletter->prepare($sUserID, $this->config->getConfigParam('bl_perfLoadAktion'));

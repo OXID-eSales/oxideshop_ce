@@ -199,7 +199,7 @@ class ReviewController extends \Details
      */
     public function saveReview()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 

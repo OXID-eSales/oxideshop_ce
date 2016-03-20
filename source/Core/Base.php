@@ -494,7 +494,7 @@ class Base extends \oxSuperCfg
             if (($forceCoreTableUsage !== null) && $forceCoreTableUsage) {
                 $shopId = -1;
             } else {
-                $shopId = oxRegistry::getConfig()->getShopId();
+                $shopId = $this->config->getShopId();
             }
 
             $viewName = getViewName($this->getCoreTableName(), $this->_blEmployMultilanguage == false ? -1 : $this->getLanguage(), $shopId);

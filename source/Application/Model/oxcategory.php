@@ -703,14 +703,14 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return oxAttributeList
      */
-    public function getAttributes()
+    public function getAttributes($sessionFilter)
     {
         $sActCat = $this->getId();
 
-        $sKey = md5($sActCat . serialize(oxRegistry::getSession()->getVariable('session_attrfilter')));
+        $sKey = md5($sActCat . serialize($sessionFilter));
         if (!isset(self::$_aCatAttributes[$sKey])) {
             $oAttrList = oxNew("oxAttributeList");
-            $oAttrList->getCategoryAttributes($sActCat, $this->getLanguage());
+            $oAttrList->getCategoryAttributes($sActCat, $this->getLanguage(), $sessionFilter);
             self::$_aCatAttributes[$sKey] = $oAttrList;
         }
 

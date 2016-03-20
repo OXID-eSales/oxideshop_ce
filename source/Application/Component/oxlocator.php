@@ -19,11 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\Request;
+use OxidEsales\Eshop\Core\ViewInterface;
 
 /**
  * Locator controller for: category, vendor, manufacturers and search lists.
  */
-class oxLocator extends oxSuperCfg
+class oxLocator extends oxSuperCfg implements ViewInterface
 {
 
     /**
@@ -52,14 +54,27 @@ class oxLocator extends oxSuperCfg
     protected $_sErrorMessage = null;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * @var \oxSession
+     */
+    protected $session;
+
+    /**
      * Class constructor - sets locator type and parameters posted or loaded
      * from GET/Session
      *
      * @param string $sType locator type
      */
-    public function __construct($config, $sType = null)
+    public function __construct($config, $request, $session, $sType = null)
     {
         parent::__construct($config);
+
+        $this->request = $request;
+        $this->session = $session;
 
         // setting locator type
         if ($sType) {
@@ -435,7 +450,7 @@ class oxLocator extends oxSuperCfg
             $oIdList->loadPriceIds($oCategory->oxcategories__oxpricefrom->value, $oCategory->oxcategories__oxpriceto->value);
         } else {
             $sActCat = $oCategory->getId();
-            $oIdList->loadCategoryIDs($sActCat, oxRegistry::getSession()->getVariable('session_attrfilter'));
+            $oIdList->loadCategoryIDs($sActCat, $this->session->getVariable('session_attrfilter'));
             // if not found - reloading with empty filter
             if (!isset($oIdList[$oCurrArticle->getId()])) {
                 $oIdList->loadCategoryIDs($sActCat, null);

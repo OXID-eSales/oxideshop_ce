@@ -866,8 +866,8 @@ class oxVoucher extends oxBase
      */
     protected function _getVoucherTimeout()
     {
-        $iVoucherTimeout = intval(oxRegistry::getConfig()->getConfigParam('iVoucherTimeout')) ?
-            intval(oxRegistry::getConfig()->getConfigParam('iVoucherTimeout')) :
+        $iVoucherTimeout = intval($this->config->getConfigParam('iVoucherTimeout')) ?
+            intval($this->config->getConfigParam('iVoucherTimeout')) :
             3 * 3600;
 
         return $iVoucherTimeout;

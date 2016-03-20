@@ -55,7 +55,7 @@ class AdminDetails extends \oxAdminView
             $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
         } else {
             $languageId = $this->getDocumentationLanguageId();
-            $oShop = $this->_getEditShop(oxRegistry::getSession()->getVariable('actshop'));
+            $oShop = $this->_getEditShop($this->session->getVariable('actshop'));
             $sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $languageId . '/admin';
         }
 

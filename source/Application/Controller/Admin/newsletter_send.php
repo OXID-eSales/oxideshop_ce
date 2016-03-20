@@ -157,10 +157,10 @@ class Newsletter_Send extends Newsletter_Selection
      */
     public function getUserCount()
     {
-        $iCnt = oxRegistry::getSession()->getVariable("iUserCount");
+        $iCnt = $this->session->getVariable("iUserCount");
         if ($iCnt === null) {
             $iCnt = parent::getUserCount();
-            oxRegistry::getSession()->setVariable("iUserCount", $iCnt);
+            $this->session->setVariable("iUserCount", $iCnt);
         }
 
         return $iCnt;
@@ -171,7 +171,7 @@ class Newsletter_Send extends Newsletter_Selection
      */
     public function resetUserCount()
     {
-        oxRegistry::getSession()->deleteVariable("iUserCount");
+        $this->session->deleteVariable("iUserCount");
         $this->_iUserCount = null;
     }
 

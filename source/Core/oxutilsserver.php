@@ -240,7 +240,7 @@ class oxUtilsServer extends oxSuperCfg
     {
         $sValue = null;
         if ($sName && isset($_COOKIE[$sName])) {
-            $sValue = oxRegistry::getConfig()->checkParamSpecialChars($_COOKIE[$sName]);
+            $sValue = $this->config->checkParamSpecialChars($_COOKIE[$sName]);
         } elseif ($sName && !isset($_COOKIE[$sName])) {
             $sValue = isset($this->_sSessionCookies[$sName]) ? $this->_sSessionCookies[$sName] : null;
         } elseif (!$sName && isset($_COOKIE)) {

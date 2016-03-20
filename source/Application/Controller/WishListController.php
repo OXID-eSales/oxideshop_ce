@@ -86,7 +86,7 @@ class WishListController extends oxUBase
             $this->_oWishUser = false;
 
             $sWishIdParameter = $this->request->getRequestParameter('wishid');
-            $sUserId = $sWishIdParameter ? $sWishIdParameter : oxRegistry::getSession()->getVariable('wishid');
+            $sUserId = $sWishIdParameter ? $sWishIdParameter : $this->session->getVariable('wishid');
             if ($sUserId) {
                 $oUser = oxNew('oxuser');
                 if ($oUser->load($sUserId)) {
@@ -95,7 +95,7 @@ class WishListController extends oxUBase
                     $this->_oWishUser = $oUser;
 
                     // store this one to session
-                    oxRegistry::getSession()->setVariable('wishid', $sUserId);
+                    $this->session->setVariable('wishid', $sUserId);
                 }
             }
         }

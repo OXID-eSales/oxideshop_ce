@@ -62,7 +62,7 @@ class oxDebugDb
     protected static function _isSkipped($sSql)
     {
         if (!count(self::$_aSkipSqls)) {
-            $sFile = oxRegistry::getConfig()->getLogsDir() . 'oxdebugdb_skipped.sql';
+            $sFile = $this->config->getLogsDir() . 'oxdebugdb_skipped.sql';
             if (is_readable($sFile)) {
                 $aSkip = explode('-- -- ENTRY END', file_get_contents($sFile));
                 foreach ($aSkip as $sQ) {

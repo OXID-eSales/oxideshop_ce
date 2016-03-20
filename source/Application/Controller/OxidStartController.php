@@ -81,7 +81,7 @@ class OxidStartController extends \oxUBase
      */
     public function pageClose()
     {
-        $mySession = $this->getSession();
+        $mySession = $this->session;
 
         if (isset($mySession)) {
             $mySession->freeze();

@@ -118,7 +118,7 @@ class BasketController extends \oxUBase
     public function render()
     {
         if ($this->config->getConfigParam('blPsBasketReservationEnabled')) {
-            $this->getSession()->getBasketReservations()->renewExpiration();
+            $this->session->getBasketReservations()->renewExpiration();
         }
 
         parent::render();
@@ -137,7 +137,7 @@ class BasketController extends \oxUBase
             $this->_oBasketArticles = false;
 
             // passing basket articles
-            if ($oBasket = $this->getSession()->getBasket()) {
+            if ($oBasket = $this->session->getBasket()) {
                 $this->_oBasketArticles = $oBasket->getBasketArticles();
             }
         }
@@ -209,7 +209,7 @@ class BasketController extends \oxUBase
     public function showBackToShop()
     {
         $iNewBasketItemMessage = $this->config->getConfigParam('iNewBasketItemMessage');
-        $sBackToShop = oxRegistry::getSession()->getVariable('_backtoshop');
+        $sBackToShop = $this->session->getVariable('_backtoshop');
 
         return ($iNewBasketItemMessage == 3 && $sBackToShop);
     }
@@ -225,7 +225,7 @@ class BasketController extends \oxUBase
             return;
         }
 
-        $oBasket = $this->getSession()->getBasket();
+        $oBasket = $this->session->getBasket();
         $oBasket->addVoucher($this->request->getRequestParameter('voucherNr'));
     }
 
@@ -240,7 +240,7 @@ class BasketController extends \oxUBase
             return;
         }
 
-        $oBasket = $this->getSession()->getBasket();
+        $oBasket = $this->session->getBasket();
         $oBasket->removeVoucher($this->request->getRequestParameter('voucherId'));
     }
 
@@ -254,7 +254,7 @@ class BasketController extends \oxUBase
     public function backToShop()
     {
         if ($this->config->getConfigParam('iNewBasketItemMessage') == 3) {
-            $oSession = oxRegistry::getSession();
+            $oSession = $this->session;
             if ($sBackLink = $oSession->getVariable('_backtoshop')) {
                 $oSession->deleteVariable('_backtoshop');
 
@@ -344,7 +344,7 @@ class BasketController extends \oxUBase
     public function changeWrapping()
     {
         if ($this->getViewConfig()->getShowGiftWrapping()) {
-            $oBasket = $this->getSession()->getBasket();
+            $oBasket = $this->session->getBasket();
 
             $this->_setWrappingInfo($oBasket, $this->request->getRequestParameter('wrapping'));
 
@@ -380,7 +380,7 @@ class BasketController extends \oxUBase
     public function getBasketContentMarkGenerator()
     {
         /** @var oxBasketContentMarkGenerator $oBasketContentMarkGenerator */
-        $oBasketContentMarkGenerator = oxNew('oxBasketContentMarkGenerator', $this->getSession()->getBasket());
+        $oBasketContentMarkGenerator = oxNew('oxBasketContentMarkGenerator', $this->session->getBasket());
 
         return $oBasketContentMarkGenerator;
     }

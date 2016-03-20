@@ -134,7 +134,7 @@ class oxFile extends oxBase
      */
     protected function _getBaseDownloadDirPath()
     {
-        $sConfigValue = oxRegistry::getConfig()->getConfigParam('sDownloadsDir');
+        $sConfigValue = $this->config->getConfigParam('sDownloadsDir');
 
         //Unix full path is set
         if ($sConfigValue && $sConfigValue[0] == DIRECTORY_SEPARATOR) {

@@ -127,7 +127,7 @@ class ForgotPasswordController extends \oxUBase
             $oUser->save();
 
             // forcing user login
-            oxRegistry::getSession()->setVariable('usr', $oUser->getId());
+            $this->session->setVariable('usr', $oUser->getId());
 
             return 'forgotpwd?success=1';
         } else {

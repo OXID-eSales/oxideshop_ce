@@ -195,11 +195,17 @@ class View extends \oxSuperCfg implements ViewInterface
      */
     protected $request;
 
-    public function __construct($config, $request)
+    /**
+     * @var \oxSession
+     */
+    protected $session;
+
+    public function __construct($config, $request, $session)
     {
         parent::__construct($config);
 
         $this->request = $request;
+        $this->session = $session;
     }
 
     /**
@@ -326,11 +332,11 @@ class View extends \oxSuperCfg implements ViewInterface
      */
     public function getBelboonParam()
     {
-        if ($sBelboon = $this->getSession()->getVariable('belboon')) {
+        if ($sBelboon = $this->session->getVariable('belboon')) {
             return $sBelboon;
         }
         if (($sBelboon = $this->request->getRequestParameter('belboon'))) {
-            $this->getSession()->setVariable('belboon', $sBelboon);
+            $this->session->setVariable('belboon', $sBelboon);
         }
 
         return $sBelboon;
@@ -594,7 +600,7 @@ class View extends \oxSuperCfg implements ViewInterface
             // building redirect path ...
             $sHeader = ($sClassName) ? "cl=$sClassName&" : ''; // adding view name
             $sHeader .= ($sPageParams) ? "$sPageParams&" : ''; // adding page params
-            $sHeader .= $this->getSession()->sid(); // adding session Id
+            $sHeader .= $this->session->sid(); // adding session Id
 
             $sUrl = $myConfig->getCurrentShopUrl($this->isAdmin());
 
@@ -1007,7 +1013,7 @@ class View extends \oxSuperCfg implements ViewInterface
     public function showFbConnectToAccountMsg()
     {
         if ($this->request->getRequestParameter("fblogin")) {
-            if (!$this->getUser() || ($this->getUser() && $this->getSession()->getVariable('_blFbUserIdUpdated'))) {
+            if (!$this->getUser() || ($this->getUser() && $this->session->getVariable('_blFbUserIdUpdated'))) {
                 return true;
             } else {
                 return false;
@@ -1047,7 +1053,7 @@ class View extends \oxSuperCfg implements ViewInterface
     public function getSidForWidget()
     {
         $sRet = null;
-        $oSession = $this->getSession();
+        $oSession = $this->session;
 
         if (!$oSession->isActualSidInCookie()) {
             $sRet = $oSession->getId();

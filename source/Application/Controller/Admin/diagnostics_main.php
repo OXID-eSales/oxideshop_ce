@@ -94,9 +94,9 @@ class Diagnostics_Main extends oxAdminDetails
      * Calls parent costructor and initializes checker object
      *
      */
-    public function __construct($config)
+    public function __construct($config, $request, $session)
     {
-        parent::__construct($config);
+        parent::__construct($config, $request, $session);
 
         $this->_sShopDir = $this->config->getConfigParam('sShopDir');
         $this->_oOutput = oxNew("oxDiagnosticsOutput");
@@ -239,10 +239,10 @@ class Diagnostics_Main extends oxAdminDetails
         $aViewData = array();
         $oDiagnostics = oxNew('oxDiagnostics');
 
-        $oDiagnostics->setShopLink(oxRegistry::getConfig()->getConfigParam('sShopURL'));
-        $oDiagnostics->setEdition(oxRegistry::getConfig()->getFullEdition());
-        $oDiagnostics->setVersion(oxRegistry::getConfig()->getVersion());
-        $oDiagnostics->setRevision(oxRegistry::getConfig()->getRevision());
+        $oDiagnostics->setShopLink($this->config->getConfigParam('sShopURL'));
+        $oDiagnostics->setEdition($this->config->getFullEdition());
+        $oDiagnostics->setVersion($this->config->getVersion());
+        $oDiagnostics->setRevision($this->config->getRevision());
 
         /**
          * Shop

@@ -490,7 +490,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
         set_time_limit(0);
 
         $oDb = oxDb::getDb();
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->config;
 
         $this->safeGuardAdditionalMultiLanguageTables();
 

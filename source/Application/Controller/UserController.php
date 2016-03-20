@@ -101,10 +101,10 @@ class UserController extends \oxUBase
 
         if ($this->getIsOrderStep()) {
             if ($config->getConfigParam('blPsBasketReservationEnabled')) {
-                $this->getSession()->getBasketReservations()->renewExpiration();
+                $this->session->getBasketReservations()->renewExpiration();
             }
 
-            $basket = $this->getSession()->getBasket();
+            $basket = $this->session->getBasket();
             $isPsBasketReservationsEnabled = $config->getConfigParam('blPsBasketReservationEnabled');
             if ($this->_blIsOrderStep && $isPsBasketReservationsEnabled &&
                 (!$basket || ($basket && !$basket->getProductsCount()))) {
@@ -162,17 +162,16 @@ class UserController extends \oxUBase
      */
     public function getOrderRemark()
     {
-        $config = oxRegistry::getConfig();
         if ($this->_sOrderRemark === null) {
             // if already connected, we can use the session
             if ($this->getUser()) {
-                $orderRemark = oxRegistry::getSession()->getVariable('ordrem');
+                $orderRemark = $this->session->getVariable('ordrem');
             } else {
                 // not connected so nowhere to save, we're gonna use what we get from post
                 $orderRemark = $this->request->getRequestParameter('order_remark', true);
             }
 
-            $this->_sOrderRemark = $orderRemark ? $config->checkParamSpecialChars($orderRemark) : false;
+            $this->_sOrderRemark = $orderRemark ? $this->config->checkParamSpecialChars($orderRemark) : false;
         }
 
         return $this->_sOrderRemark;
@@ -209,7 +208,7 @@ class UserController extends \oxUBase
      */
     public function showShipAddress()
     {
-        return oxRegistry::getSession()->getVariable('blshowshipaddress');
+        return $this->session->getVariable('blshowshipaddress');
     }
 
     /**
@@ -277,7 +276,7 @@ class UserController extends \oxUBase
      */
     public function isDownloadableProductWarning()
     {
-        $basket = $this->getSession()->getBasket();
+        $basket = $this->session->getBasket();
         if ($basket && $this->config->getConfigParam("blEnableDownloads")) {
             if ($basket->hasDownloadableProducts()) {
                 return true;

@@ -623,7 +623,7 @@ class oxConfig implements oxconfiginterface
             return;
         }
 
-        return $this->_oStart->pageClose();
+        //return $this->_oStart->pageClose();
     }
 
     /**

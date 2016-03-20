@@ -69,7 +69,7 @@ class Newsletter_Main extends oxAdminDetails
         $aParams = $this->request->getRequestParameter("editval");
 
         // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $sShopID = $this->session->getVariable("actshop");
         $aParams['oxnewsletter__oxshopid'] = $sShopID;
 
         $oNewsletter = oxNew("oxnewsletter");

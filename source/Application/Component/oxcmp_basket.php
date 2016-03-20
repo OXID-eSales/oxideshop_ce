@@ -69,9 +69,9 @@ class oxcmp_basket extends oxView
     {
         $oConfig = $this->config;
         if ($oConfig->getConfigParam('blPsBasketReservationEnabled')) {
-            if ($oReservations = $this->getSession()->getBasketReservations()) {
+            if ($oReservations = $this->session->getBasketReservations()) {
                 if (!$oReservations->getTimeLeft()) {
-                    $oBasket = $this->getSession()->getBasket();
+                    $oBasket = $this->session->getBasket();
                     if ($oBasket && $oBasket->getProductsCount()) {
                         $this->emptyBasket($oBasket);
                     }
@@ -88,7 +88,7 @@ class oxcmp_basket extends oxView
 
         // Basket exclude
         if ($this->config->getConfigParam('blBasketExcludeEnabled')) {
-            if ($oBasket = $this->getSession()->getBasket()) {
+            if ($oBasket = $this->session->getBasket()) {
                 $this->getParent()->setRootCatChanged($this->isRootCatChanged() && $oBasket->getContents());
             }
         }
@@ -103,7 +103,7 @@ class oxcmp_basket extends oxView
     public function render()
     {
         // recalculating
-        if ($oBasket = $this->getSession()->getBasket()) {
+        if ($oBasket = $this->session->getBasket()) {
             $oBasket->calculateBasket(false);
         }
 
@@ -150,7 +150,7 @@ class oxcmp_basket extends oxView
                 $oNewItem->dBundledAmount = $oBasketItem->getdBundledAmount();
 
                 // passing article
-                oxRegistry::getSession()->setVariable('_newitem', $oNewItem);
+                $this->session->setVariable('_newitem', $oNewItem);
             }
 
             // redirect to basket
@@ -186,7 +186,7 @@ class oxcmp_basket extends oxView
             $sBasketItemId = $this->request->getRequestParameter('bindex');
 
             if ($sBasketItemId) {
-                $oBasket = $this->getSession()->getBasket();
+                $oBasket = $this->session->getBasket();
                 //take params
                 $aBasketContents = $oBasket->getContents();
                 $oItem = $aBasketContents[$sBasketItemId];
@@ -206,7 +206,7 @@ class oxcmp_basket extends oxView
         if ($aProducts = $this->_getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
 
             // information that last call was changebasket
-            $oBasket = $this->getSession()->getBasket();
+            $oBasket = $this->session->getBasket();
             $oBasket->onUpdate();
 
             $this->_setLastCallFnc('changebasket');
@@ -248,7 +248,7 @@ class oxcmp_basket extends oxView
         if ($this->config->getConfigParam('iNewBasketItemMessage') == 3) {
 
             // saving return to shop link to session
-            oxRegistry::getSession()->setVariable('_backtoshop', $sClass . $sPosition);
+            $this->session->setVariable('_backtoshop', $sClass . $sPosition);
 
             // redirecting to basket
             $sClass = 'basket?';
@@ -352,7 +352,7 @@ class oxcmp_basket extends oxView
         $activeView = $this->config->getActiveView();
         $errorDestination = $activeView->getErrorDestination();
 
-        $basket = $this->getSession()->getBasket();
+        $basket = $this->session->getBasket();
         $basketInfo = $basket->getBasketSummary();
 
         $basketItemAmounts = array();
@@ -402,7 +402,7 @@ class oxcmp_basket extends oxView
      */
     protected function _setLastCall($sCallName, $aProductInfo, $aBasketInfo)
     {
-        oxRegistry::getSession()->setVariable('aLastcall', array($sCallName => $aProductInfo));
+        $this->session->setVariable('aLastcall', array($sCallName => $aProductInfo));
     }
 
     /**
@@ -433,7 +433,7 @@ class oxcmp_basket extends oxView
     public function isRootCatChanged()
     {
         // in Basket
-        $oBasket = $this->getSession()->getBasket();
+        $oBasket = $this->session->getBasket();
         if ($oBasket->showCatChangeWarning()) {
             $oBasket->setCatChangeWarningState(false);
 
@@ -441,7 +441,7 @@ class oxcmp_basket extends oxView
         }
 
         // in Category, only then category is empty ant not equal to default category
-        $sDefCat = oxRegistry::getConfig()->getActiveShop()->oxshops__oxdefcat->value;
+        $sDefCat = $this->config->getActiveShop()->oxshops__oxdefcat->value;
         $sActCat = $this->request->getRequestParameter('cnid');
         $oActCat = oxnew('oxcategory');
         if ($sActCat && $sActCat != $sDefCat && $oActCat->load($sActCat)) {
@@ -469,7 +469,7 @@ class oxcmp_basket extends oxView
             return "basket";
         } else {
             // clear basket
-            $this->getSession()->getBasket()->deleteBasket();
+            $this->session->getBasket()->deleteBasket();
             $this->getParent()->setRootCatChanged(false);
         }
     }

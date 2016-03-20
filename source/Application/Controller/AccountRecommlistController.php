@@ -227,7 +227,7 @@ class AccountRecommlistController extends \Account
      */
     public function saveRecommList()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -280,7 +280,7 @@ class AccountRecommlistController extends \Account
      */
     public function editList()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -306,7 +306,7 @@ class AccountRecommlistController extends \Account
      */
     public function removeArticle()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 

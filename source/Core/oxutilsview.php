@@ -19,11 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\Request;
+use OxidEsales\Eshop\Core\ViewInterface;
 
 /**
  * View utility class
  */
-class oxUtilsView extends oxSuperCfg
+class oxUtilsView extends oxSuperCfg implements ViewInterface
 {
 
     /**
@@ -53,6 +55,25 @@ class oxUtilsView extends oxSuperCfg
      * @var array
      */
     protected $_aActiveModuleInfo = null;
+
+
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * @var \oxSession
+     */
+    protected $session;
+
+    public function __construct($config, $request, $session)
+    {
+        parent::__construct($config);
+
+        $this->request = $request;
+        $this->session = $session;
+    }
 
     /**
      * returns existing or creates smarty object
@@ -134,9 +155,9 @@ class oxUtilsView extends oxSuperCfg
      */
     public function addErrorToDisplay($oEr, $blFull = false, $useCustomDestination = false, $customDestination = "", $activeController = "")
     {
-        if ($useCustomDestination && (oxRegistry::getConfig()->getRequestParameter('CustomError') || $customDestination != '')) {
+        if ($useCustomDestination && ($this->request->getRequestParameter('CustomError') || $customDestination != '')) {
             // check if the current request wants do display exceptions on its own
-            $destination = oxRegistry::getConfig()->getRequestParameter('CustomError');
+            $destination = $this->request->getRequestParameter('CustomError');
             if ($customDestination != '') {
                 $destination = $customDestination;
             }
@@ -147,13 +168,12 @@ class oxUtilsView extends oxSuperCfg
 
         //starting session if not yet started as all exception
         //messages are stored in session
-        $session = $this->getSession();
-        if (!$session->getId() && !$session->isHeaderSent()) {
-            $session->setForceNewSession();
-            $session->start();
+        if (!$this->session->getId() && !$this->session->isHeaderSent()) {
+            $this->session->setForceNewSession();
+            $this->session->start();
         }
 
-        $aEx = oxRegistry::getSession()->getVariable('Errors');
+        $aEx = $this->session->getVariable('Errors');
         if ($oEr instanceof oxException) {
             $oEx = oxNew('oxExceptionToDisplay');
             $oEx->setMessage($oEr->getMessage());
@@ -180,14 +200,14 @@ class oxUtilsView extends oxSuperCfg
 
         if ($oEr) {
             $aEx[$destination][] = serialize($oEr);
-            oxRegistry::getSession()->setVariable('Errors', $aEx);
+            $this->session->setVariable('Errors', $aEx);
 
             if ($activeController == '') {
-                $activeController = oxRegistry::getConfig()->getRequestParameter('actcontrol');
+                $activeController = $this->request->getRequestParameter('actcontrol');
             }
             if ($activeController) {
                 $aControllerErrors[$destination] = $activeController;
-                oxRegistry::getSession()->setVariable('ErrorController', $aControllerErrors);
+                $this->session->setVariable('ErrorController', $aControllerErrors);
             }
         }
     }
@@ -206,7 +226,7 @@ class oxUtilsView extends oxSuperCfg
      */
     public function parseThroughSmarty($sDesc, $sOxid = null, $oActView = null, $blRecompile = false)
     {
-        if (oxRegistry::getConfig()->isDemoShop()) {
+        if ($this->config->isDemoShop()) {
             return $sDesc;
         }
 
@@ -277,17 +297,15 @@ class oxUtilsView extends oxSuperCfg
      */
     public function getTemplateDirs()
     {
-        $config = oxRegistry::getConfig();
-
         // buffer for CE (main) edition templates
-        $mainTemplatesDirectory = $config->getTemplateDir($this->isAdmin());
+        $mainTemplatesDirectory = $this->config->getTemplateDir($this->isAdmin());
 
         // main templates directory has not much priority anymore
         $this->setTemplateDir($mainTemplatesDirectory);
 
         // out directory can have templates too
         if (!$this->isAdmin()) {
-            $this->setTemplateDir($this->addActiveThemeId($config->getOutDir(true)));
+            $this->setTemplateDir($this->addActiveThemeId($this->config->getOutDir(true)));
         }
 
         return $this->_aTemplateDir;
@@ -314,10 +332,8 @@ class oxUtilsView extends oxSuperCfg
      */
     public function getSmartyDir()
     {
-        $config = $this->config;
-
         //check for the Smarty dir
-        $compileDir = $config->getConfigParam('sCompileDir');
+        $compileDir = $this->config->getConfigParam('sCompileDir');
         $smartyDir = $compileDir . "/smarty/";
         if (!is_dir($smartyDir)) {
             @mkdir($smartyDir);
@@ -337,7 +353,6 @@ class oxUtilsView extends oxSuperCfg
      */
     protected function _fillCommonSmartyProperties($smarty)
     {
-        $config = $this->config;
         $smarty->left_delimiter = '[{';
         $smarty->right_delimiter = '}]';
 
@@ -359,24 +374,24 @@ class oxUtilsView extends oxSuperCfg
         $smarty->template_dir = $this->getTemplateDirs();
         $smarty->compile_id = $this->getTemplateCompileId();
         $smarty->default_template_handler_func = array(oxRegistry::get("oxUtilsView"), '_smartyDefaultTemplateHandler');
-        array_unshift($smarty->plugins_dir, $config->getConfigParam('sShopDir') . 'Core/smarty/plugins');
+        array_unshift($smarty->plugins_dir, $this->config->getConfigParam('sShopDir') . 'Core/smarty/plugins');
 
         include_once dirname(__FILE__) . '/smarty/plugins/prefilter.oxblock.php';
         $smarty->register_prefilter('smarty_prefilter_oxblock');
 
-        $debugMode = $config->getConfigParam('iDebug');
+        $debugMode = $this->config->getConfigParam('iDebug');
         if ($debugMode == 1 || $debugMode == 3 || $debugMode == 4) {
             $smarty->debugging = true;
         }
 
-        if ($debugMode == 8 && !$config->isAdmin()) {
+        if ($debugMode == 8 && !$this->config->isAdmin()) {
             include_once getShopBasePath() . 'Core/smarty/plugins/prefilter.oxtpldebug.php';
             $smarty->register_prefilter('smarty_prefilter_oxtpldebug');
         }
 
         //demo shop security
-        if (!$config->isDemoShop()) {
-            $smarty->php_handling = (int) $config->getConfigParam('iSmartyPhpHandling');
+        if (!$this->config->isDemoShop()) {
+            $smarty->php_handling = (int) $this->config->getConfigParam('iSmartyPhpHandling');
             $smarty->security = false;
         } else {
             $smarty->php_handling = SMARTY_PHP_REMOVE;
@@ -400,8 +415,7 @@ class oxUtilsView extends oxSuperCfg
      */
     protected function _smartyCompileCheck($smarty)
     {
-        $config = $this->config;
-        $smarty->compile_check = $config->getConfigParam('blCheckTemplates');
+        $smarty->compile_check = $this->config->getConfigParam('blCheckTemplates');
     }
 
     /**
@@ -417,9 +431,8 @@ class oxUtilsView extends oxSuperCfg
      */
     public function _smartyDefaultTemplateHandler($resourceType, $resourceName, &$resourceContent, &$resourceTimestamp, $smarty)
     {
-        $config = oxRegistry::getConfig();
         if ($resourceType == 'file' && !is_readable($resourceName)) {
-            $resourceName = $config->getTemplatePath($resourceName, $config->isAdmin());
+            $resourceName = $this->config->getTemplatePath($resourceName, $this->config->isAdmin());
             $resourceContent = $smarty->_read_file($resourceName);
             $resourceTimestamp = filemtime($resourceName);
 
@@ -473,9 +486,7 @@ class oxUtilsView extends oxSuperCfg
      */
     public function getTemplateBlocks($fileName)
     {
-        $config = $this->config;
-
-        $tplDir = trim($config->getConfigParam('_sTemplateDir'), '/\\');
+        $tplDir = trim($this->config->getConfigParam('_sTemplateDir'), '/\\');
         $fileName = str_replace(array('\\', '//'), '/', $fileName);
         if (preg_match('@/' . preg_quote($tplDir, '@') . '/(.*)$@', $fileName, $m)) {
             $fileName = $m[1];
@@ -483,7 +494,7 @@ class oxUtilsView extends oxSuperCfg
 
         $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $fileParam = $db->quote($fileName);
-        $shpIdParam = $db->quote($config->getShopId());
+        $shpIdParam = $db->quote($this->config->getShopId());
         $ret = array();
 
         if ($this->_blIsTplBlocks === null) {

@@ -293,7 +293,8 @@ class UtilsObject
             if ($reflection->hasMethod('__construct')) {
                 if ($reflection->isSubclassOf(ViewInterface::class)) {
                     $request = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_REQUEST);
-                    $arguments = array_merge([$request], $arguments);
+                    $session = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_SESSION);
+                    $arguments = array_merge([$request, $session], $arguments);
                 }
 
                 if ($reflection->isSubclassOf(SuperConfig::class)) {

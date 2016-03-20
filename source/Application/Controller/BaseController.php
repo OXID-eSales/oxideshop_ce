@@ -935,7 +935,7 @@ class BaseController extends \oxView
      */
     public function getSavedSorting($sortIdent)
     {
-        $sorting = oxRegistry::getSession()->getVariable('aSorting');
+        $sorting = $this->session->getVariable('aSorting');
         if (isset($sorting[$sortIdent])) {
             return $sorting[$sortIdent];
         }
@@ -1125,7 +1125,7 @@ class BaseController extends \oxView
     public function getCompareItemCount()
     {
         if ($this->_iCompItemsCnt === null) {
-            $items = oxRegistry::getSession()->getVariable('aFiltcompproducts');
+            $items = $this->session->getVariable('aFiltcompproducts');
             $this->_iCompItemsCnt = is_array($items) ? count($items) : 0;
         }
 
@@ -1216,7 +1216,7 @@ class BaseController extends \oxView
 
         $viewConfig = $this->getViewConfig();
         //value from user input
-        $session = oxRegistry::getSession();
+        $session = $this->session;
         if (($articlesPerPage = (int) $this->request->getRequestParameter('_artperpage'))) {
             // M45 Possibility to push any "Show articles per page" number parameter
             $numberOfCategoryArticles = (in_array($articlesPerPage, $numbersOfCategoryArticles)) ? $articlesPerPage : $numberOfCategoryArticles;
@@ -1386,11 +1386,11 @@ class BaseController extends \oxView
      */
     public function setItemSorting($sortIdent, $sortBy, $sortDir = null)
     {
-        $sorting = oxRegistry::getSession()->getVariable('aSorting');
+        $sorting = $this->session->getVariable('aSorting');
         $sorting[$sortIdent]['sortby'] = $sortBy;
         $sorting[$sortIdent]['sortdir'] = $sortDir ? $sortDir : null;
 
-        oxRegistry::getSession()->setVariable('aSorting', $sorting);
+        $this->session->setVariable('aSorting', $sorting);
     }
 
     /**
@@ -2374,7 +2374,7 @@ class BaseController extends \oxView
      */
     public function isLowOrderPrice()
     {
-        if ($this->_blLowOrderPrice === null && ($basket = $this->getSession()->getBasket())) {
+        if ($this->_blLowOrderPrice === null && ($basket = $this->session->getBasket())) {
             $this->_blLowOrderPrice = $basket->isBelowMinOrderPrice();
         }
 
@@ -2619,7 +2619,7 @@ class BaseController extends \oxView
     {
         if ($this->_sFormId === null) {
             $this->_sFormId = oxUtilsObject::getInstance()->generateUId();
-            oxRegistry::getSession()->setVariable('sessionuformid', $this->_sFormId);
+            $this->session->setVariable('sessionuformid', $this->_sFormId);
         }
 
         return $this->_sFormId;
@@ -2636,7 +2636,7 @@ class BaseController extends \oxView
             $this->_blCanAcceptFormData = false;
 
             $formId = $this->request->getRequestParameter("uformid");
-            $sessionFormId = oxRegistry::getSession()->getVariable("sessionuformid");
+            $sessionFormId = $this->session->getVariable("sessionuformid");
 
             // testing if form and session ids matches
             if ($formId && $formId === $sessionFormId) {
@@ -2997,7 +2997,7 @@ class BaseController extends \oxView
     {
         if ($this->getUser()) {
             $wishId = $this->request->getRequestParameter('wishid');
-            $userId = ($wishId) ? $wishId : oxRegistry::getSession()->getVariable('wishid');
+            $userId = ($wishId) ? $wishId : $this->session->getVariable('wishid');
             if ($userId) {
                 $wishUser = oxNew('oxUser');
                 if ($wishUser->load($userId)) {
@@ -3016,6 +3016,6 @@ class BaseController extends \oxView
      */
     public function getWidgetLink()
     {
-        return oxRegistry::getConfig()->getWidgetUrl();
+        return $this->config->getWidgetUrl();
     }
 }

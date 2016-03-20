@@ -408,7 +408,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function saveReview()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -453,7 +453,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function addToRecomm()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -479,7 +479,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function addTags()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -494,7 +494,7 @@ class ArticleDetailsController extends \oxUBase
         $article = $this->getProduct();
 
         // set current user added tags for this article for later checking
-        $taggedArticles = oxRegistry::getSession()->getVariable("aTaggedProducts");
+        $taggedArticles = $this->session->getVariable("aTaggedProducts");
         $addedTags = $taggedArticles ? $taggedArticles[$article->getId()] : array();
 
         $articleTagList = oxNew("oxArticleTagList");
@@ -510,7 +510,7 @@ class ArticleDetailsController extends \oxUBase
                 $addedTags[$tag] = 1;
             }
             $taggedArticles[$article->getId()] = $addedTags;
-            oxRegistry::getSession()->setVariable('aTaggedProducts', $taggedArticles);
+            $this->session->setVariable('aTaggedProducts', $taggedArticles);
         }
         // for ajax call
         if ($this->request->getRequestParameter('blAjax', true)) {
@@ -1608,7 +1608,7 @@ class ArticleDetailsController extends \oxUBase
         $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
         $translatedString = oxRegistry::getLang()->translateString('SEARCH_RESULT', $baseLanguageId, false);
         $selfLink = $this->getViewConfig()->getSelfLink();
-        $sessionToken = oxRegistry::getSession()->getVariable('sess_stoken');
+        $sessionToken = $this->session->getVariable('sess_stoken');
 
         $searchPath['title'] = sprintf($translatedString, $this->getSearchParamForHtml());
         $searchPath['link'] = $selfLink . 'stoken=' . $sessionToken . "&amp;cl=search&amp;".

@@ -143,7 +143,7 @@ class VoucherSerie_Main extends DynExportBase
         if ($this->_oVoucherSerie == null) {
             $oVoucherSerie = oxNew("oxvoucherserie");
             $sId = $this->request->getRequestParameter("voucherid");
-            if ($oVoucherSerie->load($sId ? $sId : oxRegistry::getSession()->getVariable("voucherid"))) {
+            if ($oVoucherSerie->load($sId ? $sId : $this->session->getVariable("voucherid"))) {
                 $this->_oVoucherSerie = $oVoucherSerie;
             }
         }
@@ -167,14 +167,14 @@ class VoucherSerie_Main extends DynExportBase
         $this->_aViewData['refresh'] = 0;
         $this->_aViewData['iStart'] = 0;
         $iEnd = $this->prepareExport();
-        oxRegistry::getSession()->setVariable("iEnd", $iEnd);
+        $this->session->setVariable("iEnd", $iEnd);
         $this->_aViewData['iEnd'] = $iEnd;
 
         // saving export info
-        oxRegistry::getSession()->setVariable("voucherid", $this->request->getRequestParameter("voucherid"));
-        oxRegistry::getSession()->setVariable("voucherAmount", abs((int) $this->request->getRequestParameter("voucherAmount")));
-        oxRegistry::getSession()->setVariable("randomVoucherNr", $bRandomNr);
-        oxRegistry::getSession()->setVariable("voucherNr", $sVoucherNr);
+        $this->session->setVariable("voucherid", $this->request->getRequestParameter("voucherid"));
+        $this->session->setVariable("voucherAmount", abs((int) $this->request->getRequestParameter("voucherAmount")));
+        $this->session->setVariable("randomVoucherNr", $bRandomNr);
+        $this->session->setVariable("voucherNr", $sVoucherNr);
     }
 
     /**

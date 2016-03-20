@@ -147,7 +147,7 @@ class RegisterController extends \User
             $oUser->save();
 
             // forcing user login
-            oxRegistry::getSession()->setVariable('usr', $oUser->getId());
+            $this->session->setVariable('usr', $oUser->getId());
 
             // redirecting to confirmation page
             return 'register?confirmstate=1';

@@ -207,7 +207,7 @@ class GuestbookController extends \oxUBase
         if ($this->_blFloodProtection === null) {
             $this->_blFloodProtection = false;
             // is user logged in ?
-            $userId = oxRegistry::getSession()->getVariable('usr');
+            $userId = $this->session->getVariable('usr');
             $userId = $userId ? $userId : 0;
 
             $entries = oxNew('oxGbEntry');
@@ -283,13 +283,13 @@ class GuestbookController extends \oxUBase
      */
     public function saveEntry()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
         $reviewText = trim(( string ) $this->request->getRequestParameter('rvw_txt', true));
         $shopId = $this->config->getShopId();
-        $userId = oxRegistry::getSession()->getVariable('usr');
+        $userId = $this->session->getVariable('usr');
 
         // guest book`s entry is validated
         $utilsView = oxRegistry::get("oxUtilsView");

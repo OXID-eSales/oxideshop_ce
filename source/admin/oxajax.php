@@ -20,6 +20,7 @@
  * @version   OXID eShop CE
  */
 
+use \OxidEsales\Eshop\Core\DiContainer;
 if (!defined('OX_IS_ADMIN')) {
     define('OX_IS_ADMIN', true);
 }
@@ -36,7 +37,7 @@ if ($blAjaxCall) {
     // Setting error reporting mode
     error_reporting(E_ALL ^ E_NOTICE);
 
-    $myConfig = oxRegistry::getConfig();
+    $myConfig = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_CONFIG);
 
     // Includes Utility module.
     $sUtilModule = $myConfig->getConfigParam('sUtilModule');
@@ -52,7 +53,7 @@ if ($blAjaxCall) {
         oxRegistry::getUtils()->showMessageAndExit("");
     }
 
-    if ($sContainer = oxRegistry::getConfig()->getRequestParameter('container')) {
+    if ($sContainer = DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_CONFIG)->getRequestParameter('container')) {
 
         $sContainer = trim(strtolower(basename($sContainer)));
 
@@ -75,7 +76,7 @@ if ($blAjaxCall) {
         }
 
         $oAjaxComponent->setName($sContainer);
-        $oAjaxComponent->processRequest(oxRegistry::getConfig()->getRequestParameter('fnc'));
+        $oAjaxComponent->processRequest(DiContainer::getInstance()->get(DiContainer::CONTAINER_CORE_CONFIG);->getRequestParameter('fnc'));
 
     } else {
 

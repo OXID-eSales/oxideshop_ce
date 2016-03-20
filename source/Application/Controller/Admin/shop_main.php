@@ -76,7 +76,7 @@ class Shop_Main extends oxAdminDetails
 
             $this->_aViewData["edit"] = $shop;
             //oxSession::setVar( "actshop", $soxId);//echo "<h2>$soxId</h2>";
-            oxRegistry::getSession()->setVariable("shp", $shopId);
+            $this->session->setVariable("shp", $shopId);
         }
 
         $this->checkParent($shop);
@@ -149,7 +149,7 @@ class Shop_Main extends oxAdminDetails
 
         $this->updateShopInformation($config, $shop, $shopId);
 
-        oxRegistry::getSession()->setVariable("actshop", $shopId);
+        $this->session->setVariable("actshop", $shopId);
     }
 
     /**

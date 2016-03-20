@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\Request;
+use OxidEsales\Eshop\Core\ViewInterface;
 
 /**
  * View config data access class. Keeps most
  * of getters needed for formatting various urls,
  * config parameters, session information etc.
  */
-class oxViewConfig extends oxSuperCfg
+class oxViewConfig extends oxSuperCfg implements ViewInterface
 {
 
     /**
@@ -86,6 +88,24 @@ class oxViewConfig extends oxSuperCfg
     protected $_sShopLogo = null;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * @var \oxSession
+     */
+    protected $session;
+
+    public function __construct($config, $request, $session)
+    {
+        parent::__construct($config);
+
+        $this->request = $request;
+        $this->session = $session;
+    }
+
+    /**
      * Returns shops home link
      *
      * @return string
@@ -139,7 +159,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getActContentLoadId()
     {
-        $sTplName = oxRegistry::getConfig()->getRequestParameter('oxloadid');
+        $sTplName = $this->request->getRequestParameter('oxloadid');
         // #M1176: Logout from CMS page
         if (!$sTplName && $this->config->getTopActiveView()) {
             $sTplName = $this->config->getTopActiveView()->getViewConfig()->getViewConfigParam('oxloadid');
@@ -155,7 +175,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getActTplName()
     {
-        return oxRegistry::getConfig()->getRequestParameter('tpl');
+        return $this->request->getRequestParameter('tpl');
     }
 
     /**
@@ -244,7 +264,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getActCatId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('cnid');
+        return $this->request->getRequestParameter('cnid');
     }
 
     /**
@@ -254,7 +274,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getActArticleId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('anid');
+        return $this->request->getRequestParameter('anid');
     }
 
     /**
@@ -264,7 +284,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getActSearchParam()
     {
-        return oxRegistry::getConfig()->getRequestParameter('searchparam');
+        return $this->request->getRequestParameter('searchparam');
     }
 
     /**
@@ -274,7 +294,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getActSearchTag()
     {
-        return oxRegistry::getConfig()->getRequestParameter('searchtag');
+        return $this->request->getRequestParameter('searchtag');
     }
 
     /**
@@ -284,7 +304,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getActRecommendationId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('recommid');
+        return $this->request->getRequestParameter('recommid');
     }
 
     /**
@@ -294,7 +314,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getActListType()
     {
-        return oxRegistry::getConfig()->getRequestParameter('listtype');
+        return $this->request->getRequestParameter('listtype');
     }
 
     /**
@@ -304,7 +324,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getActManufacturerId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('mnid');
+        return $this->request->getRequestParameter('mnid');
     }
 
     /**
@@ -314,7 +334,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getContentId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('oxcid');
+        return $this->request->getRequestParameter('oxcid');
     }
 
     /**
@@ -381,7 +401,7 @@ class oxViewConfig extends oxSuperCfg
     public function getSessionId()
     {
         if (($sValue = $this->getViewConfigParam('sessionid')) === null) {
-            $sValue = $this->getSession()->getId();
+            $sValue = $this->session->getId();
             $this->setViewConfigParam('sessionid', $sValue);
         }
 
@@ -396,7 +416,7 @@ class oxViewConfig extends oxSuperCfg
     public function getHiddenSid()
     {
         if (($sValue = $this->getViewConfigParam('hiddensid')) === null) {
-            $sValue = $this->getSession()->hiddenSid();
+            $sValue = $this->session->hiddenSid();
 
             // appending language info to form
             if (($sLang = oxRegistry::getLang()->getFormLang())) {
@@ -841,16 +861,16 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getNrOfCatArticles()
     {
-        $sListType = oxRegistry::getSession()->getVariable('ldtype');
+        $sListType = $this->session->getVariable('ldtype');
 
         if (is_null($sListType)) {
-            $sListType = oxRegistry::getConfig()->getConfigParam('sDefaultListDisplayType');
+            $sListType = $this->config->getConfigParam('sDefaultListDisplayType');
         }
 
         if ('grid' === $sListType) {
-            $aNrOfCatArticles = oxRegistry::getConfig()->getConfigParam('aNrofCatArticlesInGrid');
+            $aNrOfCatArticles = $this->config->getConfigParam('aNrofCatArticlesInGrid');
         } else {
-            $aNrOfCatArticles = oxRegistry::getConfig()->getConfigParam('aNrofCatArticles');
+            $aNrOfCatArticles = $this->config->getConfigParam('aNrofCatArticles');
         }
 
         return $aNrOfCatArticles;
@@ -923,7 +943,7 @@ class oxViewConfig extends oxSuperCfg
     public function getActLanguageId()
     {
         if (($sValue = $this->getViewConfigParam('lang')) === null) {
-            $iLang = oxRegistry::getConfig()->getRequestParameter('lang');
+            $iLang = $this->request->getRequestParameter('lang');
             $sValue = ($iLang !== null) ? $iLang : oxRegistry::getLang()->getBaseLanguage();
             $this->setViewConfigParam('lang', $sValue);
         }
@@ -1138,7 +1158,7 @@ class oxViewConfig extends oxSuperCfg
     public function getShowBasketTimeout()
     {
         return $this->config->getConfigParam('blPsBasketReservationEnabled')
-               && ($this->getSession()->getBasketReservations()->getTimeLeft() > 0);
+               && ($this->session->getBasketReservations()->getTimeLeft() > 0);
     }
 
     /**
@@ -1149,7 +1169,7 @@ class oxViewConfig extends oxSuperCfg
     public function getBasketTimeLeft()
     {
         if (!isset($this->_dBasketTimeLeft)) {
-            $this->_dBasketTimeLeft = $this->getSession()->getBasketReservations()->getTimeLeft();
+            $this->_dBasketTimeLeft = $this->session->getBasketReservations()->getTimeLeft();
         }
 
         return $this->_dBasketTimeLeft;
@@ -1532,7 +1552,7 @@ class oxViewConfig extends oxSuperCfg
     public function getSessionChallengeToken()
     {
         if (oxRegistry::getSession()->isSessionStarted()) {
-            $sessionChallengeToken = $this->getSession()->getSessionChallengeToken();
+            $sessionChallengeToken = $this->session->getSessionChallengeToken();
         } else {
             $sessionChallengeToken = "";
         }

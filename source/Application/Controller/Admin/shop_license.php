@@ -82,7 +82,7 @@ class Shop_License extends Shop_Config
     {
         $myConfig = $this->config;
 
-        $blIsMallAdmin = oxRegistry::getSession()->getVariable('malladmin');
+        $blIsMallAdmin = $this->session->getVariable('malladmin');
         if (!$blIsMallAdmin) {
             return false;
         }

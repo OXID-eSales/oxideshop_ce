@@ -63,8 +63,8 @@ class oxVendorList extends oxList
      */
     public function __construct($config)
     {
-        $this->setShowVendorArticleCnt($this->config->getConfigParam('bl_perfShowActionCatArticleCnt'));
         parent::__construct($config, 'oxvendor');
+        $this->setShowVendorArticleCnt($this->config->getConfigParam('bl_perfShowActionCatArticleCnt'));
     }
 
     /**

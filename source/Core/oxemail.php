@@ -273,7 +273,7 @@ class oxEmail
     public function __construct(MailClientInterface $mailer)
     {
         $this->mailer = $mailer;
-        $this->_blInlineImgEmail = oxRegistry::getConfig()->getConfigParam('blInlineImgEmail');
+        $this->_blInlineImgEmail = $this->config->getConfigParam('blInlineImgEmail');
     }
 
     /**
@@ -309,7 +309,7 @@ class oxEmail
     public function getConfig()
     {
         if ($this->_oConfig == null) {
-            $this->_oConfig = oxRegistry::getConfig();
+            $this->_oConfig = $this->config;
         }
 
         return $this->_oConfig;
@@ -1350,7 +1350,7 @@ class oxEmail
      */
     public function getCurrency()
     {
-        return oxRegistry::getConfig()->getActShopCurrencyObject();
+        return $this->config->getActShopCurrencyObject();
     }
 
     /**

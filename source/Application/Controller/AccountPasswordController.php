@@ -78,7 +78,7 @@ class AccountPasswordController extends \Account
      */
     public function changePassword()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 

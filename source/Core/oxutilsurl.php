@@ -315,7 +315,7 @@ class oxUtilsUrl extends oxSuperCfg
      */
     public function getActiveShopUrlPath()
     {
-        $shopUrl = oxRegistry::getConfig()->getShopUrl();
+        $shopUrl = $this->config->getShopUrl();
 
         return $this->extractUrlPath($shopUrl);
     }

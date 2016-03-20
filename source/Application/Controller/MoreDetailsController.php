@@ -22,8 +22,6 @@
 
 namespace OxidEsales\Eshop\Application\Controller;
 
-use oxRegistry;
-
 /**
  * Article images gallery popup window.
  * If chosen article has more pictures there is ability to create

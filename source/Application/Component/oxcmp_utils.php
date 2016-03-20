@@ -134,7 +134,7 @@ class oxcmp_utils extends oxView
             if (($blAddCompare || $blRemoveCompare) && $sProductId) {
 
                 // toggle state in session array
-                $aItems = oxRegistry::getSession()->getVariable('aFiltcompproducts');
+                $aItems = $this->session->getVariable('aFiltcompproducts');
                 if ($blAddCompare && !isset($aItems[$sProductId])) {
                     $aItems[$sProductId] = true;
                 }
@@ -143,7 +143,7 @@ class oxcmp_utils extends oxView
                     unset($aItems[$sProductId]);
                 }
 
-                oxRegistry::getSession()->setVariable('aFiltcompproducts', $aItems);
+                $this->session->setVariable('aFiltcompproducts', $aItems);
                 $oParentView = $this->getParent();
 
                 // #843C there was problem then field "blIsOnComparisonList" was not set to article object
@@ -181,7 +181,7 @@ class oxcmp_utils extends oxView
      */
     public function toNoticeList($sProductId = null, $dAmount = null, $aSel = null)
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -200,7 +200,7 @@ class oxcmp_utils extends oxView
      */
     public function toWishList($sProductId = null, $dAmount = null, $aSel = null)
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 

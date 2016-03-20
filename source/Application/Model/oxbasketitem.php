@@ -605,7 +605,7 @@ class oxBasketItem extends oxSuperCfg
             $this->_sLink = oxRegistry::get("oxUtilsUrl")->cleanUrl($this->getArticle()->getLink(), array('force_sid'));
         }
 
-        return $this->getSession()->processUrl($this->_sLink);
+        return $this->_sLink;
     }
 
     /**

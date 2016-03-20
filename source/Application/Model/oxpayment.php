@@ -120,8 +120,8 @@ class oxPayment extends oxI18n
      */
     public function __construct($config)
     {
-        $this->setPaymentVatOnTop($this->config->getConfigParam('blPaymentVatOnTop'));
         parent::__construct($config);
+        $this->setPaymentVatOnTop($this->config->getConfigParam('blPaymentVatOnTop'));
     }
 
     /**

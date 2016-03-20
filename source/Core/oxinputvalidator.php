@@ -108,7 +108,7 @@ class oxInputValidator extends oxSuperCfg
             throw $oEx;
         }
 
-        if (!oxRegistry::getConfig()->getConfigParam('blAllowUnevenAmounts')) {
+        if (!$this->config->getConfigParam('blAllowUnevenAmounts')) {
             $dAmount = round(( string ) $dAmount);
         }
 
@@ -141,12 +141,12 @@ class oxInputValidator extends oxSuperCfg
         if ($oUser->oxuser__oxpassword->value && $sLogin != $oUser->oxuser__oxusername->value) {
 
             // on this case password must be taken directly from request
-            $sNewPass = (isset($aInvAddress['oxuser__oxpassword']) && $aInvAddress['oxuser__oxpassword']) ? $aInvAddress['oxuser__oxpassword'] : oxRegistry::getConfig()->getRequestParameter('user_password');
+            $sNewPass = (isset($aInvAddress['oxuser__oxpassword']) && $aInvAddress['oxuser__oxpassword']) ? $aInvAddress['oxuser__oxpassword'] : $this->config->getRequestParameter('user_password');
             if (!$sNewPass) {
 
                 // 1. user forgot to enter password
                 $oEx = oxNew('oxInputException');
-                $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
+                $oEx->setMessage($this->config->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 
                 return $this->_addValidationError("oxuser__oxpassword", $oEx);
             } else {
@@ -506,7 +506,7 @@ class oxInputValidator extends oxSuperCfg
             }
         } else {
             $mxValidationResult = self::INVALID_BANK_CODE;
-            if (!oxRegistry::getConfig()->getConfigParam('blSkipDebitOldBankInfo')) {
+            if (!$this->config->getConfigParam('blSkipDebitOldBankInfo')) {
                 $mxValidationResult = $this->_validateOldDebitInfo($aDebitInformation);
             }
         }
@@ -657,7 +657,7 @@ class oxInputValidator extends oxSuperCfg
             $oVatInValidator->addChecker($oValidator);
 
             /** @var oxOnlineVatIdCheck $oOnlineValidator */
-            if (!oxRegistry::getConfig()->getConfigParam("blVatIdCheckDisabled")) {
+            if (!$this->config->getConfigParam("blVatIdCheckDisabled")) {
                 $oOnlineValidator = oxNew('oxOnlineVatIdCheck');
                 $oVatInValidator->addChecker($oOnlineValidator);
             }

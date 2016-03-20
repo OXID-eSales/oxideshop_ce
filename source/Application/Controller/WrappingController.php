@@ -23,7 +23,6 @@
 namespace OxidEsales\Eshop\Application\Controller;
 
 use oxList;
-use oxRegistry;
 use oxUBase;
 
 /**
@@ -71,7 +70,7 @@ class WrappingController extends oxUBase
             $this->_aBasketItemList = false;
 
             // passing basket articles
-            if ($oBasket = $this->getSession()->getBasket()) {
+            if ($oBasket = $this->session->getBasket()) {
                 $this->_aBasketItemList = $oBasket->getBasketArticles();
             }
         }
@@ -133,7 +132,7 @@ class WrappingController extends oxUBase
         $aWrapping = $this->request->getRequestParameter('wrapping');
 
         if ($this->getViewConfig()->getShowGiftWrapping()) {
-            $oBasket = $this->getSession()->getBasket();
+            $oBasket = $this->session->getBasket();
             // setting wrapping info
             if (is_array($aWrapping) && count($aWrapping)) {
                 foreach ($oBasket->getContents() as $sKey => $oBasketItem) {

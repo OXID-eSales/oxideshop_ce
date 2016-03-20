@@ -64,10 +64,11 @@ class oxWrapping extends oxI18n
      */
     public function __construct($config)
     {
+        parent::__construct($config);
+
         $oConfig = $this->config;
         $this->setWrappingVat($oConfig->getConfigParam('dDefaultVAT'));
         $this->setWrappingVatOnTop($oConfig->getConfigParam('blWrappingVatOnTop'));
-        parent::__construct($config);
     }
 
     /**

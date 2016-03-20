@@ -166,7 +166,7 @@ class ArticleListController extends \oxUBase
     {
         $categoryId = $this->request->getRequestParameter('cnid');
         $activePage = $this->getActPage();
-        $articlesPerPage = oxRegistry::getSession()->getVariable('_artperpage');
+        $articlesPerPage = $this->session->getVariable('_artperpage');
         $listDisplayType = $this->_getListDisplayType();
         $parentViewId = parent::generateViewId();
 
@@ -353,12 +353,12 @@ class ArticleListController extends \oxUBase
         $activeCategory = $this->request->getRequestParameter('cnid');
 
         if (!empty($attributeFilter)) {
-            $sessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
+            $sessionFilter = $this->session->getVariable('session_attrfilter');
             //fix for #2904 - if language will be changed attributes of this category will be deleted from session
             //and new filters for active language set.
             $sessionFilter[$activeCategory] = null;
             $sessionFilter[$activeCategory][$baseLanguageId] = $attributeFilter;
-            oxRegistry::getSession()->setVariable('session_attrfilter', $sessionFilter);
+            $this->session->setVariable('session_attrfilter', $sessionFilter);
         }
     }
 
@@ -387,7 +387,7 @@ class ArticleListController extends \oxUBase
 
             $this->_iAllArtCnt = $articleList->loadPriceArticles($priceFrom, $priceTo, $category);
         } else {
-            //$sessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
+            //$sessionFilter = $this->session->getVariable('session_attrfilter');
             $list = new Category();
             $articleList = $list->getById($category->getId());
             $this->_iAllArtCnt = $list->getCountById($category->getId());
@@ -428,10 +428,10 @@ class ArticleListController extends \oxUBase
      */
     protected function _getListDisplayType()
     {
-        $listDisplayType = oxRegistry::getSession()->getVariable('ldtype');
+        $listDisplayType = $this->session->getVariable('ldtype');
 
         if (is_null($listDisplayType)) {
-            $listDisplayType = oxRegistry::getConfig()->getConfigParam('sDefaultListDisplayType');
+            $listDisplayType = $this->config->getConfigParam('sDefaultListDisplayType');
         }
 
         return $listDisplayType;
@@ -796,7 +796,7 @@ class ArticleListController extends \oxUBase
         $this->_aAttributes = false;
 
         if (($category = $this->getActiveCategory())) {
-            $attributes = $category->getAttributes();
+            $attributes = $category->getAttributes(oxRegistry::getSession()->getVariable('session_attrfilter'));
             if (count($attributes)) {
                 $this->_aAttributes = $attributes;
             }

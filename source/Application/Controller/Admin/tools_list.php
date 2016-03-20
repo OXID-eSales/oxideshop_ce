@@ -41,7 +41,7 @@ class Tools_List extends oxAdminList
     public function updateViews()
     {
         //preventing edit for anyone except malladmin
-        if (oxRegistry::getSession()->getVariable("malladmin")) {
+        if ($this->session->getVariable("malladmin")) {
             $oMetaData = oxNew('oxDbMetaDataHandler');
             $this->_aViewData["blViewSuccess"] = $oMetaData->updateViews();
         }

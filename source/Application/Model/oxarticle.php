@@ -1154,7 +1154,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl, ListArticleI
      */
     public function hasSortingFieldsChanged()
     {
-        $aSortingFields = oxRegistry::getConfig()->getConfigParam('aSortCols');
+        $aSortingFields = $this->config->getConfigParam('aSortCols');
         $aSortingFields = !empty($aSortingFields) ? (array) $aSortingFields : array();
         $blChanged = false;
         foreach ($aSortingFields as $sField) {
@@ -1525,7 +1525,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl, ListArticleI
 
         if (self::$_aSelections[$sId]) {
             // marking active from filter
-            $aFilter = ($aFilter === null) ? oxRegistry::getConfig()->getRequestParameter("sel") : $aFilter;
+            $aFilter = ($aFilter === null) ? $this->config->getRequestParameter("sel") : $aFilter;
             if ($aFilter) {
                 $iSelIdx = 0;
                 foreach (self::$_aSelections[$sId] as $oSelection) {
@@ -2726,7 +2726,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl, ListArticleI
             $this->_sMoreDetailLink = $this->config->getShopHomeURL() . 'cl=moredetails';
 
             // not always it is okey, as not all the time active category is the same as primary article cat.
-            //if ($sActCat = oxRegistry::getConfig()->getRequestParameter('cnid')) {
+            //if ($sActCat = $this->config->getRequestParameter('cnid')) {
             //    $this->_sMoreDetailLink .= '&amp;cnid=' . $sActCat;
             //}
             $this->_sMoreDetailLink .= '&amp;anid=' . $this->getId();
@@ -2753,20 +2753,20 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl, ListArticleI
                 $this->_sToBasketLink = $myConfig->getShopHomeURL();
 
                 // override some classes as these should never showup
-                $sActClass = oxRegistry::getConfig()->getRequestParameter('cl');
+                $sActClass = $this->config->getRequestParameter('cl');
                 if ($sActClass == 'thankyou') {
                     $sActClass = 'basket';
                 }
                 $this->_sToBasketLink .= 'cl=' . $sActClass;
 
                 // this is not very correct
-                if ($sActCat = oxRegistry::getConfig()->getRequestParameter('cnid')) {
+                if ($sActCat = $this->config->getRequestParameter('cnid')) {
                     $this->_sToBasketLink .= '&amp;cnid=' . $sActCat;
                 }
 
                 $this->_sToBasketLink .= '&amp;fnc=tobasket&amp;aid=' . $this->getId() . '&amp;anid=' . $this->getId();
 
-                if ($sTpl = basename(oxRegistry::getConfig()->getRequestParameter('tpl'))) {
+                if ($sTpl = basename($this->config->getRequestParameter('tpl'))) {
                     $this->_sToBasketLink .= '&amp;tpl=' . $sTpl;
                 }
             }
@@ -4962,7 +4962,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl, ListArticleI
      */
     protected function _saveSortingFieldValuesOnLoad()
     {
-        $aSortingFields = oxRegistry::getConfig()->getConfigParam('aSortCols');
+        $aSortingFields = $this->config->getConfigParam('aSortCols');
         $aSortingFields = !empty($aSortingFields) ? (array) $aSortingFields : array();
 
         foreach ($aSortingFields as $sField) {

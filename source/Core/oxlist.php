@@ -247,7 +247,7 @@ class oxList extends oxSuperCfg implements IteratorAggregate, ArrayAccess, Count
 
         $this->_aSqlLimit[0] = 0;
         $this->_aSqlLimit[1] = 0;
-        $this->_sShopID = $this->config->getShopId();
+        $this->_sShopID = $config->getShopId();
 
         $this->init($this->_sObjectsInListName, $this->_sCoreTable);
     }

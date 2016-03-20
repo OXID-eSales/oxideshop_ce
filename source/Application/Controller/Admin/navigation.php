@@ -90,11 +90,11 @@ class Navigation extends oxAdminView
             $this->_aViewData["blOpenHistory"] = $this->request->getRequestParameter('openHistory');
         }
 
-        $blisMallAdmin = oxRegistry::getSession()->getVariable('malladmin');
+        $blisMallAdmin = $this->session->getVariable('malladmin');
         $oShoplist = oxNew('oxShopList');
         if (!$blisMallAdmin) {
             // we only allow to see our shop
-            $iShopId = oxRegistry::getSession()->getVariable("actshop");
+            $iShopId = $this->session->getVariable("actshop");
             $oShop = oxNew('oxShop');
             $oShop->load($iShopId);
             $oShoplist->add($oShop);
@@ -125,7 +125,7 @@ class Navigation extends oxAdminView
      */
     public function logout()
     {
-        $mySession = $this->getSession();
+        $mySession = $this->session;
         $myConfig = $this->config;
 
         $oUser = oxNew("oxUser");
@@ -192,15 +192,15 @@ class Navigation extends oxAdminView
 
         if ($this->config->getConfigParam('blCheckSysReq') !== false) {
             // check if system reguirements are ok
-            $oSysReq = new oxSysRequirements();
+            $oSysReq = oxnew("oxSysRequirements");
             if (!$oSysReq->getSysReqStatus()) {
                 $aMessage['warning'] = oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE');
-                $aMessage['warning'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->getSession()->getSessionChallengeToken() . '" target="basefrm">';
+                $aMessage['warning'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->session->getSessionChallengeToken() . '" target="basefrm">';
                 $aMessage['warning'] .= oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
             }
         } else {
             $aMessage['message'] = oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE_INACTIVE');
-            $aMessage['message'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->getSession()->getSessionChallengeToken() . '" target="basefrm">';
+            $aMessage['message'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->session->getSessionChallengeToken() . '" target="basefrm">';
             $aMessage['message'] .= oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
         }
 

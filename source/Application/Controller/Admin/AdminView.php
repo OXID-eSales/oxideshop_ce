@@ -118,9 +118,9 @@ class AdminView extends \oxView
     /**
      * Creates oxshop object and loads shop data, sets title of shop
      */
-    public function __construct($config)
+    public function __construct($config, $request, $session)
     {
-        parent::__construct($config);
+        parent::__construct($config, $request, $session);
 
         $myConfig = $this->config;
         $myConfig->setConfigParam('blAdmin', true);
@@ -161,8 +161,6 @@ class AdminView extends \oxView
      */
     public function init()
     {
-        $myConfig = $this->config;
-
         // authorization check
         if (!$this->_authorize()) {
             oxRegistry::getUtils()->redirect('index.php?cl=login', true, 302);
@@ -177,7 +175,7 @@ class AdminView extends \oxView
 
         parent::init();
 
-        $this->_aViewData['malladmin'] = oxRegistry::getSession()->getVariable('malladmin');
+        $this->_aViewData['malladmin'] = $this->session->getVariable('malladmin');
     }
 
     /**
@@ -190,7 +188,7 @@ class AdminView extends \oxView
      */
     public function addGlobalParams($oShop = null)
     {
-        $mySession = $this->getSession();
+        $mySession = $this->session;
         $myConfig = $this->config;
         $oLang = oxRegistry::getLang();
 
@@ -362,7 +360,7 @@ class AdminView extends \oxView
         $this->_aViewData["shopid"] = $myConfig->getShopId();
 
         // loading active shop
-        if ($sActShopId = oxRegistry::getSession()->getVariable('actshop')) {
+        if ($sActShopId = $this->session->getVariable('actshop')) {
             // load object
             $this->_aViewData['actshopobj'] = $this->_getEditShop($sActShopId);
         }
@@ -541,7 +539,7 @@ class AdminView extends \oxView
     protected function _authorize()
     {
         return ( bool ) (
-            $this->getSession()->checkSessionChallenge()
+            $this->session->checkSessionChallenge()
             && count(oxRegistry::get("oxUtilsServer")->getOxCookie())
             && oxRegistry::getUtils()->checkAccessRights()
         );
@@ -579,8 +577,8 @@ class AdminView extends \oxView
     public function chshp()
     {
         $sActShop = $this->request->getRequestParameter('shp');
-        oxRegistry::getSession()->setVariable("shp", $sActShop);
-        oxRegistry::getSession()->setVariable('currentadminshop', $sActShop);
+        $this->session->setVariable("shp", $sActShop);
+        $this->session->setVariable('currentadminshop', $sActShop);
     }
 
     /**
@@ -620,7 +618,7 @@ class AdminView extends \oxView
     {
         if (null === ($sId = $this->_sEditObjectId)) {
             if (null === ($sId = $this->request->getRequestParameter("oxid"))) {
-                $sId = oxRegistry::getSession()->getVariable("saved_oxid");
+                $sId = $this->session->getVariable("saved_oxid");
             }
         }
 

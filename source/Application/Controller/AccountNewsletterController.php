@@ -98,7 +98,7 @@ class AccountNewsletterController extends \Account
      */
     public function subscribe()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return false;
         }
 

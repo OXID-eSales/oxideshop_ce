@@ -260,7 +260,7 @@ class oxVariantHandler extends oxSuperCfg
         $aParams['oxarticles__oxactive'] = 0;
 
         // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $sShopID = $this->config->getShopId();
         $aParams['oxarticles__oxshopid'] = $sShopID;
 
         // varianthandling

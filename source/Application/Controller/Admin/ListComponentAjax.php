@@ -329,7 +329,7 @@ class ListComponentAjax extends \oxSuperCfg
     protected function _isExtendedColumn($sColumn)
     {
         $blBuild = false;
-        $blVariantsSelectionParameter = oxRegistry::getConfig()->getConfigParam('blVariantsSelection');
+        $blVariantsSelectionParameter = $this->config->getConfigParam('blVariantsSelection');
         if ($this->_blAllowExtColumns && $blVariantsSelectionParameter && $sColumn == 'oxtitle') {
             $blBuild = true;
         }

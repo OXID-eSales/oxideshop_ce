@@ -896,7 +896,7 @@ class oxUtils extends oxSuperCfg
     public function canPreview()
     {
         $blCan = null;
-        if (($sPrevId = oxRegistry::getConfig()->getRequestParameter('preview')) &&
+        if (($sPrevId = $this->config->getRequestParameter('preview')) &&
             ($sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie('admin_sid'))
         ) {
 
@@ -971,7 +971,7 @@ class oxUtils extends oxSuperCfg
                         oxRegistry::getSession()->setVariable("shp", $sRights);
 
                         // check if this subshop admin is evil.
-                        if ('chshp' == oxRegistry::getConfig()->getRequestParameter('fnc')) {
+                        if ('chshp' == $this->config->getRequestParameter('fnc')) {
                             // dont allow this call
                             $blIsAuth = false;
                         } else {
@@ -979,7 +979,7 @@ class oxUtils extends oxSuperCfg
 
                             $aShopIdVars = array('actshop', 'shp', 'currentadminshop');
                             foreach ($aShopIdVars as $sShopIdVar) {
-                                if ($sGotShop = oxRegistry::getConfig()->getRequestParameter($sShopIdVar)) {
+                                if ($sGotShop = $this->config->getRequestParameter($sShopIdVar)) {
                                     if ($sGotShop != $sRights) {
                                         $blIsAuth = false;
                                         break;
@@ -1082,7 +1082,7 @@ class oxUtils extends oxSuperCfg
     {
         //preventing possible cyclic redirection
         //#M341 and check only if redirect parameter must be added
-        if ($blAddRedirectParam && oxRegistry::getConfig()->getRequestParameter('redirected')) {
+        if ($blAddRedirectParam && $this->config->getRequestParameter('redirected')) {
             return;
         }
 
@@ -1452,7 +1452,7 @@ class oxUtils extends oxSuperCfg
     public function handlePageNotFoundError($sUrl = '')
     {
         $this->setHeader("HTTP/1.0 404 Not Found");
-        if (oxRegistry::getConfig()->isUtf()) {
+        if ($this->config->isUtf()) {
             $this->setHeader("Content-Type: text/html; charset=UTF-8");
         }
 

@@ -96,14 +96,14 @@ class SelectList_Main extends oxAdminDetails
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
 
-            $iErr = oxRegistry::getSession()->getVariable("iErrorCode");
+            $iErr = $this->session->getVariable("iErrorCode");
 
             if (!$iErr) {
                 $iErr = ERR_SUCCESS;
             }
 
             $this->_aViewData["iErrorCode"] = $iErr;
-            oxRegistry::getSession()->setVariable("iErrorCode", ERR_SUCCESS);
+            $this->session->setVariable("iErrorCode", ERR_SUCCESS);
 
         }
         if ($this->request->getRequestParameter("aoc")) {
@@ -255,7 +255,7 @@ class SelectList_Main extends oxAdminDetails
 
             $sAddField = $this->request->getRequestParameter("sAddField");
             if (empty($sAddField)) {
-                oxRegistry::getSession()->setVariable("iErrorCode", ERR_REQUIREDMISSING);
+                $this->session->setVariable("iErrorCode", ERR_REQUIREDMISSING);
 
                 return;
             }
@@ -287,7 +287,7 @@ class SelectList_Main extends oxAdminDetails
     {
         $sAddField = $this->request->getRequestParameter("sAddField");
         if (empty($sAddField)) {
-            oxRegistry::getSession()->setVariable("iErrorCode", ERR_REQUIREDMISSING);
+            $this->session->setVariable("iErrorCode", ERR_REQUIREDMISSING);
 
             return;
         }
@@ -334,7 +334,7 @@ class SelectList_Main extends oxAdminDetails
 
         $iFieldCount = count($this->aFieldArray);
         if ($iPos < 0 || $iPos >= $iFieldCount) {
-            oxRegistry::getSession()->setVariable("iErrorCode", ERR_POSOUTOFBOUNDS);
+            $this->session->setVariable("iErrorCode", ERR_POSOUTOFBOUNDS);
 
             return true;
         }

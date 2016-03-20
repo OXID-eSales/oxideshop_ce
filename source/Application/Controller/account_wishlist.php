@@ -215,7 +215,7 @@ class Account_Wishlist extends Account
      */
     public function sendWishList()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return false;
         }
 
@@ -292,7 +292,7 @@ class Account_Wishlist extends Account
      */
     public function togglePublic()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return false;
         }
 

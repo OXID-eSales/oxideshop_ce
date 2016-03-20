@@ -62,8 +62,8 @@ class oxDeliverySetList extends oxList
      */
     public function __construct($config)
     {
+        parent::__construct($config, 'oxdeliveryset');
         $this->setHomeCountry($this->config->getConfigParam('aHomeCountry'));
-        parent::__construct('oxdeliveryset');
     }
 
     /**

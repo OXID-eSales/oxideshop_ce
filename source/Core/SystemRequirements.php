@@ -29,7 +29,7 @@ use oxDb;
 /**
  * System requirements class.
  */
-class SystemRequirements
+class SystemRequirements extends SuperConfig
 {
     /**
      * System required modules
@@ -156,15 +156,6 @@ class SystemRequirements
     protected function _getPhpIntSize()
     {
         return PHP_INT_SIZE;
-    }
-
-    /**
-     * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
-     *
-     * @return null;
-     */
-    public function __construct()
-    {
     }
 
     /**

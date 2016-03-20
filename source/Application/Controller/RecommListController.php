@@ -211,7 +211,7 @@ class RecommListController extends \AList
      */
     public function saveReview()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -355,7 +355,7 @@ class RecommListController extends \AList
             $this->_blRate = false;
             if ($this->isReviewActive() && ($oActiveRecommList = $this->getActiveRecommList())) {
                 $oRating = oxNew('oxrating');
-                $sUserVariable = oxRegistry::getSession()->getVariable('usr');
+                $sUserVariable = $this->session->getVariable('usr');
                 $this->_blRate = $oRating->allowRating($sUserVariable, 'oxrecommlist', $oActiveRecommList->getId());
             }
         }

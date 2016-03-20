@@ -83,7 +83,7 @@ class oxcmp_cur extends oxView
             $myConfig->setActShopCurrency($iCur);
 
             // recalc basket
-            $oBasket = $this->getSession()->getBasket();
+            $oBasket = $this->session->getBasket();
             $oBasket->onUpdate();
         }
 
@@ -94,7 +94,7 @@ class oxcmp_cur extends oxView
 
         //setting basket currency (M:825)
         if (!isset($oBasket)) {
-            $oBasket = $this->getSession()->getBasket();
+            $oBasket = $this->session->getBasket();
         }
         $oBasket->setBasketCurrency($this->_oActCur);
         parent::init();

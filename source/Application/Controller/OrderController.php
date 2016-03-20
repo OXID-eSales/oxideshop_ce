@@ -179,7 +179,7 @@ class OrderController extends \oxUBase
             $myConfig = $this->config;
 
             if ($myConfig->getConfigParam('blPsBasketReservationEnabled')) {
-                $this->getSession()->getBasketReservations()->renewExpiration();
+                $this->session->getBasketReservations()->renewExpiration();
                 if (!$oBasket || ($oBasket && !$oBasket->getProductsCount())) {
                     oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=basket', true, 302);
                 }
@@ -203,8 +203,8 @@ class OrderController extends \oxUBase
         parent::render();
 
         // reload blocker
-        if (!oxRegistry::getSession()->getVariable('sess_challenge')) {
-            oxRegistry::getSession()->setVariable('sess_challenge', oxUtilsObject::getInstance()->generateUID());
+        if (!$this->session->getVariable('sess_challenge')) {
+            $this->session->setVariable('sess_challenge', oxUtilsObject::getInstance()->generateUID());
         }
 
         return $this->_sThisTemplate;
@@ -223,7 +223,7 @@ class OrderController extends \oxUBase
      */
     public function execute()
     {
-        if (!$this->getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -248,7 +248,7 @@ class OrderController extends \oxUBase
         }
 
         // get basket contents
-        $oBasket = $this->getSession()->getBasket();
+        $oBasket = $this->session->getBasket();
         if ($oBasket->getProductsCount()) {
 
             try {
@@ -293,11 +293,11 @@ class OrderController extends \oxUBase
 
             if ($sPaymentid && $oPayment->load($sPaymentid) &&
                 $oPayment->isValidPayment(
-                    oxRegistry::getSession()->getVariable('dynvalue'),
+                    $this->session->getVariable('dynvalue'),
                     $this->config->getShopId(),
                     $oUser,
                     $oBasket->getPriceForPayment(),
-                    oxRegistry::getSession()->getVariable('sShipSet')
+                    $this->session->getVariable('sShipSet')
                 )
             ) {
                 $this->_oPayment = $oPayment;
@@ -316,7 +316,7 @@ class OrderController extends \oxUBase
     {
         if ($this->_oBasket === null) {
             $this->_oBasket = false;
-            if ($oBasket = $this->getSession()->getBasket()) {
+            if ($oBasket = $this->session->getBasket()) {
                 $this->_oBasket = $oBasket;
             }
         }
@@ -343,8 +343,8 @@ class OrderController extends \oxUBase
     {
         if ($this->_sOrderRemark === null) {
             $this->_sOrderRemark = false;
-            if ($sRemark = oxRegistry::getSession()->getVariable('ordrem')) {
-                $this->_sOrderRemark = oxRegistry::getConfig()->checkParamSpecialChars($sRemark);
+            if ($sRemark = $this->session->getVariable('ordrem')) {
+                $this->_sOrderRemark = $this->config->checkParamSpecialChars($sRemark);
             }
         }
 
@@ -539,9 +539,9 @@ class OrderController extends \oxUBase
         $sDelAddress = $oUser->getEncodedDeliveryAddress();
 
         // delivery address
-        if (oxRegistry::getSession()->getVariable('deladrid')) {
+        if ($this->session->getVariable('deladrid')) {
             $oDelAdress = oxNew('oxAddress');
-            $oDelAdress->load(oxRegistry::getSession()->getVariable('deladrid'));
+            $oDelAdress->load($this->session->getVariable('deladrid'));
 
             $sDelAddress .= $oDelAdress->getEncodedDeliveryAddress();
         }
@@ -588,18 +588,18 @@ class OrderController extends \oxUBase
                 break;
             case ($iSuccess === oxOrder::ORDER_STATE_PAYMENTERROR):
                 // no authentication, kick back to payment methods
-                oxRegistry::getSession()->setVariable('payerror', 2);
+                $this->session->setVariable('payerror', 2);
                 $sNextStep = 'payment?payerror=2';
                 break;
             case ($iSuccess === oxOrder::ORDER_STATE_ORDEREXISTS):
                 break; // reload blocker activ
             case (is_numeric($iSuccess) && $iSuccess > 3):
-                oxRegistry::getSession()->setVariable('payerror', $iSuccess);
+                $this->session->setVariable('payerror', $iSuccess);
                 $sNextStep = 'payment?payerror=' . $iSuccess;
                 break;
             case (!is_numeric($iSuccess) && $iSuccess):
                 //instead of error code getting error text and setting payerror to -1
-                oxRegistry::getSession()->setVariable('payerror', -1);
+                $this->session->setVariable('payerror', -1);
                 $iSuccess = urlencode($iSuccess);
                 $sNextStep = 'payment?payerror=-1&payerrortext=' . $iSuccess;
                 break;

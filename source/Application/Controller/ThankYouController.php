@@ -116,15 +116,15 @@ class ThankYouController extends oxUBase
         parent::init();
 
         // get basket we might need some information from it here
-        $oBasket = $this->getSession()->getBasket();
-        $oBasket->setOrderId(oxRegistry::getSession()->getVariable('sess_challenge'));
+        $oBasket = $this->session->getBasket();
+        $oBasket->setOrderId($this->session->getVariable('sess_challenge'));
 
         // copying basket object
         $this->_oBasket = clone $oBasket;
 
         // delete it from the session
         $oBasket->deleteBasket();
-        oxRegistry::getSession()->deleteVariable('sess_challenge');
+        $this->session->deleteVariable('sess_challenge');
     }
 
     /**
@@ -146,8 +146,8 @@ class ThankYouController extends oxUBase
 
         // removing also unregistered user info (#2580)
         if (!$oUser || !$oUser->oxuser__oxpassword->value) {
-            oxRegistry::getSession()->deleteVariable('usr');
-            oxRegistry::getSession()->deleteVariable('dynvalue');
+            $this->session->deleteVariable('usr');
+            $this->session->deleteVariable('dynvalue');
         }
 
         // we must set active class as start

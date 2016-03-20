@@ -43,7 +43,7 @@ class Module_SortList extends oxAdminDetails
         $this->_aViewData["aDisabledModules"] = $oModuleList->getDisabledModuleClasses();
 
         // checking if there are any deleted extensions
-        if (oxRegistry::getSession()->getVariable("blSkipDeletedExtChecking") == false) {
+        if ($this->session->getVariable("blSkipDeletedExtChecking") == false) {
             $aDeletedExt = $oModuleList->getDeletedExtensions();
         }
 
@@ -78,7 +78,7 @@ class Module_SortList extends oxAdminDetails
     {
         //if user selected not to update modules, skipping all updates
         if ($this->request->getRequestParameter("noButton")) {
-            oxRegistry::getSession()->setVariable("blSkipDeletedExtChecking", true);
+            $this->session->setVariable("blSkipDeletedExtChecking", true);
 
             return;
         }

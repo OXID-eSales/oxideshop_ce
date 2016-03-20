@@ -27,7 +27,7 @@ class MailClientConfig
 
     public function isDebugEnabled()
     {
-        return \oxRegistry::getConfig()->getConfigParam('iDebug') == 6;
+        return $this->config->getConfigParam('iDebug') == 6;
     }
 
     public function getProtocol()
@@ -61,7 +61,7 @@ class MailClientConfig
      */
     protected function _getShop()
     {
-        return \oxRegistry::getConfig()->getActiveShop();
+        return $this->config->getActiveShop();
     }
 
 

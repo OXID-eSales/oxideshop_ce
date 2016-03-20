@@ -174,7 +174,7 @@ class AdminList extends \oxAdminView
     {
         if (!$this->_iViewListSize) {
             $config = $this->config;
-            if ($profile = oxRegistry::getSession()->getVariable('profile')) {
+            if ($profile = $this->session->getVariable('profile')) {
                 if (isset($profile[1])) {
                     $config->setConfigParam('iAdminListSize', (int)$profile[1]);
                 }
@@ -280,7 +280,7 @@ class AdminList extends \oxAdminView
         $this->_iListSize = oxDb::getDb()->getOne($sql, false, false);
 
         // set it into session that other frames know about size of DB
-        oxRegistry::getSession()->setVariable('iArtCnt', $this->_iListSize);
+        $this->session->setVariable('iArtCnt', $this->_iListSize);
     }
 
     /**
@@ -791,7 +791,7 @@ class AdminList extends \oxAdminView
 
             $listObject = $this->_oList->getBaseObject();
 
-            oxRegistry::getSession()->setVariable('tabelle', $this->_sListClass);
+            $this->session->setVariable('tabelle', $this->_sListClass);
             $this->_aViewData['listTable'] = getViewName($listObject->getCoreTableName());
             $this->config->setGlobalParameter('ListCoreTable', $listObject->getCoreTableName());
 

@@ -385,8 +385,8 @@ class oxUser extends oxBase
             return $this->_sSelAddressId;
         }
 
-        $sAddressId = oxRegistry::getConfig()->getRequestParameter("oxaddressid");
-        if (!$sAddressId && !oxRegistry::getConfig()->getRequestParameter('reloadaddress')) {
+        $sAddressId = $this->config->getRequestParameter("oxaddressid");
+        if (!$sAddressId && !$this->config->getRequestParameter('reloadaddress')) {
             $sAddressId = oxRegistry::getSession()->getVariable("deladrid");
         }
 
@@ -491,7 +491,7 @@ class oxUser extends oxBase
      */
     public function save()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->config;
 
         $blAddRemark = false;
         if ($this->oxuser__oxpassword->value && $this->oxuser__oxregister->value < 1) {
@@ -1056,7 +1056,7 @@ class oxUser extends oxBase
         $oInputValidator->checkEmail($this, $sLogin, $aInvAddress);
 
         // 3. password
-        $oInputValidator->checkPassword($this, $sPassword, $sPassword2, ((int) oxRegistry::getConfig()->getRequestParameter('option') == 3));
+        $oInputValidator->checkPassword($this, $sPassword, $sPassword2, ((int) $this->config->getRequestParameter('option') == 3));
 
         // 4. required fields
         $oInputValidator->checkRequiredFields($this, $aInvAddress, $aDelAddress);
@@ -1328,14 +1328,6 @@ class oxUser extends oxBase
 
         //login successful?
         if ($this->oxuser__oxid->value) {
-
-            // yes, successful login
-            if ($this->isAdmin()) {
-                oxRegistry::getSession()->setVariable('auth', $this->oxuser__oxid->value);
-            } else {
-                oxRegistry::getSession()->setVariable('usr', $this->oxuser__oxid->value);
-            }
-
             // cookie must be set ?
             if ($blCookie && $oConfig->getConfigParam('blShowRememberMe')) {
                 oxRegistry::get("oxUtilsServer")->setUserCookie($this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $oConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value);
@@ -1357,16 +1349,6 @@ class oxUser extends oxBase
      */
     public function logout()
     {
-        // deleting session info
-        oxRegistry::getSession()->deleteVariable('usr'); // for front end
-        oxRegistry::getSession()->deleteVariable('auth'); // for back end
-        oxRegistry::getSession()->deleteVariable('dynvalue');
-        oxRegistry::getSession()->deleteVariable('paymentid');
-        // oxRegistry::getSession()->deleteVariable( 'deladrid' );
-
-        // delete cookie
-        oxRegistry::get("oxUtilsServer")->deleteUserCookie($this->config->getShopID());
-
         return true;
     }
 
@@ -1714,7 +1696,7 @@ class oxUser extends oxBase
         }
 
         // sets active page
-        $iActPage = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+        $iActPage = (int) $this->config->getRequestParameter('pgNr');
         $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
         // load only lists which we show on screen
@@ -2097,8 +2079,6 @@ class oxUser extends oxBase
                 }
             }
         }
-        oxRegistry::getSession()->deleteVariable('su');
-        oxRegistry::getSession()->deleteVariable('re');
 
         return $blSet;
     }

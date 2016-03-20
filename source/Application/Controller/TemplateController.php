@@ -22,8 +22,6 @@
 
 namespace OxidEsales\Eshop\Application\Controller;
 
-use oxRegistry;
-
 /**
  * Template preparation class.
  * Used only in some specific cases (usually when you need to outpt just template

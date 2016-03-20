@@ -69,7 +69,7 @@ class vendor_main_ajax extends ajaxListComponent
         $sArtTable = $this->_getViewName('oxarticles');
         $sO2CView = $this->_getViewName('oxobject2category');
         $oDb = oxDb::getDb();
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->config;
         $sVendorId = $this->request->getRequestParameter('oxid');
         $sSynchVendorId = $this->request->getRequestParameter('synchoxid');
 

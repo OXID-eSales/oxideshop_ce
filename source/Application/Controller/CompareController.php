@@ -241,7 +241,7 @@ class CompareController extends \oxUBase
     public function getCompareItems()
     {
         if ($this->_aCompItems === null) {
-            $aItems = oxRegistry::getSession()->getVariable('aFiltcompproducts');
+            $aItems = $this->session->getVariable('aFiltcompproducts');
             if (is_array($aItems) && count($aItems)) {
                 $this->_aCompItems = $aItems;
             }
@@ -258,7 +258,7 @@ class CompareController extends \oxUBase
     public function setCompareItems($aItems)
     {
         $this->_aCompItems = $aItems;
-        oxRegistry::getSession()->setVariable('aFiltcompproducts', $aItems);
+        $this->session->setVariable('aFiltcompproducts', $aItems);
     }
 
     /**

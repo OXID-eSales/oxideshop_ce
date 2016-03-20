@@ -94,7 +94,6 @@ class voucherserie_groups_ajax extends ajaxListComponent
      */
     public function addGroupToVoucher()
     {
-        $oConfig = oxRegistry::getConfig();
         $aChosenCat = $this->_getActionIds('oxgroups.oxid');
         $soxId = $this->request->getRequestParameter('synchoxid');
 

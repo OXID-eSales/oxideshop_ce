@@ -1013,7 +1013,7 @@ class oxOrder extends oxBase
     {
         // copying payment info fields
         $aDynvalue = oxRegistry::getSession()->getVariable('dynvalue');
-        $aDynvalue = $aDynvalue ? $aDynvalue : oxRegistry::getConfig()->getRequestParameter('dynvalue');
+        $aDynvalue = $aDynvalue ? $aDynvalue : $this->config->getRequestParameter('dynvalue');
 
         // loading payment object
         $oPayment = oxNew('oxpayment');
@@ -1205,7 +1205,7 @@ class oxOrder extends oxBase
     public function getDelAddressInfo()
     {
         $oDelAdress = null;
-        if (!($soxAddressId = oxRegistry::getConfig()->getRequestParameter('deladrid'))) {
+        if (!($soxAddressId = $this->config->getRequestParameter('deladrid'))) {
             $soxAddressId = oxRegistry::getSession()->getVariable('deladrid');
         }
         if ($soxAddressId) {
@@ -2291,7 +2291,7 @@ class oxOrder extends oxBase
      */
     public function getShipmentTrackingUrl()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->config;
         if ($this->_sShipTrackUrl === null) {
             $sParcelService = $oConfig->getConfigParam('sParcelService');
             $sTrackingCode = $this->getTrackCode();

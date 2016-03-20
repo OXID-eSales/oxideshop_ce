@@ -336,7 +336,7 @@ class oxUtilsDate extends oxSuperCfg
     {
         // defining time format
         // checking for default values
-        $sLocalTimeFormat = oxRegistry::getConfig()->getConfigParam('sLocalTimeFormat');
+        $sLocalTimeFormat = $this->config->getConfigParam('sLocalTimeFormat');
         if (!$sLocalTimeFormat || $blToTimeStamp) {
             $sLocalTimeFormat = "ISO";
         }
@@ -355,7 +355,7 @@ class oxUtilsDate extends oxSuperCfg
     {
         // defining time format
         // checking for default values
-        $sLocalDateFormat = oxRegistry::getConfig()->getConfigParam('sLocalDateFormat');
+        $sLocalDateFormat = $this->config->getConfigParam('sLocalDateFormat');
         if (!$sLocalDateFormat || $blToTimeStamp) {
             $sLocalDateFormat = "ISO";
         }

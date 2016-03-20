@@ -162,7 +162,7 @@ class PaymentController extends \oxUBase
         $myConfig = $this->config;
 
         if ($myConfig->getConfigParam('blPsBasketReservationEnabled')) {
-            $this->getSession()->getBasketReservations()->renewExpiration();
+            $this->session->getBasketReservations()->renewExpiration();
         }
 
         parent::render();
@@ -178,7 +178,7 @@ class PaymentController extends \oxUBase
 
             //additional check if we really really have a user now
             //and the basket is not empty
-            $oBasket = $this->getSession()->getBasket();
+            $oBasket = $this->session->getBasket();
             $blPsBasketReservationEnabled = $myConfig->getConfigParam('blPsBasketReservationEnabled');
             if ($blPsBasketReservationEnabled && (!$oBasket || ($oBasket && !$oBasket->getProductsCount()))) {
                 oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() .'cl=basket', true, 302);
@@ -207,7 +207,7 @@ class PaymentController extends \oxUBase
         if (!$this->getAllSetsCnt()) {
             // no fitting shipping set found, setting default empty payment
             $this->_setDefaultEmptyPayment();
-            oxRegistry::getSession()->setVariable('sShipSet', null);
+            $this->session->setVariable('sShipSet', null);
         }
 
         $this->_unsetPaymentErrors();
@@ -245,16 +245,16 @@ class PaymentController extends \oxUBase
         $sPayErrorText = $this->request->getRequestParameter('payerrortext');
 
         if (!($iPayError || $sPayErrorText)) {
-            $iPayError = oxRegistry::getSession()->getVariable('payerror');
-            $sPayErrorText = oxRegistry::getSession()->getVariable('payerrortext');
+            $iPayError = $this->session->getVariable('payerror');
+            $sPayErrorText = $this->session->getVariable('payerrortext');
         }
 
         if ($iPayError) {
-            oxRegistry::getSession()->deleteVariable('payerror');
+            $this->session->deleteVariable('payerror');
             $this->_sPaymentError = $iPayError;
         }
         if ($sPayErrorText) {
-            oxRegistry::getSession()->deleteVariable('payerrortext');
+            $this->session->deleteVariable('payerrortext');
             $this->_sPaymentErrorText = $sPayErrorText;
         }
     }
@@ -265,7 +265,7 @@ class PaymentController extends \oxUBase
      */
     public function changeshipping()
     {
-        $oSession = $this->getSession();
+        $oSession = $this->session;
 
         $oBasket = $oSession->getBasket();
         $oBasket->setShipping(null);
@@ -287,7 +287,7 @@ class PaymentController extends \oxUBase
     public function validatePayment()
     {
         $myConfig = $this->config;
-        $oSession = $this->getSession();
+        $oSession = $this->session;
 
         //#1308C - check user. Function is executed before render(), and oUser is not set!
         // Set it manually for use in methods getPaymentList(), getShippingSetList()...
@@ -376,10 +376,10 @@ class PaymentController extends \oxUBase
 
             $sActShipSet = $this->request->getRequestParameter('sShipSet');
             if (!$sActShipSet) {
-                $sActShipSet = oxRegistry::getSession()->getVariable('sShipSet');
+                $sActShipSet = $this->session->getVariable('sShipSet');
             }
 
-            $oBasket = $this->getSession()->getBasket();
+            $oBasket = $this->session->getBasket();
 
             // load sets, active set, and active set payment list
             list($aAllSets, $sActShipSet, $aPaymentList) =
@@ -513,7 +513,7 @@ class PaymentController extends \oxUBase
             $this->_aDynValue = false;
 
             // flyspray#1217 (sarunas)
-            if (($aDynValue = oxRegistry::getSession()->getVariable('dynvalue'))) {
+            if (($aDynValue = $this->session->getVariable('dynvalue'))) {
                 $this->_aDynValue = $aDynValue;
             } else {
                 $this->_aDynValue = $this->request->getRequestParameter("dynvalue");
@@ -564,11 +564,11 @@ class PaymentController extends \oxUBase
     {
         if ($this->_sCheckedPaymentId === null) {
             if (!($sPaymentID = $this->request->getRequestParameter('paymentid'))) {
-                $sPaymentID = oxRegistry::getSession()->getVariable('paymentid');
+                $sPaymentID = $this->session->getVariable('paymentid');
             }
             if ($sPaymentID) {
                 $sCheckedId = $sPaymentID;
-            } elseif (($sSelectedPaymentID = oxRegistry::getSession()->getVariable('_selected_paymentid'))) {
+            } elseif (($sSelectedPaymentID = $this->session->getVariable('_selected_paymentid'))) {
                 $sCheckedId = $sSelectedPaymentID;
             } else {
                 // #1010A.
@@ -668,14 +668,14 @@ class PaymentController extends \oxUBase
     protected function _filterDynData()
     {
         //in case we actually ARE allowed to store the data
-        if (oxRegistry::getConfig()->getConfigParam("blStoreCreditCardInfo")) {
+        if ($this->config->getConfigParam("blStoreCreditCardInfo")) {
             //then do nothing and reset _blDynDataFiltered
             $this->_blDynDataFiltered = false;
 
             return;
         }
 
-        $aDynData = $this->getSession()->getVariable("dynvalue");
+        $aDynData = $this->session->getVariable("dynvalue");
 
         $aFields = array("kktype", "kknumber", "kkname", "kkmonth", "kkyear", "kkpruef");
 
@@ -689,7 +689,7 @@ class PaymentController extends \oxUBase
             $aDynData["kkmonth"] = null;
             $aDynData["kkyear"] = null;
             $aDynData["kkpruef"] = null;
-            oxRegistry::getSession()->setVariable("dynvalue", $aDynData);
+            $this->session->setVariable("dynvalue", $aDynData);
         }
 
         if (!$this->_checkArrValuesEmpty($_REQUEST["dynvalue"], $aFields) ||
@@ -730,7 +730,7 @@ class PaymentController extends \oxUBase
     public function getTsProtections()
     {
         if ($this->_aTsProducts === null) {
-            $oBasket = $this->getSession()->getBasket();
+            $oBasket = $this->session->getBasket();
             $dVat = $oBasket->getAdditionalServicesVatPercent();
             if ($dPrice = $oBasket->getPrice()->getBruttoPrice()) {
                 $oTsProtection = oxNew('oxtsprotection');

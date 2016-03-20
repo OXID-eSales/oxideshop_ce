@@ -172,7 +172,7 @@ class oxcmp_user extends oxView
         // TODO: move this to a proper place
         if ($oUser->isLoadedFromCookie() && !$myConfig->getConfigParam('blPerfNoBasketSaving')) {
 
-            if ($oBasket = $this->getSession()->getBasket()) {
+            if ($oBasket = $this->session->getBasket()) {
                 $oBasket->load();
                 $oBasket->onUpdate();
             }
@@ -192,10 +192,10 @@ class oxcmp_user extends oxView
      *
      * @return  string  redirection string
      */
-    public function login()
+    public function login($sUser = null, $sPassword = null)
     {
-        $sUser = $this->request->getRequestParameter('lgn_usr');
-        $sPassword = $this->request->getRequestParameter('lgn_pwd', true);
+        $sUser = $sUser? $sUser : $this->request->getRequestParameter('lgn_usr');
+        $sPassword = $sPassword ? $sPassword : $this->request->getRequestParameter('lgn_pwd', true);
         $sCookie = $this->request->getRequestParameter('lgn_cook');
         //$blFbLogin = $this->request->getRequestParameter( 'fblogin' );
 
@@ -207,6 +207,13 @@ class oxcmp_user extends oxView
             $oUser = oxNew('oxuser');
             $oUser->login($sUser, $sPassword, $sCookie);
             $this->setLoginStatus(USER_LOGIN_SUCCESS);
+
+            // yes, successful login
+            if ($this->isAdmin()) {
+                oxRegistry::getSession()->setVariable('auth', $oUser->oxuser__oxid->value);
+            } else {
+                oxRegistry::getSession()->setVariable('usr', $oUser->oxuser__oxid->value);
+            }
         } catch (oxUserException $oEx) {
             // for login component send excpetion text to a custom component (if defined)
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, '', false);
@@ -239,7 +246,7 @@ class oxcmp_user extends oxView
      */
     protected function _afterLogin($oUser)
     {
-        $oSession = $this->getSession();
+        $oSession = $this->session;
 
         // generating new session id after login
         if ($this->getLoginStatus() === USER_LOGIN_SUCCESS) {
@@ -280,7 +287,7 @@ class oxcmp_user extends oxView
             if (!$this->isAdmin() && !$this->config->getConfigParam('blPerfNoBasketSaving')) {
                 //load basket from the database
                 try {
-                    if ($oBasket = $this->getSession()->getBasket()) {
+                    if ($oBasket = $this->session->getBasket()) {
                         $oBasket->load();
                     }
                 } catch (Exception $oE) {
@@ -303,7 +310,7 @@ class oxcmp_user extends oxView
         if ($oUser = $this->getUser()) {
             //updating user Facebook ID
             if ($oUser->updateFbId()) {
-                oxRegistry::getSession()->setVariable('_blFbUserIdUpdated', true);
+                $this->session->setVariable('_blFbUserIdUpdated', true);
             }
         }
     }
@@ -316,18 +323,23 @@ class oxcmp_user extends oxView
      */
     protected function _afterLogout()
     {
-        oxRegistry::getSession()->deleteVariable('paymentid');
-        oxRegistry::getSession()->deleteVariable('sShipSet');
-        oxRegistry::getSession()->deleteVariable('deladrid');
-        oxRegistry::getSession()->deleteVariable('dynvalue');
+        $this->session->deleteVariable('paymentid');
+        $this->session->deleteVariable('sShipSet');
+        $this->session->deleteVariable('deladrid');
+        $this->session->deleteVariable('dynvalue');
+        $this->session->deleteVariable('usr'); // for front end
+        $this->session->deleteVariable('auth'); // for back end
+
+        // delete cookie
+        oxRegistry::get("oxUtilsServer")->deleteUserCookie($this->config->getShopID());
 
         // resetting & recalc basket
-        if (($oBasket = $this->getSession()->getBasket())) {
+        if (($oBasket = $this->session->getBasket())) {
             $oBasket->resetUserInfo();
             $oBasket->onUpdate();
         }
 
-        oxRegistry::getSession()->delBasket();
+        $this->session->delBasket();
     }
 
     /**
@@ -478,11 +490,14 @@ class oxcmp_user extends oxView
                 $oUser->acceptTerms();
             }
 
-            $sUserId = oxRegistry::getSession()->getVariable("su");
-            $sRecEmail = oxRegistry::getSession()->getVariable("re");
+            $sUserId = $this->session->getVariable("su");
+            $sRecEmail = $this->session->getVariable("re");
             if ($this->config->getConfigParam('blInvitationsEnabled') && $sUserId && $sRecEmail) {
                 // setting registration credit points..
                 $oUser->setCreditPointsForRegistrant($sUserId, $sRecEmail);
+
+                $this->session->deleteVariable('su');
+                $this->session->deleteVariable('re');
             }
 
             // assigning to newsletter
@@ -518,7 +533,7 @@ class oxcmp_user extends oxView
 
         if (!$blActiveLogin) {
 
-            oxRegistry::getSession()->setVariable('usr', $oUser->getId());
+            $this->session->setVariable('usr', $oUser->getId());
             $this->_afterLogin($oUser);
 
 
@@ -526,7 +541,7 @@ class oxcmp_user extends oxView
             //V #427: order remark for new users
             $sOrderRemark = $this->request->getRequestParameter('order_remark', true);
             if ($sOrderRemark) {
-                oxRegistry::getSession()->setVariable('ordrem', $sOrderRemark);
+                $this->session->setVariable('ordrem', $sOrderRemark);
             }
         }
 
@@ -597,7 +612,7 @@ class oxcmp_user extends oxView
      */
     protected function _saveDeliveryAddressState()
     {
-        $oSession = oxRegistry::getSession();
+        $oSession = $this->session;
 
         $blShow = $this->request->getRequestParameter('blshowshipaddress');
         if (!isset($blShow)) {
@@ -622,7 +637,7 @@ class oxcmp_user extends oxView
      */
     protected function _changeUser_noRedirect()
     {
-        if (!$this->getSession()->checkSessionChallenge()) {
+        if (!$this->session->checkSessionChallenge()) {
             return;
         }
 
@@ -677,12 +692,12 @@ class oxcmp_user extends oxView
         $sOrderRemark = $this->request->getRequestParameter('order_remark', true);
 
         if ($sOrderRemark) {
-            oxRegistry::getSession()->setVariable('ordrem', $sOrderRemark);
+            $this->session->setVariable('ordrem', $sOrderRemark);
         } else {
-            oxRegistry::getSession()->deleteVariable('ordrem');
+            $this->session->deleteVariable('ordrem');
         }
 
-        if ($oBasket = $this->getSession()->getBasket()) {
+        if ($oBasket = $this->session->getBasket()) {
             $oBasket->setBasketUser(null);
             $oBasket->onUpdate();
         }
@@ -700,7 +715,7 @@ class oxcmp_user extends oxView
     {
         // if user company name, user name and additional info has special chars
         $blShowShipAddressParameter = $this->request->getRequestParameter('blshowshipaddress');
-        $blShowShipAddressVariable = oxRegistry::getSession()->getVariable('blshowshipaddress');
+        $blShowShipAddressVariable = $this->session->getVariable('blshowshipaddress');
         $sDeliveryAddressParameter = $this->request->getRequestParameter('deladr', true);
         $aDeladr = ($blShowShipAddressParameter || $blShowShipAddressVariable) ? $sDeliveryAddressParameter : array();
         $aDelAdress = $aDeladr;
@@ -780,10 +795,10 @@ class oxcmp_user extends oxView
      */
     public function getInvitor()
     {
-        $sSu = oxRegistry::getSession()->getVariable('su');
+        $sSu = $this->session->getVariable('su');
 
         if (!$sSu && ($sSuNew = $this->request->getRequestParameter('su'))) {
-            oxRegistry::getSession()->setVariable('su', $sSuNew);
+            $this->session->setVariable('su', $sSuNew);
         }
     }
 
@@ -792,9 +807,9 @@ class oxcmp_user extends oxView
      */
     public function setRecipient()
     {
-        $sRe = oxRegistry::getSession()->getVariable('re');
+        $sRe = $this->session->getVariable('re');
         if (!$sRe && ($sReNew = $this->request->getRequestParameter('re'))) {
-            oxRegistry::getSession()->setVariable('re', $sReNew);
+            $this->session->setVariable('re', $sReNew);
         }
     }
 }

@@ -160,12 +160,12 @@ class oxLang extends oxSuperCfg
             $blAdmin = $this->isAdmin();
 
             // languages and search engines
-            if ($blAdmin && (($iSeLang = oxRegistry::getConfig()->getRequestParameter('changelang')) !== null)) {
+            if ($blAdmin && (($iSeLang = $this->config->getRequestParameter('changelang')) !== null)) {
                 $this->_iBaseLanguageId = $iSeLang;
             }
 
             if (is_null($this->_iBaseLanguageId)) {
-                $this->_iBaseLanguageId = oxRegistry::getConfig()->getRequestParameter('lang');
+                $this->_iBaseLanguageId = $this->config->getRequestParameter('lang');
             }
 
             //or determining by domain
@@ -181,7 +181,7 @@ class oxLang extends oxSuperCfg
             }
 
             if (is_null($this->_iBaseLanguageId)) {
-                $this->_iBaseLanguageId = oxRegistry::getConfig()->getRequestParameter('language');
+                $this->_iBaseLanguageId = $this->config->getRequestParameter('language');
                 if (!isset($this->_iBaseLanguageId)) {
                     $this->_iBaseLanguageId = oxRegistry::getSession()->getVariable('language');
                 }
@@ -269,9 +269,9 @@ class oxLang extends oxSuperCfg
                 // choosing language ident
                 // check if we really need to set the new language
                 if ("saveinnlang" == $this->config->getActiveView()->getFncName()) {
-                    $iLang = oxRegistry::getConfig()->getRequestParameter("new_lang");
+                    $iLang = $this->config->getRequestParameter("new_lang");
                 }
-                $iLang = ($iLang === null) ? oxRegistry::getConfig()->getRequestParameter('editlanguage') : $iLang;
+                $iLang = ($iLang === null) ? $this->config->getRequestParameter('editlanguage') : $iLang;
                 $iLang = ($iLang === null) ? oxRegistry::getSession()->getVariable('editlanguage') : $iLang;
                 $iLang = ($iLang === null) ? $this->getBaseLanguage() : $iLang;
 
@@ -1108,7 +1108,7 @@ class oxLang extends oxSuperCfg
     public function processUrl($sUrl, $iLang = null)
     {
         $iLang = isset($iLang) ? $iLang : $this->getBaseLanguage();
-        $iDefaultLang = intval(oxRegistry::getConfig()->getConfigParam('sDefaultLang'));
+        $iDefaultLang = intval($this->config->getConfigParam('sDefaultLang'));
         $iBrowserLanguage = intval($this->detectLanguageByBrowser());
         /** @var oxStrRegular $oStr */
         $oStr = getStr();
@@ -1345,7 +1345,7 @@ class oxLang extends oxSuperCfg
     protected function _selectLanguageParamValues($sParamName, $sShopId = null)
     {
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->config;
 
         $sQuery = "
             select " . $oConfig->getDecodeValueQuery() . " as oxvarvalue

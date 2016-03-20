@@ -32,9 +32,9 @@ class Login extends oxAdminView
     /**
      * Sets value for _sThisAction to "login".
      */
-    public function __construct($config)
+    public function __construct($config, $request, $session)
     {
-        parent::__construct($config);
+        parent::__construct($config, $request, $session);
 
         $this->config->setConfigParam('blAdmin', true);
         $this->_sThisAction = "login";
@@ -56,8 +56,9 @@ class Login extends oxAdminView
         }
 
         //resets user once on this screen.
-        $oUser = oxNew("oxUser");
-        $oUser->logout();
+        /* @var oxcmp_user $cmp */
+        $cmp = oxNew('oxcmp_user');
+        $cmp->logout();
 
         oxView::render();
 
@@ -113,14 +114,21 @@ class Login extends oxAdminView
         $sProfile = $this->request->getRequestParameter('profile');
 
         try { // trying to login
-            /** @var oxUser $oUser */
-            $oUser = oxNew("oxuser");
-            $oUser->login($sUser, $sPass);
+            /* @var oxcmp_user $cmp */
+            $cmp = oxNew('oxcmp_user');
+            $cmp->login($sUser, $sPass);
+            if (USER_LOGIN_SUCCESS !== $cmp->getLoginStatus()) {
+                /** @var oxUserException $oEx */
+                $oEx = oxNew('oxUserException');
+                $oEx->setMessage('ERROR_MESSAGE_USER_NOVALIDLOGIN');
+                throw $oEx;
+            }
+
+            $oUser = $cmp->getUser();
             $iSubshop = (int) $oUser->oxuser__oxrights->value;
             if ($iSubshop) {
                 oxRegistry::getSession()->setVariable("shp", $iSubshop);
                 oxRegistry::getSession()->setVariable('currentadminshop', $iSubshop);
-                oxRegistry::getConfig()->setShopId($iSubshop);
             }
         } catch (oxUserException $oEx) {
             $myUtilsView->addErrorToDisplay('LOGIN_ERROR');
@@ -147,15 +155,15 @@ class Login extends oxAdminView
 
         //execute onAdminLogin() event
         $oEvenHandler = oxNew("oxSystemEventHandler");
-        $oEvenHandler->onAdminLogin(oxRegistry::getConfig()->getShopId());
+        $oEvenHandler->onAdminLogin($this->config->getShopId());
 
         // #533
         if (isset($sProfile)) {
-            $aProfiles = oxRegistry::getSession()->getVariable("aAdminProfiles");
+            $aProfiles = $this->session->getVariable("aAdminProfiles");
             if ($aProfiles && isset($aProfiles[$sProfile])) {
                 // setting cookie to store last locally used profile
                 $myUtilsServer->setOxCookie("oxidadminprofile", $sProfile . "@" . implode("@", $aProfiles[$sProfile]), time() + 31536000, "/");
-                oxRegistry::getSession()->setVariable("profile", $aProfiles[$sProfile]);
+                $this->session->setVariable("profile", $aProfiles[$sProfile]);
             }
         } else {
             //deleting cookie info, as setting profile to default
@@ -172,7 +180,7 @@ class Login extends oxAdminView
         $myUtilsServer->setOxCookie("oxidadminlanguage", $aLanguages[$iLang]->abbr, time() + 31536000, "/");
 
         //P
-        //oxRegistry::getSession()->setVariable( "blAdminTemplateLanguage", $iLang );
+        //$this->session->setVariable( "blAdminTemplateLanguage", $iLang );
         oxRegistry::getLang()->setTplLanguage($iLang);
 
         return "admin_start";

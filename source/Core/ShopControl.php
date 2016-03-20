@@ -130,7 +130,7 @@ class ShopControl extends \oxSuperCfg
         try {
             $this->_runOnce();
 
-            $function = !is_null($function) ? $function : oxRegistry::getConfig()->getRequestParameter('fnc');
+            $function = !is_null($function) ? $function : $this->config->getRequestParameter('fnc');
             $class = !is_null($class) ? $class : $this->_getStartController();
 
             $this->_process($class, $function, $parameters, $viewsChain);
@@ -182,7 +182,7 @@ class ShopControl extends \oxSuperCfg
      */
     protected function _getStartController()
     {
-        $class = oxRegistry::getConfig()->getRequestParameter('cl');
+        $class = $this->config->getRequestParameter('cl');
 
         if (!$class) {
             $session = oxRegistry::getSession();

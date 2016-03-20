@@ -82,7 +82,7 @@ class Adminguestbook_Main extends oxAdminDetails
             $aParams['oxgbentries__oxid'] = null;
 
             // author
-            $aParams['oxgbentries__oxuserid'] = oxRegistry::getSession()->getVariable('auth');
+            $aParams['oxgbentries__oxuserid'] = $this->session->getVariable('auth');
         }
 
         $aParams = $this->appendAdditionalParametersForSave($aParams);

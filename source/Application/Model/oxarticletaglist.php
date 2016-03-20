@@ -211,25 +211,6 @@ class oxArticleTagList extends oxI18n implements oxITagList
     }
 
     /**
-     * Checks if tags was already tagged for the same product.
-     *
-     * @param string $tagTitle given tag
-     *
-     * @return bool
-     */
-    public function canBeTagged($tagTitle)
-    {
-        $products = oxRegistry::getSession()->getVariable("aTaggedProducts");
-        if (isset($products) && $tags = $products[$this->getArticleId()]) {
-            if ($tags[$tagTitle] == 1) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Execute cache dependencies.
      */
     public function executeDependencyEvent()

@@ -83,8 +83,8 @@ class oxVendor extends oxI18n implements oxIUrl
      */
     public function __construct($config)
     {
-        $this->setShowArticleCnt($this->config->getConfigParam('bl_perfShowActionCatArticleCnt'));
         parent::__construct($config);
+        $this->setShowArticleCnt($this->config->getConfigParam('bl_perfShowActionCatArticleCnt'));
     }
 
     /**

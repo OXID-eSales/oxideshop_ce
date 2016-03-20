@@ -223,7 +223,7 @@ class oxRssFeed extends oxSuperCfg
             $oItem->isGuidPermalink = true;
             // $oItem->description             = $oArticle->getLongDescription()->value; //oxarticles__oxshortdesc->value;
             //#4038: Smarty not parsed in RSS, although smarty parsing activated for longdescriptions
-            if (oxRegistry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
+            if ($this->config->getConfigParam('bl_perfParseLongDescinSmarty')) {
                 $oItem->description = $oArticle->getLongDesc();
             } else {
                 $oItem->description = $oArticle->getLongDescription()->value;

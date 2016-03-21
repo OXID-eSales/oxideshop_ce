@@ -110,7 +110,13 @@ class Doctrine extends oxLegacyDb
     {
         $errorInformation = $this->getConnection()->errorInfo();
 
-        return $errorInformation[1];
+        $errorNumber = 0;
+
+        if (array_key_exists('1', $errorInformation) && !is_null($errorInformation[1])) {
+            $errorNumber = $errorInformation[1];
+        }
+
+        return $errorNumber;
     }
 
     /**
@@ -122,7 +128,13 @@ class Doctrine extends oxLegacyDb
     {
         $errorInformation = $this->getConnection()->errorInfo();
 
-        return $errorInformation[2];
+        $errorMessage = '';
+
+        if (array_key_exists('2', $errorInformation) && !is_null($errorInformation[2])) {
+            $errorMessage = $errorInformation[2];
+        }
+
+        return $errorMessage;
     }
 
     /**

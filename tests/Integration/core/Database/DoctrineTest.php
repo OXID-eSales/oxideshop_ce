@@ -30,6 +30,11 @@ class DoctrineTest extends UnitTestCase
 {
 
     /**
+     * @var bool Should this test use the legacy database for the tests?
+     */
+    protected $useLegacyDatabase = false;
+
+    /**
      * @var Doctrine The doctrine database we want to test in this class.
      */
     protected $database = null;
@@ -38,7 +43,12 @@ class DoctrineTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->database = new Doctrine();
+        if ($this->useLegacyDatabase) {
+            $oxDb = oxNew('oxDb');
+            $this->database = $oxDb->getDb();
+        } else {
+            $this->database = new Doctrine();
+        }
     }
 
     /**
@@ -114,8 +124,8 @@ class DoctrineTest extends UnitTestCase
         $errorNumber = $this->database->errorNo();
         $errorMessage = $this->database->errorMsg();
 
-        $this->assertNull($errorNumber);
-        $this->assertNull($errorMessage);
+        $this->assertEquals(0, $errorNumber);
+        $this->assertEquals('', $errorMessage);
     }
 
     /**

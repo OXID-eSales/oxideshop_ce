@@ -204,6 +204,27 @@ class Doctrine extends oxLegacyDb
     }
 
     /**
+     * Set the transaction isolation level.
+     *
+     * Allowed values are 'READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE'.
+     *
+     * @param string $level The level of transaction isolation we want to set.
+     *
+     * @return bool Was the setting of transaction isolation level successful?
+     */
+    public function setTransactionIsolationLevel($level = null)
+    {
+        $result = false;
+
+        $availableLevels = array('READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE');
+        if (in_array(strtoupper($level), $availableLevels)) {
+            $result = $this->execute("SET TRANSACTION ISOLATION LEVEL $level;");
+        }
+
+        return $result;
+    }
+
+    /**
      * Execute the given query and return the corresponding result set.
      *
      * @todo: implement and test switch, so that SELECT gets handled different (no empty result set)!

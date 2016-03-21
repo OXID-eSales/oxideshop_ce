@@ -157,6 +157,25 @@ class DoctrineTest extends UnitTestCase
     }
 
     /**
+     * Test, that the set of the transaction isolation level works.
+     */
+    public function testSetTransactionIsolationLevel()
+    {
+        $this->markTestSkipped('Cause atm the oxid user has not the rights to set this value!');
+        $transactionIsolationLevelPre = $this->fetchTransactionIsolationLevel();
+
+        $this->database->setTransactionIsolationLevel('READ COMMITTED');
+        $transactionIsolationLevel = $this->fetchTransactionIsolationLevel();
+
+        $this->assertEquals('READ COMMITTED', $transactionIsolationLevel);
+
+        $this->database->setTransactionIsolationLevel($transactionIsolationLevelPre);
+        $transactionIsolationLevel = $this->fetchTransactionIsolationLevel();
+
+        $this->assertEquals($transactionIsolationLevelPre, $transactionIsolationLevel);
+    }
+
+    /**
      * Delete an entry from the database table oxorderfiles.
      *
      * @param string $oxId The oxId of the row to delete.
@@ -210,6 +229,18 @@ class DoctrineTest extends UnitTestCase
         $row = $rows->fetchRow();
 
         return $row;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function fetchTransactionIsolationLevel()
+    {
+        $sql = "SELECT * FROM information_schema.session_variables WHERE variable_name = 'tx_isolation';";
+        $resultSet = $this->database->select($sql);
+        $resultRow = $resultSet->fetchRow();
+
+        return str_replace('-', ' ', $resultRow['VARIABLE_VALUE']);
     }
 
 }

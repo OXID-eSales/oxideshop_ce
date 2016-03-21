@@ -176,6 +176,30 @@ class DoctrineTest extends UnitTestCase
     }
 
     /**
+     * Test, that the method 'getCol' works with parameters
+     */
+    public function testGetColWithoutParameters()
+    {
+        $result = $this->database->getCol("SELECT OXMAPID FROM oxarticles WHERE OXMAPID > 200 AND OXMAPID < 206");
+
+        $this->assertInternalType('array', $result);
+        $this->assertEquals(5, count($result));
+        $this->assertEquals(array('201', '202', '203', '204', '205'), $result);
+    }
+
+    /**
+     * Test, that the method 'getCol' works with parameters
+     */
+    public function testGetColWithParameters()
+    {
+        $result = $this->database->getCol("SELECT OXMAPID FROM oxarticles WHERE OXMAPID > ? AND OXMAPID < ?", array(200, 206));
+
+        $this->assertInternalType('array', $result);
+        $this->assertEquals(5, count($result));
+        $this->assertEquals(array('201', '202', '203', '204', '205'), $result);
+    }
+
+    /**
      * Delete an entry from the database table oxorderfiles.
      *
      * @param string $oxId The oxId of the row to delete.

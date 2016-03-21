@@ -258,13 +258,38 @@ class Doctrine extends oxLegacyDb
      */
     public function select($query, $parameters = false, $type = true)
     {
-        if (!$parameters) {
-            $parameters = array();
-        }
+        $parameters = $this->assureParameterIsAnArray($parameters);
 
         return new DoctrineResultSet(
             $this->getConnection()->executeQuery($query, $parameters)
         );
+    }
+
+    /**
+     * Get the values of a column.
+     *
+     * @param string     $query      The sql statement we want to execute.
+     * @param array|bool $parameters The parameters array.
+     * @param bool       $onMaster   Do we want to execute this statement on the master?
+     *
+     * @return array The values of a column of a corresponding sql query.
+     */
+    public function getCol($query, $parameters = false, $onMaster = true)
+    {
+        $parameters = $this->assureParameterIsAnArray($parameters);
+
+        $rows = $this->getConnection()->fetchAll($query, $parameters);
+
+        $result = array();
+        foreach ($rows as $row) {
+            // cause there is no doctrine equivalent, we take this little detour and restructure the result
+            $columnNames = array_keys($row);
+            $columnName = $columnNames[0];
+
+            $result[] = $row[$columnName];
+        }
+
+        return $result;
     }
 
     /**
@@ -386,6 +411,22 @@ class Doctrine extends oxLegacyDb
         }
 
         return $doctrineDriver;
+    }
+
+    /**
+     * Sanitize the given parameter to be an array.
+     *
+     * @param bool|array $parameter The parameter we want to be an array.
+     *
+     * @return array An empty array.
+     */
+    private function assureParameterIsAnArray($parameter)
+    {
+        if (!$parameter) {
+            $parameter = array();
+        }
+
+        return $parameter;
     }
 
 }

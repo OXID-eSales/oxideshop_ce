@@ -138,7 +138,7 @@ interface DatabaseInterface
     public function getCol($query, $parameters = false, $onMaster = true);
 
     /**
-     * Get array
+     * Run a given select sql statement with a limit clause on the database.
      *
      * @param string     $query        The sql statement we want to execute.
      * @param int        $numberOfRows Number of rows to select
@@ -146,7 +146,7 @@ interface DatabaseInterface
      * @param array|bool $parameters   The parameters array.
      * @param bool       $type         Connection type
      *
-     * @return mixed|Object_ResultSet
+     * @return mixed|Object_ResultSet The result of the given query.
      */
     public function selectLimit($query, $numberOfRows = -1, $offset = -1, $parameters = false, $type = true);
 

@@ -45,10 +45,23 @@ class DoctrineTest extends UnitTestCase
 
         if ($this->useLegacyDatabase) {
             $oxDb = oxNew('oxDb');
+
             $this->database = $oxDb->getDb();
         } else {
             $this->database = new Doctrine();
         }
+    }
+
+    /**
+     * Test, that the method 'selectLimit' works without parameters and an empty result.
+     */
+    public function testSelectLimit()
+    {
+        $resultSet = $this->database->selectLimit('SELECT OXID FROM oxorderfiles', 5);
+        $result = $resultSet->getAll();
+
+        $this->assertInternalType('array', $result);
+        $this->assertEmpty($result);
     }
 
     /**

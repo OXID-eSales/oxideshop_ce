@@ -186,7 +186,18 @@ class DoctrineTest extends UnitTestCase
     }
 
     /**
-     * Test, that the method 'getCol' works with parameters
+     * Test, that the method 'getCol' works without parameters and an empty result.
+     */
+    public function testGetColWithoutParametersEmptyResult()
+    {
+        $result = $this->database->getCol("SELECT OXID FROM oxorderfiles;");
+
+        $this->assertInternalType('array', $result);
+        $this->assertEquals(0, count($result));
+    }
+
+    /**
+     * Test, that the method 'getCol' works without parameters and a non empty result.
      */
     public function testGetColWithoutParameters()
     {
@@ -198,7 +209,7 @@ class DoctrineTest extends UnitTestCase
     }
 
     /**
-     * Test, that the method 'getCol' works with parameters
+     * Test, that the method 'getCol' works with parameters and a non empty result.
      */
     public function testGetColWithParameters()
     {

@@ -127,13 +127,13 @@ interface DatabaseInterface
     public function getAssoc($query, $parameters = false, $onMaster = true);
 
     /**
-     * Get column value
+     * Get the values of a column.
      *
      * @param string     $query      The sql statement we want to execute.
      * @param array|bool $parameters The parameters array.
      * @param bool       $onMaster   Do we want to execute this statement on the master?
      *
-     * @return array
+     * @return array The values of a column of a corresponding sql query.
      */
     public function getCol($query, $parameters = false, $onMaster = true);
 

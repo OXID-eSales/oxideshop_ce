@@ -44,24 +44,38 @@ class DoctrineTest extends UnitTestCase
         parent::setUp();
 
         if ($this->useLegacyDatabase) {
-            $oxDb = oxNew('oxDb');
-
-            $this->database = $oxDb->getDb();
+            $this->database = oxDb::getDb();
         } else {
             $this->database = new Doctrine();
         }
     }
 
     /**
-     * Test, that the method 'selectLimit' works without parameters and an empty result.
+     * Data provider for testSelectLimit.
+     *
+     * @return array The parameters we give into testSelectLimit.
      */
-    public function testSelectLimit()
+    public function dataProvider()
     {
-        $resultSet = $this->database->selectLimit('SELECT OXID FROM oxorderfiles', 5);
+        return array(
+            array('SELECT OXID FROM oxorderfiles', -1, -1, false, array()),
+            array('SELECT OXID FROM oxorderfiles', 5, -1, false, array()),
+        );
+
+    }
+
+    /**
+     * Test, that the method 'selectLimit' works without parameters and an empty result.
+     *
+     * @dataProvider dataProvider
+     */
+    public function testSelectLimit($sql, $limit, $offset, $parameters, $expected)
+    {
+        $resultSet = $this->database->selectLimit($sql, $limit, $offset, $parameters);
         $result = $resultSet->getAll();
 
         $this->assertInternalType('array', $result);
-        $this->assertEmpty($result);
+        $this->assertEquals($expected, $result);
     }
 
     /**

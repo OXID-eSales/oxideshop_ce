@@ -55,11 +55,25 @@ class DoctrineTest extends UnitTestCase
      *
      * @return array The parameters we give into testSelectLimit.
      */
-    public function dataProvider()
+    public function dataProvider_testSelectLimit()
     {
         return array(
             array('SELECT OXID FROM oxorderfiles', -1, -1, false, array()),
             array('SELECT OXID FROM oxorderfiles', 5, -1, false, array()),
+            array('SELECT OXID FROM oxorderfiles', -1, 1, false, array()),
+            array('SELECT OXID FROM oxvendor', 1, 0, false, array(
+                array('OXID' => '9437def212dc37c66f90cc249143510a')
+            )),
+            array('SELECT OXID FROM oxvendor', 1, 1, false, array(
+                array('OXID' => 'd2e44d9b31fcce448.08890330')
+            )),
+            array('SELECT OXID FROM oxvendor', 2, 1, false, array(
+                array('OXID' => 'd2e44d9b31fcce448.08890330'),
+                array('OXID' => 'd2e44d9b32fd2c224.65443178'),
+            )),
+            array('SELECT OXID FROM oxvendor', 2, 2, false, array(
+                array('OXID' => 'd2e44d9b32fd2c224.65443178'),
+            )),
         );
 
     }
@@ -67,7 +81,7 @@ class DoctrineTest extends UnitTestCase
     /**
      * Test, that the method 'selectLimit' works without parameters and an empty result.
      *
-     * @dataProvider dataProvider
+     * @dataProvider dataProvider_testSelectLimit
      */
     public function testSelectLimit($sql, $limit, $offset, $parameters, $expected)
     {

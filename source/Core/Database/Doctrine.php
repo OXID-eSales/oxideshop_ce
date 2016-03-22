@@ -290,11 +290,17 @@ class Doctrine extends oxLegacyDb
      */
     public function selectLimit($query, $numberOfRows = -1, $offset = -1, $parameters = false, $type = true)
     {
+        $limitSql = "";
+        if (-1 !== $numberOfRows) {
+            $limitSql = "LIMIT $numberOfRows";
+        }
+
         $offsetSql = "";
-        if (-1 !== $offset) {
+        if ((-1 !== $offset) && (-1 !== $numberOfRows)) {
             $offsetSql = "OFFSET $offset";
         }
-        return $this->select($query . " LIMIT $numberOfRows $offsetSql", $parameters, $type);
+
+        return $this->select($query . " $limitSql $offsetSql", $parameters, $type);
     }
 
     /**

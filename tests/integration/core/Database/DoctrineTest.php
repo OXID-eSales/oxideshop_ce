@@ -81,7 +81,7 @@ class DoctrineTest extends UnitTestCase
     /**
      * Test, that a rollback while a transaction cleans up the made changes.
      */
-    public function testTransactionRollbacked()
+    public function testRollbackTransactionRevertsChanges()
     {
         $this->assureOrderFileIsEmpty();
 
@@ -102,7 +102,7 @@ class DoctrineTest extends UnitTestCase
     /**
      * Test, that the commit of a transaction works as expected.
      */
-    public function testTransactionCommitted()
+    public function testCommitTransactionCommitsChanges()
     {
         $exampleOxId = 'XYZ';
 

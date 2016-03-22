@@ -280,23 +280,23 @@ class Doctrine extends oxLegacyDb
     /**
      * Run a given select sql statement with a limit clause on the database.
      *
-     * @param string     $query        The sql statement we want to execute.
-     * @param int        $numberOfRows Number of rows to select
-     * @param int        $offset       Number of rows to skip
-     * @param array|bool $parameters   The parameters array.
-     * @param bool       $type         Connection type
+     * @param string     $query      The sql statement we want to execute.
+     * @param int        $limit      Number of rows to select
+     * @param int        $offset     Number of rows to skip
+     * @param array|bool $parameters The parameters array.
+     * @param bool       $type       Connection type
      *
      * @return DoctrineResultSet The result of the given query.
      */
-    public function selectLimit($query, $numberOfRows = -1, $offset = -1, $parameters = false, $type = true)
+    public function selectLimit($query, $limit = -1, $offset = -1, $parameters = false, $type = true)
     {
         $limitSql = "";
-        if (-1 !== $numberOfRows) {
-            $limitSql = "LIMIT $numberOfRows";
+        if (-1 !== $limit) {
+            $limitSql = "LIMIT $limit";
         }
 
         $offsetSql = "";
-        if ((-1 !== $offset) && (-1 !== $numberOfRows)) {
+        if ((-1 !== $offset) && (-1 !== $limit)) {
             $offsetSql = "OFFSET $offset";
         }
 

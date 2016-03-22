@@ -310,6 +310,8 @@ class Doctrine extends oxLegacyDb
      * @param array|bool $parameters The parameters array.
      * @param bool       $onMaster   Do we want to execute this statement on the master?
      *
+     * @todo: What kind of array do we expect numeric or assoc? Does it depends on FETCH_MODE?
+     *
      * @return array The values of a column of a corresponding sql query.
      */
     public function getCol($query, $parameters = false, $onMaster = true)
@@ -409,6 +411,8 @@ class Doctrine extends oxLegacyDb
 
     /**
      * Get the connection parameter array.
+     *
+     * @todo: Map the iDebug config.inc parameter to the doctrine settings.
      *
      * @return array The connection settings parameters.
      */

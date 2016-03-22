@@ -133,6 +133,8 @@ interface DatabaseInterface
      * @param array|bool $parameters The parameters array.
      * @param bool       $onMaster   Do we want to execute this statement on the master?
      *
+     * @todo: What kind of array do we expect numeric or assoc? Does it depends on FETCH_MODE?
+     *
      * @return array The values of a column of a corresponding sql query.
      */
     public function getCol($query, $parameters = false, $onMaster = true);
@@ -173,7 +175,7 @@ interface DatabaseInterface
     /**
      * Get the number of rows, which where changed during the last sql statement.
      *
-     * @return int The number of rows affected by the sql statement.
+     * @return int The number of rows affected by the last sql statement.
      */
     public function affected_rows();
 

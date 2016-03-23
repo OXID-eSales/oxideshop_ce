@@ -212,17 +212,17 @@ class DoctrineTest extends UnitTestCase
             array('SELECT OXID FROM oxorderfiles', 5, -1, false, array()),
             array('SELECT OXID FROM oxorderfiles', -1, 1, false, array()),
             array('SELECT OXID FROM oxvendor', 1, 0, false, array(
-                array('OXID' => '9437def212dc37c66f90cc249143510a')
+                array('9437def212dc37c66f90cc249143510a')
             )),
             array('SELECT OXID FROM oxvendor', 1, 1, false, array(
-                array('OXID' => 'd2e44d9b31fcce448.08890330')
+                array('d2e44d9b31fcce448.08890330')
             )),
             array('SELECT OXID FROM oxvendor', 2, 1, false, array(
-                array('OXID' => 'd2e44d9b31fcce448.08890330'),
-                array('OXID' => 'd2e44d9b32fd2c224.65443178'),
+                array('d2e44d9b31fcce448.08890330'),
+                array('d2e44d9b32fd2c224.65443178'),
             )),
             array('SELECT OXID FROM oxvendor', 2, 2, false, array(
-                array('OXID' => 'd2e44d9b32fd2c224.65443178'),
+                array('d2e44d9b32fd2c224.65443178'),
             )),
         );
     }
@@ -342,7 +342,7 @@ class DoctrineTest extends UnitTestCase
         // check normal (associative array) case
         $row = $this->fetchFirstProductOxId();
         $this->assertInternalType('array', $row);
-        $this->assertEquals(array('OXID'), array_keys($row));
+        $this->assertEquals(array(0), array_keys($row));
 
         // check numeric array case
         $previousFetchMode = $this->database->setFetchMode(1);
@@ -440,9 +440,8 @@ class DoctrineTest extends UnitTestCase
         $this->assertNotEmpty($orderFileIds);
         $this->assertEquals(1, count($orderFileIds));
         $this->assertArrayHasKey('0', $orderFileIds);
-        $this->assertArrayHasKey('OXID', $orderFileIds[0]);
 
-        $this->assertEquals($oxId, $orderFileIds[0]['OXID']);
+        $this->assertEquals($oxId, $orderFileIds[0][0]);
     }
 
     /**

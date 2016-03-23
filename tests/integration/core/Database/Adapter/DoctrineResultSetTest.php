@@ -27,6 +27,8 @@ use OxidEsales\Eshop\Core\Database\Doctrine;
 
 /**
  * Tests for our database object.
+ *
+ * @group doctrine
  */
 class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCase
 {
@@ -96,8 +98,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         $row = $resultSet->fetchRow();
 
         $this->assertInternalType('array', $row);
-        $this->assertArrayHasKey('OXID', $row);
-        $this->assertEquals(self::FIRST_OXARTICLE_OXID, $row['OXID']);
+        $this->assertEquals(self::FIRST_OXARTICLE_OXID, $row[0]);
     }
 
     /**
@@ -125,7 +126,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         $this->assertInternalType('array', $rows);
         $this->assertNotEmpty($rows);
         $this->assertGreaterThan(200, count($rows));
-        $this->assertEquals(self::FIRST_OXARTICLE_OXID, $rows[0]['OXID']);
+        $this->assertEquals(self::FIRST_OXARTICLE_OXID, $rows[0][0]);
     }
 
     /**

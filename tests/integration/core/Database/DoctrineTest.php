@@ -58,97 +58,121 @@ class DoctrineTest extends UnitTestCase
     public function dataProvider_testSelect()
     {
         return array(
+            array( // fetch mode default and an empty result
+                   null,
+                   'SELECT OXID FROM oxorderfiles',
+                   array()
+            ),
+            array( // fetch mode default and one column
+                   null,
+                   'SELECT OXID FROM oxvendor',
+                   array(
+                       array('9437def212dc37c66f90cc249143510a'),
+                       array('d2e44d9b31fcce448.08890330'),
+                       array('d2e44d9b32fd2c224.65443178')
+                   )
+            ),
+            array( // fetch mode default and multiple columns
+                   null,
+                   'SELECT OXID, OXMAPID, OXACTIVE FROM oxvendor ORDER BY OXMAPID',
+                   array(
+                       array('d2e44d9b31fcce448.08890330', '1', '1'),
+                       array('d2e44d9b32fd2c224.65443178', '2', '1'),
+                       array('9437def212dc37c66f90cc249143510a', '3', '1')
+                   )
+            ),
+
             array( // fetch mode numeric and an empty result
-                1,
-                'SELECT OXID FROM oxorderfiles',
-                array()
+                   1,
+                   'SELECT OXID FROM oxorderfiles',
+                   array()
             ),
             array( // fetch mode numeric and one column
-                1,
-                'SELECT OXID FROM oxvendor',
-                array(
-                    array('9437def212dc37c66f90cc249143510a'),
-                    array('d2e44d9b31fcce448.08890330'),
-                    array('d2e44d9b32fd2c224.65443178')
-                )
+                   1,
+                   'SELECT OXID FROM oxvendor',
+                   array(
+                       array('9437def212dc37c66f90cc249143510a'),
+                       array('d2e44d9b31fcce448.08890330'),
+                       array('d2e44d9b32fd2c224.65443178')
+                   )
             ),
             array( // fetch mode numeric and multiple columns
-                1,
-                'SELECT OXID, OXMAPID, OXACTIVE FROM oxvendor ORDER BY OXMAPID',
-                array(
-                    array('d2e44d9b31fcce448.08890330', '1', '1'),
-                    array('d2e44d9b32fd2c224.65443178', '2', '1'),
-                    array('9437def212dc37c66f90cc249143510a', '3', '1')
-                )
+                   1,
+                   'SELECT OXID, OXMAPID, OXACTIVE FROM oxvendor ORDER BY OXMAPID',
+                   array(
+                       array('d2e44d9b31fcce448.08890330', '1', '1'),
+                       array('d2e44d9b32fd2c224.65443178', '2', '1'),
+                       array('9437def212dc37c66f90cc249143510a', '3', '1')
+                   )
             ),
 
             array( // fetch mode associative and an empty result
-                2,
-                'SELECT OXID FROM oxorderfiles',
-                array()
+                   2,
+                   'SELECT OXID FROM oxorderfiles',
+                   array()
             ),
             array( // fetch mode associative and one column
-                2,
-                'SELECT OXID FROM oxvendor',
-                array(
-                    array('OXID' => '9437def212dc37c66f90cc249143510a'),
-                    array('OXID' => 'd2e44d9b31fcce448.08890330'),
-                    array('OXID' => 'd2e44d9b32fd2c224.65443178')
-                )
+                   2,
+                   'SELECT OXID FROM oxvendor',
+                   array(
+                       array('OXID' => '9437def212dc37c66f90cc249143510a'),
+                       array('OXID' => 'd2e44d9b31fcce448.08890330'),
+                       array('OXID' => 'd2e44d9b32fd2c224.65443178')
+                   )
             ),
             array( // fetch mode associative and multiple columns
-                2,
-                'SELECT OXID, OXMAPID, OXACTIVE FROM oxvendor ORDER BY OXMAPID',
-                array(
-                    array('OXID' => 'd2e44d9b31fcce448.08890330', 'OXMAPID' => '1', 'OXACTIVE' => '1'),
-                    array('OXID' => 'd2e44d9b32fd2c224.65443178', 'OXMAPID' => '2', 'OXACTIVE' => '1'),
-                    array('OXID' => '9437def212dc37c66f90cc249143510a', 'OXMAPID' => '3', 'OXACTIVE' => '1')
-                )
+                   2,
+                   'SELECT OXID, OXMAPID, OXACTIVE FROM oxvendor ORDER BY OXMAPID',
+                   array(
+                       array('OXID' => 'd2e44d9b31fcce448.08890330', 'OXMAPID' => '1', 'OXACTIVE' => '1'),
+                       array('OXID' => 'd2e44d9b32fd2c224.65443178', 'OXMAPID' => '2', 'OXACTIVE' => '1'),
+                       array('OXID' => '9437def212dc37c66f90cc249143510a', 'OXMAPID' => '3', 'OXACTIVE' => '1')
+                   )
             ),
 
             array( // fetch mode both and an empty result
-                3,
-                'SELECT OXID FROM oxorderfiles',
-                array()
+                   3,
+                   'SELECT OXID FROM oxorderfiles',
+                   array()
             ),
             array( // fetch mode both and one column
-                3,
-                'SELECT OXID FROM oxvendor',
-                array(
-                    array('OXID' => '9437def212dc37c66f90cc249143510a', 0 => '9437def212dc37c66f90cc249143510a'),
-                    array('OXID' => 'd2e44d9b31fcce448.08890330', 0 => 'd2e44d9b31fcce448.08890330'),
-                    array('OXID' => 'd2e44d9b32fd2c224.65443178', 0 => 'd2e44d9b32fd2c224.65443178')
-                )
+                   3,
+                   'SELECT OXID FROM oxvendor',
+                   array(
+                       array('OXID' => '9437def212dc37c66f90cc249143510a', 0 => '9437def212dc37c66f90cc249143510a'),
+                       array('OXID' => 'd2e44d9b31fcce448.08890330', 0 => 'd2e44d9b31fcce448.08890330'),
+                       array('OXID' => 'd2e44d9b32fd2c224.65443178', 0 => 'd2e44d9b32fd2c224.65443178')
+                   )
             ),
             array( // fetch mode both and multiple columns
-                3,
-                'SELECT OXID, OXMAPID, OXACTIVE FROM oxvendor ORDER BY OXMAPID',
-                array(
-                    array(
-                        'OXID' => 'd2e44d9b31fcce448.08890330',
-                        'OXMAPID' => '1',
-                        'OXACTIVE' => '1',
-                        0 => 'd2e44d9b31fcce448.08890330',
-                        1 => '1',
-                        2 => '1'
-                    ),
-                    array(
-                        'OXID' => 'd2e44d9b32fd2c224.65443178',
-                        'OXMAPID' => '2',
-                        'OXACTIVE' => '1',
-                        0 => 'd2e44d9b32fd2c224.65443178',
-                        1 => '2',
-                        2 => '1'
-                    ),
-                    array(
-                        'OXID' => '9437def212dc37c66f90cc249143510a',
-                        'OXMAPID' => '3',
-                        'OXACTIVE' => '1',
-                        0 => '9437def212dc37c66f90cc249143510a',
-                        1 => '3',
-                        2 => '1'
-                    )
-                )
+                   3,
+                   'SELECT OXID, OXMAPID, OXACTIVE FROM oxvendor ORDER BY OXMAPID',
+                   array(
+                       array(
+                           'OXID'     => 'd2e44d9b31fcce448.08890330',
+                           'OXMAPID'  => '1',
+                           'OXACTIVE' => '1',
+                           0          => 'd2e44d9b31fcce448.08890330',
+                           1          => '1',
+                           2          => '1'
+                       ),
+                       array(
+                           'OXID'     => 'd2e44d9b32fd2c224.65443178',
+                           'OXMAPID'  => '2',
+                           'OXACTIVE' => '1',
+                           0          => 'd2e44d9b32fd2c224.65443178',
+                           1          => '2',
+                           2          => '1'
+                       ),
+                       array(
+                           'OXID'     => '9437def212dc37c66f90cc249143510a',
+                           'OXMAPID'  => '3',
+                           'OXACTIVE' => '1',
+                           0          => '9437def212dc37c66f90cc249143510a',
+                           1          => '3',
+                           2          => '1'
+                       )
+                   )
             ),
 
         );
@@ -165,7 +189,9 @@ class DoctrineTest extends UnitTestCase
      */
     public function testSelect($fetchMode, $sql, $expectedRows)
     {
-        $this->database->setFetchMode($fetchMode);
+        if (!is_null($fetchMode)) {
+            $this->database->setFetchMode($fetchMode);
+        }
 
         $resultSet = $this->database->select($sql);
         $rows = $resultSet->getAll();

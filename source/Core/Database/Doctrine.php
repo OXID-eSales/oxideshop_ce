@@ -48,7 +48,7 @@ class Doctrine extends oxLegacyDb
     /**
      * @var int The last fetch mode. We store the adodblite fetch mode here. See mapFetchMode method for further information.
      */
-    protected $fetchMode = 2;
+    protected $fetchMode = 1;
 
     /**
      * The standard constructor.
@@ -373,7 +373,7 @@ class Doctrine extends oxLegacyDb
     {
         $connection = DriverManager::getConnection($this->getConnectionParameters());
 
-        $connection->setFetchMode($this->fetchMode);
+        $connection->setFetchMode($this->mapFetchMode($this->fetchMode));
 
         return $connection;
     }
@@ -386,10 +386,10 @@ class Doctrine extends oxLegacyDb
      *  ADODB_FETCH_ASSOC = 2
      *  ADODB_FETCH_BOTH = 3
      *
-     *  FETCH_LAZY = 1
-     *  FETCH_ASSOC = 2
-     *  FETCH_NUM = 3
-     *  FETCH_BOTH = 4
+     *  PDO::FETCH_LAZY = 1
+     *  PDO::FETCH_ASSOC = 2
+     *  PDO::FETCH_NUM = 3
+     *  PDO::FETCH_BOTH = 4
      *
      * @param int $fetchMode The adodb fetch mode.
      *

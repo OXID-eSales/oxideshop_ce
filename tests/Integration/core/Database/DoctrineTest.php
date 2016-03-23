@@ -25,6 +25,8 @@ use OxidEsales\Eshop\Core\Database\Doctrine;
 
 /**
  * Tests for our database object.
+ *
+ * @group doctrine
  */
 class DoctrineTest extends UnitTestCase
 {

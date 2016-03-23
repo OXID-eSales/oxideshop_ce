@@ -239,22 +239,24 @@ class Doctrine extends oxLegacyDb
     /**
      * Execute the given query and return the corresponding result set.
      *
-     * @todo: implement and test switch, so that SELECT gets handled different (no empty result set)!
-     *
      * @param string     $query      The query we want to execute.
      * @param array|bool $parameters The parameters for the given query.
      *
      * @throws \Doctrine\DBAL\DBALException
      *
-     * @return mixed|DoctrineEmptyResultSet
+     * @return mixed|DoctrineEmptyResultSet|DoctrineResultSet
      */
     public function execute($query, $parameters = false)
     {
-        $affectedRows = $this->getConnection()->exec($query);
+        if ($this->isSelectStatement($query)) {
+            return $this->select($query, $parameters);
+        } else {
+            $affectedRows = $this->getConnection()->exec($query);
 
-        $this->setAffectedRows($affectedRows);
+            $this->setAffectedRows($affectedRows);
 
-        return new DoctrineEmptyResultSet();
+            return new DoctrineEmptyResultSet();
+        }
     }
 
     /**
@@ -265,6 +267,8 @@ class Doctrine extends oxLegacyDb
      * @param bool   $type
      *
      * @throws \Doctrine\DBAL\DBALException The exception, that can occur while running the sql statement.
+     *
+     * @todo: set affected rows to zero and add test!
      *
      * @return DoctrineResultSet The result of the given query.
      */
@@ -469,6 +473,20 @@ class Doctrine extends oxLegacyDb
         }
 
         return $parameter;
+    }
+
+    /**
+     * Check, if the given sql query is a select statement.
+     *
+     * @param string $query The query we want to check.
+     *
+     * @return bool Is the given query a select statement?
+     */
+    private function isSelectStatement($query)
+    {
+        $formedQuery = strtoupper(trim($query));
+
+        return 0 === strpos($formedQuery, 'SELECT');
     }
 
 }

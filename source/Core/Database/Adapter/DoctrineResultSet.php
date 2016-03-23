@@ -57,6 +57,10 @@ class DoctrineResultSet
             $this->fields = $adapted->fetch(PDO::FETCH_NUM);
             // @todo: we need the parameters here!
             $adapted->execute();
+        } else {
+            // @todo: double check, if this path or the DoctrineEmptyResultSet could be removed
+            $this->EOF = true;
+            $this->fields = false;
         }
     }
 

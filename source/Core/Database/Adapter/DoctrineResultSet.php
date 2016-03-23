@@ -23,6 +23,7 @@ namespace OxidEsales\Eshop\Core\Database\Adapter;
 
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Driver\PDOStatement;
+use PDO;
 
 class DoctrineResultSet
 {
@@ -42,6 +43,8 @@ class DoctrineResultSet
     /**
      * DoctrineResultSet constructor.
      *
+     * @todo: we need the parameters of the query and (maybe) the fetch mode in this class
+     *
      * @param Statement $adapted The statement we want to wrap in this class.
      */
     public function __construct(Statement $adapted)
@@ -50,6 +53,10 @@ class DoctrineResultSet
 
         if (0 < $this->getAdapted()->rowCount()) {
             $this->EOF = false;
+
+            $this->fields = $adapted->fetch(PDO::FETCH_NUM);
+            // @todo: we need the parameters here!
+            $adapted->execute();
         }
     }
 
@@ -95,15 +102,6 @@ class DoctrineResultSet
 
     /**
      * @todo: implement and test
-     *
-     * @return mixed
-     */
-    public function moveNext()
-    {
-    }
-
-    /**
-     * @todo: implement and test
      */
     public function Close()
     {
@@ -141,6 +139,15 @@ class DoctrineResultSet
      * @todo: implement and test
      */
     public function GetRows($nRows)
+    {
+    }
+
+    /**
+     * @todo: implement and test
+     *
+     * @return mixed
+     */
+    public function MoveNext()
     {
     }
 

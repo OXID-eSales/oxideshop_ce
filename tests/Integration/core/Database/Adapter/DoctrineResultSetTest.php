@@ -34,6 +34,11 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
 {
 
     /**
+     * @var bool Should this test use the legacy database for the tests?
+     */
+    protected $useLegacyDatabase = true;
+
+    /**
      * @var string The name of the class, including the complete namespace.
      */
     const CLASS_NAME_WITH_PATH = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet';
@@ -43,17 +48,23 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
      */
     const FIRST_OXARTICLE_OXID = '09602cddb5af0aba745293d08ae6bcf6';
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->createDatabase();
+    }
+
     /**
      * Test, that the result set of an empty select works as expected.
      *
+     * @return DoctrineResultSet The empty result set.
      */
     public function testCreationWithRealEmptyResult()
     {
-        $database = new Doctrine();
+        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers;');
 
-        $resultSet = $database->select('SELECT OXID FROM oxvouchers;');
-
-        $this->assertEquals(self::CLASS_NAME_WITH_PATH, get_class($resultSet));
+        $this->assertDoctrineResultSet($resultSet);
         $this->assertEquals(0, $resultSet->recordCount());
 
         return $resultSet;
@@ -66,11 +77,9 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
      */
     public function testCreationWithRealNonEmptyResult()
     {
-        $database = new Doctrine();
+        $resultSet = $this->database->select('SELECT OXID FROM oxarticles;');
 
-        $resultSet = $database->select('SELECT OXID FROM oxarticles;');
-
-        $this->assertEquals(self::CLASS_NAME_WITH_PATH, get_class($resultSet));
+        $this->assertDoctrineResultSet($resultSet);
         $this->assertGreaterThan(200, $resultSet->recordCount());
 
         return $resultSet;
@@ -138,7 +147,6 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
 
         $this->assertTrue($resultSet->EOF);
         $this->assertTrue($resultSet->EOF());
-
     }
 
     /**
@@ -150,6 +158,32 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
 
         $this->assertFalse($resultSet->EOF);
         $this->assertFalse($resultSet->EOF());
+    }
+
+    /**
+     * Create the database, we want to test.
+     */
+    private function createDatabase()
+    {
+        if ($this->useLegacyDatabase) {
+            $this->database = oxDb::getDb();
+        } else {
+            $this->database = new Doctrine();
+        }
+    }
+
+    /**
+     * Assert, that the given object is a doctrine result set.
+     *
+     * @param DoctrineResultSet $resultSet The object to check.
+     */
+    private function assertDoctrineResultSet($resultSet)
+    {
+        if ($this->useLegacyDatabase) {
+            $this->assertEquals('object_ResultSet', get_class($resultSet));
+        } else {
+            $this->assertEquals(self::CLASS_NAME_WITH_PATH, get_class($resultSet));
+        }
     }
 
 }

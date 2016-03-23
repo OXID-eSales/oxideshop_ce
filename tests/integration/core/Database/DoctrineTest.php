@@ -51,6 +51,63 @@ class DoctrineTest extends UnitTestCase
     }
 
     /**
+     * The data provider for the method testSelect.
+     *
+     * @return array The parameters for the testSelect.
+     */
+    public function dataProvider_testSelect()
+    {
+        return array(
+            // fetch mode numeric and an empty result
+            array(
+                1,
+                'SELECT OXID FROM oxorderfiles',
+                array()
+            ),
+            // fetch mode numeric and one column
+            array(
+                1,
+                'SELECT OXID FROM oxvendor',
+                array(
+                    array('9437def212dc37c66f90cc249143510a'),
+                    array('d2e44d9b31fcce448.08890330'),
+                    array('d2e44d9b32fd2c224.65443178')
+                )
+            ),
+            // fetch mode numeric and multiple columns
+            array(
+                1,
+                'SELECT OXID, OXMAPID, OXACTIVE FROM oxvendor ORDER BY OXMAPID',
+                array(
+                    array('d2e44d9b31fcce448.08890330', '1', '1'),
+                    array('d2e44d9b32fd2c224.65443178', '2', '1'),
+                    array('9437def212dc37c66f90cc249143510a', '3', '1')
+                )
+            )
+        );
+    }
+
+    /**
+     * Test, that the method 'select' works as expected in the cases, given by the corresponding data provider.
+     *
+     * @dataProvider dataProvider_testSelect
+     *
+     * @param int    $fetchMode    The fetch mode we want to test.
+     * @param string $sql          The query we want to test.
+     * @param array  $expectedRows The rows we expect.
+     */
+    public function testSelect($fetchMode, $sql, $expectedRows)
+    {
+        $this->database->setFetchMode($fetchMode);
+
+        $resultSet = $this->database->select($sql);
+        $rows = $resultSet->getAll();
+
+        $this->assertInternalType('array', $rows, 'Expected an array as result!');
+        $this->assertEquals($expectedRows, $rows);
+    }
+
+    /**
      * Data provider for testSelectLimit.
      *
      * @return array The parameters we give into testSelectLimit.
@@ -75,7 +132,6 @@ class DoctrineTest extends UnitTestCase
                 array('OXID' => 'd2e44d9b32fd2c224.65443178'),
             )),
         );
-
     }
 
     /**

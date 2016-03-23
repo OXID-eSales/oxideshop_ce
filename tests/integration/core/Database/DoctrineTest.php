@@ -238,6 +238,56 @@ class DoctrineTest extends UnitTestCase
     }
 
     /**
+     * Test, that the method 'execute' works with an empty result set for the select query.
+     */
+    public function testExecuteWithEmptyResultSelect()
+    {
+        $result = $this->database->execute('SELECT OXID FROM oxorderfiles');
+
+        $this->assertTrue($result->EOF);
+        $this->assertFalse($result->fields);
+
+        $expectedRows = array();
+        $allRows = $result->getAll();
+        $this->assertEquals($expectedRows, $allRows);
+    }
+
+    /**
+     * Test, that the method 'execute' works with an empty result set for the select query,
+     * whereby the select clause is not on the first char.
+     */
+    public function testExecuteWithEmptyResultAndSelectNotOnFirstChar()
+    {
+        $result = $this->database->execute('   SELECT OXID FROM oxorderfiles');
+
+        $this->assertTrue($result->EOF);
+        $this->assertFalse($result->fields);
+
+        $expectedRows = array();
+        $allRows = $result->getAll();
+        $this->assertEquals($expectedRows, $allRows);
+    }
+
+    /**
+     * Test, that the method 'execute' works with a non empty result set for the select query.
+     */
+    public function testExecuteWithNonEmptySelect()
+    {
+        $result = $this->database->execute('SELECT OXID FROM oxvendor ORDER BY OXID');
+
+        $this->assertFalse($result->EOF);
+        $this->assertEquals(array('9437def212dc37c66f90cc249143510a'), $result->fields);
+
+        $expectedRows = array(
+            array("9437def212dc37c66f90cc249143510a"),
+            array("d2e44d9b31fcce448.08890330"),
+            array("d2e44d9b32fd2c224.65443178")
+        );
+        $allRows = $result->getAll();
+        $this->assertEquals($expectedRows, $allRows);
+    }
+
+    /**
      * Test, that the method 'execute' works for insert and delete.
      */
     public function testExecuteWithInsertAndDelete()

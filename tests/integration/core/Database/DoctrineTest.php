@@ -43,11 +43,7 @@ class DoctrineTest extends UnitTestCase
     {
         parent::setUp();
 
-        if ($this->useLegacyDatabase) {
-            $this->database = oxDb::getDb();
-        } else {
-            $this->database = new Doctrine();
-        }
+        $this->createDatabase();
     }
 
     /**
@@ -242,51 +238,6 @@ class DoctrineTest extends UnitTestCase
     }
 
     /**
-     * Test, that a rollback while a transaction cleans up the made changes.
-     */
-    public function testRollbackTransactionRevertsChanges()
-    {
-        $this->assureOrderFileIsEmpty();
-
-        $exampleOxId = 'XYZ';
-
-        $this->database->startTransaction();
-        $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ('$exampleOxId');", array());
-
-        // assure, that the changes are made in this transaction
-        $this->assureOrderFileHasOnly($exampleOxId);
-
-        $this->database->rollbackTransaction();
-
-        // assure, that the changes are reverted
-        $this->assureOrderFileIsEmpty();
-    }
-
-    /**
-     * Test, that the commit of a transaction works as expected.
-     */
-    public function testCommitTransactionCommitsChanges()
-    {
-        $exampleOxId = 'XYZ';
-
-        $this->deleteOrderFilesEntry($exampleOxId);
-
-        $this->assureOrderFileIsEmpty();
-        $this->database->startTransaction();
-        $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ('$exampleOxId');", array());
-
-        // assure, that the changes are made in this transaction
-        $this->assureOrderFileHasOnly($exampleOxId);
-        $this->database->commitTransaction();
-
-        // assure, that the changes persist the transaction
-        $this->assureOrderFileHasOnly($exampleOxId);
-
-        // clean up
-        $this->deleteOrderFilesEntry($exampleOxId);
-    }
-
-    /**
      * Test, that the method 'execute' works for insert and delete.
      */
     public function testExecuteWithInsertAndDelete()
@@ -295,13 +246,15 @@ class DoctrineTest extends UnitTestCase
 
         $exampleOxId = 'XYZ';
 
-        $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ('$exampleOxId');");
+        $resultSet = $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ('$exampleOxId');");
 
+        $this->assertEmptyResultSet($resultSet);
         $this->assertEquals(1, $this->database->affected_rows());
         $this->assureOrderFileHasOnly($exampleOxId);
 
-        $this->database->execute("DELETE FROM oxorderfiles WHERE OXID = '$exampleOxId';");
+        $resultSet = $this->database->execute("DELETE FROM oxorderfiles WHERE OXID = '$exampleOxId';");
 
+        $this->assertEmptyResultSet($resultSet);
         $this->assertEquals(1, $this->database->affected_rows());
         $this->assureOrderFileIsEmpty();
     }
@@ -311,6 +264,8 @@ class DoctrineTest extends UnitTestCase
      */
     public function testErrorNoAndErrorMsgWithoutPriorError()
     {
+        $this->createDatabase();
+
         $errorNumber = $this->database->errorNo();
         $errorMessage = $this->database->errorMsg();
 
@@ -411,6 +366,51 @@ class DoctrineTest extends UnitTestCase
     }
 
     /**
+     * Test, that a rollback while a transaction cleans up the made changes.
+     */
+    public function testRollbackTransactionRevertsChanges()
+    {
+        $this->assureOrderFileIsEmpty();
+
+        $exampleOxId = 'XYZ';
+
+        $this->database->startTransaction();
+        $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ('$exampleOxId');", array());
+
+        // assure, that the changes are made in this transaction
+        $this->assureOrderFileHasOnly($exampleOxId);
+
+        $this->database->rollbackTransaction();
+
+        // assure, that the changes are reverted
+        $this->assureOrderFileIsEmpty();
+    }
+
+    /**
+     * Test, that the commit of a transaction works as expected.
+     */
+    public function testCommitTransactionCommitsChanges()
+    {
+        $exampleOxId = 'XYZ';
+
+        $this->deleteOrderFilesEntry($exampleOxId);
+
+        $this->assureOrderFileIsEmpty();
+        $this->database->startTransaction();
+        $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ('$exampleOxId');", array());
+
+        // assure, that the changes are made in this transaction
+        $this->assureOrderFileHasOnly($exampleOxId);
+        $this->database->commitTransaction();
+
+        // assure, that the changes persist the transaction
+        $this->assureOrderFileHasOnly($exampleOxId);
+
+        // clean up
+        $this->deleteOrderFilesEntry($exampleOxId);
+    }
+
+    /**
      * Delete an entry from the database table oxorderfiles.
      *
      * @param string $oxId The oxId of the row to delete.
@@ -475,6 +475,35 @@ class DoctrineTest extends UnitTestCase
         $resultRow = $resultSet->fetchRow();
 
         return str_replace('-', ' ', $resultRow['VARIABLE_VALUE']);
+    }
+
+    /**
+     * Assure, that the given result set is empty.
+     *
+     * @param object $resultSet The result set we want to be empty.
+     */
+    private function assertEmptyResultSet($resultSet)
+    {
+        $this->assertTrue($resultSet->EOF);
+        $this->assertEmpty($resultSet->fields);
+
+        if ($this->useLegacyDatabase) {
+            $this->assertEquals('ADORecordSet_empty', get_class($resultSet));
+        } else {
+            $this->assertEquals('OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet', get_class($resultSet));
+        }
+    }
+
+    /**
+     * Create the database, we want to test.
+     */
+    private function createDatabase()
+    {
+        if ($this->useLegacyDatabase) {
+            $this->database = oxDb::getDb();
+        } else {
+            $this->database = new Doctrine();
+        }
     }
 
 }

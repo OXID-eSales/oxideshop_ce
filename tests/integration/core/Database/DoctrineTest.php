@@ -83,7 +83,35 @@ class DoctrineTest extends UnitTestCase
                     array('d2e44d9b32fd2c224.65443178', '2', '1'),
                     array('9437def212dc37c66f90cc249143510a', '3', '1')
                 )
-            )
+            ),
+
+            // fetch mode numeric and an empty result
+            array(
+                2,
+                'SELECT OXID FROM oxorderfiles',
+                array()
+            ),
+            // fetch mode numeric and one column
+            array(
+                2,
+                'SELECT OXID FROM oxvendor',
+                array(
+                    array('OXID' => '9437def212dc37c66f90cc249143510a'),
+                    array('OXID' => 'd2e44d9b31fcce448.08890330'),
+                    array('OXID' => 'd2e44d9b32fd2c224.65443178')
+                )
+            ),
+            // fetch mode numeric and multiple columns
+            array(
+                2,
+                'SELECT OXID, OXMAPID, OXACTIVE FROM oxvendor ORDER BY OXMAPID',
+                array(
+                    array('OXID' => 'd2e44d9b31fcce448.08890330', 'OXMAPID' => '1', 'OXACTIVE' => '1'),
+                    array('OXID' => 'd2e44d9b32fd2c224.65443178', 'OXMAPID' => '2', 'OXACTIVE' => '1'),
+                    array('OXID' => '9437def212dc37c66f90cc249143510a', 'OXMAPID' => '3', 'OXACTIVE' => '1')
+                )
+            ),
+
         );
     }
 

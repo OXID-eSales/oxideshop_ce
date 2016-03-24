@@ -112,7 +112,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
 
         $errorNumber = 0;
 
-        if (array_key_exists('1', $errorInformation) && !is_null($errorInformation[1])) {
+        if (is_array($errorInformation) && array_key_exists('1', $errorInformation) && !is_null($errorInformation[1])) {
             $errorNumber = $errorInformation[1];
         }
 
@@ -130,7 +130,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
 
         $errorMessage = '';
 
-        if (array_key_exists('2', $errorInformation) && !is_null($errorInformation[2])) {
+        if (is_array($errorInformation) && array_key_exists('2', $errorInformation) && !is_null($errorInformation[2])) {
             $errorMessage = $errorInformation[2];
         }
 

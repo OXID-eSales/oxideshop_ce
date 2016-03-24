@@ -332,6 +332,8 @@ class DoctrineTest extends UnitTestCase
     {
         try {
             $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ;");
+
+            $this->fail('A mysql syntax error should produce an exception!');
         } catch (Exception $exception) {
             $errorNumber = $this->database->errorNo();
             $errorMessage = $this->database->errorMsg();

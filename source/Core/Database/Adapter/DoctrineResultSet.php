@@ -41,9 +41,12 @@ class DoctrineResultSet
     protected $adapted = null;
 
     /**
+     * @var bool Was the first element already fetched?
+     */
+    private $fetchedFirst = false;
+
+    /**
      * DoctrineResultSet constructor.
-     *
-     * @todo: we need the parameters of the query and (maybe) the fetch mode in this class
      *
      * @param Statement $adapted The statement we want to wrap in this class.
      */
@@ -54,9 +57,9 @@ class DoctrineResultSet
         if (0 < $this->getAdapted()->rowCount()) {
             $this->EOF = false;
 
-            $this->fields = $adapted->fetch(PDO::FETCH_NUM);
-            // @todo: we need the parameters here!
-            $adapted->execute();
+            $this->fields = $this->getAdapted()->fetch();
+
+            $this->executeAdapted();
         } else {
             // @todo: double check, if this path or the DoctrineEmptyResultSet could be removed
             $this->EOF = true;
@@ -91,6 +94,8 @@ class DoctrineResultSet
      */
     public function getAll()
     {
+        $this->getAdapted()->execute();
+
         return $this->getAdapted()->fetchAll();
     }
 
@@ -147,12 +152,28 @@ class DoctrineResultSet
     }
 
     /**
-     * @todo: implement and test
+     * Load the next row from the database.
      *
-     * @return mixed
+     * @return bool Is there another row?
      */
     public function MoveNext()
     {
+        if ($this->EOF()) {
+            return false;
+        }
+
+        if (!$this->isFetchedFirst()) {
+            $this->fetchRowIntoFields();
+        }
+        $this->fetchRowIntoFields();
+
+        if (!$this->fields) {
+            $this->EOF = true;
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -194,5 +215,43 @@ class DoctrineResultSet
     protected function setAdapted($adapted)
     {
         $this->adapted = $adapted;
+    }
+
+    /**
+     * Getter for the fetched first flag.
+     *
+     * @return boolean Is the first row of the adapted statement already fetched?
+     */
+    private function isFetchedFirst()
+    {
+        return $this->fetchedFirst;
+    }
+
+    /**
+     * Setter for the fetched first flag.
+     *
+     * @param boolean $fetchedFirst Is the first row of the adapted statement already fetched?
+     */
+    private function setFetchedFirst($fetchedFirst)
+    {
+        $this->fetchedFirst = $fetchedFirst;
+    }
+
+    /**
+     * (Re-)execute the adapted statement.
+     */
+    private function executeAdapted()
+    {
+        $this->getAdapted()->execute();
+    }
+
+    /**
+     * Fetch the next row into the fields attribute.
+     */
+    private function fetchRowIntoFields()
+    {
+        $this->fields = $this->getAdapted()->fetch();
+
+        $this->setFetchedFirst(true);
     }
 }

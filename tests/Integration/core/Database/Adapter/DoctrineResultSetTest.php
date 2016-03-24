@@ -34,9 +34,14 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
 {
 
     /**
+     * @var Doctrine|oxLegacyDb The database to test.
+     */
+    protected $database = null;
+
+    /**
      * @var bool Should this test use the legacy database for the tests?
      */
-    protected $useLegacyDatabase = true;
+    protected $useLegacyDatabase = false;
 
     /**
      * @var string The name of the class, including the complete namespace.
@@ -53,6 +58,90 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         parent::setUp();
 
         $this->createDatabase();
+    }
+
+    /**
+     * Test, that the method 'MoveNext' works for an empty result set.
+     */
+    public function testMoveNextWithEmptyResultSet()
+    {
+        $resultSet = $this->testCreationWithRealEmptyResult();
+
+        $methodResult = $resultSet->MoveNext();
+
+        $this->assertTrue($resultSet->EOF);
+        $this->assertFalse($resultSet->fields);
+        $this->assertFalse($methodResult);
+    }
+
+    /**
+     * Test, that the method 'MoveNext' works for a non empty result set.
+     */
+    public function testMoveNextWithNonEmptyResultSet()
+    {
+        $resultSet = $this->testCreationWithRealNonEmptyResult();
+
+        $this->assertFalse($resultSet->EOF);
+        $this->assertEquals(array('09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
+
+        $methodResult = $resultSet->MoveNext();
+
+        $this->assertFalse($resultSet->EOF);
+        $this->assertEquals(array('09620040146118fbc4b7eef6a0faf072'), $resultSet->fields);
+        $this->assertTrue($methodResult);
+
+        $methodResult = $resultSet->MoveNext();
+
+        $this->assertFalse($resultSet->EOF);
+        $this->assertEquals(array('0962081a5693597654fd2887af7a6095'), $resultSet->fields);
+        $this->assertTrue($methodResult);
+    }
+
+    /**
+     * Test, that the method 'MoveNext' works for a non empty result set.
+     */
+    public function testMoveNextWithNonEmptyResultSetReachingEnd()
+    {
+        $resultSet = $this->database->select('SELECT OXID FROM oxvendor;');
+
+        $resultSet->MoveNext();
+        $resultSet->MoveNext();
+        $methodResult = $resultSet->MoveNext();
+
+        $this->assertTrue($resultSet->EOF);
+        $this->assertFalse($resultSet->fields);
+        $this->assertFalse($methodResult);
+
+        $methodResult = $resultSet->MoveNext();
+
+        $this->assertTrue($resultSet->EOF);
+        $this->assertFalse($resultSet->fields);
+        $this->assertFalse($methodResult);
+    }
+
+    /**
+     * Test, that the method 'MoveNext' works for a non empty result set and the fetch mode associative array.
+     */
+    public function testMoveNextWithNonEmptyResultSetFetchModeAssociative()
+    {
+        $this->database->setFetchMode(PDO::FETCH_ASSOC);
+        $resultSet = $this->database->select('SELECT OXID FROM oxarticles;');
+        $this->createDatabase();
+
+        $this->assertFalse($resultSet->EOF);
+        $this->assertEquals(array('OXID' => '09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
+
+        $methodResult = $resultSet->MoveNext();
+
+        $this->assertFalse($resultSet->EOF);
+        $this->assertEquals(array('OXID' => '09620040146118fbc4b7eef6a0faf072'), $resultSet->fields);
+        $this->assertTrue($methodResult);
+
+        $methodResult = $resultSet->MoveNext();
+
+        $this->assertFalse($resultSet->EOF);
+        $this->assertEquals(array('OXID' => '0962081a5693597654fd2887af7a6095'), $resultSet->fields);
+        $this->assertTrue($methodResult);
     }
 
     /**

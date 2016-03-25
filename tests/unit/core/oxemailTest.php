@@ -1008,8 +1008,8 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testMakeOutputProcessing()
     {
-        $this->_oEmail->setBody('testbody 55 ï¿½'); //with euro sign
-        $this->_oEmail->setAltBody('testaltbody 55 ï¿½'); //with euro sign
+        $this->_oEmail->setBody('testbody 55 ¤'); //with euro sign
+        $this->_oEmail->setAltBody('testaltbody 55 ¤'); //with euro sign
         $this->_oEmail->UNITmakeOutputProcessing();
 
         $this->assertEquals('testbody 55 &euro;', $this->_oEmail->getBody());

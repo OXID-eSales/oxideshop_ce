@@ -22,8 +22,8 @@
 
 class Integration_User_SessionTest extends OxidTestCase
 {
-    const FIRST_ARTICLE_ID = 'oiaa81b5e002fc2f73b9398c361c0b97';
-    const SECOND_ARTICLE_ID = 'fc71f70c3398ee4c2cdd101494087185';
+    const FIRST_ARTICLE_ID = '0963c9792aea84adff1d2ef8aa4a7679';
+    const SECOND_ARTICLE_ID = '09646538b54bac72b4ccb92fb5e3649f';
 
     /**
      * Fixture setUp.

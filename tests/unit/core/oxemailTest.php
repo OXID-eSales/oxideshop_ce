@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -201,9 +201,9 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendMailByPhpMailWhenSmtpFails()
     {
-        $this->markTestIncomplete('smtp not working');
-        $oEmail = $this->getMock('oxEmail', array("_sendMail"));
-        $oEmail->expects($this->exactly(2))->method('_sendMail')->will($this->returnValue(false));
+        $oEmail = $this->getMock('oxEmail', array('_sendMail', '_sendMailErrorMsg'));
+        $oEmail->expects($this->atLeast(2))->method('_sendMail')->will($this->returnValue(false));
+        $oEmail->expects($this->atLeastOnce())->method('_sendMailErrorMsg');
 
         $oEmail->setRecipient($this->_oShop->oxshops__oxorderemail->value, $this->_oShop->oxshops__oxname->value);
         $oEmail->setHost("localhost");
@@ -549,7 +549,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testClearSidFromBody()
     {
-        $sShopId = 'oxbaseshop';
+            $sShopId = 'oxbaseshop';
 
         $oEmail = new oxEmail();
 
@@ -582,7 +582,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testClearSidFromAltBody()
     {
-        $sShopId = 'oxbaseshop';
+            $sShopId = 'oxbaseshop';
 
         $this->_oEmail->setAltBody('testAltBody index.php?bonusid=111&sid=123456789 blabla', true);
         $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->_oEmail->getAltBody());
@@ -942,7 +942,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testGetShopWithShopId()
     {
-        $iShopId = 'oxbaseshop';
+            $iShopId = 'oxbaseshop';
 
         $oShop = $this->_oEmail->UNITgetShop(null, $iShopId);
         $this->assertEquals($iShopId, $oShop->getShopId());
@@ -966,7 +966,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     {
         $this->_oEmail->setShop($this->_oShop);
 
-        $iShopId = 'oxbaseshop';
+            $iShopId = 'oxbaseshop';
 
         $oShop = $this->_oEmail->UNITgetShop(1, $iShopId);
         $this->assertEquals(1, $oShop->getLanguage());
@@ -1008,8 +1008,8 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testMakeOutputProcessing()
     {
-        $this->_oEmail->setBody('testbody 55 ¤'); //with euro sign
-        $this->_oEmail->setAltBody('testaltbody 55 ¤'); //with euro sign
+        $this->_oEmail->setBody('testbody 55 ï¿½'); //with euro sign
+        $this->_oEmail->setAltBody('testaltbody 55 ï¿½'); //with euro sign
         $this->_oEmail->UNITmakeOutputProcessing();
 
         $this->assertEquals('testbody 55 &euro;', $this->_oEmail->getBody());

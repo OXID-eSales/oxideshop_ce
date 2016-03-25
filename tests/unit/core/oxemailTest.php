@@ -201,9 +201,9 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendMailByPhpMailWhenSmtpFails()
     {
-        $this->markTestIncomplete('smtp not working');
-        $oEmail = $this->getMock('oxEmail', array("_sendMail"));
-        $oEmail->expects($this->exactly(2))->method('_sendMail')->will($this->returnValue(false));
+        $oEmail = $this->getMock('oxEmail', array('_sendMail', '_sendMailErrorMsg'));
+        $oEmail->expects($this->atLeast(2))->method('_sendMail')->will($this->returnValue(false));
+        $oEmail->expects($this->atLeastOnce())->method('_sendMailErrorMsg');
 
         $oEmail->setRecipient($this->_oShop->oxshops__oxorderemail->value, $this->_oShop->oxshops__oxname->value);
         $oEmail->setHost("localhost");
@@ -1008,8 +1008,8 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testMakeOutputProcessing()
     {
-        $this->_oEmail->setBody('testbody 55 ¤'); //with euro sign
-        $this->_oEmail->setAltBody('testaltbody 55 ¤'); //with euro sign
+        $this->_oEmail->setBody('testbody 55 ï¿½'); //with euro sign
+        $this->_oEmail->setAltBody('testaltbody 55 ï¿½'); //with euro sign
         $this->_oEmail->UNITmakeOutputProcessing();
 
         $this->assertEquals('testbody 55 &euro;', $this->_oEmail->getBody());

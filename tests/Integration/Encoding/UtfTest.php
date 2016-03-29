@@ -30,7 +30,6 @@ use oxContent;
 use oxDb;
 use oxEmail;
 use oxField;
-use oxGbEntry;
 use oxGroups;
 use oxLinks;
 use oxList;

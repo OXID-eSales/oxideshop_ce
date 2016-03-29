@@ -76,10 +76,6 @@ class AdminLinksMainTest extends \OxidTestCase
      */
     public function testSaveinnlang()
     {
-        oxTestModules::addFunction('oxgbentry', 'save', '{ return true; }');
-        oxTestModules::addFunction('oxgbentry', 'loadInLang', '{ return true; }');
-        oxTestModules::addFunction('oxgbentry', 'load', '{ return true; }');
-
         $this->setRequestParameter("oxid", "xxx");
 
         // testing..
@@ -99,10 +95,6 @@ class AdminLinksMainTest extends \OxidTestCase
      */
     public function testSave()
     {
-        oxTestModules::addFunction('oxgbentry', 'save', '{ return true; }');
-        oxTestModules::addFunction('oxgbentry', 'loadInLang', '{ return true; }');
-        oxTestModules::addFunction('oxgbentry', 'load', '{ return true; }');
-
         $this->setRequestParameter("oxid", "xxx");
 
         // testing..

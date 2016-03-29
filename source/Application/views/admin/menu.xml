@@ -163,9 +163,6 @@
                 <TAB id="tbcladminlinks_main" cl="adminlinks_main" />
                 <BTN id="links_new" />
             </SUBMENU>
-            <SUBMENU id="mxguestbook" cl="admin_guestbook" list="adminguestbook_list">
-                <TAB id="tbcladminguestbook_main" cl="adminguestbook_main" />
-            </SUBMENU>
             <SUBMENU id="mxcontent" cl="admin_content" list="content_list">
                 <TAB id="tbclcontent_main" cl="content_main" />
                 <TAB id="tbclcontent_seo" cl="content_seo" />

@@ -41,7 +41,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     /**
      * @var bool Should this test use the legacy database for the tests?
      */
-    protected $useLegacyDatabase = false;
+    protected $useLegacyDatabase = true;
 
     /**
      * @var string The name of the class, including the complete namespace.
@@ -142,6 +142,51 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         $this->assertFalse($resultSet->EOF);
         $this->assertEquals(array('OXID' => '0962081a5693597654fd2887af7a6095'), $resultSet->fields);
         $this->assertTrue($methodResult);
+    }
+
+    /**
+     * Test, that the method 'Move' works with an empty result set.
+     */
+    public function testMoveWithEmptyResultSet()
+    {
+        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers;');
+
+        $methodResult = $resultSet->Move(7);
+
+        $this->assertFalse($methodResult);
+        $this->assertTrue($resultSet->EOF);
+        $this->assertFalse($resultSet->fields);
+    }
+
+    /**
+     * @return array The parameters we want to use for the testMove method.
+     */
+    public function dataProvider_testMove()
+    {
+        return array(
+            array(2, array('0962081a5693597654fd2887af7a6095')),
+            array(0, array('09602cddb5af0aba745293d08ae6bcf6')),
+            array(1, array('09620040146118fbc4b7eef6a0faf072')),
+            array(300, array('a7c44be4a5ddee114.67356237')) // the last row (no. 239) stays
+        );
+    }
+        /**
+     * Test the method 'Move' with the parameters given by the corresponding data provider.
+     *
+     * @dataProvider dataProvider_testMove
+     *
+     * @param int   $moveTo         The index of the line we want to check.
+     * @param array $expectedFields The expected values in the given line.
+     */
+    public function testMove($moveTo, $expectedFields)
+    {
+        $resultSet = $this->database->select('SELECT OXID FROM oxarticles ORDER BY OXID;');
+
+        $methodResult = $resultSet->Move($moveTo);
+
+        $this->assertTrue($methodResult);
+        $this->assertEquals($expectedFields, $resultSet->fields);
+        $this->assertFalse($resultSet->EOF);
     }
 
     /**

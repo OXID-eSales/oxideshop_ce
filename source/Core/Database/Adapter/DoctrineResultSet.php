@@ -62,8 +62,7 @@ class DoctrineResultSet
             $this->executeAdapted();
         } else {
             // @todo: double check, if this path or the DoctrineEmptyResultSet could be removed
-            $this->EOF = true;
-            $this->fields = false;
+            $this->setToEmptyState();
         }
     }
 
@@ -177,10 +176,43 @@ class DoctrineResultSet
     }
 
     /**
-     * @todo: implement and test
+     * Load the n-th row.
+     *
+     * @param int $rowIndex The number of the row to load.
+     *
+     * @return bool Is there another row?
      */
-    public function Move($row)
+    public function Move($rowIndex)
     {
+        if ($this->isEmpty()) {
+            $this->setToEmptyState();
+
+            return false;
+        }
+
+        if ($this->isFetchedFirst()) {
+            $this->executeAdapted();
+        }
+
+        if (0 == $rowIndex) {
+            return true;
+        }
+
+        $lastFields = $this->fields;
+
+        while (0 < $rowIndex) {
+            $lastFields = $this->fields;
+
+            if (!$this->MoveNext()) {
+                $rowIndex = 0;
+                $this->fields = $lastFields;
+                $this->EOF = false;
+            }
+            
+            $rowIndex--;
+        }
+
+        return true;
     }
 
     /**
@@ -253,5 +285,24 @@ class DoctrineResultSet
         $this->fields = $this->getAdapted()->fetch();
 
         $this->setFetchedFirst(true);
+    }
+
+    /**
+     * Set the state of this wrapper to 'empty'.
+     */
+    private function setToEmptyState()
+    {
+        $this->EOF = true;
+        $this->fields = false;
+    }
+
+    /**
+     * Determine, if the wrapped result set is empty.
+     *
+     * @return bool Is the wrapped result set empty?
+     */
+    private function isEmpty()
+    {
+        return 0 === $this->recordCount();
     }
 }

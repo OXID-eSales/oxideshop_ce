@@ -349,13 +349,13 @@ class Unit_Models_oxArticleTest extends OxidTestCase
     public function testGetActiveCheckQuery()
     {
         $this->getConfig()->setConfigParam('blUseTimeCheck', true);
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
-        $sDate = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
+        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{return 0;}");
+        $sDate = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getRequestTime());
 
         $oArticle = oxNew('oxArticle');
         $sTable = $oArticle->getViewName();
 
-        $sQ = "(  $sTable.oxactive = 1  and $sTable.oxhidden = 0  or ( $sTable.oxactivefrom < '$sDate' and $sTable.oxactiveto > '$sDate' ) ) ";
+        $sQ = " (   $sTable.oxactive = 1  and $sTable.oxhidden = 0  or  ( $sTable.oxactivefrom < '$sDate' and $sTable.oxactiveto > '$sDate' ) ) ";
         $this->assertEquals($sQ, $oArticle->getActiveCheckQuery());
     }
 
@@ -369,8 +369,8 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $this->getConfig()->setConfigParam('blUseStock', true);
         $this->getConfig()->setConfigParam('blVariantParentBuyable', false);
         $this->getConfig()->setConfigParam('blUseTimeCheck', true);
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
-        $sDate = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
+        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{return 0;}");
+        $sDate = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getRequestTime());
 
         $oArticle = oxNew('oxArticle');
         $sTable = $oArticle->getViewName();
@@ -2136,7 +2136,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oArticle->setAdminMode(true);
         $sInsert = "";
         if (!$this->getConfig()->getConfigParam('blVariantParentBuyable')) {
-            $sInsert = " and IF( $sTable.oxvarcount = 0, 1, ( select 1 from $sTable as art where art.oxparentid=$sTable.oxid and ( art.oxactive = 1  ) and ( art.oxstockflag != 2 or art.oxstock > 0 ) limit 1 ) ) ";
+            $sInsert = " and IF( $sTable.oxvarcount = 0, 1, ( select 1 from $sTable as art where art.oxparentid=$sTable.oxid and  art.oxactive = 1  and ( art.oxstockflag != 2 or art.oxstock > 0 ) limit 1 ) ) ";
         }
         $sExpSelect = "(  $sTable.oxactive = 1  and $sTable.oxhidden = 0  and ( $sTable.oxstockflag != 2 or ( $sTable.oxstock + $sTable.oxvarstock ) > 0  ) $sInsert ) ";
         $sSelect = $oArticle->getSqlActiveSnippet();
@@ -2150,15 +2150,15 @@ class Unit_Models_oxArticleTest extends OxidTestCase
      */
     public function testGetSqlActiveSnippetDontUseStock()
     {
-        $iCurrTime = time();
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
+        $iCurrTime = 0;
+        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{ return $iCurrTime; }");
 
         $this->getConfig()->setConfigParam('blUseStock', false);
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->setAdminMode(true);
         $sTable = $oArticle->getViewName();
         $sDate = date('Y-m-d H:i:s', $iCurrTime);
-        $sExpSelect = "( (  $sTable.oxactive = 1  and $sTable.oxhidden = 0  or ( $sTable.oxactivefrom < '$sDate' and $sTable.oxactiveto > '$sDate' ) )  ) ";
+        $sExpSelect = "(  (   $sTable.oxactive = 1  and $sTable.oxhidden = 0  or  ( $sTable.oxactivefrom < '$sDate' and $sTable.oxactiveto > '$sDate' ) )  ) ";
         $sSelect = $oArticle->getSqlActiveSnippet();
         $this->assertEquals($sExpSelect, $sSelect);
     }

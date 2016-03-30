@@ -452,8 +452,8 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
     public function testGetSqlActiveSnippetForceCoreActiveMultilang()
     {
-        $iCurrTime = time();
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
+        $iCurrTime = 1453734000; //some rounded timestamp
+        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{ return $iCurrTime; }");
 
         $oI18n = $this->getMock('oxI18n', array('getViewName'));
         $oI18n->expects($this->once())->method('getViewName')->with($this->equalTo(null))->will($this->returnValue('oxi18n'));
@@ -476,8 +476,8 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
     public function testGetSqlActiveSnippet()
     {
-        $iCurrTime = time();
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
+        $iCurrTime = 1453734000; //some rounded timestamp
+        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{ return $iCurrTime; }");
 
         $sTable = 'oxi18n';
 

@@ -2119,8 +2119,8 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function  testGetSqlActiveSnippet()
     {
-        $iCurrTime = time();
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
+        $iCurrTime = 1453734000; //some rounded timestamp
+        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{ return $iCurrTime; }");
 
         $aFields = array('oxactive' => 1, 'oxactivefrom' => 1, 'oxactiveto' => 1);
         $sDate = date('Y-m-d H:i:s', $iCurrTime);

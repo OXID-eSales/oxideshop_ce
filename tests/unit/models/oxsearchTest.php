@@ -761,8 +761,8 @@ class Unit_Models_oxsearchTest extends OxidTestCase
         $this->getConfig()->setConfigParam('aSearchCols', array('oxlongdesc'));
         $this->getConfig()->setConfigParam('blUseRightsRoles', 0);
 
-        $iCurrTime = time();
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
+        $iCurrTime = 0;
+        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{ return $iCurrTime; }");
 
         $sSearchDate = date('Y-m-d H:i:s', $iCurrTime);
         $sArticleTable = $sTable = getViewName('oxarticles');
@@ -796,10 +796,10 @@ class Unit_Models_oxsearchTest extends OxidTestCase
         $this->getConfig()->setConfigParam('blUseRightsRoles', 0);
 
         oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
-        oxRegistry::get("oxUtilsDate")->UNITSetTime(time());
+        oxRegistry::get("oxUtilsDate")->UNITSetTime(0);
 
-        $iCurrTime = time();
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
+        $iCurrTime = 0;
+        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{ return $iCurrTime; }");
 
         $sSearchDate = date('Y-m-d H:i:s', $iCurrTime);
         $sArticleTable = $sTable = getViewName('oxarticles');

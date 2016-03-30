@@ -123,10 +123,13 @@ class DoctrineResultSet
     }
 
     /**
-     * @todo: implement and test
+     * Give back the number of columns the adapted result set has.
+     *
+     * @return int The number of columns of the adapted result set.
      */
     public function FieldCount()
     {
+        return $this->getAdapted()->columnCount();
     }
 
     /**

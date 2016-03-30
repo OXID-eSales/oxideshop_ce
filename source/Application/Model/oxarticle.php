@@ -1090,6 +1090,9 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         // load object from database
         parent::assign($aRecord);
 
+        //clear seo urls
+        $this->_aSeoUrls = array();
+
         $this->oxarticles__oxnid = $this->oxarticles__oxid;
 
         // check for simple article.

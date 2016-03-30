@@ -41,7 +41,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     /**
      * @var bool Should this test use the legacy database for the tests?
      */
-    protected $useLegacyDatabase = true;
+    protected $useLegacyDatabase = false;
 
     /**
      * @var string The name of the class, including the complete namespace.
@@ -145,6 +145,30 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     }
 
     /**
+     * @return array The parameters we want to use for the testMove method.
+     */
+    public function dataProvider_testFieldCount()
+    {
+        return array(
+            array('SELECT OXID FROM oxorderfiles;', 1),
+            array('SELECT OXID FROM oxvouchers;', 1),
+            array('SELECT * FROM oxvouchers;', 9)
+        );
+    }
+
+    /**
+     * Test, that the method 'FieldCount' works as expected.
+     *
+     * @dataProvider dataProvider_testFieldCount
+     */
+    public function testFieldCount($query, $count)
+    {
+        $resultSet = $this->database->select($query);
+
+        $this->assertEquals($count, $resultSet->FieldCount());
+    }
+
+    /**
      * Test, that the method 'Move' works with an empty result set.
      */
     public function testMoveWithEmptyResultSet()
@@ -170,7 +194,8 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
             array(300, array('a7c44be4a5ddee114.67356237')) // the last row (no. 239) stays
         );
     }
-        /**
+
+    /**
      * Test the method 'Move' with the parameters given by the corresponding data provider.
      *
      * @dataProvider dataProvider_testMove

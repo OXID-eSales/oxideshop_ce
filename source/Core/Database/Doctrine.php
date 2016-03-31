@@ -61,6 +61,9 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      */
     protected $fetchMode = 1;
 
+    /**
+     * @var array Map strings used in the shop to Doctrine constants
+     */
     protected $transactionIsolationLevelMap = array(
         'READ UNCOMMITTED' => Connection::TRANSACTION_READ_UNCOMMITTED,
         'READ COMMITTED'   => Connection::TRANSACTION_READ_COMMITTED,

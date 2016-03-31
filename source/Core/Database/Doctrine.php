@@ -224,7 +224,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      */
     public function startTransaction()
     {
-
         try {
             $this->getConnection()->beginTransaction();
             $result = true;
@@ -310,13 +309,11 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      */
     public function execute($query, $parameters = false)
     {
-        {
-            /** TODO explain , why there is an if ... else block here */
-            if ($this->isSelectStatement($query)) {
-                $result = $this->select($query, $parameters);
-            } else {
-                $result = $this->executeUpdate($query, $parameters);
-            }
+        /** TODO explain , why there is an if ... else block here */
+        if ($this->isSelectStatement($query)) {
+            $result = $this->select($query, $parameters);
+        } else {
+            $result = $this->executeUpdate($query, $parameters);
         }
 
         return $result;
@@ -367,8 +364,11 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      *
      * @return DoctrineEmptyResultSet
      */
-    protected function executeUpdate($query, array $params = array(), array $types = array())
+    protected function executeUpdate($query, $params = array(), $types = array())
     {
+        if (!$params) {
+            $params = array();
+        }
         $affectedRows = $this->getConnection()->executeUpdate($query, $params, $types);
 
         $this->setAffectedRows($affectedRows);
@@ -540,6 +540,8 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
 
     /**
      * Map the driver name from the config to the doctrine driver name.
+     *
+     * @todo: write integration test for mysqli, if we want to support mysqli!
      *
      * @param string $configDriver The driver name from the config.
      *

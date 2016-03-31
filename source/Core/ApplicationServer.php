@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * Class used as entity for server node information.
  *
@@ -28,7 +30,7 @@
  *
  * @ignore   This class will not be included in documentation.
  */
-class oxApplicationServer
+class ApplicationServer
 {
 
     /**

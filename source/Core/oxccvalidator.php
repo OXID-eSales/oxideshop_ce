@@ -20,32 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
-
 /**
- * @inheritdoc
+ * This class must be empty because of others eShop editions classes which can be used instead of it.
+ *
+ * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
+ *
  */
-class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
+class oxCcValidator extends \OxidEsales\Eshop\Core\CreditCardValidator
 {
-    /**
-     * @inheritdoc
-     */
-    public function getOverridableMap()
-    {
-        return [
-            'oxdbmetadatahandler' => '\OxidEsales\Eshop\Core\DbMetaDataHandler',
-            'oxApplicationServer' => '\OxidEsales\Eshop\Core\ApplicationServer',
-            'oxCcValidator' => '\OxidEsales\Eshop\Core\CreditCardValidator',
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getNotOverridableMap()
-    {
-        return [
-            'oxbase' => '\OxidEsales\Eshop\Core\Base',
-        ];
-    }
 }

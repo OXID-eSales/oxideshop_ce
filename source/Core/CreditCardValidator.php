@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * Credit card validation class
  *
  */
-class oxCcValidator
+class CreditCardValidator
 {
 
     /**

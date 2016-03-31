@@ -21,9 +21,9 @@
  */
 namespace Unit\Core;
 
+use OxidEsales\Eshop\Core\ClassMap;
 use OxidEsales\Eshop\Core\ClassMapProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 class ClassMapProviderTest extends \OxidTestCase
 {
@@ -32,23 +32,31 @@ class ClassMapProviderTest extends \OxidTestCase
      */
     public function providerGetsNotOverridableClassMap()
     {
+        $classMapCommunity = array(
+            'classcommunity' => '\class\which\is\under\CE'
+        );
         $classMapProfessional = array(
             'classprofessional' => '\class\which\is\under\PE'
         );
         $classMapEnterprise = array(
             'classenterprise' => '\class\which\is\under\EE'
         );
-        $resultProfessional = $classMapProfessional;
+        $resultCommunity = $classMapCommunity;
+        $resultProfessional = array(
+            'classcommunity' => '\class\which\is\under\CE',
+            'classprofessional' => '\class\which\is\under\PE'
+        );
         $resultEnterprise = array(
+            'classcommunity' => '\class\which\is\under\CE',
             'classprofessional' => '\class\which\is\under\PE',
             'classenterprise' => '\class\which\is\under\EE'
         );
-        $resultCommunity = array();
 
         return array(
-            array($classMapProfessional, $classMapEnterprise, EditionSelector::PROFESSIONAL, $resultProfessional),
-            array($classMapProfessional, $classMapEnterprise, EditionSelector::ENTERPRISE, $resultEnterprise),
-            array(null, null, EditionSelector::COMMUNITY, $resultCommunity),
+            array($classMapCommunity, $classMapProfessional, $classMapEnterprise, EditionSelector::COMMUNITY, $resultCommunity),
+            array($classMapCommunity, $classMapProfessional, $classMapEnterprise, EditionSelector::PROFESSIONAL, $resultProfessional),
+            array($classMapCommunity, $classMapProfessional, $classMapEnterprise, EditionSelector::ENTERPRISE, $resultEnterprise),
+            array($classMapCommunity, null, null, EditionSelector::COMMUNITY, $resultCommunity),
         );
     }
 
@@ -61,24 +69,20 @@ class ClassMapProviderTest extends \OxidTestCase
      * @dataProvider providerGetsNotOverridableClassMap
      */
     public function testGetsNotOverridableClassMap(
+        $mapNotOverridableCommunity,
         $mapNotOverridableProfessional,
         $mapNotOverridableEnterprise,
         $edition,
         $result
     ) {
-        /** @var EditionSelector|MockObject $editionSelector */
-        $editionSelector = $this->getMockBuilder('\OxidEsales\Eshop\Core\Edition\EditionSelector')->getMock();
-        $editionSelector->expects($this->atLeastOnce())->method('getEdition')->will($this->returnValue($edition));
+        $editionSelector = $this->getEditionSelectorStub($edition);
 
-        $classMapProfessional = $this->getMock('ProfessionalClassMap', array('getNotOverridableMap', 'getOverridableMap'));
-        $classMapProfessional->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue($mapNotOverridableProfessional));
-        $classMapProfessional->expects($this->any())->method('getOverridableMap')->will($this->returnValue(array()));
-
-        $classMapEnterprise = $this->getMock('EnterpriseClassMap', array('getNotOverridableMap', 'getOverridableMap'));
-        $classMapEnterprise->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue($mapNotOverridableEnterprise));
-        $classMapEnterprise->expects($this->any())->method('getOverridableMap')->will($this->returnValue(array()));
+        $classMapCommunity = $this->getClassMapStub([], $mapNotOverridableCommunity);
+        $classMapProfessional = $this->getClassMapStub([], $mapNotOverridableProfessional);
+        $classMapEnterprise = $this->getClassMapStub([], $mapNotOverridableEnterprise);
 
         $classMapSelector = new ClassMapProvider($editionSelector);
+        $classMapSelector->setClassMapCommunity($classMapCommunity);
         $classMapSelector->setClassMapProfessional($classMapProfessional);
         $classMapSelector->setClassMapEnterprise($classMapEnterprise);
 
@@ -94,27 +98,40 @@ class ClassMapProviderTest extends \OxidTestCase
      * @dataProvider providerGetsNotOverridableClassMap
      */
     public function testGetsOverridableClassMap(
+        $mapOverridableCommunity,
         $mapOverridableProfessional,
         $mapOverridableEnterprise,
         $edition,
         $result
     ) {
-        /** @var EditionSelector|MockObject $editionSelector */
-        $editionSelector = $this->getMockBuilder('\OxidEsales\Eshop\Core\Edition\EditionSelector')->getMock();
-        $editionSelector->expects($this->atLeastOnce())->method('getEdition')->will($this->returnValue($edition));
+        $editionSelector = $this->getEditionSelectorStub($edition);
 
-        $classMapProfessional = $this->getMock('ProfessionalClassMap', array('getNotOverridableMap', 'getOverridableMap'));
-        $classMapProfessional->expects($this->any())->method('getOverridableMap')->will($this->returnValue($mapOverridableProfessional));
-        $classMapProfessional->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue(array()));
-
-        $classMapEnterprise = $this->getMock('EnterpriseClassMap', array('getNotOverridableMap', 'getOverridableMap'));
-        $classMapEnterprise->expects($this->any())->method('getOverridableMap')->will($this->returnValue($mapOverridableEnterprise));
-        $classMapEnterprise->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue(array()));
+        $classMapCommunity = $this->getClassMapStub($mapOverridableCommunity, []);
+        $classMapProfessional = $this->getClassMapStub($mapOverridableProfessional, []);
+        $classMapEnterprise = $this->getClassMapStub($mapOverridableEnterprise, []);
 
         $classMapSelector = new ClassMapProvider($editionSelector);
+        $classMapSelector->setClassMapCommunity($classMapCommunity);
         $classMapSelector->setClassMapProfessional($classMapProfessional);
         $classMapSelector->setClassMapEnterprise($classMapEnterprise);
 
         $this->assertSame($result, $classMapSelector->getOverridableClassMap());
+    }
+
+    protected function getClassMapStub($mapOverridable, $mapNotOverridable)
+    {
+        $classMapStub = $this->getMock(ClassMap::class);
+        $classMapStub->method('getOverridableMap')->willReturn($mapOverridable);
+        $classMapStub->method('getNotOverridableMap')->willReturn($mapNotOverridable);
+
+        return $classMapStub;
+    }
+
+    protected function getEditionSelectorStub($edition)
+    {
+        $editionSelector = $this->getMock(EditionSelector::class);
+        $editionSelector->method('getEdition')->willreturn($edition);
+
+        return $editionSelector;
     }
 }

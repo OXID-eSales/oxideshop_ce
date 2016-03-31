@@ -20,30 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
-
 /**
- * @inheritdoc
+ * This class must be empty because of others eShop editions classes which can be used instead of it.
+ *
+ * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
+ *
+ * @mixin \OxidEsales\EshopEnterprise\Core\DbMetaDataHandler
  */
-class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
+class oxDbMetaDataHandler extends \OxidEsales\Eshop\Core\DbMetaDataHandler
 {
-    /**
-     * @inheritdoc
-     */
-    public function getOverridableMap()
-    {
-        return [
-            'oxdbmetadatahandler' => '\OxidEsales\Eshop\Core\DbMetaDataHandler',
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getNotOverridableMap()
-    {
-        return [
-            'oxbase' => '\OxidEsales\Eshop\Core\Base',
-        ];
-    }
 }

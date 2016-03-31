@@ -20,13 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+use oxDb;
+use oxSuperCfg;
+
 /**
  * Class for handling database related operations
  *
  */
-class oxDbMetaDataHandler extends oxSuperCfg
+class DbMetaDataHandler extends oxSuperCfg
 {
-
     /**
      *
      * @var array

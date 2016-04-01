@@ -145,6 +145,42 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     }
 
     /**
+     * Test, that the method 'FetchField' works as expected.
+     */
+    public function testFetchField()
+    {
+        $resultSet = $this->database->select('SELECT * FROM oxvendor');
+
+        $columnInformationOne = $resultSet->FetchField(0);
+
+        $this->assertEquals('stdClass', get_class($columnInformationOne));
+
+        /**
+         * We are skipping the doctrine unsupported features here.
+         */
+        $fields = array(
+            'name'         => 'OXID',
+            'table'        => 'oxvendor',
+            'max_length'   => 96,
+            'not_null'     => 1,
+            'primary_key'  => 1,
+            'type'         => 'string',
+            // 'unsigned'     => 0,
+            // 'zerofill'     => 0
+            // 'def'          => '',
+            // 'multiple_key' => 0,
+            // 'unique_key'   => 0,
+            // 'numeric'      => 0,
+            // 'blob'         => 0,
+        );
+
+        foreach ($fields as $key => $value) {
+            $this->assertTrue(isset($columnInformationOne->$key), 'Missing field "' . $key . '".');
+            $this->assertSame($value, $columnInformationOne->$key);
+        }
+    }
+
+    /**
      * @return array The parameters we want to use for the testMove method.
      */
     public function dataProvider_testFieldCount()

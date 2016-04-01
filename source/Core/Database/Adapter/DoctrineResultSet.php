@@ -116,10 +116,25 @@ class DoctrineResultSet
     }
 
     /**
-     * @todo: implement and test
+     * Get information about the column, specified by the given index.
+     *
+     * @param int $columnIndex The index of the column of this result set.
+     *
+     * @return \stdClass An object, filled with the column information.
      */
-    public function FetchField($fieldOffset)
+    public function FetchField($columnIndex)
     {
+        $metaInformation = $this->getAdapted()->getColumnMeta($columnIndex);
+
+        $result = new \stdClass();
+        $result->name = $metaInformation['name'];
+        $result->table = $metaInformation['table'];
+        $result->max_length = $metaInformation['len'];
+        $result->not_null = (int) in_array('not_null', $metaInformation['flags']);
+        $result->primary_key = (int) in_array('primary_key', $metaInformation['flags']);
+        $result->type = strtolower($metaInformation['native_type']);
+
+        return $result;
     }
 
     /**
@@ -211,7 +226,7 @@ class DoctrineResultSet
                 $this->fields = $lastFields;
                 $this->EOF = false;
             }
-            
+
             $rowIndex--;
         }
 

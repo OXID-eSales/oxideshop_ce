@@ -145,6 +145,55 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     }
 
     /**
+     * @return array The parameters we want to use for the testGetRows method.
+     */
+    public function dataProvider_testGetRows()
+    {
+        return array(
+            array('SELECT OXID FROM oxorderfiles', 0, array()),
+            array('SELECT OXID FROM oxorderfiles', 1, array()),
+            array('SELECT OXID FROM oxorderfiles', 10, array()),
+            array('SELECT OXID FROM oxvendor', 0, array()),
+            array('SELECT OXID FROM oxvendor', 1, array(array('9437def212dc37c66f90cc249143510a'))),
+            array('SELECT OXID FROM oxvendor', 5, array(array('9437def212dc37c66f90cc249143510a'), array('d2e44d9b31fcce448.08890330'), array('d2e44d9b32fd2c224.65443178'))),
+        );
+    }
+
+    /**
+     * Test, that the method 'GetRows' works as expected.
+     *
+     * @dataProvider dataProvider_testGetRows
+     *
+     * @param string $query         The sql statement to execute.
+     * @param int    $numberOfRows  The number of rows to fetch.
+     * @param array  $expectedArray The resulting array, which we expect.
+     */
+    public function testGetRows($query, $numberOfRows, $expectedArray)
+    {
+        $resultSet = $this->database->select($query);
+
+        $result = $resultSet->GetRows($numberOfRows);
+
+        $this->assertSame($expectedArray, $result);
+    }
+
+    /**
+     * Test, that the method 'GetRows' works as expected, if we call it consecutive. Therby we assure, that the internal row pointer is used correct.
+     */
+    public function testGetRowsSequentialCalls()
+    {
+        $resultSet = $this->database->select('SELECT OXID FROM oxvendor ORDER BY OXID');
+
+        $resultOne = $resultSet->GetRows(1);
+        $resultTwo = $resultSet->GetRows(1);
+        $resultThree = $resultSet->GetRows(1);
+
+        $this->assertSame($resultOne, array(array('9437def212dc37c66f90cc249143510a')));
+        $this->assertSame($resultTwo, array(array('d2e44d9b31fcce448.08890330')));
+        $this->assertSame($resultThree, array(array('d2e44d9b32fd2c224.65443178')));
+    }
+
+    /**
      * Test, that the method 'FetchField' works as expected.
      */
     public function testFetchField()
@@ -159,12 +208,12 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
          * We are skipping the doctrine unsupported features here.
          */
         $fields = array(
-            'name'         => 'OXID',
-            'table'        => 'oxvendor',
-            'max_length'   => 96,
-            'not_null'     => 1,
-            'primary_key'  => 1,
-            'type'         => 'string',
+            'name'        => 'OXID',
+            'table'       => 'oxvendor',
+            'max_length'  => 96,
+            'not_null'    => 1,
+            'primary_key' => 1,
+            'type'        => 'string',
             // 'unsigned'     => 0,
             // 'zerofill'     => 0
             // 'def'          => '',

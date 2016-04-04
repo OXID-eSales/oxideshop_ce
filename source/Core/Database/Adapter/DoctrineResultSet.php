@@ -25,6 +25,11 @@ use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Driver\PDOStatement;
 use PDO;
 
+/**
+ * The doctrine statement wrapper, to support the old adodblite interface.
+ *
+ * @package OxidEsales\Eshop\Core\Database\Adapter
+ */
 class DoctrineResultSet
 {
 

@@ -145,9 +145,9 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     }
 
     /**
-     * @return array The parameters we want to use for the testGetRows method.
+     * @return array The parameters we want to use for the testGetRows and testGetArray methods.
      */
-    public function dataProvider_testGetRows()
+    public function dataProvider_testGetRows_testGetArray()
     {
         return array(
             array('SELECT OXID FROM oxorderfiles', 0, array()),
@@ -160,9 +160,23 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     }
 
     /**
+     * Test, that the method 'GetArray' works as expected.
+     *
+     * @dataProvider dataProvider_testGetRows_testGetArray
+     */
+    public function testGetArray($query, $numberOfRows, $expectedArray)
+    {
+        $resultSet = $this->database->select($query);
+
+        $result = $resultSet->GetArray($numberOfRows);
+
+        $this->assertSame($expectedArray, $result);
+    }
+
+    /**
      * Test, that the method 'GetRows' works as expected.
      *
-     * @dataProvider dataProvider_testGetRows
+     * @dataProvider dataProvider_testGetRows_testGetArray
      *
      * @param string $query         The sql statement to execute.
      * @param int    $numberOfRows  The number of rows to fetch.

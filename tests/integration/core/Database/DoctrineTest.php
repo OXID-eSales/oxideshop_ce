@@ -195,7 +195,8 @@ class DoctrineTest extends UnitTestCase
         $rows = $resultSet->getAll();
 
         $this->assertInternalType('array', $rows, 'Expected an array as result!');
-        $this->assertEquals($expectedRows, $rows);
+        // sometimes the array gets filled in different order, we sort them to be sure, the content is same
+        $this->assertSame(sort($expectedRows), sort($rows));
     }
 
     /**
@@ -236,7 +237,7 @@ class DoctrineTest extends UnitTestCase
         $result = $resultSet->getAll();
 
         $this->assertInternalType('array', $result);
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
     }
 
     /**
@@ -251,7 +252,7 @@ class DoctrineTest extends UnitTestCase
 
         $expectedRows = array();
         $allRows = $result->getAll();
-        $this->assertEquals($expectedRows, $allRows);
+        $this->assertSame($expectedRows, $allRows);
     }
 
     /**
@@ -267,7 +268,7 @@ class DoctrineTest extends UnitTestCase
 
         $expectedRows = array();
         $allRows = $result->getAll();
-        $this->assertEquals($expectedRows, $allRows);
+        $this->assertSame($expectedRows, $allRows);
     }
 
     /**
@@ -278,7 +279,7 @@ class DoctrineTest extends UnitTestCase
         $result = $this->database->execute('SELECT OXID FROM oxvendor ORDER BY OXID');
 
         $this->assertFalse($result->EOF);
-        $this->assertEquals(array('9437def212dc37c66f90cc249143510a'), $result->fields);
+        $this->assertSame(array('9437def212dc37c66f90cc249143510a'), $result->fields);
 
         $expectedRows = array(
             array("9437def212dc37c66f90cc249143510a"),
@@ -286,7 +287,7 @@ class DoctrineTest extends UnitTestCase
             array("d2e44d9b32fd2c224.65443178")
         );
         $allRows = $result->getAll();
-        $this->assertEquals($expectedRows, $allRows);
+        $this->assertSame($expectedRows, $allRows);
     }
 
     /**
@@ -301,13 +302,13 @@ class DoctrineTest extends UnitTestCase
         $resultSet = $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ('$exampleOxId');");
 
         $this->assertEmptyResultSet($resultSet);
-        $this->assertEquals(1, $this->database->affected_rows());
+        $this->assertSame(1, $this->database->affected_rows());
         $this->assureOrderFileHasOnly($exampleOxId);
 
         $resultSet = $this->database->execute("DELETE FROM oxorderfiles WHERE OXID = '$exampleOxId';");
 
         $this->assertEmptyResultSet($resultSet);
-        $this->assertEquals(1, $this->database->affected_rows());
+        $this->assertSame(1, $this->database->affected_rows());
         $this->assureOrderFileIsEmpty();
     }
 
@@ -321,8 +322,8 @@ class DoctrineTest extends UnitTestCase
         $errorNumber = $this->database->errorNo();
         $errorMessage = $this->database->errorMsg();
 
-        $this->assertEquals(0, $errorNumber);
-        $this->assertEquals('', $errorMessage);
+        $this->assertSame(0, $errorNumber);
+        $this->assertSame('', $errorMessage);
     }
 
     /**
@@ -338,8 +339,8 @@ class DoctrineTest extends UnitTestCase
             $errorNumber = $this->database->errorNo();
             $errorMessage = $this->database->errorMsg();
 
-            $this->assertEquals(1064, $errorNumber);
-            $this->assertEquals('You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1', $errorMessage);
+            $this->assertSame(1064, $errorNumber);
+            $this->assertSame('You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1', $errorMessage);
         }
     }
 
@@ -351,7 +352,7 @@ class DoctrineTest extends UnitTestCase
         // check normal (associative array) case
         $row = $this->fetchFirstProductOxId();
         $this->assertInternalType('array', $row);
-        $this->assertEquals(array(0), array_keys($row));
+        $this->assertSame(array(0), array_keys($row));
 
         // check numeric array case
         $previousFetchMode = $this->database->setFetchMode(1);
@@ -362,7 +363,7 @@ class DoctrineTest extends UnitTestCase
 
         // check result
         $this->assertInternalType('array', $row);
-        $this->assertEquals(array(0), array_keys($row));
+        $this->assertSame(array(0), array_keys($row));
     }
 
     /**
@@ -376,12 +377,12 @@ class DoctrineTest extends UnitTestCase
         $this->database->setTransactionIsolationLevel('READ COMMITTED');
         $transactionIsolationLevel = $this->fetchTransactionIsolationLevel();
 
-        $this->assertEquals('READ COMMITTED', $transactionIsolationLevel);
+        $this->assertSame('READ COMMITTED', $transactionIsolationLevel);
 
         $this->database->setTransactionIsolationLevel($transactionIsolationLevelPre);
         $transactionIsolationLevel = $this->fetchTransactionIsolationLevel();
 
-        $this->assertEquals($transactionIsolationLevelPre, $transactionIsolationLevel);
+        $this->assertSame($transactionIsolationLevelPre, $transactionIsolationLevel);
     }
 
     /**
@@ -392,7 +393,7 @@ class DoctrineTest extends UnitTestCase
         $result = $this->database->getCol("SELECT OXID FROM oxorderfiles;");
 
         $this->assertInternalType('array', $result);
-        $this->assertEquals(0, count($result));
+        $this->assertSame(0, count($result));
     }
 
     /**
@@ -403,8 +404,8 @@ class DoctrineTest extends UnitTestCase
         $result = $this->database->getCol("SELECT OXMAPID FROM oxarticles WHERE OXMAPID > 200 AND OXMAPID < 206");
 
         $this->assertInternalType('array', $result);
-        $this->assertEquals(5, count($result));
-        $this->assertEquals(array('201', '202', '203', '204', '205'), $result);
+        $this->assertSame(5, count($result));
+        $this->assertSame(array('201', '202', '203', '204', '205'), $result);
     }
 
     /**
@@ -415,8 +416,8 @@ class DoctrineTest extends UnitTestCase
         $result = $this->database->getCol("SELECT OXMAPID FROM oxarticles WHERE OXMAPID > ? AND OXMAPID < ?", array(200, 206));
 
         $this->assertInternalType('array', $result);
-        $this->assertEquals(5, count($result));
-        $this->assertEquals(array('201', '202', '203', '204', '205'), $result);
+        $this->assertSame(5, count($result));
+        $this->assertSame(array('201', '202', '203', '204', '205'), $result);
     }
 
     /**
@@ -492,10 +493,10 @@ class DoctrineTest extends UnitTestCase
         $orderFileIds = $this->fetchOrderFilesOxIds();
 
         $this->assertNotEmpty($orderFileIds);
-        $this->assertEquals(1, count($orderFileIds));
+        $this->assertSame(1, count($orderFileIds));
         $this->assertArrayHasKey('0', $orderFileIds);
 
-        $this->assertEquals($oxId, $orderFileIds[0][0]);
+        $this->assertSame($oxId, $orderFileIds[0][0]);
     }
 
     /**
@@ -505,27 +506,31 @@ class DoctrineTest extends UnitTestCase
      */
     private function fetchOrderFilesOxIds()
     {
-        return $this->database->select('SELECT OXID FROM oxorderfiles;')->getAll();
+        return $this->database->select('SELECT OXID FROM oxorderfiles;', array(), false)->getAll();
     }
 
     /**
-     * @return array|false
+     * Fetch the oxId of the first product.
+     *
+     * @return array|false The oxId of the first product.
      */
     private function fetchFirstProductOxId()
     {
-        $rows = $this->database->select('SELECT OXID FROM oxarticles');
+        $rows = $this->database->select('SELECT OXID FROM oxarticles', array(), false);
         $row = $rows->fetchRow();
 
         return $row;
     }
 
     /**
-     * @return mixed
+     * Fetch the transaction isolation level.
+     *
+     * @return string The transaction isolation level.
      */
     private function fetchTransactionIsolationLevel()
     {
         $sql = "SELECT * FROM information_schema.session_variables WHERE variable_name = 'tx_isolation';";
-        $resultSet = $this->database->select($sql);
+        $resultSet = $this->database->select($sql, array(), false);
         $resultRow = $resultSet->fetchRow();
 
         return str_replace('-', ' ', $resultRow['VARIABLE_VALUE']);
@@ -542,9 +547,9 @@ class DoctrineTest extends UnitTestCase
         $this->assertEmpty($resultSet->fields);
 
         if ($this->useLegacyDatabase) {
-            $this->assertEquals('ADORecordSet_empty', get_class($resultSet));
+            $this->assertSame('ADORecordSet_empty', get_class($resultSet));
         } else {
-            $this->assertEquals('OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet', get_class($resultSet));
+            $this->assertSame('OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet', get_class($resultSet));
         }
     }
 

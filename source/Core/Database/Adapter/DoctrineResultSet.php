@@ -160,10 +160,15 @@ class DoctrineResultSet
     }
 
     /**
-     * @todo: implement and test
+     * Get the given number of rows, from the current row pointer on, as an array.
+     *
+     * @param int $numberOfRows The number of rows to fetch.
+     *
+     * @return array The rows of the corresponding statement, starting at the current row pointer.
      */
-    public function GetArray($nRows)
+    public function GetArray($numberOfRows)
     {
+        return $this->getRows($numberOfRows);
     }
 
     /**

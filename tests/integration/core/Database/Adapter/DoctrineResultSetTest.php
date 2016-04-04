@@ -174,6 +174,22 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     }
 
     /**
+     * Test, that the method 'GetArray' works as expected, if we call it consecutive. Thereby we assure, that the internal row pointer is used correct.
+     */
+    public function testGetArraySequentialCalls()
+    {
+        $resultSet = $this->database->select('SELECT OXID FROM oxvendor ORDER BY OXID');
+
+        $resultOne = $resultSet->GetArray(1);
+        $resultTwo = $resultSet->GetArray(1);
+        $resultThree = $resultSet->GetArray(1);
+
+        $this->assertSame($resultOne, array(array('9437def212dc37c66f90cc249143510a')));
+        $this->assertSame($resultTwo, array(array('d2e44d9b31fcce448.08890330')));
+        $this->assertSame($resultThree, array(array('d2e44d9b32fd2c224.65443178')));
+    }
+
+    /**
      * Test, that the method 'GetRows' works as expected.
      *
      * @dataProvider dataProvider_testGetRows_testGetArray
@@ -192,7 +208,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     }
 
     /**
-     * Test, that the method 'GetRows' works as expected, if we call it consecutive. Therby we assure, that the internal row pointer is used correct.
+     * Test, that the method 'GetRows' works as expected, if we call it consecutive. Thereby we assure, that the internal row pointer is used correct.
      */
     public function testGetRowsSequentialCalls()
     {

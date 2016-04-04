@@ -21,11 +21,11 @@ Please note: if you don't know what the following is about, please download the 
 
 When checking out this repository or downloading the zip file from this place, composer is required for setting up OXID eShop.
 
-1. make sure composer (https://getcomposer.org/) is installed on your system
-2. $ git clone https://github.com/OXID-eSales/oxideshop_ce.git
-3. $ cd oxideshop_ce/source
-4. $ composer install
-5. $ cp config.inc.php.dist config.inc.php
+1. make sure [composer] (https://getcomposer.org/) is installed on your system
+2. `$ git clone https://github.com/OXID-eSales/oxideshop_ce.git`
+3. `$ cd oxideshop_ce/source`
+4. `$ composer install --no-dev`
+5. `$ cp config.inc.php.dist config.inc.php`
 
 
 ### Useful links

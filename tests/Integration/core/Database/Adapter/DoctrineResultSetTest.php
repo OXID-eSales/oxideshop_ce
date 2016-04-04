@@ -190,6 +190,29 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     }
 
     /**
+     * Test, that the method 'GetArray' works as expected, if we set first a fetch mode different from the default.
+     */
+    public function testGetArrayWithDifferentFetchMode()
+    {
+        $oldFetchMode = $this->database->setFetchMode(3);
+        $resultSet = $this->database->select('SELECT OXID FROM oxvendor ORDER BY OXID');
+
+        $resultOne = $resultSet->GetArray(1);
+        $resultTwo = $resultSet->GetArray(1);
+        $resultThree = $resultSet->GetArray(1);
+
+        $this->database->setFetchMode($oldFetchMode);
+
+        $expectedOne = array(array('OXID' => '9437def212dc37c66f90cc249143510a', '9437def212dc37c66f90cc249143510a'));
+        $expectedTwo = array(array('OXID' => 'd2e44d9b31fcce448.08890330', 'd2e44d9b31fcce448.08890330'));
+        $expectedThree = array(array('OXID' => 'd2e44d9b32fd2c224.65443178', 'd2e44d9b32fd2c224.65443178'));
+
+        $this->assertArrayContentSame($resultOne, $expectedOne);
+        $this->assertArrayContentSame($resultTwo, $expectedTwo);
+        $this->assertArrayContentSame($resultThree, $expectedThree);
+    }
+
+    /**
      * Test, that the method 'GetRows' works as expected.
      *
      * @dataProvider dataProvider_testGetRows_testGetArray
@@ -458,6 +481,17 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         } else {
             $this->assertEquals(self::CLASS_NAME_WITH_PATH, get_class($resultSet));
         }
+    }
+
+    /**
+     * Assert, that the given arrays have the same content. Useful, if the content is not ordered as expected.
+     *
+     * @param array $resultArray   The array we got.
+     * @param array $expectedArray The array we expect.
+     */
+    private function assertArrayContentSame($resultArray, $expectedArray)
+    {
+        $this->assertSame(sort($resultArray), sort($expectedArray));
     }
 
 }

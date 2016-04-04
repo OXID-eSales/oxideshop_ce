@@ -152,10 +152,30 @@ class DoctrineResultSet
     }
 
     /**
-     * @todo: implement and test
+     * Get a specific column value.
+     *
+     * @param string|int $columnKey The key of the wished column.
+     *
+     * @return null|boolean|string|array The column value (string or array). If the result set is empty or the last row is reached, we give back false. If the column name is not present, we give back null.
      */
-    public function Fields($column)
+    public function Fields($columnKey)
     {
+        if ($this->isEmpty()) {
+            if (0 === $columnKey) {
+                return false;
+            } else {
+                return null;
+            }
+        } else {
+            if (0 === $columnKey) {
+                // this case is here, cause adodblite checks with empty
+                //   empty(0) is true   =>   we give back the complete array...
+
+                return $this->fields;
+            } else {
+                return $this->fields[$columnKey];
+            }
+        }
     }
 
     /**

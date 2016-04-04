@@ -307,6 +307,50 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     }
 
     /**
+     * @return array The parameters we want to use for the testFields method.
+     */
+    public function dataProvider_testFields()
+    {
+        return array(
+            array('SELECT OXID FROM oxvouchers', 0, false),
+            array('SELECT OXID FROM oxorderfiles', 'OXID', null),
+            array('SELECT OXID FROM oxarticles ORDER BY OXID', 0, array('09602cddb5af0aba745293d08ae6bcf6')),
+            array('SELECT OXID FROM oxarticles ORDER BY OXID', 'OXID', null),
+            array('SELECT OXID,OXARTNUM FROM oxarticles ORDER BY OXID', 0, array('09602cddb5af0aba745293d08ae6bcf6', '0802-85-823-7-1')),
+            array('SELECT OXID,OXARTNUM FROM oxarticles ORDER BY OXID', 1, '0802-85-823-7-1'),
+            array('SELECT OXID,OXARTNUM FROM oxarticles ORDER BY OXID', 'OXID', '09602cddb5af0aba745293d08ae6bcf6', true),
+            array('SELECT OXID,OXARTNUM FROM oxarticles ORDER BY OXID', 0, array('OXID' => '09602cddb5af0aba745293d08ae6bcf6', 'OXARTNUM' => '0802-85-823-7-1'), true),
+            array('SELECT OXID,OXARTNUM FROM oxarticles ORDER BY OXID', 'NOTNULL', null, true),
+        );
+    }
+
+    /**
+     * Test, that the method Fields works as expected.
+     *
+     * @dataProvider dataProvider_testFields
+     *
+     * @param string $query                The sql statement to execute.
+     * @param mixed  $parameter            The parameter for the Fields method.
+     * @param mixed  $expected             The expected result of the Fields method under the given specification.
+     * @param bool   $fetchModeAssociative Should the fetch mode be set to associative array before running the statement?
+     */
+    public function testFields($query, $parameter, $expected, $fetchModeAssociative = false)
+    {
+        if ($fetchModeAssociative) {
+            $oldFetchMode = $this->database->setFetchMode(2);
+        }
+
+        $resultSet = $this->database->select($query);
+        $result = $resultSet->Fields($parameter);
+
+        if ($fetchModeAssociative) {
+            $this->database->setFetchMode($oldFetchMode);
+        }
+
+        $this->assertSame($expected, $result);
+    }
+
+    /**
      * Test, that the method 'Move' works with an empty result set.
      */
     public function testMoveWithEmptyResultSet()

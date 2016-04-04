@@ -54,90 +54,90 @@ interface DatabaseInterface
     /**
      * Return connection to the database.
      *
-     * @param bool $onMaster Do we want to execute this statement on the master?
+     * @param bool $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return mysql_driver|mysql_extend|mysql_meta|mysqli_driver|mysqli_extend|mysqli_extra|object_ADOConnection|pear_ADOConnection The connection to the database.
      */
-    public function getDb($onMaster = true);
+    public function getDb($executeOnSlave = true);
 
     /**
      * Get one record from the database.
      *
-     * @param string     $query      The sql statement we want to execute.
-     * @param array|bool $parameters The parameters array.
-     * @param bool       $onMaster   Do we want to execute this statement on the master?
+     * @param string     $query          The sql statement we want to execute.
+     * @param array|bool $parameters     The parameters array.
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return string
      */
-    public function getOne($query, $parameters = false, $onMaster = true);
+    public function getOne($query, $parameters = false, $executeOnSlave = true);
 
     /**
      * Get values as array.
      *
-     * @param string     $query      The sql statement we want to execute.
-     * @param array|bool $parameters The parameters array.
-     * @param bool       $onMaster   Do we want to execute this statement on the master?
+     * @param string     $query          The sql statement we want to execute.
+     * @param array|bool $parameters     The parameters array.
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return array
      */
-    public function getArray($query, $parameters = false, $onMaster = true);
+    public function getArray($query, $parameters = false, $executeOnSlave = true);
 
     /**
      * Get one row.
      *
-     * @param string     $query      The sql statement we want to execute.
-     * @param array|bool $parameters The parameters array.
-     * @param bool       $onMaster   Do we want to execute this statement on the master?
+     * @param string     $query          The sql statement we want to execute.
+     * @param array|bool $parameters     The parameters array.
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return array
      */
-    public function getRow($query, $parameters = false, $onMaster = true);
+    public function getRow($query, $parameters = false, $executeOnSlave = true);
 
     /**
      * Get all values. The same as getArray.
      *
-     * @param string     $query      The sql statement we want to execute.
-     * @param array|bool $parameters The parameters array.
-     * @param bool       $onMaster   Do we want to execute this statement on the master?
+     * @param string     $query          The sql statement we want to execute.
+     * @param array|bool $parameters     The parameters array.
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return array
      */
-    public function getAll($query, $parameters = false, $onMaster = true);
+    public function getAll($query, $parameters = false, $executeOnSlave = true);
 
     /**
      * Get value
      *
-     * @param string     $query      The sql statement we want to execute.
-     * @param array|bool $parameters The parameters array.
-     * @param bool       $onMaster   Do we want to execute this statement on the master?
+     * @param string     $query          The sql statement we want to execute.
+     * @param array|bool $parameters     The parameters array.
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return mixed|Object_ResultSet
      */
-    public function select($query, $parameters = false, $onMaster = true);
+    public function select($query, $parameters = false, $executeOnSlave = true);
 
     /**
      * Get values as an associative array.
      *
-     * @param string     $query      The sql statement we want to execute.
-     * @param array|bool $parameters The parameters array.
-     * @param bool       $onMaster   Do we want to execute this statement on the master?
+     * @param string     $query          The sql statement we want to execute.
+     * @param array|bool $parameters     The parameters array.
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return array
      */
-    public function getAssoc($query, $parameters = false, $onMaster = true);
+    public function getAssoc($query, $parameters = false, $executeOnSlave = true);
 
     /**
      * Get the values of a column.
      *
-     * @param string     $query      The sql statement we want to execute.
-     * @param array|bool $parameters The parameters array.
-     * @param bool       $onMaster   Do we want to execute this statement on the master?
+     * @param string     $query          The sql statement we want to execute.
+     * @param array|bool $parameters     The parameters array.
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @todo: What kind of array do we expect numeric or assoc? Does it depends on FETCH_MODE?
      *
      * @return array The values of a column of a corresponding sql query.
      */
-    public function getCol($query, $parameters = false, $onMaster = true);
+    public function getCol($query, $parameters = false, $executeOnSlave = true);
 
     /**
      * Run a given select sql statement with a limit clause on the database.

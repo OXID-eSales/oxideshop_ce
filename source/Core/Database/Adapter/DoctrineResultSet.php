@@ -21,9 +21,8 @@
  */
 namespace OxidEsales\Eshop\Core\Database\Adapter;
 
-use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Driver\PDOStatement;
-use PDO;
+use Doctrine\DBAL\Driver\Statement;
 
 /**
  * The doctrine statement wrapper, to support the old adodblite interface.

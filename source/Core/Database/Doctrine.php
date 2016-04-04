@@ -407,15 +407,15 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     /**
      * Get the values of a column.
      *
-     * @param string     $query      The sql statement we want to execute.
-     * @param array|bool $parameters The parameters array.
-     * @param bool       $onMaster   Do we want to execute this statement on the master?
+     * @param string     $query          The sql statement we want to execute.
+     * @param array|bool $parameters     The parameters array.
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @todo: What kind of array do we expect numeric or assoc? Does it depends on FETCH_MODE?
      *
      * @return array The values of a column of a corresponding sql query.
      */
-    public function getCol($query, $parameters = false, $onMaster = true)
+    public function getCol($query, $parameters = false, $executeOnSlave = true)
     {
         $parameters = $this->assureParameterIsAnArray($parameters);
 

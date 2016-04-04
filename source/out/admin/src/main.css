@@ -500,3 +500,7 @@ a#linkToUpdate:hover,
 .assignmentContainer {
     width: 100%;
 }
+
+a.jumplink{
+    text-decoration: underline;
+}

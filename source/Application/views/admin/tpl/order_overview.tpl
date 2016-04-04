@@ -23,7 +23,7 @@
                 <br>
                 [{if $edit->oxorder__oxbillcompany->value}][{oxmultilang ident="GENERAL_COMPANY"}] [{$edit->oxorder__oxbillcompany->value}]<br>[{/if}]
                 [{if $edit->oxorder__oxbilladdinfo->value}][{$edit->oxorder__oxbilladdinfo->value}]<br>[{/if}]
-                [{$edit->oxorder__oxbillsal->value|oxmultilangsal}] [{$edit->oxorder__oxbillfname->value}] [{$edit->oxorder__oxbilllname->value}]<br>
+                <a class="jumplink" href="[{$oViewConf->getSelfLink()}]cl=admin_user&oxid=[{$edit->oxorder__oxuserid->value}]" target="basefrm" onclick="_homeExpActByName('admin_user');">[{$edit->oxorder__oxbillsal->value|oxmultilangsal}] [{$edit->oxorder__oxbillfname->value}] [{$edit->oxorder__oxbilllname->value}]</a><br>
                 [{$edit->oxorder__oxbillstreet->value}] [{$edit->oxorder__oxbillstreetnr->value}]<br>
                 [{$edit->oxorder__oxbillstateid->value}]
                 [{$edit->oxorder__oxbillzip->value}] [{$edit->oxorder__oxbillcity->value}]<br>
@@ -235,7 +235,7 @@
             [{/block}]
             [{block name="admin_order_overview_customer_number"}]
                 [{assign var="user" value=$edit->getOrderUser()}]
-                <b>[{oxmultilang ident="CUSTOMERNUM"}]: </b>[{$user->oxuser__oxcustnr->value}]<br>
+                <b>[{oxmultilang ident="CUSTOMERNUM"}]: </b><a class="jumplink" href="[{$oViewConf->getSelfLink()}]cl=admin_user&oxid=[{$edit->oxorder__oxuserid->value}]" target="basefrm" onclick="_homeExpActByName('admin_user');">[{$user->oxuser__oxcustnr->value}]</a><br>
             [{/block}]
             <br>
                 <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">

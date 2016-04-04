@@ -24,15 +24,21 @@ namespace OxidEsales\Eshop\Core\exception;
 
 use oxException;
 
+/**
+ * Exception to be thrown on database errors
+ */
 class DatabaseException extends oxException
 {
 
     /**
      * DatabaseException constructor.
-     *
-     * @param string    $message  exception message
-     * @param int       $code     exception code
-     * @param \Exception $previous previous exception
+     * 
+     * Use this exception to catch and rethrow exceptions of the underlying DBAL.
+     * Provide the caught exception as the third parameter of the constructor to enable exception chaining.
+     * 
+     * @param string     $message
+     * @param int        $code
+     * @param \Exception $previous Previous exception thrown by the underlying DBAL
      */
     public function __construct($message, $code, \Exception $previous)
     {

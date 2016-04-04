@@ -938,7 +938,7 @@ class Base extends \oxSuperCfg
 
         // has 'activefrom'/'activeto' fields ?
         if (isset($this->_aFieldNames['oxactivefrom']) && isset($this->_aFieldNames['oxactiveto'])) {
-            $query = $this->_addSqlActiveRangeSnippet($query, $tableName);
+            $query = $this->addSqlActiveRangeSnippet($query, $tableName);
 
         }
 
@@ -1549,11 +1549,11 @@ class Base extends \oxSuperCfg
      *
      * @return string
      */
-    protected function _addSqlActiveRangeSnippet($query, $tableName)
+    protected function addSqlActiveRangeSnippet($query, $tableName)
     {
         $dateObj = oxRegistry::get('oxUtilsDate');
-        $sSecondsToRoundForQueryCache = $this->_getSecondsToRoundForQueryCache();
-        $databaseFormattedDate = $dateObj->getRoundedRequestDateDBFormatted($sSecondsToRoundForQueryCache);
+        $secondsToRoundForQueryCache = $this->getSecondsToRoundForQueryCache();
+        $databaseFormattedDate = $dateObj->getRoundedRequestDateDBFormatted($secondsToRoundForQueryCache);
         $query = $query ? " $query or " : '';
         $query = " ( $query ( $tableName.oxactivefrom < '$databaseFormattedDate' and $tableName.oxactiveto > '$databaseFormattedDate' ) ) ";
 
@@ -1568,7 +1568,7 @@ class Base extends \oxSuperCfg
      *  it is a own method to allow overriding in child classes
      *  @return int the amount of seconds
      */
-    protected function _getSecondsToRoundForQueryCache()
+    protected function getSecondsToRoundForQueryCache()
     {
         //set default value cache time to 60 seconds
         //because active from setting is based on minutes

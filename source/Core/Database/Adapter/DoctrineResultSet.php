@@ -256,7 +256,7 @@ class DoctrineResultSet
             $this->executeAdapted();
         }
 
-        if (0 == $rowIndex) {
+        if (0 === $rowIndex) {
             return true;
         }
 
@@ -278,10 +278,21 @@ class DoctrineResultSet
     }
 
     /**
-     * @todo: implement and test
+     * Move the row pointer to the first row of the given result.
+     *
+     * @return bool True for empty or there exists another row, false for end of rows reached.
      */
     public function MoveFirst()
     {
+        if ($this->isEmpty()) {
+            return true;
+        }
+
+        $result = $this->Move(0);
+
+        $this->fields = $this->getAdapted()->fetch();
+
+        return $result;
     }
 
     /**

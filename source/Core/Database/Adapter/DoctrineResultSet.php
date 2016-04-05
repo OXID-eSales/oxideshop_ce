@@ -121,8 +121,8 @@ class DoctrineResultSet
             $this->EOF = true;
             $this->fields = array();
         } else {
-            $this->EOF = true;
-            $this->fields = null;
+            $this->EOF = false;
+            $this->fields = array();
         }
 
         $this->getAdapted()->closeCursor();

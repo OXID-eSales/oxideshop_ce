@@ -633,8 +633,8 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
 
         $this->assertNull($methodResult);
         $this->assertSame(array('09602cddb5af0aba745293d08ae6bcf6'), $firstRow);
-        $this->assertTrue($resultSet->EOF);
-        $this->assertNull($resultSet->fields);
+        $this->assertFalse($resultSet->EOF);
+        $this->assertSame(array(), $resultSet->fields);
     }
 
     /**

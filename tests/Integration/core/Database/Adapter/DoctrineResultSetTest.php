@@ -590,6 +590,54 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     }
 
     /**
+     * Test, that the method 'Close' works as expected for an empty result set.
+     */
+    public function testCloseEmptyResultSet()
+    {
+        $resultSet = $this->testCreationWithRealEmptyResult();
+
+        $methodResult = $resultSet->Close();
+
+        $this->assertNull($methodResult);
+        $this->assertTrue($resultSet->EOF);
+        $this->assertSame(array(), $resultSet->fields);
+    }
+
+    /**
+     * Test, that the method 'Close' works as expected for an empty result set with fetching a row after closing the cursor.
+     */
+    public function testCloseEmptyResultSetWithFetchingAfterClosing()
+    {
+        $resultSet = $this->testCreationWithRealEmptyResult();
+
+        $methodResult = $resultSet->Close();
+
+        $firstRow = $resultSet->fetchRow();
+
+        $this->assertNull($methodResult);
+        $this->assertFalse($firstRow);
+        $this->assertTrue($resultSet->EOF);
+        $this->assertSame(array(), $resultSet->fields);
+    }
+
+    /**
+     * Test, that the method 'Close' works as expected for a non empty result set.
+     */
+    public function testCloseNonEmptyResultSet()
+    {
+        $resultSet = $this->testCreationWithRealNonEmptyResult();
+
+        $firstRow = $resultSet->fetchRow();
+
+        $methodResult = $resultSet->Close();
+
+        $this->assertNull($methodResult);
+        $this->assertSame(array('09602cddb5af0aba745293d08ae6bcf6'), $firstRow);
+        $this->assertTrue($resultSet->EOF);
+        $this->assertNull($resultSet->fields);
+    }
+
+    /**
      * Create the database, we want to test.
      */
     private function createDatabase()

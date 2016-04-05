@@ -113,10 +113,19 @@ class DoctrineResultSet
     }
 
     /**
-     * @todo: implement and test
+     * Close the pointer to the database connection.
      */
     public function Close()
     {
+        if ($this->isEmpty()) {
+            $this->EOF = true;
+            $this->fields = array();
+        } else {
+            $this->EOF = true;
+            $this->fields = null;
+        }
+
+        $this->getAdapted()->closeCursor();
     }
 
     /**

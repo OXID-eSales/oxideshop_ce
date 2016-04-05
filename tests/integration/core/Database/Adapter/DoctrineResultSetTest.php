@@ -283,7 +283,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     }
 
     /**
-     * @return array The parameters we want to use for the testMove method.
+     * @return array The parameters we want to use for the testFieldCount method.
      */
     public function dataProvider_testFieldCount()
     {
@@ -393,6 +393,51 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
 
         $this->assertTrue($methodResult);
         $this->assertEquals($expectedFields, $resultSet->fields);
+        $this->assertFalse($resultSet->EOF);
+
+        return $resultSet;
+    }
+
+    /**
+     * Test, that the method 'MoveFirst' works as expected for an empty result set.
+     */
+    public function testMoveFirstEmptyResultSet()
+    {
+        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID;');
+
+        $methodResult = $resultSet->MoveFirst();
+
+        $this->assertTrue($methodResult);
+        $this->assertEquals(false, $resultSet->fields);
+        $this->assertTrue($resultSet->EOF);
+    }
+
+    /**
+     * Test, that the method 'MoveFirst' works as expected for a non empty result set.
+     */
+    public function testMoveFirstNonEmptyResultSet()
+    {
+        $resultSet = $this->testMove(2, array('0962081a5693597654fd2887af7a6095'));
+
+        $methodResult = $resultSet->MoveFirst();
+
+        $this->assertTrue($methodResult);
+        $this->assertEquals(array('09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
+        $this->assertFalse($resultSet->EOF);
+    }
+
+    /**
+     * Test, that the method 'MoveFirst' works as expected for a non empty result set,
+     * if we move to nearly the end of the rows.
+     */
+    public function testMoveFirstNonEmptyResultSetNearlyEndOfRows()
+    {
+        $resultSet = $this->testMove(237, array('943ed656e21971fb2f1827facbba9bec'));
+
+        $methodResult = $resultSet->MoveFirst();
+
+        $this->assertTrue($methodResult);
+        $this->assertEquals(array('09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
         $this->assertFalse($resultSet->EOF);
     }
 

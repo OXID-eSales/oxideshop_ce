@@ -82,18 +82,18 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         $resultSet = $this->testCreationWithRealNonEmptyResult();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertEquals(array('09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
+        $this->assertSame(array('09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
 
         $methodResult = $resultSet->MoveNext();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertEquals(array('09620040146118fbc4b7eef6a0faf072'), $resultSet->fields);
+        $this->assertSame(array('09620040146118fbc4b7eef6a0faf072'), $resultSet->fields);
         $this->assertTrue($methodResult);
 
         $methodResult = $resultSet->MoveNext();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertEquals(array('0962081a5693597654fd2887af7a6095'), $resultSet->fields);
+        $this->assertSame(array('0962081a5693597654fd2887af7a6095'), $resultSet->fields);
         $this->assertTrue($methodResult);
     }
 
@@ -129,18 +129,18 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         $this->createDatabase();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertEquals(array('OXID' => '09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
+        $this->assertSame(array('OXID' => '09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
 
         $methodResult = $resultSet->MoveNext();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertEquals(array('OXID' => '09620040146118fbc4b7eef6a0faf072'), $resultSet->fields);
+        $this->assertSame(array('OXID' => '09620040146118fbc4b7eef6a0faf072'), $resultSet->fields);
         $this->assertTrue($methodResult);
 
         $methodResult = $resultSet->MoveNext();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertEquals(array('OXID' => '0962081a5693597654fd2887af7a6095'), $resultSet->fields);
+        $this->assertSame(array('OXID' => '0962081a5693597654fd2887af7a6095'), $resultSet->fields);
         $this->assertTrue($methodResult);
     }
 
@@ -255,7 +255,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
 
         $columnInformationOne = $resultSet->FetchField(0);
 
-        $this->assertEquals('stdClass', get_class($columnInformationOne));
+        $this->assertSame('stdClass', get_class($columnInformationOne));
 
         /**
          * We are skipping the doctrine unsupported features here.
@@ -303,7 +303,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     {
         $resultSet = $this->database->select($query);
 
-        $this->assertEquals($count, $resultSet->FieldCount());
+        $this->assertSame($count, $resultSet->FieldCount());
     }
 
     /**
@@ -392,7 +392,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         $methodResult = $resultSet->Move($moveTo);
 
         $this->assertTrue($methodResult);
-        $this->assertEquals($expectedFields, $resultSet->fields);
+        $this->assertSame($expectedFields, $resultSet->fields);
         $this->assertFalse($resultSet->EOF);
 
         return $resultSet;
@@ -408,7 +408,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         $methodResult = $resultSet->MoveFirst();
 
         $this->assertTrue($methodResult);
-        $this->assertEquals(false, $resultSet->fields);
+        $this->assertSame(false, $resultSet->fields);
         $this->assertTrue($resultSet->EOF);
     }
 
@@ -422,7 +422,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         $methodResult = $resultSet->MoveFirst();
 
         $this->assertTrue($methodResult);
-        $this->assertEquals(array('09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
+        $this->assertSame(array('09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
         $this->assertFalse($resultSet->EOF);
     }
 
@@ -437,7 +437,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         $methodResult = $resultSet->MoveFirst();
 
         $this->assertTrue($methodResult);
-        $this->assertEquals(array('09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
+        $this->assertSame(array('09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
         $this->assertFalse($resultSet->EOF);
     }
 
@@ -494,7 +494,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         $resultSet = $this->database->select('SELECT OXID FROM oxvouchers;');
 
         $this->assertDoctrineResultSet($resultSet);
-        $this->assertEquals(0, $resultSet->recordCount());
+        $this->assertSame(0, $resultSet->recordCount());
 
         return $resultSet;
     }
@@ -536,7 +536,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         $row = $resultSet->fetchRow();
 
         $this->assertInternalType('array', $row);
-        $this->assertEquals(self::FIRST_OXARTICLE_OXID, $row[0]);
+        $this->assertSame(self::FIRST_OXARTICLE_OXID, $row[0]);
     }
 
     /**
@@ -564,7 +564,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
         $this->assertInternalType('array', $rows);
         $this->assertNotEmpty($rows);
         $this->assertGreaterThan(200, count($rows));
-        $this->assertEquals(self::FIRST_OXARTICLE_OXID, $rows[0][0]);
+        $this->assertSame(self::FIRST_OXARTICLE_OXID, $rows[0][0]);
     }
 
     /**
@@ -609,9 +609,9 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     private function assertDoctrineResultSet($resultSet)
     {
         if ($this->useLegacyDatabase) {
-            $this->assertEquals('object_ResultSet', get_class($resultSet));
+            $this->assertSame('object_ResultSet', get_class($resultSet));
         } else {
-            $this->assertEquals(self::CLASS_NAME_WITH_PATH, get_class($resultSet));
+            $this->assertSame(self::CLASS_NAME_WITH_PATH, get_class($resultSet));
         }
     }
 

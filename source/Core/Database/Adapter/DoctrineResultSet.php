@@ -296,10 +296,19 @@ class DoctrineResultSet
     }
 
     /**
-     * @todo: implement and test
+     * Move the row pointer to the last row of the given result set.
+     *
+     * @return bool Is this result set not empty?
      */
     public function MoveLast()
     {
+        if ($this->isEmpty()) {
+            return false;
+        } else {
+            $lastIndex = $this->recordCount();
+
+            return $this->Move($lastIndex);
+        }
     }
 
     /**

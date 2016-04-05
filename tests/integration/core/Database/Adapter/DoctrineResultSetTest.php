@@ -442,6 +442,49 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     }
 
     /**
+     * Test, that the method 'MoveLast' works as expected for an empty result set.
+     */
+    public function testMoveLastEmptyResultSet()
+    {
+        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID;');
+
+        $methodResult = $resultSet->MoveLast();
+
+        $this->assertFalse($methodResult);
+        $this->assertTrue($resultSet->EOF);
+        $this->assertFalse($resultSet->fields);
+    }
+
+    /**
+     * Test, that the method 'MoveLast' works as expected for a non empty result set, when we call it several times.
+     */
+    public function testMoveLastNonEmptyResultSet()
+    {
+        $resultSet = $this->database->select('SELECT OXID FROM oxarticles ORDER BY OXID;');
+
+        $methodResult = $resultSet->MoveLast();
+
+        $this->assertTrue($methodResult);
+        $this->assertFalse($resultSet->EOF);
+        $this->assertSame($resultSet->fields, array('a7c44be4a5ddee114.67356237'));
+    }
+
+    /**
+     * Test, that the method 'MoveLast' works as expected for a non empty result set, when we call it several times.
+     */
+    public function testMoveLastNonEmptyResultSetSequentialCalls()
+    {
+        $resultSet = $this->database->select('SELECT OXID FROM oxarticles ORDER BY OXID;');
+
+        $methodResult = $resultSet->MoveLast();
+        $methodResult = $resultSet->MoveLast();
+
+        $this->assertTrue($methodResult);
+        $this->assertFalse($resultSet->EOF);
+        $this->assertSame($resultSet->fields, array('a7c44be4a5ddee114.67356237'));
+    }
+
+    /**
      * Test, that the result set of an empty select works as expected.
      *
      * @return DoctrineResultSet The empty result set.

@@ -57,9 +57,9 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     protected $affectedRows = 0;
 
     /**
-     * @var int The last fetch mode. We store the adodblite fetch mode here. See mapFetchMode method for further information.
+     * @var int The current fetch mode.
      */
-    protected $fetchMode = 1;
+    protected $fetchMode = \PDO::FETCH_NUM;
 
     /**
      * @var array Map strings used in the shop to Doctrine constants
@@ -69,6 +69,16 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
         'READ COMMITTED'   => Connection::TRANSACTION_READ_COMMITTED,
         'REPEATABLE READ'  => Connection::TRANSACTION_REPEATABLE_READ,
         'SERIALIZABLE'     => Connection::TRANSACTION_SERIALIZABLE
+    );
+
+    /**
+     * @var array Map fetch modes used in the shop to doctrine constants
+     */
+    protected $fetchModeMap = array(
+        DatabaseInterface::FETCH_MODE_DEFAULT => \PDO::FETCH_BOTH,
+        DatabaseInterface::FETCH_MODE_NUM     => \PDO::FETCH_NUM,
+        DatabaseInterface::FETCH_MODE_ASSOC   => \PDO::FETCH_ASSOC,
+        DatabaseInterface::FETCH_MODE_BOTH    => \PDO::FETCH_BOTH
     );
 
     /**
@@ -88,8 +98,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      * Sets a logger instance on the object
      *
      * @param LoggerInterface $logger
-     *
-     * @return null
      */
     public function setLogger(LoggerInterface $logger)
     {
@@ -107,26 +115,28 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     }
 
     /**
-     * Set the fetch mode for future calls. Returns the old fetch mode.
+     * Set the fetch mode.
+     * Return the previous fetch mode.
+     * The given fetch mode as used be the DatabaseInterface Class will be mapped and and stored as the mode used by
+     * Doctrine.
+     * The returned fetch mode is the re-mapped fetch mode as used by the DatabaseInterface class
      *
-     * Hints:
-     *  - we map the adodb fetch mode to the pdo (used by doctrine) fetch mode here
-     *  - cause there is no getter in dbal or pdo we save the actual fetch mode in this object too
+     * @param int $fetchMode See DatabaseInterface::FETCH_MODE_* for valid values
      *
-     * @param int $fetchMode How do we want to get the results?
+     * @see DatabaseInterface::FETCH_MODE_* constants
      *
-     * @return int The previous fetch mode.
+     * @return int The previous fetch mode as DatabaseInterface::FETCH_MODE_* constants
      */
     public function setFetchMode($fetchMode)
     {
-        $lastFetchMode = $this->fetchMode;
+        $flippedFetchModeMap = array_flip($this->fetchModeMap);
+        $previousFetchMode = $flippedFetchModeMap[$this->fetchMode];
 
-        $newFetchMode = $this->mapFetchMode($fetchMode);
+        $this->fetchMode = $this->fetchModeMap[$fetchMode];
 
-        $this->getConnection()->setFetchMode($newFetchMode);
-        $this->fetchMode = $newFetchMode;
+        $this->getConnection()->setFetchMode($this->fetchMode);
 
-        return $lastFetchMode;
+        return $previousFetchMode;
     }
 
     /**
@@ -337,6 +347,10 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
         $result = null;
         $parameters = $this->assureParameterIsAnArray($parameters);
         try {
+            /**
+             * Be aware that Connection::executeQuery is a method specifically for READ operations only.
+             * This is especially important in master-slave Connection
+             */
             /** @var \Doctrine\DBAL\Driver\Statement $statement */
             $statement = $this->getConnection()->executeQuery($query, $parameters);
             $this->setAffectedRows(0);
@@ -474,40 +488,9 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     {
         $connection = DriverManager::getConnection($this->getConnectionParameters());
 
-        $connection->setFetchMode($this->mapFetchMode($this->fetchMode));
+        $connection->setFetchMode($this->fetchMode);
 
         return $connection;
-    }
-
-    /**
-     * Map the adodb lite fetch mode to the corresponding pdo fetch mode.
-     *
-     *  ADODB_FETCH_DEFAULT = 0
-     *  ADODB_FETCH_NUM = 1
-     *  ADODB_FETCH_ASSOC = 2
-     *  ADODB_FETCH_BOTH = 3
-     *
-     *  PDO::FETCH_LAZY = 1
-     *  PDO::FETCH_ASSOC = 2
-     *  PDO::FETCH_NUM = 3
-     *  PDO::FETCH_BOTH = 4
-     *
-     * @param int $fetchMode The adodb fetch mode.
-     *
-     * @return int The pdo fetch mode.
-     */
-    private function mapFetchMode($fetchMode)
-    {
-        $result = $fetchMode + 1;
-
-        if (1 === $fetchMode) {
-            $result = 3;
-        }
-        if (2 === $fetchMode) {
-            $result = 2;
-        }
-
-        return $result;
     }
 
     /**
@@ -647,4 +630,65 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
         $this->logger->error($message, $context);
     }
 
+    /**
+     * Get all values as array.
+     * Alias of getArray.
+     *
+     * @param string     $query
+     * @param array|bool $parameters     Array of parameters
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     *
+     * @see Doctrine::getArray()
+     *
+     * @throws     DatabaseException
+     *
+     * @return array
+     */
+    public function getAll($query, $parameters = array(), $executeOnSlave = true)
+    {
+        try {
+            $result = $this->getArray($query, $parameters, $executeOnSlave);
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get all values as an array.
+     * The format of returned the array depends on the fetch mode.
+     * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
+     * The default fetch mode is defined in Doctrine::$fetchMode
+     *
+     * @param string     $query
+     * @param array|bool $parameters     Array of parameters
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     *
+     * @see DatabaseInterface::setFetchMode()
+     * @see Doctrine::$fetchMode
+     *
+     * @throws     DatabaseException
+     *
+     * @return array
+     */
+    public function getArray($query, $parameters = array(), $executeOnSlave = true)
+    {
+
+        if ($parameters && !is_array($parameters)) {
+            throw new \InvalidArgumentException();
+        }
+
+        try {
+            $statement = $this->getConnection()->executeQuery($query, $parameters);
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
+        $result = $statement->fetchAll();
+
+        return $result;
+    }
 }

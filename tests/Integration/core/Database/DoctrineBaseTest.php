@@ -32,6 +32,36 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
 {
 
     /**
+     * @var string The first fixture oxId.
+     */
+    const FIXTURE_OXID_1 = 'OXID_1';
+
+    /**
+     * @var string The second fixture oxId.
+     */
+    const FIXTURE_OXID_2 = 'OXID_2';
+
+    /**
+     * @var string The third fixture oxId.
+     */
+    const FIXTURE_OXID_3 = 'OXID_3';
+
+    /**
+     * @var string The first fixture oxUserId.
+     */
+    const FIXTURE_OXUSERID_1 = 'OXUSERID_1';
+
+    /**
+     * @var string The first fixture oxUserId.
+     */
+    const FIXTURE_OXUSERID_2 = 'OXUSERID_2';
+
+    /**
+     * @var string The first fixture oxUserId.
+     */
+    const FIXTURE_OXUSERID_3 = 'OXUSERID_3';
+
+    /**
      * @var Doctrine|oxLegacyDb The database to test.
      */
     protected $database = null;
@@ -58,6 +88,70 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
         } else {
             $this->database = new Doctrine();
         }
+    }
+
+    /**
+     * Load the test fixture to the oxvouchers table.
+     */
+    protected function loadFixtureToOxVouchersTable()
+    {
+        $values = array(
+            self::FIXTURE_OXID_1 => self::FIXTURE_OXUSERID_1,
+            self::FIXTURE_OXID_2 => self::FIXTURE_OXUSERID_2,
+            self::FIXTURE_OXID_3 => self::FIXTURE_OXUSERID_3
+        );
+
+        $queryValuesParts = array();
+
+        foreach ($values as $oxId => $oxUserId) {
+            $queryValuesParts[] = "('$oxId','$oxUserId')";
+        }
+
+        $queryValuesPart = implode(',', $queryValuesParts);
+
+        $query = "INSERT INTO oxvouchers(OXID,OXUSERID) VALUES $queryValuesPart;";
+
+        $this->database->execute($query);
+    }
+
+    /**
+     * Remove all rows from the oxvoucher table.
+     */
+    protected function cleanOxVouchersTable()
+    {
+        $this->database->execute('DELETE FROM oxvouchers;');
+    }
+
+    /**
+     * Assure, that the table oxvouchers is empty. If it is not empty, the test will fail.
+     */
+    protected function assureOxVouchersTableIsEmpty()
+    {
+        if (!$this->isEmptyOxVouchersTable()) {
+            $this->cleanOxVouchersTable();
+        }
+
+        $this->assertEmpty($this->fetchAllOxVouchersRows(), "Problem while truncating the table 'oxvouchers'!");
+    }
+
+    /**
+     * Fetch all the rows of the oxvouchers table.
+     *
+     * @return array All rows of the oxvouchers table.
+     */
+    protected function fetchAllOxVouchersRows()
+    {
+        return $this->database->select('SELECT * FROM oxvouchers')->getAll();
+    }
+
+    /**
+     * Check, if the table oxvouchers is empty.
+     *
+     * @return bool Is the table oxvouchers empty?
+     */
+    protected function isEmptyOxVouchersTable()
+    {
+        return empty($this->fetchAllOxVouchersRows());
     }
 
 }

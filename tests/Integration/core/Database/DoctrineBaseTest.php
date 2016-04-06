@@ -74,7 +74,7 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
     /**
      * @var bool Should this test use the legacy database for the tests?
      */
-    const useLegacyDatabase = false;
+    const USELEGACYDATABASE = false;
 
     public static function setUpBeforeClass()
     {
@@ -120,7 +120,7 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
      */
     protected function createDatabase()
     {
-        if (self::useLegacyDatabase) {
+        if (self::USELEGACYDATABASE) {
             return oxDb::getDb();
         } else {
             return new Doctrine();
@@ -134,7 +134,7 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
      */
     protected static function createDatabaseStatic()
     {
-        if (self::useLegacyDatabase) {
+        if (self::USELEGACYDATABASE) {
             return oxDb::getDb();
         } else {
             return new Doctrine();

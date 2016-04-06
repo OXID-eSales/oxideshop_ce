@@ -31,6 +31,15 @@ use pear_ADOConnection;
 interface DatabaseInterface
 {
 
+    /** The default fetch mode as implemented by the DBAL */
+    const FETCH_MODE_DEFAULT = 0;
+    /** Fetch the query result into an array with integer keys */
+    const FETCH_MODE_NUM = 1;
+    /** Fetch the query result into an array with string keys */
+    const FETCH_MODE_ASSOC = 2;
+    /** Fetch the query result into a mixed array with both integer and string keys */
+    const FETCH_MODE_BOTH = 3;
+    
     /**
      * Setter for the database connection.
      *
@@ -39,13 +48,9 @@ interface DatabaseInterface
     public function setConnection($connection);
 
     /**
-     * Set the fetch mode for future calls. Returns the old fetch mode.
+     * Set the fetch mode of the database connection and return the previous fetch mode.
      *
-     * Hints:
-     *  - we map the adodblite fetch mode to the pdo (used by doctrine) fetch mode here
-     *  - cause there is no getter in dbal or pdo we save the actual fetch mode in this object too
-     *
-     * @param int $fetchmode How do we want to get the results?
+     * @param int $fetchMode See DatabaseInterface::FETCH_MODE_* for valid values
      *
      * @return int The previous fetch mode.
      */
@@ -72,17 +77,6 @@ interface DatabaseInterface
     public function getOne($query, $parameters = false, $executeOnSlave = true);
 
     /**
-     * Get values as array.
-     *
-     * @param string     $query          The sql statement we want to execute.
-     * @param array|bool $parameters     The parameters array.
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
-     *
-     * @return array
-     */
-    public function getArray($query, $parameters = false, $executeOnSlave = true);
-
-    /**
      * Get one row.
      *
      * @param string     $query          The sql statement we want to execute.
@@ -94,15 +88,26 @@ interface DatabaseInterface
     public function getRow($query, $parameters = false, $executeOnSlave = true);
 
     /**
-     * Get all values. The same as getArray.
+     * Get all values as array. Alias of getArray.
      *
-     * @param string     $query          The sql statement we want to execute.
-     * @param array|bool $parameters     The parameters array.
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string $query          The sql statement we want to execute.
+     * @param array  $parameters     The parameters array.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
-     * @return array
+     * @return array                 May be associative, indexed or mixed array depending on the given fetch mode
      */
-    public function getAll($query, $parameters = false, $executeOnSlave = true);
+    public function getAll($query, $parameters = array(), $executeOnSlave = true);
+
+    /**
+     * Get all values as array.
+     *
+     * @param string $query          The sql statement we want to execute.
+     * @param array  $parameters     The parameters array.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     *
+     * @return array                 May be associative, indexed or mixed array depending on the given fetch mode
+     */
+    public function getArray($query, $parameters = array(), $executeOnSlave = true);
 
     /**
      * Get value

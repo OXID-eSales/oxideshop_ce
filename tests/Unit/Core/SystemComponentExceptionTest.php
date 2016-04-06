@@ -28,7 +28,7 @@ class SystemComponentExceptionTest extends \OxidTestCase
     {
         $sComponent = "a Component";
         $oTestObject = oxNew('oxSystemComponentException');
-        $this->assertEquals('oxSystemComponentException', get_class($oTestObject));
+        $this->assertContains('SystemComponentException', get_class($oTestObject));
         $oTestObject->setComponent($sComponent);
         $this->assertEquals($sComponent, $oTestObject->getComponent());
     }
@@ -42,7 +42,7 @@ class SystemComponentExceptionTest extends \OxidTestCase
         $oTestObject->setComponent($sComponent);
         $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
         $this->assertContains($sMsg, $sStringOut);
-        $this->assertContains('oxSystemComponentException', $sStringOut);
+        $this->assertContains('SystemComponentException', $sStringOut);
         $this->assertContains($sComponent, $sStringOut);
     }
 
@@ -54,5 +54,15 @@ class SystemComponentExceptionTest extends \OxidTestCase
         $aRes = $oTestObject->getValues();
         $this->assertArrayHasKey('component', $aRes);
         $this->assertTrue($sComponent === $aRes['component']);
+    }
+
+    /**
+     * Test type getter.
+     */
+    public function testGetType()
+    {
+        $class = 'oxSystemComponentException';
+        $exception = oxNew($class);
+        $this->assertSame($class, $exception->getType());
     }
 }

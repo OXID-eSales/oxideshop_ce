@@ -30,6 +30,12 @@ use oxRegistry;
  */
 class StandardException extends \Exception
 {
+    /**
+     * Exception type, currently old class name is used.
+     *
+     * @var string
+     */
+    protected $type = 'oxException';
 
     /**
      * Log file path/name
@@ -193,5 +199,16 @@ class StandardException extends \Exception
      */
     public function setDestination($sDestination)
     {
+    }
+
+    /**
+     * Get exception type.
+     * Currently old class name is used here for compatibility.
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

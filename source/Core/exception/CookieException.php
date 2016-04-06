@@ -27,6 +27,12 @@ namespace OxidEsales\Eshop\Core\Exception;
  */
 class CookieException extends \oxException
 {
+    /**
+     * Exception type, currently old class name is used.
+     *
+     * @var string
+     */
+    protected $type = 'oxCookieException';
 
     /**
      * Get string dump

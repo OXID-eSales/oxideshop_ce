@@ -31,6 +31,12 @@ namespace OxidEsales\Eshop\Core\Exception;
  */
 class ConnectionException extends \oxException
 {
+    /**
+     * Exception type, currently old class name is used.
+     *
+     * @var string
+     */
+    protected $type = 'oxConnectionException';
 
     /**
      * Address value

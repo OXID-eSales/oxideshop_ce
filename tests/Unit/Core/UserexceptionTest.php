@@ -34,4 +34,14 @@ class UserexceptionTest extends \OxidTestCase
         $this->assertContains($sMsg, $sStringOut);
         $this->assertContains('UserException', $sStringOut);
     }
+
+    /**
+     * Test type getter.
+     */
+    public function testGetType()
+    {
+        $class = 'oxUserException';
+        $exception = oxNew($class);
+        $this->assertSame($class, $exception->getType());
+    }
 }

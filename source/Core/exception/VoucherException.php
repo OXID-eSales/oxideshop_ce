@@ -27,6 +27,12 @@ namespace OxidEsales\Eshop\Core\Exception;
  */
 class VoucherException extends \oxException
 {
+    /**
+     * Exception type, currently old class name is used.
+     *
+     * @var string
+     */
+    protected $type = 'oxVoucherException';
 
     /**
      * Voucher nr. involved in this exception

@@ -29,6 +29,12 @@ namespace OxidEsales\Eshop\Core\Exception;
  */
 class LanguageException extends \oxException
 {
+    /**
+     * Exception type, currently old class name is used.
+     *
+     * @var string
+     */
+    protected $type = 'oxLanguageException';
 
     /**
      * Language constant

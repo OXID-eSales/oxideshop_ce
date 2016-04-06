@@ -46,4 +46,14 @@ class ArticleinputexceptionTest extends \OxidTestCase
         $this->assertContains('ArticleInputException', $sStringOut); // Exception class name
         $this->assertContains($sArticle, $sStringOut); // Article nr
     }
+
+    /**
+     * Test type getter.
+     */
+    public function testGetType()
+    {
+        $class = 'oxArticleInputException';
+        $exception = oxNew($class);
+        $this->assertSame($class, $exception->getType());
+    }
 }

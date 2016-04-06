@@ -31,6 +31,13 @@ namespace OxidEsales\Eshop\Core\Exception;
 class AdoDbException extends \oxConnectionException
 {
     /**
+     * Exception type, currently old class name is used.
+     *
+     * @var string
+     */
+    protected $type = 'oxAdoDbException';
+
+    /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      *
      * @param string $sDbDriver   Database driver

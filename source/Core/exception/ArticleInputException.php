@@ -28,6 +28,12 @@ namespace OxidEsales\Eshop\Core\Exception;
  */
 class ArticleInputException extends \oxArticleException
 {
+    /**
+     * Exception type, currently old class name is used.
+     *
+     * @var string
+     */
+    protected $type = 'oxArticleInputException';
 
     /**
      * Get string dump

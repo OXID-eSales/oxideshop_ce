@@ -161,7 +161,7 @@ class oxUtilsView extends oxSuperCfg
         if ($oEr instanceof oxException) {
             $oEx = oxNew('oxExceptionToDisplay');
             $oEx->setMessage($oEr->getMessage());
-            $oEx->setExceptionType(get_class($oEr));
+            $oEx->setExceptionType($oEr->getType());
 
             if ($oEr instanceof oxSystemComponentException) {
                 $oEx->setMessageArgs($oEr->getComponent());

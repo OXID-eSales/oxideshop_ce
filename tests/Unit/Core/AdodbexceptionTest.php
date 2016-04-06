@@ -35,4 +35,12 @@ class AdodbexceptionTest extends \OxidTestCase
         $this->assertEquals($sMessage, $oTestObject->getMessage());
     }
 
+    /**
+     * Test type getter.
+     */
+    public function testGetType()
+    {
+        $exception = oxNew('oxAdoDbException', 'mysql', 'CONNECT', 200, 'MySQL Error', 'param1', 'param2', $oConnection);
+        $this->assertSame('oxAdoDbException', $exception->getType());
+    }
 }

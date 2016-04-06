@@ -27,6 +27,12 @@ namespace OxidEsales\Eshop\Core\Exception;
  */
 class ArticleException extends \oxException
 {
+    /**
+     * Exception type, currently old class name is used.
+     *
+     * @var string
+     */
+    protected $type = 'oxArticleException';
 
     /**
      * Article number who caused this exception

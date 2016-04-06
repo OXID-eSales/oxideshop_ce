@@ -61,4 +61,14 @@ class LanguageexceptionTest extends \OxidTestCase
         $this->assertArrayHasKey('langConstant', $aRes);
         $this->assertTrue($this->_sLanguageConstant === $aRes['langConstant']);
     }
+
+    /**
+     * Test type getter.
+     */
+    public function testGetType()
+    {
+        $class = 'oxLanguageException';
+        $exception = oxNew($class);
+        $this->assertSame($class, $exception->getType());
+    }
 }

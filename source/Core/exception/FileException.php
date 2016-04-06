@@ -29,6 +29,12 @@ namespace OxidEsales\Eshop\Core\Exception;
  */
 class FileException extends \oxException
 {
+    /**
+     * Exception type, currently old class name is used.
+     *
+     * @var string
+     */
+    protected $type = 'oxFileException';
 
     /**
      * File connected to this exception.

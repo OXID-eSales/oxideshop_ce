@@ -29,6 +29,12 @@ namespace OxidEsales\Eshop\Core\Exception;
  */
 class UserException extends \oxException
 {
+    /**
+     * Exception type, currently old class name is used.
+     *
+     * @var string
+     */
+    protected $type = 'oxUserException';
 
     /**
      * Get string dump

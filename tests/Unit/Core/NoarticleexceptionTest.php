@@ -33,4 +33,13 @@ class NoarticleexceptionTest extends \OxidTestCase
         $this->assertContains('NoArticleException', $sStringOut);
     }
 
+    /**
+     * Test type getter.
+     */
+    public function testGetType()
+    {
+        $class = 'oxNoArticleException';
+        $exception = oxNew($class);
+        $this->assertSame($class, $exception->getType());
+    }
 }

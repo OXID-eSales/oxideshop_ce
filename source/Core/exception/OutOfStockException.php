@@ -29,6 +29,12 @@ use oxRegistry;
  */
 class OutOfStockException extends \oxArticleException
 {
+    /**
+     * Exception type, currently old class name is used.
+     *
+     * @var string
+     */
+    protected $type = 'oxOutOfStockException';
 
     /**
      * Maximal possible amount (e.g. 2 if two items of the article are left).

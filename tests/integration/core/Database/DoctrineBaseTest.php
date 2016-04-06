@@ -32,6 +32,11 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
 {
 
     /**
+     * @var string The name of the table, we use to test the database.
+     */
+    const TABLE_NAME = 'oxdoctrinetest';
+
+    /**
      * @var string The first fixture oxId.
      */
     const FIXTURE_OXID_1 = 'OXID_1';
@@ -69,19 +74,33 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
     /**
      * @var bool Should this test use the legacy database for the tests?
      */
-    protected $useLegacyDatabase = false;
+    const useLegacyDatabase = false;
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+
+        self::createDatabaseTable();
+    }
+
+    public static function tearDownAfterClass()
+    {
+        self::removeDatabaseTable();
+
+        parent::tearDownAfterClass();
+    }
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->createDatabase();
-        $this->assureOxVouchersTableIsEmpty();
+        $this->initializeDatabase();
+        $this->assureTestTableIsEmpty();
     }
 
     public function tearDown()
     {
-        $this->assureOxVouchersTableIsEmpty();
+        $this->assureTestTableIsEmpty();
 
         parent::tearDown();
     }
@@ -89,21 +108,65 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
     /**
      * Create the database, we want to test.
      */
+    protected function initializeDatabase()
+    {
+        $this->database = $this->createDatabase();
+    }
+
+    /**
+     * Create the database object under test.
+     *
+     * @return Doctrine|oxLegacyDb The database object under test.
+     */
     protected function createDatabase()
     {
-        if ($this->useLegacyDatabase) {
-            $this->database = oxDb::getDb();
+        if (self::useLegacyDatabase) {
+            return oxDb::getDb();
         } else {
-            $this->database = new Doctrine();
+            return new Doctrine();
         }
     }
 
     /**
-     * Load the test fixture to the oxvouchers table.
+     * Create the database object under test - the static pendant to use in the setUpBeforeClass and tearDownAfterClass.
+     *
+     * @return Doctrine|oxLegacyDb The database object under test.
      */
-    protected function loadFixtureToOxVouchersTable()
+    protected static function createDatabaseStatic()
     {
-        $this->cleanOxVouchersTable();
+        if (self::useLegacyDatabase) {
+            return oxDb::getDb();
+        } else {
+            return new Doctrine();
+        }
+    }
+
+    /**
+     * Create a table in the database especially for this test.
+     */
+    protected static function createDatabaseTable()
+    {
+        $db = self::createDatabaseStatic();
+
+        $db->execute('CREATE TABLE IF NOT EXISTS ' . self::TABLE_NAME . ' (oxid VARCHAR(32), oxuserid VARCHAR(32)) ENGINE innoDb;');
+    }
+
+    /**
+     * Drop the test database table.
+     */
+    protected static function removeDatabaseTable()
+    {
+        $db = self::createDatabaseStatic();
+
+        $db->execute('DROP TABLE ' . self::TABLE_NAME . ';');
+    }
+
+    /**
+     * Load the test fixture to the oxdoctrinetest table.
+     */
+    protected function loadFixtureToTestTable()
+    {
+        $this->cleanTestTable();
 
         $values = array(
             self::FIXTURE_OXID_1 => self::FIXTURE_OXUSERID_1,
@@ -119,49 +182,49 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
 
         $queryValuesPart = implode(',', $queryValuesParts);
 
-        $query = "INSERT INTO oxvouchers(OXID,OXUSERID) VALUES $queryValuesPart;";
+        $query = "INSERT INTO " . self::TABLE_NAME . "(OXID, OXUSERID) VALUES $queryValuesPart;";
 
         $this->database->execute($query);
     }
 
     /**
-     * Remove all rows from the oxvoucher table.
+     * Remove all rows from the oxdoctrinetest table.
      */
-    protected function cleanOxVouchersTable()
+    protected function cleanTestTable()
     {
-        $this->database->execute('DELETE FROM oxvouchers;');
+        $this->database->execute('DELETE FROM ' . self::TABLE_NAME . ';');
     }
 
     /**
-     * Assure, that the table oxvouchers is empty. If it is not empty, the test will fail.
+     * Assure, that the table oxdoctrinetest is empty. If it is not empty, the test will fail.
      */
-    protected function assureOxVouchersTableIsEmpty()
+    protected function assureTestTableIsEmpty()
     {
-        if (!$this->isEmptyOxVouchersTable()) {
-            $this->cleanOxVouchersTable();
+        if (!$this->isEmptyTestTable()) {
+            $this->cleanTestTable();
         }
 
-        $this->assertEmpty($this->fetchAllOxVouchersRows(), "Problem while truncating the table 'oxvouchers'!");
+        $this->assertEmpty($this->fetchAllTestTableRows(), "Problem while truncating the table '" . self::TABLE_NAME . "'!");
     }
 
     /**
-     * Fetch all the rows of the oxvouchers table.
+     * Check, if the table oxdoctrinetest is empty.
      *
-     * @return array All rows of the oxvouchers table.
+     * @return bool Is the table oxdoctrinetest empty?
      */
-    protected function fetchAllOxVouchersRows()
+    protected function isEmptyTestTable()
     {
-        return $this->database->select('SELECT * FROM oxvouchers')->getAll();
+        return empty($this->fetchAllTestTableRows());
     }
 
     /**
-     * Check, if the table oxvouchers is empty.
+     * Fetch all the rows of the oxdoctrinetest table.
      *
-     * @return bool Is the table oxvouchers empty?
+     * @return array All rows of the oxdoctrinetest table.
      */
-    protected function isEmptyOxVouchersTable()
+    protected function fetchAllTestTableRows()
     {
-        return empty($this->fetchAllOxVouchersRows());
+        return $this->database->select('SELECT * FROM ' . self::TABLE_NAME)->getAll();
     }
 
 }

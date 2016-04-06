@@ -79,6 +79,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveNextWithNonEmptyResultSetReachingEnd()
     {
+        // @todo: use our table!
         $resultSet = $this->database->select('SELECT OXID FROM oxvendor;');
 
         $resultSet->MoveNext();
@@ -101,11 +102,11 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveNextWithNonEmptyResultSetFetchModeAssociative()
     {
-        $this->loadFixtureToOxVouchersTable();
+        $this->loadFixtureToTestTable();
 
         $this->database->setFetchMode(PDO::FETCH_ASSOC);
-        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers;');
-        $this->createDatabase();
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
+        $this->initializeDatabase();
 
         $this->assertFalse($resultSet->EOF);
         $this->assertSame(array('OXID' => self::FIXTURE_OXID_1), $resultSet->fields);
@@ -129,12 +130,12 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     public function dataProvider_testGetRows_testGetArray()
     {
         return array(
-            array('SELECT OXID FROM oxvouchers', 0, false, array()),
-            array('SELECT OXID FROM oxvouchers', 1, false, array()),
-            array('SELECT OXID FROM oxvouchers', 10, false, array()),
-            array('SELECT OXID FROM oxvouchers', 0, true, array()),
-            array('SELECT OXID FROM oxvouchers', 1, true, array(array(self::FIXTURE_OXID_1))),
-            array('SELECT OXID FROM oxvouchers', 5, true, array(array(self::FIXTURE_OXID_1), array(self::FIXTURE_OXID_2), array(self::FIXTURE_OXID_3))),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, 0, false, array()),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, 1, false, array()),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, 10, false, array()),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, 0, true, array()),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, 1, true, array(array(self::FIXTURE_OXID_1))),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, 5, true, array(array(self::FIXTURE_OXID_1), array(self::FIXTURE_OXID_2), array(self::FIXTURE_OXID_3))),
         );
     }
 
@@ -151,7 +152,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     public function testGetArray($query, $numberOfRows, $loadFixtures, $expectedArray)
     {
         if ($loadFixtures) {
-            $this->loadFixtureToOxVouchersTable();
+            $this->loadFixtureToTestTable();
         }
 
         $resultSet = $this->database->select($query);
@@ -166,9 +167,9 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testGetArraySequentialCalls()
     {
-        $this->loadFixtureToOxVouchersTable();
+        $this->loadFixtureToTestTable();
 
-        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID');
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
 
         $resultOne = $resultSet->GetArray(1);
         $resultTwo = $resultSet->GetArray(1);
@@ -185,6 +186,8 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     public function testGetArrayWithDifferentFetchMode()
     {
         $oldFetchMode = $this->database->setFetchMode(3);
+
+        // @todo: use our table!
         $resultSet = $this->database->select('SELECT OXID FROM oxvendor ORDER BY OXID');
 
         $resultOne = $resultSet->GetArray(1);
@@ -215,7 +218,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     public function testGetRows($query, $numberOfRows, $loadFixtures, $expectedArray)
     {
         if ($loadFixtures) {
-            $this->loadFixtureToOxVouchersTable();
+            $this->loadFixtureToTestTable();
         }
 
         $resultSet = $this->database->select($query);
@@ -230,9 +233,9 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testGetRowsSequentialCalls()
     {
-        $this->loadFixtureToOxVouchersTable();
+        $this->loadFixtureToTestTable();
 
-        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID');
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
 
         $resultOne = $resultSet->GetRows(1);
         $resultTwo = $resultSet->GetRows(1);
@@ -248,6 +251,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testFetchField()
     {
+        // @todo: use our table!
         $resultSet = $this->database->select('SELECT * FROM oxvendor');
 
         $columnInformationOne = $resultSet->FetchField(0);
@@ -285,8 +289,8 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     public function dataProvider_testFieldCount()
     {
         return array(
-            array('SELECT OXID FROM oxvouchers;', 1),
-            array('SELECT * FROM oxvouchers;', 9)
+            array('SELECT OXID FROM ' . self::TABLE_NAME, 1),
+            array('SELECT * FROM ' . self::TABLE_NAME , 2)
         );
     }
 
@@ -311,15 +315,15 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     public function dataProvider_testFields()
     {
         return array(
-            array('SELECT OXID FROM oxvouchers', 0, false, false),
-            array('SELECT OXID FROM oxvouchers', 'OXID', false, null),
-            array('SELECT OXID FROM oxvouchers ORDER BY OXID', 0, true, array(self::FIXTURE_OXID_1)),
-            array('SELECT OXID FROM oxvouchers ORDER BY OXID', 'OXID', true, null),
-            array('SELECT OXID,OXUSERID FROM oxvouchers ORDER BY OXID', 0, true, array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1)),
-            array('SELECT OXID,OXUSERID FROM oxvouchers ORDER BY OXID', 1, true, self::FIXTURE_OXUSERID_1),
-            array('SELECT OXID,OXUSERID FROM oxvouchers ORDER BY OXID', 'OXID', true, self::FIXTURE_OXID_1, true),
-            array('SELECT OXID,OXUSERID FROM oxvouchers ORDER BY OXID', 0, true, array('OXID' => self::FIXTURE_OXID_1, 'OXUSERID' => self::FIXTURE_OXUSERID_1), true),
-            array('SELECT OXID,OXUSERID FROM oxvouchers ORDER BY OXID', 'NOTNULL', true, null, true),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, 0, false, false),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, 'OXID', false, null),
+            array('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 0, true, array(self::FIXTURE_OXID_1)),
+            array('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 'OXID', true, null),
+            array('SELECT OXID,OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 0, true, array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1)),
+            array('SELECT OXID,OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 1, true, self::FIXTURE_OXUSERID_1),
+            array('SELECT OXID,OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 'OXID', true, self::FIXTURE_OXID_1, true),
+            array('SELECT OXID,OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 0, true, array('OXID' => self::FIXTURE_OXID_1, 'OXUSERID' => self::FIXTURE_OXUSERID_1), true),
+            array('SELECT OXID,OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 'NOTNULL', true, null, true),
         );
     }
 
@@ -336,7 +340,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     public function testFields($query, $parameter, $loadFixture, $expected, $fetchModeAssociative = false)
     {
         if ($loadFixture) {
-            $this->loadFixtureToOxVouchersTable();
+            $this->loadFixtureToTestTable();
         }
         if ($fetchModeAssociative) {
             $oldFetchMode = $this->database->setFetchMode(2);
@@ -349,7 +353,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
             $this->database->setFetchMode($oldFetchMode);
         }
 
-        $this->cleanOxVouchersTable();
+        $this->cleanTestTable();
         $this->assertSame($expected, $result);
     }
 
@@ -358,7 +362,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveWithEmptyResultSet()
     {
-        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers;');
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
 
         $methodResult = $resultSet->Move(7);
 
@@ -392,9 +396,9 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMove($moveTo, $expectedFields)
     {
-        $this->loadFixtureToOxVouchersTable();
+        $this->loadFixtureToTestTable();
 
-        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID;');
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
 
         $methodResult = $resultSet->Move($moveTo);
 
@@ -410,7 +414,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveFirstEmptyResultSet()
     {
-        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID;');
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
 
         $methodResult = $resultSet->MoveFirst();
 
@@ -424,7 +428,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveFirstNonEmptyResultSet()
     {
-        $this->loadFixtureToOxVouchersTable();
+        $this->loadFixtureToTestTable();
 
         $resultSet = $this->testMove(2, array(self::FIXTURE_OXID_3));
 
@@ -455,7 +459,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveLastEmptyResultSet()
     {
-        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID;');
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
 
         $methodResult = $resultSet->MoveLast();
 
@@ -469,9 +473,9 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveLastNonEmptyResultSet()
     {
-        $this->loadFixtureToOxVouchersTable();
+        $this->loadFixtureToTestTable();
 
-        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID;');
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
 
         $methodResult = $resultSet->MoveLast();
 
@@ -485,9 +489,9 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveLastNonEmptyResultSetSequentialCalls()
     {
-        $this->loadFixtureToOxVouchersTable();
+        $this->loadFixtureToTestTable();
 
-        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID;');
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
 
         $resultSet->MoveLast();
         $methodResult = $resultSet->MoveLast();
@@ -504,7 +508,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testCreationWithRealEmptyResult()
     {
-        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers;');
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
 
         $this->assertDoctrineResultSet($resultSet);
         $this->assertSame(0, $resultSet->recordCount());
@@ -519,9 +523,9 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testCreationWithRealNonEmptyResult()
     {
-        $this->loadFixtureToOxVouchersTable();
+        $this->loadFixtureToTestTable();
 
-        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers;');
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
 
         $this->assertDoctrineResultSet($resultSet);
         $this->assertSame(3, $resultSet->recordCount());

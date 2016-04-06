@@ -20,28 +20,17 @@
  * @version       OXID eShop CE
  */
 
-use OxidEsales\TestingLibrary\UnitTestCase;
-use Doctrine\DBAL\Driver\PDOStatement;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
-use OxidEsales\Eshop\Core\Database\Doctrine;
+
+require_once realpath(dirname(__FILE__)) . '/../DoctrineBaseTest.php';
 
 /**
  * Tests for our database object.
  *
  * @group doctrine
  */
-class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCase
+class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integration_Core_Database_DoctrineBaseTest
 {
-
-    /**
-     * @var Doctrine|oxLegacyDb The database to test.
-     */
-    protected $database = null;
-
-    /**
-     * @var bool Should this test use the legacy database for the tests?
-     */
-    protected $useLegacyDatabase = false;
 
     /**
      * @var string The name of the class, including the complete namespace.
@@ -52,13 +41,6 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
      * @var string The first OXID of the OXARTICLES
      */
     const FIRST_OXARTICLE_OXID = '09602cddb5af0aba745293d08ae6bcf6';
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->createDatabase();
-    }
 
     /**
      * Test, that the method 'MoveNext' works for an empty result set.
@@ -163,6 +145,10 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
      * Test, that the method 'GetArray' works as expected.
      *
      * @dataProvider dataProvider_testGetRows_testGetArray
+     *
+     * @param string $query         The sql statement we want to execute.
+     * @param int    $numberOfRows  The number of rows we want to fetch.
+     * @param array  $expectedArray The result the method should give back.
      */
     public function testGetArray($query, $numberOfRows, $expectedArray)
     {
@@ -298,12 +284,15 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
      * Test, that the method 'FieldCount' works as expected.
      *
      * @dataProvider dataProvider_testFieldCount
+     *
+     * @param string $query         The sql statement we want to test.
+     * @param int    $expectedCount The expected number of fields.
      */
-    public function testFieldCount($query, $count)
+    public function testFieldCount($query, $expectedCount)
     {
         $resultSet = $this->database->select($query);
 
-        $this->assertSame($count, $resultSet->FieldCount());
+        $this->assertSame($expectedCount, $resultSet->FieldCount());
     }
 
     /**
@@ -384,6 +373,8 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
      *
      * @param int   $moveTo         The index of the line we want to check.
      * @param array $expectedFields The expected values in the given line.
+     *
+     * @return mixed|object_ResultSet|DoctrineResultSet The result set after the given MoveTo method call.
      */
     public function testMove($moveTo, $expectedFields)
     {
@@ -476,7 +467,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     {
         $resultSet = $this->database->select('SELECT OXID FROM oxarticles ORDER BY OXID;');
 
-        $methodResult = $resultSet->MoveLast();
+        $resultSet->MoveLast();
         $methodResult = $resultSet->MoveLast();
 
         $this->assertTrue($methodResult);
@@ -596,9 +587,8 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     {
         $resultSet = $this->testCreationWithRealEmptyResult();
 
-        $methodResult = $resultSet->Close();
+        $resultSet->Close();
 
-        $this->assertNull($methodResult);
         $this->assertTrue($resultSet->EOF);
         $this->assertSame(array(), $resultSet->fields);
     }
@@ -610,11 +600,10 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
     {
         $resultSet = $this->testCreationWithRealEmptyResult();
 
-        $methodResult = $resultSet->Close();
+        $resultSet->Close();
 
         $firstRow = $resultSet->fetchRow();
 
-        $this->assertNull($methodResult);
         $this->assertFalse($firstRow);
         $this->assertTrue($resultSet->EOF);
         $this->assertSame(array(), $resultSet->fields);
@@ -629,24 +618,11 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends UnitTestCa
 
         $firstRow = $resultSet->fetchRow();
 
-        $methodResult = $resultSet->Close();
+        $resultSet->Close();
 
-        $this->assertNull($methodResult);
         $this->assertSame(array('09602cddb5af0aba745293d08ae6bcf6'), $firstRow);
         $this->assertFalse($resultSet->EOF);
         $this->assertSame(array(), $resultSet->fields);
-    }
-
-    /**
-     * Create the database, we want to test.
-     */
-    private function createDatabase()
-    {
-        if ($this->useLegacyDatabase) {
-            $this->database = oxDb::getDb();
-        } else {
-            $this->database = new Doctrine();
-        }
     }
 
     /**

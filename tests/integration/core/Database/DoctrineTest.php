@@ -20,33 +20,15 @@
  * @version       OXID eShop CE
  */
 
-use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\Eshop\Core\Database\Doctrine;
+require_once realpath(dirname(__FILE__)) . '/DoctrineBaseTest.php';
 
 /**
  * Tests for our database object.
  *
  * @group doctrine
  */
-class DoctrineTest extends UnitTestCase
+class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_DoctrineBaseTest
 {
-
-    /**
-     * @var bool Should this test use the legacy database for the tests?
-     */
-    protected $useLegacyDatabase = false;
-
-    /**
-     * @var Doctrine The doctrine database we want to test in this class.
-     */
-    protected $database = null;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->createDatabase();
-    }
 
     /**
      * The data provider for the method testSelect.
@@ -230,14 +212,20 @@ class DoctrineTest extends UnitTestCase
      * Test, that the method 'selectLimit' works without parameters and an empty result.
      *
      * @dataProvider dataProvider_testSelectLimit
+     *
+     * @param string $sql            The sql statement we want to execute.
+     * @param int    $limit          The sql starting row.
+     * @param int    $offset         The number of rows we are interested in.
+     * @param array  $parameters     The parameters we want to give into the 'selectLimit' method.
+     * @param array  $expectedResult The expected result of the method call.
      */
-    public function testSelectLimit($sql, $limit, $offset, $parameters, $expected)
+    public function testSelectLimit($sql, $limit, $offset, $parameters, $expectedResult)
     {
         $resultSet = $this->database->selectLimit($sql, $limit, $offset, $parameters);
         $result = $resultSet->getAll();
 
         $this->assertInternalType('array', $result);
-        $this->assertSame($expected, $result);
+        $this->assertSame($expectedResult, $result);
     }
 
     /**
@@ -487,6 +475,8 @@ class DoctrineTest extends UnitTestCase
 
     /**
      * Assure, that the table oxorderfiles has only the given oxId.
+     *
+     * @param string $oxId The oxId we want to be the only one in the oxorderfile table.
      */
     private function assureOrderFileHasOnly($oxId)
     {
@@ -550,18 +540,6 @@ class DoctrineTest extends UnitTestCase
             $this->assertSame('ADORecordSet_empty', get_class($resultSet));
         } else {
             $this->assertSame('OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet', get_class($resultSet));
-        }
-    }
-
-    /**
-     * Create the database, we want to test.
-     */
-    private function createDatabase()
-    {
-        if ($this->useLegacyDatabase) {
-            $this->database = oxDb::getDb();
-        } else {
-            $this->database = new Doctrine();
         }
     }
 

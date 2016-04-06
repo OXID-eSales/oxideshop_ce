@@ -38,11 +38,6 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     const CLASS_NAME_WITH_PATH = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet';
 
     /**
-     * @var string The first OXID of the OXARTICLES
-     */
-    const FIRST_OXARTICLE_OXID = '09602cddb5af0aba745293d08ae6bcf6';
-
-    /**
      * Test, that the method 'MoveNext' works for an empty result set.
      */
     public function testMoveNextWithEmptyResultSet()
@@ -64,18 +59,18 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
         $resultSet = $this->testCreationWithRealNonEmptyResult();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertSame(array('09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
+        $this->assertSame(array(self::FIXTURE_OXID_1), $resultSet->fields);
 
         $methodResult = $resultSet->MoveNext();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertSame(array('09620040146118fbc4b7eef6a0faf072'), $resultSet->fields);
+        $this->assertSame(array(self::FIXTURE_OXID_2), $resultSet->fields);
         $this->assertTrue($methodResult);
 
         $methodResult = $resultSet->MoveNext();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertSame(array('0962081a5693597654fd2887af7a6095'), $resultSet->fields);
+        $this->assertSame(array(self::FIXTURE_OXID_3), $resultSet->fields);
         $this->assertTrue($methodResult);
     }
 
@@ -106,23 +101,25 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveNextWithNonEmptyResultSetFetchModeAssociative()
     {
+        $this->loadFixtureToOxVouchersTable();
+
         $this->database->setFetchMode(PDO::FETCH_ASSOC);
-        $resultSet = $this->database->select('SELECT OXID FROM oxarticles;');
+        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers;');
         $this->createDatabase();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertSame(array('OXID' => '09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
+        $this->assertSame(array('OXID' => self::FIXTURE_OXID_1), $resultSet->fields);
 
         $methodResult = $resultSet->MoveNext();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertSame(array('OXID' => '09620040146118fbc4b7eef6a0faf072'), $resultSet->fields);
+        $this->assertSame(array('OXID' => self::FIXTURE_OXID_2), $resultSet->fields);
         $this->assertTrue($methodResult);
 
         $methodResult = $resultSet->MoveNext();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertSame(array('OXID' => '0962081a5693597654fd2887af7a6095'), $resultSet->fields);
+        $this->assertSame(array('OXID' => self::FIXTURE_OXID_3), $resultSet->fields);
         $this->assertTrue($methodResult);
     }
 
@@ -132,12 +129,12 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     public function dataProvider_testGetRows_testGetArray()
     {
         return array(
-            array('SELECT OXID FROM oxorderfiles', 0, array()),
-            array('SELECT OXID FROM oxorderfiles', 1, array()),
-            array('SELECT OXID FROM oxorderfiles', 10, array()),
-            array('SELECT OXID FROM oxvendor', 0, array()),
-            array('SELECT OXID FROM oxvendor', 1, array(array('9437def212dc37c66f90cc249143510a'))),
-            array('SELECT OXID FROM oxvendor', 5, array(array('9437def212dc37c66f90cc249143510a'), array('d2e44d9b31fcce448.08890330'), array('d2e44d9b32fd2c224.65443178'))),
+            array('SELECT OXID FROM oxvouchers', 0, false, array()),
+            array('SELECT OXID FROM oxvouchers', 1, false, array()),
+            array('SELECT OXID FROM oxvouchers', 10, false, array()),
+            array('SELECT OXID FROM oxvouchers', 0, true, array()),
+            array('SELECT OXID FROM oxvouchers', 1, true, array(array(self::FIXTURE_OXID_1))),
+            array('SELECT OXID FROM oxvouchers', 5, true, array(array(self::FIXTURE_OXID_1), array(self::FIXTURE_OXID_2), array(self::FIXTURE_OXID_3))),
         );
     }
 
@@ -148,10 +145,15 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      *
      * @param string $query         The sql statement we want to execute.
      * @param int    $numberOfRows  The number of rows we want to fetch.
+     * @param bool   $loadFixtures  Should we load the test fixtures before running the actual test.
      * @param array  $expectedArray The result the method should give back.
      */
-    public function testGetArray($query, $numberOfRows, $expectedArray)
+    public function testGetArray($query, $numberOfRows, $loadFixtures, $expectedArray)
     {
+        if ($loadFixtures) {
+            $this->loadFixtureToOxVouchersTable();
+        }
+
         $resultSet = $this->database->select($query);
 
         $result = $resultSet->GetArray($numberOfRows);
@@ -164,15 +166,17 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testGetArraySequentialCalls()
     {
-        $resultSet = $this->database->select('SELECT OXID FROM oxvendor ORDER BY OXID');
+        $this->loadFixtureToOxVouchersTable();
+
+        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID');
 
         $resultOne = $resultSet->GetArray(1);
         $resultTwo = $resultSet->GetArray(1);
         $resultThree = $resultSet->GetArray(1);
 
-        $this->assertSame($resultOne, array(array('9437def212dc37c66f90cc249143510a')));
-        $this->assertSame($resultTwo, array(array('d2e44d9b31fcce448.08890330')));
-        $this->assertSame($resultThree, array(array('d2e44d9b32fd2c224.65443178')));
+        $this->assertSame($resultOne, array(array(self::FIXTURE_OXID_1)));
+        $this->assertSame($resultTwo, array(array(self::FIXTURE_OXID_2)));
+        $this->assertSame($resultThree, array(array(self::FIXTURE_OXID_3)));
     }
 
     /**
@@ -205,10 +209,15 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      *
      * @param string $query         The sql statement to execute.
      * @param int    $numberOfRows  The number of rows to fetch.
+     * @param bool   $loadFixtures  Should we load the test fixtures before running the actual test.
      * @param array  $expectedArray The resulting array, which we expect.
      */
-    public function testGetRows($query, $numberOfRows, $expectedArray)
+    public function testGetRows($query, $numberOfRows, $loadFixtures, $expectedArray)
     {
+        if ($loadFixtures) {
+            $this->loadFixtureToOxVouchersTable();
+        }
+
         $resultSet = $this->database->select($query);
 
         $result = $resultSet->GetRows($numberOfRows);
@@ -221,15 +230,17 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testGetRowsSequentialCalls()
     {
-        $resultSet = $this->database->select('SELECT OXID FROM oxvendor ORDER BY OXID');
+        $this->loadFixtureToOxVouchersTable();
+
+        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID');
 
         $resultOne = $resultSet->GetRows(1);
         $resultTwo = $resultSet->GetRows(1);
         $resultThree = $resultSet->GetRows(1);
 
-        $this->assertSame($resultOne, array(array('9437def212dc37c66f90cc249143510a')));
-        $this->assertSame($resultTwo, array(array('d2e44d9b31fcce448.08890330')));
-        $this->assertSame($resultThree, array(array('d2e44d9b32fd2c224.65443178')));
+        $this->assertSame($resultOne, array(array(self::FIXTURE_OXID_1)));
+        $this->assertSame($resultTwo, array(array(self::FIXTURE_OXID_2)));
+        $this->assertSame($resultThree, array(array(self::FIXTURE_OXID_3)));
     }
 
     /**
@@ -274,7 +285,6 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     public function dataProvider_testFieldCount()
     {
         return array(
-            array('SELECT OXID FROM oxorderfiles;', 1),
             array('SELECT OXID FROM oxvouchers;', 1),
             array('SELECT * FROM oxvouchers;', 9)
         );
@@ -301,15 +311,15 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     public function dataProvider_testFields()
     {
         return array(
-            array('SELECT OXID FROM oxvouchers', 0, false),
-            array('SELECT OXID FROM oxorderfiles', 'OXID', null),
-            array('SELECT OXID FROM oxarticles ORDER BY OXID', 0, array('09602cddb5af0aba745293d08ae6bcf6')),
-            array('SELECT OXID FROM oxarticles ORDER BY OXID', 'OXID', null),
-            array('SELECT OXID,OXARTNUM FROM oxarticles ORDER BY OXID', 0, array('09602cddb5af0aba745293d08ae6bcf6', '0802-85-823-7-1')),
-            array('SELECT OXID,OXARTNUM FROM oxarticles ORDER BY OXID', 1, '0802-85-823-7-1'),
-            array('SELECT OXID,OXARTNUM FROM oxarticles ORDER BY OXID', 'OXID', '09602cddb5af0aba745293d08ae6bcf6', true),
-            array('SELECT OXID,OXARTNUM FROM oxarticles ORDER BY OXID', 0, array('OXID' => '09602cddb5af0aba745293d08ae6bcf6', 'OXARTNUM' => '0802-85-823-7-1'), true),
-            array('SELECT OXID,OXARTNUM FROM oxarticles ORDER BY OXID', 'NOTNULL', null, true),
+            array('SELECT OXID FROM oxvouchers', 0, false, false),
+            array('SELECT OXID FROM oxvouchers', 'OXID', false, null),
+            array('SELECT OXID FROM oxvouchers ORDER BY OXID', 0, true, array(self::FIXTURE_OXID_1)),
+            array('SELECT OXID FROM oxvouchers ORDER BY OXID', 'OXID', true, null),
+            array('SELECT OXID,OXUSERID FROM oxvouchers ORDER BY OXID', 0, true, array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1)),
+            array('SELECT OXID,OXUSERID FROM oxvouchers ORDER BY OXID', 1, true, self::FIXTURE_OXUSERID_1),
+            array('SELECT OXID,OXUSERID FROM oxvouchers ORDER BY OXID', 'OXID', true, self::FIXTURE_OXID_1, true),
+            array('SELECT OXID,OXUSERID FROM oxvouchers ORDER BY OXID', 0, true, array('OXID' => self::FIXTURE_OXID_1, 'OXUSERID' => self::FIXTURE_OXUSERID_1), true),
+            array('SELECT OXID,OXUSERID FROM oxvouchers ORDER BY OXID', 'NOTNULL', true, null, true),
         );
     }
 
@@ -323,8 +333,11 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      * @param mixed  $expected             The expected result of the Fields method under the given specification.
      * @param bool   $fetchModeAssociative Should the fetch mode be set to associative array before running the statement?
      */
-    public function testFields($query, $parameter, $expected, $fetchModeAssociative = false)
+    public function testFields($query, $parameter, $loadFixture, $expected, $fetchModeAssociative = false)
     {
+        if ($loadFixture) {
+            $this->loadFixtureToOxVouchersTable();
+        }
         if ($fetchModeAssociative) {
             $oldFetchMode = $this->database->setFetchMode(2);
         }
@@ -336,6 +349,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
             $this->database->setFetchMode($oldFetchMode);
         }
 
+        $this->cleanOxVouchersTable();
         $this->assertSame($expected, $result);
     }
 
@@ -359,10 +373,10 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     public function dataProvider_testMove()
     {
         return array(
-            array(2, array('0962081a5693597654fd2887af7a6095')),
-            array(0, array('09602cddb5af0aba745293d08ae6bcf6')),
-            array(1, array('09620040146118fbc4b7eef6a0faf072')),
-            array(300, array('a7c44be4a5ddee114.67356237')) // the last row (no. 239) stays
+            array(2, array(self::FIXTURE_OXID_3)),
+            array(0, array(self::FIXTURE_OXID_1)),
+            array(1, array(self::FIXTURE_OXID_2)),
+            array(300, array(self::FIXTURE_OXID_3)) // the last row (no. 239) stays
         );
     }
 
@@ -378,7 +392,9 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMove($moveTo, $expectedFields)
     {
-        $resultSet = $this->database->select('SELECT OXID FROM oxarticles ORDER BY OXID;');
+        $this->loadFixtureToOxVouchersTable();
+
+        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID;');
 
         $methodResult = $resultSet->Move($moveTo);
 
@@ -408,12 +424,14 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveFirstNonEmptyResultSet()
     {
-        $resultSet = $this->testMove(2, array('0962081a5693597654fd2887af7a6095'));
+        $this->loadFixtureToOxVouchersTable();
+
+        $resultSet = $this->testMove(2, array(self::FIXTURE_OXID_3));
 
         $methodResult = $resultSet->MoveFirst();
 
         $this->assertTrue($methodResult);
-        $this->assertSame(array('09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
+        $this->assertSame(array(self::FIXTURE_OXID_1), $resultSet->fields);
         $this->assertFalse($resultSet->EOF);
     }
 
@@ -423,12 +441,12 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveFirstNonEmptyResultSetNearlyEndOfRows()
     {
-        $resultSet = $this->testMove(237, array('943ed656e21971fb2f1827facbba9bec'));
+        $resultSet = $this->testMove(2, array(self::FIXTURE_OXID_3));
 
         $methodResult = $resultSet->MoveFirst();
 
         $this->assertTrue($methodResult);
-        $this->assertSame(array('09602cddb5af0aba745293d08ae6bcf6'), $resultSet->fields);
+        $this->assertSame(array(self::FIXTURE_OXID_1), $resultSet->fields);
         $this->assertFalse($resultSet->EOF);
     }
 
@@ -451,13 +469,15 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveLastNonEmptyResultSet()
     {
-        $resultSet = $this->database->select('SELECT OXID FROM oxarticles ORDER BY OXID;');
+        $this->loadFixtureToOxVouchersTable();
+
+        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID;');
 
         $methodResult = $resultSet->MoveLast();
 
         $this->assertTrue($methodResult);
         $this->assertFalse($resultSet->EOF);
-        $this->assertSame($resultSet->fields, array('a7c44be4a5ddee114.67356237'));
+        $this->assertSame($resultSet->fields, array(self::FIXTURE_OXID_3));
     }
 
     /**
@@ -465,14 +485,16 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveLastNonEmptyResultSetSequentialCalls()
     {
-        $resultSet = $this->database->select('SELECT OXID FROM oxarticles ORDER BY OXID;');
+        $this->loadFixtureToOxVouchersTable();
+
+        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers ORDER BY OXID;');
 
         $resultSet->MoveLast();
         $methodResult = $resultSet->MoveLast();
 
         $this->assertTrue($methodResult);
         $this->assertFalse($resultSet->EOF);
-        $this->assertSame($resultSet->fields, array('a7c44be4a5ddee114.67356237'));
+        $this->assertSame($resultSet->fields, array(self::FIXTURE_OXID_3));
     }
 
     /**
@@ -497,10 +519,12 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testCreationWithRealNonEmptyResult()
     {
-        $resultSet = $this->database->select('SELECT OXID FROM oxarticles;');
+        $this->loadFixtureToOxVouchersTable();
+
+        $resultSet = $this->database->select('SELECT OXID FROM oxvouchers;');
 
         $this->assertDoctrineResultSet($resultSet);
-        $this->assertGreaterThan(200, $resultSet->recordCount());
+        $this->assertSame(3, $resultSet->recordCount());
 
         return $resultSet;
     }
@@ -527,7 +551,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
         $row = $resultSet->fetchRow();
 
         $this->assertInternalType('array', $row);
-        $this->assertSame(self::FIRST_OXARTICLE_OXID, $row[0]);
+        $this->assertSame(self::FIXTURE_OXID_1, $row[0]);
     }
 
     /**
@@ -554,8 +578,8 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
 
         $this->assertInternalType('array', $rows);
         $this->assertNotEmpty($rows);
-        $this->assertGreaterThan(200, count($rows));
-        $this->assertSame(self::FIRST_OXARTICLE_OXID, $rows[0][0]);
+        $this->assertSame(3, count($rows));
+        $this->assertSame(self::FIXTURE_OXID_1, $rows[0][0]);
     }
 
     /**
@@ -620,7 +644,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
 
         $resultSet->Close();
 
-        $this->assertSame(array('09602cddb5af0aba745293d08ae6bcf6'), $firstRow);
+        $this->assertSame(array(self::FIXTURE_OXID_1), $firstRow);
         $this->assertFalse($resultSet->EOF);
         $this->assertSame(array(), $resultSet->fields);
     }

@@ -76,6 +76,14 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
         parent::setUp();
 
         $this->createDatabase();
+        $this->assureOxVouchersTableIsEmpty();
+    }
+
+    public function tearDown()
+    {
+        $this->assureOxVouchersTableIsEmpty();
+
+        parent::tearDown();
     }
 
     /**
@@ -95,6 +103,8 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
      */
     protected function loadFixtureToOxVouchersTable()
     {
+        $this->cleanOxVouchersTable();
+
         $values = array(
             self::FIXTURE_OXID_1 => self::FIXTURE_OXUSERID_1,
             self::FIXTURE_OXID_2 => self::FIXTURE_OXUSERID_2,

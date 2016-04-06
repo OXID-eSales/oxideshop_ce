@@ -32,10 +32,10 @@ class DatabaseException extends oxException
 
     /**
      * DatabaseException constructor.
-     * 
+     *
      * Use this exception to catch and rethrow exceptions of the underlying DBAL.
      * Provide the caught exception as the third parameter of the constructor to enable exception chaining.
-     * 
+     *
      * @param string     $message
      * @param int        $code
      * @param \Exception $previous Previous exception thrown by the underlying DBAL

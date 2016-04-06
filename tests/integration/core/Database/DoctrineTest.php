@@ -35,7 +35,7 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      *
      * @return array The parameters for the testSelect.
      */
-    public function dataProvider_testSelect()
+    public function dataProviderTestSelect()
     {
         return array(
             array( // fetch mode default and an empty result
@@ -161,7 +161,7 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
     /**
      * Test, that the method 'select' works as expected in the cases, given by the corresponding data provider.
      *
-     * @dataProvider dataProvider_testSelect
+     * @dataProvider dataProviderTestSelect
      *
      * @param int    $fetchMode    The fetch mode we want to test.
      * @param string $sql          The query we want to test.
@@ -186,7 +186,7 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      *
      * @return array The parameters we give into testSelectLimit.
      */
-    public function dataProvider_testSelectLimit()
+    public function dataProviderTestSelectLimit()
     {
         return array(
             array('SELECT OXID FROM oxorderfiles', -1, -1, false, array()),
@@ -211,7 +211,7 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
     /**
      * Test, that the method 'selectLimit' works without parameters and an empty result.
      *
-     * @dataProvider dataProvider_testSelectLimit
+     * @dataProvider dataProviderTestSelectLimit
      *
      * @param string $sql            The sql statement we want to execute.
      * @param int    $limit          The sql starting row.
@@ -454,6 +454,161 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
     }
 
     /**
+     * Test that getArray returns an array with integer keys, if setFetchMode is not called before calling getArray.
+     *
+     * @todo IMHO This is an inconsistent implementation of ADOdb Lite, as not calling setFetchMode should give the same results
+     *       as calling setFetchMode with the param DatabaseInterface::FETCH_MODE_DEFAULT
+     *
+     * assertSame is not used here as the order of element in the result can crash the test and the order of elements
+     * does not matter in this test case.
+     */
+    public function testGetArrayReturnsExpectedResultOnNoFetchModeSet()
+    {
+        $expectedResult = array(array(parent::FIXTURE_OXID_1));
+        $message = 'An array with integer keys is returned, if setFetchMode is not called before calling getArray';
+
+        $database = $this->getDb();
+        parent::assureTestTableIsEmpty();
+        $database->execute("INSERT INTO " . parent::TABLE_NAME ." (OXID) VALUES ('" . parent::FIXTURE_OXID_1. "')");
+
+        $actualResult = $database->getArray("SELECT OXID FROM " . parent::TABLE_NAME ." WHERE OXID = '".parent::FIXTURE_OXID_1."'");
+
+        parent::assureTestTableIsEmpty();
+
+        $this->assertEquals($actualResult, $expectedResult, $message);
+    }
+
+    /**
+     * Test that getArray returns an array respecting the given fetch mode.
+     * assertSame is not used here as the order of element in the result can crash the test and the order of elements
+     * does not matter in this test case.
+     *
+     * @dataProvider dataProviderTestGetArrayRespectsFetchMode
+     *
+     * @param string $message        Test message
+     * @param int    $fetchMode      A given fetch mode
+     * @param array  $expectedResult The expected result
+     */
+    public function testGetArrayRespectsTheGivenFetchMode($message, $fetchMode, $expectedResult)
+    {
+        parent::assureTestTableIsEmpty();
+        $this->database->execute("INSERT INTO " . parent::TABLE_NAME ." (OXID) VALUES ('" . parent::FIXTURE_OXID_1. "')");
+        $this->database->setFetchMode($fetchMode);
+
+        $actualResult = $this->database->getArray("SELECT OXID FROM " . parent::TABLE_NAME ." WHERE OXID = '".parent::FIXTURE_OXID_1."'");
+
+        parent::assureTestTableIsEmpty();
+
+        $this->assertEquals($actualResult, $expectedResult, $message);
+    }
+
+    /**
+     * A data provider for the different fetch modes
+     *
+     * @return array
+     */
+    public function dataProviderTestGetArrayRespectsFetchMode()
+    {
+        return array(
+            array(
+                'An array with both integer and string keys is returned for fetch mode DatabaseInterface::FETCH_MODE_DEFAULT',
+                \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_DEFAULT,
+                array(array(0 => parent::FIXTURE_OXID_1, 'OXID' => parent::FIXTURE_OXID_1))
+            ),
+            array(
+                'An array with integer keys is returned for fetch mode DatabaseInterface::FETCH_MODE_NUM',
+                \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_NUM,
+                array(array(parent::FIXTURE_OXID_1))
+            ),
+            array(
+                'An array with string keys is returned for fetch mode DatabaseInterface::FETCH_MODE_ASSOC',
+                \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_ASSOC,
+                array(array('OXID' => parent::FIXTURE_OXID_1))
+            ),
+            array(
+                'An array with both integer and string keys is returned for fetch mode DatabaseInterface::FETCH_MODE_BOTH',
+                \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_BOTH,
+                array(array(0 => parent::FIXTURE_OXID_1, 'OXID' => parent::FIXTURE_OXID_1))
+            ),
+        );
+    }
+
+    /**
+     * Test that passing parameters to getArray works as expected
+     */
+    public function testGetArrayWithEmptyParameter()
+    {
+        $message = 'The expected result is returned when passing an empty array as parameter to Doctrine::getArray()';
+        $fetchMode = \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_NUM;
+        $expectedResult = array(array(parent::FIXTURE_OXID_1));
+
+        parent::assureTestTableIsEmpty();
+        $this->database->execute("INSERT INTO " . parent::TABLE_NAME ." (OXID) VALUES ('" . parent::FIXTURE_OXID_1. "')");
+        $this->database->setFetchMode($fetchMode);
+
+        $actualResult = $this->database->getArray(
+            "SELECT OXID FROM " . parent::TABLE_NAME ." WHERE OXID = '".parent::FIXTURE_OXID_1."'",
+            array()
+        );
+
+        parent::assureTestTableIsEmpty();
+
+        $this->assertEquals($actualResult, $expectedResult, $message);
+    }
+
+
+    /**
+     * Test that passing parameters to getArray works as expected
+     */
+    public function testGetArrayWithOneParameter()
+    {
+        $message = 'The expected result is returned when passing an array with one parameter to Doctrine::getArray()';
+        $fetchMode = \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_NUM;
+        $expectedResult = array(array(parent::FIXTURE_OXID_1));
+
+        parent::assureTestTableIsEmpty();
+        $this->database->execute("INSERT INTO " . parent::TABLE_NAME ." (OXID) VALUES ('" . parent::FIXTURE_OXID_1. "')");
+        $this->database->setFetchMode($fetchMode);
+
+        $actualResult = $this->database->getArray(
+            "SELECT OXID FROM " . parent::TABLE_NAME ." WHERE OXID = ?",
+            array(parent::FIXTURE_OXID_1)
+        );
+
+        parent::assureTestTableIsEmpty();
+
+        $this->assertEquals($actualResult, $expectedResult, $message);
+    }
+
+    /**
+     * Test that passing parameters to getArray works as expected
+     */
+    public function testGetArrayWithMoreThanOneParameters()
+    {
+        $message = 'The expected result is returned when passing an array with more than one parameter to Doctrine::getArray()';
+        $fetchMode = \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_NUM;
+        $expectedResult = array(
+            array(parent::FIXTURE_OXID_1),
+            array(parent::FIXTURE_OXID_2)
+        );
+
+        parent::assureTestTableIsEmpty();
+        $this->database->execute("INSERT INTO " . parent::TABLE_NAME . " (OXID) VALUES ('" . parent::FIXTURE_OXID_1 . "')");
+        $this->database->execute("INSERT INTO " . parent::TABLE_NAME . " (OXID) VALUES ('" . parent::FIXTURE_OXID_2 . "')");
+        $this->database->setFetchMode($fetchMode);
+
+        $actualResult = $this->database->getArray(
+            "SELECT OXID FROM " . parent::TABLE_NAME . " WHERE OXID IN (?, ?)",
+            array(parent::FIXTURE_OXID_1, parent::FIXTURE_OXID_2)
+        );
+
+        parent::assureTestTableIsEmpty();
+
+        $this->assertEquals($actualResult, $expectedResult, $message);
+    }
+
+
+    /**
      * Delete an entry from the database table oxorderfiles.
      *
      * @param string $oxId The oxId of the row to delete.
@@ -542,5 +697,4 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
             $this->assertSame('OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet', get_class($resultSet));
         }
     }
-
 }

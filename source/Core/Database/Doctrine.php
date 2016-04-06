@@ -587,11 +587,11 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
 
         switch (true) {
             case $exception instanceof Exception\ConnectionException:
-                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\ConnectionException';
+                $exceptionClass = 'oxConnectionException';
                 break;
             case $exception instanceof DBALException:
             default:
-                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
+                $exceptionClass = 'OxidEsales\Eshop\Core\exception\DatabaseException';
         }
 
 
@@ -604,12 +604,14 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      * @todo: add test!
      *
      * @param \Exception $exception
+     *
+     * @throws \Exception|\oxConnectionException|DatabaseException
      */
     protected function handleException(\Exception $exception)
     {
         $this->logException($exception);
 
-        throw new $exception;
+        throw $exception;
     }
 
     /**

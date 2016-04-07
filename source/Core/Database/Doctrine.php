@@ -319,7 +319,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      */
     public function execute($query, $parameters = false)
     {
-        /** TODO explain , why there is an if ... else block here */
+        // we divide the execution here, cause it is easier to achieve the adodblite behavior this way
         if ($this->isSelectStatement($query)) {
             $result = $this->select($query, $parameters);
         } else {
@@ -337,8 +337,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      * @param bool   $type
      *
      * @throws \Doctrine\DBAL\DBALException The exception, that can occur while running the sql statement.
-     *
-     * @todo: add test!
      *
      * @return DoctrineResultSet The result of the given query.
      */
@@ -523,8 +521,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
 
     /**
      * Map the driver name from the config to the doctrine driver name.
-     *
-     * @todo: write integration test for mysqli, if we want to support mysqli!
      *
      * @param string $configDriver The driver name from the config.
      *

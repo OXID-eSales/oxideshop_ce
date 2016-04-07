@@ -290,7 +290,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     {
         return array(
             array('SELECT OXID FROM ' . self::TABLE_NAME, 1),
-            array('SELECT * FROM ' . self::TABLE_NAME , 2)
+            array('SELECT * FROM ' . self::TABLE_NAME, 2)
         );
     }
 
@@ -334,6 +334,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      *
      * @param string $query                The sql statement to execute.
      * @param mixed  $parameter            The parameter for the Fields method.
+     * @param bool   $loadFixture          Should the fixture be loaded to the test database table?
      * @param mixed  $expected             The expected result of the Fields method under the given specification.
      * @param bool   $fetchModeAssociative Should the fetch mode be set to associative array before running the statement?
      */

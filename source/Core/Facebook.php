@@ -20,6 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use Exception;
+use oxRegistry;
+use BaseFacebook;
+use FacebookApiException;
 
 try {
     include_once getShopBasePath() . "Core/facebook/facebook.php";
@@ -34,7 +40,7 @@ try {
  * Facebook API
  *
  */
-class oxFb extends Facebook
+class Facebook extends \Facebook
 {
 
     /**

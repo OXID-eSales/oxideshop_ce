@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxCountry;
+use oxCompanyVatIn;
 
 /**
  * Company VAT identification number checker. Check if number belongs to the country.
  */
-class oxCompanyVatInCountryChecker extends oxCompanyVatInChecker implements oxICountryAware
+class CompanyVatInCountryChecker extends \oxCompanyVatInChecker implements \oxICountryAware
 {
 
     /**

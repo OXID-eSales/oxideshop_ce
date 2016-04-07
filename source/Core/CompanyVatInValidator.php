@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+use oxCountry;
+use oxCompanyVatIn;
+use oxICountryAware;
+use oxCompanyVatInChecker;
+
 /**
  * Company VAT identification number validator. Executes added validators on given VATIN.
  */
-class oxCompanyVatInValidator
+class CompanyVatInValidator
 {
 
     /**

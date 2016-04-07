@@ -21,11 +21,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * HTTP headers formator.
  * Collects HTTP headers and form HTTP header.
  */
-class oxHeader
+class Header
 {
 
     protected $_aHeader = array();

@@ -20,20 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
-
 /**
- * Hasher abstract class
+ * This class must be empty because of others eShop editions classes which can be used instead of it.
+ *
+ * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
+ *
  */
-abstract class Hasher
+class oxCounter extends \OxidEsales\Eshop\Core\Counter
 {
-
-    /**
-     * Hash string.
-     *
-     * @param string $sString string for hashing.
-     *
-     * @return string
-     */
-    abstract public function hash($sString);
 }

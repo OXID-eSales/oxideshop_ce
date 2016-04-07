@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+
 /**
  * simple class to add a error message to display
  */
-class oxDisplayError implements oxIDisplayError
+class DisplayError implements \oxIDisplayError
 {
     /**
      * Error message

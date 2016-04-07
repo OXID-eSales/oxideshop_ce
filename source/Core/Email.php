@@ -20,12 +20,21 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxSystemComponentException;
+use oxField;
+use oxRegistry;
+use oxDb;
+use oxUtilsObject;
+use oxStr;
+
 /**
  * Mailing manager.
  * Collects mailing configuration, other parameters, performs mailing functions
  * (newsletters, ordering, registration emails, etc.).
  */
-class oxEmail extends PHPMailer
+class Email extends \PHPMailer
 {
     /**
      * Default Smtp server port

@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxDb;
+
 /**
  * Counter class
  *
  */
-class oxCounter
+class Counter
 {
 
     /**

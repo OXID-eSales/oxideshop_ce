@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * class for parsing and retrieving warnings from adodb saved sql table
  */
-class oxDebugDb
+class DebugDatabase
 {
 
     /**

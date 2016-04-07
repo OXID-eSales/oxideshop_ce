@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+use oxDb;
+use stdClass;
+
 /**
  * Language related utility class
  */
-class oxLang extends oxSuperCfg
+class Language extends \oxSuperCfg
 {
 
     /**

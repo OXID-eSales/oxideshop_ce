@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+
 /**
  * CURL request handler.
  * Handles CURL calls
  *
  */
 
-class oxCurl
+class Curl
 {
     /** Curl option for setting the timeout of whole execution process. */
     const EXECUTION_TIMEOUT_OPTION = 'CURLOPT_TIMEOUT';

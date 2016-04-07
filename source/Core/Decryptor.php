@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * Class oxDecryptor
  */
-class oxDecryptor
+class Decryptor
 {
 
     /**

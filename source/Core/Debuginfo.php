@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Debug information formatter
  *
  */
-class oxDebugInfo
+class DebugInfo
 {
 
     /**

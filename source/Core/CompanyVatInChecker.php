@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxCompanyVatIn;
+
 /**
  * Company VAT identification number (VATIN) checker
  *
  */
-abstract class oxCompanyVatInChecker
+abstract class CompanyVatInChecker
 {
 
     /**

@@ -20,8 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
 use OxidEsales\Eshop\Core\exception\DatabaseException;
+use oxConnectionException;
+use oxRegistry;
+use oxConfig;
+use oxDb;
+use oxCookieException;
+use oxUtilsObject;
+use stdClass;
+use oxSuperConfig;
 
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');
@@ -32,7 +42,7 @@ define('MAX_64BIT_INTEGER', '18446744073709551615');
  * @mixin \OxidEsales\EshopEnterprise\Core\Config
  * @mixin \OxidEsales\EshopProfessional\Core\Config
  */
-class oxConfig extends oxSuperCfg
+class Config extends oxSuperCfg
 {
 
     // this column of params are defined in config.inc.php file,

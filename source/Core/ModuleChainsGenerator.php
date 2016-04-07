@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+
 /**
  * Generates class chains for extended classes by modules.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxModuleChainsGenerator
+class ModuleChainsGenerator
 {
     /** @var oxModuleVariablesLocator */
     private $moduleVariablesLocator;

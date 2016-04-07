@@ -21,10 +21,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Class for validating input
  */
-class oxInputValidator extends oxSuperCfg
+class InputValidator extends \oxSuperCfg
 {
 
     /**

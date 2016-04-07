@@ -644,6 +644,8 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      */
     public function getAll($query, $parameters = array(), $executeOnSlave = true)
     {
+        $result = null;
+
         try {
             $result = $this->getArray($query, $parameters, $executeOnSlave);
         } catch (DBALException $exception) {
@@ -673,6 +675,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      */
     public function getArray($query, $parameters = array(), $executeOnSlave = true)
     {
+        $statement = null;
 
         if ($parameters && !is_array($parameters)) {
             throw new \InvalidArgumentException();
@@ -699,5 +702,4 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     {
         return $this->getConnection()->lastInsertId();
     }
-
 }

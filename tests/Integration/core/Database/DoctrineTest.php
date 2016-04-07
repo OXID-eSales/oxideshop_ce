@@ -482,16 +482,16 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      */
     public function testGetArrayReturnsExpectedResultOnNoFetchModeSet()
     {
-        $expectedResult = array(array(parent::FIXTURE_OXID_1));
+        $expectedResult = array(array(self::FIXTURE_OXID_1));
         $message = 'An array with integer keys is returned, if setFetchMode is not called before calling getArray';
 
         $database = $this->getDb();
-        parent::assureTestTableIsEmpty();
-        $database->execute("INSERT INTO " . parent::TABLE_NAME . " (OXID) VALUES ('" . parent::FIXTURE_OXID_1 . "')");
+        self::assureTestTableIsEmpty();
+        $database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_1 . "')");
 
-        $actualResult = $database->getArray("SELECT OXID FROM " . parent::TABLE_NAME . " WHERE OXID = '" . parent::FIXTURE_OXID_1 . "'");
+        $actualResult = $database->getArray("SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "'");
 
-        parent::assureTestTableIsEmpty();
+        self::assureTestTableIsEmpty();
 
         $this->assertEquals($actualResult, $expectedResult, $message);
     }
@@ -509,13 +509,13 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      */
     public function testGetArrayRespectsTheGivenFetchMode($message, $fetchMode, $expectedResult)
     {
-        parent::assureTestTableIsEmpty();
-        $this->database->execute("INSERT INTO " . parent::TABLE_NAME . " (OXID) VALUES ('" . parent::FIXTURE_OXID_1 . "')");
+        self::assureTestTableIsEmpty();
+        $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_1 . "')");
         $this->database->setFetchMode($fetchMode);
 
-        $actualResult = $this->database->getArray("SELECT OXID FROM " . parent::TABLE_NAME . " WHERE OXID = '" . parent::FIXTURE_OXID_1 . "'");
+        $actualResult = $this->database->getArray("SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "'");
 
-        parent::assureTestTableIsEmpty();
+        self::assureTestTableIsEmpty();
 
         $this->assertEquals($actualResult, $expectedResult, $message);
     }
@@ -531,22 +531,22 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
             array(
                 'An array with both integer and string keys is returned for fetch mode DatabaseInterface::FETCH_MODE_DEFAULT',
                 \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_DEFAULT,
-                array(array(0 => parent::FIXTURE_OXID_1, 'OXID' => parent::FIXTURE_OXID_1))
+                array(array(0 => self::FIXTURE_OXID_1, 'OXID' => self::FIXTURE_OXID_1))
             ),
             array(
                 'An array with integer keys is returned for fetch mode DatabaseInterface::FETCH_MODE_NUM',
                 \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_NUM,
-                array(array(parent::FIXTURE_OXID_1))
+                array(array(self::FIXTURE_OXID_1))
             ),
             array(
                 'An array with string keys is returned for fetch mode DatabaseInterface::FETCH_MODE_ASSOC',
                 \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_ASSOC,
-                array(array('OXID' => parent::FIXTURE_OXID_1))
+                array(array('OXID' => self::FIXTURE_OXID_1))
             ),
             array(
                 'An array with both integer and string keys is returned for fetch mode DatabaseInterface::FETCH_MODE_BOTH',
                 \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_BOTH,
-                array(array(0 => parent::FIXTURE_OXID_1, 'OXID' => parent::FIXTURE_OXID_1))
+                array(array(0 => self::FIXTURE_OXID_1, 'OXID' => self::FIXTURE_OXID_1))
             ),
         );
     }
@@ -558,18 +558,18 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
     {
         $message = 'The expected result is returned when passing an empty array as parameter to Doctrine::getArray()';
         $fetchMode = \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_NUM;
-        $expectedResult = array(array(parent::FIXTURE_OXID_1));
+        $expectedResult = array(array(self::FIXTURE_OXID_1));
 
-        parent::assureTestTableIsEmpty();
-        $this->database->execute("INSERT INTO " . parent::TABLE_NAME . " (OXID) VALUES ('" . parent::FIXTURE_OXID_1 . "')");
+        self::assureTestTableIsEmpty();
+        $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_1 . "')");
         $this->database->setFetchMode($fetchMode);
 
         $actualResult = $this->database->getArray(
-            "SELECT OXID FROM " . parent::TABLE_NAME . " WHERE OXID = '" . parent::FIXTURE_OXID_1 . "'",
+            "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "'",
             array()
         );
 
-        parent::assureTestTableIsEmpty();
+        self::assureTestTableIsEmpty();
 
         $this->assertEquals($actualResult, $expectedResult, $message);
     }
@@ -582,18 +582,18 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
     {
         $message = 'The expected result is returned when passing an array with one parameter to Doctrine::getArray()';
         $fetchMode = \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_NUM;
-        $expectedResult = array(array(parent::FIXTURE_OXID_1));
+        $expectedResult = array(array(self::FIXTURE_OXID_1));
 
-        parent::assureTestTableIsEmpty();
-        $this->database->execute("INSERT INTO " . parent::TABLE_NAME . " (OXID) VALUES ('" . parent::FIXTURE_OXID_1 . "')");
+        self::assureTestTableIsEmpty();
+        $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_1 . "')");
         $this->database->setFetchMode($fetchMode);
 
         $actualResult = $this->database->getArray(
-            "SELECT OXID FROM " . parent::TABLE_NAME . " WHERE OXID = ?",
-            array(parent::FIXTURE_OXID_1)
+            "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = ?",
+            array(self::FIXTURE_OXID_1)
         );
 
-        parent::assureTestTableIsEmpty();
+        self::assureTestTableIsEmpty();
 
         $this->assertEquals($actualResult, $expectedResult, $message);
     }
@@ -606,21 +606,21 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
         $message = 'The expected result is returned when passing an array with more than one parameter to Doctrine::getArray()';
         $fetchMode = \OxidEsales\Eshop\Core\Database\DatabaseInterface::FETCH_MODE_NUM;
         $expectedResult = array(
-            array(parent::FIXTURE_OXID_1),
-            array(parent::FIXTURE_OXID_2)
+            array(self::FIXTURE_OXID_1),
+            array(self::FIXTURE_OXID_2)
         );
 
-        parent::assureTestTableIsEmpty();
-        $this->database->execute("INSERT INTO " . parent::TABLE_NAME . " (OXID) VALUES ('" . parent::FIXTURE_OXID_1 . "')");
-        $this->database->execute("INSERT INTO " . parent::TABLE_NAME . " (OXID) VALUES ('" . parent::FIXTURE_OXID_2 . "')");
+        self::assureTestTableIsEmpty();
+        $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_1 . "')");
+        $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_2 . "')");
         $this->database->setFetchMode($fetchMode);
 
         $actualResult = $this->database->getArray(
-            "SELECT OXID FROM " . parent::TABLE_NAME . " WHERE OXID IN (?, ?)",
-            array(parent::FIXTURE_OXID_1, parent::FIXTURE_OXID_2)
+            "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID IN (?, ?)",
+            array(self::FIXTURE_OXID_1, self::FIXTURE_OXID_2)
         );
 
-        parent::assureTestTableIsEmpty();
+        self::assureTestTableIsEmpty();
 
         $this->assertEquals($actualResult, $expectedResult, $message);
     }

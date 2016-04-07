@@ -626,6 +626,47 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
     }
 
     /**
+     * Test, that the method 'insert_ID' leads to correct results, if we insert into a table without auto increment.
+     */
+    public function testInsertIdOnNonAutoIncrement()
+    {
+        $this->database->execute('INSERT INTO ' . self::TABLE_NAME . ' (OXUSERID) VALUES ("' . self::FIXTURE_OXUSERID_1 . '")');
+        $firstInsertedId = $this->database->insert_Id();
+
+        $this->assertEquals(0, $firstInsertedId);
+    }
+
+    /**
+     * Test, that the method 'insert_ID' leads to correct results, if we don't insert anything at all.
+     */
+    public function testInsertIdWithoutInsertion()
+    {
+        $this->database->execute('SELECT * FROM ' . self::TABLE_NAME);
+        $firstInsertedId = $this->database->insert_Id();
+
+        $this->assertEquals(0, $firstInsertedId);
+    }
+
+    /**
+     * Test, that the method 'insert_ID' leads to correct results, if we insert new rows.
+     */
+    public function testInsertIdWithInsertion()
+    {
+        $this->database->execute('CREATE TABLE oxdoctrinetest_autoincrement (oxid INT NOT NULL AUTO_INCREMENT, oxname CHAR, PRIMARY KEY (oxid));');
+
+        $this->database->execute('INSERT INTO oxdoctrinetest_autoincrement(oxname) VALUES ("OXID eSales")');
+        $firstInsertedId = $this->database->insert_Id();
+
+        $this->database->execute('INSERT INTO oxdoctrinetest_autoincrement(oxname) VALUES ("OXID eSales")');
+        $lastInsertedId = $this->database->insert_Id();
+
+        $this->database->execute('DROP TABLE oxdoctrinetest_autoincrement;');
+
+        $this->assertEquals(1, $firstInsertedId);
+        $this->assertEquals(2, $lastInsertedId);
+    }
+
+    /**
      * Fetch the transaction isolation level.
      *
      * @return string The transaction isolation level.

@@ -74,7 +74,7 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
     /**
      * @var bool Should this test use the legacy database for the tests?
      */
-    const USELEGACYDATABASE = false;
+    const USELEGACYDATABASE = true;
 
     public static function setUpBeforeClass()
     {
@@ -208,6 +208,30 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
     }
 
     /**
+     * Assure, that the table oxdoctrinetest has only the given oxId.
+     *
+     * @param string $oxId The oxId we want to be the only one in the oxdoctrinetest table.
+     */
+    protected function assertTestTableHasOnly($oxId)
+    {
+        $oxIds = $this->fetchAllTestTableRows();
+
+        $this->assertNotEmpty($oxIds);
+        $this->assertSame(1, count($oxIds));
+        $this->assertArrayHasKey('0', $oxIds);
+
+        $this->assertSame($oxId, $oxIds[0][0]);
+    }
+
+    /**
+     * Assert, that the table oxdoctrinetest is empty.
+     */
+    protected function assertTestTableIsEmpty()
+    {
+        $this->assertTrue($this->isEmptyTestTable());
+    }
+
+    /**
      * Check, if the table oxdoctrinetest is empty.
      *
      * @return bool Is the table oxdoctrinetest empty?
@@ -224,7 +248,21 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
      */
     protected function fetchAllTestTableRows()
     {
-        return $this->database->select('SELECT * FROM ' . self::TABLE_NAME)->getAll();
+        return $this->database->select('SELECT * FROM ' . self::TABLE_NAME, array(), false)->getAll();
     }
+
+    /**
+     * Fetch the oxId of the first oxdoctrinetest table row.
+     *
+     * @return array|false The oxId of the first oxdoctrinetest table row.
+     */
+    protected function fetchFirstTestTableOxId()
+    {
+        $rows = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME, array(), false);
+        $row = $rows->fetchRow();
+
+        return $row;
+    }
+
 
 }

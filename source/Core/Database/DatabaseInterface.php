@@ -283,9 +283,9 @@ interface DatabaseInterface
     public function UI($pollSeconds = 5);
 
     /**
-     * Returns last insert ID.
+     * Get the last inserted ID.
      *
-     * @return int
+     * @return string The last inserted ID.
      */
     public function insert_Id();
 }

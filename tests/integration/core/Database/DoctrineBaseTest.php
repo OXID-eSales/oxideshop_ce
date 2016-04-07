@@ -74,7 +74,7 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
     /**
      * @var bool Should this test use the legacy database for the tests?
      */
-    const USELEGACYDATABASE = true;
+    const USELEGACYDATABASE = false;
 
     public static function setUpBeforeClass()
     {

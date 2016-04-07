@@ -702,4 +702,45 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     {
         return $this->getConnection()->lastInsertId();
     }
+
+    /**
+     * Get the meta information about all the collumns of the given table.
+     *
+     * @param string $table Table name.
+     *
+     * @return array Array of objects with meta information of each column.
+     */
+    public function metaColumns($table)
+    {
+        $columns = $this->getConnection()->executeQuery('SHOW COLUMNS FROM ' . $table)->fetchAll();
+
+        $result = [];
+
+        foreach ($columns as $column) {
+            $typeInformation = explode('(', $column[1]);
+            $typeName = $typeInformation[0];
+            $typeLength = explode(')', $typeInformation[1])[0];
+
+            /**
+             * We are skipping the doctrine unsupported features AND the hard to fetch information here.
+             */
+
+            $item = new \stdClass();
+            $item->name = $column[0];
+            $item->type = $typeName;
+            $item->max_length = $typeLength;
+            $item->not_null = ('YES' === $column[3]) ? true : false;
+            // $item->primary_key = '';
+            // $item->auto_increment = '';
+            // $item->binary = '';
+            // $item->unsigned = '';
+            // $item->has_default = '';
+            // $item->scale = '';
+
+            $result[] = $item;
+        }
+
+        return $result;
+    }
+
 }

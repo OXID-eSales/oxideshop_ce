@@ -277,9 +277,8 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
             // 'blob'         => 0,
         );
 
-        foreach ($fields as $key => $value) {
-            $this->assertTrue(isset($columnInformationOne->$key), 'Missing field "' . $key . '".');
-            $this->assertSame($value, $columnInformationOne->$key);
+        foreach ($fields as $attributeName => $attributeValue) {
+            $this->assertObjectHasAttributeWithValue($columnInformationOne, $attributeName, $attributeValue);
         }
     }
 

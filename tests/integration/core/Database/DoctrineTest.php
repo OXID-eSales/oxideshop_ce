@@ -39,118 +39,122 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
     {
         return array(
             array( // fetch mode default and an empty result
+                   false,
                    null,
-                   'SELECT OXID FROM oxorderfiles',
+                   'SELECT OXID FROM ' . self::TABLE_NAME,
                    array()
             ),
             array( // fetch mode default and one column
+                   true,
                    null,
-                   'SELECT OXID FROM oxvendor',
+                   'SELECT OXID FROM ' . self::TABLE_NAME,
                    array(
-                       array('9437def212dc37c66f90cc249143510a'),
-                       array('d2e44d9b31fcce448.08890330'),
-                       array('d2e44d9b32fd2c224.65443178')
+                       array(self::FIXTURE_OXID_1),
+                       array(self::FIXTURE_OXID_2),
+                       array(self::FIXTURE_OXID_3)
                    )
             ),
             array( // fetch mode default and multiple columns
+                   true,
                    null,
-                   'SELECT OXID, OXMAPID, OXACTIVE FROM oxvendor ORDER BY OXMAPID',
+                   'SELECT OXID, OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID',
                    array(
-                       array('d2e44d9b31fcce448.08890330', '1', '1'),
-                       array('d2e44d9b32fd2c224.65443178', '2', '1'),
-                       array('9437def212dc37c66f90cc249143510a', '3', '1')
+                       array(self::FIXTURE_OXID_1, '1'),
+                       array(self::FIXTURE_OXID_2, '2'),
+                       array(self::FIXTURE_OXID_3, '3')
                    )
             ),
-
             array( // fetch mode numeric and an empty result
+                   false,
                    1,
-                   'SELECT OXID FROM oxorderfiles',
+                   'SELECT OXID FROM ' . self::TABLE_NAME,
                    array()
             ),
             array( // fetch mode numeric and one column
+                   true,
                    1,
-                   'SELECT OXID FROM oxvendor',
+                   'SELECT OXID FROM ' . self::TABLE_NAME,
                    array(
-                       array('9437def212dc37c66f90cc249143510a'),
-                       array('d2e44d9b31fcce448.08890330'),
-                       array('d2e44d9b32fd2c224.65443178')
+                       array(self::FIXTURE_OXID_1),
+                       array(self::FIXTURE_OXID_2),
+                       array(self::FIXTURE_OXID_3)
                    )
             ),
             array( // fetch mode numeric and multiple columns
+                   true,
                    1,
-                   'SELECT OXID, OXMAPID, OXACTIVE FROM oxvendor ORDER BY OXMAPID',
+                   'SELECT OXID, OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXUSERID',
                    array(
-                       array('d2e44d9b31fcce448.08890330', '1', '1'),
-                       array('d2e44d9b32fd2c224.65443178', '2', '1'),
-                       array('9437def212dc37c66f90cc249143510a', '3', '1')
+                       array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1),
+                       array(self::FIXTURE_OXID_2, self::FIXTURE_OXUSERID_2),
+                       array(self::FIXTURE_OXID_3, self::FIXTURE_OXUSERID_3)
                    )
             ),
-
             array( // fetch mode associative and an empty result
+                   false,
                    2,
-                   'SELECT OXID FROM oxorderfiles',
+                   'SELECT OXID FROM ' . self::TABLE_NAME,
                    array()
             ),
             array( // fetch mode associative and one column
+                   true,
                    2,
-                   'SELECT OXID FROM oxvendor',
+                   'SELECT OXID FROM ' . self::TABLE_NAME,
                    array(
-                       array('OXID' => '9437def212dc37c66f90cc249143510a'),
-                       array('OXID' => 'd2e44d9b31fcce448.08890330'),
-                       array('OXID' => 'd2e44d9b32fd2c224.65443178')
+                       array('OXID' => self::FIXTURE_OXID_1),
+                       array('OXID' => self::FIXTURE_OXID_2),
+                       array('OXID' => self::FIXTURE_OXID_3)
                    )
             ),
             array( // fetch mode associative and multiple columns
+                   true,
                    2,
-                   'SELECT OXID, OXMAPID, OXACTIVE FROM oxvendor ORDER BY OXMAPID',
+                   'SELECT OXID, OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXUSERID',
                    array(
-                       array('OXID' => 'd2e44d9b31fcce448.08890330', 'OXMAPID' => '1', 'OXACTIVE' => '1'),
-                       array('OXID' => 'd2e44d9b32fd2c224.65443178', 'OXMAPID' => '2', 'OXACTIVE' => '1'),
-                       array('OXID' => '9437def212dc37c66f90cc249143510a', 'OXMAPID' => '3', 'OXACTIVE' => '1')
+                       array('OXID' => self::FIXTURE_OXID_1, 'OXUSERID' => self::FIXTURE_OXUSERID_1),
+                       array('OXID' => self::FIXTURE_OXID_2, 'OXUSERID' => self::FIXTURE_OXUSERID_2),
+                       array('OXID' => self::FIXTURE_OXID_3, 'OXUSERID' => self::FIXTURE_OXUSERID_3)
                    )
             ),
 
             array( // fetch mode both and an empty result
+                   false,
                    3,
-                   'SELECT OXID FROM oxorderfiles',
+                   'SELECT OXID FROM ' . self::TABLE_NAME,
                    array()
             ),
             array( // fetch mode both and one column
+                   true,
                    3,
-                   'SELECT OXID FROM oxvendor',
+                   'SELECT OXID FROM ' . self::TABLE_NAME,
                    array(
-                       array('OXID' => '9437def212dc37c66f90cc249143510a', 0 => '9437def212dc37c66f90cc249143510a'),
-                       array('OXID' => 'd2e44d9b31fcce448.08890330', 0 => 'd2e44d9b31fcce448.08890330'),
-                       array('OXID' => 'd2e44d9b32fd2c224.65443178', 0 => 'd2e44d9b32fd2c224.65443178')
+                       array('OXID' => self::FIXTURE_OXID_1, 0 => self::FIXTURE_OXID_1),
+                       array('OXID' => self::FIXTURE_OXID_2, 0 => self::FIXTURE_OXID_2),
+                       array('OXID' => self::FIXTURE_OXID_3, 0 => self::FIXTURE_OXID_3)
                    )
             ),
             array( // fetch mode both and multiple columns
+                   true,
                    3,
-                   'SELECT OXID, OXMAPID, OXACTIVE FROM oxvendor ORDER BY OXMAPID',
+                   'SELECT OXID, OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXUSERID',
                    array(
                        array(
-                           'OXID'     => 'd2e44d9b31fcce448.08890330',
-                           'OXMAPID'  => '1',
-                           'OXACTIVE' => '1',
-                           0          => 'd2e44d9b31fcce448.08890330',
-                           1          => '1',
-                           2          => '1'
+                           'OXID'     => self::FIXTURE_OXID_1,
+                           'OXUSERID' => self::FIXTURE_OXUSERID_1,
+                           0          => self::FIXTURE_OXID_1,
+                           1          => self::FIXTURE_OXUSERID_1,
                        ),
                        array(
-                           'OXID'     => 'd2e44d9b32fd2c224.65443178',
-                           'OXMAPID'  => '2',
-                           'OXACTIVE' => '1',
-                           0          => 'd2e44d9b32fd2c224.65443178',
-                           1          => '2',
-                           2          => '1'
+                           'OXID'     => self::FIXTURE_OXID_2,
+                           'OXUSERID' => self::FIXTURE_OXUSERID_2,
+                           0          => self::FIXTURE_OXID_2,
+                           1          => self::FIXTURE_OXUSERID_2,
                        ),
                        array(
-                           'OXID'     => '9437def212dc37c66f90cc249143510a',
-                           'OXMAPID'  => '3',
-                           'OXACTIVE' => '1',
-                           0          => '9437def212dc37c66f90cc249143510a',
-                           1          => '3',
-                           2          => '1'
+                           'OXID'     => self::FIXTURE_OXID_3,
+                           'OXUSERID' => self::FIXTURE_OXUSERID_3,
+                           0          => self::FIXTURE_OXID_3,
+                           1          => self::FIXTURE_OXUSERID_3,
                        )
                    )
             ),
@@ -163,12 +167,16 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      *
      * @dataProvider dataProviderTestSelect
      *
+     * @param bool   $loadFixture  Should the fixture be loaded for this test case?
      * @param int    $fetchMode    The fetch mode we want to test.
      * @param string $sql          The query we want to test.
      * @param array  $expectedRows The rows we expect.
      */
-    public function testSelect($fetchMode, $sql, $expectedRows)
+    public function testSelect($loadFixture, $fetchMode, $sql, $expectedRows)
     {
+        if ($loadFixture) {
+            $this->loadFixtureToTestTable();
+        }
         if (!is_null($fetchMode)) {
             $this->database->setFetchMode($fetchMode);
         }
@@ -189,21 +197,21 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
     public function dataProviderTestSelectLimit()
     {
         return array(
-            array('SELECT OXID FROM oxorderfiles', -1, -1, false, array()),
-            array('SELECT OXID FROM oxorderfiles', 5, -1, false, array()),
-            array('SELECT OXID FROM oxorderfiles', -1, 1, false, array()),
-            array('SELECT OXID FROM oxvendor', 1, 0, false, array(
-                array('9437def212dc37c66f90cc249143510a')
+            array('SELECT OXID FROM ' . self::TABLE_NAME, false, -1, -1, false, array()),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, false, 5, -1, false, array()),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, false, -1, 1, false, array()),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, true, 1, 0, false, array(
+                array(self::FIXTURE_OXID_1)
             )),
-            array('SELECT OXID FROM oxvendor', 1, 1, false, array(
-                array('d2e44d9b31fcce448.08890330')
+            array('SELECT OXID FROM ' . self::TABLE_NAME, true, 1, 1, false, array(
+                array(self::FIXTURE_OXID_2)
             )),
-            array('SELECT OXID FROM oxvendor', 2, 1, false, array(
-                array('d2e44d9b31fcce448.08890330'),
-                array('d2e44d9b32fd2c224.65443178'),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, true, 2, 1, false, array(
+                array(self::FIXTURE_OXID_2),
+                array(self::FIXTURE_OXID_3),
             )),
-            array('SELECT OXID FROM oxvendor', 2, 2, false, array(
-                array('d2e44d9b32fd2c224.65443178'),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, true, 2, 2, false, array(
+                array(self::FIXTURE_OXID_3),
             )),
         );
     }
@@ -214,13 +222,17 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      * @dataProvider dataProviderTestSelectLimit
      *
      * @param string $sql            The sql statement we want to execute.
+     * @param bool   $loadFixture    Should the test database table fixture be loaded for this test case?
      * @param int    $limit          The sql starting row.
      * @param int    $offset         The number of rows we are interested in.
      * @param array  $parameters     The parameters we want to give into the 'selectLimit' method.
      * @param array  $expectedResult The expected result of the method call.
      */
-    public function testSelectLimit($sql, $limit, $offset, $parameters, $expectedResult)
+    public function testSelectLimit($sql, $loadFixture, $limit, $offset, $parameters, $expectedResult)
     {
+        if ($loadFixture) {
+            $this->loadFixtureToTestTable();
+        }
         $resultSet = $this->database->selectLimit($sql, $limit, $offset, $parameters);
         $result = $resultSet->getAll();
 
@@ -233,7 +245,7 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      */
     public function testExecuteWithEmptyResultSelect()
     {
-        $result = $this->database->execute('SELECT OXID FROM oxorderfiles');
+        $result = $this->database->execute('SELECT OXID FROM ' . self::TABLE_NAME);
 
         $this->assertTrue($result->EOF);
         $this->assertFalse($result->fields);
@@ -249,7 +261,7 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      */
     public function testExecuteWithEmptyResultAndSelectNotOnFirstChar()
     {
-        $result = $this->database->execute('   SELECT OXID FROM oxorderfiles');
+        $result = $this->database->execute('   SELECT OXID FROM ' . self::TABLE_NAME);
 
         $this->assertTrue($result->EOF);
         $this->assertFalse($result->fields);
@@ -264,15 +276,17 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      */
     public function testExecuteWithNonEmptySelect()
     {
-        $result = $this->database->execute('SELECT OXID FROM oxvendor ORDER BY OXID');
+        $this->loadFixtureToTestTable();
+
+        $result = $this->database->execute('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
 
         $this->assertFalse($result->EOF);
-        $this->assertSame(array('9437def212dc37c66f90cc249143510a'), $result->fields);
+        $this->assertSame(array(self::FIXTURE_OXID_1), $result->fields);
 
         $expectedRows = array(
-            array("9437def212dc37c66f90cc249143510a"),
-            array("d2e44d9b31fcce448.08890330"),
-            array("d2e44d9b32fd2c224.65443178")
+            array(self::FIXTURE_OXID_1),
+            array(self::FIXTURE_OXID_2),
+            array(self::FIXTURE_OXID_3)
         );
         $allRows = $result->getAll();
         $this->assertSame($expectedRows, $allRows);
@@ -283,21 +297,21 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      */
     public function testExecuteWithInsertAndDelete()
     {
-        $this->assureOrderFileIsEmpty();
+        $this->assureTestTableIsEmpty();
 
-        $exampleOxId = 'XYZ';
+        $exampleOxId = self::FIXTURE_OXID_1;
 
-        $resultSet = $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ('$exampleOxId');");
-
-        $this->assertEmptyResultSet($resultSet);
-        $this->assertSame(1, $this->database->affected_rows());
-        $this->assureOrderFileHasOnly($exampleOxId);
-
-        $resultSet = $this->database->execute("DELETE FROM oxorderfiles WHERE OXID = '$exampleOxId';");
+        $resultSet = $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('$exampleOxId');");
 
         $this->assertEmptyResultSet($resultSet);
         $this->assertSame(1, $this->database->affected_rows());
-        $this->assureOrderFileIsEmpty();
+        $this->assertTestTableHasOnly($exampleOxId);
+
+        $resultSet = $this->database->execute("DELETE FROM " . self::TABLE_NAME . " WHERE OXID = '$exampleOxId';");
+
+        $this->assertEmptyResultSet($resultSet);
+        $this->assertSame(1, $this->database->affected_rows());
+        $this->assertTestTableIsEmpty();
     }
 
     /**
@@ -320,7 +334,7 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
     public function testErrorNoAndErrorMsgWork()
     {
         try {
-            $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ;");
+            $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ;");
 
             $this->fail('A mysql syntax error should produce an exception!');
         } catch (Exception $exception) {
@@ -337,14 +351,16 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      */
     public function testSetFetchMode()
     {
+        $this->loadFixtureToTestTable();
+
         // check normal (associative array) case
-        $row = $this->fetchFirstProductOxId();
+        $row = $this->fetchFirstTestTableOxId();
         $this->assertInternalType('array', $row);
         $this->assertSame(array(0), array_keys($row));
 
         // check numeric array case
         $previousFetchMode = $this->database->setFetchMode(1);
-        $row = $this->fetchFirstProductOxId();
+        $row = $this->fetchFirstTestTableOxId();
 
         // reset fetch mode to original setting
         $this->database->setFetchMode($previousFetchMode);
@@ -378,7 +394,7 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      */
     public function testGetColWithoutParametersEmptyResult()
     {
-        $result = $this->database->getCol("SELECT OXID FROM oxorderfiles;");
+        $result = $this->database->getCol("SELECT OXID FROM " . self::TABLE_NAME);
 
         $this->assertInternalType('array', $result);
         $this->assertSame(0, count($result));
@@ -389,11 +405,13 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      */
     public function testGetColWithoutParameters()
     {
-        $result = $this->database->getCol("SELECT OXMAPID FROM oxarticles WHERE OXMAPID > 200 AND OXMAPID < 206");
+        $this->loadFixtureToTestTable();
+
+        $result = $this->database->getCol("SELECT OXUSERID FROM " . self::TABLE_NAME);
 
         $this->assertInternalType('array', $result);
-        $this->assertSame(5, count($result));
-        $this->assertSame(array('201', '202', '203', '204', '205'), $result);
+        $this->assertSame(3, count($result));
+        $this->assertSame(array(self::FIXTURE_OXUSERID_1, self::FIXTURE_OXUSERID_2, self::FIXTURE_OXUSERID_3), $result);
     }
 
     /**
@@ -401,11 +419,13 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      */
     public function testGetColWithParameters()
     {
-        $result = $this->database->getCol("SELECT OXMAPID FROM oxarticles WHERE OXMAPID > ? AND OXMAPID < ?", array(200, 206));
+        $this->loadFixtureToTestTable();
+
+        $result = $this->database->getCol("SELECT OXUSERID FROM " . self::TABLE_NAME . " WHERE OXUSERID LIKE ? ", array('%2'));
 
         $this->assertInternalType('array', $result);
-        $this->assertSame(5, count($result));
-        $this->assertSame(array('201', '202', '203', '204', '205'), $result);
+        $this->assertSame(1, count($result));
+        $this->assertSame(array(self::FIXTURE_OXUSERID_2), $result);
     }
 
     /**
@@ -413,20 +433,20 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
      */
     public function testRollbackTransactionRevertsChanges()
     {
-        $this->assureOrderFileIsEmpty();
+        $this->assureTestTableIsEmpty();
 
         $exampleOxId = 'XYZ';
 
         $this->database->startTransaction();
-        $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ('$exampleOxId');", array());
+        $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('$exampleOxId');", array());
 
         // assure, that the changes are made in this transaction
-        $this->assureOrderFileHasOnly($exampleOxId);
+        $this->assertTestTableHasOnly($exampleOxId);
 
         $this->database->rollbackTransaction();
 
         // assure, that the changes are reverted
-        $this->assureOrderFileIsEmpty();
+        $this->assureTestTableIsEmpty();
     }
 
     /**
@@ -436,21 +456,19 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
     {
         $exampleOxId = 'XYZ';
 
-        $this->deleteOrderFilesEntry($exampleOxId);
-
-        $this->assureOrderFileIsEmpty();
+        $this->assureTestTableIsEmpty();
         $this->database->startTransaction();
-        $this->database->execute("INSERT INTO oxorderfiles (OXID) VALUES ('$exampleOxId');", array());
+        $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('$exampleOxId');", array());
 
         // assure, that the changes are made in this transaction
-        $this->assureOrderFileHasOnly($exampleOxId);
+        $this->assertTestTableHasOnly($exampleOxId);
         $this->database->commitTransaction();
 
         // assure, that the changes persist the transaction
-        $this->assureOrderFileHasOnly($exampleOxId);
+        $this->assertTestTableHasOnly($exampleOxId);
 
         // clean up
-        $this->deleteOrderFilesEntry($exampleOxId);
+        $this->cleanTestTable();
     }
 
     /**
@@ -469,9 +487,9 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
 
         $database = $this->getDb();
         parent::assureTestTableIsEmpty();
-        $database->execute("INSERT INTO " . parent::TABLE_NAME ." (OXID) VALUES ('" . parent::FIXTURE_OXID_1. "')");
+        $database->execute("INSERT INTO " . parent::TABLE_NAME . " (OXID) VALUES ('" . parent::FIXTURE_OXID_1 . "')");
 
-        $actualResult = $database->getArray("SELECT OXID FROM " . parent::TABLE_NAME ." WHERE OXID = '".parent::FIXTURE_OXID_1."'");
+        $actualResult = $database->getArray("SELECT OXID FROM " . parent::TABLE_NAME . " WHERE OXID = '" . parent::FIXTURE_OXID_1 . "'");
 
         parent::assureTestTableIsEmpty();
 
@@ -492,10 +510,10 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
     public function testGetArrayRespectsTheGivenFetchMode($message, $fetchMode, $expectedResult)
     {
         parent::assureTestTableIsEmpty();
-        $this->database->execute("INSERT INTO " . parent::TABLE_NAME ." (OXID) VALUES ('" . parent::FIXTURE_OXID_1. "')");
+        $this->database->execute("INSERT INTO " . parent::TABLE_NAME . " (OXID) VALUES ('" . parent::FIXTURE_OXID_1 . "')");
         $this->database->setFetchMode($fetchMode);
 
-        $actualResult = $this->database->getArray("SELECT OXID FROM " . parent::TABLE_NAME ." WHERE OXID = '".parent::FIXTURE_OXID_1."'");
+        $actualResult = $this->database->getArray("SELECT OXID FROM " . parent::TABLE_NAME . " WHERE OXID = '" . parent::FIXTURE_OXID_1 . "'");
 
         parent::assureTestTableIsEmpty();
 
@@ -543,11 +561,11 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
         $expectedResult = array(array(parent::FIXTURE_OXID_1));
 
         parent::assureTestTableIsEmpty();
-        $this->database->execute("INSERT INTO " . parent::TABLE_NAME ." (OXID) VALUES ('" . parent::FIXTURE_OXID_1. "')");
+        $this->database->execute("INSERT INTO " . parent::TABLE_NAME . " (OXID) VALUES ('" . parent::FIXTURE_OXID_1 . "')");
         $this->database->setFetchMode($fetchMode);
 
         $actualResult = $this->database->getArray(
-            "SELECT OXID FROM " . parent::TABLE_NAME ." WHERE OXID = '".parent::FIXTURE_OXID_1."'",
+            "SELECT OXID FROM " . parent::TABLE_NAME . " WHERE OXID = '" . parent::FIXTURE_OXID_1 . "'",
             array()
         );
 
@@ -567,11 +585,11 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
         $expectedResult = array(array(parent::FIXTURE_OXID_1));
 
         parent::assureTestTableIsEmpty();
-        $this->database->execute("INSERT INTO " . parent::TABLE_NAME ." (OXID) VALUES ('" . parent::FIXTURE_OXID_1. "')");
+        $this->database->execute("INSERT INTO " . parent::TABLE_NAME . " (OXID) VALUES ('" . parent::FIXTURE_OXID_1 . "')");
         $this->database->setFetchMode($fetchMode);
 
         $actualResult = $this->database->getArray(
-            "SELECT OXID FROM " . parent::TABLE_NAME ." WHERE OXID = ?",
+            "SELECT OXID FROM " . parent::TABLE_NAME . " WHERE OXID = ?",
             array(parent::FIXTURE_OXID_1)
         );
 
@@ -605,66 +623,6 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
         parent::assureTestTableIsEmpty();
 
         $this->assertEquals($actualResult, $expectedResult, $message);
-    }
-
-
-    /**
-     * Delete an entry from the database table oxorderfiles.
-     *
-     * @param string $oxId The oxId of the row to delete.
-     */
-    protected function deleteOrderFilesEntry($oxId)
-    {
-        $this->database->execute("DELETE FROM oxorderfiles WHERE OXID = '$oxId';");
-    }
-
-    /**
-     * Assure, that the table oxorderfiles is empty.
-     */
-    private function assureOrderFileIsEmpty()
-    {
-        $orderFileIds = $this->fetchOrderFilesOxIds();
-
-        $this->assertEmpty($orderFileIds);
-    }
-
-    /**
-     * Assure, that the table oxorderfiles has only the given oxId.
-     *
-     * @param string $oxId The oxId we want to be the only one in the oxorderfile table.
-     */
-    private function assureOrderFileHasOnly($oxId)
-    {
-        $orderFileIds = $this->fetchOrderFilesOxIds();
-
-        $this->assertNotEmpty($orderFileIds);
-        $this->assertSame(1, count($orderFileIds));
-        $this->assertArrayHasKey('0', $orderFileIds);
-
-        $this->assertSame($oxId, $orderFileIds[0][0]);
-    }
-
-    /**
-     * Fetch the oxIds from the table oxorderfiles.
-     *
-     * @return array The oxIds of the table oxorderfiles.
-     */
-    private function fetchOrderFilesOxIds()
-    {
-        return $this->database->select('SELECT OXID FROM oxorderfiles;', array(), false)->getAll();
-    }
-
-    /**
-     * Fetch the oxId of the first product.
-     *
-     * @return array|false The oxId of the first product.
-     */
-    private function fetchFirstProductOxId()
-    {
-        $rows = $this->database->select('SELECT OXID FROM oxarticles', array(), false);
-        $row = $rows->fetchRow();
-
-        return $row;
     }
 
     /**

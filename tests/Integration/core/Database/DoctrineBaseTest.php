@@ -148,7 +148,7 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
     {
         $db = self::createDatabaseStatic();
 
-        $db->execute('CREATE TABLE IF NOT EXISTS ' . self::TABLE_NAME . ' (oxid CHAR(32), oxuserid CHAR(32)) ENGINE innoDb;');
+        $db->execute('CREATE TABLE IF NOT EXISTS ' . self::TABLE_NAME . ' (oxid VARCHAR(10), oxuserid VARCHAR(10)) ENGINE innoDb;');
     }
 
     /**
@@ -230,6 +230,20 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
     {
         $this->assertTrue($this->isEmptyTestTable());
     }
+
+    /**
+     * Assert, that the given object has the wished attribute with the given value.
+     *
+     * @param object $object         The object we want to check for the given attribute.
+     * @param string $attributeName  The name of the attribute we want to exist.
+     * @param mixed  $attributeValue The wished value of the attribute.
+     */
+    protected function assertObjectHasAttributeWithValue($object, $attributeName, $attributeValue)
+    {
+        $this->assertTrue(isset($object->$attributeName), 'Missing field "' . $attributeName . '".');
+        $this->assertSame($attributeValue, $object->$attributeName);
+    }
+
 
     /**
      * Check, if the table oxdoctrinetest is empty.

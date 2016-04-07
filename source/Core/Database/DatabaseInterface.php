@@ -237,6 +237,8 @@ interface DatabaseInterface
     /**
      * Returns meta data.
      *
+     * @todo: deprecate as fast as possible, it doesn't run on modern php versions.
+     *
      * @param string $table
      * @param bool   $numberOfIndices
      *

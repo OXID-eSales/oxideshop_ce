@@ -691,7 +691,7 @@ class Integration_Core_Database_DoctrineTest extends Integration_Core_Database_D
         $this->assertTrue($resultSet->EOF);
         $this->assertEmpty($resultSet->fields);
 
-        if ($this->useLegacyDatabase) {
+        if (self::USELEGACYDATABASE) {
             $this->assertSame('ADORecordSet_empty', get_class($resultSet));
         } else {
             $this->assertSame('OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet', get_class($resultSet));

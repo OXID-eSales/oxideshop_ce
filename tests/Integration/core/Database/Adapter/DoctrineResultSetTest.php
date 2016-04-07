@@ -660,7 +660,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     private function assertDoctrineResultSet($resultSet)
     {
-        if ($this->useLegacyDatabase) {
+        if (self::USELEGACYDATABASE) {
             $this->assertSame('object_ResultSet', get_class($resultSet));
         } else {
             $this->assertSame(self::CLASS_NAME_WITH_PATH, get_class($resultSet));

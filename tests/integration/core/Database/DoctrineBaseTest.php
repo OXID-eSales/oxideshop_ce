@@ -148,7 +148,7 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
     {
         $db = self::createDatabaseStatic();
 
-        $db->execute('CREATE TABLE IF NOT EXISTS ' . self::TABLE_NAME . ' (oxid VARCHAR(32), oxuserid VARCHAR(32)) ENGINE innoDb;');
+        $db->execute('CREATE TABLE IF NOT EXISTS ' . self::TABLE_NAME . ' (oxid CHAR(32), oxuserid CHAR(32)) ENGINE innoDb;');
     }
 
     /**

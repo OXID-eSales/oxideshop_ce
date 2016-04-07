@@ -79,8 +79,8 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testMoveNextWithNonEmptyResultSetReachingEnd()
     {
-        // @todo: use our table!
-        $resultSet = $this->database->select('SELECT OXID FROM oxvendor;');
+        $this->loadFixtureToTestTable();
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
 
         $resultSet->MoveNext();
         $resultSet->MoveNext();
@@ -185,10 +185,10 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testGetArrayWithDifferentFetchMode()
     {
+        $this->loadFixtureToTestTable();
         $oldFetchMode = $this->database->setFetchMode(3);
 
-        // @todo: use our table!
-        $resultSet = $this->database->select('SELECT OXID FROM oxvendor ORDER BY OXID');
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
 
         $resultOne = $resultSet->GetArray(1);
         $resultTwo = $resultSet->GetArray(1);
@@ -196,9 +196,9 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
 
         $this->database->setFetchMode($oldFetchMode);
 
-        $expectedOne = array(array('OXID' => '9437def212dc37c66f90cc249143510a', '9437def212dc37c66f90cc249143510a'));
-        $expectedTwo = array(array('OXID' => 'd2e44d9b31fcce448.08890330', 'd2e44d9b31fcce448.08890330'));
-        $expectedThree = array(array('OXID' => 'd2e44d9b32fd2c224.65443178', 'd2e44d9b32fd2c224.65443178'));
+        $expectedOne = array(array('OXID' => self::FIXTURE_OXID_1, self::FIXTURE_OXID_1));
+        $expectedTwo = array(array('OXID' => self::FIXTURE_OXID_2, self::FIXTURE_OXID_2));
+        $expectedThree = array(array('OXID' => self::FIXTURE_OXID_3, self::FIXTURE_OXID_3));
 
         $this->assertArrayContentSame($resultOne, $expectedOne);
         $this->assertArrayContentSame($resultTwo, $expectedTwo);
@@ -251,8 +251,8 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testFetchField()
     {
-        // @todo: use our table!
-        $resultSet = $this->database->select('SELECT * FROM oxvendor');
+        $this->loadFixtureToTestTable();
+        $resultSet = $this->database->select('SELECT * FROM ' . self::TABLE_NAME);
 
         $columnInformationOne = $resultSet->FetchField(0);
 
@@ -262,11 +262,11 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
          * We are skipping the doctrine unsupported features here.
          */
         $fields = array(
-            'name'        => 'OXID',
-            'table'       => 'oxvendor',
+            'name'        => 'oxid',
+            'table'       => self::TABLE_NAME,
             'max_length'  => 96,
-            'not_null'    => 1,
-            'primary_key' => 1,
+            'not_null'    => 0,
+            'primary_key' => 0,
             'type'        => 'string',
             // 'unsigned'     => 0,
             // 'zerofill'     => 0

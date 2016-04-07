@@ -24,6 +24,8 @@
  * Admin article main statistic manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Statistics -> Show -> Main.
+ *
+ * @deprecated since 5.3.0 (2016.04.07); It will be moved to statistics_module module.
  */
 class Statistic_Main extends oxAdminDetails
 {

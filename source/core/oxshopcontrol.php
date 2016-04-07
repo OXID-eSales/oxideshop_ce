@@ -158,6 +158,8 @@ class oxShopControl extends oxSuperCfg
      *
      * @param string $sClass Name of class
      * @param string $sFnc   Name of executed class method
+     *
+     * @deprecated since 5.3.0 (2016.04.07); It will be moved to statistics_module module.
      */
     protected function _log($sClass, $sFnc)
     {

@@ -21,7 +21,9 @@
  */
 
 /**
- * user list "view" class.
+ * User list "view" class.
+ *
+ * @deprecated since 5.3.0 (2016.04.07); It will be moved to extended_order_administration_module module.
  */
 class List_Order extends Order_List
 {

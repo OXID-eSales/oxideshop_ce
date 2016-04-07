@@ -23,6 +23,8 @@
 if (!class_exists("report_conversion_rate")) {
     /**
      * Conversion rate reports class
+     *
+     * @deprecated since 5.3.0 (2016.04.07); It will be moved to statistics_module module.
      */
     class Report_conversion_rate extends report_base
     {

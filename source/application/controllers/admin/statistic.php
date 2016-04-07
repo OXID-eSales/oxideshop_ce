@@ -25,6 +25,8 @@
  * Returns template, that arranges two other templates ("statistic_list.tpl"
  * and "statistic_main.tpl") to frame.
  * Admin Menu: Statistics -> Show.
+ *
+ * @deprecated since 5.3.0 (2016.04.07); It will be moved to statistics_module module.
  */
 class Statistic extends oxAdminView
 {

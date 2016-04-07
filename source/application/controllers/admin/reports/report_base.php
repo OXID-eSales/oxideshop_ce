@@ -48,6 +48,8 @@ require_once "$sIncPath/core/jpgraph/jpgraph_pie3d.php";
 if (!class_exists('report_base')) {
     /**
      * Base reports class
+     *
+     * @deprecated since 5.3.0 (2016.04.07); It will be moved to statistics_module module.
      */
     class Report_base extends oxAdminView
     {

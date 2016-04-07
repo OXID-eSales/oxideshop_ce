@@ -24,6 +24,8 @@
  * Admin order package manager.
  * Collects order package information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders.
+ *
+ * @deprecated since 5.3.0 (2016.04.07); It will be moved to extended_order_administration_module module.
  */
 class Order_Package extends oxAdminDetails
 {

@@ -24,6 +24,8 @@
  * Admin statistics service setting manager.
  * Collects statistics service settings, updates it on user submit, etc.
  * Admin Menu: Statistics -> Show -> Clear Log.
+ *
+ * @deprecated since 5.3.0 (2016.04.07); It will be moved to statistics_module module.
  */
 class Statistic_Service extends oxAdminDetails
 {

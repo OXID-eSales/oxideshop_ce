@@ -103,6 +103,8 @@ class Order_Overview extends oxAdminDetails
 
     /**
      * Performs Lexware export to user (outputs file to save).
+     *
+     * @deprecated since 5.3.0 (2016.04.07); It will be moved to lexware_export_module module.
      */
     public function exportlex()
     {

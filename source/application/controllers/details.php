@@ -60,6 +60,8 @@ class Details extends oxUBase
     /**
      * Class handling CAPTCHA image.
      *
+     * @deprecated since 5.3.0 (2016.04.07); It will be moved to captcha_module module.
+     *
      * @var object
      */
     protected $_oCaptcha = null;
@@ -1133,6 +1135,8 @@ class Details extends oxUBase
 
     /**
      * Template variable getter. Returns object of handling CAPTCHA image
+     *
+     * @deprecated since 5.3.0 (2016.04.07); It will be moved to captcha_module module.
      *
      * @return object
      */

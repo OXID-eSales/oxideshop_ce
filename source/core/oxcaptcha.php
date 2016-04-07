@@ -24,6 +24,7 @@
  * Class handling CAPTCHA image
  * This class requires utility file utils/verificationimg.php as image generator
  *
+ * @deprecated since 5.3.0 (2016.04.07); It will be moved to captcha_module module.
  */
 class oxCaptcha extends oxSuperCfg
 {

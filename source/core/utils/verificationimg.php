@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+// This file will be moved to captcha_module module.
+
 // #1428C - spam spider prevention
 if (isset($_GET['e_mac'])) {
     $sEMac = $_GET['e_mac'];
@@ -35,6 +37,8 @@ if (!function_exists('generateVerificationImg')) {
      * Generates image
      *
      * @param string $sMac verification code
+     *
+     * @deprecated since 5.3.0 (2016.04.07); It will be moved to captcha_module module.
      *
      * @return null
      */
@@ -85,6 +89,8 @@ if (!function_exists('strRem')) {
      * OXID specific string manipulation method
      *
      * @param string $sVal string
+     *
+     * @deprecated since 5.3.0 (2016.04.07); It will be moved to captcha_module module.
      *
      * @return string
      */

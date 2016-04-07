@@ -23,6 +23,8 @@
 if (!class_exists("report_user_per_group")) {
     /**
      * User per group reports class
+     *
+     * @deprecated since 5.3.0 (2016.04.07); It will be moved to statistics_module module.
      */
     class Report_user_per_group extends report_base
     {

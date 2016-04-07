@@ -22,6 +22,8 @@
 
 /**
  * Class manages statistics configuration
+ *
+ * @deprecated since 5.3.0 (2016.04.07); It will be moved to statistics_module module.
  */
 class statistic_main_ajax extends ajaxListComponent
 {

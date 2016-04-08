@@ -1035,19 +1035,10 @@ class ArticleListController extends \oxUBase
      */
     public function getCanonicalUrl()
     {
-        if (($category = $this->getActiveCategory())) {
-            $utilsUrl = oxRegistry::get("oxUtilsUrl");
-            if (oxRegistry::getUtils()->seoIsActive()) {
-                $url = $utilsUrl->prepareCanonicalUrl(
-                    $category->getBaseSeoLink($category->getLanguage(), $this->getActPage())
-                );
-            } else {
-                $url = $utilsUrl->prepareCanonicalUrl(
-                    $category->getBaseStdLink($category->getLanguage(), $this->getActPage())
-                );
-            }
-
-            return $url;
+        if ($category = $this->getActiveCategory()) {
+            return oxRegistry::get("oxUtilsUrl")->prepareCanonicalUrl(
+                $category->getBaseSeoLink($category->getLanguage(), $this->getActPage())
+            );
         }
     }
 

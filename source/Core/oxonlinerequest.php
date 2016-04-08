@@ -20,30 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
-
 /**
- * Online module notifier request class and used as entity.
+ * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
- * @ignore   This class will not be included in documentation.
  */
-class OnlineModulesNotifierRequest extends \oxOnlineRequest
+
+class oxOnlineRequest extends \OxidEsales\Eshop\Core\OnlineRequest
 {
-
-    /**
-     * Web service protocol version.
-     *
-     * @var string
-     */
-    public $pVersion = '1.1';
-
-    /**
-     * Modules array.
-     *
-     * @var array
-     */
-    public $modules;
 }

@@ -37,12 +37,11 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxApplicationServer' => '\OxidEsales\Eshop\Core\ApplicationServer',
             'oxCcValidator' => '\OxidEsales\Eshop\Core\CreditCardValidator',
 
+            'language' => '\OxidEsales\Eshop\Application\Controller\Admin\LanguageController',
+
             'oxcompanyvatinchecker' =>'\OxidEsales\Eshop\Core\CompanyVatInChecker',
-            'oxcompanyvatincountrychecker' =>'\OxidEsales\Eshop\Core\CompanyVatInCountryChecker',
-            'oxcompanyvatinvalidator' =>'\OxidEsales\Eshop\Core\CompanyVatInValidator',
-            'oxconfig' =>'\OxidEsales\Eshop\Core\Config',
+
             'oxcounter' =>'\OxidEsales\Eshop\Core\Counter',
-            'oxcurl' =>'\OxidEsales\Eshop\Core\Curl',
             'oxdebugdb' =>'\OxidEsales\Eshop\Core\DebugDatabase',
             'oxdebuginfo' =>'\OxidEsales\Eshop\Core\Debuginfo',
             'oxdecryptor' =>'\OxidEsales\Eshop\Core\Decryptor',
@@ -54,29 +53,16 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxhasher' =>'\OxidEsales\Eshop\Core\Hasher',
             'oxheader' =>'\OxidEsales\Eshop\Core\Header',
             'oxinputvalidator' =>'\OxidEsales\Eshop\Core\InputValidator',
-            'oxlang' =>'\OxidEsales\Eshop\Core\Language',
             'oxmodulechainsgenerator' =>'\OxidEsales\Eshop\Core\ModuleChainsGenerator',
-
-            'oxmodulefilesvalidator' =>'\OxidEsales\Eshop\Core\ModuleFilesValidator',
             'oxmoduleinstaller' =>'\OxidEsales\Eshop\Core\ModuleInstaller',
-            'oxmodulelist' =>'\OxidEsales\Eshop\Core\ModuleList',
             'oxmodulemetadataagainstshopvalidator' =>'\OxidEsales\Eshop\Core\ModuleMetadataAgainstShopValidator',
-            'oxmodulemetadatavalidator' =>'\OxidEsales\Eshop\Core\ModuleMetadataValidator',
             'oxmodulevalidatorfactory' =>'\OxidEsales\Eshop\Core\ModuleValidatorFactory',
             'oxmodulevariableslocator' =>'\OxidEsales\Eshop\Core\ModuleVariablesLocator',
+            'oxnojsvalidator' =>'\OxidEsales\Eshop\Core\NoJsValidator',
+            'oxonlinecaller' =>'\OxidEsales\Eshop\Core\OnlineCaller',
+            'oxonlinelicensecheckcaller' =>'\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller',
+            'oxonlinelicensecheckresponse' =>'\OxidEsales\Eshop\Core\OnlineLicenseCheckResponse',
 
-            #'oxnojsvalidator' =>'\OxidEsales\Eshop\Core\',
-            #'oxonlinecaller' =>'\OxidEsales\Eshop\Core\',
-            #'oxonlinelicensecheck' =>'\OxidEsales\Eshop\Core\',
-            #'oxonlinelicensecheckcaller' =>'\OxidEsales\Eshop\Core\',
-            #'oxonlinelicensecheckrequest' =>'\OxidEsales\Eshop\Core\',
-            #'oxonlinelicensecheckresponse' =>'\OxidEsales\Eshop\Core\',
-            #'oxonlinemodulesnotifierrequest' =>'\OxidEsales\Eshop\Core\',
-            #'oxonlinemoduleversionnotifier' =>'\OxidEsales\Eshop\Core\',
-            #'oxonlinemoduleversionnotifiercaller' =>'\OxidEsales\Eshop\Core\',
-            #'oxonlinerequest' =>'\OxidEsales\Eshop\Core\',
-            #'oxonlineserveremailbuilder' =>'\OxidEsales\Eshop\Core\',
-            #'oxonlinevatidcheck' =>'\OxidEsales\Eshop\Core\',
             #'oxopensslfunctionalitychecker' =>'\OxidEsales\Eshop\Core\',
             #'oxoutput' =>'\OxidEsales\Eshop\Core\',
             #'oxpasswordhasher' =>'\OxidEsales\Eshop\Core\',
@@ -117,8 +103,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             #'oxutilsxml' =>'\OxidEsales\Eshop\Core\',
             #'oxviewconfig' =>'\OxidEsales\Eshop\Core\',
             #'oxwidgetcontrol' =>'\OxidEsales\Eshop\Core\',
-
-
 
             ###'oxconfk' =>'\OxidEsales\Eshop\Core\ConfigurationKey',
             ###'oxfunctions' =>'\OxidEsales\Eshop\Core\Functions',
@@ -203,6 +187,22 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
 
             'oxmodule' =>'\OxidEsales\Eshop\Core\Module',
             'oxmodulecache' =>'\OxidEsales\Eshop\Core\ModuleCache',
+            'oxmodulefilesvalidator' =>'\OxidEsales\Eshop\Core\ModuleFilesValidator',
+            'oxonlinemoduleversionnotifier' =>'\OxidEsales\Eshop\Core\OnlineModuleVersionNotifier',
+            'oxmodulelist' =>'\OxidEsales\Eshop\Core\ModuleList',
+            'oxmodulemetadatavalidator' =>'\OxidEsales\Eshop\Core\ModuleMetadataValidator',
+            'oxcurl' =>'\OxidEsales\Eshop\Core\Curl',
+            'oxonlineserveremailbuilder' =>'\OxidEsales\Eshop\Core\OnlineServerEmailBuilder',
+            'oxonlinelicensecheckrequest' =>'\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest',
+            'oxonlinerequest' =>'\OxidEsales\Eshop\Core\OnlineRequest',
+            'oxonlinelicensecheck' =>'\OxidEsales\Eshop\Core\OnlineLicenseCheck',
+            'oxonlinemoduleversionnotifiercaller' =>'\OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller',
+            'oxonlinemodulesnotifierrequest' =>'\OxidEsales\Eshop\Core\OnlineModulesNotifierRequest',
+            'oxconfig' =>'\OxidEsales\Eshop\Core\Config',
+            'oxlang' =>'\OxidEsales\Eshop\Core\Language',
+            'oxcompanyvatinvalidator' =>'\OxidEsales\Eshop\Core\CompanyVatInValidator',
+            'oxcompanyvatincountrychecker' =>'\OxidEsales\Eshop\Core\CompanyVatInCountryChecker',
+            'oxonlinevatidcheck' => '\OxidEsales\Eshop\Core\OnlineVatIdCheck',
         ];
     }
 }

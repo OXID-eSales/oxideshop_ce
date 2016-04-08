@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+
 /**
  * Online check base request class.
  *
@@ -28,7 +32,7 @@
  *
  * @ignore   This class will not be included in documentation.
  */
-class oxOnlineRequest
+class OnlineRequest
 {
 
     /**

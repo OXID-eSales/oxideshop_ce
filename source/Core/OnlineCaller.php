@@ -20,6 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxCurl;
+use oxOnlineServerEmailBuilder;
+use oxSimpleXml;
+use oxOnlineRequest;
+use oxRegistry;
+use oxException;
+use Exception;
+
 /**
  * Class oxOnlineCaller makes call to given URL which is taken from child classes and sends request parameter.
  *
@@ -28,7 +38,7 @@
  *
  * @ignore   This class will not be included in documentation.
  */
-abstract class oxOnlineCaller
+abstract class OnlineCaller
 {
 
     const ALLOWED_HTTP_FAILED_CALLS_COUNT = 4;
@@ -112,7 +122,7 @@ abstract class oxOnlineCaller
 
         return $sOutputXml;
     }
-	
+
     /*
      * Depending on the type of exception, first cast the exception and then write it to log.
      *

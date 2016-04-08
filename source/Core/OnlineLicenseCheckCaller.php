@@ -20,6 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxOnlineLicenseCheckRequest;
+use oxRegistry;
+use oxUtilsXml;
+use oxException;
+use oxOnlineLicenseCheckResponse ;
+
 /**
  * Class makes call to given URL address and sends request parameter.
  *
@@ -28,7 +36,7 @@
  *
  * @ignore   This class will not be included in documentation.
  */
-class oxOnlineLicenseCheckCaller extends oxOnlineCaller
+class OnlineLicenseCheckCaller extends \oxOnlineCaller
 {
 
     /** Online License Key Check web service url. */

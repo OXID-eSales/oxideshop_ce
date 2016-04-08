@@ -20,6 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxOnlineLicenseCheckCaller;
+use oxUserCounter;
+use oxServersManager;
+use oxRegistry;
+use oxOnlineLicenseCheck;
+use stdClass;
+use oxOnlineLicenseCheckRequest;
+use oxException;
+
 /**
  * Performs Online License Key check.
  *
@@ -28,7 +39,7 @@
  *
  * @ignore   This class will not be included in documentation.
  */
-class oxOnlineLicenseCheck
+class OnlineLicenseCheck
 {
 
     /**

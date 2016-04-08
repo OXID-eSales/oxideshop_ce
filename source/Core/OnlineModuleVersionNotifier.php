@@ -20,6 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxOnlineModuleVersionNotifierCaller;
+use oxModuleList;
+use oxModule;
+use stdClass;
+use oxRegistry;
+use oxOnlineModulesNotifierRequest;
+
 /**
  * Performs Online Module Version Notifier check.
  *
@@ -32,7 +41,7 @@
  *
  * @ignore   This class will not be included in documentation.
  */
-class oxOnlineModuleVersionNotifier
+class OnlineModuleVersionNotifier
 {
 
     /** @var oxOnlineModuleVersionNotifierCaller */

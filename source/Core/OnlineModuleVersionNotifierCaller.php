@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxOnlineModulesNotifierRequest;
+
 /**
  * Class makes call to given URL address and sends request parameter.
  *
@@ -32,7 +36,7 @@
  *
  * @ignore   This class will not be included in documentation.
  */
-class oxOnlineModuleVersionNotifierCaller extends oxOnlineCaller
+class OnlineModuleVersionNotifierCaller extends \oxOnlineCaller
 {
 
     /** Online Module Version Notifier web service url. */

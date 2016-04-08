@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * Online license check response class.
  *
@@ -28,7 +30,7 @@
  *
  * @ignore   This class will not be included in documentation.
  */
-class oxOnlineLicenseCheckResponse
+class OnlineLicenseCheckResponse
 {
 
     /**

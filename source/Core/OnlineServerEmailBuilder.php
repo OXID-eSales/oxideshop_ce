@@ -20,6 +20,11 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxEmail;
+use oxRegistry;
+
 /**
  * Class oxOnlineServerEmailBuilder is responsible for email sending when it's not possible to make call via CURL.
  *
@@ -28,7 +33,7 @@
  *
  * @ignore   This class will not be included in documentation.
  */
-class oxOnlineServerEmailBuilder
+class OnlineServerEmailBuilder
 {
 
     /**

@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * Validates if there are no Javascript.
  */
-class oxNoJsValidator
+class NoJsValidator
 {
     /**
      * Checks if provided config value is not vulnerable.

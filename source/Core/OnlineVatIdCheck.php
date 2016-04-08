@@ -20,10 +20,22 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxCompanyVatIn;
+use stdClass;
+use oxRegistry;
+use oxInputException;
+use oxConnectionException;
+use DOMDocument;
+use Exception;
+use SoapClient;
+use SoapFault;
+
 /**
  * Online VAT id checker class.
  */
-class oxOnlineVatIdCheck extends oxCompanyVatInChecker
+class OnlineVatIdCheck extends \oxCompanyVatInChecker
 {
 
     /**

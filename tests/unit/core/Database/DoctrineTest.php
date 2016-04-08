@@ -36,6 +36,9 @@ class DoctrineTest extends UnitTestCase
      */
     protected $database = null;
 
+    /**
+     * Set up the test
+     */
     public function setUp()
     {
         parent::setUp();

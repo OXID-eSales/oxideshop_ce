@@ -30,11 +30,12 @@ use mysqli_meta_ADOConnection as mysqli_extra;
 use object_ADOConnection;
 use object_ResultSet;
 use pear_ADOConnection;
+use OxidEsales\Eshop;
 
 /**
  * Database connection class
  */
-class LegacyDatabase extends \oxSuperCfg
+class LegacyDatabase extends \oxSuperCfg implements Eshop\Core\Database\DatabaseInterface
 {
     /**
      * Database connection object

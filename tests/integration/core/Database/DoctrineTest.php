@@ -35,7 +35,7 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
 
     const DATABASE_EXCEPTION_CLASS = 'OxidEsales\Eshop\Core\exception\DatabaseException';
 
-    const RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\DoctrineResultSet';
+    const RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet';
 
     const EMPTY_RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet';
 

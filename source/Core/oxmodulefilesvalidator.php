@@ -20,33 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
-
-use oxModule;
-
 /**
- * Module metadata validation class.
- * Used for validating if module metadata exists and is usable.
+ * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
+ *
  */
-class ModuleMetadataValidator implements \oxIModuleValidator
+class oxModuleFilesValidator extends \OxidEsales\Eshop\Core\ModuleFilesValidator
 {
-
-    /**
-     * Validates module metadata.
-     * Return true if module metadata is valid.
-     * Return false if module metadata is not valid, or if metadata file does not exist.
-     *
-     * @param oxModule $oModule object to validate metadata.
-     *
-     * @return bool
-     */
-    public function validate(oxModule $oModule)
-    {
-        $sMetadataPath = $oModule->getMetadataPath();
-
-        return file_exists($sMetadataPath);
-    }
 }

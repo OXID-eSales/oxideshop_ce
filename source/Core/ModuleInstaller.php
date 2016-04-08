@@ -19,8 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Eshop\Core;
 
 use OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner;
+use oxModuleCache;
+use oxModule;
+use oxDb;
+use oxUtilsObject;
 
 /**
  * Modules installer class.
@@ -28,7 +33,7 @@ use OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner;
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxModuleInstaller extends oxSuperCfg
+class ModuleInstaller extends \oxSuperCfg
 {
     /**
      * @var oxModuleCache

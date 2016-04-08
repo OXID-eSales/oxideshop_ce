@@ -20,13 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+use oxModule;
+
 /**
  * Module files validator class.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxModuleFilesValidator implements oxIModuleValidator
+class ModuleFilesValidator implements \oxIModuleValidator
 {
 
     /**

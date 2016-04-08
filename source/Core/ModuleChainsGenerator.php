@@ -23,6 +23,8 @@
 namespace OxidEsales\Eshop\Core;
 
 use oxRegistry;
+use oxConfig;
+use oxModuleVariablesLocator;
 
 /**
  * Generates class chains for extended classes by modules.

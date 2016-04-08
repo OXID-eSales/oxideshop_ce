@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * Module validators factory class.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxModuleValidatorFactory
+class ModuleValidatorFactory
 {
 
     /**

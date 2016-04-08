@@ -225,50 +225,6 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
     }
 
     /**
-     * Test, that the method 'MetaColumns' works as expected.
-     */
-    public function testMetaColumns()
-    {
-        $columnInformation = $this->database->metaColumns(self::TABLE_NAME);
-
-        /**
-         * We are skipping the doctrine unsupported features AND the hard to fetch information here.
-         */
-        $expectedColumns = array(
-            array(
-                'name'           => 'oxid',
-                'max_length'     => '10',
-                'type'           => 'varchar',
-                'not_null'       => false,
-                // 'primary_key'    => false,
-                // 'auto_increment' => false,
-                // 'binary'         => false,
-                // 'unsigned'       => false,
-                // 'has_default'    => false
-                // 'scale' => null,
-            ),
-            array(
-                'name'           => 'oxuserid',
-                'max_length'     => '10',
-                'type'           => 'varchar',
-                'not_null'       => false,
-                // 'primary_key'    => false,
-                // 'auto_increment' => false,
-                // 'binary'         => false,
-                // 'unsigned'       => false,
-                // 'has_default'    => false
-                // 'scale' => null,
-            )
-        );
-
-        for ($index = 0; $index < 2; $index++) {
-            foreach ($expectedColumns[$index] as $attributeName => $attributeValue) {
-                $this->assertObjectHasAttributeWithValue($columnInformation[$index], $attributeName, $attributeValue);
-            }
-        }
-    }
-
-    /**
      * Fetch the transaction isolation level.
      *
      * @return string The transaction isolation level.

@@ -1,4 +1,6 @@
 <?php
+namespace OxidEsales\Eshop\Tests\integration\core\Database;
+
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -21,14 +23,13 @@
  */
 
 use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\Eshop\Core\Database\Doctrine;
 
 /**
  * Base class for database integration tests.
  *
  * @group doctrine
  */
-abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
+abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
 {
 
     /**
@@ -67,29 +68,13 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
     const FIXTURE_OXUSERID_3 = 'OXUSERID_3';
 
     /**
-     * @var Doctrine|oxLegacyDb The database to test.
+     * @var mixed The database to test.
      */
     protected $database = null;
 
     /**
-     * @var bool Should this test use the legacy database for the tests?
+     * Initialize database table before every test
      */
-    const USELEGACYDATABASE = false;
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-
-        self::createDatabaseTable();
-    }
-
-    public static function tearDownAfterClass()
-    {
-        self::removeDatabaseTable();
-
-        parent::tearDownAfterClass();
-    }
-
     public function setUp()
     {
         parent::setUp();
@@ -98,6 +83,9 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
         $this->assureTestTableIsEmpty();
     }
 
+    /**
+     * Empty database table after every test
+     */
     public function tearDown()
     {
         $this->assureTestTableIsEmpty();
@@ -116,50 +104,9 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
     /**
      * Create the database object under test.
      *
-     * @return Doctrine|oxLegacyDb The database object under test.
      */
-    protected function createDatabase()
-    {
-        if (self::USELEGACYDATABASE) {
-            return oxDb::getDb();
-        } else {
-            return new Doctrine();
-        }
-    }
+    abstract protected function createDatabase();
 
-    /**
-     * Create the database object under test - the static pendant to use in the setUpBeforeClass and tearDownAfterClass.
-     *
-     * @return Doctrine|oxLegacyDb The database object under test.
-     */
-    protected static function createDatabaseStatic()
-    {
-        if (self::USELEGACYDATABASE) {
-            return oxDb::getDb();
-        } else {
-            return new Doctrine();
-        }
-    }
-
-    /**
-     * Create a table in the database especially for this test.
-     */
-    protected static function createDatabaseTable()
-    {
-        $db = self::createDatabaseStatic();
-
-        $db->execute('CREATE TABLE IF NOT EXISTS ' . self::TABLE_NAME . ' (oxid CHAR(32), oxuserid CHAR(32)) ENGINE innoDb;');
-    }
-
-    /**
-     * Drop the test database table.
-     */
-    protected static function removeDatabaseTable()
-    {
-        $db = self::createDatabaseStatic();
-
-        $db->execute('DROP TABLE ' . self::TABLE_NAME . ';');
-    }
 
     /**
      * Load the test fixture to the oxdoctrinetest table.
@@ -263,6 +210,4 @@ abstract class Integration_Core_Database_DoctrineBaseTest extends UnitTestCase
 
         return $row;
     }
-
-
 }

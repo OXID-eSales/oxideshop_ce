@@ -57,6 +57,11 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     protected $affectedRows = 0;
 
     /**
+     * @var int The current fetch mode as defined in the DatabaseInterface::FETCH_MODE_* constants.
+     */
+    protected $interfaceFetchMode = DatabaseInterface::FETCH_MODE_NUM;
+
+    /**
      * @var int The current fetch mode.
      */
     protected $fetchMode = \PDO::FETCH_NUM;
@@ -129,15 +134,16 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      */
     public function setFetchMode($fetchMode)
     {
-        $flippedFetchModeMap = array_flip($this->fetchModeMap);
-        $previousFetchMode = $flippedFetchModeMap[$this->fetchMode];
+        $previousInterfaceFetchMode = $this->interfaceFetchMode;
+        $this->interfaceFetchMode = $fetchMode;
 
         $this->fetchMode = $this->fetchModeMap[$fetchMode];
 
         $this->getConnection()->setFetchMode($this->fetchMode);
 
-        return $previousFetchMode;
+        return $previousInterfaceFetchMode;
     }
+
 
     /**
      * Get the number of rows, which where changed during the last sql statement.
@@ -319,10 +325,18 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      */
     public function execute($query, $parameters = false)
     {
-        // we divide the execution here, cause it is easier to achieve the adodblite behavior this way
+        /**
+         * We divide the execution here, cause it is easier to achieve the ADOdb Lite behavior this way:
+         * ADOdb Lite returns different kinds of result sets:
+         * - DoctrineResultSet for "SELECT"
+         * - DoctrineEmptyResultSet for the rest of queries
+         */
+        
         if ($this->isSelectStatement($query)) {
+            /** @var DoctrineResultSet $result */
             $result = $this->select($query, $parameters);
         } else {
+            /** @var DoctrineEmptyResultSet $result */
             $result = $this->executeUpdate($query, $parameters);
         }
 
@@ -331,16 +345,17 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
 
     /**
      * Run a given select sql statement on the database.
+     * Affected rows will be set to 0 by this query.
      *
-     * @param string $query      The query we want to execute.
-     * @param bool   $parameters The parameters for the given query.
-     * @param bool   $type
+     * @param string $query          The query we want to execute.
+     * @param bool   $parameters     The parameters for the given query.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
-     * @throws \Doctrine\DBAL\DBALException The exception, that can occur while running the sql statement.
+     * @throws DatabaseException The exception, that can occur while running the sql statement.
      *
      * @return DoctrineResultSet The result of the given query.
      */
-    public function select($query, $parameters = false, $type = true)
+    public function select($query, $parameters = false, $executeOnSlave = true)
     {
         $result = null;
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -351,9 +366,10 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
              */
             /** @var \Doctrine\DBAL\Driver\Statement $statement */
             $statement = $this->getConnection()->executeQuery($query, $parameters);
-            $this->setAffectedRows(0);
 
             $result = new DoctrineResultSet($statement);
+
+            $this->setAffectedRows($result->recordCount());
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
@@ -368,22 +384,27 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      *
      * This method supports PDO binding types as well as DBAL mapping types.
      *
-     * @param string $query  The SQL query.
-     * @param array  $params The query parameters.
-     * @param array  $types  The parameter types.
+     * @param string $query      The SQL query.
+     * @param array  $parameters The query parameters.
+     * @param array  $types      The parameter types.
      *
-     * @throws DBALException
+     * @throws DatabaseException
      *
      * @return DoctrineEmptyResultSet
      */
-    protected function executeUpdate($query, $params = array(), $types = array())
+    protected function executeUpdate($query, $parameters = array(), $types = array())
     {
-        if (!$params) {
-            $params = array();
-        }
-        $affectedRows = $this->getConnection()->executeUpdate($query, $params, $types);
+        $parameters = $this->assureParameterIsAnArray($parameters);
 
-        $this->setAffectedRows($affectedRows);
+        try {
+            $affectedRows = $this->getConnection()->executeUpdate($query, $parameters, $types);
+            $this->setAffectedRows($affectedRows);
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
+
 
         $result = new DoctrineEmptyResultSet();
 
@@ -393,15 +414,17 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     /**
      * Run a given select sql statement with a limit clause on the database.
      *
-     * @param string     $query      The sql statement we want to execute.
-     * @param int        $limit      Number of rows to select
-     * @param int        $offset     Number of rows to skip
-     * @param array|bool $parameters The parameters array.
-     * @param bool       $type       Connection type
+     * @param string     $query          The sql statement we want to execute.
+     * @param int        $limit          Number of rows to select
+     * @param int        $offset         Number of rows to skip
+     * @param array|bool $parameters     The parameters array.
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     *
+     * @throws DatabaseException
      *
      * @return DoctrineResultSet The result of the given query.
      */
-    public function selectLimit($query, $limit = -1, $offset = -1, $parameters = false, $type = true)
+    public function selectLimit($query, $limit = -1, $offset = -1, $parameters = false, $executeOnSlave = true)
     {
         $limitSql = "";
         if (-1 !== $limit) {
@@ -413,7 +436,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
             $offsetSql = "OFFSET $offset";
         }
 
-        return $this->select($query . " $limitSql $offsetSql", $parameters, $type);
+        return $this->select($query . " $limitSql $offsetSql", $parameters, $executeOnSlave);
     }
 
     /**
@@ -478,15 +501,24 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     /**
      * Create the database connection.
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DatabaseException
+     *
+     * @todo write test
      *
      * @return \Doctrine\DBAL\Connection The database connection.
      */
     protected function createConnection()
     {
-        $connection = DriverManager::getConnection($this->getConnectionParameters());
+        $connection = null;
 
-        $connection->setFetchMode($this->fetchMode);
+        try {
+            $connection = DriverManager::getConnection($this->getConnectionParameters());
+            $connection->setFetchMode($this->fetchMode);
+
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
 
         return $connection;
     }
@@ -511,9 +543,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
         );
 
         if ($config->getConfigParam('iUtfMode')) {
-            $connectionParameters['driverOptions'] = array(
-                1002 => 'SET NAMES utf8'
-            );
+            $connectionParameters['charset'] = 'utf8';
         }
 
         return $connectionParameters;
@@ -530,8 +560,8 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     {
         $doctrineDriver = $configDriver;
 
-        if ('mysql' == $doctrineDriver) {
-            $doctrineDriver = 'pdo_' . $configDriver;
+        if (false !== strpos($doctrineDriver, 'mysql')) {
+            $doctrineDriver = 'pdo_mysql';
         }
 
         return $doctrineDriver;
@@ -629,16 +659,17 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     }
 
     /**
-     * Get all values as array.
+     * Get all values as an array.
      * Alias of getArray.
      *
      * @param string     $query
-     * @param array|bool $parameters     Array of parameters
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param array|bool $parameters
+     * @param bool       $executeOnSlave
      *
      * @see Doctrine::getArray()
      *
      * @throws     DatabaseException
+     * @throws     \InvalidArgumentException
      *
      * @return array
      */
@@ -662,14 +693,15 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
      * The default fetch mode is defined in Doctrine::$fetchMode
      *
-     * @param string     $query
-     * @param array|bool $parameters     Array of parameters
+     * @param string     $query          If parameters are given, the "?" in the string will be replaced by the values in the array
+     * @param array|bool $parameters     must loosely evaluate to false or must be an array
      * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
      *
      * @throws     DatabaseException
+     * @throws     \InvalidArgumentException
      *
      * @return array
      */
@@ -680,6 +712,8 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
         if ($parameters && !is_array($parameters)) {
             throw new \InvalidArgumentException();
         }
+
+        $parameters = $this->assureParameterIsAnArray($parameters);
 
         try {
             $statement = $this->getConnection()->executeQuery($query, $parameters);

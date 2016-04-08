@@ -484,23 +484,23 @@ class oxUtilsView extends oxSuperCfg
         }
 
         if ($this->isShopTemplateBlockOverriddenByActiveModule()) {
-            $activeThemeId = $config->getActiveThemeId($this->isAdmin());
 
             $shopId = $config->getShopId();
 
             $ids = $this->_getActiveModuleInfo();
             $modulesId = implode(", ", oxDb::getInstance()->quoteArray(array_keys($ids)));
 
+            $activeThemesIdQuery = $this->formActiveThemesIdQuery();
             $sql = "select *
                     from oxtplblocks
                     where oxactive=1
                         and oxshopid=?
                         and oxtemplate=?
                         and oxmodule in ( " . $modulesId . " )
-                        and oxtheme in ('', ?)
+                        and oxtheme in (" . $activeThemesIdQuery . ")
                         order by oxpos asc";
             $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-            $activeBlockTemplates = $db->getAll($sql, array($shopId, $templateFileName, $activeThemeId));
+            $activeBlockTemplates = $db->getAll($sql, array($shopId, $templateFileName));
 
             if ($activeBlockTemplates) {
                 $activeBlockTemplatesByTheme = $this->filterTemplateBlocks($activeBlockTemplates);
@@ -616,25 +616,87 @@ class oxUtilsView extends oxSuperCfg
      */
     private function filterTemplateBlocks($activeBlockTemplates)
     {
-        $templateBlocksToExchange = array();
         $templateBlocks = $activeBlockTemplates;
+
+        $templateBlocksToExchange = $this->formListOfDuplicatedBlocks($activeBlockTemplates);
+
+        if ($templateBlocksToExchange['theme']) {
+            $templateBlocks = $this->removeDefaultBlocks($activeBlockTemplates, $templateBlocksToExchange);
+        }
+
+        if ($templateBlocksToExchange['custom_theme']) {
+            $templateBlocks = $this->removeParentBlocks($templateBlocks, $templateBlocksToExchange);
+        }
+
+        return $templateBlocks;
+    }
+
+    /**
+     * Form list of blocks which has duplicates for specific theme.
+     *
+     * @param $activeBlockTemplates
+     *
+     * @return array
+     */
+    private function formListOfDuplicatedBlocks($activeBlockTemplates)
+    {
+        $templateBlocksToExchange = array();
+        $customThemeId = $this->getConfig()->getConfigParam('sCustomTheme');
 
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
             if ($activeBlockTemplate['OXTHEME']) {
-                $templateBlocksToExchange[] = $this->prepareBlockKey($activeBlockTemplate);
-            }
-        }
-
-        if ($templateBlocksToExchange) {
-            $templateBlocks = array();
-            foreach ($activeBlockTemplates as $activeBlockTemplate) {
-                if (!in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange)
-                    || $activeBlockTemplate['OXTHEME']) {
-                    $templateBlocks[] = $activeBlockTemplate;
+                if ($customThemeId && $customThemeId === $activeBlockTemplate['OXTHEME']) {
+                    $templateBlocksToExchange['custom_theme'][] = $this->prepareBlockKey($activeBlockTemplate);
+                } else {
+                    $templateBlocksToExchange['theme'][] = $this->prepareBlockKey($activeBlockTemplate);
                 }
             }
         }
 
+        return $templateBlocksToExchange;
+    }
+
+    /**
+     * Remove default blocks whose have duplicate for specific theme.
+     *
+     * @param $activeBlockTemplates
+     * @param $templateBlocksToExchange
+     *
+     * @return array
+     */
+    private function removeDefaultBlocks($activeBlockTemplates, $templateBlocksToExchange)
+    {
+        $templateBlocks = array();
+        foreach ($activeBlockTemplates as $activeBlockTemplate) {
+            if (!in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['theme'])
+                || $activeBlockTemplate['OXTHEME']
+            ) {
+                $templateBlocks[] = $activeBlockTemplate;
+            }
+        }
+        return $templateBlocks;
+    }
+
+    /**
+     * Remove parent theme blocks whose have duplicate for custom theme.
+     *
+     * @param $templateBlocks
+     * @param $templateBlocksToExchange
+     *
+     * @return array
+     */
+    private function removeParentBlocks($templateBlocks, $templateBlocksToExchange)
+    {
+        $activeBlockTemplates = $templateBlocks;
+        $templateBlocks = array();
+        $customThemeId = $this->getConfig()->getConfigParam('sCustomTheme');
+        foreach ($activeBlockTemplates as $activeBlockTemplate) {
+            if (!in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['custom_theme'])
+                || $activeBlockTemplate['OXTHEME'] === $customThemeId
+            ) {
+                $templateBlocks[] = $activeBlockTemplate;
+            }
+        }
         return $templateBlocks;
     }
 
@@ -738,5 +800,30 @@ class oxUtilsView extends oxSuperCfg
     private function prepareBlockKey($activeBlockTemplate)
     {
         return $activeBlockTemplate['OXTEMPLATE'] . $activeBlockTemplate['OXBLOCKNAME'];
+    }
+
+    /**
+     * To form sql query part for active themes.
+     *
+     * @return string
+     */
+    private function formActiveThemesIdQuery()
+    {
+        $defaultThemeIndicator = '';
+        $activeThemeIds = array();
+        $activeThemeIds[] = $defaultThemeIndicator;
+
+        if (!$this->isAdmin()) {
+            $activeThemeIds[] = $this->getConfig()->getConfigParam('sTheme');
+
+            $customThemeId = $this->getConfig()->getConfigParam('sCustomTheme');
+            if ($customThemeId) {
+                $activeThemeIds[] = $customThemeId;
+            }
+        }
+
+        $activeThemesIdQuery = implode(', ', oxDb::getInstance()->quoteArray($activeThemeIds));
+
+        return $activeThemesIdQuery;
     }
 }

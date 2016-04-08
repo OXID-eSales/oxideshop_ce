@@ -92,6 +92,100 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                                                        'module2'
                                                     )"
             );
+            oxDb::getDb()->Execute(
+                "insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTHEME,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
+                                                       'test_ap_1',
+                                                       '1',
+                                                       '15',
+                                                       'active_theme_parent',
+                                                       'filename2.tpl',
+                                                       'blockname_ap_1',
+                                                       1,
+                                                       'contentfile_ap_active_theme',
+                                                       'module2'
+                                                    )"
+            );
+
+            oxDb::getDb()->Execute(
+                "insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTHEME,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
+                                                       'test_apat_1',
+                                                       '1',
+                                                       '15',
+                                                       'active_theme',
+                                                       'filename3.tpl',
+                                                       'blockname_ap_1',
+                                                       1,
+                                                       'contentfile_apat_block1',
+                                                       'module2'
+                                                    )"
+            );
+            oxDb::getDb()->Execute(
+                "insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTHEME,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
+                                                       'test_apat_2',
+                                                       '1',
+                                                       '15',
+                                                       'active_theme',
+                                                       'filename3.tpl',
+                                                       'blockname_ap_2',
+                                                       1,
+                                                       'contentfile_apat_block2',
+                                                       'module2'
+                                                    )"
+            );
+            oxDb::getDb()->Execute(
+                "insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTHEME,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
+                                                       'test_apat_2_parent',
+                                                       '1',
+                                                       '15',
+                                                       'active_theme_parent',
+                                                       'filename3.tpl',
+                                                       'blockname_ap_2',
+                                                       1,
+                                                       'contentfile_apat_block2_parent',
+                                                       'module2'
+                                                    )"
+            );
+            oxDb::getDb()->Execute(
+                "insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTHEME,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
+                                                       'test_apat_3_parent',
+                                                       '1',
+                                                       '15',
+                                                       'active_theme_parent',
+                                                       'filename3.tpl',
+                                                       'blockname_ap_3',
+                                                       1,
+                                                       'contentfile_apat_block3_parent',
+                                                       'module2'
+                                                    )"
+            );
+
+            oxDb::getDb()->Execute(
+                "insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTHEME,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
+                                                       'test_apct_1',
+                                                       '1',
+                                                       '15',
+                                                       '',
+                                                       'filename4.tpl',
+                                                       'blockname_ap_1',
+                                                       1,
+                                                       'contentfile_apat_block1_default',
+                                                       'module2'
+                                                    )"
+            );
+            oxDb::getDb()->Execute(
+                "insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTHEME,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
+                                                       'test_apct_1_parent',
+                                                       '1',
+                                                       '15',
+                                                       'active_theme',
+                                                       'filename4.tpl',
+                                                       'blockname_ap_1',
+                                                       1,
+                                                       'contentfile_apat_block1_custom',
+                                                       'module2'
+                                                    )"
+            );
+
             // one non active - to be sure it is not loaded
             oxDb::getDb()->Execute(
                 "insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
@@ -667,6 +761,121 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                 ),
             ),
             $utilsView->getTemplateBlocks('filename.tpl')
+        );
+    }
+
+    public function testGetTemplateBlocksForActiveCustomTheme()
+    {
+        $config = $this->getMock('oxConfig', array('getShopId', 'init'));
+        $config->expects($this->any())->method('getShopId')->will($this->returnValue('15'));
+        $config->setConfigParam('sCustomTheme', 'active_theme');
+
+        $activeModules = array('module1' => 'module1', 'module2' => 'module2');
+
+        $utilsView = $this->getMock('oxUtilsView', array('_getActiveModuleInfo', '_getTemplateBlock'));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($activeModules));
+        $utilsView->expects($this->any())->method('_getTemplateBlock')->will($this->returnValueMap(array(
+            array('module2', 'contentfile2_active_theme', 'content2_active_theme'),
+            array('module1', 'contentfile1', 'content1'),
+        )));
+        $utilsView->setConfig($config);
+
+        $this->assertEquals(
+            array(
+                'blockname1' => array(
+                    'content1',
+                ),
+                'blockname2' => array(
+                    'content2_active_theme',
+                ),
+            ),
+            $utilsView->getTemplateBlocks('filename.tpl')
+        );
+    }
+
+    public function testGetTemplateBlocksForParent()
+    {
+        $config = $this->getMock('oxConfig', array('getShopId', 'init'));
+        $config->expects($this->any())->method('getShopId')->will($this->returnValue('15'));
+        $config->setConfigParam('sTheme', 'active_theme_parent');
+        $config->setConfigParam('sCustomTheme', 'active_theme');
+
+        $activeModules = array('module2' => 'module2');
+
+        $utilsView = $this->getMock('oxUtilsView', array('_getActiveModuleInfo', '_getTemplateBlock'));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($activeModules));
+        $utilsView->expects($this->any())->method('_getTemplateBlock')->will($this->returnValueMap(array(
+            array('module2', 'contentfile_ap_active_theme', 'content_ap_active_theme'),
+        )));
+        $utilsView->setConfig($config);
+
+        $this->assertEquals(
+            array(
+                'blockname_ap_1' => array(
+                    'content_ap_active_theme',
+                ),
+            ),
+            $utilsView->getTemplateBlocks('filename2.tpl')
+        );
+    }
+
+    public function testGetTemplateBlocksForParentAndCustomTheme()
+    {
+        $config = $this->getMock('oxConfig', array('getShopId', 'init'));
+        $config->expects($this->any())->method('getShopId')->will($this->returnValue('15'));
+        $config->setConfigParam('sTheme', 'active_theme_parent');
+        $config->setConfigParam('sCustomTheme', 'active_theme');
+
+        $activeModules = array('module2' => 'module2');
+
+        $utilsView = $this->getMock('oxUtilsView', array('_getActiveModuleInfo', '_getTemplateBlock'));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($activeModules));
+        $utilsView->expects($this->any())->method('_getTemplateBlock')->will($this->returnValueMap(array(
+            array('module2', 'contentfile_apat_block1', 'content_apat_active_theme_block_1'),
+            array('module2', 'contentfile_apat_block2', 'content_apat_active_theme_block_2'),
+            array('module2', 'contentfile_apat_block3_parent', 'content_apat_active_theme_parent_block_3'),
+        )));
+        $utilsView->setConfig($config);
+
+        $this->assertEquals(
+            array(
+                'blockname_ap_1' => array(
+                    'content_apat_active_theme_block_1',
+                ),
+                'blockname_ap_2' => array(
+                    'content_apat_active_theme_block_2',
+                ),
+                'blockname_ap_3' => array(
+                    'content_apat_active_theme_parent_block_3',
+                ),
+            ),
+            $utilsView->getTemplateBlocks('filename3.tpl')
+        );
+    }
+
+    public function testGetTemplateBlocksFoCustomTheme()
+    {
+        $config = $this->getMock('oxConfig', array('getShopId', 'init'));
+        $config->expects($this->any())->method('getShopId')->will($this->returnValue('15'));
+        $config->setConfigParam('sTheme', 'active_theme_parent');
+        $config->setConfigParam('sCustomTheme', 'active_theme');
+
+        $activeModules = array('module2' => 'module2');
+
+        $utilsView = $this->getMock('oxUtilsView', array('_getActiveModuleInfo', '_getTemplateBlock'));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($activeModules));
+        $utilsView->expects($this->any())->method('_getTemplateBlock')->will($this->returnValueMap(array(
+            array('module2', 'contentfile_apat_block1_custom', 'content_apat_block1_custom'),
+        )));
+        $utilsView->setConfig($config);
+
+        $this->assertEquals(
+            array(
+                'blockname_ap_1' => array(
+                    'content_apat_block1_custom',
+                ),
+            ),
+            $utilsView->getTemplateBlocks('filename4.tpl')
         );
     }
 

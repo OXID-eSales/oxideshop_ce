@@ -20,6 +20,11 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxDb;
+use oxRegistry;
+
 /**
  * Including pictures generator functions file
  */
@@ -28,7 +33,7 @@ require_once getShopBasePath() . "Core/utils/oxpicgenerator.php";
 /**
  * Image manipulation class
  */
-class oxUtilsPic extends oxSuperCfg
+class UtilsPic extends \oxSuperCfg
 {
 
     /**

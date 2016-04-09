@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxDb;
+use oxRegistry;
+
 /**
  * Seo encoder base
  *
  */
-class oxSeoDecoder extends oxSuperCfg
+class SeoDecoder extends \oxSuperCfg
 {
 
     /**

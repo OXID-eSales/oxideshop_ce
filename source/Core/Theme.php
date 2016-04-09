@@ -21,13 +21,17 @@
  */
 use OxidEsales\Eshop\Core\Registry;
 
+namespace OxidEsales\Eshop\Core;
+
+use oxException;
+
 /**
  * Themes handler class.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxTheme extends oxSuperCfg
+class Theme extends \oxSuperCfg
 {
 
     /**

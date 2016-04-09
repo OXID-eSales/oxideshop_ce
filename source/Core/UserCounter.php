@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxDb;
+
 /**
  * Class used for counting users depending on given attributes.
  */
-class oxUserCounter
+class UserCounter
 {
 
     /**

@@ -19,14 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+
+namespace OxidEsales\Eshop\Core;
+
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use oxRegistry;
+
 
 /**
  * View config data access class. Keeps most
  * of getters needed for formatting various urls,
  * config parameters, session information etc.
  */
-class oxViewConfig extends oxSuperCfg
+class ViewConfig extends \oxSuperCfg
 {
 
     /**

@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxshopidcalculator;
+
 /**
  * Cache for storing module variables selected from database.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxSubShopSpecificFileCache extends oxFileCache
+class SubShopSpecificFileCache extends \oxFileCache
 {
     /** @var oxShopIdCalculator */
     private $shopIdCalculator;

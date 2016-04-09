@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use SimpleXMLElement;
+
 /**
  * Parses objects to XML and XML to simple XML objects.
  *
@@ -41,7 +45,7 @@
  * <?xml version="1.0" encoding="utf-8"?>
  * <testXml><title>TestTitle</title><keys><key>testKey1</key><key>testKey2</key></keys></testXml>
  */
-class oxSimpleXml
+class SimpleXml
 {
 
     /**

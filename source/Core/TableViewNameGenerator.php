@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+use oxConfig;
+
 /**
  * Generates view name for given table name.
  */
-class oxTableViewNameGenerator
+class TableViewNameGenerator
 {
     /** @var oxConfig */
     private $config;

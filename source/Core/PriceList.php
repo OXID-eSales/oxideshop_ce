@@ -25,7 +25,9 @@
  * The main reason why we can't just sum oxPrice objects is that they have different VAT percents.
  */
 
-class oxPriceList
+namespace OxidEsales\Eshop\Core;
+
+class PriceList
 {
 
     /**

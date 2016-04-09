@@ -20,13 +20,30 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+use oxOnlineLicenseCheck;
+use oxCurl;
+use oxOnlineServerEmailBuilder;
+use oxSimpleXml;
+use oxOnlineLicenseCheckCaller;
+use oxOnlineModuleVersionNotifierCaller;
+use oxOnlineModuleVersionNotifier;
+use oxModuleList;
+use oxUtilsDate;
+use oxServersManager;
+use oxServerChecker;
+use oxUtilsServer;
+use oxServerProcessor;
+
 /**
  * Contains system event handler methods
  *
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxSystemEventHandler
+class SystemEventHandler
 {
 
     /**

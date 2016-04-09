@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+
 /**
  * Main shop actions controller. Processes user actions, logs
  * them (if needed), controls output, redirects according to
  * processed methods logic. This class is initialized from index.php
  */
-class oxWidgetControl extends oxShopControl
+class WidgetControl extends \oxShopControl
 {
     /**
      * Skip handler set for widget as it already set in oxShopControl.

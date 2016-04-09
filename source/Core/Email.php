@@ -28,6 +28,8 @@ use oxRegistry;
 use oxDb;
 use oxUtilsObject;
 use oxStr;
+use oxConfig;
+use Exception;
 
 /**
  * Mailing manager.

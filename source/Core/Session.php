@@ -20,6 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+use oxDb;
+use oxUtilsObject;
+use oxBasket;
+
 DEFINE('_DB_SESSION_HANDLER', getShopBasePath() . 'Core/adodblite/session/adodb-session.php');
 
 /**
@@ -27,7 +34,7 @@ DEFINE('_DB_SESSION_HANDLER', getShopBasePath() . 'Core/adodblite/session/adodb-
  * Performs session managing function, such as variables deletion,
  * initialisation and other session functions.
  */
-class oxSession extends oxSuperCfg
+class Session extends \oxSuperCfg
 {
 
     /**

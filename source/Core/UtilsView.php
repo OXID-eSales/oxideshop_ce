@@ -19,15 +19,23 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Eshop\Core;
 
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
+use Smarty;
+use oxRegistry;
+use oxIDisplayError;
+use oxException;
+use oxSystemComponentException;
+use oxField;
+use oxDb;
 
 /**
  * View utility class
  */
-class oxUtilsView extends oxSuperCfg
+class UtilsView extends \oxSuperCfg
 {
 
     /**

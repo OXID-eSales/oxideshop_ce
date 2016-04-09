@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+
 /**
  * Factory class responsible for redirecting string handling functions to specific
  * string handling class. String handler basically is intended for dealing with multibyte string
@@ -28,7 +32,7 @@
  * (eg. field or file names).
  *
  */
-class oxStr
+class Str
 {
 
     /**

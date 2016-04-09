@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+
 /**
  * Server data manipulation class
  */
-class oxUtilsServer extends oxSuperCfg
+class UtilsServer extends \oxSuperCfg
 {
 
     /**
@@ -421,7 +425,7 @@ class oxUtilsServer extends oxSuperCfg
 
    /**
      * Check if the given URL is same as used for request.
-     * The URL in this context is the base address for the shop e.g. https://www.domain.com/shop/ 
+     * The URL in this context is the base address for the shop e.g. https://www.domain.com/shop/
      * the protocol is optional (www.domain.com/shop/)
      * but the protocol relative syntax (//www.domain.com/shop/) is not yet supported.
      *

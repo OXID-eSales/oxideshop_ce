@@ -20,11 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+use stdClass;
+use oxPrice;
+use oxDb;
+
 /**
  * General utils class
  *
  */
-class oxUtils extends oxSuperCfg
+class Utils extends \oxSuperCfg
 {
 
     /**

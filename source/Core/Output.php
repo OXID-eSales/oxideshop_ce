@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+
 /**
  * class for output processing
  *
  */
-class oxOutput extends oxSuperCfg
+class Output extends \oxSuperCfg
 {
 
     const OUTPUT_FORMAT_HTML = 'html';

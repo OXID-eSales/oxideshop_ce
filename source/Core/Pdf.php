@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+
 $myConfig = oxRegistry::getConfig();
 
 $sTcPdfPath = $myConfig->getConfigParam('sCoreDir') . "tcpdf/";
@@ -206,7 +210,7 @@ require_once $sTcPdfPath . "tcpdf.php";
 /**
  * TCPDF class wrapper, set/overrides oxid specific functionality
  */
-class oxPDF extends TCPDF
+class PDF extends \TCPDF
 {
 
     /**

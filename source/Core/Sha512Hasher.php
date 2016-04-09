@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * Encrypt string with sha512 algorithm.
  */
-class oxSha512Hasher extends oxHasher
+class Sha512Hasher extends \oxHasher
 {
 
     /** Algorithm name. */

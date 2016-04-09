@@ -23,6 +23,8 @@ namespace Unit\Setup;
 
 require_once getShopBasePath() . '/Setup/functions.php';
 
+use OxidEsales\Eshop\Setup\Session as SetupSession;
+
 /**
  * Language tests
  */
@@ -48,7 +50,7 @@ class LanguageTest extends \OxidTestCase
 
     public function testGetSetupLangLanguageIdentIsPassedByRequest()
     {
-        $oSession = $this->getMock("Session", array("setSessionParam", "getSessionParam"), array(), '', null);
+        $oSession = $this->getMock('SetupSession', array("setSessionParam", "getSessionParam"), array(), '', null);
         $oSession->expects($this->at(0))->method("setSessionParam")->with($this->equalTo('setup_lang'));
         $oSession->expects($this->at(1))->method("getSessionParam")->with($this->equalTo('setup_lang'));
 
@@ -77,7 +79,7 @@ class LanguageTest extends \OxidTestCase
         $sBrowserLang = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
         $sBrowserLang = (in_array($sBrowserLang, $aLangs)) ? $sBrowserLang : $aLangs[0];
 
-        $oSession = $this->getMock("Session", array("setSessionParam", "getSessionParam"), array(), '', null);
+        $oSession = $this->getMock('SetupSession', array("setSessionParam", "getSessionParam"), array(), '', null);
         $oSession->expects($this->at(0))->method("getSessionParam")->with($this->equalTo('setup_lang'))->will($this->returnValue(null));
         $oSession->expects($this->at(1))->method("setSessionParam")->with($this->equalTo('setup_lang'), $this->equalTo($sBrowserLang));
 

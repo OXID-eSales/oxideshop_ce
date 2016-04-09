@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * Class dealing with multibyte strings
  */
-class oxStrMb
+class StrMb
 {
 
     /**

@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+use oxStrRegular;
+
 /**
  * URL utility class
  */
-class oxUtilsUrl extends oxSuperCfg
+class UtilsUrl extends \oxSuperCfg
 {
     const PARAMETER_SEPARATOR = '&amp;';
 

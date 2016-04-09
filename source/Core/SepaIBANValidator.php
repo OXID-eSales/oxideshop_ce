@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * SEPA (Single Euro Payments Area) validation class
  *
  */
-class oxSepaIBANValidator
+class SepaIBANValidator
 {
 
     const IBAN_ALGORITHM_MOD_VALUE = 97;

@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * String manipulation class
  */
-class oxUtilsString
+class UtilsString
 {
 
     /**

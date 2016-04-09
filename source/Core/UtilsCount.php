@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxDb;
+use oxRegistry;
+
 /**
  * Date manipulation utility class
  */
-class oxUtilsCount extends oxSuperCfg
+class UtilsCount extends \oxSuperCfg
 {
 
     /**

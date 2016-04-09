@@ -20,6 +20,11 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+use oxApplicationServer;
+
 /**
  * Checks if server node is valid, information is not outdated.
  *
@@ -28,7 +33,7 @@
  *
  * @ignore   This class will not be included in documentation.
  */
-class oxServerChecker
+class ServerChecker
 {
 
     /**

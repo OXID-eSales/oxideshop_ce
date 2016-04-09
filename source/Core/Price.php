@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+use oxPrice;
+
 /**
  * Price calculation class. Responsible for simple price calculations. Basically contains Brutto, Netto prices and VAT values.
  */
-class oxPrice
+class Price
 {
 
     /**

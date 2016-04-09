@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * Hash password together with salt, using set hash algorithm
  */
-class oxPasswordHasher
+class PasswordHasher
 {
 
     /**

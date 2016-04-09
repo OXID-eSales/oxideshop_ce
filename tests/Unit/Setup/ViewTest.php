@@ -22,8 +22,10 @@
 namespace Unit\Setup;
 
 use OxidEsales\Eshop\Setup\View;
+use OxidEsales\Eshop\Setup\Session as SetupSession;
 
 require_once getShopBasePath() . '/Setup/functions.php';
+
 
 /**
  * view tests
@@ -189,7 +191,7 @@ class ViewTest extends \OxidTestCase
     {
         $sPath = getInstallPath();
 
-        $oInst1 = $this->getMock("Session", array("getSessionParam"), array(), '', null);
+        $oInst1 = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
         $oInst1->expects($this->at(0))->method("getSessionParam")->will($this->returnValue(array("dbiDemoData" => 0)));
         $oInst1->expects($this->at(1))->method("getSessionParam")->will($this->returnValue(array("blDelSetupDir" => true)));
 
@@ -226,7 +228,7 @@ class ViewTest extends \OxidTestCase
      */
     public function testGetSid()
     {
-        $oInst = $this->getMock("Session", array("getSid"), array(), '', false);
+        $oInst = $this->getMock('SetupSession', array("getSid"), array(), '', false);
         $oInst->expects($this->once())->method("getSid")->will($this->returnValue("testSid"));
 
         $oSetupView = $this->getMock("\\OxidEsales\\Eshop\\Setup\\View", array("getInstance"));

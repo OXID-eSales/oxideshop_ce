@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * SEPA (Single Euro Payments Area) validation class
  *
  */
-class oxSepaValidator
+class SepaValidator
 {
 
     /**

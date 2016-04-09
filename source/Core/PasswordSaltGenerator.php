@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxOpenSSLFunctionalityChecker;
+
 /**
  * Generates Salt for the user password
  *
  */
-class oxPasswordSaltGenerator
+class PasswordSaltGenerator
 {
 
     /**

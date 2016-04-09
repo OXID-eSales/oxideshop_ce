@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * Class is responsible for openSSL functionality availability checking.
  */
-class oxOpenSSLFunctionalityChecker
+class OpenSSLFunctionalityChecker
 {
 
     /**

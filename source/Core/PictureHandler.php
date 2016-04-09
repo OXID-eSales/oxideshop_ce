@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+
 /**
  * class for pictures processing
  */
-class oxPictureHandler extends oxSuperCfg
+class PictureHandler extends \oxSuperCfg
 {
 
     /**

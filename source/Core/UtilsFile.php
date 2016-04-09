@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+
 /**
  * File manipulation utility class
  */
-class oxUtilsFile extends oxSuperCfg
+class UtilsFile extends \oxSuperCfg
 {
 
     /**

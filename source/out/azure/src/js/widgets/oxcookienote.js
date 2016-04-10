@@ -30,7 +30,7 @@
         /**
          * Enable cookie note dismiss
          *
-         * @return false
+         * @return {Boolean} false
          */
         _create: function() {
             var self = this;

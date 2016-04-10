@@ -31,8 +31,6 @@
 
         /**
          * Enable beta note dismiss and set cookie to keep it hidden on next pages
-         *
-         * @return integer
          */
         _create: function() {
             

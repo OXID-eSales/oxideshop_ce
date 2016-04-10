@@ -64,7 +64,7 @@
         /**
          * set rating value on form element
          *
-         * @return object
+         * @return {Object}
          */
         setRatingValue: function( oElement, value )
         {
@@ -75,7 +75,7 @@
         /**
          * set rating value on stars
          *
-         * @return object
+         * @return {Object}
          */
         setCurrentRating: function( oElement, value )
         {
@@ -87,7 +87,7 @@
         /**
          * hide review button
          *
-         * @return object
+         * @return {Object}
          */
         hideReviewButton: function( oButton )
         {
@@ -98,7 +98,7 @@
         /**
          * open review form
          *
-         * @return object
+         * @return {Object}
          */
         openReviewForm: function( oForm )
         {

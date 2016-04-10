@@ -28,10 +28,7 @@
         /**
          * Update compare links, hide add link and show remove link.
          *
-         * @param id
-         * @param state 1=hide add, 0=hide remove
-         *
-         * @return void
+         * @param {Array} list
          */
         updateLinks: function(list)
         {

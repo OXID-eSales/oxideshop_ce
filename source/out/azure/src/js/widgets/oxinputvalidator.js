@@ -88,7 +88,7 @@
                 var blValidInput = true;
 
                     if ( $( oInput ).hasClass( oOptions.methodValidateNotEmpty ) && blValidInput ) {
-                        if (! $.trim( $( oInput ).val()) ){
+                        if (! $( oInput ).val().trim() ){
                             return oOptions.errorMessageNotEmpty;
                         }
                     }
@@ -331,7 +331,7 @@
              */
             hasLength: function( stValue, length )
             {
-                stValue = jQuery.trim( stValue );
+                stValue = stValue.trim();
 
                 if( stValue.length >= length ) {
                     return true;
@@ -347,7 +347,7 @@
              */
             isEmail: function( email )
             {
-                email = jQuery.trim(email);
+                email = email.trim();
 
                 var reg = /^(.+?)\@(.+)\.(.+)$/;
 
@@ -365,8 +365,8 @@
              */
             isEqual: function( stValue1, stValue2 )
             {
-                stValue1 = jQuery.trim(stValue1);
-                stValue2 = jQuery.trim(stValue2);
+                stValue1 = stValue1.trim();
+                stValue2 = stValue2.trim();
 
                 if (stValue1 == stValue2){
                     return true;

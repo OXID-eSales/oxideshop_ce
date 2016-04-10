@@ -55,13 +55,13 @@
             $( ".box h3 a", oElement ).each(function() {
                 var iTitleWidth = $(this).width(),
                     iContWidth  = $(this).parent().width(),
-                    sTitleText  = $.trim($(this).text());
+                    sTitleText  = $(this).text().trim();
 
                 // if title is longer than its container
                 if (iTitleWidth > iContWidth) {
 
                     // checking if title has numbers at the end
-                    var sTitleEnd	    = $.trim(sEndPattern.exec(sTitleText));
+                    var sTitleEnd	    = sEndPattern.exec(sTitleText).trim();
 
                     // separating the title from the numbers
                     if (sTitleEnd) {

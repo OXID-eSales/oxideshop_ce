@@ -44,7 +44,7 @@
                 if (options.openDialog) {
 
                     if (options.loadUrl){
-                        $(options.target).load(options.loadUrl);
+                        $(options.target).on('load', options.loadUrl);
                     }
 
                     self.openDialog(options.target, options);
@@ -54,7 +54,7 @@
                     el.click(function(){
 
                         if (options.loadUrl){
-                            $(options.target).load(options.loadUrl);
+                            $(options.target).on('load', options.loadUrl);
                         }
 
                         self.openDialog(options.target, options);

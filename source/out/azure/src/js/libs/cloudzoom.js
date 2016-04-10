@@ -334,13 +334,13 @@
         };
 
         img1 = new Image();
-        $(img1).load(function () {
+        $(img1).on('load', function () {
             ctx.init2(this, 0);
         });
         img1.src = sImg.attr('src');
 
         img2 = new Image();
-        $(img2).load(function () {
+        $(img2).on('load', function () {
             ctx.init2(this, 1);
         });
         img2.src = jWin.attr('href');

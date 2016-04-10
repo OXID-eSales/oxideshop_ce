@@ -78,7 +78,7 @@
                     'onSuccess' : function(response, params) {
                         if ( response ) {
                             $('#tags').html(response);
-                            $("#tags #editTag").click(oxTag.editTag);
+                            $("#editTag").click(oxTag.editTag);
                         }
                     }
                 }
@@ -96,10 +96,11 @@
                     'onSuccess' : function(response, params) {
 
                         if ( response ) {
-                            $('#tags').html(response);
-                            $("#tags .tagText").click(oxTag.highTag);
-                            $('#tags #saveTag').click(oxTag.saveTag);
-                            $('#tags #cancelTag').click(oxTag.cancelTag);
+                            var tags = $('#tags');
+                            tags.html(response);
+                            tags.find(".tagText").click(oxTag.highTag);
+                            $('#saveTag').click(oxTag.saveTag);
+                            $('#cancelTag').click(oxTag.cancelTag);
                         }
                     }
                 }

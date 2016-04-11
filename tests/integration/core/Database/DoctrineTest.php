@@ -33,11 +33,27 @@ use OxidEsales\Eshop\Core\Database\Doctrine;
 class DoctrineTest extends DatabaseInterfaceImplementationTest
 {
 
+    /**
+     * @var string The database exception class to be thrown
+     */
     const DATABASE_EXCEPTION_CLASS = 'OxidEsales\Eshop\Core\exception\DatabaseException';
 
+    /**
+     * @var string The result set class class
+     */
     const RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet';
 
+    /**
+     * @var string The empty result set class class
+     */
     const EMPTY_RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet';
+
+    /**
+     * @var bool Use the legacy database adapter.
+     *
+     * @todo get rid of this
+     */
+    const USE_LEGACY_DATABASE = false;
 
     /**
      * Set up before beginning with tests
@@ -89,6 +105,14 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
         return new Doctrine();
     }
 
+    /**
+     * Close the database connection.
+     */
+    protected function closeConnection()
+    {
+        $this->database->closeConnection();
+    }
+    
     /**
      * Create the database object under test - the static pendant to use in the setUpBeforeClass and tearDownAfterClass.
      *

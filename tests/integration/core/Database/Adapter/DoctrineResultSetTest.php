@@ -23,20 +23,125 @@ namespace OxidEsales\Eshop\Tests\integration\core\Database\Adapter;
  */
 
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
-use OxidEsales\Eshop\Tests\integration\core\Database\DoctrineTest;
+use OxidEsales\Eshop\Core\Database\Doctrine;
+use OxidEsales\Eshop\Tests\integration\core\Database\DatabaseInterfaceImplementationBaseTest;
 
 /**
  * Tests for our database object.
  *
  * @group doctrine
  */
-class DoctrineResultSetTest extends DoctrineTest
+class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
 {
 
     /**
      * @var string The name of the class, including the complete namespace.
      */
     const CLASS_NAME_WITH_PATH = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet';
+
+    /**
+     * @var string The database exception class to be thrown
+     */
+    const DATABASE_EXCEPTION_CLASS = 'OxidEsales\Eshop\Core\exception\DatabaseException';
+
+    /**
+     * @var string The result set class class
+     */
+    const RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet';
+
+    /**
+     * @var string The empty result set class class
+     */
+    const EMPTY_RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet';
+
+    /**
+     * @var bool Use the legacy database adapter.
+     *
+     * @todo get rid of this
+     */
+    const USE_LEGACY_DATABASE = false;
+    
+    /**
+     * @return string The name of the database exception class
+     */
+    protected function getDatabaseExceptionClassName()
+    {
+        return self::DATABASE_EXCEPTION_CLASS;
+    }
+
+    /**
+     * @return string The name of the result set class
+     */
+    protected function getResultSetClassName()
+    {
+        return self::RESULT_SET_CLASS;
+    }
+
+    /**
+     * @return string The name of the empty result set class
+     */
+    protected function getEmptyResultSetClassName()
+    {
+        return self::EMPTY_RESULT_SET_CLASS;
+    }
+
+    /**
+     * Set up before beginning with tests
+     */
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+
+        self::createDatabaseTable();
+    }
+
+    /**
+     * Tear down after all tests are done
+     */
+    public static function tearDownAfterClass()
+    {
+        self::removeDatabaseTable();
+
+        parent::tearDownAfterClass();
+    }
+
+    /**
+     * Create a table in the database especially for this test.
+     */
+    protected static function createDatabaseTable()
+    {
+        $db = self::createDatabaseStatic();
+
+        $db->execute('CREATE TABLE IF NOT EXISTS ' . self::TABLE_NAME . ' (oxid CHAR(32), oxuserid CHAR(32)) ENGINE innoDb;');
+    }
+
+    /**
+     * Drop the test database table.
+     */
+    protected static function removeDatabaseTable()
+    {
+        $db = self::createDatabaseStatic();
+
+        $db->execute('DROP TABLE ' . self::TABLE_NAME . ';');
+    }
+
+    /**
+     * Create the database object under test.
+     *
+     * @return Doctrine The database object under test.
+     */
+    protected function createDatabase()
+    {
+        return new Doctrine();
+    }
+
+    /**
+     * Close the database connection.
+     */
+    protected function closeConnection()
+    {
+        $this->database->closeConnection();
+    }
 
     /**
      * Test, that the method 'MoveNext' works for an empty result set.

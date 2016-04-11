@@ -37,6 +37,7 @@ use OxidEsales\Eshop;
  */
 class LegacyDatabase extends \oxSuperCfg implements Eshop\Core\Database\DatabaseInterface
 {
+
     /**
      * Database connection object
      *
@@ -77,17 +78,18 @@ class LegacyDatabase extends \oxSuperCfg implements Eshop\Core\Database\Database
     }
 
     /**
-     * Get one record.
+     * Get one column, which you have to give into the sql select statement, of the first row, corresponding to the
+     * given sql statement.
      *
-     * @param string     $query
-     * @param array|bool $parameters Array of parameters
-     * @param bool       $type       Connection type
+     * @param string     $sqlSelect      The sql select statement
+     * @param array|bool $parameters     Array of parameters, for the given sql statement.
+     * @param bool       $executeOnSlave Should the given sql statement executed on the slave?
      *
-     * @return string
+     * @return string The first column of the first row, which is fitting to the given sql select statement.
      */
-    public function getOne($query, $parameters = false, $type = true)
+    public function getOne($sqlSelect, $parameters = false, $executeOnSlave = true)
     {
-        return $this->getDb($type)->getOne($query, $parameters);
+        return $this->getDb($executeOnSlave)->getOne($sqlSelect, $parameters);
     }
 
     /**

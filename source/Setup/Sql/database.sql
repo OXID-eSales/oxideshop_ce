@@ -2383,7 +2383,15 @@ INSERT INTO `oxstates` (`OXID`, `OXCOUNTRYID`, `OXTITLE`, `OXISOALPHA2`, `OXTITL
 ('WY', '8f241f11096877ac0.98748826', 'Wyoming', 'WY', 'Wyoming', '', ''),
 ('AA', '8f241f11096877ac0.98748826', 'Armed Forces Americas', 'AA', 'Armed Forces Americas', '', ''),
 ('AE', '8f241f11096877ac0.98748826', 'Armed Forces', 'AE', 'Armed Forces', '', ''),
-('AP', '8f241f11096877ac0.98748826', 'Armed Forces Pacific', 'AP', 'Armed Forces Pacific', '', '');
+('AP', '8f241f11096877ac0.98748826', 'Armed Forces Pacific', 'AP', 'Armed Forces Pacific', '', ''),
+('ACT', '8f241f11095410f38.37165361', 'Australian Capital Territory', 'ACT', 'Australian Capital Territory', '', ''),
+('VIC', '8f241f11095410f38.37165361', 'Victoria', 'VIC', 'Victoria', '', ''),
+('WA', '8f241f11095410f38.37165361', 'Western Australia', 'WA', 'Western Australia', '', ''),
+('NT', '8f241f11095410f38.37165361', 'Northern Territory', 'NT', 'Northern Territory', '', ''),
+('SA', '8f241f11095410f38.37165361', 'South Australia', 'SA', 'South Australia', '', ''),
+('TAS', '8f241f11095410f38.37165361', 'Tasmania', 'TAS', 'Tasmania', '', ''),
+('NSW', '8f241f11095410f38.37165361', 'New South Wales', 'NSW', 'New South Wales', '', ''),
+('QLD', '8f241f11095410f38.37165361', 'Queensland', 'QLD', 'Queensland', '', '');
 
 #
 # Table structure for table `oxtplblocks`

@@ -144,6 +144,27 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
         return $previousInterfaceFetchMode;
     }
 
+    /**
+     * Get one column, which you have to give into the sql select statement, of the first row, corresponding to the
+     * given sql statement.
+     *
+     * @param string     $sqlSelect      The sql select statement
+     * @param array|bool $parameters     Array of parameters, for the given sql statement.
+     * @param bool       $executeOnSlave Should the given sql statement executed on the slave?
+     *
+     * @return string The first column of the first row, which is fitting to the given sql select statement.
+     */
+    public function getOne($sqlSelect, $parameters = false, $executeOnSlave = true)
+    {
+        if (is_bool($parameters)) {
+            $parameters = array();
+        }
+        if ($this->isSelectStatement($sqlSelect)) {
+            return $this->getConnection()->fetchColumn($sqlSelect, $parameters);
+        }
+
+        return false;
+    }
 
     /**
      * Get the number of rows, which where changed during the last sql statement.
@@ -331,7 +352,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
          * - DoctrineResultSet for "SELECT"
          * - DoctrineEmptyResultSet for the rest of queries
          */
-        
+
         if ($this->isSelectStatement($query)) {
             /** @var DoctrineResultSet $result */
             $result = $this->select($query, $parameters);
@@ -403,7 +424,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
-
 
 
         $result = new DoctrineEmptyResultSet();
@@ -514,7 +534,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
         try {
             $connection = DriverManager::getConnection($this->getConnectionParameters());
             $connection->setFetchMode($this->fetchMode);
-
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);

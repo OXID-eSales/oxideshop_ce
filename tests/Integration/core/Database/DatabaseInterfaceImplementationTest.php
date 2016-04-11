@@ -388,7 +388,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     public function testExecuteThrowsExceptionForInvalidNonSelectQueryString()
     {
         $expectedExceptionClass = $this->getDatabaseExceptionClassName();
-        
+
         $this->setExpectedException($expectedExceptionClass);
 
         $this->database->execute('SOME INVALID QUERY');
@@ -400,7 +400,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     public function testSelectThrowsExceptionForInvalidSelectQueryString()
     {
         $expectedExceptionClass = $this->getDatabaseExceptionClassName();
-        
+
         $this->setExpectedException($expectedExceptionClass);
 
         $this->database->select(
@@ -785,11 +785,11 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $expectedResult = array(array(self::FIXTURE_OXID_1));
 
         self::assureTestTableIsEmpty();
-        $this->database->execute("INSERT INTO " . self::TABLE_NAME ." (OXID) VALUES ('" . self::FIXTURE_OXID_1. "')");
+        $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_1 . "')");
         $this->database->setFetchMode($fetchMode);
 
         $actualResult = $this->database->getArray(
-            "SELECT OXID FROM " . self::TABLE_NAME ." WHERE OXID = '".self::FIXTURE_OXID_1."'",
+            "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "'",
             $validParameter
         );
 
@@ -873,6 +873,119 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
+     * Test, that the method 'getOne' gives back false, if we try it with an empty table.
+     */
+    public function testGetOneWithEmptyTable()
+    {
+        $result = $this->database->getOne('SELECT * FROM ' . self::TABLE_NAME);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Test, that the method 'getOne' gives back false, if we try it with an invalid sql statement.
+     */
+    public function testGetOneWithWrongSqlStatement()
+    {
+        $result = $this->database->getOne('INSERT INTO ' . self::TABLE_NAME . " (oxid) VALUES ('" . self::FIXTURE_OXID_1 . "')");
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Test, that the method 'getOne' gives back the first column of the first row, if we give in a select sql statement
+     * with a select all.
+     */
+    public function testGetOneWithNonEmptyTable()
+    {
+        $this->loadFixtureToTestTable();
+
+        $result = $this->database->getOne('SELECT * FROM ' . self::TABLE_NAME);
+
+        $this->assertEquals(self::FIXTURE_OXID_1, $result);
+    }
+
+    /**
+     * Test, that the method 'getOne' gives back the correct column of the first row, if we give in the wished sql statement.
+     */
+    public function testGetOneWithNonEmptyTableAndGivenColumnName()
+    {
+        $this->loadFixtureToTestTable();
+
+        $result = $this->database->getOne('SELECT OXUSERID FROM ' . self::TABLE_NAME);
+
+        $this->assertEquals(self::FIXTURE_OXUSERID_1, $result);
+    }
+
+    /**
+     * Test, that the method 'getOne' gives back the correct item, if we give an empty parameters array to it.
+     */
+    public function testGetOneWithEmptyParameters()
+    {
+        $this->loadFixtureToTestTable();
+
+        $result = $this->database->getOne('SELECT OXUSERID FROM ' . self::TABLE_NAME, array());
+
+        $this->assertEquals(self::FIXTURE_OXUSERID_1, $result);
+    }
+
+    /**
+     * Test, that the method 'getOne' gives back the correct item, if we give parameters to it.
+     */
+    public function testGetOneWithNonEmptyParameters()
+    {
+        $this->loadFixtureToTestTable();
+
+        $result = $this->database->getOne('SELECT OXUSERID FROM ' . self::TABLE_NAME . ' WHERE oxid = ?', array(self::FIXTURE_OXID_3));
+
+        $this->assertEquals(self::FIXTURE_OXUSERID_3, $result);
+    }
+
+    /**
+     * Test, that the method 'MetaColumns' works as expected.
+     */
+    public function testMetaColumns()
+    {
+        $columnInformation = $this->database->metaColumns(self::TABLE_NAME);
+
+        /**
+         * We are skipping the doctrine unsupported features AND the hard to fetch information here.
+         */
+        $expectedColumns = array(
+            array(
+                'name'       => 'oxid',
+                'max_length' => '32',
+                'type'       => 'char',
+                'not_null'   => false,
+                // 'primary_key'    => false,
+                // 'auto_increment' => false,
+                // 'binary'         => false,
+                // 'unsigned'       => false,
+                // 'has_default'    => false
+                // 'scale' => null,
+            ),
+            array(
+                'name'       => 'oxuserid',
+                'max_length' => '32',
+                'type'       => 'char',
+                'not_null'   => false,
+                // 'primary_key'    => false,
+                // 'auto_increment' => false,
+                // 'binary'         => false,
+                // 'unsigned'       => false,
+                // 'has_default'    => false
+                // 'scale' => null,
+            )
+        );
+
+        for ($index = 0; $index < 2; $index++) {
+            foreach ($expectedColumns[$index] as $attributeName => $attributeValue) {
+                $this->assertObjectHasAttributeWithValue($columnInformation[$index], $attributeName, $attributeValue);
+            }
+        }
+    }
+
+    /**
      * Fetch the transaction isolation level.
      *
      * @return string The transaction isolation level.
@@ -897,50 +1010,5 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertEmpty($resultSet->fields);
 
         $this->assertSame($this->getEmptyResultSetClassName(), get_class($resultSet));
-    }
-
-
-    /**
-     * Test, that the method 'MetaColumns' works as expected.
-     */
-    public function testMetaColumns()
-    {
-        $columnInformation = $this->database->metaColumns(self::TABLE_NAME);
-
-        /**
-         * We are skipping the doctrine unsupported features AND the hard to fetch information here.
-         */
-        $expectedColumns = array(
-            array(
-                'name'           => 'oxid',
-                'max_length'     => '32',
-                'type'           => 'char',
-                'not_null'       => false,
-                // 'primary_key'    => false,
-                // 'auto_increment' => false,
-                // 'binary'         => false,
-                // 'unsigned'       => false,
-                // 'has_default'    => false
-                // 'scale' => null,
-            ),
-            array(
-                'name'           => 'oxuserid',
-                'max_length'     => '32',
-                'type'           => 'char',
-                'not_null'       => false,
-                // 'primary_key'    => false,
-                // 'auto_increment' => false,
-                // 'binary'         => false,
-                // 'unsigned'       => false,
-                // 'has_default'    => false
-                // 'scale' => null,
-            )
-        );
-
-        for ($index = 0; $index < 2; $index++) {
-            foreach ($expectedColumns[$index] as $attributeName => $attributeValue) {
-                $this->assertObjectHasAttributeWithValue($columnInformation[$index], $attributeName, $attributeValue);
-            }
-        }
     }
 }

@@ -156,6 +156,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      */
     public function getOne($sqlSelect, $parameters = false, $executeOnSlave = true)
     {
+        // @todo: use assureParameterIsAnArray!
         if (is_bool($parameters)) {
             $parameters = array();
         }
@@ -446,6 +447,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      */
     public function selectLimit($query, $limit = -1, $offset = -1, $parameters = false, $executeOnSlave = true)
     {
+        // @todo: check for security leaks in limit and offset or cast to int or throw exception, if limit/offset are not int!
         $limitSql = "";
         if (-1 !== $limit) {
             $limitSql = "LIMIT $limit";

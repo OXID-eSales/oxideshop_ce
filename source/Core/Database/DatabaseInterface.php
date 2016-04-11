@@ -39,7 +39,7 @@ interface DatabaseInterface
     const FETCH_MODE_ASSOC = 2;
     /** Fetch the query result into a mixed array with both integer and string keys */
     const FETCH_MODE_BOTH = 3;
-    
+
     /**
      * Setter for the database connection.
      *
@@ -66,15 +66,16 @@ interface DatabaseInterface
     public function getDb($executeOnSlave = true);
 
     /**
-     * Get one record from the database.
+     * Get one column, which you have to give into the sql select statement, of the first row, corresponding to the
+     * given sql statement.
      *
-     * @param string     $query          The sql statement we want to execute.
-     * @param array|bool $parameters     The parameters array.
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string     $sqlSelect      The sql select statement
+     * @param array|bool $parameters     Array of parameters, for the given sql statement.
+     * @param bool       $executeOnSlave Should the given sql statement executed on the slave?
      *
-     * @return string
+     * @return string The first column of the first row, which is fitting to the given sql select statement.
      */
-    public function getOne($query, $parameters = false, $executeOnSlave = true);
+    public function getOne($sqlSelect, $parameters = false, $executeOnSlave = true);
 
     /**
      * Get one row.

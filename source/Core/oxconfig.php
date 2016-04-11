@@ -1515,19 +1515,24 @@ class oxConfig extends oxSuperCfg
 
                     // check if module is active
                     if (isset($aActiveModuleInfo[$sModuleId])) {
+                        $foundTemplate = null;
 
-                        $activeThemeId = $this->getActiveThemeId($blAdmin);
-
-                        // check if template for specific theme exists, else check default template
-                        $expectedTemplateFile = null;
-                        if (isset($aTemplates[$activeThemeId], $aTemplates[$activeThemeId][$sFile])) {
-                            $expectedTemplateFile = $this->getModulesDir() . $aTemplates[$activeThemeId][$sFile];
-                        } elseif (isset($aTemplates[$sFile])) {
-                            $expectedTemplateFile = $this->getModulesDir() . $aTemplates[$sFile];
+                        // check if template for our active themes exists
+                        if ($activeThemes = $this->getActiveThemesList()) {
+                            foreach ($activeThemes as $oneActiveThemeId) {
+                                if (isset($aTemplates[$oneActiveThemeId], $aTemplates[$oneActiveThemeId][$sFile])) {
+                                    $foundTemplate = $this->getModulesDir() . $aTemplates[$oneActiveThemeId][$sFile];
+                                }
+                            }
                         }
 
-                        if ($expectedTemplateFile && $this->checkIfReadable($expectedTemplateFile)) {
-                            $finalTemplatePath = $expectedTemplateFile;
+                        // if not found in theme specific configurations
+                        if (!$foundTemplate && isset($aTemplates[$sFile])) {
+                            $foundTemplate = $this->getModulesDir() . $aTemplates[$sFile];
+                        }
+
+                        if ($foundTemplate && $this->checkIfReadable($foundTemplate)) {
+                            $finalTemplatePath = $foundTemplate;
                         }
                     }
                 }
@@ -2336,21 +2341,25 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
-     * Get active theme ID.
+     * Get active themes list.
+     * Examples:
+     *      if flow theme is active we will get ['flow']
+     *      if azure is extended by some other we will get ['azure', 'someother']
      *
-     * @param bool $isAdmin
-     *
-     * @return string
+     * @return array
      */
-    public function getActiveThemeId($isAdmin = false)
+    public function getActiveThemesList()
     {
-        $theme = oxNew('oxTheme');
-        $themeId = $theme->getActiveThemeId();
+        $activeThemeList = array();
 
-        if ($isAdmin) {
-            $themeId = 'admin';
+        if (!$this->isAdmin()) {
+            $activeThemeList[] = $this->getConfigParam('sTheme');
+
+            if ($customThemeId = $this->getConfigParam('sCustomTheme')) {
+                $activeThemeList[] = $customThemeId;
+            }
         }
 
-        return $themeId;
+        return $activeThemeList;
     }
 }

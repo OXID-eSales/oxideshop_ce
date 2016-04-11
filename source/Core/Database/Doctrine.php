@@ -545,6 +545,14 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     }
 
     /**
+     * Closes an open connection
+     */
+    protected function closeConnection()
+    {
+        $this->connection->close();
+    }
+
+    /**
      * Get the connection parameter array.
      *
      * @todo: Map the iDebug config.inc parameter to the doctrine settings.

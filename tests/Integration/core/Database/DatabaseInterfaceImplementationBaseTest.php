@@ -22,8 +22,9 @@ namespace OxidEsales\Eshop\Tests\integration\core\Database;
  * @version       OXID eShop CE
  */
 
-use OxidEsales\TestingLibrary\UnitTestCase;
+use oxDb;
 use OxidEsales\Eshop\Core\Database\Doctrine;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
  * Base class for database integration tests.
@@ -69,10 +70,25 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     const FIXTURE_OXUSERID_3 = 'OXUSERID_3';
 
     /**
-     * @var Doctrine|oxLegacyDb The database to test.
+     * @var Doctrine|\oxLegacyDb The database to test.
      */
     protected $database = null;
 
+    /**
+     * Return the name of the database exception class
+     */
+    abstract protected function getDatabaseExceptionClassName();
+
+    /**
+     * Return the name of the database exception class
+     */
+    abstract protected function getResultSetClassName();
+
+    /**
+     * Return the name of the database exception class
+     */
+    abstract protected function getEmptyResultSetClassName();
+    
     /**
      * Initialize database table before every test
      */
@@ -90,6 +106,8 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     public function tearDown()
     {
         $this->assureTestTableIsEmpty();
+        $this->closeConnection();
+        gc_collect_cycles() ;
 
         parent::tearDown();
     }
@@ -103,11 +121,16 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     }
 
     /**
-     * Create the database object under test.
+     * Create the database object under test - the static pendant to use in the setUpBeforeClass and tearDownAfterClass.
      *
-     * @return Doctrine|oxLegacyDb The database object under test.
+     * @return Doctrine|\oxLegacyDb The database object under test.
      */
     abstract protected function createDatabase();
+
+    /**
+     * Hook function for closing the database connection.
+     */
+    abstract protected function closeConnection();
 
 
     /**

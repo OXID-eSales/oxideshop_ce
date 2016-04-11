@@ -33,21 +33,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 {
 
     /**
-     * Return the name of the database exception class
-     */
-    abstract protected function getDatabaseExceptionClassName();
-
-    /**
-     * Return the name of the database exception class
-     */
-    abstract protected function getResultSetClassName();
-
-    /**
-     * Return the name of the database exception class
-     */
-    abstract protected function getEmptyResultSetClassName();
-
-    /**
      * The data provider for the method testSelect.
      *
      * @return array The parameters for the testSelect.

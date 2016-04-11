@@ -30,12 +30,27 @@ namespace OxidEsales\Eshop\Tests\integration\core\Database;
  */
 class LegacyDatabaseTest extends DatabaseInterfaceImplementationTest
 {
-
+    /**
+     * @var string The database exception class to be thrown
+     */
     const DATABASE_EXCEPTION_CLASS = 'oxAdoDbException';
 
+    /**
+     * @var string The result set class class
+     */
     const RESULT_SET_CLASS = 'ADORecordSet';
 
+    /**
+     * @var string The empty result set class class
+     */
     const EMPTY_RESULT_SET_CLASS = 'ADORecordSet_empty';
+
+    /**
+     * @var bool Use the legacy database adapter.
+     *
+     * @todo get rid of this
+     */
+    const USE_LEGACY_DATABASE = true;
 
     /**
      * Set up before beginning with tests
@@ -109,6 +124,14 @@ class LegacyDatabaseTest extends DatabaseInterfaceImplementationTest
     protected function createDatabase()
     {
         return \oxDb::getDb();
+    }
+
+    /**
+     * Close the database connection.
+     * As in this case the database handle is a singleton, closing the connection at each tearDown is not useful.
+     */
+    protected function closeConnection()
+    {
     }
 
     /**

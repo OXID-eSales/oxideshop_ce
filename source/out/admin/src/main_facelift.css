@@ -1,0 +1,220 @@
+body {
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: #34495e;
+    font-size: 13px;
+}
+a {
+    color: #34495e;
+}
+.messagebox {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #31708f;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 15px;
+}
+.warning {
+    font-size: inherit;
+    padding: 0;
+    margin: 0;
+    font-weight: normal;
+    border: none;
+}
+
+/* Tables */
+#liste td.listitem, .box td.listitem {
+    background-color: #ffffff;
+    padding: 3px;
+    border: 1px solid #ddd;
+    border-width: 0 0 1px 0;
+}
+#liste td.listitem2, .box td.listitem2 {
+    background-color: #ffffff;
+    padding: 3px;
+    border: 1px solid #ddd;
+    border-width: 0 0 1px 0;
+}
+#liste td.listfilter, .box td.listfilter {
+    background: none;
+    border: none;
+}
+#liste td.listfilter .r1, .box td.listfilter .r1 {
+    background: none;
+    border: none;
+}
+#liste td.listfilter .b1, .box td.listfilter .b1 {
+    background: none;
+    border: none;
+}
+#liste td.listheader, .box td.listheader {
+    background: none;
+    border: 2px solid #ddd;
+    border-width: 0 0 2px 0;
+    text-transform: uppercase;
+}
+#liste td.listheader.first, .box td.listheader.first {
+    border: 2px solid #ddd;
+    border-width: 0 0 2px 0;
+}
+#liste td.pagination, .box td.pagination {
+    background: none;
+    border-top: 1px solid #ddd;
+}
+#liste td.pagination .r1, .box td.pagination .r1 {
+    background: none;
+}
+#liste td.pagination .b1, .box td.pagination .b1 {
+    background: none;
+    border: none;
+}
+#liste table {
+    width: 99%;
+}
+#liste td.active, .box td.active {
+    background-image:url(bg/facelift/ico_active_facelift.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+a.delete, a.unasign {
+    background: transparent url("bg/facelift/ico_delete_facelift.png") no-repeat scroll 0 center;
+}
+
+/* Forms */
+input[type="text"], select {
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555;
+    min-height: 15px;
+    line-height: 1.42857;
+    padding: 3px;
+    font-size: 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+}
+select {
+    min-height: 25px;
+}
+
+/* Tabs */
+.tabs .tab {
+    background: #ffffff;
+    border: none;
+    height: 25px;
+    border-bottom: 1px solid #ddd;
+}
+.tabs .tab .b1 {
+    color: #787878;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+.tabs .active .b1 a {
+    color: #34495e;
+    border: 1px solid #ddd;
+    border-width: 1px 1px 0 1px;
+    border-radius: 4px 4px 0 0;
+    padding: 10px;
+}
+.tabs .tab .b1 a {
+    padding: 8px;
+    border-radius: 4px 4px 0 0;
+}
+.tabs .tab .b1 a:hover {
+    background: lightgray;
+    color: #34495e;
+}
+.tabs .active.first, .tabs .active {
+    padding: 0px;
+    border-width: 1px 1px 0 1px;
+}
+.tabs .active a{
+    background: lightgray;
+}
+.tabs .first {
+    border-width: 0 0 1px 0;
+}
+.tabs .tab.disabled .b1 {
+    padding: 8px;
+}
+.tabs .last .r1 {
+    background: #ffffff;
+}
+.tabs .last .r1 .b1 {
+    padding: 0px;
+}
+.tabs .last .r1 {
+    padding-right: 0px;
+}
+
+div.box {
+    /*border-color: #ddd;*/
+    border: none;
+    padding: 10px 0 0 0;
+}
+div.list {
+    border: 1px solid #ddd;
+    border-width: 0 0 1px 0;
+}
+
+td.edittext {
+    padding: 1px 0 1px 0;
+}
+div.actions {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-width: 1px 0 0 0;
+    height: 20px;
+    margin-top: 5px;
+    padding: 5px 0 0 0;
+}
+
+.saveButton, input[type="submit"], input[type="button"] {
+    -moz-user-select: none;
+    background-image: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    padding: 3px 5px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    background-color: #ffffff;
+}
+.saveButton:hover, input[type="submit"]:hover, input[type="button"]:hover, .btnShowHelpPanel:hover {
+    background-color: #e6e6e6;
+}
+.btnShowHelpPanel {
+    background: transparent url("bg/facelift/ico_help_facelift.png") no-repeat scroll 1px 0 !important;
+}
+.edittext select.editinput {
+    width: 100%;
+}
+
+.listTable th {
+    background: none;
+    border-bottom: 2px solid #ddd;
+    color: #34495e;
+}
+form fieldset {
+    background: none;
+    border: 1px solid #ddd;
+    padding: 0 0 5px 5px;
+}
+.groupExp {
+    background: none;
+    margin-bottom: 7px;
+    padding: 0;
+}
+
+#genimportpage table, #genimportpage h3 {
+    margin-left: 20px;
+}
+/*border-collapse: collapse;*/

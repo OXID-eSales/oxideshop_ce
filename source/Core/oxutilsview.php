@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
+
 /**
  * View utility class
  */
@@ -430,36 +434,28 @@ class oxUtilsView extends oxSuperCfg
     }
 
     /**
-     * retrieve module block contents
+     * Retrieve module block contents from active module block file.
      *
-     * @param string $moduleName module name
-     * @param string $fileName   module block file name without .tpl ending
+     * @param string $moduleId active module id.
+     * @param string $fileName module block file name.
+     *
+     * @deprecated since v6.0.0 (2016-04-13); Use ModuleTemplateBlockContentReader::getContent().
      *
      * @see getTemplateBlocks
      * @throws oxException if block is not found
      *
      * @return string
      */
-    protected function _getTemplateBlock($moduleName, $fileName)
+    protected function _getTemplateBlock($moduleId, $fileName)
     {
-        $moduleInfo = $this->_getActiveModuleInfo();
-        $modulePath = $moduleInfo[$moduleName];
-        // for 4.5 modules, since 4.6 insert in oxtplblocks the full file name
-        if (substr($fileName, -4) != '.tpl') {
-            $fileName = $fileName . ".tpl";
-        }
-        // for < 4.6 modules, since 4.7/5.0 insert in oxtplblocks the full file name and path
-        if (basename($fileName) == $fileName) {
-            $fileName = "out/blocks/$fileName";
-        }
-        $filePath = $this->getConfig()->getConfigParam('sShopDir') . "/modules/$modulePath/$fileName";
-        if (file_exists($filePath) && is_readable($filePath)) {
-            return file_get_contents($filePath);
-        } else {
-            /** @var oxException $oException */
-            $oException = oxNew("oxException", "Template block file ($filePath) not found for '$moduleName' module.");
-            throw $oException;
-        }
+        $pathFormatter = oxNew(ModuleTemplateBlockPathFormatter::class);
+        $pathFormatter->setModulesPath($this->getConfig()->getModulesDir());
+        $pathFormatter->setModuleId($moduleId);
+        $pathFormatter->setFileName($fileName);
+
+        $blockContentReader = oxNew(ModuleTemplateBlockContentReader::class);
+
+        return $blockContentReader->getContent($pathFormatter);
     }
 
     /**
@@ -488,19 +484,12 @@ class oxUtilsView extends oxSuperCfg
             $shopId = $config->getShopId();
 
             $ids = $this->_getActiveModuleInfo();
-            $modulesId = implode(", ", oxDb::getInstance()->quoteArray(array_keys($ids)));
 
-            $activeThemesIdQuery = $this->formActiveThemesIdQuery();
-            $sql = "select *
-                    from oxtplblocks
-                    where oxactive=1
-                        and oxshopid=?
-                        and oxtemplate=?
-                        and oxmodule in ( " . $modulesId . " )
-                        and oxtheme in (" . $activeThemesIdQuery . ")
-                        order by oxpos asc";
-            $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-            $activeBlockTemplates = $db->getAll($sql, array($shopId, $templateFileName));
+            $activeModulesId = array_keys($ids);
+            $activeThemeIds = $this->getActiveThemes();
+
+            $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
+            $activeBlockTemplates = $templateBlockRepository->getBlocks($templateFileName, $activeModulesId, $shopId, $activeThemeIds);
 
             if ($activeBlockTemplates) {
                 $activeBlockTemplatesByTheme = $this->filterTemplateBlocks($activeBlockTemplates);
@@ -769,17 +758,12 @@ class oxUtilsView extends oxSuperCfg
 
         $ids = $this->_getActiveModuleInfo();
         if (count($ids)) {
+            $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
             $shopId = $this->getConfig()->getShopId();
-            $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-            $modulesId = implode(", ", oxDb::getInstance()->quoteArray(array_keys($ids)));
-            $sql = "select COUNT(*)
-                            from oxtplblocks
-                            where oxactive=1
-                                and oxshopid = ?
-                                and oxmodule in ( " . $modulesId . " )";
-            $rs = $db->getOne($sql, array($shopId));
+            $activeModulesId = array_keys($ids);
+            $blocksCount = $templateBlockRepository->getBlocksCount($activeModulesId, $shopId);
 
-            if ($rs) {
+            if ($blocksCount) {
                 $moduleOverridesTemplate = true;
             }
         }
@@ -802,17 +786,15 @@ class oxUtilsView extends oxSuperCfg
         return $activeBlockTemplate['OXTEMPLATE'] . $activeBlockTemplate['OXBLOCKNAME'];
     }
 
-    /**
-     * To form sql query part for active themes.
-     *
-     * @return string
-     */
-    private function formActiveThemesIdQuery()
-    {
-        $defaultThemeIndicator = '';
-        $activeThemeIds = array();
-        $activeThemeIds[] = $defaultThemeIndicator;
 
+    /**
+     * Return active theme and active theme parent id.
+     *
+     * @return array
+     */
+    private function getActiveThemes()
+    {
+        $activeThemeIds = array();
         if (!$this->isAdmin()) {
             $activeThemeIds[] = $this->getConfig()->getConfigParam('sTheme');
 
@@ -822,8 +804,6 @@ class oxUtilsView extends oxSuperCfg
             }
         }
 
-        $activeThemesIdQuery = implode(', ', oxDb::getInstance()->quoteArray($activeThemeIds));
-
-        return $activeThemesIdQuery;
+        return $activeThemeIds;
     }
 }

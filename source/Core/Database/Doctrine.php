@@ -168,6 +168,36 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     }
 
     /**
+     * Get one row of the corresponding sql select statement.
+     *
+     * @param string     $sqlSelect      The sql select statement we want to execute.
+     * @param array|bool $parameters     Array of parameters, for the given sql statement.
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     *
+     * @return array
+     */
+    public function getRow($sqlSelect, $parameters = false, $executeOnSlave = true)
+    {
+        $parameters = $this->assureParameterIsAnArray($parameters);
+
+        try {
+            $resultSet = $this->select($sqlSelect, $parameters, $executeOnSlave);
+
+            $row = $resultSet->fetchRow();
+
+            if (!$row) {
+                $row = array();
+            }
+
+            return $row;
+        } catch (\Exception $exception) {
+
+        }
+
+        return array();
+    }
+
+    /**
      * Get the number of rows, which where changed during the last sql statement.
      *
      * @return int The number of rows affected by the sql statement.

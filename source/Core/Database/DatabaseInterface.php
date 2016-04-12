@@ -78,15 +78,15 @@ interface DatabaseInterface
     public function getOne($sqlSelect, $parameters = false, $executeOnSlave = true);
 
     /**
-     * Get one row.
+     * Get one row of the corresponding sql select statement.
      *
-     * @param string     $query          The sql statement we want to execute.
-     * @param array|bool $parameters     The parameters array.
+     * @param string     $sqlSelect      The sql select statement we want to execute.
+     * @param array|bool $parameters     Array of parameters, for the given sql statement.
      * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return array
      */
-    public function getRow($query, $parameters = false, $executeOnSlave = true);
+    public function getRow($sqlSelect, $parameters = false, $executeOnSlave = true);
 
     /**
      * Get all values as array. Alias of getArray.

@@ -927,6 +927,90 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
+     * Test, that the method 'getRow' gives an empty array with empty table and default fetch mode.
+     */
+    public function testGetRowEmptyTableDefaultFetchMode()
+    {
+        $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
+
+        $this->assertInternalType('array', $result);
+        $this->assertEmpty($result);
+    }
+
+    /**
+     * Test, that the method 'getRow' gives an empty array with a non empty table and an incorrect sql statement.
+     */
+    public function testGetRowIncorrectSqlStatement()
+    {
+        $this->loadFixtureToTestTable();
+
+        $result = $this->database->getRow('INSERT INTO ' . self::TABLE_NAME . " (oxid) VALUES ('" . self::FIXTURE_OXID_1 . "')");
+
+        $this->assertInternalType('array', $result);
+        $this->assertEmpty($result);
+
+        $this->assertEquals('', $this->database->errorMsg());
+        $this->assertEquals(0, $this->database->errorNo());
+    }
+
+    /**
+     * Test, that the method 'getRow' gives an empty array with a non empty table and default fetch mode.
+     */
+    public function testGetRowNonEmptyTableDefaultFetchMode()
+    {
+        $this->loadFixtureToTestTable();
+
+        $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
+
+        $this->assertInternalType('array', $result);
+        $this->assertEquals(array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1), $result);
+    }
+
+    /**
+     * Test, that the method 'getRow' gives back the correct result, when called with parameters.
+     */
+    public function testGetRowNonEmptyTableWithParameters()
+    {
+        $this->loadFixtureToTestTable();
+
+        $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME . ' WHERE oxid = ?', array(self::FIXTURE_OXID_2));
+
+        $this->assertInternalType('array', $result);
+        $this->assertEquals(array(self::FIXTURE_OXID_2, self::FIXTURE_OXUSERID_2), $result);
+    }
+
+    /**
+     * Test, that the method 'getRow' gives back the correct result, when called with parameters and fetch mode associative array.
+     */
+    public function testGetRowNonEmptyTableWithParametersAndFetchModeAssociative()
+    {
+        $this->loadFixtureToTestTable();
+
+        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_ASSOC);
+
+        $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME . ' WHERE oxid = ?', array(self::FIXTURE_OXID_2));
+
+        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_DEFAULT);
+
+        $this->assertInternalType('array', $result);
+        $this->assertEquals(array('oxid' => self::FIXTURE_OXID_2, 'oxuserid' => self::FIXTURE_OXUSERID_2), $result);
+    }
+
+    /**
+     * Test, that the method 'getRow' gives back the correct result, when called with parameters and consecutive calls.
+     */
+    public function testGetRowNonEmptyTableWithParametersAndConsecutiveCalls()
+    {
+        $this->loadFixtureToTestTable();
+
+        $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME . ' WHERE oxid = ?', array(self::FIXTURE_OXID_2));
+        $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME . ' WHERE oxid = ?', array(self::FIXTURE_OXID_2));
+
+        $this->assertInternalType('array', $result);
+        $this->assertEquals(array(self::FIXTURE_OXID_2, self::FIXTURE_OXUSERID_2), $result);
+    }
+
+    /**
      * Test, that the method 'MetaColumns' works as expected.
      */
     public function testMetaColumns()

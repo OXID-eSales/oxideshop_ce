@@ -911,7 +911,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
     public function testSendPriceAlarmNotificationInEN()
     {
         $aParams['aid'] = $this->_oArticle->getId();
-        $aParams['email'] = 'info@oxid-esales.com';
+        $aParams['email'] = 'user@oxid-esales.com';
 
         /** @var oxShop|PHPUnit_Framework_MockObject_MockObject $oShop */
         $oShop = $this->getMock('oxShop', array('getImageUrl'));

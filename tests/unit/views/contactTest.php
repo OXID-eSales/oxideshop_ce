@@ -174,7 +174,7 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testSendForBugtrackEntry0002065()
     {
-        $aParams = array("oxuser__oxusername" => "info@oxid-esales.com",
+        $aParams = array("oxuser__oxusername" => "user@oxid-esales.com",
                          "oxuser__oxfname"    => "admin",
                          "oxuser__oxlname"    => "admin",
                          "oxuser__oxsal"      => "MR");
@@ -184,11 +184,11 @@ class Unit_Views_contactTest extends OxidTestCase
         $this->setRequestParameter("c_subject", "subject");
 
         $oLang = oxRegistry::getLang();
-        $sMessage = $oLang->translateString('MESSAGE_FROM') . " " . $oLang->translateString('MR') . " admin admin(info@oxid-esales.com)<br /><br />message";
+        $sMessage = $oLang->translateString('MESSAGE_FROM') . " " . $oLang->translateString('MR') . " admin admin(user@oxid-esales.com)<br /><br />message";
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
         $oEmail = $this->getMock("oxemail", array("sendContactMail"));
-        $oEmail->expects($this->once())->method('sendContactMail')->with($this->equalTo('info@oxid-esales.com'), $this->equalTo('subject'), $this->equalTo($sMessage))->will($this->returnValue(true));
+        $oEmail->expects($this->once())->method('sendContactMail')->with($this->equalTo('user@oxid-esales.com'), $this->equalTo('subject'), $this->equalTo($sMessage))->will($this->returnValue(true));
 
         oxTestModules::addModuleObject('oxemail', $oEmail);
 
@@ -209,7 +209,7 @@ class Unit_Views_contactTest extends OxidTestCase
         $oUtils->expects($this->once())->method('addErrorToDisplay')->with($this->equalTo("ERROR_MESSAGE_CHECK_EMAIL"));
         oxTestModules::addModuleObject('oxUtilsView', $oUtils);
 
-        $aParams = array("oxuser__oxusername" => "info@oxid-esales.com",
+        $aParams = array("oxuser__oxusername" => "user@oxid-esales.com",
                          "oxuser__oxfname"    => "admin",
                          "oxuser__oxlname"    => "admin",
                          "oxuser__oxsal"      => "MR");

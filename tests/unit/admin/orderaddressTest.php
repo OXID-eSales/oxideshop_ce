@@ -95,7 +95,7 @@ class Unit_Admin_OrderAddressTest extends OxidTestCase
             "oxorder__oxbillsal"       => "MR",
             "oxorder__oxbillfname"     => "Marc",
             "oxorder__oxbilllname"     => "Muster",
-            "oxorder__oxbillemail"     => "info@oxid-esales.com",
+            "oxorder__oxbillemail"     => "user@oxid-esales.com",
             "oxorder__oxbillcompany"   => "",
             "oxorder__oxbillstreet"    => "Hauptstr.",
             "oxorder__oxbillstreetnr"  => "13",

@@ -486,14 +486,69 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
+     * Test, that the method 'getAssoc' works without parameters and an empty table.
+     */
+    public function testGetAssocFromEmptyTable()
+    {
+        $result = $this->database->getAssoc('SELECT * FROM ' . self::TABLE_NAME);
+
+        $this->assertEmptyArray($result);
+    }
+
+    /**
+     * Test, that the method 'getAssoc' works without parameters and a non empty table.
+     */
+    public function testGetAssocFromNonEmptyTable()
+    {
+        $this->loadFixtureToTestTable();
+
+        $result = $this->database->getAssoc('SELECT * FROM ' . self::TABLE_NAME . ' ORDER BY oxid');
+
+        $expectedArray = array(
+            self::FIXTURE_OXID_1 => self::FIXTURE_OXUSERID_1,
+            self::FIXTURE_OXID_2 => self::FIXTURE_OXUSERID_2,
+            self::FIXTURE_OXID_3 => self::FIXTURE_OXUSERID_3
+        );
+        $this->assertEquals($expectedArray, $result);
+    }
+
+    /**
+     * Test, that the method 'getAssoc' works without parameters and a non empty table and reversed column order.
+     */
+    public function testGetAssocFromNonEmptyTableWithReversedColumns()
+    {
+        $this->loadFixtureToTestTable();
+        $result = $this->database->getAssoc('SELECT oxuserid, oxid FROM ' . self::TABLE_NAME . ' ORDER BY oxid');
+
+        $expectedArray = array(
+            self::FIXTURE_OXUSERID_1 => self::FIXTURE_OXID_1,
+            self::FIXTURE_OXUSERID_2 => self::FIXTURE_OXID_2,
+            self::FIXTURE_OXUSERID_3 => self::FIXTURE_OXID_3
+        );
+        $this->assertEquals($expectedArray, $result);
+    }
+
+    /**
+     * Test, that the method 'getAssoc' works with one parameter and a non empty table.
+     */
+    public function testGetAssocFromNonEmptyTableWithParameter()
+    {
+        $this->loadFixtureToTestTable();
+        $sqlSelect = 'SELECT * FROM ' . self::TABLE_NAME . " WHERE oxid = ? ORDER BY oxid";
+        $result = $this->database->getAssoc($sqlSelect, array(self::FIXTURE_OXID_2));
+
+        $expectedArray = array(self::FIXTURE_OXID_2 => self::FIXTURE_OXUSERID_2);
+        $this->assertEquals($expectedArray, $result);
+    }
+
+    /**
      * Test, that the method 'getCol' works without parameters and an empty result.
      */
     public function testGetColWithoutParametersEmptyResult()
     {
         $result = $this->database->getCol("SELECT OXID FROM " . self::TABLE_NAME);
 
-        $this->assertInternalType('array', $result);
-        $this->assertSame(0, count($result));
+        $this->assertEmptyArray($result);
     }
 
     /**
@@ -1010,5 +1065,16 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertEmpty($resultSet->fields);
 
         $this->assertSame($this->getEmptyResultSetClassName(), get_class($resultSet));
+    }
+
+    /**
+     * Assert, that the given parameter is an empty array.
+     *
+     * @param mixed $parameter The hopefully empty array.
+     */
+    protected function assertEmptyArray($parameter)
+    {
+        $this->assertInternalType('array', $parameter);
+        $this->assertSame(0, count($parameter));
     }
 }

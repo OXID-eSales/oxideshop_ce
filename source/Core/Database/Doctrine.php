@@ -462,6 +462,48 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     }
 
     /**
+     * Get values as an associative array. The first column is taken as the key for the row.
+     *
+     * @param string     $query          The sql statement we want to execute.
+     * @param array|bool $parameters     The parameters array.
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     *
+     * @return array The rows for the corresponding sql select statement. The first column value is the key for the row.
+     */
+    public function getAssoc($query, $parameters = false, $executeOnSlave = true)
+    {
+        $preFetchMode = $this->interfaceFetchMode;
+
+        $this->setFetchMode(DatabaseInterface::FETCH_MODE_ASSOC);
+        $resultSet = $this->select($query, $parameters, $executeOnSlave);
+
+        $rows = $resultSet->getAll();
+
+        $this->setFetchMode($preFetchMode);
+
+        if (!$rows) {
+            return array();
+        }
+
+        $result = array();
+
+        foreach ($rows as $row) {
+            $firstColumn = array_keys($row)[0];
+            $key = $row[$firstColumn];
+
+            $values = array_values($row);
+
+            if (2 == count($values)) {
+                $values = $values[1];
+            }
+
+            $result[$key] = $values;
+        }
+
+        return $result;
+    }
+
+    /**
      * Get the values of a column.
      *
      * @param string     $query          The sql statement we want to execute.

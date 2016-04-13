@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');
 
@@ -1494,52 +1496,38 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
-     * Finds and returns templates files or folders path
+     * Calculates and returns full path to template.
      *
-     * @param string $sFile   File name
-     * @param bool   $blAdmin Whether to force admin
+     * @param string $templateName Template name
+     * @param bool   $isAdmin      Whether to force admin
      *
      * @return string
      */
-    public function getTemplatePath($sFile, $blAdmin)
+    public function getTemplatePath($templateName, $isAdmin)
     {
-        $finalTemplatePath = $this->getDir($sFile, $this->_sTemplateDir, $blAdmin);
+        $finalTemplatePath = $this->getDir($templateName, $this->_sTemplateDir, $isAdmin);
 
         if (!$finalTemplatePath) {
-            $aModuleTemplates = $this->getConfigParam('aModuleTemplates');
-
-            $oModulelist = oxNew('oxmodulelist');
-            $aActiveModuleInfo = $oModulelist->getActiveModuleInfo();
-            if (is_array($aModuleTemplates) && is_array($aActiveModuleInfo)) {
-                foreach ($aModuleTemplates as $sModuleId => $aTemplates) {
-
-                    // check if module is active
-                    if (isset($aActiveModuleInfo[$sModuleId])) {
-                        $foundTemplate = null;
-
-                        // check if template for our active themes exists
-                        if ($activeThemes = $this->getActiveThemesList()) {
-                            foreach ($activeThemes as $oneActiveThemeId) {
-                                if (isset($aTemplates[$oneActiveThemeId], $aTemplates[$oneActiveThemeId][$sFile])) {
-                                    $foundTemplate = $this->getModulesDir() . $aTemplates[$oneActiveThemeId][$sFile];
-                                }
-                            }
-                        }
-
-                        // if not found in theme specific configurations
-                        if (!$foundTemplate && isset($aTemplates[$sFile])) {
-                            $foundTemplate = $this->getModulesDir() . $aTemplates[$sFile];
-                        }
-
-                        if ($foundTemplate && $this->checkIfReadable($foundTemplate)) {
-                            $finalTemplatePath = $foundTemplate;
-                        }
-                    }
-                }
+            $templatePathCalculator = $this->getModuleTemplatePathCalculator();
+            $templatePathCalculator->setModulesPath($this->getConfig()->getModulesDir());
+            try {
+                $finalTemplatePath = $templatePathCalculator->calculateModuleTemplatePath($templateName);
+            } catch(Exception $e) {
+                $finalTemplatePath = '';
             }
         }
 
         return $finalTemplatePath;
+    }
+
+    /**
+     * Get module template calculator object
+     *
+     * @return ModuleTemplatePathCalculator
+     */
+    protected function getModuleTemplatePathCalculator()
+    {
+        return oxNew(ModuleTemplatePathCalculator::class);
     }
 
     /**

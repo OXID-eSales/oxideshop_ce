@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\Eshop\Core\Registry;
+
 class modForTestGetBaseTplDirExpectsDefault extends oxConfig
 {
     public function init()
@@ -1202,87 +1205,43 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     }
 
     /**
-     * Data provider for testGetModuleTemplatePath
-     * @return array
+     * Test if correct template path is returned if template found in module template configurations
      */
-    public function getModuleTemplatePathDataProvider()
+    public function testGetModuleTemplatePath()
     {
-        return [
-            ['first.tpl', 'test_path/first_default.tpl', null, null],
-            ['first.tpl', 'test_path/first_default.tpl', 'azure', null],
-            ['first.tpl', 'test_path/first_firstTheme.tpl', 'firstTheme', null],
-            ['first.tpl', 'test_path/first_secondTheme.tpl', 'secondTheme', null],
-            ['first.tpl', 'test_path/first_secondTheme.tpl', 'firstTheme', 'secondTheme'],
+        $expected = 'moduleTemplatePath';
 
-            ['second.tpl', 'test_path/second_default.tpl', 'azure', null],
-            ['second.tpl', 'test_path/second_firstTheme.tpl', 'firstTheme', null],
-            ['second.tpl', 'test_path/second_firstTheme.tpl', 'firstTheme', 'secondTheme'],
+        // tell module template calculator to give good result
+        $moduleTemplateCalculatorStub = $this->getMock(ModuleTemplatePathCalculator::class, ['calculateModuleTemplatePath']);
+        $moduleTemplateCalculatorStub->method('calculateModuleTemplatePath')->willReturn($expected);
 
-            ['third.tpl', 'test_path/third_default.tpl', 'azure', null],
-            ['third.tpl', 'test_path/third_default.tpl', 'firstTheme', null],
-            ['third.tpl', 'test_path/third_secondTheme.tpl', 'firstTheme', 'secondTheme'],
+        // imitate config with empty getDir response
+        $configStub = $this->getMock(oxConfig::class, ['getDir', 'getModuleTemplatePathCalculator']);
+        $configStub->method('getModuleTemplatePathCalculator')->willReturn($moduleTemplateCalculatorStub);
 
-            ['fourth.tpl', 'test_path/fourth_default.tpl', 'azure', null],
-            ['fourth.tpl', 'test_path/fourth_default.tpl', 'firstTheme', null],
-            ['fourth.tpl', 'test_path/fourth_default.tpl', 'firstTheme', 'secondTheme'],
+        // test if returns correct template
+        $actual = $configStub->getTemplatePath('someTemplateName.tpl', true);
 
-            ['fifth.tpl', '', 'azure', null],
-            ['fifth.tpl', 'test_path/fifth_firstTheme.tpl', 'firstTheme', null],
-            ['fifth.tpl', 'test_path/fifth_firstTheme.tpl', 'firstTheme', 'secondTheme'],
-
-            ['sixth.tpl', '', 'azure', null],
-            ['sixth.tpl', '', 'firstTheme', null],
-            ['sixth.tpl', 'test_path/sixth_secondTheme.tpl', 'firstTheme', 'secondTheme'],
-        ];
+        $this->assertEquals($expected, $actual);
     }
 
     /**
-     * Test if correct template path is returned with different theme module templates configurations
-     *
-     * @dataProvider getModuleTemplatePathDataProvider
+     * Test if correct template path is returned if template is Not found in module template configurations
      */
-    public function testGetModuleTemplatePath($requestTemplate, $expectedPath, $configTheme = null, $configCustomTheme = null)
+    public function testGetModuleTemplatePathCalculatorException()
     {
-        $moduleId = 'moduleId';
-        $modulesRootPath = 'root_module_path/';
+        $expected = '';
 
-        $templates = [
-            $moduleId => [
-                'first.tpl' => 'test_path/first_default.tpl',
-                'second.tpl' => 'test_path/second_default.tpl',
-                'third.tpl' => 'test_path/third_default.tpl',
-                'fourth.tpl' => 'test_path/fourth_default.tpl',
+        // tell module template calculator to give good result
+        $moduleTemplateCalculatorStub = $this->getMock(ModuleTemplatePathCalculator::class, ['calculateModuleTemplatePath']);
+        $moduleTemplateCalculatorStub->method('calculateModuleTemplatePath')->willThrowException(oxNew('oxException', 'Some calculator exception'));
 
-                'firstTheme' => [
-                    'first.tpl' => 'test_path/first_firstTheme.tpl',
-                    'second.tpl' => 'test_path/second_firstTheme.tpl',
-                    'fifth.tpl' => 'test_path/fifth_firstTheme.tpl',
-                ],
-                'secondTheme' => [
-                    'first.tpl' => 'test_path/first_secondTheme.tpl',
-                    'third.tpl' => 'test_path/third_secondTheme.tpl',
-                    'sixth.tpl' => 'test_path/sixth_secondTheme.tpl',
-                ]
-            ]
-        ];
-
-        // activate this virtual module
-        $moduleListStub = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
-        $moduleListStub->method('getActiveModuleInfo')->willReturn([$moduleId => true]);
-        oxTestModules::addModuleObject(oxModuleList::class, $moduleListStub);
-
-        // configure Config :)
-        $configStub = $this->getMock(oxConfig::class, ['getModulesDir', 'init', 'checkIfReadable', 'getDir']);
-        $configStub->method('checkIfReadable')->willReturn($this->returnValue(true));
-        $configStub->method('getModulesDir')->willReturn($modulesRootPath);
-        $configStub->setConfigParam('aModuleTemplates', $templates);
-
-        $configTheme && $configStub->setConfigParam('sTheme', $configTheme);
-        $configCustomTheme && $configStub->setConfigParam('sCustomTheme', $configCustomTheme);
+        // imitate config with empty getDir response
+        $configStub = $this->getMock(oxConfig::class, ['getDir', 'getModuleTemplatePathCalculator']);
+        $configStub->method('getModuleTemplatePathCalculator')->willReturn($moduleTemplateCalculatorStub);
 
         // test if returns correct template
-        $actual = $configStub->getTemplatePath($requestTemplate, true);
-        $expected = $expectedPath ? $modulesRootPath . $expectedPath : $expectedPath;
+        $actual = $configStub->getTemplatePath('someTemplateName.tpl', true);
 
         $this->assertEquals($expected, $actual);
     }

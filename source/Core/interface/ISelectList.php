@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Contract;
+
 /**
  * Interface for selection list based objects
  *
  */
-interface oxISelectList
+interface ISelectList
 {
 
     /**

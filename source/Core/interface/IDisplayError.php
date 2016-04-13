@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Contract;
+
 /**
  * DisplayError interface
  *
  */
-interface oxIDisplayError
+interface IDisplayError
 {
 
     /**

@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Contract;
+
+use oxCountry;
+
 /**
  * Interface for country getter and setter
  */
-interface oxICountryAware
+interface ICountryAware
 {
 
     /**

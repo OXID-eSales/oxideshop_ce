@@ -20,22 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Contract;
-
-use oxModule;
-
 /**
- * Interface oxIModuleValidator
+ * This class must be empty because of others eShop editions classes which can be used instead of it.
+ *
+ * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
+ *
  */
-interface IModuleValidator
+interface oxIUrl extends \OxidEsales\Eshop\Core\Contract\IUrl
 {
-
-    /**
-     * Validates module information.
-     *
-     * @param oxModule $oModule object to validate metadata.
-     *
-     * @return bool
-     */
-    public function validate(oxModule $oModule);
 }

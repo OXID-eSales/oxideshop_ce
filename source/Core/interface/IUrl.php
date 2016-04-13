@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Contract;
+
 /**
  * Interface for object URLs getters
  *
  */
-interface oxIUrl
+interface IUrl
 {
 
     /**

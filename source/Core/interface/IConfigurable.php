@@ -20,12 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Contract;
+
+use oxConfig;
 
 /**
  * The interface methods should be implemented by classes which need a configuration object
  * (usually OxConfig) manually set.
  */
-interface OxIConfigurable
+interface IConfigurable
 {
 
     /**

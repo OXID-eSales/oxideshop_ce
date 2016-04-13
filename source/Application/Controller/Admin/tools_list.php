@@ -96,24 +96,21 @@ class Tools_List extends oxAdminList
                                 $sUpdateSQL = $oStr->substr($sUpdateSQL, 0, ($oStr->strlen($sUpdateSQL) - 1));
                             }
 
-                            try {
-                                $oDB->execute($sUpdateSQL);
-                            } catch (Exception $oExcp) {
-                                // catching exception ...
-                                $blStop = true;
-                            }
-
                             $aQAffectedRows [$iQueriesCounter] = null;
                             $aQErrorMessages[$iQueriesCounter] = null;
                             $aQErrorNumbers [$iQueriesCounter] = null;
 
-                            $iErrorNum = $oDB->ErrorNo();
-                            if ($iAffectedRows = $oDB->affected_Rows() !== false && $iErrorNum == 0) {
-                                $aQAffectedRows[$iQueriesCounter] = $iAffectedRows;
-                            } else {
-                                $aQErrorMessages[$iQueriesCounter] = oxStr::getStr()->htmlentities($oDB->errorMsg());
-                                $aQErrorNumbers[$iQueriesCounter] = oxStr::getStr()->htmlentities($iErrorNum);
+                            try {
+                                $oDB->execute($sUpdateSQL);
+                                $aQAffectedRows[$iQueriesCounter] = $oDB->affectedRows();
+                            } catch (Exception $exception) {
+                                // Report errors
+                                $aQErrorMessages[$iQueriesCounter] = oxStr::getStr()->htmlentities($exception->getMessage());
+                                $aQErrorNumbers[$iQueriesCounter] = oxStr::getStr()->htmlentities($exception->getCode());
+                                // Trigger breaking the loop
+                                $blStop = true;
                             }
+
                             $iQueriesCounter++;
 
                             // stopping on first error..

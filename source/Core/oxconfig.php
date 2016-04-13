@@ -21,6 +21,7 @@
  */
 
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\Eshop\Core\exception\DatabaseException;
 
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');
@@ -420,6 +421,9 @@ class oxConfig extends oxSuperCfg
             $this->_oStart = oxNew('oxStart');
             $this->_oStart->appInit();
         } catch (oxConnectionException $oEx) {
+            //@TODO: use DatabaseException instead of oxConnectionException
+            $this->_handleDbConnectionException($oEx);
+        } catch (DatabaseException $oEx) {
             $this->_handleDbConnectionException($oEx);
         } catch (oxCookieException $oEx) {
             $this->_handleCookieException($oEx);

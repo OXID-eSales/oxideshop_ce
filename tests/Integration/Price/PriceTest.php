@@ -64,17 +64,17 @@ class PriceTest extends BaseTestCase
     protected function resetDatabase()
     {
         $database = oxDb::getDb();
-        $database->query("TRUNCATE oxarticles");
-        $database->query("TRUNCATE oxdiscount");
-        $database->query("TRUNCATE oxobject2discount");
-        $database->query("TRUNCATE oxprice2article");
+        $database->execute("TRUNCATE oxarticles");
+        $database->execute("TRUNCATE oxdiscount");
+        $database->execute("TRUNCATE oxobject2discount");
+        $database->execute("TRUNCATE oxprice2article");
         $tables = $database->getCol("SHOW TABLES");
         if (in_array('oxfield2shop', $tables)) {
-            $database->query("TRUNCATE oxfield2shop");
+            $database->execute("TRUNCATE oxfield2shop");
         }
-        $database->query("TRUNCATE oxuser");
-        $database->query("TRUNCATE oxobject2group");
-        $database->query("TRUNCATE oxgroups");
+        $database->execute("TRUNCATE oxuser");
+        $database->execute("TRUNCATE oxobject2group");
+        $database->execute("TRUNCATE oxgroups");
     }
 
     /**

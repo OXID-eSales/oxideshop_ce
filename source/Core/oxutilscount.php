@@ -209,7 +209,7 @@ class oxUtilsCount extends oxSuperCfg
         // select each vendor articles count
         $sQ = "select $sTable.oxvendorid AS vendorId, count(*) from $sTable where ";
         $sQ .= "$sTable.oxvendorid <> '' and $sTable.oxparentid = '' and " . $oArticle->getSqlActiveSnippet() . " group by $sTable.oxvendorid ";
-        $aDbResult = oxDb::getDb()->getAssoc($sQ);
+        $aDbResult = $this->getAssoc($sQ);
 
         foreach ($aDbResult as $sKey => $sValue) {
             $aCache[$sKey][$sActIdent] = $sValue;
@@ -218,6 +218,48 @@ class oxUtilsCount extends oxSuperCfg
         $this->_setVendorCache($aCache);
 
         return $aCache[$sCatId][$sActIdent];
+    }
+
+    /**
+     * Returns the query result as a two dimensional associative array.
+     * The keys of the first level are the firsts value of each row.
+     * The values of the first level arrays with numeric key that hold the all the values of each row but the first one,
+     * which is used a a key in the first level.
+     *
+     * This function was added to mimic the functionality of a the removed core method oxLegacy::getAssoc
+     *
+     * @param string $query
+     * @param array  $parameters
+     * @param bool   $executeOnSlave
+     *
+     * @return array
+     */
+    protected function getAssoc($query, $parameters = array(), $executeOnSlave = true)
+    {
+        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+
+        $resultSet = $database->select($query, $parameters, $executeOnSlave);
+
+        $rows = $resultSet->getAll();
+
+        if (!$rows) {
+            return array();
+        }
+
+        $result = array();
+
+        foreach ($rows as $row) {
+            $firstColumn = array_keys($row)[0];
+            $key = $row[$firstColumn];
+
+            $values = array_values($row);
+
+            if (2 <= count($values)) {
+                $result[$key] = $values[1];
+            }
+        }
+
+        return $result;
     }
 
     /**

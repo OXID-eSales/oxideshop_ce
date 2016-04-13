@@ -66,21 +66,21 @@ class OrderTest extends BaseTestCase
     protected function reset()
     {
         $database = oxDb::getDb();
-        $database->query("TRUNCATE oxarticles");
-        $database->query("TRUNCATE oxcategories");
-        $database->query("TRUNCATE oxdiscount");
-        $database->query("TRUNCATE oxobject2discount");
-        $database->query("TRUNCATE oxwrapping");
-        $database->query("TRUNCATE oxdelivery");
-        $database->query("TRUNCATE oxdel2delset");
-        $database->query("TRUNCATE oxobject2payment");
-        $database->query("TRUNCATE oxobject2category");
-        $database->query("TRUNCATE oxvouchers");
-        $database->query("TRUNCATE oxvoucherseries");
-        $database->query("TRUNCATE oxuser");
-        $database->query("TRUNCATE oxdeliveryset");
-        $database->query("TRUNCATE oxpayments");
-        $database->query("TRUNCATE oxprice2article");
+        $database->execute("TRUNCATE oxarticles");
+        $database->execute("TRUNCATE oxcategories");
+        $database->execute("TRUNCATE oxdiscount");
+        $database->execute("TRUNCATE oxobject2discount");
+        $database->execute("TRUNCATE oxwrapping");
+        $database->execute("TRUNCATE oxdelivery");
+        $database->execute("TRUNCATE oxdel2delset");
+        $database->execute("TRUNCATE oxobject2payment");
+        $database->execute("TRUNCATE oxobject2category");
+        $database->execute("TRUNCATE oxvouchers");
+        $database->execute("TRUNCATE oxvoucherseries");
+        $database->execute("TRUNCATE oxuser");
+        $database->execute("TRUNCATE oxdeliveryset");
+        $database->execute("TRUNCATE oxpayments");
+        $database->execute("TRUNCATE oxprice2article");
     }
 
     /**

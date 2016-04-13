@@ -525,7 +525,7 @@ class ListComponentAjax extends \oxSuperCfg
      */
     protected function _getDataFields($sQ)
     {
-        return oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getArray($sQ, false, false);
+        return oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getAll($sQ, false, false);
     }
 
     /**

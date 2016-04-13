@@ -24,6 +24,7 @@ namespace Unit\Core;
 use \oxDb;
 use \oxConfigFile;
 use \oxRegistry;
+use \Exception;
 
 /**
  * Test private methods with mock.
@@ -37,14 +38,14 @@ class oxDbPublicized extends oxDb
         return parent::_getConfigParam($sConfigName);
     }
 
-    public function _onConnectionError($connection)
+    public function _onConnectionError(Exception $exception)
     {
-        parent::_onConnectionError($connection);
+        parent::_onConnectionError($exception);
     }
 
-    public function _notifyConnectionErrors($connection)
+    public function _notifyConnectionErrors(Exception $exception)
     {
-        parent::_notifyConnectionErrors($connection);
+        parent::_notifyConnectionErrors($exception);
     }
 
     public function _setUp($connection)
@@ -166,15 +167,6 @@ class DbTest extends \OxidTestCase
     }
 
     /**
-     * Testing DB link identifier getter
-     */
-    public function testGetConnectionId()
-    {
-        $oDb = $this->getProxyClass('oxDb');
-        $this->assertNotNull($oDb->UNITgetConnectionId());
-    }
-
-    /**
      * Testing escaping string
      */
     public function testEscapeString()
@@ -184,6 +176,7 @@ class DbTest extends \OxidTestCase
         $oDb = oxDb::getInstance();
 
         $this->assertEquals('\0 \n \r \\\' \\\, \" \Z', $oDb->escapeString($sString));
+
     }
 
     public function testGetDb()
@@ -356,18 +349,21 @@ class DbTest extends \OxidTestCase
     public function testNotifyConnectionErrors()
     {
         $oDbInst = $this->getMock("oxDb", array("errorMsg", "errorNo"));
-        $oDbInst->expects($this->at(0))->method('errorMsg')->will($this->returnValue("errormsg"));
-        $oDbInst->expects($this->at(1))->method('errorNo')->will($this->returnValue("errornr"));
-        $oDbInst->expects($this->at(2))->method('errorMsg')->will($this->returnValue("errormsg"));
+        $oDbInst->expects($this->never())->method('errorMsg');
+        $oDbInst->expects($this->never())->method('errorNo');
 
         $oConfigFile = $this->getBlankConfigFile();
         $oConfigFile->sAdminEmail = "adminemail";
         $oConfigFile->dbUser = "dbuser";
 
+        $exception = oxNew('Exception');
+
         $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("getConfig", "_sendMail"));
         $oDb->setConfig($oConfigFile);
         $oDb->expects($this->once())->method('_sendMail')->with($this->equalTo('adminemail'), $this->equalTo('Offline warning!'));
-        $oDb->_notifyConnectionErrors($oDbInst);
+
+        $this->setExpectedException('oxConnectionException');
+        $oDb->_notifyConnectionErrors($exception);
     }
 
     /**
@@ -375,9 +371,10 @@ class DbTest extends \OxidTestCase
      */
     public function testOnConnectionError()
     {
+        $exception = oxNew('Exception');
         $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("_notifyConnectionErrors"));
-        $oDb->expects($this->once())->method('_notifyConnectionErrors')->with($this->equalTo('odb'));
-        $oDb->_onConnectionError('odb');
+        $oDb->expects($this->once())->method('_notifyConnectionErrors')->with($this->equalTo($exception));
+        $oDb->_onConnectionError($exception);
     }
 
     /**

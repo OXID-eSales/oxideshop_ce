@@ -122,13 +122,13 @@ interface DatabaseInterface
     public function select($query, $parameters = false, $executeOnSlave = true);
 
     /**
-     * Get values as an associative array.
+     * Get values as an associative array. The first column is taken as the key for the row.
      *
      * @param string     $query          The sql statement we want to execute.
      * @param array|bool $parameters     The parameters array.
      * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
-     * @return array
+     * @return array The rows for the corresponding sql select statement. The first column value is the key for the row.
      */
     public function getAssoc($query, $parameters = false, $executeOnSlave = true);
 

@@ -174,27 +174,27 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      * @param array|bool $parameters     Array of parameters, for the given sql statement.
      * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
-     * @return array
+     * @return array The row, we selected with the given sql statement.
      */
     public function getRow($sqlSelect, $parameters = false, $executeOnSlave = true)
     {
         $parameters = $this->assureParameterIsAnArray($parameters);
 
+        $result = array();
+
         try {
             $resultSet = $this->select($sqlSelect, $parameters, $executeOnSlave);
 
-            $row = $resultSet->fetchRow();
+            $result = $resultSet->fetchRow();
 
-            if (!$row) {
-                $row = array();
+            if (!$result) {
+                $result = array();
             }
-
-            return $row;
         } catch (\Exception $exception) {
-
+            // @todo: throw correct exception
         }
 
-        return array();
+        return $result;
     }
 
     /**

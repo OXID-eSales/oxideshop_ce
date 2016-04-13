@@ -1003,11 +1003,11 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     {
         $this->loadFixtureToTestTable();
 
-        $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME . ' WHERE oxid = ?', array(self::FIXTURE_OXID_2));
-        $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME . ' WHERE oxid = ?', array(self::FIXTURE_OXID_2));
+        $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
+        $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
 
         $this->assertInternalType('array', $result);
-        $this->assertEquals(array(self::FIXTURE_OXID_2, self::FIXTURE_OXUSERID_2), $result);
+        $this->assertEquals(array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1), $result);
     }
 
     /**

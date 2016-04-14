@@ -37,103 +37,101 @@ class ModuleExtensionsCleaner
      * Removes garbage ( module not used extensions ) from all installed extensions list.
      * For example: some classes were renamed, so these should be removed.
      *
-     * @param array    $aInstalledExtensions Installed extensions
-     * @param oxModule $oModule              Module
+     * @param array    $installedExtensions
+     * @param oxModule $module
      *
      * @return array
      */
-    public function cleanExtensions($aInstalledExtensions, oxModule $oModule)
+    public function cleanExtensions($installedExtensions, oxModule $module)
     {
-        $aModuleExtensions = $oModule->getExtensions();
+        $moduleExtensions = $module->getExtensions();
 
-        $aInstalledModuleExtensions = $this->filterModuleArray($aInstalledExtensions, $oModule->getId());
+        $installedModuleExtensions = $this->filterExtensionsByModuleId($installedExtensions, $module->getId());
 
-        if (count($aInstalledModuleExtensions)) {
-            $aGarbage = $this->getModuleExtensionsGarbage($aModuleExtensions, $aInstalledModuleExtensions);
+        if (count($installedModuleExtensions)) {
+            $garbage = $this->getModuleExtensionsGarbage($moduleExtensions, $installedModuleExtensions);
 
-            if (count($aGarbage)) {
-                $aInstalledExtensions = $this->removeGarbage($aInstalledExtensions, $aGarbage);
+            if (count($garbage)) {
+                $installedExtensions = $this->removeGarbage($installedExtensions, $garbage);
             }
         }
 
-        return $aInstalledExtensions;
+        return $installedExtensions;
     }
 
     /**
-     * Filter module array using module id
+     * Returns extensions list by module id.
      *
-     * Returns active module extensions
-     *
-     * @param array  $aModules  Module array (nested format)
-     * @param string $sModuleId Module id/folder name
+     * @param array  $modules  Module array (nested format)
+     * @param string $moduleId Module id/folder name
      *
      * @return array
      */
-    protected function filterModuleArray($aModules, $sModuleId)
+    protected function filterExtensionsByModuleId($modules, $moduleId)
     {
-        $aModulePaths = \oxRegistry::getConfig()->getConfigParam('aModulePaths');
-        $sPath = $aModulePaths[$sModuleId];
-        if (!$sPath) {
-            $sPath = $sModuleId . "/";
+        $modulePaths = \oxRegistry::getConfig()->getConfigParam('aModulePaths');
+        $path = $modulePaths[$moduleId];
+        if (!$path) {
+            $path = $moduleId . "/";
         }
 
-        $aFilteredModules = array();
-        foreach ($aModules as $sClass => $aExtend) {
-            foreach ($aExtend as $sExtendPath) {
-                if (strpos($sExtendPath, $sPath) === 0) {
-                    $aFilteredModules[$sClass][] = $sExtendPath;
+        $filteredModules = array();
+        foreach ($modules as $class => $extend) {
+            foreach ($extend as $extendPath) {
+                if (strpos($extendPath, $path) === 0) {
+                    $filteredModules[$class][] = $extendPath;
                 }
             }
         }
 
-        return $aFilteredModules;
+        return $filteredModules;
     }
 
     /**
      * Returns extension which is no longer in metadata - garbage
      *
-     * @param array $aModuleMetaDataExtensions  extensions defined in metadata.
-     * @param array $aModuleInstalledExtensions extensions which are installed
+     * @param array $moduleMetaDataExtensions  extensions defined in metadata.
+     * @param array $moduleInstalledExtensions extensions which are installed
      *
      * @return array
      */
-    protected function getModuleExtensionsGarbage($aModuleMetaDataExtensions, $aModuleInstalledExtensions)
+    protected function getModuleExtensionsGarbage($moduleMetaDataExtensions, $moduleInstalledExtensions)
     {
-        $aGarbage = $aModuleInstalledExtensions;
+        $garbage = $moduleInstalledExtensions;
 
-        foreach ($aModuleMetaDataExtensions as $sClassName => $sClassPath) {
-            if (isset($aGarbage[$sClassName])) {
-                unset($aGarbage[$sClassName][array_search($sClassPath, $aGarbage[$sClassName])]);
-                if (count($aGarbage[$sClassName]) == 0) {
-                    unset($aGarbage[$sClassName]);
+        foreach ($moduleMetaDataExtensions as $className => $classPath) {
+            if (isset($garbage[$className])) {
+                unset($garbage[$className][array_search($classPath, $garbage[$className])]);
+                if (count($garbage[$className]) == 0) {
+                    unset($garbage[$className]);
                 }
             }
         }
 
-        return $aGarbage;
+        return $garbage;
     }
 
     /**
      * Removes garbage - not exiting module extensions, returns clean array of installed extensions
      *
-     * @param array $aInstalledExtensions all installed extensions ( from all modules )
-     * @param array $aGarbage             extension which are not used and should be removed
+     * @param array $installedExtensions all installed extensions ( from all modules )
+     * @param array $garbage             extension which are not used and should be removed
      *
      * @return array
      */
-    protected function removeGarbage($aInstalledExtensions, $aGarbage)
+    protected function removeGarbage($installedExtensions, $garbage)
     {
-        foreach ($aGarbage as $sClassName => $aClassPaths) {
-            foreach ($aClassPaths as $sClassPath) {
-                if (isset($aInstalledExtensions[$sClassName])) {
-                    unset($aInstalledExtensions[$sClassName][array_search($sClassPath, $aInstalledExtensions[$sClassName])]);
-                    if (count($aInstalledExtensions[$sClassName]) == 0) {
-                        unset($aInstalledExtensions[$sClassName]);
+        foreach ($garbage as $className => $classPaths) {
+            foreach ($classPaths as $sClassPath) {
+                if (isset($installedExtensions[$className])) {
+                    unset($installedExtensions[$className][array_search($sClassPath, $installedExtensions[$className])]);
+                    if (count($installedExtensions[$className]) == 0) {
+                        unset($installedExtensions[$className]);
                     }
                 }
             }
         }
 
-        return $aInstalledExtensions;
+        return $installedExtensions;
     }
 }

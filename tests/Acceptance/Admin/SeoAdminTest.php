@@ -28,15 +28,6 @@ use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
 class SeoAdminTest extends AdminTestCase
 {
     /**
-     * Sets default language to English.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->getTranslator()->setLanguage(1);
-    }
-
-    /**
      * Seo: Core settings -> SEO
      *
      * @group seo

@@ -28,15 +28,6 @@ use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
 class MyAccountFrontendTest extends FrontendTestCase
 {
     /**
-     * Sets default language to English.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->getTranslator()->setLanguage( 1 );
-    }
-
-    /**
      * Login to eshop (popup in top of the page)
      *
      * @group myAccount

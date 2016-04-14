@@ -27,14 +27,6 @@ use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
 /** Creating and deleting items. */
 class CreatingItemsAdminTest extends AdminTestCase
 {
-    /**
-     * Sets default language to English.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->getTranslator()->setLanguage(1);
-    }
 
     /**
      * creating Countries

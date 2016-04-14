@@ -27,11 +27,6 @@ use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
 class ValidateUpdatedShopTest extends FrontendTestCase
 {
     /**
-     * @var bool
-     */
-    protected $_blStartMinkSession = false;
-
-    /**
      * Browse through shop and check if pages contains no errors.
      * @group main
      * @group validateUpdate

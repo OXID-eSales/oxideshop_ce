@@ -30,15 +30,8 @@ use OxidEsales\Eshop\Tests\Acceptance\AcceptanceTestCase;
 /** Selenium tests for UTF-8 shop version. */
 class InternationalTest extends AcceptanceTestCase
 {
-    /**
-     * Sets up default environment for tests.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->setTranslator(new \OxidEsales\TestingLibrary\Translator(0));
-    }
+    /** @var string Language id. In international edition English ID is 0. */
+    protected $translateLanguageId = 0;
 
     /* -------------------------- Admin side only functions ------------------------ */
 
@@ -62,16 +55,6 @@ class InternationalTest extends AcceptanceTestCase
         $language = "English"
     ) {
         parent::loginAdmin($menuLink1, $menuLink2, $forceMainShop, $user, $pass, $language);
-    }
-
-    /**
-     * Clears shop cache, (with _cc file)
-     * International demo data has different EN language ID.
-     */
-    public function clearCookies()
-    {
-        parent::clearCookies();
-        $this->getTranslator()->setLanguage(0);
     }
 
     /**

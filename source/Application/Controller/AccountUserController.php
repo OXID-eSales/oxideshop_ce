@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * Current user Data Maintenance form.
  * When user is logged in he may change his Billing and Shipping
@@ -28,7 +32,7 @@
  * etc. Some fields must be entered. OXID eShop -> MY ACCOUNT
  * -> Update your billing and delivery settings.
  */
-class Account_User extends Account
+class AccountUserController extends \Account
 {
 
     /**

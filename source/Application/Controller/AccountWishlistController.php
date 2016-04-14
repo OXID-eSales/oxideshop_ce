@@ -20,6 +20,11 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+use oxField;
+
 /**
  * Current user wishlist manager.
  * When user is logged in in this manager window he can modify his
@@ -29,7 +34,7 @@
  * login name in special field. OXID eShop -> MY ACCOUNT
  *  -> Newsletter.
  */
-class Account_Wishlist extends Account
+class AccountWishlistController extends \Account
 {
 
     /**

@@ -368,6 +368,8 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Returns last insert ID
      *
+     * @deprecated since v5.3.0 (2016-04-14); This method will be renamed to lastInsertId in v6.0
+     *
      * @return int
      */
     public function Insert_ID()

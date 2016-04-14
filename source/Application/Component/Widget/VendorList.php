@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -21,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component\Widget;
+
 /**
  * Vendor list widget.
  * Forms vendor list.
  */
-class oxwVendorList extends oxWidget
+class VendorList extends \oxWidget
 {
 
     /**

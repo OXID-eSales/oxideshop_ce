@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component\Widget;
+
 /**
  * Widget parent.
  * Gather functionality needed for all widgets but not for other views.
  */
-class oxWidget extends oxUBase
+class Widget extends \oxUBase
 {
 
     /**

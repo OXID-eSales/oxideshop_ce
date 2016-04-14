@@ -20,10 +20,12 @@
  * @version       OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component\Widget;
+
 /**
  * Article detailed information widget.
  */
-class oxwArticleDetails extends oxWidget
+class ArticleDetails extends \oxWidget
 {
 
     /**

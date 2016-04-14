@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -21,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component\Widget;
+
 /**
  * Article box widget
  */
-class oxwArticleBox extends oxWidget
+class ArticleBox extends \oxWidget
 {
     /**
      * Names of components (classes) that are initiated and executed

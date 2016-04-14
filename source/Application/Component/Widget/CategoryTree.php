@@ -21,11 +21,13 @@
  * @version   OXID eShop CE
  */
 
+namespace  OxidEsales\Eshop\Application\Component\Widget;
+
 /**
  * Category tree widget.
  * Forms category tree.
  */
-class oxwCategoryTree extends oxWidget
+class CategoryTree extends \oxWidget
 {
 
     /**

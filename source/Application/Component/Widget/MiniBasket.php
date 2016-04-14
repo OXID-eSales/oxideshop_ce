@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -21,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component\Widget;
+
 /**
  * Mini basket widget
  */
-class oxwMiniBasket extends oxWidget
+class MiniBasket extends \oxWidget
 {
     /**
      * Names of components (classes) that are initiated and executed

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -21,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component\Widget;
+
 /**
  * List of additional shop information links widget.
  * Forms info link list.
  */
-class oxwInformation extends oxWidget
+class oxwInformation extends \oxWidget
 {
 
     /**

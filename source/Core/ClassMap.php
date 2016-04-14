@@ -88,6 +88,32 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             ###'oxconfk' => '\OxidEsales\Eshop\Core\ConfigurationKey',
             ###'oxfunctions' => '\OxidEsales\Eshop\Core\Functions',
             ###'oxid' => '\OxidEsales\Eshop\Core\Oxid',
+
+            'manufacturerlist' => '\OxidEsales\Eshop\Application\Controller\ManufacturerListController',
+            'review' => '\OxidEsales\Eshop\Application\Controller\ReviewController',
+            'vendorlist' => '\OxidEsales\Eshop\Application\Controller\VendorListController',
+
+            'oxwactions' => '\OxidEsales\Eshop\Application\Component\Widget\Actions',
+            'oxwbetanote' => '\OxidEsales\Eshop\Application\Component\Widget\BetaNote',
+            'oxwcategorytree' => '\OxidEsales\Eshop\Application\Component\Widget\CategoryTree',
+            'oxwinformation' => '\OxidEsales\Eshop\Application\Component\Widget\Information',
+            'oxwrating' => '\OxidEsales\Eshop\Application\Component\Widget\Rating',
+            'oxwservicemenu' => '\OxidEsales\Eshop\Application\Component\Widget\ServiceMenu',
+            'oxwarticlebox' => '\OxidEsales\Eshop\Application\Component\Widget\ArticleBox', #
+            'oxwcookienote' => '\OxidEsales\Eshop\Application\Component\Widget\CookieNote',
+            'oxwlanguagelist' => '\OxidEsales\Eshop\Application\Component\Widget\LanguageList',
+            'oxwrecommendation' => '\OxidEsales\Eshop\Application\Component\Widget\Recommendation',
+            'oxwtagcloud' => '\OxidEsales\Eshop\Application\Component\Widget\TagCloud',
+            'oxwarticledetails' => '\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails',
+            'oxwcurrencylist' => '\OxidEsales\Eshop\Application\Component\Widget\CurrencyList',
+            'oxwmanufacturerlist' => '\OxidEsales\Eshop\Application\Component\Widget\ManufacturerList',
+            'oxwreview' => '\OxidEsales\Eshop\Application\Component\Widget\Review',
+            'oxwvendorlist' => '\OxidEsales\Eshop\Application\Component\Widget\VendorList',
+            'oxwbetanote' => '\OxidEsales\Eshop\Application\Component\Widget\BetaNote',
+            'oxwidget' => '\OxidEsales\Eshop\Application\Component\Widget\Widget',
+            'oxwminibasket' => '\OxidEsales\Eshop\Application\Component\Widget\MiniBasket',
+            'oxwservicelist' => '\OxidEsales\Eshop\Application\Component\Widget\ServiceList',
+
         ];
     }
 

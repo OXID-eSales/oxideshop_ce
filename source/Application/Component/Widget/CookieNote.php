@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -21,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component\Widget;
+
 /**
  * Cookie note widget
  */
-class oxwCookieNote extends oxWidget
+class CookieNote extends \oxWidget
 {
 
     /**

@@ -356,8 +356,9 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->check("editval[default]");
         $this->clickAndWaitFrame("oLockButton", 'list');
         $this->clickDeleteListItem(3);
-        $this->assertEquals("Deutsch", $this->getText("//tr[@id='row.1']/td[3]"));
-        $this->assertEquals("English", $this->getText("//tr[@id='row.2']/td[3]"));
+        $this->clickAndWait("link=Language");
+        $this->assertElementPresent("link=Deutsch");
+        $this->assertElementPresent("link=English");
         $this->assertElementNotPresent("//tr[@id='row.3']");
         //trying to delete lang with id = 0. it must be impossible
         $this->clickDeleteListItem(1);

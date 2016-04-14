@@ -2523,6 +2523,18 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertFalse($this->getConfig()->isCurrentUrl($sURLToCheck));
     }
 
+    public function testReinitialize()
+    {
+        $config = oxNew('oxConfig');
+        $config->init();
+
+        oxNew('oxConfig')->saveShopConfVar('string', 'testReinitialize', 'testReinitialize');
+
+        $config->reinitialize();
+
+        $this->assertEquals('testReinitialize', $config->getConfigParam('testReinitialize'));
+    }
+
     /**
      * @return oxConfig|PHPUnit_Framework_MockObject_MockObject
      */

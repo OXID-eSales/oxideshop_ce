@@ -425,6 +425,15 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
+     * Reloads all configuration.
+     */
+    public function reinitialize()
+    {
+        $this->_blInit = false;
+        $this->init();
+    }
+
+    /**
      * Load any additional configuration on oxConfig::init.
      */
     protected function loadAdditionalConfiguration()

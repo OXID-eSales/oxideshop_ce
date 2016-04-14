@@ -114,6 +114,15 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxwminibasket' => '\OxidEsales\Eshop\Application\Component\Widget\MiniBasket',
             'oxwservicelist' => '\OxidEsales\Eshop\Application\Component\Widget\ServiceList',
 
+            'oxcmp_categories' => '\OxidEsales\Eshop\Application\Component\CategoriesComponent',
+            'oxcmp_lang' => '\OxidEsales\Eshop\Application\Component\LanguageComponent',
+            'oxcmp_shop' => '\OxidEsales\Eshop\Application\Component\ShopComponent',
+            'oxcmp_utils' => '\OxidEsales\Eshop\Application\Component\UtilsComponent',
+            'oxcmp_basket' => '\OxidEsales\Eshop\Application\Component\BasketComponent',
+            'oxcmp_cur' => '\OxidEsales\Eshop\Application\Component\CurrencyComponent',
+            'oxcmp_news' => '\OxidEsales\Eshop\Application\Component\NewsComponent',
+            'oxcmp_user' => '\OxidEsales\Eshop\Application\Component\UserComponent',
+            'oxlocator' => '\OxidEsales\Eshop\Application\Component\Locator',
         ];
     }
 

@@ -20,6 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component;
+
+use oxRegistry;
+use oxUser;
+use oxUserException;
+use oxCookieException;
+use oxInputException;
+use oxConnectionException;
+use Exception;
+use oxField;
+
 // defining login/logout states
 define('USER_LOGIN_SUCCESS', 1);
 define('USER_LOGIN_FAIL', 2);
@@ -31,7 +42,7 @@ define('USER_LOGOUT', 3);
  *
  * @subpackage oxcmp
  */
-class oxcmp_user extends oxView
+class UserComponent extends \oxView
 {
 
     /**

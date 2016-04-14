@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component;
+
+use oxRegistry;
+
 /**
  * Shop language manager.
  * Performs language manager function: changes template settings, modifies URL's.
  *
  * @subpackage oxcmp
  */
-class oxcmp_lang extends oxView
+class LanguageComponent extends \oxView
 {
 
     /**

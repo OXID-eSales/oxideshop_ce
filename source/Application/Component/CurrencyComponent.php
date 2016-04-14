@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component;
+
+use oxRegistry;
+
 /**
  * Currency manager class.
  *
  * @subpackage oxcmp
  */
-class oxcmp_cur extends oxView
+class CurrencyComponent extends \oxView
 {
 
     /**

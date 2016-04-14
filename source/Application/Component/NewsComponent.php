@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component;
+
 /**
  * News list manager, loads some news informetion.
  *
  * @subpackage oxcmp
  */
-class oxcmp_news extends oxView
+class NewsComponent extends \oxView
 {
 
     /**

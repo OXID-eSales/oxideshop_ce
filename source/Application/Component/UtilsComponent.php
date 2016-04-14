@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component;
+
+use oxRegistry;
+
 /**
  * Transparent shop utilities class.
  * Some specific utilities, such as fetching article info, etc. (Class may be used
@@ -27,7 +31,7 @@
  *
  * @subpackage oxcmp
  */
-class oxcmp_utils extends oxView
+class UtilsComponent extends \oxView
 {
 
     /**

@@ -20,12 +20,16 @@
  * @version       OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component;
+
+use oxRegistry;
+
 /**
  * Transparent category manager class (executed automatically).
  *
  * @subpackage oxcmp
  */
-class oxcmp_categories extends oxView
+class CategoriesComponent extends \oxView
 {
 
     /**

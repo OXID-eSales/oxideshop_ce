@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component;
+
+use oxRegistry;
+
 /**
  * Translarent shop manager (executed automatically), sets
  * registration information and current shop object.
  *
  * @subpackage oxcmp
  */
-class oxcmp_shop extends oxView
+class ShopComponent extends \oxView
 {
 
     /**

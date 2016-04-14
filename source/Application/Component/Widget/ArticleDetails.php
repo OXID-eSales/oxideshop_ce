@@ -22,6 +22,10 @@
 
 namespace OxidEsales\Eshop\Application\Component\Widget;
 
+use oxRegistry;
+use stdClass;
+use oxCategory;
+
 /**
  * Article detailed information widget.
  */

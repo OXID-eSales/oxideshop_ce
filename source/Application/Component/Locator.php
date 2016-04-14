@@ -20,10 +20,16 @@
  * @version       OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component;
+
+use oxRegistry;
+use oxSeoEncoderRecomm;
+use oxSeoEncoderCategory;
+
 /**
  * Locator controller for: category, vendor, manufacturers and search lists.
  */
-class oxLocator extends oxSuperCfg
+class Locator extends \oxSuperCfg
 {
 
     /**

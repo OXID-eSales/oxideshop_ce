@@ -22,6 +22,9 @@
 
 namespace OxidEsales\Eshop\Application\Component\Widget;
 
+use oxRegistry;
+use oxArticle;
+
 /**
  * Article box widget
  */

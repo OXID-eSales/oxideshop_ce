@@ -20,13 +20,21 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Component;
+
+use oxRegistry;
+use stdClass;
+use oxOutOfStockException;
+use oxArticleInputException;
+use oxNoArticleException;
+
 /**
  * Main shopping basket manager. Arranges shopping basket
  * contents, updates amounts, prices, taxes etc.
  *
  * @subpackage oxcmp
  */
-class oxcmp_basket extends oxView
+class BasketComponent extends \oxView
 {
 
     /**

@@ -90,6 +90,8 @@ class oxLegacyDb extends oxSuperCfg
      * @param array      $aParams Array of parameters
      * @param bool       $blType  connection type
      *
+     * @deprecated since v5.3.0 (2016-04-14); Use the method oxLegacyDb::getAll() instead.
+     *
      * @return array
      */
     public function getArray($sSql, $aParams = array(), $blType = true)
@@ -257,7 +259,9 @@ class oxLegacyDb extends oxSuperCfg
      * Quote string
      *
      * @param string $sValue value
-     *
+     * 
+     * @deprecated since v5.3.0 (2016-04-14); Use the method oxLegacyDb::quote() instead.
+     *             
      * @return string
      */
     public function qstr($sValue)

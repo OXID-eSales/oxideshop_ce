@@ -154,7 +154,9 @@ class UtilsObject
      */
     public static function setClassInstance($className, $instance)
     {
-        $className = strtolower($className);
+        if (!self::isNamespacedClass($className)) {
+            $className = strtolower($className);
+        }
         self::$_aClassInstances[$className] = $instance;
     }
 
@@ -234,7 +236,7 @@ class UtilsObject
         array_shift($arguments);
         $argumentsCount = count($arguments);
         $shouldUseCache = $this->shouldCacheObject($className, $arguments);
-        if (strpos($className, '\\') === false) {
+        if (!self::isNamespacedClass($className)) {
             $className = strtolower($className);
         }
 
@@ -430,5 +432,15 @@ class UtilsObject
     protected function shouldCacheObject($className, $arguments)
     {
         return count($arguments) < 2 && (!isset($arguments[0]) || is_scalar($arguments[0]));
+    }
+
+    /**
+     * @param $className
+     *
+     * @return bool
+     */
+    private static function isNamespacedClass($className)
+    {
+        return strpos($className, '\\') !== false;
     }
 }

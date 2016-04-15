@@ -149,6 +149,9 @@ class oxLegacyDb extends oxSuperCfg
      * @param array      $aParams Array of parameters
      * @param bool       $blType  connection type
      *
+     * @deprecated since v5.3.0 (2016-04-14); This method will be removed. Rebuild the functionality of this
+     * method with your code using getAll with assoc fetch mode. In some use cases you should be able to simply use getRow
+     *             
      * @return array
      */
     public function getAssoc($sSql, $aParams = array(), $blType = true)

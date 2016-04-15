@@ -32,8 +32,8 @@ use OxidEsales\Eshop\Setup\Dispatcher;
 
 require_once '../vendor/autoload.php';
 require_once 'functions.php';
-require_once '../Core/exception/oxexception.php';
-require_once '../Core/exception/oxsystemcomponentexception.php';
+require_once '../Core/Exception/oxexception.php';
+require_once '../Core/Exception/oxsystemcomponentexception.php';
 
 $oDispatcher = new Dispatcher();
 $oDispatcher->run();

@@ -20,6 +20,11 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxShopControl;
+use oxWidgetControl;
+
 /**
  * Static class mostly containing static methods which are supposed to be called before the full framework initialization
  */

@@ -84,11 +84,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxviewconfig' => '\OxidEsales\Eshop\Core\ViewConfig',
             'oxwidgetcontrol' => '\OxidEsales\Eshop\Core\WidgetControl',
 
-            //not yet namespaced:
-            ###'oxconfk' => '\OxidEsales\Eshop\Core\ConfigurationKey',
-            ###'oxfunctions' => '\OxidEsales\Eshop\Core\Functions',
-            ###'oxid' => '\OxidEsales\Eshop\Core\Oxid',
-
             'manufacturerlist' => '\OxidEsales\Eshop\Application\Controller\ManufacturerListController',
             'review' => '\OxidEsales\Eshop\Application\Controller\ReviewController',
             'vendorlist' => '\OxidEsales\Eshop\Application\Controller\VendorListController',

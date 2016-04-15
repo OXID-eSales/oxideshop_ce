@@ -23,4 +23,4 @@
 require_once dirname(__FILE__) . "/bootstrap.php";
 
 //Starts the shop
-Oxid::runWidget();
+OxidEsales\Eshop\Core\Oxid::runWidget();

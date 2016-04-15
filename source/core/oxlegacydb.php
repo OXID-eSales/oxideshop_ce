@@ -211,11 +211,24 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Return count effected values
+     * Returns the count of rows affected by the last query.
+     * This is an alias for affectedRows().
+     *
+     * @deprecated since v5.3.0 (2016-04-14); This method will be removed in v6.0. Use affectedRows() instead.
      *
      * @return int
      */
     public function Affected_Rows()
+    {
+        return $this->affectedRows();
+    }
+
+    /**
+     * Returns the count of rows affected by the last query.
+     *
+     * @return int
+     */
+    public function affectedRows()
     {
         return $this->getDb(false)->Affected_Rows();
     }

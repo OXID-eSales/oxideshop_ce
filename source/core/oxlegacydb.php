@@ -73,12 +73,12 @@ class oxLegacyDb extends oxSuperCfg
      * Get value
      *
      * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
+     * @param array      $aParams Array of parameters
      * @param bool       $blType  connection type
      *
      * @return string
      */
-    public function getOne($sSql, $aParams = false, $blType = true)
+    public function getOne($sSql, $aParams = array(), $blType = true)
     {
         return $this->getDb($blType)->getOne($sSql, $aParams);
     }
@@ -87,12 +87,12 @@ class oxLegacyDb extends oxSuperCfg
      * Get value
      *
      * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
+     * @param array      $aParams Array of parameters
      * @param bool       $blType  connection type
      *
      * @return array
      */
-    public function getArray($sSql, $aParams = false, $blType = true)
+    public function getArray($sSql, $aParams = array(), $blType = true)
     {
         return $this->getDb($blType)->getArray($sSql, $aParams);
     }
@@ -101,12 +101,12 @@ class oxLegacyDb extends oxSuperCfg
      * Get value
      *
      * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
+     * @param array      $aParams Array of parameters
      * @param bool       $blType  connection type
      *
      * @return array
      */
-    public function getRow($sSql, $aParams = false, $blType = true)
+    public function getRow($sSql, $aParams = array(), $blType = true)
     {
         return $this->getDb($blType)->getRow($sSql, $aParams);
     }
@@ -115,12 +115,12 @@ class oxLegacyDb extends oxSuperCfg
      * Get value
      *
      * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
+     * @param array      $aParams Array of parameters
      * @param bool       $blType  connection type
      *
      * @return array
      */
-    public function getAll($sSql, $aParams = false, $blType = true)
+    public function getAll($sSql, $aParams = array(), $blType = true)
     {
 
         return $this->getDb($blType)->getAll($sSql, $aParams);
@@ -130,12 +130,12 @@ class oxLegacyDb extends oxSuperCfg
      * Get value
      *
      * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
+     * @param array      $aParams Array of parameters
      * @param bool       $blType  connection type
      *
      * @return object
      */
-    public function select($sSql, $aParams = false, $blType = true)
+    public function select($sSql, $aParams = array(), $blType = true)
     {
         return $this->getDb($blType)->execute($sSql, $aParams);
     }
@@ -144,12 +144,12 @@ class oxLegacyDb extends oxSuperCfg
      * Get value
      *
      * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
+     * @param array      $aParams Array of parameters
      * @param bool       $blType  connection type
      *
      * @return array
      */
-    public function getAssoc($sSql, $aParams = false, $blType = true)
+    public function getAssoc($sSql, $aParams = array(), $blType = true)
     {
         return $this->getDb($blType)->getAssoc($sSql, $aParams);
     }
@@ -158,12 +158,12 @@ class oxLegacyDb extends oxSuperCfg
      * Get column value
      *
      * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
+     * @param array      $aParams Array of parameters
      * @param bool       $blType  connection type
      *
      * @return object
      */
-    public function getCol($sSql, $aParams = false, $blType = true)
+    public function getCol($sSql, $aParams = array(), $blType = true)
     {
         return $this->getDb($blType)->getCol($sSql, $aParams);
     }
@@ -174,12 +174,12 @@ class oxLegacyDb extends oxSuperCfg
      * @param string     $sSql    Query
      * @param int        $iRows   Rows
      * @param int        $iOffset Offset
-     * @param array|bool $aParams Array of parameters
+     * @param array      $aParams Array of parameters
      * @param bool       $blType  connection type
      *
      * @return object
      */
-    public function selectLimit($sSql, $iRows = -1, $iOffset = -1, $aParams = false, $blType = true)
+    public function selectLimit($sSql, $iRows = -1, $iOffset = -1, $aParams = array(), $blType = true)
     {
         return $this->getDb($blType)->SelectLimit($sSql, $iRows, $iOffset, $aParams);
     }
@@ -188,11 +188,11 @@ class oxLegacyDb extends oxSuperCfg
      * Execute query
      *
      * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
+     * @param array      $aParams Array of parameters
      *
      * @return object
      */
-    public function execute($sSql, $aParams = false)
+    public function execute($sSql, $aParams = array())
     {
         return $this->getDb(false)->execute($sSql, $aParams);
     }
@@ -201,11 +201,11 @@ class oxLegacyDb extends oxSuperCfg
      * Execute query
      *
      * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
+     * @param array      $aParams Array of parameters
      *
      * @return object
      */
-    public function query($sSql, $aParams = false)
+    public function query($sSql, $aParams = array())
     {
         return $this->getDb(false)->Query($sSql, $aParams);
     }

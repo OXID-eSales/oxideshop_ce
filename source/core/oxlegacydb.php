@@ -311,6 +311,8 @@ class oxLegacyDb extends oxSuperCfg
      * @param string $sTable       Table name
      * @param bool   $blNumIndexes Numeric indexes
      *
+     * @deprecated since v5.3.0 (2016-04-13); Not used. In v6.0 this method will be removed.
+     *
      * @return array
      */
     public function metaColumnNames($sTable, $blNumIndexes = false)

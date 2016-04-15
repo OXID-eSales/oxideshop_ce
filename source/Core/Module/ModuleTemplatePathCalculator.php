@@ -73,6 +73,14 @@ class ModuleTemplatePathCalculator
     }
 
     /**
+     * @return FileSystem
+     */
+    protected function getFileSystem()
+    {
+        return oxNew(FileSystem::class);
+    }
+
+    /**
      * Finds the template by name in modules
      *
      * @param string $templateName
@@ -96,7 +104,7 @@ class ModuleTemplatePathCalculator
                 // check if module is active
                 if (isset($activeModules[$sModuleId])) {
                     $foundTemplate = null;
-                    $fileSystem = oxNew(FileSystem::class);
+                    $fileSystem = $this->getFileSystem();
 
                     // check if template for our active themes exists
                     if ($activeThemes = $config->getActiveThemesList()) {
@@ -113,7 +121,7 @@ class ModuleTemplatePathCalculator
                     }
 
                     if ($foundTemplate) {
-                        if ($config->checkIfReadable($foundTemplate)) {
+                        if ($fileSystem->isReadable($foundTemplate)) {
                             $finalTemplatePath = $foundTemplate;
                             break;
                         } else {

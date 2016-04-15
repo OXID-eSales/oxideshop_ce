@@ -2313,22 +2313,6 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
-     * Check if file exists and is readable
-     *
-     * @param string $filePath
-     *
-     * @return bool
-     */
-    public function checkIfReadable($filePath)
-    {
-        if (is_file($filePath) && is_readable($filePath)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Get active themes list.
      * Examples:
      *      if flow theme is active we will get ['flow']

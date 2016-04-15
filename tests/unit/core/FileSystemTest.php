@@ -67,4 +67,26 @@ class FileSystemTest extends UnitTestCase
         $expectedPath = 'path1/path2/path3';
         $this->assertSame($expectedPath, $actualConnectedPath);
     }
+
+    /**
+     * Test for isReadable method
+     */
+    public function testIsReadable()
+    {
+        $filePath = 'somedir/somefile.txt';
+
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile('somedir/somefile.txt', '');
+        $testDir = $vfsStreamWrapper->getRootPath();
+
+        $fileSystem = oxNew(FileSystem::class);
+        $this->assertTrue($fileSystem->isReadable($testDir . '/' . $filePath));
+
+        if (version_compare(PHP_VERSION, '5.5') >= 0) {
+            chmod($testDir . '/' . $filePath, 0000);
+            $this->assertFalse($fileSystem->isReadable($testDir . '/' . $filePath));
+        }
+
+        $this->assertFalse($fileSystem->isReadable($testDir . '/notexists.txt'));
+    }
 }

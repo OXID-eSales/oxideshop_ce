@@ -45,4 +45,20 @@ class FileSystem
 
         return implode(DIRECTORY_SEPARATOR, $pathElements);
     }
+
+    /**
+     * Check if file exists and is readable
+     *
+     * @param string $filePath
+     *
+     * @return bool
+     */
+    public function isReadable($filePath)
+    {
+        if (is_file($filePath) && is_readable($filePath)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

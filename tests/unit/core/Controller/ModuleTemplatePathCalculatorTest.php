@@ -3,8 +3,9 @@
  * #PHPHEADER_OXID_LICENSE_INFORMATION#
  */
 
-use OxidEsales\TestingLibrary\UnitTestCase;
+use OxidEsales\Eshop\Core\FileSystem\FileSystem;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
 class ModuleTemplatePathFormatterTest extends UnitTestCase
 {
@@ -189,14 +190,17 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
         $moduleListStub->method('getActiveModuleInfo')->willReturn([$this->exampleModuleId => true]);
 
         // configure Config :)
-        $configStub = $this->getMock(oxConfig::class, ['getModulesDir', 'init', 'checkIfReadable', 'getDir']);
-        $configStub->method('checkIfReadable')->willReturn($this->returnValue(true));
+        $configStub = $this->getMock(oxConfig::class, ['getModulesDir', 'init', 'getDir']);
         $configStub->setConfigParam('aModuleTemplates', $this->exampleModuleTemplateConfiguration);
 
-        $templatePathCalculator = $this->getMock(ModuleTemplatePathCalculator::class, ['getConfig', 'getModuleList']);
+        $fileSystemStub = $this->getMock(FileSystem::class, ['isReadable']);
+        $fileSystemStub->method('isReadable')->willReturn($this->returnValue(true));
+
+        $templatePathCalculator = $this->getMock(ModuleTemplatePathCalculator::class, ['getConfig', 'getModuleList', 'getFileSystem']);
         $templatePathCalculator->setModulesPath($modulesPath);
         $templatePathCalculator->method('getConfig')->will($this->returnValue($configStub));
         $templatePathCalculator->method('getModuleList')->will($this->returnValue($moduleListStub));
+        $templatePathCalculator->method('getFileSystem')->will($this->returnValue($fileSystemStub));
 
         $configTheme && $configStub->setConfigParam('sTheme', $configTheme);
         $configCustomTheme && $configStub->setConfigParam('sCustomTheme', $configCustomTheme);

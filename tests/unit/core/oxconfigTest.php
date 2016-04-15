@@ -2031,25 +2031,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertEquals($expectedResult, $realResult);
     }
 
-    public function testCheckIfReadable()
-    {
-        $filePath = 'somedir/somefile.txt';
-
-        $vfsStreamWrapper = $this->getVfsStreamWrapper();
-        $vfsStreamWrapper->createFile('somedir/somefile.txt', '');
-        $testDir = $vfsStreamWrapper->getRootPath();
-
-        $config = oxNew('oxConfig');
-        $this->assertTrue($config->checkIfReadable($testDir . '/' . $filePath));
-
-        if (version_compare(PHP_VERSION, '5.5') >= 0) {
-            chmod($testDir . '/' . $filePath, 0000);
-            $this->assertFalse($config->checkIfReadable($testDir . '/' . $filePath));
-        }
-
-        $this->assertFalse($config->checkIfReadable($testDir . '/notexists.txt'));
-    }
-
     public function testGetOutDir()
     {
         $oConfig = oxNew('oxConfig');

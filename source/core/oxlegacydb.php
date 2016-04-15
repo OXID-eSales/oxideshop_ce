@@ -321,7 +321,7 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Start mysql transaction
      *
-     * @return bool
+     * @return ADORecordSet_empty|object_ResultSet
      */
     public function startTransaction()
     {
@@ -331,7 +331,7 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Commit mysql transaction
      *
-     * @return bool
+     * @return ADORecordSet_empty|object_ResultSet
      */
     public function commitTransaction()
     {
@@ -341,7 +341,7 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * RollBack mysql transaction
      *
-     * @return bool
+     * @return ADORecordSet_empty|object_ResultSet
      */
     public function rollbackTransaction()
     {
@@ -354,7 +354,7 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @param string $sLevel level
      *
-     * @return bool
+     * @return bool|ADORecordSet_empty|object_ResultSet
      */
     public function setTransactionIsolationLevel($sLevel = null)
     {

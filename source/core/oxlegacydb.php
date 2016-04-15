@@ -222,6 +222,8 @@ class oxLegacyDb extends oxSuperCfg
      * @param string     $sSql    Query
      * @param array      $aParams Array of parameters
      *
+     *  @deprecated since v5.3.0 (2016-04-15); This method will be removed in v6.0. Please use the method execute() instead.
+     *
      * @return object
      */
     public function query($sSql, $aParams = array())

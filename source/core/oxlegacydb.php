@@ -255,6 +255,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Return error number
      *
+     * @deprecated since v5.3.0 (2016-04-14); This information will be part of the thrown DatabaseException exception.
+     *             Replace usage by catching DatabaseException and using DatabaseException->getCode()
+     *
      * @return int
      */
     public function errorNo()
@@ -264,6 +267,9 @@ class oxLegacyDb extends oxSuperCfg
 
     /**
      * Return error message
+     *
+     * @deprecated since v5.3.0 (2016-04-14); This information will be part of the thrown DatabaseException exception.
+     *             Replace usage by catching DatabaseException and using DatabaseException->getMessage()
      *
      * @return string
      */

@@ -480,7 +480,6 @@ class oxUtilsView extends oxSuperCfg
         }
 
         if ($this->isShopTemplateBlockOverriddenByActiveModule()) {
-
             $shopId = $config->getShopId();
 
             $ids = $this->_getActiveModuleInfo();
@@ -623,7 +622,7 @@ class oxUtilsView extends oxSuperCfg
     /**
      * Form list of blocks which has duplicates for specific theme.
      *
-     * @param $activeBlockTemplates
+     * @param array $activeBlockTemplates
      *
      * @return array
      */
@@ -648,8 +647,8 @@ class oxUtilsView extends oxSuperCfg
     /**
      * Remove default blocks whose have duplicate for specific theme.
      *
-     * @param $activeBlockTemplates
-     * @param $templateBlocksToExchange
+     * @param array $activeBlockTemplates
+     * @param array $templateBlocksToExchange
      *
      * @return array
      */
@@ -669,8 +668,8 @@ class oxUtilsView extends oxSuperCfg
     /**
      * Remove parent theme blocks whose have duplicate for custom theme.
      *
-     * @param $templateBlocks
-     * @param $templateBlocksToExchange
+     * @param array $templateBlocks
+     * @param array $templateBlocksToExchange
      *
      * @return array
      */
@@ -777,7 +776,7 @@ class oxUtilsView extends oxSuperCfg
      * Prepare indicator for template block.
      * This indicator might be used to identify same template block for different theme.
      *
-     * @param $activeBlockTemplate
+     * @param array $activeBlockTemplate
      *
      * @return string
      */

@@ -22,8 +22,10 @@
 
 namespace OxidEsales\Eshop\Core\Module;
 
+use oxConfig;
 use oxException;
 use OxidEsales\Eshop\Core\FileSystem\FileSystem;
+use oxModuleList;
 
 /**
  * Class ModuleTemplatePathFormatter forms path to module template.
@@ -33,12 +35,41 @@ use OxidEsales\Eshop\Core\FileSystem\FileSystem;
  */
 class ModuleTemplatePathCalculator
 {
+    /** @var string Path to modules directory inside the shop. */
+    private $modulesPath = '';
+
+    /** @var  oxConfig */
+    private $config;
+
+    /** @var oxModuleList */
+    private $moduleList;
+
+    /** @var FileSystem */
+    private $fileSystem;
+
     /**
-     * Path to modules directory inside the shop.
+     * Sets required dependencies
      *
-     * @var string
+     * @param oxConfig     $config
+     * @param oxModuleList $moduleList
+     * @param FileSystem   $fileSystem
      */
-    protected $modulesPath = '';
+    public function __construct($config = null, $moduleList = null, $fileSystem = null)
+    {
+        if (is_null($config)) {
+            $config = \oxRegistry::getConfig();
+        }
+        if (is_null($moduleList)) {
+            $moduleList = oxNew('oxModuleList');
+        }
+        if (is_null($fileSystem)) {
+            $fileSystem = oxNew(FileSystem::class);
+        }
+
+        $this->config = $config;
+        $this->moduleList = $moduleList;
+        $this->fileSystem = $fileSystem;
+    }
 
     /**
      * @param string $modulesPath
@@ -54,30 +85,6 @@ class ModuleTemplatePathCalculator
     protected function getModulesPath()
     {
         return $this->modulesPath;
-    }
-
-    /**
-     * @return oxConfig
-     */
-    protected function getConfig()
-    {
-        return oxNew('oxConfig');
-    }
-
-    /**
-     * @return oxModuleList
-     */
-    protected function getModuleList()
-    {
-        return oxNew('oxModuleList');
-    }
-
-    /**
-     * @return FileSystem
-     */
-    protected function getFileSystem()
-    {
-        return oxNew(FileSystem::class);
     }
 
     /**
@@ -137,5 +144,29 @@ class ModuleTemplatePathCalculator
         }
 
         return $finalTemplatePath;
+    }
+
+    /**
+     * @return oxConfig
+     */
+    protected function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * @return oxModuleList
+     */
+    protected function getModuleList()
+    {
+        return $this->moduleList;
+    }
+
+    /**
+     * @return FileSystem
+     */
+    protected function getFileSystem()
+    {
+        return $this->fileSystem;
     }
 }

@@ -59,7 +59,7 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
     /**
      * Data provider for testCalculateModuleTemplatePath
      */
-    public function calculateModuleTemplatePathDataProvider()
+    public function providerCalculateModuleTemplatePath()
     {
         return [
             ['first.tpl', $this->pathToModules . 'test_path/first_default.tpl', null, null],
@@ -88,9 +88,20 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
     }
 
     /**
+     * Test if correct path to template will be calculated with different theme configurations
+     *
+     * @dataProvider providerCalculateModuleTemplatePath
+     */
+    public function testCalculateModuleTemplatePath($templateName, $expectedPath, $configTheme, $configCustomTheme)
+    {
+        $calculator = $this->getModuleTemplatePathCalculator($this->pathToModules, $configTheme, $configCustomTheme);
+        $this->assertSame($expectedPath, $calculator->calculateModuleTemplatePath($templateName));
+    }
+
+    /**
      * Data provider for testCalculateModuleTemplatePathExceptions
      */
-    public function calculateModuleTemplatePathExceptionsDataProvider()
+    public function providerCalculateModuleTemplatePathExceptions()
     {
         return [
             ['fifth.tpl', '', 'azure', null],
@@ -100,20 +111,9 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
     }
 
     /**
-     * Test if correct path to template will be calculated with different theme configurations
-     *
-     * @dataProvider calculateModuleTemplatePathDataProvider
-     */
-    public function testCalculateModuleTemplatePath($templateName, $expectedPath, $configTheme, $configCustomTheme)
-    {
-        $calculator = $this->getModuleTemplatePathCalculator($this->pathToModules, $configTheme, $configCustomTheme);
-        $this->assertSame($expectedPath, $calculator->calculateModuleTemplatePath($templateName));
-    }
-
-    /**
      * Test if Exceptions will be thrown if no templates by name and theme configurations will be found
      *
-     * @dataProvider calculateModuleTemplatePathExceptionsDataProvider
+     * @dataProvider providerCalculateModuleTemplatePathExceptions
      */
     public function testCalculateModuleTemplatePathExceptions($templateName, $expectedPath, $configTheme, $configCustomTheme)
     {
@@ -130,17 +130,15 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
     {
         $this->setExpectedException('oxException');
 
-        // deactivate modules
-        $moduleListStub = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
-        $moduleListStub->method('getActiveModuleInfo')->willReturn([]);
+        /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $moduleListMock */
+        $moduleListMock = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
+        $moduleListMock->method('getActiveModuleInfo')->willReturn([]);
 
         // configure Config to return false on searching shop templates
-        $configStub = $this->getMock('oxConfig', ['getDir']);
+        $configMock = $this->getMock('oxConfig', ['getDir']);
 
-        $templatePathCalculator = $this->getMock(ModuleTemplatePathCalculator::class, ['getConfig', 'getModuleList']);
+        $templatePathCalculator = new ModuleTemplatePathCalculator($configMock, $moduleListMock);
         $templatePathCalculator->setModulesPath($this->pathToModules);
-        $templatePathCalculator->method('getConfig')->will($this->returnValue($configStub));
-        $templatePathCalculator->method('getModuleList')->will($this->returnValue($moduleListStub));
 
         try {
             $templatePathCalculator->calculateModuleTemplatePath('someTemplateName.tpl');
@@ -157,17 +155,15 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
     {
         $this->setExpectedException('oxException');
 
-        // activate this virtual module
-        $moduleListStub = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
-        $moduleListStub->method('getActiveModuleInfo')->willReturn([$this->exampleModuleId => true]);
+        /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $moduleListMock */
+        $moduleListMock = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
+        $moduleListMock->method('getActiveModuleInfo')->willReturn([$this->exampleModuleId => true]);
 
-        $configStub = $this->getMock(oxConfig::class, ['getModulesDir', 'init', 'getDir']);
-        $configStub->setConfigParam('aModuleTemplates', $this->exampleModuleTemplateConfiguration);
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $configMock */
+        $configMock = $this->getMock(oxConfig::class, ['getModulesDir', 'init', 'getDir']);
+        $configMock->setConfigParam('aModuleTemplates', $this->exampleModuleTemplateConfiguration);
 
-        $templatePathCalculator = $this->getMock(ModuleTemplatePathCalculator::class, ['getConfig', 'getModuleList']);
-        $templatePathCalculator->method('getConfig')->will($this->returnValue($configStub));
-        $templatePathCalculator->method('getModuleList')->will($this->returnValue($moduleListStub));
-
+        $templatePathCalculator = new ModuleTemplatePathCalculator($configMock, $moduleListMock);
         try {
             $templatePathCalculator->calculateModuleTemplatePath('first.tpl');
         } catch (Exception $e) {
@@ -180,30 +176,29 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
      * Return testable object.
      *
      * @param string $modulesPath
+     * @param string $configTheme
+     * @param string $configCustomTheme
      *
      * @return ModuleTemplatePathCalculator
      */
     private function getModuleTemplatePathCalculator($modulesPath, $configTheme, $configCustomTheme)
     {
-        // activate this virtual module
-        $moduleListStub = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
-        $moduleListStub->method('getActiveModuleInfo')->willReturn([$this->exampleModuleId => true]);
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $configMock */
+        $configMock = $this->getMock(oxConfig::class, ['getModulesDir', 'init', 'getDir']);
+        $configMock->setConfigParam('aModuleTemplates', $this->exampleModuleTemplateConfiguration);
+        $configTheme && $configMock->setConfigParam('sTheme', $configTheme);
+        $configCustomTheme && $configMock->setConfigParam('sCustomTheme', $configCustomTheme);
 
-        // configure Config :)
-        $configStub = $this->getMock(oxConfig::class, ['getModulesDir', 'init', 'getDir']);
-        $configStub->setConfigParam('aModuleTemplates', $this->exampleModuleTemplateConfiguration);
+        /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $moduleListMock */
+        $moduleListMock = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
+        $moduleListMock->method('getActiveModuleInfo')->willReturn([$this->exampleModuleId => true]);
 
-        $fileSystemStub = $this->getMock(FileSystem::class, ['isReadable']);
-        $fileSystemStub->method('isReadable')->willReturn($this->returnValue(true));
+        /** @var FileSystem|PHPUnit_Framework_MockObject_MockObject $fileSystemMock */
+        $fileSystemMock = $this->getMock(FileSystem::class, ['isReadable']);
+        $fileSystemMock->method('isReadable')->willReturn($this->returnValue(true));
 
-        $templatePathCalculator = $this->getMock(ModuleTemplatePathCalculator::class, ['getConfig', 'getModuleList', 'getFileSystem']);
+        $templatePathCalculator = new ModuleTemplatePathCalculator($configMock, $moduleListMock, $fileSystemMock);
         $templatePathCalculator->setModulesPath($modulesPath);
-        $templatePathCalculator->method('getConfig')->will($this->returnValue($configStub));
-        $templatePathCalculator->method('getModuleList')->will($this->returnValue($moduleListStub));
-        $templatePathCalculator->method('getFileSystem')->will($this->returnValue($fileSystemStub));
-
-        $configTheme && $configStub->setConfigParam('sTheme', $configTheme);
-        $configCustomTheme && $configStub->setConfigParam('sCustomTheme', $configCustomTheme);
 
         return $templatePathCalculator;
     }

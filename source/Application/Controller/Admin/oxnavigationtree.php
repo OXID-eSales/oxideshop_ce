@@ -116,14 +116,17 @@ class OxNavigationTree extends oxSuperCfg
         } elseif (is_readable($sMenuFile) && ($sXml = @file_get_contents($sMenuFile))) {
 
             // looking for non supported character encoding
-            if (getStr()->preg_match("/encoding\=(.*)\?\>/", $sXml, $aMatches) !== 0) {
-                if (isset($aMatches[1])) {
-                    $sCurrEncoding = trim($aMatches[1], "\"");
-                    if (!in_array(strtolower($sCurrEncoding), $this->_aSupportedExpathXmlEncodings)) {
-                        $sXml = str_replace($aMatches[1], "\"UTF-8\"", $sXml);
-                        $sXml = iconv($sCurrEncoding, "UTF-8", $sXml);
-                    }
-                }
+            if ( getStr()->preg_match( '/\sencoding\="([^"]+)"\s*\?\s*\>/', $sXml, $aMatches ) !== 0 ) {
+               if ( isset( $aMatches[1] ) ) {
+                   $sCurrEncoding = trim( $aMatches[1] );
+                   if ( !in_array( strtolower( $sCurrEncoding ), $this->_aSupportedExpathXmlEncodings ) ) {
+                       $sXml = str_replace( $aMatches[1], 'UTF-8', $sXml );
+                       // fallback since $sCurrEncoding may be invalid and lead iconv to return FALSE 
+                       $sXml = iconv( $sCurrEncoding, 'UTF-8', $sXml ) !== false
+                             ? iconv( $sCurrEncoding, 'UTF-8', $sXml )
+                             : $sXml;
+                   }
+               }
             }
 
             // load XML as string

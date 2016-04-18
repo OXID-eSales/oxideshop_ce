@@ -239,4 +239,40 @@ class Unit_Core_oxthemeTest extends OxidTestCase
 
         $this->assertEquals('azure', $oTheme->getId());
     }
+
+    /**
+     * Test if getActiveThemeList gives correct list in simple case - one theme without extending
+     */
+    public function testGetActiveThemesListSimple()
+    {
+        $this->setConfigParam('sTheme', 'someTheme');
+
+        $theme = oxNew('oxTheme');
+        $this->assertEquals(['someTheme'], $theme->getActiveThemesList());
+    }
+
+    /**
+     * Test if getActiveThemeList gives correct list if there are a theme which extends another theme
+     */
+    public function testGetActiveThemesListExtended()
+    {
+        $this->setConfigParam('sTheme', 'someBasicTheme');
+        $this->setConfigParam('sCustomTheme', 'someImprovedTheme');
+
+        $theme = oxNew('oxTheme');
+        $this->assertEquals(['someBasicTheme', 'someImprovedTheme'], $theme->getActiveThemesList());
+    }
+
+    /**
+     * Test if getActiveThemeList gives correct list if being in admin case
+     */
+    public function testGetActiveThemesListAdmin()
+    {
+        $this->setAdminMode(true);
+        $this->setConfigParam('sTheme', 'someTheme');
+        $this->setConfigParam('sCustomTheme', 'someCustomTheme');
+
+        $theme = oxNew('oxTheme');
+        $this->assertEquals(array(), $theme->getActiveThemesList());
+    }
 }

@@ -134,10 +134,7 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
         $moduleListMock = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
         $moduleListMock->method('getActiveModuleInfo')->willReturn([]);
 
-        // configure Config to return false on searching shop templates
-        $configMock = $this->getMock('oxConfig', ['getDir']);
-
-        $templatePathCalculator = new ModuleTemplatePathCalculator($configMock, $moduleListMock);
+        $templatePathCalculator = new ModuleTemplatePathCalculator($moduleListMock);
         $templatePathCalculator->setModulesPath($this->pathToModules);
 
         try {
@@ -153,23 +150,16 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
      */
     public function testCalculateModuleTemplatePathFileNotExists()
     {
-        $this->setExpectedException('oxException');
+        $this->setExpectedException('oxException', 'Cannot find template file "/test_path/first_default.tpl"');
 
         /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $moduleListMock */
         $moduleListMock = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
         $moduleListMock->method('getActiveModuleInfo')->willReturn([$this->exampleModuleId => true]);
 
-        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $configMock */
-        $configMock = $this->getMock(oxConfig::class, ['getModulesDir', 'init', 'getDir']);
-        $configMock->setConfigParam('aModuleTemplates', $this->exampleModuleTemplateConfiguration);
+        $this->setConfigParam('aModuleTemplates', $this->exampleModuleTemplateConfiguration);
 
-        $templatePathCalculator = new ModuleTemplatePathCalculator($configMock, $moduleListMock);
-        try {
-            $templatePathCalculator->calculateModuleTemplatePath('first.tpl');
-        } catch (Exception $e) {
-            $this->assertRegExp("@^Cannot find template file.*?@i", $e->getMessage());
-            throw $e;
-        }
+        $templatePathCalculator = new ModuleTemplatePathCalculator($moduleListMock);
+        $templatePathCalculator->calculateModuleTemplatePath('first.tpl');
     }
 
     /**
@@ -183,11 +173,9 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
      */
     private function getModuleTemplatePathCalculator($modulesPath, $configTheme, $configCustomTheme)
     {
-        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $configMock */
-        $configMock = $this->getMock(oxConfig::class, ['getModulesDir', 'init', 'getDir']);
-        $configMock->setConfigParam('aModuleTemplates', $this->exampleModuleTemplateConfiguration);
-        $configTheme && $configMock->setConfigParam('sTheme', $configTheme);
-        $configCustomTheme && $configMock->setConfigParam('sCustomTheme', $configCustomTheme);
+        $this->setConfigParam('aModuleTemplates', $this->exampleModuleTemplateConfiguration);
+        $this->setConfigParam('sTheme', $configTheme);
+        $this->setConfigParam('sCustomTheme', $configCustomTheme);
 
         /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $moduleListMock */
         $moduleListMock = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
@@ -197,7 +185,7 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
         $fileSystemMock = $this->getMock(FileSystem::class, ['isReadable']);
         $fileSystemMock->method('isReadable')->willReturn($this->returnValue(true));
 
-        $templatePathCalculator = new ModuleTemplatePathCalculator($configMock, $moduleListMock, $fileSystemMock);
+        $templatePathCalculator = new ModuleTemplatePathCalculator($moduleListMock, oxNew('oxTheme'), $fileSystemMock);
         $templatePathCalculator->setModulesPath($modulesPath);
 
         return $templatePathCalculator;

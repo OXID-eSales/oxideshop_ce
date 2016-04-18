@@ -101,10 +101,10 @@ class ModuleTemplateBlocksTest extends UnitTestCase
     }
 
     /**
-     * @param $themeId
-     * @param $customThemeId
-     * @param $expectedBlocksWithContent
-     * @param $isAdminMode
+     * @param string $themeId
+     * @param string $customThemeId
+     * @param string $expectedBlocksWithContent
+     * @param bool   $isAdminMode
      *
      * @dataProvider providerGetTemplateBlocksForAllActiveModules
      */
@@ -121,10 +121,10 @@ class ModuleTemplateBlocksTest extends UnitTestCase
     }
 
     /**
-     * @param $themeId
-     * @param $customThemeId
-     * @param $expectedBlocksWithContent
-     * @param $isAdminMode
+     * @param string $themeId
+     * @param string $customThemeId
+     * @param string $expectedBlocksWithContent
+     * @param bool   $isAdminMode
      *
      * @dataProvider providerGetTemplateBlocksForAllActiveModules
      */
@@ -150,20 +150,13 @@ class ModuleTemplateBlocksTest extends UnitTestCase
     {
         $shopPath = implode(DIRECTORY_SEPARATOR, [__DIR__, 'testData', 'shop']) . DIRECTORY_SEPARATOR;
 
-        $config = $this->getMock('oxConfig', array('getShopId', 'init'));
-        $config->expects($this->any())->method('getShopId')->will($this->returnValue('15'));
-        $config->setConfigParam('sShopDir', $shopPath);
-        $config->setConfigParam('sTheme', $themeId);
-        $config->setConfigParam('sCustomTheme', $customThemeId);
-        $config->setConfigParam(
-            'aModulePaths',
-            [$this->activeModuleId => 'oe/testTemplateBlockModuleId']
-        );
+        $this->setShopId(15);
+        $this->setConfigParam('sShopDir', $shopPath);
+        $this->setConfigParam('sTheme', $themeId);
+        $this->setConfigParam('sCustomTheme', $customThemeId);
+        $this->setConfigParam('aModulePaths', [$this->activeModuleId => 'oe/testTemplateBlockModuleId']);
 
-        $utilsView = oxNew('oxUtilsView');
-        $utilsView->setConfig($config);
-
-        return $utilsView;
+        return oxNew('oxUtilsView');
     }
 
     /**

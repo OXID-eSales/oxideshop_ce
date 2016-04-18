@@ -2311,27 +2311,4 @@ class oxConfig extends oxSuperCfg
     {
         return false;
     }
-
-    /**
-     * Get active themes list.
-     * Examples:
-     *      if flow theme is active we will get ['flow']
-     *      if azure is extended by some other we will get ['azure', 'someother']
-     *
-     * @return array
-     */
-    public function getActiveThemesList()
-    {
-        $activeThemeList = array();
-
-        if (!$this->isAdmin()) {
-            $activeThemeList[] = $this->getConfigParam('sTheme');
-
-            if ($customThemeId = $this->getConfigParam('sCustomTheme')) {
-                $activeThemeList[] = $customThemeId;
-            }
-        }
-
-        return $activeThemeList;
-    }
 }

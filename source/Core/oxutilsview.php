@@ -485,7 +485,7 @@ class oxUtilsView extends oxSuperCfg
             $ids = $this->_getActiveModuleInfo();
 
             $activeModulesId = array_keys($ids);
-            $activeThemeIds = $this->getActiveThemes();
+            $activeThemeIds = oxNew('oxTheme')->getActiveThemesList();
 
             $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
             $activeBlockTemplates = $templateBlockRepository->getBlocks($templateFileName, $activeModulesId, $shopId, $activeThemeIds);
@@ -783,26 +783,5 @@ class oxUtilsView extends oxSuperCfg
     private function prepareBlockKey($activeBlockTemplate)
     {
         return $activeBlockTemplate['OXTEMPLATE'] . $activeBlockTemplate['OXBLOCKNAME'];
-    }
-
-
-    /**
-     * Return active theme and active theme parent id.
-     *
-     * @return array
-     */
-    private function getActiveThemes()
-    {
-        $activeThemeIds = array();
-        if (!$this->isAdmin()) {
-            $activeThemeIds[] = $this->getConfig()->getConfigParam('sTheme');
-
-            $customThemeId = $this->getConfig()->getConfigParam('sCustomTheme');
-            if ($customThemeId) {
-                $activeThemeIds[] = $customThemeId;
-            }
-        }
-
-        return $activeThemeIds;
     }
 }

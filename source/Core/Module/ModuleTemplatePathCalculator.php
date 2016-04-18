@@ -22,10 +22,10 @@
 
 namespace OxidEsales\Eshop\Core\Module;
 
-use oxConfig;
 use oxException;
 use OxidEsales\Eshop\Core\FileSystem\FileSystem;
 use oxModuleList;
+use oxTheme;
 
 /**
  * Class ModuleTemplatePathFormatter forms path to module template.
@@ -38,8 +38,8 @@ class ModuleTemplatePathCalculator
     /** @var string Path to modules directory inside the shop. */
     private $modulesPath = '';
 
-    /** @var  oxConfig */
-    private $config;
+    /** @var oxTheme */
+    private $theme;
 
     /** @var oxModuleList */
     private $moduleList;
@@ -50,23 +50,23 @@ class ModuleTemplatePathCalculator
     /**
      * Sets required dependencies
      *
-     * @param oxConfig     $config
      * @param oxModuleList $moduleList
+     * @param oxTheme     $theme
      * @param FileSystem   $fileSystem
      */
-    public function __construct($config = null, $moduleList = null, $fileSystem = null)
+    public function __construct($moduleList = null, $theme = null, $fileSystem = null)
     {
-        if (is_null($config)) {
-            $config = \oxRegistry::getConfig();
-        }
         if (is_null($moduleList)) {
             $moduleList = oxNew('oxModuleList');
+        }
+        if (is_null($theme)) {
+            $theme = oxNew('oxTheme');
         }
         if (is_null($fileSystem)) {
             $fileSystem = oxNew(FileSystem::class);
         }
 
-        $this->config = $config;
+        $this->theme = $theme;
         $this->moduleList = $moduleList;
         $this->fileSystem = $fileSystem;
     }
@@ -98,10 +98,10 @@ class ModuleTemplatePathCalculator
      */
     public function calculateModuleTemplatePath($templateName)
     {
-        $config = $this->getConfig();
         $moduleList = $this->getModuleList();
+        $theme = $this->getTheme();
 
-        $moduleTemplates = $config->getConfigParam('aModuleTemplates');
+        $moduleTemplates = $moduleList->getModuleTemplates();
         $activeModules = $moduleList->getActiveModuleInfo();
         $finalTemplatePath = '';
 
@@ -114,7 +114,7 @@ class ModuleTemplatePathCalculator
                     $fileSystem = $this->getFileSystem();
 
                     // check if template for our active themes exists
-                    if ($activeThemes = $config->getActiveThemesList()) {
+                    if ($activeThemes = $theme->getActiveThemesList()) {
                         foreach ($activeThemes as $oneActiveThemeId) {
                             if (isset($aTemplates[$oneActiveThemeId], $aTemplates[$oneActiveThemeId][$templateName])) {
                                 $foundTemplate = $fileSystem->combinePaths($this->getModulesPath(), $aTemplates[$oneActiveThemeId][$templateName]);
@@ -147,11 +147,11 @@ class ModuleTemplatePathCalculator
     }
 
     /**
-     * @return oxConfig
+     * @return oxTheme
      */
-    protected function getConfig()
+    protected function getTheme()
     {
-        return $this->config;
+        return $this->theme;
     }
 
     /**

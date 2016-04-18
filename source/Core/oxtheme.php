@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Themes handler class.
@@ -107,7 +108,7 @@ class oxTheme extends oxSuperCfg
     }
 
     /**
-     * get theme info item
+     * Return theme information
      *
      * @param string $sName name of info item to retrieve
      *
@@ -123,7 +124,7 @@ class oxTheme extends oxSuperCfg
     }
 
     /**
-     * return current active theme, or custom theme if specified
+     * Return current active theme, or custom theme if specified
      *
      * @return string
      */
@@ -138,7 +139,31 @@ class oxTheme extends oxSuperCfg
     }
 
     /**
-     * return loaded parent
+     * Get active themes list.
+     * Examples:
+     *      if flow theme is active we will get ['flow']
+     *      if azure is extended by some other we will get ['azure', 'extending_theme']
+     *
+     * @return array
+     */
+    public function getActiveThemesList()
+    {
+        $config = Registry::getConfig();
+
+        $activeThemeList = array();
+        if (!$this->isAdmin()) {
+            $activeThemeList[] = $config->getConfigParam('sTheme');
+
+            if ($customThemeId = $config->getConfigParam('sCustomTheme')) {
+                $activeThemeList[] = $customThemeId;
+            }
+        }
+
+        return $activeThemeList;
+    }
+
+    /**
+     * Return loaded parent
      *
      * @return oxTheme
      */

@@ -63,10 +63,6 @@ class oxUtilsServer extends oxSuperCfg
      */
     public function setOxCookie($sName, $sValue = "", $iExpire = 0, $sPath = '/', $sDomain = null, $blToSession = true, $blSecure = false, $blHttpOnly = true)
     {
-        //TODO: since setcookie takes more than just 4 params..
-        // would be nice to have it sending through https only, if in https mode
-        // or allowing only http access to cookie [no JS access - reduces XSS attack possibility]
-        // ref: http://lt.php.net/manual/en/function.setcookie.php
 
         if ($blToSession && !$this->isAdmin()) {
             $this->_saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain);

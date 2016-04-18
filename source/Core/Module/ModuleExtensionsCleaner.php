@@ -71,6 +71,7 @@ class ModuleExtensionsCleaner
     {
         $modulePaths = \oxRegistry::getConfig()->getConfigParam('aModulePaths');
         $path = $modulePaths[$moduleId];
+        // TODO: This condition should be removed. Need to check integration tests.
         if (!$path) {
             $path = $moduleId . "/";
         }

@@ -28,7 +28,7 @@ use oxModuleList;
 use oxTheme;
 
 /**
- * Class ModuleTemplatePathFormatter forms path to module template.
+ * Forms path to module template.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended

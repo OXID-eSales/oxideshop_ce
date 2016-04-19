@@ -25,7 +25,7 @@ namespace OxidEsales\Eshop\Core\Module;
 use \oxDb;
 
 /**
- * Class ModuleTemplateBlockContent provides a way to get content from module template block file.
+ * Provides a way to get content from module template block file.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended

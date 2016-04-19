@@ -1387,6 +1387,8 @@ class oxBasket extends oxSuperCfg
      * TS Protection cost calculation.
      * Returns oxprice object.
      *
+     * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
+     *
      * @return object oxPrice
      */
     protected function _calcTsProtectionCost()
@@ -2939,6 +2941,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Trusted shops protection product ID setter
      *
+     * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
+     *
      * @param string $sProductId product id
      */
     public function setTsProductId($sProductId)
@@ -2948,6 +2952,8 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Trusted shops protection product ID getter
+     *
+     * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
      *
      * @return string
      */
@@ -3040,7 +3046,9 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns TS protection costs brutto value
      *
-     * @return double in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin.
+     *
+     * @return double
      */
     public function getTrustedShopProtectionCost()
     {
@@ -3172,6 +3180,8 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Return sum of basket insured by trusted shops
+     *
+     * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
      *
      * @return decimal
      */

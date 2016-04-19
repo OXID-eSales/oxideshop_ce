@@ -374,6 +374,8 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
     /**
      * Sets payment info to pdf.
      *
+     * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
+     *
      * @param int &$iStartPos text start position
      */
     protected function _setTsProtection(&$iStartPos)

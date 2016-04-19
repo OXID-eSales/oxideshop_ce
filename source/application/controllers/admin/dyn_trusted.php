@@ -25,6 +25,8 @@
  * Admin dyn trusted manager.
  *
  * @subpackage dyn
+ *
+ * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
  */
 class dyn_trusted extends Shop_Config
 {

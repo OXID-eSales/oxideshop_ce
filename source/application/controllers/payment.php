@@ -721,6 +721,8 @@ class Payment extends oxUBase
     /**
      * Template variable getter. Returns payment list count
      *
+     * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
+     *
      * @return integer
      */
     public function getTsProtections()
@@ -740,6 +742,8 @@ class Payment extends oxUBase
 
     /**
      * Template variable getter. Returns payment list count
+     *
+     * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
      *
      * @return integer
      */

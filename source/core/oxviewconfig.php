@@ -1172,6 +1172,8 @@ class oxViewConfig extends oxSuperCfg
     /**
      * Gets Trusted shops ratings from Trusted shops
      *
+     * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
+     *
      * @return array
      */
     public function getTsRatings()
@@ -1192,6 +1194,8 @@ class oxViewConfig extends oxSuperCfg
 
     /**
      * Trusted Shops ratings url
+     *
+     * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
      *
      * @return string | bool
      */
@@ -1221,6 +1225,8 @@ class oxViewConfig extends oxSuperCfg
     /**
      * Returns true if Trusted Shops feature is On
      *
+     * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
+     *
      * @param string $sType type of element to check
      *
      * @return bool
@@ -1248,6 +1254,8 @@ class oxViewConfig extends oxSuperCfg
 
     /**
      * Returns Trusted Shops id
+     *
+     * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
      *
      * @return string
      */

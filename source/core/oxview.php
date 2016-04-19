@@ -607,6 +607,8 @@ class oxView extends oxSuperCfg
     /**
      * Returns shop id in classic trusted shops
      *
+     * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
+     *
      * @return string
      */
     public function getTrustedShopId()
@@ -637,6 +639,8 @@ class oxView extends oxSuperCfg
 
     /**
      * Returns shop id in trusted shops if excellence product is ordered
+     *
+     * @deprecated since 5.3.0 (2016.04.19); Use Trusted Shops Module instead.
      *
      * @return string
      */

@@ -23,6 +23,8 @@
 /**
  * Guest book entry manager class.
  * Manages guestbook entries, denies them, etc.
+ *
+ * @deprecated since 5.3.0 (2016-04-19); There will be a module oeguestbook instead.
  */
 class GuestbookEntry extends GuestBook
 {

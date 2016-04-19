@@ -23,6 +23,8 @@
 /**
  * Shop guestbook page.
  * Manages, collects, denies user comments.
+ *
+ * @deprecated since 5.3.0 (2016-04-19); There will be a module oeguestbook instead.
  */
 class GuestBook extends oxUBase
 {

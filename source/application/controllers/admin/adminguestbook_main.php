@@ -24,6 +24,8 @@
  * Guestbook record manager.
  * Returns template, that arranges guestbook record information.
  * Admin Menu: User information -> Guestbook -> Main.
+ * 
+ * @deprecated since 5.3.0 (2016-04-19); There will be a module oeguestbook instead.
  */
 class Adminguestbook_Main extends oxAdminDetails
 {

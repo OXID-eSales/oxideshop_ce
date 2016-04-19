@@ -24,6 +24,7 @@
  * Guestbook entry object manager.
  * Loads available guestbook entries, performs some SQL queries.
  *
+ * @deprecated since 5.3.0 (2016-04-19); There will be a module oeguestbook instead.
  */
 class oxGbEntry extends oxBase
 {

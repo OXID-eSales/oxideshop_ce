@@ -1131,6 +1131,8 @@ class SystemRequirements
      * returned array components are of form array(module name, block name, template file)
      * only active (oxactive==1) blocks are checked
      *
+     * @todo extract oxtemplate query to ModuleTemplateBlockRepository
+     *
      * @return array
      */
     public function getMissingTemplateBlocks()

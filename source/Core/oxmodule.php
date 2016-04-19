@@ -355,6 +355,8 @@ class oxModule extends oxSuperCfg
     /**
      * Return templates affected by template blocks for given module id.
      *
+     * @todo extract oxtemplate query to ModuleTemplateBlockRepository
+     *
      * @param string $sModuleId Module id
      *
      * @return array

@@ -501,6 +501,8 @@ class oxModuleList extends oxSuperCfg
     /**
      * Removes extension from database - oxConfig, oxConfigDisplay and oxTplBlocks tables
      *
+     * @todo extract oxtemplate query to ModuleTemplateBlockRepository
+     *
      * @param array $aDeletedExtIds deleted extensions ID's
      *
      * @return null

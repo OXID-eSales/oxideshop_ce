@@ -34,7 +34,7 @@ class oxModuleInstaller extends oxSuperCfg
      * @var oxModuleCache
      */
     protected $_oModuleCache;
-    
+
     /** @var ModuleExtensionsCleaner */
     private $moduleCleaner;
 
@@ -254,6 +254,8 @@ class oxModuleInstaller extends oxSuperCfg
     /**
      * Deactivates or activates oxBlocks of a module
      *
+     * @todo extract oxtemplate query to ModuleTemplateBlockRepository
+     *
      * @param string $sModuleId Module id
      */
     protected function _deleteBlock($sModuleId)
@@ -382,6 +384,8 @@ class oxModuleInstaller extends oxSuperCfg
 
     /**
      * Add module templates to database.
+     *
+     * @todo extract oxtemplate query to ModuleTemplateBlockRepository
      *
      * @param array  $moduleBlocks Module blocks array
      * @param string $moduleId     Module id

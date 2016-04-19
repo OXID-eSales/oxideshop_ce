@@ -23,6 +23,11 @@
 
 /**
  * Database connection class
+ *
+ * @deprecated since v5.3.0 (2016-04-19); This class will be removed. There will be a DatabaseInterface in v6.0 which
+ *             includes all but the deprecated methods of oxLegacyDb. An implementation of the DatabaseInterface based
+ *             on Doctrine DBAL will replace oxLegacyDb.
+ *
  */
 class oxLegacyDb extends oxSuperCfg
 {

@@ -122,7 +122,7 @@ class Environment
      */
     private function getPathToTestDataDirectory()
     {
-        return realpath(dirname(__FILE__)) . '/testData/';
+        return realpath(__DIR__) . '/TestData/';
     }
 
     /**

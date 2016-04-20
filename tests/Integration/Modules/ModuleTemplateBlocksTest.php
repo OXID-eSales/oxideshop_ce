@@ -148,7 +148,7 @@ class ModuleTemplateBlocksTest extends UnitTestCase
      */
     private function getUtilsView($themeId, $customThemeId)
     {
-        $shopPath = implode(DIRECTORY_SEPARATOR, [__DIR__, 'testData', 'shop']) . DIRECTORY_SEPARATOR;
+        $shopPath = implode(DIRECTORY_SEPARATOR, [__DIR__, 'TestData', 'shop']) . DIRECTORY_SEPARATOR;
 
         $this->setShopId(15);
         $this->setConfigParam('sShopDir', $shopPath);

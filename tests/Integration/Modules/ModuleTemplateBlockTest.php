@@ -28,7 +28,7 @@ class ModuleTemplateBlockTest extends UnitTestCase
 {
     public function testGetContentForModuleTemplateBlock()
     {
-        $shopPath = implode(DIRECTORY_SEPARATOR, [__DIR__, 'testData', 'shop']);
+        $shopPath = implode(DIRECTORY_SEPARATOR, [__DIR__, 'TestData', 'shop']);
         $moduleId = 'oeTestTemplateBlockModuleId';
 
         $this->setConfigParam(
@@ -52,7 +52,7 @@ class ModuleTemplateBlockTest extends UnitTestCase
     {
         $this->setExpectedException(oxException::class);
 
-        $shopPath = implode(DIRECTORY_SEPARATOR, [__DIR__, 'testData', 'shop']);
+        $shopPath = implode(DIRECTORY_SEPARATOR, [__DIR__, 'TestData', 'shop']);
         $moduleId = 'oeTestTemplateBlockModuleId';
 
         $this->setConfigParam(

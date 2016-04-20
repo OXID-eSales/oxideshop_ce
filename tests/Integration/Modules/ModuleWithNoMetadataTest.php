@@ -27,7 +27,7 @@ class Integration_Modules_ModuleWithNoMetadataTest extends OxidTestCase
      */
     public function testGetDisabledModules()
     {
-        $sShopDir = realpath(dirname(__FILE__)) . '/testData/';
+        $sShopDir = realpath(dirname(__FILE__)) . '/TestData/';
 
         oxRegistry::getConfig()->setConfigParam('sShopDir', $sShopDir);
 

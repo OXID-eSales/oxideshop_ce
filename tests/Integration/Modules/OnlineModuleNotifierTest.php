@@ -37,7 +37,7 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
         $oCaller->expects($this->any())->method('doRequest')->with($this->equalTo($this->getExpectedRequest()));
 
         $oModuleList = oxNew('oxModuleList');
-        $sModuleDir = realpath(dirname(__FILE__)) . '/testData/modules';
+        $sModuleDir = realpath(dirname(__FILE__)) . '/TestData/modules';
         $oModuleList->getModulesFromDir($sModuleDir);
 
         $oNotifier = new oxOnlineModuleVersionNotifier($oCaller, $oModuleList);

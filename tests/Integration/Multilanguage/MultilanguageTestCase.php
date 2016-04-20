@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__)) . '/helpers/LanguageMainHelper.php';
+require_once realpath(dirname(__FILE__)) . '/Helpers/LanguageMainHelper.php';
 
 abstract class MultilanguageTestCase extends OxidTestCase
 {

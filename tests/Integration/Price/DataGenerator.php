@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/integration/price/basketconstruct.php';
+require_once realpath(dirname(__FILE__) . '/../../') . '/Integration/Price/basketconstruct.php';
 
 /**
  * Class DataGenerator

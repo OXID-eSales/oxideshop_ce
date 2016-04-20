@@ -21,7 +21,7 @@
  */
 
 require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
-require_once realpath(dirname(__FILE__)) . '/testData/modules/with_events/files/myevents.php';
+require_once realpath(dirname(__FILE__)) . '/TestData/modules/with_events/files/myevents.php';
 
 class Integration_Modules_ModuleEventsTest extends BaseModuleTestCase
 {

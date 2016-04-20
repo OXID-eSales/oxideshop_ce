@@ -19,10 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Modules;
 
-require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
+require_once __DIR__ . '/BaseModuleTestCase.php';
 
-class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTestCase
+class ModuleWithNoMetadataSupportTest extends BaseModuleTestCase
 {
     public function testModulesWithoutMetadataShouldBeAddToCleanup()
     {
@@ -70,7 +71,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
             'extending_1_class', 'with_2_files'
         );
 
-        $oEnvironment = oxNew('Environment');
+        $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules);
 
         $aModules = $this->getConfig()->getConfigParam('aModules');
@@ -100,7 +101,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
             'with_1_extension', 'with_2_files'
         );
 
-        $oEnvironment = oxNew('Environment');
+        $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules);
 
         $oModuleList = oxNew('oxModuleList');

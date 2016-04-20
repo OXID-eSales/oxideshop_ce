@@ -19,12 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\User;
 
-require_once 'userTestCase.php';
+use oxField;
+use oxRegistry;
+use oxUser;
 
-class Integration_User_loginTest extends UserTestCase
+require_once 'UserTestCase.php';
+
+class LoginTest extends UserTestCase
 {
-
     /**
      * Tries to login with password which is generated with old algorithm
      * and checks if password and salt were regenerated.

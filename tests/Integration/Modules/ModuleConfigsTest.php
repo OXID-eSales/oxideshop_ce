@@ -19,10 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Modules;
 
-require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
+use oxRegistry;
 
-class Integration_Modules_ModuleConfigsTest extends BaseModuleTestCase
+require_once __DIR__ . '/BaseModuleTestCase.php';
+
+class ModuleConfigsTest extends BaseModuleTestCase
 {
     /**
      * @return array

@@ -19,14 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Timestamp;
+
+use oxDb;
+use oxField;
 
 /**
  * Integration test testing corect timestamp setting on update and insert in all tables
  * directly from sql query or with object save() call
  */
-class Integration_Timestamp_TimestampTest extends OxidTestCase
+class TimestampTest extends \OxidTestCase
 {
-
     /**
      * Tear down the fixture.
      */

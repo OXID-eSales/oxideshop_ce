@@ -19,10 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Modules;
 
-require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
+use oxOnlineModulesNotifierRequest;
+use oxOnlineModuleVersionNotifier;
+use oxOnlineModuleVersionNotifierCaller;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
-class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
+require_once __DIR__ . '/BaseModuleTestCase.php';
+
+class OnlineModuleNotifierTest extends BaseModuleTestCase
 {
     /**
      * Tests if module was activated.
@@ -32,12 +38,12 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
         $oEnvironment = new Environment();
         $oEnvironment->prepare(array('extending_1_class', 'extending_1_class_3_extensions', 'with_everything'));
 
-        /** @var oxOnlineModuleVersionNotifierCaller|PHPUnit_Framework_MockObject_MockObject $oCaller */
+        /** @var oxOnlineModuleVersionNotifierCaller|MockObject $oCaller */
         $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller', array('doRequest'), array(), '', false);
         $oCaller->expects($this->any())->method('doRequest')->with($this->equalTo($this->getExpectedRequest()));
 
         $oModuleList = oxNew('oxModuleList');
-        $sModuleDir = realpath(dirname(__FILE__)) . '/TestData/modules';
+        $sModuleDir = __DIR__ . '/TestData/modules';
         $oModuleList->getModulesFromDir($sModuleDir);
 
         $oNotifier = new oxOnlineModuleVersionNotifier($oCaller, $oModuleList);
@@ -60,7 +66,7 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
         $oRequest->pVersion = '1.1';
         $oRequest->productId = 'eShop';
 
-        $modules = new stdClass();
+        $modules = new \StdClass();
         $modules->module = array();
 
         $aModulesInfo = array();
@@ -78,10 +84,10 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
         $aModulesInfo[] = array('id' => 'with_everything', 'version' => '1.0', 'activeInShop' => array($sShopUrl));
 
         foreach ($aModulesInfo as $aModuleInfo) {
-            $module = new stdClass();
+            $module = new \StdClass();
             $module->id = $aModuleInfo['id'];
             $module->version = $aModuleInfo['version'];
-            $module->activeInShops = new stdClass();
+            $module->activeInShops = new \StdClass();
             $module->activeInShops->activeInShop = $aModuleInfo['activeInShop'];
             $modules->module[] = $module;
         }

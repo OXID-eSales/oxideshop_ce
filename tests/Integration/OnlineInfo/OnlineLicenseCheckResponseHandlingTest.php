@@ -19,6 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\OnlineInfo;
+
+use oxCurl;
+use oxRegistry;
 
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
@@ -30,7 +34,7 @@
  * @covers oxUserCounter
  * @covers oxOnlineLicenseCheck
  */
-class Integration_OnlineInfo_OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
+class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
 {
     public function testRequestHandlingWithPositiveResponse()
     {

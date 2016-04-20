@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Modules;
 
-require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
-require_once realpath(dirname(__FILE__)) . '/TestData/modules/with_events/files/myevents.php';
+use oxRegistry;
 
-class Integration_Modules_ModuleEventsTest extends BaseModuleTestCase
+require_once __DIR__ . '/BaseModuleTestCase.php';
+require_once __DIR__ . '/TestData/modules/with_events/files/myevents.php';
+
+class ModuleEventsTest extends BaseModuleTestCase
 {
     /**
      * Test check shop module activation first time

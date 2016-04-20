@@ -19,8 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Price;
 
-require_once __DIR__ . '/baseTestCase.php';
+use oxDb;
+use oxField;
+use oxOrder;
+use oxOrderArticle;
+use oxRegistry;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
+
+require_once __DIR__. '/BasketConstruct.php';
 
 /**
  * Final order calculation test
@@ -33,7 +41,7 @@ require_once __DIR__ . '/baseTestCase.php';
  *     c.) By adding / removing articles
  * 4.) Recalculate
  */
-class Integration_Price_OrderTest extends Integration_Price_BaseTestCase
+class OrderTest extends BaseTestCase
 {
     /** @var string Test case directory */
     private $testCaseDirectory = "testcases/order";
@@ -103,13 +111,13 @@ class Integration_Price_OrderTest extends Integration_Price_BaseTestCase
         $actions = $testCase['actions'];
 
         // load calculated basket from provided data
-        $basketConstruct = oxNew('BasketConstruct');
+        $basketConstruct = new BasketConstruct();
         $basket = $basketConstruct->calculateBasket($testCase);
 
         $user = $basket->getBasketUser();
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $order */
+        /** @var oxOrder|MockObject $order */
         $order = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
         $order->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $order->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
@@ -221,7 +229,7 @@ class Integration_Price_OrderTest extends Integration_Price_BaseTestCase
      */
     protected function _addArticles($articlesData, $order)
     {
-        $basketConstruct = oxNew('BasketConstruct');
+        $basketConstruct = new BasketConstruct();
         $articles = $basketConstruct->getArticles($articlesData);
         foreach ($articles as $article) {
             $product = oxNew('oxArticle');

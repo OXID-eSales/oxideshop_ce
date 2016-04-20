@@ -19,10 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Multilanguage;
 
-require_once realpath(dirname(__FILE__)) . '/Helpers/LanguageMainHelper.php';
+use oxRegistry;
 
-abstract class MultilanguageTestCase extends OxidTestCase
+require_once __DIR__ . '/Helpers/LanguageMainHelper.php';
+
+abstract class MultilanguageTestCase extends \OxidTestCase
 {
     protected $originalLanguageArray = null;
     protected $originalBaseLanguageId = null;
@@ -39,7 +42,7 @@ abstract class MultilanguageTestCase extends OxidTestCase
         $this->originalBaseLanguageId = oxRegistry::getLang()->getBaseLanguage();
     }
 
-    /*
+    /**
     * Fixture tearDown.
     */
     protected function tearDown()
@@ -55,12 +58,13 @@ abstract class MultilanguageTestCase extends OxidTestCase
      * Test helper for test preparation.
      * Add given count of new languages.
      *
-     * @param $count
+     * @param int $count
      *
      * @return int
      */
     protected function prepare($count = 9)
     {
+        $languageId = 0;
         for ($i=0;$i<$count;$i++) {
             $languageName = chr(97+$i) . chr(97+$i);
             $languageId = $this->insertLanguage($languageName);
@@ -78,7 +82,7 @@ abstract class MultilanguageTestCase extends OxidTestCase
     /**
      * Test helper to insert a new language with given id.
      *
-     * @param $iLanguageId
+     * @param int $languageId
      *
      * @return integer
      */
@@ -109,7 +113,7 @@ abstract class MultilanguageTestCase extends OxidTestCase
     /**
      * Test helper for saving language configuration.
      *
-     * @param $languages
+     * @param array $languages
      */
     protected function storeLanguageConfiguration($languages)
     {
@@ -120,7 +124,7 @@ abstract class MultilanguageTestCase extends OxidTestCase
     }
 
     /**
-     * Test helder to trigger view update.
+     * Test helper to trigger view update.
      */
     protected function updateViews()
     {

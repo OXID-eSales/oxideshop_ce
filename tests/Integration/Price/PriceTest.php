@@ -19,8 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Price;
 
-require_once __DIR__ . '/baseTestCase.php';
+use oxDb;
+
+require_once __DIR__. '/BasketConstruct.php';
 
 /**
  * Shop price calculation test
@@ -30,7 +33,7 @@ require_once __DIR__ . '/baseTestCase.php';
  * - Total price
  * - Amount price info
  */
-class Integration_Price_PriceTest extends Integration_Price_BaseTestCase
+class PriceTest extends BaseTestCase
 {
     /** @var array Test case directories. */
     private $testCasesDirectory = "testcases/price";
@@ -105,7 +108,7 @@ class Integration_Price_PriceTest extends Integration_Price_BaseTestCase
         $aExpected = $aTestCase['expected'];
 
         // load calculated basket from provided data
-        $oConstruct = oxNew('BasketConstruct');
+        $oConstruct = new BasketConstruct();
         // create shops
         $iActiveShopId = $oConstruct->createShop($aTestCase['shop']);
 

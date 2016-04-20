@@ -19,14 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Modules;
 
-require_once realpath(dirname(__FILE__)) . '/validator.php';
-require_once realpath(dirname(__FILE__)) . '/environment.php';
+use oxModule;
+use oxRegistry;
+
+require_once __DIR__ . '/Validator.php';
+require_once __DIR__ . '/Environment.php';
 
 /**
  * Base class for module integration tests.
  */
-abstract class BaseModuleTestCase extends OxidTestCase
+abstract class BaseModuleTestCase extends \OxidTestCase
 {
     /**
      * Tear down the fixture.

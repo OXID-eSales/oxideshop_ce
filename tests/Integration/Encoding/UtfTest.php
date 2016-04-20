@@ -19,11 +19,41 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Encoding;
+
+use oxArticleList;
+use oxAttribute;
+use oxBase;
+use oxBasketItem;
+use oxCategory;
+use oxContent;
+use oxDb;
+use oxEmail;
+use oxField;
+use oxGbEntry;
+use oxGroups;
+use oxLinks;
+use oxList;
+use oxObject2Category;
+use oxOrderArticle;
+use oxRegistry;
+use oxRssFeed;
+use oxSearch;
+use oxSelectlist;
+use oxSeoEncoder;
+use oxTestModules;
+use oxUBase;
+use oxUser;
+use oxUserBasketItem;
+use oxUserPayment;
+use oxUtils;
+use oxUtilsString;
+use stdClass;
 
 /**
  * Class Unit_utf8Test
  */
-class Unit_utf8Test extends OxidTestCase
+class UtfTest extends \OxidTestCase
 {
     /** @var string Original theme */
     private $_sOrigTheme;
@@ -116,7 +146,7 @@ class Unit_utf8Test extends OxidTestCase
                          'oxaddress__oxcity', 'oxaddress__oxcountry', 'oxaddress__oxzip',
                          'oxaddress__oxfon', 'oxaddress__oxfax', 'oxaddress__oxsal');
 
-        $oAddress = new oxbase();
+        $oAddress = new oxBase();
         $oAddress->init('oxaddress');
         $oAddress->setId('_testAddress');
         foreach ($aFields as $sFieldName) {
@@ -124,7 +154,7 @@ class Unit_utf8Test extends OxidTestCase
         }
         $oAddress->save();
 
-        $oAddress = new oxbase();
+        $oAddress = new oxBase();
         $oAddress->init('oxaddress');
         $oAddress->load('_testAddress');
 
@@ -158,7 +188,7 @@ class Unit_utf8Test extends OxidTestCase
         $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', true);
         $this->getConfig()->setConfigParam('bl_perfUseSelectlistPrice', true);
 
-        $object = new stdClass();
+        $object = new StdClass();
         $object->price = '-5.99';
         $object->fprice = '-5,99';
         $object->priceUnit = 'abs';
@@ -250,7 +280,7 @@ class Unit_utf8Test extends OxidTestCase
         $oTestArticle1->save();
 
         // assigning articles to category
-        $oA2C = new oxobject2category();
+        $oA2C = new oxObject2Category();
         $oA2C->oxobject2category__oxobjectid = new oxField('_testArticle1');
         $oA2C->oxobject2category__oxcatnid = new oxField($sCatId);
         $oA2C->setId('_testArticle1');
@@ -265,7 +295,7 @@ class Unit_utf8Test extends OxidTestCase
         $oA2C->save();
 
         // creating attributes
-        $oAttr = new oxattribute();
+        $oAttr = new oxAttribute();
         $oAttr->setId('_testAttribute1');
         $oAttr->oxattribute__oxtitle = new oxField('Литовские');
         $oAttr->save();
@@ -279,7 +309,7 @@ class Unit_utf8Test extends OxidTestCase
         $oAttr->save();
 
         // assigning attributes
-        $oO2a = new oxbase();
+        $oO2a = new oxBase();
         $oO2a->init('oxobject2attribute');
 
         $oO2a->setId('_testo2a1');
@@ -403,12 +433,12 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'agentūrų Литовские für';
 
-        $oAttr = new oxattribute();
+        $oAttr = new oxAttribute();
         $oAttr->setId('_testAttribute1');
         $oAttr->oxattribute__oxtitle = new oxField($sValue);
         $oAttr->save();
 
-        $oAttr = new oxattribute();
+        $oAttr = new oxAttribute();
         $oAttr->load('_testAttribute1');
 
         $this->assertEquals($sValue, $oAttr->oxattribute__oxtitle->value);
@@ -422,7 +452,7 @@ class Unit_utf8Test extends OxidTestCase
         $oArticle->oxarticles__oxvarselect = new oxField("für");
         $oArticle->save();
 
-        $oBasketItem = new oxbasketitem();
+        $oBasketItem = new oxBasketItem();
         $oBasketItem->UNITsetArticle('_testArticle');
 
         $this->assertEquals("agentūrų Литовские, für", $oBasketItem->getTitle());
@@ -433,7 +463,7 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'agentūrų Литовские für';
 
-        $oCat = new oxbase();
+        $oCat = new oxBase();
         $oCat->init('oxcategories');
         $oCat->setId('_testCat');
         $oCat->oxcategories__oxtitle = new oxField($sValue);
@@ -441,7 +471,7 @@ class Unit_utf8Test extends OxidTestCase
         $oCat->oxcategories__oxlongdesc = new oxField($sValue);
         $oCat->save();
 
-        $oCat = new oxcategory();
+        $oCat = new oxCategory();
         $oCat->load('_testCat');
 
         $this->assertEquals($sValue, $oCat->oxcategories__oxtitle->value);
@@ -456,13 +486,13 @@ class Unit_utf8Test extends OxidTestCase
         $sValue = '[{ $oViewConf->getImageUrl() }] Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
         $sResult = $this->getConfig()->getImageUrl(false) . ' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
 
-        $oCat = new oxbase();
+        $oCat = new oxBase();
         $oCat->init('oxcategories');
         $oCat->setId('_testCat2');
         $oCat->oxcategories__oxlongdesc = new oxField($sValue);
         $oCat->save();
 
-        $oCat = new oxcategory();
+        $oCat = new oxCategory();
         $oCat->load('_testCat2');
         $this->assertEquals($sResult, $oCat->getLongDesc());
     }
@@ -478,20 +508,20 @@ class Unit_utf8Test extends OxidTestCase
         $oTestArticle1->save();
 
         // assigning articles to category
-        $oA2C = new oxobject2category();
+        $oA2C = new oxObject2Category();
         $oA2C->oxobject2category__oxobjectid = new oxField('_testArticle1');
         $oA2C->oxobject2category__oxcatnid = new oxField($categoryId);
         $oA2C->setId('_testArticle1');
         $oA2C->save();
 
         // creating attributes
-        $attribute = new oxattribute();
+        $attribute = new oxAttribute();
         $attribute->setId('_testAttribute1');
         $attribute->oxattribute__oxtitle = new oxField('für');
         $attribute->save();
 
         // assigning attributes
-        $oO2a = new oxbase();
+        $oO2a = new oxBase();
         $oO2a->init('oxobject2attribute');
         $oO2a->setId('_testo2a1');
         $oO2a->oxobject2attribute__oxobjectid = new oxField('_testArticle1');
@@ -499,7 +529,7 @@ class Unit_utf8Test extends OxidTestCase
         $oO2a->oxobject2attribute__oxvalue = new oxField('für-');
         $oO2a->save();
 
-        $oO2a = new oxbase();
+        $oO2a = new oxBase();
         $oO2a->init('oxcategory2attribute');
         $oO2a->setId('_testo2a4');
         $oO2a->oxcategory2attribute__oxobjectid = new oxField($categoryId);
@@ -609,7 +639,7 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'sėkme Литовские für';
 
-        $oContent = new oxcontent();
+        $oContent = new oxContent();
         $oContent->setId('_testContent');
         $oContent->oxcontents__oxloadid = new oxField("_testLoadId");
         $oContent->oxcontents__oxtitle = new oxField($sValue);
@@ -617,7 +647,7 @@ class Unit_utf8Test extends OxidTestCase
         $oContent->oxcontents__oxfolder = new oxField($sValue);
         $oContent->save();
 
-        $oContent = new oxcontent();
+        $oContent = new oxContent();
         $oContent->load('_testContent');
 
         $this->assertEquals($sValue, $oContent->oxcontents__oxtitle->value);
@@ -675,7 +705,7 @@ class Unit_utf8Test extends OxidTestCase
         $oCountryList->next();
 
         $oCountry = $oCountryList->current();
-        $this->assertTrue(( bool ) $oCountry);
+        $this->assertTrue((bool) $oCountry);
         $this->assertEquals("_testCountry", $oCountry->getId());
     }
 
@@ -736,12 +766,12 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'sėkme Литовские für';
 
-        $oEntry = new oxgbentry();
+        $oEntry = new oxGbEntry();
         $oEntry->setId('_testGbentry');
         $oEntry->oxgbentries__oxcontent = new oxField($sValue);
         $oEntry->save();
 
-        $oEntry = new oxgbentry();
+        $oEntry = new oxGbEntry();
         $oEntry->load('_testGbentry');
         $this->assertEquals($sValue, $oEntry->oxgbentries__oxcontent->value);
     }
@@ -750,12 +780,12 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'sėkme Литовские für';
 
-        $oGroup = new oxgroups();
+        $oGroup = new oxGroups();
         $oGroup->setId('_testGroup');
         $oGroup->oxgroups__oxtitle = new oxField($sValue);
         $oGroup->save();
 
-        $oGroup = new oxgroups();
+        $oGroup = new oxGroups();
         $oGroup->load('_testGroup');
         $this->assertEquals($sValue, $oGroup->oxgroups__oxtitle->value);
     }
@@ -780,12 +810,12 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'sėkme Литовские für';
 
-        $oLink = new oxlinks();
+        $oLink = new oxLinks();
         $oLink->setId('_testLink');
         $oLink->oxlinks__oxurldesc = new oxField($sValue);
         $oLink->save();
 
-        $oLink = new oxlinks();
+        $oLink = new oxLinks();
         $oLink->load('_testLink');
         $this->assertEquals($sValue, $oLink->oxlinks__oxurldesc->value);
     }
@@ -943,12 +973,12 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'agentūrų Литовские für';
 
-        $oOrderArticle = new oxorderarticle();
+        $oOrderArticle = new oxOrderArticle();
         $oOrderArticle->setId('_testOrderArticle');
         $oOrderArticle->setPersParams($sValue);
         $oOrderArticle->save();
 
-        $oOrderArticle = new oxorderarticle();
+        $oOrderArticle = new oxOrderArticle();
         $oOrderArticle->load('_testOrderArticle');
         $this->assertEquals($sValue, $oOrderArticle->getPersParams());
     }
@@ -1066,7 +1096,7 @@ class Unit_utf8Test extends OxidTestCase
             $oRecList->{$sFieldName} = new oxField($sValue);
         }
         $oRecList->save();
-        $oObj2List = new oxbase();
+        $oObj2List = new oxBase();
         $oObj2List->init("oxobject2list");
         $oObj2List->setId("_testRecom");
         $oObj2List->oxobject2list__oxobjectid = new oxField("2000");
@@ -1625,7 +1655,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testaListCollectMetaDescription()
     {
         $sValue = "agentūЛитовfür \n \r \t \xc2\x95 \xc2\xa0";
-        $oActCat = new oxcategory();
+        $oActCat = new oxCategory();
         $oActCat->oxcategories__oxlongdesc = $this->getMock('oxField', array('__get'));
         $oActCat->oxcategories__oxlongdesc->expects($this->once())->method('__get')->will($this->returnValue(''));
 
@@ -1654,7 +1684,7 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = "agentūЛитовfür\n\r\t\xc2\x95\xc2\xa0";
         $sDescription = oxRegistry::getLang()->translateString('INC_HEADER_YOUAREHERE');
-        $oActCat = new oxcategory();
+        $oActCat = new oxCategory();
         $oActCat->oxcategories__oxtitle = $this->getMock('oxField', array('__get'));
         $oActCat->oxcategories__oxtitle->expects($this->once())->method('__get')->will($this->returnValue($sValue));
 
@@ -1669,16 +1699,16 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testaListPrepareMetaKeyword()
     {
-        $aSubCats[0] = new oxcategory();
+        $aSubCats[0] = new oxCategory();
         $aSubCats[0]->oxcategories__oxtitle = new oxField('agentū Литовfür sub_category_1');
 
-        $aSubCats[1] = new oxcategory();
+        $aSubCats[1] = new oxCategory();
         $aSubCats[1]->oxcategories__oxtitle = new oxField('agentū Литовfür Nada fedia nada');
 
-        $oParentCategory = new oxcategory();
+        $oParentCategory = new oxCategory();
         $oParentCategory->oxcategories__oxtitle = new oxField('agentū Литовfür parent_category');
 
-        $oCategory = new oxcategory();
+        $oCategory = new oxCategory();
         $oCategory->oxcategories__oxtitle = new oxField('current_category');
         $oCategory->oxcategories__oxparentid = new oxField('parentCategoryId');
 

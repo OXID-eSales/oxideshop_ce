@@ -19,13 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Integration\Checkout;
+
+use oxBasket;
+use oxField;
+use oxRegistry;
+use oxUtilsObject;
 
 /**
  * Test basket contents for configurable articles (oxarticles.oxisconfigurable = true).
- * #
- *
  */
-class Integration_checkout_personalisableArticlesBasketAmountTest extends OxidTestCase
+class PersonalisableArticlesBasketAmountTest extends \OxidTestCase
 {
     /**
      * Make a copy of The Barrel for testing, it is already configurable
@@ -49,7 +53,7 @@ class Integration_checkout_personalisableArticlesBasketAmountTest extends OxidTe
         $this->insertArticle();
     }
 
-    /*
+    /**
     * Fixture tearDown.
     */
     protected function tearDown()
@@ -271,7 +275,7 @@ class Integration_checkout_personalisableArticlesBasketAmountTest extends OxidTe
     /**
      * Test helper for getting itemkeys.
      *
-     * @param $article can be 'first', 'second', 'third', 'fourth'
+     * @param string $article can be 'first', 'second', 'third', 'fourth'
      *
      * @return string
      */
@@ -285,7 +289,7 @@ class Integration_checkout_personalisableArticlesBasketAmountTest extends OxidTe
     /**
      * Test helper for getting itemkeys.
      *
-     * @param $article can be 'first', 'second', 'third', 'fourth'
+     * @param string $article can be 'first', 'second', 'third', 'fourth'
      *
      * @return string
      */

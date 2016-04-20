@@ -19,10 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Modules;
 
-require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
+use oxModuleList;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
-class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
+require_once __DIR__ . '/BaseModuleTestCase.php';
+
+class ModuleRemoveTest extends BaseModuleTestCase
 {
     /**
      * @return array
@@ -49,7 +53,7 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
         $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules);
 
-        /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $oModuleList */
+        /** @var oxModuleList|MockObject $oModuleList */
         $oModuleList = $this->getMock('oxModuleList', array('getDeletedExtensions'));
         $oModuleList->expects($this->any())->method('getDeletedExtensions')->will($this->returnValue($aRemovedExtensions));
 
@@ -79,7 +83,7 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
         $oEnvironment->setShopId(2);
         $oEnvironment->activateModules($aInstallModules);
 
-        /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $oModuleList */
+        /** @var oxModuleList|MockObject $oModuleList */
         $oModuleList = $this->getMock('oxModuleList', array('getDeletedExtensions'));
         $oModuleList->expects($this->any())->method('getDeletedExtensions')->will($this->returnValue($aRemovedExtensions));
 

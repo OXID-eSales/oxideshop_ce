@@ -19,8 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Integration\Admin;
 
-class Integration_Admin_OrderRecalculationTest extends OxidTestCase
+use oxBasket;
+use oxDb;
+use oxField;
+use oxOrder;
+use oxRegistry;
+use oxUtilsObject;
+
+class OrderRecalculationTest extends \OxidTestCase
 {
     /**
      * Make a copy of Stewart+Brown Shirt Kisser Fish parent and variant L violet for testing

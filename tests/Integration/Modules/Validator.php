@@ -19,6 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Modules;
+
+use oxConfig;
+use oxDb;
 
 class Validator
 {

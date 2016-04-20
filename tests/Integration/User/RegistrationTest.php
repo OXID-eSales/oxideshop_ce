@@ -19,10 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\User;
 
-require_once 'userTestCase.php';
+use oxcmp_user;
+use oxRegistry;
 
-class Integration_User_registrationTest extends UserTestCase
+require_once 'UserTestCase.php';
+
+class RegistrationTest extends UserTestCase
 {
 
     /** @var bool */

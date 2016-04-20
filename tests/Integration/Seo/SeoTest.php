@@ -19,13 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Seo;
+
+use oxBase;
+use oxDb;
+use oxField;
+use oxRegistry;
+use oxSeoEncoder;
 
 /**
- * Testing oxshoplist class
+ * Testing oxSeo class
  */
-class  Integration_Seo_oxseoTest extends OxidTestCase
+class SeoTest extends \OxidTestCase
 {
-
     public function tearDown()
     {
         oxDb::getDb()->execute("delete from oxcategories where oxid like '_test%'");

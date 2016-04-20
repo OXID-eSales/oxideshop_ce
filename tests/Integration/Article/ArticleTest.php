@@ -19,13 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Article;
+
+use oxField;
 
 /**
  * oxArticle integration test
  */
-class Integration_Article_ArticleTest extends OxidTestCase
+class ArticleTest extends \OxidTestCase
 {
-
     /**
      * Test setup
      */

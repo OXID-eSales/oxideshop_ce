@@ -19,13 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Price;
 
-require_once realpath(dirname(__FILE__)) . '/basketconstruct.php';
+require_once __DIR__. '/BasketConstruct.php';
 
 /**
  * Base test case for price calculation tests.
  */
-abstract class Integration_Price_BaseTestCase extends OxidTestCase
+abstract class BaseTestCase extends \OxidTestCase
 {
     /**
      * Returns test cases from specified paths.

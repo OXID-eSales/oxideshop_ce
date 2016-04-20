@@ -19,8 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Integration\Url;
 
-class Integration_Url_widgetUrlTest extends oxUnitTestCase
+use oxRegistry;
+
+class WidgetUrlTest extends \oxUnitTestCase
 {
     private $shopUrl = 'http://www.example.com/';
 

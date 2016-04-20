@@ -19,37 +19,23 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Integration\Multilanguage;
+
+use oxField;
+use oxRegistry;
+use oxUtilsObject;
 
 require_once 'MultilanguageTestCase.php';
 
-class Integration_Multilanguage_ViewTest extends MultilanguageTestCase
+class ViewTest extends MultilanguageTestCase
 {
     /**
      * Make a copy of Stewart+Brown Shirt Kisser Fish for testing
      */
     const SOURCE_ARTICLE_ID = '6b6099c305f591cb39d4314e9a823fc1';
 
-    /**
-     * Generated test article id.
-     * @var string
-     */
+    /** @var string Generated test article id. */
     private $testArticleId = null;
-
-    /**
-     * Fixture setUp.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    /*
-    * Fixture tearDown.
-    */
-    protected function tearDown()
-    {
-        parent::tearDown();
-    }
 
     /**
      * Assert that we get the expected multilanguage data for some language id >= 8.
@@ -65,7 +51,7 @@ class Integration_Multilanguage_ViewTest extends MultilanguageTestCase
         oxRegistry::getLang()->setBaseLanguage($languageId);
 
         //load article to have a look at e.g. it's title in the current language
-        $article = oxnew('oxArticle');
+        $article = oxNew('oxArticle');
         $article->disableLazyLoading();
         $article->load($this->testArticleId);
 
@@ -75,7 +61,7 @@ class Integration_Multilanguage_ViewTest extends MultilanguageTestCase
         //Make sure we have the expected value for the base language.
         //Effect of #6216 was that base language data was wrongly used for language id >= 8 with no way to change this.
         oxRegistry::getLang()->setBaseLanguage($this->originalBaseLanguageId);
-        $article = oxnew('oxArticle');
+        $article = oxNew('oxArticle');
         $article->disableLazyLoading();
         $article->load($this->testArticleId);
         $this->assertSame('TEST_MULTI_LANGUAGE', $article->oxarticles__oxtitle->value);
@@ -95,7 +81,7 @@ class Integration_Multilanguage_ViewTest extends MultilanguageTestCase
         $this->insertArticle();
 
         //load article to have a look at e.g. it's title in the current language
-        $article = oxnew('oxArticle');
+        $article = oxNew('oxArticle');
         $article->disableLazyLoading();
         $article->load($this->testArticleId);
 
@@ -104,7 +90,7 @@ class Integration_Multilanguage_ViewTest extends MultilanguageTestCase
 
         //As article was stored in switched base language, related original base language field is empty.
         oxRegistry::getLang()->setBaseLanguage($this->originalBaseLanguageId);
-        $article = oxnew('oxArticle');
+        $article = oxNew('oxArticle');
         $article->disableLazyLoading();
         $article->load($this->testArticleId);
         $this->assertSame('', $article->oxarticles__oxtitle->value);
@@ -115,10 +101,10 @@ class Integration_Multilanguage_ViewTest extends MultilanguageTestCase
      */
     private function insertArticle()
     {
-        $this->testArticleId = substr_replace( oxUtilsObject::getInstance()->generateUId(), '_', 0, 1 );
+        $this->testArticleId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
 
         //copy from original article
-        $article = oxNew('oxarticle');
+        $article = oxNew('oxArticle');
         $article->disableLazyLoading();
         $article->load(self::SOURCE_ARTICLE_ID);
         $article->setId($this->testArticleId);

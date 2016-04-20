@@ -19,13 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Models;
 
 /**
- * Testing oxshoplist class
+ * Testing oxShopList class
  */
-class  Integration_Models_oxshoplistTest extends OxidTestCase
+class ShopListTest extends \OxidTestCase
 {
-
     /**
      * Initialize the fixture.
      */

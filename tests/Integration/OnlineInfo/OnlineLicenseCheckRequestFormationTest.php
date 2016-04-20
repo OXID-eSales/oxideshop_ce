@@ -19,6 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\OnlineInfo;
+
+use oxCurl;
+use oxOnlineLicenseCheck;
+use oxOnlineLicenseCheckCaller;
+use oxRegistry;
 
 /**
  * Class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest
@@ -30,7 +36,7 @@
  * @covers oxUserCounter
  * @covers oxOnlineLicenseCheck
  */
-class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends OxidTestCase
+class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
 {
     /**
      * imitating package revision file and return shop dir
@@ -46,6 +52,9 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         return $fakeShopDir;
     }
 
+    /**
+     *
+     */
     public function testRequestFormationWithExistingSerials()
     {
         $oConfig = $this->getConfig();

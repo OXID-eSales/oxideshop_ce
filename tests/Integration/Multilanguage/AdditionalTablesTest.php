@@ -19,10 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Integration\Multilanguage;
+
+use oxDb;
 
 require_once 'MultilanguageTestCase.php';
 
-class Integration_Multilanguage_AdditionalTablesTest extends MultilanguageTestCase
+class AdditionalTablesTest extends MultilanguageTestCase
 {
     /**
      * Additional multilanguage tables.

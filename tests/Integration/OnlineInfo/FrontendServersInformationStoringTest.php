@@ -19,6 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Integration\OnlineInfo;
+
+use oxServerChecker;
+use oxServerProcessor;
+use oxServersManager;
+use oxUtilsDate;
+use oxUtilsServer;
 
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
@@ -28,9 +35,8 @@
  * @covers oxServerChecker
  * @covers oxServerManager
  */
-class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidTestCase
+class FrontendServersInformationStoringTest extends \OxidTestCase
 {
-
     /** @var string server id. */
     private $_sServerId = '7da43ed884a1zd1d6035d4c1d630fc4e';
 

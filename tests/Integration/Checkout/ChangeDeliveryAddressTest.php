@@ -2,8 +2,13 @@
 /**
  * #PHPHEADER_OXID_LICENSE_INFORMATION#
  */
+namespace Integration\Checkout;
 
-class Integration_Checkout_changeDeliveryAddressTest extends OxidTestCase
+use oxField;
+use oxRegistry;
+use oxUtilsObject;
+
+class ChangeDeliveryAddressTest extends \OxidTestCase
 {
     const TEST_ARTICLE_ID = '1951';
 

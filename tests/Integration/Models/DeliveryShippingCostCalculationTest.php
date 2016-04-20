@@ -19,11 +19,20 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Integration\Models;
+
+use oxArticle;
+use oxDb;
+use oxDelivery;
+use oxField;
+use oxRegistry;
+use oxUser;
+use oxUtilsObject;
 
 /**
  * Integration test for ESDEV-2954 delivery rules and shipping cost calculation.
  */
-class Integration_models_oxDeliveryShippingCostCalcuationTest extends OxidTestCase
+class DeliveryShippingCostCalculationTest extends \OxidTestCase
 {
     /**
      * Make a copy of Stewart+Brown Shirt Kisser Fish parent and variant L violet for testing
@@ -42,14 +51,9 @@ class Integration_models_oxDeliveryShippingCostCalcuationTest extends OxidTestCa
      */
     private $deliveries = array();
 
-    /**
-     * Generated oxids for test article, user, order, discount and vouchers
-     *
-     * @var string
-     */
-    private $testArticleId = null;
     private $testUserId = null;
 
+    /** @var string Generated oxids for test article, user, order, discount and vouchers. */
     private $categoryIds = array(
         '943927cd5d60751015b567794d3239bb',
         '943202124f58e02e84bb228a9a2a9f1e',
@@ -813,7 +817,7 @@ class Integration_models_oxDeliveryShippingCostCalcuationTest extends OxidTestCa
     /**
      * Create a delivery set for country germany and payment method oxidinvoice.
      *
-     * @param array  $rules
+     * @param array  $ruleIds
      * @param string $title
      *
      * @return string oxid of created set.

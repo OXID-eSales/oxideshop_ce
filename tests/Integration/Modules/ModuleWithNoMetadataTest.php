@@ -19,8 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Modules;
 
-class Integration_Modules_ModuleWithNoMetadataTest extends OxidTestCase
+use oxRegistry;
+
+class ModuleWithNoMetadataTest extends \OxidTestCase
 {
     /**
      * Tests if module was activated.

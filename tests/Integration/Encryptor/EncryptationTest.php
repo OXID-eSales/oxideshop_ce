@@ -19,13 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Encryptor;
 
 /**
  * Class Unit_Core_oxEncryptorTest
  */
-class Integration_Encryptor_EncryptationTest extends OxidTestCase
+class EncryptationTest extends \OxidTestCase
 {
-
     public function providerEncodingAndDecodingGivesSameResultWithCorrectKey()
     {
         return array(

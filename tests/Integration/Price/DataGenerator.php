@@ -19,15 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Price;
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/Integration/Price/basketconstruct.php';
+use oxDb;
+use oxUtilsObject;
+
+require_once __DIR__. '/BasketConstruct.php';
 
 /**
  * Class DataGenerator
  */
-class DataGenerator extends OxidTestCase
+class DataGenerator extends \OxidTestCase
 {
-
     // Shop modes: brutto-brutto or netto-brutto
     private $blEnterNetPrice = true;
     private $blShowNetPrice = false;
@@ -162,7 +165,7 @@ class DataGenerator extends OxidTestCase
      *
      * @param string $sFilename test case filename
      *
-     * @return file resource
+     * @return resource
      */
     protected function _createFile($sFilename)
     {
@@ -172,8 +175,8 @@ class DataGenerator extends OxidTestCase
     /**
      * Writes data array to file with provided handle
      *
-     * @param       file   resource to write $rHandle
-     * @param array $aData of data needed to write
+     * @param resource $rHandle Resource to write $rHandle
+     * @param array    $aData   Data needed write
      *
      * @return mixed
      */
@@ -409,7 +412,7 @@ class DataGenerator extends OxidTestCase
     protected function _gatherExpectedData($aTestCase)
     {
         // load calculated basket
-        $oBasketConstruct = oxNew('BasketConstruct');
+        $oBasketConstruct = new BasketConstruct();
         $oBasket = $oBasketConstruct->calculateBasket($aTestCase);
 
         // gathering data arrays

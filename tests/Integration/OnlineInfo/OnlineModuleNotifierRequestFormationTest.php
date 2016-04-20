@@ -19,6 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\OnlineInfo;
+
+use oxCurl;
+use oxModule;
+use oxOnlineModuleVersionNotifier;
+use oxOnlineModuleVersionNotifierCaller;
+use oxRegistry;
+use oxSimpleXml;
 
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
@@ -28,7 +36,7 @@
  * @covers oxServerChecker
  * @covers oxServerManager
  */
-class Integration_OnlineInfo_OnlineModuleNotifierRequestFormationTest extends OxidTestCase
+class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
 {
     public function testRequestFormation()
     {

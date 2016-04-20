@@ -19,8 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Price;
 
-require_once __DIR__ . '/baseTestCase.php';
+use oxDb;
+use oxOrderArticle;
+use oxRegistry;
+
+require_once __DIR__. '/BaseTestCase.php';
 
 /**
  * Basket price calculation test
@@ -32,7 +37,7 @@ require_once __DIR__ . '/baseTestCase.php';
  * - Vouchers
  * - Totals (grand, netto, brutto)
  */
-class Integration_Price_BasketTest extends Integration_Price_BaseTestCase
+class BasketTest extends BaseTestCase
 {
     /** @var array Test case directory array */
     private $testCaseDirectories = array(
@@ -120,7 +125,7 @@ class Integration_Price_BasketTest extends Integration_Price_BaseTestCase
         }
 
         // load calculated basket from provided data
-        $basketConstruct = oxNew('BasketConstruct');
+        $basketConstruct = new BasketConstruct();
         $basket = $basketConstruct->calculateBasket($testCase);
 
         // check basket item list

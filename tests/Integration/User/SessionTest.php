@@ -1,9 +1,34 @@
 <?php
 /**
- * #PHPHEADER_OXID_LICENSE_INFORMATION#
+ * This file is part of OXID eShop Community Edition.
+ *
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @link      http://www.oxid-esales.com
+ * @copyright (C) OXID eSales AG 2003-2016
+ * @version   OXID eShop CE
  */
+namespace Integration\User;
 
-class Integration_User_SessionTest extends OxidTestCase
+use oxBasket;
+use oxField;
+use OxidEsales\TestingLibrary\UnitTestCase;
+use oxRegistry;
+use oxUser;
+use oxUtilsObject;
+
+class SessionTest extends UnitTestCase
 {
     const FIRST_ARTICLE_ID = '0963c9792aea84adff1d2ef8aa4a7679';
     const SECOND_ARTICLE_ID = '09646538b54bac72b4ccb92fb5e3649f';
@@ -21,7 +46,7 @@ class Integration_User_SessionTest extends OxidTestCase
         $this->_createUsers();
     }
 
-    /*
+    /**
     * Fixture tearDown.
     */
     protected function tearDown()
@@ -40,7 +65,7 @@ class Integration_User_SessionTest extends OxidTestCase
         $this->fillBasketForLoggedInUser('firstuser@oxideshop.dev', 'asdfasdf', self::FIRST_ARTICLE_ID);
 
         //use logs in again, saved basket is restored
-        $user = oxNew('oxuser');
+        $user = oxNew('oxUser');
         $user->login('firstuser@oxideshop.dev', 'asdfasdf');
 
         $basket = oxRegistry::getSession()->getBasket();
@@ -161,14 +186,14 @@ class Integration_User_SessionTest extends OxidTestCase
     /**
      * Test helper, fill basket for given user.
      *
-     * @param $user
-     * @param $articleId
+     * @param oxUser $user
+     * @param string $articleId
      *
      * @return oxBasket
      */
     private function _getFilledBasketForUser($user, $articleId)
     {
-        $basket = oxnew('oxbasket');
+        $basket = oxnew('oxBasket');
         $basket->setBasketUser($user);
         $basket->addToBasket($articleId, 1);
         $basket->calculateBasket(true); //only saved on calculate, oxuserbaskets.oxtitle = 'savedbasket'
@@ -183,16 +208,16 @@ class Integration_User_SessionTest extends OxidTestCase
     /**
      * Test helper, fill basket for logged in User
      *
-     * @param $username
-     * @param $password
-     * @param $articleId
+     * @param string $username
+     * @param string $password
+     * @param string $articleId
      */
     private function fillBasketForLoggedInUser($username, $password, $articleId)
     {
         $this->setRequestParameter('lgn_usr', $username);
         $this->setRequestParameter('lgn_pwd', $password);
 
-        $parent = $this->getMock('oxuser', array('isEnabledPrivateSales'));
+        $parent = $this->getMock('oxUser', array('isEnabledPrivateSales'));
         $parent->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(false));
 
         $userComponent = oxNew('oxcmp_user');

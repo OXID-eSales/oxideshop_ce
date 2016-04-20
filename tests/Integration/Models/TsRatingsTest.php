@@ -19,13 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\Models;
 
 /**
  * oxArticle integration test
  */
-class Integration_Models_oxTsRatingsTest extends OxidTestCase
+class TsRatingsTest extends \OxidTestCase
 {
-
     /**
      * Testings invalid id call to trusted shops
      *

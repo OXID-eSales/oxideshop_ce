@@ -19,10 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Integration\User;
 
-abstract class UserTestCase extends OxidTestCase
+use oxField;
+use OxidEsales\TestingLibrary\UnitTestCase;
+use oxUser;
+
+abstract class UserTestCase extends UnitTestCase
 {
-
     /**
      * Password encoded with old algorithm.
      *
@@ -98,7 +102,7 @@ abstract class UserTestCase extends OxidTestCase
         $oUser->save();
 
         $oUserFromBase = oxNew('oxBase');
-        $oUserFromBase->init('oxuser');
+        $oUserFromBase->init('oxUser');
         $oUserFromBase->load($oUser->getId());
         $oUserFromBase->oxuser__oxshopid = new oxField($iShopId, oxField::T_RAW);
         $oUserFromBase->oxuser__oxrights = new oxField($sRight, oxField::T_RAW);

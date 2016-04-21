@@ -19,8 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxWidgetControlTest extends OxidTestCase
+use modDB;
+use \oxRegistry;
+
+class WidgetControlTest extends \OxidTestCase
 {
 
     protected function tearDown()

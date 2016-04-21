@@ -19,11 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxorder;
+
+use \oxField;
+use \Exception;
+use \oxTestModules;
 
 /**
  * Tests for Order_Main class
  */
-class Unit_Admin_OrderMainTest extends OxidTestCase
+class OrderMainTest extends \OxidTestCase
 {
     /**
      * tear down the test.

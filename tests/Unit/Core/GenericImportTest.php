@@ -19,8 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
+use oxDb;
 use OxidEsales\Eshop\Core\GenericImport\GenericImport;
+use OxidTestCase;
+use oxUser;
+use oxUtilsServer;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 /**
@@ -51,7 +56,7 @@ class GenericImportTest extends OxidTestCase
      */
     public function testInit()
     {
-        oxAddClassModule('GenericImportTest_oxUtilsServer', 'oxUtilsServer');
+        oxAddClassModule('Unit\Core\GenericImportTest_oxUtilsServer', 'oxUtilsServer');
         $oImport = new GenericImport();
 
         /** @var oxUser|MockObject $oUser */

@@ -19,8 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxemailAzureTplTest extends OxidTestCase
+use \oxField;
+use \oxPrice;
+use \stdClass;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
+
+class EmailAzureTplTest extends \OxidTestCase
 {
 
     protected $_oEmail = null;

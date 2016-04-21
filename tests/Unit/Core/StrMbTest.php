@@ -19,12 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
 //THIS FILE IS IN LATIN1 AND NOT IN UTF
 //bellow is one O uml char
 //ö
 
-class Unit_Core_oxstrMbTest extends OxidTestCase
+class StrMbTest extends \OxidTestCase
 {
     /** @var string */
     protected $_sStrNeedle = "ö";

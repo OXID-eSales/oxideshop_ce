@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxDb;
 
 /**
  * Tests for Discount_Users_Ajax class
  */
-class Unit_Admin_DiscountUsersAjaxTest extends OxidTestCase
+class DiscountUsersAjaxTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.

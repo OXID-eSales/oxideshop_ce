@@ -19,10 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Smarty;
+
+use \Smarty;
+use \oxRegistry;
 
 require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/plugins/function.oxscript.php';
 
-class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
+class PluginSmartyOxScriptTest extends \OxidTestCase
 {
 
     /**

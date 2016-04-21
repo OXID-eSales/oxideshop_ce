@@ -19,11 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \Exception;
+use \oxManufacturerList;
+use \oxField;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Testing oxManufacturerList class
  */
-class Unit_Views_ManufacturerlistTest extends OxidTestCase
+class ManufacturerlistTest extends \OxidTestCase
 {
 
     /**

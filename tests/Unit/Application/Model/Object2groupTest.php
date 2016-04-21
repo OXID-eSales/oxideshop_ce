@@ -19,8 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxobject2groupTest extends OxidTestCase
+use \oxField;
+use \oxDb;
+
+class Object2groupTest extends \OxidTestCase
 {
 
     private $_oGroup = null;

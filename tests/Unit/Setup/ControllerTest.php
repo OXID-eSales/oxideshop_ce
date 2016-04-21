@@ -19,8 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Setup;
 
 require_once getShopBasePath() . '/Setup/functions.php';
+use Exception;
 use OxidEsales\Eshop\Setup\Controller;
 use OxidEsales\Eshop\Setup\Core;
 use OxidEsales\Eshop\Setup\Database;
@@ -29,7 +31,7 @@ use OxidEsales\Eshop\Setup\View;
 /**
  * controller tests
  */
-class ControllerTest extends OxidTestCase
+class ControllerTest extends \OxidTestCase
 {
     /**
      * Testing controller::getView()

@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Setup;
 
 require_once getShopBasePath() . '/Setup/functions.php';
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
@@ -30,7 +31,7 @@ use OxidEsales\Eshop\Setup\Setup;
 /**
  * Setup tests
  */
-class SetupTest extends OxidTestCase
+class SetupTest extends \OxidTestCase
 {
     /**
      * Testing Setup::setTitle() and Setup::getTitle()

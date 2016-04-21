@@ -19,6 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxVariantHandler;
+use \stdClass;
+use \oxField;
+use \oxDb;
 
 class oxVariantHandlerForOxvarianthandlerTest extends oxVariantHandler
 {
@@ -29,7 +35,7 @@ class oxVariantHandlerForOxvarianthandlerTest extends oxVariantHandler
     }
 }
 
-class Unit_Models_oxvarianthandlerTest extends OxidTestCase
+class VarianthandlerTest extends \OxidTestCase
 {
 
     /**

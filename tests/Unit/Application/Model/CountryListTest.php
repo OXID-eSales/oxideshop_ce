@@ -19,8 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxCountryListTest extends OxidTestCase
+use \oxField;
+
+class CountryListTest extends \OxidTestCase
 {
 
     public $aList = array();

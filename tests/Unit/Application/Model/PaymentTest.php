@@ -19,6 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxPayment;
+use \oxField;
+use \oxDb;
+use \oxRegistry;
 
 class testPayment extends oxPayment
 {
@@ -29,7 +35,7 @@ class testPayment extends oxPayment
     }
 }
 
-class Unit_Models_oxpaymentTest extends OxidTestCase
+class PaymentTest extends \OxidTestCase
 {
     /**
      * Tear down the fixture.
@@ -373,7 +379,7 @@ class Unit_Models_oxpaymentTest extends OxidTestCase
      */
     public function testIsValidPaymentInGroup()
     {
-        $oPayment = oxNew('testPayment');
+        $oPayment = oxNew('Unit\Application\Model\testPayment');
         $oPayment->Load('oxcreditcard');
 
         $oUser = oxNew('oxuser');

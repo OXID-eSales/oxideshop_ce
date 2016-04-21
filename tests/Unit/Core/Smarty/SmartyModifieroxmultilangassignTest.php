@@ -19,10 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Smarty;
+
+use \Smarty;
+use \oxField;
+use \oxRegistry;
 
 require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/plugins/modifier.oxmultilangassign.php';
 
-class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
+class SmartyModifieroxmultilangassignTest extends \OxidTestCase
 {
 
     /**

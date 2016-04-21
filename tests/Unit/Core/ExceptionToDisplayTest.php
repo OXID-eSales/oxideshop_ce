@@ -19,8 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxexceptionToDisplayTest extends OxidTestCase
+use \oxRegistry;
+use \oxTestModules;
+
+class ExceptionToDisplayTest extends \OxidTestCase
 {
 
     public function testSetGetStackTrace()

@@ -19,11 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use oxCategoryList;
+use \oxField;
+use \oxDb;
+use oxManufacturerList;
+use \oxTestModules;
+use oxVendorList;
 
 /**
  * Tests for Article_List class
  */
-class Unit_Admin_ArticleListTest extends OxidTestCase
+class ArticleListTest extends \OxidTestCase
 {
 
     /**

@@ -19,6 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxarticle;
+
+use \oxNewDummyUserModule_parent;
+use \oxNewDummyUserModule2_parent;
+use \oemodulenameoxorder_parent;
+use \oxAttribute;
+use \oxRegistry;
+use oxUtilsObject;
 
 class modOxUtilsObject_oxUtilsObject extends \oxUtilsObject
 {
@@ -64,7 +74,7 @@ class oxModuleUtilsObject extends \oxUtilsObject
     }
 }
 
-class Unit_Core_oxutilsobjectTest extends OxidTestCase
+class UtilsobjectTest extends \OxidTestCase
 {
 
     /**
@@ -72,7 +82,7 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
      */
     public function tearDown()
     {
-        oxRemClassModule('modOxUtilsObject_oxUtilsObject');
+        oxRemClassModule('Unit\Core\modOxUtilsObject_oxUtilsObject');
 
         $oArticle = oxNew('oxArticle');
         $oArticle->delete('testArticle');
@@ -101,11 +111,11 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
      */
     public function testGetObject()
     {
-        $this->assertTrue(oxNew('_oxutils_test') instanceof _oxutils_test);
-        $this->assertTrue(oxNew('_oxutils_test', 1) instanceof _oxutils_test);
-        $this->assertTrue(oxNew('_oxutils_test', 1, 2) instanceof _oxutils_test);
-        $this->assertTrue(oxNew('_oxutils_test', 1, 2, 3) instanceof _oxutils_test);
-        $this->assertTrue(oxNew('_oxutils_test', 1, 2, 3, 4) instanceof _oxutils_test);
+        $this->assertTrue(oxNew('Unit\Core\_oxutils_test') instanceof _oxutils_test);
+        $this->assertTrue(oxNew('Unit\Core\_oxutils_test', 1) instanceof _oxutils_test);
+        $this->assertTrue(oxNew('Unit\Core\_oxutils_test', 1, 2) instanceof _oxutils_test);
+        $this->assertTrue(oxNew('Unit\Core\_oxutils_test', 1, 2, 3) instanceof _oxutils_test);
+        $this->assertTrue(oxNew('Unit\Core\_oxutils_test', 1, 2, 3, 4) instanceof _oxutils_test);
     }
 
     public function testOxNewSettingParameters()
@@ -147,9 +157,9 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
 
         $configFile->setVar('sShopDir', $realShopDir);
 
-        $this->assertTrue($oNewDummyModule instanceof oxNewDummyModule);
-        $this->assertTrue($oNewDummyModule instanceof oxNewDummyUserModule);
-        $this->assertTrue($oNewDummyModule instanceof oxNewDummyUserModule2);
+        $this->assertTrue($oNewDummyModule instanceof \oxNewDummyModule);
+        $this->assertTrue($oNewDummyModule instanceof \oxNewDummyUserModule);
+        $this->assertTrue($oNewDummyModule instanceof \oxNewDummyUserModule2);
     }
 
     public function testOxNewClassExtendingWhenClassesDoesNotExists()
@@ -181,9 +191,9 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
 
         $configFile->setVar('sShopDir', $realShopDir);
 
-        $this->assertTrue($oNewDummyModule instanceof oxNewDummyModule);
-        $this->assertTrue($oNewDummyModule instanceof oxNewDummyUserModule);
-        $this->assertFalse($oNewDummyModule instanceof oxNewDummyUserModule2);
+        $this->assertTrue($oNewDummyModule instanceof \oxNewDummyModule);
+        $this->assertTrue($oNewDummyModule instanceof \oxNewDummyUserModule);
+        $this->assertFalse($oNewDummyModule instanceof \oxNewDummyUserModule2);
     }
 
     public function testOxNewCreationOfNonExistingClass()

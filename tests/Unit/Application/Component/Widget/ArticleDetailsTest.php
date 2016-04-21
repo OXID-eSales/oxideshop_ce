@@ -19,11 +19,21 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Component\Widget;
+
+use oxArticle;
+use oxArticleList;
+use oxTagCloud;
+use \stdClass;
+use \oxField;
+use \Exception;
+use \oxDb;
+use \oxTestModules;
 
 /**
  * Tests for oxwArticleBox class
  */
-class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
+class ArticleDetailsTest extends \OxidTestCase
 {
     /**
      * Test get active zoom picture.
@@ -136,7 +146,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
         $oDetailsView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
         $oProduct = $oDetailsView->UNITgetParentProduct('1126');
-        $this->assertTrue($oProduct instanceof oxarticle);
+        $this->assertTrue($oProduct instanceof oxArticle);
         $this->assertEquals('1126', $oProduct->getId());
     }
 
@@ -618,7 +628,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
         $oArticle->load("1849");
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oDetails->getCrossSelling();
-        $this->assertTrue($oList instanceof oxarticlelist);
+        $this->assertTrue($oList instanceof oxArticleList);
 
         $iCount = 2;
         if ($this->getConfig()->getEdition() === 'EE') {

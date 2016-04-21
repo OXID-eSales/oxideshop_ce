@@ -19,8 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class testElement extends oxI18n
+use \oxI18n;
+use \stdClass;
+use \oxField;
+use \oxlist;
+use \oxListObject;
+
+class TestElement extends oxI18n
 {
 
     public function isInList()
@@ -29,7 +36,7 @@ class testElement extends oxI18n
     }
 }
 
-class Unit_Core_oxlistTest extends OxidTestCase
+class ListTest extends \OxidTestCase
 {
 
     private $_oList;
@@ -320,10 +327,10 @@ class Unit_Core_oxlistTest extends OxidTestCase
 
         $sQ = "select * from oxarticles limit 0,5";
         $oSubj = oxNew('oxList');
-        $oSubj->init("testElement", "oxarticles");
+        $oSubj->init("Unit\\Core\\TestElement", "oxarticles");
         $oSubj->selectString($sQ);
 
-        $oElement = oxNew('testElement');
+        $oElement = new TestElement();
         $this->assertFalse($oElement->isInList());
 
         foreach ($oSubj as $oElement) {

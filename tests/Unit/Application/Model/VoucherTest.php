@@ -19,11 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxField;
+use oxUtilsObject;
+use oxVoucherException;
+use \stdclass;
+use \oxDb;
+use \oxRegistry;
 
 /**
  * Testing oxvoucherserie class
  */
-class Unit_Models_oxvoucherTest extends OxidTestCase
+class VoucherTest extends \OxidTestCase
 {
     const MAX_LOOP_AMOUNT = 4;
 
@@ -1357,17 +1365,11 @@ class Unit_Models_oxvoucherTest extends OxidTestCase
         $oNewVoucher = oxNew('oxvoucher');
         if (!$oNewVoucher->load($sOXID)) {
             $this->fail('can not load voucher');
-
-            return;
         }
         $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField('aaa');
         $oNewVoucher->save();
-        try {
-            $oNewVoucher->getSerie();
-        } catch (oxObjectException $oEx) {
-            return;
-        }
-        $this->fail("failed test");
+        $this->setExpectedException('oxObjectException');
+        $oNewVoucher->getSerie();
     }
 
     /**

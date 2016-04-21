@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Edition;
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\TestingLibrary\UnitTestCase;
+use oxRegistry;
 
 // TODO: class should be refactored to testable state.
-class EditionSelectorTest extends OxidEsales\TestingLibrary\UnitTestCase
+class EditionSelectorTest extends UnitTestCase
 {
     public function testReturnsEdition()
     {

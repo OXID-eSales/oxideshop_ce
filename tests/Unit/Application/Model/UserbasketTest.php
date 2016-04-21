@@ -19,8 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxuserbasketTest extends OxidTestCase
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
+
+class UserbasketTest extends \OxidTestCase
 {
 
     private $_oUserBasket;

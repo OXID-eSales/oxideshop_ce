@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Setup;
 
 use OxidEsales\Eshop\Setup\View;
 
@@ -27,7 +28,7 @@ require_once getShopBasePath() . '/Setup/functions.php';
 /**
  * view tests
  */
-class ViewTest extends OxidTestCase
+class ViewTest extends \OxidTestCase
 {
     /**
      * Testing view::getTitle()

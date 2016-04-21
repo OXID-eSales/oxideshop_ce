@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxServerProcessor;
 
 /**
  * @covers oxServerProcessor
  */
-class Unit_Core_oxServerProcessorTest extends OxidTestCase
+class ServerProcessorTest extends \OxidTestCase
 {
     public function testNodeInformationNotUpdatedIfNotNeed()
     {

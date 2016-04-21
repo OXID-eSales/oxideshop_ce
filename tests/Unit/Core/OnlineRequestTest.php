@@ -19,13 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
 /**
  * Class Unit_Core_oxOnlineRequestTest
  *
  * @covers oxOnlineRequest
  */
-class Unit_Core_oxOnlineRequestTest extends OxidTestCase
+class OnlineRequestTest extends \OxidTestCase
 {
     public function testClusterIdGenerationWhenNotSet()
     {

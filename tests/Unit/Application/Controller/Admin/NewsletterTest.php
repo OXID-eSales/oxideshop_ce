@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
 
 /**
  * Tests for Admin_News class
  */
-class Unit_Admin_NewsletterTest extends OxidTestCase
+class NewsletterTest extends \OxidTestCase
 {
     /**
      * Admin_News::Render() test case

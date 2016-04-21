@@ -19,13 +19,20 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use DateTime;
+use oxOnlineLicenseCheck;
+use oxOnlineModuleVersionNotifier;
+use oxRegistry;
+use oxUtils;
+use oxUtilsDate;
 
 /**
  * @covers oxSystemEventHandler
  */
-class Unit_Core_oxSystemEventHandlerTest extends \oxUnitTestCase
+class oxSystemEventHandlerTest extends \oxUnitTestCase
 {
-
     /**
      * @return null|void
      */

@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
 
 /**
  * Test Trusted shop ratings acquisition from Trusted Shops website
@@ -29,7 +30,7 @@
  *
  * Class oxTsRatingsTest
  */
-class Unit_Views_oxTsRatingsTest extends OxidTestCase
+class TsRatingsTest extends \OxidTestCase
 {
 
     /**

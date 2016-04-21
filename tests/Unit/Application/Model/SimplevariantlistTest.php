@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxlist;
+
+use \oxField;
 
 //class should be named Unit_oxSimpleVariantListTest
 //but GAAAH IT DOES NOT WORK somehow, just because of the name??????
 //T2009-04-20
-class Unit_Models_oxsimplevariantlistTest extends OxidTestCase
+class SimplevariantlistTest extends \OxidTestCase
 {
 
     public function testSetParent()

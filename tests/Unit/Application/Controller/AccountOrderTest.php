@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use oxArticleList;
+use \oxField;
+use \oxTestModules;
 
 /**
  * Tests for Account class
  */
-class Unit_Views_accountOrderTest extends OxidTestCase
+class AccountOrderTest extends \OxidTestCase
 {
 
     /**
@@ -64,7 +69,7 @@ class Unit_Views_accountOrderTest extends OxidTestCase
 
         $oView = $this->getMock("Account_Order", array("getOrderList"));
         $oView->expects($this->any())->method('getOrderList')->will($this->returnValue($oOrderList));
-        $this->assertTrue($oView->getOrderArticleList() instanceof oxarticlelist);
+        $this->assertTrue($oView->getOrderArticleList() instanceof oxArticleList);
     }
 
     /**

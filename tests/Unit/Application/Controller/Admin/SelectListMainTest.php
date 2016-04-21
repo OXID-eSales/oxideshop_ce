@@ -19,11 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxselectlist;
+
+use \Exception;
+use \stdClass;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Tests for SelectList_Main class
  */
-class Unit_Admin_SelectListMainTest extends OxidTestCase
+class SelectListMainTest extends \OxidTestCase
 {
 
     /**

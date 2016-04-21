@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxRegistry;
 
 /**
  * Tests for contact class
  */
-class Unit_Views_exceptionErrorTest extends OxidTestCase
+class ExceptionErrorTest extends \OxidTestCase
 {
 
     /**

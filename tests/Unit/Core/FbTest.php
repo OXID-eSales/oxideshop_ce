@@ -19,6 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxFb;
+use \oxRegistry;
 
 class _oxFb extends oxFb
 {
@@ -44,7 +48,7 @@ class _oxFb extends oxFb
     }
 }
 
-class Unit_Core_oxfbTest extends OxidTestCase
+class FbTest extends \OxidTestCase
 {
 
     private $_oxLinks;
@@ -134,7 +138,7 @@ class Unit_Core_oxfbTest extends OxidTestCase
     public function testSetPersistentData()
     {
         $oSess = oxRegistry::getSession();
-        $oFb = $this->getProxyClass('_oxFb');
+        $oFb = $this->getProxyClass('Unit\Core\_oxFb');
 
         $sSessKey = $oFb->UNITconstructSessionVariableName('access_token');
         $this->assertFalse($oSess->hasVariable($sSessKey));
@@ -150,7 +154,7 @@ class Unit_Core_oxfbTest extends OxidTestCase
     public function testGetPersistentData()
     {
         $oSess = oxRegistry::getSession();
-        $oFb = $this->getProxyClass('_oxFb');
+        $oFb = $this->getProxyClass('Unit\Core\_oxFb');
 
         $sSessKey = $oFb->UNITconstructSessionVariableName('access_token');
         $oSess->setVariable($sSessKey, 'test2');
@@ -166,7 +170,7 @@ class Unit_Core_oxfbTest extends OxidTestCase
     public function testClearPersistentData()
     {
         $oSess = oxRegistry::getSession();
-        $oFb = $this->getProxyClass('_oxFb');
+        $oFb = $this->getProxyClass('Unit\Core\_oxFb');
 
         $sSessKey = $oFb->constructSessionVariableName('access_token');
         $oSess->setVariable($sSessKey, 'test3');

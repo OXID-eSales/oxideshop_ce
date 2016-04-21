@@ -19,11 +19,20 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxorder;
+use \oxuserpayment;
+
+use \oxField;
+use \Exception;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Tests for Order_Overview class
  */
-class Unit_Admin_OrderOverviewTest extends OxidTestCase
+class OrderOverviewTest extends \OxidTestCase
 {
 
     /**

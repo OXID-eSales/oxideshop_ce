@@ -19,11 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \Exception;
+use \oxfield;
+use \oxException;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Testing forgotpwd class
  */
-class Unit_Views_forgotpwdTest extends OxidTestCase
+class ForgotpwdTest extends \OxidTestCase
 {
 
     /**

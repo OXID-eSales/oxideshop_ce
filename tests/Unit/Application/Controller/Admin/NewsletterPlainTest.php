@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxnewsletter;
+
+use \Exception;
+use \oxTestModules;
 
 /**
  * Tests for Newsletter_Plain class
  */
-class Unit_Admin_NewsletterPlainTest extends OxidTestCase
+class NewsletterPlainTest extends \OxidTestCase
 {
 
     /**

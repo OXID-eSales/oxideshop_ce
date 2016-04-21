@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Component\Widget;
+
+use oxTagCloud;
 
 /**
  * Tests for oxwTagCloud class
  */
-class Unit_Components_Widgets_oxwTagCloudTest extends OxidTestCase
+class TagCloudTest extends \OxidTestCase
 {
 
     /**

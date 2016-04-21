@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxnewslist;
 
 /**
  * oxcmp_news tests
  */
-class Unit_Views_oxCmpNewsTest extends OxidTestCase
+class CmpNewsTest extends \OxidTestCase
 {
 
     /**

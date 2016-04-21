@@ -19,10 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Smarty;
+
+use \oxField;
+use \Smarty;
+use \stdClass;
+use \oxRegistry;
+use \oxTestModules;
 
 require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/plugins/function.oxcontent.php';
 
-class Unit_Maintenance_pluginSmartyOxContentTest extends OxidTestCase
+class PluginSmartyOxContentTest extends \OxidTestCase
 {
 
     public function testGetContentWhenShopIsNotProductiveAndContentDoesNotExist()

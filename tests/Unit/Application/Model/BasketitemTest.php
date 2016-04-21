@@ -19,11 +19,24 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use oxArticleException;
+use oxArticleInputException;
+use \oxExceptionToDisplay;
+use \oxArticle;
+use \oxBasketItem;
+use \oxField;
+use oxNoArticleException;
+use oxOutOfStockException;
+use \stdClass;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Test oxArticle module - notBuyable
  */
-class modOxArticle_notBuyable_oxbasketItem extends oxArticle
+class BasketItemTest_ArticleHelper extends oxArticle
 {
 
     /**
@@ -89,7 +102,7 @@ class modForTestSetAsDiscountArticle extends oxBasketItem
 /**
  * Testing oxBasketItem class.
  */
-class Unit_Models_oxbasketitemTest extends OxidTestCase
+class BasketitemTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.
@@ -495,17 +508,17 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
     {
         $article = $this->createArticle();
 
-        oxAddClassModule('modOxArticle_notBuyable_oxbasketItem', 'oxArticle');
+        oxAddClassModule('Unit\Application\Model\BasketItemTest_ArticleHelper', 'oxArticle');
 
         $oBasketItem = oxNew('oxBasketItem');
         try {
             $oBasketItem->getArticle(true, $article->getId());
         } catch (oxArticleInputException $oEx) {
-            oxRemClassModule('modOxArticle_notBuyable_oxbasketItem');
+            oxRemClassModule('Unit\Application\Model\BasketItemTest_ArticleHelper');
             return;
         }
 
-        oxRemClassModule('modOxArticle_notBuyable_oxbasketItem');
+        oxRemClassModule('Unit\Application\Model\BasketItemTest_ArticleHelper');
         $this->fail('Execption was not thrown when article is not buyable');
     }
 
@@ -532,18 +545,18 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
      */
     public function testGetArticle_notVisibleArticle()
     {
-        oxAddClassModule('modOxArticle_notVisible_oxbasketItem', 'oxArticle');
+        oxAddClassModule('Unit\Application\Model\modOxArticle_notVisible_oxbasketItem', 'oxArticle');
 
         $article = $this->createArticle();
         $oBasketItem = oxNew('oxBasketItem');
         try {
             $oBasketItem->getArticle(true, $article->getId());
         } catch (oxNoArticleException $oEx) {
-            oxRemClassModule('modOxArticle_notVisible_oxbasketItem');
+            oxRemClassModule('Unit\Application\Model\modOxArticle_notVisible_oxbasketItem');
             return;
         }
 
-        oxRemClassModule('modOxArticle_notVisible_oxbasketItem');
+        oxRemClassModule('Unit\Application\Model\modOxArticle_notVisible_oxbasketItem');
         $this->fail('Execption was not thrown when article is not visible');
     }
 

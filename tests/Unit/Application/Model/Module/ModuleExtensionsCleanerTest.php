@@ -19,10 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model\Module;
 
 use OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
-class ModuleExtensionsCleanerTest extends OxidEsales\TestingLibrary\UnitTestCase
+class ModuleExtensionsCleanerTest extends UnitTestCase
 {
     /**
      * Test case for bug #6342

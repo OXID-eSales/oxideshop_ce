@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
 
 /**
  * Tests for Dynscreen_List class
  */
-class Unit_Admin_DynscreenListTest extends OxidTestCase
+class DynscreenListTest extends \OxidTestCase
 {
 
     /**

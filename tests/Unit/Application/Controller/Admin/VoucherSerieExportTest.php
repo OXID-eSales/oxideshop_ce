@@ -19,11 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxField;
+use \oxRegistry;
 
 /**
  * Tests for VoucherSerie_Export class
  */
-class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
+class VoucherSerieExportTest extends \OxidTestCase
 {
 
     /**

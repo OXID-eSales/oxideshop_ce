@@ -19,6 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use modDB;
+use \oxUtils;
+use \oxSystemComponentException;
+use \Exception;
+use \stdClass;
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 class testOxUtils extends oxUtils
 {
@@ -46,7 +57,7 @@ class testOxUtils extends oxUtils
     }
 }
 
-class Unit_Core_oxutilsTest extends OxidTestCase
+class UtilsTest extends \OxidTestCase
 {
 
     protected $_sTestLogFileName = null;

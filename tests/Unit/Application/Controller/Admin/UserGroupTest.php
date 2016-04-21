@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
 
 /**
  * Tests for UserGroup class
  */
-class Unit_Admin_UserGroupTest extends OxidTestCase
+class UserGroupTest extends \OxidTestCase
 {
 
     /**

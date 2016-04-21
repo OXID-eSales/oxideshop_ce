@@ -19,11 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxField;
+use \oxRegistry;
 
 /**
  * Testing news class.
  */
-class Unit_Views_newsTest extends OxidTestCase
+class NewsTest extends \OxidTestCase
 {
 
     public $aNews = array();

@@ -19,8 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxGbEntryTest extends OxidTestCase
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+
+class GbEntryTest extends \OxidTestCase
 {
 
     private $_oObj = null;

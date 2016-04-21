@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxDb;
 
 /**
  * Tests for Article_Rights_Visible_Ajax class
  */
-class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
+class ArticleSelectionAjaxTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.

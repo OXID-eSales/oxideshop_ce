@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxDb;
 
 /**
  * Tests for Delivery_Categories_Ajax class
  */
-class Unit_Admin_DeliveryCategoriesAjaxTest extends OxidTestCase
+class DeliveryCategoriesAjaxTest extends \OxidTestCase
 {
 
     protected $_sCategoriesView = 'oxv_oxcategories_1_de';

@@ -19,8 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
 
-class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
+use \DOMDocument;
+use \oxField;
+use \DOMXPath;
+use \stdClass;
+use \DOMElement;
+use \oxTestModules;
+
+class NavigationTreeTest extends \OxidTestCase
 {
 
     protected $_sWrongDynfile = 'wrongfile.xml';

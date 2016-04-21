@@ -19,6 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxUtils;
+use \oxOutput;
+use \oxconfig;
+use \oxField;
+use \oxTestModules;
 
 class oxUtils_Extended extends oxUtils
 {
@@ -44,7 +51,7 @@ class oxConfigForUnit_oxoutputTest extends oxconfig
     }
 }
 
-class Unit_Core_oxoutputTest extends OxidTestCase
+class OutputTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.

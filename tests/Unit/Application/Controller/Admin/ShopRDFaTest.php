@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxRegistry;
 
 /**
  * Tests for Shop_Main class
  */
-class Unit_Admin_ShopRDFaTest extends OxidTestCase
+class ShopRDFaTest extends \OxidTestCase
 {
 
     /**

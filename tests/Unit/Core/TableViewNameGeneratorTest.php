@@ -19,10 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
-class Unit_Core_oxTableViewNameGeneratorTest extends OxidTestCase
+class TableViewNameGeneratorTest extends \OxidTestCase
 {
     public function testLanguageTableViewNameGenerationWhenDefaultLanguageIsUsed()
     {

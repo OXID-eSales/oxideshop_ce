@@ -19,6 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use Exception;
+use oxArticleHelper;
+use \oxdeliverylist;
+use oxEmailHelper;
+use \oxField;
+use oxOrder;
+use \stdClass;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
 
@@ -37,7 +49,7 @@ class modoxdeliverylist_oxorder extends oxdeliverylist
     }
 }
 
-class Unit_Models_oxorderTest extends OxidTestCase
+class OrderTest extends \OxidTestCase
 {
 
     /**
@@ -58,7 +70,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxRemClassModule('modoxdeliverylist_oxorder');
+        oxRemClassModule('Unit\Application\Model\modoxdeliverylist_oxorder');
         $this->cleanUpTable('oxorder');
         $this->cleanUpTable('oxorderarticles');
         $this->cleanUpTable('oxdeliveryset');
@@ -731,7 +743,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
 
     public function testGetShippingSetList()
     {
-        oxAddClassModule('modoxdeliverylist_oxorder', 'oxdeliverylist');
+        oxAddClassModule('Unit\Application\Model\modoxdeliverylist_oxorder', 'oxdeliverylist');
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->setId("_testOrderId");

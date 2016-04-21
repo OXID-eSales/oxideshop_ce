@@ -19,15 +19,22 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Setup;
 
+use Conf;
+use Exception;
+use oxDb;
 use OxidEsales\Eshop\Setup\Database;
+use PDO;
+use PHPUnit_Framework_MockObject_MockObject;
+use StdClass;
 
 require_once getShopBasePath() . '/Setup/functions.php';
 
 /**
  * SetupDb tests
  */
-class DatabaseTest extends OxidTestCase
+class DatabaseTest extends \OxidTestCase
 {
     /** @var array Queries will be logged here. */
     private $loggedQueries;
@@ -38,7 +45,7 @@ class DatabaseTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->loggedQueries = new stdClass();
+        $this->loggedQueries = new StdClass();
     }
 
     /**

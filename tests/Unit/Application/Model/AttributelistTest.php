@@ -19,11 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxDb;
+use \oxRegistry;
 
 /**
  * testing oxattributelist class.
  */
-class Unit_Models_oxattributelistTest extends OxidTestCase
+class AttributelistTest extends \OxidTestCase
 {
 
     /**

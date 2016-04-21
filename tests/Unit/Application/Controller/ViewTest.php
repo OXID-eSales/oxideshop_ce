@@ -19,6 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use oxSystemComponentException;
+use oxUtilsHelper;
+use \oxView;
+use \oxField;
+use \oxRegistry;
+use \oxTestModules;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
 
@@ -36,7 +44,7 @@ class modOxView extends oxView
     }
 }
 
-class Unit_Views_oxviewTest extends OxidTestCase
+class ViewTest extends \OxidTestCase
 {
 
     protected $_oView = null;
@@ -276,7 +284,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testExecuteFunction()
     {
-        $oView = $this->getMock('modOxView', array('xxx', '_executeNewAction'));
+        $oView = $this->getMock('Unit\Application\Controller\modOxView', array('xxx', '_executeNewAction'));
         $oView->expects($this->once())->method('xxx')->will($this->returnValue('xxx'));
         $oView->expects($this->once())->method('_executeNewAction')->with($this->equalTo('xxx'));
         $oView->executeFunction('xxx');
@@ -291,7 +299,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
     public function testExecuteFunctionThrowsExeption()
     {
-        $oView = $this->getMock('modOxView', array('xxx'));
+        $oView = $this->getMock('Unit\Application\Controller\modOxView', array('xxx'));
         $oView->expects($this->never())->method('xxx');
 
 
@@ -368,7 +376,6 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $sUrl = $oView->_executeNewAction("details?someparam=12");
         $this->assertEquals("shopurl/index.php?cl=details&someparam=12&" . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
-
     }
 
     public function testExecuteNewActionSsl()
@@ -473,7 +480,6 @@ class Unit_Views_oxviewTest extends OxidTestCase
      *
      * @return null
      */
-
     public function testGetTSExcellenceId()
     {
         $sTest = "testValue";

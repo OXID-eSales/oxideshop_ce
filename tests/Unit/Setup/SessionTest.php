@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Setup;
+
+use OxidEsales\Eshop\Setup\Session;
 
 /**
  * Session tests
  */
-class SessionTest extends OxidTestCase
+class SessionTest extends \OxidTestCase
 {
 
     public function setUp()

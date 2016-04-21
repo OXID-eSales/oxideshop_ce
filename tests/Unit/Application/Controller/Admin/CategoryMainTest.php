@@ -19,11 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use oxCategory;
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Tests for Category_Main class
  */
-class Unit_Admin_CategoryMainTest extends OxidTestCase
+class CategoryMainTest extends \OxidTestCase
 {
     /**
      * @var oxCategory
@@ -76,7 +83,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         $this->assertEquals('category_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxcategory);
+        $this->assertTrue($aViewData['edit'] instanceof oxCategory);
     }
 
     /**

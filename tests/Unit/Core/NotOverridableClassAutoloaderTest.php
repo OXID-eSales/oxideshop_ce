@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
 use OxidEsales\Eshop\Core\Autoload\NotOverridableClassAutoload;
 
@@ -26,7 +27,7 @@ class ClassToCheckAliasCreation
 {
 }
 
-class NotOverridableClassAutoloaderTest extends OxidTestCase
+class NotOverridableClassAutoloaderTest extends \OxidTestCase
 {
     public function testCreatesAlias()
     {
@@ -50,7 +51,7 @@ class NotOverridableClassAutoloaderTest extends OxidTestCase
     protected function getMap()
     {
         return array(
-            'classalias' => 'ClassToCheckAliasCreation'
+            'classalias' => 'Unit\Core\ClassToCheckAliasCreation'
         );
     }
 }

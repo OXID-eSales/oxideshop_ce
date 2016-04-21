@@ -19,12 +19,21 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use oxConfig;
 use OxidEsales\Eshop\Core\Registry;
+use oxLang;
+use oxRegistry;
+use oxSession;
+use oxStr;
+use oxUtils;
+use stdClass;
 
 /**
  * Test case for OxReg
  */
-class RegistryTest extends OxidTestCase
+class RegistryTest extends \OxidTestCase
 {
 
     /**

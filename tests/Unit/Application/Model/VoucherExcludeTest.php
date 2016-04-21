@@ -19,11 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxDb;
+use oxVoucherException;
 
 /**
  * Testing oxVoucher class
  */
-class Unit_Models_oxVoucherExcludeTest extends OxidTestCase
+class VoucherExcludeTest extends \OxidTestCase
 {
 
     /**
@@ -471,16 +475,8 @@ class Unit_Models_oxVoucherExcludeTest extends OxidTestCase
         $oVoucher->load('test_111');
 
         // there are no items in basket matching this discount, expecting exception
-        try {
-            $oVoucher->getDiscountValue(100);
-        } catch (oxVoucherException $oEx) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOVOUCHER', $oEx->getMessage());
-            $blException = true;
-        }
-
-        if (!$blException) {
-            $this->fail('no exception thrown');
-        }
+        $this->setExpectedException('oxVoucherException', 'ERROR_MESSAGE_VOUCHER_NOVOUCHER');
+        $oVoucher->getDiscountValue(100);
     }
 
     /**
@@ -495,16 +491,8 @@ class Unit_Models_oxVoucherExcludeTest extends OxidTestCase
         $oVoucher->load('test_333');
 
         // there are no items in basket matching this discount, expecting exception
-        try {
-            $oVoucher->getDiscountValue(100);
-        } catch (oxVoucherException $oEx) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOVOUCHER', $oEx->getMessage());
-            $blException = true;
-        }
-
-        if (!$blException) {
-            $this->fail('no exception thrown');
-        }
+        $this->setExpectedException('oxVoucherException', 'ERROR_MESSAGE_VOUCHER_NOVOUCHER');
+        $oVoucher->getDiscountValue(100);
     }
 
     /**

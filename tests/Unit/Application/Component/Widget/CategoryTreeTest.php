@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Component\Widget;
 
 /**
  * Tests for oxwCategoryTree class
  */
-class Unit_Components_Widgets_oxwCategoryTreeTest extends OxidTestCase
+class CategoryTreeTest extends \OxidTestCase
 {
 
     /**

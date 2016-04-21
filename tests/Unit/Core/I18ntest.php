@@ -19,6 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use modDB;
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 //require_once 'oxbaseTest.php';
 
@@ -42,7 +49,7 @@ class _oxI18n extends \oxI18n
 
 }
 
-class Unit_Core_oxi18ntest extends OxidTestCase
+class I18ntest extends \OxidTestCase
 {
     protected function setUp()
     {
@@ -647,26 +654,26 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->any())->method('select')->will($this->returnValue(false));
-        $dbMock->expects($this->any())->method('execute')->will($this->evalFunction('{Unit_Core_oxi18ntest::$aLoggedSqls[] = $args[0];return true;}'));
+        $dbMock->expects($this->any())->method('execute')->will($this->evalFunction('{\Unit\Core\I18nTest::$aLoggedSqls[] = $args[0];return true;}'));
         oxDb::setDbObject($dbMock);
 
         $oObj->setLanguage(0);
-        Unit_Core_oxi18ntest::$aLoggedSqls = array();
+        I18nTest::$aLoggedSqls = array();
         $oObj->UNITupdate();
         $this->assertEquals(
             array("update oxstates set oxid = 'test_update',oxcountryid = '',oxtitle = 'test_x',oxisoalpha2 = '' where oxstates.oxid = 'test_update'"),
-            array_map('trim', Unit_Core_oxi18ntest::$aLoggedSqls)
+            array_map('trim', I18ntest::$aLoggedSqls)
         );
 
         $oObj->setLanguage(90);
-        Unit_Core_oxi18ntest::$aLoggedSqls = array();
+        I18nTest::$aLoggedSqls = array();
         $oObj->UNITupdate();
         $this->assertEquals(
             array(
                  "update oxstates set oxid = 'test_update',oxcountryid = '',oxisoalpha2 = '' where oxstates.oxid = 'test_update'",
                  "insert into oxstates_set11 set oxid = 'test_update',oxtitle_90 = 'test_x' on duplicate key update oxid = 'test_update',oxtitle_90 = 'test_x'",
             ),
-            array_map('trim', Unit_Core_oxi18ntest::$aLoggedSqls)
+            array_map('trim', I18ntest::$aLoggedSqls)
         );
     }
 
@@ -696,29 +703,29 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->any())->method('select')->will($this->returnValue(false));
-        $dbMock->expects($this->any())->method('execute')->will($this->evalFunction('{Unit_Core_oxi18ntest::$aLoggedSqls[] = $args[0];return true;}'));
+        $dbMock->expects($this->any())->method('execute')->will($this->evalFunction('{\Unit\Core\I18nTest::$aLoggedSqls[] = $args[0];return true;}'));
         oxDb::setDbObject($dbMock);
 
         $oObj->setLanguage(0);
-        Unit_Core_oxi18ntest::$aLoggedSqls = array();
+        I18ntest::$aLoggedSqls = array();
         $oObj->UNITupdate();
         $this->assertEquals(
             array(
                  "update oxstates set oxid = 'test_update',oxcountryid = '',oxtitle = 'test_x',oxisoalpha2 = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '' where oxstates.oxid = 'test_update'",
                  "insert into oxstates_set11 set oxid = 'test_update',oxtitle_90 = 'test_y' on duplicate key update oxid = 'test_update',oxtitle_90 = 'test_y'",
             ),
-            array_map('trim', Unit_Core_oxi18ntest::$aLoggedSqls)
+            array_map('trim', I18ntest::$aLoggedSqls)
         );
 
         $oObj->setLanguage(90);
-        Unit_Core_oxi18ntest::$aLoggedSqls = array();
+        I18nTest::$aLoggedSqls = array();
         $oObj->UNITupdate();
         $this->assertEquals(
             array(
                  "update oxstates set oxid = 'test_update',oxcountryid = '',oxtitle = 'test_x',oxisoalpha2 = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '' where oxstates.oxid = 'test_update'",
                  "insert into oxstates_set11 set oxid = 'test_update',oxtitle_90 = 'test_y' on duplicate key update oxid = 'test_update',oxtitle_90 = 'test_y'",
             ),
-            array_map('trim', Unit_Core_oxi18ntest::$aLoggedSqls)
+            array_map('trim', I18ntest::$aLoggedSqls)
         );
     }
 
@@ -761,29 +768,29 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->any())->method('select')->will($this->returnValue(false));
-        $dbMock->expects($this->any())->method('execute')->will($this->evalFunction('{Unit_Core_oxi18ntest::$aLoggedSqls[] = $args[0];return true;}'));
+        $dbMock->expects($this->any())->method('execute')->will($this->evalFunction('{\Unit\Core\I18nTest::$aLoggedSqls[] = $args[0];return true;}'));
         oxDb::setDbObject($dbMock);
 
         $oObj->setLanguage(0);
-        Unit_Core_oxi18ntest::$aLoggedSqls = array();
+        I18nTest::$aLoggedSqls = array();
         $oObj->UNITinsert();
         $this->assertEquals(
             array(
                 "Insert into oxstates set oxid = 'test_insert',oxcountryid = '',oxtitle = 'test_x',oxisoalpha2 = ''",
                 "insert into oxstates_set11 set oxid = 'test_insert'",
             ),
-            array_map('trim', Unit_Core_oxi18ntest::$aLoggedSqls)
+            array_map('trim', I18nTest::$aLoggedSqls)
         );
 
         $oObj->setLanguage(90);
-        Unit_Core_oxi18ntest::$aLoggedSqls = array();
+        I18nTest::$aLoggedSqls = array();
         $oObj->UNITinsert();
         $this->assertEquals(
             array(
                 "Insert into oxstates set oxid = 'test_insert',oxcountryid = '',oxisoalpha2 = ''",
                 "insert into oxstates_set11 set oxid = 'test_insert',oxtitle_90 = 'test_x'",
             ),
-            array_map('trim', Unit_Core_oxi18ntest::$aLoggedSqls)
+            array_map('trim', I18nTest::$aLoggedSqls)
         );
     }
 

@@ -19,11 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
+use oxDb;
+use oxException;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
+use oxUtilsView;
+use PHPUnit_Framework_MockObject_MockObject;
 
 class oxUtilsViewGetTemplateBlocksTest extends UnitTestCase
 {

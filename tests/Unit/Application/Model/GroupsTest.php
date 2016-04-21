@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxfield;
+use \oxDb;
+use \oxRegistry;
 
 /**
  * Testing oxgroups class
  */
-class Unit_Models_oxgroupsTest extends OxidTestCase
+class GroupsTest extends \OxidTestCase
 {
 
     protected $_aAdd = array('oxobject2delivery' => array('oxobjectid', ''),

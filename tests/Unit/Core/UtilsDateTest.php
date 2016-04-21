@@ -19,8 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxUtilsDateTest extends OxidTestCase
+use \oxField;
+use \stdclass;
+use \DateTime;
+use \oxRegistry;
+
+class UtilsDateTest extends \OxidTestCase
 {
 
     public function testFormatDBDate()

@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Modules\Oe\Invoicepdf\Controllers\Admin;
+
+use \oxField;
+use \InvoicepdfOrder_Overview;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Tests for Order_Overview class
  */
-class Unit_Modules_Oe_Invoicepdf_Controllers_Admin_InvoicepdfOrderOverviewTest extends OxidTestCase
+class InvoicepdfOrderOverviewTest extends \OxidTestCase
 {
     /**
      * Prepares test suite.

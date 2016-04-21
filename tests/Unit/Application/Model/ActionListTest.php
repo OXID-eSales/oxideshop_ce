@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Tests for Actions_List class
  */
-class Unit_Models_oxActionListTest extends OxidTestCase
+class ActionListTest extends \OxidTestCase
 {
 
     /**

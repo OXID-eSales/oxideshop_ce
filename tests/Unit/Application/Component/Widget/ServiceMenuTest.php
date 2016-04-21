@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Component\Widget;
+
+use \oxTestModules;
 
 /**
  * Tests for oxwServiceMenu class
  */
-class Unit_Components_Widgets_oxwServiceMenuTest extends OxidTestCase
+class ServiceMenuTest extends \OxidTestCase
 {
     /**
      * Testing oxwServiceMenu::getCompareItemsCnt()

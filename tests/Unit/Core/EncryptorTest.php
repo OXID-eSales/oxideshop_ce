@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
 /**
  * Class Unit_Core_oxEncryptorTest
  */
-class Unit_Core_oxEncryptorTest extends OxidTestCase
+class EncryptorTest extends \OxidTestCase
 {
 
     public function providerEncodingAndDecoding()

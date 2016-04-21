@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxvoucherserie;
+
+use \Exception;
+use \oxTestModules;
 
 /**
  * Tests for VoucherSerie_Main class
  */
-class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
+class VoucherSerieMainTest extends \OxidTestCase
 {
 
     /**

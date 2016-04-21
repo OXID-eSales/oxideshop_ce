@@ -19,8 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxstdclassTest extends OxidTestCase
+class StdclassTest extends \OxidTestCase
 {
 
     // 1. testing constructor works .. ok, its a pseudo test ;-)

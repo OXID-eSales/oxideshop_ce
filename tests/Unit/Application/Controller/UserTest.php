@@ -19,11 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxField;
+use \Exception;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Testing user class
  */
-class Unit_Views_userTest extends OxidTestCase
+class UserTest extends \OxidTestCase
 {
 
     protected $_oUser = array();

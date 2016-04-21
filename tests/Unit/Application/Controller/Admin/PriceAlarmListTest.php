@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \stdClass;
 
 /**
  * Tests for PriceAlarm_List class
  */
-class Unit_Admin_PriceAlarmListTest extends OxidTestCase
+class PriceAlarmListTest extends \OxidTestCase
 {
 
     /**

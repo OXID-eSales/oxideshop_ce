@@ -19,11 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \Exception;
+use \oxTestModules;
 
 /**
  * Tests for Shop_Main class
  */
-class Unit_Admin_ShopMainTest extends OxidTestCase
+class ShopMainTest extends \OxidTestCase
 {
     /**
      * Shop_Main::Render() test case

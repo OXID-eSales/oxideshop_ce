@@ -19,8 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxDiagnosticsTest extends OxidTestCase
+use \oxDb;
+
+class DiagnosticsTest extends \OxidTestCase
 {
 
     /**

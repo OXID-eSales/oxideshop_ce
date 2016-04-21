@@ -19,8 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxutilsstringTest extends OxidTestCase
+use \oxRegistry;
+
+class UtilsstringTest extends \OxidTestCase
 {
 
     public function testPrepareCSVField()

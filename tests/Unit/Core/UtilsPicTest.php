@@ -19,8 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxUtilsPicTest extends OxidTestCase
+use \stdClass;
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
+
+class UtilsPicTest extends \OxidTestCase
 {
 
     /**

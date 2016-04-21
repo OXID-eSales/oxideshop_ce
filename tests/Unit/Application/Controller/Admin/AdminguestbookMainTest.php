@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxField;
+use oxGbEntry;
+use \oxTestModules;
 
 /**
  * Tests for Adminguestbook_Main class
  */
-class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
+class AdminguestbookMainTest extends \OxidTestCase
 {
 
     /**
@@ -43,7 +48,7 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
-        $this->assertTrue($aViewData["edit"] instanceof oxgbentry);
+        $this->assertTrue($aViewData["edit"] instanceof oxGbEntry);
         $this->assertEquals($this->getConfig()->getConfigParam("blGBModerate"), $aViewData["blShowActBox"]);
 
         $this->assertEquals('adminguestbook_main.tpl', $sTplName);

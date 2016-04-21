@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \stdClass;
+use \Exception;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Tests for Navigation class
  */
-class Unit_Admin_NavigationTest extends OxidTestCase
+class NavigationTest extends \OxidTestCase
 {
 
     /**

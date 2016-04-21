@@ -19,8 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxsearchTest extends OxidTestCase
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
+
+class SearchTest extends \OxidTestCase
 {
 
     private $_oSearchHandler;

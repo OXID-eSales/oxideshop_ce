@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use modDB;
+use \oxField;
+use \oxDb;
+use \oxTestModules;
 
 /**
  * Testing oxseoencodervendor class
  */
-class Unit_Models_oxSeoEncoderVendorTest extends OxidTestCase
+class SeoEncoderVendorTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.

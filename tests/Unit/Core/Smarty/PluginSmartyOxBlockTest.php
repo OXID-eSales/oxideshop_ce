@@ -19,10 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Smarty;
+
+use \stdClass;
+use \oxException;
+use \oxRegistry;
+use \oxTestModules;
 
 require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'Core/smarty/plugins/prefilter.oxblock.php';
 
-class Unit_Maintenance_pluginSmartyOxBlockTest extends OxidTestCase
+class PluginSmartyOxBlockTest extends \OxidTestCase
 {
     /**
      * test case for smarty 2 with no dbg output

@@ -19,8 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxUtilsCountTest extends OxidTestCase
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+
+class UtilsCountTest extends \OxidTestCase
 {
     /** @var array */
     private $categories = array();

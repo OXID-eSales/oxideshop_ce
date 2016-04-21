@@ -19,6 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use modDB;
+use \oxSeoEncoder;
+use \Exception;
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use oxSeoEncoderHelper;
+use \oxTestModules;
 
 class modSeoEncoder extends oxSeoEncoder
 {
@@ -69,7 +79,7 @@ class modSeoEncoder extends oxSeoEncoder
 /**
  * Testing oxseoencoder class
  */
-class Unit_Models_oxSeoEncoderTest extends OxidTestCase
+class SeoEncoderTest extends \OxidTestCase
 {
 
     /**

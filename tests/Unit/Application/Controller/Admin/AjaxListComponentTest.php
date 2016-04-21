@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \Exception;
+use \oxDb;
+use \oxTestModules;
 
 /**
  * Tests for ajaxListComponent class
  */
-class Unit_Admin_AjaxListComponentTest extends OxidTestCase
+class AjaxListComponentTest extends \OxidTestCase
 {
 
     /**

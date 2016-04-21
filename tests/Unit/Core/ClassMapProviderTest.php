@@ -19,11 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
 use OxidEsales\Eshop\Core\ClassMapProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
-class ClassMapProviderTest extends OxidTestCase
+class ClassMapProviderTest extends \OxidTestCase
 {
     /**
      * @return array
@@ -64,7 +66,7 @@ class ClassMapProviderTest extends OxidTestCase
         $edition,
         $result
     ) {
-        /** @var EditionSelector|PHPUnit_Framework_MockObject_MockObject $editionSelector */
+        /** @var EditionSelector|MockObject $editionSelector */
         $editionSelector = $this->getMockBuilder('\OxidEsales\Eshop\Core\Edition\EditionSelector')->getMock();
         $editionSelector->expects($this->atLeastOnce())->method('getEdition')->will($this->returnValue($edition));
 
@@ -97,7 +99,7 @@ class ClassMapProviderTest extends OxidTestCase
         $edition,
         $result
     ) {
-        /** @var EditionSelector|PHPUnit_Framework_MockObject_MockObject $editionSelector */
+        /** @var EditionSelector|MockObject $editionSelector */
         $editionSelector = $this->getMockBuilder('\OxidEsales\Eshop\Core\Edition\EditionSelector')->getMock();
         $editionSelector->expects($this->atLeastOnce())->method('getEdition')->will($this->returnValue($edition));
 

@@ -19,17 +19,20 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxTestModules;
 
 /**
  * Smarty emulation class
  */
-class Unit_Admin_GenExportDoTest_smarty
+class GenExportDoTest_smarty
 {
 
     /**
      * Instance storage
      *
-     * @var Unit_Admin_GenExportDoTest_smarty
+     * @var GenExportDoTest_smarty
      */
     protected static $_oInst = null;
 
@@ -43,12 +46,12 @@ class Unit_Admin_GenExportDoTest_smarty
     /**
      * Emulated smarty instance getter
      *
-     * @return Unit_Admin_GenExportDoTest_smarty
+     * @return GenExportDoTest_smarty
      */
     public static function getInstance()
     {
         if (self::$_oInst === null) {
-            self::$_oInst = new Unit_Admin_GenExportDoTest_smarty();
+            self::$_oInst = new GenExportDoTest_smarty();
         }
 
         return self::$_oInst;
@@ -81,7 +84,7 @@ class Unit_Admin_GenExportDoTest_smarty
 /**
  * Tests for GenExport_Do class
  */
-class Unit_Admin_GenExportDoTest extends OxidTestCase
+class GenExportDoTest extends \OxidTestCase
 {
     /**
      * GenExport_Do::NextTick() test case
@@ -103,7 +106,7 @@ class Unit_Admin_GenExportDoTest extends OxidTestCase
      */
     public function testNextTick()
     {
-        oxTestModules::addFunction("oxUtilsView", "getSmarty", "{return Unit_Admin_GenExportDoTest_smarty::getInstance();}");
+        oxTestModules::addFunction("oxUtilsView", "getSmarty", "{return \\Unit\\Application\\Controller\\Admin\\GenExportDoTest_smarty::getInstance();}");
 
         $oView = $this->getMock("GenExport_Do", array("getOneArticle", "write", "getViewId"));
         $oView->expects($this->once())->method('getOneArticle')->will($this->returnValue(oxNew('oxArticle')));
@@ -111,7 +114,7 @@ class Unit_Admin_GenExportDoTest extends OxidTestCase
         $oView->expects($this->once())->method('getViewId')->will($this->returnValue('dyn_interface'));
         $this->assertEquals(2, $oView->nextTick(1));
 
-        $aCallLog = Unit_Admin_GenExportDoTest_smarty::getInstance()->getLog();
+        $aCallLog = GenExportDoTest_smarty::getInstance()->getLog();
 
         //#3611
         $this->assertEquals("assign", $aCallLog[0][0]);

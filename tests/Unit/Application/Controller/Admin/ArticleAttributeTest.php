@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use oxArticle;
+use \oxDb;
+use \oxTestModules;
 
 /**
  * Tests for Article_Attribute class
  */
-class Unit_Admin_ArticleAttributeTest extends OxidTestCase
+class ArticleAttributeTest extends \OxidTestCase
 {
 
     /**

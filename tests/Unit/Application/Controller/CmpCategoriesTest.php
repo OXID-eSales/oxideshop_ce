@@ -19,8 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
 
-class Unit_Views_oxcmpCategoriesTest extends OxidTestCase
+use \Exception;
+use \stdClass;
+use \oxField;
+use \oxTestModules;
+
+class CmpCategoriesTest extends \OxidTestCase
 {
 
     public static $oCL = null;
@@ -325,7 +331,7 @@ class Unit_Views_oxcmpCategoriesTest extends OxidTestCase
 
     public function testLoadManufacturerTreeIsNotNeeded()
     {
-        oxTestModules::addFunction('oxUtilsObject', 'oxNew($cl)', '{if ("oxmanufacturerlist" == $cl) return Unit_Views_oxcmpCategoriesTest::$oCL; return parent::oxNew($cl);}');
+        oxTestModules::addFunction('oxUtilsObject', 'oxNew($cl)', '{if ("oxmanufacturerlist" == $cl) return \Unit\Application\Controller\CmpCategoriesTest::$oCL; return parent::oxNew($cl);}');
 
         $oCfg = $this->getMock('stdClass', array('getConfigParam'));
         $oCfg->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('bl_perfLoadManufacturerTree'))->will($this->returnValue(false));
@@ -357,7 +363,7 @@ class Unit_Views_oxcmpCategoriesTest extends OxidTestCase
                 $this->equalTo("returned click Manufacturer")
             );
 
-        oxTestModules::addFunction('oxUtilsObject', 'oxNew($cl)', '{if ("oxmanufacturerlist" == $cl) return Unit_Views_oxcmpCategoriesTest::$oCL; return parent::oxNew($cl);}');
+        oxTestModules::addFunction('oxUtilsObject', 'oxNew($cl)', '{if ("oxmanufacturerlist" == $cl) return \Unit\Application\Controller\CmpCategoriesTest::$oCL; return parent::oxNew($cl);}');
 
         $oCfg = $this->getMock('stdClass', array('getConfigParam', 'getShopHomeURL'));
         $oCfg->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('bl_perfLoadManufacturerTree'))->will($this->returnValue(true));

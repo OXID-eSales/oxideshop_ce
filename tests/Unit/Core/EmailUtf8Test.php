@@ -19,8 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\core;
 
-class Unit_core_oxemailUtf8Test extends OxidTestCase
+use \oxField;
+use oxStr;
+
+class EmailUtf8Test extends \OxidTestCase
 {
 
     /**

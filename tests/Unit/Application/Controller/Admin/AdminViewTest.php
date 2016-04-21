@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use oxArticleHelper;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Testing oxAdminView class
  */
-class Unit_Admin_oxAdminViewTest extends OxidTestCase
+class AdminViewTest extends \OxidTestCase
 {
 
     /**

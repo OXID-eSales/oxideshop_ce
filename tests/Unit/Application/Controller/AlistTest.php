@@ -19,11 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxField;
+use \Exception;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Tests for aList class
  */
-class Unit_Views_alistTest extends OxidTestCase
+class AlistTest extends \OxidTestCase
 {
 
     /**

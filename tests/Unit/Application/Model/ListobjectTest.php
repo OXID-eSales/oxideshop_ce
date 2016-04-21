@@ -19,11 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxListObject;
+use \oxField;
 
 /**
  * Testing oxshoplist class
  */
-class Unit_Models_oxlistobjectTest extends OxidTestCase
+class ListobjectTest extends \OxidTestCase
 {
 
 

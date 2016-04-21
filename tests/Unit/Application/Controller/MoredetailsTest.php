@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxTestModules;
 
 /**
  * Testing moredetails class
  */
-class Unit_Views_moredetailsTest extends OxidTestCase
+class MoredetailsTest extends \OxidTestCase
 {
 
     /**

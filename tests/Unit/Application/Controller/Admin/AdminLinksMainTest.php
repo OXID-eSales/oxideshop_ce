@@ -19,11 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxDb;
+use \oxTestModules;
 
 /**
  * Tests for Adminlinks_Main class
  */
-class Unit_Admin_AdminLinksMainTest extends OxidTestCase
+class AdminLinksMainTest extends \OxidTestCase
 {
 
     /**

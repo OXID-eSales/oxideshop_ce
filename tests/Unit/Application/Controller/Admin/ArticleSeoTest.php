@@ -19,11 +19,21 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use oxCategory;
+use \oxField;
+use \oxDb;
+use oxManufacturer;
+use \oxRegistry;
+use oxSeoEncoderArticle;
+use \oxTestModules;
+use oxVendor;
 
 /**
  * Tests for Article_Seo class
  */
-class Unit_Admin_ArticleSeoTest extends OxidTestCase
+class ArticleSeoTest extends \OxidTestCase
 {
 
     /**
@@ -197,7 +207,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
         oxTestModules::addFunction('oxcategory', 'load', '{ return true; }');
 
         $oView = oxNew('Article_Seo');
-        $this->assertTrue($oView->getActCategory() instanceof oxcategory);
+        $this->assertTrue($oView->getActCategory() instanceof oxCategory);
     }
 
     /**
@@ -237,7 +247,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
 
         $oView = $this->getMock("Article_Seo", array("getActCatType"));
         $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxvendor"));
-        $this->assertTrue($oView->getActVendor() instanceof oxvendor);
+        $this->assertTrue($oView->getActVendor() instanceof oxVendor);
     }
 
     /**
@@ -251,7 +261,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
 
         $oView = $this->getMock("Article_Seo", array("getActCatType"));
         $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxmanufacturer"));
-        $this->assertTrue($oView->getActManufacturer() instanceof oxmanufacturer);
+        $this->assertTrue($oView->getActManufacturer() instanceof oxManufacturer);
     }
 
     /**

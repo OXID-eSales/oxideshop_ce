@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxField;
+use \oxDb;
+use oxPricealarm;
+use \oxTestModules;
 
 /**
  * ext Smarty class for testing
  */
-class Unit_Admin_PriceAlarmMainTest_smarty
+class PriceAlarmMainTest_smarty
 {
 
     /**
@@ -42,7 +48,7 @@ class Unit_Admin_PriceAlarmMainTest_smarty
 /**
  * Tests for PriceAlarm_Main class
  */
-class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
+class PriceAlarmMainTest extends \OxidTestCase
 {
 
     /**
@@ -79,7 +85,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
     public function testRender__()
     {
         oxTestModules::addFunction('oxpricealarm', 'load', '{ $this->oxpricealarm__oxuserid = new oxField( "oxdefaultadmin" ); return true; }');
-        oxTestModules::addFunction('oxUtilsView', 'getSmarty', '{ return new Unit_Admin_PriceAlarmMainTest_smarty(); }');
+        oxTestModules::addFunction('oxUtilsView', 'getSmarty', '{ return new \\Unit\\Application\\Controller\\Admin\\PriceAlarmMainTest_smarty(); }');
         oxTestModules::addFunction('oxarticle', 'load', '{ $this->oxarticles__oxparentid = new oxField( "parentid" ); $this->oxarticles__oxtitle = new oxField(""); return true; }');
         $this->setRequestParameter("oxid", "testId");
 
@@ -143,7 +149,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
     public function testRender_checkingMailBody()
     {
         oxTestModules::addFunction('oxpricealarm', 'load', '{ $this->oxpricealarm__oxuserid = new oxField( "oxdefaultadmin" ); return true; }');
-        oxTestModules::addFunction('oxUtilsView', 'getSmarty', '{ return new Unit_Admin_PriceAlarmMainTest_smarty(); }');
+        oxTestModules::addFunction('oxUtilsView', 'getSmarty', '{ return new \Unit\Application\Controller\Admin\PriceAlarmMainTest_smarty(); }');
         oxTestModules::addFunction('oxarticle', 'load', '{ $this->oxarticles__oxparentid = new oxField( "parentid" ); $this->oxarticles__oxtitle = new oxField(""); return true; }');
 
         $this->setRequestParameter("oxid", "testId");

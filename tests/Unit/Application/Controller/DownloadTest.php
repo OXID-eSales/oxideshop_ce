@@ -19,11 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \exception;
+use \oxTestModules;
 
 /**
  * Tests for Download class
  */
-class Unit_Views_downloadTest extends OxidTestCase
+class DownloadTest extends \OxidTestCase
 {
 
 

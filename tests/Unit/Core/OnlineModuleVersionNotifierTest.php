@@ -19,8 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxOnlineModuleVersionNotifierTest extends OxidTestCase
+use \oxOnlineModuleVersionNotifier;
+
+class OnlineModuleVersionNotifierTest extends \OxidTestCase
 {
     public function testVersionNotifyWithModulesInShop()
     {

@@ -19,15 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Setup;
 
 use OxidEsales\Eshop\Setup\Utilities;
 
 /**
  * Utilities tests
  */
-class UtilitiesTest extends OxidTestCase
+class UtilitiesTest extends \OxidTestCase
 {
-
     protected $_sPathTranslated = null;
     protected $_sScriptFilename = null;
     protected $_sHttpReferer = null;

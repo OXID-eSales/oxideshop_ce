@@ -21,8 +21,13 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
 
-class Unit_Views_pricealarmTest extends OxidTestCase
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
+
+class PricealarmTest extends \OxidTestCase
 {
 
     /**

@@ -19,6 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxFileException;
+use \Exception;
+use \oxRegistry;
+use \oxTestModules;
 
 //copied the implementation from http://php.net/sys_get_temp_dir
 //in case it is needed more often it should be moved to some generic place
@@ -47,7 +53,7 @@ if (!function_exists('sys_get_temp_dir')) {
     }
 }
 
-class Unit_Core_oxUtilsFileTest extends OxidTestCase
+class UtilsFileTest extends \OxidTestCase
 {
 
     public function setUp()
@@ -324,24 +330,14 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
         $aFiles['name'] = 'testfile';
         $aFiles['tmp_name'] = 'testfile';
 
-        try {
-            oxRegistry::get("oxUtilsFile")->handleUploadedFile($aFiles, '/out/media/');
-        } catch (oxException $e) {
-            return;
-        }
-        $this->fail('Wrongfile type slipped');
+        $this->setExpectedException('oxException');
+        oxRegistry::get("oxUtilsFile")->handleUploadedFile($aFiles, '/out/media/');
     }
 
     public function testProcessFileEmpty()
     {
-        try {
-            oxRegistry::get("oxUtilsFile")->processFile(null, '/out/media/');
-        } catch (oxException $e) {
-            $this->assertEquals('EXCEPTION_NOFILE', $e->getMessage());
-
-            return;
-        }
-        $this->fail('Not a $_FILE array supplied');
+        $this->setExpectedException('oxException', 'EXCEPTION_NOFILE');
+        oxRegistry::get("oxUtilsFile")->processFile(null, '/out/media/');
     }
 
     public function testProcessFileWrongChar1()
@@ -349,27 +345,16 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
 
         $_FILES['fileItem']['name'] = 'testfile_\xc4\xaf\xc5\xa1.jpg';
         $_FILES['fileItem']['tmp_name'] = 'testfile';
-        try {
-            oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
-        } catch (oxException $e) {
-            $this->assertEquals('EXCEPTION_FILENAMEINVALIDCHARS', $e->getMessage());
 
-            return;
-        }
-        $this->fail('Wrong char slipped');
+        $this->setExpectedException('oxException', 'EXCEPTION_FILENAMEINVALIDCHARS');
+        oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
     }
 
     public function testProcessFileWrongChar2()
     {
         $_FILES['fileItem']['name'] = 'TEST.te.stfile_0__.jpg';
         $_FILES['fileItem']['tmp_name'] = 'testfile';
-        try {
-            oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
-        } catch (oxException $e) {
-            $this->fail('Wrong exception' . $e->getMessage());
-
-            return;
-        }
+        oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
     }
 
     public function testProcessFileWrongFileType()
@@ -377,12 +362,8 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
         $_FILES['fileItem']['name'] = 'testfile';
         $_FILES['fileItem']['tmp_name'] = 'testfile';
 
-        try {
-            oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
-        } catch (oxException $e) {
-            return;
-        }
-        $this->fail('Wrongfile type slipped');
+        $this->setExpectedException('oxException');
+        oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
     }
 
     public function testProcessFileTooBigFile()
@@ -391,12 +372,8 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
         $_FILES['fileItem']['tmp_name'] = 'testfile.jpg';
         $_FILES['fileItem']['error'] = 1;
 
-        try {
-            oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
-        } catch (oxException $e) {
-            return;
-        }
-        $this->fail('Wrongfile type slipped');
+        $this->setExpectedException('oxException');
+        oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
     }
 
     public function testNormalizeDir()

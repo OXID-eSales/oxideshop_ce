@@ -19,12 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
+use oxUtilsHelper;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
 /**
  * Testing oxvendorlist class
  */
-class Unit_Models_oxvendorlistTest extends OxidTestCase
+class VendorlistTest extends \OxidTestCase
 {
 
     /**

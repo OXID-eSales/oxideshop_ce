@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxField;
 
 /**
  * Tests for Account class
  */
-class Unit_Views_accountUserTest extends OxidTestCase
+class AccountUserTest extends \OxidTestCase
 {
 
     /**

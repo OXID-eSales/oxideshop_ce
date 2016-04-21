@@ -19,8 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
+use \stdClass;
+use \oxOnlineLicenseCheck;
+use \oxException;
+use \oxRegistry;
+
+class OnlineLicenseCheckTest extends \OxidTestCase
 {
     public function testRequestFormation()
     {

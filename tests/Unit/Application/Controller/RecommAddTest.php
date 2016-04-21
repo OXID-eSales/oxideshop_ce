@@ -19,8 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
 
-class Unit_Views_RecommAddTest extends OxidTestCase
+use \oxField;
+
+class RecommAddTest extends \OxidTestCase
 {
 
     /**

@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxRegistry;
 
 /**
  * @covers oxServerChecker
  */
-class Unit_Core_oxServerCheckerTest extends OxidTestCase
+class ServerCheckerTest extends \OxidTestCase
 {
 
     public function tearDown()

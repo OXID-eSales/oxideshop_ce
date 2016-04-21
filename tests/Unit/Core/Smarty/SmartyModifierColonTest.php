@@ -19,10 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Smarty;
+
+use \oxRegistry;
 
 require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/plugins/modifier.colon.php';
 
-class Unit_Maintenance_smartyModifierColonTest extends OxidTestCase
+class SmartyModifierColonTest extends \OxidTestCase
 {
 
     /**

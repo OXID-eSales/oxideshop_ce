@@ -19,11 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxuser;
+use \oxCountryList;
+
+use \Exception;
+use \oxTestModules;
 
 /**
  * Tests for User_Address class
  */
-class Unit_Admin_UserAddressTest extends OxidTestCase
+class UserAddressTest extends \OxidTestCase
 {
 
     /**

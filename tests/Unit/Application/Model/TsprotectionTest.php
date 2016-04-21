@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
 /**
  * oxvatselector test
  */
-class Unit_Models_oxtsprotectionTest extends OxidTestCase
+class TsprotectionTest extends \OxidTestCase
 {
 
     /**

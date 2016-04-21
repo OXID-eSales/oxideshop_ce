@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxField;
+use \oxRegistry;
+use \oxTestModules;
+use oxUserList;
 
 /**
  * Tests for Account class
  */
-class Unit_Views_accountWishlistTest extends OxidTestCase
+class AccountWishlistTest extends \OxidTestCase
 {
 
     /**
@@ -272,7 +278,7 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
         $oView = oxNew('Account_Wishlist');
         $oView->searchForWishList();
 
-        $this->assertTrue($oView->getWishListUsers() instanceof oxuserlist);
+        $this->assertTrue($oView->getWishListUsers() instanceof oxUserList);
         $this->assertEquals("searchParam", $oView->getWishListSearchParam());
     }
 

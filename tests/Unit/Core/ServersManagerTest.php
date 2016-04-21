@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxRegistry;
 
 /**
  * @covers oxServersManager
  */
-class Unit_Core_oxServersManagerTest extends OxidTestCase
+class ServersManagerTest extends \OxidTestCase
 {
 
     public function tearDown()

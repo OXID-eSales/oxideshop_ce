@@ -19,8 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxsimpleVariantTest extends OxidTestCase
+use \oxPrice;
+
+use \oxField;
+use \StdClass;
+use \oxRegistry;
+use \oxTestModules;
+
+class SimpleVariantTest extends \OxidTestCase
 {
 
     /**

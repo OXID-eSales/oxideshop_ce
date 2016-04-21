@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxField;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * OxDiscountList tester
  */
-class Unit_Models_oxDiscountlistTest extends OxidTestCase
+class DiscountlistTest extends \OxidTestCase
 {
 
     public $aDiscountIds = array();

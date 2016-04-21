@@ -19,8 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxFileCollectorTest extends OxidTestCase
+class FileCollectorTest extends \OxidTestCase
 {
 
     /**

@@ -19,6 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxcategory;
+
+use oxCategoryList;
+use \oxField;
+use \oxDb;
+use \oxRegistry;
 
 if (!class_exists('\OxidEsales\EshopEnterprise\Application\Model\CategoryList')) {
     class_alias('oxCategoryList', '\OxidEsales\EshopEnterprise\Application\Model\CategoryList');
@@ -27,7 +35,7 @@ if (!class_exists('\OxidEsales\EshopEnterprise\Application\Model\CategoryList'))
 /**
  * Enterprise edition extending
  */
-class testEEoxCategoryList extends \OxidEsales\EshopEnterprise\Application\Model\CategoryList
+class oxCategoryListHelperEE extends \OxidEsales\EshopEnterprise\Application\Model\CategoryList
 {
     protected $_testAdmin = false;
 
@@ -70,7 +78,7 @@ class testEEoxCategoryList extends \OxidEsales\EshopEnterprise\Application\Model
 /**
  * CE extending
  */
-class testPEOxCategoryList extends \oxCategoryList
+class oxCategoryListHelperCE extends \oxCategoryList
 {
     protected $_testAdmin = false;
 
@@ -113,7 +121,7 @@ class testPEOxCategoryList extends \oxCategoryList
 /**
  * Test oxContentList module for EE
  */
-class modContentListEE_oxcategorylist extends \OxidEsales\EshopEnterprise\Application\Model\CategoryList
+class oxCategoryListHelperLoadCategoryMenusEE extends \OxidEsales\EshopEnterprise\Application\Model\CategoryList
 {
     /**
      * Test loadCatMenues.
@@ -133,7 +141,7 @@ class modContentListEE_oxcategorylist extends \OxidEsales\EshopEnterprise\Applic
 /**
  * Test oxContentList module for CE
  */
-class modContentListCE_oxcategorylist extends \oxCategoryList
+class oxCategoryListHelperLoadCategoryMenusPE extends \oxCategoryList
 {
     /**
      * Test loadCatMenues.
@@ -153,8 +161,9 @@ class modContentListCE_oxcategorylist extends \oxCategoryList
 /**
  * Testing oxCategoryList class
  */
-class Unit_Models_oxCategoryListTest extends OxidTestCase
+class CategoryListTest extends \OxidTestCase
 {
+    /** @var oxCategoryList  */
     protected $_oList = null;
     protected $_sNoCat;
     protected $_sActCat;
@@ -172,7 +181,7 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
     {
         parent::setUp();
 
-        $this->classForMock = ($this->getTestConfig()->getShopEdition() === 'EE') ? 'testEEoxCategoryList' : 'testPEoxCategoryList';
+        $this->classForMock = ($this->getTestConfig()->getShopEdition() === 'EE') ? 'Unit\Application\Model\oxCategoryListHelperEE' : 'Unit\Application\Model\oxCategoryListHelperCE';
 
         $this->_oList = oxNew($this->classForMock);
         $this->_sNoCat = '_no_such_cat_';
@@ -268,7 +277,7 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
         $this->_oList->setVar('blForceFull', false);
         $this->_oList->setVar('iForceLevel', 0);
 
-        $oCat = oxNew('oxcategory');
+        $oCat = oxNew('oxCategory');
         $oCat->load($this->_sActCat);
         $sCurSnippet = $this->_oList->UNITgetDepthSqlSnippet($oCat);
 
@@ -657,8 +666,6 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
 
     /**
      * Test list post processing, adding content categories to tree with content categories.
-     *
-     * @return null
      */
     public function test_ppAddContentCategories_sim()
     {
@@ -668,7 +675,7 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
         $this->_oList->setVar('blForceFull', false);
         $this->_oList->setVar('iForceLevel', 0);
 
-        $moduleName = ($this->getTestConfig()->getShopEdition() === 'EE') ? 'modContentListEE_oxcategorylist' : 'modContentListCE_oxcategorylist';
+        $moduleName = ($this->getTestConfig()->getShopEdition() === 'EE') ? 'Unit\Application\Model\oxCategoryListHelperLoadCategoryMenusEE' : 'Unit\Application\Model\oxCategoryListHelperLoadCategoryMenusPE';
         oxAddClassModule($moduleName, 'oxcontentlist');
 
         $this->_oList->load();

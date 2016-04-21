@@ -19,8 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxrecommlistTest extends OxidTestCase
+use Exception;
+use \oxField;
+use \oxlist;
+use \oxDb;
+use oxObjectException;
+use \oxTestModules;
+
+class RecommlistTest extends \OxidTestCase
 {
 
     private $_sArticleID;

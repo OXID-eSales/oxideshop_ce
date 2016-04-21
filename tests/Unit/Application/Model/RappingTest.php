@@ -19,6 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxWrapping;
+use \oxField;
+use \oxRegistry;
 
 class testOxWrapping extends oxWrapping
 {
@@ -41,7 +46,7 @@ class testOxWrapping extends oxWrapping
 /**
  * Testing oxwrapping class
  */
-class Unit_Models_oxwrappingTest extends OxidTestCase
+class RappingTest extends \OxidTestCase
 {
 
     protected $_sCardOxid = null;

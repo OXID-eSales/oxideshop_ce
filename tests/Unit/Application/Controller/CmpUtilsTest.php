@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \Exception;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * oxcmp_utils tests
  */
-class Unit_Views_oxCmpUtilsTest extends OxidTestCase
+class CmpUtilsTest extends \OxidTestCase
 {
 
     /**

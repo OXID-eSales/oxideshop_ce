@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use oxUtilsObject;
 
 /**
  * Testing oxvoucherserie class
  */
-class Unit_Models_oxvoucherserieTest extends OxidTestCase
+class VoucherserieTest extends \OxidTestCase
 {
 
     protected $_aIds = null;

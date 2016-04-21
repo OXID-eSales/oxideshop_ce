@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxField;
+use \oxDb;
+use \oxRegistry;
 
 /**
  * Testing oxvoucherserie class
  */
-class Unit_Models_oxvoucherlistTest extends OxidTestCase
+class VoucherlistTest extends \OxidTestCase
 {
     const MAX_LOOP_AMOUNT = 4;
 

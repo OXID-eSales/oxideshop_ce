@@ -19,11 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Component\Widget;
+
+use \oxTestModules;
+use RecommList;
 
 /**
  * Tests for oxwRecomm class
  */
-class Unit_Components_Widgets_oxwRecommendationTest extends OxidTestCase
+class RecommendationTest extends \OxidTestCase
 {
 
     /**
@@ -67,7 +71,7 @@ class Unit_Components_Widgets_oxwRecommendationTest extends OxidTestCase
     public function testGetRecommList()
     {
         $oRecommList = oxNew('oxwRecommendation');
-        $this->assertTrue($oRecommList->getRecommList() instanceof recommlist);
+        $this->assertTrue($oRecommList->getRecommList() instanceof RecommList);
     }
 
 }

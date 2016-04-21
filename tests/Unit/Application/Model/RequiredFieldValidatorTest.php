@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
 /**
  * Testing oxRequiredFieldValidator class.
  */
-class Unit_Models_oxRequiredFieldValidatorTest extends OxidTestCase
+class RequiredFieldValidatorTest extends \OxidTestCase
 {
 
     public function providerValidateFieldValue()

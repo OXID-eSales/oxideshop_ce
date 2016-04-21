@@ -19,8 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxrssfeedTest extends OxidTestCase
+use \oxField;
+use oxRssFeed;
+use \stdClass;
+use \oxList;
+use \oxRegistry;
+use \oxTestModules;
+
+class RssfeedTest extends \OxidTestCase
 {
 
     public function testGetChannel()

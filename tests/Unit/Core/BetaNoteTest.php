@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
 /**
  * Testing beta note class
  */
-class Unit_Core_oxwBetaNoteTest extends OxidTestCase
+class BetaNoteTest extends \OxidTestCase
 {
 
     /**

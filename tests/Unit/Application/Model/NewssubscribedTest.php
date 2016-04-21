@@ -19,10 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxField;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxNewsSubscribedHelper.php';
 
-class Unit_Models_oxnewssubscribedTest extends OxidTestCase
+class NewssubscribedTest extends \OxidTestCase
 {
     private $_oNewsSub = null;
     private $_oUser = null;

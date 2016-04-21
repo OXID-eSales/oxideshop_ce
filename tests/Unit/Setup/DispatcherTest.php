@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Setup;
 
 /**
  * dispatcher tests
  */
-class DispatcherTest extends OxidTestCase
+class DispatcherTest extends \OxidTestCase
 {
     /**
      * Testing dispatcher::run()

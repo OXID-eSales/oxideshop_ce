@@ -19,8 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxUtilsUrlTest extends OxidTestCase
+use \oxRegistry;
+use \oxTestModules;
+
+class UtilsUrlTest extends \OxidTestCase
 {
     /**
      * oxUtilsUrl::prepareCanonicalUrl() test case

@@ -19,11 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxdelivery;
+
+use \Exception;
+use \stdClass;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Tests for Delivery_Main class
  */
-class Unit_Admin_DeliveryMainTest extends OxidTestCase
+class DeliveryMainTest extends \OxidTestCase
 {
 
     /**

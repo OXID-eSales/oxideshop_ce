@@ -19,13 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxField;
 
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 /**
  * Tests for Account class
  */
-class Unit_Views_accountNoticelistTest extends OxidTestCase
+class AccountNoticelistTest extends \OxidTestCase
 {
 
     /**

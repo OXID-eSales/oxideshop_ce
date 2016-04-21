@@ -19,11 +19,22 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \Exception;
+use oxArticle;
+use oxCategoryList;
+use \oxField;
+use \oxDb;
+use oxManufacturerList;
+use \oxTestModules;
+use oxUtilsObject;
+use oxVendorList;
 
 /**
  * Tests for Article_Main class
  */
-class Unit_Admin_ArticleMainTest extends OxidTestCase
+class ArticleMainTest extends \OxidTestCase
 {
 
     /**
@@ -322,7 +333,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
 
         $this->assertEquals("article_main.tpl", $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData['edit'] instanceof oxarticle);
+        $this->assertTrue($aViewData['edit'] instanceof oxArticle);
     }
 
     /**
@@ -342,8 +353,8 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oView = oxNew('Article_Main');
         $this->assertEquals("article_main.tpl", $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData['edit'] instanceof oxarticle);
-        $this->assertTrue($aViewData['parentarticle'] instanceof oxarticle);
+        $this->assertTrue($aViewData['edit'] instanceof oxArticle);
+        $this->assertTrue($aViewData['parentarticle'] instanceof oxArticle);
         $this->assertEquals($sParentOxid, $aViewData['oxparentid']);
         $this->assertEquals("-1", $aViewData['oxid']);
     }
@@ -407,7 +418,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
 
         $oView = oxNew('Article_Main');
         $oList = $oView->getVendorList();
-        $this->assertTrue($oList instanceof oxvendorlist);
+        $this->assertTrue($oList instanceof oxVendorList);
         $this->assertEquals($iListSize, $oList->count());
     }
 
@@ -422,7 +433,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
 
         $oView = oxNew('Article_Main');
         $oList = $oView->getManufacturerList();
-        $this->assertTrue($oList instanceof oxmanufacturerlist);
+        $this->assertTrue($oList instanceof oxManufacturerList);
         $this->assertEquals($iListSize, $oList->count());
     }
 

@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
 
 /**
  * Tests for GenExport_Main class
  */
-class Unit_Admin_GenExportMainTest extends OxidTestCase
+class GenExportMainTest extends \OxidTestCase
 {
 
     /**

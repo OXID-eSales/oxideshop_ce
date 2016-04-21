@@ -19,8 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxfieldTest extends OxidTestCase
+use \oxField;
+use \oxRegistry;
+
+class FieldTest extends \OxidTestCase
 {
 
     public function test_construct()

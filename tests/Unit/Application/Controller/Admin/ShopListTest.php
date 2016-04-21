@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxTestModules;
 
 /**
  * Tests for Shop_List class
  */
-class Unit_Admin_ShopListTest extends OxidTestCase
+class ShopListTest extends \OxidTestCase
 {
     /**
      * Shop_List::Init() test case

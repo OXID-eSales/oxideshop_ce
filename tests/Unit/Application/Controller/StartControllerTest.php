@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use oxArticleList;
+use oxField;
+use oxTestModules;
 
 /**
  * Testing start class
  */
-class StartTest extends OxidTestCase
+class StartControllerTest extends \OxidTestCase
 {
 
     public function testGetTitleSuffix()
@@ -66,7 +71,7 @@ class StartTest extends OxidTestCase
         $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getArticleList();
-        $this->assertTrue($aList instanceof oxarticlelist);
+        $this->assertTrue($aList instanceof oxArticleList);
         $this->assertEquals(2, $aList->count());
     }
 
@@ -75,7 +80,7 @@ class StartTest extends OxidTestCase
         $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getTopArticleList();
-        $this->assertTrue($aList instanceof oxarticlelist);
+        $this->assertTrue($aList instanceof oxArticleList);
         $this->assertEquals(1, $aList->count());
 
         $expectedId = $this->getTestConfig()->getShopEdition() == 'EE'? "2275" : "1849";
@@ -87,7 +92,7 @@ class StartTest extends OxidTestCase
         $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getNewestArticles();
-        $this->assertTrue($aList instanceof oxarticlelist);
+        $this->assertTrue($aList instanceof oxArticleList);
         $this->assertEquals(4, $aList->count());
     }
 
@@ -106,7 +111,7 @@ class StartTest extends OxidTestCase
         $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getCatOfferArticleList();
-        $this->assertTrue($aList instanceof oxarticlelist);
+        $this->assertTrue($aList instanceof oxArticleList);
         $this->assertEquals(2, $aList->count());
     }
 
@@ -169,7 +174,5 @@ class StartTest extends OxidTestCase
 
         $oView = oxNew('start');
         $oView->getBanners();
-
     }
-
 }

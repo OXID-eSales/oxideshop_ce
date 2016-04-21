@@ -19,11 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \stdClass;
+use \SimpleXMLElement;
 
 /**
  * Testing oxXml class.
  */
-class Unit_Core_oxSimpleXmlTest extends OxidTestCase
+class SimpleXmlTest extends \OxidTestCase
 {
 
     public function testObjectToXml()

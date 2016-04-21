@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Edition;
 
 use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\TestingLibrary\UnitTestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
-class EditionRootPathProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
+class EditionRootPathProviderTest extends UnitTestCase
 {
     public function providerReturnsEditionPath()
     {

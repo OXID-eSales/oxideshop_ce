@@ -19,11 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \Exception;
+use oxArticle;
+use oxArticleList;
+use \oxDb;
+use \oxTestModules;
 
 /**
  * Tests for Article_Variant class
  */
-class Unit_Admin_ArticleVariantTest extends OxidTestCase
+class ArticleVariantTest extends \OxidTestCase
 {
     /**
      * Article_Variant::render() test case
@@ -41,7 +48,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
 
         $aViewData = $oView->getViewData();
         $this->assertTrue($aViewData["edit"] instanceof oxArticle);
-        $this->assertTrue($aViewData["mylist"] instanceof oxarticlelist);
+        $this->assertTrue($aViewData["mylist"] instanceof oxArticleList);
     }
 
     /**
@@ -63,7 +70,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
         $this->assertTrue($aViewData["parentarticle"] instanceof oxArticle);
         $this->assertEquals(1, $aViewData["issubvariant"]);
         $this->assertEquals(1, $aViewData["readonly"]);
-        $this->assertTrue($aViewData["mylist"] instanceof oxarticlelist);
+        $this->assertTrue($aViewData["mylist"] instanceof oxArticleList);
     }
 
     /**

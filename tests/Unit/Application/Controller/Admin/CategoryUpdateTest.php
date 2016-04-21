@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxCategoryList;
+
+use \oxTestModules;
 
 /**
  * Tests for Category_Update class
  */
-class Unit_Admin_CategoryUpdateTest extends OxidTestCase
+class CategoryUpdateTest extends \OxidTestCase
 {
 
     /**

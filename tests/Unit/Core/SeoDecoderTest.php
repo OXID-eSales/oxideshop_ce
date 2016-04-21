@@ -19,8 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxSeoDecoderTest extends OxidTestCase
+use \exception;
+use \PHPUnit_Framework_AssertionFailedError;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
+
+class SeoDecoderTest extends \OxidTestCase
 {
     /**
      * Tear down the fixture.

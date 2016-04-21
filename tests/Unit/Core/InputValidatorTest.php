@@ -19,6 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use oxArticleInputException;
+use \oxUserException;
+use \oxCompanyVatInCountryChecker;
+use \oxOnlineVatIdCheck;
+
+use \oxutils;
+use \oxCompanyVatInValidator;
+use \oxuser;
+use \oxField;
+use \oxRegistry;
 
 class Unit_oxInputValidatorTest_oxutils extends oxutils
 {
@@ -32,7 +44,7 @@ class Unit_oxInputValidatorTest_oxutils extends oxutils
 /**
  * Test input validation class (oxInputValidator)
  */
-class Unit_Core_oxInputValidatorTest extends OxidTestCase
+class InputValidatorTest extends \OxidTestCase
 {
 
     private $_oValidator = null;

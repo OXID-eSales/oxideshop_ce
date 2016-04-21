@@ -19,11 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxField;
+use \oxRegistry;
 
 /**
  * Tests for Account class
  */
-class Unit_Views_accountNewsletterTest extends OxidTestCase
+class AccountNewsletterTest extends \OxidTestCase
 {
 
     /**

@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
 
 /**
  * Tests for GenImport class
  */
-class Unit_Admin_GenImportTest extends OxidTestCase
+class GenImportTest extends \OxidTestCase
 {
 
     /**

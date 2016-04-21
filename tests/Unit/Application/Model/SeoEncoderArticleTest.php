@@ -19,6 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use modDB;
+use \oxSeoEncoderArticle;
+use \Exception;
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 class modSeoEncoderArticle extends oxSeoEncoderArticle
 {
@@ -70,7 +79,7 @@ class modSeoEncoderArticle extends oxSeoEncoderArticle
 /**
  * Testing oxseoencoder class
  */
-class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
+class SeoEncoderArticleTest extends \OxidTestCase
 {
 
     /**
@@ -1099,7 +1108,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
             $sUrl = "en/" . oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Table+Lamp+SPHERE+red.html";
         }
 
-        $oEncoder = $this->getMock('modSeoEncoderArticle', array('_loadFromDb', "_getCategory"));
+        $oEncoder = $this->getMock('Unit\Application\Model\modSeoEncoderArticle', array('_loadFromDb', "_getCategory"));
         $oEncoder->expects($this->once())->method('_getCategory')->will($this->returnValue($oCategory));
         $oEncoder->expects($this->any())->method('_loadFromDb')->will($this->returnvalue(false));
         $oEncoder->setSeparator('+');
@@ -1150,7 +1159,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
             $sUrl = "en/" . oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Table+Lamp+SPHERE+red.html";
         }
 
-        $oEncoder = $this->getMock('modSeoEncoderArticle', array('_loadFromDb', "_getCategory"));
+        $oEncoder = $this->getMock('Unit\Application\Model\modSeoEncoderArticle', array('_loadFromDb', "_getCategory"));
         $oEncoder->expects($this->once())->method('_getCategory')->will($this->returnValue($oCategory));
         $oEncoder->expects($this->any())->method('_loadFromDb')->will($this->returnvalue(false));
         $oEncoder->setSeparator('+');

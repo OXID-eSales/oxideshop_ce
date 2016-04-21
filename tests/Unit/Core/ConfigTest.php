@@ -19,6 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxubase;
+
+use \oxConfig;
+use \stdClass;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
 use OxidEsales\Eshop\Core\Registry;
@@ -59,7 +68,7 @@ class modForTestInitLoadingPriority extends oxConfig
     }
 }
 
-class Unit_Core_oxconfigTest extends OxidTestCase
+class ConfigTest extends \OxidTestCase
 {
 
     protected $_iCurr = null;

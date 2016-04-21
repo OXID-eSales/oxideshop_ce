@@ -19,8 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxfunctionsTest extends OxidTestCase
+use \oxArticle;
+
+use oxSystemComponentException;
+use \stdClass;
+use \oxField;
+use \oxTestModules;
+
+class FunctionsTest extends \OxidTestCase
 {
     /** @var string */
     protected $requestMethod = null;
@@ -144,12 +152,8 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
         $oNew = oxNew('oxArticle');
         $this->assertTrue($oNew instanceof oxArticle);
 
-        try {
-            oxNew('oxxxx');
-        } catch (oxSystemComponentException $oExcp) {
-            return;
-        }
-        $this->fail('error testing oxnew()');
+        $this->setExpectedException('oxSystemComponentException');
+        oxNew('oxxxx');
     }
 
     public function testOx_get_template()

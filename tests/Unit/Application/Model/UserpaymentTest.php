@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxField;
+use \stdClass;
+use \oxDb;
+use \oxRegistry;
 
 /**
  * Testing oxuserpayment class
  */
-class Unit_Models_oxuserpaymentTest extends OxidTestCase
+class UserpaymentTest extends \OxidTestCase
 {
 
     protected $_oUpay = null;

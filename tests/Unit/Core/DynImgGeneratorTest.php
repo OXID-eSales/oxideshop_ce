@@ -19,13 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use oxDynImgGenerator;
 
 require_once getShopBasePath() . 'Core/oxdynimggenerator.php';
 
 /**
  * Tests for Actions_List class
  */
-class Unit_Core_oxDynImgGeneratorTest extends OxidTestCase
+class DynImgGeneratorTest extends \OxidTestCase
 {
 
     /**

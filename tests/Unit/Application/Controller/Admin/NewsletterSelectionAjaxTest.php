@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxDb;
 
 /**
  * Tests for News_Main_Ajax class
  */
-class Unit_Admin_NewsletterSelectionAjaxTest extends OxidTestCase
+class NewsletterSelectionAjaxTest extends \OxidTestCase
 {
 
     protected $_sGroupsView = 'oxv_oxgroups_de';

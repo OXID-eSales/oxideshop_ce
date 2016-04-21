@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxField;
+use oxOrderFile;
+use \oxTestModules;
 
 /**
  * Tests for Account_downloads class
  */
-class Unit_Views_accountdownloadsTest extends OxidTestCase
+class AccountdownloadsTest extends \OxidTestCase
 {
 
     /**
@@ -80,7 +85,7 @@ class Unit_Views_accountdownloadsTest extends OxidTestCase
         $this->assertEquals("testOrder", $aOrderFilesList["testArtNr"]["oxordernr"]);
         $this->assertEquals("2011-11-11 11:11", $aOrderFilesList["testArtNr"]["oxorderdate"]);
         $this->assertEquals("testArtTitle", $aOrderFilesList["testArtNr"]["oxarticletitle"]);
-        $this->assertTrue($aOrderFilesList["testArtNr"]["oxorderfiles"][0] instanceof oxorderfile);
+        $this->assertTrue($aOrderFilesList["testArtNr"]["oxorderfiles"][0] instanceof oxOrderFile);
     }
 
     /**

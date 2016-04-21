@@ -19,8 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
 
-class modOxPayment_payment extends oxPayment
+use \oxPayment;
+use \oxField;
+use \Exception;
+use \oxException;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
+
+class PaymentHelper2 extends oxPayment
 {
 
     public static $dBasketPrice = null;
@@ -34,13 +43,13 @@ class modOxPayment_payment extends oxPayment
 }
 
 
-class Unit_Views_paymentTest extends OxidTestCase
+class PaymentTest extends \OxidTestCase
 {
 
     public function setUp()
     {
         parent::setUp();
-        modOxPayment_payment::$dBasketPrice = null;
+        PaymentHelper2::$dBasketPrice = null;
     }
 
     /**
@@ -423,7 +432,7 @@ class Unit_Views_paymentTest extends OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        oxAddClassModule('modOxPayment_payment', 'oxPayment');
+        oxAddClassModule('Unit\Application\Controller\PaymentHelper2', 'oxPayment');
 
         $oBasket = $this->getMock('oxBasket', array('getPriceForPayment'));
         $oBasket->expects($this->once())->method('getPriceForPayment')->will($this->returnValue(100));
@@ -438,10 +447,10 @@ class Unit_Views_paymentTest extends OxidTestCase
 
         $oPayment->validatePayment();
 
-        $this->assertEquals(100, modOxPayment_payment::$dBasketPrice);
+        $this->assertEquals(100, PaymentHelper2::$dBasketPrice);
     }
 
-    /*
+    /**
      * #M1432: Error message by shipping options - Frontend
      */
     public function testValidatePaymentDifferentShipping()
@@ -449,7 +458,7 @@ class Unit_Views_paymentTest extends OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        oxAddClassModule('modOxPayment_payment', 'oxPayment');
+        oxAddClassModule('Unit\Application\Controller\PaymentHelper2', 'oxPayment');
 
         $oBasket = $this->getMock('oxBasket', array('getPriceForPayment'));
         $oBasket->expects($this->once())->method('getPriceForPayment')->will($this->returnValue(100));

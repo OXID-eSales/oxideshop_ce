@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxField;
 
 /**
  * Testing oxuserlist class
  */
-class Unit_Models_oxuserlistTest extends OxidTestCase
+class UserlistTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.

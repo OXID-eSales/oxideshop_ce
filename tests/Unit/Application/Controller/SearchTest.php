@@ -19,8 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
 
-class Unit_Views_searchTest extends OxidTestCase
+use \oxRegistry;
+use \oxTestModules;
+
+class SearchTest extends \OxidTestCase
 {
 
     public function testIsEmptySearch()

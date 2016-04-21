@@ -19,8 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
 
-class Unit_Admin_ModuleListTest extends OxidTestCase
+use oxConfig;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
+
+class ModuleListTest extends \OxidTestCase
 {
     /**
      * Module_List::Render() test case
@@ -35,9 +39,9 @@ class Unit_Admin_ModuleListTest extends OxidTestCase
     
     public function testRenderWithCorrectModuleNames()
     {
-        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        /** @var oxConfig|MockObject $config */
         $config = $this->getMock('oxConfig', array('getModulesDir'));
-        $config->expects($this->any())->method('getModulesDir')->will($this->returnValue(__DIR__.'/../testData/modules/'));
+        $config->expects($this->any())->method('getModulesDir')->will($this->returnValue(__DIR__.'/../../../testData/modules/'));
 
         $oView = oxNew('Module_List');
         $oView->setConfig($config);

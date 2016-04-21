@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
 
 /**
  * Tests for dyn_interface class
  */
-class Unit_Admin_dyninterfaceTest extends OxidTestCase
+class DyninterfaceTest extends \OxidTestCase
 {
 
     /**

@@ -19,6 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use oxActionList;
+use \oxUbase;
+use oxUBaseHelper;
+use oxUser;
+use \stdClass;
+use \oxField;
+use \exception;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 if (!function_exists('getSeoProcType')) {
     function getSeoProcType()
@@ -32,7 +44,7 @@ require_once TEST_LIBRARY_HELPERS_PATH . 'oxUBaseHelper.php';
 /**
  * Testing oxUBase class
  */
-class Unit_Views_oxUBaseTest extends OxidTestCase
+class UBaseTest extends \OxidTestCase
 {
 
     protected $_sRequestMethod = null;
@@ -2231,7 +2243,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $oView = $this->getMock("oxubase", array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue(true));
 
-        $this->assertTrue($oView->getWishlistName() instanceof oxuser);
+        $this->assertTrue($oView->getWishlistName() instanceof oxUser);
     }
 
     public function testGetWishlistNameIfNotLoggedIn()

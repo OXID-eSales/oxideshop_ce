@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxcountry;
+
+use \Exception;
+use \oxTestModules;
 
 /**
  * Tests for Country_Main class
  */
-class Unit_Admin_CountryMainTest extends OxidTestCase
+class CountryMainTest extends \OxidTestCase
 {
 
     /**

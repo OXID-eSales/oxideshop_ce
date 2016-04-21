@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
 /**
  * oxSepaValidator test class
@@ -28,7 +29,7 @@
  *  - IBAN Registry (all IBAN lengths by country)
  *  - BIC (Bank International Code)
  */
-class Unit_Core_oxSepaIBANValidatorTest extends OxidTestCase
+class SepaIBANValidatorTest extends \OxidTestCase
 {
 
     /**

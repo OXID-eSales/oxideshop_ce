@@ -19,21 +19,22 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
+use \Exception;
+use oxSystemComponentException;
+use \oxTestModules;
+
+class ExceptionhandlerTest extends \OxidTestCase
 {
 
     protected $_sMsg = 'TEST_EXCEPTION';
 
     public function testCallUnExistingMethod()
     {
-        try {
-            $oExcpHandler = oxNew('oxexceptionhandler');
-            $oExcpHandler->__test__();
-        } catch (oxSystemComponentException $oExcp) {
-            return;
-        }
-        $this->fail('exception must be thrown');
+        $this->setExpectedException('oxSystemComponentException');
+        $oExcpHandler = oxNew('oxexceptionhandler');
+        $oExcpHandler->__test__();
     }
 
     public function testSetGetFileName()
@@ -61,8 +62,6 @@ class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
                 unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
             }
             $this->fail('handleUncaughtException() throws an exception.');
-
-            return;
         }
         if (!file_exists($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
             $this->fail('No debug log file written');
@@ -90,8 +89,6 @@ class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
                 unlink($sFileName);
             }
             $this->fail('handleUncaughtException() throws an exception.');
-
-            return;
         }
         if (file_exists($sFileName)) {
             $this->fail('Illegally written in log file.');
@@ -105,25 +102,14 @@ class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
         $oTestObject = oxNew('oxexceptionhandler', '1'); // iDebug = 1
         $oTestObject->setLogFileName($sFileName);
 
-        try {
-            throw new Exception("test exception");
-            // actuall test
-        } catch (Exception $e) {
-            $oTestObject->handleUncaughtException($e);
-            if (!file_exists($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
-                $this->fail('No debug log file written');
-            }
-            $sFile = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
-            unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName); // delete file first as assert may return out this function
-            $this->assertContains("test exception", $sFile);
-            $this->assertContains('Exception', $sFile);
-
-            return;
+        $oTestObject->handleUncaughtException(new Exception("test exception"));
+        if (!file_exists($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
+            $this->fail('No debug log file written');
         }
-        if (file_exists($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
-            unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
-        }
-        $this->fail('Test failed.');
+        $sFile = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+        unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName); // delete file first as assert may return out this function
+        $this->assertContains("test exception", $sFile);
+        $this->assertContains('Exception', $sFile);
     }
 
     public function testSetIDebug()

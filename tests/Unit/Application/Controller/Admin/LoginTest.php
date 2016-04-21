@@ -19,11 +19,22 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxField;
+use \oxException;
+use \stdClass;
+use \oxConnectionException;
+use \oxUserException;
+use \oxCookieException;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Testing login class.
  */
-class Unit_Admin_loginTest extends OxidTestCase
+class LoginTest extends \OxidTestCase
 {
 
     public function setUp()

@@ -19,6 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use oxArticleHelper;
+use \oxDelivery;
+use oxDeliveryHelper;
+use \oxField;
+use \oxDb;
 
 class modOxDelivery extends oxDelivery
 {
@@ -65,7 +72,7 @@ class modOxDelivery extends oxDelivery
 
 }
 
-class Unit_Models_oxdeliveryTest extends OxidTestCase
+class DeliveryTest extends \OxidTestCase
 {
 
     protected $_sOxId = null;
@@ -83,7 +90,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        oxAddClassModule('modOxDelivery', 'oxDelivery');
+        oxAddClassModule('Unit\Application\Model\modOxDelivery', 'oxDelivery');
 
         $this->cleanUpTable('oxdelivery');
         $this->cleanUpTable('oxobject2delivery');
@@ -153,7 +160,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxRemClassModule('modOxDelivery');
+        oxRemClassModule('Unit\Application\Model\modOxDelivery');
 
         $this->cleanUpTable('oxdelivery');
         $this->cleanUpTable('oxobject2delivery');
@@ -1049,7 +1056,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
 
     public function testIsForArticle()
     {
-        $oDelivery = $this->getMock('modOxDelivery', array('_checkDeliveryAmount', 'getCalculationRule'));
+        $oDelivery = $this->getMock('Unit\Application\Model\modOxDelivery', array('_checkDeliveryAmount', 'getCalculationRule'));
         $oDelivery->expects($this->once())->method('_checkDeliveryAmount')->will($this->returnValue(true));
         $calculateMoreThanOncePerCartRule = 123;
         $oDelivery->expects($this->any())->method('getCalculationRule')->will($this->returnValue($calculateMoreThanOncePerCartRule));

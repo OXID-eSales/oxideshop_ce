@@ -19,11 +19,20 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Modules\Oe\Invoicepdf\Models;
+
+use \stdClass;
+use \InvoicepdfArticleSummary;
+use \oxField;
+use \InvoicepdfOxOrder;
+use \oxPdf;
+use \ReflectionClass;
+use \oxTestModules;
 
 /**
  * Testing myorder module for printing pdf's
  */
-class Unit_Modules_Oe_Invoicepdf_Models_InvoicePdfOxOrderTest extends OxidTestCase
+class InvoicePdfOxOrderTest extends \OxidTestCase
 {
     /**
      * Prepares test suite.

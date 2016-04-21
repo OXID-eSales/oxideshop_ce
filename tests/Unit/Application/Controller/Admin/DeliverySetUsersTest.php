@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxTestModules;
 
 /**
  * Tests for DeliverySet_Users class
  */
-class Unit_Admin_DeliverySetUsersTest extends OxidTestCase
+class DeliverySetUsersTest extends \OxidTestCase
 {
 
     /**

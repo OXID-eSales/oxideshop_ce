@@ -19,6 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use Exception;
+use oxException;
+use \oxNewsLetter;
+use \oxEmail;
+use \oxDb;
 
 class modOxNewsLetter extends oxNewsLetter
 {
@@ -72,7 +79,7 @@ class modEmailOxNewsLetterSubject extends oxEmail
 
     public function sendNewsletterMail($oNews, $oUser, $sSubject = null)
     {
-        throw new oxexception($sSubject);
+        throw new oxException($sSubject);
     }
 }
 
@@ -90,7 +97,7 @@ class oxnewsletterForUnit_oxnewsletterTest extends oxnewsletter
     }
 }
 
-class Unit_Models_oxnewsletterTest extends OxidTestCase
+class NewsletterTest extends \OxidTestCase
 {
 
     /**
@@ -254,7 +261,7 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
         $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
-        $oTestNews = $this->getMock('oxnewsletterForUnit_oxnewsletterTest', array('_assignProducts'));
+        $oTestNews = $this->getMock('Unit\Application\Model\oxnewsletterForUnit_oxnewsletterTest', array('_assignProducts'));
         $oTestNews->expects($this->once())->method('_assignProducts')->with($this->isInstanceOf('oxUBase'), $this->equalTo(true));
         $oTestNews->load('newstest');
         $oTestNews->setNonPublicVar('_oUser', $oUser);
@@ -332,7 +339,7 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
     // setting by id
     public function testSetUserId()
     {
-        $oTestNews = oxNew('modOxNewsLetter');
+        $oTestNews = new modOxNewsLetter();
         $oTestNews->UNITsetUser('oxdefaultadmin');
         $oUser = $oTestNews->getUser();
         $this->assertEquals($oUser->oxuser__oxid->value, 'oxdefaultadmin');
@@ -341,7 +348,7 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
     // setting by object
     public function testSetUserObject()
     {
-        $oTestNews = oxNew('modOxNewsLetter');
+        $oTestNews = new modOxNewsLetter();
         $oUser = oxNew("oxUser");
         $oUser->load('oxdefaultadmin');
         $oTestNews->UNITsetUser($oUser);
@@ -352,7 +359,7 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
     // setting wrong id
     public function testSetUserWrongId()
     {
-        $oTestNews = oxNew('modOxNewsLetter');
+        $oTestNews = new modOxNewsLetter();
         $oTestNews->UNITsetUser('123');
         $oUser = $oTestNews->getUser();
         $this->assertEquals($oUser->oxuser__oxid->value, null);
@@ -391,7 +398,7 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
 
     public function testSendMail()
     {
-        oxAddClassModule('modEmailOxNewsLetter2', 'oxEmail');
+        oxAddClassModule('Unit\Application\Model\modEmailOxNewsLetter2', 'oxEmail');
 
         $oTestNews = oxNew("oxNewsLetter");
         if (!$oTestNews->load('oxidnewsletter')) {
@@ -403,14 +410,14 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
         $this->assertTrue($blMailWasSent);
     }
 
-    /*
+    /**
      * oxNewsletter::send - Testing for correct subject value.
      *
      * @return null
      */
     public function testSendMail_Subject()
     {
-        oxAddClassModule('modEmailOxNewsLetterSubject', 'oxEmail');
+        oxAddClassModule('Unit\Application\Model\modEmailOxNewsLetterSubject', 'oxEmail');
 
         $oTestNews = oxNew("oxNewsLetter");
         if (!$oTestNews->load('oxidnewsletter')) {

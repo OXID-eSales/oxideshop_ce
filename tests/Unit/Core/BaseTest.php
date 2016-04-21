@@ -19,6 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxObjectException;
+
+use Exception;
+use \oxBase;
+use oxBaseHelper;
+use \oxUtils;
+use \stdClass;
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxBaseHelper.php';
 
@@ -218,7 +231,7 @@ class oxUtilsNoCaching extends oxUtils
 /**
  * Testing oxBase class.
  */
-class Unit_Core_oxbaseTest extends OxidTestCase
+class BaseTest extends \OxidTestCase
 {
 
     /**
@@ -1542,8 +1555,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function  testSaveIsDerived()
     {
-        $oBase = new _oxBase();
-        $oBase = $this->getMock('_oxbase', array('update'));
+        $oBase = $this->getMock('Unit\Core\_oxBase', array('update'));
         $oBase->expects($this->any())
             ->method('update')
             ->will($this->returnValue(true));
@@ -1680,8 +1692,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
 
     /**
      * Test update with oxid, wrong sql.
-     *
-     * @return null
      */
     public function  testUpdateWithOXIDWrongSql()
     {
@@ -1689,7 +1699,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $sInsert = "Insert into oxarticles (`OXID`,`OXTITLE`) values ('_test','test')";
         $myDB->Execute($sInsert);
 
-        $oBase = $this->getMock('_oxbase', array('_getUpdateFields'));
+        $oBase = $this->getMock('Unit\Core\_oxBase', array('_getUpdateFields'));
         $oBase->expects($this->any())
             ->method('_getUpdateFields')
             ->will($this->returnValue(''));
@@ -1813,7 +1823,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtils', 'fromFileCache', '{return false;}');
         oxTestModules::addFunction('oxUtils', 'fromStaticCache', '{return false;}');
-        $oBase = $this->getMock('_oxBase', array('isAdmin'));
+        $oBase = $this->getMock('Unit\Core\_oxBase', array('isAdmin'));
         $oBase->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oBase->init('oxactions');
 

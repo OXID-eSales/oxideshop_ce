@@ -19,8 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Smarty;
 
-class Unit_Maintenance_moduleSimilarClassTest extends OxidTestCase
+use \testModuleSimilarName_parent;
+use \oxRegistry;
+
+class ModuleSimilarClassTest extends \OxidTestCase
 {
 
     /**

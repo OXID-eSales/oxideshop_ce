@@ -19,11 +19,21 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxArticle;
+
+use modDB;
+use \oxField;
+use \Exception;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Testing oxArticleList class
  */
-class Unit_Models_oxarticlelistTest extends OxidTestCase
+class ArticlelistTest extends \OxidTestCase
 {
     /**
      * Tear down the fixture.

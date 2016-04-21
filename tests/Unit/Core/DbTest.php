@@ -19,6 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxDb;
+use \oxConfigFile;
+use \oxRegistry;
 
 /**
  * Test private methods with mock.
@@ -63,7 +68,7 @@ class oxDbPublicized extends oxDb
     }
 }
 
-class Unit_Core_oxDbTest extends OxidTestCase
+class DbTest extends \OxidTestCase
 {
     /**
      * Clean-up oxarticles table + parent::tearDown()
@@ -261,7 +266,7 @@ class Unit_Core_oxDbTest extends OxidTestCase
         $oConfigFile->isAdmin = true;
         $oConfigFile->blLogChangesInAdmin = true;
 
-        $oDb = $this->getMock("oxDbPublicized", array("isAdmin"));
+        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("isAdmin"));
         $oDb->setConfig($oConfigFile);
         $oDb->expects($this->once())->method("isAdmin")->will($this->returnValue(true));
         $this->assertEquals("perfmon:oxadminlog", $oDb->_getModules());
@@ -271,7 +276,7 @@ class Unit_Core_oxDbTest extends OxidTestCase
         $oConfigFile->iDebug = 0;
         $oConfigFile->isAdmin = false;
 
-        $oDb = $this->getMock("oxDbPublicized", array("getConfig"));
+        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("getConfig"));
         $oDb->setConfig($oConfigFile);
         $this->assertEquals("", $oDb->_getModules());
     }
@@ -285,7 +290,7 @@ class Unit_Core_oxDbTest extends OxidTestCase
         $oConfigFile->iDebug = 0;
         $oConfigFile->isAdmin = false;
 
-        $oDb = $this->getMock("oxDbPublicized", array("getConfig"));
+        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("getConfig"));
         $oDb->setConfig($oConfigFile);
         $oDb->_getModules();
 
@@ -359,7 +364,7 @@ class Unit_Core_oxDbTest extends OxidTestCase
         $oConfigFile->sAdminEmail = "adminemail";
         $oConfigFile->dbUser = "dbuser";
 
-        $oDb = $this->getMock("oxDbPublicized", array("getConfig", "_sendMail"));
+        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("getConfig", "_sendMail"));
         $oDb->setConfig($oConfigFile);
         $oDb->expects($this->once())->method('_sendMail')->with($this->equalTo('adminemail'), $this->equalTo('Offline warning!'));
         $oDb->_notifyConnectionErrors($oDbInst);
@@ -370,7 +375,7 @@ class Unit_Core_oxDbTest extends OxidTestCase
      */
     public function testOnConnectionError()
     {
-        $oDb = $this->getMock("oxDbPublicized", array("_notifyConnectionErrors"));
+        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("_notifyConnectionErrors"));
         $oDb->expects($this->once())->method('_notifyConnectionErrors')->with($this->equalTo('odb'));
         $oDb->_onConnectionError('odb');
     }

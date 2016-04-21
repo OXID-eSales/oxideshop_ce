@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
 //THIS FILE IS IN LATIN1 AND NOT IN UTF
 //bellow is one O uml char
@@ -28,7 +29,7 @@
 //Warning: StrRegular functions should not be ever called with utf string params,
 //we test the behaviour here which actually is expected with given params, but wrong.
 
-class Unit_Core_oxstrRegularTest extends OxidTestCase
+class StrRegularTest extends \OxidTestCase
 {
     /** @var string */
     protected $_sStrNeedle = "ö";

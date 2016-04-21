@@ -19,8 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
 
-class Unit_Views_suggestTest extends OxidTestCase
+use \oxList;
+
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
+
+class SuggestTest extends \OxidTestCase
 {
 
     /**

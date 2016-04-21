@@ -19,6 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Smarty;
+
+use \RecursiveIteratorIterator;
+use \RecursiveDirectoryIterator;
 
 /**
  * Tests language files and templates for missing constants.
@@ -35,7 +39,7 @@
  * - make sure all templates have translations
  * - find unused translations. Too long, not to be used for automatic testing.
  */
-class Unit_Maintenance_langIntegrityTest extends OxidTestCase
+class LangIntegrityTest extends \OxidTestCase
 {
     /**
      * Theme to test against

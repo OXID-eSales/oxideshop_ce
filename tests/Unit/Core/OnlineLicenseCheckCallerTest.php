@@ -19,6 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxOnlineLicenseCheckCaller;
+use \Exception;
+use \oxSimpleXml;
 
 /**
  * Class Unit_Core_oxOnlineLicenseCheckCallerTest
@@ -28,7 +33,7 @@
  * @covers oxOnlineLicenseCheckRequest
  * @covers oxOnlineModulesNotifierRequest
  */
-class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
+class OnlineLicenseCheckCallerTest extends \OxidTestCase
 {
 
     public function testIfCorrectRequestPassedToXmlFormatter()

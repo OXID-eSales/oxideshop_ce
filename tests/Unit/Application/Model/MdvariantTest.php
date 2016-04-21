@@ -19,12 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
 /**
  * Unit_oxmdvariantTest
  *
  */
-class Unit_Models_oxmdvariantTest extends OxidTestCase
+class MdvariantTest extends \OxidTestCase
 {
 
     /**

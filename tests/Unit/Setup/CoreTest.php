@@ -19,13 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Setup;
 
 use OxidEsales\Eshop\Setup\Core;
 
 /**
  * SetupCoreTest tests
  */
-class CoreTest extends OxidTestCase
+class CoreTest extends \OxidTestCase
 {
     /**
      * Test get instance.

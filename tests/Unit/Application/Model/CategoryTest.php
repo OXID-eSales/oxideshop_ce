@@ -19,6 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use oxCategory;
+use oxCategoryHelper;
+use oxUtilsObject;
+use \oxUtilsView;
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxCategoryHelper.php';
 
@@ -31,7 +41,7 @@ class oxcategoryTest_oxUtilsView extends oxUtilsView
     }
 }
 
-class Unit_Models_oxCategoryTest extends OxidTestCase
+class CategoryTest extends \OxidTestCase
 {
 
     protected $_oCategoryA = null;

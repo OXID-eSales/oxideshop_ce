@@ -19,8 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxcontentlistTest extends OxidTestCase
+use \oxField;
+
+class ContentlistTest extends \OxidTestCase
 {
 
     protected $_oContent = null;

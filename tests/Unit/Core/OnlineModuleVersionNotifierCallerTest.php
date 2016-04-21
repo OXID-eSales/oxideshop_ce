@@ -19,6 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxOnlineModuleVersionNotifierCaller;
+use \oxSimpleXml;
+use \stdClass;
 
 /**
  * Class Unit_Core_oxOnlineModuleVersionNotifierCallerTest
@@ -26,7 +31,7 @@
  * @covers oxOnlineModuleVersionNotifierCaller
  * @covers oxOnlineCaller
  */
-class Unit_Core_oxOnlineModuleVersionNotifierCallerTest extends OxidTestCase
+class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
 {
 
     public function testGetWebServiceUrl()

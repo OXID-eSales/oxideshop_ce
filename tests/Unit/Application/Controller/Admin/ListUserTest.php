@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use DOMDocument;
 
 /**
  * Tests for List_User class
  */
-class Unit_Admin_ListUserTest extends OxidTestCase
+class ListUserTest extends \OxidTestCase
 {
 
     /**

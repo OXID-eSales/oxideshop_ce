@@ -19,8 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxuserexceptionTest extends OxidTestCase
+class UserexceptionTest extends \OxidTestCase
 {
 
     // We check on class name (exception class) and message only - rest is not checked yet

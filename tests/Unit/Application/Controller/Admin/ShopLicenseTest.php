@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxshop;
+
+use \oxDb;
+use oxSystemComponentException;
 
 /**
  * Tests for Shop_License class
  */
-class Unit_Admin_ShopLicenseTest extends OxidTestCase
+class ShopLicenseTest extends \OxidTestCase
 {
     /**
      * Sets malladmin parameter

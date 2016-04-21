@@ -19,6 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Smarty;
+
+use \testModuleInclusion_parent;
+use \oxRegistry;
 
 /**
  * test for situation:
@@ -26,7 +30,7 @@
  * module file inclusion makes autoload mod_parent by including the same module file
  * thus in the end module class is created twice resulting in php fatal error
  */
-class Unit_Maintenance_moduleFileInclusionTest extends OxidTestCase
+class ModuleFileInclusionTest extends \OxidTestCase
 {
 
     /**

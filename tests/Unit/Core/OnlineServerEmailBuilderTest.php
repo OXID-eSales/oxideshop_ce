@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxRegistry;
 
 /**
  * Class Unit_Core_oxOnlineServerEmailBuilderTest
  */
-class Unit_Core_oxOnlineServerEmailBuilderTest extends OxidTestCase
+class OnlineServerEmailBuilderTest extends \OxidTestCase
 {
 
     public function testBuildIfParametersWereSetCorrectly()

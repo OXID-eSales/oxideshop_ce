@@ -19,6 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use oxArticle;
+use \oxLocator;
+use \oxField;
+use \oxlist;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 class testOxLocator extends oxLocator
 {
@@ -51,7 +60,7 @@ class testOxLocator extends oxLocator
     }
 }
 
-class Unit_Views_oxlocatorTest extends OxidTestCase
+class LocatorTest extends \OxidTestCase
 {
     /**
      * Make a copy of The Barrel for testing
@@ -220,7 +229,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oConfig = $this->getMock('oxconfig', array('getConfigParam'));
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
 
-        $oLocator = $this->getMock('testOxLocator', array('getConfig'));
+        $oLocator = $this->getMock('Unit\Application\Controller\testOxLocator', array('getConfig'));
         $oLocator->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         // testing

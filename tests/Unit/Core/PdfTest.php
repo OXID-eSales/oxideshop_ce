@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
 /**
  * Testing oxPdf class.
  */
-class Unit_Core_oxpdfTest extends OxidTestCase
+class PdfTest extends \OxidTestCase
 {
     /**
      * oxPdf::PutLink() test case

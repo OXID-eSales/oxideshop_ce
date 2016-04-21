@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \Exception;
+use oxArticle;
+use \oxDb;
+use \oxTestModules;
 
 /**
  * Tests for Article_Stock class
  */
-class Unit_Admin_ArticleStockTest extends OxidTestCase
+class ArticleStockTest extends \OxidTestCase
 {
 
     /**

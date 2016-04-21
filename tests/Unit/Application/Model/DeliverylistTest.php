@@ -19,6 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxdelivery;
+
+use oxArticleHelper;
+use \oxdeliverylist;
+use \oxDb;
+use \oxField;
+use \oxRegistry;
+use \oxTestModules;
+use oxUser;
 
 class oxDeliveryListTestClass extends oxdeliverylist
 {
@@ -82,9 +93,10 @@ class oxDb_noActiveSnippetInDeliveryList extends oxDb
 }
 
 
-class Unit_Models_oxdeliverylistTest extends OxidTestCase
+class DeliverylistTest extends \OxidTestCase
 {
-
+    /** @var oxUser */
+    protected $_oUser;
     protected $_aTestProducts = array();
     protected $_aCategories = array();
     protected $_aDeliverySets = array();
@@ -102,7 +114,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         // set to load full deliveries list
         $this->getConfig()->setConfigParam('bl_perfLoadDelivery', true);
 
-        oxAddClassModule('oxDeliveryListTestClass', 'oxdeliverylist');
+        oxAddClassModule('Unit\Application\Model\oxDeliveryListTestClass', 'oxdeliverylist');
 
         // inserting some demo data
 
@@ -210,8 +222,8 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxRemClassModule('oxDeliveryListTestClass');
-        oxRemClassModule('oxDb_noActiveSnippetInDeliveryList');
+        oxRemClassModule('Unit\Application\Model\oxDeliveryListTestClass');
+        oxRemClassModule('Unit\Application\Model\oxDb_noActiveSnippetInDeliveryList');
 
         $this->cleanUpTable('oxdel2delset');
         $this->cleanUpTable('oxobject2category');
@@ -444,7 +456,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('_testUserId');
 
-        $oDList = oxNew('oxdeliverylistTest_forGetList');
+        $oDList = new oxdeliverylistTest_forGetList();
         $oDList->getList($this->_oUser, 'a7c40f63264309e05.58576680', '_testDeliverySetId');
 
         //testing if getList calls _getFilterSelect() with correct params
@@ -467,7 +479,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('_testUserId');
 
-        $oDList = oxNew('oxdeliverylistTest_forGetList');
+        $oDList = new oxdeliverylistTest_forGetList();
         $oDList->getList($this->_oUser, null, '_testDeliverySetId');
 
         $this->assertEquals(3, $oDList->count());
@@ -498,7 +510,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
 
-        $oDList = oxNew('oxDeliveryListTestClass');
+        $oDList = new oxDeliveryListTestClass();
 
         $sTable = getViewName('oxdelivery');
         $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '' ) as $sTable where (
@@ -534,7 +546,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
 
-        $oDList = oxNew('oxDeliveryListTestClass');
+        $oDList = new oxDeliveryListTestClass();
 
         $sTable = getViewName('oxdelivery');
         $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '' ) as $sTable where (
@@ -573,7 +585,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
 
-        $oDList = oxNew('oxDeliveryListTestClass');
+        $oDList = new oxDeliveryListTestClass();
         // default oxConfig country check.
         $sTable = getViewName('oxdelivery');
         $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId' ) as $sTable where (
@@ -614,7 +626,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         //remove user from groups
         $this->cleanUpTable('oxobject2group');
 
-        $oDList = oxNew('oxDeliveryListTestClass');
+        $oDList = new oxDeliveryListTestClass();
         // default oxConfig country check.
         $sTable = getViewName('oxdelivery');
         $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId' ) as $sTable where (
@@ -1098,7 +1110,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        $oDList = oxNew('oxdeliverylistTest_forGetList');
+        $oDList = new oxDeliveryListTest_forGetList();
         $oDList->getList($oUser, 'a7c40f631fc920687.20179984', 'b3b46b74d3894f9f5.62965460');
 
         //testing if getList calls _getFilterSelect() with correct params

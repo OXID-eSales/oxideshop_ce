@@ -19,11 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxManufacturer;
+
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Testing oxmanufacturer class
  */
-class Unit_Models_oxmanufacturerTest extends OxidTestCase
+class ManufacturerTest extends \OxidTestCase
 {
 
     /**

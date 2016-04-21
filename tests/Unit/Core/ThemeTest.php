@@ -19,8 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxthemeTest extends OxidTestCase
+use \oxTheme;
+
+use \another;
+
+class ThemeTest extends \OxidTestCase
 {
 
     public function setup()
@@ -56,13 +61,9 @@ class Unit_Core_oxthemeTest extends OxidTestCase
     public function testActivateError()
     {
         $oTheme = $this->getMock('oxTheme', array('checkForActivationErrors'));
-        $oTheme->expects($this->once())->method('checkForActivationErrors')->will($this->returnValue('asd'));
-        try {
-            $oTheme->activate();
-            $this->fail("setTheme passed ??? ");
-        } catch (oxException $e) {
-            $this->assertEquals('asd', $e->getMessage());
-        }
+        $oTheme->expects($this->once())->method('checkForActivationErrors')->will($this->returnValue('Error Message'));
+        $this->setExpectedException('oxException', 'Error Message');
+        $oTheme->activate();
     }
 
     public function testActivateMain()

@@ -19,8 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxLangTest extends OxidTestCase
+use oxLang;
+use \stdClass;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
+
+class LangTest extends \OxidTestCase
 {
 
     /**
@@ -1295,7 +1302,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $this->getConfig()->setConfigParam('aLanguageParams', $aLangParams);
 
-        $oLang = new  oxLang();
+        $oLang = new oxLang();
         $aLangIds = array(0 => 'de', 1 => 'ru', 3 => 'en');
 
         $this->assertEquals($aLangIds, $oLang->getLanguageIds());

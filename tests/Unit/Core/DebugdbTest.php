@@ -19,11 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use modDB;
+use \oxDb;
 
 /**
  * testing oxattributelist class.
  */
-class Unit_Core_oxdebugdbTest extends OxidTestCase
+class DebugdbTest extends \OxidTestCase
 {
 
     /**

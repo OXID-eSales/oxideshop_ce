@@ -19,10 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
 use OxidEsales\Eshop\Core\ClassNameProvider;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
-class ClassNameProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
+class ClassNameProviderTest extends UnitTestCase
 {
     public function providerReturnsClassNameFromClassAlias()
     {

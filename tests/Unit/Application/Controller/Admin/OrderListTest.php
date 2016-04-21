@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxField;
+use \oxDb;
+use \oxTestModules;
 
 /**
  * Testing order_list class.
  */
-class Unit_Admin_OrderListTest extends OxidTestCase
+class OrderListTest extends \OxidTestCase
 {
 
     /**

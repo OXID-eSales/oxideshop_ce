@@ -19,8 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxreviewTest extends OxidTestCase
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
+
+class ReviewTest extends \OxidTestCase
 {
 
     protected $_oReview = null;

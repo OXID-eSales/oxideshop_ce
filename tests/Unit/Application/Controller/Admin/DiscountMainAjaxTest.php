@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxDb;
 
 /**
  * Tests for Discount_Main_Ajax class
  */
-class Unit_Admin_DiscountMainAjaxTest extends OxidTestCase
+class DiscountMainAjaxTest extends \OxidTestCase
 {
 
     /**

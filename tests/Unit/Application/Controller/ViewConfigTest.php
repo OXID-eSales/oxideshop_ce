@@ -19,8 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
 
-class Unit_Views_oxviewConfigTest extends OxidTestCase
+use \oxcountrylist;
+
+use \stdClass;
+use \oxRegistry;
+use \oxTestModules;
+
+class ViewConfigTest extends \OxidTestCase
 {
 
     protected $_aTsConfig = array("blTestMode"   => false, // set TRUE to enable testing mode

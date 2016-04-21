@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxField;
+use \oxGroups;
+use \oxDb;
+use \oxTestModules;
 
 /**
  * Tests for Newsletter_Send class
  */
-class Unit_Admin_NewsletterSendTest extends OxidTestCase
+class NewsletterSendTest extends \OxidTestCase
 {
 
     /**

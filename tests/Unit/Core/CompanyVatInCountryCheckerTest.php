@@ -19,8 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
+use \oxCompanyVatIn;
+use oxCompanyVatInCountryChecker;
+use \oxField;
+
+class CompanyVatInCountryCheckerTest extends \OxidTestCase
 {
 
     public function testGetCountry_set()

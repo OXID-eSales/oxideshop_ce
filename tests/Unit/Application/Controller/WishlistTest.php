@@ -19,8 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
 
-class Unit_Views_wishlistTest extends OxidTestCase
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+
+class WishlistTest extends \OxidTestCase
 {
 
     /**

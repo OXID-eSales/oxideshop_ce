@@ -19,11 +19,20 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxarticle;
+use \oxwrapping;
+
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Class Unit_Models_oxorderarticleTest
  */
-class Unit_Models_oxorderarticleTest extends OxidTestCase
+class OrderarticleTest extends \OxidTestCase
 {
 
     /** @var oxOrderArticle orderArticle */

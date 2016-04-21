@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxTestModules;
 
 /**
  * Tests for Discount_Users class
  */
-class Unit_Admin_DiscountUsersTest extends OxidTestCase
+class DiscountUsersTest extends \OxidTestCase
 {
 
     /**

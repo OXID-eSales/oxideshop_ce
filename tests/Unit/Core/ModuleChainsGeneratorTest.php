@@ -19,10 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxTestModules;
 
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
-class Unit_Core_oxModuleChainsGeneratorTest extends OxidTestCase
+class ModuleChainsGeneratorTest extends \OxidTestCase
 {
 
     public function testGetActiveModuleChain()

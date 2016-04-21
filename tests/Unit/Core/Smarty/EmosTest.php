@@ -19,6 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Smarty;
+
+use \EMOS;
+use \stdClass;
 
 require_once getShopBasePath() . '/Core/smarty/plugins/emos.php';
 
@@ -28,7 +32,7 @@ require_once getShopBasePath() . '/Core/smarty/plugins/emos.php';
  * @author Tomas Liubinas
  *
  */
-class EmosTest extends EMOS
+class EmosHelper extends EMOS
 {
 
     /**
@@ -72,7 +76,7 @@ class EmosTest extends EMOS
 /**
  * Testing emos class
  */
-class Unit_Maintenance_emosTest extends OxidTestCase
+class EmosTest extends \OxidTestCase
 {
 
     /**
@@ -82,7 +86,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testConstruct()
     {
-        $oEmos = new EmosTest("xxx", "yyy");
+        $oEmos = new EmosHelper("xxx", "yyy");
 
         $this->assertEquals('xxx', $oEmos->getProtected("_sPathToFile"));
         $this->assertEquals('yyy', $oEmos->getProtected("_sScriptFileName"));
@@ -103,7 +107,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
         $oItem->variant2 = 'var2';
         $oItem->variant3 = 'var3';
 
-        $oEmos = $this->getMock('EmosTest', array('_emos_DataFormat'));
+        $oEmos = $this->getMock('\Unit\Core\Smarty\EmosHelper', array('_emos_DataFormat'));
         $oEmos->expects($this->at(0))->method('_emos_DataFormat')->with($this->equalTo('prodid'))->will($this->returnValue('prodid'));
         $oEmos->expects($this->at(1))->method('_emos_DataFormat')->with($this->equalTo('prodname'))->will($this->returnValue('prodname'));
         $oEmos->expects($this->at(2))->method('_emos_DataFormat')->with($this->equalTo('prodgrp'))->will($this->returnValue('prodgrp'));
@@ -124,7 +128,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
         $sStrPre = '  &amp;&quot;&gt;<a href="">ggg</a>\'"%;   / /';
         $sStrPos = '&>ggg//';
 
-        $oEmos = new EmosTest;
+        $oEmos = new EmosHelper;
         $this->assertEquals($sStrPos, $oEmos->call_emos_DataFormat($sStrPre));
     }
 
@@ -135,7 +139,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testPrettyPrint()
     {
-        $oEmos = new EmosTest();
+        $oEmos = new EmosHelper();
         $this->assertEquals("", $oEmos->getProtected("_br"));
         $this->assertEquals("", $oEmos->getProtected("_tab"));
         $oEmos->prettyPrint();
@@ -150,7 +154,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testPrepareScript()
     {
-        $oEmos = new EmosTest("xxx", "yyy");
+        $oEmos = new EmosHelper("xxx", "yyy");
         $oEmos->prettyPrint();
         $oEmos->call_prepareScript();
 

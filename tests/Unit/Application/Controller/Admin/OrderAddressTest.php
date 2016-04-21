@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxorder;
+
+use \Exception;
+use \oxTestModules;
 
 /**
  * Tests for Order_Address class
  */
-class Unit_Admin_OrderAddressTest extends OxidTestCase
+class OrderAddressTest extends \OxidTestCase
 {
 
     /**

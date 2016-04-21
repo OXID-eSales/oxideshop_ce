@@ -19,6 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxdeliveryset;
+
+use \oxDeliverySetList;
+use \oxDb;
+use \oxPaymentList;
+use \oxField;
+use \oxRegistry;
+use \oxTestModules;
 
 class modOxDeliverySetList extends oxDeliverySetList
 {
@@ -51,7 +61,7 @@ class modOxDeliverySetList_paymentList extends oxPaymentList
     }
 }
 
-class Unit_Models_oxDeliverysetListTest extends OxidTestCase
+class DeliverysetListTest extends \OxidTestCase
 {
 
     /**
@@ -815,7 +825,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oBasket = $this->getMock('oxBasket', array('getPriceForPayment'));
         $oBasket->expects($this->once())->method('getPriceForPayment')->will($this->returnValue(100));
 
-        oxAddClassModule('modOxDeliverySetList_paymentList', 'oxPaymentList');
+        oxAddClassModule('Unit\Application\Model\modOxDeliverySetList_paymentList', 'oxPaymentList');
 
         $oDeliverySetList = oxNew('oxDeliverySetList');
 

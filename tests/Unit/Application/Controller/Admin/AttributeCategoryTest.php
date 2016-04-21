@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use oxAttribute;
 
 /**
  * Tests for Attribute_Category class
  */
-class Unit_Admin_AttributeCategoryTest extends OxidTestCase
+class AttributeCategoryTest extends \OxidTestCase
 {
 
     /**
@@ -40,6 +43,6 @@ class Unit_Admin_AttributeCategoryTest extends OxidTestCase
         $this->assertEquals('attribute_category.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxattribute);
+        $this->assertTrue($aViewData['edit'] instanceof oxAttribute);
     }
 }

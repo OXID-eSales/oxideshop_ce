@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxField;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Testing Guestbook class
  */
-class Unit_Views_GuestbookTest extends OxidTestCase
+class GuestbookTest extends \OxidTestCase
 {
 
     private $_oObj = null;

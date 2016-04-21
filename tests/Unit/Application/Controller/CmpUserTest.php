@@ -19,6 +19,20 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxcmp_user;
+use \Exception;
+use \oxField;
+use \oxUserException;
+use \oxCookieException;
+use \oxInputException;
+use \oxConnectionException;
+use \oxUser;
+use \oxException;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 class modcmp_user_parent
 {
@@ -45,7 +59,7 @@ class modcmp_user extends oxcmp_user
 
 }
 
-class Unit_Views_oxcmpUserTest extends OxidTestCase
+class CmpUserTest extends \OxidTestCase
 {
 
     /**
@@ -356,7 +370,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oConfig->expects($this->any())->method('getShopHomeUrl')->will($this->returnValue('shopurl/?'));
         $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(false));
 
-        $oView = $this->getMock('modcmp_user', array('getConfig'));
+        $oView = $this->getMock('Unit\Application\Controller\modcmp_user', array('getConfig'));
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->setRequestParameter('cl', 'testclass');
@@ -379,7 +393,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oConfig->expects($this->any())->method('getShopSecureHomeUrl')->will($this->returnValue('sslshopurl/?'));
         $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(true));
 
-        $oView = $this->getMock('modcmp_user', array('getConfig'));
+        $oView = $this->getMock('Unit\Application\Controller\modcmp_user', array('getConfig'));
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $this->setRequestParameter('cl', 'testclass');
         $this->setRequestParameter('cnid', 'catid');

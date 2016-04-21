@@ -19,6 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Smarty;
+
+use \oxRegistry;
 
 require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'smarty/plugins/modifier.oxfilesize.php';
 
@@ -26,7 +29,7 @@ require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'smarty/plugi
 /**
  * Smarty modifier test case
  */
-class Unit_Maintenance_oxfilesizeTest extends OxidTestCase
+class FilesizeTest extends \OxidTestCase
 {
 
     /**

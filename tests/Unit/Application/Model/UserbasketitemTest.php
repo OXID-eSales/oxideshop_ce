@@ -19,6 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxArticle;
+use oxArticleException;
+use \oxField;
+use \stdclass;
 
 class modOxArticle_oxUserBasketItem extends oxArticle
 {
@@ -34,7 +40,7 @@ class modOxArticle_oxUserBasketItem extends oxArticle
     }
 }
 
-class Unit_Models_oxuserbasketitemTest extends OxidTestCase
+class UserbasketitemTest extends \OxidTestCase
 {
 
     /**

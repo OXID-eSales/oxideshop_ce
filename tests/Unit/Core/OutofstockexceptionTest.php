@@ -19,8 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxoutofstockexceptionTest extends OxidTestCase
+class OutofstockexceptionTest extends \OxidTestCase
 {
 
     private $_oTestObject = null;

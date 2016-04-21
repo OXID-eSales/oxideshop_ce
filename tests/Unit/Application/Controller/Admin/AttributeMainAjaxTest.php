@@ -19,11 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxDb;
 
 /**
  * Tests for Attribute_Category_Ajax class
  */
-class Unit_Admin_AttributeMainAjaxTest extends OxidTestCase
+class AttributeMainAjaxTest extends \OxidTestCase
 {
 
     protected $_sArticleView = 'oxv_oxarticles_1_de';

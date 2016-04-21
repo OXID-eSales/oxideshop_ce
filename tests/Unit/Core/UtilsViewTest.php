@@ -19,8 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
-class Unit_Core_oxUtilsViewTest extends OxidTestCase
+use \stdClass;
+use \oxRegistry;
+use \oxTestModules;
+
+class UtilsViewTest extends \OxidTestCase
 {
     /**
      * oxUtilsView::getTemplateDirs() test case

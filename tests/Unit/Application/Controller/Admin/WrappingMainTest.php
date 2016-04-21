@@ -19,11 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxwrapping;
+
+use \Exception;
+use \oxDb;
+use \oxTestModules;
 
 /**
  * Tests for Wrapping_Main class
  */
-class Unit_Admin_WrappingMainTest extends OxidTestCase
+class WrappingMainTest extends \OxidTestCase
 {
 
     /**

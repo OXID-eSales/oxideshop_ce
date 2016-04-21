@@ -19,8 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxlinksTest extends OxidTestCase
+use \oxField;
+use \oxDb;
+
+class LinksTest extends \OxidTestCase
 {
 
     private $_oxLinks;

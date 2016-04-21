@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
 /**
  * License key managing class.
  */
-class Unit_Core_oxSerialCeTest extends OxidTestCase
+class SerialCeTest extends \OxidTestCase
 {
     /**
      * This test makes sure oxSerial class does not exist in CE edition

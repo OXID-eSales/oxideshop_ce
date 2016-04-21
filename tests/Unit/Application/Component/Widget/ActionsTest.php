@@ -19,12 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Component\Widget;
+
+use oxArticleList;
 
 
 /**
  * Tests for oxwAction class
  */
-class Unit_Components_Widgets_oxwActionsTest extends OxidTestCase
+class ActionsTest extends \OxidTestCase
 {
     /**
      * Testing oxwAction::render()
@@ -48,7 +51,7 @@ class Unit_Components_Widgets_oxwActionsTest extends OxidTestCase
         $action = oxNew('oxwActions');
         $action->setViewParameters(array('action' => 'oxtop5'));
         $aList = $action->getAction();
-        $this->assertTrue($aList instanceof oxarticlelist);
+        $this->assertTrue($aList instanceof oxArticleList);
         $this->assertSame($topProductCount, $aList->count());
         $this->assertSame($topProductId, $aList->current()->getId());
     }

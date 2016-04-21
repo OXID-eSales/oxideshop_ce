@@ -19,6 +19,20 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
+
+use \oxList;
+use \oxSimpleVariant;
+use \oxArticle;
+
+use oxArticleHelper;
+use \oxField;
+use \Exception;
+use \StdClass;
+use \oxbasket;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 if (!defined('OX_IS_ADMIN')) {
     define('OX_IS_ADMIN', false);
@@ -29,7 +43,7 @@ require_once TEST_LIBRARY_HELPERS_PATH . 'oxArticleHelper.php';
 /**
  * Testing oxArticle class.
  */
-class Unit_Models_oxArticleTest extends OxidTestCase
+class ArticleTest extends \OxidTestCase
 {
     /**
      * A object of a test article 1

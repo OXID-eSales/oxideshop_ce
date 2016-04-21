@@ -19,13 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxCurl;
+use \Exception;
+use oxOnlineCaller;
+use oxOnlineRequest;
 
 /**
  * Class Unit_Core_oxoOnlineCallerTest
  *
  * @covers oxOnlineCaller
  */
-class Unit_Core_oxOnlineCallerTest extends OxidTestCase
+class OnlineCallerTest extends \OxidTestCase
 {
 
     const SUT = 'oxOnlineCaller';
@@ -103,7 +109,7 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
     public function testCallSetsTimeoutOptionForCurlExecution()
     {
         // Arrange
-        $curlDouble = oxNew('oxOnlineCallerOxCurlOptionDouble');
+        $curlDouble = new oxOnlineCallerOxCurlOptionDouble();
 
         /** @var oxOnlineCaller $sut */
         $sut = $this->getMockBuilder(static::SUT)

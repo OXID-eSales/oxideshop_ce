@@ -19,10 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Smarty;
+
+use \oxRegistry;
 
 require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/plugins/modifier.oxnumberformat.php';
 
-class Unit_Maintenance_smartyModifierOxNumberFormatTest extends OxidTestCase
+class SmartyModifierOxNumberFormatTest extends \OxidTestCase
 {
 
     /**

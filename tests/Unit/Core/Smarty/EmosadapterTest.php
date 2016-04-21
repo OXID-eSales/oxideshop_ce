@@ -19,10 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Smarty;
+
+use \Emos;
+
+use \oxField;
+use \stdClass;
+use \oxDb;
+use \oxRegistry;
 
 require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'smarty/plugins/oxemosadapter.php';
 
-class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
+class EmosadapterTest extends \OxidTestCase
 {
 
     protected function setUp()

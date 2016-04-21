@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxnews;
+
+use \Exception;
+use \oxTestModules;
 
 /**
  * Tests for News_Main class
  */
-class Unit_Admin_NewsMainTest extends OxidTestCase
+class NewsMainTest extends \OxidTestCase
 {
 
     /**

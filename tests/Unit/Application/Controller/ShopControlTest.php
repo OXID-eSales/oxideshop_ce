@@ -19,17 +19,22 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
 
-class myDb extends oxDb
-{
+use modDB;
+use \Exception;
+use \oxException;
+use \oxConnectionException;
+use oxExceptionToDisplay;
+use oxOutput;
+use \oxSystemComponentException;
+use \oxRegistry;
+use \oxTestModules;
 
-    public static function resetDb()
-    {
-        self::$_oDB = null;
-    }
-}
+// Force autoloading of Smarty class, so that mocking would work correctly.
+class_exists('Smarty');
 
-class Unit_Views_oxShopControlTest extends OxidTestCase
+class ShopControlTest extends \OxidTestCase
 {
 
     protected function tearDown()

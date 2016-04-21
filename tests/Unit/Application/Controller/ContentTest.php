@@ -19,6 +19,20 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxpaymentlist;
+use \oxdeliverysetlist;
+use \oxdelivery;
+use \oxdeliverylist;
+
+use \oxUtilsView;
+use \oxField;
+use \Exception;
+use \oxcontent;
+use \stdClass;
+use \oxDb;
+use \oxTestModules;
 
 /*
  * Dummy class for getParsedContent function test.
@@ -36,7 +50,7 @@ class contentTest_oxUtilsView extends oxUtilsView
 /**
  * Tests for content class
  */
-class Unit_Views_contentTest extends OxidTestCase
+class ContentTest extends \OxidTestCase
 {
 
     /** @var oxContent  */

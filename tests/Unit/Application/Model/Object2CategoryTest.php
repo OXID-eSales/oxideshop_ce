@@ -19,8 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxobject2CategoryTest extends OxidTestCase
+class Object2CategoryTest extends \OxidTestCase
 {
     /**
      * Tests setter and getter of product id

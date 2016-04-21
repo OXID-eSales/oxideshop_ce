@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \stdClass;
+
+use \oxField;
+use \oxDb;
 
 /**
  * Tests for Shop_Main class
  */
-class Unit_Admin_PaymentRDFaTest extends OxidTestCase
+class PaymentRDFaTest extends \OxidTestCase
 {
 
     /**

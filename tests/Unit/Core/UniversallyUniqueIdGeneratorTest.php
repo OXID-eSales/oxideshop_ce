@@ -19,13 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
+
+use \oxUniversallyUniqueIdGenerator;
 
 /**
  * Class Unit_Core_oxServersClusterIdGeneratorTest
  *
  * @covers oxServerNodesManager
  */
-class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
+class UniversallyUniqueIdGeneratorTest extends \OxidTestCase
 {
 
     public function testUUIDUniqueness()

@@ -19,64 +19,163 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxarticlelist;
+
+use \oxField;
+use \oxTestModules;
 
 /**
- * Testing oxStart class
+ * Testing start class
  */
-class Unit_Views_oxStartTest extends OxidTestCase
+class StartTest extends \OxidTestCase
 {
 
-    public function testRenderNormal()
+    public function testGetTitleSuffix()
     {
-        $oStart = oxNew('oxStart');
-        $oStart->getConfig();
-        $sRes = $oStart->render();
-        $this->assertEquals('message/err_unknown.tpl', $sRes);
+        $oShop = oxNew('oxShop');
+        $oShop->oxshops__oxstarttitle = $this->getMock('oxField', array('__get'));
+        $oShop->oxshops__oxstarttitle->expects($this->once())->method('__get')->will($this->returnValue('testsuffix'));
+
+        $oConfig = $this->getMock('oxconfig', array('getActiveShop'));
+        $oConfig->expects($this->once())->method('getActiveShop')->will($this->returnValue($oShop));
+
+        $oView = $this->getMock('start', array('getConfig'));
+        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        $this->assertEquals('testsuffix', $oView->getTitleSuffix());
     }
 
-    public function testGetErrorNumber()
+    public function testGetCanonicalUrl()
     {
-        $oStart = oxNew('oxStart');
-        $this->setRequestParameter('errornr', 123);
+        oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
-        $this->assertEquals(123, $oStart->getErrorNumber());
+        $oViewConfig = $this->getMock("oxviewconfig", array("getHomeLink"));
+        $oViewConfig->expects($this->once())->method('getHomeLink')->will($this->returnValue("testHomeLink"));
+
+        $oView = $this->getMock("start", array("getViewConfig"));
+        $oView->expects($this->once())->method('getViewConfig')->will($this->returnValue($oViewConfig));
+
+        $this->assertEquals('testHomeLink', $oView->getCanonicalUrl());
     }
 
-    public function testPageCloseNoSession()
+    public function testGetRealSeoCanonicalUrl()
     {
-        $oStart = $this->getMock('oxStart', array('getSession'));
-        $oStart->expects($this->once())->method('getSession')->will($this->returnValue(null));
+        oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
-        $oUtils = $this->getMock('oxUtils', array('commitFileCache'));
-        $oUtils->expects($this->once())->method('commitFileCache')->will($this->returnValue(null));
-
-        oxTestModules::addModuleObject('oxUtils', $oUtils);
-        $this->assertEquals(null, $oStart->pageClose());
+        $oView = oxNew('start');
+        $this->assertEquals($this->getConfig()->getConfigParam("sShopURL"), $oView->getCanonicalUrl());
     }
 
-    public function testPageClose()
+    public function testGetArticleList()
     {
-        $oSession = $this->getMock('oxSession', array('freeze'));
-        $oSession->expects($this->once())->method('freeze')->will($this->returnValue(null));
+        $oStart = $this->getProxyClass('start');
 
-        $oStart = $this->getMock('oxStart', array('getSession'));
-        $oStart->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
-
-        $oUtils = $this->getMock('oxUtils', array('commitFileCache'));
-        $oUtils->expects($this->once())->method('commitFileCache')->will($this->returnValue(null));
-
-        oxTestModules::addModuleObject('oxUtils', $oUtils);
-        $this->assertEquals(null, $oStart->pageClose());
+        $aList = $oStart->getArticleList();
+        $this->assertTrue($aList instanceof oxarticlelist);
+        $this->assertEquals(2, $aList->count());
     }
 
-    public function testAppInitOnShopStartEventCalled()
+    public function testGetTopArticleList()
     {
-        $oSystemEventHandler = $this->getMock('oxSystemEventHandler');
-        $oSystemEventHandler->expects($this->once())->method('onShopStart')->will($this->returnValue(null));
+        $oStart = $this->getProxyClass('start');
 
-        $oStart = $this->getMock('oxStart', array('_getSystemEventHandler'));
-        $oStart->expects($this->any())->method('_getSystemEventHandler')->will($this->returnValue($oSystemEventHandler));
+        $aList = $oStart->getTopArticleList();
+        $this->assertTrue($aList instanceof oxarticlelist);
+        $this->assertEquals(1, $aList->count());
 
-        $oStart->appInit();
+        $expectedId = $this->getTestConfig()->getShopEdition() == 'EE'? "2275" : "1849";
+        $this->assertEquals($expectedId, $aList->current()->getId());
     }
+
+    public function testGetNewestArticles()
+    {
+        $oStart = $this->getProxyClass('start');
+
+        $aList = $oStart->getNewestArticles();
+        $this->assertTrue($aList instanceof oxarticlelist);
+        $this->assertEquals(4, $aList->count());
+    }
+
+    public function testGetCatOfferArticle()
+    {
+        $oStart = $this->getProxyClass('start');
+
+        $oArt = $oStart->getCatOfferArticle();
+
+        $expectedId = $this->getTestConfig()->getShopEdition() == 'EE'? "1351" : "1126";
+        $this->assertEquals($expectedId, $oArt->getId());
+    }
+
+    public function testGetCatOfferArticleList()
+    {
+        $oStart = $this->getProxyClass('start');
+
+        $aList = $oStart->getCatOfferArticleList();
+        $this->assertTrue($aList instanceof oxarticlelist);
+        $this->assertEquals(2, $aList->count());
+    }
+
+    public function testPrepareMetaKeyword()
+    {
+        $this->getConfig()->setConfigParam('bl_perfLoadAktion', 1);
+
+        $oArticle = $this->getMock('oxarticle', array('getLongDescription'));
+        $oArticle->expects($this->once())->method('getLongDescription')->will($this->returnValue(new oxField('testlongdesc')));
+
+        $oStart = $this->getMock('start', array('getFirstArticle'));
+        $oStart->expects($this->once())->method('getFirstArticle')->will($this->returnValue($oArticle));
+
+        $oView = oxNew('oxubase');
+        $this->assertEquals($oView->UNITprepareMetaKeyword('testlongdesc'), $oStart->UNITprepareMetaKeyword(null));
+    }
+
+    public function testViewMetaKeywords()
+    {
+        oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
+
+        $oStart = $this->getProxyClass('start');
+        $oStart->render();
+        $aMetaKeywords = $oStart->getMetaKeywords();
+
+        $this->assertTrue(strlen($aMetaKeywords) > 0);
+    }
+
+    public function testPrepareMetaDescription()
+    {
+        $this->getConfig()->setConfigParam('bl_perfLoadAktion', 1);
+
+        $oArticle = $this->getMock('oxarticle', array('getLongDescription'));
+        $oArticle->expects($this->once())->method('getLongDescription')->will($this->returnValue(new oxField('testlongdesc')));
+
+        $oStart = $this->getMock('start', array('getFirstArticle'));
+        $oStart->expects($this->once())->method('getFirstArticle')->will($this->returnValue($oArticle));
+
+        $oView = oxNew('oxubase');
+        $this->assertEquals($oView->UNITprepareMetaDescription('- testlongdesc'), $oStart->UNITprepareMetaDescription(null));
+    }
+
+    public function testViewMetaDescritpion()
+    {
+        oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
+
+        $oStart = $this->getProxyClass('start');
+        $oStart->render();
+        $aMetaKeywords = $oStart->getMetaDescription();
+
+        $this->assertTrue(strlen($aMetaKeywords) > 0);
+    }
+
+    public function testGetBanners()
+    {
+        $oArticleList = $this->getMock('oxActionList', array('loadBanners'));
+        $oArticleList->expects($this->once())->method('loadBanners');
+
+        oxTestModules::addModuleObject('oxActionList', $oArticleList);
+
+        $oView = oxNew('start');
+        $oView->getBanners();
+
+    }
+
 }

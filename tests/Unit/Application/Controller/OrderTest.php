@@ -19,11 +19,24 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use oxBasket;
+use oxOutOfStockException;
+use \oxUtils;
+use \oxUtilsObject;
+use \oxOrder;
+use \oxPayment;
+use \Exception;
+use \oxException;
+use \oxField;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Test oxUtils module.
  */
-class modOxUtils_order extends oxUtils
+class UtilsHelper extends oxUtils
 {
 
     /**
@@ -44,9 +57,8 @@ class modOxUtils_order extends oxUtils
 /**
  * Test oxUtilsObject module.
  */
-class modOxUtilsObject_order extends oxUtilsObject
+class UtilsObjectHelper extends oxUtilsObject
 {
-
     /**
      * Allways generate fixed uid.
      *
@@ -61,9 +73,8 @@ class modOxUtilsObject_order extends oxUtilsObject
 /**
  * Test oxOrdert module.
  */
-class modOxOrder_order extends oxOrder
+class OrderHelper extends oxOrder
 {
-
     /**
      * Skip finalizeOrder.
      *
@@ -94,32 +105,8 @@ class modOxOrder_order extends oxOrder
 /**
  * Test oxPayment module.
  */
-class modOxPayment_order extends oxPayment
+class PaymentHelper extends oxPayment
 {
-
-    /**
-     * Skip isValidPayment.
-     *
-     * @param array  $aDynvalue    Dynamic values
-     * @param string $sShopId      Shop id
-     * @param object $oUser        User object
-     * @param double $dBasketPrice Basket price
-     * @param string $sShipSetId   Shipping set id
-     *
-     * @return boolean
-     */
-    public function isValidPayment($aDynvalue, $sShopId, $oUser, $dBasketPrice, $sShipSetId)
-    {
-        return true;
-    }
-}
-
-/**
- * Test oxPayment module.
- */
-class modOxPaymentIsValid_order extends oxPayment
-{
-
     public static $dBasketPrice = null;
 
     /**
@@ -136,7 +123,6 @@ class modOxPaymentIsValid_order extends oxPayment
     public function isValidPayment($aDynvalue, $sShopId, $oUser, $dBasketPrice, $sShipSetId)
     {
         self::$dBasketPrice = $dBasketPrice;
-
         return true;
     }
 }
@@ -144,7 +130,7 @@ class modOxPaymentIsValid_order extends oxPayment
 /**
  * Testing oxorder class.
  */
-class Unit_Views_orderTest extends OxidTestCase
+class OrderTest extends \OxidTestCase
 {
 
     /**
@@ -161,8 +147,8 @@ class Unit_Views_orderTest extends OxidTestCase
         $oUser->setId('_testUserId');
         $oUser->save();
 
-        oxAddClassModule('modOxUtils_order', 'oxutils');
-        modOxPaymentIsValid_order::$dBasketPrice = null;
+        oxAddClassModule('\Unit\Application\Controller\UtilsHelper', 'oxUtils');
+        PaymentHelper::$dBasketPrice = null;
     }
 
     /**
@@ -387,8 +373,8 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testRender()
     {
-        oxAddClassModule('modOxUtilsObject_order', 'oxutilsobject');
-        oxAddClassModule('modOxPayment_order', 'oxpayment');
+        oxAddClassModule('Unit\Application\Controller\UtilsObjectHelper', 'oxutilsobject');
+        oxAddClassModule('Unit\Application\Controller\PaymentHelper', 'oxpayment');
 
         $oConfig = $this->getConfig();
         $mySession = oxRegistry::getSession();
@@ -593,13 +579,8 @@ class Unit_Views_orderTest extends OxidTestCase
         $oOrder->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oOrder->expects($this->any())->method('getPayment')->will($this->returnValue(true));
 
-        try {
-            // no next step
-            $this->assertNull($oOrder->execute());
-        } catch (oxOutOfStockException $oEx) {
-            return;
-        }
-        $this->fail("error runing testExecuteWithWrongStock()");
+        $this->setExpectedException('oxOutOfStockException');
+        $this->assertNull($oOrder->execute());
     }
 
     /**
@@ -612,7 +593,7 @@ class Unit_Views_orderTest extends OxidTestCase
     {
         $oConfig = $this->getConfig();
 
-        oxAddClassModule('modOxOrder_order', 'oxorder');
+        oxAddClassModule('\Unit\Application\Controller\OrderHelper', 'oxorder');
 
         //basket name in session will be "basket"
         $oConfig->setConfigParam('blMallSharedBasket', 1);
@@ -748,21 +729,22 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testGetPayment_userBasketPriceForPayment()
     {
-        $oUser = oxNew('oxuser');
+        $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
         $oBasket = $this->getMock('oxBasket', array('getPriceForPayment', 'getPaymentId'));
         $oBasket->expects($this->once())->method('getPriceForPayment')->will($this->returnValue(100));
         $oBasket->expects($this->once())->method('getPaymentId')->will($this->returnValue('oxidinvoice'));
 
-        oxAddClassModule('modOxPaymentIsValid_order', 'oxPayment');
+        PaymentHelper::$dBasketPrice = null;
+        oxAddClassModule('Unit\Application\Controller\PaymentHelper', 'oxPayment');
 
         $oOrder = $this->getMock('Order', array('getBasket'));
         $oOrder->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
 
         $oOrder->getPayment();
 
-        $this->assertEquals(100, modOxPaymentIsValid_order::$dBasketPrice);
+        $this->assertEquals(100, PaymentHelper::$dBasketPrice);
     }
 
 

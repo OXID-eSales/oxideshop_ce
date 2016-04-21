@@ -19,66 +19,21 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
 
-/**
- * Test oxLinks module
- */
-class modOxLinks_oxAdminView extends oxLinks
-{
-
-    /**
-     * Force isDerived.
-     *
-     * @return boolean
-     */
-    public function isDerived()
-    {
-        return true;
-    }
-}
-
-/**
- * Test oxAdminView module
- */
-class modOxAdminView_autorized extends oxAdminView
-{
-
-    /**
-     * Force _authorize.
-     *
-     * @return boolean
-     */
-    protected function _authorize()
-    {
-        return true;
-    }
-}
-
-/**
- * Test oxAdminView Editor
- */
-class modOxAdminView_Editor
-{
-
-    /**
-     * Skip fetch.
-     *
-     * @return null
-     */
-    public function fetch()
-    {
-    }
-}
+use \oxLinks;
+use \oxAdminView;
+use \stdClass;
+use \oxField;
+use \oxDb;
 
 /**
  * Testing oxAdminDetails class.
  */
-class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
+class AdminDetailsTest extends \OxidTestCase
 {
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -87,14 +42,11 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $this->cleanUpTable('oxcontents');
         $this->cleanUpTable('oxobject2category');
 
-        oxRemClassModule('modOxLinks_oxAdminView');
         parent::tearDown();
     }
 
     /**
      * Test generate text editor if WYSIWYG Pro is installed.
-     *
-     * @return null
      */
     public function testGenerateTextEditorWProIsInstalled()
     {
@@ -110,8 +62,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      * Test generate text editor if WYSIWYG Pro is not installed.
-     *
-     * @return null
      */
     public function testGenerateTextEditorNoWPro()
     {
@@ -124,8 +74,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      * Test get plain editor.
-     *
-     * @return null
      */
     public function testGetPlainEditor()
     {
@@ -139,8 +87,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      * Test get edit value then object is not set.
-     *
-     * @return null
      */
     public function testGetEditValueObjectNotSet()
     {
@@ -150,8 +96,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      * Test get edit value.
-     *
-     * @return null
      */
     public function testGetEditValue()
     {
@@ -169,8 +113,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      * Test get edit value - when smarty parser is off.
-     *
-     * @return null
      */
     public function testGetEditValue_parseIsOff()
     {
@@ -187,8 +129,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      *  Test updating object folder parameters
-     *
-     * @return null
      */
     public function testChangeFolder()
     {
@@ -211,8 +151,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      *  Test updating object folder parameters - reseting folder
-     *
-     * @return null
      */
     public function testChangeFolderResetingFolderName()
     {
@@ -237,8 +175,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      *  Test setup navigation.
-     *
-     * @return null
      */
     public function testSetupNavigation()
     {
@@ -256,8 +192,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      *  Test get category tree testing if empty category will be selected.
-     *
-     * @return null
      */
     public function testGetCategoryTreeTestingIfEmptyCategoryWillBeSelected()
     {
@@ -273,8 +207,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      *  Test get category tree unsetting active category.
-     *
-     * @return null
      */
     public function testGetCategoryTreeUnsettingActiveCategory()
     {
@@ -294,8 +226,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      *  Test get category tree marking active category.
-     *
-     * @return null
      */
     public function testGetCategoryTreeMarkingActiveCategory()
     {
@@ -317,8 +247,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      * Test reseting of number of articles in current shop categories.
-     *
-     * @return null
      */
     public function testResetNrOfCatArticles()
     {
@@ -330,8 +258,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      * Test reseting number of articles in current shop vendors.
-     *
-     * @return null
      */
     public function testResetNrOfVendorArticles()
     {
@@ -343,8 +269,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
     /**
      * Test reseting number of articles in current shop manufacturers.
-     *
-     * @return null
      */
     public function testResetNrOfManufacturerArticles()
     {
@@ -355,9 +279,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
     }
 
     /**
-     * Test reseting count of vendor/manufacturer category items
-     *
-     * @return null
+     * Test reset count of vendor/manufacturer category items
      */
     public function testResetCounts()
     {

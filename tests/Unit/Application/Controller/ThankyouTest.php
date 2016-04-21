@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller;
+
+use \oxField;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Testing thankyou class
  */
-class Unit_Views_thankyouTest extends OxidTestCase
+class ThankyouTest extends \OxidTestCase
 {
 
     /**

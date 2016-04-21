@@ -19,11 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxSeoEncoderVendor;
+
+use \Exception;
+use \oxField;
+use \oxDb;
+use \oxTestModules;
 
 /**
  * Tests for Vendor_Seo class
  */
-class Unit_Admin_VendorSeoTest extends OxidTestCase
+class VendorSeoTest extends \OxidTestCase
 {
 
     /**

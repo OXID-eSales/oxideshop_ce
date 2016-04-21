@@ -19,8 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Model;
 
-class Unit_Models_oxpaymentlistTest extends OxidTestCase
+use \oxField;
+use oxUtilsObject;
+
+class PaymentlistTest extends \OxidTestCase
 {
 
     protected $_aPayList = array();

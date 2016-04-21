@@ -19,11 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \Exception;
+use oxAttribute;
+use \oxField;
+use \oxTestModules;
 
 /**
  * Tests for Attribute_Main class
  */
-class Unit_Admin_AttributeMainTest extends OxidTestCase
+class AttributeMainTest extends \OxidTestCase
 {
 
     /**
@@ -41,7 +47,7 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
         $this->assertEquals('attribute_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxattribute);
+        $this->assertTrue($aViewData['edit'] instanceof oxAttribute);
     }
 
     /**

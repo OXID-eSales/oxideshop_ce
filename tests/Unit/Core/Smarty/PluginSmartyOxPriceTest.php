@@ -19,10 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Smarty;
+
+use \stdClass;
+use \oxPrice;
+use \Smarty;
+use \oxRegistry;
 
 require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/plugins/function.oxprice.php';
 
-class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
+class PluginSmartyOxPriceTest extends \OxidTestCase
 {
 
     /**

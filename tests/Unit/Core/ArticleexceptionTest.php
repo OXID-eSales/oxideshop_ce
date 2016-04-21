@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+namespace Unit\Core;
 
 /**
  * Testing oxArticleException class.
  */
-class Unit_Core_oxarticleexceptionTest extends OxidTestCase
+class ArticleexceptionTest extends \OxidTestCase
 {
 
     /**

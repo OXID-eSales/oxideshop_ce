@@ -19,6 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxarticle;
+
+use \DynExportBase;
+use \Exception;
+use \stdClass;
+use \oxDb;
+use \oxRegistry;
+use \oxTestModules;
 
 /**
  * Tests module for DynExportBase class
@@ -64,7 +74,7 @@ class _DynExportBase extends DynExportBase
 /**
  * Tests for DynExportBase class
  */
-class Unit_Admin_DynExportBaseTest extends OxidTestCase
+class DynExportBaseTest extends \OxidTestCase
 {
 
     /**
@@ -135,7 +145,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
     public function testStart()
     {
         $testFile = $this->createFile('test.txt', '');
-        $oView = $this->getMock("_DynExportBase", array("prepareExport"));
+        $oView = $this->getMock('Unit\Application\Controller\Admin\_DynExportBase', array("prepareExport"));
         $oView->expects($this->once())->method('prepareExport')->will($this->returnValue(5));
         $oView->setVar('sFilePath', $testFile);
         $oView->start();
@@ -206,7 +216,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         $this->setRequestParameter("aExportResultset", array("aaaaa"));
         $testFile = $this->createFile('test.txt', '');
 
-        $oView = $this->getMock("_DynExportBase", array("nextTick"));
+        $oView = $this->getMock('Unit\Application\Controller\Admin\_DynExportBase', array("nextTick"));
         $oView->expects($this->any())->method('nextTick')->will($this->returnValue(5));
         $oView->setVar('sFilePath', $testFile);
         $oView->setExportPerTick(30);
@@ -228,7 +238,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         $this->getConfig()->setConfigParam("iExportNrofLines", 10);
         $testFile = $this->createFile('test.txt', '');
 
-        $oView = $this->getMock("_DynExportBase", array("nextTick"));
+        $oView = $this->getMock('Unit\Application\Controller\Admin\_DynExportBase', array("nextTick"));
         $oView->expects($this->any())->method('nextTick')->will($this->returnValue(5));
         $oView->setVar('sFilePath', $testFile);
         $oView->run();
@@ -413,7 +423,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         $oView = $this->getMock("DynExportBase", array("_initArticle", "_getHeapTableName", "_setCampaignDetailLink"));
         $oView->expects($this->once())->method('_initArticle')->with($this->equalTo("oxarticles"), $this->equalTo(0))->will($this->returnValue(oxNew('oxarticle')));
         $oView->expects($this->once())->method('_getHeapTableName')->will($this->returnValue("oxarticles"));
-        $oView->expects($this->once())->method('_setCampaignDetailLink')->with($this->isInstanceOf(oxarticle))->will($this->returnValue(oxNew('oxarticle')));
+        $oView->expects($this->once())->method('_setCampaignDetailLink')->with($this->isInstanceOf('oxArticle'))->will($this->returnValue(oxNew('oxarticle')));
 
         $this->assertTrue($oView->getOneArticle(0, $blContinue) instanceof oxarticle);
         $this->assertTrue($blContinue);

@@ -19,11 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Controller\Admin;
+
+use \oxorderfilelist;
+
+use \oxField;
+use \oxDb;
+use \oxRegistry;
 
 /**
  * Tests for Order_Article class
  */
-class Unit_Admin_OrderDownloadsTest extends OxidTestCase
+class OrderDownloadsTest extends \OxidTestCase
 {
 
     /**

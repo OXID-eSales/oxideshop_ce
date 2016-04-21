@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Application\Models;
 
 /**
  * Testing oxRequiredFieldsValidator class.
  */
-class Unit_Models_oxRequiredAddressFieldsTest extends OxidTestCase
+class RequiredAddressFieldsTest extends \OxidTestCase
 {
 
     public function testGetRequiredFieldsWhenNoFieldsAreSetInConfig()

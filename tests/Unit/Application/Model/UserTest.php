@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once TEST_LIBRARY_HELPERS_PATH .'oxEmailHelper.php';
+require_once TEST_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
 
 /**
  * Mocks loadFromUserID and loadFromEMail in oxNewsSubscribed class.

@@ -23,7 +23,7 @@
 /**
  * Testing start class
  */
-class Unit_Views_startTest extends OxidTestCase
+class StartTest extends OxidTestCase
 {
 
     public function testGetTitleSuffix()

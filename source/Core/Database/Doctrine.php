@@ -589,7 +589,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      *
      * @return array The connection settings parameters.
      */
-    private function getConnectionParameters()
+    protected function getConnectionParameters()
     {
         $config = $this->getConfig();
 
@@ -601,8 +601,28 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
             'driver'   => $this->mapConnectionParameterDriver($config->getConfigParam('dbType'))
         );
 
+        /**
+         * IMPORTANT:
+         * Please be aware that different database drivers may need different options/values for setting the charset
+         * or may not support setting charset at all.
+         * See http://doctrine-orm.readthedocs.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connection-details
+         * for details.
+         *
+         * Take into account that the character set must be set either on the server level, or within the database
+         * connection itself (depending on the driver) for it to affect PDO::quote().
+         */
         if ($config->getConfigParam('iUtfMode')) {
-            $connectionParameters['charset'] = 'utf8';
+            switch ($connectionParameters['driver']) {
+                case 'pdo_mysql':
+                default:
+                    $connectionParameters['charset'] = 'utf8';
+            }
+        } else {
+            switch ($connectionParameters['driver']) {
+                case 'pdo_mysql':
+                default:
+                    $connectionParameters['charset'] = 'latin1';
+            }
         }
 
         return $connectionParameters;

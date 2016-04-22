@@ -37,14 +37,14 @@
     },
     "autoload": {
         "psr-4": {
-            "OxidEsales\\Eshop\\": "./",
-            "OxidEsales\\EshopProfessional\\": "Edition/Professional",
-            "OxidEsales\\EshopEnterprise\\": "Edition/Enterprise"
+            "OxidEsales\\Eshop\\": "./source",
+            "OxidEsales\\EshopProfessional\\": "./source/Edition/Professional",
+            "OxidEsales\\EshopEnterprise\\": "./source/Edition/Enterprise"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "OxidEsales\\Eshop\\Tests\\": "../tests"
+            "OxidEsales\\Eshop\\Tests\\": "./tests"
         }
     },
     "minimum-stability": "dev",
@@ -57,10 +57,13 @@
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
         ]
     },
+    "config": {
+        "vendor-dir": "source/vendor"
+    },
     "extra": {
         "incenteev-parameters": {
-            "file": "test_config.yml",
-            "dist-file": "vendor/oxid-esales/testing-library/test_config.yml.dist",
+            "file": "source/test_config.yml",
+            "dist-file": "source/vendor/oxid-esales/testing-library/test_config.yml.dist",
             "parameter-key": "mandatory_parameters",
             "env-map": {
                 "shop_path": "SHOP_PATH",

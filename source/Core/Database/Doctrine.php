@@ -138,18 +138,18 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      * Get one column, which you have to give into the sql select statement, of the first row, corresponding to the
      * given sql statement.
      *
-     * @param string     $sqlSelect      The sql select statement
-     * @param array|bool $parameters     Array of parameters, for the given sql statement.
-     * @param bool       $executeOnSlave Should the given sql statement executed on the slave?
+     * @param string $sqlSelect      The sql select statement
+     * @param array  $parameters     Array of parameters, for the given sql statement.
+     * @param bool   $executeOnSlave Should the given sql statement executed on the slave?
      *
      * @return string The first column of the first row, which is fitting to the given sql select statement.
      */
-    public function getOne($sqlSelect, $parameters = false, $executeOnSlave = true)
+    public function getOne($sqlSelect, $parameters = array(), $executeOnSlave = true)
     {
-        // @todo: use assureParameterIsAnArray!
-        if (is_bool($parameters)) {
-            $parameters = array();
-        }
+        // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
+        $parameters = $this->assureParameterIsAnArray($parameters);
+        // END deprecated
+        
         if ($this->isSelectStatement($sqlSelect)) {
             return $this->getConnection()->fetchColumn($sqlSelect, $parameters);
         }
@@ -362,22 +362,25 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     /**
      * Execute the given query and return the corresponding result set.
      *
-     * @param string     $query      The query we want to execute.
-     * @param array|bool $parameters The parameters for the given query.
+     * @param string $query      The query we want to execute.
+     * @param array  $parameters The parameters for the given query.
      *
      * @throws DatabaseException
      *
      * @return DoctrineEmptyResultSet|DoctrineResultSet
      */
-    public function execute($query, $parameters = false)
+    public function execute($query, $parameters = array())
     {
+        // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
+        $parameters = $this->assureParameterIsAnArray($parameters);
+        // END deprecated
+
         /**
          * We divide the execution here, cause it is easier to achieve the ADOdb Lite behavior this way:
          * ADOdb Lite returns different kinds of result sets:
          * - DoctrineResultSet for "SELECT"
          * - DoctrineEmptyResultSet for the rest of queries
          */
-
         if ($this->isSelectStatement($query)) {
             /** @var DoctrineResultSet $result */
             $result = $this->select($query, $parameters);
@@ -394,17 +397,21 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      * Affected rows will be set to 0 by this query.
      *
      * @param string $query          The query we want to execute.
-     * @param bool   $parameters     The parameters for the given query.
+     * @param array  $parameters     The parameters for the given query.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @throws DatabaseException The exception, that can occur while running the sql statement.
      *
      * @return DoctrineResultSet The result of the given query.
      */
-    public function select($query, $parameters = false, $executeOnSlave = true)
+    public function select($query, $parameters = array(), $executeOnSlave = true)
     {
-        $result = null;
+        // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
+        // END deprecated
+
+        $result = null;
+
         try {
             /**
              * Be aware that Connection::executeQuery is a method specifically for READ operations only.
@@ -440,8 +447,10 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      */
     protected function executeUpdate($query, $parameters = array(), $types = array())
     {
+        // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
-
+        // END deprecated
+        
         try {
             $affectedRows = $this->getConnection()->executeUpdate($query, $parameters, $types);
             $this->setAffectedRows($affectedRows);
@@ -503,17 +512,19 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     /**
      * Get the values of a column.
      *
-     * @param string     $query          The sql statement we want to execute.
-     * @param array|bool $parameters     The parameters array.
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string $query          The sql statement we want to execute.
+     * @param array  $parameters     The parameters array.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @todo: What kind of array do we expect numeric or assoc? Does it depends on FETCH_MODE?
      *
      * @return array The values of a column of a corresponding sql query.
      */
-    public function getCol($query, $parameters = false, $executeOnSlave = true)
+    public function getCol($query, $parameters = array(), $executeOnSlave = true)
     {
+        // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
+        // END deprecated
 
         $rows = $this->getConnection()->fetchAll($query, $parameters);
 
@@ -657,14 +668,30 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
 
     /**
      * Sanitize the given parameter to be an array.
+     * In v5.3.0 in many places in the code false is passed instead of an empty array.
+     *
+     * This methods work like this:
+     * Anything that evaluates to true and is not an array will cause an exception to be thrown.
+     * Anything that evaluates to false will be converted into an empty array.
+     * An non empty array will be returned as such.
      *
      * @param bool|array $parameter The parameter we want to be an array.
      *
-     * @return array An empty array.
+     * @throws \InvalidArgumentException
+     *
+     * @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
+     *
+     * @return array The original array or an empty array, if false was passed.
      */
     private function assureParameterIsAnArray($parameter)
     {
-        if (!$parameter) {
+        /** If $parameter evaluates to true and it is not an array throw an InvalidArgumentException */
+        if ($parameter && !is_array($parameter)) {
+            throw new \InvalidArgumentException();
+        }
+        
+        /** If $parameter evaluates to false and it is not an array convert it into an array */
+        if (!is_array($parameter)) {
             $parameter = array();
         }
 
@@ -753,9 +780,9 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      * @see DatabaseInterface::setFetchMode() for how to set the fetch mode
      * @see Doctrine::$fetchMode for the default fetch mode
      *
-     * @param string     $query
-     * @param array|bool $parameters
-     * @param bool       $executeOnSlave
+     * @param string $query
+     * @param array  $parameters
+     * @param bool   $executeOnSlave
      *
      * @see Doctrine::getArray()
      *
@@ -766,6 +793,9 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      */
     public function getAll($query, $parameters = array(), $executeOnSlave = true)
     {
+        // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
+        $parameters = $this->assureParameterIsAnArray($parameters);
+        // END deprecated
         $result = null;
 
         try {
@@ -785,9 +815,9 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      * @see DatabaseInterface::setFetchMode() for how to set the fetch mode
      * @see Doctrine::$fetchMode for the default fetch mode
      *
-     * @param string     $query          If parameters are given, the "?" in the string will be replaced by the values in the array
-     * @param array|bool $parameters     must loosely evaluate to false or must be an array
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string $query          If parameters are given, the "?" in the string will be replaced by the values in the array
+     * @param array  $parameters     must loosely evaluate to false or must be an array
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
@@ -799,11 +829,10 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      */
     public function getArray($query, $parameters = array(), $executeOnSlave = true)
     {
+        // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
+        $parameters = $this->assureParameterIsAnArray($parameters);
+        // END deprecated
         $statement = null;
-
-        if ($parameters && !is_array($parameters)) {
-            throw new \InvalidArgumentException();
-        }
 
         $parameters = $this->assureParameterIsAnArray($parameters);
 
@@ -830,7 +859,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     }
 
     /**
-     * Get the meta information about all the collumns of the given table.
+     * Get the meta information about all the columns of the given table.
      *
      * @param string $table Table name.
      *
@@ -868,5 +897,4 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
 
         return $result;
     }
-
 }

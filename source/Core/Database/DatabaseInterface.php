@@ -81,24 +81,24 @@ interface DatabaseInterface
      * Get one column, which you have to give into the sql select statement, of the first row, corresponding to the
      * given sql statement.
      *
-     * @param string     $sqlSelect      The sql select statement
-     * @param array|bool $parameters     Array of parameters, for the given sql statement.
-     * @param bool       $executeOnSlave Should the given sql statement executed on the slave?
+     * @param string $sqlSelect      The sql select statement
+     * @param array  $parameters     Array of parameters, for the given sql statement.
+     * @param bool   $executeOnSlave Should the given sql statement executed on the slave?
      *
      * @return string The first column of the first row, which is fitting to the given sql select statement.
      */
-    public function getOne($sqlSelect, $parameters = false, $executeOnSlave = true);
+    public function getOne($sqlSelect, $parameters = array(), $executeOnSlave = true);
 
     /**
      * Get one row of the corresponding sql select statement.
      *
-     * @param string     $sqlSelect      The sql select statement we want to execute.
-     * @param array|bool $parameters     Array of parameters, for the given sql statement.
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string $query          The sql statement we want to execute.
+     * @param array  $parameters     The parameters array.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return array
      */
-    public function getRow($sqlSelect, $parameters = false, $executeOnSlave = true);
+    public function getRow($query, $parameters = array(), $executeOnSlave = true);
 
     /**
      * Get all values as array. Alias of getArray.
@@ -125,60 +125,60 @@ interface DatabaseInterface
     /**
      * Get value
      *
-     * @param string     $query          The sql statement we want to execute.
-     * @param array|bool $parameters     The parameters array.
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string $query          The sql statement we want to execute.
+     * @param array  $parameters     The parameters array.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return mixed|Object_ResultSet
      */
-    public function select($query, $parameters = false, $executeOnSlave = true);
+    public function select($query, $parameters = array(), $executeOnSlave = true);
 
     /**
      * Get values as an associative array.
      *
-     * @param string     $query          The sql statement we want to execute.
-     * @param array|bool $parameters     The parameters array.
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string $query          The sql statement we want to execute.
+     * @param array  $parameters     The parameters array.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return array
      */
-    public function getAssoc($query, $parameters = false, $executeOnSlave = true);
+    public function getAssoc($query, $parameters = array(), $executeOnSlave = true);
 
     /**
      * Get the values of a column.
      *
-     * @param string     $query          The sql statement we want to execute.
-     * @param array|bool $parameters     The parameters array.
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string $query          The sql statement we want to execute.
+     * @param array  $parameters     The parameters array.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @todo: What kind of array do we expect numeric or assoc? Does it depends on FETCH_MODE?
      *
      * @return array The values of a column of a corresponding sql query.
      */
-    public function getCol($query, $parameters = false, $executeOnSlave = true);
+    public function getCol($query, $parameters = array(), $executeOnSlave = true);
 
     /**
      * Run a given select sql statement with a limit clause on the database.
      *
-     * @param string     $query      The sql statement we want to execute.
-     * @param int        $limit      Number of rows to select
-     * @param int        $offset     Number of rows to skip
-     * @param array|bool $parameters The parameters array.
-     * @param bool       $type       Connection type
+     * @param string $query      The sql statement we want to execute.
+     * @param int    $limit      Number of rows to select
+     * @param int    $offset     Number of rows to skip
+     * @param array  $parameters The parameters array.
+     * @param bool   $type       Connection type
      *
      * @return mixed|Object_ResultSet The result of the given query.
      */
-    public function selectLimit($query, $limit = -1, $offset = -1, $parameters = false, $type = true);
+    public function selectLimit($query, $limit = -1, $offset = -1, $parameters = array(), $type = true);
 
     /**
      * Executes query and returns result set.
      *
-     * @param string     $query      The sql statement we want to execute.
-     * @param array|bool $parameters The parameters array.
+     * @param string $query      The sql statement we want to execute.
+     * @param array  $parameters The parameters array.
      *
      * @return mixed|Object_ResultSet
      */
-    public function execute($query, $parameters = false);
+    public function execute($query, $parameters = array());
 
     /**
      * Get the number of rows, which where changed during the last sql statement.

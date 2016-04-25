@@ -55,13 +55,6 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     const EMPTY_RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet';
 
     /**
-     * @var bool Use the legacy database adapter.
-     *
-     * @todo get rid of this
-     */
-    const USE_LEGACY_DATABASE = false;
-    
-    /**
      * @return string The name of the database exception class
      */
     protected function getDatabaseExceptionClassName()

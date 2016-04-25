@@ -23,6 +23,7 @@ namespace OxidEsales\Eshop\Tests\integration\core\Database;
  */
 
 use oxDb;
+use OxidEsales\Eshop\Core\Database\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Doctrine;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
@@ -196,9 +197,14 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
 
     /**
      * Load the test fixture to the oxdoctrinetest table.
+     *
+     * @param DatabaseInterface $database An instance of the database handler
      */
-    protected function loadFixtureToTestTable()
+    protected function loadFixtureToTestTable($database = null)
     {
+        if (is_null($database)) {
+            $database = $this->database;
+        }
         $this->cleanTestTable();
 
         $values = array(
@@ -217,7 +223,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
 
         $query = "INSERT INTO " . self::TABLE_NAME . "(OXID, OXUSERID) VALUES $queryValuesPart;";
 
-        $this->database->execute($query);
+        $database->execute($query);
     }
 
     /**

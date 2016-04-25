@@ -57,11 +57,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     protected $affectedRows = 0;
 
     /**
-     * @var int The current fetch mode as defined in the DatabaseInterface::FETCH_MODE_* constants.
-     */
-    protected $interfaceFetchMode = DatabaseInterface::FETCH_MODE_NUM;
-
-    /**
      * @var int The current fetch mode.
      */
     protected $fetchMode = \PDO::FETCH_NUM;
@@ -120,28 +115,23 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     }
 
     /**
-     * Set the fetch mode.
-     * Return the previous fetch mode.
-     * The given fetch mode as used be the DatabaseInterface Class will be mapped and and stored as the mode used by
-     * Doctrine.
-     * The returned fetch mode is the re-mapped fetch mode as used by the DatabaseInterface class
+     * Set the fetch mode of an open database connection.
+     * The given fetch mode as used be the DatabaseInterface Class will be mapped to the Doctrine specific fetch mode.
      *
-     * @param int $fetchMode See DatabaseInterface::FETCH_MODE_* for valid values
+     * When the connection is opened the fetch mode will be set to a default value as defined in Doctrine::$fetchMode.
      *
-     * @see DatabaseInterface::FETCH_MODE_* constants
+     * Once the connection has been opened, the fetch mode might be set to any of the valid fetch modes as defined in
+     * DatabaseInterface::FETCH_MODE_*
+     * This implies that piece a of code should make no assumptions about the current fetch mode of the connection,
+     * but rather set it explicitly, before retrieving the results.
      *
-     * @return int The previous fetch mode as DatabaseInterface::FETCH_MODE_* constants
+     * @param integer $fetchMode See DatabaseInterface::FETCH_MODE_* for valid values
      */
     public function setFetchMode($fetchMode)
     {
-        $previousInterfaceFetchMode = $this->interfaceFetchMode;
-        $this->interfaceFetchMode = $fetchMode;
-
         $this->fetchMode = $this->fetchModeMap[$fetchMode];
 
         $this->getConnection()->setFetchMode($this->fetchMode);
-
-        return $previousInterfaceFetchMode;
     }
 
     /**
@@ -169,6 +159,10 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
 
     /**
      * Get one row of the corresponding sql select statement.
+     * The returned value depends on the fetch mode.
+     *
+     * @see DatabaseInterface::setFetchMode() for how to set the fetch mode
+     * @see Doctrine::$fetchMode for the default fetch mode
      *
      * @param string     $sqlSelect      The sql select statement we want to execute.
      * @param array|bool $parameters     Array of parameters, for the given sql statement.
@@ -754,7 +748,10 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
 
     /**
      * Get all values as an array.
-     * Alias of getArray.
+     * The returned value depends on the fetch mode.
+     *
+     * @see DatabaseInterface::setFetchMode() for how to set the fetch mode
+     * @see Doctrine::$fetchMode for the default fetch mode
      *
      * @param string     $query
      * @param array|bool $parameters
@@ -783,9 +780,10 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
 
     /**
      * Get all values as an array.
-     * The format of returned the array depends on the fetch mode.
-     * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
-     * The default fetch mode is defined in Doctrine::$fetchMode
+     * The returned value depends on the fetch mode.
+     *
+     * @see DatabaseInterface::setFetchMode() for how to set the fetch mode
+     * @see Doctrine::$fetchMode for the default fetch mode
      *
      * @param string     $query          If parameters are given, the "?" in the string will be replaced by the values in the array
      * @param array|bool $parameters     must loosely evaluate to false or must be an array

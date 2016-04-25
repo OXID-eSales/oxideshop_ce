@@ -23,6 +23,7 @@ namespace OxidEsales\Eshop\Tests\integration\core\Database\Adapter;
  */
 
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
+use OxidEsales\Eshop\Core\Database\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Doctrine;
 use OxidEsales\Eshop\Tests\integration\core\Database\DatabaseInterfaceImplementationBaseTest;
 
@@ -285,15 +286,13 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     public function testGetArrayWithDifferentFetchMode()
     {
         $this->loadFixtureToTestTable();
-        $oldFetchMode = $this->database->setFetchMode(3);
+        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_BOTH);
 
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
 
         $resultOne = $resultSet->GetArray(1);
         $resultTwo = $resultSet->GetArray(1);
         $resultThree = $resultSet->GetArray(1);
-
-        $this->database->setFetchMode($oldFetchMode);
 
         $expectedOne = array(array('OXID' => self::FIXTURE_OXID_1, self::FIXTURE_OXID_1));
         $expectedTwo = array(array('OXID' => self::FIXTURE_OXID_2, self::FIXTURE_OXID_2));
@@ -438,21 +437,15 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
      */
     public function testFields($query, $parameter, $loadFixture, $expected, $fetchModeAssociative = false)
     {
-        $oldFetchMode = null;
-            
         if ($loadFixture) {
             $this->loadFixtureToTestTable();
         }
         if ($fetchModeAssociative) {
-            $oldFetchMode = $this->database->setFetchMode(2);
+            $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_ASSOC);
         }
 
         $resultSet = $this->database->select($query);
         $result = $resultSet->Fields($parameter);
-
-        if ($fetchModeAssociative) {
-            $this->database->setFetchMode($oldFetchMode);
-        }
 
         $this->cleanTestTable();
         $this->assertSame($expected, $result);

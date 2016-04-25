@@ -33,48 +33,69 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 {
 
     /**
-     * The data provider for the method testSelect.
+     * The data provider for the method testGetAllForAllFetchModes.
      *
-     * @return array The parameters for the testSelect.
+     * @return array The parameters for testGetAllForAllFetchModes.
      */
-    public function dataProviderTestSelect()
+    public function dataProviderTestGetAllForAllFetchModes()
     {
         return array(
-            array( // fetch mode default and an empty result
-                   false,
-                   null,
-                   'SELECT OXID FROM ' . self::TABLE_NAME,
+            /**
+             *
+             * DatabaseInterface::FETCH_MODE_DEFAULT
+             * This returns the same as DatabaseInterface::FETCH_MODE_BOTH and a funny aspect of our beloved ADOdb lite
+             *
+             */
+            array( // fetch mode "default", this is not the "default fetch mode" and an empty result
+                   DatabaseInterface::FETCH_MODE_DEFAULT,
+                   'SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE 0',
                    array()
             ),
-            array( // fetch mode default and one column
-                   true,
-                   null,
+            array( // fetch mode "default", this is not the "default fetch mode" and one column
+                   DatabaseInterface::FETCH_MODE_DEFAULT,
                    'SELECT OXID FROM ' . self::TABLE_NAME,
                    array(
-                       array(self::FIXTURE_OXID_1),
-                       array(self::FIXTURE_OXID_2),
-                       array(self::FIXTURE_OXID_3)
+                       array('OXID' => self::FIXTURE_OXID_1, 0 => self::FIXTURE_OXID_1),
+                       array('OXID' => self::FIXTURE_OXID_2, 0 => self::FIXTURE_OXID_2),
+                       array('OXID' => self::FIXTURE_OXID_3, 0 => self::FIXTURE_OXID_3)
                    )
             ),
-            array( // fetch mode default and multiple columns
-                   true,
-                   null,
-                   'SELECT OXID, OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID',
+            array( // fetch mode "default", this is not the "default fetch mode" and multiple columns
+                   DatabaseInterface::FETCH_MODE_DEFAULT,
+                   'SELECT OXID, OXUSERID FROM ' . self::TABLE_NAME,
                    array(
-                       array(self::FIXTURE_OXID_1, '1'),
-                       array(self::FIXTURE_OXID_2, '2'),
-                       array(self::FIXTURE_OXID_3, '3')
+                       array(
+                           'OXID'     => self::FIXTURE_OXID_1,
+                           'OXUSERID' => self::FIXTURE_OXUSERID_1,
+                           0          => self::FIXTURE_OXID_1,
+                           1          => self::FIXTURE_OXUSERID_1,
+                       ),
+                       array(
+                           'OXID'     => self::FIXTURE_OXID_2,
+                           'OXUSERID' => self::FIXTURE_OXUSERID_2,
+                           0          => self::FIXTURE_OXID_2,
+                           1          => self::FIXTURE_OXUSERID_2,
+                       ),
+                       array(
+                           'OXID'     => self::FIXTURE_OXID_3,
+                           'OXUSERID' => self::FIXTURE_OXUSERID_3,
+                           0          => self::FIXTURE_OXID_3,
+                           1          => self::FIXTURE_OXUSERID_3,
+                       )
                    )
             ),
+            /**
+             *
+             * DatabaseInterface::FETCH_MODE_NUM
+             *
+             */
             array( // fetch mode numeric and an empty result
-                   false,
-                   1,
-                   'SELECT OXID FROM ' . self::TABLE_NAME,
+                   DatabaseInterface::FETCH_MODE_NUM,
+                   'SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE 0',
                    array()
             ),
             array( // fetch mode numeric and one column
-                   true,
-                   1,
+                   DatabaseInterface::FETCH_MODE_NUM,
                    'SELECT OXID FROM ' . self::TABLE_NAME,
                    array(
                        array(self::FIXTURE_OXID_1),
@@ -83,24 +104,26 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                    )
             ),
             array( // fetch mode numeric and multiple columns
-                   true,
-                   1,
-                   'SELECT OXID, OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXUSERID',
+                   DatabaseInterface::FETCH_MODE_NUM,
+                   'SELECT OXID, OXUSERID FROM ' . self::TABLE_NAME,
                    array(
                        array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1),
                        array(self::FIXTURE_OXID_2, self::FIXTURE_OXUSERID_2),
                        array(self::FIXTURE_OXID_3, self::FIXTURE_OXUSERID_3)
                    )
             ),
+            /**
+             *
+             * DatabaseInterface::FETCH_MODE_ASSOC
+             *
+             */
             array( // fetch mode associative and an empty result
-                   false,
-                   2,
-                   'SELECT OXID FROM ' . self::TABLE_NAME,
+                   DatabaseInterface::FETCH_MODE_ASSOC,
+                   'SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE 0',
                    array()
             ),
             array( // fetch mode associative and one column
-                   true,
-                   2,
+                   DatabaseInterface::FETCH_MODE_ASSOC,
                    'SELECT OXID FROM ' . self::TABLE_NAME,
                    array(
                        array('OXID' => self::FIXTURE_OXID_1),
@@ -109,25 +132,26 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                    )
             ),
             array( // fetch mode associative and multiple columns
-                   true,
-                   2,
-                   'SELECT OXID, OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXUSERID',
+                   DatabaseInterface::FETCH_MODE_ASSOC,
+                   'SELECT OXID, OXUSERID FROM ' . self::TABLE_NAME,
                    array(
                        array('OXID' => self::FIXTURE_OXID_1, 'OXUSERID' => self::FIXTURE_OXUSERID_1),
                        array('OXID' => self::FIXTURE_OXID_2, 'OXUSERID' => self::FIXTURE_OXUSERID_2),
                        array('OXID' => self::FIXTURE_OXID_3, 'OXUSERID' => self::FIXTURE_OXUSERID_3)
                    )
             ),
-
+            /**
+             *
+             * DatabaseInterface::FETCH_MODE_BOTH
+             *
+             */
             array( // fetch mode both and an empty result
-                   false,
-                   3,
-                   'SELECT OXID FROM ' . self::TABLE_NAME,
+                   DatabaseInterface::FETCH_MODE_BOTH,
+                   'SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE 0',
                    array()
             ),
             array( // fetch mode both and one column
-                   true,
-                   3,
+                   DatabaseInterface::FETCH_MODE_BOTH,
                    'SELECT OXID FROM ' . self::TABLE_NAME,
                    array(
                        array('OXID' => self::FIXTURE_OXID_1, 0 => self::FIXTURE_OXID_1),
@@ -136,9 +160,8 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                    )
             ),
             array( // fetch mode both and multiple columns
-                   true,
-                   3,
-                   'SELECT OXID, OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXUSERID',
+                   DatabaseInterface::FETCH_MODE_BOTH,
+                   'SELECT OXID, OXUSERID FROM ' . self::TABLE_NAME,
                    array(
                        array(
                            'OXID'     => self::FIXTURE_OXID_1,
@@ -165,29 +188,84 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Test, that the method 'select' works as expected in the cases, given by the corresponding data provider.
+     * Test, that the method 'getAll' returns the expected results for the all possible fetch modes.
      *
-     * @dataProvider dataProviderTestSelect
+     * @dataProvider dataProviderTestGetAllForAllFetchModes
      *
-     * @param bool   $loadFixture  Should the fixture be loaded for this test case?
      * @param int    $fetchMode    The fetch mode we want to test.
      * @param string $sql          The query we want to test.
      * @param array  $expectedRows The rows we expect.
      */
-    public function testSelect($loadFixture, $fetchMode, $sql, $expectedRows)
+    public function testGetAllForAllFetchModes($fetchMode, $sql, $expectedRows)
     {
-        if ($loadFixture) {
-            $this->loadFixtureToTestTable();
-        }
-        if (!is_null($fetchMode)) {
-            $this->database->setFetchMode($fetchMode);
-        }
-        $resultSet = $this->database->select($sql);
-        $rows = $resultSet->getAll();
+        $this->loadFixtureToTestTable();
+        $this->database->setFetchMode($fetchMode);
+
+        $rows = $this->database->getAll($sql);
 
         $this->assertInternalType('array', $rows, 'Expected an array as result!');
         // sometimes the array gets filled in different order, we sort them to be sure, the content is same
-        $this->assertSame(sort($expectedRows), sort($rows));
+        $this->assertEquals($expectedRows, $rows);
+    }
+
+
+    /**
+     * Data provider for the default fetch mode
+     *
+     * @return array
+     */
+    public function dataProviderTestFetchAllDefaultFetchMode()
+    {
+        return array(
+            array(
+                'On default fetch mode, DatabaseInterface::select() will return an empty array for an empty result',
+                'SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE 0',
+                array()
+            ),
+            array( // fetch mode default and one column
+                   'On default fetch mode, DatabaseInterface::select() will return an array with numeric key for a non empty result',
+                   'SELECT OXID FROM ' . self::TABLE_NAME,
+                   array(
+                       array(self::FIXTURE_OXID_1),
+                       array(self::FIXTURE_OXID_2),
+                       array(self::FIXTURE_OXID_3)
+                   )
+            ),
+            array( // fetch mode default and multiple columns
+                   'On default fetch mode, DatabaseInterface::select() will return an array with numeric key for a non empty result',
+                   'SELECT OXID, OXUSERID FROM ' . self::TABLE_NAME,
+                   array(
+                       array(self::FIXTURE_OXID_1, '1'),
+                       array(self::FIXTURE_OXID_2, '2'),
+                       array(self::FIXTURE_OXID_3, '3')
+                   )
+            ),
+
+        );
+    }
+
+    /**
+     * Test that the return values of a select statement are as expected, if no fetch mode has been set on the connection.
+     * In this case the fetch mode should be DatabaseInterface::FETCH_MODE_NUM, as it is the default fetch mode.
+     *
+     * @dataProvider dataProviderTestFetchAllDefaultFetchMode
+     *
+     * @param string $assertionMessage A message explaining the assertion
+     * @param string $sql              The SQL query to be executed
+     * @param array  $expectedRows     The expected result as an array
+     */
+    public function testGetAllWithDefaultFetchMode($assertionMessage, $sql, $expectedRows)
+    {
+        /** @var DatabaseInterface $database Get a fresh instance of the database handler */
+        $database = $this->createDatabase();
+
+        $this->loadFixtureToTestTable($database);
+
+        $actualRows = $database->getAll($sql);
+
+        $this->assertInternalType('array', $actualRows, 'Expected an array as result!');
+        // sometimes the array gets filled in different order, we sort them to be sure, the content is same
+        $this->assertSame(sort($expectedRows), sort($actualRows), $assertionMessage);
     }
 
     /**
@@ -458,11 +536,8 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertSame(array(0), array_keys($row));
 
         // check numeric array case
-        $previousFetchMode = $this->database->setFetchMode(1);
+        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_NUM);
         $row = $this->fetchFirstTestTableOxId();
-
-        // reset fetch mode to original setting
-        $this->database->setFetchMode($previousFetchMode);
 
         // check result
         $this->assertInternalType('array', $row);
@@ -505,6 +580,22 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     public function testGetColWithoutParameters()
     {
         $this->loadFixtureToTestTable();
+
+        $result = $this->database->getCol("SELECT OXUSERID FROM " . self::TABLE_NAME);
+
+        $this->assertInternalType('array', $result);
+        $this->assertSame(3, count($result));
+        $this->assertSame(array(self::FIXTURE_OXUSERID_1, self::FIXTURE_OXUSERID_2, self::FIXTURE_OXUSERID_3), $result);
+    }
+
+    /**
+     * Test, that the method 'getCol' works without parameters and a non empty result.
+     */
+    public function testGetColDoesNotDependOnFetchMode()
+    {
+        $this->loadFixtureToTestTable();
+
+        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_ASSOC);
 
         $result = $this->database->getCol("SELECT OXUSERID FROM " . self::TABLE_NAME);
 
@@ -998,20 +1089,71 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Test, that the method 'getRow' gives back the correct result, when called with parameters and fetch mode associative array.
+     * Data provider for getRow.
+     * Provides assertion messages and expected results for all possible fetch modes.
+     *
+     * @return array
      */
-    public function testGetRowNonEmptyTableWithParametersAndFetchModeAssociative()
+    public function dataProviderTestGetRowForAllFetchModes()
+    {
+        return array(
+            array(
+                'getRow will return an array with both integer and string keys for DatabaseInterface::FETCH_MODE_DEFAULT',
+                DatabaseInterface::FETCH_MODE_DEFAULT,
+                array(
+                    0          => self::FIXTURE_OXID_1,
+                    1          => self::FIXTURE_OXUSERID_1,
+                    'oxid'     => self::FIXTURE_OXID_1,
+                    'oxuserid' => self::FIXTURE_OXUSERID_1,
+                )
+            ),
+            array(
+                'getRow will return an array with integer keys for DatabaseInterface::FETCH_MODE_NUM',
+                DatabaseInterface::FETCH_MODE_NUM,
+                array(
+                    0          => self::FIXTURE_OXID_1,
+                    1          => self::FIXTURE_OXUSERID_1,
+                )
+            ),
+            array(
+                'getRow will return an array with string keys for DatabaseInterface::FETCH_MODE_ASSOC',
+                DatabaseInterface::FETCH_MODE_ASSOC,
+                array(
+                    'oxid'     => self::FIXTURE_OXID_1,
+                    'oxuserid' => self::FIXTURE_OXUSERID_1,
+                )
+            ),
+            array(
+                'getRow will return an array with both integer and string keys for DatabaseInterface::FETCH_MODE_BOTH',
+                DatabaseInterface::FETCH_MODE_BOTH,
+                array(
+                    0          => self::FIXTURE_OXID_1,
+                    1          => self::FIXTURE_OXUSERID_1,
+                    'oxid'     => self::FIXTURE_OXID_1,
+                    'oxuserid' => self::FIXTURE_OXUSERID_1,
+                )
+            ),
+        );
+    }
+
+    /**
+     * Test, that the method 'getRow' returns the expected results for the all possible fetch modes.
+     *
+     * @dataProvider dataProviderTestGetRowForAllFetchModes
+     *
+     * @param string $assertionMessage A message explaining the assertion
+     * @param int    $fetchMode        The fetch mode we want to test.
+     * @param array  $expectedResult   The rows we expect.
+     */
+    public function testGetRowForAllFetchModes($assertionMessage, $fetchMode, $expectedResult)
     {
         $this->loadFixtureToTestTable();
 
-        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_ASSOC);
+        $this->database->setFetchMode($fetchMode);
 
-        $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME . ' WHERE oxid = ?', array(self::FIXTURE_OXID_2));
+        $actualResult = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
 
-        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_DEFAULT);
-
-        $this->assertInternalType('array', $result);
-        $this->assertEquals(array('oxid' => self::FIXTURE_OXID_2, 'oxuserid' => self::FIXTURE_OXUSERID_2), $result);
+        $this->assertEquals($expectedResult, $actualResult, $assertionMessage);
     }
 
     /**

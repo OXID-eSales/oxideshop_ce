@@ -30,13 +30,22 @@ use pear_ADOConnection;
  */
 interface DatabaseInterface
 {
-
-    /** The default fetch mode as implemented by the DBAL */
+    /**
+     * The default fetch mode as implemented by the database driver, in Doctrine this is usually FETCH_MODE_BOTH
+     *
+     * @deprecated since 6.0 (2016-04-19); This constant is confusing as the shop uses a different default fetch mode.
+     */
     const FETCH_MODE_DEFAULT = 0;
-    /** Fetch the query result into an array with integer keys */
+
+    /**
+     * Fetch the query result into an array with integer keys.
+     * This is the default fetch mode as it is set by OXID eShop on opening a database connection.
+     */
     const FETCH_MODE_NUM = 1;
+
     /** Fetch the query result into an array with string keys */
     const FETCH_MODE_ASSOC = 2;
+
     /** Fetch the query result into a mixed array with both integer and string keys */
     const FETCH_MODE_BOTH = 3;
 
@@ -48,11 +57,14 @@ interface DatabaseInterface
     public function setConnection($connection);
 
     /**
-     * Set the fetch mode of the database connection and return the previous fetch mode.
+     * Set the fetch mode of an open database connection.
+     * When the connection is opened the fetch mode will be set to a default value.
+     * Once the connection has been opened, the fetch mode might be set to any of the valid fetch modes as defined in
+     * DatabaseInterface::FETCH_MODE_*
+     * This implies that piece a of code should make no assumptions about the current fetch mode of the connection,
+     * but rather set it explicitly, before retrieving the results.
      *
-     * @param int $fetchMode See DatabaseInterface::FETCH_MODE_* for valid values
-     *
-     * @return int The previous fetch mode.
+     * @param int $fetchMode See  for valid values
      */
     public function setFetchMode($fetchMode);
 

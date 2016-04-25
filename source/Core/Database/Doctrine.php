@@ -463,11 +463,13 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     }
 
     /**
-     * Run a given select sql statement with a limit clause on the database.
+     * Run a given select sql statement with a limit clause.
+     * Be aware that only a few database vendors have the LIMIT clause as known from MySQL.
+     * The Doctrine Query Builder should be used here.
      *
      * @param string     $query          The sql statement we want to execute.
-     * @param int        $limit          Number of rows to select
-     * @param int        $offset         Number of rows to skip
+     * @param int        $rowCount       Maximum number of rows to return
+     * @param int        $offset         Offset of the first row to return
      * @param array|bool $parameters     The parameters array.
      * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
@@ -475,20 +477,33 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      *
      * @return DoctrineResultSet The result of the given query.
      */
-    public function selectLimit($query, $limit = -1, $offset = -1, $parameters = false, $executeOnSlave = true)
+    public function selectLimit($query, $rowCount = -1, $offset = -1, $parameters = false, $executeOnSlave = true)
     {
-        // @todo: check for security leaks in limit and offset or cast to int or throw exception, if limit/offset are not int!
-        $limitSql = "";
-        if (-1 !== $limit) {
-            $limitSql = "LIMIT $limit";
+        /**
+         * Parameter validation.
+         * At the moment there will be no InvalidArgumentException thrown on non numeric values as this may break
+         * too many things.
+         */
+        if (!is_numeric($rowCount) || !is_numeric($offset)) {
+            trigger_error(
+                'Parameters rowCount and offset have to be numeric in DatabaseInterface::selectLimit(). ' .
+                'Please fix your code as this error may trigger an exception in future versions of OXID eShop.',
+                E_USER_DEPRECATED
+            );
         }
 
-        $offsetSql = "";
-        if ((-1 !== $offset) && (-1 !== $limit)) {
-            $offsetSql = "OFFSET $offset";
+        /**
+         * Cast the parameters limit and offset to integer in in order to avoid SQL injection.
+         */
+        $rowCount = (int) $rowCount;
+        $offset = (int) $offset;
+        $limitClause = '';
+
+        if ($rowCount >= 0 && $offset >= 0) {
+            $limitClause = "LIMIT $rowCount OFFSET $offset";
         }
 
-        return $this->select($query . " $limitSql $offsetSql", $parameters, $executeOnSlave);
+        return $this->select($query . " $limitClause ", $parameters, $executeOnSlave);
     }
 
     /**

@@ -70,6 +70,18 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     const FIXTURE_OXUSERID_3 = 'OXUSERID_3';
 
     /**
+     * @var bool Use the legacy database adapter.
+     *
+     * @todo get rid of this
+     */
+    const USE_LEGACY_DATABASE = false;
+
+    /**
+     * @var array Holds the errors caught by the user-defined error handler
+     */
+    protected $errors;
+
+    /**
      * @var Doctrine|\oxLegacyDb The database to test.
      */
     protected $database = null;
@@ -88,17 +100,64 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
      * Return the name of the database exception class
      */
     abstract protected function getEmptyResultSetClassName();
-    
+
     /**
      * Initialize database table before every test
      */
     public function setUp()
     {
+        /** Set a user-defined error handler in order to handle errors triggered with trigger_error */
+        $this->errors = array();
+        set_error_handler(array($this, "errorHandler"));
+
         parent::setUp();
 
         $this->initializeDatabase();
         $this->assureTestTableIsEmpty();
     }
+
+    /**
+     * Provides an error handler
+     *
+     * @param integer $errorLevel   Error number as defined in http://php.net/manual/en/errorfunc.constants.php
+     * @param string  $errorMessage Error message
+     * @param string  $errorFile    Error file
+     * @param integer $errorLine    Error line
+     * @param array   $errorContext Error context
+     */
+    public function errorHandler($errorLevel, $errorMessage, $errorFile, $errorLine, $errorContext)
+    {
+        $this->errors[] = compact(
+            "errorLevel",
+            "errorMessage",
+            "errorFile",
+            "errorLine",
+            "errorContext"
+        );
+    }
+
+    /**
+     * Assert a given error level and a given error message
+     *
+     * @param integer $errorLevel   Error number as defined in http://php.net/manual/en/errorfunc.constants.php
+     * @param string  $errorMessage Error message
+     *
+     * @return boolean Returns true on assertion success
+     */
+    public function assertError($errorLevel, $errorMessage)
+    {
+        foreach ($this->errors as $error) {
+            if ($error["errorMessage"] === $errorMessage
+                && $error["errorLevel"] === $errorLevel
+            ) {
+                return true;
+            }
+        }
+        $this->fail(
+            "No error with level " . $errorLevel . " and message '" . $errorMessage . "' was triggered"
+        );
+    }
+
 
     /**
      * Empty database table after every test
@@ -107,8 +166,10 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     {
         $this->assureTestTableIsEmpty();
         $this->closeConnection();
-        gc_collect_cycles() ;
+        gc_collect_cycles();
 
+        /** Restore the previous error handler function */
+        restore_error_handler();
         parent::tearDown();
     }
 

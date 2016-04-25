@@ -191,33 +191,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Data provider for testSelectLimit.
-     *
-     * @return array The parameters we give into testSelectLimit.
-     */
-    public function dataProviderTestSelectLimit()
-    {
-        return array(
-            array('SELECT OXID FROM ' . self::TABLE_NAME, false, -1, -1, false, array()),
-            array('SELECT OXID FROM ' . self::TABLE_NAME, false, 5, -1, false, array()),
-            array('SELECT OXID FROM ' . self::TABLE_NAME, false, -1, 1, false, array()),
-            array('SELECT OXID FROM ' . self::TABLE_NAME, true, 1, 0, false, array(
-                array(self::FIXTURE_OXID_1)
-            )),
-            array('SELECT OXID FROM ' . self::TABLE_NAME, true, 1, 1, false, array(
-                array(self::FIXTURE_OXID_2)
-            )),
-            array('SELECT OXID FROM ' . self::TABLE_NAME, true, 2, 1, false, array(
-                array(self::FIXTURE_OXID_2),
-                array(self::FIXTURE_OXID_3),
-            )),
-            array('SELECT OXID FROM ' . self::TABLE_NAME, true, 2, 2, false, array(
-                array(self::FIXTURE_OXID_3),
-            )),
-        );
-    }
-
-    /**
      * Test, that affected rows is set to the expected values by consecutive calls to select()
      */
     public function testExecuteSetsAffectedRows()
@@ -270,27 +243,72 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Test, that the method 'selectLimit' works without parameters and an empty result.
+     * Data provider for testSelectLimit.
      *
-     * @dataProvider dataProviderTestSelectLimit
-     *
-     * @param string $sql            The sql statement we want to execute.
-     * @param bool   $loadFixture    Should the test database table fixture be loaded for this test case?
-     * @param int    $limit          The sql starting row.
-     * @param int    $offset         The number of rows we are interested in.
-     * @param array  $parameters     The parameters we want to give into the 'selectLimit' method.
-     * @param array  $expectedResult The expected result of the method call.
+     * @return array The parameters we give into testSelectLimit.
      */
-    public function testSelectLimit($sql, $loadFixture, $limit, $offset, $parameters, $expectedResult)
+    public function dataProviderTestSelectLimitForDifferentLimitAndOffsetValues()
     {
-        if ($loadFixture) {
-            $this->loadFixtureToTestTable();
-        }
-        $resultSet = $this->database->selectLimit($sql, $limit, $offset, $parameters);
-        $result = $resultSet->getAll();
+        return array(
+            array(
+                'If parameter rowCount is integer 0, no rows are returned at all',
+                0, // row count
+                0, // offset
+                [] // expected result
+            ),
+            array(
+                'If parameter rowCount is string "2" and offset is string "0", the first 2 rows will be returned',
+                "2", // row count as a string
+                "0", // offset as string
+                [
+                    [self::FIXTURE_OXID_1], [self::FIXTURE_OXID_2]  // expected result
+                ]
+            ),
+            array(
+                'If parameter rowCount has the value 2 and offset has the value 0, the first 2 rows will be returned',
+                2, // row count
+                0, // offset
+                [
+                    [self::FIXTURE_OXID_1], [self::FIXTURE_OXID_2]  // expected result
+                ]
+            ),
+            array(
+                'If parameter rowCount has the value 2 and offset has the value 1, the last 2 rows will be returned',
+                2, // row count
+                1, // offset
+                [
+                    [self::FIXTURE_OXID_2], [self::FIXTURE_OXID_3] // expected result
+                ]
+            ),
+        );
+    }
 
-        $this->assertInternalType('array', $result);
-        $this->assertSame($expectedResult, $result);
+    /**
+     * Test, that the method 'selectLimit' returns the expected rows from the database for different
+     * values of limit and offset.
+     *
+     * This test assumes that there are at least 3 entries in the table.
+     *
+     * @dataProvider dataProviderTestSelectLimitForDifferentLimitAndOffsetValues
+     *
+     * @param string $assertionMessage A message explaining the assertion
+     * @param int    $rowCount         Maximum number of rows to return
+     * @param int    $offset           Offset of the first row to return
+     * @param array  $expectedResult   The expected result of the method call.
+     */
+    public function testSelectLimitReturnsExpectedResultForDifferentOffsetAndLimit($assertionMessage, $rowCount, $offset, $expectedResult)
+    {
+        $this->loadFixtureToTestTable();
+        $sql = 'SELECT OXID FROM ' . self::TABLE_NAME  . ' WHERE OXID IN (' .
+               '"' . self::FIXTURE_OXID_1 . '",' .
+               '"' . self::FIXTURE_OXID_2 . '",' .
+               '"' . self::FIXTURE_OXID_3 . '"' .
+               ')';
+
+        $resultSet = $this->database->selectLimit($sql, $rowCount, $offset);
+        $actualResult = $resultSet->getAll();
+
+        $this->assertSame($expectedResult, $actualResult, $assertionMessage);
     }
 
     /**

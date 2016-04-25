@@ -42,8 +42,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
             array(new oxPrice(120012.1), $oUSDCurrency, 'USD120,012.100'),
             array(new oxPrice(1278), $oEURCurrency, '1.278,00 EUR'),
             array(new oxPrice(1992.45), $oEmptyCurrency, '1.992,45'),
-            //array(new oxPrice(1992.45), null, '1.992,45 EUR', null), // @todo: this leads to a bug in the oxprice->getPrice
-            array(new oxPrice(1992.45), null, '1#992,45 EUR', array('EUR@ 1.00@ ,@ #@ EUR@ 2')),
+            array(new oxPrice(1992.45), null, '1.992,45'),
         );
     }
 
@@ -52,15 +51,12 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
      *
      * @dataProvider pricesAsObjects
      *
-     * @param oxPrice  $oPrice            price
-     * @param stdClass $oCurrency         currency object
-     * @param string   $sExpectedOutput   expected output
-     * @param array    $aCurrencies       The currencies we want to set for this run.
+     * @param oxPrice  $oPrice          price
+     * @param stdClass $oCurrency       currency object
+     * @param string   $sExpectedOutput expected output
      */
-    public function testFormatPrice_usingPriceAsObject($oPrice, $oCurrency, $sExpectedOutput, $aCurrencies = array())
+    public function testFormatPrice_usingPriceAsObject($oPrice, $oCurrency, $sExpectedOutput)
     {
-        $this->_setCurrencies($aCurrencies);
-
         $oSmarty = new Smarty();
         $aParams['price'] = $oPrice;
         $aParams['currency'] = $oCurrency;
@@ -89,7 +85,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
             array(1278, $oEURCurrency, '1.278,00 EUR'),
             array(1278, $oEURCurrencyZero, '1.278 EUR'),
             array(1992.45, $oEmptyCurrency, '1.992,45'),
-            array(1992.45, null, '1#992,45 EUR', array('EUR@ 1.00@ ,@ #@ EUR@ 2')),
+            array(1992.45, null, '1.992,45'),
         );
     }
 
@@ -101,12 +97,9 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
      * @param float    $fPrice          price
      * @param stdClass $oCurrency       currency object
      * @param string   $sExpectedOutput expected output
-     * @param array    $aCurrencies       The currencies we want to set
      */
-    public function testFormatPrice_usingPriceAsFloat($fPrice, $oCurrency, $sExpectedOutput, $aCurrencies = array())
+    public function testFormatPrice_usingPriceAsFlout($fPrice, $oCurrency, $sExpectedOutput)
     {
-        $this->_setCurrencies($aCurrencies);
-
         $oSmarty = new Smarty();
         $aParams['price'] = $fPrice;
         $aParams['currency'] = $oCurrency;
@@ -133,7 +126,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
             array(0, $oEURCurrencyZero, '0 EUR'),
             array(0, $oUSDCurrency, 'USD0.000'),
             array(0, $oEmptyCurrency, ''),
-            array(0, null, '0#00 EUR', array('EUR@ 1.00@ #@ .@ EUR@ 2')),
+            array(0, null, ''),
         );
     }
 
@@ -142,15 +135,12 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
      *
      * @dataProvider pricesNullPrices
      *
-     * @param float      $fPrice          price
-     * @param stdClass   $oCurrency       currency object
-     * @param string     $sExpectedOutput expected output
-     * @param array      $aCurrencies     The currencies we want to set
+     * @param float    $fPrice          price
+     * @param stdClass $oCurrency       currency object
+     * @param string   $sExpectedOutput expected output
      */
-    public function testFormatPrice_badPriceOrCurrency($fPrice, $oCurrency, $sExpectedOutput, $aCurrencies = array())
+    public function testFormatPrice_badPriceOrCurrency($fPrice, $oCurrency, $sExpectedOutput)
     {
-        $this->_setCurrencies($aCurrencies);
-
         $oSmarty = new Smarty();
         $aParams['price'] = $fPrice;
         $aParams['currency'] = $oCurrency;
@@ -199,19 +189,5 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
         $oEURCurrency->decimal = 0;
 
         return $oEURCurrency;
-    }
-
-    /**
-     * Helper method to set the given currencies.
-     *
-     * @param array $aCurrencies The currencies we want to set.
-     */
-    protected function _setCurrencies($aCurrencies)
-    {
-        if ( !empty( $aCurrencies ) || is_null($aCurrencies) ) {
-            $oConfig = oxRegistry::getConfig();
-
-            $oConfig->setConfigParam('aCurrencies', $aCurrencies);
-        }
     }
 }

@@ -33,7 +33,7 @@
  * @param Smarty &$smarty clever simulation of a method
  *
  * @return string
-*/
+ */
 function smarty_function_oxprice( $params, &$smarty )
 {
     $sOutput = '';
@@ -46,10 +46,8 @@ function smarty_function_oxprice( $params, &$smarty )
 
     if ( !is_null( $mPrice ) ) {
 
-        $oConfig = oxRegistry::getConfig();
-
         $sPrice = ( $mPrice instanceof oxPrice ) ? $mPrice->getPrice() : $mPrice;
-        $oCurrency = isset( $params['currency'] ) ? $params['currency'] : $oConfig->getActShopCurrencyObject();
+        $oCurrency = isset( $params['currency'] ) ? $params['currency'] : null;
 
         if ( !is_null( $oCurrency ) ) {
             $sDecimalsSeparator = isset( $oCurrency->dec ) ? $oCurrency->dec : $sDecimalsSeparator;

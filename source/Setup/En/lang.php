@@ -48,7 +48,7 @@ $aLang = array(
 'ERROR_NOT_AVAILABLE'                           => 'ERROR: %s not found!',
 'ERROR_NOT_WRITABLE'                            => 'ERROR: %s not writeable!',
 'ERROR_DB_CONNECT'                              => 'ERROR: No database connection possible!',
-'ERROR_OPENING_SQL_FILE'                        => 'ERROR: Can not open SQL file %s!',
+'ERROR_OPENING_SQL_FILE'                        => 'ERROR: Cannot open SQL file %s!',
 'ERROR_FILL_ALL_FIELDS'                         => 'ERROR: Please fill in all needed fields!',
 'ERROR_COULD_NOT_CREATE_DB'                     => 'ERROR: Database not available and also cannot be created!',
 'ERROR_DB_ALREADY_EXISTS'                       => 'ERROR: Seems there is already OXID eShop installed in database %s. Please delete it prior continuing!',
@@ -63,7 +63,7 @@ $aLang = array(
 'ERROR_PASSWORD_TOO_SHORT'                      => 'Password is too short!',
 'ERROR_PASSWORDS_DO_NOT_MATCH'                  => 'Passwords do not match!',
 'ERROR_USER_NAME_DOES_NOT_MATCH_PATTERN'        => 'Please enter a valid e-mail address!',
-'ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS' => 'MySQL version does not fit system requiremens',
+'ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS' => 'MySQL version does not fit system requirements',
 
 'ERROR_VIEWS_CANT_CREATE'                       => 'ERROR: Can\'t create views. Please check your database user privileges.',
 'ERROR_VIEWS_CANT_SELECT'                       => 'ERROR: Can\'t select from views. Please check your database user privileges.',
@@ -106,7 +106,7 @@ $aLang = array(
 'STEP_0_ERROR_URL'                              => 'http://www.oxid-esales.com/en/products/community-edition/system-requirements',
 'STEP_0_TEXT'                                   => '<ul class="req">'.
                                                    '<li class="pass"> - Your system fits the requirement.</li>'.
-                                                   '<li class="pmin"> - The requirement is not or only partly fit. The OXID eShop will work anyway and can be installed..</li>'.
+                                                   '<li class="pmin"> - The requirement is not or only partly fit. The OXID eShop will work anyway and can be installed.</li>'.
                                                    '<li class="fail"> - Your system doesn\'t fit the requirement. The OXID eShop will not work without it and cannot be installed.</li>'.
                                                    '<li class="null"> - The requirement could  not be checked.'.
                                                    '</ul>',
@@ -142,7 +142,7 @@ $aLang = array(
 'STEP_3_UTFNOTSUPPORTED'                        => 'The OXID eShop cannot operate in UTF-8 mode, due to:',
 'STEP_3_UTFNOTSUPPORTED1'                       => ' missing mbstring PHP module',
 'STEP_3_UTFNOTSUPPORTED2'                       => ' installed PCRE does not support UTF-8',
-'STEP_3_UTFINFO'                                => 'UTF-8 character encoding provides better support for special chars than other character encodings. This is particulary important for multilingual eShops. However, UTF-8 is slightly slower than the standard encoding (ISO 8859-15). <br /> If you plan to provide your eShop in many different languages, you should use UTF-8. If you just want to provide a few languages using related symbol sets (e. g. English, German, French), you don\'t need UTF-8.',
+'STEP_3_UTFINFO'                                => 'UTF-8 character encoding provides better support for special chars than other character encodings. This is particularly important for multilingual eShops. However, UTF-8 is slightly slower than the standard encoding (ISO 8859-15). <br /> If you plan to provide your eShop in many different languages, you should use UTF-8. If you just want to provide a few languages using related symbol sets (e. g. English, German, French), you don\'t need UTF-8.',
 'STEP_3_CREATE_DB_WHEN_NO_DB_FOUND'             => 'If database does not exist, it\'s going to be created',
 'BUTTON_RADIO_INSTALL_DB_DEMO'                  => 'Install demodata',
 'BUTTON_RADIO_NOT_INSTALL_DB_DEMO'              => 'Do <strong>not</strong> install demodata',
@@ -153,12 +153,12 @@ $aLang = array(
 'STEP_3_1_DB_CREATE_IS_OK'                      => 'Database %s successfully created ...',
 'STEP_3_1_CREATING_TABLES'                      => 'Creating tables, applying data ...',
 
-'STEP_3_2_TITLE'                                => 'Database - tables are beeing created ...',
+'STEP_3_2_TITLE'                                => 'Database - tables are being created ...',
 'STEP_3_2_CONTINUE_INSTALL_OVER_EXISTING_DB'    => 'If you want to overwrite all existing data and install anyway click ',
 'STEP_3_2_CREATING_DATA'                        => 'Database successfully created. Please wait ...',
 
 'STEP_4_TITLE'                                  => 'Setting up OXID eShop directories and URL',
-'STEP_4_DESC'                                   => 'Please provide neccesary data for running OXID eShop:',
+'STEP_4_DESC'                                   => 'Please provide necessary data for running OXID eShop:',
 'STEP_4_SHOP_URL'                               => 'Shop URL',
 'STEP_4_SHOP_DIR'                               => 'Directory for OXID eShop',
 'STEP_4_SHOP_TMP_DIR'                           => 'Directory for temporary data',

@@ -208,9 +208,14 @@ class oxSession extends oxSuperCfg
         } else {
             $this->setName("sid");
         }
+        
+        if ($myConfig->isHttpsOnly() && $this->_getSessionUseCookies()){
+            // in https only mode disable sesseion id in parameters because its not needed and not very secure.
+        } else {
 
-        $sForceSidParam = $myConfig->getRequestParameter($this->getForcedName());
-        $sSidParam = $myConfig->getRequestParameter($this->getName());
+           $sForceSidParam = $myConfig->getRequestParameter($this->getForcedName());
+           $sSidParam = $myConfig->getRequestParameter($this->getName());
+        }
 
         //forcing sid for SSL<->nonSSL transitions
         if ($sForceSidParam) {

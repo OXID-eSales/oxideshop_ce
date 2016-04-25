@@ -239,18 +239,6 @@ interface DatabaseInterface
     public function metaColumns($table);
 
     /**
-     * Returns meta data.
-     *
-     * @todo: deprecate as fast as possible, it doesn't run on modern php versions.
-     *
-     * @param string $table
-     * @param bool   $numberOfIndices
-     *
-     * @return array
-     */
-    public function metaColumnNames($table, $numberOfIndices = false);
-
-    /**
      * Start the mysql transaction.
      *
      * @throws DatabaseException

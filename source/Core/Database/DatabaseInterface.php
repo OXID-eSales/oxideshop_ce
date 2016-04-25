@@ -277,9 +277,11 @@ interface DatabaseInterface
     public function UI($pollSeconds = 5);
 
     /**
-     * Get the last inserted ID.
+     * Return string representing the row ID of the last row that was inserted into
+     * the database.
+     * This function will return 0 on tables without autoincrement fields.
      *
-     * @return string The last inserted ID.
+     * @return string|int Row ID
      */
-    public function insert_Id();
+    public function lastInsertId();
 }

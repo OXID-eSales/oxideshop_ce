@@ -181,16 +181,6 @@ interface DatabaseInterface
     public function execute($query, $parameters = false);
 
     /**
-     * Execute the given query and return the corresponding result set.
-     *
-     * @param string     $query      The sql statement(s) we want to run.
-     * @param array|bool $parameters The parameters array.
-     *
-     * @return mixed|Object_ResultSet The result set of the execution of the given sql statement(s).
-     */
-    public function query($query, $parameters = false);
-
-    /**
      * Get the number of rows, which where changed during the last sql statement.
      *
      * @return int The number of rows affected by the last sql statement.

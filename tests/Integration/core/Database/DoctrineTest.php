@@ -22,6 +22,7 @@ namespace OxidEsales\Eshop\Tests\integration\core\Database;
  * @version       OXID eShop CE
  */
 
+use Doctrine\DBAL\DBALException;
 use OxidEsales\Eshop\Core\Database\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Doctrine;
 
@@ -274,5 +275,115 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
                 ]
             ),
         );
+    }
+
+    /**
+     * Test, that startTransaction() throws the expected Exception on failure.
+     */
+    public function testStartTransactionThrowsExpectedExceptionOnFailure()
+    {
+        $this->setExpectedException(self::DATABASE_EXCEPTION_CLASS);
+
+        $connectionMock =  $this->getMockBuilder('\Doctrine')
+            ->setMethods(['beginTransaction'])
+            ->getMock();
+        $connectionMock->expects($this->once())
+            ->method('beginTransaction')
+            ->willThrowException(new DBALException());
+
+        /** @var \OxidEsales\Eshop\Core\Database\Doctrine|\PHPUnit_Framework_MockObject_MockObject $databaseMock */
+        $databaseMock = $this->getMockBuilder('\OxidEsales\Eshop\Core\Database\Doctrine')
+            ->setMethods(['getConnection'])
+            ->getMock();
+        $databaseMock->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connectionMock));
+
+        $databaseMock->startTransaction();
+    }
+
+    /**
+     * Test, that commitTransaction() throws the expected Exception on failure.
+     */
+    public function testCommitTransactionThrowsExpectedExceptionOnFailure()
+    {
+        $this->setExpectedException(self::DATABASE_EXCEPTION_CLASS);
+
+        $connectionMock =  $this->getMockBuilder('\Doctrine')
+            ->setMethods(['commit'])
+            ->getMock();
+        $connectionMock->expects($this->once())
+            ->method('commit')
+            ->willThrowException(new DBALException());
+
+        /** @var \OxidEsales\Eshop\Core\Database\Doctrine|\PHPUnit_Framework_MockObject_MockObject $databaseMock */
+        $databaseMock = $this->getMockBuilder('\OxidEsales\Eshop\Core\Database\Doctrine')
+            ->setMethods(['getConnection'])
+            ->getMock();
+        $databaseMock->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connectionMock));
+
+        $databaseMock->commitTransaction();
+    }
+
+    /**
+     * Test, that rollbackTransaction() throws the expected Exception on failure.
+     */
+    public function testRollbackTransactionThrowsExpectedExceptionOnFailure()
+    {
+        $this->setExpectedException(self::DATABASE_EXCEPTION_CLASS);
+
+        $connectionMock =  $this->getMockBuilder('\Doctrine')
+            ->setMethods(['rollBack'])
+            ->getMock();
+        $connectionMock->expects($this->once())
+            ->method('rollBack')
+            ->willThrowException(new DBALException());
+
+        /** @var \OxidEsales\Eshop\Core\Database\Doctrine|\PHPUnit_Framework_MockObject_MockObject $databaseMock */
+        $databaseMock = $this->getMockBuilder('\OxidEsales\Eshop\Core\Database\Doctrine')
+            ->setMethods(['getConnection'])
+            ->getMock();
+        $databaseMock->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connectionMock));
+
+        $databaseMock->rollbackTransaction();
+    }
+
+    /**
+     * Test, that setTransactionIsolationLevel() throws the expected Exception on failure.
+     */
+    public function testSetTransactionIsolationLevelThrowsExpectedExceptionOnFailure()
+    {
+        $this->setExpectedException(self::DATABASE_EXCEPTION_CLASS);
+
+        $connectionMock =  $this->getMockBuilder('\Doctrine')
+            ->setMethods(['setTransactionIsolation'])
+            ->getMock();
+        $connectionMock->expects($this->once())
+            ->method('setTransactionIsolation')
+            ->willThrowException(new DBALException());
+
+        /** @var \OxidEsales\Eshop\Core\Database\Doctrine|\PHPUnit_Framework_MockObject_MockObject $databaseMock */
+        $databaseMock = $this->getMockBuilder('\OxidEsales\Eshop\Core\Database\Doctrine')
+            ->setMethods(['getConnection'])
+            ->getMock();
+        $databaseMock->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connectionMock));
+
+        $databaseMock->setTransactionIsolationLevel('READ COMMITTED');
+    }
+
+    /**
+     * Test, that setTransactionIsolationLevel() throws the expected Exception on failure.
+     */
+    public function testSetTransactionIsolationLevelThrowsExpectedExceptionOnInvalidParameter()
+    {
+        $this->setExpectedException('\InvalidArgumentException');
+
+        $this->database->setTransactionIsolationLevel('INVALID TRANSACTION ISOLATION LEVEL');
     }
 }

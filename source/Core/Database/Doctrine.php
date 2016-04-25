@@ -282,55 +282,46 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     /**
      * Start a mysql transaction.
      *
-     * @return bool
+     * @throws DatabaseException
      */
     public function startTransaction()
     {
         try {
             $this->getConnection()->beginTransaction();
-            $result = true;
         } catch (DBALException $exception) {
-            $this->logException($exception);
-            $result = false;
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
-
-        return $result;
     }
 
     /**
      * Commit a mysql transaction.
      *
-     * @return bool
+     * @throws DatabaseException
      */
     public function commitTransaction()
     {
         try {
             $this->getConnection()->commit();
-            $result = true;
         } catch (DBALException $exception) {
-            $this->logException($exception);
-            $result = false;
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
-
-        return $result;
     }
 
     /**
      * Rollback a mysql transaction.
      *
-     * @return bool
+     * @throws DatabaseException
      */
     public function rollbackTransaction()
     {
         try {
             $this->getConnection()->rollBack();
-            $result = true;
         } catch (DBALException $exception) {
-            $this->logException($exception);
-            $result = false;
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
-
-        return $result;
     }
 
     /**
@@ -340,23 +331,22 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      *
      * @param string $level The level of transaction isolation we want to set.
      *
-     * @return bool Was the setting of transaction isolation level successful?
+     * @see Doctrine::transactionIsolationLevelMap
+     *
+     * @throws \InvalidArgumentException|DatabaseException
      */
-    public function setTransactionIsolationLevel($level = null)
+    public function setTransactionIsolationLevel($level)
     {
-        $result = false;
-
         if (!array_key_exists(strtoupper($level), $this->transactionIsolationLevelMap)) {
-            return $result;
+            throw new \InvalidArgumentException();
         }
 
         try {
-            $result = (bool) $this->getConnection()->setTransactionIsolation($this->transactionIsolationLevelMap[$level]);
+            $this->getConnection()->setTransactionIsolation($this->transactionIsolationLevelMap[$level]);
         } catch (DBALException $exception) {
-            $this->logException($exception);
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
-
-        return $result;
     }
 
     /**

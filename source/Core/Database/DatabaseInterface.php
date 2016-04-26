@@ -70,15 +70,6 @@ interface DatabaseInterface
     public function setFetchMode($fetchMode);
 
     /**
-     * Return connection to the database.
-     *
-     * @param bool $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
-     *
-     * @return mysql_driver|mysql_extend|mysql_meta|mysqli_driver|mysqli_extend|mysqli_extra|object_ADOConnection|pear_ADOConnection The connection to the database.
-     */
-    public function getDb($executeOnSlave = true);
-
-    /**
      * Get one column, which you have to give into the sql select statement, of the first row, corresponding to the
      * given sql statement.
      *

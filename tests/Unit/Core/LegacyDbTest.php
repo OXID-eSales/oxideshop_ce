@@ -21,6 +21,9 @@
  */
 namespace Unit\Core;
 
+/**
+ * @group database-adapter
+ */
 class LegacyDbTest extends \OxidTestCase
 {
 

@@ -30,7 +30,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 /**
  * Base class for database integration tests.
  *
- * @group doctrine
+ * @group database-adapter
  */
 abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
 {

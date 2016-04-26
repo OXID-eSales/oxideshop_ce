@@ -26,7 +26,7 @@ namespace OxidEsales\Eshop\Tests\integration\core\Database;
 /**
  * Tests for our database object.
  *
- * @group doctrine
+ * @group database-adapter
  */
 class LegacyDatabaseTest extends DatabaseInterfaceImplementationTest
 {

@@ -29,7 +29,7 @@ use OxidEsales\Eshop\Core\Database\Doctrine;
 /**
  * Tests for our database object.
  *
- * @group doctrine
+ * @group database-adapter
  */
 class DoctrineTest extends DatabaseInterfaceImplementationTest
 {

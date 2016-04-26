@@ -26,7 +26,7 @@ use OxidEsales\Eshop\Core\Database\Doctrine;
 /**
  * Unit tests for our database abstraction layer object.
  *
- * @group doctrine
+ * @group database-adapter
  */
 class DoctrineTest extends UnitTestCase
 {

@@ -30,7 +30,7 @@ use OxidEsales\Eshop\Tests\integration\core\Database\DatabaseInterfaceImplementa
 /**
  * Tests for our database object.
  *
- * @group doctrine
+ * @group database-adapter
  */
 class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
 {

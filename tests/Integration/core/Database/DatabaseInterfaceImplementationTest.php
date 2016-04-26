@@ -656,6 +656,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
     /**
      * Test that getAll returns an array with integer keys, if setFetchMode is not called before calling getArray.
+     * Test that getAll returns an array with integer keys, if setFetchMode is not called before calling getAll.
      *
      * @todo IMHO This is an inconsistent implementation of ADOdb Lite, as not calling setFetchMode should give the same results
      *       as calling setFetchMode with the param DatabaseInterface::FETCH_MODE_DEFAULT

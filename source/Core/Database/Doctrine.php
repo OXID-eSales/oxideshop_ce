@@ -30,22 +30,14 @@ use OxidEsales\Eshop;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
 use OxidEsales\Eshop\Core\exception\DatabaseException;
 use oxLegacyDb;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * The doctrine implementation of our database.
  *
  * @package OxidEsales\Eshop\Core\Database
  */
-class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInterface
+class Doctrine extends oxLegacyDb implements DatabaseInterface
 {
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
 
     /**
      * @var \Doctrine\DBAL\Connection The database connection.
@@ -89,20 +81,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     public function __construct()
     {
         $this->setConnection($this->createConnection());
-
-        /** Set the logger to the NullLogger until setLogger is called */
-        $logger = new NullLogger();
-        $this->setLogger($logger);
-    }
-
-    /**
-     * Sets a logger instance on the object
-     *
-     * @param LoggerInterface $logger
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
     }
 
     /**
@@ -443,7 +421,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
             $this->handleException($exception);
         }
 
-
         $result = new DoctrineEmptyResultSet();
 
         return $result;
@@ -702,7 +679,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      *
      * @param \Exception $exception Doctrine exception to be converted
      *
-     * @return \Exception Converted exception
+     * @return \oxException Exception converted into an instance of oxException
      */
     protected function convertException(\Exception $exception)
     {
@@ -740,19 +717,20 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
                 $exceptionClass = 'OxidEsales\Eshop\Core\exception\DatabaseException';
         }
 
-        return new $exceptionClass($message, $code, $exception);
+        /** @var \oxException $convertedException */
+        $convertedException = new $exceptionClass($message, $code, $exception);
+            
+        return $convertedException;
     }
 
     /**
      * Handle a given exception
      *
-     * @todo: add test!
-     *
-     * @param \Exception $exception
+     * @param \oxException $exception
      *
      * @throws \Exception|\oxConnectionException|DatabaseException
      */
-    protected function handleException(\Exception $exception)
+    protected function handleException(\oxException $exception)
     {
         $this->logException($exception);
 
@@ -760,21 +738,15 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     }
 
     /**
-     * Log a given Exception
-     *
-     * @todo: add test!
+     * Log a given Exception the log file using the standard eShop logging mechanism.
      *
      * @param \Exception $exception
      */
     protected function logException(\Exception $exception)
     {
-
-        $message = $exception->getCode() . ' ' . $exception->getMessage();
-        $context = array(
-            'exception'         => $exception,
-            'previousException' => $exception->getPrevious()
-        );
-        $this->logger->error($message, $context);
+        /** The exception has to be converted into an instance of oxException in order to be logged like this */
+        $exception = $this->convertException($exception);
+        $exception->debugOut();
     }
 
     /**

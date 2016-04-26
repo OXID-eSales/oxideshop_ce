@@ -406,19 +406,37 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     /**
      * Add module templates to database.
      *
-     * @todo extract oxtplblocks query to ]
+     * @deprecated please use setTemplateBlocks this method will be removed because
+     * the combination of deleting and adding does unnessery writes and so it does not scale
+     * also it's more likely to get race conditions (in the moment the blocks are deleted)
      *
      * @param array  $moduleBlocks Module blocks array
      * @param string $moduleId     Module id
      */
     protected function _addTemplateBlocks($moduleBlocks, $moduleId)
     {
+        $this->setTemplateBlocks($moduleBlocks, $moduleId);
+    }
+
+    /**
+     * Set module templates in the database.
+     * we do not use delete and add combination because
+     * the combination of deleting and adding does unnecessary writes and so it does not scale
+     * also it's more likely to get race conditions (in the moment the blocks are deleted)
+     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
+     *
+     * @param array  $moduleBlocks Module blocks array
+     * @param string $moduleId     Module id
+     */
+    protected function setTemplateBlocks($moduleBlocks, $moduleId)
+    {
         $shopId = $this->getConfig()->getShopId();
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-
         if (is_array($moduleBlocks)) {
+            $knownBlocks = ['dummy'];
             foreach ($moduleBlocks as $moduleBlock) {
-                $id = Registry::getUtilsObject()->generateUId();
+                $id = md5($moduleId . json_encode($moduleBlock) . $shopId);
+                $knownBlocks[] = $id;
 
                 $template = $moduleBlock["template"];
                 $position = isset($moduleBlock['position']) && is_numeric($moduleBlock['position']) ?
@@ -430,7 +448,18 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
                 $theme = isset($moduleBlock['theme']) ? $moduleBlock['theme'] : '';
 
                 $sql = "INSERT INTO `oxtplblocks` (`OXID`, `OXACTIVE`, `OXSHOPID`, `OXTHEME`, `OXTEMPLATE`, `OXBLOCKNAME`, `OXPOS`, `OXFILE`, `OXMODULE`)
-                         VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?)";
+                     VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?)
+                     ON DUPLICATE KEY UPDATE
+                      `OXID` = VALUES(OXID),
+                      `OXACTIVE` = VALUES(OXACTIVE),
+                      `OXSHOPID` = VALUES(OXSHOPID),
+                      `OXTHEME`  = VALUES(OXTHEME),
+                      `OXTEMPLATE` = VALUES(OXTEMPLATE),
+                      `OXBLOCKNAME` = VALUES(OXBLOCKNAME),
+                      `OXPOS` = VALUES(OXPOS),
+                      `OXFILE` = VALUES(OXFILE),
+                      `OXMODULE` = VALUES(OXMODULE)
+                     ";
 
                 $db->execute(
                     $sql,
@@ -446,6 +475,12 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
                     )
                 );
             }
+
+            $commaSeparatedListOfKnownBlocks = join(',', $db->quoteArray($knownBlocks));
+            $db->execute(
+                "DELETE FROM oxtplblocks WHERE OXSHOPID = ? AND OXMODULE = ? AND OXID NOT IN ($commaSeparatedListOfKnownBlocks) ",
+                array($shopId, $moduleId)
+            );
         }
     }
 

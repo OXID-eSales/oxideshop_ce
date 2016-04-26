@@ -666,20 +666,6 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos->getCode($aParams, $oSmarty);
     }
 
-    public function testGetCodeForGuestbook()
-    {
-        $aParams = null;
-        $oSmarty = null;
-
-        $oFormatter = $this->getMock('EMOS', array('addContent'));
-        $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Service/Gaestebuch'));
-
-        $oEmos = $this->getMock('oxEmosAdapter', array('getEmos', '_getEmosCl'));
-        $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
-        $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('guestbook'));
-        $oEmos->getCode($aParams, $oSmarty);
-    }
-
     public function testGetCodeForLinks()
     {
         $aParams = null;

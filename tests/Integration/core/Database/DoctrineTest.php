@@ -152,16 +152,16 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
      * Test that the expected exception is thrown for an invalid function parameter.
      * See the data provider for arguments considered invalid.
      *
-     * @dataProvider dataProviderTestGetArrayThrowsDatabaseExceptionOnInvalidArguments
+     * @dataProvider dataProviderTestGetAllThrowsDatabaseExceptionOnInvalidArguments
      *
      * @param mixed $invalidParameter A parameter, which is considered invalid and will trigger an exception
      */
-    public function testGetArrayThrowsDatabaseExceptionOnInvalidArguments($invalidParameter)
+    public function testGetAllThrowsDatabaseExceptionOnInvalidArguments($invalidParameter)
     {
         $expectedExceptionClass = '\InvalidArgumentException';
         $this->setExpectedException($expectedExceptionClass);
 
-        $this->database->getArray(
+        $this->database->getAll(
             "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "'",
             $invalidParameter
         );
@@ -184,24 +184,6 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
         $databaseMock->execute(
             $query,
             array()
-        );
-    }
-
-    /**
-     * As in ADOdb Lite GetAll is just an alias for getArray. Test that delegation works.
-     *
-     */
-    public function testGetAllDelegatesToGetArray()
-    {
-        /** @var \OxidEsales\Eshop\Core\Database\Doctrine|\PHPUnit_Framework_MockObject_MockObject $databaseMock */
-        $databaseMock = $this->getMockBuilder('\OxidEsales\Eshop\Core\Database\Doctrine')
-            ->setMethods(['getArray'])
-            ->getMock();
-
-        $databaseMock->expects($this->once())->method('getArray');
-
-        $databaseMock->getAll(
-            "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "'"
         );
     }
 

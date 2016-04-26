@@ -232,18 +232,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     }
 
     /**
-     * Quote the given string.
-     *
-     * @param string $value The string we want to quote.
-     *
-     * @return string The given string in quotes.
-     */
-    public function qstr($value)
-    {
-        return $this->quote($value);
-    }
-
-    /**
      * Quote the given string. Same as qstr.
      *
      * @param string $value The string we want to quote.
@@ -759,49 +747,13 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
 
     /**
      * Get all values as an array.
-     * The returned value depends on the fetch mode.
+     * The format of returned the array depends on the fetch mode.
+     * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
+     * The default fetch mode is defined in Doctrine::$fetchMode
      *
-     * @see DatabaseInterface::setFetchMode() for how to set the fetch mode
-     * @see Doctrine::$fetchMode for the default fetch mode
-     *
-     * @param string $query
-     * @param array  $parameters
-     * @param bool   $executeOnSlave
-     *
-     * @see Doctrine::getArray()
-     *
-     * @throws     DatabaseException
-     * @throws     \InvalidArgumentException
-     *
-     * @return array
-     */
-    public function getAll($query, $parameters = array(), $executeOnSlave = true)
-    {
-        // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
-        $parameters = $this->assureParameterIsAnArray($parameters);
-        // END deprecated
-        $result = null;
-
-        try {
-            $result = $this->getArray($query, $parameters, $executeOnSlave);
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Get all values as an array.
-     * The returned value depends on the fetch mode.
-     *
-     * @see DatabaseInterface::setFetchMode() for how to set the fetch mode
-     * @see Doctrine::$fetchMode for the default fetch mode
-     *
-     * @param string $query          If parameters are given, the "?" in the string will be replaced by the values in the array
-     * @param array  $parameters     must loosely evaluate to false or must be an array
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string     $query          If parameters are given, the "?" in the string will be replaced by the values in the array
+     * @param array|bool $parameters     must loosely evaluate to false or must be an array
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
@@ -811,12 +763,13 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      *
      * @return array
      */
-    public function getArray($query, $parameters = array(), $executeOnSlave = true)
+    public function getAll($query, $parameters = array(), $executeOnSlave = true)
     {
-        // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
-        $parameters = $this->assureParameterIsAnArray($parameters);
-        // END deprecated
         $statement = null;
+
+        if ($parameters && !is_array($parameters)) {
+            throw new \InvalidArgumentException();
+        }
 
         $parameters = $this->assureParameterIsAnArray($parameters);
 
@@ -828,7 +781,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
         }
 
         $result = $statement->fetchAll();
-
+        
         return $result;
     }
 

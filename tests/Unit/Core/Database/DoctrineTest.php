@@ -88,19 +88,6 @@ class DoctrineTest extends UnitTestCase
     }
 
     /**
-     * Test, that the method 'qstr' delegates direct to the method 'quote'.
-     */
-    public function testQstrDelegation()
-    {
-        $value = 'quoteThis';
-
-        $databaseMock = $this->getMock('OxidEsales\Eshop\Core\Database\Doctrine', array('quote'));
-        $databaseMock->expects($this->once())->method('quote')->with($value);
-
-        $databaseMock->qstr($value);
-    }
-
-    /**
      * Test, that the method 'quoteArray' works with an empty array.
      */
     public function testQuoteArrayWithEmptyArray()

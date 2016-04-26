@@ -112,7 +112,6 @@ interface DatabaseInterface
      */
     public function getAll($query, $parameters = array(), $executeOnSlave = true);
 
-
     /**
      * Get value
      *

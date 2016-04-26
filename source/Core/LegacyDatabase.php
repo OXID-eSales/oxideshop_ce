@@ -33,6 +33,11 @@ use pear_ADOConnection;
 
 /**
  * Database connection class
+ *
+ * @deprecated since v5.3.0 (2016-04-19); This class will be removed. There will be a DatabaseInterface in v6.0 which
+ *             includes all but the deprecated methods of oxLegacyDb. An implementation of the DatabaseInterface based
+ *             on Doctrine DBAL will replace oxLegacyDb.
+ *
  */
 class LegacyDatabase extends \oxSuperCfg
 {
@@ -96,6 +101,8 @@ class LegacyDatabase extends \oxSuperCfg
      * @param array|bool $parameters Array of parameters
      * @param bool       $type       Connection type
      *
+     * @deprecated since v5.3.0 (2016-04-14); Use the method oxLegacyDb::getAll() instead.
+     *
      * @return array
      */
     public function getArray($query, $parameters = false, $type = true)
@@ -152,6 +159,9 @@ class LegacyDatabase extends \oxSuperCfg
      * @param array|bool $parameters Array of parameters
      * @param bool       $type       Connection type
      *
+     * @deprecated since v5.3.0 (2016-04-14); This method will be removed. Rebuild the functionality of this
+     * method with your code using getAll with assoc fetch mode. In some use cases you should be able to simply use getRow
+     *
      * @return array
      */
     public function getAssoc($query, $parameters = false, $type = true)
@@ -205,6 +215,8 @@ class LegacyDatabase extends \oxSuperCfg
     /**
      * Executes query and returns result set.
      *
+     * @deprecated since v5.3.0 (2016-04-15); This method will be removed in v6.0. Please use the method execute() instead.
+     *
      * @param string     $query
      * @param array|bool $parameters Array of parameters
      *
@@ -218,6 +230,8 @@ class LegacyDatabase extends \oxSuperCfg
     /**
      * Returns count of affected rows.
      *
+     * @deprecated since v5.3.0 (2016-04-14); This method will be removed in v6.0. Use affectedRows() instead.
+     *
      * @return int
      */
     public function affected_rows()
@@ -226,7 +240,20 @@ class LegacyDatabase extends \oxSuperCfg
     }
 
     /**
+     * Returns the count of rows affected by the last query.
+     *
+     * @return int
+     */
+    public function affectedRows()
+    {
+        return $this->getDb(false)->Affected_Rows();
+    }
+
+    /**
      * Returns error number.
+     *
+     * @deprecated since v5.3.0 (2016-04-14); This information will be part of the thrown DatabaseException exception.
+     *             Replace usage by catching DatabaseException and using DatabaseException->getCode()
      *
      * @return int
      */
@@ -237,6 +264,9 @@ class LegacyDatabase extends \oxSuperCfg
 
     /**
      * Returns error message.
+     *
+     * @deprecated since v5.3.0 (2016-04-14); This information will be part of the thrown DatabaseException exception.
+     *             Replace usage by catching DatabaseException and using DatabaseException->getMessage()
      *
      * @return string
      */
@@ -249,6 +279,8 @@ class LegacyDatabase extends \oxSuperCfg
      * Quote string
      *
      * @param string $value value
+     *
+     * @deprecated since v5.3.0 (2016-04-14); Use the method oxLegacyDb::quote() instead.
      *
      * @return string
      */
@@ -302,6 +334,8 @@ class LegacyDatabase extends \oxSuperCfg
      *
      * @param string $table
      * @param bool   $numberOfIndexes
+     *
+     * @deprecated since v5.3.0 (2016-04-13); Not used. In v6.0 this method will be removed.
      *
      * @return array
      */
@@ -372,10 +406,23 @@ class LegacyDatabase extends \oxSuperCfg
 
     /**
      * Returns last insert ID.
+     * This method is an alias of lastInsertId().
+     *
+     * @deprecated since v5.3.0 (2016-04-14); This method will be removed in v6.0. Use lastInsertId instead.
      *
      * @return int
      */
     public function insert_Id()
+    {
+        return $this->getDb(false)->Insert_ID();
+    }
+
+    /**
+     * Returns last insert ID
+     *
+     * @return int
+     */
+    public function lastInsertId()
     {
         return $this->getDb(false)->Insert_ID();
     }

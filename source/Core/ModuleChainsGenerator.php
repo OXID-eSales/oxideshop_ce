@@ -37,6 +37,20 @@ class ModuleChainsGenerator
     private $moduleVariablesLocator;
 
     /**
+     * @var $extensionWithEror array of moduleExtensions that can not be loaded
+     * Used within onModuleExtensionCreationError method
+     * it is needed to collect errors while already handling errors
+     */
+    protected $extensionWithError = [];
+
+    /**
+     * @var $handlingError boolean holding the information if error handling is on going
+     * if it is set to true errors are collected but handling is postponed until 
+     * the current error was handled. See also $extensionWithError
+     */
+    protected $handlingError = false;
+
+    /**
      * @param ModuleVariablesLocator $moduleVariablesLocator
      */
     public function __construct($moduleVariablesLocator)
@@ -117,7 +131,7 @@ class ModuleChainsGenerator
      * @param array  $classChain Module names
      * @param string $baseClass  Oxid base class
      *
-     * @throws oxSystemComponentException missing system component exception
+     * @throws \oxSystemComponentException missing system component exception
      *
      * @return string
      */
@@ -132,7 +146,9 @@ class ModuleChainsGenerator
 
             if ($this->createClassExtension($parentClass, $extensionPath)) {
                 $parentClass = basename($extensionPath);
-                $lastClass = basename($extensionPath);
+                $lastClass = $parentClass;
+            } else {
+                print "Debug: failed to load $extensionPath (parent $parentClass)";
             }
         }
 
@@ -148,7 +164,7 @@ class ModuleChainsGenerator
      * @param string $class
      * @param string $extensionPath
      *
-     * @throws oxSystemComponentException
+     * @throws \oxSystemComponentException
      *
      * @return bool
      */
@@ -198,21 +214,63 @@ class ModuleChainsGenerator
      * If blDoNotDisableModuleOnError config value is false, disables bad module.
      * To avoid problems with unit tests it only throw an exception if class does not exist.
      *
-     * @param string $classExtension
+     * @param string $classExtension the path of the class
      * @param string $moduleClass
      *
-     * @throws oxSystemComponentException
+     * @throws \oxSystemComponentException
+     * @return void
      */
     protected function onModuleExtensionCreationError($classExtension, $moduleClass)
     {
-        $disableModuleOnError = !oxRegistry::get("oxConfigFile")->getVar("blDoNotDisableModuleOnError");
-        if ($disableModuleOnError) {
-            $this->disableModule($classExtension);
+        $this->extensionWithError[$classExtension] = $moduleClass;
+        if ($this->handlingError) {
+            //avoid endless loop in case error handling may use indirectly $classExtension  
+            return;
+        }
+        $this->handlingError = true;
+        
+        do{
+           $this->handleModuleExtensionError($classExtension, $moduleClass);
+           unset($this->extensionWithError[$classExtension]);
+           $classExtension = key($this->extensionWithError);
+           $moduleClass = $this->extensionWithError[$classExtension];
+        } while($classExtension);
+
+        $this->handlingError = false;
+     }
+    
+     protected function handleModuleExtensionError($classExtension, $moduleClass)
+     {
+  
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //TODO: try to solve the error by fixing the internal module state:
+        // so at least the next request will get the correct extension chain
+        // Only if automatically fixing is not possible one of the other options(e.g. exception, disabling module) should be used
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        
+        $oxConfigFile = oxRegistry::get("oxConfigFile");
+        $blIgnoreModuleExtensionError = $oxConfigFile->getVar("blIgnoreExtensionOnError");
+        $exception = oxNew("oxSystemComponentException");
+        $exception->setMessage("EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND");
+        $exception->setComponent($moduleClass);
+        if ($blIgnoreModuleExtensionError) {
+            //ignoring the error while building the module chain is important to keep the system usable
+            //so admin can run console commands or use the admin area to fix/analyze the problem.
+            //But writing the error to the logfile is the most important thing so someone will be able to analyse
+            //whats cause maybe unexpected behavior in case of an broken module chain
+            $exception->debugOut();
         } else {
-            $exception = oxNew("oxSystemComponentException");
-            $exception->setMessage("EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND");
-            $exception->setComponent($moduleClass);
-            throw $exception;
+            $disableModuleOnError = !$oxConfigFile->getVar("blDoNotDisableModuleOnError");
+            if ($disableModuleOnError) {
+                //it is important to log error to make clear that something went wrong
+                //and make it it possible to analyze the problem
+                $exception->debugOut();
+                //disabling the module because if one part of the module is not working the shop might work better without that module at all
+                $this->disableModule($classExtension);
+            } else {
+                throw $exception;
+            }
         }
     }
 

@@ -169,6 +169,13 @@
     $this->blDoNotDisableModuleOnError = false;
 
     /**
+     * If class from extension path does not exist, ignore it and try to continue
+     * The exception will be logged but not thrown, module will not be deactivate
+     * regardless of the blDoNotDisableModuleOnError setting
+     */
+    $this->blIgnoreModuleExtensionError = true;
+
+    /**
      * Enable temporarily in case you can't access the backend due to broken views
      */
     $this->blSkipViewUsage = false;

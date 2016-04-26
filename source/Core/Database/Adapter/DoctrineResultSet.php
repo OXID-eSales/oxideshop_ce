@@ -115,7 +115,7 @@ class DoctrineResultSet
     /**
      * Close the pointer to the database connection.
      */
-    public function Close()
+    public function close()
     {
         if ($this->isEmpty()) {
             $this->EOF = true;
@@ -135,7 +135,7 @@ class DoctrineResultSet
      *
      * @return \stdClass An object, filled with the column information.
      */
-    public function FetchField($columnIndex)
+    public function fetchField($columnIndex)
     {
         $metaInformation = $this->getAdapted()->getColumnMeta($columnIndex);
 
@@ -155,7 +155,7 @@ class DoctrineResultSet
      *
      * @return int The number of columns of the adapted result set.
      */
-    public function FieldCount()
+    public function fieldCount()
     {
         return $this->getAdapted()->columnCount();
     }
@@ -167,7 +167,7 @@ class DoctrineResultSet
      *
      * @return null|boolean|string|array The column value (string or array). If the result set is empty or the last row is reached, we give back false. If the column name is not present, we give back null.
      */
-    public function Fields($columnKey)
+    public function fields($columnKey)
     {
         if ($this->isEmpty()) {
             if (0 === $columnKey) {
@@ -194,7 +194,7 @@ class DoctrineResultSet
      *
      * @return array The rows of the corresponding statement, starting at the current row pointer.
      */
-    public function GetArray($numberOfRows)
+    public function getArray($numberOfRows)
     {
         return $this->getRows($numberOfRows);
     }
@@ -206,7 +206,7 @@ class DoctrineResultSet
      *
      * @return array The rows of the corresponding statement, starting at the current row pointer.
      */
-    public function GetRows($numberOfRows)
+    public function getRows($numberOfRows)
     {
         $result = array();
 
@@ -226,7 +226,7 @@ class DoctrineResultSet
      *
      * @return bool Is there another row?
      */
-    public function MoveNext()
+    public function moveNext()
     {
         if ($this->EOF()) {
             return false;
@@ -253,7 +253,7 @@ class DoctrineResultSet
      *
      * @return bool Is there another row?
      */
-    public function Move($rowIndex)
+    public function move($rowIndex)
     {
         if ($this->isEmpty()) {
             $this->setToEmptyState();
@@ -274,7 +274,7 @@ class DoctrineResultSet
         while (0 < $rowIndex) {
             $lastFields = $this->fields;
 
-            if (!$this->MoveNext()) {
+            if (!$this->moveNext()) {
                 $rowIndex = 0;
                 $this->fields = $lastFields;
                 $this->EOF = false;
@@ -291,13 +291,13 @@ class DoctrineResultSet
      *
      * @return bool True for empty or there exists another row, false for end of rows reached.
      */
-    public function MoveFirst()
+    public function moveFirst()
     {
         if ($this->isEmpty()) {
             return true;
         }
 
-        $result = $this->Move(0);
+        $result = $this->move(0);
 
         $this->fields = $this->getAdapted()->fetch();
 
@@ -309,14 +309,14 @@ class DoctrineResultSet
      *
      * @return bool Is this result set not empty?
      */
-    public function MoveLast()
+    public function moveLast()
     {
         if ($this->isEmpty()) {
             return false;
         } else {
             $lastIndex = $this->recordCount();
 
-            return $this->Move($lastIndex);
+            return $this->move($lastIndex);
         }
     }
 

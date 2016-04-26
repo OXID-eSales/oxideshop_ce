@@ -138,13 +138,13 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'MoveNext' works for an empty result set.
+     * Test, that the method 'moveNext' works for an empty result set.
      */
     public function testMoveNextWithEmptyResultSet()
     {
         $resultSet = $this->testCreationWithRealEmptyResult();
 
-        $methodResult = $resultSet->MoveNext();
+        $methodResult = $resultSet->moveNext();
 
         $this->assertTrue($resultSet->EOF);
         $this->assertFalse($resultSet->fields);
@@ -152,7 +152,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'MoveNext' works for a non empty result set.
+     * Test, that the method 'moveNext' works for a non empty result set.
      */
     public function testMoveNextWithNonEmptyResultSet()
     {
@@ -161,13 +161,13 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
         $this->assertFalse($resultSet->EOF);
         $this->assertSame(array(self::FIXTURE_OXID_1), $resultSet->fields);
 
-        $methodResult = $resultSet->MoveNext();
+        $methodResult = $resultSet->moveNext();
 
         $this->assertFalse($resultSet->EOF);
         $this->assertSame(array(self::FIXTURE_OXID_2), $resultSet->fields);
         $this->assertTrue($methodResult);
 
-        $methodResult = $resultSet->MoveNext();
+        $methodResult = $resultSet->moveNext();
 
         $this->assertFalse($resultSet->EOF);
         $this->assertSame(array(self::FIXTURE_OXID_3), $resultSet->fields);
@@ -175,22 +175,22 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'MoveNext' works for a non empty result set.
+     * Test, that the method 'moveNext' works for a non empty result set.
      */
     public function testMoveNextWithNonEmptyResultSetReachingEnd()
     {
         $this->loadFixtureToTestTable();
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
 
-        $resultSet->MoveNext();
-        $resultSet->MoveNext();
-        $methodResult = $resultSet->MoveNext();
+        $resultSet->moveNext();
+        $resultSet->moveNext();
+        $methodResult = $resultSet->moveNext();
 
         $this->assertTrue($resultSet->EOF);
         $this->assertFalse($resultSet->fields);
         $this->assertFalse($methodResult);
 
-        $methodResult = $resultSet->MoveNext();
+        $methodResult = $resultSet->moveNext();
 
         $this->assertTrue($resultSet->EOF);
         $this->assertFalse($resultSet->fields);
@@ -198,26 +198,26 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'MoveNext' works for a non empty result set and the fetch mode associative array.
+     * Test, that the method 'moveNext' works for a non empty result set and the fetch mode associative array.
      */
     public function testMoveNextWithNonEmptyResultSetFetchModeAssociative()
     {
         $this->loadFixtureToTestTable();
 
-        $this->database->setFetchMode(\PDO::FETCH_ASSOC);
+        $this->database->setFetchMode(Doctrine::FETCH_MODE_ASSOC);
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
         $this->initializeDatabase();
 
         $this->assertFalse($resultSet->EOF);
         $this->assertSame(array('OXID' => self::FIXTURE_OXID_1), $resultSet->fields);
 
-        $methodResult = $resultSet->MoveNext();
+        $methodResult = $resultSet->moveNext();
 
         $this->assertFalse($resultSet->EOF);
         $this->assertSame(array('OXID' => self::FIXTURE_OXID_2), $resultSet->fields);
         $this->assertTrue($methodResult);
 
-        $methodResult = $resultSet->MoveNext();
+        $methodResult = $resultSet->moveNext();
 
         $this->assertFalse($resultSet->EOF);
         $this->assertSame(array('OXID' => self::FIXTURE_OXID_3), $resultSet->fields);
@@ -240,7 +240,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'GetArray' works as expected.
+     * Test, that the method 'getArray' works as expected.
      *
      * @dataProvider dataProviderTestGetRowsTestGetArray
      *
@@ -257,13 +257,13 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
 
         $resultSet = $this->database->select($query);
 
-        $result = $resultSet->GetArray($numberOfRows);
+        $result = $resultSet->getArray($numberOfRows);
 
         $this->assertSame($expectedArray, $result);
     }
 
     /**
-     * Test, that the method 'GetArray' works as expected, if we call it consecutive. Thereby we assure, that the internal row pointer is used correct.
+     * Test, that the method 'getArray' works as expected, if we call it consecutive. Thereby we assure, that the internal row pointer is used correct.
      */
     public function testGetArraySequentialCalls()
     {
@@ -271,9 +271,9 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
 
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
 
-        $resultOne = $resultSet->GetArray(1);
-        $resultTwo = $resultSet->GetArray(1);
-        $resultThree = $resultSet->GetArray(1);
+        $resultOne = $resultSet->getArray(1);
+        $resultTwo = $resultSet->getArray(1);
+        $resultThree = $resultSet->getArray(1);
 
         $this->assertSame($resultOne, array(array(self::FIXTURE_OXID_1)));
         $this->assertSame($resultTwo, array(array(self::FIXTURE_OXID_2)));
@@ -281,7 +281,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'GetArray' works as expected, if we set first a fetch mode different from the default.
+     * Test, that the method 'getArray' works as expected, if we set first a fetch mode different from the default.
      */
     public function testGetArrayWithDifferentFetchMode()
     {
@@ -290,9 +290,9 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
 
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
 
-        $resultOne = $resultSet->GetArray(1);
-        $resultTwo = $resultSet->GetArray(1);
-        $resultThree = $resultSet->GetArray(1);
+        $resultOne = $resultSet->getArray(1);
+        $resultTwo = $resultSet->getArray(1);
+        $resultThree = $resultSet->getArray(1);
 
         $expectedOne = array(array('OXID' => self::FIXTURE_OXID_1, self::FIXTURE_OXID_1));
         $expectedTwo = array(array('OXID' => self::FIXTURE_OXID_2, self::FIXTURE_OXID_2));
@@ -304,7 +304,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'GetRows' works as expected.
+     * Test, that the method 'getRows' works as expected.
      *
      * @dataProvider dataProviderTestGetRowsTestGetArray
      *
@@ -321,13 +321,13 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
 
         $resultSet = $this->database->select($query);
 
-        $result = $resultSet->GetRows($numberOfRows);
+        $result = $resultSet->getRows($numberOfRows);
 
         $this->assertSame($expectedArray, $result);
     }
 
     /**
-     * Test, that the method 'GetRows' works as expected, if we call it consecutive. Thereby we assure, that the internal row pointer is used correct.
+     * Test, that the method 'getRows' works as expected, if we call it consecutive. Thereby we assure, that the internal row pointer is used correct.
      */
     public function testGetRowsSequentialCalls()
     {
@@ -335,9 +335,9 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
 
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
 
-        $resultOne = $resultSet->GetRows(1);
-        $resultTwo = $resultSet->GetRows(1);
-        $resultThree = $resultSet->GetRows(1);
+        $resultOne = $resultSet->getRows(1);
+        $resultTwo = $resultSet->getRows(1);
+        $resultThree = $resultSet->getRows(1);
 
         $this->assertSame($resultOne, array(array(self::FIXTURE_OXID_1)));
         $this->assertSame($resultTwo, array(array(self::FIXTURE_OXID_2)));
@@ -345,14 +345,14 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'FetchField' works as expected.
+     * Test, that the method 'fetchField' works as expected.
      */
     public function testFetchField()
     {
         $this->loadFixtureToTestTable();
         $resultSet = $this->database->select('SELECT * FROM ' . self::TABLE_NAME);
 
-        $columnInformationOne = $resultSet->FetchField(0);
+        $columnInformationOne = $resultSet->fetchField(0);
 
         $this->assertSame('stdClass', get_class($columnInformationOne));
 
@@ -392,7 +392,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'FieldCount' works as expected.
+     * Test, that the method 'fieldCount' works as expected.
      *
      * @dataProvider dataProviderTestFieldCount
      *
@@ -403,7 +403,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     {
         $resultSet = $this->database->select($query);
 
-        $this->assertSame($expectedCount, $resultSet->FieldCount());
+        $this->assertSame($expectedCount, $resultSet->fieldCount());
     }
 
     /**
@@ -425,14 +425,14 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method Fields works as expected.
+     * Test, that the method 'fields' works as expected.
      *
      * @dataProvider dataProviderTestFields
      *
      * @param string $query                The sql statement to execute.
-     * @param mixed  $parameter            The parameter for the Fields method.
+     * @param mixed  $parameter            The parameter for the fields method.
      * @param bool   $loadFixture          Should the fixture be loaded to the test database table?
-     * @param mixed  $expected             The expected result of the Fields method under the given specification.
+     * @param mixed  $expected             The expected result of the fields method under the given specification.
      * @param bool   $fetchModeAssociative Should the fetch mode be set to associative array before running the statement?
      */
     public function testFields($query, $parameter, $loadFixture, $expected, $fetchModeAssociative = false)
@@ -445,20 +445,20 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
         }
 
         $resultSet = $this->database->select($query);
-        $result = $resultSet->Fields($parameter);
+        $result = $resultSet->fields($parameter);
 
         $this->cleanTestTable();
         $this->assertSame($expected, $result);
     }
 
     /**
-     * Test, that the method 'Move' works with an empty result set.
+     * Test, that the method 'move' works with an empty result set.
      */
     public function testMoveWithEmptyResultSet()
     {
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
 
-        $methodResult = $resultSet->Move(7);
+        $methodResult = $resultSet->move(7);
 
         $this->assertFalse($methodResult);
         $this->assertTrue($resultSet->EOF);
@@ -479,7 +479,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test the method 'Move' with the parameters given by the corresponding data provider.
+     * Test the method 'move' with the parameters given by the corresponding data provider.
      *
      * @dataProvider dataProviderTestMove
      *
@@ -494,7 +494,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
 
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
 
-        $methodResult = $resultSet->Move($moveTo);
+        $methodResult = $resultSet->move($moveTo);
 
         $this->assertTrue($methodResult);
         $this->assertSame($expectedFields, $resultSet->fields);
@@ -504,13 +504,13 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'MoveFirst' works as expected for an empty result set.
+     * Test, that the method 'moveFirst' works as expected for an empty result set.
      */
     public function testMoveFirstEmptyResultSet()
     {
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
 
-        $methodResult = $resultSet->MoveFirst();
+        $methodResult = $resultSet->moveFirst();
 
         $this->assertTrue($methodResult);
         $this->assertSame(false, $resultSet->fields);
@@ -518,7 +518,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'MoveFirst' works as expected for a non empty result set.
+     * Test, that the method 'moveFirst' works as expected for a non empty result set.
      */
     public function testMoveFirstNonEmptyResultSet()
     {
@@ -526,7 +526,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
 
         $resultSet = $this->testMove(2, array(self::FIXTURE_OXID_3));
 
-        $methodResult = $resultSet->MoveFirst();
+        $methodResult = $resultSet->moveFirst();
 
         $this->assertTrue($methodResult);
         $this->assertSame(array(self::FIXTURE_OXID_1), $resultSet->fields);
@@ -534,14 +534,14 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'MoveFirst' works as expected for a non empty result set,
+     * Test, that the method 'moveFirst' works as expected for a non empty result set,
      * if we move to nearly the end of the rows.
      */
     public function testMoveFirstNonEmptyResultSetNearlyEndOfRows()
     {
         $resultSet = $this->testMove(2, array(self::FIXTURE_OXID_3));
 
-        $methodResult = $resultSet->MoveFirst();
+        $methodResult = $resultSet->moveFirst();
 
         $this->assertTrue($methodResult);
         $this->assertSame(array(self::FIXTURE_OXID_1), $resultSet->fields);
@@ -549,13 +549,13 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'MoveLast' works as expected for an empty result set.
+     * Test, that the method 'moveLast' works as expected for an empty result set.
      */
     public function testMoveLastEmptyResultSet()
     {
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
 
-        $methodResult = $resultSet->MoveLast();
+        $methodResult = $resultSet->moveLast();
 
         $this->assertFalse($methodResult);
         $this->assertTrue($resultSet->EOF);
@@ -563,7 +563,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'MoveLast' works as expected for a non empty result set, when we call it several times.
+     * Test, that the method 'moveLast' works as expected for a non empty result set, when we call it several times.
      */
     public function testMoveLastNonEmptyResultSet()
     {
@@ -571,7 +571,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
 
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
 
-        $methodResult = $resultSet->MoveLast();
+        $methodResult = $resultSet->moveLast();
 
         $this->assertTrue($methodResult);
         $this->assertFalse($resultSet->EOF);
@@ -579,7 +579,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'MoveLast' works as expected for a non empty result set, when we call it several times.
+     * Test, that the method 'moveLast' works as expected for a non empty result set, when we call it several times.
      */
     public function testMoveLastNonEmptyResultSetSequentialCalls()
     {
@@ -587,8 +587,8 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
 
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
 
-        $resultSet->MoveLast();
-        $methodResult = $resultSet->MoveLast();
+        $resultSet->moveLast();
+        $methodResult = $resultSet->moveLast();
 
         $this->assertTrue($methodResult);
         $this->assertFalse($resultSet->EOF);
@@ -703,26 +703,26 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'Close' works as expected for an empty result set.
+     * Test, that the method 'close' works as expected for an empty result set.
      */
     public function testCloseEmptyResultSet()
     {
         $resultSet = $this->testCreationWithRealEmptyResult();
 
-        $resultSet->Close();
+        $resultSet->close();
 
         $this->assertTrue($resultSet->EOF);
         $this->assertSame(array(), $resultSet->fields);
     }
 
     /**
-     * Test, that the method 'Close' works as expected for an empty result set with fetching a row after closing the cursor.
+     * Test, that the method 'close' works as expected for an empty result set with fetching a row after closing the cursor.
      */
     public function testCloseEmptyResultSetWithFetchingAfterClosing()
     {
         $resultSet = $this->testCreationWithRealEmptyResult();
 
-        $resultSet->Close();
+        $resultSet->close();
 
         $firstRow = $resultSet->fetchRow();
 
@@ -732,7 +732,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'Close' works as expected for a non empty result set.
+     * Test, that the method 'close' works as expected for a non empty result set.
      */
     public function testCloseNonEmptyResultSet()
     {
@@ -740,7 +740,7 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
 
         $firstRow = $resultSet->fetchRow();
 
-        $resultSet->Close();
+        $resultSet->close();
 
         $this->assertSame(array(self::FIXTURE_OXID_1), $firstRow);
         $this->assertFalse($resultSet->EOF);

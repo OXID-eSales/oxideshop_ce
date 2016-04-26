@@ -11,9 +11,6 @@
             <dd>
                 <a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=links"}]">[{oxmultilang ident="LINKS"}]</a>
             </dd>
-            <dd>
-                <a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=guestbook"}]">[{oxmultilang ident="GUESTBOOK"}]</a>
-            </dd>
             [{if $oView->isActive('Invitations')}]
                 <dd><a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=invite"}]"
                        rel="nofollow">[{oxmultilang ident="INVITE_YOUR_FRIENDS"}]</a></dd>

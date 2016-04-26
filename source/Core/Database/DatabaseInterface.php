@@ -177,7 +177,7 @@ interface DatabaseInterface
      *
      * @return int The number of rows affected by the last sql statement.
      */
-    public function affected_rows();
+    public function affectedRows();
 
     /**
      * Get the last error number, occurred while executing a sql statement through any of the methods in this class.

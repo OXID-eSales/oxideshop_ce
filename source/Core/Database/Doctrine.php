@@ -190,7 +190,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      *
      * @return int The number of rows affected by the sql statement.
      */
-    public function affected_rows()
+    public function affectedRows()
     {
         return $this->getAffectedRows();
     }

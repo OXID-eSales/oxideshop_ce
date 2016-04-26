@@ -278,7 +278,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         /** One row will be updated by the query */
         $expectedAffectedRows = 1;
         $this->database->execute('UPDATE ' . self::TABLE_NAME . ' SET oxuserid = "somevalue" WHERE OXID = ?', array(self::FIXTURE_OXID_1));
-        $actualAffectedRows = $this->database->affected_rows();
+        $actualAffectedRows = $this->database->affectedRows();
 
         $this->assertEquals($expectedAffectedRows, $actualAffectedRows, '1 row was updated by the query');
 
@@ -286,7 +286,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         /** Two rows will be updated by the query */
         $expectedAffectedRows = 2;
         $this->database->execute('UPDATE ' . self::TABLE_NAME . ' SET oxuserid = "someothervalue" WHERE OXID IN (?, ?)', array(self::FIXTURE_OXID_1, self::FIXTURE_OXID_2));
-        $actualAffectedRows = $this->database->affected_rows();
+        $actualAffectedRows = $this->database->affectedRows();
 
         $this->assertEquals($expectedAffectedRows, $actualAffectedRows, '2 rows was updated by the query');
     }
@@ -305,7 +305,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             array(), // params
             false // Execute on slave
         );
-        $actualAffectedRows = $this->database->affected_rows();
+        $actualAffectedRows = $this->database->affectedRows();
         $this->assertEquals($expectedAffectedRows, $actualAffectedRows, '1 row was selected, so affected rows must be set to 1');
 
         /** 2 rows will be selected, so affected rows must be set to 2 */
@@ -315,7 +315,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             array(), // params
             false // Execute on slave
         );
-        $actualAffectedRows = $this->database->affected_rows();
+        $actualAffectedRows = $this->database->affectedRows();
 
         $this->assertEquals($expectedAffectedRows, $actualAffectedRows, '2 rows were selected, so affected rows must be set to 2');
     }
@@ -453,13 +453,13 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $resultSet = $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('$exampleOxId');");
 
         $this->assertEmptyResultSet($resultSet);
-        $this->assertSame(1, $this->database->affected_rows());
+        $this->assertSame(1, $this->database->affectedRows());
         $this->assertTestTableHasOnly($exampleOxId);
 
         $resultSet = $this->database->execute("DELETE FROM " . self::TABLE_NAME . " WHERE OXID = '$exampleOxId';");
 
         $this->assertEmptyResultSet($resultSet);
-        $this->assertSame(1, $this->database->affected_rows());
+        $this->assertSame(1, $this->database->affectedRows());
         $this->assertTestTableIsEmpty();
     }
 

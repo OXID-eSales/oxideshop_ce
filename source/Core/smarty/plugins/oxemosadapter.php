@@ -88,7 +88,6 @@ class oxEmosAdapter extends oxSuperCfg
         'help' => 'Service/Hilfe',
         'newsletter_success' => 'Service/Newsletter/Success',
         'newsletter_failure' => 'Service/Newsletter/Form',
-        'guestbook' => 'Service/Gaestebuch',
         'links' => 'Service/Links',
         'info_impressum.tpl' => 'Info/Impressum',
         'info_agb.tpl' => 'Info/AGB',

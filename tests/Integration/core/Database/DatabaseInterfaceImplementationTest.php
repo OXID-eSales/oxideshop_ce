@@ -1044,6 +1044,8 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $this->assertInternalType('array', $result);
         $this->assertEmpty($result);
+
+        $this->assertEquals(0, $this->database->affected_rows());
     }
 
     /**

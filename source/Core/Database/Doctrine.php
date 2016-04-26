@@ -149,7 +149,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
-        
+
         if ($this->isSelectStatement($sqlSelect)) {
             return $this->getConnection()->fetchColumn($sqlSelect, $parameters);
         }
@@ -174,18 +174,12 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     {
         $parameters = $this->assureParameterIsAnArray($parameters);
 
-        $result = array();
+        $resultSet = $this->select($sqlSelect, $parameters, $executeOnSlave);
 
-        try {
-            $resultSet = $this->select($sqlSelect, $parameters, $executeOnSlave);
+        $result = $resultSet->fetchRow();
 
-            $result = $resultSet->fetchRow();
-
-            if (!$result) {
-                $result = array();
-            }
-        } catch (\Exception $exception) {
-            // @todo: throw correct exception
+        if (!$result) {
+            $result = array();
         }
 
         return $result;
@@ -440,7 +434,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
-        
+
         try {
             $affectedRows = $this->getConnection()->executeUpdate($query, $parameters, $types);
             $this->setAffectedRows($affectedRows);
@@ -679,7 +673,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
         if ($parameter && !is_array($parameter)) {
             throw new \InvalidArgumentException();
         }
-        
+
         /** If $parameter evaluates to false and it is not an array convert it into an array */
         if (!is_array($parameter)) {
             $parameter = array();

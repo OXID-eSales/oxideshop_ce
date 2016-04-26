@@ -273,11 +273,6 @@ REPLACE INTO `oxlinks` (`OXID`,      `OXSHOPID`,  `OXACTIVE`, `OXURL`,          
                       ('testlink8', 'oxbaseshop', 0,         'http://www.zzgoogle.com',  '8 [DE] link description šÄßüл',      '2 [EN] link description šÄßüл',      '2008-03-01 00:00:01'),
                       ('testlink9', 'oxbaseshop', 0,         'http://www.zgoogle.com',   '[last] [DE] link description šÄßüл', '3 [EN] link description šÄßüл',      '2008-01-01 00:00:03');
 
-#Guestbook demodata
-REPLACE INTO `oxgbentries` (`OXID`,           `OXSHOPID`,   `OXUSERID`,       `OXCONTENT`,                       `OXCREATE`,           `OXACTIVE`, `OXVIEWED`) VALUES
-                          ('testguestbook1', 'oxbaseshop', 'testuser',       'Demo guestbook entry [EN] šÄßüл', '2008-01-01 00:00:01', 1,          1),
-                          ('testguestbook2', 'oxbaseshop', 'oxdefaultadmin', 'Demo guestbook entry [DE] šÄßüл', '2008-01-02 00:00:01', 1,          1);
-
 #Countries demodata
 REPLACE INTO `oxcountry` (`OXID`,        `OXACTIVE`, `OXTITLE`,                     `OXISOALPHA2`, `OXISOALPHA3`, `OXUNNUM3`, `OXORDER`, `OXSHORTDESC`,                 `OXTITLE_1`,                    `OXSHORTDESC_1`,                     `OXVATSTATUS`) VALUES
                         ('testcountry1', 0,         '1 DE test Country šÄßüл',      '',           '111',         '',          0,        '[last] DE test Country desc', '[last] EN test Country šÄßüл', '1 EN test Country desc šÄßüл',       0),

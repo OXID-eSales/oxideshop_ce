@@ -2378,24 +2378,6 @@ class CreatingItemsAdminTest extends AdminTestCase
     }
 
     /**
-     * creating Guestbook
-     *
-     * @group creatingitems
-     */
-    public function testCreateGuestbook()
-    {
-        $this->loginAdmin("Customer Info", "Guestbook");
-        $this->openListItem("link=Demo guestbook entry [DE] šÄßüл");
-        $this->assertEquals("Demo guestbook entry [DE] šÄßüл", $this->getValue("editval[oxgbentries__oxcontent]"));
-        $this->type("editval[oxgbentries__oxcontent]", "ddd_šÄßüл");
-        $this->clickAndWaitFrame("save", "list");
-        $this->frame("list");
-        $this->assertElementPresent("link=ddd_šÄßüл");
-        $this->frame("edit");
-        $this->assertEquals("ddd_šÄßüл", $this->getValue("editval[oxgbentries__oxcontent]"));
-    }
-
-    /**
      * creating CMS pages
      *
      * @group creatingitems

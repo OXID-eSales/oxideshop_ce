@@ -162,11 +162,6 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("%HELP% - Main", $this->getText("//h1"));
         $this->assertTextPresent("Here, you can insert additional information, further links, user manual etc");
 
-        $this->clickAndWait("//dl[@id='footerServices']//a[text()='%GUESTBOOK%']");
-        $this->assertEquals("%YOU_ARE_HERE%: / %GUESTBOOK%", $this->getText("breadCrumb"));
-        $this->assertEquals("%PAGE_TITLE_GUESTBOOK%", $this->getText("//h1"));
-        $this->assertElementPresent("link=%MESSAGE_TO_BE_LOGGED_WRITE_GUESTBOOK%");
-
         $this->clickAndWait("//dl[@id='footerServices']//a[text()='%LINKS%']");
         $this->assertEquals("%YOU_ARE_HERE%: / %LINKS%", $this->getText("breadCrumb"));
         $this->assertEquals("%LINKS%", $this->getText("//h1"));
@@ -1404,38 +1399,6 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("Test product 3 [EN] šÄßüл", $this->getText("//h1"));
     }
 
-    /**
-     * Guestbook spam control
-     *
-     * @group frontend
-     */
-    public function testFrontendGuestbookSpamProtection()
-    {
-        //setting spam protection 2 entries per day
-        $this->callShopSC("oxConfig", null, null, array("iMaxGBEntriesPerDay" => array("type" => "str", "value" => '2')));
-
-        $this->clearCache();
-        $this->openShop();
-        $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
-        $this->clickAndWait("//dl[@id='footerServices']//a[text()='%GUESTBOOK%']");
-        $this->assertEquals("%PAGE_TITLE_GUESTBOOK%", $this->getText("//h1"));
-        $this->assertFalse($this->isVisible("rvw_txt"));
-        $this->assertElementPresent("writeNewReview");
-        $this->_writeReview(1, true);
-        $this->_writeReview(2, false);
-        $this->clickAndWait("//dl[@id='footerServices']//a[text()='%GUESTBOOK%']");
-        $this->assertElementNotPresent("writeNewReview");
-
-        //increasing guestbook entries limit
-        $this->callShopSC("oxConfig", null, null, array("iMaxGBEntriesPerDay" => array("type" => "str", "value" => '10')));
-
-        $this->clickAndWait("//dl[@id='footerServices']//a[text()='%GUESTBOOK%']");
-        $this->assertEquals("%PAGE_TITLE_GUESTBOOK%", $this->getText("//h1"));
-        $this->assertElementPresent("writeNewReview");
-        $this->_writeReview(3, true);
-        $this->_writeReview(4, true);
-    }
-
 
 
     /**
@@ -1901,25 +1864,5 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals($aArticlesTitles[1], $this->getText("searchList_2"));
         $this->assertEquals($aArticlesTitles[2], $this->getText("searchList_3"));
         $this->assertEquals($aArticlesTitles[3], $this->getText("searchList_4"));
-    }
-
-    /**
-     * Writes review and checks link visibility.
-     *
-     * @param $iGuestBookEntryNumberToAssert
-     * @param $blReviewLinkVisible
-     */
-    private function _writeReview($iGuestBookEntryNumberToAssert, $blReviewLinkVisible)
-    {
-        $this->click("writeNewReview");
-        $this->waitForItemAppear("rvw_txt");
-        $this->type("rvw_txt", "guestbook entry No. $iGuestBookEntryNumberToAssert");
-        $this->clickAndWait("//button[text()='%SUBMIT%']");
-        $this->assertTextPresent("guestbook entry No. $iGuestBookEntryNumberToAssert");
-        if ($blReviewLinkVisible) {
-            $this->assertElementPresent("writeNewReview");
-        } else {
-            $this->assertElementNotPresent("writeNewReview");
-        }
     }
 }

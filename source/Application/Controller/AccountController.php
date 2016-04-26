@@ -203,7 +203,7 @@ class AccountController extends \oxUBase
     }
 
     /**
-     * For some user actions (like writing guestbook entry or product
+     * For some user actions (like writing product
      * review) user must be logged in. So e.g. in product details page
      * there is a link leading to current view. Link contains parameter
      * "sourcecl", which tells where to redirect after successfull login.

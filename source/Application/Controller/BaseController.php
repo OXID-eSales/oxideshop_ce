@@ -2626,7 +2626,7 @@ class BaseController extends \oxView
     }
 
     /**
-     * Form id getter. This id used to prevent double guestbook, review entry submit
+     * Form id getter. This id used to prevent double review entry submit
      *
      * @return string
      */

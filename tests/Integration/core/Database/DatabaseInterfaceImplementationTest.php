@@ -663,6 +663,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
     /**
      * Test that getAll returns an array with integer keys, if setFetchMode is not called before calling getArray.
+     * Test that getAll returns an array with integer keys, if setFetchMode is not called before calling getAll.
      *
      * @todo IMHO This is an inconsistent implementation of ADOdb Lite, as not calling setFetchMode should give the same results
      *       as calling setFetchMode with the param DatabaseInterface::FETCH_MODE_DEFAULT
@@ -670,10 +671,10 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      * assertSame is not used here as the order of element in the result can crash the test and the order of elements
      * does not matter in this test case.
      */
-    public function testGetArrayReturnsExpectedResultOnNoFetchModeSet()
+    public function testGetAllReturnsExpectedResultOnNoFetchModeSet()
     {
         $expectedResult = array(array(self::FIXTURE_OXID_1));
-        $message = 'An array with integer keys is returned, if setFetchMode is not called before calling getArray';
+        $message = 'An array with integer keys is returned, if setFetchMode is not called before calling getAll';
 
         $database = $this->getDb();
         self::assureTestTableIsEmpty();
@@ -687,7 +688,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Test that getArray returns an array respecting the given fetch mode.
+     * Test that getAll returns an array respecting the given fetch mode.
      * assertSame is not used here as the order of element in the result can crash the test and the order of elements
      * does not matter in this test case.
      *
@@ -742,11 +743,11 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Test that passing parameters to getArray works as expected
+     * Test that passing parameters to getAll works as expected
      */
-    public function testGetArrayWithEmptyParameter()
+    public function testGetAllWithEmptyParameter()
     {
-        $message = 'The expected result is returned when passing an empty array as parameter to Doctrine::getArray()';
+        $message = 'The expected result is returned when passing an empty array as parameter to Doctrine::getAll()';
         $fetchMode = DatabaseInterface::FETCH_MODE_NUM;
         $expectedResult = array(array(self::FIXTURE_OXID_1));
 
@@ -765,11 +766,11 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Test that passing parameters to getArray works as expected
+     * Test that passing parameters to getAll works as expected
      */
-    public function testGetArrayWithOneParameter()
+    public function testGetAllWithOneParameter()
     {
-        $message = 'The expected result is returned when passing an array with one parameter to Doctrine::getArray()';
+        $message = 'The expected result is returned when passing an array with one parameter to Doctrine::getAll()';
         $fetchMode = DatabaseInterface::FETCH_MODE_NUM;
         $expectedResult = array(array(self::FIXTURE_OXID_1));
 
@@ -788,11 +789,11 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Test that passing parameters to getArray works as expected
+     * Test that passing parameters to getAll works as expected
      */
-    public function testGetArrayWithMoreThanOneParameters()
+    public function testGetAllWithMoreThanOneParameters()
     {
-        $message = 'The expected result is returned when passing an array with more than one parameter to Doctrine::getArray()';
+        $message = 'The expected result is returned when passing an array with more than one parameter to Doctrine::getAll()';
         $fetchMode = DatabaseInterface::FETCH_MODE_NUM;
         $expectedResult = array(
             array(self::FIXTURE_OXID_1),
@@ -817,7 +818,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     /**
      * Test that the expected exception is thrown for an invalid query string.
      */
-    public function testGetArrayThrowsDatabaseExceptionOnInvalidQueryString()
+    public function testGetAllThrowsDatabaseExceptionOnInvalidQueryString()
     {
         $expectedExceptionClass = $this->getDatabaseExceptionClassName();
 
@@ -830,7 +831,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Provide invalid parameters for getArray.
+     * Provide invalid parameters for getAll.
      * Anything which loosely evaluates to true and is not an array will trigger an exception.
      *
      * @return array
@@ -839,23 +840,23 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     {
         return array(
             array(
-                //'Passing a plain string as parameter to getArray triggers an exception',
+                //'Passing a plain string as parameter to getAll triggers an exception',
                 'string'
             ),
             array(
-                //'Passing an object as parameter to getArray triggers an exception',
+                //'Passing an object as parameter to getAll triggers an exception',
                 new \stdClass()
             ),
             array(
-                //'Passing an integer as parameter to getArray triggers an exception',
+                //'Passing an integer as parameter to getAll triggers an exception',
                 (int) 1
             ),
             array(
-                //'Passing a float string as parameter to getArray triggers an exception',
+                //'Passing a float string as parameter to getAll triggers an exception',
                 (float) 1
             ),
             array(
-                //'Passing TRUE as parameter to getArray triggers an exception',
+                //'Passing TRUE as parameter to getAll triggers an exception',
                 true
             ),
         );
@@ -868,12 +869,12 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      *
      * See the data provider for arguments, which loosely evaluate to false
      *
-     * @dataProvider dataProviderTestGetArrayThrowsNoExceptionOnValidArguments
+     * @dataProvider dataProviderTestGetAllThrowsNoExceptionOnValidArguments
      *
      * @param string $message        An assertion message
      * @param mixed  $validParameter A valid parameter
      */
-    public function testGetArrayThrowsNoExceptionOnValidArguments($message, $validParameter)
+    public function testGetAllThrowsNoExceptionOnValidArguments($message, $validParameter)
     {
         $fetchMode = DatabaseInterface::FETCH_MODE_NUM;
         $expectedResult = array(array(self::FIXTURE_OXID_1));
@@ -893,33 +894,33 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Provide invalid parameters for getArray.
+     * Provide invalid parameters for getAll.
      * Anything which loosely evaluates to false will not trigger an exception.
      * Anything which loosely evaluates to true and is an array will not trigger an exception.
      *
      * @return array
      */
-    public function dataProviderTestGetArrayThrowsNoExceptionOnValidArguments()
+    public function dataProviderTestGetAllThrowsNoExceptionOnValidArguments()
     {
         return array(
             array(
-                'Passing an empty string as parameter to getArray does not trigger an exception',
+                'Passing an empty string as parameter to getAll does not trigger an exception',
                 ''
             ),
             array(
-                'Passing an null as parameter to getArray does not trigger an exception',
+                'Passing an null as parameter to getAll does not trigger an exception',
                 null
             ),
             array(
-                'Passing an empty array as parameter to getArray does not trigger an exception',
+                'Passing an empty array as parameter to getAll does not trigger an exception',
                 array()
             ),
             array(
-                'Passing a false as parameter to getArray does not trigger an exception',
+                'Passing a false as parameter to getAll does not trigger an exception',
                 false
             ),
             array(
-                'Passing "0" as parameter to getArray triggers does not trigger an exception',
+                'Passing "0" as parameter to getAll triggers does not trigger an exception',
                 "0"
             ),
         );
@@ -1045,7 +1046,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertInternalType('array', $result);
         $this->assertEmpty($result);
 
-        $this->assertEquals(0, $this->database->affected_rows());
+        $this->assertEquals(0, $this->database->affectedRows());
     }
 
     /**

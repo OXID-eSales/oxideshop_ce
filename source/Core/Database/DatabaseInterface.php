@@ -84,13 +84,13 @@ interface DatabaseInterface
     /**
      * Get one row of the corresponding sql select statement.
      *
-     * @param string $query          The sql statement we want to execute.
-     * @param array  $parameters     The parameters array.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string     $sqlSelect      The sql select statement we want to execute.
+     * @param array|bool $parameters     Array of parameters, for the given sql statement.
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return array
      */
-    public function getRow($query, $parameters = array(), $executeOnSlave = true);
+    public function getRow($sqlSelect, $parameters = false, $executeOnSlave = true);
 
     /**
      * Get all values as an array.
@@ -116,9 +116,9 @@ interface DatabaseInterface
     /**
      * Get value
      *
-     * @param string $query          The sql statement we want to execute.
-     * @param array  $parameters     The parameters array.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string     $query          The sql statement we want to execute.
+     * @param array|bool $parameters     The parameters array.
+     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return mixed|Object_ResultSet
      */

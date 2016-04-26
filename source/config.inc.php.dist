@@ -174,6 +174,15 @@
     $this->blSkipViewUsage = false;
 
     /**
+    * Allow session ids in urls
+    * Enable this only if you/your customers need it
+    * for security reasons it is not suggested to transfer/accept session ids in the url
+    * But you will need enable this option if you distinct https / http domains
+    */
+    $this->blAllowSidInUrl = false;
+
+
+    /**
      * Enterprise Edition related config options.
      * This options have no effect on Community/Professional Editions.
      */

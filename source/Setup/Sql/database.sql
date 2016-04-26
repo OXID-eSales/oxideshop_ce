@@ -467,7 +467,6 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('79c3fbc9897c0d159.27469500', 'oxbaseshop', '', 'blLoadVariants', 'bool', 0x07),
 ('b2b400dd011bf6273.08965005', 'oxbaseshop', '', 'blVariantsSelection', 'bool', ''),
 ('43040112c71dfb0f2.40367454', 'oxbaseshop', '', 'sDefaultImageQuality', 'str', 0x7741),
-('51240739e4bc61362.43751239', 'oxbaseshop', '', 'iMaxGBEntriesPerDay', 'str', 0xb0),
 ('4994145b9e87481c5.69580772', 'oxbaseshop', '', 'aSortCols', 'arr', 0x4dba832f74e74df4cdd5af631238e7040fc97a18cf6cb28fd522f05ae28cf374f04ceeb7bd886eb10ac36ba86043beb02e),
 ('4994145b9e8736eb6.03785000', 'oxbaseshop', '', 'iTop5Mode', 'str', 0x07),
 ('4994145b9e8678993.26056670', 'oxbaseshop', '', 'blShowSorting', 'bool', 0x07),
@@ -647,7 +646,6 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('21aab05ff5ffb9d97f3f74fe42a73776', 'oxbaseshop', 'theme:flow', 'blSliderShowImageCaption', 'bool', 0x07),
 ('47d214681abba5bd79b558fd14a66738', 'oxbaseshop', 'theme:flow', 'blFooterShowHelp', 'bool', 0x07),
 ('4ce74be75654d89aebb4d003af00af36', 'oxbaseshop', 'theme:flow', 'blFooterShowLinks', 'bool', 0x07),
-('d3ecdc7283e0a6c87a0155c0806b3f23', 'oxbaseshop', 'theme:flow', 'blFooterShowGuestbook', 'bool', 0x07),
 ('e2f220830be47ee41df7a9d4542a0128', 'oxbaseshop', 'theme:flow', 'blFooterShowNewsletter', 'bool', 0x07),
 ('839b5d6e01ff652ff7150e7dad3ccd61', 'oxbaseshop', 'theme:flow', 'blFooterShowNewsletterForm', 'bool', 0x07),
 ('2d856fd6e3269163319c9c0c5940e806', 'oxbaseshop', 'theme:flow', 'blEmailsShowProductPictures', 'bool', ''),
@@ -762,7 +760,6 @@ INSERT INTO `oxconfigdisplay` (`OXID`, `OXCFGMODULE`, `OXCFGVARNAME`, `OXGROUPIN
 ('93de3805c1e330ff33a568550e2414d9', 'theme:flow', 'blFullwidthLayout', 'display', '', 10),
 ('994aff028981fc19681f0db08a80f7f5', 'theme:flow', 'blFooterShowHelp', 'footer', '', 1),
 ('e676ec37632a4e1b1d30cc839c06614f', 'theme:flow', 'blFooterShowLinks', 'footer', '', 2),
-('4e1cb3a18e477ef6bd4ed6e3a1719d3c', 'theme:flow', 'blFooterShowGuestbook', 'footer', '', 3),
 ('0cd598f56d0a74e8c4e4d75a961960f4', 'theme:flow', 'blFooterShowNewsletter', 'footer', '', 4),
 ('8838d89730016811eab0e0e5d71c52d1', 'theme:flow', 'blFooterShowNewsletterForm', 'footer', '', 5),
 ('c9ef60e5f343d3cdf0747f33cb942624', 'theme:flow', 'blEmailsShowProductPictures', 'emails', '', 1),
@@ -1283,25 +1280,6 @@ CREATE TABLE IF NOT EXISTS `oxfiles` (
   PRIMARY KEY (`OXID`),
   KEY `OXARTID` (`OXARTID`)
 ) ENGINE=MyISAM COMMENT 'Files available for users to download';
-
-#
-# Table structure for table `oxgbentries`
-#
-
-DROP TABLE IF EXISTS `oxgbentries`;
-
-CREATE TABLE `oxgbentries` (
-  `OXID` char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Entry id',
-  `OXSHOPID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Shop id (oxshops)',
-  `OXUSERID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'User id (oxuser)',
-  `OXCONTENT` text NOT NULL COMMENT 'Content',
-  `OXCREATE` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'Creation time',
-  `OXACTIVE` tinyint(1) NOT NULL default '0' COMMENT 'Is active',
-  `OXVIEWED` tinyint(1) NOT NULL default '0' COMMENT 'Whether the entry was checked by admin',
-  `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
-  PRIMARY KEY  (`OXID`),
-  KEY (`OXUSERID`)
-) ENGINE=MyISAM COMMENT='Guestbook`s entries';
 
 #
 # Table structure for table `oxgroups`
@@ -2117,7 +2095,6 @@ INSERT INTO `oxseo` (`OXOBJECTID`, `OXIDENT`, `OXSHOPID`, `OXLANG`, `OXSTDURL`, 
 ('f560b18b547bca23752a154b45120980', '6b30b01fe01b80894efc0f29610e5215', 'oxbaseshop', 0, 'index.php?cl=account_password', 'mein-passwort/', 'static', 0, 0, ''),
 ('f560b18b547bca23752a154b45120980', '6c890ac1255a99f8d1eb46f1193843d6', 'oxbaseshop', 1, 'index.php?cl=account_password', 'en/my-password/', 'static', 0, 0, ''),
 ('04abcb465a8d3a4441df4c480838d23d', '7685924d3f3fb7e9bda421c57f665af4', 'oxbaseshop', 1, 'index.php?cl=contact', 'en/contact/', 'static', 0, 0, ''),
-('d12b7badee1037e7c1a5a7a245a14e11', '7c8aa72aa16b7d4a859b22d8b8328412', 'oxbaseshop', 0, 'index.php?cl=guestbook', 'gaestebuch/', 'static', 0, 0, ''),
 ('2e17757c0aaf8ed9ef2ba30317fa1faf', '82dd672d68d8f6c943f98ccdaecda691', 'oxbaseshop', 0, 'index.php?cl=suggest', 'empfehlen/', 'static', 0, 0, ''),
 ('18f64cbbc296a32fb84b3bbe31dfed09', '89c5e6bf1b5441599c4815281debe8df', 'oxbaseshop', 0, 'index.php?cl=account', 'mein-konto/', 'static', 0, 0, ''),
 ('c71c50f5443d85b37a013420857e83e7', '8afe769d3de8b5db0a872b23f959dd36', 'oxbaseshop', 1, 'index.php?cl=download', 'en/download/', 'static', 0, 0, ''),
@@ -2140,7 +2117,6 @@ INSERT INTO `oxseo` (`OXOBJECTID`, `OXIDENT`, `OXSHOPID`, `OXLANG`, `OXSTDURL`, 
 ('6d9b5b3ee58bca1bd7be188f71e80ef2', 'cc28156a4f728c1b33e7e02fd846628e', 'oxbaseshop', 0, 'index.php?cl=review', 'bewertungen/', 'static', 0, 0, ''),
 ('ab459c0dc911137e9cc024d9fba5a68b', 'ccca27059506a916fb64d673a5dd676b', 'oxbaseshop', 0, 'index.php?cl=start', 'startseite/', 'static', 0, 0, ''),
 ('57cb6b2fafc870810cd48b8e1d28cf91', 'da6c5523f7c91d108cadb0be7757c27f', 'oxbaseshop', 1, 'index.php?cl=tags', 'en/tags/', 'static', 0, 0, ''),
-('d12b7badee1037e7c1a5a7a245a14e11', 'ded4f3786c6f4d6d14e3034834ebdcaf', 'oxbaseshop', 1, 'index.php?cl=guestbook', 'en/guestbook/', 'static', 0, 0, ''),
 ('057ef382f23bdbb84991d049af2baba9', 'e0dd29a75947539da6b1924d31c9849f', 'oxbaseshop', 0, 'index.php?cl=compare', 'mein-produktvergleich/', 'static', 0, 0, ''),
 ('56ebd65f4a7cc25de1dc1f7cf15591fb', 'e5a8de0e49e91c5728eadfcb233bdbd1', 'oxbaseshop', 1, 'index.php?cl=news', 'en/news/', 'static', 0, 0, ''),
 ('e56acdd347b0516f68a0afdd811e2382', 'e604233c5a2804d21ec0252a445e93d3', 'oxbaseshop', 0, 'index.php?cl=newsletter', 'newsletter/', 'static', 0, 0, ''),

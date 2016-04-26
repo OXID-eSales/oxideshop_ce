@@ -53,7 +53,7 @@ interface DatabaseInterface
     /**
      * Setter for the database connection.
      *
-     * @param mysql_driver|mysql_extend|mysql_meta|mysqli_driver|mysqli_extend|mysqli_extra|object_ADOConnection|pear_ADOConnection $connection The connection to the database.
+     * @param mysql_driver_ADOConnection|mysql_extend_ADOConnection|mysql_meta_ADOConnection|mysqli_driver_ADOConnection|mysqli_extend_ADOConnection|mysqli_extra_ADOConnection|object_ADOConnection|pear_ADOConnection $connection The connection to the database.
      */
     public function setConnection($connection);
 
@@ -84,13 +84,13 @@ interface DatabaseInterface
     /**
      * Get one row of the corresponding sql select statement.
      *
-     * @param string     $sqlSelect      The sql select statement we want to execute.
-     * @param array|bool $parameters     Array of parameters, for the given sql statement.
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string $sqlSelect      The sql select statement we want to execute.
+     * @param array  $parameters     Array of parameters, for the given sql statement.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return array
      */
-    public function getRow($sqlSelect, $parameters = false, $executeOnSlave = true);
+    public function getRow($sqlSelect, $parameters = array(), $executeOnSlave = true);
 
     /**
      * Get all values as an array.
@@ -98,9 +98,9 @@ interface DatabaseInterface
      * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
      * The default fetch mode is defined in Doctrine::$fetchMode
      *
-     * @param string     $query          If parameters are given, the "?" in the string will be replaced by the values in the array
-     * @param array|bool $parameters     must loosely evaluate to false or must be an array
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string $query          If parameters are given, the "?" in the string will be replaced by the values in the array
+     * @param array  $parameters     Array of parameters, for the given sql statement.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
@@ -116,9 +116,9 @@ interface DatabaseInterface
     /**
      * Get value
      *
-     * @param string     $query          The sql statement we want to execute.
-     * @param array|bool $parameters     The parameters array.
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string $query          The sql statement we want to execute.
+     * @param array  $parameters     The parameters array.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return mixed|Object_ResultSet
      */
@@ -177,20 +177,6 @@ interface DatabaseInterface
      * @return int The number of rows affected by the last sql statement.
      */
     public function affectedRows();
-
-    /**
-     * Get the last error number, occurred while executing a sql statement through any of the methods in this class.
-     *
-     * @return int The last mysql error number.
-     */
-    public function errorNo();
-
-    /**
-     * Get the last error message, occurred while executing a sql statement through any of the methods in this class.
-     *
-     * @return string The last error message.
-     */
-    public function errorMsg();
 
     /**
      * Quote the given string. Same as qstr.

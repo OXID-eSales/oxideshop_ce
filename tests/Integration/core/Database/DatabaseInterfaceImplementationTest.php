@@ -492,38 +492,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Test, that the methods 'errorNo' and 'errorMsg' work as expected.
-     */
-    public function testErrorNoAndErrorMsgWithoutPriorError()
-    {
-        $this->createDatabase();
-
-        $errorNumber = $this->database->errorNo();
-        $errorMessage = $this->database->errorMsg();
-
-        $this->assertSame(0, $errorNumber);
-        $this->assertSame('', $errorMessage);
-    }
-
-    /**
-     * Test, that the methods 'errorNo' and 'errorMsg' work as expected.
-     */
-    public function testErrorNoAndErrorMsgWork()
-    {
-        try {
-            $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ;");
-
-            $this->fail('A mysql syntax error should produce an exception!');
-        } catch (\Exception $exception) {
-            $errorNumber = $this->database->errorNo();
-            $errorMessage = $this->database->errorMsg();
-
-            $this->assertSame(1064, $errorNumber);
-            $this->assertSame('You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1', $errorMessage);
-        }
-    }
-
-    /**
      * Test, that the fetch mode set works as expected and retrieves the last set fetch mode.
      */
     public function testSetFetchMode()
@@ -1060,9 +1028,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $this->assertInternalType('array', $result);
         $this->assertEmpty($result);
-
-        $this->assertEquals('', $this->database->errorMsg());
-        $this->assertEquals(0, $this->database->errorNo());
     }
 
     /**

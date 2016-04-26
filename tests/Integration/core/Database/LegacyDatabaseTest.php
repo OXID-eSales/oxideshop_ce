@@ -21,6 +21,8 @@ namespace OxidEsales\Eshop\Tests\integration\core\Database;
      * @copyright (C) OXID eSales AG 2003-2016
      * @version       OXID eShop CE
      */
+use OxidEsales\Eshop\Core\LegacyDatabase;
+use OxidEsales\Eshop\Core\Database\DatabaseInterface;
 
 
 /**
@@ -52,6 +54,11 @@ class LegacyDatabaseTest extends DatabaseInterfaceImplementationTest
      */
     const USE_LEGACY_DATABASE = true;
 
+    /**
+     * @var DatabaseInterface|LegacyDatabase The database to test.
+     */
+    protected $database = null;
+    
     /**
      * Set up before beginning with tests
      */
@@ -143,4 +150,38 @@ class LegacyDatabaseTest extends DatabaseInterfaceImplementationTest
     {
         return \oxDb::getDb();
     }
+
+
+    /**
+     * Test, that the methods 'errorNo' and 'errorMsg' work as expected.
+     */
+    public function testErrorNoAndErrorMsgWithoutPriorError()
+    {
+        $this->createDatabase();
+
+        $errorNumber = $this->database->errorNo();
+        $errorMessage = $this->database->errorMsg();
+
+        $this->assertSame(0, $errorNumber);
+        $this->assertSame('', $errorMessage);
+    }
+
+    /**
+     * Test, that the methods 'errorNo' and 'errorMsg' work as expected.
+     */
+    public function testErrorNoAndErrorMsgWork()
+    {
+        try {
+            $this->database->execute("INVALID SQL QUERY");
+
+            $this->fail('A mysql syntax error should produce an exception!');
+        } catch (\Exception $exception) {
+            $errorNumber = $this->database->errorNo();
+            $errorMessage = $this->database->errorMsg();
+
+            $this->assertSame(self::EXPECTED_MYSQL_SYNTAX_ERROR_CODE, $errorNumber);
+            $this->assertSame(self::EXPECTED_MYSQL_SYNTAX_ERROR_MESSAGE, $errorMessage);
+        }
+    }
 }
+

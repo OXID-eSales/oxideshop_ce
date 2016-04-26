@@ -23,6 +23,7 @@ namespace OxidEsales\Eshop\Core\Database;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use OxidEsales\Eshop;
@@ -164,21 +165,29 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
      * @see DatabaseInterface::setFetchMode() for how to set the fetch mode
      * @see Doctrine::$fetchMode for the default fetch mode
      *
-     * @param string     $sqlSelect      The sql select statement we want to execute.
-     * @param array|bool $parameters     Array of parameters, for the given sql statement.
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string $sqlSelect      The sql select statement we want to execute.
+     * @param array  $parameters     Array of parameters, for the given sql statement.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return array The row, we selected with the given sql statement.
      */
-    public function getRow($sqlSelect, $parameters = false, $executeOnSlave = true)
+    public function getRow($sqlSelect, $parameters = array(), $executeOnSlave = true)
     {
         $parameters = $this->assureParameterIsAnArray($parameters);
 
-        $resultSet = $this->select($sqlSelect, $parameters, $executeOnSlave);
+        try {
+            $resultSet = $this->select($sqlSelect, $parameters, $executeOnSlave);
+            $result = $resultSet->fetchRow();
+        } catch (DatabaseException $exception) {
+            $this->logException($exception);
+            $result = array();
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->logException($exception);
+            $result = array();
+        }
 
-        $result = $resultSet->fetchRow();
-
-        if (!$result) {
+        if (false == $result) {
             $result = array();
         }
 
@@ -398,6 +407,9 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
 
         return $result;
@@ -569,7 +581,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
     /**
      * Closes an open connection
      */
-    protected function closeConnection()
+    public function closeConnection()
     {
         $this->connection->close();
     }
@@ -686,8 +698,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
 
     /**
      * Convert a given native Doctrine exception into an OxidEsales exception.
-     *
-     * @todo: add test!
+     * Note: This method is MySQL specific, as the MySQL error codes instead of SQLSTATE are used.
      *
      * @param \Exception $exception Doctrine exception to be converted
      *
@@ -703,10 +714,31 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInter
                 $exceptionClass = 'oxConnectionException';
                 break;
             case $exception instanceof DBALException:
+                /**
+                 * Doctrine passes the message and the code of the PDO Exception, which would break backward
+                 * compatibility as it uses SQLSTATE error code (string), but the shop used to the (My)SQL errors (integer)
+                 * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
+                 * Fortunately we can access PDOException and recover the original SQL error code and message.
+                 */
+                /** @var PDOException $pdoException */
+                $pdoException = $exception->getPrevious();
+                $code = $pdoException->errorInfo[1];
+                $message = $pdoException->errorInfo[2];
+                $exceptionClass = 'OxidEsales\Eshop\Core\exception\DatabaseException';
+                break;
+            case $exception instanceof PDOException:
+                /**
+                 * The shop used to the (My)SQL errors (integer) in the error code, but $pdoException uses SQLSTATE error code (string)
+                 * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
+                 * Fortunately we can access PDOException and recover the original SQL error code and message.
+                 */
+                $code = $exception->errorInfo[1];
+                $message = $exception->errorInfo[2];
+                $exceptionClass = 'OxidEsales\Eshop\Core\exception\DatabaseException';
+                break;
             default:
                 $exceptionClass = 'OxidEsales\Eshop\Core\exception\DatabaseException';
         }
-
 
         return new $exceptionClass($message, $code, $exception);
     }

@@ -69,6 +69,9 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
      * @var string The first fixture oxUserId.
      */
     const FIXTURE_OXUSERID_3 = 'OXUSERID_3';
+    
+    const EXPECTED_MYSQL_SYNTAX_ERROR_CODE  = 1064;
+    const EXPECTED_MYSQL_SYNTAX_ERROR_MESSAGE  = 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'INVALID SQL QUERY\' at line 1';
 
     /**
      * @var bool Use the legacy database adapter.

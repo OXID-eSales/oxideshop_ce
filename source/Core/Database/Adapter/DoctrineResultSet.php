@@ -22,7 +22,6 @@
 namespace OxidEsales\Eshop\Core\Database\Adapter;
 
 use Doctrine\DBAL\Driver\PDOStatement;
-use Doctrine\DBAL\Driver\Statement;
 
 /**
  * The doctrine statement wrapper, to support the old adodblite interface.
@@ -52,9 +51,9 @@ class DoctrineResultSet
     /**
      * DoctrineResultSet constructor.
      *
-     * @param Statement $adapted The statement we want to wrap in this class.
+     * @param PDOStatement $adapted The statement we want to wrap in this class.
      */
-    public function __construct(Statement $adapted)
+    public function __construct(PDOStatement $adapted)
     {
         $this->setAdapted($adapted);
 
@@ -62,7 +61,8 @@ class DoctrineResultSet
             $this->EOF = false;
 
             $this->fields = $this->getAdapted()->fetch();
-
+            
+            // @todo A prepared statement is executed here, but this makes no sense without the parameters. Yet no params are provided.
             $this->executeAdapted();
         } else {
             // @todo: double check, if this path or the DoctrineEmptyResultSet could be removed

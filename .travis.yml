@@ -46,5 +46,5 @@ before_script:
   # composer initiation
   - SHOP_PATH='' SHOP_TESTS_PATH='../tests' MODULES_PATH='' composer install
 
-script: vendor/bin/runtests
+script: source/vendor/bin/runtests
 

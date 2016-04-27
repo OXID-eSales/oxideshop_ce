@@ -46,6 +46,13 @@ class WidgetControl extends \oxShopControl
     protected $_blMainTasksExecuted = true;
 
     /**
+     * Array of Views added to the view chain
+     *
+     * @var array
+     */
+    protected $parentsAdded = [];
+
+    /**
      * Main shop widget manager. Sets needed parameters and calls parent::start method.
      *
      * Session variables:
@@ -81,6 +88,10 @@ class WidgetControl extends \oxShopControl
             // Removing current active view.
             $oConfig->dropLastActiveView();
 
+            foreach ($this->parentsAdded as $sParentClassName) {
+                $oConfig->dropLastActiveView();
+            }
+
             // Setting back last active view.
             $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
             $oSmarty->assign('oView', $oConfig->getActiveView());
@@ -109,10 +120,11 @@ class WidgetControl extends \oxShopControl
                 if ($sParentClassName != $sClass && !in_array(strtolower($sParentClassName), $aActiveViewsNames)) {
                     // creating parent view object
                     $oViewObject = oxNew($sParentClassName);
-                    if (strtolower($sParentClassName) != 'oxubase') {  
-                        $oViewObject->setClassName($sParentClassName);  
+                    if (strtolower($sParentClassName) != 'oxubase') {
+                        $oViewObject->setClassName($sParentClassName);
                     }
                     $oConfig->setActiveView($oViewObject);
+                    $this->parentsAdded[] = $sParentClassName;
                 }
             }
         }

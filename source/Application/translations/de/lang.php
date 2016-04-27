@@ -100,7 +100,6 @@ $aLang = array(
 'CHOOSE'                                                      => 'Wählen',
 'CHOOSE_VARIANT'                                              => 'Variante wählen',
 'CLICK_HERE'                                                  => 'hier klicken.',
-'CLICK_HERE_TO_WRITE_ENTRY'                                   => 'Hier klicken, um einen Eintrag zu schreiben',
 'CLOSE'                                                       => 'Schließen',
 'COMPANY'                                                     => 'Firma',
 'COMPARE'                                                     => 'Vergleichen',

@@ -101,18 +101,14 @@ class oxWidgetControl extends oxShopControl
 
         // if exists views chain, initializing these view at first
         if (is_array($aViewsChain) && !empty($aViewsChain)) {
-
             foreach ($aViewsChain as $sParentClassName) {
                 if ($sParentClassName != $sClass && !in_array(strtolower($sParentClassName), $aActiveViewsNames)) {
                     // creating parent view object
-                    if (strtolower($sParentClassName) == 'oxubase') {
-                        $oViewObject = oxNew('oxubase');
-                        $oConfig->setActiveView($oViewObject);
-                    } else {
-                        $oViewObject = oxNew($sParentClassName);
-                        $oViewObject->setClassName($sParentClassName);
-                        $oConfig->setActiveView($oViewObject);
+                    $oViewObject = oxNew($sParentClassName);
+                    if (strtolower($sParentClassName) != 'oxubase') {  
+                        $oViewObject->setClassName($sParentClassName);  
                     }
+                    $oConfig->setActiveView($oViewObject);
                 }
             }
         }

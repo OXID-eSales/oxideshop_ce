@@ -8,24 +8,6 @@
         "GPL-3.0",
         "proprietary"
     ],
-    "repositories": {
-        "oxid-esales/testing-library": {
-            "type": "vcs",
-            "url": "https://github.com/OXID-eSales/testing_library.git"
-        },
-        "alexandresalome/php-selenium": {
-            "type": "vcs",
-            "url": "https://github.com/OXID-eSales/PHP-Selenium.git"
-        },
-        "oxid-esales/coding-standards": {
-            "type": "vcs",
-            "url": "https://github.com/OXID-eSales/coding_standards.git"
-        },
-        "squizlabs/php_codesniffer": {
-            "type": "vcs",
-            "url": "https://github.com/OXID-eSales/PHP_CodeSniffer.git"
-        }
-    },
     "require": {
         "phpmailer/phpmailer": "^5.2.14",
         "smarty/smarty": "^2.6.29"

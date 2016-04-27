@@ -1,5 +1,5 @@
 {
-    "name": "oxid-esales/eshop",
+    "name": "oxid-esales/oxideshop-ce",
     "description": "This file is mean to be used for OXID eShop development internally. Use this file to get OXID eShop dependencies. Use modules/composer.json for project dependencies.",
     "type": "project",
     "keywords": ["oxid", "modules", "eShop"],

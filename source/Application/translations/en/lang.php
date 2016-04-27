@@ -369,7 +369,6 @@ $aLang = array(
 'NOT_SHIPPED_YET'                                             => 'Not shipped yet!',
 'NOTREGISTERED_ACCOUNTINFO'                                   => 'Customer information',
 'NOW_ONLY'                                                    => 'Now only',
-'NO_ENTRY_AVAILABLE'                                          => 'No entries available yet.',
 'NO_GREETING_CARD'                                            => 'No greeting card',
 'NO_ITEMS_FOUND'                                              => 'Sorry - no items found.',
 'NO_LISTMANIA_LIST_FOUND'                                     => 'No listmania lists found',

@@ -76,13 +76,6 @@ class oxOrder extends oxBase
      *
      * @var int
      */
-    const ORDER_STATE_INVALIDTSPROTECTION = 6;
-
-    /**
-     * Protection parameters used for some data in order are invalid
-     *
-     * @var int
-     */
     const ORDER_STATE_INVALIDDElADDRESSCHANGED = 7;
 
     /**
@@ -182,13 +175,6 @@ class oxOrder extends oxBase
      * @var oxprice
      */
     protected $_oPaymentPrice = null;
-
-    /**
-     * Order TS protection costs price object
-     *
-     * @var oxprice
-     */
-    protected $_oTsProtectionPrice = null;
 
     /**
      * Current class name
@@ -450,24 +436,6 @@ class oxOrder extends oxBase
     }
 
     /**
-     * Returns order TS protection price object
-     *
-     * @return oxprice
-     */
-    public function getOrderTsProtectionPrice()
-    {
-        if ($this->_oTsProtectionPrice != null) {
-            return $this->_oTsProtectionPrice;
-        }
-
-        $this->_oTsProtectionPrice = oxNew('oxprice');
-        $this->_oTsProtectionPrice->setBruttoPriceMode();
-        $this->_oTsProtectionPrice->setPrice($this->oxorder__oxtsprotectcosts->value, $this->getConfig()->getConfigParam('dDefaultVAT'));
-
-        return $this->_oTsProtectionPrice;
-    }
-
-    /**
      * Returns order netto sum (total order price - VAT)
      *
      * @return double
@@ -562,18 +530,9 @@ class oxOrder extends oxBase
             oxNew('oxCounter')->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
         }
 
-        // executing TS protection
-        if (!$blRecalculatingOrder && $oBasket->getTsProductId()) {
-            $blRet = $this->_executeTsProtection($oBasket);
-            if ($blRet !== true) {
-                return $blRet;
-            }
-        }
-
         // deleting remark info only when order is finished
         oxRegistry::getSession()->deleteVariable('ordrem');
-        oxRegistry::getSession()->deleteVariable('stsprotection');
-        
+
         //#4005: Order creation time is not updated when order processing is complete
         if (!$blRecalculatingOrder) {
             $this->_updateOrderDate();
@@ -751,8 +710,6 @@ class oxOrder extends oxBase
         // copies wrapping info
         $this->_setWrapping($oBasket);
 
-        // copies TS protection info
-        $this->_setTsProtection($oBasket);
     }
 
     /**
@@ -2154,48 +2111,6 @@ class oxOrder extends oxBase
         if (!$oDb->getOne($sQ, false, false)) {
             return self::ORDER_STATE_INVALIDPAYMENT;
         }
-    }
-
-    /**
-     * Assigns Trusted Shops Protection product id and costs
-     *
-     * @param oxBasket $oBasket basket object
-     */
-    protected function _setTsProtection(oxBasket $oBasket)
-    {
-        // protection price
-        if (($oTsProtectionCost = $oBasket->getCosts('oxtsprotection'))) {
-            $this->oxorder__oxtsprotectcosts = new oxField($oTsProtectionCost->getBruttoPrice(), oxField::T_RAW);
-        }
-
-        // protection protduct id
-        $this->oxorder__oxtsprotectid = new oxField($oBasket->getTsProductId(), oxField::T_RAW);
-    }
-
-    /**
-     * Executes Trusted shops protection order.
-     *
-     * @param oxBasket $oBasket basket object
-     *
-     * @return bool
-     */
-    protected function _executeTsProtection(oxBasket $oBasket)
-    {
-        $aValues['tsProductId'] = $this->oxorder__oxtsprotectid->value;
-        $aValues['amount'] = $oBasket->getTsInsuredSum();
-        $oCur = $this->getConfig()->getActShopCurrencyObject();
-        $aValues['currency'] = $oCur->name;
-        $aValues['buyerEmail'] = $this->oxorder__oxbillemail->value;
-        $aValues['shopCustomerID'] = $this->oxorder__oxuserid->value;
-        $aValues['shopOrderID'] = $this->oxorder__oxordernr->value;
-        $aValues['orderDate'] = $this->oxorder__oxorderdate->value;
-        $sPaymentId = $oBasket->getPaymentId();
-
-        /** @var oxTsProtection $oTsProtection */
-        $oTsProtection = oxNew('oxtsprotection');
-        $oTsProtection->requestForTsProtection($aValues, $sPaymentId);
-
-        return true;
     }
 
     /**

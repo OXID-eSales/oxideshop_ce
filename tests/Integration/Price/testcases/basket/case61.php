@@ -1,26 +1,24 @@
 <?php
 /**
- * Price enter mode: bruto 
+ * Price enter mode: bruto
  * Price view mode:  brutto
  * Product count: count of used products
  * VAT info: 19%
- * Currency rate: 0.68 
+ * Currency rate: 0.68
  * Discounts: count
  *  1. bascet 5 abs
- *  2. shop 5 abs for 9001 
+ *  2. shop 5 abs for 9001
  *  3. bascet 1 abs for 9001
  *  4. shop 5% for 9002
  *  5. bascet 6% for 9002
  * Vouchers: count
  *  1. 6 abs
- * Trusted Shop:
- *  1. TS080501_500_30_EUR, netto 0.82
  * Wrapping: +;
  * Gift cart:  -;
- * Costs VAT caclulation rule: max 
+ * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS -
  * Actions with basket or order:
  *  1. update / delete / change config
@@ -88,17 +86,6 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
         ),
-    ),
-    'trustedshop' => array (
-        'product_id'     => 'TS080501_500_30_EUR',           // trusted shop product id
-        'payments'    => array(                              // paymentids
-            'oxidcashondel'  => 'DIRECT_DEBIT',
-            'oxidcreditcard' => 'DIRECT_DEBIT',
-            'oxiddebitnote'  => 'DIRECT_DEBIT',
-            'oxidpayadvance' => 'DIRECT_DEBIT',
-            'oxidinvoice'    => 'DIRECT_DEBIT',
-            'oxempty'        => 'DIRECT_DEBIT',
-        )
     ),
     'costs' => array(
         'wrapping' => array(
@@ -180,15 +167,10 @@ $aData = array(
                 'netto' => '0,57',
                 'vat' => '0,11'
             ),
-            'trustedshop' => array(
-                'brutto' => '0,98',
-                'netto' => '0,82',
-                'vat' => '0,16'
-            ),
             'voucher' => array (
                 'brutto' => '4,08',
             ),
-            'grandTotal'  => '3.016,14'
+            'grandTotal'  => '3.015,16'
         ),
     ),
     'options' => array (

@@ -1,24 +1,21 @@
 <?php
 /*
 /**
- * Price enter mode: netto 
+ * Price enter mode: netto
  * Price view mode:  brutto
  * Product count: 2
- * VAT info: 19% Default VAT for all Products 
- * Currency rate: 1.0 
+ * VAT info: 19% Default VAT for all Products
+ * Currency rate: 1.0
  * Discounts: 5
- *  1. shop discount 5.5% for product 9005 
- *  2. shop discount -10% for product 9006 
+ *  1. shop discount 5.5% for product 9005
+ *  2. shop discount -10% for product 9006
  * Vouchers: -;
- * Trusted Shop:
- *  1. "TS080501_1500_30_EUR"  "netto" => "2.47", "amount" => "1500" ,
  * Wrapping: -;
- * Costs VAT caclulation rule: max 
+ * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  * Short description:
- * Trusted shop calculation in Neto-brutto mode,
  */
 $aData = array(
     'articles' => array (
@@ -34,17 +31,6 @@ $aData = array(
             'oxvat'                    => 19,
             'amount'                   => 1,
         ),
-    ),
-    'trustedshop' => array (
-        'product_id'     => 'TS080501_1500_30_EUR',           // trusted shop product id
-        'payments'    => array(                              // paymentids
-            'oxidcashondel'  => 'DIRECT_DEBIT',
-            'oxidcreditcard' => 'DIRECT_DEBIT',
-            'oxiddebitnote'  => 'DIRECT_DEBIT',
-            'oxidpayadvance' => 'DIRECT_DEBIT',
-            'oxidinvoice'    => 'DIRECT_DEBIT',
-            'oxempty'        => 'DIRECT_DEBIT',
-        )
     ),
     'discounts' => array (
         0 => array (
@@ -112,13 +98,7 @@ $aData = array(
                 'netto' => '8,40',
                  'vat' => '1,60'
             ),
-
-			'trustedshop' => array(
-                'brutto' => '2,94',
-                'netto' => '2,47',
-                'vat' => '0,47',
-            ),
-            'grandTotal'  => '1.251,90'
+            'grandTotal'  => '1.248,96'
         ),
     ),
     'options' => array (
@@ -126,7 +106,7 @@ $aData = array(
                 'blEnterNetPrice' => true,
                 'blShowNetPrice' => false,
                 'blShowVATForWrapping' => true,
-				'sAdditionalServVATCalcMethod' => 'biggest_net', 
+				'sAdditionalServVATCalcMethod' => 'biggest_net',
                 'blShowVATForPayCharge' => true,
                 'blShowVATForDelivery' => true,
         ),

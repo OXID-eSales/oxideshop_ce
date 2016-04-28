@@ -45,7 +45,6 @@ $aLang = array(
     'WRAPPING_COSTS'                        => 'Geschenkverpackung',
     'GIFTCARD_COSTS'                        => 'Grußkarte',
     'ORDER_OVERVIEW_PDF_PAYMENTIMPACT'      => 'Aufschlag Zahlungsart',
-    'ORDER_OVERVIEW_PDF_TSPROTECTION'       => 'Trusted Shops Käuferschutz',
     'ORDER_OVERVIEW_PDF_ALLSUM'             => 'Gesamtsumme (brutto)',
     'ORDER_OVERVIEW_PDF_SELPAYMENT'         => 'Ihre gewählte Zahlungsweise: ',
     'ORDER_OVERVIEW_PDF_PAYUPTO'            => 'Zahlbar bis zum ',

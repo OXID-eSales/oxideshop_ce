@@ -29,93 +29,6 @@ use \oxTestModules;
 
 class ViewConfigTest extends \OxidTestCase
 {
-
-    protected $_aTsConfig = array("blTestMode"   => false, // set TRUE to enable testing mode
-                                  "sTsUrl"       => "https://www.trustedshops.com",
-                                  "sTsTestUrl"   => "https://qa.trustedshops.com",
-                                  "sTsWidgetUri" => array("bewertung/widget/widgets/%s.gif"),
-                                  "sTsInfoUri"   => array("de" => "bewertung/info_%s.html",
-                                                          "en" => "buyerrating/info_%s.html"
-                                  ),
-                                  "sTsRatingUri" => array("de" => "bewertung/bewerten_%s.html",
-                                                          "en" => "buyerrating/rate_%s.html"
-                                  )
-    );
-
-    /**
-     * oxViewconfig::getTsId() test case
-     *
-     * @return null
-     */
-    public function testGetTsId()
-    {
-        $sLangId = oxRegistry::getLang()->getLanguageAbbr();
-
-        $this->getConfig()->setConfigParam("aTsLangIds", array($sLangId => 123));
-        $this->getConfig()->setConfigParam("aTsActiveLangIds", array($sLangId => 123));
-
-        $oViewConf = oxNew('oxViewConfig');
-        $this->assertEquals(123, $oViewConf->getTsId());
-    }
-
-    /**
-     * oxViewconfig::showTs() test case
-     *
-     * @return null
-     */
-    public function testShowTs()
-    {
-        $this->getConfig()->setConfigParam("blTsWidget", false);
-        $this->getConfig()->setConfigParam("blTsThankyouReview", false);
-        $this->getConfig()->setConfigParam("blTsOrderEmailReview", false);
-        $this->getConfig()->setConfigParam("blTsOrderSendEmailReview", false);
-
-        $oViewConf = oxNew('oxViewConfig');
-        $this->assertFalse($oViewConf->showTs("WIDGET"));
-        $this->assertFalse($oViewConf->showTs("THANKYOU"));
-        $this->assertFalse($oViewConf->showTs("ORDEREMAIL"));
-        $this->assertFalse($oViewConf->showTs("ORDERCONFEMAIL"));
-
-        $this->getConfig()->setConfigParam("blTsWidget", true);
-        $this->getConfig()->setConfigParam("blTsThankyouReview", true);
-        $this->getConfig()->setConfigParam("blTsOrderEmailReview", true);
-        $this->getConfig()->setConfigParam("blTsOrderSendEmailReview", true);
-
-        $this->assertTrue($oViewConf->showTs("WIDGET"));
-        $this->assertTrue($oViewConf->showTs("THANKYOU"));
-        $this->assertTrue($oViewConf->showTs("ORDEREMAIL"));
-        $this->assertTrue($oViewConf->showTs("ORDERCONFEMAIL"));
-    }
-
-    /**
-     * oxViewconfig::getTsRatingUrl() test case
-     *
-     * @return null
-     */
-    public function testGetTsRatingUrl()
-    {
-        $this->getConfig()->setConfigParam("aTsConfig", $this->_aTsConfig);
-        $sLangId = oxRegistry::getLang()->getLanguageAbbr();
-        $sTsInfoUri = (isset($this->_aTsConfig["sTsRatingUri"]) && isset($this->_aTsConfig["sTsRatingUri"][$sLangId])) ? $this->_aTsConfig["sTsRatingUri"][$sLangId] : false;
-
-        $oViewConf = $this->getMock("oxViewConfig", array("getTsId"));
-        $oViewConf->expects($this->once())->method("getTsId")->will($this->returnValue("xyz"));
-        $this->assertEquals("https://www.trustedshops.com/" . sprintf($sTsInfoUri, "xyz"), $oViewConf->getTsRatingUrl());
-    }
-
-    /**
-     * oxViewconfig::etTsDomain() test case
-     *
-     * @return null
-     */
-    public function testGetTsDomain()
-    {
-        $this->getConfig()->setConfigParam("aTsConfig", $this->_aTsConfig);
-
-        $oViewConf = oxNew('oxViewConfig');
-        $this->assertEquals("https://www.trustedshops.com", $oViewConf->getTsDomain());
-    }
-
     /**
      * oxViewConfig::getHelpPageLink() test case
      *
@@ -2504,7 +2417,7 @@ class ViewConfigTest extends \OxidTestCase
         $this->setConfigParam('aModules', $aModules);
         $this->setConfigParam('aDisabledModules', $aDisabledModules);
         $this->setConfigParam('aModuleVersions', $aModuleVersions);
-        
+
         $oViewConf = oxNew('oxViewConfig');
         $blIsModuleActive = $oViewConf->isModuleActive($sModuleId);
 

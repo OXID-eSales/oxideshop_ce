@@ -1,20 +1,18 @@
 <?php
 /**
- * Price enter mode: bruto 
+ * Price enter mode: bruto
  * Price view mode:  neto
  * Product count: count of used products
  * VAT info: 19%
- * Currency rate: 1.0 
+ * Currency rate: 1.0
  * Discounts: -
  * Vouchers: -
- * Trusted Shop:
- *  1. TS080501_500_30_EUR, netto 0.82
  * Wrapping: -;
  * Gift cart:  -;
- * Costs VAT caclulation rule: max 
+ * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment - 
- *  2. Delivery - 
+ *  1. Payment -
+ *  2. Delivery -
  *  3. TS +
  */
 $aData = array(
@@ -26,17 +24,6 @@ $aData = array(
             'amount'                   => 100,
         ),
     ),
-    'trustedshop' => array (
-        'product_id'     => 'TS080501_2500_30_EUR',           // trusted shop product id
-        'payments'    => array(                              // paymentids
-            'oxidcashondel'  => 'DIRECT_DEBIT',
-            'oxidcreditcard' => 'DIRECT_DEBIT',
-            'oxiddebitnote'  => 'DIRECT_DEBIT',
-            'oxidpayadvance' => 'DIRECT_DEBIT',
-            'oxidinvoice'    => 'DIRECT_DEBIT',
-            'oxempty'        => 'DIRECT_DEBIT',
-        )
-    ),
     'expected' => array (
         'articles' => array (
              111 => array ( '20,97', '2.097,00' ),
@@ -47,12 +34,7 @@ $aData = array(
             'vats' => array (
                 19 => '398,43'
             ),
-            'trustedshop' => array(
-                'brutto' => '4,90',
-                'netto' => '4,12',
-                'vat' => '0,78'
-            ),
-            'grandTotal'  => '2.500,33'
+            'grandTotal'  => '2.495,43'
         ),
     ),
     'options' => array (

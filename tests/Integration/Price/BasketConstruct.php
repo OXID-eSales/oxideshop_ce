@@ -49,7 +49,6 @@ class BasketConstruct
         $options = $testCase['options'];
         $userData = $testCase['user'];
         $categories = $testCase['categories'];
-        $trustedShops = $testCase['trustedshop'];
         // set custom configs
         $this->setOptions($options);
 
@@ -70,9 +69,6 @@ class BasketConstruct
 
         // create & set payment costs
         $payment = $this->_setPayments($costs['payment']);
-
-        // set trusted shop
-        $tsProductId = $this->_setTrustedShop($trustedShops);
 
         // create & set vouchers
         $voucherIDs = $this->_setVouchers($costs['voucherserie']);
@@ -115,11 +111,6 @@ class BasketConstruct
         // try to add payment
         if (!empty($payment)) {
             $basket->setPayment($payment[0]);
-        }
-
-        // see if we can add trusted shop product
-        if (!empty($tsProductId)) {
-            $basket->setTsProductId($tsProductId);
         }
 
         // try to add vouchers
@@ -288,28 +279,6 @@ class BasketConstruct
             }
             $discount->save();
         }
-    }
-
-    /**
-     * Set up trusted shop
-     *
-     * @param array $trustedShop of trusted shops data
-     *
-     * @return string selected product id
-     */
-    protected function _setTrustedShop($trustedShop)
-    {
-        if ($trustedShop['payments']) {
-            foreach ($trustedShop['payments'] as $shopPayId => $tsPayId) {
-                $payment = oxNew('oxPayment');
-                if ($payment->load($shopPayId)) {
-                    $payment->oxpayments__oxtspaymentid = new oxField($tsPayId);
-                    $payment->save();
-                }
-            }
-        }
-
-        return $trustedShop['product_id'] ?: null;
     }
 
     /**

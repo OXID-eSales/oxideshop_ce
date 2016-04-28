@@ -45,7 +45,6 @@ $aLang = array(
     'WRAPPING_COSTS'                            => 'Gift Wrapping',
     'GIFTCARD_COSTS'                            => 'Greeting Card',
     'ORDER_OVERVIEW_PDF_PAYMENTIMPACT'          => 'Additional Charge Payment Method',
-    'ORDER_OVERVIEW_PDF_TSPROTECTION'           => 'Trusted Shops buyer protection',
     'ORDER_OVERVIEW_PDF_ALLSUM'                 => 'Grand Total (brutto)',
     'ORDER_OVERVIEW_PDF_SELPAYMENT'             => 'Payment Method: ',
     'ORDER_OVERVIEW_PDF_PAYUPTO'                => 'Billing till ',

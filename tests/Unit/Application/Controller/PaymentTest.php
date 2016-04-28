@@ -744,14 +744,6 @@ class PaymentTest extends \OxidTestCase
         $oO->render();
     }
 
-    public function testGetCheckedTsProductId()
-    {
-        $this->setRequestParameter('stsprotection', 'testId');
-        $oPayment = $this->getProxyClass("payment");
-
-        $this->assertEquals('testId', $oPayment->getCheckedTsProductId());
-    }
-
     /**
      * Testing Payment::getBreadCrumb()
      *
@@ -1036,28 +1028,6 @@ class PaymentTest extends \OxidTestCase
 
         $oPayment = oxNew('Payment');
         $this->assertTrue($oPayment->isPaymentVatSplitted());
-    }
-
-    /**
-     * Test payment if changed shipping
-     */
-    public function testGetTsProtections()
-    {
-        $oPrice = oxNew('oxPrice');
-        $oPrice->setPrice(100, 21);
-
-        $oBasket = $this->getMock('oxBasket', array('getAdditionalServicesVatPercent', 'getPrice'));
-        $oBasket->expects($this->once())->method('getAdditionalServicesVatPercent')->will($this->returnValue(21));
-        $oBasket->expects($this->once())->method('getPrice')->will($this->returnValue($oPrice));
-
-        $oSession = $this->getMock('oxSession', array('getBasket'));
-        $oSession->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
-
-        $oPayment = $this->getMock('Payment', array('getSession'));
-        $oPayment->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
-
-        $aTsProducts = $oPayment->getTsProtections();
-        $this->assertFalse(empty($aTsProducts));
     }
 
 }

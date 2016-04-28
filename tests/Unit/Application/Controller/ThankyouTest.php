@@ -107,15 +107,6 @@ class ThankyouTest extends \OxidTestCase
         $this->assertEquals('testPasswort', $oThankyou->getIPaymentPassword());
     }
 
-    public function testGetTrustedShopId()
-    {
-        $this->getConfig()->setConfigParam('tsSealActive', 1);
-        $this->getConfig()->setConfigParam('tsSealType', array(0 => 'CLASSIC'));
-        $this->getConfig()->setConfigParam('iShopID_TrustedShops', array(0 => 'XASASASASASASASASASASASASASASASAS'));
-        $oThankyou = $this->getProxyClass('thankyou');
-        $this->assertEquals('XASASASASASASASASASASASASASASASAS', $oThankyou->getTrustedShopId());
-    }
-
     public function testGetMailError()
     {
         $this->setRequestParameter('mailerror', 'testShop');

@@ -569,20 +569,6 @@ $aLang =  array(
 
 'HELP_WRAPPING_MAIN_PICTURE'                  => 'With <span class="navipath_or_inputname">Picture</span> and <span class="navipath_or_inputname">Upload Picture</span> you can upload a picture for the gift wrapping. In <span class="navipath_or_inputname">Upload Picture</span>, select the picture to upload. When clicking on <span class="navipath_or_inputname">Save</span>, the picture is uploaded. After uploading, the filename is shown in <span class="navipath_or_inputname">Picture</span>.',
 
-
-
-'HELP_DYN_TRUSTED_RATINGS_ID'                 => 'You will receive your Trusted Shops ID for Customer Ratings in the order conformation e-mail. If you are already a member of Trusted Shops, please use your known Trusted Shops ID. The green light indicates that the Customer Ratings have been verified and enabled after saving your settings.',
-'HELP_DYN_TRUSTED_RATINGS_WIDGET'             => 'Enable the Customer Ratings Widget by switching this option on.',
-'HELP_DYN_TRUSTED_RATINGS_THANKYOU'           => 'Enable the button "Write a review!" on "Order completed" page subsequent to an order by switching this option on.',
-'HELP_DYN_TRUSTED_RATINGS_ORDEREMAIL'         => 'Enable the button "Write a review!" in "Order confirmation" e-mail subsequent to an order by switching this option on.',
-'HELP_DYN_TRUSTED_RATINGS_ORDERSENDEMAIL'     => 'Enable the button "Write a review!" in "Order sent" e-mail after dispatch of the order.',
-'HELP_DYN_TRUSTED_TSID'                       => 'Trusted Shops ID of the online shop (for language).',
-'HELP_DYN_TRUSTED_USER'                       => 'A user name (wsUser) for the Trusted Shops webservice is required if you offer the Trusted Shops Buyer Protection Excellence to your customers. Buyer Protection Classic does not require a user name.',
-'HELP_DYN_TRUSTED_PASSWORD'                   => 'A password (wsPassword) for the Trusted Shops webservice is required if you offer the Trusted Shops Buyer Protection Excellence to your customers. Buyer Protection Classic does not require a password.',
-'HELP_DYN_TRUSTED_TESTMODUS'                  => 'Test environment ("Sandbox") on. After completion of the certification Trusted Shops will send you login details by e-mail.',
-'HELP_DYN_TRUSTED_ACTIVE'                     => 'Check this option to display the Trusted Shops Seal on shop.',
-'HELP_DYN_TRUSTED_TSPAYMENT'                  => 'Assign the shop offered payment types at the appropriate payment to Trusted Store.',
-
 'HELP_PROMOTIONS_BANNER_PICTUREANDLINK'       => 'Upload banner image and enter banner URL which will be used when clicking on banner. If product is assigned to banner and URL is not entered, link to assigned product will be used when clicking on banner.',
 'HELP_SHOP_PERF_SEO_CACHE'                    => 'Enabled SEO cache increases performance, but requires a lot of disk space in /tmp directory.',
 

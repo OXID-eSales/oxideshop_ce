@@ -32,10 +32,4 @@
             [{oxmultilang ident="YOUR_TEAM" args=$shop->oxshops__oxname->value}]
     [{/block}]
 
-[{block name="email_plain_senddownloadlinks_ts"}]
-[{if $oViewConf->showTs("ORDERCONFEMAIL") && $oViewConf->getTsId()}]
-[{oxmultilang ident="RATE_OUR_SHOP"}]
-[{$oViewConf->getTsRatingUrl()}]
-[{/if}]
-[{/block}]
 [{include file="email/html/footer.tpl"}]

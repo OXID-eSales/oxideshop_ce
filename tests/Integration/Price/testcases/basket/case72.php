@@ -1,24 +1,21 @@
 <?php
 /**
- * Price enter mode: netto 
+ * Price enter mode: netto
  * Price view mode:  netto
  * Product count: count of used products
  * VAT info: 19%
- * Currency rate: 1 
+ * Currency rate: 1
  * Discounts: -
  * Vouchers: -
- * Trusted Shop:
- *  1. "TS080501_2500_30_EUR"  "netto" => "4.12", "amount" => "2500" ,
  * Wrapping: -;
  * Gift cart:  -;
- * Costs VAT caclulation rule: max 
+ * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS -
- * Short description: 
- * Neto-Neto mode. Additiona products Neto-Neto. Testing trusted shop . If product total price is =2000€, then is used trusted shop with parameters:
- * "netto" => "4.12", "amount" => "2500" ,. 
+ * Short description:
+ * Neto-Neto mode. Additiona products Neto-Neto.
  */
 $aData = array(
     'articles' => array (
@@ -28,21 +25,10 @@ $aData = array(
             'oxvat'                    => 19,
             'amount'                   => 200,
         ),
-   
-    ),
-    'trustedshop' => array (
-        'product_id'     => 'TS080501_2500_30_EUR',           // trusted shop product id
-        'payments'    => array(                              // paymentids
-            'oxidcashondel'  => 'DIRECT_DEBIT',
-            'oxidcreditcard' => 'DIRECT_DEBIT',
-            'oxiddebitnote'  => 'DIRECT_DEBIT',
-            'oxidpayadvance' => 'DIRECT_DEBIT',
-            'oxidinvoice'    => 'DIRECT_DEBIT',
-            'oxempty'        => 'DIRECT_DEBIT',
-        )
+
     ),
     'costs' => array(
-  
+
         'delivery' => array(
             0 => array(
                 'oxtitle' => '6_abs_del',
@@ -85,12 +71,7 @@ $aData = array(
                 'netto' => '10,00',
                 'vat' => '1,90'
             ),
-            'trustedshop' => array(
-                'brutto' => '4,90',
-                'netto' => '4,12',
-                'vat' => '0,78'
-            ),
-            'grandTotal'  => '2.408,70'
+            'grandTotal'  => '2.403,80'
         ),
     ),
     'options' => array (
@@ -101,7 +82,7 @@ $aData = array(
             'blShowVATForDelivery'=> true,
             'blShowVATForPayCharge'=> true,
             'blShowVATForWrapping'=> true,
-            'sAdditionalServVATCalcMethod' => 'biggest_net', 
+            'sAdditionalServVATCalcMethod' => 'biggest_net',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,
             'blWrappingVatOnTop' => true,

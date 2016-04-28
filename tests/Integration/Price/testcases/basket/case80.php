@@ -4,21 +4,19 @@
  * Price view mode: netto / netto
  * Product count: 1001 and 1002
  * VAT info: count of used vat's (list)
- * Currency rate: 1.0 
+ * Currency rate: 1.0
  * Discounts: -
  * Wrapping:  -
  * Gift cart: -;
  * Costs VAT caclulation rule: proportiona
-  * Trusted Shop:
- *  1. "TS080501_2500_30_EUR"  "netto" => "4.12", "amount" => "2500" ,
  * Wrapping: -;
  * Gift cart:  -;
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS -
- * Short description: 
- * Neto-Neto mode. Additiona products Neto-Neto. Calculate VAT according to the proportional value Testing trusted shop
+ * Short description:
+ * Neto-Neto mode. Additiona products Neto-Neto. Calculate VAT according to the proportional value
  */
 $aData = array(
     // Product
@@ -39,17 +37,6 @@ $aData = array(
 				'amount'                   => 15,
 	    ),
 
-    ),
-	'trustedshop' => array (
-        'product_id'     => 'TS080501_2500_30_EUR',           // trusted shop product id
-        'payments'    => array(                              // paymentids
-            'oxidcashondel'  => 'DIRECT_DEBIT',
-            'oxidcreditcard' => 'DIRECT_DEBIT',
-            'oxiddebitnote'  => 'DIRECT_DEBIT',
-            'oxidpayadvance' => 'DIRECT_DEBIT',
-            'oxidinvoice'    => 'DIRECT_DEBIT',
-            'oxempty'        => 'DIRECT_DEBIT',
-        )
     ),
 
 	     // Additional costs
@@ -112,13 +99,8 @@ $aData = array(
                 'netto' => '1.072,50',
                 'vat' => '226,88'
         ),
-		    'trustedshop' => array(
-                'brutto' => '4,99',
-                'netto' => '4,12',
-                'vat' => '0,87'
-            ),
             // GRAND TOTAL
-            'grandTotal'  => '4.966,25'
+            'grandTotal'  => '4.961,26'
         ),
     ),
     // Test case options
@@ -130,7 +112,7 @@ $aData = array(
             'blShowVATForDelivery'=> true,
             'blShowVATForPayCharge'=> true,
             'blShowVATForWrapping'=> true,
-            'sAdditionalServVATCalcMethod' => 'proportional', 
+            'sAdditionalServVATCalcMethod' => 'proportional',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,
             'blWrappingVatOnTop' => true,

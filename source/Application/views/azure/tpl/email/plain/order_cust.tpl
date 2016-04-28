@@ -148,16 +148,6 @@
 [{/if}]
 [{/block}]
 
-[{block name="email_plain_order_cust_ts"}]
-[{* Trusted shops protection *}]
-[{if $basket->getTsProtectionCosts()}]
-    [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$basket->getTsProtectionVatPercent()}] [{$basket->getTsProtectionVat()}] [{$currency->name}]
-    [{if $basket->getTsProtectionVat()}]
-        [{if $basket->isProportionalCalculationOn()}][{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT"}][{else}] [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$basket->getTsProtectionVatPercent()}][{/if}]
-    [{/if}]
-[{/if}]
-[{/block}]
-
 [{block name="email_plain_order_cust_wrappingcosts"}]
 [{* Gift wrapping *}]
 [{if $oViewConf->getShowGiftWrapping()}]
@@ -253,13 +243,6 @@
 
 [{block name="email_plain_order_cust_orderemailend"}]
 [{oxcontent ident="oxuserorderemailendplain"}]
-[{/block}]
-
-[{block name="email_plain_order_cust_tsinfo"}]
-[{if $oViewConf->showTs("ORDEREMAIL") && $oViewConf->getTsId()}]
-[{oxmultilang ident="RATE_OUR_SHOP"}]
-[{$oViewConf->getTsRatingUrl()}]
-[{/if}]
 [{/block}]
 
 [{oxcontent ident="oxemailfooterplain"}]

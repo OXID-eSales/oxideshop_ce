@@ -1928,7 +1928,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->expects($this->once())->method('_calcBasketTotalDiscount');
         $oBasket->expects($this->once())->method('_calcVoucherDiscount');
         $oBasket->expects($this->once())->method('_applyDiscounts');
-        $oBasket->expects($this->exactly(5))->method('setCost');
+        $oBasket->expects($this->exactly(4))->method('setCost');
         $oBasket->expects($this->once())->method('_calcTotalPrice');
         $oBasket->expects($this->once())->method('formatDiscount');
         $oBasket->expects($this->once())->method('afterUpdate');
@@ -1981,7 +1981,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->expects($this->once())->method('_calcBasketTotalDiscount');
         $oBasket->expects($this->once())->method('_calcVoucherDiscount');
         $oBasket->expects($this->once())->method('_applyDiscounts');
-        $oBasket->expects($this->exactly(5))->method('setCost');
+        $oBasket->expects($this->exactly(4))->method('setCost');
         $oBasket->expects($this->once())->method('_calcTotalPrice');
         $oBasket->expects($this->once())->method('formatDiscount');
         $oBasket->expects($this->once())->method('afterUpdate');
@@ -2685,7 +2685,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->addToBasket($this->oArticle->getId(), 2);
         $oBasket->addToBasket($this->oVariant->getId(), 11);
         $oBasket->calculateBasket(false);
-        $this->assertEquals(array('oxdelivery', 'oxwrapping', 'oxgiftcard', 'oxpayment', 'oxtsprotection'), array_keys($oBasket->getCosts()));
+        $this->assertEquals(array('oxdelivery', 'oxwrapping', 'oxgiftcard', 'oxpayment'), array_keys($oBasket->getCosts()));
     }
 
     /**
@@ -3495,66 +3495,6 @@ class BasketTest extends \OxidTestCase
     }
 
     /**
-     * Testing formatted Trusted shops protection vat value getter
-     *
-     * @return null
-     */
-    public function testGetTsProtectionVat()
-    {
-        $this->getConfig()->setConfigParam('blShowVATForPayCharge', true);
-        $oPrice = $this->getMock('oxprice', array('getVatValue'));
-        $oPrice->expects($this->once())->method('getVatValue')->will($this->returnValue(11.588));
-        $oBasket = $this->getProxyClass("oxBasket");
-        $oBasket->setNonPublicVar('_aCosts', array("oxtsprotection" => $oPrice));
-        $this->assertEquals("11,59", $oBasket->getTsProtectionVat());
-    }
-
-    /**
-     * Testing formatted Trusted shops protection vat value getter
-     *
-     * @return null
-     */
-    public function testGetTsProtectionVatDoNotShow()
-    {
-        $this->getConfig()->setConfigParam('blShowVATForPayCharge', false);
-        $oPrice = $this->getMock('oxprice', array('getVatValue'));
-        $oPrice->expects($this->once())->method('getVatValue')->will($this->returnValue(11.588));
-        $oBasket = $this->getProxyClass("oxBasket");
-        $oBasket->setNonPublicVar('_aCosts', array("oxtsprotection" => $oPrice));
-        $this->assertFalse($oBasket->getTsProtectionVat());
-    }
-
-    /**
-     * Testing formatted Trusted shops protection netto price getter
-     *
-     * @return null
-     */
-    public function testGetTsProtectionNet()
-    {
-        $this->getConfig()->setConfigParam('blShowVATForPayCharge', true);
-        $oPrice = $this->getMock('oxprice', array('getNettoPrice'));
-        $oPrice->expects($this->once())->method('getNettoPrice')->will($this->returnValue(11.588));
-        $oBasket = $this->getProxyClass("oxBasket");
-        $oBasket->setNonPublicVar('_aCosts', array("oxtsprotection" => $oPrice));
-        $this->assertEquals("11,59", $oBasket->getTsProtectionNet());
-    }
-
-    /**
-     * Testing formatted Trusted shops protection netto price getter
-     *
-     * @return null
-     */
-    public function testGetTsProtectionNetDoNotShow()
-    {
-        $this->getConfig()->setConfigParam('blShowVATForPayCharge', false);
-        $oPrice = $this->getMock('oxprice', array('getNettoPrice'));
-        $oPrice->expects($this->never())->method('getNettoPrice')->will($this->returnValue(11.588));
-        $oBasket = $this->getProxyClass("oxBasket");
-        $oBasket->setNonPublicVar('_aCosts', array("oxtsprotection" => $oPrice));
-        $this->assertFalse($oBasket->getTsProtectionNet());
-    }
-
-    /**
      * Testing payment brutto price getter
      *
      * @return null
@@ -4264,54 +4204,6 @@ class BasketTest extends \OxidTestCase
     }
 
     /**
-     * oxbasket::getFTsProtectionCosts() test case
-     *
-     * @return null
-     */
-    public function testGetFTsProtectionCosts()
-    {
-        $oPrice = $this->getMock('oxprice', array('getBruttoPrice'));
-        $oPrice->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(0.98));
-
-        $oBasket = $this->getMock('oxbasket', array('getCosts'));
-        $oBasket->expects($this->any())->method('getCosts')->will($this->returnValue($oPrice));
-
-        $this->assertEquals('0,98', $oBasket->getFTsProtectionCosts());
-    }
-
-    /**
-     * oxbasket::setTsProductId() and oxbasket::getTsProductId() test case
-     *
-     * @return null
-     */
-    public function testSetGetTsProductId()
-    {
-        $oBasket = $this->getProxyClass("oxbasket");
-        $oBasket->setTsProductId('xxx');
-        $this->assertEquals('xxx', $oBasket->getTsProductId());
-    }
-
-    /**
-     * Testing TS protection costs calculation
-     *
-     * @return null
-     */
-    public function testCalcTsProtectionCost()
-    {
-        //$this->getConfig()->setConfigParam( 'blEnterNetPrice', false );
-        $oBasket = oxNew('oxBasket');
-        $oBasket->addToBasket($this->oArticle->getId(), 2);
-        $oBasket->calculateBasket(false);
-        $oBasket->setTsProductId('TS080501_500_30_EUR');
-
-        $oPayCost = $oBasket->UNITcalcTsProtectionCost();
-
-        $this->assertEquals(0.98, $oPayCost->getBruttoPrice());
-        $this->assertEquals(0.82, round($oPayCost->getNettoPrice(), 2));
-        $this->assertEquals(19, $oPayCost->getVat());
-    }
-
-    /**
      * Testing oxbasket::_oNotDiscountedProductsPriceList getter
      *
      * @return null
@@ -4563,15 +4455,6 @@ class BasketTest extends \OxidTestCase
 
         // checking amounts
         $this->assertEquals(44, $oSummary->dArticleDiscountablePrice);
-    }
-
-    public function testInsuredSumCalculationForTrustedShop()
-    {
-        $oBasket = oxNew('oxBasket');
-        $oBasket->setPrice(new oxPrice(100.98));
-        $oBasket->setCost('oxtsprotection', new oxPrice(0.98));
-
-        $this->assertEquals(100, $oBasket->getTsInsuredSum());
     }
 
     public function testGetSaveBasketSetNotSave()

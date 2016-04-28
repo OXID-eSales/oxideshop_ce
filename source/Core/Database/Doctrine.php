@@ -185,42 +185,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
     }
 
     /**
-     * Get the last error number, occurred while executing a sql statement through any of the methods in this class.
-     *
-     * @return int The last mysql error number.
-     */
-    public function errorNo()
-    {
-        $errorInformation = $this->getConnection()->errorInfo();
-
-        $errorNumber = 0;
-
-        if (is_array($errorInformation) && array_key_exists('1', $errorInformation) && !is_null($errorInformation[1])) {
-            $errorNumber = $errorInformation[1];
-        }
-
-        return $errorNumber;
-    }
-
-    /**
-     * Get the last error message, occurred while executing a sql statement through any of the methods in this class.
-     *
-     * @return string The last error message.
-     */
-    public function errorMsg()
-    {
-        $errorInformation = $this->getConnection()->errorInfo();
-
-        $errorMessage = '';
-
-        if (is_array($errorInformation) && array_key_exists('2', $errorInformation) && !is_null($errorInformation[2])) {
-            $errorMessage = $errorInformation[2];
-        }
-
-        return $errorMessage;
-    }
-
-    /**
      * Quote the given string. Same as qstr.
      *
      * @param string $value The string we want to quote.

@@ -347,7 +347,7 @@ class LanguageMainTest extends \OxidTestCase
     {
         $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
         $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
-        $aLangData['params']['fr'] = array("baseId" => 5, "active" => 1, "sort" => 20, "default" => false);
+        $aLangData['params']['fr'] = array("baseId" => 9, "active" => 1, "sort" => 20, "default" => false);
 
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);

@@ -394,39 +394,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
     }
 
     /**
-     * Executes an SQL INSERT/UPDATE/DELETE query with the given parameters, sets the number of affected rows and returns
-     * an empty DoctrineResultSet.
-     *
-     * This method supports PDO binding types as well as DBAL mapping types.
-     *
-     * @param string $query      The SQL query.
-     * @param array  $parameters The query parameters.
-     * @param array  $types      The parameter types.
-     *
-     * @throws DatabaseException
-     *
-     * @return DoctrineEmptyResultSet
-     */
-    protected function executeUpdate($query, $parameters = array(), $types = array())
-    {
-        // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
-        $parameters = $this->assureParameterIsAnArray($parameters);
-        // END deprecated
-
-        try {
-            $affectedRows = $this->getConnection()->executeUpdate($query, $parameters, $types);
-            $this->setAffectedRows($affectedRows);
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        }
-
-        $result = new DoctrineEmptyResultSet();
-
-        return $result;
-    }
-
-    /**
      * Run a given select sql statement with a limit clause.
      * Be aware that only a few database vendors have the LIMIT clause as known from MySQL.
      * The Doctrine Query Builder should be used here.
@@ -502,6 +469,47 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
     }
 
     /**
+     * Closes an open connection
+     */
+    public function closeConnection()
+    {
+        $this->connection->close();
+    }
+
+    /**
+     * Executes an SQL INSERT/UPDATE/DELETE query with the given parameters, sets the number of affected rows and returns
+     * an empty DoctrineResultSet.
+     *
+     * This method supports PDO binding types as well as DBAL mapping types.
+     *
+     * @param string $query      The SQL query.
+     * @param array  $parameters The query parameters.
+     * @param array  $types      The parameter types.
+     *
+     * @throws DatabaseException
+     *
+     * @return DoctrineEmptyResultSet
+     */
+    protected function executeUpdate($query, $parameters = array(), $types = array())
+    {
+        // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
+        $parameters = $this->assureParameterIsAnArray($parameters);
+        // END deprecated
+
+        try {
+            $affectedRows = $this->getConnection()->executeUpdate($query, $parameters, $types);
+            $this->setAffectedRows($affectedRows);
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
+        $result = new DoctrineEmptyResultSet();
+
+        return $result;
+    }
+
+    /**
      * Get the database connection.
      *
      * @return \Doctrine\DBAL\Connection $oConnection The database connection we want to use.
@@ -553,14 +561,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
         }
 
         return $connection;
-    }
-
-    /**
-     * Closes an open connection
-     */
-    public function closeConnection()
-    {
-        $this->connection->close();
     }
 
     /**

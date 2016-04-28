@@ -31,6 +31,7 @@ use pear_ADOConnection;
  */
 interface DatabaseInterface
 {
+
     /**
      * The default fetch mode as implemented by the database driver, in Doctrine this is usually FETCH_MODE_BOTH
      *
@@ -115,18 +116,18 @@ interface DatabaseInterface
     /**
      * Get value
      *
-     * @param string $query          The sql statement we want to execute.
+     * @param string $sqlSelect      The sql select statement
      * @param array  $parameters     The parameters array.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return mixed|Object_ResultSet
      */
-    public function select($query, $parameters = array(), $executeOnSlave = true);
+    public function select($sqlSelect, $parameters = array(), $executeOnSlave = true);
 
     /**
      * Get the values of a column.
      *
-     * @param string $query          The sql statement we want to execute.
+     * @param string $sqlSelect      The sql select statement
      * @param array  $parameters     The parameters array.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
@@ -134,12 +135,12 @@ interface DatabaseInterface
      *
      * @return array The values of a column of a corresponding sql query.
      */
-    public function getCol($query, $parameters = array(), $executeOnSlave = true);
+    public function getCol($sqlSelect, $parameters = array(), $executeOnSlave = true);
 
     /**
      * Run a given select sql statement with a limit clause on the database.
      *
-     * @param string $query      The sql statement we want to execute.
+     * @param string $sqlSelect  The sql select statement
      * @param int    $limit      Number of rows to select
      * @param int    $offset     Number of rows to skip
      * @param array  $parameters The parameters array.
@@ -147,7 +148,7 @@ interface DatabaseInterface
      *
      * @return mixed|Object_ResultSet The result of the given query.
      */
-    public function selectLimit($query, $limit = -1, $offset = -1, $parameters = array(), $type = true);
+    public function selectLimit($sqlSelect, $limit = -1, $offset = -1, $parameters = array(), $type = true);
 
     /**
      * Executes query and returns result set.

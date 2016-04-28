@@ -86,11 +86,11 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
     /**
      * Set the database connection.
      *
-     * @param \Doctrine\DBAL\Connection $oConnection The database connection we want to use.
+     * @param \Doctrine\DBAL\Connection $connection The database connection we want to use.
      */
-    public function setConnection($oConnection)
+    public function setConnection($connection)
     {
-        $this->connection = $oConnection;
+        $this->connection = $connection;
     }
 
     /**
@@ -321,7 +321,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
      * Run a given select sql statement on the database.
      * Affected rows will be set to 0 by this query.
      *
-     * @param string $query          The query we want to execute.
+     * @param string $sqlSelect      The sql select statement we want to execute.
      * @param array  $parameters     The parameters for the given query.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
@@ -329,7 +329,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
      *
      * @return DoctrineResultSet The result of the given query.
      */
-    public function select($query, $parameters = array(), $executeOnSlave = true)
+    public function select($sqlSelect, $parameters = array(), $executeOnSlave = true)
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -343,7 +343,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
              * This is especially important in master-slave Connection
              */
             /** @var \Doctrine\DBAL\Driver\Statement $statement */
-            $statement = $this->getConnection()->executeQuery($query, $parameters);
+            $statement = $this->getConnection()->executeQuery($sqlSelect, $parameters);
 
             $result = new DoctrineResultSet($statement);
 
@@ -364,7 +364,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
      * Be aware that only a few database vendors have the LIMIT clause as known from MySQL.
      * The Doctrine Query Builder should be used here.
      *
-     * @param string     $query          The sql statement we want to execute.
+     * @param string     $sqlSelect      The sql select statement we want to execute.
      * @param int        $rowCount       Maximum number of rows to return
      * @param int        $offset         Offset of the first row to return
      * @param array|bool $parameters     The parameters array.
@@ -374,7 +374,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
      *
      * @return DoctrineResultSet The result of the given query.
      */
-    public function selectLimit($query, $rowCount = -1, $offset = -1, $parameters = false, $executeOnSlave = true)
+    public function selectLimit($sqlSelect, $rowCount = -1, $offset = -1, $parameters = false, $executeOnSlave = true)
     {
         /**
          * Parameter validation.
@@ -400,13 +400,13 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
             $limitClause = "LIMIT $rowCount OFFSET $offset";
         }
 
-        return $this->select($query . " $limitClause ", $parameters, $executeOnSlave);
+        return $this->select($sqlSelect . " $limitClause ", $parameters, $executeOnSlave);
     }
 
     /**
      * Get the values of a column.
      *
-     * @param string $query          The sql statement we want to execute.
+     * @param string $sqlSelect      The sql select statement we want to execute.
      * @param array  $parameters     The parameters array.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
@@ -414,13 +414,13 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
      *
      * @return array The values of a column of a corresponding sql query.
      */
-    public function getCol($query, $parameters = array(), $executeOnSlave = true)
+    public function getCol($sqlSelect, $parameters = array(), $executeOnSlave = true)
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
 
-        $rows = $this->getConnection()->fetchAll($query, $parameters);
+        $rows = $this->getConnection()->fetchAll($sqlSelect, $parameters);
 
         $result = array();
         foreach ($rows as $row) {
@@ -685,7 +685,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
 
         /** @var \oxException $convertedException */
         $convertedException = new $exceptionClass($message, $code, $exception);
-            
+
         return $convertedException;
     }
 
@@ -749,7 +749,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
         }
 
         $result = $statement->fetchAll();
-        
+
         return $result;
     }
 

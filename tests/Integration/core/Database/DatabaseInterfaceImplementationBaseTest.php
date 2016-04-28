@@ -178,6 +178,16 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     }
 
     /**
+     * Create the database object under test - the static pendant to use in the setUpBeforeClass and tearDownAfterClass.
+     *
+     * @return Doctrine|\oxLegacyDb The database object under test.
+     */
+    protected static function createDatabaseStatic()
+    {
+        return self::USE_LEGACY_DATABASE ? oxDb::getDb() : new Doctrine();
+    }
+
+    /**
      * Create the database, we want to test.
      */
     protected function initializeDatabase()

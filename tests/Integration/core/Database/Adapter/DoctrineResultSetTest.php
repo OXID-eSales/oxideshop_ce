@@ -653,6 +653,30 @@ class DoctrineResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
+     * Test, that the method 'fetchRow' works for a non empty result set and consecutive calls.
+     */
+    public function testFetchRowWithNonEmptyResultSetAndConsecutiveCalls()
+    {
+        $resultSet = $this->testCreationWithRealNonEmptyResult();
+
+        $rowOne = $resultSet->fetchRow();
+        $rowTwo = $resultSet->fetchRow();
+        $rowThree = $resultSet->fetchRow();
+        $rowFour = $resultSet->fetchRow();
+
+        $this->assertInternalType('array', $rowOne);
+        $this->assertSame(self::FIXTURE_OXID_1, $rowOne[0]);
+
+        $this->assertInternalType('array', $rowTwo);
+        $this->assertSame(self::FIXTURE_OXID_2, $rowTwo[0]);
+
+        $this->assertInternalType('array', $rowThree);
+        $this->assertSame(self::FIXTURE_OXID_3, $rowThree[0]);
+
+        $this->assertFalse($rowFour);
+    }
+
+    /**
      * Test, that the method 'getAll' works for an empty result set.
      */
     public function testGetAllWithEmptyResultSet()

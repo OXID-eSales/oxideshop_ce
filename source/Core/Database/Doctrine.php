@@ -151,7 +151,9 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
      */
     public function getRow($sqlSelect, $parameters = array(), $executeOnSlave = true)
     {
+        // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
+        // END deprecated
 
         try {
             $resultSet = $this->select($sqlSelect, $parameters, $executeOnSlave);
@@ -775,7 +777,9 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
             throw new \InvalidArgumentException();
         }
 
+        // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
+        // END deprecated
 
         try {
             $statement = $this->getConnection()->executeQuery($query, $parameters);

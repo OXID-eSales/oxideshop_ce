@@ -1156,6 +1156,8 @@ class oxViewConfig extends oxSuperCfg
     /**
      * Returns Trusted shops domain name (includes "http://")
      *
+     * @deprecated since 5.3.0 (2016.04.28); Use Trusted Shops Module instead.
+     *
      * @return string
      */
     public function getTsDomain()

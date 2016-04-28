@@ -773,10 +773,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
     {
         $statement = null;
 
-        if ($parameters && !is_array($parameters)) {
-            throw new \InvalidArgumentException();
-        }
-
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated

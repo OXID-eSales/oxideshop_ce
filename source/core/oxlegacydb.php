@@ -44,6 +44,8 @@ class oxLegacyDb extends oxSuperCfg
      * Set connection
      *
      * @param object $oConnection Connection
+     *
+     * @deprecated since v5.3.0 (2016-04-21); This method will be protected in v6.0. Do not use any more.
      */
     public function setConnection($oConnection)
     {
@@ -71,18 +73,6 @@ class oxLegacyDb extends oxSuperCfg
      * @return object
      */
     public function getDb($blType = true)
-    {
-        return $this->_getDb($blType);
-    }
-
-    /**
-     * Return connection to db
-     *
-     * @param bool $blType - connection type
-     *
-     * @return object
-     */
-    protected function _getDb($blType = true)
     {
 
         return $this->_oDb;
@@ -170,7 +160,7 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @deprecated since v5.3.0 (2016-04-14); This method will be removed. Rebuild the functionality of this
      * method with your code using getAll with assoc fetch mode. In some use cases you should be able to simply use getRow
-     *             
+     *
      * @return array
      */
     public function getAssoc($sSql, $aParams = array(), $blType = true)
@@ -289,9 +279,9 @@ class oxLegacyDb extends oxSuperCfg
      * Quote string
      *
      * @param string $sValue value
-     * 
+     *
      * @deprecated since v5.3.0 (2016-04-14); Use the method oxLegacyDb::quote() instead.
-     *             
+     *
      * @return string
      */
     public function qstr($sValue)

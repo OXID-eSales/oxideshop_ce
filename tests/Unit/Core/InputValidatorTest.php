@@ -572,6 +572,43 @@ class InputValidatorTest extends \OxidTestCase
         $oValidator->checkRequiredFields(new oxUser(), $aInvAdress, $aDelAdress);
     }
 
+    public function testCheckPassword_NoError_WhenPasswordCorrect()
+    {
+        $user = oxNew('oxuser');
+        $user->setId("testlalaa_");
+
+        $validator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $validator->expects($this->never())->method('_addValidationError');
+
+        $validator->checkPassword($user, '1234567', '1234567', true);
+    }
+
+    public function testCheckPassword_NoError_WhenPasswordLengthIsSameAsCustomDefined()
+    {
+        $user = oxNew('oxuser');
+        $user->setId("testlalaa_");
+
+        $this->setConfigParam('iPasswordLength', 7);
+
+        $validator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $validator->expects($this->never())->method('_addValidationError');
+
+        $validator->checkPassword($user, '1234567', '1234567', true);
+    }
+
+    public function testCheckPassword_ThrowError_WhenWhenPasswordIsShortenThenCustomDefined()
+    {
+        $user = oxNew('oxuser');
+        $user->setId("testlalaa_");
+
+        $this->setConfigParam('iPasswordLength', 8);
+
+        $validator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $validator->expects($this->atLeastOnce())->method('_addValidationError');
+
+        $validator->checkPassword($user, '1234567', '1234567', true);
+    }
+
     /**
      * Test case for oxInputValidator::checkPassword()
      * 1. for user without password - no checks
@@ -622,12 +659,14 @@ class InputValidatorTest extends \OxidTestCase
         $oUser->setId("testlalaa_");
 
         $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $expectedErrorMessage = oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT');
+
         $oValidator->expects($this->once())->method('_addValidationError')
             ->with(
                 $this->equalTo('oxuser__oxpassword'),
                 $this->logicalAnd(
                     $this->isInstanceOf('oxInputException'),
-                    $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT'))
+                    $this->attributeEqualTo('message', $expectedErrorMessage)
                 )
             );
 

@@ -1184,15 +1184,9 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getPasswordLength()
     {
-        $iPasswordLength = 6;
+        $inputValidator = oxRegistry::get('oxInputValidator');
 
-        $oConfig = $this->getConfig();
-
-        if ($oConfig->getConfigParam("iPasswordLength")) {
-            $iPasswordLength = $oConfig->getConfigParam("iPasswordLength");
-        }
-
-        return $iPasswordLength;
+        return $inputValidator->getPasswordLength();
     }
 
     /**

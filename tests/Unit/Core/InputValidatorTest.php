@@ -550,6 +550,22 @@ class InputValidatorTest extends \OxidTestCase
         $oValidator->checkRequiredFields($oUser, $aInvAdress, $aDelAdress);
     }
 
+    public function testGetPasswordLengthDefaultValue()
+    {
+        $oViewConf = oxNew('oxInputValidator');
+        $this->assertEquals(6, $oViewConf->getPasswordLength());
+
+    }
+
+    public function testGetPasswordLengthFromConfig()
+    {
+        $oViewConf = oxNew('oxInputValidator');
+
+        $this->getConfig()->setConfigParam("iPasswordLength", 66);
+        $this->assertEquals(66, $oViewConf->getPasswordLength());
+
+    }
+
     /**
      * Test case for oxInputValidator::checkPassword()
      * 2. defining required fields in aMustFillFields. While testing original

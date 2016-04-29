@@ -229,22 +229,11 @@ class oxInputValidator extends oxSuperCfg
             return $this->_addValidationError("oxuser__oxpassword", $oEx);
         }
 
-        // check length?
-        if ($blCheckLength) {
-            // default password length
-            $iPasswordLength = 6;
+        if ($blCheckLength && getStr()->strlen($sNewPass) < $this->getPasswordLength()) {
+            $oEx = oxNew('oxInputException');
+            $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT'));
 
-            if (oxRegistry::getConfig()->getConfigParam("iPasswordLength")) {
-                $iPasswordLength = (int)oxRegistry::getConfig()->getConfigParam("iPasswordLength");
-            }
-
-            //  password is too short ?
-            if (getStr()->strlen($sNewPass) < $iPasswordLength) {
-                $oEx = oxNew('oxInputException');
-                $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT'));
-
-                return $this->_addValidationError("oxuser__oxpassword", $oEx);
-            }
+            return $this->_addValidationError("oxuser__oxpassword", $oEx);
         }
 
         //  passwords do not match ?
@@ -254,6 +243,24 @@ class oxInputValidator extends oxSuperCfg
 
             return $this->_addValidationError("oxuser__oxpassword", $oEx);
         }
+    }
+
+    /**
+     * min length of password
+     *
+     * @return int
+     */
+    public function getPasswordLength()
+    {
+        $passwordLength = 6;
+
+        $config = $this->getConfig();
+
+        if ($config->getConfigParam("iPasswordLength")) {
+            $passwordLength = $config->getConfigParam("iPasswordLength");
+        }
+
+        return $passwordLength;
     }
 
     /**
@@ -573,9 +580,9 @@ class oxInputValidator extends oxSuperCfg
 
         if ($oStr->strlen($aDebitInfo['lsktonr']) < 10) {
             $sNewNum = str_repeat(
-                '0',
-                10 - $oStr->strlen($aDebitInfo['lsktonr'])
-            ) . $aDebitInfo['lsktonr'];
+                           '0',
+                           10 - $oStr->strlen($aDebitInfo['lsktonr'])
+                       ) . $aDebitInfo['lsktonr'];
             $aDebitInfo['lsktonr'] = $sNewNum;
         }
 

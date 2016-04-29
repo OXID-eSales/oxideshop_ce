@@ -350,10 +350,13 @@ class SeoEncoderCategoryTest extends \OxidTestCase
         $oDb->execute($sQ);
         $sQ = "insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( 'obj_id', '{$sShopId}', '0' )";
         $oDb->execute($sQ);
+        $sQ = "insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang ) values ( 'obj_id', '132', '{$sShopId}', '0' )";
+        $oDb->execute($sQ);
 
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'obj_id'"));
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxobject2seodata where oxobjectid = 'obj_id'"));
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxtype = 'oxarticle' and oxparams = 'obj_id' "));
+        $this->assertTrue((bool) $oDb->getOne("select 1 from oxseohistory where oxobjectid = 'obj_id'"));
 
         $oObj = oxNew('oxBase');
         $oObj->setId('obj_id');
@@ -364,5 +367,6 @@ class SeoEncoderCategoryTest extends \OxidTestCase
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'obj_id'"));
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxobject2seodata where oxobjectid = 'obj_id'"));
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxseo where oxtype = 'oxarticle' and oxparams = 'obj_id' "));
+        $this->assertFalse((bool) $oDb->getOne("select 1 from oxseohistory where oxobjectid = 'obj_id'"));
     }
 }

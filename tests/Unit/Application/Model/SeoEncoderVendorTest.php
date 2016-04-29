@@ -282,8 +282,12 @@ class SeoEncoderVendorTest extends \OxidTestCase
         $sQ = "insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( 'oid', '{$sShopId}', '0' )";
         $oDb->execute($sQ);
 
+        $sQ = "insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang ) values ( 'oid', '132', '{$sShopId}', '0' )";
+        $oDb->execute($sQ);
+
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'oid'"));
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxobject2seodata where oxobjectid = 'oid'"));
+        $this->assertTrue((bool) $oDb->getOne("select 1 from oxseohistory where oxobjectid = 'oid'"));
 
         $oObj = oxNew('oxbase');
         $oObj->setId('oid');
@@ -293,6 +297,7 @@ class SeoEncoderVendorTest extends \OxidTestCase
 
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'oid'"));
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxobject2seodata where oxobjectid = 'oid'"));
+        $this->assertFalse((bool) $oDb->getOne("select 1 from oxseohistory where oxobjectid = 'oid'"));
 
     }
 }

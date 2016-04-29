@@ -140,6 +140,7 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
         $sIdQuoted = $oDb->quote($oManufacturer->getId());
         $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxmanufacturer'");
         $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
+        $oDb->execute("delete from oxseohistory where oxobjectid = $sIdQuoted");
     }
 
     /**

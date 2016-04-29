@@ -109,6 +109,7 @@ class oxSeoEncoderContent extends oxSeoEncoder
         $sIdQuoted = $oDb->quote($sId);
         $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxcontent'");
         $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
+        $oDb->execute("delete from oxseohistory where oxobjectid = $sIdQuoted");
     }
 
     /**

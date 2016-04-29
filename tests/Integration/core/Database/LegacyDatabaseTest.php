@@ -1,5 +1,5 @@
 <?php
-namespace OxidEsales\Eshop\Tests\integration\core\Database;
+namespace OxidEsales\Eshop\Tests\Integration\Core\Database;
 
     /**
      * This file is part of OXID eShop Community Edition.

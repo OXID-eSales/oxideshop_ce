@@ -21,7 +21,7 @@
  */
 namespace OxidEsales\Eshop\Core\Database\Adapter;
 
-use Doctrine\DBAL\Driver\PDOStatement;
+use Doctrine\DBAL\Driver\Statement;
 
 /**
  * The doctrine statement wrapper, to support the old adodblite interface.
@@ -36,10 +36,13 @@ class DoctrineResultSet
      */
     public $EOF = true;
 
+    /**
+     * @var array Holds the retrieved fields of the resultSet row on the current cursor position
+     */
     public $fields = array();
 
     /**
-     * @var PDOStatement The doctrine adapted statement.
+     * @var Statement The doctrine adapted statement.
      */
     protected $adapted = null;
 
@@ -49,11 +52,16 @@ class DoctrineResultSet
     private $fetchedFirst = false;
 
     /**
+     * @var bool
+     */
+    private $isEmptyResultSet = false;
+
+    /**
      * DoctrineResultSet constructor.
      *
-     * @param PDOStatement $adapted The statement we want to wrap in this class.
+     * @param Statement $adapted The statement we want to wrap in this class.
      */
-    public function __construct(PDOStatement $adapted)
+    public function __construct(Statement $adapted)
     {
         $this->setAdapted($adapted);
 
@@ -62,10 +70,9 @@ class DoctrineResultSet
 
             $this->fields = $this->getAdapted()->fetch();
             
-            // @todo A prepared statement is executed here, but this makes no sense without the parameters. Yet no params are provided.
+            // @todo A prepared statement is executed here, but this makes no sense without binding the parameters. Yet no params are provided.
             $this->executeAdapted();
         } else {
-            // @todo: double check, if this path or the DoctrineEmptyResultSet could be removed
             $this->setToEmptyState();
         }
     }
@@ -269,8 +276,6 @@ class DoctrineResultSet
             return true;
         }
 
-        $lastFields = $this->fields;
-
         while (0 < $rowIndex) {
             $lastFields = $this->fields;
 
@@ -323,7 +328,7 @@ class DoctrineResultSet
     /**
      * Getter for the adapted statement.
      *
-     * @return PDOStatement The adapted statement.
+     * @return Statement The adapted statement.
      */
     protected function getAdapted()
     {
@@ -333,9 +338,9 @@ class DoctrineResultSet
     /**
      * Setter for the adapted statement.
      *
-     * @param PDOStatement $adapted The adapted statement.
+     * @param Statement $adapted The adapted statement.
      */
-    protected function setAdapted($adapted)
+    protected function setAdapted(Statement $adapted)
     {
         $this->adapted = $adapted;
     }
@@ -383,6 +388,9 @@ class DoctrineResultSet
      */
     private function setToEmptyState()
     {
+
+        /** The following properties change the value for an  empty result set */
+        $this->isEmptyResultSet = true;
         $this->EOF = true;
         $this->fields = false;
     }
@@ -394,6 +402,6 @@ class DoctrineResultSet
      */
     private function isEmpty()
     {
-        return 0 === $this->recordCount();
+        return $this->isEmptyResultSet;
     }
 }

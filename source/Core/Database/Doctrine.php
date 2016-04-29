@@ -28,6 +28,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use OxidEsales\Eshop;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
+use OxidEsales\Eshop\Core\Database\Adapter\DoctrineEmptyResultSet;
 use OxidEsales\Eshop\Core\exception\DatabaseException;
 use oxLegacyDb;
 
@@ -342,9 +343,8 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
              * Be aware that Connection::executeQuery is a method specifically for READ operations only.
              * This is especially important in master-slave Connection
              */
-            /** @var \Doctrine\DBAL\Driver\Statement $statement */
-            $statement = $this->getConnection()->executeQuery($sqlSelect, $parameters);
-
+            /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
+            $statement = $this->getConnection()->executeQuery($query, $parameters);
             $result = new DoctrineResultSet($statement);
 
             $this->setAffectedRows($result->recordCount());

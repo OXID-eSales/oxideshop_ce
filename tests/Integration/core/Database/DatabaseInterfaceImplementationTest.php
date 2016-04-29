@@ -1,5 +1,5 @@
 <?php
-namespace OxidEsales\Eshop\Tests\integration\core\Database;
+namespace OxidEsales\Eshop\Tests\Integration\Core\Database;
 
 /**
  * This file is part of OXID eShop Community Edition.
@@ -27,7 +27,7 @@ use OxidEsales\Eshop\Core\Database\DatabaseInterface;
  * This class tests an implementation of the DatabaseInterface.
  * All implementation MUST extend this test.
  *
- * @package OxidEsales\Eshop\Tests\integration\core\Database
+ * @package OxidEsales\Eshop\Tests\Integration\Core\Database
  */
 abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImplementationBaseTest
 {

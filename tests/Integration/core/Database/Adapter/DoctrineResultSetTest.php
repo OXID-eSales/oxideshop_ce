@@ -1,5 +1,5 @@
 <?php
-namespace OxidEsales\Eshop\Tests\integration\core\Database\Adapter;
+namespace OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter;
 
 /**
  * This file is part of OXID eShop Community Edition.
@@ -25,7 +25,7 @@ namespace OxidEsales\Eshop\Tests\integration\core\Database\Adapter;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
 use OxidEsales\Eshop\Core\Database\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Doctrine;
-use OxidEsales\Eshop\Tests\integration\core\Database\DatabaseInterfaceImplementationBaseTest;
+use OxidEsales\Eshop\Tests\Integration\Core\Database\DatabaseInterfaceImplementationBaseTest;
 
 /**
  * Tests for our database object.

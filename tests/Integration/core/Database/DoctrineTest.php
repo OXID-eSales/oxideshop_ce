@@ -1,5 +1,5 @@
 <?php
-namespace OxidEsales\Eshop\Tests\integration\core\Database;
+namespace OxidEsales\Eshop\Tests\Integration\Core\Database;
 
 /**
  * This file is part of OXID eShop Community Edition.
@@ -47,7 +47,7 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
     /**
      * @var string The empty result set class class
      */
-    const EMPTY_RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet';
+    const EMPTY_RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineEmptyResultSet';
 
     /**
      * @var bool Use the legacy database adapter.

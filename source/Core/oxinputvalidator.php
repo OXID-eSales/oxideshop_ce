@@ -241,7 +241,7 @@ class oxInputValidator extends oxSuperCfg
             //  password is too short ?
             if (getStr()->strlen($sNewPass) < $iPasswordLength) {
                 $oEx = oxNew('oxInputException');
-                $oEx->setMessage('ERROR_MESSAGE_PASSWORD_TOO_SHORT');
+                $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT'));
 
                 return $this->_addValidationError("oxuser__oxpassword", $oEx);
             }

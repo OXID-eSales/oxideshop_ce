@@ -270,7 +270,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Test, that affected rows is set to the expected values by consecutive calls to select()
+     * Test, that affected rows is set to the expected values by consecutive calls to execute()
      */
     public function testExecuteSetsAffectedRows()
     {

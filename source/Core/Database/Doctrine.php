@@ -344,7 +344,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
              * This is especially important in master-slave Connection
              */
             /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
-            $statement = $this->getConnection()->executeQuery($query, $parameters);
+            $statement = $this->getConnection()->executeQuery($sqlSelect, $parameters);
             $result = new DoctrineResultSet($statement);
 
             $this->setAffectedRows($result->recordCount());

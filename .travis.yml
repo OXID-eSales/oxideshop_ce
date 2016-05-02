@@ -44,7 +44,7 @@ before_script:
   - sed -i 's|<dbHost>|localhost|; s|<dbName>|oxidehop|; s|<dbUser>|root|; s|<dbPwd>||; s|<sShopURL>|http://localhost|; s|<sShopDir>|'$TRAVIS_BUILD_DIR'/source|; s|<sCompileDir>|'$TRAVIS_BUILD_DIR'/source/tmp|; s|<iUtfMode>|1|; s|$this->iDebug = 0|$this->iDebug = 1|' source/config.inc.php
 
   # composer initiation
-  - cd source && SHOP_PATH='' SHOP_TESTS_PATH='../tests' MODULES_PATH='' composer install
+  - SHOP_PATH='' SHOP_TESTS_PATH='../tests' MODULES_PATH='' composer install
 
-script: vendor/bin/runtests
+script: source/vendor/bin/runtests
 

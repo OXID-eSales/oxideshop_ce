@@ -35,11 +35,4 @@
 [{if $order->getShipmentTrackingUrl()}][{oxmultilang ident="SHIPMENT_TRACKING" suffix="COLON"}] [{$order->getShipmentTrackingUrl()}][{/if}]
 [{/block}]
 
-[{block name="email_plain_ordershipped_ts"}]
-[{if $oViewConf->showTs("ORDERCONFEMAIL") && $oViewConf->getTsId()}]
-[{oxmultilang ident="RATE_OUR_SHOP"}]
-[{$oViewConf->getTsRatingUrl()}]
-[{/if}]
-[{/block}]
-
 [{oxcontent ident="oxemailfooterplain"}]

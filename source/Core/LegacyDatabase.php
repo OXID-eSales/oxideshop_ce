@@ -33,20 +33,25 @@ use pear_ADOConnection;
 
 /**
  * Database connection class
+ *
+ * @deprecated since v5.3.0 (2016-04-19); This class will be removed. There will be a DatabaseInterface in v6.0 which
+ *             includes all but the deprecated methods of oxLegacyDb. An implementation of the DatabaseInterface based
+ *             on Doctrine DBAL will replace oxLegacyDb.
+ *
  */
 class LegacyDatabase extends \oxSuperCfg
 {
     /**
      * Database connection object
      *
-     * @var mysql_driver|mysql_extend|mysql_meta|mysqli_driver|mysqli_extend|mysqli_extra|object_ADOConnection|pear_ADOConnection
+     * @var mysql_driver_ADOConnection|mysql_extend_ADOConnection|mysql_meta_ADOConnection|mysqli_driver_ADOConnection|mysqli_extend_ADOConnection|mysqli_extra_ADOConnection|object_ADOConnection|pear_ADOConnection
      */
     protected $_oDb = null;
 
     /**
      * Set connection
      *
-     * @param mysql_driver|mysql_extend|mysql_meta|mysqli_driver|mysqli_extend|mysqli_extra|object_ADOConnection|pear_ADOConnection $connection
+     * @param mysql_driver_ADOConnection|mysql_extend_ADOConnection|mysql_meta_ADOConnection|mysqli_driver_ADOConnection|mysqli_extend_ADOConnection|mysqli_extra_ADOConnection|object_ADOConnection|pear_ADOConnection $connection
      */
     public function setConnection($connection)
     {
@@ -60,7 +65,7 @@ class LegacyDatabase extends \oxSuperCfg
      */
     public function setFetchMode($fetchMode)
     {
-        $this->_oDb->setFetchMode($fetchMode);
+        $this->_oDb->SetFetchMode($fetchMode);
     }
 
     /**
@@ -70,63 +75,50 @@ class LegacyDatabase extends \oxSuperCfg
      *
      * @return mysql_driver|mysql_extend|mysql_meta|mysqli_driver|mysqli_extend|mysqli_extra|object_ADOConnection|pear_ADOConnection
      */
-    public function getDb($type = true)
+    protected function getDb($type = true)
     {
         return $this->_oDb;
     }
 
     /**
-     * Get one record.
+     * Get one column, which you have to give into the sql select statement, of the first row, corresponding to the
+     * given sql statement.
      *
      * @param string     $query
      * @param array|bool $parameters Array of parameters
      * @param bool       $type       Connection type
      *
-     * @return string
+     * @return string The first column of the first row, which is fitting to the given sql select statement.
      */
     public function getOne($query, $parameters = false, $type = true)
     {
-        return $this->getDb($type)->getOne($query, $parameters);
-    }
-
-    /**
-     * Get values as array.
-     *
-     * @param string     $query
-     * @param array|bool $parameters Array of parameters
-     * @param bool       $type       Connection type
-     *
-     * @return array
-     */
-    public function getArray($query, $parameters = false, $type = true)
-    {
-        return $this->getDb($type)->getArray($query, $parameters);
+        return $this->getDb($type)->GetOne($query, $parameters);
     }
 
     /**
      * Get one row.
      *
-     * @param string     $query
-     * @param array|bool $parameters Array of parameters
-     * @param bool       $type       Connection type
+     * @param string $query
+     * @param array  $parameters Array of parameters
+     * @param bool   $type       Connection type
      *
      * @return array
      */
-    public function getRow($query, $parameters = false, $type = true)
+    public function getRow($query, $parameters = array(), $type = true)
     {
-        return $this->getDb($type)->getRow($query, $parameters);
+        return $this->getDb($type)->GetRow($query, $parameters);
     }
 
     /**
      * Get all values. The same as getArray.
      *
-     * @param string     $query
-     * @param array|bool $parameters Array of parameters
-     * @param bool       $type       Connection type
+     * @param string $query
+     * @param array  $parameters Array of parameters
+     * @param bool   $type       Connection type
      *
      * @return array
      */
-    public function getAll($query, $parameters = false, $type = true)
+    public function getAll($query, $parameters = array(), $type = true)
     {
         return $this->getDb($type)->getAll($query, $parameters);
     }
@@ -134,57 +126,43 @@ class LegacyDatabase extends \oxSuperCfg
     /**
      * Get value
      *
-     * @param string     $query
-     * @param array|bool $parameters Array of parameters
-     * @param bool       $type       Connection type
+     * @param string $query
+     * @param array  $parameters Array of parameters
+     * @param bool   $type       Connection type
      *
      * @return mixed|Object_ResultSet
      */
-    public function select($query, $parameters = false, $type = true)
+    public function select($query, $parameters = array(), $type = true)
     {
-        return $this->getDb($type)->execute($query, $parameters);
-    }
-
-    /**
-     * Get values as an associative array.
-     *
-     * @param string     $query
-     * @param array|bool $parameters Array of parameters
-     * @param bool       $type       Connection type
-     *
-     * @return array
-     */
-    public function getAssoc($query, $parameters = false, $type = true)
-    {
-        return $this->getDb($type)->getAssoc($query, $parameters);
+        return $this->getDb($type)->Execute($query, $parameters);
     }
 
     /**
      * Get column value
      *
-     * @param string     $query
-     * @param array|bool $parameters Array of parameters
-     * @param bool       $type       Connection type
+     * @param string $query
+     * @param array  $parameters Array of parameters
+     * @param bool   $type       Connection type
      *
      * @return array
      */
-    public function getCol($query, $parameters = false, $type = true)
+    public function getCol($query, $parameters = array(), $type = true)
     {
-        return $this->getDb($type)->getCol($query, $parameters);
+        return $this->getDb($type)->GetCol($query, $parameters);
     }
 
     /**
      * Get array
      *
-     * @param string     $query
-     * @param int        $numberOfRows Number of rows to select
-     * @param int        $offset       Number of rows to skip
-     * @param array|bool $parameters   Array of parameters
-     * @param bool       $type         Connection type
+     * @param string $query
+     * @param int    $numberOfRows Number of rows to select
+     * @param int    $offset       Number of rows to skip
+     * @param array  $parameters   Array of parameters
+     * @param bool   $type         Connection type
      *
      * @return mixed|Object_ResultSet
      */
-    public function selectLimit($query, $numberOfRows = -1, $offset = -1, $parameters = false, $type = true)
+    public function selectLimit($query, $numberOfRows = -1, $offset = -1, $parameters = array(), $type = true)
     {
         return $this->getDb($type)->SelectLimit($query, $numberOfRows, $offset, $parameters);
     }
@@ -192,73 +170,28 @@ class LegacyDatabase extends \oxSuperCfg
     /**
      * Executes query and returns result set.
      *
-     * @param string     $query
-     * @param array|bool $parameters Array of parameters
+     * @param string $query
+     * @param array  $parameters Array of parameters
      *
      * @return mixed|Object_ResultSet
      */
-    public function execute($query, $parameters = false)
+    public function execute($query, $parameters = array())
     {
-        return $this->getDb(false)->execute($query, $parameters);
+        return $this->getDb(false)->Execute($query, $parameters);
     }
 
     /**
-     * Executes query and returns result set.
-     *
-     * @param string     $query
-     * @param array|bool $parameters Array of parameters
-     *
-     * @return mixed|Object_ResultSet
-     */
-    public function query($query, $parameters = false)
-    {
-        return $this->getDb(false)->Query($query, $parameters);
-    }
-
-    /**
-     * Returns count of affected rows.
+     * Returns the count of rows affected by the last query.
      *
      * @return int
      */
-    public function affected_rows()
+    public function affectedRows()
     {
         return $this->getDb(false)->Affected_Rows();
     }
 
     /**
-     * Returns error number.
-     *
-     * @return int
-     */
-    public function errorNo()
-    {
-        return $this->getDb(false)->ErrorNo();
-    }
-
-    /**
-     * Returns error message.
-     *
-     * @return string
-     */
-    public function errorMsg()
-    {
-        return $this->getDb(false)->ErrorMsg();
-    }
-
-    /**
-     * Quote string
-     *
-     * @param string $value value
-     *
-     * @return string
-     */
-    public function qstr($value)
-    {
-        return $this->getDb(false)->qstr($value);
-    }
-
-    /**
-     * Quotes string. Same as qstr.
+     * Quotes string.
      *
      * @param string $sValue value
      *
@@ -266,7 +199,7 @@ class LegacyDatabase extends \oxSuperCfg
      */
     public function quote($sValue)
     {
-        return $this->getDb(false)->quote($sValue);
+        return $this->getDb(false)->Quote($sValue);
     }
 
     /**
@@ -298,46 +231,33 @@ class LegacyDatabase extends \oxSuperCfg
     }
 
     /**
-     * Returns meta data.
-     *
-     * @param string $table
-     * @param bool   $numberOfIndexes
-     *
-     * @return array
-     */
-    public function metaColumnNames($table, $numberOfIndexes = false)
-    {
-        return $this->getDb(false)->MetaColumnNames($table, $numberOfIndexes);
-    }
-
-    /**
      * Start mysql transaction.
      *
-     * @return bool
+     * @return ADORecordSet_empty|object_ResultSet
      */
     public function startTransaction()
     {
-        return $this->getDb(false)->execute('START TRANSACTION');
+        return $this->getDb(false)->Execute('START TRANSACTION');
     }
 
     /**
      * Commit mysql transaction.
      *
-     * @return bool
+     * @return ADORecordSet_empty|object_ResultSet
      */
     public function commitTransaction()
     {
-        return $this->getDb(false)->execute('COMMIT');
+        return $this->getDb(false)->Execute('COMMIT');
     }
 
     /**
      * RollBack mysql transaction.
      *
-     * @return bool
+     * @return ADORecordSet_empty|object_ResultSet
      */
     public function rollbackTransaction()
     {
-        return $this->getDb(false)->execute('ROLLBACK');
+        return $this->getDb(false)->Execute('ROLLBACK');
     }
 
     /**
@@ -346,7 +266,7 @@ class LegacyDatabase extends \oxSuperCfg
      *
      * @param string $level level
      *
-     * @return bool
+     * @return bool|ADORecordSet_empty|object_ResultSet
      */
     public function setTransactionIsolationLevel($level = null)
     {
@@ -354,7 +274,7 @@ class LegacyDatabase extends \oxSuperCfg
 
         $availableLevels = array('READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE');
         if (in_array(strtoupper($level), $availableLevels)) {
-            $result = $this->getDb(false)->execute('SET TRANSACTION ISOLATION LEVEL ' . $level);
+            $result = $this->getDb(false)->Execute('SET SESSION TRANSACTION ISOLATION LEVEL ' . $level);
         }
 
         return $result;
@@ -371,11 +291,11 @@ class LegacyDatabase extends \oxSuperCfg
     }
 
     /**
-     * Returns last insert ID.
+     * Returns last insert ID
      *
      * @return int
      */
-    public function insert_Id()
+    public function lastInsertId()
     {
         return $this->getDb(false)->Insert_ID();
     }

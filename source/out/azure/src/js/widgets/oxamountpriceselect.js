@@ -54,8 +54,6 @@
 
         /**
          * Shows price list box
-         *
-         * @return null
          */
         showPriceList : function()
         {
@@ -66,8 +64,6 @@
 
         /**
          * Hides price list box
-         *
-         * @return null
          */
         hidePriceList : function()
         {
@@ -78,8 +74,6 @@
 
         /**
          * Hides all lists box
-         *
-         * @return null
          */
         hideAll : function()
         {
@@ -89,8 +83,6 @@
 
         /**
          * toggle list box
-         *
-         * @return null
          */
         togglePriceList : function ()
         {
@@ -108,7 +100,7 @@
         /**
          * returns state of list box
          *
-         * @return boolean
+         * @return {Boolean}
          */
         isOpened : function ()
         {

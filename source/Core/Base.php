@@ -813,7 +813,7 @@ class Base extends \oxSuperCfg
         $coreTable = $this->getCoreTableName();
         $deleteQuery = "delete from {$coreTable} where oxid = " . $database->quote($oxid);
         $database->execute($deleteQuery);
-        if ($blDelete = (bool) $database->affected_Rows()) {
+        if ($blDelete = (bool) $database->affectedRows()) {
             $this->onChange(ACTION_DELETE, $oxid);
         }
 

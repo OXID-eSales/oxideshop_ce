@@ -372,42 +372,6 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
     }
 
     /**
-     * Sets payment info to pdf.
-     *
-     * @param int &$iStartPos text start position
-     */
-    protected function _setTsProtection(&$iStartPos)
-    {
-        $oLang = oxRegistry::getLang();
-        $oConfig = oxRegistry::getConfig();
-        if ($this->_oData->oxorder__oxtsprotectcosts->value && $oConfig->getConfigParam('blShowVATForPayCharge')) {
-
-            // payment netto
-            $iStartPos += 4;
-            $sPayCostNetto = $oLang->formatCurrency($this->_oData->getOrderTsProtectionPrice()->getNettoPrice(), $this->_oData->getCurrency()) . ' ' . $this->_oData->getCurrency()->name;
-            $this->text(45, $iStartPos, $this->_oData->translate('ORDER_OVERVIEW_PDF_TSPROTECTION') . ' ' . $this->_oData->translate('ORDER_OVERVIEW_PDF_NETTO'));
-            $this->text(195 - $this->_oPdf->getStringWidth($sPayCostNetto), $iStartPos, $sPayCostNetto);
-
-            // payment VAT
-            $iStartPos += 4;
-            $sPayCostVAT = $oLang->formatCurrency($this->_oData->getOrderTsProtectionPrice()->getVATValue(), $this->_oData->getCurrency()) . ' ' . $this->_oData->getCurrency()->name;
-            $this->text(45, $iStartPos, $this->_oData->translate('ORDER_OVERVIEW_PDF_ZZGLVAT') . $oConfig->getConfigParam('dDefaultVAT') . $this->_oData->translate('ORDER_OVERVIEW_PDF_PERCENTSUM'));
-            $this->text(195 - $this->_oPdf->getStringWidth($sPayCostVAT), $iStartPos, $sPayCostVAT);
-
-            $iStartPos++;
-
-        } elseif ($this->_oData->oxorder__oxtsprotectcosts->value) {
-
-            $iStartPos += 4;
-            $sPayCost = $oLang->formatCurrency($this->_oData->oxorder__oxtsprotectcosts->value, $this->_oData->getCurrency()) . ' ' . $this->_oData->getCurrency()->name;
-            $this->text(45, $iStartPos, $this->_oData->translate('ORDER_OVERVIEW_PDF_TSPROTECTION'));
-            $this->text(195 - $this->_oPdf->getStringWidth($sPayCost), $iStartPos, $sPayCost);
-
-            $iStartPos++;
-        }
-    }
-
-    /**
      * Sets grand total order price to pdf.
      *
      * @param int &$iStartPos text start position
@@ -494,9 +458,6 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
 
         // wrapping info
         $this->_setWrappingInfo($siteH);
-
-        // TS protection info
-        $this->_setTsProtection($siteH);
 
         // separating line
         $this->line(15, $siteH, 195, $siteH);

@@ -1356,7 +1356,7 @@ class oxLang extends oxSuperCfg
             $sQuery .= " and oxshopid = '{$sShopId}' limit 1";
         }
 
-        return $oDb->getArray($sQuery);
+        return $oDb->getAll($sQuery);
     }
 
 

@@ -29,7 +29,7 @@ class Shop_Config extends oxAdminDetails
 {
 
     protected $_sThisTemplate = 'shop_config.tpl';
-    protected $_aSkipMultiline = array('aHomeCountry', 'iShopID_TrustedShops', 'aTsUser', 'aTsPassword');
+    protected $_aSkipMultiline = array('aHomeCountry');
     protected $_aParseFloat = array('iMinOrderPrice');
 
     protected $_aConfParams = array(

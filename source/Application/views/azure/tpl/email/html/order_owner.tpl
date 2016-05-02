@@ -472,48 +472,7 @@
                         [{/if}]
                     [{/if}]
                         [{/block}]
-
-                        [{block name="email_html_order_owner_ts"}]
-                        [{assign var="trustedShopProtectionCost" value=$basket->getTrustedShopProtectionCost()}]
-                        [{if $trustedShopProtectionCost && $trustedShopProtectionCost->getPrice() > 0}]
-                                <!-- Trusted Shops -->
-                                <tr valign="top">
-                                    <td style="padding: 5px; border-bottom: 2px solid #ccc;[{if $basket->getTsProtectionVat()}]border-bottom: 1px solid #ddd;[{/if}]">
-                                        <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{oxmultilang ident="TRUSTED_SHOP_BUYER_PROTECTION" suffix="COLON"}]
-                                        </p>
-                                    </td>
-                                    <td style="padding: 5px; border-bottom: 2px solid #ccc;[{if $basket->getTsProtectionVat()}]border-bottom: 1px solid #ddd;[{/if}]" align="right">
-                                        <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{oxprice price=$trustedShopProtectionCost->getNettoPrice() currency=$currency}]
-                                        </p>
-                                    </td>
-                                </tr>
-                                [{if $trustedShopProtectionCost->getVatValue()}]
-                                    <tr valign="top">
-                                        [{if $basket->isProportionalCalculationOn()}]
-                                            <td style="padding: 5px; border-bottom: 2px solid #ccc;">
-                                                <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                                    [{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON"}]
-                                                </p>
-                                            </td>
-                                        [{else}]
-                                            <td style="padding: 5px; border-bottom: 2px solid #ccc;">
-                                                <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$trustedShopProtectionCost->getVat()}]
-                                                </p>
-                                            </td>
-                                        [{/if}]
-                                        <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
-                                            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{oxprice price=$trustedShopProtectionCost->getVatValue() currency=$currency}]
-                                            </p>
-                                        </td>
-                                    </tr>
-                                [{/if}]
-                        [{/if}]
-                        [{/block}]
-
+                            
                         [{if $oViewConf->getShowGiftWrapping()}]
                             [{block name="email_html_order_owner_wrappingcosts"}]
                                 <!-- Gift wrapping -->

@@ -572,20 +572,6 @@ $aLang =  array(
 
 'HELP_WRAPPING_MAIN_PICTURE'                  => 'Bei <span class="navipath_or_inputname">Bild</span> und <span class="navipath_or_inputname">Bild hochladen</span> können Sie ein Bild für die Geschenkverpackung hochladen. Wählen Sie bei <span class="navipath_or_inputname">Bild hochladen</span> das Bild aus, das Sie hochladen möchten. Wenn Sie auf Speichern klicken, wird das Bild hochgeladen. Nachdem das Bild hochgeladen ist, wird der Dateiname des Bildes in <span class="navipath_or_inputname">Bild</span> angezeigt.',
 
-
-
-'HELP_DYN_TRUSTED_RATINGS_ID'                 => 'Sie erhalten Ihre Trusted Shops ID für die Kundenbewertungen per E-Mail in Ihrer Auftragsbestätigung von Trusted Shops. Soweit Sie bereits Mitglied bei Trusted Shops sind, verwenden Sie bitte Ihre bekannte Trusted Shops ID. Das grüne Licht zeigt Ihnen an, dass die Trusted Shops Kundenbewertung geprüft und aktiviert wurden, nachdem Sie die Eingabe gespeichert haben.',
-'HELP_DYN_TRUSTED_RATINGS_WIDGET'             => 'Aktivieren Sie diese Option, um das Bewertungs-Widget in Ihrem Shop anzuzeigen.',
-'HELP_DYN_TRUSTED_RATINGS_THANKYOU'           => 'Aktivieren Sie diese Option, um den Button "Bewerten Sie uns!" auf der Bestätigungsseite "Bestellung abgeschlossen" im direkten Anschluss an eine Bestellung anzuzeigen.',
-'HELP_DYN_TRUSTED_RATINGS_ORDEREMAIL'         => 'Aktivieren Sie diese Option, um den Button "Bewerten Sie uns!" in der Bestellbestätigungsmail im direkten Anschluss an eine Bestellung anzuzeigen.',
-'HELP_DYN_TRUSTED_RATINGS_ORDERSENDEMAIL'     => 'Aktivieren Sie diese Option, um den Button "Bewerten Sie uns!" in der Benachrichtigung "Bestellung wurde versandt" per E-Mail anzuzeigen.',
-'HELP_DYN_TRUSTED_TSID'                       => 'Trusted Shops ID des Online Shops',
-'HELP_DYN_TRUSTED_USER'                       => 'Ein Benutzername (wsUser) für den Trusted Shops Webservice ist erforderlich, wenn Sie Ihren Kunden den kostenpflichtigen Käuferschutz Trusted Shops Excellence anbieten. Der Käuferschutz Classic erfordert keine Eingabe eines Benutzernamens.',
-'HELP_DYN_TRUSTED_PASSWORD'                   => 'Ein Passwort (wsPasswort) für den Trusted Shops Webservice ist erforderlich, wenn Sie Ihren Kunden den kostenpflichtigen Käuferschutz Trusted Shops Excellence anbieten. Der Käuferschutz Classic erfordert keine Eingabe eines Passworts.',
-'HELP_DYN_TRUSTED_TESTMODUS'                  => 'Testumgebung ("Sandbox") einschalten. Nach Abschluss der Zertifizierung sendet Ihnen Ihr Ansprechpartner bei Trusted Shops die Zugangsdaten per E-Mail.',
-'HELP_DYN_TRUSTED_ACTIVE'                     => 'Aktivieren Sie diese Option, um das Trusted Shops Siegel im shop anzuzeigen.',
-'HELP_DYN_TRUSTED_TSPAYMENT'                  => 'Ordnen Sie den im Shop angebotenen Zahlungsarten die entsprechende Zahlungsart bei Trusted Shop zu.',
-
 'HELP_PROMOTIONS_BANNER_PICTUREANDLINK'       => 'Laden Sie ein Bild für den großen Startseitenbanner hoch und geben die URL für den Klick auf den Banner an. Falls ein Artikel zugeordnet wird, wird dessen URL automatisch als Banner-URL verwendet.',
 'HELP_SHOP_PERF_SEO_CACHE'                    => 'Aktivierter SEO Cache verbessert die Performance, benötigt aber sehr viel Speicherplatz im /tmp-Verzeichnis.',
 

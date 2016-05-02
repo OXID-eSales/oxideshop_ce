@@ -339,14 +339,6 @@ class PaymentController extends \oxUBase
         if ($blOK) {
             $oSession->setVariable('paymentid', $sPaymentId);
             $oSession->setVariable('dynvalue', $aDynvalue);
-            if (oxRegistry::getConfig()->getRequestParameter('bltsprotection')) {
-                $sTsProductId = oxRegistry::getConfig()->getRequestParameter('stsprotection');
-                $oBasket->setTsProductId($sTsProductId);
-                $oSession->setVariable('stsprotection', $sTsProductId);
-            } else {
-                $oSession->deleteVariable('stsprotection');
-                $oBasket->setTsProductId(null);
-            }
             $oBasket->setShipping($sShipSetId);
             $oSession->deleteVariable('_selected_paymentid');
 
@@ -357,8 +349,6 @@ class PaymentController extends \oxUBase
             //#1308C - delete paymentid from session, and save selected it just for view
             $oSession->deleteVariable('paymentid');
             $oSession->setVariable('_selected_paymentid', $sPaymentId);
-            $oSession->deleteVariable('stsprotection');
-            $oBasket->setTsProductId(null);
 
             return;
         }
@@ -720,43 +710,6 @@ class PaymentController extends \oxUBase
         unset($_GET["dynvalue"]["kkyear"]);
         unset($_GET["dynvalue"]["kkpruef"]);
 
-    }
-
-    /**
-     * Template variable getter. Returns payment list count
-     *
-     * @return integer
-     */
-    public function getTsProtections()
-    {
-        if ($this->_aTsProducts === null) {
-            $oBasket = $this->getSession()->getBasket();
-            $dVat = $oBasket->getAdditionalServicesVatPercent();
-            if ($dPrice = $oBasket->getPrice()->getBruttoPrice()) {
-                $oTsProtection = oxNew('oxtsprotection');
-                $oTsProtection->setVat($dVat);
-                $this->_aTsProducts = $oTsProtection->getTsProducts($dPrice);
-            }
-        }
-
-        return $this->_aTsProducts;
-    }
-
-    /**
-     * Template variable getter. Returns payment list count
-     *
-     * @return integer
-     */
-    public function getCheckedTsProductId()
-    {
-        if ($this->_sCheckedProductId === null) {
-            $this->_sCheckedProductId = false;
-            if ($sId = oxRegistry::getConfig()->getRequestParameter('stsprotection')) {
-                $this->_sCheckedProductId = $sId;
-            }
-        }
-
-        return $this->_sCheckedProductId;
     }
 
     /**

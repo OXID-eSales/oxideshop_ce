@@ -23,9 +23,9 @@ When checking out this repository or downloading the zip file from this place, c
 
 1. make sure [composer] (https://getcomposer.org/) is installed on your system
 2. `$ git clone https://github.com/OXID-eSales/oxideshop_ce.git`
-3. `$ cd oxideshop_ce/source`
+3. `$ cd oxideshop_ce`
 4. `$ composer install --no-dev`
-5. `$ cp config.inc.php.dist config.inc.php`
+5. `$ cp source/config.inc.php.dist source/config.inc.php`
 
 
 ### Useful links

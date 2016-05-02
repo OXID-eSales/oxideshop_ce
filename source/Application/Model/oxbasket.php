@@ -259,13 +259,6 @@ class oxBasket extends oxSuperCfg
     protected $_blShowCatChangeWarning = false;
 
     /**
-     * Trusted shops protection product ID
-     *
-     * @var string
-     */
-    protected $_sTsProductId = null;
-
-    /**
      * new basket item addition state
      *
      * @var bool
@@ -1059,11 +1052,6 @@ class oxBasket extends oxSuperCfg
             $oTotalPrice->add($this->_aCosts['oxpayment']->getBruttoPrice());
         }
 
-        // 2.6 add TS protection price
-        if (isset($this->_aCosts['oxtsprotection'])) {
-            $oTotalPrice->add($this->_aCosts['oxtsprotection']->getBruttoPrice());
-        }
-
         $this->setPrice($oTotalPrice);
     }
 
@@ -1387,26 +1375,6 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
-     * TS Protection cost calculation.
-     * Returns oxprice object.
-     *
-     * @return object oxPrice
-     */
-    protected function _calcTsProtectionCost()
-    {
-        if (($this->getTsProductId())) {
-            $oTsProtection = oxNew('oxtsprotection');
-            $oTsProduct = $oTsProtection->getTsProduct($this->getTsProductId());
-            $oProtectionPrice = $oTsProduct->getPrice();
-            $oProtectionPrice->setVat($this->getAdditionalServicesVatPercent());
-        } else {
-            $oProtectionPrice = oxNew('oxPrice');
-        }
-
-        return $oProtectionPrice;
-    }
-
-    /**
      * Sets basket additional costs
      *
      * @param string $sCostName additional costs
@@ -1494,9 +1462,6 @@ class oxBasket extends oxSuperCfg
 
         //  9.3: adding payment cost
         $this->setCost('oxpayment', $this->_calcPaymentCost());
-
-        //  9.4: adding TS protection cost
-        $this->setCost('oxtsprotection', $this->_calcTsProtectionCost());
 
         //  10. calculate total price
         $this->_calcTotalPrice();
@@ -2942,118 +2907,6 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
-     * Trusted shops protection product ID setter
-     *
-     * @param string $sProductId product id
-     */
-    public function setTsProductId($sProductId)
-    {
-        $this->_sTsProductId = $sProductId;
-    }
-
-    /**
-     * Trusted shops protection product ID getter
-     *
-     * @return string
-     */
-    public function getTsProductId()
-    {
-        return $this->_sTsProductId;
-    }
-
-    /**
-     * Returns if exists formatted TS protection costs
-     *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
-     *
-     * @return string | bool
-     */
-    public function getFTsProtectionCosts()
-    {
-        $oProtectionCost = $this->getCosts('oxtsprotection');
-        if ($oProtectionCost && $oProtectionCost->getBruttoPrice()) {
-            return oxRegistry::getLang()->formatCurrency($oProtectionCost->getBruttoPrice(), $this->getBasketCurrency());
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns VAT of TS protection costs
-     *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
-     *
-     * @return string | bool
-     */
-    public function getTsProtectionVatPercent()
-    {
-        return $this->getCosts('oxtsprotection')->getVat();
-    }
-
-    /**
-     * Returns formatted VAT of TS protection costs
-     *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
-     *
-     * @return string
-     */
-    public function getTsProtectionVat()
-    {
-        $dProtectionVAT = $this->getCosts('oxtsprotection')->getVatValue();
-        // blShowVATForPayCharge option will be used, only for displaying, but not calculation
-        if ($dProtectionVAT > 0 && $this->getConfig()->getConfigParam('blShowVATForPayCharge')) {
-            return oxRegistry::getLang()->formatCurrency($dProtectionVAT, $this->getBasketCurrency());
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns formatted netto price of TS protection costs
-     *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
-     *
-     * @return string
-     */
-    public function getTsProtectionNet()
-    {
-        // blShowVATForPayCharge option will be used, only for displaying, but not calculation
-        if ($this->getConfig()->getConfigParam('blShowVATForPayCharge')) {
-            return oxRegistry::getLang()->formatCurrency($this->getCosts('oxtsprotection')->getNettoPrice(), $this->getBasketCurrency());
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns TS protection costs brutto value
-     *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
-     *
-     * @return double
-     */
-    public function getTsProtectionCosts()
-    {
-        $oProtection = $this->getCosts('oxtsprotection');
-        if ($oProtection) {
-            return $oProtection->getBruttoPrice();
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns TS protection costs brutto value
-     *
-     * @return double in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
-     */
-    public function getTrustedShopProtectionCost()
-    {
-        return $this->getCosts('oxtsprotection');
-    }
-
-
-    /**
      * Returns pricelist object of not discounted products
      *
      * @return oxprice in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
@@ -3175,13 +3028,4 @@ class oxBasket extends oxSuperCfg
         return oxPrice::getPriceInActCurrency($this->getConfig()->getConfigParam('iMinOrderPrice'));
     }
 
-    /**
-     * Return sum of basket insured by trusted shops
-     *
-     * @return decimal
-     */
-    public function getTsInsuredSum()
-    {
-        return $this->getPrice()->getBruttoPrice() - $this->getCosts('oxtsprotection')->getBruttoPrice();
-    }
 }

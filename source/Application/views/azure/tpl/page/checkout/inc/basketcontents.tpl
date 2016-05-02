@@ -449,33 +449,6 @@
                         [{/if}]
                     [{/block}]
 
-                    [{block name="checkout_basketcontents_ts"}]
-                        [{assign var="trustedShopProtectionCost" value=$oxcmp_basket->getTrustedShopProtectionCost()}]
-                        [{if $trustedShopProtectionCost && $trustedShopProtectionCost->getPrice() > 0}]
-                            [{if $oViewConf->isFunctionalityEnabled('blShowVATForPayCharge')}]
-                                <tr>
-                                    <th>[{oxmultilang ident="TRUSTED_SHOP_BUYER_PROTECTION"}]</th>
-                                    <td id="basketTSNetto">[{oxprice price=$trustedShopProtectionCost->getNettoPrice() currency=$currency}]</td>
-                                </tr>
-                                [{if $trustedShopProtectionCost->getVatValue()}]
-                                    <tr>
-                                        [{if $oxcmp_basket->isProportionalCalculationOn()}]
-                                            <th>[{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON"}]</th>
-                                        [{else}]
-                                            <th>[{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$trustedShopProtectionCost->getVat()}]</th>
-                                        [{/if}]
-                                        <td id="basketTSVat">[{oxprice price=$trustedShopProtectionCost->getVatValue() currency=$currency}]</td>
-                                    </tr>
-                                [{/if}]
-                            [{else}]
-                                <tr>
-                                    <th>[{oxmultilang ident="TRUSTED_SHOP_BUYER_PROTECTION"}]</th>
-                                    <td id="basketTSGross">[{oxprice price=$trustedShopProtectionCost->getBruttoPrice() currency=$currency}]</td>
-                                </tr>
-                            [{/if}]
-                        [{/if}]
-                    [{/block}]
-
                     [{block name="checkout_basketcontents_wrappingcosts"}]
                         [{if $oViewConf->getShowGiftWrapping()}]
 

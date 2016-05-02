@@ -79,7 +79,7 @@
             /**
              * Validate form element, return forms true - valid, false - not valid
              *
-             * @return boolean
+             * @return {Boolean}
              */
             inputValidation: function( oInput, blCanSetDefaultState )
             {
@@ -223,8 +223,7 @@
             /**
              * returns li element
              *
-             *
-             * @return object
+             * @return {Object}
              */
             getFieldSet: function( oField ){
 
@@ -236,7 +235,7 @@
             /**
              * Show error messages
              *
-             * @return object
+             * @return {Object}
              */
             showErrorMessage: function ( oObject, messageType )
             {
@@ -251,7 +250,7 @@
             /**
              * Hide error messages
              *
-             * @return object
+             * @return {Object}
              */
             hideErrorMessage: function ( oObject )
             {
@@ -268,7 +267,7 @@
             /**
              * has match error messages
              *
-             * @return boolean
+             * @return {Boolean}
              */
             hasOpenMatchMessage: function ( oObject )
             {
@@ -278,7 +277,7 @@
             /**
              * Hide match error messages
              *
-             * @return object
+             * @return {Object}
              */
             hideMatchMessages: function ( oObject )
             {
@@ -294,7 +293,7 @@
             /**
              * Set default look of form list element
              *
-             * @return object
+             * @return {Object}
              */
             setDefaultState: function ( oObject )
             {
@@ -316,7 +315,7 @@
             /**
              * gets required length from form
              *
-             * @return boolean
+             * @return {Boolean}
              */
             getLength: function(oObject){
 
@@ -327,7 +326,7 @@
             /**
              * Checks length
              *
-             * @return boolean
+             * @return {Boolean}
              */
             hasLength: function( stValue, length )
             {
@@ -343,7 +342,7 @@
             /**
              * Checks mails validation
              *
-             * @return boolean
+             * @return {Boolean}
              */
             isEmail: function( email )
             {
@@ -361,7 +360,7 @@
             /**
              * Checks is string equal
              *
-             * @return boolean
+             * @return {Boolean}
              */
             isEqual: function( stValue1, stValue2 )
             {

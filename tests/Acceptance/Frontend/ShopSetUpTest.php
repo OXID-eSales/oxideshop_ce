@@ -31,11 +31,12 @@ use oxRegistry;
 /** Selenium tests for frontend navigation. */
 class ShopSetUpTest extends FrontendTestCase
 {
-    /**
-     * How much more time wait for these tests
-     */
+    /** @var int How much more time wait for these tests. */
     protected $_iWaitTimeMultiplier = 7;
 
+    /**
+     * Regenerate views after test.
+     */
     protected function tearDown()
     {
         parent::tearDown();

@@ -126,35 +126,6 @@
      */
     $this->iBasketReservationCleanPerRequest = 200;
 
-    // Trusted shops buyer protection wsdl url
-    $this->sTsProtectionUrl = "https://protection.trustedshops.com/ts/protectionservices/ApplicationRequestService?wsdl";
-    // This is only needed for testing during integration
-    $this->sTsTestProtectionUrl = "https://protection-qa.trustedshops.com/ts/protectionservices/ApplicationRequestService?wsdl";
-
-    // Trusted Shops Ratings login info
-    // The public username and password are provided in TrustedShops documentation and helps to identify the functionality provided by OXID eShop
-    // Do not change this information unless instructed otherwise
-    $this->sTsUser = "oxid_esales";
-    $this->sTsPass = "V1AoGEXm";
-
-    // Trusted Shops Ratings configuration array
-    $this->aTsConfig = array( "blTestMode"   => false, // set TRUE to enable testing mode
-                              "sTsUrl"       => "https://www.trustedshops.com", // Trusted Shops Rating main url
-                              "sTsTestUrl"   => "https://qa.trustedshops.com",  // Trusted Shops Rating test url
-                              "sTsWidgetUri" => array( "bewertung/widget/widgets/%s.gif" ), // rating widget url
-                              "sTsInfoUri"   => array( "de" => "bewertung/info_%s.html",  // DE rating info url
-                                                       "en" => "buyerrating/info_%s.html" // EN rating info url
-                                                     ),
-                              "sTsRatingUri" => array( "de" => "bewertung/bewerten_%s.html", // DE rating url
-                                                       "en" => "buyerrating/rate_%s.html"    // EN rating url
-                                                     )
-                             );
-    // Trusted Shops Ratings service wsdl
-    $this->sTsServiceWsdl = "https://www.trustedshops.de/ts/services/TsRating?wsdl";
-
-    // Trusted Shops Ratings test service wsdl
-    $this->sTsServiceTestWsdl = "https://qa.trustedshops.de/ts/services/TsRating?wsdl";
-
     /**
      * should template blocks be highlighted in frontend ?
      * this is mainly intended for module writers in non productive environment

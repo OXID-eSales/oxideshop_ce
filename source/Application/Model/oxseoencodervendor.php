@@ -142,6 +142,7 @@ class oxSeoEncoderVendor extends oxSeoEncoder
         $vendorId = $vendor->getId();
         $database->execute("delete from oxseo where oxobjectid = ? and oxtype = 'oxvendor'", array($vendorId));
         $database->execute("delete from oxobject2seodata where oxobjectid = ?", array($vendorId));
+        $database->execute("delete from oxseohistory where oxobjectid = ?", array($vendorId));
     }
 
     /**

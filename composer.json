@@ -1,0 +1,57 @@
+{
+    "name": "oxid-esales/oxideshop-ce",
+    "description": "This file is mean to be used for OXID eShop development internally. Use this file to get OXID eShop dependencies. Use modules/composer.json for project dependencies.",
+    "type": "oxid-esales-oxideshop",
+    "keywords": ["oxid", "modules", "eShop"],
+    "homepage": "https://www.oxid-esales.com/en/home.html",
+    "license": [
+        "GPL-3.0",
+        "proprietary"
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^5.2.14",
+        "smarty/smarty": "^2.6.29"
+    },
+    "require-dev": {
+        "oxid-esales/testing-library": "dev-master",
+        "oxid-esales/coding-standards": "dev-master",
+        "incenteev/composer-parameter-handler": "~2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "OxidEsales\\Eshop\\": "./source",
+            "OxidEsales\\EshopProfessional\\": "./source/Edition/Professional",
+            "OxidEsales\\EshopEnterprise\\": "./source/Edition/Enterprise"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OxidEsales\\Eshop\\Tests\\": "./tests"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+        ]
+    },
+    "config": {
+        "vendor-dir": "source/vendor"
+    },
+    "extra": {
+        "incenteev-parameters": {
+            "file": "source/test_config.yml",
+            "dist-file": "source/vendor/oxid-esales/testing-library/test_config.yml.dist",
+            "parameter-key": "mandatory_parameters",
+            "env-map": {
+                "shop_path": "SHOP_PATH",
+                "shop_tests_path": "SHOP_TESTS_PATH",
+                "partial_module_paths": "PARTIAL_MODULE_PATHS"
+            }
+        }
+    }
+}

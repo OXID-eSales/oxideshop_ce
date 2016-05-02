@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\Eshop\Core\exception\DatabaseException;
+
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');
 
@@ -418,10 +421,22 @@ class oxConfig extends oxSuperCfg
             $this->_oStart = oxNew('oxStart');
             $this->_oStart->appInit();
         } catch (oxConnectionException $oEx) {
+            //@TODO: use DatabaseException instead of oxConnectionException
+            $this->_handleDbConnectionException($oEx);
+        } catch (DatabaseException $oEx) {
             $this->_handleDbConnectionException($oEx);
         } catch (oxCookieException $oEx) {
             $this->_handleCookieException($oEx);
         }
+    }
+
+    /**
+     * Reloads all configuration.
+     */
+    public function reinitialize()
+    {
+        $this->_blInit = false;
+        $this->init();
     }
 
     /**
@@ -1485,37 +1500,38 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
-     * Finds and returns templates files or folders path
+     * Calculates and returns full path to template.
      *
-     * @param string $sFile   File name
-     * @param bool   $blAdmin Whether to force admin
+     * @param string $templateName Template name
+     * @param bool   $isAdmin      Whether to force admin
      *
      * @return string
      */
-    public function getTemplatePath($sFile, $blAdmin)
+    public function getTemplatePath($templateName, $isAdmin)
     {
-        $sTemplatePath = $this->getDir($sFile, $this->_sTemplateDir, $blAdmin);
+        $finalTemplatePath = $this->getDir($templateName, $this->_sTemplateDir, $isAdmin);
 
-        if (!$sTemplatePath) {
-            $sBasePath = getShopBasePath();
-            $aModuleTemplates = $this->getConfigParam('aModuleTemplates');
-
-            $oModulelist = oxNew('oxmodulelist');
-            $aActiveModuleInfo = $oModulelist->getActiveModuleInfo();
-            if (is_array($aModuleTemplates) && is_array($aActiveModuleInfo)) {
-                foreach ($aModuleTemplates as $sModuleId => $aTemplates) {
-                    if (isset($aTemplates[$sFile]) && isset($aActiveModuleInfo[$sModuleId])) {
-                        $sPath = $aTemplates[$sFile];
-                        $sPath = $sBasePath . 'modules/' . $sPath;
-                        if (is_file($sPath) && is_readable($sPath)) {
-                            $sTemplatePath = $sPath;
-                        }
-                    }
-                }
+        if (!$finalTemplatePath) {
+            $templatePathCalculator = $this->getModuleTemplatePathCalculator();
+            $templatePathCalculator->setModulesPath($this->getConfig()->getModulesDir());
+            try {
+                $finalTemplatePath = $templatePathCalculator->calculateModuleTemplatePath($templateName);
+            } catch(Exception $e) {
+                $finalTemplatePath = '';
             }
         }
 
-        return $sTemplatePath;
+        return $finalTemplatePath;
+    }
+
+    /**
+     * Get module template calculator object
+     *
+     * @return ModuleTemplatePathCalculator
+     */
+    protected function getModuleTemplatePathCalculator()
+    {
+        return oxNew(ModuleTemplatePathCalculator::class);
     }
 
     /**
@@ -2298,21 +2314,5 @@ class oxConfig extends oxSuperCfg
     protected function getEditionTemplate($templateName)
     {
         return false;
-    }
-
-    /**
-     * Check if file exists and is readable
-     *
-     * @param string $filePath
-     *
-     * @return bool
-     */
-    public function checkIfReadable($filePath)
-    {
-        if (is_file($filePath) && is_readable($filePath)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

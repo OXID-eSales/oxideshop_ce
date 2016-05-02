@@ -315,7 +315,7 @@ abstract class ImportObject
         $allKeysExists = true;
         foreach ($this->getKeyFields() as $key) {
             if (array_key_exists($key, $data)) {
-                $queryWherePart[] = $key . '=' . $database->qstr($data[$key]);
+                $queryWherePart[] = $key . '=' . $database->quote($data[$key]);
             } else {
                 $allKeysExists = false;
             }

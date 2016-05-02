@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
+
 /**
  * View utility class
  */
@@ -430,98 +434,70 @@ class oxUtilsView extends oxSuperCfg
     }
 
     /**
-     * retrieve module block contents
+     * Retrieve module block contents from active module block file.
      *
-     * @param string $moduleName module name
-     * @param string $fileName   module block file name without .tpl ending
+     * @param string $moduleId active module id.
+     * @param string $fileName module block file name.
+     *
+     * @deprecated since v6.0.0 (2016-04-13); Use ModuleTemplateBlockContentReader::getContent().
      *
      * @see getTemplateBlocks
      * @throws oxException if block is not found
      *
      * @return string
      */
-    protected function _getTemplateBlock($moduleName, $fileName)
+    protected function _getTemplateBlock($moduleId, $fileName)
     {
-        $moduleInfo = $this->_getActiveModuleInfo();
-        $modulePath = $moduleInfo[$moduleName];
-        // for 4.5 modules, since 4.6 insert in oxtplblocks the full file name
-        if (substr($fileName, -4) != '.tpl') {
-            $fileName = $fileName . ".tpl";
-        }
-        // for < 4.6 modules, since 4.7/5.0 insert in oxtplblocks the full file name and path
-        if (basename($fileName) == $fileName) {
-            $fileName = "out/blocks/$fileName";
-        }
-        $filePath = $this->getConfig()->getConfigParam('sShopDir') . "/modules/$modulePath/$fileName";
-        if (file_exists($filePath) && is_readable($filePath)) {
-            return file_get_contents($filePath);
-        } else {
-            /** @var oxException $oException */
-            $oException = oxNew("oxException", "Template block file ($filePath) not found for '$moduleName' module.");
-            throw $oException;
-        }
+        $pathFormatter = oxNew(ModuleTemplateBlockPathFormatter::class);
+        $pathFormatter->setModulesPath($this->getConfig()->getModulesDir());
+        $pathFormatter->setModuleId($moduleId);
+        $pathFormatter->setFileName($fileName);
+
+        $blockContentReader = oxNew(ModuleTemplateBlockContentReader::class);
+
+        return $blockContentReader->getContent($pathFormatter);
     }
 
     /**
-     * template blocks getter: retrieve sorted blocks for overriding in templates
+     * Template blocks getter: retrieve sorted blocks for overriding in templates
      *
-     * @param string $fileName filename of rendered template
+     * @param string $templateFileName filename of rendered template
      *
      * @see smarty_prefilter_oxblock
      *
      * @return array
      */
-    public function getTemplateBlocks($fileName)
+    public function getTemplateBlocks($templateFileName)
     {
+        $templateBlocksWithContent = array();
+
         $config = $this->getConfig();
 
         $tplDir = trim($config->getConfigParam('_sTemplateDir'), '/\\');
-        $fileName = str_replace(array('\\', '//'), '/', $fileName);
-        if (preg_match('@/' . preg_quote($tplDir, '@') . '/(.*)$@', $fileName, $m)) {
-            $fileName = $m[1];
+        $templateFileName = str_replace(array('\\', '//'), '/', $templateFileName);
+        if (preg_match('@/' . preg_quote($tplDir, '@') . '/(.*)$@', $templateFileName, $m)) {
+            $templateFileName = $m[1];
         }
 
-        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $fileParam = $db->quote($fileName);
-        $shpIdParam = $db->quote($config->getShopId());
-        $ret = array();
+        if ($this->isShopTemplateBlockOverriddenByActiveModule()) {
+            $shopId = $config->getShopId();
 
-        if ($this->_blIsTplBlocks === null) {
-            $this->_blIsTplBlocks = false;
             $ids = $this->_getActiveModuleInfo();
-            if (count($ids)) {
-                $sSql = "select COUNT(*) from oxtplblocks where oxactive=1 and oxshopid=$shpIdParam and oxmodule in ( " . implode(", ", oxDb::getInstance()->quoteArray(array_keys($ids))) . " ) ";
-                $rs = $db->getOne($sSql);
-                if ($rs) {
-                    $this->_blIsTplBlocks = true;
-                }
+
+            $activeModulesId = array_keys($ids);
+            $activeThemeIds = oxNew('oxTheme')->getActiveThemesList();
+
+            $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
+            $activeBlockTemplates = $templateBlockRepository->getBlocks($templateFileName, $activeModulesId, $shopId, $activeThemeIds);
+
+            if ($activeBlockTemplates) {
+                $activeBlockTemplatesByTheme = $this->filterTemplateBlocks($activeBlockTemplates);
+
+                $templateBlocksWithContent = $this->fillTemplateBlockWithContent($activeBlockTemplatesByTheme);
             }
         }
 
-        if ($this->_blIsTplBlocks) {
-            $ids = $this->_getActiveModuleInfo();
-            if (count($ids)) {
-                $sSql = "select * from oxtplblocks where oxactive=1 and oxshopid=$shpIdParam and oxtemplate=$fileParam and oxmodule in ( " . implode(", ", oxDb::getInstance()->quoteArray(array_keys($ids))) . " ) order by oxpos asc";
-                $db->setFetchMode(oxDb::FETCH_MODE_ASSOC);
-                $rs = $db->select($sSql);
-
-                if ($rs != false && $rs->recordCount() > 0) {
-                    while (!$rs->EOF) {
-                        try {
-                            if (!is_array($ret[$rs->fields['OXBLOCKNAME']])) {
-                                $ret[$rs->fields['OXBLOCKNAME']] = array();
-                            }
-                            $ret[$rs->fields['OXBLOCKNAME']][] = $this->_getTemplateBlock($rs->fields['OXMODULE'], $rs->fields['OXFILE']);
-                        } catch (oxException $exception) {
-                            $exception->debugOut();
-                        }
-                        $rs->moveNext();
-                    }
-                }
-            }
-        }
-
-        return $ret;
+        return $templateBlocksWithContent;
     }
 
     /**
@@ -556,5 +532,256 @@ class oxUtilsView extends oxSuperCfg
         $fullThemePath = $themePath . $themeId . "/tpl/";
 
         return $fullThemePath;
+    }
+
+    /**
+     * Leave only one element for items grouped by fields: OXTEMPLATE and OXBLOCKNAME
+     *
+     * Pick only one element from each group if OXTHEME contains (by following priority):
+     * - Active theme id
+     * - Parent theme id of active theme
+     * - Undefined
+     *
+     * Example of $activeBlockTemplates:
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a" (group a)
+     *  OXTHEME = ""
+     *  "content_a_default"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a" (group a)
+     *  OXTHEME = "parent_of_active_theme"
+     *  "content_a_parent"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a" (group a)
+     *  OXTHEME = "active_theme"
+     *  "content_a_active"
+     *
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b" (group b)
+     *  OXTHEME = ""
+     *  "content_b_default"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b" (group b)
+     *  OXTHEME = "parent_of_active_theme"
+     *  "content_b_parent"
+     *
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_c" (group c)
+     *  OXTHEME = ""
+     *  OXFILE = "x"
+     *  "content_c_x_default"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_c" (group c)
+     *  OXTHEME = ""
+     *  OXFILE = "y"
+     *  "content_c_y_default"
+     *
+     * Example of return:
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a" (group a)
+     *  OXTHEME = "active_theme"
+     *  "content_a_active"
+     *
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b" (group b)
+     *  OXTHEME = "parent_of_active_theme"
+     *  "content_b_parent"
+     *
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_c" (group c)
+     *  OXTHEME = ""
+     *  OXFILE = "x"
+     *  "content_c_x_default"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_c" (group c)
+     *  OXTHEME = ""
+     *  OXFILE = "y"
+     *  "content_c_y_default"
+     *
+     * @param array $activeBlockTemplates list of template blocks with all parameters.
+     *
+     * @return array list of blocks with their content.
+     */
+    private function filterTemplateBlocks($activeBlockTemplates)
+    {
+        $templateBlocks = $activeBlockTemplates;
+
+        $templateBlocksToExchange = $this->formListOfDuplicatedBlocks($activeBlockTemplates);
+
+        if ($templateBlocksToExchange['theme']) {
+            $templateBlocks = $this->removeDefaultBlocks($activeBlockTemplates, $templateBlocksToExchange);
+        }
+
+        if ($templateBlocksToExchange['custom_theme']) {
+            $templateBlocks = $this->removeParentBlocks($templateBlocks, $templateBlocksToExchange);
+        }
+
+        return $templateBlocks;
+    }
+
+    /**
+     * Form list of blocks which has duplicates for specific theme.
+     *
+     * @param array $activeBlockTemplates
+     *
+     * @return array
+     */
+    private function formListOfDuplicatedBlocks($activeBlockTemplates)
+    {
+        $templateBlocksToExchange = array();
+        $customThemeId = $this->getConfig()->getConfigParam('sCustomTheme');
+
+        foreach ($activeBlockTemplates as $activeBlockTemplate) {
+            if ($activeBlockTemplate['OXTHEME']) {
+                if ($customThemeId && $customThemeId === $activeBlockTemplate['OXTHEME']) {
+                    $templateBlocksToExchange['custom_theme'][] = $this->prepareBlockKey($activeBlockTemplate);
+                } else {
+                    $templateBlocksToExchange['theme'][] = $this->prepareBlockKey($activeBlockTemplate);
+                }
+            }
+        }
+
+        return $templateBlocksToExchange;
+    }
+
+    /**
+     * Remove default blocks whose have duplicate for specific theme.
+     *
+     * @param array $activeBlockTemplates
+     * @param array $templateBlocksToExchange
+     *
+     * @return array
+     */
+    private function removeDefaultBlocks($activeBlockTemplates, $templateBlocksToExchange)
+    {
+        $templateBlocks = array();
+        foreach ($activeBlockTemplates as $activeBlockTemplate) {
+            if (!in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['theme'])
+                || $activeBlockTemplate['OXTHEME']
+            ) {
+                $templateBlocks[] = $activeBlockTemplate;
+            }
+        }
+        return $templateBlocks;
+    }
+
+    /**
+     * Remove parent theme blocks whose have duplicate for custom theme.
+     *
+     * @param array $templateBlocks
+     * @param array $templateBlocksToExchange
+     *
+     * @return array
+     */
+    private function removeParentBlocks($templateBlocks, $templateBlocksToExchange)
+    {
+        $activeBlockTemplates = $templateBlocks;
+        $templateBlocks = array();
+        $customThemeId = $this->getConfig()->getConfigParam('sCustomTheme');
+        foreach ($activeBlockTemplates as $activeBlockTemplate) {
+            if (!in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['custom_theme'])
+                || $activeBlockTemplate['OXTHEME'] === $customThemeId
+            ) {
+                $templateBlocks[] = $activeBlockTemplate;
+            }
+        }
+        return $templateBlocks;
+    }
+
+    /**
+     * Fill array with template content or skip if template does not exist.
+     * Logs error message if template does not exist.
+     *
+     * Example of $activeBlockTemplates:
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a"
+     *  "content_a_active"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b"
+     *  OXFILE = "x"
+     *  "content_b_x_default"
+     *
+     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b"
+     *  OXFILE = "y"
+     *  "content_b_y_default"
+     *
+     * Example of return:
+     *
+     * $templateBlocks = [
+     *   block_name_a = [
+     *     0 => "content_a_active"
+     *   ],
+     *   block_name_c = [
+     *     0 => "content_b_x_default",
+     *     1 => "content_b_y_default"
+     *   ]
+     * ]
+     *
+     * @param array $blockTemplates
+     *
+     * @return array
+     */
+    private function fillTemplateBlockWithContent($blockTemplates)
+    {
+        $templateBlocksWithContent = array();
+
+        foreach ($blockTemplates as $activeBlockTemplate) {
+            try {
+                if (!is_array($templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']])) {
+                    $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']] = array();
+                }
+                $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']][] = $this->_getTemplateBlock($activeBlockTemplate['OXMODULE'], $activeBlockTemplate['OXFILE']);
+            } catch (oxException $exception) {
+                $exception->debugOut();
+            }
+        }
+
+        return $templateBlocksWithContent;
+    }
+
+    /**
+     * Check if at least one active module overrides at least one template (in active shop).
+     * To win performance when:
+     * - no active modules exists.
+     * - none active module overrides template.
+     *
+     * @return bool
+     */
+    private function isShopTemplateBlockOverriddenByActiveModule()
+    {
+        if ($this->_blIsTplBlocks !== null) {
+            return $this->_blIsTplBlocks;
+        }
+
+        $moduleOverridesTemplate = false;
+
+        $ids = $this->_getActiveModuleInfo();
+        if (count($ids)) {
+            $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
+            $shopId = $this->getConfig()->getShopId();
+            $activeModulesId = array_keys($ids);
+            $blocksCount = $templateBlockRepository->getBlocksCount($activeModulesId, $shopId);
+
+            if ($blocksCount) {
+                $moduleOverridesTemplate = true;
+            }
+        }
+
+        $this->_blIsTplBlocks = $moduleOverridesTemplate;
+
+        return $moduleOverridesTemplate;
+    }
+
+    /**
+     * Prepare indicator for template block.
+     * This indicator might be used to identify same template block for different theme.
+     *
+     * @param array $activeBlockTemplate
+     *
+     * @return string
+     */
+    private function prepareBlockKey($activeBlockTemplate)
+    {
+        return $activeBlockTemplate['OXTEMPLATE'] . $activeBlockTemplate['OXBLOCKNAME'];
     }
 }

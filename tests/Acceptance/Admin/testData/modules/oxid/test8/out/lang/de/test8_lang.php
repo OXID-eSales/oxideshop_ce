@@ -27,7 +27,6 @@ $sLangName  = "Deutsch";
 $aLang = array(
 
 'charset'                                         => 'ISO-8859-15',
-'TRUSTED_SHOPS'                                   => "Module #8 title DE",
 );
 
 /*

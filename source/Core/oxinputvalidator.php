@@ -229,8 +229,7 @@ class oxInputValidator extends oxSuperCfg
             return $this->_addValidationError("oxuser__oxpassword", $oEx);
         }
 
-        //  password is too short ?
-        if ($blCheckLength && getStr()->strlen($sNewPass) < 6) {
+        if ($blCheckLength && getStr()->strlen($sNewPass) < $this->getPasswordLength()) {
             $oEx = oxNew('oxInputException');
             $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT'));
 
@@ -244,6 +243,24 @@ class oxInputValidator extends oxSuperCfg
 
             return $this->_addValidationError("oxuser__oxpassword", $oEx);
         }
+    }
+
+    /**
+     * min length of password
+     *
+     * @return int
+     */
+    public function getPasswordLength()
+    {
+        $passwordLength = 6;
+
+        $config = $this->getConfig();
+
+        if ($config->getConfigParam("iPasswordLength")) {
+            $passwordLength = $config->getConfigParam("iPasswordLength");
+        }
+
+        return $passwordLength;
     }
 
     /**
@@ -563,9 +580,9 @@ class oxInputValidator extends oxSuperCfg
 
         if ($oStr->strlen($aDebitInfo['lsktonr']) < 10) {
             $sNewNum = str_repeat(
-                '0',
-                10 - $oStr->strlen($aDebitInfo['lsktonr'])
-            ) . $aDebitInfo['lsktonr'];
+                           '0',
+                           10 - $oStr->strlen($aDebitInfo['lsktonr'])
+                       ) . $aDebitInfo['lsktonr'];
             $aDebitInfo['lsktonr'] = $sNewNum;
         }
 

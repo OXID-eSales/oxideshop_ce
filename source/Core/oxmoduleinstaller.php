@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner;
+
 /**
  * Modules installer class.
  *
@@ -28,20 +30,27 @@
  */
 class oxModuleInstaller extends oxSuperCfg
 {
-
     /**
      * @var oxModuleCache
      */
     protected $_oModuleCache;
 
+    /** @var ModuleExtensionsCleaner */
+    private $moduleCleaner;
+
     /**
      * Sets dependencies.
      *
-     * @param oxModuleCache $oxModuleCache
+     * @param oxModuleCache           $oxModuleCache
+     * @param ModuleExtensionsCleaner $moduleCleaner
      */
-    public function __construct(oxModuleCache $oxModuleCache = null)
+    public function __construct(oxModuleCache $oxModuleCache = null, $moduleCleaner = null)
     {
         $this->setModuleCache($oxModuleCache);
+        if (is_null($moduleCleaner)) {
+            $moduleCleaner = oxNew(ModuleExtensionsCleaner::class);
+        }
+        $this->moduleCleaner = $moduleCleaner;
     }
 
     /**
@@ -201,6 +210,16 @@ class oxModuleInstaller extends oxSuperCfg
     }
 
     /**
+     * Returns module cleaner object.
+     *
+     * @return ModuleExtensionsCleaner
+     */
+    protected function getModuleCleaner()
+    {
+        return $this->moduleCleaner;
+    }
+
+    /**
      * Add module to disable list
      *
      * @param string $sModuleId Module id
@@ -216,7 +235,9 @@ class oxModuleInstaller extends oxSuperCfg
     }
 
     /**
-     * Removes extension from modules array
+     * Removes extension from modules array.
+     *
+     * @deprecated on b-dev, This method is not used in code.
      *
      * @param string $sModuleId Module id
      */
@@ -232,6 +253,8 @@ class oxModuleInstaller extends oxSuperCfg
 
     /**
      * Deactivates or activates oxBlocks of a module
+     *
+     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
      *
      * @param string $sModuleId Module id
      */
@@ -362,28 +385,42 @@ class oxModuleInstaller extends oxSuperCfg
     /**
      * Add module templates to database.
      *
-     * @param array  $aModuleBlocks Module blocks array
-     * @param string $sModuleId     Module id
+     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
+     *
+     * @param array  $moduleBlocks Module blocks array
+     * @param string $moduleId     Module id
      */
-    protected function _addTemplateBlocks($aModuleBlocks, $sModuleId)
+    protected function _addTemplateBlocks($moduleBlocks, $moduleId)
     {
-        $sShopId = $this->getConfig()->getShopId();
-        $oDb = oxDb::getDb();
+        $shopId = $this->getConfig()->getShopId();
+        $db = oxDb::getDb();
 
-        if (is_array($aModuleBlocks)) {
+        if (is_array($moduleBlocks)) {
+            foreach ($moduleBlocks as $moduleBlock) {
+                $id = oxUtilsObject::getInstance()->generateUId();
 
-            foreach ($aModuleBlocks as $aValue) {
-                $sOxId = oxUtilsObject::getInstance()->generateUId();
+                $template = $moduleBlock["template"];
+                $position = isset($moduleBlock['position']) && is_numeric($moduleBlock['position']) ?
+                    intval($moduleBlock['position']) : 1;
 
-                $sTemplate = $aValue["template"];
-                $iPosition = $aValue["position"] ? $aValue["position"] : 1;
-                $sBlock = $aValue["block"];
-                $sFile = $aValue["file"];
+                $block = $moduleBlock["block"];
+                $filePath = $moduleBlock["file"];
 
-                $sSql = "INSERT INTO `oxtplblocks` (`OXID`, `OXACTIVE`, `OXSHOPID`, `OXTEMPLATE`, `OXBLOCKNAME`, `OXPOS`, `OXFILE`, `OXMODULE`)
-                         VALUES ('{$sOxId}', 1, '{$sShopId}', " . $oDb->quote($sTemplate) . ", " . $oDb->quote($sBlock) . ", " . $oDb->quote($iPosition) . ", " . $oDb->quote($sFile) . ", '{$sModuleId}')";
+                $theme = isset($moduleBlock['theme']) ? $moduleBlock['theme'] : '';
 
-                $oDb->execute($sSql);
+                $sql = "INSERT INTO `oxtplblocks` (`OXID`, `OXACTIVE`, `OXSHOPID`, `OXTHEME`, `OXTEMPLATE`, `OXBLOCKNAME`, `OXPOS`, `OXFILE`, `OXMODULE`)
+                         VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?)";
+
+                $db->execute($sql, array(
+                    $id,
+                    $shopId,
+                    $theme,
+                    $template,
+                    $block,
+                    $position,
+                    $filePath,
+                    $moduleId
+                ));
             }
         }
     }
@@ -435,7 +472,6 @@ class oxModuleInstaller extends oxSuperCfg
         $oDb = oxDb::getDb();
 
         if (is_array($aModuleSettings)) {
-
             foreach ($aModuleSettings as $aValue) {
                 $sOxId = oxUtilsObject::getInstance()->generateUId();
 
@@ -518,78 +554,19 @@ class oxModuleInstaller extends oxSuperCfg
         }
     }
 
-
     /**
      * Removes garbage ( module not used extensions ) from all installed extensions list
      *
-     * @param array    $aInstalledExtensions Installed extensions
-     * @param oxModule $oModule              Module
+     * @param array    $installedExtensions Installed extensions
+     * @param oxModule $module              Module
+     *
+     * @deprecated on b-dev, ModuleExtensionsCleaner::cleanExtensions() should be used.
      *
      * @return array
      */
-    protected function _removeNotUsedExtensions($aInstalledExtensions, oxModule $oModule)
+    protected function _removeNotUsedExtensions($installedExtensions, oxModule $module)
     {
-        $aModuleExtensions = $oModule->getExtensions();
-
-        $aInstalledModuleExtensions = $this->_filterModuleArray($aInstalledExtensions, $oModule->getId());
-
-        if (count($aInstalledModuleExtensions)) {
-            $aGarbage = $this->_getModuleExtensionsGarbage($aModuleExtensions, $aInstalledModuleExtensions);
-
-            if (count($aGarbage)) {
-                $aInstalledExtensions = $this->_removeGarbage($aInstalledExtensions, $aGarbage);
-            }
-        }
-
-        return $aInstalledExtensions;
-    }
-
-    /**
-     * Returns extension which is no longer in metadata - garbage
-     *
-     * @param array $aModuleMetaDataExtensions  extensions defined in metadata.
-     * @param array $aModuleInstalledExtensions extensions which are installed
-     *
-     * @return array
-     */
-    protected function _getModuleExtensionsGarbage($aModuleMetaDataExtensions, $aModuleInstalledExtensions)
-    {
-        $aGarbage = $aModuleInstalledExtensions;
-
-        foreach ($aModuleMetaDataExtensions as $sClassName => $sClassPath) {
-            if (isset($aGarbage[$sClassName])) {
-                unset($aGarbage[$sClassName][array_search($sClassPath, $aGarbage[$sClassName])]);
-                if (count($aGarbage[$sClassName]) == 0) {
-                    unset($aGarbage[$sClassName]);
-                }
-            }
-        }
-
-        return $aGarbage;
-    }
-
-    /**
-     * Removes garbage - not exiting module extensions, returns clean array of installed extensions
-     *
-     * @param array $aInstalledExtensions all installed extensions ( from all modules )
-     * @param array $aGarbage             extension which are not used and should be removed
-     *
-     * @return array
-     */
-    protected function _removeGarbage($aInstalledExtensions, $aGarbage)
-    {
-        foreach ($aGarbage as $sClassName => $aClassPaths) {
-            foreach ($aClassPaths as $sClassPath) {
-                if (isset($aInstalledExtensions[$sClassName])) {
-                    unset($aInstalledExtensions[$sClassName][array_search($sClassPath, $aInstalledExtensions[$sClassName])]);
-                    if (count($aInstalledExtensions[$sClassName]) == 0) {
-                        unset($aInstalledExtensions[$sClassName]);
-                    }
-                }
-            }
-        }
-
-        return $aInstalledExtensions;
+        return $this->getModuleCleaner()->cleanExtensions($installedExtensions, $module);
     }
 
     /**
@@ -667,28 +644,6 @@ class oxModuleInstaller extends oxSuperCfg
                              oxvarname IN (" . implode(", ", $aQuotedConfigsToRemove) . ")";
 
         $oDb->execute($sDeleteSql);
-    }
-
-    /**
-     * Filter module array using module id
-     *
-     * @param array  $aModules  Module array (nested format)
-     * @param string $sModuleId Module id/folder name
-     *
-     * @return array
-     */
-    protected function _filterModuleArray($aModules, $sModuleId)
-    {
-        $aFilteredModules = array();
-        foreach ($aModules as $sClass => $aExtend) {
-            foreach ($aExtend as $sExtendPath) {
-                if (strpos($sExtendPath, $sModuleId . "/") === 0) {
-                    $aFilteredModules[$sClass][] = $sExtendPath;
-                }
-            }
-        }
-
-        return $aFilteredModules;
     }
 
     /**

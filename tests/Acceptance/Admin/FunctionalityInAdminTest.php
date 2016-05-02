@@ -29,15 +29,6 @@ use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
 class FunctionalityInAdminTest extends AdminTestCase
 {
     /**
-     * Sets default language to English.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->getTranslator()->setLanguage(1);
-    }
-
-    /**
      * Testing downloadable product in admin ant frontend
      *
      * @group adminFunctionality

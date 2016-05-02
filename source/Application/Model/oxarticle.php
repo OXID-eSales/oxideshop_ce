@@ -576,7 +576,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
 
         // enabled time range check ?
         if ($this->getConfig()->getConfigParam('blUseTimeCheck')) {
-            $sQ = $this->_addSqlActiveRangeSnippet($sQ,$sTable);
+            $sQ = $this->addSqlActiveRangeSnippet($sQ,$sTable);
         }
 
         return $sQ;
@@ -609,7 +609,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
             if (!$myConfig->getConfigParam('blVariantParentBuyable')) {
                 $activeCheck = 'art.oxactive = 1';
                 if ($myConfig->getConfigParam('blUseTimeCheck')) {
-                    $activeCheck = $this->_addSqlActiveRangeSnippet($activeCheck,'art');
+                    $activeCheck = $this->addSqlActiveRangeSnippet($activeCheck,'art');
                 }
                 $sQ = " $sQ and IF( $sTable.oxvarcount = 0, 1, ( select 1 from $sTable as art where art.oxparentid=$sTable.oxid and $activeCheck and ( art.oxstockflag != 2 or art.oxstock > 0 ) limit 1 ) ) ";
             }

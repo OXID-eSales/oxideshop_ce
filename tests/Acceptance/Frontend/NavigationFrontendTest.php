@@ -29,15 +29,6 @@ use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
 class NavigationFrontendTest extends FrontendTestCase
 {
     /**
-     * Sets default language to English.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->getTranslator()->setLanguage( 1 );
-    }
-
-    /**
      * Switching languages in frontend
      *
      * @group frontend

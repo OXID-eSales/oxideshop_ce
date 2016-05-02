@@ -28,15 +28,6 @@ use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
 class BasketFrontendTest extends FrontendTestCase
 {
     /**
-     * Sets default language to English.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->getTranslator()->setLanguage(1);
-    }
-
-    /**
      * Basket flyout.
      *
      * @group basketfrontend

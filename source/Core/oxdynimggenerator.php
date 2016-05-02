@@ -594,7 +594,7 @@ class oxDynImgGenerator
         $sLockName = $this->_getLockName($sSource);
 
         // creating lock file
-        $this->_hLockHandle = @fopen($this->_getLockName($sSource), "w");
+        $this->_hLockHandle = @fopen($sLockName, "w");
         if (is_resource($this->_hLockHandle)) {
             if (!($blLocked = flock($this->_hLockHandle, LOCK_EX))) {
                 // on failure - closing
@@ -606,8 +606,8 @@ class oxDynImgGenerator
         // in case system does not support file lockings
         if (!$blLocked) {
             // start a blank file to inform other processes we are dealing with it.
-            if (!(file_exists($this->_getLockName($sSource)) && abs(time() - filectime($this->_getLockName($sSource)) < 40))) {
-                if ($this->_hLockHandle = @fopen($this->_getLockName($sSource), "w")) {
+            if (!(file_exists($sLockName) && abs(time() - filectime($sLockName) < 40))) {
+                if ($this->_hLockHandle = @fopen($sLockName, "w")) {
                     $blLocked = true;
                 }
             }

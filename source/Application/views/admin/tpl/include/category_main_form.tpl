@@ -47,7 +47,7 @@
                 [{oxmultilang ident="CATEGORY_MAIN_SORT"}]
             </td>
             <td class="edittext" colspan="2">
-                <input type="text" class="editinput" size="25" maxlength="[{$edit->oxcategories__oxorder->fldmax_length}]" name="editval[oxcategories__oxsort]" value="[{$edit->oxcategories__oxsort->value}]" [{$readonly}]>
+                <input type="text" class="editinput" size="25" maxlength="[{$edit->oxcategories__oxsort->fldmax_length}]" name="editval[oxcategories__oxsort]" value="[{$edit->oxcategories__oxsort->value}]" [{$readonly}]>
                 [{oxinputhelp ident="HELP_CATEGORY_MAIN_SORT"}]
             </td>
         </tr>

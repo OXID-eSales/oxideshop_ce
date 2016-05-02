@@ -44,7 +44,7 @@
                 [{block name="admin_order_overview_deliveryaddress"}]
                     <b>[{oxmultilang ident="GENERAL_DELIVERYADDRESS"}]:</b><br>
                     <br>
-                    [{if $edit->oxorder__oxdelcompany->value}]Firma [{$edit->oxorder__oxdelcompany->value}]<br>[{/if}]
+                    [{if $edit->oxorder__oxdelcompany->value}][{oxmultilang ident="GENERAL_COMPANY"}] [{$edit->oxorder__oxdelcompany->value}]<br>[{/if}]
                     [{if $edit->oxorder__oxdeladdinfo->value}][{$edit->oxorder__oxdeladdinfo->value}]<br>[{/if}]
                     [{$edit->oxorder__oxdelsal->value|oxmultilangsal}] [{$edit->oxorder__oxdelfname->value}] [{$edit->oxorder__oxdellname->value}]<br>
                     [{$edit->oxorder__oxdelstreet->value}] [{$edit->oxorder__oxdelstreetnr->value}]<br>

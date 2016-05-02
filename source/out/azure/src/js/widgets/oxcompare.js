@@ -94,7 +94,7 @@
         /**
          * get columns rows height
          *
-         * @return integer
+         * @return {Number}
          */
         getColumnHeight: function ( sBrowser, oColumn )
         {
@@ -115,7 +115,7 @@
         /**
          * set columns rows height
          *
-         * @return object
+         * @return {Object}
          */
         setColumnHeight: function ( oColumn, iHeight )
         {
@@ -125,7 +125,7 @@
         /**
          * get columns
          *
-         * @return object
+         * @return {Object}
          */
         getOtherColumn: function ( iColumnCount, iNumberOfRow )
         {
@@ -135,7 +135,7 @@
         /**
          * get browser
          *
-         * @return object
+         * @return {Object}
          */
         getBrowser: function ()
         {
@@ -158,7 +158,7 @@
         /**
          * get column Count
          *
-         * @return object
+         * @return {Number}
          */
         getColumnCount: function ()
         {

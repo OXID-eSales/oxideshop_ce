@@ -51,7 +51,7 @@
         /**
          * show / hide select add/remove options
          *
-         * @return object
+         * @return {Object}
          */
         manageStateSelect: function(oSelect, aStates, aStatesValues, selectedStateId)
         {
@@ -73,7 +73,7 @@
         /**
          * get state select
          *
-         * @return object
+         * @return {Object}
          */
         getStateSelect: function(oCountrySelect)
         {
@@ -84,7 +84,7 @@
         /**
          * get state select span
          *
-         * @return object
+         * @return {Object}
          */
         getStateSelectSpan: function(oStateSelect)
         {
@@ -95,7 +95,7 @@
         /**
          * add options
          *
-         * @return object
+         * @return {Object}
          */
         addSelectOptions: function(oSelect, aValues, aLables, selectedStateId)
         {
@@ -118,7 +118,7 @@
         /**
          * remove all select options except first list prompt string
          *
-         * @return object
+         * @return {Object}
          */
         removeSelectOptions: function(oSelect)
         {
@@ -129,7 +129,7 @@
         /**
          * get Country state names
          *
-         * @return array
+         * @return {Array}
          */
         getStates: function(sCountry, allStates, allCountryIds)
         {
@@ -139,7 +139,7 @@
         /**
          * get Country state ids
          *
-         * @return array
+         * @return {Array}
          */
         getStatesValues: function(sCountry, allStatesIds, allCountryIds)
         {

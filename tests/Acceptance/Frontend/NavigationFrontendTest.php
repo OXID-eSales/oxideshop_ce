@@ -150,8 +150,8 @@ class NavigationFrontendTest extends FrontendTestCase
         //SERVICE links
         $this->assertElementPresent("footerServices");
         //there are fixed amount of links in here
-        $this->assertElementPresent("//dl[@id='footerServices']//dd[10]");
-        $this->assertElementNotPresent("//dl[@id='footerServices']//dd[11]");
+        $this->assertElementPresent("//dl[@id='footerServices']//dd[9]");
+        $this->assertElementNotPresent("//dl[@id='footerServices']//dd[10]");
 
         $this->clickAndWait("//dl[@id='footerServices']//a[text()='%PAGE_TITLE_CONTACT%']");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_CONTACT%", $this->getText("breadCrumb"));

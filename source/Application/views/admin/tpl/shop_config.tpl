@@ -1086,17 +1086,6 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iMaxGBEntriesPerDay] value="[{$confstrs.iMaxGBEntriesPerDay}]" [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_MAXGBENTRIESPERDAY"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_MAXGBENTRIESPERDAY"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <dl>
-                <dt>
                     <textarea class="txtfield" name=confarrs[aCurrencies] [{$readonly}]>[{$confarrs.aCurrencies}]</textarea>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_SETORDELETECURRENCY"}]
                 </dt>

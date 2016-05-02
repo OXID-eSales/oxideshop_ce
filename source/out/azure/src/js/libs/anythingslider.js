@@ -192,7 +192,7 @@
 
 			base.$items = base.$el.find('> li').addClass('panel');
 			base.setDimensions();
-			if (!base.options.resizeContents) { $(window).load(function(){ base.setDimensions(); }); } // set dimensions after all images load
+			if (!base.options.resizeContents) { $(window).on('load', function(){ base.setDimensions(); }); } // set dimensions after all images load
 
 			if (base.currentPage > base.pages) {
 				base.currentPage = base.pages;

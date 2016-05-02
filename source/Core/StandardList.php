@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxDb;
+
 /**
  * List manager.
  * Collects list data (eg. from DB), performs list changes updating (to DB), etc.
  */
-class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
+class StandardList extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countable
 {
 
     /**

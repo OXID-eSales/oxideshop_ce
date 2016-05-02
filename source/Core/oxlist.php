@@ -20,14 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
-
 /**
- * Standard class.
- *
- * @deprecated since v5.2.0 (2014-09-11); Use stdClass.
+ * This class must be empty because of others eShop editions classes which can be used instead of it.
  */
-class StandardClass
+class oxList extends \OxidEsales\Eshop\Core\StandardList
 {
-
 }

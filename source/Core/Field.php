@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxRegistry;
+
 /**
  * Database field description object.
  *
@@ -31,7 +35,7 @@
  * returned value escaping status.
  *
  */
-class oxField // extends oxSuperCfg
+class Field // extends oxSuperCfg
 {
 
     /**

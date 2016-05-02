@@ -20,6 +20,11 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
+use oxDb;
+use oxRegistry;
+
 require_once dirname(__FILE__) . "/../bootstrap.php";
 
 // Checks if base path getter does not exist
@@ -122,7 +127,7 @@ if (!function_exists("includeImageUtils")) {
 /**
  * Image generator class
  */
-class oxDynImgGenerator
+class DynamicImageGenerator
 {
 
     /**

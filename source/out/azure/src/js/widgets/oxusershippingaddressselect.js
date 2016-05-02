@@ -46,8 +46,6 @@
 
         /**
          * Clears all shipping address input fields
-         *
-         * @return null
          */
         emptyInputFields : function()
         {
@@ -62,8 +60,6 @@
 
         /**
          * Sets some form values and submits it
-         *
-         * @return null
          */
         submitForm : function()
         {
@@ -75,7 +71,7 @@
         /**
          * Returns reloadaddress value
          *
-         * @return integer
+         * @return {String}
          */
         getReloadValue : function( selectValue )
         {

@@ -98,9 +98,7 @@
         /**
          * Shows action links list box in details
          *
-         * @param object arrow img object
-         *
-         * @return null
+         * @param {Object} arrow img object
          */
         showLinks : function( arrow )
         {
@@ -114,10 +112,8 @@
         /**
          * Hides action links list box in details
          *
-         * @param object arrow    img object of selector
-         * @param object arrowSrc img object of product links
-         *
-         * @return null
+         * @param {Object} arrow    img object of selector
+         * @param {Object} arrowSrc img object of product links
          */
         hideLinks : function( arrow, arrowSrc )
         {
@@ -137,10 +133,10 @@
         /**
          * Shows action links list box in details
          *
-         * @param integer iTargetWidth target width
-         * @param object oObject      object to set width
+         * @param {Number} iTargetWidth target width
+         * @param {Object} oObject      object to set width
          *
-         * @return integer
+         * @return {Number}
          */
         getLinkboxWidth : function( iTargetWidth, oObject )
         {

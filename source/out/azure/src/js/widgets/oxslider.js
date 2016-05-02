@@ -135,7 +135,7 @@
             /**
              * generate slider navigation array
              *
-             * @return array
+             * @return {Array}
              */
             getNavigationTabsArray: function(oElement, stElementType){
 
@@ -151,7 +151,7 @@
             /**
              * shows controls with opacity (navigation, start-stop button, etc.)
              *
-             * @return object
+             * @return {Object}
              */
             showControlsWithOpacity: function(oElement, fOpacity){
 
@@ -166,7 +166,7 @@
             /**
              * shows control with opacity (navigation, start-stop button, etc.)
              *
-             * @return object
+             * @return {Object}
              */
             showControlWithOpacity: function(oElement, stClass, fOpacity){
 
@@ -178,7 +178,7 @@
             /**
              * Show control (navigation, start-stop button, etc.)
              *
-             * @return object
+             * @return {Object}
              */
             showControl: function(oElement, stClass){
 
@@ -190,7 +190,7 @@
             /**
              * hide control (navigation, start-stop button, etc.)
              *
-             * @return object
+             * @return {Object}
              */
             hideControl: function(oElement, stClass ){
 
@@ -202,7 +202,7 @@
             /**
              * hides controla (navigation, start-stop button, etc.)
              *
-             * @return object
+             * @return {Object}
              */
             hideControls: function(oElement){
 
@@ -217,7 +217,7 @@
             /**
              * hides texts spans
              *
-             * @return object
+             * @return {Object}
              */
             hideTextSpan: function(oElement, stClass ){
 
@@ -229,7 +229,7 @@
             /**
              * shows texts spans
              *
-             * @return object
+             * @return {Object}
              */
             showTextSpan: function(oElement, stClass ){
 

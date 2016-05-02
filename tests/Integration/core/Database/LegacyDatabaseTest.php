@@ -150,37 +150,4 @@ class LegacyDatabaseTest extends DatabaseInterfaceImplementationTest
     {
         return \oxDb::getDb();
     }
-
-
-    /**
-     * Test, that the methods 'errorNo' and 'errorMsg' work as expected.
-     */
-    public function testErrorNoAndErrorMsgWithoutPriorError()
-    {
-        $this->createDatabase();
-
-        $errorNumber = $this->database->errorNo();
-        $errorMessage = $this->database->errorMsg();
-
-        $this->assertSame(0, $errorNumber);
-        $this->assertSame('', $errorMessage);
-    }
-
-    /**
-     * Test, that the methods 'errorNo' and 'errorMsg' work as expected.
-     */
-    public function testErrorNoAndErrorMsgWork()
-    {
-        try {
-            $this->database->execute("INVALID SQL QUERY");
-
-            $this->fail('A mysql syntax error should produce an exception!');
-        } catch (\Exception $exception) {
-            $errorNumber = $this->database->errorNo();
-            $errorMessage = $this->database->errorMsg();
-
-            $this->assertSame(self::EXPECTED_MYSQL_SYNTAX_ERROR_CODE, $errorNumber);
-            $this->assertSame(self::EXPECTED_MYSQL_SYNTAX_ERROR_MESSAGE, $errorMessage);
-        }
-    }
 }

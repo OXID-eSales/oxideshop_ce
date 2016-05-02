@@ -29,6 +29,8 @@ use OxidEsales\Eshop\Core\Database\DatabaseInterface;
  * All implementation MUST extend this test.
  *
  * @package OxidEsales\Eshop\Tests\Integration\Core\Database
+ *
+ * @group database-adapter
  */
 abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImplementationBaseTest
 {

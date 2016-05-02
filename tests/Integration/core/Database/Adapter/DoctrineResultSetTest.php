@@ -28,6 +28,8 @@ use OxidEsales\Eshop\Core\Database\Doctrine;
  * Class DoctrineResultSetTest
  *
  * @package OxidEsales\Eshop\Tests\integration\core\Database\Adapter
+ *
+ * @group database-adapter
  */
 class DoctrineResultSetTest extends ResultSetTest
 {

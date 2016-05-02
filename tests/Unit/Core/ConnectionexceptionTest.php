@@ -21,6 +21,11 @@
  */
 namespace Unit\Core;
 
+/**
+ * Class ConnectionexceptionTest
+ *
+ * @group database-adapter
+ */
 class ConnectionexceptionTest extends \OxidTestCase
 {
 

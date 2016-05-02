@@ -31,6 +31,7 @@ use \Exception;
  * Test private methods with mock.
  * oxDb do not extend oxSuperConfig so do not have magic getter for private methods.
  *
+ * @group database-adapter
  */
 class oxDbPublicized extends oxDb
 {

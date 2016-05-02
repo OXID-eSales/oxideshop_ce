@@ -26,6 +26,8 @@ namespace OxidEsales\Eshop\Tests\integration\core\Database\Adapter;
  * Class LegacyResultSetTest
  *
  * @package OxidEsales\Eshop\Tests\integration\core\Database\Adapter
+ *
+ * @group database-adapter
  */
 class LegacyResultSetTest extends ResultSetTest
 {

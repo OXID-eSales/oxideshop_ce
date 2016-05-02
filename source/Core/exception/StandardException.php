@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
+use oxRegistry;
+
 /**
  * Basic exception class
  *
  */
-class oxException extends Exception
+class StandardException extends \Exception
 {
 
     /**
@@ -135,7 +139,7 @@ class oxException extends Exception
         try {
             $sLogMsg = $this->getString() . "\n---------------------------------------------\n";
             oxRegistry::getUtils()->writeToLog($sLogMsg, $this->getLogFileName());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
     }
 

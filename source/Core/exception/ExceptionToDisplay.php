@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
+use oxRegistry;
+
 /**
  * simplified Exception classes for simply displaying errors
  * saves resources when exception functionality is not needed
  */
-class oxExceptionToDisplay implements oxIDisplayError
+class ExceptionToDisplay implements \oxIDisplayError
 {
 
     /**

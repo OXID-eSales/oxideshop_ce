@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
 /**
  * exception class for all kind of exceptions connected to an input done by the user e.g.:
  * - not valid email adress
  * - negative value
  */
-class oxInputException extends oxException
+class InputException extends \oxException
 {
 
     /**

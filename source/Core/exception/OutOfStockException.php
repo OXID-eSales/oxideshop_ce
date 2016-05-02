@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
+use oxRegistry;
+
 /**
  * exception class for an article which is out of stock
  */
-class oxOutOfStockException extends oxArticleException
+class OutOfStockException extends \oxArticleException
 {
 
     /**

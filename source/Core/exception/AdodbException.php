@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
 /**
  * Exception class for all adoDb problems, e.g.:
  * - connection problems
  * - wrong credentials
  * - incorrect queries
  */
-class oxAdoDbException extends oxConnectionException
+class AdoDbException extends \oxConnectionException
 {
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).

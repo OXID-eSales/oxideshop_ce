@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
 /**
  * Exception base class for an article
  */
-class oxArticleException extends oxException
+class ArticleException extends \oxException
 {
 
     /**

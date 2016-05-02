@@ -29,9 +29,9 @@ class UserexceptionTest extends \OxidTestCase
     {
         $sMsg = 'Erik was here..';
         $oTestObject = oxNew('oxUserException', $sMsg);
-        $this->assertEquals('oxUserException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\Eshop\Core\Exception\UserException', get_class($oTestObject));
         $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
         $this->assertContains($sMsg, $sStringOut);
-        $this->assertContains('oxUserException', $sStringOut);
+        $this->assertContains('UserException', $sStringOut);
     }
 }

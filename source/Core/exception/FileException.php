@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
 /**
  * exception for invalid or non existin external files, e.g.:
  * - file does not exist
  * - file is not valid xml
  */
-class oxFileException extends oxException
+class FileException extends \oxException
 {
 
     /**

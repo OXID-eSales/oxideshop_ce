@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
 /**
  * e.g.:
  * - shop is not active
  */
-class oxShopException extends oxException
+class ShopException extends \oxException
 {
 
     /**

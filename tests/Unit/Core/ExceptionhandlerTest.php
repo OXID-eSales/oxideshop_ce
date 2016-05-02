@@ -70,7 +70,7 @@ class ExceptionhandlerTest extends \OxidTestCase
         unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName); // delete file first as assert may return out this function
         // we check on class name and message - rest is not checked yet
         $this->assertContains($this->_sMsg, $sFile);
-        $this->assertContains('oxException', $sFile);
+        $this->assertContains('Exception', $sFile);
     }
 
     // We can only test if a log file is not written - screen output must be checked manually or with selenium

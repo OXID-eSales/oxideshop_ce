@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
 /**
  * exception class covering voucher exceptions
  */
-class oxVoucherException extends oxException
+class VoucherException extends \oxException
 {
 
     /**

@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
 /**
  * exceptions for missing components e.g.:
  * - missing class
@@ -27,7 +29,7 @@
  * - missing template
  * - missing field in object
  */
-class oxSystemComponentException extends oxException
+class SystemComponentException extends \oxException
 {
 
     /**

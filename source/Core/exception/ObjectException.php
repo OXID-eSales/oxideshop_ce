@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
 /**
  * e.g.:
  * - not existing object
  * - wrong type
  * - ID not set
  */
-class oxObjectException extends oxException
+class ObjectException extends \oxException
 {
 
     /**

@@ -20,24 +20,11 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Exception;
-
 /**
- * exception class for all kind of exceptions connected to a user e.g.:
- * - user doesn't exist
- * - wrong password
+ * This class must be empty because of others eShop editions classes which can be used instead of it.
+ *
+ * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class UserException extends \oxException
+class oxFileException extends \OxidEsales\Eshop\Core\Exception\FileException
 {
-
-    /**
-     * Get string dump
-     * Overrides oxException::getString()
-     *
-     * @return string
-     */
-    public function getString()
-    {
-        return __CLASS__ . '-' . parent::getString();
-    }
 }

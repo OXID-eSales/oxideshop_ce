@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
 /**
  * Article input exception..
  *
  */
-class oxArticleInputException extends oxArticleException
+class ArticleInputException extends \oxArticleException
 {
 
     /**

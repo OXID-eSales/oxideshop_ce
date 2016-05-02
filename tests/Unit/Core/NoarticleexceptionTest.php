@@ -28,9 +28,9 @@ class NoarticleexceptionTest extends \OxidTestCase
     public function testGetString()
     {
         $oTestObject = oxNew('oxNoArticleException');
-        $this->assertEquals('oxNoArticleException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\Eshop\Core\Exception\NoArticleException', get_class($oTestObject));
         $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
-        $this->assertContains('oxNoArticleException', $sStringOut);
+        $this->assertContains('NoArticleException', $sStringOut);
     }
 
 }

@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
+use oxRegistry;
+use Exception;
+use oxException;
+
 /**
  * Exception handler, deals with all high level exceptions (caught in oxShopControl)
  */
-class oxExceptionHandler
+class ExceptionHandler
 {
 
     /**
@@ -90,7 +96,7 @@ class oxExceptionHandler
     public function handleUncaughtException($oEx)
     {
         // split between php or shop exception
-        if (!$oEx instanceof oxException) {
+        if (!($oEx instanceof \OxidEsales\Eshop\Core\Exception\StandardException)) {
             $this->_dealWithNoOxException($oEx);
 
             return; // Return straight away ! (in case of unit testing)
@@ -178,6 +184,6 @@ class oxExceptionHandler
             }
         }
 
-        throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . __CLASS__ . ")" . PHP_EOL);
+        throw new \oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . __CLASS__ . ")" . PHP_EOL);
     }
 }

@@ -28,8 +28,8 @@ class InputexceptionTest extends \OxidTestCase
     public function testGetString()
     {
         $oTestObject = oxNew('oxInputException');
-        $this->assertEquals('oxInputException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\Eshop\Core\Exception\InputException', get_class($oTestObject));
         $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
-        $this->assertContains('oxInputException', $sStringOut);
+        $this->assertContains('InputException', $sStringOut);
     }
 }

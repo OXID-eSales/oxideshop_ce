@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
 /**
  * exception class for clients without cookies support
  */
-class oxCookieException extends oxException
+class CookieException extends \oxException
 {
 
     /**

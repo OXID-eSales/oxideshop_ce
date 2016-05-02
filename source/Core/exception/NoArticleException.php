@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\Exception;
+
 /**
  * exception class for non existing articles
  */
-class oxNoArticleException extends oxArticleException
+class NoArticleException extends \oxArticleException
 {
 
     /**

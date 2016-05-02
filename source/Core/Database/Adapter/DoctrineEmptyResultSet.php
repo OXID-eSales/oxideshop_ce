@@ -22,7 +22,8 @@
 namespace OxidEsales\Eshop\Core\Database\Adapter;
 
 /**
- * Class DoctrineEmptyResultSet
+ * The doctrine statement wrapper, to support the old adodblite interface.
+ * The empty result set is here, cause it was in adodb lite. We will remove it later on.
  *
  * @package OxidEsales\Eshop\Core\Database
  */
@@ -35,7 +36,7 @@ class DoctrineEmptyResultSet
     public $EOF = true;
 
     /**
-     * @var array
+     * @var array Holds the retrieved fields of the resultSet row on the current cursor position
      */
     public $fields = array();
 

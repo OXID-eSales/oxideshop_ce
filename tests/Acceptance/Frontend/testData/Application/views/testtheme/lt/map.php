@@ -810,7 +810,6 @@ $aMap = array(
 'WIDGET_FOOTER_NEWSLETTER_TITLE'                                  => 'NEWSLETTER',
 'WIDGET_LOCATOR_CHOOSE'                                           => 'CHOOSE',
 'WIDGET_LOCATOR_SORT_OXARTNUM'                                    => 'ARTNUM',
-'WIDGET_LOCATOR_SORT_OXGBENTRIES.OXCREATE'                        => 'DATE',
 'WIDGET_LOCATOR_SORT_OXPRICE'                                     => 'PRICE',
 'WIDGET_LOCATOR_SORT_OXRATING'                                    => 'RATING',
 'WIDGET_LOCATOR_SORT_OXSTOCK'                                     => 'STOCK',

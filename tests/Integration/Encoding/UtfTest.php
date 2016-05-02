@@ -90,7 +90,6 @@ class UtfTest extends \OxidTestCase
         $this->cleanUpTable('oxdelivery');
         $this->cleanUpTable('oxdeliveryset');
         $this->cleanUpTable('oxdiscount');
-        $this->cleanUpTable('oxgbentries');
         $this->cleanUpTable('oxgroups');
         $this->cleanUpTable('oxlinks');
         $this->cleanUpTable('oxmanufacturers');
@@ -759,20 +758,6 @@ class UtfTest extends \OxidTestCase
         $oField->convertToPseudoHtml();
 
         $this->assertEquals("a&amp;g&lt;e&gt;n&quot;t&#039;ūrų Литовские für<br />\n", $oField->getRawValue());
-    }
-
-    public function testOxGbEntrySaveAndLoad()
-    {
-        $sValue = 'sėkme Литовские für';
-
-        $oEntry = new oxGbEntry();
-        $oEntry->setId('_testGbentry');
-        $oEntry->oxgbentries__oxcontent = new oxField($sValue);
-        $oEntry->save();
-
-        $oEntry = new oxGbEntry();
-        $oEntry->load('_testGbentry');
-        $this->assertEquals($sValue, $oEntry->oxgbentries__oxcontent->value);
     }
 
     public function testOxGroupsSaveAndLoad()

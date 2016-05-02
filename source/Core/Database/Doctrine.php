@@ -627,6 +627,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
 
     /**
      * Check, if the given sql query is a select statement.
+     * @todo It is not safe to have comments at the beginning of the query string.
      *
      * @param string $query The query we want to check.
      *
@@ -721,9 +722,9 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
      * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
      * The default fetch mode is defined in Doctrine::$fetchMode
      *
-     * @param string     $query          If parameters are given, the "?" in the string will be replaced by the values in the array
-     * @param array|bool $parameters     must loosely evaluate to false or must be an array
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param string $sqlSelect      The sql select statement we want to execute.
+     * @param array  $parameters     must loosely evaluate to false or must be an array
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
@@ -733,7 +734,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
      *
      * @return array
      */
-    public function getAll($query, $parameters = array(), $executeOnSlave = true)
+    public function getAll($sqlSelect, $parameters = array(), $executeOnSlave = true)
     {
         $statement = null;
 
@@ -742,7 +743,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
         // END deprecated
 
         try {
-            $statement = $this->getConnection()->executeQuery($query, $parameters);
+            $statement = $this->getConnection()->executeQuery($sqlSelect, $parameters);
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);

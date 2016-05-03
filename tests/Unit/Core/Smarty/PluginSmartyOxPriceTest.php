@@ -26,7 +26,7 @@ use \oxPrice;
 use \Smarty;
 use \oxRegistry;
 
-require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/plugins/function.oxprice.php';
+require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxprice.php';
 
 class PluginSmartyOxPriceTest extends \OxidTestCase
 {

@@ -28,7 +28,7 @@ use \stdClass;
 use \oxDb;
 use \oxRegistry;
 
-require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'smarty/plugins/oxemosadapter.php';
+require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'Smarty/Plugin/oxemosadapter.php';
 
 class EmosadapterTest extends \OxidTestCase
 {

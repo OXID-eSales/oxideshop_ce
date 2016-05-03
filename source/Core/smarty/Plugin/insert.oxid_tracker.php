@@ -42,7 +42,7 @@ function smarty_insert_oxid_tracker( $params, &$smarty )
     $myConfig = oxRegistry::getConfig();
     // econda is on ?
     if ( $myConfig->getConfigParam( 'blEcondaActive' ) ) {
-        include_once $myConfig->getConfigParam( 'sCoreDir' ).'smarty/plugins/oxemosadapter.php';
+        include_once $myConfig->getConfigParam( 'sCoreDir' ).'Smarty/Plugin/oxemosadapter.php';
 
         $sOutput = oxRegistry::get("oxEmosAdapter")->getCode( $params, $smarty );
 

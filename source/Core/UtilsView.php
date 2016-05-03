@@ -371,9 +371,9 @@ class UtilsView extends \oxSuperCfg
         $smarty->template_dir = $this->getTemplateDirs();
         $smarty->compile_id = $this->getTemplateCompileId();
         $smarty->default_template_handler_func = array(oxRegistry::get("oxUtilsView"), '_smartyDefaultTemplateHandler');
-        array_unshift($smarty->plugins_dir, $config->getConfigParam('sShopDir') . 'Core/smarty/plugins');
+        array_unshift($smarty->plugins_dir, $config->getConfigParam('sShopDir') . 'Core/Smarty/Plugin');
 
-        include_once dirname(__FILE__) . '/smarty/plugins/prefilter.oxblock.php';
+        include_once dirname(__FILE__) . '/Smarty/Plugin/prefilter.oxblock.php';
         $smarty->register_prefilter('smarty_prefilter_oxblock');
 
         $debugMode = $config->getConfigParam('iDebug');
@@ -382,7 +382,7 @@ class UtilsView extends \oxSuperCfg
         }
 
         if ($debugMode == 8 && !$config->isAdmin()) {
-            include_once getShopBasePath() . 'Core/smarty/plugins/prefilter.oxtpldebug.php';
+            include_once getShopBasePath() . 'Core/Smarty/Plugin/prefilter.oxtpldebug.php';
             $smarty->register_prefilter('smarty_prefilter_oxtpldebug');
         }
 

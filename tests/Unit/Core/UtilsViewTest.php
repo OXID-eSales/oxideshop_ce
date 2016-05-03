@@ -439,7 +439,7 @@ class UtilsViewTest extends \OxidTestCase
             'compile_id'      => md5($config->getTemplateDir(false) . '__' . $config->getShopId()),
             'debugging'       => true,
             'compile_check'   => true,
-            'plugins_dir'     => array($this->getConfigParam('sShopDir') . 'Core/smarty/plugins', 'plugins'),
+            'plugins_dir'     => array($this->getConfigParam('sShopDir') . 'Core/Smarty/Plugin', 'plugins'),
         );
 
         $oSmarty = $this->getMock('smarty', array('register_resource'));

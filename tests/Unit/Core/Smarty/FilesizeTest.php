@@ -23,7 +23,7 @@ namespace Unit\Core\Smarty;
 
 use \oxRegistry;
 
-require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'smarty/plugins/modifier.oxfilesize.php';
+require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'Smarty/Plugin/modifier.oxfilesize.php';
 
 
 /**

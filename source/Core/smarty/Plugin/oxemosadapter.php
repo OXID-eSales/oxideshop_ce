@@ -41,7 +41,7 @@
 /**
  * Includes emos script formatter class
  */
-require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'smarty/plugins/emos.php';
+require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'Smarty/Plugin/emos.php';
 
 /**
  * This class is a reference implementation of a PHP Function to include

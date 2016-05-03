@@ -25,7 +25,7 @@ use \Smarty;
 use \oxRegistry;
 use \oxTestModules;
 
-require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/plugins/function.oxid_include_widget.php';
+require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxid_include_widget.php';
 
 class PluginSmartyoxIncludeWidgetTest extends \OxidTestCase
 {

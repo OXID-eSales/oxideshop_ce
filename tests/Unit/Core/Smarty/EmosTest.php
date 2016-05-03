@@ -24,7 +24,7 @@ namespace Unit\Core\Smarty;
 use \EMOS;
 use \stdClass;
 
-require_once getShopBasePath() . '/Core/smarty/plugins/emos.php';
+require_once getShopBasePath() . '/Core/Smarty/Plugin/emos.php';
 
 /**
  * Exposes protected methods for EMOS class

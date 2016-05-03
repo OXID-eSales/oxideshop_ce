@@ -24,7 +24,7 @@ namespace Unit\Core\Smarty;
 use \Smarty;
 use \oxRegistry;
 
-require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/plugins/function.oxscript.php';
+require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxscript.php';
 
 class PluginSmartyOxScriptTest extends \OxidTestCase
 {

@@ -23,7 +23,7 @@ namespace Unit\Core\Smarty;
 
 use \oxRegistry;
 
-require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/plugins/modifier.oxnumberformat.php';
+require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/modifier.oxnumberformat.php';
 
 class SmartyModifierOxNumberFormatTest extends \OxidTestCase
 {

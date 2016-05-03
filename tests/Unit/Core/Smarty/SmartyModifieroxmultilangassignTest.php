@@ -25,7 +25,7 @@ use \Smarty;
 use \oxField;
 use \oxRegistry;
 
-require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/plugins/modifier.oxmultilangassign.php';
+require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/modifier.oxmultilangassign.php';
 
 class SmartyModifieroxmultilangassignTest extends \OxidTestCase
 {

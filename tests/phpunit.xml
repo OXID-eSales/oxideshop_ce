@@ -22,13 +22,13 @@
         <blacklist>
             <directory suffix=".php">Application/Controller/Admin/Report/</directory>
             <directory suffix=".php">Application/views/</directory>
-            <directory suffix=".php">Core/smarty</directory>
+            <directory suffix=".php">Core/Smarty</directory>
             <directory suffix=".php">Core/wysiwigpro/</directory>
             <directory suffix=".php">Core/jpgraph/</directory>
             <directory suffix=".php">Core/adodblite/</directory>
             <directory suffix=".php">Core/tcpdf/</directory>
             <directory suffix=".php">Core/phpmailer/</directory>
-            <directory suffix=".php">Core/smarty/</directory>
+            <directory suffix=".php">Core/Smarty/</directory>
             <directory suffix=".php">Core/utils/</directory>
             <directory suffix=".php">Core/facebook/</directory>
             <directory suffix=".php">Core/objects/</directory>
@@ -36,42 +36,42 @@
             <file>Core/oxerpcsv.php</file>
             <file>Core/oxerpinterface.php</file>
             <exclude>
-                <file>Core/smarty/plugins/block.oxhasrights.php</file>
-                <file>Core/smarty/plugins/block.oxifcontent.php</file>
-                <file>Core/smarty/plugins/function.oxcontent.php</file>
-                <file>Core/smarty/plugins/function.oxeval.php</file>
-                <file>Core/smarty/plugins/function.oxgetseourl.php</file>
-                <file>Core/smarty/plugins/function.oxid_include_dynamic.php</file>
-                <file>Core/smarty/plugins/function.oxid_include_widget.php</file>
-                <file>Core/smarty/plugins/function.oxinputhelp.php</file>
-                <file>Core/smarty/plugins/function.oxmailto.php</file>
-                <file>Core/smarty/plugins/function.oxmultilang.php</file>
-                <file>Core/smarty/plugins/function.oxprice.php</file>
-                <file>Core/smarty/plugins/function.oxscript.php</file>
-                <file>Core/smarty/plugins/function.oxstyle.php</file>
-                <file>Core/smarty/plugins/function.oxvariantselect.php</file>
-                <file>Core/smarty/plugins/insert.oxid_cmplogin.php</file>
-                <file>Core/smarty/plugins/insert.oxid_cssmanager.php</file>
-                <file>Core/smarty/plugins/insert.oxid_fblogin.php</file>
-                <file>Core/smarty/plugins/insert.oxid_newbasketitem.php</file>
-                <file>Core/smarty/plugins/insert.oxid_nocache.php</file>
-                <file>Core/smarty/plugins/insert.oxid_tracker.php</file>
-                <file>Core/smarty/plugins/modifier.oxaddparams.php</file>
-                <file>Core/smarty/plugins/modifier.oxaddslashes.php</file>
-                <file>Core/smarty/plugins/modifier.oxenclose.php</file>
-                <file>Core/smarty/plugins/modifier.oxescape.php</file>
-                <file>Core/smarty/plugins/modifier.oxfilesize.php</file>
-                <file>Core/smarty/plugins/modifier.oxformattime.php</file>
-                <file>Core/smarty/plugins/modifier.oxformdate.php</file>
-                <file>Core/smarty/plugins/modifier.oxlower.php</file>
-                <file>Core/smarty/plugins/modifier.oxmultilangassign.php</file>
-                <file>Core/smarty/plugins/modifier.oxmultilangsal.php</file>
-                <file>Core/smarty/plugins/modifier.oxnumberformat.php</file>
-                <file>Core/smarty/plugins/modifier.oxtruncate.php</file>
-                <file>Core/smarty/plugins/modifier.oxupper.php</file>
-                <file>Core/smarty/plugins/modifier.oxwordwrap.php</file>
-                <file>Core/smarty/plugins/prefilter.oxblock.php</file>
-                <file>Core/smarty/plugins/prefilter.oxtpldebug.php</file>
+                <file>Core/Smarty/Plugin/block.oxhasrights.php</file>
+                <file>Core/Smarty/Plugin/block.oxifcontent.php</file>
+                <file>Core/Smarty/Plugin/function.oxcontent.php</file>
+                <file>Core/Smarty/Plugin/function.oxeval.php</file>
+                <file>Core/Smarty/Plugin/function.oxgetseourl.php</file>
+                <file>Core/Smarty/Plugin/function.oxid_include_dynamic.php</file>
+                <file>Core/Smarty/Plugin/function.oxid_include_widget.php</file>
+                <file>Core/Smarty/Plugin/function.oxinputhelp.php</file>
+                <file>Core/Smarty/Plugin/function.oxmailto.php</file>
+                <file>Core/Smarty/Plugin/function.oxmultilang.php</file>
+                <file>Core/Smarty/Plugin/function.oxprice.php</file>
+                <file>Core/Smarty/Plugin/function.oxscript.php</file>
+                <file>Core/Smarty/Plugin/function.oxstyle.php</file>
+                <file>Core/Smarty/Plugin/function.oxvariantselect.php</file>
+                <file>Core/Smarty/Plugin/insert.oxid_cmplogin.php</file>
+                <file>Core/Smarty/Plugin/insert.oxid_cssmanager.php</file>
+                <file>Core/Smarty/Plugin/insert.oxid_fblogin.php</file>
+                <file>Core/Smarty/Plugin/insert.oxid_newbasketitem.php</file>
+                <file>Core/Smarty/Plugin/insert.oxid_nocache.php</file>
+                <file>Core/Smarty/Plugin/insert.oxid_tracker.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxaddparams.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxaddslashes.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxenclose.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxescape.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxfilesize.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxformattime.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxformdate.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxlower.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxmultilangassign.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxmultilangsal.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxnumberformat.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxtruncate.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxupper.php</file>
+                <file>Core/Smarty/Plugin/modifier.oxwordwrap.php</file>
+                <file>Core/Smarty/Plugin/prefilter.oxblock.php</file>
+                <file>Core/Smarty/Plugin/prefilter.oxtpldebug.php</file>
             </exclude>
         </blacklist>
     </filter>

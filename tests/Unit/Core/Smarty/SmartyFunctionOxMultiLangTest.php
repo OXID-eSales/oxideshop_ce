@@ -25,7 +25,7 @@ use \Smarty;
 use \oxField;
 use \oxRegistry;
 
-require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/plugins/function.oxmultilang.php';
+require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxmultilang.php';
 
 class SmartyFunctionOxMultiLangTest extends \OxidTestCase
 {

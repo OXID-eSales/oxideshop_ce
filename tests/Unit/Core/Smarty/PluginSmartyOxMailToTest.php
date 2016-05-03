@@ -24,7 +24,7 @@ namespace Unit\Core\Smarty;
 use \Smarty;
 use \oxRegistry;
 
-require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/plugins/function.oxmailto.php';
+require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxmailto.php';
 
 class PluginSmartyOxMailToTest extends \OxidTestCase
 {

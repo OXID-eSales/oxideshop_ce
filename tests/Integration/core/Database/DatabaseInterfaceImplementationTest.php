@@ -30,7 +30,7 @@ use OxidEsales\Eshop\Core\Database\DatabaseInterface;
  *
  * @package OxidEsales\Eshop\Tests\Integration\Core\Database
  *
- * @group database-adapter
+ * @group   database-adapter
  */
 abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImplementationBaseTest
 {
@@ -321,6 +321,34 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $actualAffectedRows = $this->database->affectedRows();
 
         $this->assertEquals($expectedAffectedRows, $actualAffectedRows, '2 rows were selected, so affected rows must be set to 2');
+    }
+
+    /**
+     * Test, that the method 'select' reacts as expected, when called with parameters.
+     */
+    public function testSelectWithParameters()
+    {
+        $this->loadFixtureToTestTable();
+
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE OXID = ?', array(self::FIXTURE_OXID_2), false);
+
+        $result = $resultSet->getAll();
+
+        $this->assertEquals(array(array(self::FIXTURE_OXID_2)), $result);
+    }
+
+    /**
+     * Test, that the method 'selectLimit' reacts as expected, when called with parameters.
+     */
+    public function testSelectLimitWithParameters()
+    {
+        $this->loadFixtureToTestTable();
+
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE OXID <> ?', array(self::FIXTURE_OXID_2), false);
+
+        $result = $resultSet->getAll();
+
+        $this->assertEquals(array(array(self::FIXTURE_OXID_1), array(self::FIXTURE_OXID_3)), $result);
     }
 
     /**

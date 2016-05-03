@@ -404,7 +404,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->assertEquals("Finished", $this->getSelectedLabel("setfolder"));
         $this->assertEquals("97,50", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
         $this->assertEquals("Billing Address: Company UserCompany User additional info Mrs UserName UserSurname Musterstr 10 790980 Musterstadt Ireland VAT ID: 123 E-mail: example_test@oxid-esales.dev", $this->clearString($this->getText("//td[1]/table[1]/tbody/tr/td[1]")));
-        $this->assertEquals("Shipping Address: Firma company add info Mrs name surname street 1 HE zip city Germany", $this->clearString($this->getText("//td[1]/table[1]/tbody/tr/td[2]")));
+        $this->assertEquals("Shipping Address: Company company add info Mrs name surname street 1 HE zip city Germany", $this->clearString($this->getText("//td[1]/table[1]/tbody/tr/td[2]")));
         $this->openTab("Main");
         $this->assertEquals("0", $this->getValue("editval[oxorder__oxdelcost]"));
         $this->assertEquals("10", $this->getValue("editval[oxorder__oxdiscount]"));

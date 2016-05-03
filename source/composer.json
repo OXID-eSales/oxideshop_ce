@@ -23,6 +23,11 @@
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
         ]
     },
+    "config": {
+        "platform": {
+            "php": "5.3.3"
+        }
+    },
     "extra": {
         "incenteev-parameters": {
             "file": "test_config.yml",

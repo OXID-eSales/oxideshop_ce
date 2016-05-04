@@ -39,7 +39,7 @@ class SuperConfig
      *
      * @var oxconfig
      */
-    protected static $_oConfig = null;
+    protected $_oConfig = null;
 
     /**
      * oxsession instance
@@ -110,11 +110,11 @@ class SuperConfig
      */
     public function getConfig()
     {
-        if (self::$_oConfig == null) {
-            self::$_oConfig = oxRegistry::getConfig();
+        if ($this->_oConfig == null) {
+            $this->_oConfig = oxRegistry::getConfig();
         }
 
-        return self::$_oConfig;
+        return $this->_oConfig;
     }
 
     /**
@@ -126,7 +126,7 @@ class SuperConfig
      */
     public function setConfig($config)
     {
-        self::$_oConfig = $config;
+        $this->_oConfig = $config;
     }
 
     /**

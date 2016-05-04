@@ -427,9 +427,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     {
         $result = $this->database->execute('SELECT OXID FROM ' . self::TABLE_NAME);
 
-        $this->assertTrue($result->EOF);
-        $this->assertFalse($result->fields);
-
         $expectedRows = array();
         $allRows = $result->getAll();
         $this->assertSame($expectedRows, $allRows);
@@ -442,9 +439,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     public function testExecuteWithEmptyResultAndSelectNotOnFirstChar()
     {
         $result = $this->database->execute('   SELECT OXID FROM ' . self::TABLE_NAME);
-
-        $this->assertTrue($result->EOF);
-        $this->assertFalse($result->fields);
 
         $expectedRows = array();
         $allRows = $result->getAll();

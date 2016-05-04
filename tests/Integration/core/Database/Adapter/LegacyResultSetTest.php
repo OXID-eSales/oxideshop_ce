@@ -126,7 +126,7 @@ class LegacyResultSetTest extends ResultSetTest
         $fields = array(
             'name'        => 'oxid',
             'table'       => self::TABLE_NAME,
-            'max_length'  => 6, // There is a difference when using ADODB lite with 'mysqli' or 'mysql' driver
+            // 'max_length'  => 6, // There is a difference when using ADODB lite with 'mysqli' or 'mysql' driver and different mysql server versions
             // 'not_null'    => 0,
             // 'primary_key' => 0,
             'type'        => 254, // There is a difference when using ADODB lite with 'mysqli' or 'mysql' driver

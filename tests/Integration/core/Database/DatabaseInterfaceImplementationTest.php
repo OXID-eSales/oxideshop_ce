@@ -548,13 +548,13 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      */
     public function testSetTransactionIsolationLevel()
     {
-        $this->markTestSkipped('Cause atm the oxid user has not the rights to set this value!');
         $transactionIsolationLevelPre = $this->fetchTransactionIsolationLevel();
 
-        $this->database->setTransactionIsolationLevel('READ COMMITTED');
+        $expectedLevel = 'READ COMMITTED';
+        $this->database->setTransactionIsolationLevel($expectedLevel);
         $transactionIsolationLevel = $this->fetchTransactionIsolationLevel();
 
-        $this->assertSame('READ COMMITTED', $transactionIsolationLevel);
+        $this->assertSame($expectedLevel, $transactionIsolationLevel);
 
         $this->database->setTransactionIsolationLevel($transactionIsolationLevelPre);
         $transactionIsolationLevel = $this->fetchTransactionIsolationLevel();
@@ -1220,11 +1220,12 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      */
     protected function fetchTransactionIsolationLevel()
     {
-        $sql = "SELECT * FROM information_schema.session_variables WHERE variable_name = 'tx_isolation';";
+        $sql = "SELECT VARIABLE_VALUE FROM information_schema.session_variables WHERE variable_name = 'tx_isolation';";
+
         $resultSet = $this->database->select($sql, array(), false);
         $resultRow = $resultSet->fetchRow();
 
-        return str_replace('-', ' ', $resultRow['VARIABLE_VALUE']);
+        return str_replace('-', ' ', $resultRow[0]);
     }
 
     /**

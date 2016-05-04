@@ -263,6 +263,8 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
     /**
      * Set the transaction isolation level.
      *
+     * Note: This method is MySQL specific, as we use the MySQL syntax for setting the transaction isolation level. 
+     * 
      * Allowed values are 'READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE'.
      *
      * @param string $level The level of transaction isolation we want to set.
@@ -270,15 +272,25 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
      * @see Doctrine::transactionIsolationLevelMap
      *
      * @throws \InvalidArgumentException|DatabaseException
+     *
+     * @return bool|DoctrineEmptyResultSet|DoctrineResultSet
      */
     public function setTransactionIsolationLevel($level)
     {
-        if (!array_key_exists(strtoupper($level), $this->transactionIsolationLevelMap)) {
+        $availableLevels = array_keys($this->transactionIsolationLevelMap);
+
+        if (!in_array(strtoupper($level), $availableLevels)) {
             throw new \InvalidArgumentException();
         }
 
         try {
-            $this->getConnection()->setTransactionIsolation($this->transactionIsolationLevelMap[$level]);
+            $result = false;
+
+            if (in_array(strtoupper($level), $availableLevels)) {
+                $result = $this->execute('SET SESSION TRANSACTION ISOLATION LEVEL ' . $level);
+            }
+
+            return $result;
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
@@ -627,6 +639,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
 
     /**
      * Check, if the given sql query is a select statement.
+     *
      * @todo It is not safe to have comments at the beginning of the query string.
      *
      * @param string $query The query we want to check.

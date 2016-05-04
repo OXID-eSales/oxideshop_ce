@@ -346,20 +346,13 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
     {
         $this->setExpectedException(self::DATABASE_EXCEPTION_CLASS);
 
-        $connectionMock =  $this->getMockBuilder('\Doctrine')
-            ->setMethods(['setTransactionIsolation'])
-            ->getMock();
-        $connectionMock->expects($this->once())
-            ->method('setTransactionIsolation')
-            ->willThrowException(new DBALException());
-
         /** @var \OxidEsales\Eshop\Core\Database\Doctrine|\PHPUnit_Framework_MockObject_MockObject $databaseMock */
         $databaseMock = $this->getMockBuilder('\OxidEsales\Eshop\Core\Database\Doctrine')
-            ->setMethods(['getConnection'])
+            ->setMethods(['execute'])
             ->getMock();
         $databaseMock->expects($this->once())
-            ->method('getConnection')
-            ->will($this->returnValue($connectionMock));
+            ->method('execute')
+            ->willThrowException(new DBALException());
 
         $databaseMock->setTransactionIsolationLevel('READ COMMITTED');
     }

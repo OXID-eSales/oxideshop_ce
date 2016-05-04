@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin dyn General export manager.
  */
-class GenExport extends DynExportBase
+class GenericExport extends \DynExportBase
 {
 
     /**

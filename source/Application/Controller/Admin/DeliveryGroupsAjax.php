@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxDb;
+use oxField;
+
 /**
  * Class manages delivery groups
  */
-class delivery_groups_ajax extends ajaxListComponent
+class DeliveryGroupsAjax extends \ajaxListComponent
 {
 
     /**

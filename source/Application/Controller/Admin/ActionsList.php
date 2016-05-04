@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Admin actionss manager.
  * Sets list template, list object class ('oxactions') and default sorting
  * field ('oxactions.oxtitle').
  * Admin Menu: Manage Products -> Actions.
  */
-class Actions_List extends oxAdminList
+class ActionsList extends \oxAdminList
 {
 
     /**

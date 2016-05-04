@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxSystemComponentException;
+
 /**
  * Admin shop license setting manager.
  * Collects shop license settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> License.
  */
-class Shop_License extends Shop_Config
+class ShopLicense extends \Shop_Config
 {
     /**
      * Current class template.

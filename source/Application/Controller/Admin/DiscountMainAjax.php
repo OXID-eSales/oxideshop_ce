@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxDb;
+use oxField;
+
 /**
  * Class manages discount countries
  */
-class discount_main_ajax extends ajaxListComponent
+class DiscountMainAjax extends \ajaxListComponent
 {
 
     /**

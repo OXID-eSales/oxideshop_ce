@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin news list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Customer News -> News.
  */
-class News_List extends oxAdminList
+class NewsList extends \oxAdminList
 {
 
     /**

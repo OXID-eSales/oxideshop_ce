@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Admin article crosselling/accesories manager.
  * Creates list of available articles, there is ability to assign or remove
  * assigning of article to crosselling/accesories with other products.
  * Admin Menu: Manage Products -> Articles -> Crosssell.
  */
-class Article_Crossselling extends oxAdminDetails
+class ArticleCrossselling extends \oxAdminDetails
 {
 
     /**

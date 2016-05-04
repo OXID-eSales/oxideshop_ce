@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+
 /**
  * Article seo config class
  */
-class Article_Seo extends Object_Seo
+class ArticleSeo extends \Object_Seo
 {
 
     /**

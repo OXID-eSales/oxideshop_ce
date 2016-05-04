@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin deliverysetset list manager.
  * Collects deliveryset base information (description), there is ability to
  * filter them by description, title or delete them.
  * Admin Menu: Shop Settings -> Shipping & Handling Sets.
  */
-class DeliverySet_List extends oxAdminList
+class DeliverySetList extends \oxAdminList
 {
 
     /**

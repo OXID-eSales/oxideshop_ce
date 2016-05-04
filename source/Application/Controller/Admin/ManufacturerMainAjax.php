@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxDb;
+
 /**
  * Class manages manufacturer assignment to articles
  */
-class manufacturer_main_ajax extends ajaxListComponent
+class ManufacturerMainAjax extends \ajaxListComponent
 {
 
     /**

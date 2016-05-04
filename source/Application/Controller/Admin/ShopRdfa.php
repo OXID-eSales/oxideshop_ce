@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Admin shop system RDFa manager.
  * Collects shop system settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> RDFa.
  *
  */
-class shop_rdfa extends Shop_Config
+class ShopRdfa extends \Shop_Config
 {
 
     /**

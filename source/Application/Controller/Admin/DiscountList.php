@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin discount list manager.
  * Collects delivery base information (description), there is ability to
  * filter them by description, title or delete them.
  * Admin Menu: Shop Settings -> Discounts.
  */
-class Discount_List extends oxAdminList
+class DiscountList extends \oxAdminList
 {
 
     /**

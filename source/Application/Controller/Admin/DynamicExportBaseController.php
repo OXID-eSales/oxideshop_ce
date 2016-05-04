@@ -20,6 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use stdClass;
+
 /**
  * Error constants
  */
@@ -33,7 +39,7 @@ DEFINE("ERR_FILEIO", 1);
  *
  * @subpackage dyn
  */
-class DynExportBase extends oxAdminDetails
+class DynamicExportBaseController extends \oxAdminDetails
 {
 
     /**

@@ -20,13 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use stdClass;
+use oxField;
+
 /**
  * Admin article main delivery manager.
  * There is possibility to change delivery name, article, user
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main.
  */
-class Delivery_Main extends oxAdminDetails
+class DeliveryMain extends \oxAdminDetails
 {
 
     /**

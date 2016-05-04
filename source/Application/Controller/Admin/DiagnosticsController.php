@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Checks Version of System files.
  * Admin Menu: Service -> Diagnostics Tool.
  */
-class Diagnostics extends oxAdminView
+class DiagnosticsController extends \oxAdminView
 {
 
     /**

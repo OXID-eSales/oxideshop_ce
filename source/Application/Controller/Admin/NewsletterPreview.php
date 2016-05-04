@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Newsletter preview manager.
  * Creates plaintext and HTML format newsletter preview.
  * Admin Menu: Customer News -> Newsletter -> Preview.
  */
-class Newsletter_Preview extends oxAdminDetails
+class NewsletterPreview extends \oxAdminDetails
 {
 
     /**

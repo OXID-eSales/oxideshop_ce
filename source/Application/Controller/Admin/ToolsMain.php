@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * CVS export manager.
  * Performs export function according to user chosen categories.
  * Admin Menu: Maine Menu -> Im/Export -> Export.
  */
-class Tools_Main extends oxAdminDetails
+class ToolsMain extends \oxAdminDetails
 {
 
     /**

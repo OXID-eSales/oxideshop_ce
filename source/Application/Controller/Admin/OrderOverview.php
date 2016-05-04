@@ -20,12 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+use oxDb;
+
 /**
  * Admin order overview manager.
  * Collects order overview information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders -> Overview.
  */
-class Order_Overview extends oxAdminDetails
+class OrderOverview extends \oxAdminDetails
 {
     /**
      * Executes parent method parent::render(), creates oxOrder, passes

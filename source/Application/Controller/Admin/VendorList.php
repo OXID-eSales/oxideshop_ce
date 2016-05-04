@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin vendor list manager.
  */
-class Vendor_List extends oxAdminList
+class VendorList extends \oxAdminList
 {
 
     /**

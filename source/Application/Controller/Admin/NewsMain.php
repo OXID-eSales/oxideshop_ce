@@ -20,13 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use stdClass;
+use oxField;
 
 /**
  * Admin article main news manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Customer News -> News -> Main.
  */
-class News_Main extends oxAdminDetails
+class NewsMain extends \oxAdminDetails
 {
 
     /**

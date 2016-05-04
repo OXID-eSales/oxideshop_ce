@@ -20,13 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Admin article review manager.
  * Collects customer review about article data. There ir possibility to update
  * review text or delete it.
  * Admin Menu: Manage Products -> Articles -> Review.
  */
-class Article_Review extends oxAdminDetails
+class ArticleReview extends \oxAdminDetails
 {
     /**
      * Loads selected article review information, returns name of template

@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Checks Version of System files.
  * Admin Menu: Service -> Version Checker -> Main.
  */
-class Diagnostics_Main extends oxAdminDetails
+class DiagnosticsMain extends \oxAdminDetails
 {
 
     /**

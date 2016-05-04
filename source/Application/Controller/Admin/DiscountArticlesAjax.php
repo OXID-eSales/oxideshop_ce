@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxDb;
+use oxField;
+
 /**
  * Class manages discount articles
  */
-class discount_articles_ajax extends ajaxListComponent
+class DiscountArticlesAjax extends \ajaxListComponent
 {
     /**  */
     const NEW_DISCOUNT_LIST_ID = "-1";

@@ -19,10 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxSysRequirements;
+
 /**
  * Administrator GUI navigation manager class.
  */
-class Navigation extends oxAdminView
+class NavigationController extends \oxAdminView
 {
 
     /**

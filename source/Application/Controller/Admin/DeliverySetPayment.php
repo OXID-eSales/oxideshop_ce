@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Admin deliveryset payment manager.
  * There is possibility to assign set to payment method
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling Set -> Payment
  */
-class DeliverySet_Payment extends oxAdminDetails
+class DeliverySetPayment extends \oxAdminDetails
 {
 
     /**

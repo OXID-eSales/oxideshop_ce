@@ -20,13 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Admin article overview manager.
  * Collects and previews such article information as article creation date,
  * last modification date, sales rating and etc.
  * Admin Menu: Manage Products -> Articles -> Overview.
  */
-class Article_Overview extends oxAdminDetails
+class ArticleOverview extends \oxAdminDetails
 {
 
     /**
@@ -46,7 +51,7 @@ class Article_Overview extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             $oDB = $this->getDatabase();
-            
+
             // load object
             $this->updateArticle($oArticle, $soxId);
 

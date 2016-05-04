@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+
 /**
  * Class manages article attributes
  */
-class attribute_main_ajax extends ajaxListComponent
+class AttributeMainAjax extends \ajaxListComponent
 {
 
     /**

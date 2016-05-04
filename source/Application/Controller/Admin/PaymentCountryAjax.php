@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxDb;
+use oxField;
+
 /**
  * Class manages payment countries
  */
-class payment_country_ajax extends ajaxListComponent
+class PaymentCountryAjax extends \ajaxListComponent
 {
 
     /**

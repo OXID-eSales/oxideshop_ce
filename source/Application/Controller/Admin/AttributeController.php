@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Returns template, that arranges two other templates ("attribute_list.tpl"
  * and "attribute_main.tpl") to frame.
  * Admin Menu: Manage Products -> Attributes.
  */
-class Attribute extends oxAdminView
+class AttributeController extends \oxAdminView
 {
 
     /**

@@ -20,13 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use stdClass;
+
 /**
  * Admin article main actions manager.
  * There is possibility to change actions description, assign articles to
  * this actions, etc.
  * Admin Menu: Manage Products -> actions -> Main.
  */
-class Actions_Main extends oxAdminDetails
+class ActionsMain extends \oxAdminDetails
 {
 
     /**

@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Admin category main attributes manager.
  * There is possibility to change attribute description, assign categories to
  * this attribute, etc.
  * Admin Menu: Manage Products -> Attributes -> Gruppen.
  */
-class Attribute_Category extends oxAdminDetails
+class AttributeCategory extends \oxAdminDetails
 {
 
     /**

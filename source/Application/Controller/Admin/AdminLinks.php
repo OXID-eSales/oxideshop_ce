@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admins links manager.
  * Sets template, that arranges two other templates ("adminlinks_lis.tpl"
  * and "adminlinks_main.tpl") to frame.
  * Admin Menu: Customer News -> Links.
  */
-class Admin_Links extends oxAdminView
+class AdminLinks extends \oxAdminView
 {
 
     /**

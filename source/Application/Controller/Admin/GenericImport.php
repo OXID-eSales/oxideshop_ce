@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin dyn General import manager.
  */
-class GenImport extends GenImport_Main
+class GenericImport extends \GenImport_Main
 {
 
     /**

@@ -20,12 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use stdClass;
+use Exception;
+
 /**
  * Admin article main user manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: User Administration -> Users -> Main.
  */
-class User_Main extends oxAdminDetails
+class UserMain extends \oxAdminDetails
 {
 
     private $_sSaveError = null;

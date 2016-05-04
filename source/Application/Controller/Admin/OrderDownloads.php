@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Admin order article manager.
  * Collects order articles information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders -> Articles.
  */
-class Order_Downloads extends oxAdminDetails
+class OrderDownloads extends \oxAdminDetails
 {
 
     /**

@@ -20,13 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxTheme;
+use oxException;
+
 /**
  * Admin article main deliveryset manager.
  * There is possibility to change deliveryset name, article, user
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main Sets.
  */
-class Theme_Main extends oxAdminDetails
+class ThemeMain extends \oxAdminDetails
 {
 
     /**

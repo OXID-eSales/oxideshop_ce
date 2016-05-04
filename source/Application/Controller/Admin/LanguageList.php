@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use Exception;
+
 /**
  * Admin selectlist list manager.
  */
-class Language_List extends oxAdminList
+class LanguageList extends \oxAdminList
 {
 
     /**

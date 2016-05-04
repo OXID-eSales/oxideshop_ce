@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Collects System information.
  * Admin Menu: Service -> System Requirements.
  */
-class sysreq extends oxAdminView
+class SystemRequirements extends \oxAdminView
 {
 
     /**

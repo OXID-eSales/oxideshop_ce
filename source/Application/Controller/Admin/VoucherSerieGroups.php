@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Admin voucherserie groups manager.
  * Collects and manages information about user groups, added to one or another
  * serie of vouchers.
  * Admin Menu: Shop Settings -> Vouchers -> Groups.
  */
-class VoucherSerie_Groups extends oxAdminDetails
+class VoucherSerieGroups extends \oxAdminDetails
 {
 
     /**

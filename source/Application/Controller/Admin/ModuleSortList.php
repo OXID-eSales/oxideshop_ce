@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Extensions sorting list handler.
  * Admin Menu: Extensions -> Module -> Installed Shop Modules.
  */
-class Module_SortList extends oxAdminDetails
+class ModuleSortList extends \oxAdminDetails
 {
 
     /**

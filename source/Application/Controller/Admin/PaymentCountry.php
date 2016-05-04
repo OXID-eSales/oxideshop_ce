@@ -20,12 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use stdClass;
+use oxField;
+
 /**
  * Admin article main payment manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Shop Settings -> Payment Methods -> Main.
  */
-class Payment_Country extends oxAdminDetails
+class PaymentCountry extends \oxAdminDetails
 {
 
     /**

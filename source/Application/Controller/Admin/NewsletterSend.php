@@ -20,11 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+use oxAdminDetails;
+
 /**
  * Newsletter sending manager.
  * Performs sending of newsletter to selected user groups.
  */
-class Newsletter_Send extends Newsletter_Selection
+class NewsletterSend extends \Newsletter_Selection
 {
 
     /**

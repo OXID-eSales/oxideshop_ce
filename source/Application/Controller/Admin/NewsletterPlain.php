@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Newsletter plain manager.
  * Performs newsletter creation (plain text format, collects neccessary information).
  * Admin Menu: Customer News -> Newsletter -> Text.
  */
-class Newsletter_Plain extends oxAdminDetails
+class NewsletterPlain extends \oxAdminDetails
 {
 
     /**

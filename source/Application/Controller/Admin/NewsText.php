@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use stdClass;
+
 /**
  * Admin Menu: Customer News -> News -> Text.
  */
-class News_Text extends oxAdminDetails
+class NewsText extends \oxAdminDetails
 {
     /**
      * Executes parent method parent::render(), creates oxnews object and

@@ -116,6 +116,13 @@ class AdminView extends \oxView
     protected $_sEditObjectId = null;
 
     /**
+     * Optional view id.
+     *
+     * @var string
+     */
+    protected $viewId = null;
+
+    /**
      * Creates oxshop object and loads shop data, sets title of shop
      */
     public function __construct()
@@ -567,7 +574,7 @@ class AdminView extends \oxView
      */
     public function getViewId()
     {
-        $sClassName = strtolower(get_class($this));
+        $sClassName = is_null($this->viewId) ? strtolower(get_class($this)) : $this->viewId;
 
         return $this->getNavigation()->getClassId($sClassName);
     }

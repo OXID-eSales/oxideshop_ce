@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin article delivery manager.
  * Returns template, that arranges two other templates ("delivery_list.tpl"
  * and "delivery_main.tpl") to frame.
  * Admin Menu: Shop settings -> Shipping & Handling.
  */
-class Delivery extends oxAdminView
+class DeliveryController extends \oxAdminView
 {
 
     /**

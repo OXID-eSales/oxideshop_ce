@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin article categories thumbnail manager.
  * Category thumbnail manager (Previews assigned pictures).
  * Admin Menu: Manage Products -> Categories -> Thumbnail.
  */
-class Category_Pictures extends oxAdminDetails
+class CategoryPictures extends \oxAdminDetails
 {
 
     /**

@@ -20,12 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use stdClass;
+
 /**
  * Admin article main discount manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Shop Settings -> Discounts -> Main.
  */
-class Discount_Main extends oxAdminDetails
+class DiscountMain extends \oxAdminDetails
 {
 
     /**

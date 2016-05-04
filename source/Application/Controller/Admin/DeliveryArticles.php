@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
 
 /**
  * Admin article main delivery manager.
@@ -27,7 +30,7 @@
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main.
  */
-class Delivery_Articles extends oxAdminDetails
+class DeliveryArticles extends \oxAdminDetails
 {
 
     /**

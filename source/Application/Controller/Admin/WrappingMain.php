@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use stdClass;
+
 /**
  * Admin wrapping main manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: System Administration -> Wrapping -> Main.
  */
-class Wrapping_Main extends oxAdminDetails
+class WrappingMain extends \oxAdminDetails
 {
 
     /**

@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Class manages article select lists sorting
  */
-class selectlist_order_ajax extends ajaxListComponent
+class SelectListOrderAjax extends \ajaxListComponent
 {
 
     /**

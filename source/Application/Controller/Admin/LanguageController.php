@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Sets template, that arranges two other templates ("article_list.tpl"
  * and "article_main.tpl") to frame.
  * Admin Menu: Manage Products -> Articles.
  */
-class Language extends oxAdminView
+class LanguageController extends \oxAdminView
 {
 
     /**

@@ -19,12 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-use OxidEsales\Eshop\Core\GenericImport\GenericImport;
+
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxStr;
+use oxRegistry;
+use oxAdminDetails;
 
 /**
  * Admin general export manager.
  */
-class GenImport_Main extends oxAdminDetails
+class GenericImportMain extends oxAdminDetails
 {
 
     /**

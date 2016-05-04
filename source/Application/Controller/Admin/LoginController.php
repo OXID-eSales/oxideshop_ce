@@ -20,11 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxView;
+use oxCookieException;
+use oxUserException;
+use oxConnectionException;
+
 /**
  * Administrator login form.
  * Performs administrator login form data collection.
  */
-class Login extends oxAdminView
+class LoginController extends \oxAdminView
 {
     /** Login page view id. */
     CONST VIEW_ID = 'login';

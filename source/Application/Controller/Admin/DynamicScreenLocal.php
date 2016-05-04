@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin shop system setting manager.
  * Collects shop system settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> System.
  */
-class Dynscreen_Local extends oxAdminView
+class DynamicScreenLocal extends \oxAdminView
 {
 
     /**

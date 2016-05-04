@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin attributes manager.
  * Collects attributes base information (Description), there is ability to filter
  * them by Description or delete them.
  * Admin Menu: Manage Products -> Attributes.
  */
-class Attribute_List extends oxAdminList
+class AttributeList extends \oxAdminList
 {
 
     /**

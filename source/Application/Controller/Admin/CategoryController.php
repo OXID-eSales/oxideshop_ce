@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin article categories text manager.
  * Returns template, that arranges two other templates ("category_list.tpl"
  * and "category_main.tpl") to frame.
  * Admin Menu: Manage Products -> Categories.
  */
-class Category extends oxAdminView
+class CategoryController extends \oxAdminView
 {
 
     /**

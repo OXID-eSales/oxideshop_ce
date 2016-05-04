@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin newsletter manager.
  * Returns template, that arranges two other templates ("newsletter_list.tpl"
  * and "newsletter_main.tpl") to frame.
  * Admin Menu: Customer News -> Newsletter.
  */
-class Admin_Newsletter extends oxAdminView
+class AdminNewsletter extends \oxAdminView
 {
 
     /**

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -21,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin newsletter list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Customer News -> Newsletter.
  */
-class Newsletter_List extends oxAdminList
+class NewsletterList extends \oxAdminList
 {
 
     /**

@@ -20,6 +20,7 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
 
 /**
  * Admin Econda manager.
@@ -28,7 +29,7 @@
  *
  * @deprecated v5.3 (2016-05-10); Econda will be moved to own module.
  */
-class dyn_econda extends Shop_Config
+class DynEconda extends \Shop_Config
 {
 
     /**

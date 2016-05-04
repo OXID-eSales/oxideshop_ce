@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin order manager.
  * Returns template, that arranges two other templates ("order_list.tpl"
  * and "order_overview.tpl") to frame.
  * Admin Menu: Orders -> Display Orders.
  */
-class Admin_Order extends oxAdminView
+class AdminOrder extends \oxAdminView
 {
 
     /**

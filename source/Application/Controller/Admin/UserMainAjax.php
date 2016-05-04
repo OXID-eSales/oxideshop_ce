@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+
 /**
  * Class manages user assignment to groups
  */
-class user_main_ajax extends ajaxListComponent
+class UserMainAjax extends \ajaxListComponent
 {
 
     /**

@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Class for extending
  */
-class User_Overview extends oxAdminDetails
+class UserOverview extends \oxAdminDetails
 {
 
     /**

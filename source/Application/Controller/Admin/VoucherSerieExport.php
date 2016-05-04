@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxUtilsObject;
+
 /**
  * General export class.
  */
-class VoucherSerie_Export extends VoucherSerie_Main
+class VoucherSerieExport extends \VoucherSerie_Main
 {
 
     /**

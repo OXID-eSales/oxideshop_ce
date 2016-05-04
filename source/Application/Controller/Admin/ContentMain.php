@@ -20,12 +20,20 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+use oxUtilsObject;
+use stdClass;
+
 /**
  * Admin content manager.
  * There is possibility to change content description, enter page text etc.
  * Admin Menu: Customerinformations -> Content.
  */
-class Content_Main extends oxAdminDetails
+class ContentMain extends \oxAdminDetails
 {
 
     /**

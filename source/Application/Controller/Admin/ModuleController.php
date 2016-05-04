@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin theme manager.
  * Returns template, that arranges two other templates ("theme_list.tpl"
  * and "theme_main.tpl") to frame.
  * Admin Menu: Main Menu -> Theme.
  */
-class Module extends oxAdminView
+class ModuleController extends \oxAdminView
 {
 
     /**

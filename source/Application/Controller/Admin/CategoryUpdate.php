@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Class for updating category tree structure in DB.
  */
-class Category_Update extends oxAdminView
+class CategoryUpdate extends \oxAdminView
 {
 
     /**

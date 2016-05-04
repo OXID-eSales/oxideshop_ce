@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use stdClass;
+
 /**
  * Admin article main selectlist manager.
  * Performs collection and updatind (on user submit) main item information.
  */
-class Country_Main extends oxAdminDetails
+class CountryMain extends \oxAdminDetails
 {
 
     /**

@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+
 /**
  * Class controls article assignment to accessories
  */
-class article_accessories_ajax extends ajaxListComponent
+class ArticleAccessoriesAjax extends \ajaxListComponent
 {
 
     /**
@@ -85,7 +91,7 @@ class article_accessories_ajax extends ajaxListComponent
                               "or {$sArticleTable}.oxparentid=$sView.oxobjectid )";
                 $sSqlIfFals = " {$sArticleTable}.oxid=$sView.oxobjectid ";
                 $sVariantSelectionSql = $blVariantsSelectionParameter ? $sSqlIfTrue : $sSqlIfFals;
-                
+
                 $sQAdd = " from $sView left join {$sArticleTable} on {$sVariantSelectionSql}" .
                          " where $sView.oxcatnid = " . $oDb->quote($sSelId) . " ";
             } else {

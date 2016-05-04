@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+
 /**
  * Category seo config class
  */
-class Category_Seo extends Object_Seo
+class CategorySeo extends \Object_Seo
 {
 
     /**

@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Class manages category articles order
  */
-class category_order_ajax extends ajaxListComponent
+class CategoryOrderAjax extends \ajaxListComponent
 {
 
     /**

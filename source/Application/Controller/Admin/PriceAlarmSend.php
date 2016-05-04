@@ -20,11 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+
 /**
  * pricealarm sending manager.
  * Performs sending of pricealarm to selected iAllCnt groups.
  */
-class PriceAlarm_Send extends oxAdminList
+class PriceAlarmSend extends \oxAdminList
 {
 
     /**

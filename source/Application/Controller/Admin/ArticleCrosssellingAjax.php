@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+
 /**
  * Class controls article crossselling configuration
  */
-class article_crossselling_ajax extends ajaxListComponent
+class ArticleCrosssellingAjax extends \ajaxListComponent
 {
 
     /**

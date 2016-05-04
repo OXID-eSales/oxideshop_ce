@@ -20,12 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use stdClass;
+use oxField;
+
 /**
  * Admin article RDFa payment manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Shop Settings -> Payment Methods -> RDFa.
  */
-class payment_rdfa extends oxAdminDetails
+class PaymentRdfa extends \oxAdminDetails
 {
 
     /**

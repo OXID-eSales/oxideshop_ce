@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Admin shop system setting manager.
  * Collects shop system settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> System.
  */
-class Shop_System extends Shop_Config
+class ShopSystem extends \Shop_Config
 {
 
     /**
@@ -54,7 +59,7 @@ class Shop_System extends Shop_Config
         $sLangAbbr = $aLanguages[$oLang->getObjectTplLanguage()]->abbr;
 
         // loading shop location countries list (defines in which country shop exists)
-        include "shop_countries.php";
+        include "ShopCountries.php";
 
         $soxId = $this->getEditObjectId();
         if (!$soxId) {

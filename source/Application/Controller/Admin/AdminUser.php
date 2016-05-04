@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin user manager.
  * Returns template, that arranges two other templates ("user_list.tpl"
  * and "user_main.tpl") to frame.
  * Admin Menu: User Administration -> Users.
  */
-class Admin_User extends oxAdminView
+class AdminUser extends \oxAdminView
 {
 
     /**

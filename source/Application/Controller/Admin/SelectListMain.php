@@ -20,6 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+use stdClass;
+
 DEFINE("ERR_SUCCESS", 1);
 DEFINE("ERR_REQUIREDMISSING", -1);
 DEFINE("ERR_POSOUTOFBOUNDS", -2);
@@ -28,7 +34,7 @@ DEFINE("ERR_POSOUTOFBOUNDS", -2);
  * Admin article main selectlist manager.
  * Performs collection and updatind (on user submit) main item information.
  */
-class SelectList_Main extends oxAdminDetails
+class SelectListMain extends \oxAdminDetails
 {
     /**
      * Keeps all act. fields to store

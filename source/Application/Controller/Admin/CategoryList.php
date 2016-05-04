@@ -20,13 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+use stdClass;
+
 /**
  * Admin category list manager.
  * Collects attributes base information (sorting, title, etc.), there is ability to
  * filter them by sorting, title or delete them.
  * Admin Menu: Manage Products -> Categories.
  */
-class Category_List extends oxAdminList
+class CategoryList extends \oxAdminList
 {
 
     /**

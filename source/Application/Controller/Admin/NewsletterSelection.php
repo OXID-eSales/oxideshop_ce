@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Newsletter user group selection manager.
  * Adds/removes chosen user group to/from newsletter mailing.
  * Admin Menu: Customer News -> Newsletter -> Selection.
  */
-class Newsletter_Selection extends oxAdminDetails
+class NewsletterSelection extends \oxAdminDetails
 {
 
     /**

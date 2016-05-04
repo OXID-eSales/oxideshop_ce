@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Content seo config class
  */
-class Content_Seo extends Object_Seo
+class ContentSeo extends \Object_Seo
 {
 
     /**

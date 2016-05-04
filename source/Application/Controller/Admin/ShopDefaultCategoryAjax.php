@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+
 /**
  * Class controls article assignment to attributes
  */
-class shop_default_category_ajax extends ajaxListComponent
+class ShopDefaultCategoryAjax extends \ajaxListComponent
 {
 
     /**

@@ -20,12 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+use stdClass;
+
 /**
  * Admin article RDFa deliveryset manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Shop Settings -> Shipping & Handling -> RDFa.
  */
-class deliveryset_rdfa extends payment_rdfa
+class DeliverySetRdfa extends \payment_rdfa
 {
 
     /**

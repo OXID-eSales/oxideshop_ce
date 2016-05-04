@@ -20,13 +20,26 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+use stdClass;
+use oxCategory;
+use oxUtilsPic;
+use oxUtilsFile;
+use oxExceptionToDisplay;
+use oxDbMetaDataHandler;
+use oxUtilsView;
+use category_main_ajax;
+
 /**
  * Admin article main categories manager.
  * There is possibility to change categories description, sorting, range of price
  * and etc.
  * Admin Menu: Manage Products -> Categories -> Main.
  */
-class Category_Main extends oxAdminDetails
+class CategoryMain extends \oxAdminDetails
 {
     const NEW_CATEGORY_ID = "-1";
 

@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin article deliveryset manager.
  * Returns template, that arranges two other templates ("deliveryset_list.tpl"
  * and "deliveryset_main.tpl") to frame.
  * Admin Menu: Shop settings -> Shipping & Handling Sets.
  */
-class DeliverySet extends oxAdminView
+class DeliverySetController extends \oxAdminView
 {
 
     /**

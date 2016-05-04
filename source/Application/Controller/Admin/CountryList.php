@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin selectlist list manager.
  */
-class Country_List extends oxAdminList
+class CountryList extends \oxAdminList
 {
 
     /**

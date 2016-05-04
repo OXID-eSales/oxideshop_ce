@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin starting page.
  * Returns template, that consists with title-admin-page.
  * Starting admin menu window.
  * Admin Menu.
  */
-class Admin_Start extends oxAdminView
+class AdminStart extends \oxAdminView
 {
 
     /**

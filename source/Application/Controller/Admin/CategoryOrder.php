@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Admin article categories order manager.
  * There is possibility to change category sorting.
  * Admin Menu: Manage Products -> Categories -> Order.
  */
-class Category_Order extends oxAdminDetails
+class CategoryOrder extends \oxAdminDetails
 {
 
     /**

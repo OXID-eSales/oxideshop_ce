@@ -20,12 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+use Exception;
+
 /**
  * Admin article files parameters manager.
  * Collects and updates (on user submit) files.
  * Admin Menu: Manage Products -> Articles -> Files.
  */
-class Article_Files extends oxAdminDetails
+class ArticleFiles extends \oxAdminDetails
 {
 
     /**

@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+
 /**
  * Class manages article select lists configuration
  */
-class selectlist_main_ajax extends ajaxListComponent
+class SelectListMainAjax extends \ajaxListComponent
 {
 
     /**

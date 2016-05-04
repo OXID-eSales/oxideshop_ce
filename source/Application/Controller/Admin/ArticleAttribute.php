@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Admin article attributes/selections lists manager.
  * Collects available attributes/selections lists for chosen article, may add
  * or remove any of them to article, etc.
  * Admin Menu: Manage Products -> Articles -> Selection.
  */
-class Article_Attribute extends oxAdminDetails
+class ArticleAttribute extends \oxAdminDetails
 {
 
     /**

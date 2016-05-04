@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+
 /**
  * Class manages voucher assignment to user groups
  */
-class voucherserie_groups_ajax extends ajaxListComponent
+class VoucherSerieGroupsAjax extends \ajaxListComponent
 {
 
     /**

@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin voucherserie list manager.
  * Collects voucherserie base information (serie no., discount, valid from, etc.),
  * there is ability to filter them by deiscount, serie no. or delete them.
  * Admin Menu: Shop Settings -> Vouchers.
  */
-class VoucherSerie_List extends oxAdminList
+class VoucherSerieList extends \oxAdminList
 {
 
     /**

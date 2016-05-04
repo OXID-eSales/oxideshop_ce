@@ -20,12 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+use stdClass;
+
 /**
  * Admin article main pricealarm manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Customer News -> pricealarm -> Main.
  */
-class PriceAlarm_Main extends oxAdminDetails
+class PriceAlarmMain extends \oxAdminDetails
 {
 
     /**

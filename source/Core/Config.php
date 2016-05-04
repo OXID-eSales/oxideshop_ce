@@ -31,7 +31,8 @@ use oxDb;
 use oxCookieException;
 use oxUtilsObject;
 use stdClass;
-use oxSuperConfig;
+use OxidEsales\Eshop\Core\SuperConfig;
+use Exception;
 
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');
@@ -42,7 +43,7 @@ define('MAX_64BIT_INTEGER', '18446744073709551615');
  * @mixin \OxidEsales\EshopEnterprise\Core\Config
  * @mixin \OxidEsales\EshopProfessional\Core\Config
  */
-class Config extends oxSuperCfg
+class Config extends SuperConfig
 {
 
     // this column of params are defined in config.inc.php file,

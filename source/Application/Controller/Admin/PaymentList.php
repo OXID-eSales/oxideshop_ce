@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin payment list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Shop Settings -> Payment Methods.
  */
-class Payment_List extends oxAdminList
+class PaymentList extends \oxAdminList
 {
 
     /**

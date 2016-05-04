@@ -20,12 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+
 /**
  * Admin user history settings manager.
  * Collects user history settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> History.
  */
-class User_Remark extends oxAdminDetails
+class UserRemark extends \oxAdminDetails
 {
 
     /**

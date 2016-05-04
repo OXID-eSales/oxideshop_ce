@@ -20,12 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxAdminDetails;
+
 /**
  * Admin shop config manager.
  * Collects shop config information, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> General.
  */
-class Shop_Config extends oxAdminDetails
+class ShopConfiguration extends oxAdminDetails
 {
 
     protected $_sThisTemplate = 'shop_config.tpl';

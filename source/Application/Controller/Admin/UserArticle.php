@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin user articles setting manager.
  * Collects user articles settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> Articles.
  */
-class User_Article extends oxAdminDetails
+class UserArticle extends \oxAdminDetails
 {
 
     /**

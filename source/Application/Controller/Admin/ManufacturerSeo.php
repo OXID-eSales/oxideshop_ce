@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+
 /**
  * Manufacturer seo config class
  */
-class Manufacturer_Seo extends Object_Seo
+class ManufacturerSeo extends \Object_Seo
 {
 
     /**

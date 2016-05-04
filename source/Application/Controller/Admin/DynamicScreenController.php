@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Admin dynscreen manager.
  * Returns template, that arranges two other templates ("dynscreen_list.tpl"
@@ -27,7 +31,7 @@
  *
  * @subpackage dyn
  */
-class Dynscreen extends oxAdminList
+class DynamicScreenController extends \oxAdminList
 {
 
     /**

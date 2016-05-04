@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+
 /**
  * Vendor seo config class
  */
-class Vendor_Seo extends Object_Seo
+class VendorSeo extends \Object_Seo
 {
 
     /**

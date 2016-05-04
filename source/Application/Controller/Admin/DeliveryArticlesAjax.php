@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxDb;
+use oxField;
+
 /**
  * Class manages delivery articles
  */
-class delivery_articles_ajax extends ajaxListComponent
+class DeliveryArticlesAjax extends \ajaxListComponent
 {
 
     /**

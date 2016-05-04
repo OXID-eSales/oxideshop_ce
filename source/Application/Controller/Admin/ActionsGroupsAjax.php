@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+
 /**
  * Class manages promotion groups
  */
-class actions_groups_ajax extends ajaxListComponent
+class ActionsGroupsAjax extends \ajaxListComponent
 {
     /**
      * Columns array

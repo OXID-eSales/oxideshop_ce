@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Admin user address setting manager.
  * Collects user address settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> Addresses.
  */
-class User_Address extends oxAdminDetails
+class UserAddress extends \oxAdminDetails
 {
 
     /**

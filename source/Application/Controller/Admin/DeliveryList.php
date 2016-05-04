@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin delivery list manager.
  * Collects delivery base information (description), there is ability to
  * filter them by description, title or delete them.
  * Admin Menu: Shop Settings -> Shipping & Handling.
  */
-class Delivery_List extends oxAdminList
+class DeliveryList extends \oxAdminList
 {
 
     /**

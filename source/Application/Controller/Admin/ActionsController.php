@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Sets view template, that arranges two other templates ("actions_list.tpl"
  * and "actions_main.tpl") to frame.
  * Admin Menu: Manage Products -> Actions.
  */
-class Actions extends oxAdminView
+class ActionsController extends \oxAdminView
 {
 
     /**

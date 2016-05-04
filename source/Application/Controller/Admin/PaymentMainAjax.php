@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxDb;
+use oxField;
+
 /**
  * Class manages payment user groups
  */
-class payment_main_ajax extends ajaxListComponent
+class PaymentMainAjax extends \ajaxListComponent
 {
 
     /**

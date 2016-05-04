@@ -20,13 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+use oxGroups;
+
 /**
  * Admin deliveryset User manager.
  * There is possibility to add User, groups
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling Sets -> Users.
  */
-class DeliverySet_Users extends oxAdminDetails
+class DeliverySetUsers extends \oxAdminDetails
 {
 
     /**

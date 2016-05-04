@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Class controls article assignment to attributes
  */
-class article_bundle_ajax extends ajaxListComponent
+class ArticleBundleAjax extends \ajaxListComponent
 {
 
     /**

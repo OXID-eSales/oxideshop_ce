@@ -94,9 +94,9 @@ if (!function_exists('getCountryList')) {
     {
         $aCountries = array();
         if (defined('OXID_PHP_UNIT')) {
-            include getShopBasePath() . "Application/Controller/Admin/shop_countries.php";
+            include getShopBasePath() . "Application/Controller/Admin/ShopCountries.php";
         } else {
-            include getInstallPath() . "Application/Controller/Admin/shop_countries.php";
+            include getInstallPath() . "Application/Controller/Admin/ShopCountries.php";
         }
 
         return $aCountries;
@@ -113,9 +113,9 @@ if (!function_exists('getLocation')) {
     {
         $aLocationCountries = array();
         if (defined('OXID_PHP_UNIT')) {
-            include getShopBasePath() . "Application/Controller/Admin/shop_countries.php";
+            include getShopBasePath() . "Application/Controller/Admin/ShopCountries.php";
         } else {
-            include getInstallPath() . "Application/Controller/Admin/shop_countries.php";
+            include getInstallPath() . "Application/Controller/Admin/ShopCountries.php";
         }
 
         return $aLocationCountries;
@@ -132,9 +132,9 @@ if (!function_exists('getLanguages')) {
     {
         $aLanguages = array();
         if (defined('OXID_PHP_UNIT')) {
-            include getShopBasePath() . "Application/Controller/Admin/shop_countries.php";
+            include getShopBasePath() . "Application/Controller/Admin/ShopCountries.php";
         } else {
-            include getInstallPath() . "Application/Controller/Admin/shop_countries.php";
+            include getInstallPath() . "Application/Controller/Admin/ShopCountries.php";
         }
 
         return $aLanguages;

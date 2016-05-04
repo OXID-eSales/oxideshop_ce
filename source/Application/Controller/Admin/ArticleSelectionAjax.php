@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+
 /**
  * Class controls article assignment to selection lists
  */
-class article_selection_ajax extends ajaxListComponent
+class ArticleSelectionAjax extends \ajaxListComponent
 {
 
     /**

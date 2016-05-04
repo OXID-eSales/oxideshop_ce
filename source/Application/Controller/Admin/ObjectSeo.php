@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use stdClass;
+
 /**
  * Base seo config class.
  */
-class Object_Seo extends oxAdminDetails
+class ObjectSeo extends \oxAdminDetails
 {
     /**
      * Executes parent method parent::render(),

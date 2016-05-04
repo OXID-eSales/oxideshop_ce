@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxDb;
+use oxField;
+
 /**
  * Class manages deliveryset countries
  */
-class deliveryset_country_ajax extends ajaxListComponent
+class DeliverySetCountryAjax extends \ajaxListComponent
 {
 
     /**

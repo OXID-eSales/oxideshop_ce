@@ -20,12 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+
 /**
  * Admin order remark manager.
  * Collects order remark information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders -> History.
  */
-class Order_Remark extends oxAdminDetails
+class OrderRemark extends \oxAdminDetails
 {
 
     /**

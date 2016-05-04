@@ -20,13 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Admin Contents manager.
  * Collects Content base information (Description), there is ability to filter
  * them by Description or delete them.
  * Admin Menu: Customerinformations -> Content.
  */
-class Content_List extends oxAdminList
+class ContentList extends \oxAdminList
 {
 
     /**
@@ -42,10 +47,10 @@ class Content_List extends oxAdminList
      * @var string
      */
     protected $_sListType = 'oxcontentlist';
-    
+
     /**
      * Current class template name.
-     * 
+     *
      * @var string
      */
     protected $_sThisTemplate = "content_list.tpl";

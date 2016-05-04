@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+
 /**
  * Class controls article assignment to action
  */
-class actions_main_ajax extends ajaxListComponent
+class ActionsMainAjax extends \ajaxListComponent
 {
 
     /**

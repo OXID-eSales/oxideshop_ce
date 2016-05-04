@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Admin shop list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Main Menu -> Core Settings.
  */
-class Shop_List extends oxAdminList
+class ShopList extends \oxAdminList
 {
     /** New Shop indicator. */
     const NEW_SHOP_ID = '-1';

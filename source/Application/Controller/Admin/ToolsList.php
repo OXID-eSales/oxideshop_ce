@@ -20,12 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxStr;
+use Exception;
+
 /**
  * Admin systeminfo manager.
  * Returns template, that arranges two other templates ("tools_list.tpl"
  * and "tools_main.tpl") to frame.
  */
-class Tools_List extends oxAdminList
+class ToolsList extends \oxAdminList
 {
 
     /**

@@ -20,13 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+
 /**
  * Admin article picture manager.
  * Collects information about article's used pictures, there is posibility to
  * upload any other picture, etc.
  * Admin Menu: Manage Products -> Articles -> Pictures.
  */
-class Article_Pictures extends oxAdminDetails
+class ArticlePictures extends \oxAdminDetails
 {
     /**
      * Loads article information - pictures, passes data to Smarty

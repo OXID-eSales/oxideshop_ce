@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Class reserved for extending (for customization - you can add you own fields, etc.).
  */
-class Article_Userdef extends oxAdminDetails
+class ArticleUserdef extends \oxAdminDetails
 {
 
     /**

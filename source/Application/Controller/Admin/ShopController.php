@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin shop manager.
  * Returns template, that arranges two other templates ("shop_list.tpl"
  * and "shop_main.tpl") to frame.
  * Admin Menu: Main Menu -> Core Settings.
  */
-class Shop extends oxAdminView
+class ShopController extends \oxAdminView
 {
     const CURRENT_TEMPLATE = 'shop.tpl';
 

@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use stdClass;
+
 /**
  * Admin article categories text manager.
  * Category text/description manager, enables editing of text.
  * Admin Menu: Manage Products -> Categories -> Text.
  */
-class Category_Text extends oxAdminDetails
+class CategoryText extends \oxAdminDetails
 {
 
     /**

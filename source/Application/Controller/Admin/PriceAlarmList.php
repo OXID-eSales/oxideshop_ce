@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin pricealarm list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Customer News -> pricealarm.
  */
-class PriceAlarm_List extends oxAdminList
+class PriceAlarmList extends \oxAdminList
 {
 
     /**

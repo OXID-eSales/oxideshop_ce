@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use stdClass;
+
 /**
  * Admin manufacturer main screen.
  * Performs collection and updating (on user submit) main item information.
  */
-class Manufacturer_Main extends oxAdminDetails
+class ManufacturerMain extends \oxAdminDetails
 {
 
     /**

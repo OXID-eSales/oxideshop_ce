@@ -20,12 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxUtilsDate;
+use oxRegistry;
+use oxField;
+use oxPaymentList;
+
 /**
  * Admin article main order manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Orders -> Display Orders -> Main.
  */
-class Order_Main extends oxAdminDetails
+class OrderMain extends \oxAdminDetails
 {
     /**
      * Whitelist of parameters whose change does not require a full order recalculation.

@@ -20,12 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxUtilsObject;
+use oxException;
+
 /**
  * Admin article main shop manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Main Menu -> Core Settings -> Main.
  */
-class Shop_Main extends oxAdminDetails
+class ShopMain extends \oxAdminDetails
 {
     /** Identifies new shop. */
     const NEW_SHOP_ID = "-1";

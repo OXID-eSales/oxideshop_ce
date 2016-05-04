@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use stdClass;
+
 /**
  * Admin links details manager.
  * Creates form for submitting new admin links or modifying old ones.
  * Admin Menu: Customer News -> Links.
  */
-class Adminlinks_Main extends oxAdminDetails
+class AdminlinksMain extends \oxAdminDetails
 {
 
     /**

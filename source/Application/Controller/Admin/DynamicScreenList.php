@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+
 /**
  * Admin dynscreen list manager.
  * Arranges controll tabs and sets title.
  *
  * @subpackage dyn
  */
-class Dynscreen_List extends Dynscreen
+class DynamicScreenList extends \Dynscreen
 {
 
     /**

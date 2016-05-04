@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin selectlist manager.
  * Returns template, that arranges two other templates ("selectlist_list.tpl"
  * and "selectlist_main.tpl") to frame.
  */
-class SelectList extends oxAdminView
+class SelectListController extends \oxAdminView
 {
 
     /**

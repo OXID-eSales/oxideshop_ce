@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use stdClass;
+
 /**
  * Admin article main usergroup manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: User Administration -> User Groups -> Main.
  */
-class UserGroup_Main extends oxAdminDetails
+class UserGroupMain extends \oxAdminDetails
 {
 
     /**

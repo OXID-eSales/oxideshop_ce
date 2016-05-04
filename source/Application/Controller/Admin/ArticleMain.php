@@ -20,13 +20,21 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+use oxUtilsObject;
+use stdClass;
+
 /**
  * Admin article main manager.
  * Collects and updates (on user submit) article base parameters data ( such as
  * title, article No., short Description and etc.).
  * Admin Menu: Manage Products -> Articles -> Main.
  */
-class Article_Main extends oxAdminDetails
+class ArticleMain extends \oxAdminDetails
 {
 
     /**

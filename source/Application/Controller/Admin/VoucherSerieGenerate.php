@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+
 /**
  * Voucher Serie generator class
  *
  */
-class VoucherSerie_Generate extends VoucherSerie_Main
+class VoucherSerieGenerate extends \VoucherSerie_Main
 {
 
     /**

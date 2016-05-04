@@ -20,13 +20,20 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+use stdClass;
+
 /**
  * Admin article inventory manager.
  * Collects such information about article as stock quantity, delivery status,
  * stock message, etc; Updates information (on user submit).
  * Admin Menu: Manage Products -> Articles -> Inventory.
  */
-class Article_Stock extends oxAdminDetails
+class ArticleStock extends \oxAdminDetails
 {
 
     /**

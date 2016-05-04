@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Class manages vendor assignment to articles
  */
-class vendor_main_ajax extends ajaxListComponent
+class VendorMainAjax extends \ajaxListComponent
 {
 
     /**

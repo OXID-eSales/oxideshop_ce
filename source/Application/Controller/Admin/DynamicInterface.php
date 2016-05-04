@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin dyn manager.
  *
  * @subpackage dyn
  */
-class dyn_interface extends oxAdminDetails
+class DynamicInterface extends \oxAdminDetails
 {
 
     /**

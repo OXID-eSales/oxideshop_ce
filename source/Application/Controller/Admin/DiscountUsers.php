@@ -20,13 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+use stdClass;
+
 /**
  * Admin article main discount manager.
  * There is possibility to change discount name, article, user
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main.
  */
-class Discount_Users extends oxAdminDetails
+class DiscountUsers extends \oxAdminDetails
 {
 
     /**

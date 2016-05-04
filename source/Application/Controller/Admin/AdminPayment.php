@@ -20,13 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
 /**
  * Admin payment manager.
  * Returns template, that arranges two other templates ("payment_list.tpl"
  * and "payment_main.tpl") to frame.
  * Admin Menu: Shop Settings -> Payment Methods.
  */
-class Admin_Payment extends oxAdminView
+class AdminPayment extends \oxAdminView
 {
 
     /**

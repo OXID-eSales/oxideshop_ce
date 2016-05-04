@@ -20,12 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
+use stdClass;
+
 /**
  * Admin article variants manager.
  * Collects and updates article variants data.
  * Admin Menu: Manage Products -> Articles -> Variants.
  */
-class Article_Variant extends oxAdminDetails
+class ArticleVariant extends \oxAdminDetails
 {
 
     /**

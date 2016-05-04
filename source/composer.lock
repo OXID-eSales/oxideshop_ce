@@ -699,16 +699,16 @@
         },
         {
             "name": "oxid-esales/testing-library",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "02dc33f75c6c50c62a42e08a478c47d742cbf8d3"
+                "reference": "507b047f2baa503b5637f4989a5bdf9224548fc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/02dc33f75c6c50c62a42e08a478c47d742cbf8d3",
-                "reference": "02dc33f75c6c50c62a42e08a478c47d742cbf8d3",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/507b047f2baa503b5637f4989a5bdf9224548fc8",
+                "reference": "507b047f2baa503b5637f4989a5bdf9224548fc8",
                 "shasum": ""
             },
             "require": {

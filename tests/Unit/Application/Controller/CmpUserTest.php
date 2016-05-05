@@ -1111,6 +1111,52 @@ class CmpUserTest extends \OxidTestCase
     }
 
     /**
+     * Test _changeUser_noRedirect()().
+     *
+     * @return null
+     */
+    public function testChangeUserNoRedirectCanNotChangeBlackListedData()
+    {
+        $this->setRequestParameter('blnewssubscribed', false);
+        $aRawVal = array(
+            'oxuser__oxid'        => 'newId',
+            'oxid'        => 'newId',
+            'oxuser__oxpoints'        => 'newPoints',
+            'oxpoints'        => 'newPoints',
+            'oxuser__oxboni'        => 'newBoni',
+            'oxboni'        => 'newBoni',
+            'oxuser__oxfname'     => 'fname',
+            'oxuser__oxlname'     => 'lname',
+            'oxuser__oxstreetnr'  => 'nr',
+            'oxuser__oxstreet'    => 'street',
+            'oxuser__oxzip'       => 'zip',
+            'oxuser__oxcity'      => 'city',
+            'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984'
+        );
+        $this->setRequestParameter('invadr', $aRawVal);
+
+        $oUser = $this->getMock($this->getProxyClassName('oxUser'), array('getNewsSubscription', 'setNewsSubscription'));
+        $oUser->oxuser__oxid = new oxField('oldId');
+        $oUser->oxuser__oxpoints = new oxField('oldPoints');
+        $oUser->oxuser__oxboni = new oxField('oldBoni');
+        $oUser->oxuser__oxusername = new oxField('test@oxid-esales.com');
+        $oUser->oxuser__oxpassword = new oxField(crc32('Test@oxid-esales.com'));
+
+        $oSession = $this->getMock('oxSession', array('getBasket', 'checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+
+        $oUserView = $this->getMock($this->getProxyClassName('oxcmp_user'), array('getSession', 'getUser', '_getDelAddressData'));
+        $oUserView->expects($this->once())->method('_getDelAddressData')->will($this->returnValue(null));
+        $oUserView->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
+        $oUserView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $this->assertTrue($oUserView->UNITchangeUser_noRedirect());
+
+        $this->assertEquals('oldId', $oUser->oxuser__oxid->value);
+        $this->assertEquals('oldPoints', $oUser->oxuser__oxpoints->value);
+        $this->assertEquals('oldBoni', $oUser->oxuser__oxboni->value);
+    }
+
+    /**
      * Test _getDelAddressData().
      *
      * @return null

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -207,7 +207,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxUser", "logout", "{ return true;}");
 
-        $aMockFnc = array('_afterLogout', '_getLogoutLink', 'getParent');
+            $aMockFnc = array('_afterLogout', '_getLogoutLink', 'getParent');
 
         $oParent = $this->getMock('oxubase', array("isEnabledPrivateSales"));
         $oParent->expects($this->once())->method('isEnabledPrivateSales')->will($this->returnValue(true));
@@ -566,7 +566,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
 
         $oUser = $this->getMock('oxcmp_user', array('inGroup'));
         $oUser->expects($this->once())->method('inGroup')->will($this->returnValue(false));
-        $aMockFnc = array('getSession', "getLoginStatus");
+            $aMockFnc = array('getSession', "getLoginStatus");
         $oUserView = $this->getMock('oxcmp_user', $aMockFnc);
         $oUserView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
         $oUserView->expects($this->once())->method('getLoginStatus')->will($this->returnValue(1));
@@ -652,7 +652,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oParent = $this->getMock('oxubase', array("isEnabledPrivateSales"));
         $oParent->expects($this->once())->method('isEnabledPrivateSales')->will($this->returnValue(false));
 
-        $aMockFnc = array('_afterLogout', '_getLogoutLink', 'getParent');
+            $aMockFnc = array('_afterLogout', '_getLogoutLink', 'getParent');
 
         $oUserView = $this->getMock('oxcmp_user', $aMockFnc);
         $oUserView->expects($this->once())->method('_afterLogout');
@@ -912,7 +912,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oSession = $this->getMock('oxSession', array('getBasket', 'checkSessionChallenge'));
         $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        $aMockFnc = array('getSession', 'getUser', '_getDelAddressData');
+            $aMockFnc = array('getSession', 'getUser', '_getDelAddressData');
         $this->getProxyClass("oxcmp_user");
         $oUserView = $this->getMock('oxcmp_userPROXY', $aMockFnc);
         $oUserView->expects($this->once())->method('_getDelAddressData')->will($this->returnValue(null));
@@ -1087,6 +1087,95 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
 
         $oNewsSubscribed->load('_test_9191965231c39c27141aab0431');
         $this->assertNotEquals($oNewsSubscribed->oxnewssubscribed__oxunsubscribed->value, '0000-00-00 00:00:00');
+    }
+
+    /**
+     * Test _changeUser_noRedirect()().
+     *
+     * @return null
+     */
+    public function testChangeUserNoRedirectCanNotChangeBlackListedData()
+    {
+        $this->setRequestParam('blnewssubscribed', false);
+        $aRawVal = array(
+            'oxuser__oxid'        => 'newId',
+            'oxid'        => 'newId',
+            'oxuser__oxpoints'        => 'newPoints',
+            'oxpoints'        => 'newPoints',
+            'oxuser__oxboni'        => 'newBoni',
+            'oxboni'        => 'newBoni',
+            'oxuser__oxfname'     => 'fname',
+            'oxuser__oxlname'     => 'lname',
+            'oxuser__oxstreetnr'  => 'nr',
+            'oxuser__oxstreet'    => 'street',
+            'oxuser__oxzip'       => 'zip',
+            'oxuser__oxcity'      => 'city',
+            'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984'
+        );
+        $this->setRequestParam('invadr', $aRawVal);
+
+        $this->getProxyClass("oxcmp_user");
+        $oUser = $this->getMock('oxUser', array('getNewsSubscription', 'setNewsSubscription'));
+        $oUser->oxuser__oxid = new oxField('oldId');
+        $oUser->oxuser__oxpoints = new oxField('oldPoints');
+        $oUser->oxuser__oxboni = new oxField('oldBoni');
+        $oUser->oxuser__oxusername = new oxField('test@oxid-esales.com');
+        $oUser->oxuser__oxpassword = new oxField(crc32('Test@oxid-esales.com'));
+
+        $oSession = $this->getMock('oxSession', array('getBasket', 'checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+
+        $this->getProxyClass("oxcmp_user");
+        $oUserView = $this->getMock('oxcmp_userPROXY', array('getSession', 'getUser', '_getDelAddressData'));
+        $oUserView->expects($this->once())->method('_getDelAddressData')->will($this->returnValue(null));
+        $oUserView->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
+        $oUserView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $this->assertTrue($oUserView->UNITchangeUser_noRedirect());
+
+        $this->assertEquals('oldId', $oUser->oxuser__oxid->value);
+        $this->assertEquals('oldPoints', $oUser->oxuser__oxpoints->value);
+        $this->assertEquals('oldBoni', $oUser->oxuser__oxboni->value);
+    }
+
+    /**
+     * Test _changeUser_noRedirect()().
+     *
+     * @return null
+     */
+    public function testChangeUserNoRedirectCanNotChangeBlackListedDataUsingUppercaseLetters()
+    {
+        $this->setRequestParam('blnewssubscribed', false);
+        $aRawVal = array(
+            'OXID'        => 'newId',
+            'oxuser__oxfname'     => 'fname',
+            'oxuser__oxlname'     => 'lname',
+            'oxuser__oxstreetnr'  => 'nr',
+            'oxuser__oxstreet'    => 'street',
+            'oxuser__oxzip'       => 'zip',
+            'oxuser__oxcity'      => 'city',
+            'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984'
+        );
+        $this->setRequestParam('invadr', $aRawVal);
+
+        $this->getProxyClass("oxcmp_user");
+        $oUser = $this->getMock('oxUser', array('getNewsSubscription', 'setNewsSubscription'));
+        $oUser->oxuser__oxid = new oxField('oldId');
+        $oUser->oxuser__oxpoints = new oxField('oldPoints');
+        $oUser->oxuser__oxboni = new oxField('oldBoni');
+        $oUser->oxuser__oxusername = new oxField('test@oxid-esales.com');
+        $oUser->oxuser__oxpassword = new oxField(crc32('Test@oxid-esales.com'));
+
+        $oSession = $this->getMock('oxSession', array('getBasket', 'checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+
+        $this->getProxyClass("oxcmp_user");
+        $oUserView = $this->getMock('oxcmp_userPROXY', array('getSession', 'getUser', '_getDelAddressData'));
+        $oUserView->expects($this->once())->method('_getDelAddressData')->will($this->returnValue(null));
+        $oUserView->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
+        $oUserView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $this->assertTrue($oUserView->UNITchangeUser_noRedirect());
+
+        $this->assertEquals('oldId', $oUser->oxuser__oxid->value);
     }
 
     /**

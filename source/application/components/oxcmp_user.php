@@ -441,7 +441,10 @@ class oxcmp_user extends oxView
         $sPassword2 = $oConfig->getRequestParameter('lgn_pwd2', true);
 
         $aInvAdress = $oConfig->getRequestParameter('invadr', true);
+        $aInvAdress = $this->cleanBillingAddress($aInvAdress);
+
         $aDelAdress = $this->_getDelAddressData();
+        $aDelAdress = $this->cleanDeliveryAddress($aDelAdress);
 
         /** @var oxUser $oUser */
         $oUser = oxNew('oxuser');
@@ -616,9 +619,11 @@ class oxcmp_user extends oxView
 
         // collecting values to check
         $aDelAdress = $this->_getDelAddressData();
+        $aDelAdress = $this->cleanDeliveryAddress($aDelAdress);
 
         // if user company name, user name and additional info has special chars
         $aInvAdress = oxRegistry::getConfig()->getRequestParameter('invadr', true);
+        $aInvAdress = $this->cleanBillingAddress($aInvAdress);
 
         $sUserName = $oUser->oxuser__oxusername->value;
         $sPassword = $sPassword2 = $oUser->oxuser__oxpassword->value;
@@ -669,6 +674,38 @@ class oxcmp_user extends oxView
         }
 
         return true;
+    }
+
+    /**
+     * Removes sensitive fields from billing address data.
+     *
+     * @param array $aBillingAddress
+     *
+     * @return array
+     */
+    private function cleanBillingAddress($aBillingAddress)
+    {
+        if (is_array($aBillingAddress)) {
+            $skipFields = array('oxuser__oxid', 'oxid', 'oxuser__oxpoints', 'oxpoints', 'oxuser__oxboni', 'oxboni');
+            $aBillingAddress = array_diff_key($aBillingAddress, array_flip($skipFields));
+        }
+        return $aBillingAddress;
+    }
+
+    /**
+     * Removes sensitive fields from billing address data.
+     *
+     * @param array $aDeliveryAddress
+     *
+     * @return array
+     */
+    private function cleanDeliveryAddress($aDeliveryAddress)
+    {
+        if (is_array($aDeliveryAddress)) {
+            $skipFields = array('oxaddress__oxid', 'oxid', 'oxaddress__oxuserid', 'oxuserid', 'oxaddress__oxaddressuserid', 'oxaddressuserid');
+            $aDeliveryAddress = array_diff_key($aDeliveryAddress, array_flip($skipFields));
+        }
+        return $aDeliveryAddress;
     }
 
     /**

@@ -100,8 +100,6 @@ class Shop_Seo extends Shop_Config
      */
     public function save()
     {
-        parent::save();
-
         // saving config params
         $this->saveConfVars();
 

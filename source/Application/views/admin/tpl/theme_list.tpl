@@ -88,8 +88,8 @@ window.onload = function ()
 <script type="text/javascript">
 if (parent.parent)
 {   parent.parent.sShopTitle   = "[{$actshopobj->oxshops__oxname->getRawValue()|oxaddslashes}]";
-    parent.parent.sMenuItem    = "[{oxmultilang ident="ACTIONS_LIST_MENUITEM"}]";
-    parent.parent.sMenuSubItem = "[{oxmultilang ident="ACTIONS_LIST_MENUSUBITEM"}]";
+    parent.parent.sMenuItem    = "[{oxmultilang ident="mxextensions"}]";
+    parent.parent.sMenuSubItem = "[{oxmultilang ident="mxtheme"}]";
     parent.parent.sWorkArea    = "[{$_act}]";
     parent.parent.setTitle();
 }

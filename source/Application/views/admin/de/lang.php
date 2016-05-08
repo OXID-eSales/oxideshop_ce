@@ -1199,6 +1199,7 @@ $aLang = array(
 'SHOP_SEO_NEWSTATICURL'                                    => '-- Neu anlegen --',
 'SHOP_SEO_RESERVEDWORDS'                                   => 'Reservierte Wörter (werden automatisch mit dem SEO Suffix versehen)',
 'SHOP_SEO_SKIPTAGS'                                        => 'Wörter, die bei der Erzeugung der Metatags für Suchmaschinen ignoriert werden',
+'SHOP_SEO_LOWERCASEURLS'                                   => 'SEO-URLs in Kleinbuchstaben umwandeln',
 'SHOP_LICENSE_SERIAL'                                      => 'Installierte Seriennummern',
 'SHOP_LICENSE_NEWSERIAL'                                   => 'Seriennr. hinzufügen',
 'SHOP_LICENSE_VERSION'                                     => 'eShop Version',

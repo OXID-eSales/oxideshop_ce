@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxField;
+
 /**
  * Article file link manager.
  *
  */
-class oxOrderFile extends oxBase
+class OrderFile extends \oxBase
 {
 
     /**

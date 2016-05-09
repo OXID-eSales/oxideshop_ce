@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * Seo encoder base
  */
-class oxSeoEncoderManufacturer extends oxSeoEncoder
+class SeoEncoderManufacturer extends \oxSeoEncoder
 {
     /**
      * Root manufacturer uri cache

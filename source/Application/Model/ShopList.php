@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
 /**
  * Shop list manager.
  * Organizes list of shop objects.
  */
-class oxShopList extends oxList
+class ShopList extends \oxList
 {
     /**
      * Calls parent constructor

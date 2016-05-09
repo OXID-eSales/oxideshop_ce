@@ -20,11 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxArticleInputException;
+use oxOutOfStockException;
+use oxNoArticleException;
+use stdClass;
+
 /**
  * UserBasketItem class, responsible for storing most important fields
  *
  */
-class oxBasketItem extends oxSuperCfg
+class BasketItem extends \oxSuperCfg
 {
 
     /**

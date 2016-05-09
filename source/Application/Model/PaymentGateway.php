@@ -20,13 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
 /**
  * Payment gateway manager.
  * Checks and sets payment method data, executes payment.
  *
  */
-
-class oxPaymentGateway extends oxSuperCfg
+class PaymentGateway extends \oxSuperCfg
 {
 
     /**

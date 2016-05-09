@@ -20,11 +20,24 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxOutOfStockException;
+use oxRegistry;
+use oxNoArticleException;
+use oxArticleInputException;
+use oxArticleException;
+use oxField;
+use stdClass;
+use oxPrice;
+use oxDb;
+use oxVoucherException;
+
 /**
  * Basket manager
  *
  */
-class oxBasket extends oxSuperCfg
+class Basket extends \oxSuperCfg
 {
 
     /**

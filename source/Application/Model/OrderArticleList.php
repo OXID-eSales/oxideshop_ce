@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * Order article list manager.
  *
  */
-class oxOrderArticleList extends oxList
+class OrderArticleList extends \oxList
 {
 
     /**

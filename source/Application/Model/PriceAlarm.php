@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxField;
+
 /**
  * Pricealarm manager.
  * Performs Pricealarm data/objects loading, deleting.
  *
  */
-class oxPricealarm extends oxBase
+class Pricealarm extends \oxBase
 {
 
     /**

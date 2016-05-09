@@ -20,13 +20,20 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+use stdClass;
+use oxRegistry;
+use oxField;
+
 /**
  * Voucher manager.
  * Performs deletion, generating, assigning to group and other voucher
  * managing functions.
  *
  */
-class oxVoucher extends oxBase
+class Voucher extends \oxBase
 {
 
     protected $_oSerie = null;
@@ -476,7 +483,7 @@ class oxVoucher extends oxBase
      * create oxVoucherSerie object of this voucher
      *
      * @throws oxObjectException
-     * 
+     *
      * @return oxVoucherSerie
      */
     public function getSerie()
@@ -786,7 +793,7 @@ class oxVoucher extends oxBase
 
         return $dVoucher;
     }
-    
+
     /**
      * Returns the discount value used, if voucher is applied only for specific categories.
      *

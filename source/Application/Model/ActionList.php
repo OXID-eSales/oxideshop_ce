@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Promotion List manager.
  *
  */
-class oxActionList extends oxList
+class ActionList extends \oxList
 {
 
     /**

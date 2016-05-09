@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * News list manager.
  * Creates news objects, fetches its data.
  *
  */
-class oxNewslist extends oxList
+class NewsList extends \oxList
 {
 
     /**

@@ -20,11 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+use oxRegistry;
+use oxList;
+use oxUtilsObject;
+use oxField;
+
 /**
  * Recommendation list manager class.
  *
  */
-class oxRecommList extends oxBase implements oxIUrl
+class RecommendationList extends \oxBase implements \oxIUrl
 {
 
     /**

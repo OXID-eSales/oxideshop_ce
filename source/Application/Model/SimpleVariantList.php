@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
 /**
  * Simple variant list.
  *
  */
-class oxSimpleVariantList extends oxList
+class SimpleVariantList extends \oxList
 {
 
     /**

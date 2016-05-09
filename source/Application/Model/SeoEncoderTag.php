@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxTagCloud;
+use oxRegistry;
+
 /**
  * Seo encoder for tags.
  *
  * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
  */
-class oxSeoEncoderTag extends oxSeoEncoder
+class SeoEncoderTag extends \oxSeoEncoder
 {
     /** @var oxTagCloud Tag preparation util object. */
     protected $_oTagPrepareUtil = null;

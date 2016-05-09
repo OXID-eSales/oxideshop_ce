@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Wrapping manager.
  * Performs Wrapping data/objects loading, deleting.
  *
  */
-class oxWrapping extends oxI18n
+class Wrapping extends \oxI18n
 {
 
     /**

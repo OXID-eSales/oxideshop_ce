@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxField;
+
 /**
  * Links manager.
  * Collects stored in DB links data (URL, description).
  */
-class oxLinks extends oxI18n
+class Links extends \oxI18n
 {
 
     /**

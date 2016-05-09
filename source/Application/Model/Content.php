@@ -20,12 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxField;
+use oxDb;
+
 /**
  * Content manager.
  * Base object for content pages
  *
  */
-class oxContent extends oxI18n implements oxIUrl
+class Content extends \oxI18n implements \oxIUrl
 {
 
     /**

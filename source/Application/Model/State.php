@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * State handler
  */
-class oxState extends oxI18n
+class State extends \oxI18n
 {
 
     /**

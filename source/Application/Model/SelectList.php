@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Select list manager
  *
  */
-class oxSelectlist extends oxI18n implements oxISelectList
+class SelectList extends \oxI18n implements \oxISelectList
 {
     /**
      * Select list fields array

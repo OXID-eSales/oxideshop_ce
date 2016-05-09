@@ -20,11 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+use oxRegistry;
+use stdClass;
+
+
 /**
  * Attribute list manager.
  *
  */
-class oxAttributeList extends oxList
+class AttributeList extends \oxList
 {
 
     /**

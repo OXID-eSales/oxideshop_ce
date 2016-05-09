@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+
 /**
  * Defines and returns delivery and billing required fields.
  */
-class oxRequiredAddressFields
+class RequiredAddressFields
 {
 
     /**

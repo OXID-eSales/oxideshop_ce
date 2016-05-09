@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * Group manager.
  * Base class for user groups. Does nothing special yet.
  *
  */
-class oxGroups extends oxI18n
+class Groups extends \oxI18n
 {
 
     /**

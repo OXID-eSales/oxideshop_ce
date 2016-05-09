@@ -21,12 +21,11 @@
  */
 namespace Unit\Application\Model;
 
-use \oxcategory;
-
 use oxCategoryList;
 use \oxField;
 use \oxDb;
 use \oxRegistry;
+use \oxCategory;
 
 if (!class_exists('\OxidEsales\EshopEnterprise\Application\Model\CategoryList')) {
     class_alias('oxCategoryList', '\OxidEsales\EshopEnterprise\Application\Model\CategoryList');

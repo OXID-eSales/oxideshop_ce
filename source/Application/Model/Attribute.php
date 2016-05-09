@@ -20,12 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+use oxRegistry;
+use oxField;
+use oxUtilsObject;
+
 /**
  * Article attributes manager.
  * Collects and keeps attributes of chosen article.
  *
  */
-class oxAttribute extends oxI18n
+class Attribute extends \oxI18n
 {
     /**
      * Current class name

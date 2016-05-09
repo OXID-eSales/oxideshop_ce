@@ -20,11 +20,20 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxUtilsObject;
+use oxField;
+use oxDb;
+use OxidEsales\Eshop\Application\Model\Basket;
+use oxuserbasket;
+
 /**
  * Basket reservations handler class
  *
  */
-class oxBasketReservation extends oxSuperCfg
+class BasketReservation extends \oxSuperCfg
 {
 
     /**
@@ -147,11 +156,11 @@ class oxBasketReservation extends oxSuperCfg
     /**
      * compute difference of reserved amounts vs basket items
      *
-     * @param oxBasket $oBasket basket object
+     * @param Basket $oBasket basket object
      *
      * @return array
      */
-    protected function _basketDifference(oxBasket $oBasket)
+    protected function _basketDifference(Basket $oBasket)
     {
         $aDiff = $this->_getReservedItems();
         // refreshing history
@@ -196,7 +205,7 @@ class oxBasketReservation extends oxSuperCfg
      *
      * @param oxBasket $oBasket basket object
      */
-    public function reserveBasket(oxBasket $oBasket)
+    public function reserveBasket(Basket $oBasket)
     {
         if (!$this->isAdmin()) {
             $this->_reserveArticles($this->_basketDifference($oBasket));

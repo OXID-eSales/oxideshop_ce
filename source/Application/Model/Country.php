@@ -20,12 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
 
 /**
  * Country manager
  *
  */
-class oxCountry extends oxI18n
+class Country extends \oxI18n
 {
 
     /**

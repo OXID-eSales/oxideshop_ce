@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
 /**
  * Variant selection lists manager class
  *
  */
-class oxVariantSelectList implements oxISelectList
+class VariantSelectList implements \oxISelectList
 {
 
     /**

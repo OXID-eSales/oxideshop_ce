@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxField;
+
 /**
  * Manufacturer list manager.
  * Collects list of manufacturers according to collection rules (activ, etc.).
  *
  */
-class oxManufacturerList extends oxList
+class ManufacturerList extends \oxList
 {
 
     /**

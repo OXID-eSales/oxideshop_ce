@@ -19,11 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * Payment list manager.
  *
  */
-class oxPaymentList extends oxList
+class PaymentList extends \oxList
 {
 
     /**

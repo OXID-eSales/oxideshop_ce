@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxField;
+
 /**
  * Vendor list manager.
  * Collects list of vendors according to collection rules (activ, etc.).
  *
  */
-class oxVendorList extends oxList
+class VendorList extends \oxList
 {
 
     /**

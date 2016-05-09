@@ -20,13 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+use oxField;
+
 /**
  * Newsletter Subscriptions manager
  * Performs user managing function
  * information, deletion and other.
  *
  */
-class oxNewsSubscribed extends oxBase
+class NewsSubscribed extends \oxBase
 {
 
     /**

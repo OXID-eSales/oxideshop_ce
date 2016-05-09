@@ -20,13 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+
 /**
  * Diagnostic tool result outputer
  * Performs OutputKey check of shop files and generates report file.
  *
  */
-
-class oxDiagnosticsOutput
+class DiagnosticsOutput
 {
 
     /**

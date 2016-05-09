@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * Discount list manager.
  * Organizes list of discount objects.
  *
  */
-class oxDiscountList extends oxList
+class DiscountList extends \oxList
 {
 
     /**

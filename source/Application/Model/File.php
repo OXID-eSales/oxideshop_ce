@@ -20,11 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxField;
+use oxRegistry;
+use oxDb;
+use oxException;
+
 /**
  * Article files manager.
  *
  */
-class oxFile extends oxBase
+class File extends \oxBase
 {
 
     /**

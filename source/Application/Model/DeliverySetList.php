@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * DeliverySet list manager.
  *
  */
-class oxDeliverySetList extends oxList
+class DeliverySetList extends \oxList
 {
 
     /**

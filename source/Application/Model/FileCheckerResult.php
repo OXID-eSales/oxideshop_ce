@@ -20,13 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
 /**
  * File checker result class
  * Structures and keeps the result of shop file check diagnostics
  *
  */
-
-class oxFileCheckerResult
+class FileCheckerResult
 {
 
     /**

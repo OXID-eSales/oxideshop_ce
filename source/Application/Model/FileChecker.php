@@ -20,13 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+
 /**
  * Shop file checker
  * Performs version check of shop file
  *
  */
-
-class oxFileChecker
+class FileChecker
 {
 
     /**

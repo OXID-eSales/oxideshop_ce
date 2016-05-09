@@ -25,7 +25,7 @@ namespace OxidEsales\Eshop\Application\Controller;
 /**
  * Special page for Credits
  */
-class CreditsController extends \Content
+class CreditsController extends ContentController
 {
 
     /**

@@ -20,13 +20,20 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+use oxField;
+use oxUtilsView;
+
 /**
  * News manager.
  * Performs news text collection. News may be sorted by user categories (only
  * these user may read news), etc.
  *
  */
-class oxNews extends oxI18n
+class News extends \oxI18n
 {
 
     /**

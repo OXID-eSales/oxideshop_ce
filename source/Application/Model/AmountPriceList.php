@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * Article amount price list
  *
  */
-class oxAmountPriceList extends oxList
+class AmountPriceList extends \oxList
 {
     /**
      * List Object class name

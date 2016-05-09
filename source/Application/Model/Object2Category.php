@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxField;
+
 /**
  * Manages product assignment to category.
  */
-class oxObject2Category extends oxBase
+class Object2Category extends \oxBase
 {
 
     /**

@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Payment manager.
  * Performs payment methods, such as assigning to someone, returning value etc.
  *
  */
-class oxPayment extends oxI18n
+class Payment extends \oxI18n
 {
 
     /**

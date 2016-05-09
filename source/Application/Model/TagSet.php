@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxTag;
+use Iterator;
 
 /**
  * Class dedicated to article tags handling.
@@ -27,7 +31,7 @@
  *
  * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
  */
-class oxTagSet extends oxSuperCfg implements Iterator
+class TagSet extends \oxSuperCfg implements Iterator
 {
 
     /**

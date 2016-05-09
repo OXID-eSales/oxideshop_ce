@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * Order delivery manager.
  * Currently calculates price/costs.
  *
  */
-class oxDelivery extends oxI18n
+class Delivery extends \oxI18n
 {
 
     /**

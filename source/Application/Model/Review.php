@@ -20,12 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+use oxField;
+use oxRegistry;
+
 /**
  * Article review manager.
  * Performs loading, updating, inserting of article review.
  *
  */
-class oxReview extends oxBase
+class Review extends \oxBase
 {
 
     /**

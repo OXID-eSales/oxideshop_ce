@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxPrice;
+
 /**
  * Lightweight variant handler. Implemnets only absolutely needed oxArticle methods.
  *
  */
-class oxSimpleVariant extends oxI18n implements oxIUrl
+class SimpleVariant extends \oxI18n implements \oxIUrl
 {
 
     /**

@@ -20,13 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use Exception;
+
 /**
  * Directory reader.
  * Performs reading of file list of one shop directory
  *
  */
-
-class oxFileCollector
+class FileCollector
 {
 
     /**

@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
 /**
  * Media URL handler
  *
  */
-class oxMediaUrl extends oxI18n
+class MediaUrl extends \oxI18n
 {
 
     /**

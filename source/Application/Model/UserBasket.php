@@ -20,6 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxField;
+use oxDb;
+
 /**
  * Virtual basket manager class. Virtual baskets are user article lists which are stored in database (noticelists, wishlists).
  * The name of the class is left like this because of historic reasons.
@@ -28,7 +34,7 @@
  * articles to it.
  *
  */
-class oxUserBasket extends oxBase
+class UserBasket extends \oxBase
 {
 
     /**

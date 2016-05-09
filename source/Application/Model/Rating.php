@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+use oxRegistry;
+
 /**
  * Article rate manager.
  * Performs loading, updating, inserting of article rates.
  *
  */
-class oxRating extends oxBase
+class Rating extends \oxBase
 {
 
     /**

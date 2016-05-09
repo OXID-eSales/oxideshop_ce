@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+
 /**
  * Defines an element of multidimentional variant name tree structure. Contains article id, variant name, URL, price, price text, and a subset of MD variants.
  *
  */
-class oxMdVariant extends oxSuperCfg
+class MdVariant extends \oxSuperCfg
 {
 
     /**

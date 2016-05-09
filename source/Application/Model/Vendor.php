@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxField;
+
 /**
  * Vendor manager
  *
  */
-class oxVendor extends oxI18n implements oxIUrl
+class Vendor extends \oxI18n implements \oxIUrl
 {
 
     protected static $_aRootVendor = array();

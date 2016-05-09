@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxField;
+
 /**
  * Remark manager.
  *
  */
-class oxRemark extends oxBase
+class Remark extends \oxBase
 {
 
     /**

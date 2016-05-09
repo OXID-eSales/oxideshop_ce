@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * Order delivery set manager.
  *
  */
-class oxDeliverySet extends oxI18n
+class DeliverySet extends \oxI18n
 {
 
     /**

@@ -26,6 +26,7 @@ use oxRegistry;
 use oxDb;
 use oxUtilsObject;
 use oxBasket;
+use OxidEsales\Eshop\Application\Model\Basket;
 
 DEFINE('_DB_SESSION_HANDLER', getShopBasePath() . 'Core/adodblite/session/adodb-session.php');
 
@@ -586,7 +587,7 @@ class Session extends \oxSuperCfg
      *
      * @return null
      */
-    protected function _validateBasket(oxBasket $oBasket)
+    protected function _validateBasket(Basket $oBasket)
     {
         $aCurrContent = $oBasket->getContents();
         if (empty($aCurrContent)) {

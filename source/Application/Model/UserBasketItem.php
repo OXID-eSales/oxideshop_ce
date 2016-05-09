@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxField;
+
 /**
  * Shopping basket item manager.
  * Manager class for shopping basket item (class may be overriden).
  *
  */
-class oxUserBasketItem extends oxBase
+class UserBasketItem extends \oxBase
 {
 
     /**

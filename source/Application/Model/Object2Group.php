@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxField;
+use oxDb;
+
 /**
  * Manages object (users, discounts, deliveries...) assignment to groups.
  */
-class oxObject2Group extends oxBase
+class Object2Group extends \oxBase
 {
     /**
      * Load the relation even if from other shop

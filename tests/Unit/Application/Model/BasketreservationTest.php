@@ -24,6 +24,7 @@ namespace Unit\Application\Model;
 use \oxField;
 use \oxDb;
 use \oxTestModules;
+use OxidEsales\Eshop\Application\Model\BasketReservation;
 
 class BasketreservationTest extends \OxidTestCase
 {
@@ -493,13 +494,12 @@ class BasketreservationTest extends \OxidTestCase
         $basket = oxNew('oxBasket');
 
         //standard mode
-        $this->getProxyClass('oxBasketReservation');
-        $basketReservation = $this->getMock('oxBasketReservationProxy', array('_reserveArticles'));
+        $basketReservation = $this->getMock(BasketReservation::class, array('_reserveArticles'));
         $basketReservation->expects($this->once())->method('_reserveArticles');
         $basketReservation->reserveBasket($basket);
 
         //admin mode
-        $basketReservation = $this->getMock('oxBasketReservationProxy', array('_reserveArticles'));
+        $basketReservation = $this->getMock(BasketReservation::class, array('_reserveArticles'));
         $basketReservation->expects($this->never())->method('_reserveArticles');
         $basketReservation->setAdminMode(true);
         $basketReservation->reserveBasket($basket);

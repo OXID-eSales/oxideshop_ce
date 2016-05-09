@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+
 /**
- * oxVariantHandler encapsulates methods dealing with multidimensional variant and variant names.
+ * VariantHandler encapsulates methods dealing with multidimensional variant and variant names.
  *
  */
-class oxVariantHandler extends oxSuperCfg
+class VariantHandler extends \oxSuperCfg
 {
 
     /**

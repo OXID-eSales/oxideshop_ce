@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Article list manager.
  * Collects list of article according to collection rules (categories, etc.).
  *
  */
-class oxArticleList extends oxList
+class ArticleList extends \oxList
 {
 
     /**

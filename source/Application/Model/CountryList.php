@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
 /**
  * Country list manager class.
  * Collects a list of countries according to collection rules (active).
  *
  */
-class oxCountryList extends oxList
+class CountryList extends \oxList
 {
 
     /**

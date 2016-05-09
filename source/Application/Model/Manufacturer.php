@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;#
+use oxField;
+
 /**
  * Manufacturer manager
  *
  */
-class oxManufacturer extends oxI18n implements oxIUrl
+class Manufacturer extends \oxI18n implements \oxIUrl
 {
 
     protected static $_aRootManufacturer = array();

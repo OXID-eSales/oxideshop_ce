@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * Seo encoder category
  */
-class oxSeoEncoderCategory extends oxSeoEncoder
+class SeoEncoderCategory extends \oxSeoEncoder
 {
     /** @var array _aCatCache cache for categories. */
     protected $_aCatCache = array();

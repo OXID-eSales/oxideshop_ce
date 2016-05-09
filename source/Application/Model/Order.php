@@ -20,12 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxField;
+use oxRegistry;
+use oxDb;
+
 /**
  * Order manager.
  * Performs creation assigning, updating, deleting and other order functions.
  *
  */
-class oxOrder extends oxBase
+class Order extends \oxBase
 {
 
     // defining order state constants
@@ -466,13 +472,13 @@ class oxOrder extends oxBase
      * and sending order by email to shop owner and user
      * Mailing status (1 if OK, 0 on error) is returned.
      *
-     * @param oxBasket $oBasket              Shopping basket object
+     * @param Basket   $oBasket              Shopping basket object
      * @param object   $oUser                Current user object
      * @param bool     $blRecalculatingOrder Order recalculation
      *
      * @return integer
      */
-    public function finalizeOrder(oxBasket $oBasket, $oUser, $blRecalculatingOrder = false)
+    public function finalizeOrder(Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
         // check if this order is already stored
         $sGetChallenge = oxRegistry::getSession()->getVariable('sess_challenge');
@@ -628,9 +634,9 @@ class oxOrder extends oxBase
      * Additionally stores general discount and wrapping. Sets order status to "error"
      * and creates oxOrderArticle objects and assigns to them basket articles.
      *
-     * @param oxBasket $oBasket Shopping basket object
+     * @param Basket $oBasket Shopping basket object
      */
-    protected function _loadFromBasket(oxBasket $oBasket)
+    protected function _loadFromBasket(Basket $oBasket)
     {
         $myConfig = $this->getConfig();
 
@@ -781,9 +787,9 @@ class oxOrder extends oxBase
     /**
      * Assigns wrapping VAT and card price + card message info
      *
-     * @param oxBasket $oBasket basket object
+     * @param Basket $oBasket basket object
      */
-    protected function _setWrapping(oxBasket $oBasket)
+    protected function _setWrapping(Basket $oBasket)
     {
         $myConfig = $this->getConfig();
 
@@ -909,12 +915,12 @@ class oxOrder extends oxBase
      * and finally executes it (oxPaymentGateway::executePayment()). On failure -
      * deletes order and returns * error code 2.
      *
-     * @param oxBasket $oBasket      basket object
-     * @param object   $oUserpayment user payment object
+     * @param Basket $oBasket      basket object
+     * @param object $oUserpayment user payment object
      *
      * @return  integer 2 or an error code
      */
-    protected function _executePayment(oxBasket $oBasket, $oUserpayment)
+    protected function _executePayment(Basket $oBasket, $oUserpayment)
     {
         $oPayTransaction = $this->_getGateway();
         $oPayTransaction->setPaymentParams($oUserpayment);

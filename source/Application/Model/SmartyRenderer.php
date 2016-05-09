@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+
 /**
  * Smarty renderer class
  * Renders smarty template with given parameters and returns rendered body.
  *
  */
-class oxSmartyRenderer
+class SmartyRenderer
 {
 
     /**

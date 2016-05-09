@@ -20,6 +20,11 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxITagList;
+
 // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
 if (!defined('OXTAGCLOUD_MINFONT')) {
     define('OXTAGCLOUD_MINFONT', 100);
@@ -35,7 +40,7 @@ if (!defined('OXTAGCLOUD_MINFONT')) {
  *
  * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
  */
-class oxTagCloud extends oxSuperCfg
+class TagCloud extends \oxSuperCfg
 {
 
     /**

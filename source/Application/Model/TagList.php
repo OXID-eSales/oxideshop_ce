@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
 if (!defined('OXTAGCLOUD_MINFONT')) {
     define('OXTAGCLOUD_MINTAGLENGTH', 4);
@@ -34,7 +38,7 @@ if (!defined('OXTAGCLOUD_MINFONT')) {
  *
  * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
  */
-class oxTagList extends oxI18n implements oxITagList
+class TagList extends \oxI18n implements \oxITagList
 {
 
     /**

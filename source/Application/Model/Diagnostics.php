@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Diagnostic tool model
  * Stores configuration and public diagnostic methods for shop diagnostics
  *
  */
-
-class oxDiagnostics
+class Diagnostics
 {
 
     /**

@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Implements search
  *
  */
-class oxSearch extends oxSuperCfg
+class Search extends \oxSuperCfg
 {
 
     /**

@@ -21,11 +21,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
 /**
  * Class for validating address
  *
  */
-class oxRequiredFieldValidator
+class RequiredFieldValidator
 {
 
     /**

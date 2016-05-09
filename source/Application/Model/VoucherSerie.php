@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Voucher serie manager.
  * Manages list of available Vouchers (fetches, deletes, etc.).
  *
  */
-class oxVoucherSerie extends oxBase
+class VoucherSerie extends \oxBase
 {
 
     /**

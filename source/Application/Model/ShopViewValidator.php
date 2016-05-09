@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * Shop view validator.
  * checks which views are valid / invalid
  *
  */
-class oxShopViewValidator
+class ShopViewValidator
 {
 
     protected $_aMultiLangTables = array();

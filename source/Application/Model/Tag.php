@@ -20,6 +20,10 @@
  * @version       OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+
 // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
 if (!defined('OXTAGCLOUD_MINTAGLENGTH')) {
     define('OXTAGCLOUD_MINTAGLENGTH', 4);
@@ -31,7 +35,7 @@ if (!defined('OXTAGCLOUD_MINTAGLENGTH')) {
  *
  * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
  */
-class oxTag extends oxSuperCfg
+class Tag extends \oxSuperCfg
 {
 
     /**

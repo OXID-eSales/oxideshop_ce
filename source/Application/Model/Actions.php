@@ -20,11 +20,20 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+use oxField;
+use oxRegistry;
+use oxUtilsUrl;
+use oxUtilsView;
+use oxUtilsFile;
+
 /**
  * Article actions manager. Collects and keeps actions of chosen article.
  *
  */
-class oxActions extends oxI18n
+class Actions extends \oxI18n
 {
 
     /**

@@ -20,13 +20,23 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxField;
+use oxRegistry;
+use oxDb;
+use oxUtilsObject;
+use oxInputValidator;
+use oxUserException;
+use oxConnectionException;
+
 /**
  * User manager.
  * Performs user managing function, as assigning to groups, updating
  * information, deletion and other.
  *
  */
-class oxUser extends oxBase
+class User extends \oxBase
 {
 
     /**

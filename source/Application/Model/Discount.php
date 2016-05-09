@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+use stdClass;
+
 /**
  * Discounts manager.
  *
  */
-class oxDiscount extends oxI18n
+class Discount extends \oxI18n
 {
 
     /**

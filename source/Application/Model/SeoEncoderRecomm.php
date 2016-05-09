@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+
 /**
  * Seo encoder base
  */
-class oxSeoEncoderRecomm extends oxSeoEncoder
+class SeoEncoderRecomm extends \oxSeoEncoder
 {
     /**
      * Returns SEO uri for tag.

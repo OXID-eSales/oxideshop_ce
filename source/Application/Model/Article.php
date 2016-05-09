@@ -20,7 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
 use OxidEsales\Eshop\Application\Model\Contract\ArticleInterface;
+use oxDb;
+use oxRegistry;
+use oxField;
+use oxPrice;
+use oxList;
+use oxSeoEncoderArticle;
 
 // defining supported link types
 define('OXARTICLE_LINKTYPE_CATEGORY', 0);
@@ -36,7 +44,7 @@ define('OXARTICLE_LINKTYPE_RECOMM', 5);
  * discounts, etc.
  *
  */
-class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
+class Article extends \oxI18n implements ArticleInterface, \oxIUrl
 {
 
     /**

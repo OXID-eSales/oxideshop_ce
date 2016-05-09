@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
 /**
  * Address handler
  */
-class oxAddress extends oxBase
+class Address extends \oxBase
 {
 
     /**

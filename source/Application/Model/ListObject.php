@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxField;
+
 /**
  * Simple list object
  */
-class oxListObject
+class ListObject
 {
 
     /**

@@ -20,13 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxField;
+use oxDb;
+
 /**
  * Newsletter manager.
  * Performs creation of newsletter text, assign newsletter to user groups,
  * deletes and etc.
  *
  */
-class oxNewsletter extends oxBase
+class Newsletter extends \oxBase
 {
 
     /**

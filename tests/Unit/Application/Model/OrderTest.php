@@ -31,6 +31,7 @@ use \stdClass;
 use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
+use OxidEsales\Eshop\Application\Model\PaymentGateway;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
 
@@ -2215,7 +2216,7 @@ class OrderTest extends \OxidTestCase
         $oPayment->save();
 
         $oGateway = $oOrder->UNITgetGateway();
-        $this->assertEquals("oxPaymentGateway", get_class($oGateway));
+        $this->assertEquals(PaymentGateway::class, get_class($oGateway));
     }
 
     public function testSetPayment()

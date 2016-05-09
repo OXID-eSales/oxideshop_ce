@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Shop manager.
  * Performs configuration and object loading or deletion.
  */
-class oxShop extends oxI18n
+class Shop extends \oxI18n
 {
     /** @var string Name of current class. */
     protected $_sClassName = 'oxshop';

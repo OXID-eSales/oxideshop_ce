@@ -32,6 +32,7 @@ use \oxException;
 use \oxField;
 use \oxRegistry;
 use \oxTestModules;
+use \OxidEsales\Eshop\Application\Model\Basket;
 
 /**
  * Test oxUtils module.
@@ -84,7 +85,7 @@ class OrderHelper extends oxOrder
      *
      * @return boolean
      */
-    public function finalizeOrder(oxBasket $oBasket, $oUser, $blRecalculatingOrder = false)
+    public function finalizeOrder(Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
         return 1;
     }

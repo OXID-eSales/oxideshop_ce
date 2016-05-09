@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * Content list manager.
  * Collects list of content
  *
  */
-class oxContentList extends oxList
+class ContentList extends \oxList
 {
 
     /**

@@ -24,6 +24,7 @@ namespace Unit\Application\Model;
 use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
+use \oxActionList;
 
 /**
  * Tests for Actions_List class

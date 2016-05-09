@@ -20,13 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * User payment manager.
  * Performs assigning, loading, inserting and updating functions for
  * user payment.
  *
  */
-class oxUserPayment extends oxBase
+class UserPayment extends \oxBase
 {
 
     // you can change this if you want more security

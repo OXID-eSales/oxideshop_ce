@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
 /**
  * Variant selection container class
  *
  */
-class oxSelection
+class Selection
 {
 
     /**

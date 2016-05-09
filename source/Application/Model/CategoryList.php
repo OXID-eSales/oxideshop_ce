@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
 
 /**
  * Category list manager.
@@ -27,7 +30,7 @@
  * list structure.
  *
  */
-class oxCategoryList extends oxList
+class CategoryList extends \oxList
 {
 
     /**

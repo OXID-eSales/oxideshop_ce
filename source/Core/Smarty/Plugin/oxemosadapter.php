@@ -37,6 +37,7 @@
  *  $Id$
  */
 
+use OxidEsales\Eshop\Application\Controller\ContentController;
 
 /**
  * Includes emos script formatter class
@@ -488,7 +489,7 @@ class oxEmosAdapter extends oxSuperCfg
                 break;
             case 'content':
                 // backwards compatibility
-                $oContent = ($oCurrentView instanceof content) ? $oCurrentView->getContent() : null;
+                $oContent = ($oCurrentView instanceof ContentController) ? $oCurrentView->getContent() : null;
                 $sContentId = $oContent ? $oContent->oxcontents__oxloadid->value : null;
 
                 if (array_key_exists('content_' . $sContentId, $aContent)) {

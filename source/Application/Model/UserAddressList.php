@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+
 /**
  * Class oxUserAddressList
  */
-class oxUserAddressList extends oxList
+class UserAddressList extends \oxList
 {
 
     /**

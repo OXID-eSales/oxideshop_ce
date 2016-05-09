@@ -20,13 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxDb;
+use oxRegistry;
+use oxField;
+
 /**
  * Category manager.
  * Collects category information (articles, etc.), performs insertion/deletion
  * of categories nodes. By recursion methods are set structure of category.
  *
  */
-class oxCategory extends oxI18n implements oxIUrl
+class Category extends \oxI18n implements \oxIUrl
 {
 
     /**

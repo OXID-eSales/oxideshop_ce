@@ -20,11 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxView;
+use oxRegistry;
+use oxUBase;
+use oxDb;
+use oxCategory;
+
 /**
  * Seo encoder for articles
  *
  */
-class oxSeoEncoderArticle extends oxSeoEncoder
+class SeoEncoderArticle extends \oxSeoEncoder
 {
 
     /**

@@ -20,10 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Model;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Seo encoder base
  */
-class oxSeoEncoderContent extends oxSeoEncoder
+class SeoEncoderContent extends \oxSeoEncoder
 {
     /**
      * Returns target "extension" (/)

@@ -392,6 +392,7 @@ $aLang = array(
 'OPEN_ACCOUNT'                                                => 'Konto eröffnen',
 'OR'                                                          => 'oder',
 'ORDERS'                                                      => 'Bestellungen',
+'ORDER'                                                       => 'Bestellen',
 'ORDER_COMPLETED'                                             => 'Bestellung abgeschlossen',
 'ORDER_DATE'                                                  => 'Bestellung vom',
 'ORDER_EMPTY_HISTORY'                                         => 'Die Bestellhistorie ist leer',

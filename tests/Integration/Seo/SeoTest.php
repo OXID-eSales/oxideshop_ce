@@ -32,12 +32,14 @@ use oxSeoEncoder;
  */
 class SeoTest extends \OxidTestCase
 {
-    public function tearDown()
+    protected function tearDown()
     {
         oxDb::getDb()->execute("delete from oxcategories where oxid like '_test%'");
         oxDb::getDb()->execute("delete from oxarticles where oxid like '_test%'");
         oxDb::getDb()->execute("delete from oxobject2category where oxobjectid like '_test%'");
         oxDb::getDb()->execute("delete from oxseo where oxobjectid like '_test%'");
+
+        parent::tearDown();
     }
 
     /**
@@ -357,7 +359,7 @@ class SeoTest extends \OxidTestCase
         $this->_addArticle();
         $this->_addArticlesToCategories(array('_testid'), $aCategories);
 
-        $sArticleSeo = 'this/there/testArticle.html';
+        $sArticleSeo = 'testCategory1/testArticle.html';
         $sCurrentSeo = oxRegistry::getConfig()->getShopUrl() . $sArticleSeo;
 
         $oArticle = oxNew('oxArticle');

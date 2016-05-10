@@ -836,8 +836,6 @@ class Doctrine implements DatabaseInterface
     {
         $columns = $this->getConnection()->executeQuery('SHOW COLUMNS FROM ' . $table)->fetchAll();
 
-        var_dump($columns);
-
         $result = [];
 
         foreach ($columns as $column) {

@@ -24,10 +24,9 @@ namespace OxidEsales\Eshop\Core\Database;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Driver\PDOException;
-use Doctrine\DBAL\Logging\EchoSQLLogger;
 use OxidEsales\Eshop;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineEmptyResultSet;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
@@ -837,6 +836,8 @@ class Doctrine implements DatabaseInterface
     {
         $columns = $this->getConnection()->executeQuery('SHOW COLUMNS FROM ' . $table)->fetchAll();
 
+        var_dump($columns);
+
         $result = [];
 
         foreach ($columns as $column) {
@@ -852,7 +853,7 @@ class Doctrine implements DatabaseInterface
             $item->name = $column[0];
             $item->type = $typeName;
             $item->max_length = $typeLength;
-            $item->not_null = ('YES' === $column[3]) ? true : false;
+            $item->not_null = ('NO' === $column[2]) ? true : false;
             // $item->primary_key = '';
             // $item->auto_increment = '';
             // $item->binary = '';

@@ -2410,7 +2410,7 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
      */
     public function getCustomVAT()
     {
-        if (isset($this->oxarticles__oxvat->value)) {
+        if ($this->__isset('oxarticles__oxvat') || $this->__get('oxarticles__oxvat')) {
             return $this->oxarticles__oxvat->value;
         }
     }

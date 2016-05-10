@@ -4133,14 +4133,27 @@ class ArticleTest extends \OxidTestCase
 
     /**
      * Test get custom VAT.
-     *
-     * @return null
      */
     public function testGetCustomVAT()
     {
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->oxarticles__oxvat = new oxField(7, oxField::T_RAW);
-        $this->assertEquals($oArticle->oxarticles__oxvat->value, $oArticle->getCustomVAT());
+        $this->assertEquals(7, $oArticle->getCustomVAT());
+    }
+
+    /**
+     * Test get custom VAT.
+     * From PHP 7.0.6 the way isset works changed. In previous versions when value is not set __get was being called.
+     */
+    public function testGetCustomVATWithLazyLoadedVat()
+    {
+        $oArticle = $this->_createArticle('_testArt');
+        $oArticle->oxarticles__oxvat = new oxField(7, oxField::T_RAW);
+        $oArticle->save();
+
+        $oArticle = oxNew('oxArticle');
+        $oArticle->load('_testArt');
+        $this->assertEquals(7, $oArticle->getCustomVAT());
     }
 
     /**

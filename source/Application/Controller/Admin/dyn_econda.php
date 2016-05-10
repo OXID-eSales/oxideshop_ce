@@ -25,6 +25,8 @@
  * Admin Econda manager.
  *
  * @subpackage dyn
+ *
+ * @deprecated v5.3 (2016-05-10); Econda will be moved to own module.
  */
 class dyn_econda extends Shop_Config
 {

@@ -27,7 +27,6 @@ use mysql_driver_ADOConnection;
 use mysqli_driver_ADOConnection;
 use oxAdoDbException;
 use oxConnectionException;
-use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Database\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Doctrine as DatabaseAdapter;
 use OxidEsales\Eshop\Core\exception\DatabaseConnectionException;
@@ -424,7 +423,7 @@ class Database
     {
         // simple cache
         if (!isset(self::$_aTblDescCache[$tableName])) {
-            self::$_aTblDescCache[$tableName] = self::getDb()->metaColumns($tableName);
+            self::$_aTblDescCache[$tableName] = $this->formTableDescription($tableName);
         }
 
         return self::$_aTblDescCache[$tableName];
@@ -739,5 +738,18 @@ class Database
     protected function logException(DatabaseConnectionException $exception)
     {
         $exception->debugOut();
+    }
+
+
+    /**
+     * Extracts and returns table metadata from DB.
+     *
+     * @param string $tableName
+     *
+     * @return array
+     */
+    protected function formTableDescription($tableName)
+    {
+        return self::getDb()->metaColumns($tableName);
     }
 }

@@ -15,17 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 
 /**
  * Class dedicated to article tags handling.
  * Is responsible for saving, returning and adding tags for given article.
+ *
+ * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
  */
 class oxArticleTagList extends oxI18n implements oxITagList
 {
+
     /**
      * Tags.
      *
@@ -239,6 +242,8 @@ class oxArticleTagList extends oxI18n implements oxITagList
 
     /**
      * Execute cache dependencies.
+     *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
      */
     protected function _updateTagDependency()
     {

@@ -23,6 +23,13 @@ namespace Unit\Application\Model;
 
 use \oxTag;
 
+/**
+ * Class TagsetTest
+ *
+ * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+ *
+ * @package Unit\Application\Model
+ */
 class TagsetTest extends \OxidTestCase
 {
 

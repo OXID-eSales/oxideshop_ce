@@ -59,6 +59,8 @@ class ArticleDetailsController extends \oxUBase
     /**
      * If tags will be changed
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @var bool
      */
     protected $_blEditTags = null;
@@ -66,6 +68,8 @@ class ArticleDetailsController extends \oxUBase
     /**
      * All tags
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @var array
      */
     protected $_aTags = null;
@@ -472,6 +476,8 @@ class ArticleDetailsController extends \oxUBase
     /**
      * Adds tags from parameter
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return null
      */
     public function addTags()
@@ -522,6 +528,8 @@ class ArticleDetailsController extends \oxUBase
      * @param array            $tags           Tags array to add to list
      * @param array            $addedTags      Tags, which are already added to list
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return array
      */
     protected function _addTagsToList($articleTagList, $tags, $addedTags)
@@ -548,6 +556,8 @@ class ArticleDetailsController extends \oxUBase
     /**
      * Sets tags editing mode
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return null
      */
     public function editTags()
@@ -576,6 +586,8 @@ class ArticleDetailsController extends \oxUBase
 
     /**
      * Cancels tags editing mode
+     * 
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
      */
     public function cancelTags()
     {
@@ -613,6 +625,8 @@ class ArticleDetailsController extends \oxUBase
     /**
      * Returns if tags will be edit
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return bool
      */
     public function getEditTags()
@@ -622,6 +636,8 @@ class ArticleDetailsController extends \oxUBase
 
     /**
      * Returns all tags
+     *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
      *
      * @return array
      */
@@ -710,8 +726,10 @@ class ArticleDetailsController extends \oxUBase
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $listType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_MANUFACTURER;
+                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             } elseif ('tag' == $listType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_TAG;
+                // END deprecated
             } elseif ('recommlist' == $listType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
             } else {
@@ -1044,6 +1062,7 @@ class ArticleDetailsController extends \oxUBase
     public function getTitle()
     {
         if ($article = $this->getProduct()) {
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             $tag = $this->getTag();
             $articleTitle = $article->oxarticles__oxtitle->value;
             $variantSelectionId = $article->oxarticles__oxvarselect->value;
@@ -1052,6 +1071,7 @@ class ArticleDetailsController extends \oxUBase
             $tagValue = !empty($tag) ? ' - ' . $tag : '';
 
             return $articleTitle . $variantSelectionValue . $tagValue;
+            // END deprecated 
         }
     }
 
@@ -1064,9 +1084,11 @@ class ArticleDetailsController extends \oxUBase
     {
         $meta = parent::getMetaDescription();
 
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         if ($tag = $this->getTag()) {
             $meta = $tag . ' - ' . $meta;
         }
+        // END deprecated
 
         return $meta;
     }
@@ -1074,6 +1096,8 @@ class ArticleDetailsController extends \oxUBase
     /**
      * Template variable getter. Returns current tag
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return string
      */
     public function getTag()
@@ -1113,8 +1137,10 @@ class ArticleDetailsController extends \oxUBase
     {
         if ('search' == $this->getListType()) {
             $paths = $this->_getSearchBreadCrumb();
+            // @deprecated v5.3 (2016-05-04); Will be moved to own module.
         } elseif ('tag' == $this->getListType()) {
             $paths = $this->_getTagBreadCrumb();
+            // END deprecated 
         } elseif ('recommlist' == $this->getListType()) {
             $paths = $this->_getRecommendationListBredCrumb();
         } elseif ('vendor' == $this->getListType()) {
@@ -1442,6 +1468,8 @@ class ArticleDetailsController extends \oxUBase
     /**
      * Checks if rating functionality is on and allowed to user
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return bool
      */
     public function canChangeTags()
@@ -1455,7 +1483,9 @@ class ArticleDetailsController extends \oxUBase
 
     /**
      * Returns tag cloud manager class
-     *
+     * 
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return oxTagCloud
      */
     public function getTagCloudManager()
@@ -1572,6 +1602,8 @@ class ArticleDetailsController extends \oxUBase
     /**
      * Tag bread crumb
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return array
      */
     protected function _getTagBreadCrumb()

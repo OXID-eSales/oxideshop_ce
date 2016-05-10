@@ -24,6 +24,11 @@ namespace Unit\Application\Model;
 use \oxTagSet;
 use \oxRegistry;
 
+/**
+ * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+ *             
+ * @package Unit\Application\Model
+ */
 class ArticletaglistTest extends \OxidTestCase
 {
 

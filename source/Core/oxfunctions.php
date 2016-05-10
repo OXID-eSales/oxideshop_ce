@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 
 if (!function_exists('registerComposerAutoload')) {
@@ -106,7 +106,9 @@ function setPhpIniParams()
     ini_set('session.name', 'sid');
     ini_set('session.use_cookies', 0);
     ini_set('session.use_trans_sid', 0);
+    // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
     ini_set('url_rewriter.tags', '');
+    // End deprecated
 }
 
 if (!function_exists('error_404_handler')) {
@@ -399,15 +401,16 @@ if (!function_exists('getViewName')) {
     /**
      * Return the view name of the given table if a view exists, otherwise the table name itself
      *
-     * @param string $table  table name
+     * @param string $table      table name
      * @param int    $languageId language id [optional]
-     * @param string $shopId shop id, otherwise config->myshopid is used [optional]
+     * @param string $shopId     shop id, otherwise config->myshopid is used [optional]
      *
      * @return string
      */
     function getViewName($table, $languageId = null, $shopId = null)
     {
         $viewNameGenerator = oxRegistry::get('oxTableViewNameGenerator');
+
         return $viewNameGenerator->getViewName($table, $languageId, $shopId);
     }
 }

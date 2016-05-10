@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 namespace Unit\Application\Model;
 
@@ -32,6 +32,7 @@ use \oxTestModules;
 
 class modSeoEncoder extends oxSeoEncoder
 {
+
     public function setProhibitedID($aProhibitedID)
     {
         $this->_aProhibitedID = $aProhibitedID;
@@ -418,7 +419,9 @@ class SeoEncoderTest extends \OxidTestCase
             $sArticleVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Hersteller-1/Bar-Butler-6-BOTTLES.html";
             $sArticleManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Hersteller-1/Bar-Butler-6-BOTTLES.html";
             $sArticlePriceCatSeoUrl = $sShopUrl . "Test-Price-Category-DE/Bar-Butler-6-BOTTLES.html";
+            // @deprecated v5.3 (2016-05-04); Will be moved to own module.
             $sArticleTagSeoUrl = $sShopUrl . "tag/cmmaterial/Bar-Butler-6-BOTTLES.html";
+            // END deprecated
             $sCategoryId = "30e44ab82c03c3848.49471214";
             $sCategorySeoUrl = $sShopUrl . "Fuer-Sie/";
             $sManufacturerId = "88a996f859f94176da943f38ee067984";
@@ -431,7 +434,9 @@ class SeoEncoderTest extends \OxidTestCase
             $sArticleVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Bush/Original-BUSH-Beach-Radio.html";
             $sArticleManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Bush/Original-BUSH-Beach-Radio.html";
             $sArticlePriceCatSeoUrl = $sShopUrl . "Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
+            // @deprecated v5.3 (2016-05-04); Will be moved to own module.
             $sArticleTagSeoUrl = $sShopUrl . "tag/seiner/Original-BUSH-Beach-Radio.html";
+            // END deprecated
             $sCategoryId = "8a142c3e4143562a5.46426637";
             $sCategorySeoUrl = $sShopUrl . "Geschenke/";
             $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
@@ -484,17 +489,18 @@ class SeoEncoderTest extends \OxidTestCase
         $oManufacturer->load($sManufacturerId);
         $this->assertEquals($sManufacturerSeoUrl, $oManufacturer->getLink(0));
 
+        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
         $oTagEncoder = oxNew('oxSeoEncoderTag');
         $sTag = $this->getTestConfig()->getShopEdition() == 'EE' ? "messerblock" : "flaschen";
         $sTagUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? "tag/messerblock/" : "tag/flaschen/";
 
         $this->assertEquals($sShopUrl . "tag/bar-equipment/", $oTagEncoder->getTagUrl("bar equipment", 0));
         $this->assertEquals($sShopUrl . $sTagUrl, $oTagEncoder->getTagUrl($sTag, 0));
+        // END deprecated
 
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
         $this->assertEquals($sVendorSeoUrl, $oVendor->getLink(0));
-
         // missing static urls..
     }
 
@@ -524,7 +530,9 @@ class SeoEncoderTest extends \OxidTestCase
             $sArticleVendorSeoUrl = $sShopUrl . "en/By-Distributor/true-fashion-com/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
             $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Stewart-Brown/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
             $sArticlePriceCatSeoUrl = $sShopUrl . "en/Test-Price-Category-DE/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
+            // @deprecated v5.3 (2016-05-04); Will be moved to own module.
             $sArticleTagSeoUrl = $sShopUrl . "en/tag/shirt/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
+            // END deprecated
             $sTag = "shirt";
             $sCategoryId = "30e44ab82c03c3848.49471214";
             $sCategorySeoUrl = $sShopUrl . "en/For-Her/";
@@ -538,7 +546,9 @@ class SeoEncoderTest extends \OxidTestCase
             $sArticleVendorSeoUrl = $sShopUrl . "en/By-Distributor/Bush/Original-BUSH-Beach-Radio.html";
             $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Bush/Original-BUSH-Beach-Radio.html";
             $sArticlePriceCatSeoUrl = $sShopUrl . "en/Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
+            // @deprecated v5.3 (2016-05-04); Will be moved to own module.
             $sArticleTagSeoUrl = $sShopUrl . "en/tag/original/Original-BUSH-Beach-Radio.html";
+            // END deprected
             $sTag = "original";
             $sCategoryId = "8a142c3e4143562a5.46426637";
             $sCategorySeoUrl = $sShopUrl . "en/Gifts/";
@@ -591,16 +601,17 @@ class SeoEncoderTest extends \OxidTestCase
         $oManufacturer->load($sManufacturerId);
         $this->assertEquals($sManufacturerSeoUrl, $oManufacturer->getLink(1));
 
+        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
         $sTag = "kuyichi";
         $sTagSeoUrl = $sShopUrl . "en/tag/kuyichi/";
 
         $oTagEncoder = oxNew('oxSeoEncoderTag');
         $this->assertEquals($sTagSeoUrl, $oTagEncoder->getTagUrl($sTag, 1));
-
+        // END deprecated
+        
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
         $this->assertEquals($sVendorSeoUrl, $oVendor->getLink(1));
-
         // missing static urls..
     }
 
@@ -1374,7 +1385,6 @@ class SeoEncoderTest extends \OxidTestCase
         $oEncoder->expects($this->atLeastOnce())->method('_saveInCache');
 
         $this->assertEquals('seourl1', $oEncoder->UNITloadFromDb('oxarticle', 'test', 0, 1, 'param2'));
-
     }
 
     public function testloadFromDbNoStrictParamsCheck()
@@ -1739,7 +1749,6 @@ class SeoEncoderTest extends \OxidTestCase
         $oEncoder = oxNew('oxSeoEncoder');
         $this->assertEquals($sEncodedString, $oEncoder->encodeString($sString));
         $this->assertEquals($sPartEncodedString, $oEncoder->encodeString($sString, false));
-
     }
 
     /**

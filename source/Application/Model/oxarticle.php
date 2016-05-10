@@ -27,7 +27,7 @@ define('OXARTICLE_LINKTYPE_CATEGORY', 0);
 define('OXARTICLE_LINKTYPE_VENDOR', 1);
 define('OXARTICLE_LINKTYPE_MANUFACTURER', 2);
 define('OXARTICLE_LINKTYPE_PRICECATEGORY', 3);
-define('OXARTICLE_LINKTYPE_TAG', 4);
+define('OXARTICLE_LINKTYPE_TAG', 4); // @deprecated v5.3 (2016-05-04); Will be moved to own module.
 define('OXARTICLE_LINKTYPE_RECOMM', 5);
 
 /**
@@ -845,7 +845,9 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     {
         switch ($sFieldName) {
             case "oxlongdesc":
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             case "oxtags":
+            // END deprecated
                 return true;
         }
 

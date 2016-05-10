@@ -278,11 +278,13 @@ class SearchTest extends \OxidTestCase
         $iAllArtCnt = $oSearch->getSearchArticleCount("bar");
 
         $sArticleTable = getViewName('oxarticles');
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         $sQ = "select $sArticleTable.oxid from $sArticleTable, oxartextends  where  oxartextends.oxid=$sArticleTable.oxid and ( ( $sArticleTable.oxactive = 1  or ( $sArticleTable.oxactivefrom < '" . date('Y-m-d H:i:s') . "' and
         $sArticleTable.oxactiveto > '" . date('Y-m-d H:i:s') . "' ) ) and ( $sArticleTable.oxstockflag != 2 or ( $sArticleTable.oxstock +
         $sArticleTable.oxvarstock ) > 0 ) ) and $sArticleTable.oxparentid = '' and $sArticleTable.oxissearch = 1
         and ( ( $sArticleTable.oxtitle like '%bar%' or  $sArticleTable.oxshortdesc like '%bar%' or $sArticleTable.oxsearchkeys like '%bar%' or
         $sArticleTable.oxartnum like '%bar%' or oxartextends.oxtags like '%bar%' ) )";
+        // END deprecated
 
         $aAll = oxDB::getDb()->getAll($sQ);
 
@@ -623,7 +625,9 @@ class SearchTest extends \OxidTestCase
         $this->cleanTmpDir();
         $sArticleTable = getViewName('oxarticles', 1);
         $sAETable = getViewName('oxartextends', 1);
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         $sFix = " and ( (  $sArticleTable.oxtitle like '%a%' or  $sArticleTable.oxshortdesc like '%a%' or  $sArticleTable.oxsearchkeys like '%a%' or  $sArticleTable.oxartnum like '%a%' or  $sAETable.oxtags like '%a%' )  ) ";
+        // END deprecated
 
         $oSearch = oxNew('oxSearch');
         $oSearch->setLanguage(1);
@@ -810,9 +814,11 @@ class SearchTest extends \OxidTestCase
         $sArticleTable = $sTable = getViewName('oxarticles');
         $sAETable = getViewName('oxartextends');
 
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         $sQ = "select `$sArticleTable`.`oxid`, $sArticleTable.oxtimestamp from $sArticleTable LEFT JOIN $sAETable ON $sArticleTable.oxid=$sAETable.oxid where (  ( $sArticleTable.oxactive = 1  and $sArticleTable.oxhidden = 0 or ( $sArticleTable.oxactivefrom < '$sSearchDate' and
                $sArticleTable.oxactiveto > '$sSearchDate' ) )  and ( $sArticleTable.oxstockflag != 2 or ( $sArticleTable.oxstock +
                $sArticleTable.oxvarstock ) > 0  )  ";
+        // END deprecated
         if (!$this->getConfig()->getConfigParam('blVariantParentBuyable')) {
             //$sQ.= "and ( $sArticleTable.oxvarcount=0 or ( select count(art.oxid) from $sArticleTable as art
             //      where art.oxstockflag=2 and art.oxparentid=$sArticleTable.oxid and art.oxstock=0 ) < $sArticleTable.oxvarcount ) ";
@@ -820,8 +826,10 @@ class SearchTest extends \OxidTestCase
             $sQ .= "and IF( $sTable.oxvarcount = 0, 1, ( select 1 from $sTable as art where art.oxparentid=$sTable.oxid and ( art.oxactive = 1 $sTimeCheckQ ) and ( art.oxstockflag != 2 or art.oxstock > 0 ) limit 1 ) ) ";
 
         }
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         $sQ .= ")  and $sArticleTable.oxparentid = '' and $sArticleTable.oxissearch = 1  and
                 ( (  $sAETable.oxtags like '%xxx%' )  ) ";
+        // END deprecated 
 
         $oSearch = oxNew('oxSearch');
         $sFix = $oSearch->UNITgetSearchSelect('xxx');

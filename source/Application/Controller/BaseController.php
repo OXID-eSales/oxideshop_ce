@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 namespace OxidEsales\Eshop\Application\Controller;
 
@@ -51,6 +51,7 @@ define('VIEW_INDEXSTATE_NOINDEXFOLLOW', 2); //  no index / follow
  */
 class BaseController extends \oxView
 {
+
     /**
      * Facebook widget status marker
      *
@@ -396,7 +397,11 @@ class BaseController extends \oxView
     /** @var array check all "must-be-fields" if they are completely. */
     protected $_aMustFillFields = null;
 
-    /** @var bool Show tags cloud. */
+    /**
+     * @var bool Show tags cloud.
+     *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     */
     protected $_blShowTagCloud = true;
 
     /** @var bool If active root category was changed. */
@@ -1368,7 +1373,9 @@ class BaseController extends \oxView
 
         $params['searchrecomm'] = $config->getRequestParameter('searchrecomm', true);
         $params['searchparam'] = $config->getRequestParameter('searchparam', true);
+        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
         $params['searchtag'] = $config->getRequestParameter('searchtag', true);
+        // END deprecated
 
         $params['searchvendor'] = $config->getRequestParameter('searchvendor');
         $params['searchcnid'] = $config->getRequestParameter('searchcnid');
@@ -1530,12 +1537,14 @@ class BaseController extends \oxView
                     $result .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($var));
                 }
                 break;
+            // @deprecated v5.3 (2016-05-04); Will be moved to own module.
             case 'tag':
                 $result .= "&amp;listtype={$listType}";
                 if ($param = rawurlencode($config->getRequestParameter('searchtag', true))) {
                     $result .= "&amp;searchtag={$param}";
                 }
                 break;
+            // END deprecated
         }
 
         return $result;
@@ -1684,11 +1693,11 @@ class BaseController extends \oxView
         if ($value = oxRegistry::getConfig()->getRequestParameter('searchrecomm')) {
             $url .= "&amp;searchrecomm={$value}";
         }
-
+        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
         if ($value = oxRegistry::getConfig()->getRequestParameter('searchtag')) {
             $url .= "&amp;searchtag={$value}";
         }
-
+        // END deprecated
         if ($value = oxRegistry::getConfig()->getRequestParameter('recommid')) {
             $url .= "&amp;recommid={$value}";
         }
@@ -1789,6 +1798,8 @@ class BaseController extends \oxView
 
     /**
      * Returns if tags will be edit
+     *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
      */
     public function getEditTags()
     {
@@ -1933,9 +1944,11 @@ class BaseController extends \oxView
             if (isset($searchParamForLink)) {
                 $this->_sAdditionalParams .= "&amp;searchparam={$searchParamForLink}";
             }
+            // @deprecated v5.3 (2016-05-04); Will be moved to own module.
             if (($value = oxRegistry::getConfig()->getRequestParameter('searchtag'))) {
                 $this->_sAdditionalParams .= '&amp;searchtag=' . rawurlencode(rawurldecode($value));
             }
+            // END deprecated
             if (($value = oxRegistry::getConfig()->getRequestParameter('searchcnid'))) {
                 $this->_sAdditionalParams .= '&amp;searchcnid=' . rawurlencode(rawurldecode($value));
             }
@@ -1998,7 +2011,6 @@ class BaseController extends \oxView
      */
     public function getPageNavigation()
     {
-
     }
 
     /**
@@ -2173,6 +2185,8 @@ class BaseController extends \oxView
      *  - sTag current tag
      *  - link link leading to tag article list
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return stdClass
      */
     public function getActTag()
@@ -2726,7 +2740,7 @@ class BaseController extends \oxView
         $this->_blShowPromotions = false;
         if (oxNew('oxActionList')->areAnyActivePromotions()) {
             $this->_blShowPromotions = (count($this->getPromoFinishedList()) + count($this->getPromoCurrentList()) +
-                    count($this->getPromoFutureList())) > 0;
+                                        count($this->getPromoFutureList())) > 0;
         }
 
         return $this->_blShowPromotions;
@@ -2997,6 +3011,8 @@ class BaseController extends \oxView
     /**
      * Returns true if tags are ON
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return boolean
      */
     public function showTags()

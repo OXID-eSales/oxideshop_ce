@@ -349,6 +349,8 @@ class oxUtilsCount extends oxSuperCfg
      * @param string $sTag  tag to search article count
      * @param int    $iLang language
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *                      
      * @return int
      */
     public function getTagArticleCount($sTag, $iLang)

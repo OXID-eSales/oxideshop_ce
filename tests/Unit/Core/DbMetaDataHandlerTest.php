@@ -176,6 +176,8 @@ class DbMetaDataHandlerTest extends \OxidTestCase
 
     /**
      * Test if returned sql for creating new field indexes is correct
+     *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
      */
     public function testAddFieldIndexSql()
     {

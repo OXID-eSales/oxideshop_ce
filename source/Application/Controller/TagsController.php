@@ -26,6 +26,8 @@ use oxRegistry;
 
 /**
  * Shows bigger tag cloud
+ * 
+ * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
  */
 class TagsController extends \oxUBase
 {
@@ -55,6 +57,8 @@ class TagsController extends \oxUBase
     /**
      * Returns tag cloud manager class
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return oxTagCloud
      */
     public function getTagCloudManager()

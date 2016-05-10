@@ -23,6 +23,8 @@
 /**
  * Tag cloud.
  * Shop starter, manages starting visible articles, etc.
+ *
+ * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
  */
 class oxwTagCloud extends oxWidget
 {

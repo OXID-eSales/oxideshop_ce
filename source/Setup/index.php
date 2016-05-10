@@ -26,7 +26,9 @@ error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
 ini_set('session.name', 'sid');
 ini_set('session.use_cookies', 0);
 ini_set('session.use_trans_sid', 0);
+// @deprecated v5.3 (2016-05-04); Will be moved to own module.
 ini_set('url_rewriter.tags', '');
+// END deprecated
 
 use OxidEsales\Eshop\Setup\Dispatcher;
 

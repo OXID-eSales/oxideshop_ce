@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 namespace Unit\Application\Model;
 
@@ -35,6 +35,7 @@ use \oxTestModules;
  */
 class ArticlelistTest extends \OxidTestCase
 {
+
     /**
      * Tear down the fixture.
      *
@@ -256,8 +257,6 @@ class ArticlelistTest extends \OxidTestCase
 
         $oTestList->setCustomSorting('testTable.testSorting desc');
         $this->assertEquals('testTable.testSorting desc', $oTestList->getNonPublicVar('_sCustomSorting'));
-
-
     }
 
     /**
@@ -540,9 +539,13 @@ class ArticlelistTest extends \OxidTestCase
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->any())
             ->method('getAll')
-            ->will($this->returnCallback(function ($s) {
-                throw new Exception($s);
-            }));
+            ->will(
+                $this->returnCallback(
+                    function ($s) {
+                        throw new Exception($s);
+                    }
+                )
+            );
         oxDb::setDbObject($dbMock);
 
         try {
@@ -698,11 +701,14 @@ class ArticlelistTest extends \OxidTestCase
 
         $sExpt = "and ( ( $sArticleTable.oxtitle like '%test%' or $sArticleTable.oxshortdesc like '%test%' ";
         $sExpt .= "or $sArticleTable.oxsearchkeys like '%test%' or $sArticleTable.oxartnum like '%test%' ";
+        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
         $sExpt .= "or $sAEV.oxtags like '%test%' ) or ";
+        // END deprecated
         $sExpt .= " ( $sArticleTable.oxtitle like '%Search%' or $sArticleTable.oxshortdesc like '%Search%' ";
         $sExpt .= "or $sArticleTable.oxsearchkeys like '%Search%' or $sArticleTable.oxartnum like '%Search%' ";
+        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
         $sExpt .= "or $sAEV.oxtags like '%Search%' )  ) ";
-
+        // END deprecated
         $sRes = $oTest->UNITgetSearchSelect('test Search');
 
         $sExpt = str_replace(array("\n", "\r", " "), "", $sExpt);
@@ -739,11 +745,15 @@ class ArticlelistTest extends \OxidTestCase
 
         $sExpt = "and ( ( $sArticleTable.oxtitle like '%test%' or $sArticleTable.oxshortdesc like '%test%' ";
         $sExpt .= "or $sArticleTable.oxsearchkeys like '%test%' or $sArticleTable.oxartnum like '%test%' ";
+        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
         $sExpt .= "or $sAEV.oxtags like '%test%' ) and ";
+        // END deprecated
         $sExpt .= " ( $sArticleTable.oxtitle like '%Search%' or $sArticleTable.oxshortdesc like '%Search%' ";
         $sExpt .= "or $sArticleTable.oxsearchkeys like '%Search%' or $sArticleTable.oxartnum like '%Search%' ";
+        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
         $sExpt .= "or $sAEV.oxtags like '%Search%' )  ) ";
-
+        // END deprecated
+        
         $sRes = $oTest->UNITgetSearchSelect('test Search');
 
         $sExpt = str_replace(array("\n", "\r", " "), "", $sExpt);
@@ -769,8 +779,10 @@ class ArticlelistTest extends \OxidTestCase
         $sExpt .= "or $sArticleTable.oxshortdesc like '%würfel%' or $sArticleTable.oxshortdesc like '%w&uuml;rfel%' ";
         $sExpt .= "or $sArticleTable.oxsearchkeys like '%würfel%' or $sArticleTable.oxsearchkeys like '%w&uuml;rfel%' ";
         $sExpt .= "or $sArticleTable.oxartnum like '%würfel%' or $sArticleTable.oxartnum like '%w&uuml;rfel%' ";
+        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
         $sExpt .= "or $sAEV.oxtags like '%würfel%' or $sAEV.oxtags like '%w&uuml;rfel%' ) )";
-
+        // END deprecated
+        
         $sRes = $oTest->UNITgetSearchSelect('würfel ');
 
         $sExpt = str_replace(array("\n", "\r", " "), "", $sExpt);
@@ -952,6 +964,8 @@ class ArticlelistTest extends \OxidTestCase
     /**
      * Test load search ids with search in tags.
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return null
      */
     public function testLoadSearchIdsWithSearchInTags()
@@ -1158,7 +1172,6 @@ class ArticlelistTest extends \OxidTestCase
         sort($aA2);
 
         $this->assertEquals($aA2, $aA1);
-
     }
 
     /**
@@ -2034,7 +2047,6 @@ class ArticlelistTest extends \OxidTestCase
         $this->assertTrue(isset($oTest[2000]));
         $this->assertTrue(isset($oTest[1771]));
         $this->assertTrue(isset($oTest[1354]));
-
     }
 
     /**

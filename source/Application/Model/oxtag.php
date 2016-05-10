@@ -15,17 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 
+// @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
 if (!defined('OXTAGCLOUD_MINTAGLENGTH')) {
     define('OXTAGCLOUD_MINTAGLENGTH', 4);
 }
+// END deprecated
+
 /**
  * Class dedicated to tags handling
  *
+ * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
  */
 class oxTag extends oxSuperCfg
 {

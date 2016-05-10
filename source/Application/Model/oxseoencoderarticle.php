@@ -145,6 +145,8 @@ class oxSeoEncoderArticle extends oxSeoEncoder
      * @param int       $iLang        language id
      * @param bool      $blRegenerate if TRUE forces seo url regeneration
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *
      * @return string
      */
     public function getArticleTagUri($oArticle, $iLang, $blRegenerate = false)
@@ -176,6 +178,8 @@ class oxSeoEncoderArticle extends oxSeoEncoder
      *
      * @param oxArticle $oArticle product
      * @param int       $iLang    language id
+     *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
      *
      * @return string | null
      */
@@ -614,9 +618,11 @@ class oxSeoEncoderArticle extends oxSeoEncoder
             case OXARTICLE_LINKTYPE_MANUFACTURER:
                 $sUri = $this->getArticleManufacturerUri($oArticle, $iLang);
                 break;
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             case OXARTICLE_LINKTYPE_TAG:
                 $sUri = $this->getArticleTagUri($oArticle, $iLang);
                 break;
+            // END deprecated 
             case OXARTICLE_LINKTYPE_RECOMM:
                 $sUri = $this->getArticleRecommUri($oArticle, $iLang);
                 break;
@@ -670,9 +676,11 @@ class oxSeoEncoderArticle extends oxSeoEncoder
                 case 'manufacturer':
                     $sSeoUrl = $this->getArticleManufacturerUri($oArticle, $iLang, true);
                     break;
+                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
                 case 'tag':
                     $sSeoUrl = $this->getArticleTagUri($oArticle, $iLang, true);
                     break;
+                // END deprecated 
                 default:
                     $sSeoUrl = $this->getArticleUri($oArticle, $iLang, true);
                     break;

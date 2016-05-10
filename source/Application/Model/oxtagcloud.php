@@ -20,6 +20,7 @@
  * @version   OXID eShop CE
  */
 
+// @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
 if (!defined('OXTAGCLOUD_MINFONT')) {
     define('OXTAGCLOUD_MINFONT', 100);
     define('OXTAGCLOUD_MAXFONT', 400);
@@ -27,10 +28,12 @@ if (!defined('OXTAGCLOUD_MINFONT')) {
     define('OXTAGCLOUD_STARTPAGECOUNT', 20);
     define('OXTAGCLOUD_EXTENDEDCOUNT', 200);
 }
+// END deprecated
 
 /**
  * Class dedicated to tag cloud handling
  *
+ * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
  */
 class oxTagCloud extends oxSuperCfg
 {

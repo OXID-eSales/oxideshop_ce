@@ -23,7 +23,7 @@
     /** database connection information */
     $this->dbType = 'mysqli';
     $this->dbHost = '<dbHost>'; // database host name
-    $this->dbPort  = <dbPort>; // tcp port to which the database is bind
+    // $this->dbPort  = <dbPort>; // tcp port to which the database is bound
     $this->dbName = '<dbName>'; // database name
     $this->dbUser = '<dbUser>'; // database user name
     $this->dbPwd  = '<dbPwd>'; // database user password

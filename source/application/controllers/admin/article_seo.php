@@ -135,12 +135,14 @@ class Article_Seo extends Object_Seo
                 $this->_aSelectionList["oxmanufacturer"][$this->_iEditLang] = $oManList;
             }
 
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             $aLangs = $oProduct->getAvailableInLangs();
             foreach ($aLangs as $iLang => $sLangTitle) {
                 if ($oTagList = $this->_getTagList($oProduct, $iLang)) {
                     $this->_aSelectionList["oxtag"][$iLang] = $oTagList;
                 }
             }
+            // END deprecated
         }
 
         return $this->_aSelectionList;
@@ -231,6 +233,8 @@ class Article_Seo extends Object_Seo
      * @param oxArticle $oArticle Article object
      * @param int       $iLang    language id
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *
      * @return array
      */
     protected function _getTagList($oArticle, $iLang)
@@ -270,6 +274,8 @@ class Article_Seo extends Object_Seo
     /**
      * Returns active tag, used for seo url getter
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return string | null
      */
     public function getTag()
@@ -328,8 +334,10 @@ class Article_Seo extends Object_Seo
                 return 'vendor';
             case 'oxmanufacturer':
                 return 'manufacturer';
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             case 'oxtag':
                 return 'tag';
+            // END deprecated
         }
     }
 
@@ -360,11 +368,13 @@ class Article_Seo extends Object_Seo
      */
     protected function _getSeoEntryType()
     {
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         if ($this->getTag()) {
             return 'dynamic';
         } else {
             return $this->_getType();
         }
+        // END deprecated 
     }
 
     /**
@@ -386,11 +396,13 @@ class Article_Seo extends Object_Seo
      */
     public function processParam($sParam)
     {
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         if ($this->getTag()) {
             return '';
         } else {
             return $this->getActCatId();
         }
+        // END deprecated 
     }
 
     /**
@@ -418,8 +430,10 @@ class Article_Seo extends Object_Seo
                     return $oEncoder->getArticleVendorUri($oProduct, $this->getEditLang());
                 case 'oxmanufacturer':
                     return $oEncoder->getArticleManufacturerUri($oProduct, $this->getEditLang());
+                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
                 case 'oxtag':
                     return $oEncoder->getArticleTagUri($oProduct, $this->getActCatLang());
+                // END deprecated
                 default:
                     if ($this->getActCatId()) {
                         return $oEncoder->getArticleUri($oProduct, $this->getEditLang());
@@ -438,6 +452,8 @@ class Article_Seo extends Object_Seo
      * @param string $sListType preferred list type tag/vendor/manufacturer.. [default is NULL]
      * @param string $iLang     preferred language id [default is NULL]
      * @param string $sTag      preferred tag [default is NULL]
+     *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.                          
      *
      * @return string
      */
@@ -463,9 +479,11 @@ class Article_Seo extends Object_Seo
             case 'oxmanufacturer':
                 $aParams["mnid"] = $this->getActCatId();
                 break;
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             case 'oxtag':
                 $aParams["searchtag"] = $sTag !== null ? $sTag : $this->getTag();
                 break;
+            // END deprecated
             default:
                 $aParams["cnid"] = $this->getActCatId();
                 break;
@@ -494,9 +512,11 @@ class Article_Seo extends Object_Seo
     protected function _getSaveObjectId()
     {
         $sId = $this->getEditObjectId();
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         if ($this->getActCatType() == 'oxtag') {
             $sId = $this->_getEncoder()->getDynamicObjectId($this->getConfig()->getShopId(), $this->_getStdUrl($sId));
         }
+        // END deprecated
 
         return $sId;
     }

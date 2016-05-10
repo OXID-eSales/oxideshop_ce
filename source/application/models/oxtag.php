@@ -20,12 +20,16 @@
  * @version   OXID eShop CE
  */
 
+// @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
 if (!defined('OXTAGCLOUD_MINTAGLENGTH')) {
     define('OXTAGCLOUD_MINTAGLENGTH', 4);
 }
+// END deprecated
+
 /**
  * Class dedicated to tags handling
  *
+ * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
  */
 class oxTag extends oxSuperCfg
 {

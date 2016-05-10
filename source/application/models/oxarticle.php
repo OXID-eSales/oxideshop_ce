@@ -814,7 +814,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     {
         switch ($sFieldName) {
             case "oxlongdesc":
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             case "oxtags":
+            // END deprecated
                 return true;
         }
 

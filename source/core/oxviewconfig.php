@@ -171,7 +171,9 @@ class oxViewConfig extends oxSuperCfg
         $sTplName = $this->getActTplName();
         $sContentLoadId = $this->getActContentLoadId();
         $sSearchParam = $this->getActSearchParam();
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         $sSearchTag = $this->getActSearchTag();
+        // END deprecated
         $sRecommId = $this->getActRecommendationId();
         $sListType = $this->getActListType();
 
@@ -183,7 +185,9 @@ class oxViewConfig extends oxSuperCfg
                . ($sArtnid ? "&amp;anid={$sArtnid}" : '')
                . ($sMnfid ? "&amp;mnid={$sMnfid}" : '')
                . ($sSearchParam ? "&amp;searchparam={$sSearchParam}" : '')
+               // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
                . ($sSearchTag ? "&amp;searchtag={$sSearchTag}" : '')
+               // END deprecated
                . ($sRecommId ? "&amp;recommid={$sRecommId}" : '')
                . ($sListType ? "&amp;listtype={$sListType}" : '')
                . "&amp;fnc=logout"
@@ -258,6 +262,8 @@ class oxViewConfig extends oxSuperCfg
 
     /**
      * Returns active search tag parameter
+     *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
      *
      * @return string
      */

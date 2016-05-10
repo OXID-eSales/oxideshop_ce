@@ -46,6 +46,8 @@ class Details extends oxUBase
     /**
      * If tags will be changed
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @var bool
      */
     protected $_blEditTags = null;
@@ -53,6 +55,8 @@ class Details extends oxUBase
     /**
      * All tags
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @var array
      */
     protected $_aTags = null;
@@ -477,6 +481,8 @@ class Details extends oxUBase
     /**
      * Adds tags from parameter
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *
      * @return null;
      */
     public function addTags()
@@ -523,6 +529,8 @@ class Details extends oxUBase
     /**
      * Adds tags to passed oxArticleTagList object
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *
      * @param oxArticleTagList $oArticleTagList article tags list object
      * @param array            $aTags           tags array to add to list
      * @param array            $aAddedTags      tags, which are already added to list
@@ -553,6 +561,8 @@ class Details extends oxUBase
     /**
      * Sets tags editing mode
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *
      * @return null
      */
     public function editTags()
@@ -582,6 +592,8 @@ class Details extends oxUBase
 
     /**
      * Cancels tags editing mode
+     *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
      */
     public function cancelTags()
     {
@@ -620,6 +632,8 @@ class Details extends oxUBase
     /**
      * Returns if tags will be edit
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *
      * @return bool
      */
     public function getEditTags()
@@ -629,6 +643,8 @@ class Details extends oxUBase
 
     /**
      * Returns all tags
+     *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
      *
      * @return array
      */
@@ -718,8 +734,10 @@ class Details extends oxUBase
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_MANUFACTURER;
+                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             } elseif ('tag' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_TAG;
+                // END deprecated
             } elseif ('recommlist' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
             } else {
@@ -1051,6 +1069,7 @@ class Details extends oxUBase
     public function getTitle()
     {
         if ($oProduct = $this->getProduct()) {
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             $sTag = $this->getTag();
             $sTitleField = 'oxarticles__oxtitle';
             $sVarSelField = 'oxarticles__oxvarselect';
@@ -1059,6 +1078,7 @@ class Details extends oxUBase
             $sTagValue = !empty($sTag) ? ' - ' . $sTag : '';
 
             return $oProduct->$sTitleField->value . $sVarSelValue . $sTagValue;
+            // END deprecated
         }
     }
 
@@ -1071,9 +1091,11 @@ class Details extends oxUBase
     {
         $sMeta = parent::getMetaDescription();
 
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         if ($sTag = $this->getTag()) {
             $sMeta = $sTag . ' - ' . $sMeta;
         }
+        // END deprecated
 
         return $sMeta;
     }
@@ -1081,6 +1103,8 @@ class Details extends oxUBase
     /**
      * Template variable getter. Returns current tag
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return string
      */
     public function getTag()
@@ -1120,8 +1144,10 @@ class Details extends oxUBase
     {
         if ('search' == $this->getListType()) {
             $aPaths = $this->_getSearchBreadCrumb();
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         } elseif ('tag' == $this->getListType()) {
             $aPaths = $this->_getTagBreadCrumb();
+            // END deprecated
         } elseif ('recommlist' == $this->getListType()) {
             $aPaths = $this->_getRecommendationListBredCrumb();
         } elseif ('vendor' == $this->getListType()) {
@@ -1478,7 +1504,9 @@ class Details extends oxUBase
 
     /**
      * Checks if rating functionality is on and allowed to user
-     *
+     * 
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return bool
      */
     public function canChangeTags()
@@ -1494,6 +1522,8 @@ class Details extends oxUBase
     /**
      * Returns tag cloud manager class
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return oxTagCloud
      */
     public function getTagCloudManager()
@@ -1612,6 +1642,8 @@ class Details extends oxUBase
     /**
      * Tag bread crumb
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return array
      */
     protected function _getTagBreadCrumb()

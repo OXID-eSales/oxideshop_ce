@@ -302,6 +302,8 @@ class oxLocator extends oxSuperCfg
      *
      * @param oxubase   $oLocatorTarget oxubase object
      * @param oxarticle $oCurrArticle   current article
+     *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.                                  
      */
     protected function _setTagLocatorData($oLocatorTarget, $oCurrArticle)
     {
@@ -334,12 +336,14 @@ class oxLocator extends oxSuperCfg
             }
 
             $sAddSearch = '';
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             // setting parameters when seo is Off
             if (!$myUtils->seoIsActive()) {
                 $sSearchTagParameter = oxRegistry::getConfig()->getRequestParameter('searchtag', true);
                 $sAddSearch = 'searchtag=' . rawurlencode($sSearchTagParameter);
                 $sAddSearch .= '&amp;listtype=tag';
             }
+            // END deprecated
 
             $oNextProduct = $this->_oNextProduct;
             $oBackProduct = $this->_oBackProduct;

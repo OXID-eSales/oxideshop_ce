@@ -119,6 +119,8 @@ class Account extends oxUBase
     /**
      * Show tags cloud
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @var bool
      */
     protected $_blShowTagCloud = false;

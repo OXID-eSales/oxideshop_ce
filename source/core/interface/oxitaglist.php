@@ -23,6 +23,7 @@
 /**
  * oxTagCloud set interface
  *
+ * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
  */
 interface oxITagList
 {

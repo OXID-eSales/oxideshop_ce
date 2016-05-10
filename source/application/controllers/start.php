@@ -100,6 +100,8 @@ class Start extends oxUBase
     /**
      * Tag cloud
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @var array
      */
     protected $_sTagCloud = null;

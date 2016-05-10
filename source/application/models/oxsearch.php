@@ -188,10 +188,12 @@ class oxSearch extends oxSuperCfg
         // longdesc field now is kept on different table
         $sDescJoin = '';
         if (is_array($aSearchCols = $this->getConfig()->getConfigParam('aSearchCols'))) {
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             if (in_array('oxlongdesc', $aSearchCols) || in_array('oxtags', $aSearchCols)) {
                 $sDescView = getViewName('oxartextends', $this->_iLanguage);
                 $sDescJoin = " LEFT JOIN {$sDescView} ON {$sArticleTable}.oxid={$sDescView}.oxid ";
             }
+            // END deprecated
         }
 
         //select articles
@@ -278,14 +280,16 @@ class oxSearch extends oxSuperCfg
                 if ($blSep2) {
                     $sSearch .= ' or ';
                 }
-
+                
+                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
                 // as long description now is on different table table must differ
                 if ($sField == 'oxlongdesc' || $sField == 'oxtags') {
                     $sSearchField = getViewName('oxartextends', $this->_iLanguage) . ".{$sField}";
                 } else {
                     $sSearchField = "{$sArticleTable}.{$sField}";
                 }
-
+                // END deprecated
+                
                 $sSearch .= " {$sSearchField} like " . $oDb->quote("%$sSearchString%");
 
                 // special chars ?

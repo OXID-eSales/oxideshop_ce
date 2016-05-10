@@ -85,11 +85,13 @@ class Article_Main extends oxAdminDetails
             // #381A
             $this->_formJumpList($oArticle, $oParentArticle);
 
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             //loading tags
             $oArticleTagList = oxNew("oxArticleTagList");
             $oArticleTagList->loadInLang($this->_iEditLang, $oArticle->getId());
             $oArticle->tags = $oArticleTagList->get();
-
+            // END deprecated
+            
             $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
@@ -255,6 +257,7 @@ class Article_Main extends oxAdminDetails
             }
         }
 
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         //saving tags
         if (isset($aParams['tags'])) {
             $sTags = $aParams['tags'];
@@ -266,7 +269,8 @@ class Article_Main extends oxAdminDetails
                 $this->_aViewData["invalid_tags"] = implode(', ', $aInvalidTags);
             }
         }
-
+        // END deprecated
+        
         $this->setEditObjectId($oArticle->getId());
     }
 
@@ -315,6 +319,8 @@ class Article_Main extends oxAdminDetails
      * @param string $sTags      Tags string to set for article
      * @param string $sArticleId Article id
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return array of oxTag objects
      */
     protected function _setTags($sTags, $sArticleId)

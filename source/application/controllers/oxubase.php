@@ -489,6 +489,8 @@ class oxUBase extends oxView
     /**
      * Show tags cloud
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @var bool
      */
     protected $_blShowTagCloud = true;
@@ -1452,7 +1454,9 @@ class oxUBase extends oxView
 
         $aParams['searchrecomm'] = $oConfig->getRequestParameter('searchrecomm', true);
         $aParams['searchparam'] = $oConfig->getRequestParameter('searchparam', true);
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         $aParams['searchtag'] = $oConfig->getRequestParameter('searchtag', true);
+        // END deprecated
 
         $aParams['searchvendor'] = $oConfig->getRequestParameter('searchvendor');
         $aParams['searchcnid'] = $oConfig->getRequestParameter('searchcnid');
@@ -1614,12 +1618,14 @@ class oxUBase extends oxView
                     $sRet .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($sVar));
                 }
                 break;
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             case 'tag':
                 $sRet .= "&amp;listtype={$sListType}";
                 if ($sParam = rawurlencode($oConfig->getRequestParameter('searchtag', true))) {
                     $sRet .= "&amp;searchtag={$sParam}";
                 }
                 break;
+            // END deprecated
         }
 
         return $sRet;
@@ -1769,10 +1775,12 @@ class oxUBase extends oxView
             $sURL .= "&amp;searchrecomm={$sVal}";
         }
 
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         if ($sVal = oxRegistry::getConfig()->getRequestParameter('searchtag')) {
             $sURL .= "&amp;searchtag={$sVal}";
         }
-
+        // END deprecated
+        
         if ($sVal = oxRegistry::getConfig()->getRequestParameter('recommid')) {
             $sURL .= "&amp;recommid={$sVal}";
         }
@@ -1873,6 +1881,8 @@ class oxUBase extends oxView
 
     /**
      * Returns if tags will be edit
+     *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
      */
     public function getEditTags()
     {
@@ -2017,9 +2027,11 @@ class oxUBase extends oxView
             if (isset($sSearchParamForLink)) {
                 $this->_sAdditionalParams .= "&amp;searchparam={$sSearchParamForLink}";
             }
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             if (($sVar = oxRegistry::getConfig()->getRequestParameter('searchtag'))) {
                 $this->_sAdditionalParams .= '&amp;searchtag=' . rawurlencode(rawurldecode($sVar));
             }
+            // END deprecated
             if (($sVar = oxRegistry::getConfig()->getRequestParameter('searchcnid'))) {
                 $this->_sAdditionalParams .= '&amp;searchcnid=' . rawurlencode(rawurldecode($sVar));
             }
@@ -2260,6 +2272,8 @@ class oxUBase extends oxView
      *  - sTag current tag
      *  - link link leading to tag article list
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return stdClass
      */
     public function getActTag()
@@ -3085,6 +3099,8 @@ class oxUBase extends oxView
     /**
      * Returns true if tags are ON
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return boolean
      */
     public function showTags()

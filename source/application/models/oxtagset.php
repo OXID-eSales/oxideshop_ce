@@ -25,6 +25,7 @@
  * Class dedicated to article tags handling.
  * Is responsible for saving, returning and adding tags for given article.
  *
+ * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
  */
 class oxTagSet extends oxSuperCfg implements Iterator
 {

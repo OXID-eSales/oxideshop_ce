@@ -120,7 +120,9 @@ class oxcmp_categories extends oxView
     protected function _getActCat()
     {
         $sActManufacturer = oxRegistry::getConfig()->getRequestParameter('mnid');
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         $sActTag = oxRegistry::getConfig()->getRequestParameter('searchtag');
+        // END deprecated
         $sActCat = $sActManufacturer ? null : oxRegistry::getConfig()->getRequestParameter('cnid');
 
         // loaded article - then checking additional parameters
@@ -132,9 +134,12 @@ class oxcmp_categories extends oxView
 
             $sActVendor = (getStr()->preg_match('/^v_.?/i', $sActCat)) ? $sActCat : null;
 
+            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             $sActCat = $this->_addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActTag, $sActVendor);
+            // END deprecated
         }
 
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         // Checking for the default category
         if ($sActCat === null && !$oProduct && !$sActManufacturer && !$sActTag) {
             // set remote cat
@@ -144,7 +149,8 @@ class oxcmp_categories extends oxView
                 $sActCat = null;
             }
         }
-
+        // END deprecated
+        
         return $sActCat;
     }
 
@@ -226,7 +232,9 @@ class oxcmp_categories extends oxView
      * @param string    $sActManufacturer active manufacturer id
      * @param string    $sActTag          active tag
      * @param string    $sActVendor       active vendor
-     *
+     *                                    
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module. So the parameter sActTag will be removed.
+     *                                    
      * @return string $sActCat
      */
     protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActTag, $sActVendor)
@@ -252,9 +260,11 @@ class oxcmp_categories extends oxView
                 // such vendor is available ?
                 $sListType = 'vendor';
                 $sActCat = $sActVendor;
+                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             } elseif ($sActTag) {
                 // tag ?
                 $sListType = 'tag';
+                // END deprecated
             } elseif ($sActCat && $oProduct->isAssignedToCategory($sActCat)) {
                 // category ?
             } else {

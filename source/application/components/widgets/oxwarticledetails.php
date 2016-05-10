@@ -64,6 +64,8 @@ class oxwArticleDetails extends oxWidget
     /**
      * If tags can be changed
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @var bool
      */
     protected $_blCanEditTags = null;
@@ -314,6 +316,8 @@ class oxwArticleDetails extends oxWidget
     /**
      * Checks if rating functionality is on and allowed to user
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return bool
      */
     public function canChangeTags()
@@ -355,6 +359,8 @@ class oxwArticleDetails extends oxWidget
     /**
      * Returns tag cloud manager class
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return oxTagCloud
      */
     public function getTagCloudManager()
@@ -374,6 +380,8 @@ class oxwArticleDetails extends oxWidget
      * Returns if tags can be changed, if user is logged in and
      * product exists.
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return bool
      */
     public function isEditableTags()
@@ -401,8 +409,10 @@ class oxwArticleDetails extends oxWidget
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_MANUFACTURER;
+                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
             } elseif ('tag' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_TAG;
+                // END deprecated
             } elseif ('recommlist' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
             } else {
@@ -1057,6 +1067,8 @@ class oxwArticleDetails extends oxWidget
     /**
      * Returns tag separator
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @return string
      */
     public function getTagSeparator()

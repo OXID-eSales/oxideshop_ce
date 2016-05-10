@@ -340,6 +340,8 @@ class oxRssFeed extends oxSuperCfg
      * @param string $sRssUrl    url of rss page
      * @param string $sTargetUrl url of page rss represents
      *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     *             
      * @access protected
      */
     protected function _loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl = null)

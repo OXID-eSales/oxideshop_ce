@@ -399,8 +399,8 @@ class Doctrine implements DatabaseInterface
     /**
      * Set the transaction isolation level.
      *
-     * Note: This method is MySQL specific, as we use the MySQL syntax for setting the transaction isolation level. 
-     * 
+     * Note: This method is MySQL specific, as we use the MySQL syntax for setting the transaction isolation level.
+     *
      * Allowed values are 'READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE'.
      *
      * @param string $level The level of transaction isolation we want to set.
@@ -827,6 +827,7 @@ class Doctrine implements DatabaseInterface
 
     /**
      * Get the meta information about all the columns of the given table.
+     * This is kind of a poor man's schema manager, which only works for MySQL.
      *
      * @param string $table Table name.
      *
@@ -834,32 +835,83 @@ class Doctrine implements DatabaseInterface
      */
     public function metaColumns($table)
     {
-        $columns = $this->getConnection()->executeQuery('SHOW COLUMNS FROM ' . $table)->fetchAll();
+        $connection = $this->getConnection();
+        $connection->setFetchMode(\PDO::FETCH_ASSOC);
+        $databaseName = $connection->getDatabase();
+        $query = "
+            SELECT 
+              COLUMN_NAME AS `Field`, 
+              COLUMN_TYPE AS `Type`, 
+              IS_NULLABLE AS `Null`, 
+              COLUMN_KEY AS `Key`, 
+              COLUMN_DEFAULT AS `Default`, 
+              EXTRA AS `Extra`, 
+              COLUMN_COMMENT AS `Comment`, 
+              CHARACTER_SET_NAME AS `CharacterSet`, 
+              COLLATION_NAME AS `Collation` 
+            FROM information_schema.COLUMNS 
+            WHERE 
+              TABLE_SCHEMA = '$databaseName' 
+              AND 
+              TABLE_NAME = '$table'";
+        $columns = $connection->executeQuery($query)->fetchAll();
+        /** Depending on the fetch mode we may find numeric or string key in the array $rawColumns */
+
 
         $result = [];
 
         foreach ($columns as $column) {
-            $typeInformation = explode('(', $column[1]);
-            $typeName = $typeInformation[0];
-            $typeLength = explode(')', $typeInformation[1])[0];
+            $type = $this->getMetaColumnValueByKey($column, 'Type');
+            $field = $this->getMetaColumnValueByKey($column, 'Field');
+            $null = $this->getMetaColumnValueByKey($column, 'Null');
+            $key = $this->getMetaColumnValueByKey($column, 'Key');
+            $default = $this->getMetaColumnValueByKey($column, 'Default');
+            $extra = $this->getMetaColumnValueByKey($column, 'Extra');
+            $comment = $this->getMetaColumnValueByKey($column, 'Comment');
+            $characterSet = $this->getMetaColumnValueByKey($column, 'CharacterSet');
+            $collation = $this->getMetaColumnValueByKey($column, 'Collation');
 
-            /**
-             * We are skipping the doctrine unsupported features AND the hard to fetch information here.
-             */
+
+            $typeInformation = explode('(', $type);
+            $typeName = trim($typeInformation[0]);
 
             $item = new \stdClass();
-            $item->name = $column[0];
+            $item->name = $field;
             $item->type = $typeName;
-            $item->max_length = $typeLength;
-            $item->not_null = ('NO' === $column[2]) ? true : false;
-            // $item->primary_key = '';
-            // $item->auto_increment = '';
-            // $item->binary = '';
-            // $item->unsigned = '';
-            // $item->has_default = '';
-            // $item->scale = '';
+            $item->not_null = ('no' === strtolower($null));
+            $item->primary_key = (strtolower($key) == 'pri');
+            $item->auto_increment = strtolower($extra) == 'auto_increment';
+            $item->binary = (false !== strpos(strtolower($type), 'blob'));
+            $item->unsigned =  (false !== strpos(strtolower($type), 'unsigned'));
+            $item->has_default = ('' === $default || is_null($default)) ? false : true;
+            if ($item->has_default) {
+                $item->default_value = $default;
+            }
 
-            $result[] = $item;
+            list($item->max_length, $item->scale) = $this->getColumnMaxLengthAndScale($column, $item->type);
+
+            /** Unset has_default and default_value for binary types */
+            if ($item->binary) {
+                unset($item->has_default, $item->default_value);
+            }
+
+            /** Additional properties not fount in ADODB lite */
+            $item->comment = $comment;
+            $item->characterSet = $characterSet;
+            $item->collation = $collation;
+
+            /**
+             * ADODB lite properties not implemented
+             *
+             * Todo implement the enums property for SET and ENUM fields
+             */
+            // $item->enums
+
+            if (array_key_exists('Field', $column)) {
+                $result[$item->name] = $item;
+            } else {
+                $result[] = $item;
+            }
         }
 
         return $result;
@@ -874,5 +926,123 @@ class Doctrine implements DatabaseInterface
     {
         // TODO to be implemented or deprecated in DatabaseInterface
     }
-}
 
+    /**
+     * Get the value of a meta column key.
+     *
+     * @param array  $column The meta column, where the value has to be fetched.
+     * @param string $key    The key to fetch.
+     *
+     * @return mixed
+     */
+    protected function getMetaColumnValueByKey(array $column, $key)
+    {
+        if (array_key_exists('Field', $column)) {
+            $keyMap = array(
+                'Field' => 'Field',
+                'Type' => 'Type',
+                'Null' => 'Null',
+                'Key' => 'Key',
+                'Default' => 'Default',
+                'Extra' => 'Extra',
+                'Comment' => 'Comment',
+                'CharacterSet' => 'CharacterSet',
+                'Collation' => 'Collation',
+            );
+        } else {
+            $keyMap = array(
+                'Field' => 0,
+                'Type' => 1,
+                'Null' => 2,
+                'Key' => 3,
+                'Default' => 4,
+                'Extra' => 5,
+                'Comment' => 6,
+                'CharacterSet' => 7,
+                'Collation' => 8,
+            );
+        }
+
+        $result = $column[$keyMap[$key]];
+
+        return $result;
+    }
+
+
+    /**
+     * Get the maximal length of a given column of a given type.
+     *
+     * @param array  $column       The meta column for which the may length has to be found.
+     * @param string $assignedType The type of the column.
+     *
+     * @return int
+     */
+    protected function getColumnMaxLengthAndScale(array $column, $assignedType)
+    {
+        /** @var int $maxLength The max length of a field. For floating point type or fixed point type fields the precision of the field */
+        $maxLength = -1;
+        /** @var int $scale The scale of floating point type or fixed point type fields */
+        $scale = -1;
+
+        /** @var string $mySqlType E.g. "CHAR(4)" or "DECIMAL(5,2)" or "tinyint(1) unsigned" */
+        $mySqlType = $this->getMetaColumnValueByKey($column, 'Type');
+        /** Get the maximum display width for the type */
+
+
+        /** Match max length E.g CHAR(4) */
+        if (preg_match("/^(.+)\((\d+)/", $mySqlType, $matches)) {
+            if (is_numeric($matches[2])) {
+                $maxLength = $matches[2];
+            }
+        /** Match Precision an scale E.g DECIMAL(5,2) */
+        } elseif (preg_match("/^(.+)\((\d+),(\d+)/", $mySqlType, $matches)) {
+            if (is_numeric($matches[2])) {
+                $maxLength = $matches[2];
+            }
+            if (is_numeric($matches[3])) {
+                $scale = $matches[3];
+            }
+            /**
+             * Match List type E.g. SET('A', 'B', 'CDE)
+             * In this case the length will be the string length of the longest element
+             */
+        } elseif (preg_match("/^(enum|set)\((.*)\)$/i", strtolower($mySqlType), $matches)) {
+            if ($matches[2]) {
+                $pieces = explode(",", $matches[2]);
+                /** The array values contain 2 quotes, so we have to subtract 2 from the strlen */
+                $maxLength = max(array_map("strlen", $pieces)) - 2;
+                if ($maxLength <= 0) {
+                    $maxLength = 1;
+                }
+            }
+        }
+
+
+        /** Numeric types, which may have a maximum length */
+        $integerTypes = array('INTEGER', 'INT', 'SMALLINT', 'TINYINT', 'MEDIUMINT', 'BIGINT');
+        $fixedPointTypes = array('DECIMAL', 'NUMERIC');
+        $floatingPointTypes = array('FLOAT', 'DOUBLE');
+
+        /** Text types, which may have a maximum length */
+        $textTypes = array('CHAR', 'VARCHAR');
+
+        /** Date types, which may have a maximum length */
+        $dateTypes = array('YEAR');
+
+        $assignedType = strtoupper($assignedType);
+        if ((
+                in_array($assignedType, $integerTypes) ||
+                in_array($assignedType, $fixedPointTypes) ||
+                in_array($assignedType, $floatingPointTypes) ||
+                in_array($assignedType, $textTypes) ||
+                in_array($assignedType, $dateTypes)
+            ) && -1 == $maxLength
+        ) {
+            /**
+             * Todo If the assigned type is one of the following and maxLength is -1, then, if applicable the default max length ot that type should be assigned.
+             */
+        }
+        
+        return array((int) $maxLength, (int) $scale);
+    }
+}

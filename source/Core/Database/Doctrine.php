@@ -976,7 +976,7 @@ class Doctrine implements DatabaseInterface
      * @param array  $column       The meta column for which the may length has to be found.
      * @param string $assignedType The type of the column.
      *
-     * @return int
+     * @return int[] the maximal length and the scale (in case of DECIMAL type)
      */
     protected function getColumnMaxLengthAndScale(array $column, $assignedType)
     {

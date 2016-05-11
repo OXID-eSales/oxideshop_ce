@@ -598,8 +598,8 @@ class AdminView extends \oxView
         // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         // resetting tag cache
         $oTagCloud = oxNew('oxtagcloud');
-        // END deprecated
         $oTagCloud->resetCache();
+        // END deprecated
     }
 
     /**

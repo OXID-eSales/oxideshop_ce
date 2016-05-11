@@ -106,9 +106,7 @@ function setPhpIniParams()
     ini_set('session.name', 'sid');
     ini_set('session.use_cookies', 0);
     ini_set('session.use_trans_sid', 0);
-    // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
     ini_set('url_rewriter.tags', '');
-    // End deprecated
 }
 
 if (!function_exists('error_404_handler')) {

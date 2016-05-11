@@ -431,7 +431,11 @@ class BaseController extends \oxView
     /** @var integer Number of possible pages. */
     protected $_iCntPages = null;
 
-    /** @var stdClass Active tag. */
+    /**
+     * @var stdClass Active tag.
+     *
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     */
     protected $_oActTag = null;
 
     /** @var string Form id. */
@@ -1373,7 +1377,7 @@ class BaseController extends \oxView
 
         $params['searchrecomm'] = $config->getRequestParameter('searchrecomm', true);
         $params['searchparam'] = $config->getRequestParameter('searchparam', true);
-        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
+        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         $params['searchtag'] = $config->getRequestParameter('searchtag', true);
         // END deprecated
 

@@ -1178,24 +1178,30 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 'max_length' =>  32,
                 'type'       => 'char',
                 'not_null'   => false,
-                // 'primary_key'    => false,
-                // 'auto_increment' => false,
-                // 'binary'         => false,
-                // 'unsigned'       => false,
-                // 'has_default'    => false
-                // 'scale' => null,
+                'primary_key'    => false,
+                'auto_increment' => false,
+                'binary'         => false,
+                'unsigned'       => false,
+                'has_default'    => false,
+                'scale'          => -1,
+                'comment'        => '',
+                'characterSet'   => 'utf8',
+                'collation'      => 'utf8_general_ci'
             ),
             'oxuserid' => array(
                 'name'       => 'oxuserid',
                 'max_length' => 32,
                 'type'       => 'char',
                 'not_null'   => false,
-                // 'primary_key'    => false,
-                // 'auto_increment' => false,
-                // 'binary'         => false,
-                // 'unsigned'       => false,
-                // 'has_default'    => false
-                // 'scale' => null,
+                'primary_key'    => false,
+                'auto_increment' => false,
+                'binary'         => false,
+                'unsigned'       => false,
+                'has_default'    => false,
+                'scale'          => -1,
+                'comment'        => '',
+                'characterSet'   => 'utf8',
+                'collation'      => 'utf8_general_ci'
             )
         );
 

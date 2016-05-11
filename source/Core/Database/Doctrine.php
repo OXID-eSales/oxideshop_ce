@@ -686,7 +686,7 @@ class Doctrine implements DatabaseInterface
     }
 
     /**
-     * Check, if the given sql query is a select statement.
+     * Check, if the given sql query is a select statement. We handle 'show' as a select statement.
      *
      * @todo It is not safe to have comments at the beginning of the query string.
      *
@@ -698,7 +698,7 @@ class Doctrine implements DatabaseInterface
     {
         $formedQuery = strtoupper(trim($query));
 
-        return 0 === strpos($formedQuery, 'SELECT');
+        return (0 === strpos($formedQuery, 'SELECT') || 0 === strpos($formedQuery, 'SHOW'));
     }
 
     /**

@@ -983,6 +983,16 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
+     * Test, that the method 'getOne' gives back the column name, if we give in a 'show' statement.
+     */
+    public function testGetOneWithShowStatement()
+    {
+        $result = $this->database->getOne('SHOW COLUMNS FROM ' . self::TABLE_NAME);
+
+        $this->assertEquals('oxid', $result);
+    }
+
+    /**
      * Test, that the method 'getOne' gives back the correct column of the first row, if we give in the wished sql statement.
      */
     public function testGetOneWithNonEmptyTableAndGivenColumnName()

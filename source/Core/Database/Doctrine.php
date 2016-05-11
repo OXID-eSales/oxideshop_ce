@@ -114,7 +114,7 @@ class Doctrine implements DatabaseInterface
         $connection = null;
 
         $connectionParameters = $this->getConnectionParameters();
-        
+
         $configuration = new Configuration();
         /**
          * TODO we need a SQLLogger that logs to a (CSV?) file, as we probably do not want to log into the database.
@@ -214,7 +214,7 @@ class Doctrine implements DatabaseInterface
             'port'     => $connectionParameters['databasePort'],
             'charset'  => $pdoCharset,
         );
-        
+
         return $connectionParameters;
     }
 
@@ -839,20 +839,20 @@ class Doctrine implements DatabaseInterface
         $connection->setFetchMode(\PDO::FETCH_ASSOC);
         $databaseName = $connection->getDatabase();
         $query = "
-            SELECT 
-              COLUMN_NAME AS `Field`, 
-              COLUMN_TYPE AS `Type`, 
-              IS_NULLABLE AS `Null`, 
-              COLUMN_KEY AS `Key`, 
-              COLUMN_DEFAULT AS `Default`, 
-              EXTRA AS `Extra`, 
-              COLUMN_COMMENT AS `Comment`, 
-              CHARACTER_SET_NAME AS `CharacterSet`, 
-              COLLATION_NAME AS `Collation` 
-            FROM information_schema.COLUMNS 
-            WHERE 
-              TABLE_SCHEMA = '$databaseName' 
-              AND 
+            SELECT
+              COLUMN_NAME AS `Field`,
+              COLUMN_TYPE AS `Type`,
+              IS_NULLABLE AS `Null`,
+              COLUMN_KEY AS `Key`,
+              COLUMN_DEFAULT AS `Default`,
+              EXTRA AS `Extra`,
+              COLUMN_COMMENT AS `Comment`,
+              CHARACTER_SET_NAME AS `CharacterSet`,
+              COLLATION_NAME AS `Collation`
+            FROM information_schema.COLUMNS
+            WHERE
+              TABLE_SCHEMA = '$databaseName'
+              AND
               TABLE_NAME = '$table'";
         $columns = $connection->executeQuery($query)->fetchAll();
         /** Depending on the fetch mode we may find numeric or string key in the array $rawColumns */
@@ -914,6 +914,7 @@ class Doctrine implements DatabaseInterface
             }
         }
 
+        $connection->setFetchMode(\PDO::FETCH_NUM);
         return $result;
     }
 
@@ -1042,7 +1043,7 @@ class Doctrine implements DatabaseInterface
              * Todo If the assigned type is one of the following and maxLength is -1, then, if applicable the default max length ot that type should be assigned.
              */
         }
-        
+
         return array((int) $maxLength, (int) $scale);
     }
 }

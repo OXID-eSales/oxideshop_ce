@@ -37,7 +37,7 @@ use OxidEsales\Eshop\Core\Database\DatabaseInterface;
  */
 abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImplementationBaseTest
 {
-    
+
     /**
      * The data provider for the method testGetAllForAllFetchModes.
      *
@@ -1172,10 +1172,10 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         /**
          * We are skipping the doctrine unsupported features AND the hard to fetch information here.
          */
-        $expectedColumns = array(
+        $expectedColumns = array( 'oxid' =>
             array(
                 'name'       => 'oxid',
-                'max_length' => '32',
+                'max_length' =>  32,
                 'type'       => 'char',
                 'not_null'   => false,
                 // 'primary_key'    => false,
@@ -1185,9 +1185,9 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 // 'has_default'    => false
                 // 'scale' => null,
             ),
-            array(
+            'oxuserid' => array(
                 'name'       => 'oxuserid',
-                'max_length' => '32',
+                'max_length' => 32,
                 'type'       => 'char',
                 'not_null'   => false,
                 // 'primary_key'    => false,
@@ -1199,9 +1199,9 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             )
         );
 
-        for ($index = 0; $index < 2; $index++) {
-            foreach ($expectedColumns[$index] as $attributeName => $attributeValue) {
-                $this->assertObjectHasAttributeWithValue($columnInformation[$index], $attributeName, $attributeValue);
+        foreach($expectedColumns as $key => $sub) {
+            foreach ($sub as $attributeName => $attributeValue) {
+                $this->assertObjectHasAttributeWithValue($columnInformation[$key], $attributeName, $attributeValue);
             }
         }
     }

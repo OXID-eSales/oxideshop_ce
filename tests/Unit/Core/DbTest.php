@@ -193,6 +193,7 @@ class DbTest extends \OxidTestCase
 
     public function testGetDbFetchMode()
     {
+        $this->markTestSkipped('This kind of global fetch mode saving is not supported by the new doctine dbal database adapter.');
         $oDb = oxNew("oxDb");
 
         //unfortunately we should use globals in order to test this behaviour

@@ -1172,7 +1172,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         /**
          * We are skipping the doctrine unsupported features AND the hard to fetch information here.
          */
-        $expectedColumns = array( 'oxid' =>
+        $expectedColumns = array(
             array(
                 'name'       => 'oxid',
                 'max_length' =>  32,
@@ -1188,7 +1188,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 'characterSet'   => 'utf8',
                 'collation'      => 'utf8_general_ci'
             ),
-            'oxuserid' => array(
+            array(
                 'name'       => 'oxuserid',
                 'max_length' => 32,
                 'type'       => 'char',

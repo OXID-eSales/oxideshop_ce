@@ -836,7 +836,6 @@ class Doctrine implements DatabaseInterface
     public function metaColumns($table)
     {
         $connection = $this->getConnection();
-        $connection->setFetchMode(\PDO::FETCH_ASSOC);
         $databaseName = $connection->getDatabase();
         $query = "
             SELECT
@@ -914,7 +913,6 @@ class Doctrine implements DatabaseInterface
             }
         }
 
-        $connection->setFetchMode(\PDO::FETCH_NUM);
         return $result;
     }
 

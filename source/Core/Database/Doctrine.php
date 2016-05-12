@@ -887,7 +887,16 @@ class Doctrine implements DatabaseInterface
                 $item->default_value = $default;
             }
 
-            list($item->max_length, $item->scale) = $this->getColumnMaxLengthAndScale($column, $item->type);
+            /** These varaibles were set only when there is was value in the previous implementation with ADOdb Lite.
+                Do it the same way here for compatiblity.
+             */
+            list($max_length, $scale) = $this->getColumnMaxLengthAndScale($column, $item->type);
+            if(-1 !== $max_length){
+                $item->max_length = (string)$max_length;
+            }
+            if(-1 !== $scale){
+                $item->scale = (string)$scale;
+            }
 
             /** Unset has_default and default_value for binary types */
             if ($item->binary) {
@@ -974,7 +983,8 @@ class Doctrine implements DatabaseInterface
      * @param array  $column       The meta column for which the may length has to be found.
      * @param string $assignedType The type of the column.
      *
-     * @return int[] the maximal length and the scale (in case of DECIMAL type)
+     * @return int[] The maximal length and the scale (in case of DECIMAL type).
+     *               Both variables are -1 in case of no value can be found.
      */
     protected function getColumnMaxLengthAndScale(array $column, $assignedType)
     {

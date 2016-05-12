@@ -77,6 +77,8 @@ class DebugdbTest extends \OxidTestCase
 
     public function testSkipWhiteSpace()
     {
+        $this->markTestSkippedUntil('2016-06-29', 'We will remove this whole mysql logging in ESDEV-3511.');
+
         $oSubj = $this->getProxyClass("oxdebugdb");
         $sTestIn = "Test Val \ntest\tval\r ";
         $sExpOut = "TestValtestval";
@@ -90,6 +92,8 @@ class DebugdbTest extends \OxidTestCase
      */
     public function testGetWarnings()
     {
+        $this->markTestSkippedUntil('2016-06-29', 'We will remove this whole mysql logging in ESDEV-3511.');
+        
         modDB::$unitMOD = false;
         $oSubj = oxNew('oxDebugDb');
         $aOut = $oSubj->getWarnings();

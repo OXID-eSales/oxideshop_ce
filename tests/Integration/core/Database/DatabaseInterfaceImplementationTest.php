@@ -1167,17 +1167,65 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      */
     public function testMetaColumns()
     {
-        $columnInformation = $this->database->metaColumns(self::TABLE_NAME);
+        $metaColumnsTestTable = self::TABLE_NAME . '_testmetacolumns';
+        $this->createTableForTestMetaColumns($metaColumnsTestTable);
+        $columnInformation = $this->database->metaColumns($metaColumnsTestTable);
 
-        /**
-         * We are skipping the doctrine unsupported features AND the hard to fetch information here.
-         */
-        $expectedColumns = array(
+        $expectedColumns = $this->getExpectedColumnsByTestMetaColumns();
+
+        foreach($expectedColumns as $key => $sub) {
+            foreach ($sub as $attributeName => $attributeValue) {
+                $this->assertObjectHasAttributeWithValue($columnInformation[$key], $attributeName, $attributeValue);
+            }
+        }
+    }
+
+    /*
+     * There is a another special table needed for testMetaColumns.
+     *
+     * @param string $metaColumnsTestTable The name of the table to create
+     */
+    protected function createTableForTestMetaColumns($metaColumnsTestTable)
+    {
+        $dbh = self::getDatabaseHandler();
+        $dbh->exec("CREATE TABLE IF NOT EXISTS " . $metaColumnsTestTable . " (
+            OXINT INT(11) NOT NULL AUTO_INCREMENT,            
+            OXUSERID CHAR(32),
+            OXTIME TIME COMMENT 'a column of type TIME',            
+            OXBIT BIT(6) NOT NULL,
+            OXDEC DEC(6,2) UNSIGNED NOT NULL DEFAULT 1.3 COMMENT 'a column with type DECIMAL',
+            OXTEXT TEXT NOT NULL COMMENT 'a column with type TEXT',
+            OXID CHAR(32) NOT NULL,
+            OXBLOB BLOB,
+            PRIMARY KEY (OXINT)
+        ) ENGINE innoDb;");
+
+    }
+
+    /*
+     * specify which results the function metaColumns() expects for each column of the testing table
+     */
+    protected function getExpectedColumnsByTestMetaColumns()
+    {
+        return array(
             array(
-                'name'       => 'oxid',
-                'max_length' =>  32,
-                'type'       => 'char',
-                'not_null'   => false,
+                'name'           => 'OXINT',
+                'max_length'     => 11,
+                'type'           => 'int',
+                'not_null'       => true,
+                'primary_key'    => true,
+                'auto_increment' => true,
+                'binary'         => false,
+                'unsigned'       => false,
+                'has_default'    => false,
+                'scale'          => -1,
+                'comment'        => '',
+            ),
+            array(
+                'name'           => 'OXUSERID',
+                'max_length'     => 32,
+                'type'           => 'char',
+                'not_null'       => false,
                 'primary_key'    => false,
                 'auto_increment' => false,
                 'binary'         => false,
@@ -1189,10 +1237,64 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 'collation'      => 'utf8_general_ci'
             ),
             array(
-                'name'       => 'oxuserid',
-                'max_length' => 32,
-                'type'       => 'char',
-                'not_null'   => false,
+                'name'           => 'OXTIME',
+                'max_length'     => -1,
+                'type'           => 'time',
+                'not_null'       => false,
+                'primary_key'    => false,
+                'auto_increment' => false,
+                'binary'         => false,
+                'unsigned'       => false,
+                'has_default'    => false,
+                'scale'          => -1,
+                'comment'        => 'a column of type TIME',
+            ),
+            array(
+                'name'           => 'OXBIT',
+                'max_length'     => 6,
+                'type'           => 'bit',
+                'not_null'       => true,
+                'primary_key'    => false,
+                'auto_increment' => false,
+                'binary'         => false,
+                'unsigned'       => false,
+                'scale'          => -1,
+                'comment'        => '',
+            ),
+            array(
+                'name'           => 'OXDEC',
+                'max_length'     => 6,
+                'type'           => 'decimal',
+                'not_null'       => true,
+                'primary_key'    => false,
+                'auto_increment' => false,
+                'binary'         => false,
+                'unsigned'       => true,
+                'has_default'    => true,
+                'default_value'  => '1.30',
+                'scale'          => 2,
+                'comment'        => 'a column with type DECIMAL',
+            ),
+            array(
+                'name'           => 'OXTEXT',
+                'max_length'     => -1,
+                'type'           => 'text',
+                'not_null'       => true,
+                'primary_key'    => false,
+                'auto_increment' => false,
+                'binary'         => false,
+                'unsigned'       => false,
+                'has_default'    => false,
+                'scale'          => -1,
+                'comment'        => 'a column with type TEXT',
+                'characterSet'   => 'utf8',
+                'collation'      => 'utf8_general_ci'
+            ),
+            array(
+                'name'           => 'OXID',
+                'max_length'     => 32,
+                'type'           => 'char',
+                'not_null'       => true,
                 'primary_key'    => false,
                 'auto_increment' => false,
                 'binary'         => false,
@@ -1202,14 +1304,20 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 'comment'        => '',
                 'characterSet'   => 'utf8',
                 'collation'      => 'utf8_general_ci'
-            )
+            ),
+            array(
+                'name'           => 'OXBLOB',
+                'max_length'     => -1,
+                'type'           => 'blob',
+                'not_null'       => false,
+                'primary_key'    => false,
+                'auto_increment' => false,
+                'binary'         => true,
+                'unsigned'       => false,
+                'scale'          => -1,
+                'comment'        => '',
+            ),
         );
-
-        foreach($expectedColumns as $key => $sub) {
-            foreach ($sub as $attributeName => $attributeValue) {
-                $this->assertObjectHasAttributeWithValue($columnInformation[$key], $attributeName, $attributeValue);
-            }
-        }
     }
 
     /**

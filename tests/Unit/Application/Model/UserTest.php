@@ -370,7 +370,7 @@ class UserTest extends \OxidTestCase
 
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxacceptedterms where oxuserid='oxdefaultadmin' and oxtermversion='1'"));
 
-        $oDb->getOne("update oxacceptedterms set oxtermversion='0'");
+        $oDb->execute("update oxacceptedterms set oxtermversion='0'");
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxacceptedterms where oxuserid='oxdefaultadmin' and oxtermversion='0'"));
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxacceptedterms where oxuserid='oxdefaultadmin' and oxtermversion='1'"));
 

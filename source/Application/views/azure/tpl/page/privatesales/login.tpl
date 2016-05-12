@@ -3,6 +3,7 @@
 [{/capture}]
 [{capture append="oxidBlock_content"}]
     <div class="accountLoginView">
+        [{include file="message/errors.tpl"}]
         <h1 id="loginAccount" class="pageHead">[{$oView->getTitle()}]</h1>
         [{if $oView->confirmTerms()}]
             [{include file="form/privatesales/accept_terms.tpl"}]

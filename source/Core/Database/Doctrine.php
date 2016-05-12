@@ -986,25 +986,24 @@ class Doctrine implements DatabaseInterface
         /** @var string $mySqlType E.g. "CHAR(4)" or "DECIMAL(5,2)" or "tinyint(1) unsigned" */
         $mySqlType = $this->getMetaColumnValueByKey($column, 'Type');
         /** Get the maximum display width for the type */
-
-
-        /** Match max length E.g CHAR(4) */
-        if (preg_match("/^(.+)\((\d+)/", $mySqlType, $matches)) {
-            if (is_numeric($matches[2])) {
-                $maxLength = $matches[2];
-            }
+        
         /** Match Precision an scale E.g DECIMAL(5,2) */
-        } elseif (preg_match("/^(.+)\((\d+),(\d+)/", $mySqlType, $matches)) {
+        if (preg_match("/^(.+)\((\d+),(\d+)/", $mySqlType, $matches)) {
             if (is_numeric($matches[2])) {
                 $maxLength = $matches[2];
             }
             if (is_numeric($matches[3])) {
                 $scale = $matches[3];
             }
-            /**
-             * Match List type E.g. SET('A', 'B', 'CDE)
-             * In this case the length will be the string length of the longest element
-             */
+            /** Match max length E.g CHAR(4) */
+        } elseif (preg_match("/^(.+)\((\d+)/", $mySqlType, $matches)){
+            if (is_numeric($matches[2])) {
+                $maxLength = $matches[2];
+            }
+        /**
+         * Match List type E.g. SET('A', 'B', 'CDE)
+         * In this case the length will be the string length of the longest element
+         */
         } elseif (preg_match("/^(enum|set)\((.*)\)$/i", strtolower($mySqlType), $matches)) {
             if ($matches[2]) {
                 $pieces = explode(",", $matches[2]);

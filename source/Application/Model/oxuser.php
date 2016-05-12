@@ -1046,10 +1046,6 @@ class oxUser extends oxBase
      * @param array  $aInvAddress array of user profile data
      * @param array  $aDelAddress array of user profile data
      *
-     * @todo currently this method calls oxUser class methods responsible for
-     * input validation. In next major release these should be replaced by direct
-     * oxInputValidation calls
-     *
      * @throws oxUserException, oxInputException
      */
     public function checkValues($sLogin, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)

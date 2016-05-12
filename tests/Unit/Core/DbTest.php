@@ -345,7 +345,7 @@ class DbTest extends \OxidTestCase
     }
 
     /**
-     * Test case for oxDb::_notifyConnectionErrors()
+     * Test case for oxDb::notifyConnectionErrors()
      *
      * @expectedException oxConnectionException
      */
@@ -366,18 +366,18 @@ class DbTest extends \OxidTestCase
         $oDb->expects($this->once())->method('_sendMail')->with($this->equalTo('adminemail'), $this->equalTo('Offline warning!'));
 
         $this->setExpectedException('oxConnectionException');
-        $oDb->_notifyConnectionErrors($exception);
+        $oDb->notifyConnectionErrors($exception);
     }
 
     /**
-     * Test case for oxDb::_onConnectionError()
+     * Test case for oxDb::onConnectionError()
      */
     public function testOnConnectionError()
     {
         $exception = oxNew('Exception');
-        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("_notifyConnectionErrors"));
-        $oDb->expects($this->once())->method('_notifyConnectionErrors')->with($this->equalTo($exception));
-        $oDb->_onConnectionError($exception);
+        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("notifyConnectionErrors"));
+        $oDb->expects($this->once())->method('notifyConnectionErrors')->with($this->equalTo($exception));
+        $oDb->onConnectionError($exception);
     }
 
     /**

@@ -75,6 +75,7 @@ class Database
      */
     protected static $_aTblDescCache = array();
 
+    // Todo remove all properties which are pulled from configFile and pull them directly from there.
     /**
      * Database type
      *
@@ -173,7 +174,6 @@ class Database
      */
     private static $_sLocalDateFormat;
 
-
     /**
      * Returns the singleton instance of this class or of a sub class of this class
      *
@@ -203,7 +203,8 @@ class Database
         if (static::$_oDB === null) {
             static::$_oDB = $databaseFactory->createDatabase();
             /** Post connect actions will be taken only once per connection */
-            $databaseFactory->prepareDatabaseConnection(static::$_oDB);
+            // Todo implement functionality of prepareDatabaseConnection here and than refactor it to a own method
+            // $databaseFactory->prepareDatabaseConnection(static::$_oDB);
             static::$_oDB->execute('SET @@session.sql_mode = ""');
 
         }
@@ -283,6 +284,8 @@ class Database
     }
 
     /**
+     * Retrieve the connection related configuration parameters from the class configuration and return them in an array.
+     *
      * @return array
      */
     protected function buildConnectionParameters()
@@ -291,18 +294,18 @@ class Database
          * @var string $databaseDriver
          * At the moment the database adapter uses always 'pdo_mysql'
          */
-        $databaseDriver = self::_getConfigParam('_dbType');
+        $databaseDriver = $this->getConfigParam('_dbType');
         /**
          * @var string $databaseHost
          * The database host to connect to.
          * Be aware, that the connection between the MySQL client and the server is unencrypted.
          */
-        $databaseHost = self::_getConfigParam('_dbHost');
+        $databaseHost = $this->getConfigParam('_dbHost');
         /**
          * @var integer $databasePort
          * TCP port to connect to
          */
-        $databasePort = (int) self::_getConfigParam('_dbPort');
+        $databasePort = (int) $this->getConfigParam('_dbPort');
         if (!$databasePort) {
             $databasePort = 3306;
         }
@@ -310,17 +313,17 @@ class Database
          * @var string $databaseName
          * The name of the database or scheme to connect to
          */
-        $databaseName = self::_getConfigParam('_dbName');
+        $databaseName = $this->getConfigParam('_dbName');
         /**
          * @var string $databaseUser
          * The user id of the database user
          */
-        $databaseUser = self::_getConfigParam('_dbUser');
+        $databaseUser = $this->getConfigParam('_dbUser');
         /**
          * @var string $databasePassword
          * The password of the database user
          */
-        $databasePassword = self::_getConfigParam('_dbPwd');
+        $databasePassword = $this->getConfigParam('_dbPwd');
 
         $connectionParameters = array(
             'databaseDriver'    => $databaseDriver,
@@ -332,10 +335,10 @@ class Database
         );
 
         /** The charset has to be set during the connection to the database */
-        if (self::_getConfigParam('_iUtfMode')) {
+        if ($this->getConfigParam('_iUtfMode')) {
             $charset = 'utf8';
         } else {
-            $charset = self::_getConfigParam('_sDefaultDatabaseConnection');
+            $charset = $this->getConfigParam('_sDefaultDatabaseConnection');
         }
         if ($charset) {
             $connectionParameters = array_merge($connectionParameters, array('connectionCharset' => $charset));
@@ -345,6 +348,7 @@ class Database
     }
 
     /**
+     * Return false if the database connection has not been configured in the eShop configuration file.
      *
      * @param ConfigFile $config
      *
@@ -386,6 +390,7 @@ class Database
 
     /**
      * Setter for database connection object
+     * Todo Ask shiftas of the use of this method and if it can be removed
      *
      * @param Database $newDbObject
      */
@@ -396,6 +401,7 @@ class Database
 
     /**
      * Database connection object getter
+     * Todo Ask shiftas of the use of this method and if it can be removed
      *
      * @return Database
      */
@@ -406,6 +412,7 @@ class Database
 
     /**
      * Call to reset table description cache
+     * Todo Check, if this could be private
      */
     public function resetTblDescCache()
     {
@@ -432,6 +439,7 @@ class Database
     /**
      * Checks if given string is valid database field name.
      * It must contain from alphanumeric plus dot and underscore symbols
+     * Todo refactor and move to Doctrine class
      *
      * @param string $field field name
      *
@@ -444,6 +452,7 @@ class Database
 
     /**
      * Escape string for using in mysql statements
+     * Todo deprecate in 5.3 and move to doctrine class
      *
      * @param string $string string which will be escaped
      *
@@ -466,6 +475,7 @@ class Database
 
     /**
      * Return local config value by given name.
+     * Todo retrieve values directly from configFile
      *
      * @param string $configName returning config name.
      *
@@ -504,20 +514,7 @@ class Database
 
     /**
      * Returns database instance object for given type
-     *
-     * @deprecated on b-dev (2015-10-23); Use self::createDatabaseConnection() instead.
-     *
-     * @param bool $instanceType instance type
-     *
-     * @return mysql_driver_ADOConnection|mysqli_driver_ADOConnection
-     */
-    protected function _getDbInstance($instanceType = false)
-    {
-        return $this->createDatabaseConnection($instanceType);
-    }
-
-    /**
-     * Returns database instance object for given type
+     * Todo Remove this method
      *
      * @param bool $instanceType instance type
      *
@@ -525,7 +522,7 @@ class Database
      */
     protected function createDatabaseConnection($instanceType)
     {
-        $databaseType = self::_getConfigParam("_dbType");
+        $databaseType = $this->getConfigParam("_dbType");
 
         /** @var mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection */
         $connection = ADONewConnection($databaseType, $this->_getModules());
@@ -542,12 +539,15 @@ class Database
 
     /**
      * Returns which AdoDbLite modules should be loaded when creating database connection.
+     * Todo Implement admin auditing/logging with doctrine
+     * Todo Implement perfmon with doctrine (?)
+     * Todo remove this method
      *
      * @return string
      */
     protected function _getModules()
     {
-        $debugLevel = self::_getConfigParam('_iDebug');
+        $debugLevel = $this->getConfigParam('_iDebug');
 
         $this->_registerAdoDbExceptionHandler();
 
@@ -556,7 +556,7 @@ class Database
             $modules = 'perfmon';
         }
 
-        if ($this->isAdmin() && self::_getConfigParam('_blLogChangesInAdmin')) {
+        if ($this->isAdmin() && $this->getConfigParam('_blLogChangesInAdmin')) {
             $modules .= ($modules ? ':' : '') . 'oxadminlog';
         }
 
@@ -565,22 +565,24 @@ class Database
 
     /**
      * Initiates actual database connection.
+     * Todo remove this method
      *
      * @param mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection
      * @param bool                                                   $instanceType
      */
     protected function connectToDatabase($connection, $instanceType)
     {
-        $host = self::_getConfigParam("_dbHost");
-        $user = self::_getConfigParam("_dbUser");
-        $password = self::_getConfigParam("_dbPwd");
-        $databaseName = self::_getConfigParam("_dbName");
+        $host = $this->getConfigParam("_dbHost");
+        $user = $this->getConfigParam("_dbUser");
+        $password = $this->getConfigParam("_dbPwd");
+        $databaseName = $this->getConfigParam("_dbName");
 
         $connection->connect($host, $user, $password, $databaseName);
     }
 
     /**
      * Registers AdoDb exceptions handler for SQL errors
+     * Todo remove this method
      */
     protected function _registerAdoDbExceptionHandler()
     {
@@ -592,6 +594,7 @@ class Database
 
     /**
      * Setting up connection parameters - sql mode, encoding, logging etc
+     * Todo remove this method
      *
      * @deprecated on b-dev (2015-10-23); Use self::prepareDatabaseConnection() instead.
      *
@@ -604,12 +607,13 @@ class Database
 
     /**
      * Setting up connection parameters - sql mode, encoding, logging etc.
+     * Todo remove this method
      *
      * @param DatabaseInterface $connection database connection instance
      */
     protected function prepareDatabaseConnection(DatabaseInterface $connection)
     {
-        $debugLevel = self::_getConfigParam('_iDebug');
+        $debugLevel = $this->getConfigParam('_iDebug');
         if ($debugLevel == 2 || $debugLevel == 3 || $debugLevel == 4 || $debugLevel == 7) {
             try {
                 $connection->execute('truncate table adodb_logsql');
@@ -642,7 +646,7 @@ class Database
      *
      * @return PHPMailer
      */
-    protected static function sendMail($email, $subject, $body)
+    protected function sendMail($email, $subject, $body)
     {
         $mailer = new PHPMailer();
         $mailer->isMail();
@@ -664,7 +668,7 @@ class Database
      */
     protected function notifyConnectionErrors(\Exception $exception)
     {
-        if (($adminEmail = self::_getConfigParam('_sAdminEmail'))) {
+        if (($adminEmail = $this->getConfigParam('_sAdminEmail'))) {
             $failedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
 
             $date = date(DATE_RFC822); // RFC 822 (example: Mon, 15 Aug 05 15:52:01 +0000)
@@ -684,7 +688,7 @@ class Database
                 Script: {$script}
                 Referrer: {$referrer}";
 
-            self::sendMail($adminEmail, $warningSubject, $warningBody);
+            $this->sendMail($adminEmail, $warningSubject, $warningBody);
         }
 
         // Re throw the exception
@@ -699,6 +703,7 @@ class Database
     /**
      * In case of connection error - redirects to setup
      * or send notification message for shop owner
+     * The exception is not rethrown as the shop tries t6o use the database during its exception handling which will cause an uncaught exception
      *
      * @param DatabaseConnectionException $exception Database exception
      */
@@ -721,7 +726,7 @@ class Database
     }
 
     /**
-     * Deprecated method to be removed
+     * Todo This method is deprecated since v5.2.0 and has to be removed
      *
      * @param array $array
      *
@@ -740,9 +745,9 @@ class Database
         $exception->debugOut();
     }
 
-
     /**
      * Extracts and returns table metadata from DB.
+     * This method is extended in the Enterprise Edition.
      *
      * @param string $tableName
      *

@@ -2205,7 +2205,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $sPicVal = $this->getPictureUrl($i);
             $sIcoVal = $this->getIconUrl($i);
             if (!$oStr->strstr($sIcoVal, 'nopic_ico.jpg') && !$oStr->strstr($sIcoVal, 'nopic.jpg') &&
-                !$oStr->strstr($sPicVal, 'nopic_ico.jpg') && !$oStr->strstr($sPicVal, 'nopic.jpg')
+                !$oStr->strstr($sPicVal, 'nopic_ico.jpg') && !$oStr->strstr($sPicVal, 'nopic.jpg') &&
+                $sPicVal !== null
             ) {
                 if ($iCntr) {
                     $blMorePic = true;

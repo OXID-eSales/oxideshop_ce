@@ -375,9 +375,12 @@ class DbTest extends \OxidTestCase
      */
     public function testOnConnectionError()
     {
-        $exception = oxNew('Exception');
-        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("notifyConnectionErrors"));
+        $exception = oxNew('OxidEsales\Eshop\Core\exception\DatabaseConnectionException', 'THE CONNECTION ERROR MESSAGE!', 42, new \Exception());
+
+        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array('notifyConnectionErrors', 'redirectToMaintenancePage'));
         $oDb->expects($this->once())->method('notifyConnectionErrors')->with($this->equalTo($exception));
+        $oDb->expects($this->once())->method('redirectToMaintenancePage');
+
         $oDb->onConnectionError($exception);
     }
 

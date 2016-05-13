@@ -887,8 +887,9 @@ class Doctrine implements DatabaseInterface
                 $item->default_value = $default;
             }
 
-            /** These varaibles were set only when there is was value in the previous implementation with ADOdb Lite.
-                Do it the same way here for compatiblity.
+            /**
+             * These variables were set only when there was a value in the previous implementation with ADOdb Lite.
+             * We do it the same way here for compatibility.
              */
             list($max_length, $scale) = $this->getColumnMaxLengthAndScale($column, $item->type);
             if(-1 !== $max_length){
@@ -903,7 +904,7 @@ class Doctrine implements DatabaseInterface
                 unset($item->has_default, $item->default_value);
             }
 
-            /** Additional properties not fount in ADODB lite */
+            /** Additional properties not found in ADODB lite */
             $item->comment = $comment;
             $item->characterSet = $characterSet;
             $item->collation = $collation;

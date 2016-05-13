@@ -1061,7 +1061,7 @@ class oxUser extends oxBase
         $sLogin = $oInputValidator->checkLogin($this, $sLogin, $aInvAddress);
 
         // 2. checking email
-        $oInputValidator->checkEmail($this, $sLogin, $aInvAddress);
+        $oInputValidator->checkEmail($this, $sLogin);
 
         // 3. password
         $oInputValidator->checkPassword($this, $sPassword, $sPassword2, ((int) oxRegistry::getConfig()->getRequestParameter('option') == 3));

@@ -3838,9 +3838,11 @@ class ArticleTest extends \OxidTestCase
         $oArticle = $this->_createArticle('_testArt');
 
         $oDb = oxDb::getDB();
-        $oDb->getOne("update oxarticles set oxtimestamp = '2005-03-24 14:33:53' where oxid = '_testArt'");
+        $oDb->execute("update oxarticles set oxtimestamp = '2005-03-24 14:33:53' where oxid = '_testArt'");
         $sTimeStamp = $oDb->getOne("select oxtimestamp from oxarticles where oxid = '_testArt'");
+
         $rs = $oArticle->updateSoldAmount(1);
+
         $this->assertTrue($rs->EOF);
         $this->assertEquals(1, $oDb->getOne("select oxsoldamount from oxarticles where oxid = '_testArt'"));
         $this->assertNotEquals($sTimeStamp, $oDb->getOne("select oxtimestamp from oxarticles where oxid = '_testArt'"));

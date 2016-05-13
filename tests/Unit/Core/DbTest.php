@@ -362,11 +362,11 @@ class DbTest extends \OxidTestCase
 
         $exception = oxNew('Exception');
 
-        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("getConfig", "_sendMail"));
+        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("getConfig", "sendMail"));
         $oDb->setConfig($oConfigFile);
-        $oDb->expects($this->once())->method('_sendMail')->with($this->equalTo('adminemail'), $this->equalTo('Offline warning!'));
+        $oDb->expects($this->once())->method('sendMail')->with($this->equalTo('adminemail'), $this->equalTo('Offline warning!'));
 
-        $this->setExpectedException('oxConnectionException');
+        $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseException');
         $oDb->notifyConnectionErrors($exception);
     }
 

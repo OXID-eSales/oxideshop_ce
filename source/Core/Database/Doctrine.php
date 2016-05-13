@@ -897,6 +897,8 @@ class Doctrine implements DatabaseInterface
             }
             if(-1 !== $scale){
                 $item->scale = (string)$scale;
+            } else {
+                $item->scale = null;
             }
 
             /** Unset has_default and default_value for binary types */

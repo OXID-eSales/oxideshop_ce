@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -1078,7 +1078,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $this->_blNotBuyableParent = false;
 
 
-        $aData = $this->_loadFromDb($sOXID);
+            $aData = $this->_loadFromDb($sOXID);
 
         if ($aData) {
             $this->assign($aData);
@@ -1713,7 +1713,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     {
         $sVendorId = false;
         if ($this->oxarticles__oxvendorid->value) {
-            $sVendorId = $this->oxarticles__oxvendorid->value;
+                $sVendorId = $this->oxarticles__oxvendorid->value;
 
         }
 
@@ -1732,7 +1732,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $sManufacturerId = false;
         if ($this->oxarticles__oxmanufacturerid->value) {
 
-            $sManufacturerId = $this->oxarticles__oxmanufacturerid->value;
+                $sManufacturerId = $this->oxarticles__oxmanufacturerid->value;
 
         }
 

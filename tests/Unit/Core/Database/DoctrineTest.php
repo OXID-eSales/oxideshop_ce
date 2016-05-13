@@ -44,7 +44,7 @@ class DoctrineTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->database = new Doctrine();
+        $this->database = \oxDb::getDb();
     }
 
     /**

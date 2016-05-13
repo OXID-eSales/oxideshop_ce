@@ -31,8 +31,8 @@ class EditionRootPathProviderTest extends UnitTestCase
     public function providerReturnsEditionPath()
     {
         return array(
-            array(EditionSelector::ENTERPRISE, rtrim(getShopBasePath(), '/') . '/Edition/Enterprise/'),
-            array(EditionSelector::PROFESSIONAL, rtrim(getShopBasePath(), '/') . '/Edition/Professional/'),
+            array(EditionSelector::ENTERPRISE, rtrim(getShopBasePath(), '/') . '/vendor/oxid-esales/oxideshop-ee/'),
+            array(EditionSelector::PROFESSIONAL, rtrim(getShopBasePath(), '/') . '/vendor/oxid-esales/oxideshop-pe/'),
             array(EditionSelector::COMMUNITY, rtrim(getShopBasePath(), '/') . '/'),
         );
     }

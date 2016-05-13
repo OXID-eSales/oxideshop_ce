@@ -7,10 +7,10 @@ if ($testConfig->getShopEdition() === 'CE') {
     $serviceCaller->setParameter('importSql', '@'. __DIR__ .'/Fixtures/testdata.sql');
 }
 if ($testConfig->getShopEdition() === 'PE') {
-    $serviceCaller->setParameter('importSql', '@' . $testConfig->getShopPath() . '/Edition/Professional/Tests/Fixtures/testdata.sql');
+    $serviceCaller->setParameter('importSql', '@' . $testConfig->getShopPath() . '/vendor/oxid-esales/oxideshop-pe/Tests/Fixtures/testdata.sql');
 }
 if ($testConfig->getShopEdition() === 'EE') {
-    $serviceCaller->setParameter('importSql', '@' . $testConfig->getShopPath() . '/Edition/Enterprise/Tests/Fixtures/testdata.sql');
+    $serviceCaller->setParameter('importSql', '@' . $testConfig->getShopPath() . '/vendor/oxid-esales/oxideshop-ee/Tests/Fixtures/testdata.sql');
 }
 $serviceCaller->callService('ShopPreparation', 1);
 

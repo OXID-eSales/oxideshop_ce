@@ -30,11 +30,11 @@ namespace OxidEsales\Eshop\Core\Edition;
  */
 class EditionRootPathProvider
 {
-    const EDITIONS_DIRECTORY = 'Edition';
+    const EDITIONS_DIRECTORY = 'vendor/oxid-esales';
 
-    const ENTERPRISE_DIRECTORY = 'Enterprise';
+    const ENTERPRISE_DIRECTORY = 'oxideshop-ee';
 
-    const PROFESSIONAL_DIRECTORY = 'Professional';
+    const PROFESSIONAL_DIRECTORY = 'oxideshop-pe';
 
     /** @var EditionSelector */
     private $editionSelector;

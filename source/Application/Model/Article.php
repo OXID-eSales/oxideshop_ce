@@ -1365,7 +1365,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         if (!$myConfig->getConfigParam('bl_perfLoadSimilar')) {
             return;
         }
-        
+
         // Check configured number of similar products (bug #6062)
         if($myConfig->getConfigParam('iNrofSimilarArticles') < 1) {
             return;
@@ -1384,7 +1384,12 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         $aList = $this->_getSimList($sAttribs, $iCnt);
 
         if (count($aList)) {
-            uasort($aList, 'cmpart');
+            uasort($aList, function($a, $b) {
+                if ($a->cnt == $b->cnt) {
+                    return 0;
+                }
+                return ($a->cnt < $b->cnt) ? -1 : 1;
+            });
 
             $sSearch = $this->_generateSimListSearchStr($sArticleTable, $aList);
 

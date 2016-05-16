@@ -193,15 +193,15 @@ function debug($mVar)
  * @param object $a first compare item
  * @param object $b second compre item
  *
+ * @deprecated since v6.0.0 (2016-05-16); Moved as anonymous function to Article class.
+ *
  * @return integer
  */
 function cmpart($a, $b)
 {
-    // sorting for crossselling
     if ($a->cnt == $b->cnt) {
         return 0;
     }
-
     return ($a->cnt < $b->cnt) ? -1 : 1;
 }
 

@@ -749,20 +749,13 @@ class oxwArticleDetails extends oxWidget
     }
 
     /**
-     * Template variable getter. Returns if price alarm is disabled
+     * Template variable getter. Returns if price alarm is enabled
      *
-     * @return object
+     * @return bool
      */
     public function isPriceAlarm()
     {
-        // #419 disabling price alarm if article has fixed price
-        $oProduct = $this->getProduct();
-        $sFixedPriceField = 'oxarticles__oxblfixedprice';
-        if (isset($oProduct->$sFixedPriceField->value) && $oProduct->$sFixedPriceField->value) {
-            return 0;
-        }
-
-        return 1;
+        return $this->getProduct()->isPriceAlarm();
     }
 
     /**

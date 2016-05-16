@@ -980,19 +980,13 @@ class ArticleDetailsController extends \oxUBase
     }
 
     /**
-     * Template variable getter. Returns if price alarm is disabled
+     * Template variable getter. Returns if price alarm is enabled
      *
-     * @return int
+     * @return bool
      */
     public function isPriceAlarm()
     {
-        // #419 disabling price alarm if article has fixed price
-        $article = $this->getProduct();
-        if (isset($article->oxarticles__oxblfixedprice->value) && $article->oxarticles__oxblfixedprice->value) {
-            return 0;
-        }
-
-        return 1;
+        return $this->getProduct()->isPriceAlarm();
     }
 
     /**

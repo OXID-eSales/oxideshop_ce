@@ -716,7 +716,7 @@ class ArticleDetailsTest extends \OxidTestCase
     }
 
     /**
-     * Test is product added to price allarm.
+     * Test is product added to price alarm.
      *
      * @return null
      */
@@ -728,11 +728,11 @@ class ArticleDetailsTest extends \OxidTestCase
         $oView = $this->getMock('oxwArticleDetails', array('getProduct'));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
 
-        $this->assertEquals(0, $oView->isPriceAlarm());
+        $this->assertEquals(false, $oView->isPriceAlarm());
     }
 
     /**
-     * Test is product added to price allarm - true test.
+     * Test is product added to price alarm - true test.
      *
      * @return null
      */
@@ -744,7 +744,7 @@ class ArticleDetailsTest extends \OxidTestCase
         $oView = $this->getMock('oxwArticleDetails', array('getProduct'));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
 
-        $this->assertEquals(1, $oView->isPriceAlarm());
+        $this->assertEquals(true, $oView->isPriceAlarm());
     }
 
     /**

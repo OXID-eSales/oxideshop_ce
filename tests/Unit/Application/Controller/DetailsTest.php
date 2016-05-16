@@ -878,7 +878,7 @@ class DetailsTest extends \OxidTestCase
         $oView = $this->getMock('details', array('getProduct'));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
 
-        $this->assertEquals(0, $oView->isPriceAlarm());
+        $this->assertEquals(false, $oView->isPriceAlarm());
     }
 
     /**
@@ -894,7 +894,7 @@ class DetailsTest extends \OxidTestCase
         $oView = $this->getMock('details', array('getProduct'));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
 
-        $this->assertEquals(1, $oView->isPriceAlarm());
+        $this->assertEquals(true, $oView->isPriceAlarm());
     }
 
     /**

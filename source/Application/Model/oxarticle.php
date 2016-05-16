@@ -783,6 +783,17 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
     }
 
     /**
+     * Checks if price alarm is enabled.
+     *
+     * @return bool
+     */
+    public function isPriceAlarm()
+    {
+        // #419 disabling price alarm if article has fixed price
+        return !(isset($this->oxarticles__oxblfixedprice->value) && $this->oxarticles__oxblfixedprice->value);
+    }
+
+    /**
      * Get persistent parameters
      *
      * @deprecated on b-dev (2015-11-30); Not used anymore. Setting pers params to session was removed since 2.7.

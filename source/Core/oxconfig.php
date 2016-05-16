@@ -1854,6 +1854,12 @@ class oxConfig extends oxSuperCfg
 
         // Update value only for current shop
         if ($sShopId == $this->getShopId()) {
+            if($this->getConfigParam($sVarName) === $sVarVal) {
+                //if the value is equal to the current value in the cache
+                //do not save it for performance reasons
+                //caller is responsible for not calling setConfigParam manually before calling this method
+                return;
+            }
             $this->setConfigParam($sVarName, $sVarVal);
         }
 

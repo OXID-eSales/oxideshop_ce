@@ -38,7 +38,7 @@ if (!defined('OX_BASE_PATH')) {
 require_once OX_BASE_PATH . 'modules/functions.php';
 
 // Generic utility method file including autoloading definition
-require_once OX_BASE_PATH . 'Core/oxfunctions.php';
+require_once OX_BASE_PATH . 'oxfunctions.php';
 
 // Composer autoloader.
 registerComposerAutoload();

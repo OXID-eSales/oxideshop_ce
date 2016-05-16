@@ -42,7 +42,7 @@ use OxidEsales\Eshop\Application\Controller\ContentController;
 /**
  * Includes emos script formatter class
  */
-require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'Smarty/Plugin/emos.php';
+require_once __DIR__ . '/emos.php';
 
 /**
  * This class is a reference implementation of a PHP Function to include

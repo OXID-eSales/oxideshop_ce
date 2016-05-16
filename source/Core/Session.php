@@ -28,7 +28,7 @@ use oxUtilsObject;
 use oxBasket;
 use OxidEsales\Eshop\Application\Model\Basket;
 
-DEFINE('_DB_SESSION_HANDLER', getShopBasePath() . 'Core/adodblite/session/adodb-session.php');
+DEFINE('_DB_SESSION_HANDLER', __DIR__ . '/adodblite/session/adodb-session.php');
 
 /**
  * Session manager.

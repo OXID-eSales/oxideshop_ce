@@ -371,7 +371,7 @@ class UtilsViewTest extends \OxidTestCase
                         )
         );
 
-        $oSmarty = $this->getMock('smarty', array('register_resource', 'register_prefilter'));
+        $oSmarty = $this->getMock('\Smarty', array('register_resource', 'register_prefilter'));
         $oSmarty->expects($this->once())->method('register_resource')
             ->with(
                 $this->equalTo('ox'),
@@ -387,7 +387,7 @@ class UtilsViewTest extends \OxidTestCase
         $oSmarty->expects($this->once())->method('register_prefilter')
             ->with($this->equalTo('smarty_prefilter_oxblock'));
 
-        $oUtilsView = oxNew('oxutilsview');
+        $oUtilsView = oxNew('oxUtilsView');
         $oUtilsView->setConfig($config);
         $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
         $oUtilsView->UNITsmartyCompileCheck($oSmarty);
@@ -439,10 +439,10 @@ class UtilsViewTest extends \OxidTestCase
             'compile_id'      => md5($config->getTemplateDir(false) . '__' . $config->getShopId()),
             'debugging'       => true,
             'compile_check'   => true,
-            'plugins_dir'     => array($this->getConfigParam('sShopDir') . 'Core/Smarty/Plugin', 'plugins'),
+            'plugins_dir'     => array($this->getConfigParam('sCoreDir') . 'Smarty/Plugin', 'plugins'),
         );
 
-        $oSmarty = $this->getMock('smarty', array('register_resource'));
+        $oSmarty = $this->getMock('\Smarty', array('register_resource'));
         $oSmarty->expects($this->once())->method('register_resource');
 
         $oUtilsView = oxNew('oxUtilsView');

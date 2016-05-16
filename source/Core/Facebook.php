@@ -28,7 +28,7 @@ use BaseFacebook;
 use FacebookApiException;
 
 try {
-    include_once getShopBasePath() . "Core/facebook/facebook.php";
+    include_once __DIR__ . "/facebook/facebook.php";
 } catch (Exception $oEx) {
     // skipping class includion if curl or json is not active
     oxRegistry::getConfig()->setConfigParam("bl_showFbConnect", false);

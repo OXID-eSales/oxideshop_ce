@@ -35,7 +35,7 @@ use oxRegistry;
 use PHPMailer;
 
 // Including main ADODB include
-require_once getShopBasePath() . 'Core/adodblite/adodb.inc.php';
+require_once __DIR__ . '/adodblite/adodb.inc.php';
 
 /**
  * Database connection class
@@ -476,7 +476,7 @@ class Database
         global $ADODB_EXCEPTION;
         $ADODB_EXCEPTION = 'oxAdoDbException';
 
-        include_once getShopBasePath() . 'Core/adodblite/adodb-exceptions.inc.php';
+        include_once __DIR__ . '/adodblite/adodb-exceptions.inc.php';
     }
 
     /**

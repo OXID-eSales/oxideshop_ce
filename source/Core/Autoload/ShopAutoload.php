@@ -66,7 +66,7 @@ class ShopAutoload
         $filePath = '';
 
         if (in_array($class, $this->coreClasses)) {
-            $filePath = getShopBasePath() . "Core/" . $class . ".php";
+            $filePath = __DIR__. "/../" . $class . ".php";
         } else {
             $directories = $this->getClassDirectories();
             foreach ($directories as $directory) {
@@ -101,25 +101,16 @@ class ShopAutoload
      */
     protected function generateDirectories()
     {
-        $shopBasePath = getShopBasePath();
+        $shopBasePath = __DIR__ . "/../../";
         $aClassDirs = array(
             $shopBasePath . 'Core/',
             $shopBasePath . 'Application/Component/Widget/',
-            $shopBasePath . 'application/components/services/',
             $shopBasePath . 'Application/Component/',
             $shopBasePath . 'Application/Model/',
             $shopBasePath . 'Application/Controller/',
             $shopBasePath . 'Application/Controller/Admin/',
-            $shopBasePath . 'Application/Controller/Admin/Report/',
-            $shopBasePath . 'views/',
             $shopBasePath . 'Core/exception/',
-            $shopBasePath . 'Core/interface/',
-            $shopBasePath . 'Core/cache/',
-            $shopBasePath . 'Core/cache/connectors/',
-            $shopBasePath . 'admin/reports/',
-            $shopBasePath . 'admin/',
-            $shopBasePath . 'modules/',
-            $shopBasePath
+            $shopBasePath . 'Core/interface/'
         );
 
         return $aClassDirs;

@@ -34,21 +34,20 @@
  * @param Smarty &$smarty clever simulation of a method
  *
  * @deprecated v5.3 (2016-05-10); Econda will be moved to own module.
- *             
+ *
  * @return string
  */
-function smarty_insert_oxid_tracker( $params, &$smarty )
+function smarty_insert_oxid_tracker($params, &$smarty)
 {
-    $myConfig = oxRegistry::getConfig();
-    // econda is on ?
-    if ( $myConfig->getConfigParam( 'blEcondaActive' ) ) {
-        include_once $myConfig->getConfigParam( 'sCoreDir' ).'Smarty/Plugin/oxemosadapter.php';
+    $config = oxRegistry::getConfig();
+    if ($config->getConfigParam('blEcondaActive')) {
+        include_once __DIR__ . '/oxemosadapter.php';
 
-        $sOutput = oxRegistry::get("oxEmosAdapter")->getCode( $params, $smarty );
+        $output = oxRegistry::get("oxEmosAdapter")->getCode($params, $smarty);
 
         // returning JS code to output
-        if ( strlen( trim( $sOutput ) ) ) {
-            return "<div style=\"display:none;\">{$sOutput}</div>";
+        if (strlen(trim($output))) {
+            return "<div style=\"display:none;\">{$output}</div>";
         }
     }
 }

@@ -385,7 +385,7 @@ class Config extends SuperConfig
 
         $this->_loadVarsFromFile();
 
-        include getShopBasePath() . 'Core/oxconfk.php';
+        include __DIR__ . '/oxconfk.php';
 
         // setting ADODB timeout
         global $ADODB_SESS_LIFE;
@@ -530,8 +530,7 @@ class Config extends SuperConfig
             $this->setConfigParam('iDebug', $this->isProductiveMode() ? 0 : -1);
         }
 
-        $sCoreDir = $this->getConfigParam('sShopDir');
-        $this->setConfigParam('sCoreDir', $sCoreDir . '/Core/');
+        $this->setConfigParam('sCoreDir', __DIR__ . DIRECTORY_SEPARATOR);
     }
 
     /**

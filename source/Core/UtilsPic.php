@@ -28,7 +28,7 @@ use oxRegistry;
 /**
  * Including pictures generator functions file
  */
-require_once getShopBasePath() . "Core/utils/oxpicgenerator.php";
+require_once __DIR__ . "/utils/oxpicgenerator.php";
 
 /**
  * Image manipulation class

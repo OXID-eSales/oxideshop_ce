@@ -30,10 +30,16 @@ ini_set('url_rewriter.tags', '');
 
 use OxidEsales\Eshop\Setup\Dispatcher;
 
-require_once '../vendor/autoload.php';
+if (!defined('OX_BASE_PATH')) {
+    define('OX_BASE_PATH', __DIR__ . DIRECTORY_SEPARATOR . '/../');
+}
+
+require_once '../oxfunctions.php';
+
+registerComposerAutoload();
+registerShopAutoLoad();
+
 require_once 'functions.php';
-require_once '../Core/Exception/oxexception.php';
-require_once '../Core/Exception/oxsystemcomponentexception.php';
 
 $oDispatcher = new Dispatcher();
 $oDispatcher->run();

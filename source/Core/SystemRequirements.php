@@ -323,9 +323,6 @@ class SystemRequirements
      */
     public function checkServerPermissions($sPath = null, $iMinPerm = 777)
     {
-        $sVerPrefix = '';
-
-
         clearstatcache();
         $sPath = $sPath ? $sPath : getShopBasePath();
 
@@ -339,11 +336,10 @@ class SystemRequirements
         }
 
         $sTmp = "$sPath/tmp/";
-        if (class_exists('oxConfig')) {
-            $sCfgTmp = $this->getConfig()->getConfigParam('sCompileDir');
-            if (strpos($sCfgTmp, '<sCompileDir_') === false) {
-                $sTmp = $sCfgTmp;
-            }
+        $config = new ConfigFile(getShopBasePath() . "/config.inc.php");
+        $sCfgTmp = $config->getVar('sCompileDir');
+        if ($sCfgTmp && strpos($sCfgTmp, '<sCompileDir') === false) {
+            $sTmp = $sCfgTmp;
         }
 
         $aPathsToCheck = array(
@@ -375,7 +371,6 @@ class SystemRequirements
             }
 
             // testing if file permissions >= $iMinPerm
-            //if ( ( (int) substr( decoct( fileperms( $sFullPath ) ), 2 ) ) < $iMinPerm ) {
             if (!is_readable($sPathToCheck) || !is_writable($sPathToCheck)) {
                 $iModStat = 0;
                 break;

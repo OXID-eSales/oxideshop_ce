@@ -49,13 +49,13 @@ class Registry
      */
     public static function get($className)
     {
-        $className = strtolower($className);
-        if (isset(self::$instances[$className])) {
-            return self::$instances[$className];
+        $key = strtolower($className);
+        if (isset(self::$instances[$key])) {
+            return self::$instances[$key];
         } else {
-            self::$instances[$className] = oxNew($className);
+            self::$instances[$key] = oxNew($className);
 
-            return self::$instances[$className];
+            return self::$instances[$key];
         }
     }
 

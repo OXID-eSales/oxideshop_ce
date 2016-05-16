@@ -660,20 +660,14 @@ class Config extends SuperConfig
      * @param string $name  Name of parameter.
      * @param bool   $blRaw Get unescaped parameter.
      *
-     * @deprecated on b-dev (2015-06-10);
-     * Use oxConfig::getRequestEscapedParameter() or oxConfig::getRequestRawParameter().
+     * @deprecated on b-dev (2015-06-10); Use Request::getRequestParameter() or Request::getRequestEscapedParameter().
      *
      * @return mixed
      */
     public function getRequestParameter($name, $blRaw = false)
     {
-        if ($blRaw) {
-            $sValue = $this->getRequestRawParameter($name);
-        } else {
-            $sValue = $this->getRequestEscapedParameter($name);
-        }
-
-        return $sValue;
+        $request = Registry::get(Request::class);
+        return $blRaw ? $request->getRequestParameter($name) : $request->getRequestEscapedParameter($name);
     }
 
     /**
@@ -682,19 +676,13 @@ class Config extends SuperConfig
      * @param string $name         Name of parameter.
      * @param string $defaultValue Default value if no value provided.
      *
+     * @deprecated on 6.0.0 (2016-05-16); Use OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()
+     *
      * @return mixed
      */
     public function getRequestEscapedParameter($name, $defaultValue = null)
     {
-        $value = $this->getRequestRawParameter($name, $defaultValue);
-
-        // TODO: remove this after special chars concept implementation
-        $isAdmin = $this->isAdmin() && $this->getSession()->getVariable("blIsAdmin");
-        if ($value !== null && !$isAdmin) {
-            $this->checkParamSpecialChars($value);
-        }
-
-        return $value;
+        return Registry::get(Request::class)->getRequestEscapedParameter($name, $defaultValue);
     }
 
     /**
@@ -703,19 +691,13 @@ class Config extends SuperConfig
      * @param string $name         Name of parameter.
      * @param string $defaultValue Default value if no value provided.
      *
+     * @deprecated on 6.0.0 (2016-05-16); Use OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()
+     *
      * @return mixed
      */
     public function getRequestRawParameter($name, $defaultValue = null)
     {
-        if (isset($_POST[$name])) {
-            $value = $_POST[$name];
-        } elseif (isset($_GET[$name])) {
-            $value = $_GET[$name];
-        } else {
-            $value = $defaultValue;
-        }
-
-        return $value;
+        return Registry::get(Request::class)->getRequestParameter($name, $defaultValue);
     }
 
     /**
@@ -768,33 +750,7 @@ class Config extends SuperConfig
      */
     public function checkParamSpecialChars(& $sValue, $aRaw = null)
     {
-        if (is_object($sValue)) {
-            return $sValue;
-        }
-
-        if (is_array($sValue)) {
-            $newValue = array();
-            foreach ($sValue as $sKey => $sVal) {
-                $sValidKey = $sKey;
-                if (!$aRaw || !in_array($sKey, $aRaw)) {
-                    $this->checkParamSpecialChars($sValidKey);
-                    $this->checkParamSpecialChars($sVal);
-                    if ($sValidKey != $sKey) {
-                        unset ($sValue[$sKey]);
-                    }
-                }
-                $newValue[$sValidKey] = $sVal;
-            }
-            $sValue = $newValue;
-        } elseif (is_string($sValue)) {
-            $sValue = str_replace(
-                array('&', '<', '>', '"', "'", chr(0), '\\', "\n", "\r"),
-                array('&amp;', '&lt;', '&gt;', '&quot;', '&#039;', '', '&#092;', '&#10;', '&#13;'),
-                $sValue
-            );
-        }
-
-        return $sValue;
+        return Registry::get(Request::class)->checkParamSpecialChars($sValue, $aRaw);
     }
 
     /**

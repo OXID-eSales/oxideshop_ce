@@ -58,55 +58,6 @@ class FunctionsTest extends \OxidTestCase
         parent::tearDown();
     }
 
-    /**
-     * Testing request uri getter
-     */
-    public function testGetRequestUrl()
-    {
-        $_SERVER["REQUEST_METHOD"] = 'GET';
-        $_SERVER['REQUEST_URI'] = $sUri = 'test.php?param1=value1&param2=value2';
-
-        $this->assertEquals(str_replace(array('&', 'test.php'), array('&amp;', 'index.php'), $sUri), getRequestUrl());
-    }
-
-    /**
-     * Testing request uri getter
-     */
-    public function testGetRequestUrlEmptyParams()
-    {
-        $_SERVER["REQUEST_METHOD"] = 'GET';
-        $_SERVER['REQUEST_URI'] = $sUri = '/shop/';
-
-        $this->assertNull(getRequestUrl());
-    }
-
-    /**
-     * Testing request uri getter
-     */
-    public function testGetRequestUrlSubfolder()
-    {
-        $_SERVER["REQUEST_METHOD"] = 'GET';
-        $_SERVER['SCRIPT_URI'] = $sUri = '/shop/?cl=details';
-
-        $this->assertEquals('index.php?cl=details', getRequestUrl());
-    }
-
-    /**
-     * Testing request removing sid from link
-     */
-    public function testGetRequestUrl_removingSID()
-    {
-        $_SERVER["REQUEST_METHOD"] = 'GET';
-        $_SERVER['REQUEST_URI'] = 'test.php?param1=value1&sid=zzz&sysid=vvv&param2=ttt';
-        $this->assertEquals('index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', getRequestUrl());
-
-        $_SERVER['REQUEST_URI'] = 'test.php?sid=zzz&param1=value1&sysid=vvv&param2=ttt';
-        $this->assertEquals('index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', getRequestUrl());
-
-        $_SERVER['REQUEST_URI'] = 'test.php?param1=value1&sysid=vvv&param2=ttt&sid=zzz';
-        $this->assertEquals('index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', getRequestUrl());
-    }
-
     public function test_isAdmin()
     {
         $this->assertEquals(false, isAdmin());

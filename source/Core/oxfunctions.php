@@ -20,6 +20,9 @@
  * @version       OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Request;
+
 if (!function_exists('registerComposerAutoload')) {
     /**
      * Registers auto-loader for shop namespaced classes.
@@ -119,7 +122,7 @@ if (!function_exists('error_404_handler')) {
      */
     function error_404_handler($sUrl = '')
     {
-        oxRegistry::getUtils()->handlePageNotFoundError($sUrl);
+        Registry::getUtils()->handlePageNotFoundError($sUrl);
     }
 }
 
@@ -134,7 +137,7 @@ if (!function_exists('error_404_handler')) {
  */
 function warningHandler($iErrorNr, $sErrorText)
 {
-    echo "<div class='error_box'>" . oxRegistry::getLang()->translateString('userError') . "<code>[$iErrorNr] $sErrorText</code></div>";
+    echo "<div class='error_box'>" . Registry::getLang()->translateString('userError') . "<code>[$iErrorNr] $sErrorText</code></div>";
 }
 
 /**
@@ -145,7 +148,7 @@ function warningHandler($iErrorNr, $sErrorText)
  */
 function dumpVar($mVar, $blToFile = false)
 {
-    $myConfig = oxRegistry::getConfig();
+    $myConfig = Registry::getConfig();
     if ($blToFile) {
         $out = var_export($mVar, true);
         $f = fopen($myConfig->getConfigParam('sCompileDir') . "/vardump.txt", "a");
@@ -244,26 +247,28 @@ if (!function_exists('stopProfile')) {
  * Creates and returns new object. If creation is not available, dies and outputs
  * error message.
  *
- * @param string $sClassName Name of class
+ * @param string $className Name of class
  *
  * @throws oxSystemComponentException in case that class does not exists
  *
  * @return object
  */
-function oxNew($sClassName)
+function oxNew($className)
 {
     startProfile('oxNew');
-    $aArgs = func_get_args();
-    $oRes = call_user_func_array(array(oxUtilsObject::getInstance(), "oxNew"), $aArgs);
+    $arguments = func_get_args();
+    $object = call_user_func_array(array(oxUtilsObject::getInstance(), "oxNew"), $arguments);
     stopProfile('oxNew');
 
-    return $oRes;
+    return $object;
 }
 
 /**
  * Returns current DB handler
  *
  * @param bool $blAssoc data fetch mode
+ *
+ * @deprecated since v6.0.0 (2016-05-16); Use oxDb::getDb().
  *
  * @return oxDb
  */
@@ -275,6 +280,8 @@ function getDb($blAssoc = true)
 /**
  * Returns string handler
  *
+ * @deprecated since v6.0.0 (2016-05-16); Use oxStr::getStr().
+ *
  * @return oxStrRegular|oxStrMb
  */
 function getStr()
@@ -283,7 +290,9 @@ function getStr()
 }
 
 /**
- * Sets template name to passed reference, returns true.
+ * Sets template content from cache. In demoshop enables security mode.
+ *
+ * @see http://www.smarty.net/docsv2/en/template.resources.tpl
  *
  * @param string $sTplName    name of template
  * @param string &$sTplSource Template source
@@ -294,7 +303,7 @@ function getStr()
 function ox_get_template($sTplName, &$sTplSource, $oSmarty)
 {
     $sTplSource = $oSmarty->oxidcache->value;
-    if (oxRegistry::getConfig()->isDemoShop()) {
+    if (Registry::getConfig()->isDemoShop()) {
         $oSmarty->security = true;
     }
 
@@ -302,7 +311,10 @@ function ox_get_template($sTplName, &$sTplSource, $oSmarty)
 }
 
 /**
- * Sets timestamt to passed timestamp object, returns true.
+ * Sets time for smarty templates recompilation. If oxidtimecache is set, smarty will cache templates for this period.
+ * Otherwise templates will always be compiled.
+ *
+ * @see http://www.smarty.net/docsv2/en/template.resources.tpl
  *
  * @param string $sTplName       name of template
  * @param string &$iTplTimestamp template timestamp referense
@@ -312,19 +324,14 @@ function ox_get_template($sTplName, &$sTplSource, $oSmarty)
  */
 function ox_get_timestamp($sTplName, &$iTplTimestamp, $oSmarty)
 {
-    if (isset($oSmarty->oxidtimecache->value)) {
-        // use stored timestamp
-        $iTplTimestamp = $oSmarty->oxidtimecache->value;
-    } else {
-        // always compile
-        $iTplTimestamp = time();
-    }
-
+    $iTplTimestamp = isset($oSmarty->oxidtimecache->value) ? $oSmarty->oxidtimecache->value : time();
     return true;
 }
 
 /**
- * Assumes all templates are secure, returns true.
+ * Dummy function, required for smarty plugin registration.
+ *
+ * @see http://www.smarty.net/docsv2/en/template.resources.tpl
  *
  * @param string $sTplName not used here
  * @param object $oSmarty  not used here
@@ -333,19 +340,19 @@ function ox_get_timestamp($sTplName, &$iTplTimestamp, $oSmarty)
  */
 function ox_get_secure($sTplName, $oSmarty)
 {
-    // assume all templates are secure
     return true;
 }
 
 /**
- * Does nothing.
+ * Dummy function, required for smarty plugin registration.
+ *
+ * @see http://www.smarty.net/docsv2/en/template.resources.tpl
  *
  * @param string $sTplName not used here
  * @param object $oSmarty  not used here
  */
 function ox_get_trusted($sTplName, $oSmarty)
 {
-    // not used for templates
 }
 
 
@@ -360,7 +367,7 @@ if (!function_exists('getLangTableIdx')) {
      */
     function getLangTableIdx($iLangId)
     {
-        $iLangPerTable = oxRegistry::getConfig()->getConfigParam("iLangPerTable");
+        $iLangPerTable = Registry::getConfig()->getConfigParam("iLangPerTable");
         //#0002718 min language count per table 2
         $iLangPerTable = ($iLangPerTable > 1) ? $iLangPerTable : 8;
 
@@ -383,8 +390,8 @@ if (!function_exists('getLangTableName')) {
     function getLangTableName($sTable, $iLangId)
     {
         $iTableIdx = getLangTableIdx($iLangId);
-        if ($iTableIdx && in_array($sTable, oxRegistry::getLang()->getMultiLangTables())) {
-            $sLangTableSuffix = oxRegistry::getConfig()->getConfigParam("sLangTableSuffix");
+        if ($iTableIdx && in_array($sTable, Registry::getLang()->getMultiLangTables())) {
+            $sLangTableSuffix = Registry::getConfig()->getConfigParam("sLangTableSuffix");
             $sLangTableSuffix = $sLangTableSuffix ? $sLangTableSuffix : "_set";
 
             $sTable .= $sLangTableSuffix . $iTableIdx;
@@ -403,12 +410,13 @@ if (!function_exists('getViewName')) {
      * @param int    $languageId language id [optional]
      * @param string $shopId     shop id, otherwise config->myshopid is used [optional]
      *
+     * @deprecated since v6.0.0 (2016-05-16); Use oxTableViewNameGenerator::getViewName().
+     *
      * @return string
      */
     function getViewName($table, $languageId = null, $shopId = null)
     {
-        $viewNameGenerator = oxRegistry::get('oxTableViewNameGenerator');
-
+        $viewNameGenerator = Registry::get('oxTableViewNameGenerator');
         return $viewNameGenerator->getViewName($table, $languageId, $shopId);
     }
 }
@@ -420,33 +428,12 @@ if (!function_exists('getRequestUrl')) {
      * @param string $sParams     Parameters to object
      * @param bool   $blReturnUrl If return url
      *
+     * @deprecated since v6.0.0 (2016-05-16); Use OxidEsales\Eshop\Core\Request::getRequestUrl().
+     *
      * @return string
      */
     function getRequestUrl($sParams = '', $blReturnUrl = false)
     {
-        if ($_SERVER["REQUEST_METHOD"] != "POST") {
-
-            if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI']) {
-                $sRequest = $_SERVER['REQUEST_URI'];
-            } else {
-                // try something else
-                $sRequest = $_SERVER['SCRIPT_URI'];
-            }
-
-            // trying to resolve controller file name
-            if ($sRequest && ($iPos = stripos($sRequest, '?')) !== false) {
-
-                $oStr = getStr();
-                // formatting request url
-                $sRequest = 'index.php' . $oStr->substr($sRequest, $iPos);
-
-                // removing possible session id
-                $sRequest = $oStr->preg_replace('/(&|\?)(force_)?(admin_)?sid=[^&]*&?/', '$1', $sRequest);
-                $sRequest = $oStr->preg_replace('/(&|\?)stoken=[^&]*&?/', '$1', $sRequest);
-                $sRequest = $oStr->preg_replace('/&$/', '', $sRequest);
-
-                return str_replace('&', '&amp;', $sRequest);
-            }
-        }
+        return Registry::get(Request::class)->getRequestUrl($sParams, $blReturnUrl);
     }
 }

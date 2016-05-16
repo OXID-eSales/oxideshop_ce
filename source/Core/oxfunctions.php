@@ -91,25 +91,7 @@ if (!function_exists('getShopBasePath')) {
  */
 function isAdmin()
 {
-    if (defined('OX_IS_ADMIN')) {
-        return OX_IS_ADMIN;
-    }
-
-    return false;
-}
-
-/**
- * Sets default PHP parameters.
- *
- * @return null;
- */
-function setPhpIniParams()
-{
-    //setting required PHP configuration parameters
-    ini_set('session.name', 'sid');
-    ini_set('session.use_cookies', 0);
-    ini_set('session.use_trans_sid', 0);
-    ini_set('url_rewriter.tags', '');
+    return defined('OX_IS_ADMIN') ? OX_IS_ADMIN : false;
 }
 
 if (!function_exists('error_404_handler')) {

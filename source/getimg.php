@@ -39,7 +39,7 @@
 */
 
 // including generator class
-require_once "Core/oxdynimggenerator.php";
+require_once __DIR__ . "/bootstrap.php";
 
 // rendering requested image
-oxDynImgGenerator::getInstance()->outputImage();
+OxidEsales\Eshop\Core\DynamicImageGenerator::getInstance()->outputImage();

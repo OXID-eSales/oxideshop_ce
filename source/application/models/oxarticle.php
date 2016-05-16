@@ -1275,6 +1275,11 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             return;
         }
 
+        // Check configured number of similar products (bug #6062)
+        if($myConfig->getConfigParam('iNrofSimilarArticles') < 1) {
+            return;
+        }
+
         $sArticleTable = $this->getViewName();
 
         $sAttribs = '';

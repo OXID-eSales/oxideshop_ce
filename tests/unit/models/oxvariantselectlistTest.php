@@ -60,7 +60,7 @@ class Unit_Models_oxvariantselectlistTest extends OxidTestCase
     /**
      * @see https://bugs.oxid-esales.com/view.php?id=6053
      */
-    public function testAddVariantAllowZeroAsValue()
+    public function testAddVariantAllowsZeroAsValue()
     {
         $oSelectionList = new oxVariantSelectList("test", 0);
 

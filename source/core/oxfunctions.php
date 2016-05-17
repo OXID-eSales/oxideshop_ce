@@ -144,15 +144,12 @@ function getClassDirs($sBasePath)
                         $sBasePath . 'application/controllers/',
                         $sBasePath . 'application/controllers/admin/',
                         $sBasePath . 'application/controllers/admin/reports/',
-                        $sBasePath . 'views/',
                         $sBasePath . 'core/exception/',
                         $sBasePath . 'core/interface/',
                         $sBasePath . 'core/cache/',
                         $sBasePath . 'core/cache/connectors/',
                         $sBasePath . 'core/wysiwigpro/',
                         $sBasePath . 'admin/reports/',
-                        $sBasePath . 'admin/',
-                        $sBasePath . 'modules/',
                         $sBasePath
     );
 

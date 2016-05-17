@@ -1064,7 +1064,6 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
     public function testGetVarSelectKeepsZeroAsValue()
     {
         $article = $this->createArticle();
-        $article->oxarticles__oxtitle = new oxField('title', oxField::T_RAW);
         $article->oxarticles__oxvarselect = new oxField('0', oxField::T_RAW);
         $article->save();
         $oBasketItem = $this->getMock('oxbasketitem', array('getArticle'));

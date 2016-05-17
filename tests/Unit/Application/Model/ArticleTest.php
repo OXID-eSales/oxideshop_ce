@@ -6062,12 +6062,14 @@ class ArticleTest extends \OxidTestCase
     {
         $oArticle = oxNew("oxArticle");
         $oArticle->load("2000");
+
         $oList = $oArticle->getSimilarProducts();
-        $iCount = 5;
-        if ($this->getConfig()->getEdition() === 'EE') {
-            $iCount = 4;
+
+        if ('EE' === $this->getConfig()->getEdition()) {
+            $this->assertEquals(4, count($oList));
+        } else {
+            $this->assertEquals(5, count($oList));
         }
-        $this->assertEquals($iCount, count($oList));
     }
 
     /**

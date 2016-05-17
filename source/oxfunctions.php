@@ -29,7 +29,14 @@ if (!function_exists('registerComposerAutoload')) {
      */
     function registerComposerAutoload()
     {
-        require_once __DIR__ . '/vendor/autoload.php';
+        class AutoloadConfigFile {
+            public function __construct()
+            {
+                include 'config.inc.php';
+            }
+        }
+        $configFile = new AutoloadConfigFile();
+        require_once $configFile->vendorDirectory . '/autoload.php';
     }
 }
 

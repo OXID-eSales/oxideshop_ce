@@ -39,6 +39,9 @@
     // Possible options: CE|PE|EE or left empty (will be determined automatically).
     $this->edition = '';
 
+    // Location of composer's vendor directory.
+    $this->vendorDirectory = __DIR__ . '/../vendor';
+
     // File type whitelist for file upload
     $this->aAllowedUploadTypes = array('jpg', 'gif', 'png', 'pdf', 'mp3', 'avi', 'mpg', 'mpeg', 'doc', 'xls', 'ppt');
 

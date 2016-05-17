@@ -39,13 +39,10 @@
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
         ]
     },
-    "config": {
-        "vendor-dir": "source/vendor"
-    },
     "extra": {
         "incenteev-parameters": {
-            "file": "source/test_config.yml",
-            "dist-file": "source/vendor/oxid-esales/testing-library/test_config.yml.dist",
+            "file": "test_config.yml",
+            "dist-file": "vendor/oxid-esales/testing-library/test_config.yml.dist",
             "parameter-key": "mandatory_parameters",
             "env-map": {
                 "shop_path": "SHOP_PATH",

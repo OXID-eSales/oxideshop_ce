@@ -197,13 +197,7 @@ class Doctrine implements DatabaseInterface
         /**
          * @var array Map charset as passed by the caller to doctrine charsets
          */
-        $charsetMap = array(
-            'utf-8'  => 'utf8',
-            'utf8'   => 'utf8',
-            'latin1' => 'latin1'
-        );
         $sanitizedCharset = trim(strtolower($connectionParameters['connectionCharset']));
-        $pdoCharset = $charsetMap[$sanitizedCharset];
 
         $connectionParameters = array(
             'driver'   => 'pdo_mysql',
@@ -212,7 +206,7 @@ class Doctrine implements DatabaseInterface
             'user'     => $connectionParameters['databaseUser'],
             'password' => $connectionParameters['databasePassword'],
             'port'     => $connectionParameters['databasePort'],
-            'charset'  => $pdoCharset,
+            'charset'  => $sanitizedCharset,
         );
 
         return $connectionParameters;

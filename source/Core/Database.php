@@ -60,13 +60,12 @@ class Database
      */
     protected static $instance = null;
 
-
     /**
      * Database connection object
      *
      * @var null|DatabaseAdapter
      */
-    protected static $_oDB = null;
+    protected static $db = null;
 
     /**
      * Database tables descriptions cache array
@@ -75,104 +74,33 @@ class Database
      */
     protected static $_aTblDescCache = array();
 
-    // Todo remove all properties which are pulled from configFile and pull them directly from there.
     /**
      * Database type
      *
-     * @var string
+     * @var null|ConfigFile
      */
-    private static $_dbType = '';
+    protected $configFile;
 
     /**
-     * Database user name
+     * This class is a singleton and should be instantiated with getInstance().
      *
-     * @var string
+     * @Deprecated in v6.0. The constructor will be protected in the future. Use getInstance() instead.
+     *
+     * Database constructor.
      */
-    private static $_dbUser = '';
+    public function __construct()
+    {
+    }
 
     /**
-     * Database password
+     * As this class is a singleton, an instance of this class must not be cloned.
      *
-     * @var string
+     * @throws \Exception
      */
-    private static $_dbPwd = '';
-
-    /**
-     * Database table name
-     *
-     * @var string
-     */
-    private static $_dbName = '';
-
-    /**
-     * Database hostname
-     *
-     * @var string
-     */
-    private static $_dbHost = '';
-
-    /**
-     * Debug option value
-     *
-     * @var int
-     */
-    private static $_iDebug = 0;
-
-    /**
-     * Should changes be logged in admin
-     *
-     * @var bool
-     */
-    private static $_blLogChangesInAdmin = false;
-
-    /**
-     * UTF mode
-     *
-     * @var int
-     */
-    private static $_iUtfMode = 0;
-
-    /**
-     * Default database connection value
-     *
-     * @var string
-     */
-    private static $_sDefaultDatabaseConnection = null;
-
-    /**
-     * Array of slave hosts
-     *
-     * @var array
-     */
-    private static $_aSlaveHosts;
-
-    /**
-     * Admin email value
-     *
-     * @var string
-     */
-    private static $_sAdminEmail;
-
-    /**
-     * Value for master slave balance
-     *
-     * @var int
-     */
-    private static $_iMasterSlaveBalance;
-
-    /**
-     * Local time format  value
-     *
-     * @var string
-     */
-    private static $_sLocalTimeFormat;
-
-    /**
-     * Local date format value
-     *
-     * @var string
-     */
-    private static $_sLocalDateFormat;
+    public function __clone()
+    {
+        throw new \Exception("You must not clone this object as it is a singleton.");
+    }
 
     /**
      * Returns the singleton instance of this class or of a sub class of this class
@@ -199,20 +127,18 @@ class Database
      */
     public static function getDb($fetchMode = Database::FETCH_MODE_NUM)
     {
-        $databaseFactory = static::getInstance();
-        if (static::$_oDB === null) {
-            static::$_oDB = $databaseFactory->createDatabase();
-            /** Post connect actions will be taken only once per connection */
-            // Todo implement functionality of prepareDatabaseConnection here and than refactor it to a own method
-            // $databaseFactory->prepareDatabaseConnection(static::$_oDB);
-            static::$_oDB->execute('SET @@session.sql_mode = ""');
+        if (null === static::$db) {
+            $databaseFactory = static::getInstance();
+            static::$db = $databaseFactory->createDatabase();
 
+            /** Post connect actions will be taken only once per connection */
+            $databaseFactory->onPostConnect();
         }
 
-        /** The following actions be taken on each call th getDb */
-        static::$_oDB->setFetchMode($fetchMode);
+        /** The following actions be taken on each call to getDb */
+        static::$db->setFetchMode($fetchMode);
 
-        return static::$_oDB;
+        return static::$db;
     }
 
     /**
@@ -241,6 +167,16 @@ class Database
         }
 
         return $databaseAdapter;
+    }
+
+    /**
+     *
+     */
+    protected function onPostConnect()
+    {
+        // Todo implement functionality of prepareDatabaseConnection here and than refactor it to a own method
+        // $databaseFactory->prepareDatabaseConnection(static::$_oDB);
+        $this->setSqlMode();
     }
 
     /**
@@ -273,7 +209,7 @@ class Database
         }
 
         /** Set local configuration parameters */
-        $databaseFactory->setConfig($configFile);
+        $databaseFactory->setConfigFile($configFile);
 
         /** ------- TODO split this method here ------ */
 
@@ -294,18 +230,18 @@ class Database
          * @var string $databaseDriver
          * At the moment the database adapter uses always 'pdo_mysql'
          */
-        $databaseDriver = $this->getConfigParam('_dbType');
+        $databaseDriver = $this->getConfigParam('dbType');
         /**
          * @var string $databaseHost
          * The database host to connect to.
          * Be aware, that the connection between the MySQL client and the server is unencrypted.
          */
-        $databaseHost = $this->getConfigParam('_dbHost');
+        $databaseHost = $this->getConfigParam('dbHost');
         /**
          * @var integer $databasePort
          * TCP port to connect to
          */
-        $databasePort = (int) $this->getConfigParam('_dbPort');
+        $databasePort = (int) $this->getConfigParam('dbPort');
         if (!$databasePort) {
             $databasePort = 3306;
         }
@@ -313,17 +249,17 @@ class Database
          * @var string $databaseName
          * The name of the database or scheme to connect to
          */
-        $databaseName = $this->getConfigParam('_dbName');
+        $databaseName = $this->getConfigParam('dbName');
         /**
          * @var string $databaseUser
          * The user id of the database user
          */
-        $databaseUser = $this->getConfigParam('_dbUser');
+        $databaseUser = $this->getConfigParam('dbUser');
         /**
          * @var string $databasePassword
          * The password of the database user
          */
-        $databasePassword = $this->getConfigParam('_dbPwd');
+        $databasePassword = $this->getConfigParam('dbPwd');
 
         $connectionParameters = array(
             'databaseDriver'    => $databaseDriver,
@@ -335,10 +271,10 @@ class Database
         );
 
         /** The charset has to be set during the connection to the database */
-        if ($this->getConfigParam('_iUtfMode')) {
+        if ($this->getConfigParam('iUtfMode')) {
             $charset = 'utf8';
         } else {
-            $charset = $this->getConfigParam('_sDefaultDatabaseConnection');
+            $charset = $this->getConfigParam('sDefaultDatabaseConnection');
         }
         if ($charset) {
             $connectionParameters = array_merge($connectionParameters, array('connectionCharset' => $charset));
@@ -354,11 +290,12 @@ class Database
      *
      * @return bool
      */
-    public static function isDatabaseConfigured(ConfigFile $config)
+    protected static function isDatabaseConfigured(ConfigFile $config)
     {
         $isValid = true;
 
-        if ('<dbHost>' == $config->getVar('dbHost')) {
+        // If the shop has not been configured yet the hostname has the format '<dbHost>'
+        if (false  !== strpos($config->getVar('dbHost'), '<')) {
             $isValid = false;
         }
 
@@ -368,35 +305,54 @@ class Database
     /**
      * Sets class properties needed for a successful database connection
      *
-     * @param ConfigFile $config configs.
+     * @param ConfigFile $configFile The file config.inc.php wrapped in an object
      */
-    public static function setConfig(ConfigFile $config)
+    public function setConfigFile(ConfigFile $configFile)
     {
-        self::$_dbType = $config->getVar('dbType');
-        self::$_dbUser = $config->getVar('dbUser');
-        self::$_dbPwd = $config->getVar('dbPwd');
-        self::$_dbName = $config->getVar('dbName');
-        self::$_dbHost = $config->getVar('dbHost');
-        self::$_iDebug = $config->getVar('iDebug');
-        self::$_blLogChangesInAdmin = $config->getVar('blLogChangesInAdmin');
-        self::$_iUtfMode = $config->getVar('iUtfMode');
-        self::$_sDefaultDatabaseConnection = $config->getVar('sDefaultDatabaseConnection');
-        self::$_aSlaveHosts = $config->getVar('aSlaveHosts');
-        self::$_iMasterSlaveBalance = $config->getVar('iMasterSlaveBalance');
-        self::$_sAdminEmail = $config->getVar('sAdminEmail');
-        self::$_sLocalTimeFormat = $config->getVar('sLocalTimeFormat');
-        self::$_sLocalDateFormat = $config->getVar('sLocalDateFormat');
+
+        $this->configFile = $configFile;
+
+        // Connection data
+        $dbType = $this->configFile->getVar('dbType');
+        $dbUser = $this->configFile->getVar('dbUser');
+        $dbPwd = $this->configFile->getVar('dbPwd');
+        $dbName = $this->configFile->getVar('dbName');
+        $dbHost = $this->configFile->getVar('dbHost');
+
+        // Debugging / performance / logging
+        $debug = $this->configFile->getVar('iDebug');
+
+        // Auditing
+        $logChangesInAdmin = $this->configFile->getVar('blLogChangesInAdmin');
+
+        // Database connection charsets
+        $utfMode = $this->configFile->getVar('iUtfMode'); // utf8
+        $defaultDatabaseConnection = $this->configFile->getVar('sDefaultDatabaseConnection'); // charset that differs from utf8 and latin1
+
+        // Email address to send warnings to
+        $adminEmail = $this->configFile->getVar('sAdminEmail');
+
+        // time formats
+        $localTimeFormat = $this->configFile->getVar('sLocalTimeFormat');
+        $localDateFormat = $this->configFile->getVar('sLocalDateFormat');
+
+        // Master-slave move
+        $slaveHosts = $this->configFile->getVar('aSlaveHosts');
+
+        // Database load balancing
+        $masterSlaveBalance = $this->configFile->getVar('iMasterSlaveBalance');
+
     }
 
     /**
      * Setter for database connection object
      * Todo Ask shiftas of the use of this method and if it can be removed
      *
-     * @param Database $newDbObject
+     * @param null|Database $newDbObject
      */
     public static function setDbObject($newDbObject)
     {
-        self::$_oDB = $newDbObject;
+        self::$db = $newDbObject;
     }
 
     /**
@@ -407,12 +363,12 @@ class Database
      */
     public static function getDbObject()
     {
-        return self::$_oDB;
+        return self::$db;
     }
 
     /**
      * Call to reset table description cache
-     * Todo Check, if this could be private
+     * Todo Check, if this could be private, it is used only in tests
      */
     public function resetTblDescCache()
     {
@@ -440,6 +396,7 @@ class Database
      * Checks if given string is valid database field name.
      * It must contain from alphanumeric plus dot and underscore symbols
      * Todo refactor and move to Doctrine class
+     * @See http://stackoverflow.com/questions/4977898/check-for-valid-sql-column-name, especially the notes on portability
      *
      * @param string $field field name
      *
@@ -475,13 +432,12 @@ class Database
 
     /**
      * Return local config value by given name.
-     * Todo retrieve values directly from configFile
      *
-     * @param string $configName returning config name.
+     * @param string $configVar returning config name.
      *
      * @return mixed
      */
-    protected static function _getConfigParam($configName)
+    protected function getConfigParam($configVar)
     {
         if (isset(self::$$configName)) {
             return self::$$configName;
@@ -522,7 +478,7 @@ class Database
      */
     protected function createDatabaseConnection($instanceType)
     {
-        $databaseType = $this->getConfigParam("_dbType");
+        $databaseType = $this->getConfigParam("dbType");
 
         /** @var mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection */
         $connection = ADONewConnection($databaseType, $this->_getModules());
@@ -547,7 +503,7 @@ class Database
      */
     protected function _getModules()
     {
-        $debugLevel = $this->getConfigParam('_iDebug');
+        $debugLevel = $this->getConfigParam('iDebug');
 
         $this->_registerAdoDbExceptionHandler();
 
@@ -556,7 +512,7 @@ class Database
             $modules = 'perfmon';
         }
 
-        if ($this->isAdmin() && $this->getConfigParam('_blLogChangesInAdmin')) {
+        if ($this->isAdmin() && $this->getConfigParam('blLogChangesInAdmin')) {
             $modules .= ($modules ? ':' : '') . 'oxadminlog';
         }
 
@@ -572,10 +528,10 @@ class Database
      */
     protected function connectToDatabase($connection, $instanceType)
     {
-        $host = $this->getConfigParam("_dbHost");
-        $user = $this->getConfigParam("_dbUser");
-        $password = $this->getConfigParam("_dbPwd");
-        $databaseName = $this->getConfigParam("_dbName");
+        $host = $this->getConfigParam("dbHost");
+        $user = $this->getConfigParam("dbUser");
+        $password = $this->getConfigParam("dbPwd");
+        $databaseName = $this->getConfigParam("dbName");
 
         $connection->connect($host, $user, $password, $databaseName);
     }
@@ -613,7 +569,7 @@ class Database
      */
     protected function prepareDatabaseConnection(DatabaseInterface $connection)
     {
-        $debugLevel = $this->getConfigParam('_iDebug');
+        $debugLevel = $this->getConfigParam('iDebug');
         if ($debugLevel == 2 || $debugLevel == 3 || $debugLevel == 4 || $debugLevel == 7) {
             try {
                 $connection->execute('truncate table adodb_logsql');
@@ -667,7 +623,7 @@ class Database
      */
     protected function notifyConnectionErrors(\Exception $exception)
     {
-        if (($adminEmail = $this->getConfigParam('_sAdminEmail'))) {
+        if (($adminEmail = $this->getConfigParam('sAdminEmail'))) {
             $failedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
 
             $date = date(DATE_RFC822); // RFC 822 (example: Mon, 15 Aug 05 15:52:01 +0000)
@@ -695,7 +651,7 @@ class Database
         $code = $exception->getCode();
         // @todo Add DatabaseConnectionException, which implements oxConnectionException methods and is used instead
         $exception = new DatabaseException($message, $code, $exception);
-        // $exception->setConnectionError(self::_getConfigParam('_dbUser') . 's' . getShopBasePath() . $exception->getMessage());
+        // $exception->setConnectionError(self::_getConfigParam('dbUser') . 's' . getShopBasePath() . $exception->getMessage());
         throw $exception;
     }
 
@@ -733,7 +689,7 @@ class Database
      */
     public function quoteArray(array $array)
     {
-        return self::getDb()->quoteArray($array);
+        return static::getDb()->quoteArray($array);
     }
 
     /**
@@ -754,6 +710,11 @@ class Database
      */
     protected function formTableDescription($tableName)
     {
-        return self::getDb()->metaColumns($tableName);
+        return static::getDb()->metaColumns($tableName);
+    }
+
+    protected function setSqlMode()
+    {
+        static::getDb()->execute('SET @@session.sql_mode = ""');
     }
 }

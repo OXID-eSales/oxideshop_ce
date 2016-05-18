@@ -22,10 +22,6 @@
 
 namespace OxidEsales\Eshop\Core;
 
-use oxFileCache;
-use oxShopIdCalculator;
-use oxDb;
-
 /**
  * Selects module variables from database or cache.
  *
@@ -37,15 +33,15 @@ class ModuleVariablesLocator
     /** @var array Static cache for module information variables. */
     protected static $moduleVariables = array();
 
-    /** @var oxFileCache */
+    /** @var FileCache */
     private $fileCache;
 
-    /** @var oxShopIdCalculator */
+    /** @var ShopIdCalculator */
     private $shopIdCalculator;
 
     /**
-     * @param oxFileCache        $fileCache
-     * @param oxShopIdCalculator $shopIdCalculator
+     * @param FileCache        $fileCache
+     * @param ShopIdCalculator $shopIdCalculator
      */
     public function __construct($fileCache, $shopIdCalculator)
     {
@@ -107,7 +103,7 @@ class ModuleVariablesLocator
     public static function resetModuleVariables()
     {
         self::$moduleVariables = array();
-        oxFileCache::clearCache();
+        FileCache::clearCache();
     }
 
     /**
@@ -130,7 +126,7 @@ class ModuleVariablesLocator
      */
     protected function getModuleVarFromDB($name)
     {
-        $database = oxDb::getDb();
+        $database = Database::getDb();
 
         $shopId = $this->getShopIdCalculator()->getShopId();
         $configKey = $this->getConfigurationKey();
@@ -144,7 +140,7 @@ class ModuleVariablesLocator
     }
 
     /**
-     * @return oxFileCache
+     * @return FileCache
      */
     protected function getFileCache()
     {
@@ -152,7 +148,7 @@ class ModuleVariablesLocator
     }
 
     /**
-     * @return oxShopIdCalculator
+     * @return ShopIdCalculator
      */
     protected function getShopIdCalculator()
     {

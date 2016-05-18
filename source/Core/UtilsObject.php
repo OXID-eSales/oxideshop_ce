@@ -23,12 +23,7 @@
 namespace OxidEsales\Eshop\Core;
 
 use oxBase;
-use oxFileCache;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use oxModuleVariablesLocator;
-use oxShopIdCalculator;
-use oxSubShopSpecificFileCache;
-use oxModuleChainsGenerator;
 use oxSystemComponentException;
 use oxUtilsObject;
 use ReflectionClass;
@@ -80,16 +75,16 @@ class UtilsObject
     /** @var ClassNameProvider */
     private $classNameProvider;
 
-    /** @var oxModuleChainsGenerator */
+    /** @var ModuleChainsGenerator */
     private $moduleChainsGenerator;
 
-    /** @var oxShopIdCalculator */
+    /** @var ShopIdCalculator */
     private $shopIdCalculator;
 
     /**
      * @param ClassNameProvider       $classNameProvider
-     * @param oxModuleChainsGenerator $moduleChainsGenerator
-     * @param oxShopIdCalculator      $shopIdCalculator
+     * @param ModuleChainsGenerator $moduleChainsGenerator
+     * @param ShopIdCalculator        $shopIdCalculator
      */
     public function __construct($classNameProvider = null, $moduleChainsGenerator = null, $shopIdCalculator = null)
     {
@@ -100,15 +95,15 @@ class UtilsObject
         $this->classNameProvider = $classNameProvider;
 
         if (!$shopIdCalculator) {
-            $moduleVariablesCache = new oxFileCache();
-            $shopIdCalculator = new oxShopIdCalculator($moduleVariablesCache);
+            $moduleVariablesCache = new FileCache();
+            $shopIdCalculator = new ShopIdCalculator($moduleVariablesCache);
         }
         $this->shopIdCalculator = $shopIdCalculator;
 
         if (!$moduleChainsGenerator) {
-            $subShopSpecificCache = new oxSubShopSpecificFileCache($shopIdCalculator);
-            $moduleVariablesLocator = new oxModuleVariablesLocator($subShopSpecificCache, $shopIdCalculator);
-            $moduleChainsGenerator = new oxModuleChainsGenerator($moduleVariablesLocator);
+            $subShopSpecificCache = new SubShopSpecificFileCache($shopIdCalculator);
+            $moduleVariablesLocator = new ModuleVariablesLocator($subShopSpecificCache, $shopIdCalculator);
+            $moduleChainsGenerator = new ModuleChainsGenerator($moduleVariablesLocator);
         }
         $this->moduleChainsGenerator = $moduleChainsGenerator;
     }
@@ -198,7 +193,7 @@ class UtilsObject
      *
      * @param string $variableName
      *
-     * @deprecated use oxModuleVariablesLocator::getModuleVariable()
+     * @deprecated use ModuleVariablesLocator::getModuleVariable()
      *
      * @return mixed
      */
@@ -213,7 +208,7 @@ class UtilsObject
      * @param string $variableName
      * @param mixed  $value
      *
-     * @deprecated use oxModuleVariablesLocator::setModuleVariable()
+     * @deprecated use ModuleVariablesLocator::setModuleVariable()
      */
     public function setModuleVar($variableName, $value)
     {
@@ -377,11 +372,11 @@ class UtilsObject
     /**
      * Resets module variables cache.
      *
-     * @deprecated use oxModuleVariablesLocator::resetModuleVars instead.
+     * @deprecated use ModuleVariablesLocator::resetModuleVars instead.
      */
     public static function resetModuleVars()
     {
-        oxModuleVariablesLocator::resetModuleVariables();
+        ModuleVariablesLocator::resetModuleVariables();
     }
 
     /**
@@ -389,7 +384,7 @@ class UtilsObject
      *
      * @param string $sModule
      *
-     * @deprecated use oxModuleChainsGenerator::disableModule instead.
+     * @deprecated use ModuleChainsGenerator::disableModule instead.
      */
     protected function _disableModule($sModule)
     {
@@ -405,7 +400,7 @@ class UtilsObject
     }
 
     /**
-     * @return oxModuleChainsGenerator
+     * @return ModuleChainsGenerator
      */
     protected function getModuleChainsGenerator()
     {
@@ -413,7 +408,7 @@ class UtilsObject
     }
 
     /**
-     * @return oxShopIdCalculator
+     * @return ShopIdCalculator
      */
     protected function getShopIdCalculator()
     {

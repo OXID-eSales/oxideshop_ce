@@ -22,8 +22,6 @@
 
 namespace OxidEsales\Eshop\Core;
 
-use oxRegistry;
-use oxModuleVariablesLocator;
 use oxModule;
 
 /**
@@ -34,7 +32,6 @@ use oxModule;
  */
 class ModuleCache extends \oxSuperCfg
 {
-
     /**
      * @var oxModule
      */
@@ -76,12 +73,12 @@ class ModuleCache extends \oxSuperCfg
     public function resetCache()
     {
         $aTemplates = $this->getModule()->getTemplates();
-        $oUtils = oxRegistry::getUtils();
+        $oUtils = Registry::getUtils();
         $oUtils->resetTemplateCache($aTemplates);
         $oUtils->resetLanguageCache();
         $oUtils->resetMenuCache();
 
-        oxModuleVariablesLocator::resetModuleVariables();
+        ModuleVariablesLocator::resetModuleVariables();
 
         $this->_clearApcCache();
     }

@@ -22,9 +22,7 @@
 
 namespace OxidEsales\Eshop\Core;
 
-use OxConfigFile;
 use oxDb;
-use oxFileCache;
 
 /**
  * Calculates Shop id from request data or shop url.
@@ -37,11 +35,11 @@ class ShopIdCalculator
     /** @var array */
     private static $urlMap;
 
-    /** @var oxFileCache */
+    /** @var FileCache */
     private $variablesCache;
 
     /**
-     * @param oxFileCache $variablesCache
+     * @param FileCache $variablesCache
      */
     public function __construct($variablesCache)
     {
@@ -128,7 +126,7 @@ class ShopIdCalculator
     }
 
     /**
-     * @return oxFileCache
+     * @return FileCache
      */
     protected function getVariablesCache()
     {

@@ -24,7 +24,6 @@ namespace OxidEsales\Eshop\Core;
 
 use oxRegistry;
 use oxConfig;
-use oxModuleVariablesLocator;
 
 /**
  * Generates class chains for extended classes by modules.
@@ -34,11 +33,11 @@ use oxModuleVariablesLocator;
  */
 class ModuleChainsGenerator
 {
-    /** @var oxModuleVariablesLocator */
+    /** @var ModuleVariablesLocator */
     private $moduleVariablesLocator;
 
     /**
-     * @param oxModuleVariablesLocator $moduleVariablesLocator
+     * @param ModuleVariablesLocator $moduleVariablesLocator
      */
     public function __construct($moduleVariablesLocator)
     {
@@ -235,7 +234,7 @@ class ModuleChainsGenerator
     }
 
     /**
-     * @return oxModuleVariablesLocator
+     * @return ModuleVariablesLocator
      */
     public function getModuleVariablesLocator()
     {

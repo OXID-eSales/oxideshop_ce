@@ -1284,6 +1284,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             OXTEXT TEXT  CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NOT NULL COMMENT 'a column with type TEXT',
             OXID CHAR(32)  CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NOT NULL COMMENT 'a column with type CHAR',
             OXBLOB BLOB  COMMENT 'a column with type BLOB',
+            OXFLOAT FLOAT(5,2) UNSIGNED NOT NULL DEFAULT 1.3 COMMENT 'a column with type FLOAT',
             PRIMARY KEY (OXINT)
         ) ENGINE innoDb;");
 
@@ -1394,6 +1395,19 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 'unsigned'       => false,
                 'comment'        => 'a column with type BLOB',
             ),
+            array(
+                'name'           => 'OXFLOAT',
+                'max_length'     => '5',
+                'scale'          => '2',
+                'type'           => 'float',
+                'not_null'       => true,
+                'primary_key'    => false,
+                'auto_increment' => false,
+                'binary'         => false,
+                'unsigned'       => true,
+                'has_default'    => true,
+                'default_value'  => '1.30',
+            )
         );
     }
 

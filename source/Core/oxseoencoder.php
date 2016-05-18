@@ -709,7 +709,7 @@ class oxSeoEncoder extends oxSuperCfg
      *
      * @access protected
      *
-     * @return void
+     * @return mixed
      */
     protected function _saveToDb($sType, $sObjectId, $sStdUrl, $sSeoUrl, $iLang, $iShopId = null, $blFixed = null, $sParams = null)
     {

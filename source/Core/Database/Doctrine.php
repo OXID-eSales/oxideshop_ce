@@ -888,6 +888,8 @@ class Doctrine implements DatabaseInterface
             list($max_length, $scale) = $this->getColumnMaxLengthAndScale($column, $item->type);
             if(-1 !== $max_length){
                 $item->max_length = (string)$max_length;
+            } else {
+                $item->max_length = $max_length;
             }
             if(-1 !== $scale){
                 $item->scale = (string)$scale;

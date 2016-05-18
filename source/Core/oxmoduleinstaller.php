@@ -99,7 +99,7 @@ class oxModuleInstaller extends oxSuperCfg
 
             $this->resetCache();
 
-            $this->_callEvent('onActivate', $oModule->getId());
+            $this->_callEvent('onActivate', $sModuleId);
 
             $blResult = true;
         }
@@ -121,7 +121,6 @@ class oxModuleInstaller extends oxSuperCfg
         $sModuleId = $oModule->getId();
 
         if ($sModuleId) {
-            $sModuleId = $oModule->getId();
             $this->_callEvent('onDeactivate', $sModuleId);
 
             $this->_addToDisabledList($sModuleId);

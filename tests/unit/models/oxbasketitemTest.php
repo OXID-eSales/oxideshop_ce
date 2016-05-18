@@ -1070,7 +1070,7 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($article));
         $oBasketItem->UNITsetArticle($article->getId());
 
-        $this->assertEquals("0", $oBasketItem->getVarSelect());
+        $this->assertEquals('0', $oBasketItem->getVarSelect());
     }
 
     /**

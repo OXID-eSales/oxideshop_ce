@@ -33,7 +33,7 @@
  * @param Smarty &$smarty clever simulation of a method
  *
  * @return string
-*/
+ */
 function smarty_function_oxprice( $params, &$smarty )
 {
     $sOutput = '';

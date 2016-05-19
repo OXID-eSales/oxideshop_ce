@@ -30,10 +30,11 @@ class EditionRootPathProviderTest extends UnitTestCase
 {
     public function providerReturnsEditionPath()
     {
+        $vendorDirectory = $this->getConfig()->getConfigParam('vendorDirectory');
         return array(
-            array(EditionSelector::ENTERPRISE, rtrim(getShopBasePath(), '/') . '/vendor/oxid-esales/oxideshop-ee/'),
-            array(EditionSelector::PROFESSIONAL, rtrim(getShopBasePath(), '/') . '/vendor/oxid-esales/oxideshop-pe/'),
-            array(EditionSelector::COMMUNITY, rtrim(getShopBasePath(), '/') . '/'),
+            array(EditionSelector::ENTERPRISE, realpath("$vendorDirectory/oxid-esales/oxideshop-ee").'/'),
+            array(EditionSelector::PROFESSIONAL, realpath("$vendorDirectory/oxid-esales/oxideshop-pe/").'/'),
+            array(EditionSelector::COMMUNITY, realpath(getShopBasePath()) . '/'),
         );
     }
 

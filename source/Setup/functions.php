@@ -139,8 +139,7 @@ if (!function_exists('getDefaultConfigFileMode')) {
     }
 }
 
-$editionSelector = new EditionSelector();
-if (!function_exists('getSerial') && !$editionSelector->isCommunity()) {
+if (!function_exists('getSerial') && class_exists(Serial::class)) {
     /**
      * Creates and returns oxSerial object
      *

@@ -115,6 +115,16 @@ function editThis(sID)
         </tr>
         [{block name="admin_shop_seo_form"}]
             <tr class="conftext[{cycle}]">
+             <td valign="top">
+                <input type="hidden" name="confbools[blSEOLowerCaseUrls]" value="false">
+                <input type="checkbox" name="confbools[blSEOLowerCaseUrls]" value="true" [{if ($confbools.blSEOLowerCaseUrls)}]checked[{/if}] [{$readonly}]>
+                [{oxinputhelp ident="HELP_SHOP_SEO_LOWERCASEURLS"}]
+             </td>
+             <td valign="top" width="100%">
+               [{oxmultilang ident="SHOP_SEO_LOWERCASEURLS"}]
+             </td>
+            </tr>
+            <tr class="conftext[{cycle}]">
              <td valign="top" nowrap>
                 <input type=text class="confinput" style="width:270px;" name=confstrs[sSEOSeparator] value="[{$confstrs.sSEOSeparator}]" [{$readonly}]>
                 [{oxinputhelp ident="HELP_SHOP_SEO_IDSSEPARATOR"}]

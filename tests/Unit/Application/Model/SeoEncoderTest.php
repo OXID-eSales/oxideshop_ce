@@ -1827,4 +1827,23 @@ class SeoEncoderTest extends \OxidTestCase
         $this->assertTrue($oEncoder->UNITsaveInCache($sCacheIdent, $sCache, "any"));
         $this->assertEquals($sCache, $oEncoder->UNITloadFromCache($sCacheIdent, "any"));
     }
+
+    /**
+     * Test lower casing of urls with config param blSEOLowerCaseUrls
+     *
+     * @return null
+     */
+    public function testLowerCasingOfUrls()
+    {
+        $sSeoUrlBefore = 'Foo/Bar.html';
+        $sSeoUrlAfter = 'foo/bar.html';
+
+        $oEncoder = oxNew('oxSeoEncoder');
+
+        $this->getConfig()->setConfigParam('blSEOLowerCaseUrls', true);
+        $this->assertEquals($sSeoUrlAfter, $oEncoder->UNITprepareUri($sSeoUrlBefore));
+
+        $this->getConfig()->setConfigParam('blSEOLowerCaseUrls', false);
+        $this->assertEquals($sSeoUrlBefore, $oEncoder->UNITprepareUri($sSeoUrlBefore));
+    }
 }

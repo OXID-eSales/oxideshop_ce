@@ -289,6 +289,8 @@ $aLang =  array(
 
 'HELP_SHOP_SEO_SKIPTAGS'                      => 'If no META tags are defined for products and categories, the META tags are created automatically. thereby very common words can be omitted. All words entered here are omitted when creating the META tags.',
 
+'HELP_SHOP_SEO_LOWERCASEURLS'                 => 'Lowercase all upper case characters in SEO urls. E.g. www.youreshop.com/Kiteboarding/Kites/ transforms to www.youreshop.com/kiteboarding/kites/.',
+
 'HELP_SHOP_SEO_STATICURLS'                    => 'For special pages (e. g. general terms and conditions) you can enter fixed SEO URLs. When selecting a static URL, the normal URL is shown in <span class="navipath_or_inputname">Standard URL</span>. In the input fields below you can define a SEO URL for each language.',
 
 

@@ -1203,6 +1203,7 @@ $aLang = array(
 'SHOP_SEO_NEWSTATICURL'                                    => '-- new --',
 'SHOP_SEO_RESERVEDWORDS'                                   => 'Reserved Words (are automatically suffixed)',
 'SHOP_SEO_SKIPTAGS'                                        => 'Words which are ignored in automatic Creation of Meta-tags.',
+'SHOP_SEO_LOWERCASEURLS'                                   => 'Lowercase SEO urls',
 'SHOP_LICENSE_SERIAL'                                      => 'Installed License Keys',
 'SHOP_LICENSE_NEWSERIAL'                                   => 'Add License Keys',
 'SHOP_LICENSE_VERSION'                                     => 'eShop Version',

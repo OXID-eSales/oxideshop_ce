@@ -168,13 +168,6 @@
                 <td class="edittext">&nbsp;<b>[{if $edit->oxorder__oxcurrency->value}] [{$edit->oxorder__oxcurrency->value}] [{else}] [{$currency->name}] [{/if}]</b></td>
                 </tr>
                 [{/if}]
-                [{if $edit->oxorder__oxtsprotectid->value}]
-                <tr>
-                <td class="edittext" height="15">[{oxmultilang ident=ORDER_OVERVIEW_PROTECTION}]&nbsp;</td>
-                <td class="edittext" align="right"><b>[{$tsprotectcosts}]</b></td>
-                <td class="edittext">&nbsp;<b>[{if $edit->oxorder__oxcurrency->value}] [{$edit->oxorder__oxcurrency->value}] [{else}] [{$currency->name}] [{/if}]</b></td>
-                </tr>
-                [{/if}]
                 <tr>
                 <td class="edittext" height="25">[{oxmultilang ident="GENERAL_SUMTOTAL"}]&nbsp;&nbsp;</td>
                 <td class="edittext" align="right"><b>[{$edit->getFormattedTotalOrderSum()}]</b></td>

@@ -224,7 +224,6 @@ class EmailAzureTplTest extends \OxidTestCase
         $oPrice4->expects($this->any())->method('getPrice')->will($this->returnValue(256));
         $oPrice4->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(true));
         $oPrice4->expects($this->any())->method('getNettoPrice')->will($this->returnValue(7));
-        $oBasket->setCost('oxtsprotection', $oPrice4);
 
         $oPayment = oxNew('oxPayment');
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
@@ -244,7 +243,6 @@ class EmailAzureTplTest extends \OxidTestCase
         $oOrder->oxorder__oxbillcity = new oxField('');
         $oOrder->oxorder__oxbillcountry = new oxField('');
         $oOrder->oxorder__oxbillcompany = new oxField('');
-        $oOrder->oxorder__oxtsprotectcosts = new oxField('12');
         $oOrder->oxorder__oxdeltype = new oxField("oxidstandard");
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
@@ -337,7 +335,6 @@ class EmailAzureTplTest extends \OxidTestCase
         $oPrice4->expects($this->any())->method('getPrice')->will($this->returnValue(256));
         $oPrice4->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(true));
         $oPrice4->expects($this->any())->method('getNettoPrice')->will($this->returnValue(7));
-        $oBasket->setCost('oxtsprotection', $oPrice4);
 
         $oPayment = oxNew('oxPayment');
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
@@ -355,7 +352,6 @@ class EmailAzureTplTest extends \OxidTestCase
         $oOrder->oxorder__oxbillstreet = new oxField('');
         $oOrder->oxorder__oxbillcity = new oxField('');
         $oOrder->oxorder__oxbillcountry = new oxField('');
-        $oOrder->oxorder__oxtsprotectcosts = new oxField('12');
         $oOrder->oxorder__oxdeltype = new oxField("oxidstandard");
 
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));

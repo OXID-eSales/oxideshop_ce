@@ -151,7 +151,11 @@ class oxModule extends oxSuperCfg
      */
     public function getExtensions()
     {
-        return isset($this->_aModule['extend']) ? $this->_aModule['extend'] : array();
+        $res = isset($this->_aModule['extend']) ? $this->_aModule['extend'] : array();
+        //convert class names (keys) to lower case because building extension chain is case sensitive and would fail
+        //if one module use CamelCase and the other not.
+        $res = array_change_key_case($res, CASE_LOWER);
+        return $res;
     }
 
     /**

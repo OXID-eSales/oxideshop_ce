@@ -26,6 +26,8 @@
  * and "dyn_affiliates_about.tpl") to frame.
  *
  * @subpackage dyn
+ *
+ * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
  */
 class Dynscreen extends oxAdminList
 {

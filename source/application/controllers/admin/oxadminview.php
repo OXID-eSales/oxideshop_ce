@@ -85,6 +85,8 @@ class oxAdminView extends oxView
     /**
      * Shop dynamic pages url
      *
+     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
+     *
      * @var string
      */
     protected $_sServiceUrl = null;
@@ -229,6 +231,8 @@ class oxAdminView extends oxView
 
     /**
      * Returns service URL
+     *
+     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
      *
      * @param string $sLangAbbr language abbr.
      *

@@ -25,6 +25,8 @@
  * Arranges controll tabs and sets title.
  *
  * @subpackage dyn
+ *
+ * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
  */
 class Dynscreen_List extends Dynscreen
 {

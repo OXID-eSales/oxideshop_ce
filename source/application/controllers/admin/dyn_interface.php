@@ -24,6 +24,8 @@
  * Admin dyn manager.
  *
  * @subpackage dyn
+ *
+ * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
  */
 class dyn_interface extends oxAdminDetails
 {

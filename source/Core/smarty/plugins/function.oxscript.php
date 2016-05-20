@@ -44,7 +44,7 @@
  */
 function smarty_function_oxscript($params, &$smarty)
 {
-    $isDynamic = (bool) $smarty->_tpl_vars["__oxid_include_dynamic"];
+    $isDynamic = isset($smarty->_tpl_vars["__oxid_include_dynamic"]);
     $priority = !empty($params['priority']) ? $params['priority'] : 3;
     $widget = !empty($params['widget']) ? $params['widget'] : '';
     $isInWidget = !empty($params['inWidget']) ? $params['inWidget'] : false;

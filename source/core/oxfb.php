@@ -33,6 +33,7 @@ try {
 /**
  * Facebook API
  *
+ * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
  */
 class oxFb extends Facebook
 {

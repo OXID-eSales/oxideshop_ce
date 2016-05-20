@@ -518,6 +518,7 @@ class oxUser extends oxBase
             $this->oxuser__oxbirthdate = new oxField($this->convertBirthday($this->oxuser__oxbirthdate->value), oxField::T_RAW);
         }
 
+        // @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
         // checking if user Facebook ID should be updated
         if ($myConfig->getConfigParam("bl_showFbConnect")) {
             $oFb = oxRegistry::get("oxFb");
@@ -525,6 +526,7 @@ class oxUser extends oxBase
                 $this->oxuser__oxfbid = new oxField($oFb->getUser());
             }
         }
+        // END deprecated
 
         $blRet = parent::save();
 
@@ -1439,10 +1441,12 @@ class oxUser extends oxBase
             $blFoundInCookie = $sUserID ? true : false;
         }
 
+        // @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
         // If facebook connection is enabled, trying to login user using Facebook ID
         if (!$sUserID && !$blAdmin && $oConfig->getConfigParam("bl_showFbConnect")) {
             $sUserID = $this->_getFacebookUserId();
         }
+        // END deprecated
 
         // checking user results
         if ($sUserID) {
@@ -1473,6 +1477,8 @@ class oxUser extends oxBase
 
     /**
      * Checks if user is connected via Facebook connect and if so, returns user id.
+     *
+     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
      *
      * @return string
      */
@@ -2181,6 +2187,8 @@ class oxUser extends oxBase
 
     /**
      * Updates user Facebook ID
+     *
+     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
      *
      * @return null
      */

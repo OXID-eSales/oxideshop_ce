@@ -32,6 +32,8 @@
  * @param array  $params  params
  * @param Smarty &$smarty clever simulation of a method
  *
+* @deprecated v5.3 (2016-05-10); Facebook will be moved to own module.
+ *
  * @return string
  */
 function smarty_insert_oxid_fblogin($params, &$smarty)

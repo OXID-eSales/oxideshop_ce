@@ -40,6 +40,8 @@ class oxUBase extends oxView
     /**
      * Facebook widget status marker
      *
+     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
+     *
      * @var bool
      */
     protected $_blFbWidgetsOn = null;
@@ -490,7 +492,7 @@ class oxUBase extends oxView
      * Show tags cloud
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
+     *
      * @var bool
      */
     protected $_blShowTagCloud = true;
@@ -1780,7 +1782,7 @@ class oxUBase extends oxView
             $sURL .= "&amp;searchtag={$sVal}";
         }
         // END deprecated
-        
+
         if ($sVal = oxRegistry::getConfig()->getRequestParameter('recommid')) {
             $sURL .= "&amp;recommid={$sVal}";
         }
@@ -2273,7 +2275,7 @@ class oxUBase extends oxView
      *  - link link leading to tag article list
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
+     *
      * @return stdClass
      */
     public function getActTag()
@@ -3029,6 +3031,8 @@ class oxUBase extends oxView
     /**
      * Returns TRUE if facebook widgets are on
      *
+     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
+     *
      * @return boolean
      */
     public function isFbWidgetVisible()
@@ -3100,7 +3104,7 @@ class oxUBase extends oxView
      * Returns true if tags are ON
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
+     *
      * @return boolean
      */
     public function showTags()

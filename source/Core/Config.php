@@ -884,6 +884,16 @@ class Config extends SuperConfig
     }
 
     /**
+     * Checks if shop runs in https only mode
+     * https only mode means there is no http url but only a https url
+     *
+     * @return bool
+     */
+    public function isHttpsOnly() {
+        return $this->isSsl() && $this->getSslShopUrl() == $this->getShopUrl();
+    }
+
+    /**
      * Compares current URL to supplied string
      *
      * @param string $sURL URL

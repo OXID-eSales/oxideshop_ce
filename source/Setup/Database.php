@@ -287,7 +287,7 @@ class Database extends Core
 
         // if it is international eshop, setting admin user country to selected one
         if ($oSession->getSessionParam('location_lang') != "de") {
-            $oPdo->exec("UPDATE oxuser SET oxcountryid = '$sCountryLang' where oxid='oxdefaultadmin'");
+            $oPdo->exec("UPDATE oxuser SET oxcountryid = '$sCountryLang' where OXUSERNAME='admin'");
         }
 
         $oPdo->exec("delete from oxconfig where oxvarname = 'blLoadDynContents'");
@@ -488,10 +488,10 @@ class Database extends Core
 
         $sPassword = hash('sha512', $sPassword . $sPassSalt);
 
-        $sQ = "update oxuser set oxusername='{$sLoginName}', oxpassword='{$sPassword}', oxpasssalt='{$sPassSalt}' where oxid='oxdefaultadmin'";
+        $sQ = "update oxuser set oxusername='{$sLoginName}', oxpassword='{$sPassword}', oxpasssalt='{$sPassSalt}' where OXUSERNAME='admin'";
         $this->execSql($sQ);
 
-        $sQ = "update oxnewssubscribed set oxemail='{$sLoginName}' where oxuserid='oxdefaultadmin'";
+        $sQ = "update oxnewssubscribed set oxemail='{$sLoginName}' where OXEMAIL='admin'";
         $this->execSql($sQ);
     }
 

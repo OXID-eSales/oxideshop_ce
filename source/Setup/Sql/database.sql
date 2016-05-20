@@ -1,4 +1,5 @@
 SET @@session.sql_mode = '';
+SET @defaultAdminId = MD5(UUID());
 
 #
 # Table structure for table `oxacceptedterms`
@@ -1486,7 +1487,7 @@ CREATE TABLE `oxnewssubscribed` (
 # Data for table `oxnewssubscribed`
 #
 INSERT INTO `oxnewssubscribed` (`OXID`, `OXSHOPID`, `OXUSERID`, `OXSAL`, `OXFNAME`, `OXLNAME`, `OXEMAIL`, `OXDBOPTIN`, `OXEMAILFAILED`, `OXSUBSCRIBED`, `OXUNSUBSCRIBED`) VALUES
-('0b742e66fd94c88b8.61001136', 'oxbaseshop', 'oxdefaultadmin', 'MR', 'John', 'Doe', 'admin', 1, 0, '2005-07-26 19:16:09', '0000-00-00 00:00:00');
+('0b742e66fd94c88b8.61001136', 'oxbaseshop', @defaultAdminId, 'MR', 'John', 'Doe', 'admin', 1, 0, '2005-07-26 19:16:09', '0000-00-00 00:00:00');
 
 #
 # Table structure for table `oxobject2action`
@@ -1615,7 +1616,7 @@ CREATE TABLE `oxobject2group` (
 ) ENGINE=MyISAM COMMENT 'Shows many-to-many relationship between users and groups';
 
 INSERT INTO `oxobject2group` (`OXID`, `OXSHOPID`, `OXOBJECTID`, `OXGROUPSID`) VALUES
-('e913fdd8443ed43e1.51222316', 'oxbaseshop', 'oxdefaultadmin', 'oxidadmin');
+('e913fdd8443ed43e1.51222316', 'oxbaseshop', @defaultAdminId, 'oxidadmin');
 
 #
 # Table structure for table `oxobject2list`
@@ -2436,7 +2437,7 @@ CREATE TABLE `oxuser` (
 # Data for table `oxuser`
 #
 INSERT INTO `oxuser` (`OXID`, `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`, `OXUSERNAME`, `OXPASSWORD`, `OXPASSSALT`, `OXCUSTNR`, `OXUSTID`, `OXCOMPANY`, `OXFNAME`, `OXLNAME`, `OXSTREET`, `OXSTREETNR`, `OXADDINFO`, `OXCITY`, `OXCOUNTRYID`, `OXSTATEID`, `OXZIP`, `OXFON`, `OXFAX`, `OXSAL`, `OXBONI`, `OXCREATE`, `OXREGISTER`, `OXPRIVFON`, `OXMOBFON`, `OXBIRTHDATE`, `OXURL`, `OXUPDATEKEY`, `OXUPDATEEXP`, `OXPOINTS`, `OXFBID`) VALUES
-('oxdefaultadmin', 1, 'malladmin', 'oxbaseshop', 'admin', 'ac81eb18344087cdaf5e83f31b3e10a82dec17db499daf0aa11937731e9abd3ff4ec29808a9827946505fd1665b3ed1ed6be9d1c04c44dcbfa920c84fe2e3ba1', '61646D696E', 1, '', 'Your Company Name', 'John', 'Doe', 'Maple Street', '2425', '', 'Any City', 'a7c40f631fc920687.20179984', '', '9041', '217-8918712', '217-8918713', 'MR', 1000, '2003-01-01 00:00:00', '2003-01-01 00:00:00', '', '', '0000-00-00', '', '', 0, 0, 0);
+(@defaultAdminId, 1, 'malladmin', 'oxbaseshop', 'admin', 'ac81eb18344087cdaf5e83f31b3e10a82dec17db499daf0aa11937731e9abd3ff4ec29808a9827946505fd1665b3ed1ed6be9d1c04c44dcbfa920c84fe2e3ba1', '61646D696E', 1, '', 'Your Company Name', 'John', 'Doe', 'Maple Street', '2425', '', 'Any City', 'a7c40f631fc920687.20179984', '', '9041', '217-8918712', '217-8918713', 'MR', 1000, '2003-01-01 00:00:00', '2003-01-01 00:00:00', '', '', '0000-00-00', '', '', 0, 0, 0);
 #
 # Table structure for table `oxuserbaskets`
 #

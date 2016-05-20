@@ -356,8 +356,8 @@ class DatabaseTest extends \OxidTestCase
         /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock('OxidEsales\\Eshop\\Setup\\Database', array("getInstance", "execSql"));
         $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
-        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("update oxuser set oxusername='{$loginName}', oxpassword='" . hash('sha512', $password . $passwordSalt) . "', oxpasssalt='{$passwordSalt}' where oxid='oxdefaultadmin'"));
-        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("update oxnewssubscribed set oxemail='{$loginName}' where oxuserid='oxdefaultadmin'"));
+        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("update oxuser set oxusername='{$loginName}', oxpassword='" . hash('sha512', $password . $passwordSalt) . "', oxpasssalt='{$passwordSalt}' where OXUSERNAME='admin'"));
+        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("update oxnewssubscribed set oxemail='{$loginName}' where OXEMAIL='admin'"));
         $database->writeAdminLoginData($loginName, $password);
     }
 

@@ -8,7 +8,10 @@ UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dba832f744c5786a371d9df33778f9525f408b6e
 UPDATE `oxcountry` SET `OXACTIVE` = 1 WHERE `OXISOALPHA2` in ('DE', 'AT', 'CH', 'GB', 'US');
 
 #set country for default user
+UPDATE oxuser SET oxid = 'oxdefaultadmin' where OXUSERNAME='admin';
 UPDATE oxuser SET oxcountryid = 'a7c40f631fc920687.20179984' where oxid='oxdefaultadmin';
+
+UPDATE `oxnewssubscribed` SET OXUSERID = 'oxdefaultadmin' WHERE OXID='0b742e66fd94c88b8.61001136';
 
 #
 # Data for table `oxactions2article`
@@ -3314,6 +3317,8 @@ INSERT INTO `oxobject2group` (`OXID`, `OXSHOPID`, `OXOBJECTID`, `OXGROUPSID`) VA
 ('c193fddd49b5f65d4.60703125', 'oxbaseshop', 'oxidpayadvance', 'oxidpricec'),
 ('dfc42e744180bf4a9.98598495', 'oxbaseshop', 'dfc42e74417f07347.45624764', 'oxidnewcustomer'),
 ('34f5e54f695bf109454aa152d9440a1f', 'oxbaseshop', 'oxdefaultadmin', 'oxidforeigncustomer');
+
+UPDATE `oxobject2group` SET OXOBJECTID = 'oxdefaultadmin' WHERE OXID = 'e913fdd8443ed43e1.51222316';
 
 #
 # Data for table `oxlinks`

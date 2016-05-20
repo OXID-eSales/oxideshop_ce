@@ -1072,6 +1072,21 @@ class BasketitemTest extends \OxidTestCase
     }
 
     /**
+     * @see https://bugs.oxid-esales.com/view.php?id=6053
+     */
+    public function testGetVarSelectKeepsZeroAsValue()
+    {
+        $article = $this->createArticle();
+        $article->oxarticles__oxvarselect = new oxField('0', oxField::T_RAW);
+        $article->save();
+        $oBasketItem = $this->getMock('oxbasketitem', array('getArticle'));
+        $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($article));
+        $oBasketItem->UNITsetArticle($article->getId());
+
+        $this->assertEquals("0", $oBasketItem->getVarSelect());
+    }
+
+    /**
      * Test set languade id value.
      *
      * @return null

@@ -50,7 +50,7 @@ class VariantselectlistTest extends \OxidTestCase
         $oSelectionList->addVariant("test2", "test2", false, true);
         $oSelectionList->addVariant("test2", "test2", true, false);
 
-        // checkign for active selection
+        // checking for active selection
         $oActiveSelection = $oSelectionList->getActiveSelection();
         $this->assertNotNull($oActiveSelection);
         $this->assertEquals("test2", $oActiveSelection->getName());
@@ -58,5 +58,32 @@ class VariantselectlistTest extends \OxidTestCase
 
         // checking various getters
         $this->assertEquals(2, count($oSelectionList->getSelections()));
+    }
+
+    /**
+     * @see https://bugs.oxid-esales.com/view.php?id=6053
+     */
+    public function testAddVariantAllowsZeroAsValue()
+    {
+        $oSelectionList = new oxVariantSelectList("test", 0);
+
+        $oSelectionList->addVariant("0", "test1", false, true);
+        $oSelectionList->addVariant(" 0 ", "test2", false, true);
+        $oSelectionList->addVariant("01", "test3", false, true);
+        $oSelectionList->addVariant(" ", "test4", false, true);
+        $oSelectionList->addVariant("", "test5", false, true);
+
+        $aSelections = $oSelectionList->getSelections();
+
+        $this->assertInstanceOf('oxSelection', $aSelections["test1"]);
+        $this->assertInstanceOf('oxSelection', $aSelections["test2"]);
+        $this->assertInstanceOf('oxSelection', $aSelections["test3"]);
+
+        $this->assertEquals("0", $aSelections["test1"]->getName());
+        $this->assertEquals("0", $aSelections["test2"]->getName());
+        $this->assertEquals("01", $aSelections["test3"]->getName());
+
+        $this->assertNotInstanceOf('oxSelection', $aSelections["test4"]);
+        $this->assertNotInstanceOf('oxSelection', $aSelections["test5"]);
     }
 }

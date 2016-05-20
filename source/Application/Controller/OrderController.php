@@ -509,7 +509,7 @@ class OrderController extends \oxUBase
         $aPath = array();
 
         $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('ORDER_COMPLETED', $iBaseLanguage, false);
+        $aPath['title'] = oxRegistry::getLang()->translateString('ORDER', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;

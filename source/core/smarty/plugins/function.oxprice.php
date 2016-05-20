@@ -45,9 +45,15 @@ function smarty_function_oxprice($params, &$smarty)
     $mPrice = $params['price'];
 
     if (!is_null($mPrice)) {
+        $config = oxRegistry::getConfig();
+        $currencyArray = $config->getCurrencyArray();
+        $defaultConfigCurrency = null;
+        if (!empty($currencyArray)) {
+            $defaultConfigCurrency = $currencyArray[0];
+        }
 
         $sPrice = ($mPrice instanceof oxPrice) ? $mPrice->getPrice() : $mPrice;
-        $oCurrency = isset($params['currency']) ? $params['currency'] : null;
+        $oCurrency = isset($params['currency']) ? $params['currency'] : $defaultConfigCurrency;
 
         if (!is_null($oCurrency)) {
             $sDecimalsSeparator = isset($oCurrency->dec) ? $oCurrency->dec : $sDecimalsSeparator;

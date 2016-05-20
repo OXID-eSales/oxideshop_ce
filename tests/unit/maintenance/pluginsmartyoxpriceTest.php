@@ -42,7 +42,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
             array(new oxPrice(120012.1), $oUSDCurrency, 'USD120,012.100'),
             array(new oxPrice(1278), $oEURCurrency, '1.278,00 EUR'),
             array(new oxPrice(1992.45), $oEmptyCurrency, '1.992,45'),
-            array(new oxPrice(1992.45), null, '1.992,45'),
+            array(new oxPrice(1992.45), null, '1.992,45 ?'),
         );
     }
 
@@ -61,7 +61,36 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
         $aParams['price'] = $oPrice;
         $aParams['currency'] = $oCurrency;
 
-        $this->assertEquals($sExpectedOutput, smarty_function_oxprice($aParams, $oSmarty));
+        $this->assertEquals(utf8_decode($sExpectedOutput), utf8_decode(smarty_function_oxprice($aParams, $oSmarty)));
+    }
+
+    /**
+     * Test, that the oxprice smarty plugin will use the admin setted currency, if we don't give some currency object in.
+     */
+    public function testNoCurrencyObjectAsParameterButInConfig() {
+        $this->_setCurrencies(array('EUR@ 1.00@ ,@ #@ €@ 2'));
+
+        $oSmarty = new Smarty();
+
+        $aParams = array(
+            'price' => new oxPrice(1992.45),
+        );
+
+        $this->assertEquals('1#992,45 €', smarty_function_oxprice($aParams, $oSmarty));
+    }
+    
+    /**
+     * Helper method to set the given currencies.
+     *
+     * @param array $aCurrencies The currencies we want to set.
+     */
+    protected function _setCurrencies($aCurrencies)
+    {
+        if (!empty($aCurrencies) || is_null($aCurrencies)) {
+            $oConfig = oxRegistry::getConfig();
+
+            $oConfig->setConfigParam('aCurrencies', $aCurrencies);
+        }
     }
 
     /**
@@ -85,7 +114,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
             array(1278, $oEURCurrency, '1.278,00 EUR'),
             array(1278, $oEURCurrencyZero, '1.278 EUR'),
             array(1992.45, $oEmptyCurrency, '1.992,45'),
-            array(1992.45, null, '1.992,45'),
+            array(1992.45, null, '1.992,45 ?'),
         );
     }
 
@@ -98,13 +127,14 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
      * @param stdClass $oCurrency       currency object
      * @param string   $sExpectedOutput expected output
      */
-    public function testFormatPrice_usingPriceAsFlout($fPrice, $oCurrency, $sExpectedOutput)
+    public function testFormatPrice_usingPriceAsFloat($fPrice, $oCurrency, $sExpectedOutput)
     {
         $oSmarty = new Smarty();
         $aParams['price'] = $fPrice;
         $aParams['currency'] = $oCurrency;
 
-        $this->assertEquals($sExpectedOutput, smarty_function_oxprice($aParams, $oSmarty));
+        // we utf8 decode here to make the test more robust against shop settings 
+        $this->assertEquals(utf8_decode($sExpectedOutput), utf8_decode(smarty_function_oxprice($aParams, $oSmarty)));
     }
 
     /**
@@ -126,7 +156,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
             array(0, $oEURCurrencyZero, '0 EUR'),
             array(0, $oUSDCurrency, 'USD0.000'),
             array(0, $oEmptyCurrency, ''),
-            array(0, null, ''),
+            array(0, null, '0,00 ?'),
         );
     }
 
@@ -145,7 +175,8 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
         $aParams['price'] = $fPrice;
         $aParams['currency'] = $oCurrency;
 
-        $this->assertEquals($sExpectedOutput, smarty_function_oxprice($aParams, $oSmarty));
+        // we utf8 decode here to make the test more robust against shop settings 
+        $this->assertEquals(utf8_decode($sExpectedOutput), utf8_decode(smarty_function_oxprice($aParams, $oSmarty)));
     }
 
     /**

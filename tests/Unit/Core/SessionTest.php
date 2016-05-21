@@ -1454,12 +1454,12 @@ class SessionTest extends \OxidTestCase
     }
 
     /**
-     * check if forces session on POST request
+     * check if session is not forced on every POST/GET request
      */
     function testIsSessionRequiredActionOnPost()
     {
         $oSess = $this->getMock('oxSession', array('_getRequireSessionWithParams'));
-        $oSess->expects($this->exactly(2))->method('_getRequireSessionWithParams')
+        $oSess->expects($this->any())->method('_getRequireSessionWithParams')
             ->will(
                 $this->returnValue(
                     array()
@@ -1471,7 +1471,7 @@ class SessionTest extends \OxidTestCase
             $_SERVER['REQUEST_METHOD'] = 'GET';
             $this->assertEquals(false, $oSess->UNITisSessionRequiredAction());
             $_SERVER['REQUEST_METHOD'] = 'POST';
-            $this->assertEquals(true, $oSess->UNITisSessionRequiredAction());
+            $this->assertEquals(false, $oSess->UNITisSessionRequiredAction());
         } catch (Exception $e) {
         }
         $_SERVER['REQUEST_METHOD'] = $sInitial;

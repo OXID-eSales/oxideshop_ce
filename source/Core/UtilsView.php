@@ -161,7 +161,6 @@ class UtilsView extends \oxSuperCfg
         //messages are stored in session
         $session = $this->getSession();
         if (!$session->getId() && !$session->isHeaderSent()) {
-            $session->setForceNewSession();
             $session->start();
         }
 

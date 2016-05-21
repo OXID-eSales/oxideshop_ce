@@ -204,10 +204,32 @@ class Session extends \oxSuperCfg
     }
 
     /**
-     * Starts shop session, generates unique session ID, extracts user IP.
+     * @var bool helper to debug endless loops
+     * TODO: remove this after debugging
      */
-    public function start()
+    private $starting = false;
+
+    /**
+     * Starts shop session, generates unique session ID, extracts user IP.
+     * @param bool $forceSessionStart
+     * if set to true the session will be started
+     * even if there is no session id in request, in that case a new session id will be generated
+     * if set to false the session will only be started if the current request contains an session id
+     * or has some specific characteristics or the shop is configured to create a sessions for every request
+     *
+     * default is true because calling that method you usually want to have start a session
+     */
+    public function start($forceSessionStart = true)
     {
+        if ($forceSessionStart){
+            $this->setForceNewSession(true);
+        }
+        // TODO: remove this after debugging
+        if ($this->starting) {
+            throw new \Exception(" endless loop detected ");
+        }
+        $this->starting = true;
+
         $myConfig = $this->getConfig();
         $sid = null;
 
@@ -457,14 +479,17 @@ class Session extends \oxSuperCfg
 
     /**
      * Sets parameter and its value to global session mixedvar array.
-     *
+     * this method will force starting a session if there is not already a session started
      * @param string $name  Name of parameter to store
      * @param mixed  $value Value of parameter
-     *
+     * @param bool $autoStartSession start the session if not already started (default is true)
      * @return null
      */
-    public function setVariable($name, $value)
+    public function setVariable($name, $value, $autoStartSession = true)
     {
+        if (!$this->_blStarted && $autoStartSession) {
+            $this->start();
+        }
         $_SESSION[$name] = $value;
     }
 
@@ -1044,7 +1069,7 @@ class Session extends \oxSuperCfg
             }
         }
 
-        return (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST');
+        return false;
     }
 
     /**

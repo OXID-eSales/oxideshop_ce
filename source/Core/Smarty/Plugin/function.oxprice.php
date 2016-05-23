@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\Registry;
+
 /**
  * Smarty function
  * -------------------------------------------------------------
@@ -45,8 +47,7 @@ function smarty_function_oxprice($params, &$smarty)
     $mPrice = $params['price'];
 
     if (!is_null($mPrice)) {
-
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = Registry::getConfig();
 
         $sPrice = ($mPrice instanceof oxPrice) ? $mPrice->getPrice() : $mPrice;
         $oCurrency = isset($params['currency']) ? $params['currency'] : $oConfig->getActShopCurrencyObject();

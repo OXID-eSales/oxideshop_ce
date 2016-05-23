@@ -27,6 +27,8 @@ use OxidEsales\Eshop\Core\Database;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use ReflectionClass;
+use OxidEsales\Eshop\Core\exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\exception\DatabaseNotConfiguredException;
 
 /**
  * Class DatabaseTest
@@ -38,25 +40,43 @@ class DatabaseTest extends UnitTestCase
 {
     public function testGetDbThrowsDatabaseConnectionException()
     {
+        /** @var ConfigFile $configFileBackup Backup of the configFile as stored in Registry. This object must be restored  */
+        $configFileBackup = Registry::get('oxConfigFile');
+
         $configFile = $this->getBlankConfigFile();
         Registry::set('oxConfigFile',$configFile);
         self::resetDbProperty(Database::getInstance());
 
         $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseConnectionException');
 
-        Database::getDb();
+        try {
+            Database::getDb();
+        } catch (DatabaseConnectionException $exception ) {
+            /** Restore original configFile object */
+            Registry::set('oxConfigFile',$configFileBackup);
+            throw $exception;
+        }
     }
 
     public function testGetDbThrowsDatabaseNotConfiguredException()
     {
+        /** @var ConfigFile $configFileBackup Backup of the configFile as stored in Registry. This object must be restored  */
+        $configFileBackup = Registry::get('oxConfigFile');
+
         $configFile = $this->getBlankConfigFile();
         $configFile->setVar('dbHost','<');
         Registry::set('oxConfigFile',$configFile);
         self::resetDbProperty(Database::getInstance());
 
         $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseNotConfiguredException');
-
-        Database::getDb();
+        
+        try {
+            Database::getDb();            
+        } catch (DatabaseNotConfiguredException $exception ) {
+            /** Restore original configFile object */
+            Registry::set('oxConfigFile',$configFileBackup);
+            throw $exception;
+        }
     }
 
     /**

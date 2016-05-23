@@ -45,7 +45,7 @@ class DatabaseTest extends UnitTestCase
 
         $configFile = $this->getBlankConfigFile();
         Registry::set('oxConfigFile',$configFile);
-        self::resetDbProperty(Database::getInstance());
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , null);
 
         $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseConnectionException');
 
@@ -66,7 +66,7 @@ class DatabaseTest extends UnitTestCase
         $configFile = $this->getBlankConfigFile();
         $configFile->setVar('dbHost','<');
         Registry::set('oxConfigFile',$configFile);
-        self::resetDbProperty(Database::getInstance());
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , null);
 
         $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseNotConfiguredException');
         
@@ -89,14 +89,5 @@ class DatabaseTest extends UnitTestCase
     protected function getBlankConfigFile()
     {
         return new ConfigFile($this->createFile('config.inc.php', '<?php '));
-    }
-
-    public static function resetDbProperty($class) {
-        $reflectionClass = new ReflectionClass('OxidEsales\Eshop\Core\Database');
-
-        $reflectionProperty = $reflectionClass->getProperty('db');
-        $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue($class, null);
-
     }
 }

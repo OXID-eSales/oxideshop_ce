@@ -49,7 +49,6 @@ class DatabaseTest extends UnitTestCase
 
     public function testGetDbThrowsDatabaseNotConfiguredException()
     {
-        var_dump(__FUNCTION__);
         $configFile = $this->getBlankConfigFile();
         $configFile->setVar('dbHost','<');
         Registry::set('oxConfigFile',$configFile);

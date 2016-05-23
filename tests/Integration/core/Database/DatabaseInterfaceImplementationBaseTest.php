@@ -124,6 +124,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     public function setUp()
     {
         /** Set a user-defined error handler in order to handle errors triggered with trigger_error */
+        echo $this->getName() .  PHP_EOL;
         $this->errors = array();
         set_error_handler(array($this, "errorHandler"));
 

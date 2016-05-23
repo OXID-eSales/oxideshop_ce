@@ -161,6 +161,7 @@ class DbTest extends UnitTestCase
 
     public function testGetDbThrowsDatabaseNotConfiguredException()
     {
+        var_dump(__FUNCTION__);
         /** Set an invalid config file */
         $configFile = $this->getBlankConfigFile();
         $configFile->setVar('dbHost', '<');

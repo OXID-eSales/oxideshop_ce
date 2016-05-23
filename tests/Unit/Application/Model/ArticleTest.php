@@ -108,7 +108,7 @@ class ArticleTest extends \OxidTestCase
         $oDB->Execute('delete from oxselectlist where oxid = "_testoxsellist" ');
         $oDB->Execute('delete from oxobject2selectlist where oxselnid = "_testoxsellist" ');
 
-        $this->setProtectedClassProperty(oxDb::getInstance(), 'tblDescCache', []);
+        $this->setProtectedClassProperty(Database::getInstance(), 'tblDescCache', []);
 
         parent::tearDown();
     }

@@ -30,8 +30,8 @@ use Doctrine\DBAL\Exception;
 use OxidEsales\Eshop;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineEmptyResultSet;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
-use OxidEsales\Eshop\Core\exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * The doctrine implementation of our database.
@@ -741,7 +741,7 @@ class Doctrine implements DatabaseInterface
                 $pdoException = $exception->getPrevious();
                 $code = $pdoException->errorInfo[1];
                 $message = $pdoException->errorInfo[2];
-                $exceptionClass = 'OxidEsales\Eshop\Core\exception\DatabaseException';
+                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
                 break;
             case $exception instanceof PDOException:
                 /**
@@ -751,10 +751,10 @@ class Doctrine implements DatabaseInterface
                  */
                 $code = $exception->errorInfo[1];
                 $message = $exception->errorInfo[2];
-                $exceptionClass = 'OxidEsales\Eshop\Core\exception\DatabaseException';
+                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
                 break;
             default:
-                $exceptionClass = 'OxidEsales\Eshop\Core\exception\DatabaseException';
+                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
         }
 
         /** @var \oxException $convertedException */

@@ -27,8 +27,8 @@ use OxidEsales\Eshop\Core\Database;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use ReflectionClass;
-use OxidEsales\Eshop\Core\exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\exception\DatabaseNotConfiguredException;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
 
 /**
  * Class DatabaseTest
@@ -47,7 +47,7 @@ class DatabaseTest extends UnitTestCase
         Registry::set('oxConfigFile',$configFile);
         $this->setProtectedClassProperty(Database::getInstance(), 'db' , null);
 
-        $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseConnectionException');
+        $this->setExpectedException('OxidEsales\Eshop\Core\Exception\DatabaseConnectionException');
 
         try {
             Database::getDb();
@@ -68,7 +68,7 @@ class DatabaseTest extends UnitTestCase
         Registry::set('oxConfigFile',$configFile);
         $this->setProtectedClassProperty(Database::getInstance(), 'db' , null);
 
-        $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseNotConfiguredException');
+        $this->setExpectedException('OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException');
         
         try {
             Database::getDb();            

@@ -20,7 +20,7 @@
  * @version       OXID eShop CE
  */
 
-use OxidEsales\Eshop\Core\exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 

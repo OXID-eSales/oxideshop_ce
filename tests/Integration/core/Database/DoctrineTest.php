@@ -37,7 +37,7 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
     /**
      * @var string The database exception class to be thrown
      */
-    const DATABASE_EXCEPTION_CLASS = 'OxidEsales\Eshop\Core\exception\DatabaseException';
+    const DATABASE_EXCEPTION_CLASS = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
 
     /**
      * @var string The result set class class

@@ -24,8 +24,8 @@ namespace OxidEsales\Eshop\Core;
 use oxConnectionException;
 use OxidEsales\Eshop\Core\Database\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Doctrine as DatabaseAdapter;
-use OxidEsales\Eshop\Core\exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\exception\DatabaseNotConfiguredException;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
 
 /**
  * Database connection class

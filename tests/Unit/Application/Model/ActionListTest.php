@@ -22,6 +22,7 @@
 namespace Unit\Application\Model;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\Database;
 use \oxRegistry;
 use \oxTestModules;
 use \oxActionList;

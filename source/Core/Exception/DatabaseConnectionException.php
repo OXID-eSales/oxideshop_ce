@@ -1,5 +1,5 @@
 <?php
-namespace OxidEsales\Eshop\Core\exception;
+namespace OxidEsales\Eshop\Core\Exception;
 
 /**
  * This file is part of OXID eShop Community Edition.

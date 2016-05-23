@@ -26,7 +26,7 @@ use oxException;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
-use OxidEsales\Eshop\Core\exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 use oxConnectionException;
 use oxCookieException;
 use stdClass;

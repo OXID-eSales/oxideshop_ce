@@ -23,7 +23,7 @@ namespace OxidEsales\Eshop\Core\Database;
 
 use object_ADOConnection;
 use object_ResultSet;
-use OxidEsales\Eshop\Core\exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 use pear_ADOConnection;
 
 /**

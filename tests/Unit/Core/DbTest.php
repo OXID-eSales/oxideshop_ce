@@ -154,7 +154,7 @@ class DbTest extends UnitTestCase
         /** Reset the db property */
         $this->setProtectedClassProperty(Database::getInstance(), 'db', null);
 
-        $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseConnectionException');
+        $this->setExpectedException('OxidEsales\Eshop\Core\Exception\DatabaseConnectionException');
 
         Database::getDb();
     }
@@ -168,7 +168,7 @@ class DbTest extends UnitTestCase
         /** Reset the db property */
         $this->setProtectedClassProperty(Database::getInstance(), 'db', null);
 
-        $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseNotConfiguredException');
+        $this->setExpectedException('OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException');
 
         Database::getDb();
     }

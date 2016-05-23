@@ -87,7 +87,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     protected $errors;
 
     /**
-     * @var Doctrine|\oxLegacyDb The database to test.
+     * @var DatabaseInterface The database to test.
      */
     protected $database = null;
 
@@ -109,7 +109,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     /**
      * Create the database object under test - the static pendant to use in the setUpBeforeClass and tearDownAfterClass.
      *
-     * @return Doctrine|\oxLegacyDb The database object under test.
+     * @return DatabaseInterface The database object under test.
      */
     abstract protected function createDatabase();
 

@@ -183,7 +183,7 @@ class Doctrine implements DatabaseInterface
      */
     protected function getPdoMysqlConnectionParameters(array $connectionParameters)
     {
-        $connectionParameters = array(
+        $pdoMysqlConnectionParameters = array(
             'driver'   => 'pdo_mysql',
             'host'     => $connectionParameters['databaseHost'],
             'dbname'   => $connectionParameters['databaseName'],
@@ -209,10 +209,10 @@ class Doctrine implements DatabaseInterface
         $sanitizedCharset = trim(strtolower($connectionParameters['connectionCharset']));
 
         if (!empty($sanitizedCharset)) {
-            $connectionParameters['charset'] = $sanitizedCharset;
+            $pdoMysqlConnectionParameters['charset'] = $sanitizedCharset;
         }
 
-        return $connectionParameters;
+        return $pdoMysqlConnectionParameters;
     }
 
     /**

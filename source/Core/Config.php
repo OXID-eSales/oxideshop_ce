@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
 use OxidEsales\Eshop\Core\exception\DatabaseException;
 use oxConnectionException;
@@ -31,7 +32,6 @@ use oxDb;
 use oxCookieException;
 use oxUtilsObject;
 use stdClass;
-use OxidEsales\Eshop\Core\SuperConfig;
 use Exception;
 
 //max integer
@@ -45,6 +45,7 @@ define('MAX_64BIT_INTEGER', '18446744073709551615');
  */
 class Config extends SuperConfig
 {
+    const DEFAULT_CONFIG_KEY = 'fq45QS09_fqyx09239QQ';
 
     // this column of params are defined in config.inc.php file,
     // so for backwards compatibility. names starts without underscore
@@ -173,7 +174,7 @@ class Config extends SuperConfig
     /**
      * Application starter instance
      *
-     * @var oxStart
+     * @var OxidStartController
      */
     private $_oStart = null;
 
@@ -307,6 +308,9 @@ class Config extends SuperConfig
      */
     protected $_blInit = false;
 
+    /** @var string Default configuration encryption key for database values. */
+    protected $sConfigKey = self::DEFAULT_CONFIG_KEY;
+
     /**
      * prefix for oxModule field for themes in oxConfig and oxConfigDisplay tables
      *
@@ -384,8 +388,6 @@ class Config extends SuperConfig
         $this->_blInit = true;
 
         $this->_loadVarsFromFile();
-
-        include __DIR__ . '/oxconfk.php';
 
         // setting ADODB timeout
         global $ADODB_SESS_LIFE;

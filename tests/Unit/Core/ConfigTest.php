@@ -40,11 +40,7 @@ class modForTestGetBaseTplDirExpectsDefault extends oxConfig
             return;
         }
         $this->_blInit = true;
-
         $this->_loadVarsFromFile();
-
-        include getShopBasePath() . 'Core/oxconfk.php';
-
         $this->_setDefaults();
     }
 

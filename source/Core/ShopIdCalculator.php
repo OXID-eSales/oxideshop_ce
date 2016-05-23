@@ -65,10 +65,8 @@ class ShopIdCalculator
      */
     protected function _getConfKey()
     {
-        $sFileName = dirname(__FILE__) . "/oxconfk.php";
-        $sCfgFile = new oxConfigFile($sFileName);
-
-        return $sCfgFile->getVar("sConfigKey");
+        $config = new ConfigFile(getShopBasePath() . "/config.inc.php");
+        return $config->getVar('sConfigKey') ?: Config::DEFAULT_CONFIG_KEY;
     }
 
     /**

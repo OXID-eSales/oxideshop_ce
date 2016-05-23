@@ -24,7 +24,6 @@ namespace OxidEsales\Eshop\Core;
 
 use oxFileCache;
 use oxShopIdCalculator;
-use oxConfigFile;
 use oxDb;
 
 /**
@@ -118,10 +117,8 @@ class ModuleVariablesLocator
      */
     protected function getConfigurationKey()
     {
-        $configKeyFileName = dirname(__FILE__) . "/oxconfk.php";
-        $configFile = new oxConfigFile($configKeyFileName);
-
-        return $configFile->getVar("sConfigKey");
+        $config = new ConfigFile(getShopBasePath() . "/config.inc.php");
+        return $config->getVar('sConfigKey') ?: Config::DEFAULT_CONFIG_KEY;
     }
 
     /**

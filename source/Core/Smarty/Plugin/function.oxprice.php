@@ -34,7 +34,7 @@
  *
  * @return string
  */
-function smarty_function_oxprice( $params, &$smarty )
+function smarty_function_oxprice($params, &$smarty)
 {
     $sOutput = '';
     $iDecimals = 2;
@@ -44,25 +44,25 @@ function smarty_function_oxprice( $params, &$smarty )
     $sSide = '';
     $mPrice = $params['price'];
 
-    if ( !is_null( $mPrice ) ) {
+    if (!is_null($mPrice)) {
 
         $oConfig = oxRegistry::getConfig();
 
-        $sPrice = ( $mPrice instanceof oxPrice ) ? $mPrice->getPrice() : $mPrice;
-        $oCurrency = isset( $params['currency'] ) ? $params['currency'] : $oConfig->getActShopCurrencyObject();
+        $sPrice = ($mPrice instanceof oxPrice) ? $mPrice->getPrice() : $mPrice;
+        $oCurrency = isset($params['currency']) ? $params['currency'] : $oConfig->getActShopCurrencyObject();
 
-        if ( !is_null( $oCurrency ) ) {
-            $sDecimalsSeparator = isset( $oCurrency->dec ) ? $oCurrency->dec : $sDecimalsSeparator;
-            $sThousandSeparator = isset( $oCurrency->thousand ) ? $oCurrency->thousand : $sThousandSeparator;
-            $sCurrencySign = isset( $oCurrency->sign ) ? $oCurrency->sign : $sCurrencySign;
-            $sSide = isset( $oCurrency->side ) ? $oCurrency->side : $sSide;
-            $iDecimals = isset( $oCurrency->decimal ) ? (int) $oCurrency->decimal : $iDecimals;
+        if (!is_null($oCurrency)) {
+            $sDecimalsSeparator = isset($oCurrency->dec) ? $oCurrency->dec : $sDecimalsSeparator;
+            $sThousandSeparator = isset($oCurrency->thousand) ? $oCurrency->thousand : $sThousandSeparator;
+            $sCurrencySign = isset($oCurrency->sign) ? $oCurrency->sign : $sCurrencySign;
+            $sSide = isset($oCurrency->side) ? $oCurrency->side : $sSide;
+            $iDecimals = isset($oCurrency->decimal) ? (int) $oCurrency->decimal : $iDecimals;
         }
 
-        if ( is_numeric( $sPrice ) ) {
-            if ( (float) $sPrice > 0 || $sCurrencySign  ) {
-                $sPrice = number_format( $sPrice, $iDecimals, $sDecimalsSeparator, $sThousandSeparator );
-                $sOutput = ( isset($sSide) && $sSide == 'Front' ) ? $sCurrencySign . $sPrice : $sPrice . ' ' . $sCurrencySign;
+        if (is_numeric($sPrice)) {
+            if ((float) $sPrice > 0 || $sCurrencySign) {
+                $sPrice = number_format($sPrice, $iDecimals, $sDecimalsSeparator, $sThousandSeparator);
+                $sOutput = (isset($sSide) && $sSide == 'Front') ? $sCurrencySign . $sPrice : $sPrice . ' ' . $sCurrencySign;
             }
 
             $sOutput = trim($sOutput);

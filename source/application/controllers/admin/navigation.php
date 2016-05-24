@@ -142,11 +142,13 @@ class Navigation extends oxAdminView
         // kill session
         $mySession->destroy();
 
+        // @deprecated since v5.3.0 (2016-05-24); Implement your own session handler with a module.
         // delete also, this is usually not needed but for security reasons we execute still
         if ($myConfig->getConfigParam('blAdodbSessionHandler')) {
             $oDb = oxDb::getDb();
             $oDb->execute("delete from oxsessions where SessionID = " . $oDb->quote($mySession->getId()));
         }
+        // END deprecated
 
         //reseting content cache if needed
         if ($myConfig->getConfigParam('blClearCacheOnLogout')) {

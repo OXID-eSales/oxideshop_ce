@@ -23,6 +23,7 @@
 namespace OxidEsales\Eshop\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\Database;
 use oxRegistry;
 use stdClass;
 
@@ -55,16 +56,14 @@ class AttributeList extends \oxList
             return;
         }
 
-        foreach ($aIds as $iKey => $sVal) {
-            $aIds[$iKey] = oxDb::getInstance()->escapeString($sVal);
-        }
-
         $sAttrViewName = getViewName('oxattribute');
         $sViewName = getViewName('oxobject2attribute');
 
+        $oxObjectIdsSql = implode (',', Database::getDb()->quoteArray($aIds));
+
         $sSelect = "select $sAttrViewName.oxid, $sAttrViewName.oxtitle, {$sViewName}.oxvalue, {$sViewName}.oxobjectid ";
         $sSelect .= "from {$sViewName} left join $sAttrViewName on $sAttrViewName.oxid = {$sViewName}.oxattrid ";
-        $sSelect .= "where {$sViewName}.oxobjectid in ( '" . implode("','", $aIds) . "' ) ";
+        $sSelect .= "where {$sViewName}.oxobjectid in ( " . $oxObjectIds . " ) ";
         $sSelect .= "order by {$sViewName}.oxpos, $sAttrViewName.oxpos";
 
         return $this->_createAttributeListFromSql($sSelect);

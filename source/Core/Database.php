@@ -173,22 +173,6 @@ class Database
     }
 
     /**
-     * Escape string for using in mysql statements
-     * @todo Deprecate in 5.3
-     * @deprecated since v5.3.0 (2016-05-20); Do not use any more. This method will be removed. Use DatabaseInterface::quote() or DatabaseInterface::quoteIdentifier()
-     *
-     * @param string $string string which will be escaped
-     *
-     * @return string
-     */
-    public function escapeString($string)
-    {
-        $result = trim(static::getDb()->quote($string), "'");
-        
-        return $result;
-    }
-
-    /**
      * Creates database connection and returns it.
      *
      * @throws DatabaseConnectionException

@@ -334,7 +334,7 @@ class AdminList extends \oxAdminView
                     $field = $table . $column;
 
                     //add table name to column name if no table name found attached to column name
-                    $query .= ((($addSeparator) ? ', ' : '')) . oxDb::getInstance()->escapeString($field);
+                    $query .= ((($addSeparator) ? ', ' : '')) . oxDb::getDb()->quoteIdentifier($field);
 
                     //V oxActive field search always DESC
                     if ($descending || $column == "oxactive" || strcasecmp($sortDirectory, 'desc') == 0) {
@@ -451,7 +451,7 @@ class AdminList extends \oxAdminView
                             $queryBoolAction .= '(';
                         }
 
-                        $fieldName = oxDb::getInstance()->escapeString($fieldName);
+                        $fieldName = oxDb::getDb()->quoteIdentifier($fieldName);
                         $fullQuery .= " {$queryBoolAction} {$fieldName} ";
 
                         //for search in same field for different values using AND

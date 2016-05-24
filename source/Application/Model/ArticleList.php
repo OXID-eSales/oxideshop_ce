@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Model;
 
+use OxidEsales\Eshop\Core\Database;
 use oxRegistry;
 use oxDb;
 use OxidEsales\Eshop\Core\Registry;
@@ -665,16 +666,14 @@ class ArticleList extends \oxList
             return;
         }
 
-        foreach ($aIds as $iKey => $sVal) {
-            $aIds[$iKey] = oxDb::getInstance()->escapeString($sVal);
-        }
-
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
         $sArticleFields = $oBaseObject->getSelectFields();
+        
+        $oxIdsSql = implode (',', Database::getDb()->quoteArray($aIds));
 
         $sSelect = "select $sArticleFields from $sArticleTable ";
-        $sSelect .= "where $sArticleTable.oxid in ( '" . implode("','", $aIds) . "' ) and ";
+        $sSelect .= "where $sArticleTable.oxid in ( " . $oxIdsSql . " ) and ";
         $sSelect .= $oBaseObject->getSqlActiveSnippet();
 
         $this->selectString($sSelect);

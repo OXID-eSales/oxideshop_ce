@@ -49,16 +49,19 @@ class UserList extends \oxList
      */
     public function loadWishlistUsers($sSearchStr)
     {
-        $sSearchStr = oxDb::getInstance()->escapeString($sSearchStr);
+        $sSearchStr = trim ($sSearchStr);
+
         if (!$sSearchStr) {
             return;
         }
+
+        $quotedSearchStr = oxDb::getDb()->quote("%$sSearchStr%");
 
         $sSelect = "select oxuser.oxid, oxuser.oxfname, oxuser.oxlname from oxuser ";
         $sSelect .= "left join oxuserbaskets on oxuserbaskets.oxuserid = oxuser.oxid ";
         $sSelect .= "where oxuserbaskets.oxid is not null and oxuserbaskets.oxtitle = 'wishlist' ";
         $sSelect .= "and oxuserbaskets.oxpublic = 1 ";
-        $sSelect .= "and ( oxuser.oxusername like '%$sSearchStr%' or oxuser.oxlname like '%$sSearchStr%')";
+        $sSelect .= "and ( oxuser.oxusername like $quotedSearchStr or oxuser.oxlname like $quotedSearchStr)";
         $sSelect .= "and ( select 1 from oxuserbasketitems where oxuserbasketitems.oxbasketid = oxuserbaskets.oxid limit 1)";
 
         $this->selectString($sSelect);

@@ -390,9 +390,7 @@ class Config extends SuperConfig
 
         $this->_loadVarsFromFile();
 
-        // setting ADODB timeout
-        global $ADODB_SESS_LIFE;
-        $ADODB_SESS_LIFE = 1;
+        include getShopBasePath() . 'Core/oxconfk.php';
 
         $this->_setDefaults();
 
@@ -522,11 +520,6 @@ class Config extends SuperConfig
 
         if (is_null($this->getConfigParam('iZoomPicCount'))) {
             $this->setConfigParam('iZoomPicCount', 4);
-        }
-
-        // ADODB cache life time
-        if (is_null($this->getConfigParam('iDBCacheLifeTime'))) {
-            $this->setConfigParam('iDBCacheLifeTime', 3600); // 1 hour
         }
 
         if (is_null($this->getConfigParam('iDebug'))) {

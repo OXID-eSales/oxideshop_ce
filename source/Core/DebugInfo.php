@@ -180,24 +180,6 @@ class DebugInfo
     }
 
     /**
-     * db debug info formatter (collects adodb logs)
-     *
-     * @return string
-     */
-    public function formatAdoDbPerf()
-    {
-        $perfMonitor = @NewPerfMonitor(oxDb::getDb());
-        if ($perfMonitor) {
-            ob_start();
-            $perfMonitor->UI(5);
-
-            return ob_get_clean();
-        }
-
-        return '';
-    }
-
-    /**
      * Forms view name and timestamp to.
      *
      * @return string

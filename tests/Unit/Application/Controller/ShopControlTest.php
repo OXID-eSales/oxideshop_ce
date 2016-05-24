@@ -492,8 +492,6 @@ class ShopControlTest extends \OxidTestCase
         $oControl->UNITstartMonitor();
         $oControl->UNITstopMonitor();
 
-        oxTestModules::addFunction('oxDebugInfo', 'formatAdoDbPerf', '{ return ""; }');
-
         $oOut = $this->getMock("oxOutput", array('output'));
         $oOut->expects($this->once())->method('output')->with($this->equalTo('debuginfo'));
 

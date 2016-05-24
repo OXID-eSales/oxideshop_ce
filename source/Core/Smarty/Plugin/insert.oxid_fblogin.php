@@ -29,6 +29,8 @@
  * Purpose: Used for tracking in econda, etracker etc.
  * -------------------------------------------------------------
  *
+ * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
+ *
  * @param array  $params  params
  * @param Smarty &$smarty clever simulation of a method
  *

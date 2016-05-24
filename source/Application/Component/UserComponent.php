@@ -303,6 +303,8 @@ class UserComponent extends \oxView
     /**
      * Executes oxcmp_user::login() and updates logged in user Facebook User ID (if user was
      * connected using Facebook Connect)
+     *
+     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
      */
     public function login_updateFbId()
     {

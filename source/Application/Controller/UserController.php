@@ -114,9 +114,11 @@ class UserController extends \oxUBase
 
         parent::render();
 
+        // @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
         if ($config->getConfigParam("bl_showFbConnect") && !$this->getUser()) {
             $this->_fillFormWithFacebookData();
         }
+        // END deprecated
 
         return $this->_sThisTemplate;
     }
@@ -214,6 +216,8 @@ class UserController extends \oxUBase
 
     /**
      * Fills user form with date taken from Facebook
+     *
+     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
      */
     protected function _fillFormWithFacebookData()
     {

@@ -55,6 +55,8 @@ class BaseController extends \oxView
     /**
      * Facebook widget status marker
      *
+     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
+     *
      * @var bool
      */
     protected $_blFbWidgetsOn = null;
@@ -2190,7 +2192,7 @@ class BaseController extends \oxView
      *  - link link leading to tag article list
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
+     *
      * @return stdClass
      */
     public function getActTag()
@@ -2945,6 +2947,8 @@ class BaseController extends \oxView
     /**
      * Returns TRUE if facebook widgets are on
      *
+     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
+     *
      * @return boolean
      */
     public function isFbWidgetVisible()
@@ -3016,7 +3020,7 @@ class BaseController extends \oxView
      * Returns true if tags are ON
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
+     *
      * @return boolean
      */
     public function showTags()

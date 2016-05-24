@@ -19,9 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "OxidEsales\\Eshop\\": "./source",
-            "OxidEsales\\EshopProfessional\\": "./source/Edition/Professional",
-            "OxidEsales\\EshopEnterprise\\": "./source/Edition/Enterprise"
+            "OxidEsales\\Eshop\\": "./source"
         }
     },
     "autoload-dev": {

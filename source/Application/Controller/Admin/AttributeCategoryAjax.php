@@ -106,7 +106,7 @@ class AttributeCategoryAjax extends \ajaxListComponent
             $sQ = $this->_addFilter("delete oxcategory2attribute.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
-            $sChosenCategories = implode(", ", oxDb::getInstance()->quoteArray($aChosenCat));
+            $sChosenCategories = implode(", ", oxDb::getDb()->quoteArray($aChosenCat));
             $sQ = "delete from oxcategory2attribute where oxcategory2attribute.oxid in (" . $sChosenCategories . ") ";
             oxDb::getDb()->Execute($sQ);
         }

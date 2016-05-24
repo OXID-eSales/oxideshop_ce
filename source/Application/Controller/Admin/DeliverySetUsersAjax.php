@@ -119,7 +119,7 @@ class DeliverySetUsersAjax extends \ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups)) . ") ";
+            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aRemoveGroups)) . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }

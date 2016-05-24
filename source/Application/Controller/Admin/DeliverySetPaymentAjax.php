@@ -91,7 +91,7 @@ class DeliverySetPaymentAjax extends \ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif (is_array($aChosenCntr)) {
-            $sQ = "delete from oxobject2payment where oxobject2payment.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenCntr)) . ") ";
+            $sQ = "delete from oxobject2payment where oxobject2payment.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aChosenCntr)) . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }

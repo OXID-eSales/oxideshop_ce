@@ -144,7 +144,7 @@ class ArticleCrosssellingAjax extends \ajaxListComponent
             $sQ = $this->_addFilter("delete oxobject2article.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", oxDb::getInstance()->quoteArray($aChosenArt));
+            $sChosenArticles = implode(", ", oxDb::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxobject2article where oxobject2article.oxid in (" . $sChosenArticles . ") ";
             oxDb::getDb()->Execute($sQ);
         }

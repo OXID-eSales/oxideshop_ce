@@ -514,7 +514,7 @@ class Discount extends \oxI18n
             return false;
         }
 
-        $sCatIds = "(" . implode(",", oxDb::getInstance()->quoteArray($aCatIds)) . ")";
+        $sCatIds = "(" . implode(",", oxDb::getDb()->quoteArray($aCatIds)) . ")";
 
         $oDb = oxDb::getDb();
         // getOne appends limit 1, so this one should be fast enough
@@ -580,7 +580,7 @@ class Discount extends \oxI18n
         $oDb = oxDb::getDb();
         $sDiscountIdQuoted = $oDb->quote($this->oxdiscount__oxid->value);
 
-        $sCategoryIds = "(" . implode(",", oxDb::getInstance()->quoteArray($aCategoryIds)) . ")";
+        $sCategoryIds = "(" . implode(",", oxDb::getDb()->quoteArray($aCategoryIds)) . ")";
         $sQ = "select 1
                 from oxobject2discount
                 where oxdiscountid = {$sDiscountIdQuoted} and oxobjectid in {$sCategoryIds} and oxtype = 'oxcategories'";

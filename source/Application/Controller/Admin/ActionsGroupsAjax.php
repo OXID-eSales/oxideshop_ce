@@ -93,7 +93,7 @@ class ActionsGroupsAjax extends \ajaxListComponent
             $sQ = $this->_addFilter("delete oxobject2action.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sRemoveGroups = implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups));
+            $sRemoveGroups = implode(", ", oxDb::getDb()->quoteArray($aRemoveGroups));
             $sQ = "delete from oxobject2action where oxobject2action.oxid in (" . $sRemoveGroups . ") ";
             oxDb::getDb()->Execute($sQ);
         }

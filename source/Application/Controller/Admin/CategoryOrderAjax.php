@@ -73,13 +73,13 @@ class CategoryOrderAjax extends \ajaxListComponent
         if ($sSynchOxid = oxRegistry::getConfig()->getRequestParameter('synchoxid')) {
             $sQAdd = " from $sArtTable left join $sO2CView on $sArtTable.oxid=$sO2CView.oxobjectid where $sO2CView.oxcatnid = " . $oDb->quote($sSynchOxid);
             if ($aSkipArt = oxRegistry::getSession()->getVariable('neworder_sess')) {
-                $sQAdd .= " and $sArtTable.oxid not in ( " . implode(", ", oxDb::getInstance()->quoteArray($aSkipArt)) . " ) ";
+                $sQAdd .= " and $sArtTable.oxid not in ( " . implode(", ", oxDb::getDb()->quoteArray($aSkipArt)) . " ) ";
             }
         } else {
             // which fields to load ?
             $sQAdd = " from $sArtTable where ";
             if ($aSkipArt = oxRegistry::getSession()->getVariable('neworder_sess')) {
-                $sQAdd .= " $sArtTable.oxid in ( " . implode(", ", oxDb::getInstance()->quoteArray($aSkipArt)) . " ) ";
+                $sQAdd .= " $sArtTable.oxid in ( " . implode(", ", oxDb::getDb()->quoteArray($aSkipArt)) . " ) ";
             } else {
                 $sQAdd .= " 1 = 0 ";
             }
@@ -135,7 +135,7 @@ class CategoryOrderAjax extends \ajaxListComponent
             // checking if all articles were moved from one
             $sSelect = "select 1 from $sArticleTable left join $sO2CView on $sArticleTable.oxid=$sO2CView.oxobjectid ";
             $sSelect .= "where $sO2CView.oxcatnid = '$soxId' and $sArticleTable.oxparentid = '' and $sArticleTable.oxid ";
-            $sSelect .= "not in ( " . implode(", ", oxDb::getInstance()->quoteArray($aSkipArt)) . " ) ";
+            $sSelect .= "not in ( " . implode(", ", oxDb::getDb()->quoteArray($aSkipArt)) . " ) ";
 
             // simply echoing "1" if some items found, and 0 if nothing was found
             echo (int) oxDb::getDb()->getOne($sSelect, false, false);
@@ -172,7 +172,7 @@ class CategoryOrderAjax extends \ajaxListComponent
             // checking if all articles were moved from one
             $sSelect = "select 1 from $sArticleTable left join $sO2CView on $sArticleTable.oxid=$sO2CView.oxobjectid ";
             $sSelect .= "where $sO2CView.oxcatnid = '$soxId' and $sArticleTable.oxparentid = '' and $sArticleTable.oxid ";
-            $sSelect .= "not in ( " . implode(", ", oxDb::getInstance()->quoteArray($aOrdArt)) . " ) ";
+            $sSelect .= "not in ( " . implode(", ", oxDb::getDb()->quoteArray($aOrdArt)) . " ) ";
 
             // simply echoing "1" if some items found, and 0 if nothing was found
             echo (int) oxDb::getDb()->getOne($sSelect, false, false);
@@ -200,7 +200,7 @@ class CategoryOrderAjax extends \ajaxListComponent
             $aNewOrder = oxRegistry::getSession()->getVariable("neworder_sess");
             if (is_array($aNewOrder) && count($aNewOrder)) {
                 $sO2CView = $this->_getViewName('oxobject2category');
-                $sSelect = "select * from $sO2CView where $sO2CView.oxcatnid='" . $oCategory->getId() . "' and $sO2CView.oxobjectid in (" . implode(", ", oxDb::getInstance()->quoteArray($aNewOrder)) . " )";
+                $sSelect = "select * from $sO2CView where $sO2CView.oxcatnid='" . $oCategory->getId() . "' and $sO2CView.oxobjectid in (" . implode(", ", oxDb::getDb()->quoteArray($aNewOrder)) . " )";
                 $oList = oxNew("oxlist");
                 $oList->init("oxbase", "oxobject2category");
                 $oList->selectString($sSelect);

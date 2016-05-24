@@ -101,7 +101,7 @@ class PaymentMainAjax extends \ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sRemoveGroups = implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups));
+            $sRemoveGroups = implode(", ", oxDb::getDb()->quoteArray($aRemoveGroups));
             $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . $sRemoveGroups . ") ";
             oxDb::getDb()->Execute($sQ);
         }

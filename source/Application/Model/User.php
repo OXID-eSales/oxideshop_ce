@@ -2132,7 +2132,7 @@ class User extends \oxBase
         if ($sUserId && is_array($aRecEmail) && count($aRecEmail) > 0) {
             //iserting statistics about invitation
             $sDate = oxRegistry::get("oxUtilsDate")->formatDBDate(date("Y-m-d"), true);
-            $aRecEmail = oxDb::getInstance()->quoteArray($aRecEmail);
+            $aRecEmail = oxDb::getDb()->quoteArray($aRecEmail);
             foreach ($aRecEmail as $sRecEmail) {
                 $sSql = "INSERT INTO oxinvitations SET oxuserid = " . $oDb->quote($sUserId) . ", oxemail = $sRecEmail,  oxdate='$sDate', oxpending = '1', oxaccepted = '0', oxtype = '1' ";
                 $oDb->execute($sSql);

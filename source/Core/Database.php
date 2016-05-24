@@ -189,20 +189,6 @@ class Database
     }
 
     /**
-     * Todo This method is deprecated since v5.2.0 and has to be removed
-     *
-     * @param array $array
-     *
-     * @deprecated since v5.2.0 (2014-03-12); use DatabaseInterface::quoteArray()
-     *
-     * @return array
-     */
-    public function quoteArray(array $array)
-    {
-        return static::getDb()->quoteArray($array);
-    }
-
-    /**
      * Creates database connection and returns it.
      *
      * @throws DatabaseConnectionException

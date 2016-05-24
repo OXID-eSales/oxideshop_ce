@@ -94,7 +94,7 @@ class NewsMainAjax extends \ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups)) . ") ";
+            $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aRemoveGroups)) . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }

@@ -142,7 +142,7 @@ class ArticleExtendAjax extends \ajaxListComponent
             $query = "delete from oxobject2category where oxobject2category.oxobjectid= "
                   . oxDb::getDb()->quote($oxId) . " and ";
             $query = $this->updateQueryForRemovingArticleFromCategory($query);
-            $query .= " oxcatnid in (" . implode(', ', oxDb::getInstance()->quoteArray($categoriesToRemove)) . ')';
+            $query .= " oxcatnid in (" . implode(', ', oxDb::getDb()->quoteArray($categoriesToRemove)) . ')';
             $dataBase->Execute($query);
 
             // updating oxtime values

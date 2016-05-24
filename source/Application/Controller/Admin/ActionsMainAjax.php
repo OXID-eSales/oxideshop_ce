@@ -166,7 +166,7 @@ class ActionsMainAjax extends \ajaxListComponent
             $sQ = parent::_addFilter("delete oxactions2article.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", oxDb::getInstance()->quoteArray($aChosenArt));
+            $sChosenArticles = implode(", ", oxDb::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxactions2article where oxactions2article.oxid in (" . $sChosenArticles . ") ";
             oxDb::getDb()->Execute($sQ);
         }

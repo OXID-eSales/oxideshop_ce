@@ -191,7 +191,7 @@ class ContentList extends \oxList
         }
 
         if ($iType == self::TYPE_SERVICE_LIST) {
-            $sIdents = implode(", ", oxDb::getInstance()->quoteArray($this->getServiceKeys()));
+            $sIdents = implode(", ", oxDb::getDb()->quoteArray($this->getServiceKeys()));
             $sSQLAdd = " AND OXLOADID IN (" . $sIdents . ")";
             $sSQLType = '';
         }

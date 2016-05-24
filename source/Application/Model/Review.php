@@ -125,7 +125,7 @@ class Review extends \oxBase
 
         $sObjectIdWhere = '';
         if (is_array($aIds) && count($aIds)) {
-            $sObjectIdWhere = "oxreviews.oxobjectid in ( " . implode(", ", oxDb::getInstance()->quoteArray($aIds)) . " )";
+            $sObjectIdWhere = "oxreviews.oxobjectid in ( " . implode(", ", oxDb::getDb()->quoteArray($aIds)) . " )";
         } elseif (is_string($aIds) && $aIds) {
             $sObjectIdWhere = "oxreviews.oxobjectid = " . $oDb->quote($aIds);
         } else {

@@ -90,7 +90,7 @@ class ArticleAttributeAjax extends \ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", oxDb::getInstance()->quoteArray($aChosenArt));
+            $sChosenArticles = implode(", ", oxDb::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxobject2attribute where oxobject2attribute.oxid in ({$sChosenArticles}) ";
             oxDb::getDb()->Execute($sQ);
         }

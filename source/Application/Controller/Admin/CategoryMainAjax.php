@@ -266,7 +266,7 @@ class CategoryMainAjax extends \ajaxListComponent
     protected function removeCategoryArticles($articles, $categoryID)
     {
         $db = oxDb::getDb();
-        $prodIds = implode(", ", oxDb::getInstance()->quoteArray($articles));
+        $prodIds = implode(", ", oxDb::getDb()->quoteArray($articles));
 
         $delete = "delete from oxobject2category ";
         $where = $this->getRemoveCategoryArticlesQueryFilter($categoryID, $prodIds);

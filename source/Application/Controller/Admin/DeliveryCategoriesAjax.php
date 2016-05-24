@@ -105,7 +105,7 @@ class DeliveryCategoriesAjax extends \ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif (is_array($aChosenCat)) {
-            $sChosenCategoriess = implode(", ", oxDb::getInstance()->quoteArray($aChosenCat));
+            $sChosenCategoriess = implode(", ", oxDb::getDb()->quoteArray($aChosenCat));
             $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . $sChosenCategoriess . ") ";
             oxDb::getDb()->Execute($sQ);
         }

@@ -127,7 +127,7 @@ class SelectListMainAjax extends \ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenArt)) . ") ";
+            $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aChosenArt)) . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }

@@ -94,7 +94,7 @@ class DeliverySetGroupsAjax extends \ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sRemoveGroups = implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups));
+            $sRemoveGroups = implode(", ", oxDb::getDb()->quoteArray($aRemoveGroups));
             $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . $sRemoveGroups . ") ";
             oxDb::getDb()->Execute($sQ);
         }

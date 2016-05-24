@@ -99,7 +99,7 @@ class DeliverySetCountryAjax extends \ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif (is_array($aChosenCntr)) {
-            $sChosenCountries = implode(", ", oxDb::getInstance()->quoteArray($aChosenCntr));
+            $sChosenCountries = implode(", ", oxDb::getDb()->quoteArray($aChosenCntr));
             $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . $sChosenCountries . ") ";
             oxDb::getDb()->Execute($sQ);
         }

@@ -98,7 +98,7 @@ class ArticleSelectionAjax extends \ajaxListComponent
             $sQ = $this->_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", oxDb::getInstance()->quoteArray($aChosenArt));
+            $sChosenArticles = implode(", ", oxDb::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxobject2selectlist " .
                   "where oxobject2selectlist.oxid in (" . $sChosenArticles . ") ";
             oxDb::getDb()->Execute($sQ);

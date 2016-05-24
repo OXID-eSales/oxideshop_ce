@@ -381,9 +381,11 @@ class oxConfig extends oxSuperCfg
 
         include getShopBasePath() . 'core/oxconfk.php';
 
+        // @deprecated since v5.3 (2016-05-24); Adodblite will be removed.
         // setting ADODB timeout
         global $ADODB_SESS_LIFE;
         $ADODB_SESS_LIFE = 1;
+        // END deprecated
 
         $this->_setDefaults();
 
@@ -493,10 +495,12 @@ class oxConfig extends oxSuperCfg
             $this->setConfigParam('iZoomPicCount', 4);
         }
 
+        // @deprecated since v5.3 (2016-05-24); Adodblite will be removed.
         // ADODB cache life time
         if (is_null($this->getConfigParam('iDBCacheLifeTime'))) {
             $this->setConfigParam('iDBCacheLifeTime', 3600); // 1 hour
         }
+        // END deprecated
 
         if (is_null($this->getConfigParam('iDebug'))) {
             $this->setConfigParam('iDebug', $this->isProductiveMode() ? 0 : -1);

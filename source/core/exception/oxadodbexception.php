@@ -25,6 +25,8 @@
  * - connection problems
  * - wrong credentials
  * - incorrect queries
+ *
+ * @deprecated since v5.3 (2016-05-24); Adodblite will be removed.
  */
 class oxAdoDbException extends oxConnectionException
 {

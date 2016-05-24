@@ -113,7 +113,12 @@ class ModuleVariablesLocator
      */
     protected function getConfigurationKey()
     {
-        $config = new ConfigFile(getShopBasePath() . "/config.inc.php");
+        if (Registry::instanceExists('oxConfigFile')) {
+            $config = Registry::get('oxConfigFile');
+        } else {
+            $config = new ConfigFile(getShopBasePath() . '/config.inc.php');
+            Registry::set('oxConfigFile', $config);
+        }
         return $config->getVar('sConfigKey') ?: Config::DEFAULT_CONFIG_KEY;
     }
 

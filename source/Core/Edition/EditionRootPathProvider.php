@@ -23,7 +23,7 @@
 namespace OxidEsales\Eshop\Core\Edition;
 
 use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\EshopProfessional\ClassMap as ProfessionalClassMap;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class is responsible for returning edition directory path.
@@ -57,7 +57,12 @@ class EditionRootPathProvider
      */
     public function getDirectoryPath()
     {
-        $configFile = new ConfigFile(getShopBasePath() . 'config.inc.php');
+        if (Registry::instanceExists('oxConfigFile')) {
+            $configFile = Registry::get('oxConfigFile');
+        } else {
+            $configFile = new ConfigFile(getShopBasePath() . '/config.inc.php');
+            Registry::set('oxConfigFile', $configFile);
+        }
         $editionsPath = $configFile->getVar('vendorDirectory')  .'/'. static::EDITIONS_DIRECTORY;
         $path = getShopBasePath();
         if ($this->getEditionSelector()->isEnterprise()) {

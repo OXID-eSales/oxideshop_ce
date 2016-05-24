@@ -173,23 +173,6 @@ class Database
     }
 
     /**
-     * Checks if given string is valid database field name.
-     * It must contain from alphanumeric plus dot and underscore symbols
-     * @todo Refactor and move to Doctrine class
-     * @See http://stackoverflow.com/questions/4977898/check-for-valid-sql-column-name, especially the notes on portability
-     * @todo Deprecate in 5.3
-     * @deprecated since v5.3.0 (2016-05-20); Do not use any more. This method will be removed. Use DatabaseInterface::quote() or DatabaseInterface::quoteIdentifier()
-     *
-     * @param string $field field name
-     *
-     * @return bool
-     */
-    public function isValidFieldName($field)
-    {
-        return (boolean) getStr()->preg_match("#^[\w\d\._]*$#", $field);
-    }
-
-    /**
      * Escape string for using in mysql statements
      * @todo Deprecate in 5.3
      * @deprecated since v5.3.0 (2016-05-20); Do not use any more. This method will be removed. Use DatabaseInterface::quote() or DatabaseInterface::quoteIdentifier()

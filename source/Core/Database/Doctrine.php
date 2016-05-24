@@ -319,7 +319,6 @@ class Doctrine implements DatabaseInterface
     }
 
     /**
-     * @todo Make this method part of the DatabaseInterface in v6.0
      * Quote a string in a way that it can be used as a identifier (i.e. table name or field name) in a SQL statement.
      *
      * @param $value

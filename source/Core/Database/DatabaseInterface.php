@@ -177,6 +177,15 @@ interface DatabaseInterface
     public function quote($value);
 
     /**
+     * Quote a string in a way that it can be used as a identifier (i.e. table name or field name) in a SQL statement.
+     *
+     * @param $value
+     *
+     * @return string
+     */
+    public function quoteIdentifier($value); 
+
+    /**
      * Quote every string in the given array.
      *
      * @param array $arrayOfStrings The strings to quote as an array.

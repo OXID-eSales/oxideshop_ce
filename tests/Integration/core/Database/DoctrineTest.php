@@ -23,6 +23,7 @@
 namespace OxidEsales\Eshop\Tests\Integration\Core\Database;
 
 use Doctrine\DBAL\DBALException;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 use OxidEsales\Eshop\Core\Database\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Doctrine;
 
@@ -352,5 +353,51 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
         $this->fail(
             "No error with level " . $errorLevel . " and message '" . $errorMessage . "' was triggered"
         );
+    }
+
+    public function testQuoteIdentifierWithValidValues($identifier, $expectedMessage)
+    {
+        $this->loadFixtureToTestTable();
+        $quotedIdentifier = $this->database->quoteIdentifier('OXID');
+
+        $expectedResult = [
+            [self::FIXTURE_OXID_1]
+        ];
+        $resultSet = $this->database
+            ->select("SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "' ORDER BY " . $quotedIdentifier);
+        $actualResult = $resultSet->getAll();
+        
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    /**
+     * @param $identifier
+     * @param $expectedMessage
+     *
+     * @dataProvider dataProviderTestQuoteIdentifierWithInvalidValues
+     */
+    public function testQuoteIdentifierWithInvalidValues($identifier, $expectedMessage)
+    {
+        $this->setExpectedException('OxidEsales\Eshop\Core\Exception\DatabaseException', $expectedMessage);
+
+        $quotedIdentifier = $this->database->quoteIdentifier($identifier);
+
+        $this->database->select('SELECT * FROM ' . self::TABLE_NAME . ' ORDER BY ' . $quotedIdentifier);
+    }
+
+    public function dataProviderTestQuoteIdentifierWithInvalidValues()
+    {
+        return [
+            [
+                // A arbitrary string will be converted in a column name
+                'SELECT * from oxuser',
+                'Unknown column \'SELECT * from oxuser\' in \'order clause\''
+            ],
+            [
+                // A arbitrary string, which contains a backtick, will be converted in a column name
+                'columnName ` columnName',
+                'Unknown column \'columnName ` columnName\' in \'order clause\''
+            ],
+        ];
     }
 }

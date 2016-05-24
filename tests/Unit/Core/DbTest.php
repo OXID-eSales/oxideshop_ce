@@ -100,18 +100,6 @@ class DbTest extends UnitTestCase
         }
     }
 
-    public function testIsValidFieldName()
-    {
-        $database = Database::getInstance();
-
-        $this->assertTrue($database->isValidFieldName('oxid'));
-        $this->assertTrue($database->isValidFieldName('oxid_1'));
-        $this->assertTrue($database->isValidFieldName('oxid.1'));
-        $this->assertTrue($database->isValidFieldName('.oxid.1'));
-        $this->assertTrue($database->isValidFieldName('_oxid.1'));
-        $this->assertFalse($database->isValidFieldName('oxid{1'));
-    }
-
     /**
      * Testing escaping string
      * Todo Remove when deprecated in 5.3

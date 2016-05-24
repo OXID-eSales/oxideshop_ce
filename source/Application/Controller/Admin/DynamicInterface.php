@@ -26,6 +26,8 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * Admin dyn manager.
  *
  * @subpackage dyn
+ *
+ * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
  */
 class DynamicInterface extends \oxAdminDetails
 {

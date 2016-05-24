@@ -173,13 +173,15 @@ class Session extends Core
             $this->setSessionParam('sShopLang', $sShopLang);
         }
 
+        // @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
         //storing dyn pages settings to session
         $blUseDynPages = $oUtils->getRequestVar("use_dynamic_pages", "post");
         if (isset($blUseDynPages)) {
             $this->setSessionParam('use_dynamic_pages', $blUseDynPages);
         }
+        // END deprecated
 
-        //storing dyn pages settings to session
+        //storing check for updates settings to session
         $blCheckForUpdates = $oUtils->getRequestVar("check_for_updates", "post");
         if (isset($blCheckForUpdates)) {
             $this->setSessionParam('check_for_updates', $blCheckForUpdates);

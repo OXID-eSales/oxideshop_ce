@@ -147,6 +147,8 @@ class NavigationTree extends \oxSuperCfg
     /**
      * Adds to element DynTabs
      *
+     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
+     *
      * @param object $oDom dom element to add links
      */
     protected function _addDynLinks($oDom)
@@ -537,6 +539,8 @@ class NavigationTree extends \oxSuperCfg
     /**
      * Checks if dyn file is valid for inclusion
      *
+     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
+     *
      * @param string $sDynFilePath dyn file path
      *
      * @return bool
@@ -619,8 +623,10 @@ class NavigationTree extends \oxSuperCfg
                     // adds links to menu items
                     $this->_addLinks($this->_oInitialDom);
 
+                    // @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
                     // adds links to dynamic parts
                     $this->_addDynLinks($this->_oInitialDom);
+                    // END deprecated
 
                     // writing to cache
                     $myOxUtlis->toFileCache($sCacheName, $this->_oInitialDom->saveXML());
@@ -824,6 +830,8 @@ class NavigationTree extends \oxSuperCfg
     /**
      * Get dynamic pages url or local path
      *
+     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
+     *
      * @param int    $iLang             language id
      * @param string $blLoadDynContents get local or remote content path
      *
@@ -846,6 +854,8 @@ class NavigationTree extends \oxSuperCfg
 
     /**
      * Get dynamic pages language code
+     *
+     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
      *
      * @return string
      */

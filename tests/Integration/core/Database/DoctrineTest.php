@@ -50,13 +50,6 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
     const EMPTY_RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineEmptyResultSet';
 
     /**
-     * @var bool Use the legacy database adapter.
-     *
-     * @todo get rid of this
-     */
-    const USE_LEGACY_DATABASE = false;
-
-    /**
      * @var DatabaseInterface|Doctrine The database to test.
      */
     protected $database = null;

@@ -379,7 +379,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxsupercfg' => '\OxidEsales\Eshop\Core\SuperConfig',
             'oxutilsobject' => '\OxidEsales\Eshop\Core\UtilsObject',
             'oxdb' => '\OxidEsales\Eshop\Core\Database',
-            'oxlegacydb' => '\OxidEsales\Eshop\Core\LegacyDatabase',
             'oxconnectionexception' => '\OxidEsales\Eshop\Core\Exception\ConnectionException',
             'oxdynimggenerator' => '\OxidEsales\Eshop\Core\DynamicImageGenerator',
             'oxexceptiontodisplay' => '\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay',

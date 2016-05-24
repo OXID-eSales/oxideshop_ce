@@ -97,7 +97,7 @@ class ArticleOverview extends \oxAdminDetails
     }
 
     /**
-     * @return oxLegacyDb
+     * @return DatabaseInterface
      */
     protected function getDatabase()
     {

@@ -75,13 +75,6 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     const EXPECTED_MYSQL_SYNTAX_ERROR_MESSAGE  = 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'INVALID SQL QUERY\' at line 1';
 
     /**
-     * @var bool Use the legacy database adapter.
-     *
-     * @todo get rid of this
-     */
-    const USE_LEGACY_DATABASE = false;
-
-    /**
      * @var array Holds the errors caught by the user-defined error handler
      */
     protected $errors;

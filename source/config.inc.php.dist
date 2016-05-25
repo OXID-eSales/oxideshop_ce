@@ -21,7 +21,7 @@
  */
 
     /** database connection information */
-    $this->dbType = 'mysqli';
+    $this->dbType = 'mysql';
     $this->dbHost = '<dbHost>'; // database host name
     // $this->dbPort  = <dbPort>; // tcp port to which the database is bound
     $this->dbName = '<dbName>'; // database name

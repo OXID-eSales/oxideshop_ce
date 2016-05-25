@@ -529,6 +529,44 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
         }
     }
 
+    public function testRemoveNotActiveMenuNodes()
+    {
+        $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+                    <OXMENU id="NAVIGATION_ESHOPADMIN">
+                       <MAINMENU>
+                           <SUBMENU cl="MenuEntry-Active" active="1">
+                               <TAB cl="MenuTab-Active" />
+                           </SUBMENU>
+                           <SUBMENU cl="MenuEntry-DefaultActivity">
+                               <TAB cl="MenuTab-DefaultActivity" />
+                           </SUBMENU>
+                       </MAINMENU>
+                       <MAINMENU active="0">
+                           <SUBMENU cl="MenuEntry-NotActive" active="0">
+                             <TAB cl="MenuTab-NotActive" />
+                           </SUBMENU>
+                       </MAINMENU>
+                    </OXMENU>';
+
+        $oDom = new DOMDocument();
+        $oDom->formatOutput = true;
+        $oDom->loadXML($sXml);
+
+        $oNavTree = $this->getMock("oxnavigationtree", array("_getInitialDom"));
+        $oNavTree->expects($this->any())->method('_getInitialDom')->will($this->returnValue($oDom));
+        $oRDom = $oNavTree->getDomXml();
+
+        $aExpectedMenuClasses = array(".", "MenuEntry-Active", "MenuEntry-DefaultActivity");
+        foreach ($oRDom->documentElement->childNodes as $menuNode) {
+//            foreach ($menuNode->documentElement->childNodes as $menuItem) {
+                var_dump($menuNode);
+//                if ($menuItem->nodeType == XML_ELEMENT_NODE) {
+//                $this->assertContains($menuItem->getAttribute('cl'), $aExpectedMenuClasses);
+//                }
+//            }
+        }
+    }
+
     /**
      * OxNavigationTree::_checkRights() test case
      *

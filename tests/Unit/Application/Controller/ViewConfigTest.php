@@ -2248,54 +2248,6 @@ class ViewConfigTest extends \OxidTestCase
     }
 
     /**
-     * oxViewconfig::getFbAppId() test case
-     *
-     * @return null
-     */
-    public function testGetFbAppId()
-    {
-        $sTest = "sFbApp";
-        $this->getConfig()->setConfigParam("sFbAppId", $sTest);
-
-        $oViewConf = oxNew('oxViewConfig');
-        $this->assertEquals($sTest, $oViewConf->getFbAppId());
-    }
-
-    /**
-     * oxViewconfig::getShowFbConnect() test case
-     *
-     * @return null
-     */
-    public function testGetShowFbConnect()
-    {
-        $oViewConf = oxNew('oxViewConfig');
-
-        $this->getConfig()->setConfigParam("bl_showFbConnect", false);
-        $this->assertFalse($oViewConf->getShowFbConnect());
-
-        $this->getConfig()->setConfigParam("bl_showFbConnect", true);
-        $this->getConfig()->setConfigParam("sFbAppId", true);
-        $this->getConfig()->setConfigParam("sFbSecretKey", true);
-        $this->assertTrue($oViewConf->getShowFbConnect());
-
-        $this->getConfig()->setConfigParam("bl_showFbConnect", true);
-        $this->getConfig()->setConfigParam("sFbAppId", false);
-        $this->getConfig()->setConfigParam("sFbSecretKey", false);
-        $this->assertFalse($oViewConf->getShowFbConnect());
-
-        $this->getConfig()->setConfigParam("bl_showFbConnect", true);
-        $this->getConfig()->setConfigParam("sFbAppId", false);
-        $this->getConfig()->setConfigParam("sFbSecretKey", true);
-        $this->assertFalse($oViewConf->getShowFbConnect());
-
-        $this->getConfig()->setConfigParam("bl_showFbConnect", true);
-        $this->getConfig()->setConfigParam("sFbAppId", true);
-        $this->getConfig()->setConfigParam("sFbSecretKey", false);
-        $this->assertFalse($oViewConf->getShowFbConnect());
-
-    }
-
-    /**
      * oxViewconfig::getPasswordLength() test case
      *
      * @return null

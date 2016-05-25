@@ -1347,10 +1347,6 @@ div.ui-tabs-hide {
     display: none;
 }
 
-ul.tabs li.fbTab a {
-    background: url(../../img/facebook_icon.png) no-repeat 0 1px;
-    padding: 0 0 0 18px;
-}
 
 /* --- BUTTONS  ------------------- */
 button {
@@ -1818,7 +1814,6 @@ div.searchBox input.textbox:focus {
 }
 
 #footer .bar {color:#000; padding:10px 10px 10px 20px; border-bottom:1px solid #3799B1; height:20px;}
-#footer .bar .facebook {float: left; margin-right:5px;}
 #footer .bar .deliveryinfo {float: right;}
 #footer .bar .deliveryinfo a {font-size:10px; color:#515353;}
 
@@ -1866,58 +1861,6 @@ div.searchBox input.textbox:focus {
 
 .newsletter {float: left; background: #E7EAEC; padding:0 0 0 10px; font-size:10px; width: auto;}
 .newsletter .textbox {margin: 0 10px 0 10px; width: 140px;}
-
-.fbInfoPopup {
-    width: 500px;
-}
-
-.fbInfoPopup a {
-    color: #1D7E96;
-}
-
-.fbEnableButton {
-    float: left;
-    border: 1px solid #c8d5e6;
-    text-align: left;
-    margin-right: 10px;
-}
-
-.fbEnableButton:hover {
-    border-color: #9dacce;
-}
-
-.fbEnableButton a {
-    display: block;
-    float: left;
-    line-height: 18px;
-    background: url(../../img/facebook_icon.png) no-repeat 3px 3px;
-    padding: 0 0 0 21px;
-    font-size: 10px;
-    text-transform: uppercase;
-    color: #2c5e97;
-}
-
-.fbEnableButton a:hover {
-    text-decoration: none;
-}
-
-.fbEnableButton a.helpText {
-    float: left;
-    background: none;
-    border-left: 1px solid #c8d5e6;
-    margin-left: 5px;
-    padding: 0 4px;
-}
-
-.fbEnableButton a.helpText:hover {
-    background: #d7e3f1;
-    -webkit-border-top-right-radius: 4px;
-    -webkit-border-bottom-right-radius: 4px;
-    -moz-border-radius-topright: 4px;
-    -moz-border-radius-bottomright: 4px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-}
 
 
 .copyright {margin: 0 10px; font-size:10px; float: right; padding: 5px 0; color:#2F2F2F; font-weight: bold;}
@@ -3349,17 +3292,6 @@ h3.section button {
     z-index: 66;
 }
 
-.fb_share_count_hidden {
-    margin: 3px 7px 0 0;
-    display:inline-block;
-}
-
-a.fb_button_simple {
-    width: 14px;
-    height: 14px;
-    overflow: hidden;
-    display:inline-block;
-}
 
 .social:hover {
     background: none;
@@ -5150,30 +5082,6 @@ p.shoplupe {
 
 .categoryTags {
     padding: 5px 5px 5px 5px;
-}
-
-a.fbEnableLink {
-    display: inline-block;
-    text-transform: uppercase;
-    padding: 30px 0 15px 0;
-    font-size: 12px;
-    font-weight: bold;
-    color: #2c5e97;
-}
-
-.fbEnableDesc {
-    margin-bottom: 35px;
-    font-size: 11px;
-    color: #555;
-}
-
-.fbEnableDesc a {
-    line-height: 25px;
-    color: #2c5e97;
-}
-
-a.fbEnableLink, .fbEnableDesc {
-    margin-left: 20px;
 }
 
 a.downloadableFile {

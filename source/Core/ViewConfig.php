@@ -1125,18 +1125,6 @@ class ViewConfig extends \oxSuperCfg
     }
 
     /**
-     * Returns facebook application key value
-     *
-     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
-     *
-     * @return string
-     */
-    public function getFbAppId()
-    {
-        return $this->getConfig()->getConfigParam('sFbAppId');
-    }
-
-    /**
      * should basket timeout counter be shown?
      *
      * @return bool
@@ -1159,27 +1147,6 @@ class ViewConfig extends \oxSuperCfg
         }
 
         return $this->_dBasketTimeLeft;
-    }
-
-    /**
-     * Checks if Facebook connect is on. If yes, also checks if Facebook application id
-     * and secure key are entered in config table.
-     *
-     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
-     *
-     * @return bool
-     */
-    public function getShowFbConnect()
-    {
-        $myConfig = $this->getConfig();
-
-        if ($myConfig->getConfigParam('bl_showFbConnect')) {
-            if ($myConfig->getConfigParam("sFbAppId") && $myConfig->getConfigParam("sFbSecretKey")) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

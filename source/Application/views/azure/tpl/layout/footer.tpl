@@ -4,12 +4,7 @@
     <footer id="footer">
         <div id="panel" class="corners">
                 <div class="bar">
-                    [{block name="footer_fblike"}]
-                        [{if $oView->isActive('FbLike') && $oViewConf->getFbAppId()}]
-                            <div class="facebook" id="footerFbLike">
-                                [{include file="widget/facebook/enable.tpl" source="widget/facebook/like.tpl" ident="#footerFbLike" parent="footer"}]
-                            </div>
-                        [{/if}]
+                    [{block name="footer_social"}]
                     [{/block}]
                     [{if $oView->showNewsletter()}]
                         [{include file="widget/footer/newsletter.tpl"}]

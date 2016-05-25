@@ -1785,38 +1785,6 @@ class FunctionalityInAdminTest extends AdminTestCase
     }
 
     /**
-    * Customer must enable Facebook social plugins' should not affect frontend if all facebook functionality is disabled. For bug#3186
-     *
-    * @group adminFunctionality
-    */
-    public function testIsFacebookPluginEnabled()
-    {
-        $testConfig = $this->getTestConfig();
-        if ($testConfig->isSubShop()) {
-            $this->markTestSkipped('Test is not for subshops');
-        }
-
-        $this->loginAdmin("Master Settings", "Core Settings");
-        $this->openTab("Settings");
-        $this->click("link=Facebook");
-        $this->check("//input[@name='confbools[blFacebookConfirmEnabled]' and @value='true']");
-        $this->type("confstrs[sFbAppId]", "129895460367329");
-        $this->type(" confstrs[sFbSecretKey]", "1e5f848786f334becd745476c71eb6dd");
-        $this->select("confstrs[blFbLikeEnabled]", "label=Enable");
-        $this->clickAndWait("save");
-        $this->clearCache();
-        $this->openShop();
-        $this->assertEquals('-1', $this->getEval('this.page().findElement("footerFbLike").innerHTML.search("<fb:like");'), "Facebook like should not be loaded at first visit in shop");
-        $this->assertElementPresent("//div[@id='footerFbLike']//a[text()='%ENABLE%']");
-        $this->assertElementPresent("//div[@id='footerFbLike']//a[text()='?']");
-        $this->click("//div[@id='footerFbLike']//a[text()='%ENABLE%']");
-        sleep(5);
-        $this->assertEquals('1', $this->getEval('this.page().findElement("footerFbLike").innerHTML.search("<fb:like");'), "Facebook like should be loaded after enabling it");
-        $this->assertElementNotPresent("//div[@id='footerFbLike']//a[text()='%ENABLE%']");
-        $this->assertElementNotPresent("//div[@id='footerFbLike']//a[text()='?']");
-    }
-
-    /**
      * Reset all orders shop id to current shop
      */
     private function updateSubshopOrders()

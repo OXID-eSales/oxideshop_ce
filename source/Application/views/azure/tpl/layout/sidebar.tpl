@@ -47,15 +47,7 @@
         [{/if}]
     [{/block}]
 
-    [{block name="sidebar_facebookfacepile"}]
-          [{if $oView->isActive('FbFacepile') && $oView->isConnectedWithFb()}]
-            <div id="facebookFacepile" class="box">
-                <h3>[{oxmultilang ident="FACEBOOK_FACEPILE"}]</h3>
-                <div class="content" id="productFbFacePile">
-                    [{include file="widget/facebook/enable.tpl" source="widget/facebook/facepile.tpl" ident="#productFbFacePile" type="text"}]
-                </div>
-            </div>
-        [{/if}]
+    [{block name="sidebar_social"}]
     [{/block}]
 
     [{block name="sidebar_shopluperatings"}]

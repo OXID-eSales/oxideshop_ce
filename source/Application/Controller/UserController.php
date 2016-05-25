@@ -88,9 +88,7 @@ class UserController extends \oxUBase
     /**
      * Loads customer basket object form session (oxSession::getBasket()),
      * passes action article/basket/country list to template engine. If
-     * available - loads user delivery address data (oxAddress). If user
-     * is connected using Facebook connect calls user::_fillFormWithFacebookData to
-     * prefill form data with data taken from user Facebook account. Returns
+     * available - loads user delivery address data (oxAddress). Returns
      * name template file to render user::_sThisTemplate.
      *
      * @return  string  $this->_sThisTemplate   current template file name
@@ -113,12 +111,6 @@ class UserController extends \oxUBase
         }
 
         parent::render();
-
-        // @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
-        if ($config->getConfigParam("bl_showFbConnect") && !$this->getUser()) {
-            $this->_fillFormWithFacebookData();
-        }
-        // END deprecated
 
         return $this->_sThisTemplate;
     }
@@ -212,37 +204,6 @@ class UserController extends \oxUBase
     public function showShipAddress()
     {
         return oxRegistry::getSession()->getVariable('blshowshipaddress');
-    }
-
-    /**
-     * Fills user form with date taken from Facebook
-     *
-     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
-     */
-    protected function _fillFormWithFacebookData()
-    {
-        // Create our Application instance.
-        $facebook = oxRegistry::get("oxFb");
-
-        if ($facebook->isConnected()) {
-            $facebookUser = $facebook->api('/me');
-
-            $invoiceAddress = $this->getInvoiceAddress();
-            $charset = oxRegistry::getLang()->translateString("charset");
-
-            // do not stop converting on error - just try to translit unknown symbols
-            $charset .= '//TRANSLIT';
-
-            if (!$invoiceAddress["oxuser__oxfname"]) {
-                $invoiceAddress["oxuser__oxfname"] = iconv('UTF-8', $charset, $facebookUser["first_name"]);
-            }
-
-            if (!$invoiceAddress["oxuser__oxlname"]) {
-                $invoiceAddress["oxuser__oxlname"] = iconv('UTF-8', $charset, $facebookUser["last_name"]);
-            }
-
-            $this->setInvoiceAddress($invoiceAddress);
-        }
     }
 
     /**

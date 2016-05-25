@@ -25,20 +25,6 @@
     [{/block}]
 
     [{block name="head_meta_open_graph"}]
-        [{if $oViewConf->getFbAppId()}]
-            <meta property="og:site_name" content="[{$oViewConf->getBaseDir()}]">
-            <meta property="fb:app_id" content="[{$oViewConf->getFbAppId()}]">
-            <meta property="og:title" content="[{$oView->getPageTitle()}]">
-            [{if $oViewConf->getActiveClassName() == 'details'}]
-                <meta property="og:type" content="product">
-                <meta property="og:image" content="[{$oView->getActPicture()}]">
-                <meta property="og:url" content="[{$oView->getCanonicalUrl()}]">
-            [{else}]
-                <meta property="og:type" content="website">
-                <meta property="og:image" content="[{$oViewConf->getImageUrl('basket.png')}]">
-                <meta property="og:url" content="[{$oViewConf->getCurrentHomeDir()}]">
-            [{/if}]
-        [{/if}]
     [{/block}]
 
     [{assign var="canonical_url" value=$oView->getCanonicalUrl()}]
@@ -77,7 +63,7 @@
 [{/capture}]
 <!DOCTYPE HTML>
 [{assign var="sLanguage" value=$oView->getActiveLangAbbr()}]
-<html [{if $sLanguage}]lang="[{$sLanguage}]"[{/if}] [{if $oViewConf->getShowFbConnect()}]xmlns:fb="http://www.facebook.com/2008/fbml"[{/if}]>
+<html [{if $sLanguage}]lang="[{$sLanguage}]"[{/if}][{block name="head_html_namespace"}][{/block}]>
     <head>
         [{foreach from=$oxidBlock_pageHead item="_block"}]
             [{$_block}]

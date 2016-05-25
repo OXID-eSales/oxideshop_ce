@@ -205,7 +205,6 @@ class UserComponent extends \oxView
         $sUser = oxRegistry::getConfig()->getRequestParameter('lgn_usr');
         $sPassword = oxRegistry::getConfig()->getRequestParameter('lgn_pwd', true);
         $sCookie = oxRegistry::getConfig()->getRequestParameter('lgn_cook');
-        //$blFbLogin = oxRegistry::getConfig()->getRequestParameter( 'fblogin' );
 
         $this->setLoginStatus(USER_LOGIN_FAIL);
 
@@ -297,24 +296,6 @@ class UserComponent extends \oxView
             }
 
 
-        }
-    }
-
-    /**
-     * Executes oxcmp_user::login() and updates logged in user Facebook User ID (if user was
-     * connected using Facebook Connect)
-     *
-     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
-     */
-    public function login_updateFbId()
-    {
-        $this->login();
-
-        if ($oUser = $this->getUser()) {
-            //updating user Facebook ID
-            if ($oUser->updateFbId()) {
-                oxRegistry::getSession()->setVariable('_blFbUserIdUpdated', true);
-            }
         }
     }
 

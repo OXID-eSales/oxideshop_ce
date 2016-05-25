@@ -526,16 +526,6 @@ class User extends \oxBase
             $this->oxuser__oxbirthdate = new oxField($this->convertBirthday($this->oxuser__oxbirthdate->value), oxField::T_RAW);
         }
 
-        // @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
-        // checking if user Facebook ID should be updated
-        if ($myConfig->getConfigParam("bl_showFbConnect")) {
-            $oFb = oxRegistry::get("oxFb");
-            if ($oFb->isConnected() && $oFb->getUser()) {
-                $this->oxuser__oxfbid = new oxField($oFb->getUser());
-            }
-        }
-        // END deprecated
-
         $blRet = parent::save();
 
         //add registered remark
@@ -1430,13 +1420,6 @@ class User extends \oxBase
             $blFoundInCookie = $sUserID ? true : false;
         }
 
-        // @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
-        // If facebook connection is enabled, trying to login user using Facebook ID
-        if (!$sUserID && !$blAdmin && $oConfig->getConfigParam("bl_showFbConnect")) {
-            $sUserID = $this->_getFacebookUserId();
-        }
-        // END deprecated
-
         // checking user results
         if ($sUserID) {
             if ($this->load($sUserID)) {
@@ -1462,26 +1445,6 @@ class User extends \oxBase
 
             return false;
         }
-    }
-
-    /**
-     * Checks if user is connected via Facebook connect and if so, returns user id.
-     *
-     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
-     *
-     * @return string
-     */
-    protected function _getFacebookUserId()
-    {
-        $oDb = oxDb::getDb();
-        $oFb = oxRegistry::get("oxFb");
-        if ($oFb->isConnected() && $oFb->getUser()) {
-            $sSelect = $this->formFacebookUserIdQuery($oFb);
-
-            $sUserID = $oDb->getOne($sSelect);
-        }
-
-        return $sUserID;
     }
 
     /**
@@ -2151,26 +2114,6 @@ class User extends \oxBase
     }
 
     /**
-     * Updates user Facebook ID
-     *
-     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
-     *
-     * @return null
-     */
-    public function updateFbId()
-    {
-        $oFb = oxRegistry::get("oxFb");
-        $blRet = false;
-
-        if ($oFb->isConnected() && $oFb->getUser()) {
-            $this->oxuser__oxfbid = new oxField($oFb->getUser());
-            $blRet = $this->save();
-        }
-
-        return $blRet;
-    }
-
-    /**
      * Updating invitations statistics
      *
      * @param array $aRecEmail array of recipients emails
@@ -2365,24 +2308,6 @@ class User extends \oxBase
      */
     protected function onLogin($sUser, $sPassword)
     {
-    }
-
-    /**
-     * Forms Facebook user ID query.
-     *
-     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
-     *
-     * @param oxFb $facebookConnector
-     *
-     * @return string
-     */
-    protected function formFacebookUserIdQuery($facebookConnector)
-    {
-        $userSelectQuery = "oxuser.oxfbid = " . oxDb::getDb()->quote($facebookConnector->getUser());
-
-        $query = "select oxid from oxuser where oxuser.oxactive = 1 and {$userSelectQuery}";
-
-        return $query;
     }
 
     /**

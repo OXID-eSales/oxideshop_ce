@@ -30,7 +30,6 @@
             <directory suffix=".php">Core/phpmailer/</directory>
             <directory suffix=".php">Core/Smarty/</directory>
             <directory suffix=".php">Core/utils/</directory>
-            <directory suffix=".php">Core/facebook/</directory>
             <directory suffix=".php">Core/objects/</directory>
             <file>Core/oxerpbase.php</file>
             <file>Core/oxerpcsv.php</file>

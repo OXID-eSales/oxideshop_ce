@@ -887,63 +887,6 @@ class View extends \oxSuperCfg
     }
 
     /**
-     * Checks if user is connected via Facebook connect
-     *
-     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
-     *
-     * @return bool
-     */
-    public function isConnectedWithFb()
-    {
-        $myConfig = $this->getConfig();
-
-        if ($myConfig->getConfigParam("bl_showFbConnect")) {
-            $oFb = oxRegistry::get("oxFb");
-
-            return $oFb->isConnected();
-        }
-
-        return false;
-    }
-
-    /**
-     * Gets get Facebook user id
-     *
-     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
-     *
-     * @return int
-     */
-    public function getFbUserId()
-    {
-        if ($this->getConfig()->getConfigParam("bl_showFbConnect")) {
-            $oFb = oxRegistry::get("oxFb");
-
-            return $oFb->getUser();
-        }
-    }
-
-    /**
-     * Returns true if popup message about connecting your existing account
-     * to Facebook account must be shown
-     *
-     * @deprecated since v5.3 (2016-05-20); Facebook will be extracted into module.
-     *
-     * @return bool
-     */
-    public function showFbConnectToAccountMsg()
-    {
-        if ($this->getConfig()->getRequestParameter("fblogin")) {
-            if (!$this->getUser() || ($this->getUser() && $this->getSession()->getVariable('_blFbUserIdUpdated'))) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Returns if shop is mall
      *
      * @return bool

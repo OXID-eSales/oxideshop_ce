@@ -27,7 +27,10 @@
         [{/if}]
         [{include file="layout/footer.tpl"}]
     </div>
-    [{include file="widget/facebook/init.tpl"}]
+
+    [{block name="layout_init_social"}]
+    [{/block}]
+
     [{if $oView->isPriceCalculated()}]
         [{block name="layout_page_vatinclude"}]
         [{oxifcontent ident="oxdeliveryinfo" object="oCont"}]

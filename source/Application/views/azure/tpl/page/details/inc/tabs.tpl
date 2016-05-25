@@ -52,25 +52,10 @@
     [{/if}]
 [{/block}]
 
-[{block name="details_tabs_fbcomments"}]
-    [{if $oView->isActive('FbComments') && $oViewConf->getFbAppId()}]
-        [{capture append="FBtabs"}]<a href="#productFbComments">[{oxmultilang ident="FACEBOOK_COMMENTS"}]</a>[{/capture}]
-        [{assign var='_fbScript' value="http://connect.facebook.net/en_US/all.js#appId="|cat:$oViewConf->getFbAppId()|cat:"&amp;xfbml=1"}]
-        [{capture append="FBtabsContent"}]<div id="productFbComments">[{include file="widget/facebook/enable.tpl" source="widget/facebook/comments.tpl" ident="#productFbComments" script=$_fbScript type="text"}]</div>[{/capture}]
-    [{/if}]
+[{block name="details_tabs_comments"}]
 [{/block}]
 
-[{block name="details_tabs_fbinvite"}]
-    [{if $oView->isActive('FbInvite') && $oViewConf->getFbAppId()}]
-        [{capture append="FBtabs"}]<a href="#productFbInvite">[{oxmultilang ident="FACEBOOK_INVITE"}]</a>[{/capture}]
-        [{capture append="FBtabsContent"}]
-            <div id="productFbInvite">
-                <fb:serverfbml width="560px" id="productFbInviteFbml">
-                    [{include file="widget/facebook/enable.tpl" source="widget/facebook/invite.tpl" ident="#productFbInviteFbml" type="text"}]
-                </fb:serverfbml>
-            </div>
-        [{/capture}]
-    [{/if}]
+[{block name="details_tabs_invite"}]
 [{/block}]
 
 [{block name="details_tabs_main"}]
@@ -90,19 +75,5 @@
     [{/if}]
 [{/block}]
 
-[{block name="details_tabs_facebook"}]
-    [{if $FBtabs}]
-        <div class="tabbedWidgetBox clear">
-            <ul id="itemFbTabs" class="tabs clear">
-                [{foreach from=$FBtabs item="FBtab"}]
-                    <li class="fbTab">[{$FBtab}]</li>
-                [{/foreach}]
-            </ul>
-            <div class="widgetBoxBottomRound FXgradBlueLight">
-                [{foreach from=$FBtabsContent item="FBtabContent"}]
-                    [{$FBtabContent}]
-                [{/foreach}]
-            </div>
-        </div>
-    [{/if}]
+[{block name="details_tabs_social"}]
 [{/block}]

@@ -52,14 +52,8 @@
                     <button type="submit" class="submitButton">[{oxmultilang ident="LOGIN"}]</button>
                 </p>
             </div>
-            [{if $oViewConf->getShowFbConnect()}]
-                <div class="altLoginBox corners clear">
-                    <span>[{oxmultilang ident="LOGIN_WITH" suffix="COLON"}]</span>
-                    <div id="loginboxFbConnect">
-                        [{include file="widget/facebook/enable.tpl" source="widget/facebook/connect.tpl" ident="#loginboxFbConnect"}]
-                    </div>
-                </div>
-            [{/if}]
+            [{block name="thirdparty_login"}]
+            [{/block}]
         </div>
     </form>
 [{else}]

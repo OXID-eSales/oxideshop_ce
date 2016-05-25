@@ -2003,24 +2003,6 @@ class UBaseTest extends \OxidTestCase
     }
 
     /**
-     * oxUBase::isFbWidgetVisible()
-     *
-     * @return null
-     */
-    public function testisFbWidgetVisible()
-    {
-        // cookie OFF
-        oxTestModules::addFunction("oxUtilsServer", "getOxCookie", "{return 0;}");
-        $oView = oxNew('oxUbase');
-        $this->assertFalse($oView->isFbWidgetVisible());
-
-        // cookie ON
-        oxTestModules::addFunction("oxUtilsServer", "getOxCookie", "{return 1;}");
-        $oView = oxNew('oxUbase');
-        $this->assertTrue($oView->isFbWidgetVisible());
-    }
-
-    /**
      * oxUBase::isEnabledDownloadabaleFiles() test case
      *
      * @return null

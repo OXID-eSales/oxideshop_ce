@@ -47,7 +47,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
 
             'oxemail' => '\OxidEsales\Eshop\Core\Email',
             'oxencryptor' => '\OxidEsales\Eshop\Core\Encryptor',
-            'oxfb' => '\OxidEsales\Eshop\Core\Facebook',
             'oxfilecache' => '\OxidEsales\Eshop\Core\FileCache',
             'oxhasher' => '\OxidEsales\Eshop\Core\Hasher',
             'oxheader' => '\OxidEsales\Eshop\Core\Header',

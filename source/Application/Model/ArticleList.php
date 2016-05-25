@@ -76,17 +76,16 @@ class ArticleList extends \oxList
      * Loads selectlists for each artile in list if they exists
      * Returns true on success.
      *
-     * @param string $sSelect SQL select string
+     * @param string $sql SQL select string
      *
-     * @return bool
+     * @param string $sql
+     * @param array  $parameters
      */
-    public function selectString($sSelect)
+    public function selectString($sql, array $parameters = array())
     {
         startProfile("loadinglists");
-        $oRes = parent::selectString($sSelect);
+        parent::selectString($sql, $parameters);
         stopProfile("loadinglists");
-
-        return $oRes;
     }
 
     /**

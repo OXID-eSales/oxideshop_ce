@@ -80,6 +80,31 @@ class DiscountArticlesAjaxTest extends \OxidTestCase
         $sSynchoxid = '_testSynchoxid';
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setConfigParam('blVariantParentBuyable', false);
+        $sArticleTable = getViewName("oxarticles");
+        $sO2CView = getViewName("oxobject2category");
+
+        $oView = oxNew('discount_articles_ajax');
+        $sQuery = "from $sO2CView left join $sArticleTable on  $sArticleTable.oxid=$sO2CView.oxobjectid ";
+        $sQuery .= " where $sO2CView.oxcatnid = '_testOxid' and $sArticleTable.oxid is not null  and ";
+        $sQuery .= "$sArticleTable.oxvarcount = 0 and ";
+        $sQuery .= " $sArticleTable.oxid not in (  select $sArticleTable.oxid from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
+        $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxarticles'  )";
+        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
+    }
+
+    /**
+     * DiscountArticlesAjax::_getQuery() test case
+     *
+     * @return null
+     */
+    public function testGetQueryOxidParentIsBuyable()
+    {
+        $sOxid = '_testOxid';
+        $sSynchoxid = '_testSynchoxid';
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setConfigParam('blVariantParentBuyable', true);
         $sArticleTable = getViewName("oxarticles");
         $sO2CView = getViewName("oxobject2category");
 
@@ -100,6 +125,26 @@ class DiscountArticlesAjaxTest extends \OxidTestCase
     {
         $sSynchoxid = '_testSynchoxid';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setConfigParam('blVariantParentBuyable', false);
+        $sArticleTable = getViewName("oxarticles");
+
+        $oView = oxNew('discount_articles_ajax');
+        $sQuery = "from $sArticleTable where 1 and $sArticleTable.oxparentid = '' and $sArticleTable.oxvarcount = 0 and ";
+        $sQuery .= " $sArticleTable.oxid not in (  select $sArticleTable.oxid from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
+        $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxarticles'  )";
+        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
+    }
+
+    /**
+     * DiscountArticlesAjax::_getQuery() test case
+     *
+     * @return null
+     */
+    public function testGetQuerySynchoxidParentIsBuyable()
+    {
+        $sSynchoxid = '_testSynchoxid';
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setConfigParam('blVariantParentBuyable', true);
         $sArticleTable = getViewName("oxarticles");
 
         $oView = oxNew('discount_articles_ajax');

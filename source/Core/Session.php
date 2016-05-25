@@ -290,7 +290,7 @@ class Session extends \oxSuperCfg
     }
 
     /**
-     * check for CSRF, returns true, if request (get/post) token maches session saved var
+     * check for CSRF, returns true, if request (get/post) token matches session saved var
      * false, if CSRF is possible
      *
      * @return bool

@@ -371,14 +371,14 @@ class StandardList extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Coun
     }
 
     /**
-     * Selects and SQL, creates objects and assign them.
-     * 
+     * Convert results of the given select statement into objects and store them in _aArray.
+     *
      * Developers are encouraged to use prepared statements like this:
      * $sql = 'SELECT * FROM `mytable` WHERE oxid = ?';
      * $parameters = ['MYOXID']
      * selectString($sql, $parameters)
      *
-     * @param string $sql SQL select statement or prepared statement
+     * @param string $sql        SQL select statement or prepared statement
      * @param array  $parameters Parameters to be used in a prepared statement
      */
     public function selectString($sql, array $parameters = array())

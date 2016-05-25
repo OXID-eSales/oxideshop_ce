@@ -73,13 +73,11 @@ class ArticleList extends \oxList
     }
 
     /**
-     * Loads selectlists for each artile in list if they exists
-     * Returns true on success.
+     * @inheritdoc
+     * In addition to the parent method, this method includes profiling.
      *
-     * @param string $sql SQL select string
-     *
-     * @param string $sql
-     * @param array  $parameters
+     * @param string $sql        SQL select statement or prepared statement
+     * @param array  $parameters Parameters to be used in a prepared statement
      */
     public function selectString($sql, array $parameters = array())
     {
@@ -668,7 +666,7 @@ class ArticleList extends \oxList
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
         $sArticleFields = $oBaseObject->getSelectFields();
-        
+
         $oxIdsSql = implode (',', Database::getDb()->quoteArray($aIds));
 
         $sSelect = "select $sArticleFields from $sArticleTable ";

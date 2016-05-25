@@ -70,8 +70,10 @@
     // Log all modifications performed in Admin
     $this->blLogChangesInAdmin = false;
 
-    // Force admin email
+    // Force admin email. Offline warnings are sent with high priority to this address.
     $this->sAdminEmail = '';
+    // Defines the time interval in seconds warnings are sent during the shop is offline.
+    $this->offlineWarningInterval = 60 * 5;
 
     // in case session must be started on first user page visit (not only on
     // session required action) set this option value 1

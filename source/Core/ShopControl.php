@@ -26,6 +26,7 @@ use oxException;
 use OxidEsales\Eshop\Application\Controller\BaseController;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\EshopEnterprise\Core\Cache\DynamicContent\ContentCache;
 use oxOutput;
 use oxRegistry;
@@ -111,6 +112,22 @@ class ShopControl extends \oxSuperCfg
      * @var ContentCache
      */
     protected $_oCache = null;
+
+    /**
+     * Path to the file, which holds the timestamp of the moment the last offline warning was sent.
+     * @var
+     */
+    protected $offlineWarningTimestampFile;
+
+    /**
+     * ShopControl constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->offlineWarningTimestampFile = OX_BASE_PATH . 'log/last-offline-warning-timestamp.log';
+    }
 
     /**
      * Main shop manager, that sets shop status, executes configuration methods.
@@ -759,6 +776,8 @@ class ShopControl extends \oxSuperCfg
     /**
      * Log an exception.
      *
+     * This method forms part of the exception handling process. Any further exceptions must be caught.
+     *
      * @param \Exception $exception
      */
     protected function logException(\Exception $exception)
@@ -773,6 +792,8 @@ class ShopControl extends \oxSuperCfg
      * Redirect to the OXID eShop maintenance page.
      * This method is used instead of the eShop standard redirection mechanism
      * in case no database connection is available.
+     *
+     * This method forms part of the exception handling process. Any further exceptions must be caught.
      */
     protected function redirectToMaintenancePageWithoutDbConnection()
     {
@@ -786,6 +807,8 @@ class ShopControl extends \oxSuperCfg
      * Redirect to the OXID eShop setup wizard.
      * This method is used instead of the eShop standard redirection mechanism
      * in case no database connection is available.
+     *
+     * This method forms part of the exception handling process. Any further exceptions must be caught.
      */
     protected static function redirectToSetupWizardWithoutDbConnection()
     {
@@ -796,7 +819,9 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
-     * Notify the shop owner about connection problems
+     * Notify the shop owner about database connection problems.
+     *
+     * This method forms part of the exception handling process. Any further exceptions must be caught.
      *
      * @param DatabaseConnectionException $exception Database connection exception to report
      */
@@ -808,57 +833,104 @@ class ShopControl extends \oxSuperCfg
         $this->logException($exception);
 
         /**
-         * If not in debug mode, send email to shop admin, if email
-         * address has been configured in shop config file config.inc.php
+         * If the shop is not in debug mode, a "shop offline" warning is send to the shop admin.
+         * In order not to spam the shop admin, the warning will be sent in a certain interval of time.
          */
-        $adminEmail = Registry::get("OxConfigFile")->getVar('sAdminEmail');
-        if ($adminEmail && ! $this->_isDebugMode()) {
-            $this->sendMail($adminEmail, $exception);
+        if ($this->messageWasSentWithinThreshold() || $this->_isDebugMode()) {
+            return;
+        }
+
+        $result = $this->sendOfflineWarning($exception);
+        if ($result) {
+            file_put_contents($this->offlineWarningTimestampFile, time());
         }
     }
 
     /**
-     * Send an email with a given subject and body to a given email address
+     * Return true, if a message was already sent within a given threshold.
      *
-     * @param string      $emailAddress
-     * @param oxException $exception
+     * This method forms part of the exception handling process. Any further exceptions must be caught.
      *
      * @return bool
      */
-    protected function sendMail($emailAddress, oxException $exception)
+    protected function messageWasSentWithinThreshold()
     {
-        $failedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
+        $wasSentWithinThreshold = false;
 
-        $date = date(DATE_RFC822); // RFC 822 (example: Mon, 15 Aug 05 15:52:01 +0000)
-        $script = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
-        $referrer = $_SERVER['HTTP_REFERER'];
-
-        //sending a message to admin
-        $emailSubject = 'Offline warning!';
-        $emailBody = "
-            Database connection error in OXID eShop:
-            Date: {$date}
-            Shop: {$failedShop}
-
-            mysql error: " . $exception->getMessage() . "
-            mysql error no: " . $exception->getCode() . "
-
-            Script: {$script}
-            Referrer: {$referrer}";
-
-        /** As we are inside the exception handling process, any further exceptions must be caught */
-        try {
-            $mailer = new PHPMailer();
-            $mailer->isMail();
-
-            $mailer->setFrom($emailAddress);
-            $mailer->addAddress($emailAddress);
-            $mailer->Subject = $emailSubject;
-            $mailer->Body = $emailBody;
-
-            return $mailer->send();
-        } catch (\Exception $exception) {
-            $this->logException($exception);
+        /** @var int $threshold Threshold in seconds */
+        $threshold = Registry::get("OxConfigFile")->getVar('offlineWarningInterval');
+        if (file_exists($this->offlineWarningTimestampFile)) {
+            $lastSentTimestamp = (int) file_get_contents($this->offlineWarningTimestampFile);
+            $lastSentBefore = time() - $lastSentTimestamp;
+            if ($lastSentBefore < $threshold) {
+                $wasSentWithinThreshold = true;
+            }
         }
+
+        return $wasSentWithinThreshold;
+    }
+
+    /**
+     * Send an offline warning to the shop owner.
+     * Currently an email is sent to the email address configured as 'sAdminEmail' in the eShop config file.
+     
+     * This method forms part of the exception handling process. Any further exceptions must be caught.
+     *
+     * @param StandardException $exception
+     *
+     * @return bool Returns true, if the email was sent.
+     */
+    protected function sendOfflineWarning(StandardException $exception)
+    {
+        $result = false;
+        /** @var  $emailAddress Email address to sent the message to */
+        $emailAddress = Registry::get("OxConfigFile")->getVar('sAdminEmail');
+
+        if ($emailAddress) {
+            /** As we are inside the exception handling process, any further exceptions must be caught */
+            try {
+                $failedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
+
+                $date = date(DATE_RFC822); // RFC 822 (example: Mon, 15 Aug 05 15:52:01 +0000)
+                $script = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
+                $referrer = $_SERVER['HTTP_REFERER'];
+
+                //sending a message to admin
+                $emailSubject = 'Offline warning!';
+                $emailBody = "
+                Database connection error in OXID eShop:
+                Date: {$date}
+                Shop: {$failedShop}
+    
+                mysql error: " . $exception->getMessage() . "
+                mysql error no: " . $exception->getCode() . "
+    
+                Script: {$script}
+                Referrer: {$referrer}";
+
+                $mailer = new PHPMailer();
+                $mailer->isMail();
+
+                $mailer->setFrom($emailAddress);
+                $mailer->addAddress($emailAddress);
+                $mailer->Subject = $emailSubject;
+                $mailer->Body = $emailBody;
+                /** Set the priority of the message
+                 * For most clients expecting the Priority header:
+                 * 1 = High, 2 = Medium, 3 = Low
+                 * */
+                $mailer->Priority = 1;
+                /** MS Outlook custom header */
+                $mailer->addCustomHeader("X-MSMail-Priority: Urgent");
+                /** Set the Importance header: */
+                $mailer->addCustomHeader("Importance: High");
+
+                $result = $mailer->send();
+            } catch (\Exception $exception) {
+                $this->logException($exception);
+            }
+        }
+
+        return $result;
     }
 }

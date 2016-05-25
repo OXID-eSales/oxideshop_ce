@@ -214,6 +214,29 @@ class DiscountArticlesAjaxTest extends \OxidTestCase
         $sSynchoxid = '_testDiscountNew';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $this->setRequestParameter("all", true);
+        $this->setConfigParam('blVariantParentBuyable', false);
+
+        $iCount = oxDb::getDb()->getOne("select count(oxid) from oxarticles where oxparentid = '' and oxvarcount = 0");
+
+        $oView = oxNew('discount_articles_ajax');
+        $this->assertGreaterThan(0, $iCount);
+        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
+
+        $oView->addDiscArt();
+        $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
+    }
+
+    /**
+     * DiscountArticlesAjax::addDiscArt() test case
+     *
+     * @return null
+     */
+    public function testAddDiscArtAllParentIsBuyable()
+    {
+        $sSynchoxid = '_testDiscountNewParentIsBuyable';
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("all", true);
+        $this->setConfigParam('blVariantParentBuyable', true);
 
         $iCount = oxDb::getDb()->getOne("select count(oxid) from oxarticles where oxparentid = ''");
 
@@ -224,5 +247,4 @@ class DiscountArticlesAjaxTest extends \OxidTestCase
         $oView->addDiscArt();
         $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
     }
-
 }

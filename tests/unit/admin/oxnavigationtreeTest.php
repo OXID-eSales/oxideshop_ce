@@ -154,7 +154,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
      */
     public function testGetDomXml()
     {
-        $aTestMethods = array("_getInitialDom", "_checkGroups", "_checkRights", "_checkDemoShopDenials", "_cleanEmptyParents");
+        $aTestMethods = array("_getInitialDom", "_checkGroups", "_checkRights", "_checkDemoShopDenials", "_cleanEmptyParents", "_removeNotActiveNodes");
 
 
         $oNavTree = $this->getMock("oxnavigationtree", $aTestMethods);
@@ -162,6 +162,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
         $oNavTree->expects($this->once())->method('_checkGroups');
         $oNavTree->expects($this->once())->method('_checkRights');
         $oNavTree->expects($this->once())->method('_checkDemoShopDenials');
+        $oNavTree->expects($this->once())->method('_removeNotActiveNodes');
         $oNavTree->expects($this->exactly(2))->method('_cleanEmptyParents');
 
 
@@ -490,6 +491,42 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
         $oNavTree->expects($this->at(1))->method('_hasGroup')->will($this->returnValue(true));
         $oNavTree->UNITcheckGroups($oDom);
         $this->assertEquals(str_replace(array("\t", " ", "\n", "\r"), "", $sResXml), str_replace(array("\t", " ", "\n", "\r"), "", $oDom->saveXML()));
+    }
+
+    /**
+     * OxNavigationTree::_removeNotActiveNodes() test case
+     *
+     * @return null
+     */
+    public function testRemoveNotActiveNodes()
+    {
+        $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+                   <MAINMENU>
+                     <SUBMENU cl="testClass1" active="1">
+                       <TAB cl="testTabClass1" />
+                     </SUBMENU>
+                     <SUBMENU cl="testClass2" active="0">
+                       <TAB cl="testTabClass2" />
+                     </SUBMENU>
+                     <SUBMENU cl="testClass3">
+                       <TAB cl="testTabClass3" />
+                     </SUBMENU>
+                   </MAINMENU>';
+
+        $oDom = new DOMDocument();
+        $oDom->formatOutput = true;
+        $oDom->loadXML($sXml);
+
+        $oNavTree = $this->getMock("oxnavigationtree", array("_getInitialDom"));
+        $oNavTree->expects($this->any())->method('_getInitialDom')->will($this->returnValue($oDom));
+        $oRDom = $oNavTree->getDomXml();
+
+        $aExpectedMenuClasses = array("testClass1", "testClass3");
+        foreach ($oRDom->documentElement->childNodes as $menuItem) {
+            if ($menuItem->nodeType == XML_ELEMENT_NODE) {
+                $this->assertContains($menuItem->getAttribute('cl'), $aExpectedMenuClasses);
+            }
+        }
     }
 
     /**

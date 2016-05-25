@@ -502,14 +502,14 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
     {
         $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
                    <MAINMENU>
-                     <SUBMENU cl="testClass1" active="1">
-                       <TAB cl="testTabClass1" />
+                     <SUBMENU cl="MenuEntry-Active" active="1">
+                       <TAB cl="MenuTab-Active" />
                      </SUBMENU>
-                     <SUBMENU cl="testClass2" active="0">
-                       <TAB cl="testTabClass2" />
+                     <SUBMENU cl="MenuEntry-NotActive" active="0">
+                       <TAB cl="MenuTab-NotActive" />
                      </SUBMENU>
-                     <SUBMENU cl="testClass3">
-                       <TAB cl="testTabClass3" />
+                     <SUBMENU cl="MenuEntry-DefaultActivity">
+                       <TAB cl="MenuTab-DefaultActivity" />
                      </SUBMENU>
                    </MAINMENU>';
 
@@ -521,7 +521,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
         $oNavTree->expects($this->any())->method('_getInitialDom')->will($this->returnValue($oDom));
         $oRDom = $oNavTree->getDomXml();
 
-        $aExpectedMenuClasses = array("testClass1", "testClass3");
+        $aExpectedMenuClasses = array("MenuEntry-Active", "MenuEntry-DefaultActivity");
         foreach ($oRDom->documentElement->childNodes as $menuItem) {
             if ($menuItem->nodeType == XML_ELEMENT_NODE) {
                 $this->assertContains($menuItem->getAttribute('cl'), $aExpectedMenuClasses);

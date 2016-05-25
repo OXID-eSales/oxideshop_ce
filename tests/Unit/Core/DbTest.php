@@ -100,19 +100,6 @@ class DbTest extends UnitTestCase
         }
     }
 
-    /**
-     * Testing escaping string
-     * Todo Remove when deprecated in 5.3
-     */
-    public function testEscapeString()
-    {
-        $sString = "\x00 \n \r ' \, \" \x1a";
-
-        $database = Database::getInstance();
-
-        $this->assertEquals('\0 \n \r \\\' \\\, \" \Z', $database->escapeString($sString));
-    }
-
     public function testGetInstanceReturnsInstanceOfDatabase()
     {
         $database = Database::getInstance();

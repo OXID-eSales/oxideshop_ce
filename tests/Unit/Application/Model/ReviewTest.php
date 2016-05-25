@@ -146,7 +146,7 @@ class ReviewTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxField', 'convertToFormattedDbDate', '{$this->convertToFormattedDbDate=true;}');
         oxTestModules::addFunction('oxField', 'convertToPseudoHtml', '{$this->convertToPseudoHtml=true;}');
-        oxTestModules::addFunction('oxlist', 'selectString', '{$this->selectArgs = $aA;$o=oxNew("oxreview");$o->oxreviews__oxcreate=oxNew("oxField");$o->oxreviews__oxtext=oxNew("oxField");$this->_aArray = array($o);}');
+        oxTestModules::addFunction('oxlist', 'selectString($sql, array $parameters = array())', '{$this->selectArgs = $aA;$o=oxNew("oxreview");$o->oxreviews__oxcreate=oxNew("oxField");$o->oxreviews__oxtext=oxNew("oxField");$this->_aArray = array($o);}');
         $oObj = oxNew('oxreview');
         $oList = $oObj->loadList('checktype', array('aId', 'lalaId'));
         $this->assertEquals("select oxreviews.* from oxreviews where oxreviews.oxtype = 'checktype' and oxreviews.oxobjectid in ( 'aId', 'lalaId' ) and oxreviews.oxlang = '0' and oxreviews.oxtext != \"\"  order by oxreviews.oxcreate desc ", $oList->selectArgs[0]);

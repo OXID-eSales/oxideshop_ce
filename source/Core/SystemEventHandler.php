@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use Exception;
 use oxRegistry;
 use oxOnlineLicenseCheck;
 use oxCurl;

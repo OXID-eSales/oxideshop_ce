@@ -784,6 +784,7 @@ class ModulelistTest extends \OxidTestCase
     /**
      * @param string $vendorDirectoryName
      * @param bool   $isVendor
+     * @dataProvider providerIsVendorDir
      */
     public function testIsVendorDir($vendorDirectoryName, $isVendor)
     {

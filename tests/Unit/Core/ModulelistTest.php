@@ -770,18 +770,48 @@ class ModulelistTest extends \OxidTestCase
     }
 
     /**
-     * oxmodulelist::_isVendorDir() test case
+     * @return array
      */
-    public function testIsVendorDir()
+    public function providerIsVendorDir()
     {
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $this->markTestSkipped('This test is for Community and Professional editions only.');
-        }
-        $modulesDir = $this->getConfig()->getModulesDir();
+        return [
+            ['module1', false],
+            ['vendor1', true],
+            ['notVendor', false]
+        ];
+    }
 
+    /**
+     * @param string $vendorDirectoryName
+     * @param bool   $isVendor
+     */
+    public function testIsVendorDir($vendorDirectoryName, $isVendor)
+    {
+        $structure = [
+            'modules' => [
+                'module1' => [
+                    'metadata.php' => '<?php'
+                ],
+                'vendor1' => [
+                    'module2' => [
+                        'metadata.php' => '<?php'
+                    ]
+                ],
+                'notVendor' => [
+                    'someDirectory' => [
+                        'file.php' => '<?php'
+                    ]
+                ]
+            ]
+        ];
+        $vfsStream = $this->getVfsStreamWrapper();
+        $vfsStream->createStructure($structure);
+
+        $this->getConfig()->setConfigParam('sShopDir', $vfsStream->getRootPath());
+        $modulesDir = $this->getConfig()->getModulesDir();
         $moduleList = oxNew('oxModuleList');
 
-        $this->assertFalse($moduleList->_isVendorDir($modulesDir . "/invoicepdf"));
+        $this->assertSame($isVendor, $moduleList->_isVendorDir($modulesDir . "/$vendorDirectoryName"));
     }
 
     public function testGetDeletedExtensionsForModuleWithNoMetadata()

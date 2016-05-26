@@ -673,10 +673,13 @@ class ModuleList extends \oxSuperCfg
      */
     protected function _isVendorDir($sModuleDir)
     {
-        if (is_dir($sModuleDir) && file_exists($sModuleDir . 'vendormetadata.php')) {
-            return true;
+        $currentDirectoryContents = scandir($sModuleDir);
+        $currentDirectoryContents = array_diff($currentDirectoryContents, ['.', '..']);
+        foreach ($currentDirectoryContents as $entry) {
+            if (is_dir("$sModuleDir/$entry") && file_exists("$sModuleDir/$entry/metadata.php")) {
+                return true;
+            }
         }
-
         return false;
     }
 

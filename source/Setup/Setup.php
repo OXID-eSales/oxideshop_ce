@@ -153,7 +153,7 @@ class Setup extends Core
     public function alreadySetUp()
     {
         $blSetUp = false;
-        $sConfig = join("", file(getInstallPath() . "config.inc.php"));
+        $sConfig = join("", file(getShopBasePath() . "config.inc.php"));
         if (strpos($sConfig, "<dbHost>") === false) {
             $blSetUp = true;
         }

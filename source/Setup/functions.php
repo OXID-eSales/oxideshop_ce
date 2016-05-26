@@ -31,7 +31,7 @@ if (!function_exists('getInstallPath')) {
      */
     function getInstallPath()
     {
-        return getShopBasePath();
+        return "../";
     }
 }
 
@@ -162,19 +162,6 @@ if (!function_exists('getVendorDirectory')) {
     }
 }
 
-if (!class_exists("Config", false)) {
-    /**
-     * Config file loader class
-     */
-    class Config
-    {
-        public function __construct()
-        {
-            include getInstallPath() . "config.inc.php";
-        }
-    }
-}
-
 if (!class_exists("Conf", false)) {
     /**
      * Config key loader class
@@ -183,7 +170,7 @@ if (!class_exists("Conf", false)) {
     {
         public function __construct()
         {
-            $config = new \OxidEsales\Eshop\Core\ConfigFile(getInstallPath() . "/config.inc.php");
+            $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
             $this->sConfigKey = $config->getVar('sConfigKey') ?: \OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY;
         }
     }

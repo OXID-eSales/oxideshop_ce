@@ -235,7 +235,7 @@ class View extends Core
         $oSession = $this->getInstance("Session");
         /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
-        $sPath = getInstallPath();
+        $sPath = getShopBasePath();
 
         $aDemoConfig = $oSession->getSessionParam("aDB");
         if (!isset($aDemoConfig['dbiDemoData']) || $aDemoConfig['dbiDemoData'] != '1') {

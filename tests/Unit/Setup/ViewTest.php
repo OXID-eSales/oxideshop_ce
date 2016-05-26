@@ -189,7 +189,7 @@ class ViewTest extends \OxidTestCase
      */
     public function testIsDeletedSetup()
     {
-        $sPath = getInstallPath();
+        $sPath = getShopBasePath();
 
         $oInst1 = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
         $oInst1->expects($this->at(0))->method("getSessionParam")->will($this->returnValue(array("dbiDemoData" => 0)));

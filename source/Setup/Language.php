@@ -78,7 +78,7 @@ class Language extends Core
     {
         if ($this->_aLangData === null) {
             $this->_aLangData = array();
-            $sLangFilePath = getInstallPath() . EditionPathProvider::SETUP_DIRECTORY . '/' . ucfirst($this->getLanguage()) . '/lang.php';
+            $sLangFilePath = getShopBasePath() . EditionPathProvider::SETUP_DIRECTORY . '/' . ucfirst($this->getLanguage()) . '/lang.php';
             if (file_exists($sLangFilePath) && is_readable($sLangFilePath)) {
                 $aLang = array();
                 include $sLangFilePath;

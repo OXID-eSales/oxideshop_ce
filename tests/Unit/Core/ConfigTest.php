@@ -206,6 +206,41 @@ class ConfigTest extends \OxidTestCase
         $this->assertTrue($oConfig->isSsl());
     }
 
+    /**
+     * test that is httpsOnly method on config returns true if connection is using https and the shop is configured
+     * with https for both urls
+     */
+    public function testIsHttpsOnlySameUrlWithSSl() {
+        $res = $this->isHttpsOnlySameUrl(true);
+        $this->assertTrue( $res);
+    }
+
+    /**
+     * test that is httpsOnly method on config returns false if connection is not using https and the shop is configured
+     * with http for both urls
+     */
+    public function testIsHttpsOnlySameUrlNotSsl() {
+        $res = $this->isHttpsOnlySameUrl(false);
+        $this->assertFalse($res);
+    }
+
+    /**
+     * simulates https or http connection depending on the $withSSl parameter and
+     * runs isHttpsOnly method on config object
+     * the result is returned
+     * @return bool
+     */
+    private function isHttpsOnlySameUrl($withSsl)
+    {
+        $config = $this->getMock('oxconfig', array('isSsl', 'getSslShopUrl', 'getShopUrl'));
+        $config->expects($this->any())->method('isSsl')->will($this->returnValue($withSsl));
+        foreach (['getSslShopUrl', 'getShopUrl'] as $method) {
+            $config->expects($this->any())->method($method)->will($this->returnValue('http'. ($withSsl?'s':'') . '://oxid-esales.com'));
+        }
+        $res = $config->isHttpsOnly();
+        return $res;
+    }
+
     public function testIsUtfWhenInUtfMode()
     {
         $oConfig = $this->getMock('oxConfig', array('getConfigParam'));
@@ -2470,4 +2505,6 @@ class ConfigTest extends \OxidTestCase
             ->will($this->returnValue($this->shopUrl . $entryPoint . '?'));
         oxRegistry::set('oxUtilsUrl', $utilsUrl);
     }
+
+
 }

@@ -504,9 +504,12 @@ class PictureHandlerTest extends \OxidTestCase
      */
     public function testGetAltImageUrlNoDoubleSlashes()
     {
-        $this->setConfigParam('sAltImageUrl', 'https://example.com/');
         $oPicHandler = oxnew('oxPictureHandler');
 
+        $this->setConfigParam('sAltImageUrl', 'https://example.com');
+        $this->assertEquals('https://example.com/path/nopic.jpg', $oPicHandler->getAltImageUrl('path/', 'nopic.jpg'));
+
+        $this->setConfigParam('sAltImageUrl', 'https://example.com/');
         $this->assertEquals('https://example.com/path/nopic.jpg', $oPicHandler->getAltImageUrl('path/', 'nopic.jpg'));
     }
 

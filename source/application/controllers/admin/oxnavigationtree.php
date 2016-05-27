@@ -312,18 +312,18 @@ class OxNavigationTree extends oxSuperCfg
     }
 
     /**
-     * Removes form tree elements if it is marked as not active (active="0")
+     * Removes node from tree elements if it is marked as not visible (visible="0")
      *
      * @param DOMDocument $oDom document to check group
      *
      * @return null
      */
-    protected function _removeNotActiveNodes($oDom)
+    protected function removeInvisibleMenuNodes($oDom)
     {
         $oXPath = new DomXPath($oDom);
-        $oNodeList = $oXPath->query("//*[@active]");
+        $oNodeList = $oXPath->query("//*[@visible]");
         foreach ($oNodeList as $oNode) {
-            if (!$oNode->getAttribute('active')) {
+            if (!$oNode->getAttribute('visible')) {
                 $oNode->parentNode->removeChild($oNode);
             }
         }
@@ -675,8 +675,8 @@ class OxNavigationTree extends oxSuperCfg
             // check config params
             $this->_checkDemoShopDenials($this->_oDom);
 
-            // check config params
-            $this->_removeNotActiveNodes($this->_oDom);
+            // removes items marked as not visible
+            $this->removeInvisibleMenuNodes($this->_oDom);
 
 
             $this->_cleanEmptyParents($this->_oDom, '//SUBMENU[@id][@list]', 'TAB');

@@ -154,7 +154,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
      */
     public function testGetDomXml()
     {
-        $aTestMethods = array("_getInitialDom", "_checkGroups", "_checkRights", "_checkDemoShopDenials", "_cleanEmptyParents", "_removeNotActiveNodes");
+        $aTestMethods = array("_getInitialDom", "_checkGroups", "_checkRights", "_checkDemoShopDenials", "_cleanEmptyParents", "removeInvisibleMenuNodes");
 
 
         $oNavTree = $this->getMock("oxnavigationtree", $aTestMethods);
@@ -162,7 +162,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
         $oNavTree->expects($this->once())->method('_checkGroups');
         $oNavTree->expects($this->once())->method('_checkRights');
         $oNavTree->expects($this->once())->method('_checkDemoShopDenials');
-        $oNavTree->expects($this->once())->method('_removeNotActiveNodes');
+        $oNavTree->expects($this->once())->method('removeInvisibleMenuNodes');
         $oNavTree->expects($this->exactly(2))->method('_cleanEmptyParents');
 
 
@@ -494,22 +494,23 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
     }
 
     /**
-     * OxNavigationTree::_removeNotActiveNodes() test case
+     * OxNavigationTree::removeInvisibleMenuNodes() test case when menu is marked as invisible,
+     * also if it marked as visible and default behaviour, if attribute visible is not present.
      *
      * @return null
      */
-    public function testRemoveNotActiveNodes()
+    public function testRemoveInvisibleMenuNodes()
     {
         $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
                    <MAINMENU>
-                     <SUBMENU cl="MenuEntry-Active" active="1">
-                       <TAB cl="MenuTab-Active" />
+                     <SUBMENU cl="MenuEntry-Visible" visible="1">
+                       <TAB cl="MenuTab-AVisible" />
                      </SUBMENU>
-                     <SUBMENU cl="MenuEntry-NotActive" active="0">
-                       <TAB cl="MenuTab-NotActive" />
+                     <SUBMENU cl="MenuEntry-NotVisible" visible="0">
+                       <TAB cl="MenuTab-NotVisible" />
                      </SUBMENU>
-                     <SUBMENU cl="MenuEntry-DefaultActivity">
-                       <TAB cl="MenuTab-DefaultActivity" />
+                     <SUBMENU cl="MenuEntry-DefaultVisibility">
+                       <TAB cl="MenuTab-DefaultVisibility" />
                      </SUBMENU>
                    </MAINMENU>';
 
@@ -521,7 +522,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
         $oNavTree->expects($this->any())->method('_getInitialDom')->will($this->returnValue($oDom));
         $oRDom = $oNavTree->getDomXml();
 
-        $aExpectedMenuClasses = array("MenuEntry-Active", "MenuEntry-DefaultActivity");
+        $aExpectedMenuClasses = array("MenuEntry-Visible", "MenuEntry-DefaultVisibility");
         foreach ($oRDom->documentElement->childNodes as $menuItem) {
             if ($menuItem->nodeType == XML_ELEMENT_NODE) {
                 $this->assertContains($menuItem->getAttribute('cl'), $aExpectedMenuClasses);
@@ -529,21 +530,26 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
         }
     }
 
-    public function testRemoveNotActiveMenuNodes()
+    /**
+     * OxNavigationTree::removeInvisibleMenuNodes() test case wen main menu is marked as invisible.
+     *
+     * @return null
+     */
+    public function testRemoveInvisibleMainMenuNodes()
     {
         $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
                     <OXMENU id="NAVIGATION_ESHOPADMIN">
-                       <MAINMENU>
-                           <SUBMENU cl="MenuEntry-Active" active="1">
-                               <TAB cl="MenuTab-Active" />
+                       <MAINMENU id="MainMenu-Visible">
+                           <SUBMENU cl="MenuEntry-Visible" visible="1">
+                               <TAB cl="MenuTab-Visible" />
                            </SUBMENU>
-                           <SUBMENU cl="MenuEntry-DefaultActivity">
-                               <TAB cl="MenuTab-DefaultActivity" />
+                           <SUBMENU cl="MenuEntry-DefaultVisibility">
+                               <TAB cl="MenuTab-DefaultVisibility" />
                            </SUBMENU>
                        </MAINMENU>
-                       <MAINMENU active="0">
-                           <SUBMENU cl="MenuEntry-NotActive" active="0">
-                             <TAB cl="MenuTab-NotActive" />
+                       <MAINMENU id="MainMenu-NotVisible" visible="0">
+                           <SUBMENU cl="MenuEntry-NotVisible" visible="0">
+                             <TAB cl="MenuTab-NotVisible" />
                            </SUBMENU>
                        </MAINMENU>
                     </OXMENU>';
@@ -556,14 +562,47 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
         $oNavTree->expects($this->any())->method('_getInitialDom')->will($this->returnValue($oDom));
         $oRDom = $oNavTree->getDomXml();
 
-        $aExpectedMenuClasses = array(".", "MenuEntry-Active", "MenuEntry-DefaultActivity");
+        $aExpectedMenuItems = array("MainMenu-Visible");
         foreach ($oRDom->documentElement->childNodes as $menuNode) {
-//            foreach ($menuNode->documentElement->childNodes as $menuItem) {
-                var_dump($menuNode);
-//                if ($menuItem->nodeType == XML_ELEMENT_NODE) {
-//                $this->assertContains($menuItem->getAttribute('cl'), $aExpectedMenuClasses);
-//                }
-//            }
+            if ($menuNode->nodeType == XML_ELEMENT_NODE) {
+                $this->assertContains($menuNode->getAttribute('id'), $aExpectedMenuItems);
+            }
+        }
+    }
+
+    /**
+     * OxNavigationTree::removeInvisibleMenuNodes() test case when tab is marked as not visible.
+     *
+     * @return null
+     */
+    public function testRemoveInvisibleTabs()
+    {
+        $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+                   <MAINMENU>
+                     <SUBMENU cl="MenuEntry-Visible">
+                       <TAB cl="MenuTab-Visible" visible="1" />
+                     </SUBMENU>
+                     <SUBMENU cl="MenuEntry-VisibleTwo">
+                       <TAB cl="MenuTab-NotVisible" visible="0" />
+                     </SUBMENU>
+                     <SUBMENU cl="MenuEntry-DefaultVisibility">
+                       <TAB cl="MenuTab-DefaultVisibility" />
+                     </SUBMENU>
+                   </MAINMENU>';
+
+        $oDom = new DOMDocument();
+        $oDom->formatOutput = true;
+        $oDom->loadXML($sXml);
+
+        $oNavTree = $this->getMock("oxnavigationtree", array("_getInitialDom"));
+        $oNavTree->expects($this->any())->method('_getInitialDom')->will($this->returnValue($oDom));
+        $oRDom = $oNavTree->getDomXml();
+
+        $aExpectedMenuClasses = array("MenuTab-Visible", null, "MenuTab-DefaultVisibility");
+        foreach ($oRDom->documentElement->childNodes as $menuItem) {
+            if ($menuItem->nodeType == XML_ELEMENT_NODE) {
+                $this->assertContains($oNavTree->getActiveTab($menuItem->getAttribute('cl'), 0), $aExpectedMenuClasses);
+            }
         }
     }
 

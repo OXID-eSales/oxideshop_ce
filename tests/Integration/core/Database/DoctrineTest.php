@@ -355,7 +355,7 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
         );
     }
 
-    public function testQuoteIdentifierWithValidValues($identifier, $expectedMessage)
+    public function testQuoteIdentifierWithValidValues()
     {
         $this->loadFixtureToTestTable();
         $quotedIdentifier = $this->database->quoteIdentifier('OXID');
@@ -399,5 +399,125 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
                 'Unknown column \'columnName ` columnName\' in \'order clause\''
             ],
         ];
+    }
+
+    /**
+     * @dataProvider dataProviderTestQuoteWithInvalidValues
+     *
+     * @param mixed $value
+     * @param mixed $expectedQuotedValue
+     * @param string $expectedException
+     * @param string $message
+     */
+    public function testQuoteWithInvalidValues($value, $expectedQuotedValue, $expectedException, $message)
+    {
+        $this->loadFixtureToTestTable();
+
+        $actualQuotedValue = $this->database->quote($value);
+        $this->assertSame($expectedQuotedValue, $actualQuotedValue, $message);
+
+        $this->setExpectedException($expectedException);
+
+        $query = "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = {$actualQuotedValue}";
+        $resultSet = $this->database
+            ->select($query);
+        $resultSet->getAll();
+    }
+
+    public function dataProviderTestQuoteWithInvalidValues()
+    {
+        return [
+            [array('key' => 'value'), false, self::DATABASE_EXCEPTION_CLASS, 'An array will be converted into boolean "false" and an exception is thrown, when the statement is executed '],
+            [new \stdClass(), false, self::DATABASE_EXCEPTION_CLASS, 'An object will be converted into boolean "false" and an exception is thrown, when the statement is executed'],
+        ];
+    }
+
+
+    /**
+     * Test, that affected rows is set to the expected values by consecutive calls to execute()
+     */
+    public function testExecuteSetsAffectedRows()
+    {
+        $this->loadFixtureToTestTable();
+
+        /** One row will be updated by the query */
+        $expectedAffectedRows = 1;
+        $this->database->execute('UPDATE ' . self::TABLE_NAME . ' SET oxuserid = "somevalue" WHERE OXID = ?', array(self::FIXTURE_OXID_1));
+        $actualAffectedRows = $this->database->affectedRows();
+
+        $this->assertEquals($expectedAffectedRows, $actualAffectedRows, '1 row was updated by the query');
+
+
+        /** Two rows will be updated by the query */
+        $expectedAffectedRows = 2;
+        $this->database->execute('UPDATE ' . self::TABLE_NAME . ' SET oxuserid = "someothervalue" WHERE OXID IN (?, ?)', array(self::FIXTURE_OXID_1, self::FIXTURE_OXID_2));
+        $actualAffectedRows = $this->database->affectedRows();
+
+        $this->assertEquals($expectedAffectedRows, $actualAffectedRows, '2 rows was updated by the query');
+    }
+
+    /**
+     * Test, that affected rows is set to the expected values by consecutive calls to select()
+     */
+    public function testSelectSetsAffectedRows()
+    {
+        $this->loadFixtureToTestTable();
+
+        /** 1 rows will be selected, so affected rows must be set to 1 */
+        $expectedAffectedRows = 1;
+        $this->database->select(
+            'SELECT OXID FROM ' . self::TABLE_NAME . ' LIMIT 0, 1', // query
+            array(), // params
+            false // Execute on slave
+        );
+        $actualAffectedRows = $this->database->affectedRows();
+        $this->assertEquals($expectedAffectedRows, $actualAffectedRows, '1 row was selected, so affected rows must be set to 1');
+
+        /** 2 rows will be selected, so affected rows must be set to 2 */
+        $expectedAffectedRows = 2;
+        $this->database->select(
+            'SELECT OXID FROM ' . self::TABLE_NAME . ' LIMIT 0, 2', // query
+            array(), // params
+            false // Execute on slave
+        );
+        $actualAffectedRows = $this->database->affectedRows();
+
+        $this->assertEquals($expectedAffectedRows, $actualAffectedRows, '2 rows were selected, so affected rows must be set to 2');
+    }
+
+
+    /**
+     * Test, that the method 'execute' works for insert and delete.
+     */
+    public function testExecuteWithInsertAndDelete()
+    {
+        $this->truncateTestTable();
+
+        $exampleOxId = self::FIXTURE_OXID_1;
+
+        $resultSet = $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('$exampleOxId');");
+
+        $this->assertEmptyResultSet($resultSet);
+        $this->assertSame(1, $this->database->affectedRows());
+        $this->assertTestTableHasOnly($exampleOxId);
+
+        $resultSet = $this->database->execute("DELETE FROM " . self::TABLE_NAME . " WHERE OXID = '$exampleOxId';");
+
+        $this->assertEmptyResultSet($resultSet);
+        $this->assertSame(1, $this->database->affectedRows());
+        $this->assertTestTableIsEmpty();
+    }
+
+    /**
+     * Test, that the method 'getRow' gives an empty array with empty table and default fetch mode.
+     */
+    public function testGetRowEmptyTableDefaultFetchMode()
+    {
+        $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
+
+        $this->assertInternalType('array', $result);
+        $this->assertEmpty($result);
+
+        $this->assertEquals(0, $this->database->affectedRows());
     }
 }

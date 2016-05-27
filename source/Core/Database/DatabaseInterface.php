@@ -21,10 +21,8 @@
  */
 namespace OxidEsales\Eshop\Core\Database;
 
-use object_ADOConnection;
-use object_ResultSet;
+use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
 use OxidEsales\Eshop\Core\Exception\DatabaseException;
-use pear_ADOConnection;
 
 /**
  * The database connection interface specifies how a database connection should look and act.
@@ -52,56 +50,122 @@ interface DatabaseInterface
     const FETCH_MODE_BOTH = 3;
 
     /**
-     * Setter for the database connection.
+     * Set the necessary connection parameters to connect to the database.
+     * The parameter array must at least contain the key 'default'. E.g.
+     * [
+     *  'default' => [
+     *      'databaseDriver'    => '', // string At the moment only 'pdo_mysql' is supported
+     *      'databaseHost'      => '', // string
+     *      'databasePort'      => '', // integer Optional, defaults to port 3306
+     *      'databaseName'      => '', // string
+     *      'databaseUser'      => '', // string
+     *      'databasePassword'  => '', // string
+     *      'connectionCharset' => '', // string Optional, defaults to the servers connection character set
+     *      ]
+     * ]
      *
-     * @param mysql_driver_ADOConnection|mysql_extend_ADOConnection|mysql_meta_ADOConnection|mysqli_driver_ADOConnection|mysqli_extend_ADOConnection|mysqli_extra_ADOConnection|object_ADOConnection|pear_ADOConnection $connection The connection to the database.
+     * @param array $connectionParameters
      */
-    public function setConnection($connection);
+    public function setConnectionParameters(array $connectionParameters);
 
     /**
      * Set the fetch mode of an open database connection.
-     * When the connection is opened the fetch mode will be set to a default value.
-     * Once the connection has been opened, the fetch mode might be set to any of the valid fetch modes as defined in
-     * DatabaseInterface::FETCH_MODE_*
-     * This implies that piece a of code should make no assumptions about the current fetch mode of the connection,
-     * but rather set it explicitly, before retrieving the results.
      *
-     * @param int $fetchMode See  for valid values
+     * After the connection has been opened, this method may be used to set the fetch mode to any of the valid fetch
+     * modes as defined in DatabaseInterface::FETCH_MODE_*
+     *
+     * NOTE: This implies, that it is not safe to make any assumptions about the current fetch mode of the connection.
+     *
+     * @param int $fetchMode See DatabaseInterface::FETCH_MODE_* for valid values
      */
     public function setFetchMode($fetchMode);
 
     /**
-     * Get one column, which you have to give into the sql select statement, of the first row, corresponding to the
-     * given sql statement.
+     * Get the first value of the first row of the result set of a given sql SELECT or SHOW statement.
+     * Returns false for any other statement.
      *
-     * @param string $sqlSelect      The sql select statement
-     * @param array  $parameters     Array of parameters, for the given sql statement.
-     * @param bool   $executeOnSlave Should the given sql statement executed on the slave?
+     * NOTE: Although you might pass any SELECT or SHOW statement to this method, try to limit the result of the
+     * statement to one single row, as the rest of the rows is simply discarded.
      *
-     * @return string The first column of the first row, which is fitting to the given sql select statement.
+     * @param string $query          The sql SELECT or SHOW statement.
+     * @param array  $parameters     Array of parameters for the given sql statement.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
+     *
+     * @return string|false          Returns a string for SELECT or SHOW statements and FALSE for any other statement.
      */
-    public function getOne($sqlSelect, $parameters = array(), $executeOnSlave = true);
+    public function getOne($query, $parameters = array(), $executeOnSlave = true);
 
     /**
-     * Get one row of the corresponding sql select statement.
+     * Get an array with the values of the first row of a given sql SELECT or SHOW statement .
+     * Returns an empty array for any other statement.
+     *
+     * The keys of the array may be numeric, strings or both, depending on the FETCH_MODE_* of the connection.
+     * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
+     *
+     * NOTE: Although you might pass any SELECT or SHOW statement to this method, try to limit the result of the
+     * statement to one single row, as the rest of the rows is simply discarded.
+     * 
+     * IMPORTANT:
+     * You are strongly encouraged to use prepared statements like this:
+     * $result = Database::getDb->getOne(
+     *   'SELECT ´id´ FROM ´mytable´ WHERE ´id´ = ? LIMIT 0, 1',
+     *   array($id1)
+     * );
+     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * SQL injection vulnerability.
+     *
      *
      * @param string $sqlSelect      The sql select statement we want to execute.
      * @param array  $parameters     Array of parameters, for the given sql statement.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
      *
      * @return array
      */
     public function getRow($sqlSelect, $parameters = array(), $executeOnSlave = true);
 
     /**
-     * Get all values as an array.
-     * The format of returned the array depends on the fetch mode.
+     * Return the first column of all rows of the results of a given sql SELECT or SHOW statement as an numeric array.
+     * Throws an exception for any other statement.
+     *
+     * IMPORTANT:
+     * You are strongly encouraged to use prepared statements like this:
+     * $result = Database::getDb->getRow(
+     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? LIMIT 0, 1',
+     *   array($id1)
+     * );
+     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * SQL injection vulnerability.
+     *
+     * @param string $sqlSelect      The sql select statement
+     * @param array  $parameters     The parameters array.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
+     *
+     * @throws DatabaseException
+     *
+     * @return array The values of the first column of a corresponding sql query.
+     */
+    public function getCol($sqlSelect, $parameters = array(), $executeOnSlave = true);
+
+    /**
+     * Get an multi-dimensional array of arrays with the values of the all rows of a given sql SELECT or SHOW statement.
+     * Returns an empty array for any other statement.
+     *
+     * The keys of the first level array are numeric.
+     * The keys of the second level arrays may be numeric, strings or both, depending on the FETCH_MODE_* of the connection.
      * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
-     * The default fetch mode is defined in Doctrine::$fetchMode
+     * 
+     * IMPORTANT:
+     * You are strongly encouraged to use prepared statements like this:
+     * $result = Database::getDb->getAll(
+     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ? LIMIT 0, 1',
+     *   array($id1, $id2)
+     * );
+     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * SQL injection vulnerability.
      *
      * @param string $query          If parameters are given, the "?" in the string will be replaced by the values in the array
      * @param array  $parameters     Array of parameters, for the given sql statement.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
      *
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
@@ -114,88 +178,155 @@ interface DatabaseInterface
     public function getAll($query, $parameters = array(), $executeOnSlave = true);
 
     /**
-     * Get value
+     * Return the results of a given sql SELECT or SHOW statement as a ResultSet.
+     * Throws an exception for any other statement.
+     *
+     * The values of first row of the result may be via resultSet's fields property.
+     * This property is an array, which keys may be numeric, strings or both, depending on the FETCH_MODE_* of the connection.
+     * All further rows can be accessed via the specific methods of ResultSet.
+     *
+     * IMPORTANT:
+     * You are strongly encouraged to use prepared statements like this:
+     * $resultSet = Database::getDb->select(
+     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
+     *   array($id1, $id2)
+     * );
+     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * SQL injection vulnerability.
      *
      * @param string $sqlSelect      The sql select statement
      * @param array  $parameters     The parameters array.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
      *
-     * @return mixed|Object_ResultSet
+     * @throws DatabaseException The exception, that can occur while executing the sql statement.
+     *
+     * @return DoctrineResultSet
      */
     public function select($sqlSelect, $parameters = array(), $executeOnSlave = true);
 
     /**
-     * Get the values of a column.
+     * Return the results of a given sql SELECT or SHOW statement limited by a LIMIT clause as a ResultSet.
+     * Throws an exception for any other statement.
      *
-     * @param string $sqlSelect      The sql select statement
-     * @param array  $parameters     The parameters array.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
+     * The values of first row of the result may be via resultSet's fields property.
+     * This property is an array, which keys may be numeric, strings or both, depending on the FETCH_MODE_* of the connection.
+     * All further rows can be accessed via the specific methods of ResultSet.
      *
-     * @todo: What kind of array do we expect numeric or assoc? Does it depends on FETCH_MODE?
-     *
-     * @return array The values of a column of a corresponding sql query.
-     */
-    public function getCol($sqlSelect, $parameters = array(), $executeOnSlave = true);
-
-    /**
-     * Run a given select sql statement with a limit clause on the database.
+     * IMPORTANT:
+     * You are strongly encouraged to use prepared statements like this:
+     * $resultSet = Database::getDb->selectLimit(
+     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
+     *   $rowCount,
+     *   $offset,
+     *   array($id1, $id2)
+     * );
+     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * SQL injection vulnerability.
      *
      * @param string $sqlSelect  The sql select statement
-     * @param int    $limit      Number of rows to select
-     * @param int    $offset     Number of rows to skip
+     * @param int    $rowCount   Maximum number of rows to return
+     * @param int    $offset     Offset of the first row to return
      * @param array  $parameters The parameters array.
-     * @param bool   $type       Connection type
+     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
      *
-     * @return mixed|Object_ResultSet The result of the given query.
+     * @throws DatabaseException The exception, that can occur while executing the sql statement.
+     *
+     * @return DoctrineResultSet The result of the given query.
      */
-    public function selectLimit($sqlSelect, $limit = -1, $offset = -1, $parameters = array(), $type = true);
+    public function selectLimit($sqlSelect, $rowCount = -1, $offset = -1, $parameters = array(), $executeOnSlave = true);
 
     /**
-     * Executes query and returns result set.
+     * Execute read statements like SELECT or SHOW and return the results as a ResultSet.
+     * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
+     *
+     * IMPORTANT:
+     * You are strongly encouraged to use prepared statements like this:
+     * $resultSet = Database::getDb->execute(
+     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
+     *   array($id1, $id2)
+     * );
+     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * SQL injection vulnerability.
      *
      * @param string $query      The sql statement we want to execute.
      * @param array  $parameters The parameters array.
      *
-     * @return mixed|Object_ResultSet
+     * @deprecated since v6.0.0 (2016-05-27) This method will be removed. Use either select() or executeUpdate()
+     *
+     * @return integer|DoctrineResultSet Number of rows affected by the statement for non read statements and DoctrineResultSet for read statements
      */
+
     public function execute($query, $parameters = array());
 
     /**
-     * Get the number of rows, which where changed during the last sql statement.
+     * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
      *
-     * @return int The number of rows affected by the last sql statement.
+     * IMPORTANT:
+     * You are strongly encouraged to use prepared statements like this:
+     * $resultSet = Database::getDb->execute(
+     *   'UPDATE ´mytable´ SET (´mycolumn´ = ?) WHERE ´id´ = ?',
+     *   array($value, $id)
+     * );
+     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * SQL injection vulnerability.
+     *
+     * @param string $query      The sql statement we want to execute.
+     * @param array  $parameters The parameters array.
+     *
+     * @return integer Number of rows affected by the statement
      */
-    public function affectedRows();
+    public function executeUpdate($query, $parameters = array());
 
     /**
-     * Quote the given string. Same as qstr.
+     * Quote a string or a numeric value in a way, that it might be used as a value in a sql statement.
+     * Returns false for values that cannot be quoted.
      *
-     * @param string $value The string we want to quote.
+     * NOTE: It is not safe to use the return value of this function in a query. There will be no risk of SQL injection,
+     * but when the statement is executed and the value could not have been quoted, a DatabaseException is thrown.
+     * You are strongly encouraged to always use prepared statements instead of quoting the values on your own.
+     * E.g. use
+     * $resultSet = Database::getDb->select(
+     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
+     *   array($id1, $id2)
+     * );
+     * instead of
+     * $resultSet = Database::getDb->select(
+     *  'SELECT * FROM ´mytable´ WHERE ´id´ = ' . Database::getDb->quote($id1) . ' OR ´id´ = ' . Database::getDb->quote($id1)
+     * );
      *
-     * @return string The given string in quotes.
+     * @param mixed $value The string or numeric value to be quoted.
+     *
+     * @return false|string The given string or numeric value converted to a string surrounded by single quotes or set to false, if the value could not have been quoted.
      */
     public function quote($value);
 
     /**
-     * Quote a string in a way that it can be used as a identifier (i.e. table name or field name) in a SQL statement.
+     * Quote every value in a given array in a way, that it might be used as a value in a sql statement and return the
+     * result as a new array. Numeric values will be converted to strings which quotes.
+     * The keys and their order of the returned array will be the same as of the input array.
+     *
+     * NOTE: It is not safe to use the return value of this function in a query. There will be no risk of SQL injection,
+     * but when the statement is executed and the value could not have been quoted, a DatabaseException is thrown.
+     * You are strongly encouraged to always use prepared statements instead of quoting the values on your own.
+     * 
+     * @param array $array The strings to quote as an array.
+     *
+     * @return array Array with all string and numeric values quoted with single quotes or set to false, if the value could not have been quoted.
+     */
+    public function quoteArray($array);
+
+    /**
+     * Quote a string in a way, that it can be used as a identifier (i.e. table name or field name) in a sql statement.
+     * You are strongly encouraged to always use quote identifiers.
      *
      * @param $value
      *
      * @return string
      */
-    public function quoteIdentifier($value); 
+    public function quoteIdentifier($value);
 
     /**
-     * Quote every string in the given array.
-     *
-     * @param array $arrayOfStrings The strings to quote as an array.
-     *
-     * @return array The given strings quoted.
-     */
-    public function quoteArray($arrayOfStrings);
-
-    /**
-     * Return meta data for the columns.
+     * Return the meta data for the columns of a table.
      *
      * @param string $table The name of the table.
      *
@@ -204,29 +335,34 @@ interface DatabaseInterface
     public function metaColumns($table);
 
     /**
-     * Start the mysql transaction.
+     * Start a database transaction.
      *
      * @throws DatabaseException
      */
     public function startTransaction();
 
     /**
-     * Commit the mysql transaction.
+     * Commit a database transaction.
      *
      * @throws DatabaseException
      */
     public function commitTransaction();
 
     /**
-     * RollBack the mysql transaction.
+     * RollBack a database transaction.
      *
      * @throws DatabaseException
      */
     public function rollbackTransaction();
 
     /**
-     * Set transaction isolation level.
+     * Set the transaction isolation level.
      * Allowed values 'READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ' and 'SERIALIZABLE'.
+     *
+     * NOTE: Currently the transaction isolation level is set on the database session and not globally.
+     * Setting the transaction isolation level globally requires root privileges in MySQL an this application should not
+     * be executed with root privileges.
+     * If you need to set the transaction isolation level globally, ask your database administrator to do so,
      *
      * @param string $level The transaction isolation level
      *
@@ -235,18 +371,11 @@ interface DatabaseInterface
     public function setTransactionIsolationLevel($level);
 
     /**
-     * Calls the database UI method.
-     *
-     * @param integer $pollSeconds poll seconds
-     */
-    public function UI($pollSeconds = 5);
-
-    /**
      * Return string representing the row ID of the last row that was inserted into
      * the database.
-     * This function will return 0 on tables without autoincrement fields.
+     * Returns 0 for tables without autoincrement field.
      *
      * @return string|int Row ID
      */
-    public function lastInsertId();
+    public function getLastInsertId();
 }

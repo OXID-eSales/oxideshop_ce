@@ -98,6 +98,11 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
              * DatabaseInterface::FETCH_MODE_NUM
              *
              */
+            array( // fetch mode numeric and an INSERT statement
+                   DatabaseInterface::FETCH_MODE_NUM,
+                   'INSERT INTO ' . self::TABLE_NAME . ' VALUES (\'a\', \'b\')',
+                   array()
+            ),
             array( // fetch mode numeric and an empty result
                    DatabaseInterface::FETCH_MODE_NUM,
                    'SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE 0',
@@ -278,58 +283,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Test, that affected rows is set to the expected values by consecutive calls to execute()
-     */
-    public function testExecuteSetsAffectedRows()
-    {
-        $this->loadFixtureToTestTable();
-
-        /** One row will be updated by the query */
-        $expectedAffectedRows = 1;
-        $this->database->execute('UPDATE ' . self::TABLE_NAME . ' SET oxuserid = "somevalue" WHERE OXID = ?', array(self::FIXTURE_OXID_1));
-        $actualAffectedRows = $this->database->affectedRows();
-
-        $this->assertEquals($expectedAffectedRows, $actualAffectedRows, '1 row was updated by the query');
-
-
-        /** Two rows will be updated by the query */
-        $expectedAffectedRows = 2;
-        $this->database->execute('UPDATE ' . self::TABLE_NAME . ' SET oxuserid = "someothervalue" WHERE OXID IN (?, ?)', array(self::FIXTURE_OXID_1, self::FIXTURE_OXID_2));
-        $actualAffectedRows = $this->database->affectedRows();
-
-        $this->assertEquals($expectedAffectedRows, $actualAffectedRows, '2 rows was updated by the query');
-    }
-
-    /**
-     * Test, that affected rows is set to the expected values by consecutive calls to select()
-     */
-    public function testSelectSetsAffectedRows()
-    {
-        $this->loadFixtureToTestTable();
-
-        /** 1 rows will be selected, so affected rows must be set to 1 */
-        $expectedAffectedRows = 1;
-        $this->database->select(
-            'SELECT OXID FROM ' . self::TABLE_NAME . ' LIMIT 0, 1', // query
-            array(), // params
-            false // Execute on slave
-        );
-        $actualAffectedRows = $this->database->affectedRows();
-        $this->assertEquals($expectedAffectedRows, $actualAffectedRows, '1 row was selected, so affected rows must be set to 1');
-
-        /** 2 rows will be selected, so affected rows must be set to 2 */
-        $expectedAffectedRows = 2;
-        $this->database->select(
-            'SELECT OXID FROM ' . self::TABLE_NAME . ' LIMIT 0, 2', // query
-            array(), // params
-            false // Execute on slave
-        );
-        $actualAffectedRows = $this->database->affectedRows();
-
-        $this->assertEquals($expectedAffectedRows, $actualAffectedRows, '2 rows were selected, so affected rows must be set to 2');
-    }
-
-    /**
      * Test, that the method 'select' reacts as expected, when called with parameters.
      */
     public function testSelectWithParameters()
@@ -341,6 +294,27 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $result = $resultSet->getAll();
 
         $this->assertEquals(array(array(self::FIXTURE_OXID_2)), $result);
+    }
+
+    public function testSelectWithNonReadStatementThrowsException()
+    {
+        $expectedExceptionClass = $this->getDatabaseExceptionClassName();
+
+        $this->setExpectedException($expectedExceptionClass);
+
+        $this->database->select('INSERT INTO ' . self::TABLE_NAME . ' VALUES (\'a\',\'b\')');
+    }
+
+
+    public function testSelectPreparedWithInvalidParameterDoesNotThrowException()
+    {
+        $this->loadFixtureToTestTable();
+
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE OXID = ?', array(array('key' => 'value')), false);
+
+        $result = $resultSet->getAll();
+
+        $this->assertEquals(array(), $result);
     }
 
     /**
@@ -472,27 +446,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertSame($expectedRows, $allRows);
     }
 
-    /**
-     * Test, that the method 'execute' works for insert and delete.
-     */
-    public function testExecuteWithInsertAndDelete()
-    {
-        $this->truncateTestTable();
-
-        $exampleOxId = self::FIXTURE_OXID_1;
-
-        $resultSet = $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('$exampleOxId');");
-
-        $this->assertEmptyResultSet($resultSet);
-        $this->assertSame(1, $this->database->affectedRows());
-        $this->assertTestTableHasOnly($exampleOxId);
-
-        $resultSet = $this->database->execute("DELETE FROM " . self::TABLE_NAME . " WHERE OXID = '$exampleOxId';");
-
-        $this->assertEmptyResultSet($resultSet);
-        $this->assertSame(1, $this->database->affectedRows());
-        $this->assertTestTableIsEmpty();
-    }
 
     /**
      * Test that the expected exception is thrown when passing an invalid non "SELECT" query.
@@ -615,6 +568,18 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertInternalType('array', $result);
         $this->assertSame(1, count($result));
         $this->assertSame(array(self::FIXTURE_OXUSERID_2), $result);
+    }
+
+    /**
+     * Test 'getCol' with an INSERT statement
+     */
+    public function testGetColhWithNonReadStatementThrowsException()
+    {
+        $expectedExceptionClass = $this->getDatabaseExceptionClassName();
+
+        $this->setExpectedException($expectedExceptionClass);
+
+        $this->database->getCol("INSERT INTO " . self::TABLE_NAME . " VALUES ('a', 'b')");
     }
 
     /**
@@ -917,7 +882,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     public function testInsertIdOnNonAutoIncrement()
     {
         $this->database->execute('INSERT INTO ' . self::TABLE_NAME . ' (OXUSERID) VALUES ("' . self::FIXTURE_OXUSERID_1 . '")');
-        $firstInsertedId = $this->database->lastInsertId();
+        $firstInsertedId = $this->database->getLastInsertId();
 
         $this->assertEquals(0, $firstInsertedId);
     }
@@ -928,7 +893,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     public function testInsertIdWithoutInsertion()
     {
         $this->database->execute('SELECT * FROM ' . self::TABLE_NAME);
-        $firstInsertedId = $this->database->lastInsertId();
+        $firstInsertedId = $this->database->getLastInsertId();
 
         $this->assertEquals(0, $firstInsertedId);
     }
@@ -941,10 +906,10 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->database->execute('CREATE TABLE oxdoctrinetest_autoincrement (oxid INT NOT NULL AUTO_INCREMENT, oxname CHAR, PRIMARY KEY (oxid));');
 
         $this->database->execute('INSERT INTO oxdoctrinetest_autoincrement(oxname) VALUES ("OXID eSales")');
-        $firstInsertedId = $this->database->lastInsertId();
+        $firstInsertedId = $this->database->getLastInsertId();
 
         $this->database->execute('INSERT INTO oxdoctrinetest_autoincrement(oxname) VALUES ("OXID eSales")');
-        $lastInsertedId = $this->database->lastInsertId();
+        $lastInsertedId = $this->database->getLastInsertId();
 
         $this->database->execute('DROP TABLE oxdoctrinetest_autoincrement;');
 
@@ -1031,18 +996,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertEquals(self::FIXTURE_OXUSERID_3, $result);
     }
 
-    /**
-     * Test, that the method 'getRow' gives an empty array with empty table and default fetch mode.
-     */
-    public function testGetRowEmptyTableDefaultFetchMode()
-    {
-        $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
-
-        $this->assertInternalType('array', $result);
-        $this->assertEmpty($result);
-
-        $this->assertEquals(0, $this->database->affectedRows());
-    }
 
     /**
      * Test, that the method 'getRow' gives an empty array with a non empty table and an incorrect sql statement.
@@ -1266,6 +1219,39 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             }
         }
     }
+
+    /**
+     * @dataProvider dataProviderTestQuoteWithValidValues
+     *
+     * @param mixed $value
+     * @param mixed $expectedQuotedValue
+     * @param mixed $expectedResult
+     * @param string $message
+     */
+    public function testQuoteWithValidValues($value, $expectedQuotedValue, $expectedResult, $message)
+    {
+        $this->loadFixtureToTestTable();
+
+        $actualQuotedValue = $this->database->quote($value);
+
+        $this->assertSame($expectedQuotedValue, $actualQuotedValue, $message);
+
+        $query = "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = {$actualQuotedValue}";
+        $resultSet = $this->database
+            ->select($query);
+        $actualResult = $resultSet->getAll();
+
+        $this->assertSame($expectedResult, $actualResult, $message);
+    }
+
+    public function dataProviderTestQuoteWithValidValues()
+    {
+        return [
+            [self::FIXTURE_OXID_1, "'" . self::FIXTURE_OXID_1 . "'", [[self::FIXTURE_OXID_1]], 'The string "'. self::FIXTURE_OXID_1 .'" 1  will be converted into the string "\''. self::FIXTURE_OXID_1 .'\'" and the query result will be ['. self::FIXTURE_OXID_1 .']'],
+            [1, "'1'", [], 'The integer 1  will be converted into the string "1" and the query result will be empty'],
+        ];
+    }
+
 
     /*
      * There is a another special table needed for testMetaColumns.

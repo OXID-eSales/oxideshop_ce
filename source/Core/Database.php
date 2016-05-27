@@ -93,7 +93,7 @@ class Database
      */
     public function __clone()
     {
-        throw new \Exception("You must not clone this object as it is a singleton.");
+        throw new \Exception("This object is a singleton, thou shalt not clone.");
     }
 
     /**
@@ -302,12 +302,14 @@ class Database
         $databasePassword = $this->getConfigParam('dbPwd');
 
         $connectionParameters = array(
-            'databaseDriver'    => $databaseDriver,
-            'databaseHost'      => $databaseHost,
-            'databasePort'      => $databasePort,
-            'databaseName'      => $databaseName,
-            'databaseUser'      => $databaseUser,
-            'databasePassword'  => $databasePassword,
+            'default' => array(
+                'databaseDriver'    => $databaseDriver,
+                'databaseHost'      => $databaseHost,
+                'databasePort'      => $databasePort,
+                'databaseName'      => $databaseName,
+                'databaseUser'      => $databaseUser,
+                'databasePassword'  => $databasePassword,
+            )
         );
 
         /** The charset has to be set during the connection to the database */
@@ -317,7 +319,7 @@ class Database
             $charset = $this->getConfigParam('sDefaultDatabaseConnection');
         }
         if ($charset) {
-            $connectionParameters = array_merge($connectionParameters, array('connectionCharset' => $charset));
+            $connectionParameters['default'] = array_merge($connectionParameters['default'], array('connectionCharset' => $charset));
         }
 
         return $connectionParameters;

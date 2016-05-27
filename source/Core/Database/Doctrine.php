@@ -32,6 +32,7 @@ use OxidEsales\Eshop\Core\Database\Adapter\DoctrineEmptyResultSet;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 
 /**
  * The doctrine implementation of our database.
@@ -96,13 +97,12 @@ class Doctrine implements DatabaseInterface
      */
     public function setConnectionParameters(array $connectionParameters)
     {
-        if (array_key_exists('master', $connectionParameters) && array_key_exists('slaves', $connectionParameters)) {
-            $this->setConnectionParametersForMasterSlave($connectionParameters);
-        } else {
-            /** @var $connectionParameters */
-            $connectionParameters = $this->getPdoMysqlConnectionParameters($connectionParameters);
+        if (array_key_exists('default', $connectionParameters)) {
+            $this->connectionParameters = $this->getPdoMysqlConnectionParameters($connectionParameters['default']);
+        }
 
-            $this->connectionParameters = $connectionParameters;
+        if (array_key_exists('slaves', $connectionParameters)) {
+            $this->setConnectionParametersForMasterSlave($connectionParameters['slaves']);
         }
     }
 
@@ -135,7 +135,10 @@ class Doctrine implements DatabaseInterface
             }
             $this->setConnection($connection);
         } catch (DBALException $exception) {
-            $exception = new DatabaseConnectionException($exception->getMessage(), $exception->getCode(), $exception);
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
     }
@@ -145,7 +148,7 @@ class Doctrine implements DatabaseInterface
      *
      * @param Connection $connection
      */
-    public function setConnection($connection)
+    protected function setConnection($connection)
     {
         $this->connection = $connection;
     }
@@ -293,9 +296,11 @@ class Doctrine implements DatabaseInterface
             $resultSet = $this->select($sqlSelect, $parameters, $executeOnSlave);
             $result = $resultSet->fetchRow();
         } catch (DatabaseException $exception) {
+            /** Only log exception, do not re-throw here, as legacy code expects this behavior */
             $this->logException($exception);
             $result = array();
         } catch (PDOException $exception) {
+            /** Only log exception, do not re-throw here, as legacy code expects this behavior */
             $exception = $this->convertException($exception);
             $this->logException($exception);
             $result = array();
@@ -345,15 +350,15 @@ class Doctrine implements DatabaseInterface
     /**
      * Quote every string in the given array.
      *
-     * @param array $arrayOfStrings The strings to quote as an array.
+     * @param array $array The strings to quote as an array.
      *
      * @return array The given strings quoted.
      */
-    public function quoteArray($arrayOfStrings)
+    public function quoteArray($array)
     {
         $result = array();
 
-        foreach ($arrayOfStrings as $key => $item) {
+        foreach ($array as $key => $item) {
             $result[$key] = $this->quote($item);
         }
 
@@ -567,8 +572,6 @@ class Doctrine implements DatabaseInterface
      * @param array  $parameters     The parameters array.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
-     * @todo: What kind of array do we expect numeric or assoc? Does it depends on FETCH_MODE?
-     *
      * @return array The values of a column of a corresponding sql query.
      */
     public function getCol($sqlSelect, $parameters = array(), $executeOnSlave = true)
@@ -576,16 +579,23 @@ class Doctrine implements DatabaseInterface
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
+        
+        try{
+            $rows = $this->getConnection()->fetchAll($sqlSelect, $parameters);
+            $result = array();
+            foreach ($rows as $row) {
+                // cause there is no doctrine equivalent, we take this little detour and restructure the result
+                $columnNames = array_keys($row);
+                $columnName = $columnNames[0];
 
-        $rows = $this->getConnection()->fetchAll($sqlSelect, $parameters);
-
-        $result = array();
-        foreach ($rows as $row) {
-            // cause there is no doctrine equivalent, we take this little detour and restructure the result
-            $columnNames = array_keys($row);
-            $columnName = $columnNames[0];
-
-            $result[] = $row[$columnName];
+                $result[] = $row[$columnName];
+            }
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
 
         return $result;
@@ -615,7 +625,7 @@ class Doctrine implements DatabaseInterface
      *
      * @return DoctrineEmptyResultSet
      */
-    protected function executeUpdate($query, $parameters = array(), $types = array())
+    public function executeUpdate($query, $parameters = array(), $types = array())
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -736,8 +746,8 @@ class Doctrine implements DatabaseInterface
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately we can access PDOException and recover the original SQL error code and message.
                  */
-                /** @var PDOException  $pdoException*/
                 $pdoException = $exception->getPrevious();
+                /** @var $pdoException PDOException */
                 $code = $pdoException->errorInfo[1];
                 $message = $pdoException->errorInfo[2];
                 $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
@@ -766,11 +776,13 @@ class Doctrine implements DatabaseInterface
      * Handle a given exception. The standard behavior at the moment is to throw the exception passed in the parameter.
      * A second exception handling including logging will be done by the ShopControl class.
      *
-     * @param \oxException $exception
+     * @param StandardException $exception
      *
-     * @throws \Exception|\oxConnectionException|DatabaseException
+     * @throws StandardException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseException
      */
-    protected function handleException(\oxException $exception)
+    protected function handleException(StandardException $exception)
     {
         throw $exception;
     }
@@ -808,6 +820,7 @@ class Doctrine implements DatabaseInterface
      */
     public function getAll($sqlSelect, $parameters = array(), $executeOnSlave = true)
     {
+        $result = array();
         $statement = null;
 
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
@@ -821,7 +834,10 @@ class Doctrine implements DatabaseInterface
             $this->handleException($exception);
         }
 
-        $result = $statement->fetchAll();
+
+        if ($this->isSelectStatement($sqlSelect)) {
+            $result = $statement->fetchAll();
+        }
 
         return $result;
     }
@@ -831,7 +847,7 @@ class Doctrine implements DatabaseInterface
      *
      * @return string The last inserted ID.
      */
-    public function lastInsertId()
+    public function getLastInsertId()
     {
         return $this->getConnection()->lastInsertId();
     }

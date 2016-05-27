@@ -70,7 +70,6 @@ class DoctrineResultSet
 
             $this->fields = $this->getAdapted()->fetch();
             
-            // @todo A prepared statement is executed here, but this makes no sense without binding the parameters. Yet no params are provided.
             $this->executeAdapted();
         } else {
             $this->setToEmptyState();
@@ -144,6 +143,7 @@ class DoctrineResultSet
      */
     public function fetchField($columnIndex)
     {
+        /** @todo The method getColumnMeta is specific of the PDO driver. Change to unspecific version, if not exits be creative ;-) */
         $metaInformation = $this->getAdapted()->getColumnMeta($columnIndex);
 
         $result = new \stdClass();

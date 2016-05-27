@@ -13,7 +13,7 @@
         "smarty/smarty": "^2.6.29"
     },
     "require-dev": {
-        "oxid-esales/testing-library": "dev-master-move_core_to_vendor",
+        "oxid-esales/testing-library": "dev-master",
         "oxid-esales/coding-standards": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0"
     },

@@ -884,11 +884,6 @@ INSERT INTO `oxnewsletter` (`OXID`, `OXSHOPID`, `OXTITLE`, `OXTEMPLATE`, `OXPLAI
 # Data for table `oxnewssubscribed`
 #
 INSERT INTO `oxnewssubscribed` (`OXID`, `OXSHOPID`, `OXUSERID`, `OXSAL`, `OXFNAME`, `OXLNAME`, `OXEMAIL`, `OXDBOPTIN`, `OXEMAILFAILED`, `OXSUBSCRIBED`, `OXUNSUBSCRIBED`) VALUES
-  ('36944b76cc9639101.18366310', 'oxbaseshop', '36944b76cc9604c53.04579642', 'MR', 'Max', 'Manager', 'management', 0, 0, '2006-07-14 12:07:05', '0000-00-00 00:00:00'),
-  ('36944b76d204210c1.05764016', 'oxbaseshop', '36944b76d203d4a35.41417835', 'MRS', 'Lisa', 'Leser', 'redaktion', 0, 0, '2006-07-14 12:08:32', '0000-00-00 00:00:00'),
-  ('36944b76d6e5bd545.44755823', 'oxbaseshop', '36944b76d6e583fe2.12734046', 'MRS', 'Theresa', 'Bild', 'bild', 0, 0, '2006-07-14 12:09:50', '0000-00-00 00:00:00'),
-  ('36944b76daea2c536.99998884', 'oxbaseshop', '36944b76dae9ef333.88219217', 'MR', 'Franz', 'Zahlendreher', 'buchhaltung', 0, 0, '2006-07-14 12:10:54', '0000-00-00 00:00:00'),
-  ('36944b76e7181c237.17167204', 'oxbaseshop', '36944b76e717de855.40215733', 'MR', 'Peter', 'Produktmanager', 'produkt', 0, 0, '2006-07-14 12:14:09', '0000-00-00 00:00:00'),
   ('e7a194e983a31c078c6d5527a7b9f9ba', 'oxbaseshop', 'e7af1c3b786fd02906ccd75698f4e6b9', 'MR', 'Marc', 'Muster', 'user@oxid-esales.com', 0, 0, '2011-02-01 08:41:25', '0000-00-00 00:00:00');
 
 #

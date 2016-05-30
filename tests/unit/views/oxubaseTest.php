@@ -1275,8 +1275,10 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
     public function testGetActiveLangAbbrWhenDisabledInConfig()
     {
         $this->setConfigParam('bl_perfLoadLanguages', false);
-        $oView = new oxUbase();
-        $this->assertNull($oView->getActiveLangAbbr());
+        //expect the same result like in testGetActiveLangAbbr
+        //the only difference is that for performance reasons with this setting the shop internal
+        //abbr is used and not the user defined settings from the database.
+        $this->testGetActiveLangAbbr();
     }
 
     public function testGetRequestParams()

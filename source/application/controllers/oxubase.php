@@ -1961,23 +1961,27 @@ class oxUBase extends oxView
 
     /**
      * Returns active lang suffix
-     *
+     * usally it used in html lang attr to allow the browser to interpret the page in the right language
+     * e.g. to support hyphons
      * @return string
      */
     public function getActiveLangAbbr()
     {
-        // Performance
-        if (!$this->getConfig()->getConfigParam('bl_perfLoadLanguages')) {
-            return;
-        }
-
         if (!isset($this->_sActiveLangAbbr)) {
-            $aLanguages = oxRegistry::getLang()->getLanguageArray();
-            while (list($sKey, $oVal) = each($aLanguages)) {
-                if ($oVal->selected) {
-                    $this->_sActiveLangAbbr = $oVal->abbr;
-                    break;
+            $languageService = oxRegistry::getLang();
+            if ($this->getConfig()->getConfigParam('bl_perfLoadLanguages')) {
+                $languages = $languageService->getLanguageArray();
+                while (list($key, $language) = each($languages)) {
+                    if ($language->selected) {
+                        $this->_sActiveLangAbbr = $language->abbr;
+                        break;
+                    }
                 }
+            } else {
+                // Performance
+                // use oxid shop internal languageAbbr, this might be correct in the most cases but not guaranteed to be that
+                // configured in the admin backend for that language
+                $this->_sActiveLangAbbr = $languageService->getLanguageAbbr();
             }
         }
 

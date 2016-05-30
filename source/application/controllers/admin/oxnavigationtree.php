@@ -227,7 +227,7 @@ class OxNavigationTree extends oxSuperCfg
     }
 
     /**
-     * Removes form tree elements whitch doesn't have requred user rights
+     * Removes form tree elements which does not have required user rights
      *
      * @param object $oDom DOMDocument
      */
@@ -258,7 +258,7 @@ class OxNavigationTree extends oxSuperCfg
     }
 
     /**
-     * Removes form tree elements whitch doesn't have requred groups
+     * Removes from tree elements which don't have required groups
      *
      * @param DOMDocument $oDom document to check group
      */

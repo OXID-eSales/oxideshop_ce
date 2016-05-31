@@ -281,10 +281,9 @@ $aLang =  array(
 'HELP_SHOP_SEO_RESERVEDWORDS'                 => 'Bestimmte URLs sind im eShop festgelegt, z.B. www.ihronlineshop.de/admin, um den Administrationsbereich zu öffnen. Wenn eine Kategorie <span class="filename_filepath_or_italic">admin</span> heißen würde, wäre die SEO URL zu dieser Kategorie ebenfalls www.ihronlineshop.de/admin - die Kategorie könnte nicht geöffnet werden. Deswegen wird an solche SEO URLs automatisch das SEO Suffix angehängt. Mit dem Eingabefeld können Sie einstellen, an welche SEO URLs das SEO Suffix automatisch angehängt werden soll.',
 
 'HELP_SHOP_SEO_SKIPTAGS'                      => 'Wenn bei Artikeln oder Kategorien keine SEO-Einstellungen für die META-Tags vorhanden sind, werden diese Informationen aus der Beschreibung generiert. Dabei können Wörter weggelassen werden, die besonders häufig vorkommen. Alle Wörter, die in diesem Eingabefeld stehen, werden bei der automatischen Generierung ignoriert.',
+'HELP_SHOP_SEO_LOWERCASEURLS'                 => 'Wandelt Großbuchstaben bei der Generierung von SEO-URLs in Kleinbuchstaben um. Aus www.ihronlineshop.de/Kiteboarding/Kites/ wird www.ihronlineshop.de/kiteboarding/kites/.',
 
 'HELP_SHOP_SEO_STATICURLS'                    => 'Für bestimmte Seiten (z. B. AGB\'s) im eShop können Sie feste suchmaschinenfreundliche URLs festlegen. Wenn Sie eine statische URL auswählen, wird in dem Feld <span class="navipath_or_inputname">Standard URL</span> die normale URL angezeigt. In den Eingabefeldern weiter unten können Sie für jede Sprache suchmaschinenfreundliche URLs eingeben.',
-
-
 
 'HELP_SHOP_MAIN_PRODUCTIVE'                   => 'Für Installation, Konfiguration, Anpassung der Templates und Modul-Debugging sollte der Shop nicht im Produktivmodus sein. Sobald der Produktivmodus aktiviert ist, wird das Cache Handling und das Error Reporting für den Livebetrieb des Shops optimiert.<br>' .
                                                  '<span class="warning_or_important_hint">Aktivieren Sie diese Einstellung, bevor Ihr eShop öffentlich zugänglich gemacht wird.</span><br>' .

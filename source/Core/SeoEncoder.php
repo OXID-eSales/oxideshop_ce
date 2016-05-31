@@ -643,6 +643,12 @@ class SeoEncoder extends \oxSuperCfg
         // binding the ending back
         $sUri .= $sExt;
 
+        // lowercase uri if option is set
+        if ($this->getConfig()->getConfigParam('blSEOLowerCaseUrls')) {
+            $strUtility = Str::getStr();
+            $sUri = $strUtility->strtolower($sUri);
+        }
+
         // fix for not having url, which executes through /other/ script then seo decoder
         $sUri = $oStr->preg_replace("#^(/*)(" . implode('|', $this->_getReservedEntryKeys()) . ")(/|$)#i", "\$1\$2$sAdd\$3", $sUri);
 

@@ -72,4 +72,17 @@ class oxwCategoryTree extends oxWidget
     {
         return $this->getViewParameter("deepLevel");
     }
+
+    /**
+     * Content category getter
+     *
+     * @return bool|string
+     */
+    public function getContentCategory()
+    {
+        if (oxRegistry::getConfig()->getRequestParameter('oxcid')) {
+            return oxRegistry::getConfig()->getRequestParameter('oxcid');
+        }
+        return false;
+    }
 }

@@ -98,7 +98,8 @@ class ModuleInstaller extends \oxSuperCfg
             $this->_addTemplateBlocks($oModule->getInfo("blocks"), $sModuleId);
             $this->_addModuleFiles($oModule->getInfo("files"), $sModuleId);
             $this->_addTemplateFiles($oModule->getInfo("templates"), $sModuleId);
-            $this->_addModuleSettings($oModule->getInfo("settings"), $sModuleId);
+            $settingsHandler = oxNew(SettingsHandler::class);
+            $settingsHandler->setModuleType('module')->run($oModule);
             $this->_addModuleVersion($oModule->getInfo("version"), $sModuleId);
             $this->_addModuleEvents($oModule->getInfo("events"), $sModuleId);
 
@@ -463,51 +464,6 @@ class ModuleInstaller extends \oxSuperCfg
     }
 
     /**
-     * Add module settings to database.
-     *
-     * @param array  $aModuleSettings Module settings array
-     * @param string $sModuleId       Module id
-     */
-    protected function _addModuleSettings($aModuleSettings, $sModuleId)
-    {
-        $this->_removeNotUsedSettings($aModuleSettings, $sModuleId);
-        $oConfig = $this->getConfig();
-        $sShopId = $oConfig->getShopId();
-        $oDb = oxDb::getDb();
-
-        if (is_array($aModuleSettings)) {
-            foreach ($aModuleSettings as $aValue) {
-                $sOxId = oxUtilsObject::getInstance()->generateUId();
-
-                $sModule = 'module:' . $sModuleId;
-                $sName = $aValue["name"];
-                $sType = $aValue["type"];
-                $sValue = is_null($oConfig->getConfigParam($sName)) ? $aValue["value"] : $oConfig->getConfigParam($sName);
-                $sGroup = $aValue["group"];
-
-                $sConstraints = "";
-                if ($aValue["constraints"]) {
-                    $sConstraints = $aValue["constraints"];
-                } elseif ($aValue["constrains"]) {
-                    $sConstraints = $aValue["constrains"];
-                }
-
-                $iPosition = $aValue["position"] ? $aValue["position"] : 1;
-
-                $oConfig->setConfigParam($sName, $sValue);
-                $oConfig->saveShopConfVar($sType, $sName, $sValue, $sShopId, $sModule);
-
-                $sDeleteSql = "DELETE FROM `oxconfigdisplay` WHERE OXCFGMODULE=" . $oDb->quote($sModule) . " AND OXCFGVARNAME=" . $oDb->quote($sName);
-                $sInsertSql = "INSERT INTO `oxconfigdisplay` (`OXID`, `OXCFGMODULE`, `OXCFGVARNAME`, `OXGROUPING`, `OXVARCONSTRAINT`, `OXPOS`) " .
-                              "VALUES ('{$sOxId}', " . $oDb->quote($sModule) . ", " . $oDb->quote($sName) . ", " . $oDb->quote($sGroup) . ", " . $oDb->quote($sConstraints) . ", " . $oDb->quote($iPosition) . ")";
-
-                $oDb->execute($sDeleteSql);
-                $oDb->execute($sInsertSql);
-            }
-        }
-    }
-
-    /**
      * Add module events to config.
      *
      * @param array  $aModuleEvents Module events
@@ -571,83 +527,6 @@ class ModuleInstaller extends \oxSuperCfg
     protected function _removeNotUsedExtensions($installedExtensions, oxModule $module)
     {
         return $this->getModuleCleaner()->cleanExtensions($installedExtensions, $module);
-    }
-
-    /**
-     * Removes configs which are removed from module metadata
-     *
-     * @param array  $aModuleSettings Module settings
-     * @param string $sModuleId       Module id
-     */
-    protected function _removeNotUsedSettings($aModuleSettings, $sModuleId)
-    {
-        $aModuleConfigs = $this->_getModuleConfigs($sModuleId);
-        $aModuleSettings = $this->_parseModuleSettings($aModuleSettings);
-
-        $aConfigsToRemove = array_diff($aModuleConfigs, $aModuleSettings);
-        if (!empty($aConfigsToRemove)) {
-            $this->_removeModuleConfigs($sModuleId, $aConfigsToRemove);
-        }
-    }
-
-    /**
-     * Returns module configuration from database
-     *
-     * @param string $sModuleId Module id
-     *
-     * @return array
-     */
-    protected function _getModuleConfigs($sModuleId)
-    {
-        $oDb = oxDb::getDb();
-        $sQuotedShopId = $oDb->quote($this->getConfig()->getShopId());
-        $sQuotedModuleId = $oDb->quote('module:' . $sModuleId);
-
-        $sModuleConfigsQuery = "SELECT oxvarname FROM oxconfig WHERE oxmodule = $sQuotedModuleId AND oxshopid = $sQuotedShopId";
-
-        return $oDb->getCol($sModuleConfigsQuery);
-    }
-
-    /**
-     * Parses module config variable names to array from module settings
-     *
-     * @param array $aModuleSettings Module settings
-     *
-     * @return array
-     */
-    protected function _parseModuleSettings($aModuleSettings)
-    {
-        $aSettings = array();
-
-        if (is_array($aModuleSettings)) {
-            foreach ($aModuleSettings as $aSetting) {
-                $aSettings[] = $aSetting['name'];
-            }
-        }
-
-        return $aSettings;
-    }
-
-    /**
-     * Removes module configs from database
-     *
-     * @param string $sModuleId        Module id
-     * @param array  $aConfigsToRemove Configs to remove
-     */
-    protected function _removeModuleConfigs($sModuleId, $aConfigsToRemove)
-    {
-        $oDb = oxDb::getDb();
-        $sQuotedShopId = $oDb->quote($this->getConfig()->getShopId());
-        $sQuotedModuleId = $oDb->quote('module:' . $sModuleId);
-
-        $aQuotedConfigsToRemove = array_map(array($oDb, 'quote'), $aConfigsToRemove);
-        $sDeleteSql = "DELETE
-                       FROM `oxconfig`
-                       WHERE oxmodule = $sQuotedModuleId AND
-                             oxshopid = $sQuotedShopId AND
-                             oxvarname IN (" . implode(", ", $aQuotedConfigsToRemove) . ")";
-
-        $oDb->execute($sDeleteSql);
     }
 
     /**

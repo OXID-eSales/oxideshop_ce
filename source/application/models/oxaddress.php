@@ -98,7 +98,7 @@ class oxAddress extends oxBase
         if ($sFirstName || $sLastName) {
             $sAddress = $sFirstName . ($sFirstName ? " " : "") . "$sLastName, ";
         }
-        $sAddress .= "$sStreet $sStreetNr $sCity";
+        $sAddress .= "$sStreet $sStreetNr, $sCity";
 
         $sAddress = trim($sAddress);
 

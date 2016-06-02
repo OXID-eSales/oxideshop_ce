@@ -40,7 +40,7 @@ class Unit_Core_oxAddressTest extends OxidTestCase
         $oSubj->oxaddress__oxstreetnr = new oxField('StreetNr');
         $oSubj->oxaddress__oxcity = new oxField('Kaunas');
 
-        $this->assertEquals("Fname Lname, Street StreetNr Kaunas", $oSubj->toString());
+        $this->assertEquals("Fname Lname, Street StreetNr, Kaunas", $oSubj->toString());
     }
 
     /**
@@ -55,7 +55,7 @@ class Unit_Core_oxAddressTest extends OxidTestCase
         $oSubj->oxaddress__oxstreetnr = new oxField('StreetNr');
         $oSubj->oxaddress__oxcity = new oxField('Kaunas');
 
-        $this->assertEquals("Street StreetNr Kaunas", $oSubj->toString());
+        $this->assertEquals("Street StreetNr, Kaunas", $oSubj->toString());
 
     }
 
@@ -72,7 +72,7 @@ class Unit_Core_oxAddressTest extends OxidTestCase
         $oSubj->oxaddress__oxstreetnr = new oxField('StreetNr');
         $oSubj->oxaddress__oxcity = new oxField('Kaunas');
 
-        $this->assertEquals("Lname, Street StreetNr Kaunas", $oSubj->toString());
+        $this->assertEquals("Lname, Street StreetNr, Kaunas", $oSubj->toString());
 
     }
 
@@ -90,7 +90,7 @@ class Unit_Core_oxAddressTest extends OxidTestCase
         $oSubj->oxaddress__oxstreetnr = new oxField('StreetNr');
         $oSubj->oxaddress__oxcity = new oxField('Kaunas');
 
-        $this->assertEquals("Fname Lname, Street StreetNr Kaunas", $oSubj->toString());
+        $this->assertEquals("Fname Lname, Street StreetNr, Kaunas", $oSubj->toString());
     }
 
     /**

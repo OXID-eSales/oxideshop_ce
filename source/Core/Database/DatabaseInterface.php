@@ -319,11 +319,11 @@ interface DatabaseInterface
      * Quote a string in a way, that it can be used as a identifier (i.e. table name or field name) in a sql statement.
      * You are strongly encouraged to always use quote identifiers.
      *
-     * @param $value
+     * @param string $string The string to be quoted.
      *
      * @return string
      */
-    public function quoteIdentifier($value);
+    public function quoteIdentifier($string);
 
     /**
      * Return the meta data for the columns of a table.

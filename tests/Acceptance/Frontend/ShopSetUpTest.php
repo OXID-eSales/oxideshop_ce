@@ -135,7 +135,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->click("step3Submit");
         $aMessages = array(
             0 => "Seems there is already OXID eShop installed in database",
-            1 => "Please provide neccesary data for running OXID eShop"
+            1 => "Please provide necessary data for running OXID eShop"
         );
         $this->waitForText($aMessages, false, 120);
         $this->checkForErrors();

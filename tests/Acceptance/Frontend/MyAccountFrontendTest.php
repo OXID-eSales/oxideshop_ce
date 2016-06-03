@@ -429,7 +429,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->assertEquals("Berlin", $this->getSelectedLabel("oxStateSelect_deladr[oxaddress__oxstateid]"));
         $this->select("addressId", "label=%NEW_ADDRESS%");
 
-        $this->select("addressId", "label=First name_šÄßüл Last name_šÄßüл, street_šÄßüл 1 city_šÄßüл");
+        $this->select("addressId", "label=First name_šÄßüл Last name_šÄßüл, street_šÄßüл 1, city_šÄßüл");
         $this->waitForPageToLoad("30000");
         $this->select("deladr[oxaddress__oxsal]", "label=%MR%");
         $this->type("deladr[oxaddress__oxfname]", "First name1");

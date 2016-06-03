@@ -149,7 +149,7 @@ class BasketFrontendTest extends FrontendTestCase
         // bad product was removed in last confirm and order, so now order can be created
         $this->_confirmAndOrder();
 
-        $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
+        $this->assertEquals("%YOU_ARE_HERE%: / %ORDER%", $this->getText("breadCrumb"));
     }
 
     /**
@@ -818,7 +818,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->click("payment_testpayment");
 
         $this->_continueToNextStep();
-        $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
+        $this->assertEquals("%YOU_ARE_HERE%: / %ORDER%", $this->getText("breadCrumb"));
         $this->clickAndWait("link=%STEPS_PAY%");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAY%", $this->getText("breadCrumb"));
     }

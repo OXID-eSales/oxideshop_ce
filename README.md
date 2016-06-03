@@ -34,3 +34,11 @@ When checking out this repository or downloading the zip file from this place, c
 * Wiki - http://www.oxidforge.org
 * Bug tracker - https://bugs.oxid-esales.com
 * VM and SDK - https://github.com/OXID-eSales/oxvm_eshop
+
+
+### Contact us
+
+ * [Open a new issue on our bug tracker](https://bugs.oxid-esales.com)
+ * [Join our mailing list](http://lists.oxidforge.org/mailman/listinfo/dev-general)
+ * [Use the contact form](https://www.oxid-esales.com/en/contact/contact-us.html)
+

@@ -21,7 +21,6 @@
  */
 namespace OxidEsales\Eshop\Core;
 
-use oxConnectionException;
 use OxidEsales\Eshop\Core\Database\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Doctrine as DatabaseAdapter;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
@@ -115,7 +114,7 @@ class Database
      *
      * @param int $fetchMode - fetch mode default numeric - 0
      *
-     * @throws oxConnectionException error while initiating connection to DB
+     * @throws DatabaseConnectionException error while initiating connection to DB
      *
      * @return DatabaseInterface
      */

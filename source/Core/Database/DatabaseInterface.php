@@ -251,31 +251,9 @@ interface DatabaseInterface
      * @param string $query      The sql statement we want to execute.
      * @param array  $parameters The parameters array.
      *
-     * @deprecated since v6.0.0 (2016-05-27) This method will be removed. Use either select() or executeUpdate()
-     *
-     * @return integer|DoctrineResultSet Number of rows affected by the statement for non read statements and DoctrineResultSet for read statements
+     * @return integer Number of rows affected by the SQL statement
      */
-
     public function execute($query, $parameters = array());
-
-    /**
-     * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
-     *
-     * IMPORTANT:
-     * You are strongly encouraged to use prepared statements like this:
-     * $resultSet = Database::getDb->execute(
-     *   'UPDATE ´mytable´ SET (´mycolumn´ = ?) WHERE ´id´ = ?',
-     *   array($value, $id)
-     * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
-     * SQL injection vulnerability.
-     *
-     * @param string $query      The sql statement we want to execute.
-     * @param array  $parameters The parameters array.
-     *
-     * @return integer Number of rows affected by the statement
-     */
-    public function executeUpdate($query, $parameters = array());
 
     /**
      * Quote a string or a numeric value in a way, that it might be used as a value in a sql statement.

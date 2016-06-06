@@ -512,6 +512,8 @@ class oxDb
 
     /**
      * Call to reset table description cache
+     *
+     * @deprecated since v5.3.0 (2016-06-06); This method will be removed in v6.0.
      */
     public function resetTblDescCache()
     {
@@ -545,6 +547,8 @@ class oxDb
      *
      * @param string $sField field name
      *
+     * @deprecated since v5.3.0 (2016-06-06); This method will be removed in v6.0.
+     *
      * @return bool
      */
     public function isValidFieldName($sField)
@@ -566,6 +570,9 @@ class oxDb
      * Escape string for using in mysql statements
      *
      * @param string $sString string which will be escaped
+     *
+     * @deprecated since v5.3.0 (2016-06-06); This method will be removed in v6.0. Use oxLegacyDb::quote() to quote values.
+     *             As of v6.0 there will be a new method quoteIdentifier() to quote strings in order to use them as identifiers.
      *
      * @return string
      */

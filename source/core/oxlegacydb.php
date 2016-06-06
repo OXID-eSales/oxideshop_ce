@@ -201,10 +201,13 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Execute query
      *
-     * @param string     $sSql    Query
+     * Note: This method should be used for SQL statements, that do not return any result sets like INSERT, UPDATE and DELETE.
+     *       Use select() for SQL statements, that return a result set like SELECT and SHOW
+     *
+     * @param string     $sSql    Query. SQL statements, that does not return any result set like INSERT, UPDATE and DELETE.
      * @param array      $aParams Array of parameters
      *
-     * @return object
+     * @return object deprecated since v5.3.0 (2016-06-06); As of v6.0 this method will not return an object, but the number of affected rows instead.
      */
     public function execute($sSql, $aParams = array())
     {
@@ -217,7 +220,7 @@ class oxLegacyDb extends oxSuperCfg
      * @param string     $sSql    Query
      * @param array      $aParams Array of parameters
      *
-     *  @deprecated since v5.3.0 (2016-04-15); This method will be removed in v6.0. Please use the method execute() instead.
+     * @deprecated since v5.3.0 (2016-04-15); This method will be removed in v6.0. Please use the method execute() instead.
      *
      * @return object
      */
@@ -230,21 +233,11 @@ class oxLegacyDb extends oxSuperCfg
      * Returns the count of rows affected by the last query.
      * This is an alias for affectedRows().
      *
-     * @deprecated since v5.3.0 (2016-04-14); This method will be removed in v6.0. Use affectedRows() instead.
+     * @deprecated since v5.3.0 (2016-04-14); This method will be removed in v6.0. Use the return value of execute() instead.
      *
      * @return int
      */
     public function Affected_Rows()
-    {
-        return $this->affectedRows();
-    }
-
-    /**
-     * Returns the count of rows affected by the last query.
-     *
-     * @return int
-     */
-    public function affectedRows()
     {
         return $this->getDb(false)->Affected_Rows();
     }

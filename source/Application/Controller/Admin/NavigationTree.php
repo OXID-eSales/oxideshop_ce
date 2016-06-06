@@ -239,7 +239,7 @@ class NavigationTree extends \oxSuperCfg
     }
 
     /**
-     * Removes form tree elements whitch doesn't have requred user rights
+     * Removes form tree elements which does not have required user rights
      *
      * @param object $oDom DOMDocument
      */
@@ -270,7 +270,7 @@ class NavigationTree extends \oxSuperCfg
     }
 
     /**
-     * Removes form tree elements whitch doesn't have requred groups
+     * Removes from tree elements which don't have required groups
      *
      * @param DOMDocument $oDom document to check group
      */
@@ -319,6 +319,24 @@ class NavigationTree extends \oxSuperCfg
         foreach ($oNodeList as $oNode) {
             if ($oNode->getAttribute('disableForDemoShop')) {
                 $oNode->parentNode->removeChild($oNode);
+            }
+        }
+    }
+
+    /**
+     * Removes node from tree elements if it is marked as not visible (visible="0")
+     *
+     * @param DOMDocument $dom document to check group
+     *
+     * @return null
+     */
+    protected function removeInvisibleMenuNodes($dom)
+    {
+        $xPath = new DomXPath($dom);
+        $nodeList = $xPath->query("//*[@visible]");
+        foreach ($nodeList as $node) {
+            if (!$node->getAttribute('visible')) {
+                $node->parentNode->removeChild($node);
             }
         }
     }
@@ -660,6 +678,9 @@ class NavigationTree extends \oxSuperCfg
 
             // removes items denied by user rights
             $this->_checkRights($this->_oDom);
+
+            // removes items marked as not visible
+            $this->removeInvisibleMenuNodes($this->_oDom);
 
             // check config params
             $this->_checkDemoShopDenials($this->_oDom);

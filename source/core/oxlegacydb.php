@@ -20,6 +20,7 @@
  * @version   OXID eShop CE
  */
 
+require_once 'interface/DatabaseInterface.php';
 
 /**
  * Database connection class
@@ -28,8 +29,10 @@
  *             includes all but the deprecated methods of oxLegacyDb. An implementation of the DatabaseInterface based
  *             on Doctrine DBAL will replace oxLegacyDb.
  *
+ * @implements DatabaseInterface
+ *
  */
-class oxLegacyDb extends oxSuperCfg
+class oxLegacyDb extends oxSuperCfg implements DatabaseInterface
 {
 
     /**
@@ -53,9 +56,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Set fetch mode to connection
-     *
-     * @param int $iFetchMode Fetch mode
+     * @inheritdoc
      */
     public function setFetchMode($iFetchMode)
     {
@@ -79,13 +80,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Get value
-     *
-     * @param string     $sSql    Query
-     * @param array      $aParams Array of parameters
-     * @param bool       $blType  connection type
-     *
-     * @return string
+     * @inheritdoc
      */
     public function getOne($sSql, $aParams = array(), $blType = true)
     {
@@ -109,13 +104,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Get value
-     *
-     * @param string     $sSql    Query
-     * @param array      $aParams Array of parameters
-     * @param bool       $blType  connection type
-     *
-     * @return array
+     * @inheritdoc
      */
     public function getRow($sSql, $aParams = array(), $blType = true)
     {
@@ -123,13 +112,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Get value
-     *
-     * @param string     $sSql    Query
-     * @param array      $aParams Array of parameters
-     * @param bool       $blType  connection type
-     *
-     * @return array
+     * @inheritdoc
      */
     public function getAll($sSql, $aParams = array(), $blType = true)
     {
@@ -138,13 +121,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Get value
-     *
-     * @param string     $sSql    Query
-     * @param array      $aParams Array of parameters
-     * @param bool       $blType  connection type
-     *
-     * @return object
+     * @inheritdoc
      */
     public function select($sSql, $aParams = array(), $blType = true)
     {
@@ -169,13 +146,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Get column value
-     *
-     * @param string     $sSql    Query
-     * @param array      $aParams Array of parameters
-     * @param bool       $blType  connection type
-     *
-     * @return object
+     * @inheritdoc
      */
     public function getCol($sSql, $aParams = array(), $blType = true)
     {
@@ -183,15 +154,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Get array
-     *
-     * @param string     $sSql    Query
-     * @param int        $iRows   Rows
-     * @param int        $iOffset Offset
-     * @param array      $aParams Array of parameters
-     * @param bool       $blType  connection type
-     *
-     * @return object
+     * @inheritdoc
      */
     public function selectLimit($sSql, $iRows = -1, $iOffset = -1, $aParams = array(), $blType = true)
     {
@@ -199,15 +162,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Execute query
-     *
-     * Note: This method should be used for SQL statements, that do not return any result sets like INSERT, UPDATE and DELETE.
-     *       Use select() for SQL statements, that return a result set like SELECT and SHOW
-     *
-     * @param string     $sSql    Query. SQL statements, that does not return any result set like INSERT, UPDATE and DELETE.
-     * @param array      $aParams Array of parameters
-     *
-     * @return object deprecated since v5.3.0 (2016-06-06); As of v6.0 this method will not return an object, but the number of affected rows instead.
+     * @inheritdoc
      */
     public function execute($sSql, $aParams = array())
     {
@@ -283,11 +238,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Quote string
-     *
-     * @param string $sValue value
-     *
-     * @return string
+     * @inheritdoc
      */
     public function quote($sValue)
     {
@@ -295,11 +246,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Quotes an array.
-     *
-     * @param array $aStrArray array of strings to quote
-     *
-     * @return array
+     * @inheritdoc
      */
     public function quoteArray($aStrArray)
     {
@@ -311,11 +258,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * return meta data
-     *
-     * @param string $sTable Table name
-     *
-     * @return array
+     * @inheritdoc
      */
     public function metaColumns($sTable)
     {
@@ -338,9 +281,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Start mysql transaction
-     *
-     * @return ADORecordSet_empty|object_ResultSet
+     * @inheritdoc
      */
     public function startTransaction()
     {
@@ -348,9 +289,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Commit mysql transaction
-     *
-     * @return ADORecordSet_empty|object_ResultSet
+     * @inheritdoc
      */
     public function commitTransaction()
     {
@@ -358,9 +297,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * RollBack mysql transaction
-     *
-     * @return ADORecordSet_empty|object_ResultSet
+     * @inheritdoc
      */
     public function rollbackTransaction()
     {
@@ -368,12 +305,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
-     * Set transaction isolation level
-     * Allowed values READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE
-     *
-     * @param string $sLevel level
-     *
-     * @return bool|ADORecordSet_empty|object_ResultSet
+     * @inheritdoc
      */
     public function setTransactionIsolationLevel($sLevel = null)
     {

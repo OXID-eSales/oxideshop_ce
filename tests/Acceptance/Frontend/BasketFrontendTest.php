@@ -298,13 +298,10 @@ class BasketFrontendTest extends FrontendTestCase
         $this->type("invadr[oxuser__oxustid]", "BE0410521222");
 
         $this->_continueToNextStep();
+
         $this->clickAndWait("link=%STEPS_BASKET%");
 
-        if ($this->getText("//tr[@id='cartItem_1']/td[7]") != "0%") {
-            // Let's repeat once more.
-            $this->_continueToNextStep(2);
-            $this->clickAndWait("link=%STEPS_BASKET%");
-        }
+        $this->repeatedlyAddVatIdToByPassOnlineValidator();
 
         $this->assertEquals(
             "0%",
@@ -1356,5 +1353,26 @@ class BasketFrontendTest extends FrontendTestCase
     {
         $this->check("//form[@id='orderConfirmAgbTop']//input[@name='ord_agb' and @value='1']");
         $this->clickAndWait( "//form[@id='orderConfirmAgbTop']//button" );
+    }
+
+    private function repeatedlyAddVatIdToByPassOnlineValidator()
+    {
+        $this->clickAndWait("link=%STEPS_BASKET%");
+
+        if ($this->getText("//tr[@id='cartItem_1']/td[7]") != "0%") {
+
+            $this->_continueToNextStep();
+
+            $this->select("invadr[oxuser__oxcountryid]", "label=Belgium");
+            $this->type("invadr[oxuser__oxustid]", "BE0410521222");
+
+            $this->_continueToNextStep();
+
+            // If online VAT ID validator isn't available an message VAT_MESSAGE_ID_NOT_VALID appears
+            // but it is ignored and after next step basket would have wrong VAT numbers.
+            $this->assertElementNotPresent("//*[contains(@class, 'error')]", "VAT Online ID check gives a trouble.");
+
+            $this->clickAndWait("link=%STEPS_BASKET%");
+        }
     }
 }

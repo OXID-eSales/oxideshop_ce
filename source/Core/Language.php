@@ -440,7 +440,7 @@ class Language extends \oxSuperCfg
 
         // checking if in map exist
         $aMap = $this->_getLanguageMap($iLang, $blAdminMode);
-        if (isset($aLang[$aMap[$sStringToTranslate]])) {
+        if (isset($aMap[$sStringToTranslate], $aLang[$aMap[$sStringToTranslate]])) {
             return $aLang[$aMap[$sStringToTranslate]];
         }
 

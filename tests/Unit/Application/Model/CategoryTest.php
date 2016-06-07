@@ -1060,4 +1060,16 @@ class CategoryTest extends \OxidTestCase
         $oCategory->oxcategories__oxdefsortmode = new oxField('desc');
         $this->assertEquals('desc', $oCategory->getDefaultSortingMode());
     }
+
+    /**
+     * Test if "Base::$_isLoaded" flag is set to true after loading the object
+     */
+    public function testIsLoadedReturnsTrue()
+    {
+        /** @var oxCategory $oCategory */
+        $oCategory = oxNew('oxCategory');
+        $this->assertFalse($oCategory->isLoaded());
+        $oCategory->load($this->_sCategory);
+        $this->assertTrue($oCategory->isLoaded());
+    }
 }

@@ -272,6 +272,8 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
      */
     public function testAjaxDiscountsAssignProducts()
     {
+        $this->callShopSC("oxConfig", null, null, array("blVariantParentBuyable" => array("type" => "bool", "value" => 'true')));
+
         $this->loginAdmin("Shop Settings", "Discounts");
         $this->changeAdminListLanguage('Deutsch');
         $this->clickAndWait("link=Name");
@@ -366,6 +368,7 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
      */
     public function testAjaxDiscountsAssignAllProducts()
     {
+        $this->callShopSC("oxConfig", null, null, array("blVariantParentBuyable" => array("type" => "bool", "value" => 'true')));
         $this->callShopSC("oxConfig", null, null, array("blVariantsSelection" => array("type" => "bool", "value" => 'true')));
 
         $this->loginAdmin("Shop Settings", "Discounts");
@@ -951,6 +954,7 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
     {
         //active config option blVariantsSelection
         $this->callShopSC("oxConfig", null, null, array("blVariantsSelection" => array("type" => "bool", "value" => 'true')));
+        $this->callShopSC("oxConfig", null, null, array("blVariantParentBuyable" => array("type" => "bool", "value" => 'true')));
         $this->loginAdmin("Shop Settings", "Coupon Series");
         $this->clickAndWait("link=Name");
         $this->clickAndWaitFrame("link=2 Coupon šÄßüл", "edit");

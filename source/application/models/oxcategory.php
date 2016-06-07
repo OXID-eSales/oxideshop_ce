@@ -245,7 +245,7 @@ class oxCategory extends oxI18n implements oxIUrl
 
         if ($aData) {
             $this->assign($aData);
-
+            $this->_isLoaded = true;
             return true;
         }
 

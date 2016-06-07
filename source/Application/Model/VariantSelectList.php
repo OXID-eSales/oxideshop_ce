@@ -89,7 +89,9 @@ class VariantSelectList implements \oxISelectList
      */
     public function addVariant($sName, $sValue, $blDisabled, $blActive)
     {
-        if (($sName = trim($sName))) {
+        $sName = trim($sName);
+        //#6053 Allow "0" as a valid value.
+        if (!empty($sName) || $sName === '0') {
             $sKey = $sValue;
 
             // creating new

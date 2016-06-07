@@ -22,6 +22,8 @@
 
 /**
  * class for parsing and retrieving warnings from adodb saved sql table
+ *
+ * @deprecated since v5.3.0 (2016-06-07). The SQL logging feature is deprecated. This feature will be removed.
  */
 class oxDebugDb
 {

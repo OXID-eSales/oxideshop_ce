@@ -50,12 +50,12 @@
     // -1 = Logger Messages internal use only
     //  0 = off
     //  1 = smarty
-    //  2 = SQL
-    //  3 = SQL + smarty
-    //  4 = SQL + smarty + shoptemplate data
+    //  2 = SQL The SQL logging feature is deprecated since v5.3.0 (2016-06-07). This feature will be removed.
+    //  3 = SQL + smarty The SQL logging feature is deprecated since v5.3.0 (2016-06-07). This feature will be removed.
+    //  4 = SQL + smarty + shoptemplate data The SQL logging feature is deprecated since v5.3.0 (2016-06-07). This feature will be removed.
     //  5 = Delivery Cost calculation info
     //  6 = SMTP Debug Messages
-    //  7 = oxDbDebug SQL parser
+    //  7 = oxDbDebug SQL parser The SQL logging feature is deprecated since v5.3.0 (2016-06-07). This feature will be removed.
     //  8 = display smarty template names (requires /tmp cleanup)
     $this->iDebug = 0;
 

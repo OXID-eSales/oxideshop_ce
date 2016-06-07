@@ -245,13 +245,19 @@ class oxShopControl extends oxSuperCfg
 
             $sLog .= $oDebugInfo->formatExecutionTime($this->getTotalTime());
 
+            // @deprecated since v5.3.0 (2016-06-07).
+            // The SQL logging feature is deprecated. This feature will be removed.
             if ($iDebug == 7) {
                 $sLog .= $oDebugInfo->formatDbInfo();
             }
+            // END deprecated
 
+            // @deprecated since v5.3.0 (2016-06-07).
+            // The SQL performance monitor feature is deprecated. This feature will be removed.
             if ($iDebug == 2 || $iDebug == 3 || $iDebug == 4) {
                 $sLog .= $oDebugInfo->formatAdoDbPerf();
             }
+            // END deprecated
 
             $sLog .= '</div>';
 

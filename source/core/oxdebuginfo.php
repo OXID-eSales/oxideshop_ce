@@ -155,6 +155,8 @@ class oxDebugInfo
 
     /**
      * db debug info formatter
+     * 
+     * @deprecated since v5.3.0 (2016-06-07). The SQL logging feature is deprecated. This feature will be removed.
      *
      * @return string
      */
@@ -177,6 +179,8 @@ class oxDebugInfo
 
     /**
      * db debug info formatter (collects adodb logs)
+     *
+     * @deprecated since v5.3.0 (2016-06-07). The SQL logging feature is deprecated. This feature will be removed.
      *
      * @return string
      */

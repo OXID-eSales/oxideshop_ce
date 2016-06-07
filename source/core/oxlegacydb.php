@@ -323,6 +323,8 @@ class oxLegacyDb extends oxSuperCfg implements DatabaseInterface
      * Calls Db UI method
      *
      * @param integer $iPollSecs poll seconds
+     *
+     * @deprecated since v5.3.0 (2016-06-07); This method will be removed in v6.0.
      */
     public function UI($iPollSecs = 5)
     {

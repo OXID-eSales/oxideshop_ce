@@ -286,6 +286,8 @@ class oxDb
      */
     protected function _setUp($oDb)
     {
+        // @deprecated since v5.3.0 (2016-06-07).
+        // The SQL logging feature is deprecated. This feature will be removed.
         $_iDebug = self::_getConfigParam('_iDebug');
         if ($_iDebug == 2 || $_iDebug == 3 || $_iDebug == 4 || $_iDebug == 7) {
             try {
@@ -297,6 +299,7 @@ class oxDb
                 $oDb->logSQL(true);
             }
         }
+        // END deprecated
 
         $oDb->cacheSecs = 60 * 10; // 10 minute caching
         $oDb->execute('SET @@session.sql_mode = ""');
@@ -460,6 +463,8 @@ class oxDb
             //setting configuration on the first call
             $oInst->setConfig(oxRegistry::get("oxConfigFile"));
 
+            // @deprecated since v5.3.0 (2016-06-07).
+            // As of v6.0 it is not longer possible to use the database for PHP session handling.
             global $ADODB_SESSION_TBL,
                    $ADODB_SESSION_CONNECT,
                    $ADODB_SESSION_DRIVER,
@@ -483,6 +488,8 @@ class oxDb
             $ADODB_SESSION_DB = self::_getConfigParam('_dbName');
             $ADODB_SESSION_CONNECT = self::_getConfigParam('_dbHost');
             $ADODB_SESS_DEBUG = false;
+            // END deprecated
+
 
             $oDb = new oxLegacyDb();
             $oDbInst = $oInst->_getDbInstance();

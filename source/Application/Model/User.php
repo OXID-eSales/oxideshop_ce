@@ -432,7 +432,7 @@ class User extends \oxBase
 
     /**
      * Sets in the array oxuser::_aAddresses selected address.
-     * Returns user selected Address id.
+     * Returns user selected address object.
      *
      * @param bool $sWishId wishlist user id
      *

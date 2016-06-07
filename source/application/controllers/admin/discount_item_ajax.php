@@ -72,12 +72,19 @@ class discount_item_ajax extends ajaxListComponent
         if (!$sOxid && $sSynchOxid) {
             $sQAdd = " from $sArticleTable where 1 ";
             $sQAdd .= $oConfig->getConfigParam('blVariantsSelection') ? '' : "and $sArticleTable.oxparentid = '' ";
+
+            //#6027
+            //if we have variants then depending on config option the parent may be non buyable
+            //when the checkbox is checked, blVariantParentBuyable is true.
+            $sQAdd .= $oConfig->getConfigParam('blVariantParentBuyable') ?  '' : "and $sArticleTable.oxvarcount = 0";
         } else {
             // selected category ?
             if ($sSynchOxid && $sOxid != $sSynchOxid) {
                 $sQAdd = " from $sO2CView left join $sArticleTable on ";
                 $sQAdd .= $oConfig->getConfigParam('blVariantsSelection') ? "($sArticleTable.oxid=$sO2CView.oxobjectid or $sArticleTable.oxparentid=$sO2CView.oxobjectid)" : " $sArticleTable.oxid=$sO2CView.oxobjectid ";
                 $sQAdd .= " where $sO2CView.oxcatnid = " . $oDb->quote($sOxid) . " and $sArticleTable.oxid is not null ";
+                //#6027
+                $sQAdd .= $oConfig->getConfigParam('blVariantParentBuyable') ?  '' : " and $sArticleTable.oxvarcount = 0";
 
                 // resetting
                 $sId = null;

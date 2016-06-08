@@ -971,7 +971,8 @@ class oxBasketItem extends oxSuperCfg
     {
         if ($this->_sVarSelect === null || $this->getLanguageId() != oxRegistry::getLang()->getBaseLanguage()) {
             $oArticle = $this->getArticle();
-            $this->_sVarSelect = $oArticle->oxarticles__oxvarselect->value ? $oArticle->oxarticles__oxvarselect->value : '';
+            $sVarSelectValue = $oArticle->oxarticles__oxvarselect->value;
+            $this->_sVarSelect = (!empty($sVarSelectValue) || $sVarSelectValue === '0') ? $sVarSelectValue : '';
         }
 
         return $this->_sVarSelect;

@@ -1101,7 +1101,7 @@ class OrderTest extends \OxidTestCase
         $oOrder->oxorder__oxpaymenttype->setValue("oxidinvoice");
         $oOrder->recalculateOrder();
 
-        $this->assertEquals('7.5', $oOrder->oxorder__oxpaycost->value);
+        $this->assertEquals('0.0', $oOrder->oxorder__oxpaycost->value);
     }
 
     //#M429: Total amounts are not recalculated when Shipping is changed for order in the admin

@@ -332,7 +332,7 @@ class Doctrine implements DatabaseInterface
      */
     public function quoteIdentifier($value) 
     {
-        return $this->getConnection()->quoteIdentifier($value);
+        return $this->getConnection()->quoteIdentifier(trim($value, $this->getConnection()->getDatabasePlatform()->getIdentifierQuoteCharacter()));
     }
     
     /**
@@ -737,7 +737,7 @@ class Doctrine implements DatabaseInterface
 
         switch (true) {
             case $exception instanceof Exception\ConnectionException:
-                $exceptionClass = 'oxConnectionException';
+                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseConnectionException';
                 break;
             case $exception instanceof DBALException:
                 /**

@@ -170,6 +170,7 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
      */
     public function testAddDiscCatAll()
     {
+        $this->cleanUpTable('oxobject2discount', 'oxdiscountid');
         $sSynchoxid = '_testDiscountNew';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $this->setRequestParameter("all", true);
@@ -183,5 +184,4 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
         $oView->addDiscCat();
         $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
     }
-
 }

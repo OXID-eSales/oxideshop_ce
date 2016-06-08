@@ -27,6 +27,7 @@ use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
 use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use oxConnectionException;
 use oxCookieException;
 use stdClass;
@@ -390,8 +391,6 @@ class Config extends SuperConfig
 
         $this->_loadVarsFromFile();
 
-        include getShopBasePath() . 'Core/oxconfk.php';
-
         $this->_setDefaults();
 
         try {
@@ -400,9 +399,12 @@ class Config extends SuperConfig
             // loading shop config
             if (empty($shopID) || !$configLoaded) {
                 // if no config values where loaded (some problems with DB), throwing an exception
-                $ex = new oxConnectionException();
-                $ex->setMessage("Unable to load shop config values from database");
-                throw $ex;
+                $oEx = new DatabaseConnectionException(
+                    "Unable to load shop config values from database",
+                    0,
+                    new \Exception()
+                    );
+                throw $oEx;
             }
 
             // loading theme config options
@@ -432,13 +434,12 @@ class Config extends SuperConfig
             //application initialization
             $this->_oStart = oxNew('oxStart');
             $this->_oStart->appInit();
-        } catch (oxConnectionException $ex) {
-            //@TODO: use DatabaseException instead of oxConnectionException
-            $this->_handleDbConnectionException($ex);
-        } catch (DatabaseException $ex) {
-            $this->_handleDbConnectionException($ex);
-        } catch (oxCookieException $ex) {
-            $this->_handleCookieException($ex);
+        } catch (DatabaseConnectionException $oEx) {
+            $this->_handleDbConnectionException($oEx);
+        } catch (DatabaseException $oEx) {
+            $this->_handleDbConnectionException($oEx);
+        } catch (oxCookieException $oEx) {
+            $this->_handleCookieException($oEx);
         }
     }
 

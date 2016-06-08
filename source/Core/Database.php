@@ -76,8 +76,8 @@ class Database
 
     /**
      * This class is a singleton and should be instantiated with getInstance().
-     * @todo Deprecate in 5.3
-     * @Deprecated in v5.3. The constructor will be protected in the future. Use getInstance() instead.
+     * 
+     * @deprecated in v5.3.0 (2016-06-08) The constructor will be protected in the future. Use getInstance() instead.
      *
      * Database constructor.
      */

@@ -23,7 +23,6 @@
 namespace OxidEsales\Eshop\Core;
 
 use oxRegistry;
-use oxDb;
 
 /**
  * Debug information formatter
@@ -99,15 +98,13 @@ class DebugInfo
     public function formatExecutionTime($dTotalTime)
     {
         $log = 'Execution time:' . round($dTotalTime, 4) . '<br />';
-        global $profileTimes;
+        global $aProfileTimes;
         global $executionCounts;
-        global $profileBacktraces;
-        if (is_array($profileTimes)) {
+        if (is_array($aProfileTimes)) {
             $log .= "----------------------------------------------------------<br>" . PHP_EOL;
-            arsort($profileTimes);
+            arsort($aProfileTimes);
             $log .= "<table cellspacing='10px' style='border: 1px solid #000'>";
-            $nr = 1;
-            foreach ($profileTimes as $key => $val) {
+            foreach ($aProfileTimes as $key => $val) {
                 $log .= "<tr><td style='border-bottom: 1px dotted #000;min-width:300px;'>Profile $key: </td><td style='border-bottom: 1px dotted #000;min-width:100px;'>" . round($val, 5) . "s</td>";
                 if ($dTotalTime) {
                     $log .= "<td style='border-bottom: 1px dotted #000;min-width:100px;'>" . round($val * 100 / $dTotalTime, 2) . "%</td>";
@@ -118,21 +115,6 @@ class DebugInfo
                              . "<td style='border-bottom: 1px dotted #000;min-width:100px;'>" . round($val / $executionCounts[$key], 5) . "s</td>" . PHP_EOL;
                 } else {
                     $log .= " <td colspan=3 style='border-bottom: 1px dotted #000;min-width:100px;'> not stopped correctly! </td>" . PHP_EOL;
-                }
-
-                if (isset($profileBacktraces[$key])) {
-                    $log .= "<td style='border-bottom: 1px dotted #000;min-width:15px; '>";
-                    foreach ($profileBacktraces[$key] as $btId => $bt) {
-                        $cnt = (int) $profileBacktraceCounts[$btId];
-                        $log .= "<a style='color:#00AA00;margin:5px;cursor:pointer' onclick='var el=document.getElementById(\"profdbg_trace_$nr\"); if (el.style.display==\"block\")el.style.display=\"none\"; else el.style.display = \"block\";'>Count($cnt) - TRACE (show/hide)</a><br><br>";
-                        $log .= "<div id='profdbg_trace_$nr' style='display:none'>";
-                        foreach ($bt as $level => $info) {
-                            $log .= "<i><strong>$level: {$info['function']}</strong></i> at {$info['file']}:{$info['line']}<br>";
-                        }
-                        $log .= "</div>";
-                        $nr++;
-                    }
-                    $log .= "</td>";
                 }
                 $log .= '</tr>';
             }
@@ -152,28 +134,6 @@ class DebugInfo
         $log = "cl=" . oxRegistry::getConfig()->getActiveView()->getClassName();
         if (($fnc = oxRegistry::getConfig()->getActiveView()->getFncName())) {
             $log .= " fnc=$fnc";
-        }
-
-        return $log;
-    }
-
-    /**
-     * db debug info formatter
-     *
-     * @return string
-     */
-    public function formatDbInfo()
-    {
-        $log = "----------------------------------------------------------<br>" . PHP_EOL;
-        $log .= "-- oxdebugdb --<br>" . PHP_EOL;
-        $dbgDb = oxNew('oxdebugdb');
-        $warnings = $dbgDb->getWarnings();
-        $nr = 1;
-        foreach ($warnings as $w) {
-            $log .= "{$w['check']}: {$w['time']} - <span style='color:#900000;margin:5px'>" . htmlentities($w['sql'], ENT_QUOTES, 'UTF-8') . "</span>";
-            $log .= "<div id='dbgdb_trace_$nr' style='display:none'>" . nl2br($w['trace']) . "</div>";
-            $log .= "<a style='color:#00AA00;margin:5px;cursor:pointer' onclick='var el=document.getElementById(\"dbgdb_trace_$nr\"); if (el.style.display==\"block\")el.style.display=\"none\"; else el.style.display = \"block\";'>TRACE (show/hide)</a><br><br>";
-            ++$nr;
         }
 
         return $log;

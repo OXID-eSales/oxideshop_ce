@@ -58,12 +58,10 @@
     // -1 = Log more messages and throw exceptions on errors (not recommended for production)
     //  0 = off
     //  1 = smarty
-    //  2 = SQL
-    //  3 = SQL + smarty
-    //  4 = SQL + smarty + shoptemplate data
+    //  3 = smarty
+    //  4 = smarty + shoptemplate data
     //  5 = Delivery Cost calculation info
     //  6 = SMTP Debug Messages
-    //  7 = oxDbDebug SQL parser
     //  8 = display smarty template names (requires /tmp cleanup)
     $this->iDebug = 0;
 

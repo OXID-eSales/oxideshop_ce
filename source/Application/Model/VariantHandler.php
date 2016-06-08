@@ -331,7 +331,7 @@ class VariantHandler extends \oxSuperCfg
             $blActive = ($sActVariantId === $oVariant->getId()) ? true : false;
             for ($i = 0; $i < $iVarSelCnt; $i++) {
                 $sName = isset($aNames[$i]) ? trim($aNames[$i]) : false;
-                if ($sName) {
+                if ($sName !== '') {
                     $sHash = md5($sName);
 
                     // filling up filter

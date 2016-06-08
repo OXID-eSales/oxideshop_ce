@@ -499,6 +499,20 @@ class PictureHandlerTest extends \OxidTestCase
         $this->assertEquals(array('path' => false, 'url' => 'https://aqqa/master/product/nopic.jpg',), $oPicHandler->p_getPictureInfo('master/product/', 'nopic.jpg'));
     }
 
+    /**
+     * #5720
+     */
+    public function testGetAltImageUrlNoDoubleSlashes()
+    {
+        $oPicHandler = oxnew('oxPictureHandler');
+
+        $this->setConfigParam('sAltImageUrl', 'https://example.com');
+        $this->assertEquals('https://example.com/path/nopic.jpg', $oPicHandler->getAltImageUrl('path/', 'nopic.jpg'));
+
+        $this->setConfigParam('sAltImageUrl', 'https://example.com/');
+        $this->assertEquals('https://example.com/path/nopic.jpg', $oPicHandler->getAltImageUrl('path/', 'nopic.jpg'));
+    }
+
     public function testGetPictureInfoNotFound()
     {
         $oCfg = $this->getMock('oxConfig', array('getPicturePath', 'getOutDir', 'getOutUrl'));

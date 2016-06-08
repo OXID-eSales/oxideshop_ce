@@ -305,7 +305,7 @@ class PictureHandler extends \oxSuperCfg
             }
 
             if (!is_null($sFile)) {
-                $sAltUrl .= '/' . $sFilePath . $sFile;
+                $sAltUrl = Registry::getUtils()->checkUrlEndingSlash($sAltUrl) . $sFilePath . $sFile;
             }
         }
 

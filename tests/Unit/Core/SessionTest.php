@@ -215,10 +215,6 @@ class SessionTest extends \OxidTestCase
      */
     protected function tearDown()
     {
-        $oDB = oxDb::getDb();
-        $sDelete = "DROP TABLE IF EXISTS oxsessions";
-        $oDB->Execute($sDelete);
-
         //removing oxUtils module
         oxRemClassModule('testUtils');
         oxRemClassModule('\Unit\Core\UtilsServerHelper');
@@ -730,33 +726,6 @@ class SessionTest extends \OxidTestCase
     function testIsSwappedClientAsDifferentClientIfRemoteAccess()
     {
         $this->assertTrue($this->oSession->UNITcheckUserAgent('browser1', 'browser2'));
-    }
-
-    /**
-     * oxsession::isSwappedClient() cookie check test is performed
-     */
-    function testIsSwappedClientSidCheck()
-    {
-        $oDB = oxDb::getDb();
-        $sInsert = "CREATE TABLE `oxsessions` (
-                `ID` int( 11 ) NOT NULL AUTO_INCREMENT ,
-                `SessionID` varchar( 64 ) default NULL ,
-                `session_data` text,
-                `expiry` int( 11 ) default NULL ,
-                `expireref` varchar( 64 ) default NULL ,
-                PRIMARY KEY ( `ID` ) ,
-                KEY `SessionID` ( `SessionID` ) ,
-                KEY `expiry` ( `expiry` )
-                )";
-        $oDB->Execute($sInsert);
-        $this->assertTrue($this->oSession->UNITcheckSid());
-
-        $sInsert = "INSERT INTO `oxsessions` ( `SessionID` ) VALUES ( 'sessiontest' )";
-        $oDB->Execute($sInsert);
-
-        $oSession = $this->getMock('\Unit\Core\testSession', array('getId'));
-        $oSession->expects($this->any())->method('getId')->will($this->returnValue('sessiontest'));
-        $this->assertFalse($oSession->UNITcheckSid());
     }
 
     /**

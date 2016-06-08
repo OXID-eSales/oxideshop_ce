@@ -28,9 +28,6 @@ use oxUtilsObject;
 use oxBasket;
 use OxidEsales\Eshop\Application\Model\Basket;
 
-// @deprecated since v5.3.0 (2016-05-24); Implement your own session handler with a module.
-DEFINE('_DB_SESSION_HANDLER', __DIR__ . '/adodblite/session/adodb-session.php');
-
 /**
  * Session manager.
  * Performs session managing function, such as variables deletion,
@@ -333,15 +330,6 @@ class Session extends \oxSuperCfg
             session_cache_limiter(false);
         }
 
-
-        // @deprecated since v5.3.0 (2016-05-24); Implement your own session handler with a module.
-        // Including database session managing class if needed.
-        if (oxRegistry::getConfig()->getConfigParam('blAdodbSessionHandler')) {
-            $oDB = oxDb::getDb();
-            include_once _DB_SESSION_HANDLER;
-        }
-        // END deprecated
-
         $this->_blStarted = @session_start();
         if (!$this->getSessionChallengeToken()) {
             $this->_initNewSessionChallenge();
@@ -408,20 +396,13 @@ class Session extends \oxSuperCfg
      */
     protected function _getNewSessionId($blUnset = true)
     {
-        // @deprecated since v5.3.0 (2016-05-24); Implement your own session handler with a module.
         $sOldId = session_id();
-        @session_regenerate_id(!oxRegistry::getConfig()->getConfigParam('blAdodbSessionHandler'));
+        @session_regenerate_id(true);
         $sNewId = session_id();
 
         if ($blUnset) {
             session_unset();
         }
-
-        if (oxRegistry::getConfig()->getConfigParam('blAdodbSessionHandler')) {
-            $oDB = oxDb::getDb();
-            $oDB->execute("UPDATE oxsessions SET SessionID = " . $oDB->quote($sNewId) . " WHERE SessionID = " . $oDB->quote($sOldId));
-        }
-        // END deprecated
 
         return session_id();
     }
@@ -819,19 +800,11 @@ class Session extends \oxSuperCfg
             // checking if session user agent matches actual
             $blSwapped = $this->_checkUserAgent($myUtilsServer->getServerVar('HTTP_USER_AGENT'), $this->getVariable('sessionagent'));
             if (!$blSwapped) {
-                // @deprecated since v5.3.0 (2016-05-24); Implement your own session handler with a module.
-                if ($myConfig->getConfigParam('blAdodbSessionHandler')) {
-                    $blSwapped = $this->_checkSid();
+                $blDisableCookieCheck = $myConfig->getConfigParam('blDisableCookieCheck');
+                $blUseCookies = $this->_getSessionUseCookies();
+                if (!$blDisableCookieCheck && $blUseCookies) {
+                    $blSwapped = $this->_checkCookies($myUtilsServer->getOxCookie('sid_key'), $this->getVariable("sessioncookieisset"));
                 }
-
-                if (!$blSwapped) {
-                    $blDisableCookieCheck = $myConfig->getConfigParam('blDisableCookieCheck');
-                    $blUseCookies = $this->_getSessionUseCookies();
-                    if (!$blDisableCookieCheck && $blUseCookies) {
-                        $blSwapped = $this->_checkCookies($myUtilsServer->getOxCookie('sid_key'), $this->getVariable("sessioncookieisset"));
-                    }
-                }
-                // END deprecated
             }
         }
 
@@ -862,29 +835,6 @@ class Session extends \oxSuperCfg
         }
 
         return $blCheck;
-    }
-
-    /**
-     * Checking if this sid is old
-     *
-     * @return bool
-     */
-    protected function _checkSid()
-    {
-        $oDb = oxDb::getDb();
-        //matze changed sesskey to SessionID because structure of oxsession changed!!
-        $sSID = $oDb->getOne("select SessionID from oxsessions where SessionID = " . $oDb->quote($this->getId()));
-
-        //2007-05-14
-        //we check _blNewSession as well as this may be actually new session not written to db yet
-        if (!$this->_blNewSession && (!isset($sSID) || !$sSID)) {
-            // this means, that this session has expired in the past and someone uses this sid to reactivate it
-            $this->_sErrorMsg = "Session has expired in the past and someone uses this sid to reactivate it, creating new SID...<br>";
-
-            return true;
-        }
-
-        return false;
     }
 
     /**

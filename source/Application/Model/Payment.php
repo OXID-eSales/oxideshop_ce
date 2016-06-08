@@ -315,6 +315,11 @@ class Payment extends \oxI18n
             }
 
             $this->_oPrice = $oPrice;
+        } else {
+            // no payment costs
+            $oPrice = oxNew('oxPrice');
+            $oPrice->setPrice(0);
+            $this->_oPrice = $oPrice;
         }
 
     }

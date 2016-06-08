@@ -104,8 +104,7 @@ $aLang =  array(
                                                  '<ul><li>oxtitle = Title</li>' .
                                                  '<li>oxshortdesc = Short description</li>' .
                                                  '<li>oxsearchkeys = Search terms entered for each product</li>' .
-                                                 '<li>oxartnum = Product number</li>' .
-                                                 '<li>oxtags    = Tags entered for each product</li></ul>',
+                                                 '<li>oxartnum = Product number</li></ul>',
 
 'HELP_SHOP_CONFIG_SORTFIELDS'                 => 'Here you can define the database fields which can be used for sorting product lists. Enter one field per row.<br>' .
                                                  'The most common entries are:' .
@@ -184,8 +183,6 @@ $aLang =  array(
 'HELP_SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE' => 'In the 4th step of the checkout process the CMS page "oxtsinternationalfees" is additionally displayed.',
 
 'HELP_SHOP_CONFIG_SHOWTSCODMESSAGE'           => 'In the 4th step of the checkout process the CMS page "oxtscodmessage" is additionally displayed.',
-
-'HELP_SHOP_CONFIG_SHOWTAGS'                   => 'If not checked, no tags will be displayed in eShop. Pages that could be called via tag URL, are not accessible.',
 
 'HELP_SHOP_CONFIG_DOWNLOADS'                  => 'Shop with downloadable products. Activate here, that products can be ordered and downloaded.',
 
@@ -286,8 +283,6 @@ $aLang =  array(
 'HELP_ARTICLE_MAIN_ALDPRICE'                  => 'With <span class="navipath_or_inputname">Alt. Prices</span> you can set up special prices for certain users (user groups "Price A", "Price B" and "Price C").',
 
 'HELP_ARTICLE_MAIN_VAT'                       => 'Here you can enter a special VAT for this product. This VAT is used for this product in all later calculations (cart, order, invoice)',
-
-'HELP_ARTICLE_MAIN_TAGS'                      => 'Here you can enter tags for the product. From these tags the tag cloud on the front page is generated. The tags are separated by a comma.',
 
 'HELP_ARTICLE_EXTEND_UNITQUANTITY'            => 'With <span class="navipath_or_inputname">Quantity</span> and <span class="navipath_or_inputname">Unit</span> you can set the price per quantity unit. The price per quantity unit is calculated and displayed with the product (e.g. 1.43 EUR per liter). In <span class="navipath_or_inputname">Quantity</span>, enter the amount of the product (e.g. <span class="userinput_or_code">1.5</span>), in <span class="navipath_or_inputname">Unit</span> define the according quantity unit (e.g. <span class="userinput_or_code">liter</span>). You can choose unit type from given values or, by selecting blank unit type "-", enter unit type manually. If you wish to append existing type list, please follow this <a href="http://wiki.oxidforge.org/Tutorials/Adding_new_unit_types" target="_blank">link</a> for instructions.',
 

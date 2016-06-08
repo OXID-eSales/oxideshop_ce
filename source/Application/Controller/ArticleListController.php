@@ -136,15 +136,6 @@ class ArticleListController extends \oxUBase
     protected $_sCatTitle = null;
 
     /**
-     * Show tags cloud
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @var bool
-     */
-    protected $_blShowTagCloud = true;
-
-    /**
      * Sign if to load and show bargain action
      *
      * @var bool
@@ -247,8 +238,6 @@ class ArticleListController extends \oxUBase
             $category = oxNew('oxCategory');
             $category->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
             $this->setActiveCategory($category);
-
-            $this->_blShowTagCloud = true;
         } elseif (($category = $this->getActiveCategory())) {
             $this->_blIsCat = true;
             $this->_blBargainAction = true;

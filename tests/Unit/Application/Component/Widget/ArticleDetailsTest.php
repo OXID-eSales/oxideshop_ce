@@ -23,7 +23,6 @@ namespace Unit\Application\Component\Widget;
 
 use oxArticle;
 use oxArticleList;
-use oxTagCloud;
 use \stdClass;
 use \oxField;
 use \Exception;
@@ -179,22 +178,6 @@ class ArticleDetailsTest extends \OxidTestCase
         $this->assertTrue($oDetails->canRate());
     }
 
-    public function testCanChangeTags_nouser()
-    {
-        $oView = $this->getMock('Details', array('getUser'));
-        $oView->expects($this->once())->method('getUser');
-
-        $this->assertFalse($oView->canChangeTags());
-    }
-
-    public function testCanChangeTags_withuser()
-    {
-        $oView = $this->getMock('Details', array('getUser'));
-        $oView->expects($this->once())->method('getUser')->will($this->returnValue(true));
-
-        $this->assertTrue($oView->canChangeTags());
-    }
-
     /**
      * Test get attributes.
      *
@@ -217,40 +200,6 @@ class ArticleDetailsTest extends \OxidTestCase
     }
 
     /**
-     * Test get tag cloud after adding new tags.
-     *
-     * @return null
-     */
-    public function testGetTagCloudManagerAfterAddTags()
-    {
-        oxTestModules::addFunction('oxSeoEncoderTag', '_saveToDb', '{return null;}');
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-        $this->setRequestParameter('newTags', "newTag");
-        $oArt = oxNew('oxArticle');
-        $oArt->load('2000');
-        $oArt->setId('_testArt');
-        $oArt->save();
-
-        $oArticle = oxNew('oxArticle');
-        $oArticle->load('_testArt');
-
-        $oDetails = $this->getProxyClass('oxwArticleDetails');
-        $oDetails->setNonPublicVar("_oProduct", $oArticle);
-        $this->assertTrue($oDetails->getTagCloudManager() instanceof oxTagCloud);
-    }
-
-    public function testIsEditableTags()
-    {
-        $oView = $this->getMock($this->getProxyClassName('oxwArticleDetails'), array('getProduct', 'getUser'));
-        $oView->expects($this->once())->method('getProduct')->will($this->returnValue(true));
-        $oView->expects($this->once())->method('getUser')->will($this->returnValue(true));
-
-        $this->assertTrue($oView->isEditableTags());
-        $this->assertTrue($oView->getNonPublicVar('_blCanEditTags'));
-    }
-
-    /**
      * Test get link type.
      *
      * @return null
@@ -266,11 +215,6 @@ class ArticleDetailsTest extends \OxidTestCase
         $oDetailsView = $this->getMock("oxwArticleDetails", array('getActiveCategory'));
         $oDetailsView->expects($this->never())->method('getActiveCategory');
         $this->assertEquals(OXARTICLE_LINKTYPE_MANUFACTURER, $oDetailsView->getLinkType());
-
-        $this->setRequestParameter('listtype', 'tag');
-        $oDetailsView = $this->getMock("oxwArticleDetails", array('getActiveCategory'));
-        $oDetailsView->expects($this->never())->method('getActiveCategory');
-        $this->assertEquals(OXARTICLE_LINKTYPE_TAG, $oDetailsView->getLinkType());
 
         $this->setRequestParameter('listtype', null);
         $oDetailsView = $this->getMock("oxwArticleDetails", array('getActiveCategory'));
@@ -1025,17 +969,6 @@ class ArticleDetailsTest extends \OxidTestCase
         $this->setConfigParam('blUseMultidimensionVariants', false);
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $this->assertFalse($oDetails->isMdVariantView());
-    }
-
-    public function testGetTagSeparator()
-    {
-        $oConfig = $this->getMock('oxConfig', array('getConfigParam'));
-        $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('sTagSeparator'))->will($this->returnValue('test_separator'));
-
-        $oView = $this->getMock('oxwArticleDetails', array('getConfig'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
-
-        $this->assertSame('test_separator', $oView->getTagSeparator());
     }
 
     /**

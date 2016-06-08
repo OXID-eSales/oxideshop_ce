@@ -104,16 +104,6 @@ class CompareController extends \oxUBase
     protected $_blBargainAction = true;
 
     /**
-     * Show tags cloud
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @var bool
-     */
-    protected $_blShowTagCloud = false;
-
-
-    /**
      * Current class template name.
      *
      * @var string

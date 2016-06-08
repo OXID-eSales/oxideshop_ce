@@ -104,8 +104,7 @@ $aLang =  array(
                                                  '<ul><li>oxtitle = Titel (Name) der Artikel</li>' .
                                                  '<li>oxshortdesc = Kurzbeschreibung der Artikel</li>' .
                                                  '<li>oxsearchkeys = Suchwörter, die bei den Artikeln eingetragen sind</li>' .
-                                                 '<li>oxartnum = Artikelnummern</li>' .
-                                                 '<li>oxtags = Stichworte, bei den Artikeln eingetragen sind</li></ul>',
+                                                 '<li>oxartnum = Artikelnummern</li>',
 
 'HELP_SHOP_CONFIG_SORTFIELDS'                 => 'Hier können Sie die Datenbankfelder der Artikel eingeben, nach denen Artikellisten sortiert werden können. Geben Sie pro Zeile nur ein Datenbankfeld ein.<br>' .
                                                  'Die am häufigsten benötigten Einträge sind:' .
@@ -180,8 +179,6 @@ $aLang =  array(
 'HELP_SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE' => 'Im 4. Schritt des Bestellprozesses wird die CMS-Seite "oxtsinternationalfees" ergänzend angezeigt.',
 
 'HELP_SHOP_CONFIG_SHOWTSCODMESSAGE'           => 'Im 4. Schritt des Bestellprozesses wird die CMS-Seite "oxtscodmessage" ergänzend angezeigt.',
-
-'HELP_SHOP_CONFIG_SHOWTAGS'                   => 'Wenn nicht angehakt, werden keine Tags im eShop angezeigt. Auf Seiten, die über Tag URL aufgerufen werden könnten, kann nicht zugegriffen werden.',
 
 'HELP_SHOP_MALL_MALLMODE'                     => 'Hier stellen Sie ein, was auf der Startseite dieses eShops angezeigt werden soll: '.
                                                  '<ul><li><span class="navipath_or_inputname">Shop-Auswahlseite</span>: Eine Seite wird angezeigt, auf der Kunden zwischen den verschiedenen Shops wählen können.</li>' .
@@ -280,8 +277,6 @@ $aLang =  array(
 'HELP_ARTICLE_MAIN_ALDPRICE'                  => 'Mit <span class="navipath_or_inputname">Alt. Preise</span> können Sie für bestimmte Benutzer spezielle Preise einrichten (Benutzergruppen "Preis A", "Preis B" und "Preis C").',
 
 'HELP_ARTICLE_MAIN_VAT'                       => 'Hier können Sie für diesen Artikel einen speziellen Mehrwertsteuersatz eingeben (z. B: 7% für Lebensmittel).',
-
-'HELP_ARTICLE_MAIN_TAGS'                      => 'Hier können Sie passende Stichworte zum Artikel eingeben. Aus diesen Stichworten wird die Tagcloud (Stichwortwolke) auf der Startseite generiert. Tags werden durch Komma getrennt.',
 
 'HELP_ARTICLE_EXTEND_UNITQUANTITY'            => 'Mit <span class="navipath_or_inputname">Menge</span> und <span class="navipath_or_inputname">Mengeneinheit</span> können Sie den Grundpreis des Artikels (Preis pro Mengeneinheit) einstellen. Dieser wird berechnet und beim Artikel angezeigt (z.B. 1,43 EUR pro Liter). Geben Sie bei <span class="navipath_or_inputname">Menge</span> die Menge des Artikels (z.B. 1,5) ein und legen Sie bei <span class="navipath_or_inputname">Mengeneinheit</span> die entsprechende Mengeneinheit (z.B. Liter) fest. Sie können eine Mengeneinheit aus der Liste auswählen oder eine Mengeneinheit eintragen, ohne eine Mengeneinheit auszuwählen ("-"). </br> Wie Sie die Liste der Mengeneinheiten erweitern können, wird in diesem <a href="http://wiki.oxidforge.org/Tutorials/Adding_new_unit_types" target="_blank">Tutorial</a> beschrieben.',
 

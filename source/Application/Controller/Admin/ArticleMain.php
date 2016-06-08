@@ -27,6 +27,7 @@ use oxDb;
 use oxField;
 use oxUtilsObject;
 use stdClass;
+use OxidEsales\Eshop\Application\Model\Article;
 
 /**
  * Admin article main manager.
@@ -91,13 +92,9 @@ class ArticleMain extends \oxAdminDetails
             // #381A
             $this->_formJumpList($oArticle, $oParentArticle);
 
-            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-            //loading tags
-            $oArticleTagList = oxNew("oxArticleTagList");
-            $oArticleTagList->loadInLang($this->_iEditLang, $oArticle->getId());
-            $oArticle->tags = $oArticleTagList->get();
-            // END deprecated
-            
+            //hook for modules
+            $oArticle = $this->customizeArticleInformation($oArticle);
+
             $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
@@ -221,19 +218,7 @@ class ArticleMain extends \oxAdminDetails
             }
         }
 
-        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-        //saving tags
-        if (isset($aParams['tags'])) {
-            $sTags = $aParams['tags'];
-            if (!trim($sTags)) {
-                $sTags = $oArticle->oxarticles__oxsearchkeys->value;
-            }
-            $aInvalidTags = $this->_setTags($sTags, $oArticle->getId());
-            if (!empty($aInvalidTags)) {
-                $this->_aViewData["invalid_tags"] = implode(', ', $aInvalidTags);
-            }
-        }
-        // END deprecated
+        $oArticle = $this->saveAdditionalArticleData($oArticle, $aParams);
 
         $this->setEditObjectId($oArticle->getId());
     }
@@ -275,26 +260,6 @@ class ArticleMain extends \oxAdminDetails
                 $oRs->moveNext();
             }
         }
-    }
-
-    /**
-     * Sets tags to article. Returns invalid tags array
-     *
-     * @param string $sTags      Tags string to set for article
-     * @param string $sArticleId Article id
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @return array of oxTag objects
-     */
-    protected function _setTags($sTags, $sArticleId)
-    {
-        $oArticleTagList = oxNew('oxarticletaglist');
-        $oArticleTagList->loadInLang($this->_iEditLang, $sArticleId);
-        $oArticleTagList->set($sTags);
-        $oArticleTagList->save();
-
-        return $oArticleTagList->get()->getInvalidTags();
     }
 
     /**
@@ -374,7 +339,7 @@ class ArticleMain extends \oxAdminDetails
             // #983A copying staffelpreis info
             $this->_copyStaffelpreis($sOldId, $sNewId);
 
-            //copy article extends (longdescription, tags)
+            //copy article extends (longdescription)
             $this->_copyArtExtends($sOldId, $sNewId);
 
             //files
@@ -774,5 +739,32 @@ class ArticleMain extends \oxAdminDetails
     protected function updateBase($base)
     {
         return $base;
+    }
+
+    /**
+     * Customize article data for rendering.
+     * Intended to be used by modules.
+     *
+     * @param Article $article
+     *
+     * @return Article
+     */
+    protected function customizeArticleInformation($article)
+    {
+        return $article;
+    }
+
+    /**
+     * Save non standard article information if needed.
+     * Intended to be used by modules.
+     *
+     * @param Article $article
+     * @param array   $parameters
+     *
+     * @return Article
+     */
+    protected function saveAdditionalArticleData($article, $parameters)
+    {
+        return $article;
     }
 }

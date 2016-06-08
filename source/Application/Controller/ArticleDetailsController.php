@@ -24,14 +24,12 @@ namespace OxidEsales\Eshop\Application\Controller;
 
 use oxArticle;
 use oxArticleList;
-use oxArticleTagList;
 use oxCategory;
 use oxDeliveryList;
 use oxDeliverySetList;
 use oxPaymentList;
 use oxRegistry;
 use oxField;
-use oxTagCloud;
 use oxVariantSelectList;
 
 /**
@@ -55,24 +53,6 @@ class ArticleDetailsController extends \oxUBase
      * @var oxArticle
      */
     protected $_oParentProd = null;
-
-    /**
-     * If tags will be changed
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @var bool
-     */
-    protected $_blEditTags = null;
-
-    /**
-     * All tags
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @var array
-     */
-    protected $_aTags = null;
 
     /**
      * Parent article name
@@ -480,143 +460,6 @@ class ArticleDetailsController extends \oxUBase
     }
 
     /**
-     * Adds tags from parameter
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return null
-     */
-    public function addTags()
-    {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
-            return;
-        }
-
-        $tags = $this->getConfig()->getRequestParameter('newTags', true);
-        $highTag = $this->getConfig()->getRequestParameter('highTags', true);
-        if (!$tags && !$highTag) {
-            return;
-        }
-        if ($highTag) {
-            $tags = getStr()->html_entity_decode($highTag);
-        }
-        $article = $this->getProduct();
-
-        // set current user added tags for this article for later checking
-        $taggedArticles = oxRegistry::getSession()->getVariable("aTaggedProducts");
-        $addedTags = $taggedArticles ? $taggedArticles[$article->getId()] : array();
-
-        $articleTagList = oxNew("oxArticleTagList");
-        $articleTagList->load($article->getId());
-        $separator = $articleTagList->get()->getSeparator();
-        $uniqueTags = array_unique(explode($separator, $tags));
-
-        $result = $this->_addTagsToList($articleTagList, $uniqueTags, $addedTags);
-
-        if (!empty($result['tags'])) {
-            $articleTagList->save();
-            foreach ($result['tags'] as $tag) {
-                $addedTags[$tag] = 1;
-            }
-            $taggedArticles[$article->getId()] = $addedTags;
-            oxRegistry::getSession()->setVariable('aTaggedProducts', $taggedArticles);
-        }
-        // for ajax call
-        if ($this->getConfig()->getRequestParameter('blAjax', true)) {
-            oxRegistry::getUtils()->showMessageAndExit(json_encode($result));
-        }
-    }
-
-    /**
-     * Adds tags to passed oxArticleTagList object
-     *
-     * @param oxArticleTagList $articleTagList Article tags list object
-     * @param array            $tags           Tags array to add to list
-     * @param array            $addedTags      Tags, which are already added to list
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return array
-     */
-    protected function _addTagsToList($articleTagList, $tags, $addedTags)
-    {
-        $result = array('tags' => array(), 'invalid' => array(), 'inlist' => array());
-
-        foreach ($tags as $tagName) {
-            $tag = oxNew("oxTag", $tagName);
-            if ($addedTags[$tag->get()] != 1) {
-                if ($tag->isValid()) {
-                    $articleTagList->addTag($tag);
-                    $result['tags'][] = $tag->get();
-                } else {
-                    $result['invalid'][] = $tag->get();
-                }
-            } else {
-                $result['inlist'][] = $tag->get();
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Sets tags editing mode
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return null
-     */
-    public function editTags()
-    {
-        if (!$this->getUser()) {
-            return;
-        }
-        $articleTagList = oxNew("oxArticleTagList");
-        $articleTagList->load($this->getProduct()->getId());
-        $tagSet = $articleTagList->get();
-        $this->_aTags = $tagSet->get();
-        $this->_blEditTags = true;
-
-        // for ajax call
-        if ($this->getConfig()->getRequestParameter('blAjax', true)) {
-            $charset = oxRegistry::getLang()->translateString('charset');
-            oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . $charset);
-            $smarty = oxRegistry::get("oxUtilsView")->getSmarty();
-            $smarty->assign('oView', $this);
-            $smarty->assign('oViewConf', $this->getViewConfig());
-            oxRegistry::getUtils()->showMessageAndExit(
-                $smarty->fetch('page/details/inc/editTags.tpl', $this->getViewId())
-            );
-        }
-    }
-
-    /**
-     * Cancels tags editing mode
-     * 
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     */
-    public function cancelTags()
-    {
-        $articleTagList = oxNew("oxArticleTagList");
-        $articleTagList->load($this->getProduct()->getId());
-        $tagSet = $articleTagList->get();
-        $this->_aTags = $tagSet->get();
-        $this->_blEditTags = false;
-
-        // for ajax call
-        if (oxRegistry::getConfig()->getRequestParameter('blAjax', true)) {
-            $charset = oxRegistry::getLang()->translateString('charset');
-            oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . $charset);
-            $smarty = oxRegistry::get("oxUtilsView")->getSmarty();
-            $smarty->assign('oView', $this);
-            $smarty->assign('oViewConf', $this->getViewConfig());
-            oxRegistry::getUtils()->showMessageAndExit(
-                $smarty->fetch('page/details/inc/tags.tpl', $this->getViewId())
-            );
-        }
-    }
-
-    /**
      * Returns active product id to load its seo meta info
      *
      * @return string
@@ -628,29 +471,6 @@ class ArticleDetailsController extends \oxUBase
         }
     }
 
-    /**
-     * Returns if tags will be edit
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return bool
-     */
-    public function getEditTags()
-    {
-        return $this->_blEditTags;
-    }
-
-    /**
-     * Returns all tags
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @return array
-     */
-    public function getTags()
-    {
-        return $this->_aTags;
-    }
 
     /**
      * Returns current product
@@ -732,11 +552,7 @@ class ArticleDetailsController extends \oxUBase
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $listType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_MANUFACTURER;
-                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-            } elseif ('tag' == $listType) {
-                $this->_iLinkType = OXARTICLE_LINKTYPE_TAG;
-                // END deprecated
-                // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             } elseif ('recommlist' == $listType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
                 // END deprecated
@@ -1066,47 +882,13 @@ class ArticleDetailsController extends \oxUBase
     public function getTitle()
     {
         if ($article = $this->getProduct()) {
-            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-            $tag = $this->getTag();
+
             $articleTitle = $article->oxarticles__oxtitle->value;
             $variantSelectionId = $article->oxarticles__oxvarselect->value;
 
             $variantSelectionValue = $variantSelectionId ? ' ' . $variantSelectionId : '';
-            $tagValue = !empty($tag) ? ' - ' . $tag : '';
-
-            return $articleTitle . $variantSelectionValue . $tagValue;
-            // END deprecated 
+            return $articleTitle . $variantSelectionValue ;
         }
-    }
-
-    /**
-     * Template variable getter. Returns meta description
-     *
-     * @return string
-     */
-    public function getMetaDescription()
-    {
-        $meta = parent::getMetaDescription();
-
-        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-        if ($tag = $this->getTag()) {
-            $meta = $tag . ' - ' . $meta;
-        }
-        // END deprecated
-
-        return $meta;
-    }
-
-    /**
-     * Template variable getter. Returns current tag
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return string
-     */
-    public function getTag()
-    {
-        return oxRegistry::getConfig()->getRequestParameter("searchtag");
     }
 
     /**
@@ -1141,11 +923,7 @@ class ArticleDetailsController extends \oxUBase
     {
         if ('search' == $this->getListType()) {
             $paths = $this->_getSearchBreadCrumb();
-            // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-        } elseif ('tag' == $this->getListType()) {
-            $paths = $this->_getTagBreadCrumb();
-            // END deprecated
-            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         } elseif ('recommlist' == $this->getListType()) {
             $paths = $this->_getRecommendationListBredCrumb();
             // END deprecated
@@ -1472,40 +1250,6 @@ class ArticleDetailsController extends \oxUBase
     }
 
     /**
-     * Checks if rating functionality is on and allowed to user
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return bool
-     */
-    public function canChangeTags()
-    {
-        if ($this->getUser()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns tag cloud manager class
-     * 
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return oxTagCloud
-     */
-    public function getTagCloudManager()
-    {
-        $tagList = oxNew("oxArticleTagList");
-        $tagList->setArticleId($this->getProduct()->getId());
-        $tagCloud = oxNew("oxTagCloud");
-        $tagCloud->setTagList($tagList);
-        $tagCloud->setExtendedMode(true);
-
-        return $tagCloud;
-    }
-
-    /**
      * Template variable getter. Returns if to show zoom pictures
      *
      * @return bool
@@ -1603,35 +1347,6 @@ class ArticleDetailsController extends \oxUBase
         $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
         $recommListPath['title'] = oxRegistry::getLang()->translateString('LISTMANIA', $baseLanguageId, false);
         $paths[] = $recommListPath;
-
-        return $paths;
-    }
-
-    /**
-     * Tag bread crumb
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return array
-     */
-    protected function _getTagBreadCrumb()
-    {
-        $paths = array();
-
-        $tagPath = array();
-
-        $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
-        $selfLink = $this->getViewConfig()->getSelfLink();
-
-        $tagPath['title'] = oxRegistry::getLang()->translateString('TAGS', $baseLanguageId, false);
-        $tagPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($selfLink . 'cl=tags');
-        $paths[] = $tagPath;
-
-        $searchTagParameter = oxRegistry::getConfig()->getRequestParameter('searchtag');
-        $stringModifier = getStr();
-        $tagPath['title'] = $stringModifier->ucfirst($searchTagParameter);
-        $tagPath['link'] = oxRegistry::get("oxSeoEncoderTag")->getTagUrl($searchTagParameter);
-        $paths[] = $tagPath;
 
         return $paths;
     }

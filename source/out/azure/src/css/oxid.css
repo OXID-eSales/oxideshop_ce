@@ -1877,69 +1877,7 @@ a.readMore:hover {
     text-decoration: underline;
 }
 
-/* --- Tags --------------------------------- */
-
-p.tagCloud, div.tagCloud  {
-    line-height: 1.5em;
-}
-
-a.tagitem_100 {
-    font-size:12px;
-}
-
-a.tagitem_200 {
-    font-size:14px;
-}
-
-a.tagitem_300 {
-    font-size:16px;
-}
-
-a.tagitem_400 {
-    font-size:18px;
-}
-
-a.tagitem_500 {
-    font-size:20px;
-}
-
-a.tagitem_600 {
-    font-size:22px;
-}
-
-a.tagitem_700 {
-    font-size:24px;
-}
-
-a.tagitem_800 {
-    font-size:26px;
-}
-
-a.tagitem_900 {
-    font-size:28px
-}
-
-span.taggedText {
-    color: #a2a9ab;
-}
-
-p.tagError {
-    display: none;
-}
-
-a.tagText{
-    vertical-align:middle;
-    display:inline-block;
-    line-height:12px;
-}
-
-a.tagText img{
-    margin-right:3px;
-    vertical-align:top;
-}
-
 a.compare.remove {display:none}
-
 
 /* --- Grid View ------------------------------------ */
 .gridView,

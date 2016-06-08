@@ -172,35 +172,6 @@ class UBaseTest extends \OxidTestCase
         $this->assertEquals('oActManufacturer', $oUBase->getActManufacturer());
     }
 
-    public function testGetActTagSeo()
-    {
-        $sTag = $this->getTestConfig()->getShopEdition() == 'EE' ? 'ideale' : 'liebliche';
-
-        oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        $this->setRequestParameter('searchtag', $sTag);
-
-        $oTag = new stdclass();
-        $oTag->sTag = $sTag;
-        $oTag->link = $this->getConfig()->getShopUrl() . "tag/{$sTag}/";
-
-        $oUBase = oxNew('oxUBase');
-        $this->assertEquals($oTag, $oUBase->getActTag());
-    }
-
-    public function testGetActTag()
-    {
-        oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
-        $this->setRequestParameter('searchtag', 'someTag');
-
-        $oTag = new stdclass();
-        $oTag->sTag = 'someTag';
-        $oTag->link = $this->getConfig()->getShopHomeURL() . "cl=tag&amp;searchtag=someTag";
-
-        $oUBase = oxNew('oxUBase');
-        $this->assertEquals($oTag, $oUBase->getActTag());
-    }
-
     public function testSetGetViewProduct()
     {
         $oUBase = oxNew('oxUBase');
@@ -907,7 +878,7 @@ class UBaseTest extends \OxidTestCase
         if (($sLang = oxRegistry::getLang()->getUrlLang())) {
             $sAdditionalParams = $sLang . "&amp;";
         }
-        $sAdditionalParams .= "cl=testClass&amp;searchparam=aa&amp;searchtag=testtag&amp;searchcnid=testcat&amp;searchvendor=testvendor&amp;searchmanufacturer=testmanufact&amp;cnid=testCnId&amp;mnid=testid";
+        $sAdditionalParams .= "cl=testClass&amp;searchparam=aa&amp;searchcnid=testcat&amp;searchvendor=testvendor&amp;searchmanufacturer=testmanufact&amp;cnid=testCnId&amp;mnid=testid";
         $this->assertEquals($sAdditionalParams, $oView->getAdditionalParams());
     }
 
@@ -1048,15 +1019,6 @@ class UBaseTest extends \OxidTestCase
         $oV->setListType('search');
         $sGot = $oV->getDynUrlParams();
         $this->assertEquals('&amp;listtype=search&amp;searchparam=sa%22&amp;searchcnid=sa%22%22&amp;searchvendor=sa%22%22&amp;searchmanufacturer=ma%22%22', $sGot);
-    }
-
-    public function testGetDynUrlParamsInTaglist()
-    {
-        $oV = oxNew('oxubase');
-        $this->setRequestParameter('searchtag', 'testtag');
-        $oV->setListType('tag');
-        $sGot = $oV->getDynUrlParams();
-        $this->assertEquals('&amp;listtype=tag&amp;searchtag=testtag', $sGot);
     }
 
     /**
@@ -1292,12 +1254,11 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('searchvendor', 'searchven');
         $this->setRequestParameter('searchmanufacturer', 'searchman');
         $this->setRequestParameter('searchrecomm', 'searchrec');
-        $this->setRequestParameter('searchtag', 'searchtag');
         $this->setRequestParameter('recommid', 'recid');
 
         $sExpUrl = 'cl=testclass&amp;fnc=testfunc&amp;cnid=catid&amp;mnid=manId&amp;anid=artid&amp;page=2&amp;tpl=test&amp;oxloadid=test&amp;pgNr=2' .
             '&amp;searchparam=test&amp;searchcnid=searchcat&amp;searchvendor=searchven' .
-            '&amp;searchmanufacturer=searchman&amp;searchrecomm=searchrec&amp;searchtag=searchtag&amp;recommid=recid';
+            '&amp;searchmanufacturer=searchman&amp;searchrecomm=searchrec&amp;recommid=recid';
         $this->assertEquals($sExpUrl, $oView->UNITgetRequestParams());
     }
 
@@ -1990,19 +1951,6 @@ class UBaseTest extends \OxidTestCase
     }
 
     /**
-     * oxUBase::showTags() test case
-     *
-     * @return null
-     */
-    public function testShowTags()
-    {
-        $this->setConfigParam("blShowTags", true);
-
-        $oView = oxNew('oxUbase');
-        $this->assertTrue($oView->showTags());
-    }
-
-    /**
      * oxUBase::isEnabledDownloadabaleFiles() test case
      *
      * @return null
@@ -2176,17 +2124,6 @@ class UBaseTest extends \OxidTestCase
     {
         $oUBase = oxNew('oxubase');
         $this->assertNull($oUBase->getPaymentList());
-    }
-
-    /*
-     * oxUBase::getEditTags() test case
-     *
-     * @return null
-     */
-    public function testGetEditTags()
-    {
-        $oUBase = oxNew('oxubase');
-        $this->assertNull($oUBase->getEditTags());
     }
 
     /**

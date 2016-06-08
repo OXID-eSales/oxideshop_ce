@@ -38,8 +38,6 @@ class ArticleSeoTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -55,69 +53,89 @@ class ArticleSeoTest extends \OxidTestCase
     }
 
     /**
-     * Article_Seo::getEntryUri() test case
-     *
-     * @return null
+     * Article_Seo::getEntryUri() test case, with oxvendor as active category type given.
      */
-    public function testGetEntryUri()
+    public function testGetEntryUriOxVendorCase()
     {
-        $sO2CView = getViewName('oxobject2category');
-        $sQ = "select oxarticles.oxid from oxarticles left join {$sO2CView} on
-               oxarticles.oxid={$sO2CView}.oxobjectid where
-               oxarticles.oxactive='1' and {$sO2CView}.oxobjectid is not null";
+        $productId = $this->ensureProductIdExists();
 
-        $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
-        $sProdId = $oDb->getOne($sQ);
+        $seoEncoder = $this->getMock("oxSeoEncoderCategory", array("getArticleVendorUri"));
+        $seoEncoder->expects($this->at(0))->method('getArticleVendorUri')->will($this->returnValue("ArticleVendorUri"));
 
-        // must be existing
-        $this->assertTrue((bool) $sProdId);
+        $oView = $this->getMock("Article_Seo", array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang"));
 
-        $oEncoder = $this->getMock("oxSeoEncoderCategory", array("getArticleVendorUri", "getArticleManufacturerUri", "getArticleTagUri", "getArticleUri", "getArticleMainUri"));
-        $oEncoder->expects($this->at(0))->method('getArticleVendorUri')->will($this->returnValue("ArticleVendorUri"));
-        $oEncoder->expects($this->at(1))->method('getArticleManufacturerUri')->will($this->returnValue("ArticleManufacturerUri"));
-        $oEncoder->expects($this->at(2))->method('getArticleTagUri')->will($this->returnValue("ArticleTagUri"));
-        $oEncoder->expects($this->at(3))->method('getArticleUri')->will($this->returnValue("ArticleUri"));
-        $oEncoder->expects($this->at(4))->method('getArticleMainUri')->will($this->returnValue("ArticleMainUri"));
-
-        $oView = $this->getMock("Article_Seo", array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang", "getActCatLang", "getActCatId"));
-        $oView->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue($sProdId));
-        $oView->expects($this->at(1))->method('_getEncoder')->will($this->returnValue($oEncoder));
+        $oView->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue($productId));
+        $oView->expects($this->at(1))->method('_getEncoder')->will($this->returnValue($seoEncoder));
         $oView->expects($this->at(2))->method('getActCatType')->will($this->returnValue("oxvendor"));
         $oView->expects($this->at(3))->method('getEditLang')->will($this->returnValue(0));
 
-        $oView->expects($this->at(4))->method('getEditObjectId')->will($this->returnValue($sProdId));
-        $oView->expects($this->at(5))->method('_getEncoder')->will($this->returnValue($oEncoder));
-        $oView->expects($this->at(6))->method('getActCatType')->will($this->returnValue("oxmanufacturer"));
-        $oView->expects($this->at(7))->method('getEditLang')->will($this->returnValue(0));
-
-        $oView->expects($this->at(8))->method('getEditObjectId')->will($this->returnValue($sProdId));
-        $oView->expects($this->at(9))->method('_getEncoder')->will($this->returnValue($oEncoder));
-        $oView->expects($this->at(10))->method('getActCatType')->will($this->returnValue("oxtag"));
-        $oView->expects($this->at(11))->method('getActCatLang')->will($this->returnValue(0));
-
-        $oView->expects($this->at(12))->method('getEditObjectId')->will($this->returnValue($sProdId));
-        $oView->expects($this->at(13))->method('_getEncoder')->will($this->returnValue($oEncoder));
-        $oView->expects($this->at(14))->method('getActCatType')->will($this->returnValue("oxsomething"));
-        $oView->expects($this->at(15))->method('getActCatId')->will($this->returnValue(true));
-        $oView->expects($this->at(16))->method('getEditLang')->will($this->returnValue(0));
-
-        $oView->expects($this->at(17))->method('getEditObjectId')->will($this->returnValue($sProdId));
-        $oView->expects($this->at(18))->method('_getEncoder')->will($this->returnValue($oEncoder));
-        $oView->expects($this->at(19))->method('getActCatType')->will($this->returnValue("oxsomething"));
-        $oView->expects($this->at(20))->method('getActCatId')->will($this->returnValue(false));
-        $oView->expects($this->at(21))->method('getEditLang')->will($this->returnValue(0));
-
         $this->assertEquals("ArticleVendorUri", $oView->getEntryUri());
-        $this->assertEquals("ArticleManufacturerUri", $oView->getEntryUri());
-        $this->assertEquals("ArticleTagUri", $oView->getEntryUri());
-        $this->assertEquals("ArticleUri", $oView->getEntryUri());
-        $this->assertEquals("ArticleMainUri", $oView->getEntryUri());
+    }
+    
+    /**
+     * Article_Seo::getEntryUri() test case, with the oxmanufacturer as active category type given. 
+     */
+    public function testGetEntryUriOxManufacturerCase()
+    {
+        $productId = $this->ensureProductIdExists();
+
+        $seoEncoder = $this->getMock("oxSeoEncoderCategory", array("getArticleManufacturerUri"));
+        $seoEncoder->expects($this->at(0))->method('getArticleManufacturerUri')->will($this->returnValue("ArticleManufacturerUri"));
+
+        $view = $this->getMock("Article_Seo", array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang"));
+
+        $view->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue($productId));
+        $view->expects($this->at(1))->method('_getEncoder')->will($this->returnValue($seoEncoder));
+        $view->expects($this->at(2))->method('getActCatType')->will($this->returnValue("oxmanufacturer"));
+        $view->expects($this->at(3))->method('getEditLang')->will($this->returnValue(0));
+
+        $this->assertEquals("ArticleManufacturerUri", $view->getEntryUri());
+    }
+
+    /**
+     * Article_Seo::getEntryUri() test case, with given active category id.
+     */
+    public function testGetEntryUriDefaultWithActiveCategoryId()
+    {
+        $productId = $this->ensureProductIdExists();
+
+        $seoEncoder = $this->getMock("oxSeoEncoderCategory", array("getArticleUri"));
+        $seoEncoder->expects($this->at(0))->method('getArticleUri')->will($this->returnValue("ArticleUri"));
+
+        $view = $this->getMock("Article_Seo", array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang", "getActCatId"));
+
+        $view->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue($productId));
+        $view->expects($this->at(1))->method('_getEncoder')->will($this->returnValue($seoEncoder));
+        $view->expects($this->at(2))->method('getActCatType')->will($this->returnValue("oxsomething"));
+        $view->expects($this->at(3))->method('getActCatId')->will($this->returnValue(true));
+        $view->expects($this->at(4))->method('getEditLang')->will($this->returnValue(0));
+
+        $this->assertEquals("ArticleUri", $view->getEntryUri());
+    }
+
+    /**
+     * Article_Seo::getEntryUri() test case, without given active category id.
+     */
+    public function testGetEntryUriDefaultWithoutActiveCategoryId()
+    {
+        $productId = $this->ensureProductIdExists();
+
+        $seoEncoder = $this->getMock("oxSeoEncoderCategory", array("getArticleMainUri"));
+        $seoEncoder->expects($this->at(0))->method('getArticleMainUri')->will($this->returnValue("ArticleMainUri"));
+
+        $view = $this->getMock("Article_Seo", array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang", "getActCatId"));
+
+        $view->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue($productId));
+        $view->expects($this->at(1))->method('_getEncoder')->will($this->returnValue($seoEncoder));
+        $view->expects($this->at(2))->method('getActCatType')->will($this->returnValue("oxsomething"));
+        $view->expects($this->at(3))->method('getActCatId')->will($this->returnValue(false));
+        $view->expects($this->at(4))->method('getEditLang')->will($this->returnValue(0));
+
+        $this->assertEquals("ArticleMainUri", $view->getEntryUri());
     }
 
     /**
      * Testing Article_Seo::showCatSelect()
-     *
-     * @return null
      */
     public function showCatSelect()
     {
@@ -127,8 +145,6 @@ class ArticleSeoTest extends \OxidTestCase
 
     /**
      * Article_Seo::_getEncoder() test case
-     *
-     * @return null
      */
     public function testGetEncoder()
     {
@@ -139,8 +155,6 @@ class ArticleSeoTest extends \OxidTestCase
 
     /**
      * Article_Seo::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -150,8 +164,6 @@ class ArticleSeoTest extends \OxidTestCase
 
     /**
      * Article_Seo::_getVendorList() test case (regular)
-     *
-     * @return null
      */
     public function testGetVendorList()
     {
@@ -174,8 +186,6 @@ class ArticleSeoTest extends \OxidTestCase
 
     /**
      * Article_Seo::_getManufacturerList() test case (regular)
-     *
-     * @return null
      */
     public function testGetManufacturerList()
     {
@@ -199,8 +209,6 @@ class ArticleSeoTest extends \OxidTestCase
 
     /**
      * Article_Seo::getActCategory() test case (category)
-     *
-     * @return null
      */
     public function testGetActCategory()
     {
@@ -209,37 +217,9 @@ class ArticleSeoTest extends \OxidTestCase
         $oView = oxNew('Article_Seo');
         $this->assertTrue($oView->getActCategory() instanceof oxCategory);
     }
-
-    /**
-     * Article_Seo::getTag() test case (manufacturer)
-     *
-     * @return null
-     */
-    public function testGetTag()
-    {
-        $oTag1 = $this->getMock("oxManufacturer", array("getId", "getTitle"));
-        $oTag1->expects($this->once())->method('getId')->will($this->returnValue("testTagId2"));
-        $oTag1->expects($this->never())->method('getTitle')->will($this->returnValue("testTagId"));
-
-        $oTag2 = $this->getMock("oxManufacturer", array("getId", "getTitle"));
-        $oTag2->expects($this->once())->method('getId')->will($this->returnValue("testTagId"));
-        $oTag2->expects($this->once())->method('getTitle')->will($this->returnValue("testTagId"));
-
-        $aTagList = array($oTag1, $oTag2);
-
-        $oView = $this->getMock("Article_Seo", array("getActCatType", "getActCatId", "getActCatLang", "getEditObjectId", "_getTagList"));
-        $oView->expects($this->once())->method('getActCatType')->will($this->returnValue("oxtag"));
-        $oView->expects($this->once())->method('getActCatId')->will($this->returnValue("testTagId"));
-        $oView->expects($this->once())->method('getActCatLang')->will($this->returnValue(0));
-        $oView->expects($this->once())->method('getEditObjectId')->will($this->returnValue("ObjectId"));
-        $oView->expects($this->once())->method('_getTagList')->will($this->returnValue($aTagList));
-        $this->assertEquals("testTagId", $oView->getTag());
-    }
-
+    
     /**
      * Article_Seo::getActVendor() test case (manufacturer)
-     *
-     * @return null
      */
     public function testGetActVendor()
     {
@@ -252,8 +232,6 @@ class ArticleSeoTest extends \OxidTestCase
 
     /**
      * Article_Seo::getActManufacturer() test case (manufacturer)
-     *
-     * @return null
      */
     public function testGetActManufacturer()
     {
@@ -265,34 +243,38 @@ class ArticleSeoTest extends \OxidTestCase
     }
 
     /**
-     * Article_Seo::getListType() test case
-     *
-     * @return null
+     * Test, that the method 'getListType' returns null, if the active category type is oxany.
      */
-    public function testGetListType()
+    public function testGetListTypeCaseAny()
     {
-        $oView = $this->getMock("Article_Seo", array("getActCatType"));
-        $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxvendor"));
-        $this->assertEquals("vendor", $oView->getListType());
-
-        $oView = $this->getMock("Article_Seo", array("getActCatType"));
-        $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxmanufacturer"));
-        $this->assertEquals("manufacturer", $oView->getListType());
-
-        $oView = $this->getMock("Article_Seo", array("getActCatType"));
-        $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxtag"));
-        $this->assertEquals("tag", $oView->getListType());
-
         $oView = $this->getMock("Article_Seo", array("getActCatType"));
         $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxany"));
         $this->assertNull($oView->getListType());
     }
 
+    /**
+     * Test, that the method 'getListType' returns vendor, if the active category type is oxvendor.
+     */
+    public function testGetListTypeCaseVendor()
+    {
+        $oView = $this->getMock("Article_Seo", array("getActCatType"));
+        $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxvendor"));
+        $this->assertEquals("vendor", $oView->getListType());
+    }
+
+    /**
+     * Test, that the method 'getListType' returns manufacturer, if the active category type is oxmanufacturer.
+     */
+    public function testGetListTypeCaseManufacturer()
+    {
+        $oView = $this->getMock("Article_Seo", array("getActCatType"));
+        $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxmanufacturer"));
+        $this->assertEquals("manufacturer", $oView->getListType());
+    }
+
 
     /**
      * Article_Seo::_getAltSeoEntryId() test case
-     *
-     * @return null
      */
     public function testGetAltSeoEntryId()
     {
@@ -303,8 +285,6 @@ class ArticleSeoTest extends \OxidTestCase
 
     /**
      * Article_Seo::getEditLang() test case
-     *
-     * @return null
      */
     public function testGetEditLang()
     {
@@ -314,104 +294,26 @@ class ArticleSeoTest extends \OxidTestCase
     }
 
     /**
-     * Article_Seo::_getSeoEntryType() test case (tag)
-     *
-     * @return null
-     */
-    public function testGetSeoEntryTypeTag()
-    {
-        $oView = $this->getMock("Article_Seo", array("getTag"));
-        $oView->expects($this->once())->method('getTag')->will($this->returnValue(true));
-        $this->assertEquals('dynamic', $oView->UNITgetSeoEntryType());
-    }
-
-    /**
      * Article_Seo::_getSeoEntryType() test case (default)
-     *
-     * @return null
      */
     public function testGetSeoEntryType()
     {
-        $oView = $this->getMock("Article_Seo", array("getTag"));
-        $oView->expects($this->once())->method('getTag')->will($this->returnValue(false));
-        $this->assertEquals('oxarticle', $oView->UNITgetSeoEntryType());
+        $view = oxNew("Article_Seo");
+        
+        $this->assertEquals('oxarticle', $view->UNITgetSeoEntryType());
     }
 
     /**
      * Article_Seo::getType() test case (manufacturer)
-     *
-     * @return null
      */
     public function testGetType()
     {
         $oView = oxNew('Article_Seo');
         $this->assertEquals('oxarticle', $oView->UNITgetType());
     }
-
-    /**
-     * Article_Seo::_getStdUrl() test case (vendor)
-     *
-     * @return null
-     */
-    public function testGetStdUrlVendor()
-    {
-        $oView = $this->getMock("Article_Seo", array("getActCatType", "getTag", "getActCatId"));
-        $oView->expects($this->any())->method("getActCatType")->will($this->returnValue("oxvendor"));
-        $oView->expects($this->any())->method("getActCatId")->will($this->returnValue("vendor"));
-        $oView->expects($this->any())->method("getTag")->will($this->returnValue("testTag"));
-
-        $this->assertEquals("index.php?cl=details&amp;anid=&amp;listtype=vendor&amp;cnid=v_vendor", $oView->UNITgetStdUrl("testOxId"));
-    }
-
-    /**
-     * Article_Seo::_getStdUrl() test case (manufacturer)
-     *
-     * @return null
-     */
-    public function testGetStdUrlManufacturer()
-    {
-        $oView = $this->getMock("Article_Seo", array("getActCatType", "getTag", "getActCatId"));
-        $oView->expects($this->any())->method("getActCatType")->will($this->returnValue("oxmanufacturer"));
-        $oView->expects($this->any())->method("getActCatId")->will($this->returnValue("manufacturer"));
-        $oView->expects($this->any())->method("getTag")->will($this->returnValue("testTag"));
-
-        $this->assertEquals("index.php?cl=details&amp;anid=&amp;listtype=manufacturer&amp;mnid=manufacturer", $oView->UNITgetStdUrl("testOxId"));
-    }
-
-    /**
-     * Article_Seo::_getStdUrl() test case (tag)
-     *
-     * @return null
-     */
-    public function testGetStdUrlTag()
-    {
-        $oView = $this->getMock("Article_Seo", array("getActCatType", "getTag", "getActCatId"));
-        $oView->expects($this->any())->method("getActCatType")->will($this->returnValue("oxtag"));
-        $oView->expects($this->any())->method("getActCatId")->will($this->returnValue("tag"));
-        $oView->expects($this->any())->method("getTag")->will($this->returnValue("testTag"));
-
-        $this->assertEquals("index.php?cl=details&amp;anid=&amp;listtype=tag&amp;searchtag=testTag", $oView->UNITgetStdUrl("testOxId"));
-    }
-
-    /**
-     * Article_Seo::_getStdUrl() test case (default)
-     *
-     * @return null
-     */
-    public function testGetStdUrlDefault()
-    {
-        $oView = $this->getMock("Article_Seo", array("getActCatType", "getTag", "getActCatId"));
-        $oView->expects($this->any())->method("getActCatType")->will($this->returnValue("oxanytype"));
-        $oView->expects($this->any())->method("getActCatId")->will($this->returnValue("catid"));
-
-        $this->assertEquals("index.php?cl=details&amp;anid=&amp;cnid=catid", $oView->UNITgetStdUrl("testOxId"));
-
-    }
-
+    
     /**
      * Article_Seo::getActCatType() test case
-     *
-     * @return null
      */
     public function testGetActCatType()
     {
@@ -428,8 +330,6 @@ class ArticleSeoTest extends \OxidTestCase
 
     /**
      * Article_Seo::getActCatLang() test case
-     *
-     * @return null
      */
     public function testGetActCatLang()
     {
@@ -446,8 +346,6 @@ class ArticleSeoTest extends \OxidTestCase
 
     /**
      * Article_Seo::getActCatId() test case
-     *
-     * @return null
      */
     public function testGetActCatId()
     {
@@ -469,8 +367,6 @@ class ArticleSeoTest extends \OxidTestCase
 
     /**
      * Article_Seo::_getCategoryList() test case
-     *
-     * @return null
      */
     public function testGetCategoryList()
     {
@@ -479,7 +375,7 @@ class ArticleSeoTest extends \OxidTestCase
                oxarticles.oxid={$sO2CView}.oxobjectid where
                oxarticles.oxactive='1' and {$sO2CView}.oxobjectid is not null";
 
-        $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $sProdId = $oDb->getOne($sQ);
 
         // must be existing
@@ -503,99 +399,45 @@ class ArticleSeoTest extends \OxidTestCase
     }
 
     /**
-     * Article_Seo::_getTagList() test case
-     *
-     * @return null
-     */
-    public function testGetTagList()
-    {
-        $sQ = "select oxarticles.oxid from oxarticles left join oxartextends on
-               oxarticles.oxid=oxartextends.oxid where
-               oxarticles.oxactive='1' and oxartextends.oxid is not null and oxartextends.oxtags != ''";
-
-        $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
-        $sProdId = $oDb->getOne($sQ);
-
-        // must be existing
-        $this->assertTrue((bool) $sProdId);
-
-        $oProduct = oxNew('oxArticle');
-        $oProduct->load($sProdId);
-
-        $oArticleTagList = oxNew('oxArticleTagList');
-        $oArticleTagList->load($sProdId);
-        $oTagSet = $oArticleTagList->get();
-        $aTags = $oTagSet->get();
-
-        $oView = oxNew('Article_Seo');
-        $aList = $oView->UNITgetTagList($oProduct, 0);
-
-        // must be have few assignments
-        $this->assertTrue(count($aTags) > 0);
-        $this->assertEquals(count($aTags), count($aList));
-    }
-
-    /**
      * Article_Seo::getSelectionList() test case
-     *
-     * @return null
      */
     public function testGetSelectionList()
     {
-        $iProdId = oxDb::getDb()->getOne("select oxid from oxarticles");
-        $iEditLang = oxRegistry::getLang()->getEditLanguage();
+        $productId = oxDb::getDb()->getOne("select oxid from oxarticles");
+        $editingLanguageId = oxRegistry::getLang()->getEditLanguage();
 
-        $oProduct = oxNew('oxArticle');
-        $oProduct->load($iProdId);
-        $aLangs = $oProduct->getAvailableInLangs();
+        $product = oxNew('oxArticle');
+        $product->load($productId);
 
-        $oView = $this->getMock("Article_Seo", array("getEditObjectId", "_getCategoryList", "_getVendorList", "_getManufacturerList", "_getTagList"));
-        $oView->expects($this->any())->method("getEditObjectId")->will($this->returnValue($iProdId));
-        $oView->expects($this->any())->method("_getCategoryList")->will($this->returnValue("CategoryList"));
-        $oView->expects($this->any())->method("_getVendorList")->will($this->returnValue("VendorList"));
-        $oView->expects($this->any())->method("_getManufacturerList")->will($this->returnValue("ManufacturerList"));
-        $oView->expects($this->any())->method("_getTagList")->will($this->returnValue("TagList"));
+        $view = $this->getMock("Article_Seo", array("getEditObjectId", "_getCategoryList", "_getVendorList", "_getManufacturerList", "_getTagList"));
+        $view->expects($this->any())->method("getEditObjectId")->will($this->returnValue($productId));
+        $view->expects($this->any())->method("_getCategoryList")->will($this->returnValue("CategoryList"));
+        $view->expects($this->any())->method("_getVendorList")->will($this->returnValue("VendorList"));
+        $view->expects($this->any())->method("_getManufacturerList")->will($this->returnValue("ManufacturerList"));
+        $view->expects($this->any())->method("_getTagList")->will($this->returnValue("TagList"));
 
-        $aList = array();
-        $aList["oxcategory"][$iEditLang] = "CategoryList";
-        $aList["oxvendor"][$iEditLang] = "VendorList";
-        $aList["oxmanufacturer"][$iEditLang] = "ManufacturerList";
-        foreach ($aLangs as $iLang => $sLangTitle) {
-            $aList["oxtag"][$iLang] = "TagList";
-        }
+        $expectedList = array();
+        $expectedList["oxcategory"][$editingLanguageId] = "CategoryList";
+        $expectedList["oxvendor"][$editingLanguageId] = "VendorList";
+        $expectedList["oxmanufacturer"][$editingLanguageId] = "ManufacturerList";
 
-        $this->assertEquals($aList, $oView->getSelectionList());
-    }
-
-    /**
-     * Article_Seo::processParam() test case (tag)
-     *
-     * @return null
-     */
-    public function testProcessParamTag()
-    {
-        $oView = $this->getMock("Article_Seo", array("getTag"));
-        $oView->expects($this->once())->method("getTag")->will($this->returnValue(true));
-        $this->assertEquals("", $oView->processParam("testParam"));
+        $this->assertEquals($expectedList, $view->getSelectionList());
     }
 
     /**
      * Article_Seo::processParam() test case (any other than tag)
-     *
-     * @return null
      */
     public function testProcessParam()
     {
-        $oView = $this->getMock("Article_Seo", array("getTag", "getActCatId"));
-        $oView->expects($this->once())->method("getTag")->will($this->returnValue(false));
+        $oView = $this->getMock("Article_Seo", array("getActCatId"));
+
         $oView->expects($this->once())->method("getActCatId")->will($this->returnValue("testParam2"));
+
         $this->assertEquals("testParam2", $oView->processParam("testParam1#testParam2#0"));
     }
 
     /**
      * Vendor_Seo::isEntryFixed() test case
-     *
-     * @return null
      */
     public function testIsEntryFixed()
     {
@@ -618,5 +460,23 @@ class ArticleSeoTest extends \OxidTestCase
 
         $this->assertTrue($oView->isEntryFixed());
         $this->assertFalse($oView->isEntryFixed());
+    }
+
+    /**
+     * @return string The product id.
+     */
+    protected function ensureProductIdExists()
+    {
+        $objectToCategoryViewName = getViewName('oxobject2category');
+        $query = "select oxarticles.oxid from oxarticles left join {$objectToCategoryViewName} on
+               oxarticles.oxid={$objectToCategoryViewName}.oxobjectid where
+               oxarticles.oxactive='1' and {$objectToCategoryViewName}.oxobjectid is not null";
+
+        $produdtId = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getOne($query);
+
+        // must be existing
+        $this->assertTrue((bool) $produdtId);
+
+        return $produdtId;
     }
 }

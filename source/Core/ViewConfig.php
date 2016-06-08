@@ -180,9 +180,6 @@ class ViewConfig extends \oxSuperCfg
         $sTplName = $this->getActTplName();
         $sContentLoadId = $this->getActContentLoadId();
         $sSearchParam = $this->getActSearchParam();
-        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-        $sSearchTag = $this->getActSearchTag();
-        // END deprecated
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         $sRecommId = $this->getActRecommendationId();
         // END deprecated
@@ -196,9 +193,6 @@ class ViewConfig extends \oxSuperCfg
                . ($sArtnid ? "&amp;anid={$sArtnid}" : '')
                . ($sMnfid ? "&amp;mnid={$sMnfid}" : '')
                . ($sSearchParam ? "&amp;searchparam={$sSearchParam}" : '')
-                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-               . ($sSearchTag ? "&amp;searchtag={$sSearchTag}" : '')
-                // END deprecated
                // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
                . ($sRecommId ? "&amp;recommid={$sRecommId}" : '')
                // END deprecated
@@ -271,18 +265,6 @@ class ViewConfig extends \oxSuperCfg
     public function getActSearchParam()
     {
         return oxRegistry::getConfig()->getRequestParameter('searchparam');
-    }
-
-    /**
-     * Returns active search tag parameter
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @return string
-     */
-    public function getActSearchTag()
-    {
-        return oxRegistry::getConfig()->getRequestParameter('searchtag');
     }
 
     /**
@@ -897,7 +879,7 @@ class ViewConfig extends \oxSuperCfg
 
     /**
      * Returns config param "bl_showListmania" value
-     * 
+     *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return bool
@@ -1472,5 +1454,53 @@ class ViewConfig extends \oxSuperCfg
     public function getEdition()
     {
         return $this->getConfig()->getEdition();
+    }
+
+    /**
+     * Hook for modules.
+     * Returns array of params => values which are used in hidden forms and as additional url params.
+     * NOTICE: this method SHOULD return raw (non encoded into entities) parameters, because values
+     * are processed by htmlentities() to avoid security and broken templates problems
+     *
+     * @return array
+     */
+    public function getAdditionalNavigationParameters()
+    {
+        return array();
+    }
+
+    /**
+     * Hook for modules.
+     * Template variable getter. Returns additional params for url
+     *
+     * @return string
+     */
+    public function getAdditionalParameters()
+    {
+        return '';
+    }
+
+    /**
+     * Hook for modules.
+     * Collects additional _GET parameters used by eShop
+     *
+     * @return string
+     */
+    public function addRequestParameters()
+    {
+        return '';
+    }
+
+    /**
+     * Hook for modules.
+     * returns additional url params for dynamic url building
+     *
+     * @param string $listType
+     *
+     * @return string
+     */
+    public function getDynUrlParameters($listType)
+    {
+        return '';
     }
 }

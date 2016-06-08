@@ -152,12 +152,12 @@ class I18ntest extends \OxidTestCase
     {
         $oi18 = new _oxI18n();
         $oi18->init("oxartextends");
-        $this->assertEquals(array('oxid' => 0, 'oxlongdesc' => 1, 'oxtags' => 1, 'oxtimestamp' => 0), $oi18->getClassVar('_aFieldNames'));
+        $this->assertEquals(array('oxid' => 0, 'oxlongdesc' => 1,'oxtimestamp' => 0), $oi18->getClassVar('_aFieldNames'));
 
         $oi18 = new _oxI18n();
         $oi18->init("oxartextends");
         $oi18->setEnableMultilang(false);
-        $this->assertEquals(array('oxid' => 0, 'oxlongdesc' => 0, 'oxlongdesc_1' => 0, 'oxlongdesc_2' => 0, 'oxlongdesc_3' => 0, 'oxtags' => 0, 'oxtags_1' => 0, 'oxtags_2' => 0, 'oxtags_3' => 0, 'oxtimestamp' => 0), $oi18->getClassVar('_aFieldNames'));
+        $this->assertEquals(array('oxid' => 0, 'oxlongdesc' => 0, 'oxlongdesc_1' => 0, 'oxlongdesc_2' => 0, 'oxlongdesc_3' => 0, 'oxtimestamp' => 0), $oi18->getClassVar('_aFieldNames'));
     }
 
     public function testSetEnableMultilanguageCacheTest()

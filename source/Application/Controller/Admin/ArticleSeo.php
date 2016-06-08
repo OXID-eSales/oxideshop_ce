@@ -47,7 +47,7 @@ class ArticleSeo extends \Object_Seo
     protected $_aSelectionList = null;
 
     /**
-     * Returns active selection type - oxcategory, oxmanufacturer, oxvendor or oxtag
+     * Returns active selection type - oxcategory, oxmanufacturer, oxvendor
      *
      * @return string
      */
@@ -68,7 +68,7 @@ class ArticleSeo extends \Object_Seo
     }
 
     /**
-     * Returns active category (manufacturer/vendor/tag) language id
+     * Returns active category (manufacturer/vendor) language id
      *
      * @return int
      */
@@ -94,7 +94,7 @@ class ArticleSeo extends \Object_Seo
     }
 
     /**
-     * Returns active category (manufacturer/vendor/tag) id
+     * Returns active category (manufacturer/vendor) id
      *
      * @return string
      */
@@ -126,7 +126,7 @@ class ArticleSeo extends \Object_Seo
         if ($this->_aSelectionList === null) {
             $this->_aSelectionList = array();
 
-            $oProduct = oxNew('oxArticle');
+            $oProduct = oxNew('OxidEsales\Eshop\Application\Model\Article');
             $oProduct->load($this->getEditObjectId());
 
             if ($oCatList = $this->_getCategoryList($oProduct)) {
@@ -140,15 +140,6 @@ class ArticleSeo extends \Object_Seo
             if ($oManList = $this->_getManufacturerList($oProduct)) {
                 $this->_aSelectionList["oxmanufacturer"][$this->_iEditLang] = $oManList;
             }
-
-            // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-            $aLangs = $oProduct->getAvailableInLangs();
-            foreach ($aLangs as $iLang => $sLangTitle) {
-                if ($oTagList = $this->_getTagList($oProduct, $iLang)) {
-                    $this->_aSelectionList["oxtag"][$iLang] = $oTagList;
-                }
-            }
-            // END deprecated
         }
 
         return $this->_aSelectionList;
@@ -233,37 +224,6 @@ class ArticleSeo extends \Object_Seo
         }
     }
 
-    /**
-     * Returns product tags array for given language
-     *
-     * @param oxArticle $oArticle Article object
-     * @param int       $iLang    language id
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return array
-     */
-    protected function _getTagList($oArticle, $iLang)
-    {
-        $oArticleTagList = oxNew("oxarticletaglist");
-        $oArticleTagList->setLanguage($iLang);
-        $oArticleTagList->load($oArticle->getId());
-        $aTagsList = array();
-        if (count($aTags = $oArticleTagList->getArray())) {
-            $sShopId = $this->getConfig()->getShopId();
-            $iProdId = $oArticle->getId();
-            foreach ($aTags as $sTitle => $oTagObject) {
-                // A. we do not have oxTag object yet, so reusing manufacturers for general interface
-                $oTag = oxNew("oxManufacturer");
-                $oTag->setLanguage($iLang);
-                $oTag->setId(md5(strtolower($sShopId . $this->_getStdUrl($iProdId, "oxtag", "tag", $iLang, $sTitle))));
-                $oTag->oxmanufacturers__oxtitle = new oxField($sTitle);
-                $aTagsList[] = $oTag;
-            }
-        }
-
-        return $aTagsList;
-    }
 
     /**
      * Returns active category object, used for seo url getter
@@ -275,32 +235,6 @@ class ArticleSeo extends \Object_Seo
         $oCat = oxNew('oxCategory');
 
         return ($oCat->load($this->getActCatId())) ? $oCat : null;
-    }
-
-    /**
-     * Returns active tag, used for seo url getter
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return string | null
-     */
-    public function getTag()
-    {
-        if ($this->getActCatType() == 'oxtag') {
-
-            $iLang = $this->getActCatLang();
-            $sTagId = $this->getActCatId();
-
-            $oProduct = oxNew('oxArticle');
-            $oProduct->loadInLang($iLang, $this->getEditObjectId());
-
-            $aList = $this->_getTagList($oProduct, $iLang);
-            foreach ($aList as $oTag) {
-                if ($oTag->getId() == $sTagId) {
-                    return $oTag->getTitle();
-                }
-            }
-        }
     }
 
     /**
@@ -340,10 +274,6 @@ class ArticleSeo extends \Object_Seo
                 return 'vendor';
             case 'oxmanufacturer':
                 return 'manufacturer';
-            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-            case 'oxtag':
-                return 'tag';
-            // END deprecated
         }
     }
 
@@ -368,22 +298,6 @@ class ArticleSeo extends \Object_Seo
     }
 
     /**
-     * Returns seo entry type
-     *
-     * @return string
-     */
-    protected function _getSeoEntryType()
-    {
-        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-        if ($this->getTag()) {
-            return 'dynamic';
-        } else {
-            return $this->_getType();
-        }
-        // END deprecated
-    }
-
-    /**
      * Returns url type
      *
      * @return string
@@ -402,13 +316,7 @@ class ArticleSeo extends \Object_Seo
      */
     public function processParam($sParam)
     {
-        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-        if ($this->getTag()) {
-            return '';
-        } else {
-            return $this->getActCatId();
-        }
-        // END deprecated
+        return $this->getActCatId();
     }
 
     /**
@@ -428,76 +336,24 @@ class ArticleSeo extends \Object_Seo
      */
     public function getEntryUri()
     {
-        $oProduct = oxNew('oxArticle');
-        if ($oProduct->load($this->getEditObjectId())) {
-            $oEncoder = $this->_getEncoder();
+        $product = oxNew('oxArticle');
+
+        if ($product->load($this->getEditObjectId())) {
+            $seoEncoder = $this->_getEncoder();
+
             switch ($this->getActCatType()) {
                 case 'oxvendor':
-                    return $oEncoder->getArticleVendorUri($oProduct, $this->getEditLang());
+                    return $seoEncoder->getArticleVendorUri($product, $this->getEditLang());
                 case 'oxmanufacturer':
-                    return $oEncoder->getArticleManufacturerUri($oProduct, $this->getEditLang());
-                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-                case 'oxtag':
-                    return $oEncoder->getArticleTagUri($oProduct, $this->getActCatLang());
-                // END deprecated
+                    return $seoEncoder->getArticleManufacturerUri($product, $this->getEditLang());
                 default:
                     if ($this->getActCatId()) {
-                        return $oEncoder->getArticleUri($oProduct, $this->getEditLang());
+                        return $seoEncoder->getArticleUri($product, $this->getEditLang());
                     } else {
-                        return $oEncoder->getArticleMainUri($oProduct, $this->getEditLang());
+                        return $seoEncoder->getArticleMainUri($product, $this->getEditLang());
                     }
             }
         }
-    }
-
-    /**
-     * Returns objects standard url
-     *
-     * @param string $sOxid     object id
-     * @param string $sCatType  preferred type - oxvendor/oxmanufacturer/oxtag.. [default is NULL]
-     * @param string $sListType preferred list type tag/vendor/manufacturer.. [default is NULL]
-     * @param string $iLang     preferred language id [default is NULL]
-     * @param string $sTag      preferred tag [default is NULL]
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return string
-     */
-    protected function _getStdUrl($sOxid, $sCatType = null, $sListType = null, $iLang = null, $sTag = null)
-    {
-        $iLang = $iLang !== null ? $iLang : $this->getEditLang();
-        $sCatType = $sCatType !== null ? $sCatType : $this->getActCatType();
-        $sListType = $sListType !== null ? $sListType : $this->getListType();
-
-        $aParams = array();
-        if ($sListType) {
-            $aParams["listtype"] = $sListType;
-        }
-
-        $oProduct = oxNew('oxArticle');
-        $oProduct->loadInLang($iLang, $sOxid);
-
-        // adding vendor or manufacturer id
-        switch ($sCatType) {
-            case 'oxvendor':
-                $aParams["cnid"] = "v_" . $this->getActCatId();
-                break;
-            case 'oxmanufacturer':
-                $aParams["mnid"] = $this->getActCatId();
-                break;
-            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-            case 'oxtag':
-                $aParams["searchtag"] = $sTag !== null ? $sTag : $this->getTag();
-                break;
-            // END deprecated 
-            default:
-                $aParams["cnid"] = $this->getActCatId();
-                break;
-        }
-
-        $oUtilsUrl = oxRegistry::get("oxUtilsUrl");
-
-        return trim($oUtilsUrl->appendUrl($oProduct->getBaseStdLink($iLang, true, false), $aParams), '&amp;');
     }
 
     /**
@@ -518,11 +374,6 @@ class ArticleSeo extends \Object_Seo
     protected function _getSaveObjectId()
     {
         $sId = $this->getEditObjectId();
-        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-        if ($this->getActCatType() == 'oxtag') {
-            $sId = $this->_getEncoder()->getDynamicObjectId($this->getConfig()->getShopId(), $this->_getStdUrl($sId));
-        }
-        // END deprecated 
 
         return $sId;
     }

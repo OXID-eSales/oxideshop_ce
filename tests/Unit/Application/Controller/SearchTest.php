@@ -105,11 +105,19 @@ class SearchTest extends \OxidTestCase
     {
         $this->setRequestParameter('searchparam', 'bar');
 
-        $oSearch = oxNew('Search');
-        $oSearch->init();
+        $search = oxNew('Search');
+        $search->init();
 
-        $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE'? 5 : 8;
-        $this->assertEquals($expectedCount, $oSearch->getArticleList()->count());
+        $expectedArticles = array(1126, 1127, 1131, 1142, 1351, 1849, 2080, 'd8842e3cbf9290351.59301740');
+        if ('EE' == $this->getTestConfig()->getShopEdition()) {
+            $expectedArticles = array(1126, 1849, 1876, 2080);
+        }
+
+        $result = array_keys($search->getArticleList()->getArray());
+        sort($result);
+        sort($expectedArticles);
+
+        $this->assertEquals($expectedArticles, $result);
     }
 
     public function testGetSimilarRecommListIds()

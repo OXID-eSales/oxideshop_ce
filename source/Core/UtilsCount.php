@@ -349,32 +349,6 @@ class UtilsCount extends \oxSuperCfg
     }
 
     /**
-     * Returns specified Tag article count
-     *
-     * @param string $sTag  tag to search article count
-     * @param int    $iLang language
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *                      
-     * @return int
-     */
-    public function getTagArticleCount($sTag, $iLang)
-    {
-        $oDb = oxDb::getDb();
-
-        $oArticle = oxNew("oxArticle");
-        $sArticleTable = $oArticle->getViewName();
-        $sActiveSnippet = $oArticle->getSqlActiveSnippet();
-        $sViewName = getViewName('oxartextends', $iLang);
-
-        $sQ = "select count(*) from {$sViewName} inner join {$sArticleTable} on " .
-              "{$sArticleTable}.oxid = {$sViewName}.oxid where {$sArticleTable}.oxparentid = '' and {$sArticleTable}.oxissearch = 1 AND match ( {$sViewName}.oxtags ) " .
-              "against( " . $oDb->quote("\"" . $sTag . "\"") . " IN BOOLEAN MODE ) and {$sActiveSnippet}";
-
-        return $oDb->getOne($sQ);
-    }
-
-    /**
      * Resets vendor (all vendors) article count
      *
      * @param string $sVendorId Category/vendor ID

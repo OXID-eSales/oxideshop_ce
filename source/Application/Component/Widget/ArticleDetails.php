@@ -357,26 +357,6 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Returns tag cloud manager class
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return oxTagCloud
-     */
-    public function getTagCloudManager()
-    {
-        /** @var oxArticleTagList $oTagList */
-        $oTagList = oxNew("oxArticleTagList");
-        //$oTagList->load($this->getProduct()->getId());
-        $oTagList->setArticleId($this->getProduct()->getId());
-        $oTagCloud = oxNew("oxTagCloud");
-        $oTagCloud->setTagList($oTagList);
-        $oTagCloud->setExtendedMode(true);
-
-        return $oTagCloud;
-    }
-
-    /**
      * Returns if tags can be changed, if user is logged in and
      * product exists.
      *
@@ -409,11 +389,7 @@ class ArticleDetails extends \oxWidget
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_MANUFACTURER;
-                // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-            } elseif ('tag' == $sListType) {
-                $this->_iLinkType = OXARTICLE_LINKTYPE_TAG;
-                // END deprecated
-                // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             } elseif ('recommlist' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
                 // END deprecated
@@ -1041,20 +1017,6 @@ class ArticleDetails extends \oxWidget
         }
 
         return $this->_blMdView;
-    }
-
-    /**
-     * Returns tag separator
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @return string
-     */
-    public function getTagSeparator()
-    {
-        $sSeparator = $this->getConfig()->getConfigParam("sTagSeparator");
-
-        return $sSeparator;
     }
 
     /**

@@ -104,7 +104,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxwcookienote' => '\OxidEsales\Eshop\Application\Component\Widget\CookieNote',
             'oxwlanguagelist' => '\OxidEsales\Eshop\Application\Component\Widget\LanguageList',
             'oxwrecommendation' => '\OxidEsales\Eshop\Application\Component\Widget\Recommendation',
-            'oxwtagcloud' => '\OxidEsales\Eshop\Application\Component\Widget\TagCloud',
             'oxwarticledetails' => '\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails',
             'oxwcurrencylist' => '\OxidEsales\Eshop\Application\Component\Widget\CurrencyList',
             'oxwmanufacturerlist' => '\OxidEsales\Eshop\Application\Component\Widget\ManufacturerList',
@@ -337,7 +336,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             // END deprecated
             'newsletter' => 'OxidEsales\Eshop\Application\Controller\NewsletterController',
             'pricealarm' => 'OxidEsales\Eshop\Application\Controller\PriceAlarmController',
-            'tag' => 'OxidEsales\Eshop\Application\Controller\TagController',
 
         ];
     }
@@ -458,7 +456,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxidisplayerror' => '\OxidEsales\Eshop\Core\Contract\IDisplayError',
             'oximodulevalidator' => '\OxidEsales\Eshop\Core\Contract\IModuleValidator',
             'oxiselectlist' => '\OxidEsales\Eshop\Core\Contract\ISelectList',
-            'oxitaglist' => '\OxidEsales\Eshop\Core\Contract\ITagList',
             'oxiurl' => '\OxidEsales\Eshop\Core\Contract\IUrl',
 
             'oxactionlist' => 'OxidEsales\Eshop\Application\Model\ActionList',
@@ -466,7 +463,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxaddress' => 'OxidEsales\Eshop\Application\Model\Address',
             'oxamountpricelist' => 'OxidEsales\Eshop\Application\Model\AmountPriceList',
             'oxarticlelist' => 'OxidEsales\Eshop\Application\Model\ArticleList',
-            'oxarticletaglist' => 'OxidEsales\Eshop\Application\Model\ArticleTagList',
             'oxattribute' => 'OxidEsales\Eshop\Application\Model\Attribute',
             'oxattributelist' => 'OxidEsales\Eshop\Application\Model\AttributeList',
             'oxbasket' => 'OxidEsales\Eshop\Application\Model\Basket',
@@ -532,7 +528,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxseoencodercontent' => 'OxidEsales\Eshop\Application\Model\SeoEncoderContent',
             'oxseoencodermanufacturer' => 'OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer',
             'oxseoencoderrecomm' => 'OxidEsales\Eshop\Application\Model\SeoEncoderRecomm',
-            'oxseoencodertag' => 'OxidEsales\Eshop\Application\Model\SeoEncoderTag',
             'oxseoencodervendor' => 'OxidEsales\Eshop\Application\Model\SeoEncoderVendor',
             'oxshop' => 'OxidEsales\Eshop\Application\Model\Shop',
             'oxshoplist' => 'OxidEsales\Eshop\Application\Model\ShopList',
@@ -541,10 +536,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxsimplevariantlist' => 'OxidEsales\Eshop\Application\Model\SimpleVariantList',
             'oxsmartyrenderer' => 'OxidEsales\Eshop\Application\Model\SmartyRenderer',
             'oxstate' => 'OxidEsales\Eshop\Application\Model\State',
-            'oxtag' => 'OxidEsales\Eshop\Application\Model\Tag',
-            'oxtagcloud' => 'OxidEsales\Eshop\Application\Model\TagCloud',
-            'oxtaglist' => 'OxidEsales\Eshop\Application\Model\TagList',
-            'oxtagset' => 'OxidEsales\Eshop\Application\Model\TagSet',
             'oxuser' => 'OxidEsales\Eshop\Application\Model\User',
             'oxuseraddresslist' => 'OxidEsales\Eshop\Application\Model\UserAddressList',
             'oxuserbasket' => 'OxidEsales\Eshop\Application\Model\UserBasket',

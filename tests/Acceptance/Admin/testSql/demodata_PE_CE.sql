@@ -55,24 +55,24 @@ REPLACE INTO `oxarticles` (`OXID`,    `OXSHOPID`,   `OXPARENTID`, `OXACTIVE`, `O
 #persparam
 REPLACE INTO `oxarticles` (`OXID`,  `OXSHOPID`,   `OXPARENTID`, `OXACTIVE`, `OXARTNUM`, `OXTITLE`,          `OXSHORTDESC`,     `OXPRICE`, `OXSTOCKFLAG`, `OXINSERT`,   `OXTIMESTAMP`,        `OXISSEARCH`, `OXVARMINPRICE`, `OXTITLE_1`,        `OXSHORTDESC_1`,    `OXSORT`, `OXISCONFIGURABLE`) VALUES
                          ('20016', 'oxbaseshop', '',            1,         '20016',    'perspara DE_prod', 'perspara DE_desc', 1.9,       1,            '2008-04-03', '2008-04-03 12:50:20', 1,            1.9,            'perspara EN_prod', 'perspara EN_desc',  0,       1);
-REPLACE INTO `oxartextends` (`OXID`,  `OXLONGDESC`, `OXTAGS`) VALUES
-                           ('20016', '',           '');
+REPLACE INTO `oxartextends` (`OXID`,  `OXLONGDESC`) VALUES
+                           ('20016', '');
 
 #Articles long desc
-REPLACE INTO `oxartextends` (`OXID`,   `OXLONGDESC`,                                  `OXLONGDESC_1`,                                      `OXTAGS`,              `OXTAGS_1`) VALUES
-                           ('1000',   '<p>Test product 0 long description [DE]</p>', '<p>Test product 0 long description [EN] šÄßüл</p>', 'tag_,0___,[DE],tag_', '[EN],0___,tag_,šÄßüл,tag_'),
-                           ('1001',   '<p>Test product 1 long description [DE]</p>', '<p>Test product 1 long description [EN] šÄßüл</p>', 'tag_,1___,[DE],tag_', '[EN],1___,tag_,šÄßüл,tag_'),
-                           ('1002',   '<p>Test product 2 long description [DE]</p>', '<p>Test product 2 long description [EN] šÄßüл</p>', 'tag_,2___,[DE],tag_', '[EN],2___,tag_,šÄßüл,tag_'),
-                           ('1003',   '<p>Test product 3 long description [DE]</p>', '<p>Test product 3 long description [EN] šÄßüл</p>', 'tag_,3___,[DE],tag_', '[EN],3___,tag_,šÄßüл,tag_'),
-                           ('1002-1', '',                                            '',                                                  '',                    ''),
-                           ('1002-2', '',                                            '',                                                  '',                    ''),
-                           ('10010',  '',                                            '',                                                  '',                    'tag_,šÄßüл'),
-                           ('10011',  '',                                            '',                                                  '',                    'tag_,šÄßüл'),
-                           ('10012',  '',                                            '',                                                  '',                    'tag_,šÄßüл'),
-                           ('10013',  '',                                            '',                                                  '',                    'tag_,šÄßüл'),
-                           ('10014',  '',                                            '',                                                  '',                    'tag_,šÄßüл'),
-                           ('10015',  '',                                            '',                                                  '',                    'tag_,šÄßüл'),
-                           ('10016',  '',                                            '',                                                  '',                    'tag_,šÄßüл');
+REPLACE INTO `oxartextends` (`OXID`,   `OXLONGDESC`,                                  `OXLONGDESC_1`) VALUES
+                           ('1000',   '<p>Test product 0 long description [DE]</p>', '<p>Test product 0 long description [EN] šÄßüл</p>'),
+                           ('1001',   '<p>Test product 1 long description [DE]</p>', '<p>Test product 1 long description [EN] šÄßüл</p>'),
+                           ('1002',   '<p>Test product 2 long description [DE]</p>', '<p>Test product 2 long description [EN] šÄßüл</p>'),
+                           ('1003',   '<p>Test product 3 long description [DE]</p>', '<p>Test product 3 long description [EN] šÄßüл</p>'),
+                           ('1002-1', '',                                            ''),
+                           ('1002-2', '',                                            ''),
+                           ('10010',  '',                                            ''),
+                           ('10011',  '',                                            ''),
+                           ('10012',  '',                                            ''),
+                           ('10013',  '',                                            ''),
+                           ('10014',  '',                                            ''),
+                           ('10015',  '',                                            ''),
+                           ('10016',  '',                                            '');
 
 #Attributes demodata
 REPLACE INTO `oxattribute` (`OXID`,           `OXSHOPID`,   `OXTITLE`,                     `OXTITLE_1`,                  `OXPOS`) VALUES

@@ -294,25 +294,24 @@ class DbMetaDataHandlerTest extends \OxidTestCase
 
     /**
      * Test if returned sql for creating new field indexes is correct
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
      */
     public function testGetAddFieldIndexSql()
     {
+        $this->createTestTable();
         $dbMetaDataHandler = oxNew('OxidEsales\Eshop\Core\DbMetaDataHandler');
 
         $expectedSqls = [
-            'ALTER TABLE `oxartextends` ADD FULLTEXT KEY  (`OXTAGS_4`)',
-            "ALTER TABLE `oxartextends` ADD FULLTEXT KEY  (`OXTAGS_5`)",
-            "ALTER TABLE `oxartextends_set1` ADD FULLTEXT KEY  (`OXTAGS_8`)",
-            "ALTER TABLE `oxartextends_set2` ADD FULLTEXT KEY  (`OXTAGS_20`)"
+            'ALTER TABLE `testDbMetaDataHandler` ADD FULLTEXT KEY  (`OXLONGDESC_4`)',
+            "ALTER TABLE `testDbMetaDataHandler` ADD FULLTEXT KEY  (`OXLONGDESC_5`)",
+            "ALTER TABLE `testDbMetaDataHandler_set1` ADD FULLTEXT KEY  (`OXLONGDESC_8`)",
+            "ALTER TABLE `testDbMetaDataHandler_set2` ADD FULLTEXT KEY  (`OXLONGDESC_20`)"
         ];
 
         $resultSqls = [
-            $dbMetaDataHandler->getAddFieldIndexSql("oxartextends", "OXTAGS", "OXTAGS_4"),
-            $dbMetaDataHandler->getAddFieldIndexSql("oxartextends", "OXTAGS", "OXTAGS_5"),
-            $dbMetaDataHandler->getAddFieldIndexSql("oxartextends", "OXTAGS", "OXTAGS_8", "oxartextends_set1"),
-            $dbMetaDataHandler->getAddFieldIndexSql("oxartextends", "OXTAGS", "OXTAGS_20", "oxartextends_set2")
+            $dbMetaDataHandler->getAddFieldIndexSql("testDbMetaDataHandler", "OXLONGDESC", "OXLONGDESC_4"),
+            $dbMetaDataHandler->getAddFieldIndexSql("testDbMetaDataHandler", "OXLONGDESC", "OXLONGDESC_5"),
+            $dbMetaDataHandler->getAddFieldIndexSql("testDbMetaDataHandler", "OXLONGDESC", "OXLONGDESC_8", "testDbMetaDataHandler_set1"),
+            $dbMetaDataHandler->getAddFieldIndexSql("testDbMetaDataHandler", "OXLONGDESC", "OXLONGDESC_20", "testDbMetaDataHandler_set2")
         ];
 
         foreach ($expectedSqls as $index => $value) {

@@ -24,20 +24,20 @@ INSERT INTO `oxarticles` (`OXID`,   `OXSHOPID`,   `OXPARENTID`, `OXACTIVE`, `OXA
                          ('10015',  'oxbaseshop', '',            0,         '10015',    '15 EN product šųößлы',       '14 EN description šųößлы',              2.1,       0,          0,          0,          0,         '',            0,                NULL,    0,          1,         1,            '',                     '',                         '0000-00-00', '2008-04-03', '2010-03-16 10:53:43', 0,          0,         0,         '',              1,            0,                 '',                     0,            0,           '',                 2.1,            '',              '',              '14 DE product šųößлы',         '15 DE description',              '',               '',              '',                  0,        '',                '',                 0,                  0,          0,             0,              0,             ''),
                          ('10016',  'oxbaseshop', '',            0,         '10016',    '10 EN product šųößлы',       '15 EN description šųößлы',              1.9,       0,          0,          0,          0,         '',            0,                NULL,    0,          0,         1,            '',                     '',                         '0000-00-00', '2008-04-03', '2010-03-16 10:53:43', 0,          0,         0,         '',              1,            0,                 '',                     0,            0,           '',                 1.9,            '',              '',              '15 DE product šųößлы',         '10 DE description',              '',               '',              '',                  0,        '',                '',                 0,                  0,          0,             0,              0,             '');
 
-INSERT INTO `oxartextends` (`OXID`,   `OXLONGDESC`,                                         `OXLONGDESC_1`,                                `OXTAGS`,                            `OXTAGS_1`) VALUES
-                           ('1000',   '<p>Test product 0 long description [EN] šųößлы</p>', '<p>Test product 0 long description [DE]</p>', '[EN],0___,tag_,šųößлы,šųößлы,tag_', 'tag_,0___,[DE],tag_'),
-                           ('1001',   '<p>Test product 1 long description [EN] šųößлы</p>', '<p>Test product 1 long description [DE]</p>', '[EN],1___,tag_,šųößлы,šųößлы,tag_', 'tag_,1___,[DE],tag_'),
-                           ('1002',   '<p>Test product 2 long description [EN] šųößлы</p>', '<p>Test product 2 long description [DE]</p>', '[EN],2___,tag_,šųößлы,šųößлы,tag_', 'tag_,2___,[DE],tag_'),
-                           ('1003',   '<p>Test product 3 long description [EN] šųößлы</p>', '<p>Test product 3 long description [DE]</p>', '[EN],3___,tag_,šųößлы,šųößлы,tag_', 'tag_,3___,[DE],tag_'),
-                           ('1002-1', '',                                                   '',                                            '',                                  ''),
-                           ('1002-2', '',                                                   '',                                            '',                                  ''),
-                           ('10010',  '',                                                   '',                                            'tag_,šųößлы,šųößлы',                ''),
-                           ('10011',  '',                                                   '',                                            'tag_,šųößлы,šųößлы',                ''),
-                           ('10012',  '',                                                   '',                                            'tag_,šųößлы,šųößлы',                ''),
-                           ('10013',  '',                                                   '',                                            'tag_,šųößлы,šųößлы',                ''),
-                           ('10014',  '',                                                   '',                                            'tag_,šųößлы,šųößлы',                ''),
-                           ('10015',  '',                                                   '',                                            'tag_,šųößлы,šųößлы',                ''),
-                           ('10016',  '',                                                   '',                                            'tag_,šųößлы,šųößлы',                '');
+INSERT INTO `oxartextends` (`OXID`,   `OXLONGDESC`,                                         `OXLONGDESC_1`) VALUES
+                           ('1000',   '<p>Test product 0 long description [EN] šųößлы</p>', '<p>Test product 0 long description [DE]</p>'),
+                           ('1001',   '<p>Test product 1 long description [EN] šųößлы</p>', '<p>Test product 1 long description [DE]</p>'),
+                           ('1002',   '<p>Test product 2 long description [EN] šųößлы</p>', '<p>Test product 2 long description [DE]</p>'),
+                           ('1003',   '<p>Test product 3 long description [EN] šųößлы</p>', '<p>Test product 3 long description [DE]</p>'),
+                           ('1002-1', '',                                                   ''),
+                           ('1002-2', '',                                                   ''),
+                           ('10010',  '',                                                   ''),
+                           ('10011',  '',                                                   ''),
+                           ('10012',  '',                                                   ''),
+                           ('10013',  '',                                                   ''),
+                           ('10014',  '',                                                   ''),
+                           ('10015',  '',                                                   ''),
+                           ('10016',  '',                                                   '');
 
 INSERT INTO `oxaccessoire2article` (`OXID`,                       `OXOBJECTID`, `OXARTICLENID`, `OXSORT`) VALUES
                                    ('e2647c561ffb990a8.18051802', '1002',       '1000',          0);

@@ -45,9 +45,8 @@
                                     [{assign var="sLabel" value="GENERAL_SEO_VND"|oxmultilangassign}]
                                 [{elseif $sListType == "oxmanufacturer"}]
                                     [{assign var="sLabel" value="GENERAL_SEO_MANUFACTURER"|oxmultilangassign}]
-                                [{elseif $sListType == "oxtag"}]
-                                [{assign var="oTagLang" value=$otherlang.$iLang}]
-                                    [{assign var="sLabel" value="GENERAL_SEO_TAG"|oxmultilangassign|cat:" "|cat:$oTagLang->sLangDesc}]
+                                [{block name="object_seo_extended"}]
+                                [{/block}]
                                 [{/if}]
 
                                 <optgroup label="[{$sLabel}]">
@@ -126,9 +125,8 @@
             <td class="edittext">
             </td>
             <td class="edittext"><br>
-                [{if $oView->getActCatType() == 'oxtag'}]
-                    [{assign var="custreadonly" value="readonly disabled"}]
-                [{/if}]
+                [{block name="object_seo_custreadonly"}]
+                [{/block}]
                 [{include file="language_edit.tpl" custreadonly=$custreadonly}]
             </td>
         </tr>

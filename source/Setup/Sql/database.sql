@@ -297,16 +297,8 @@ CREATE TABLE `oxartextends` (
   `OXLONGDESC_1` text NOT NULL,
   `OXLONGDESC_2` text NOT NULL,
   `OXLONGDESC_3` text NOT NULL,
-  `OXTAGS` varchar(255) NOT NULL COMMENT 'Tags (multilanguage)',
-  `OXTAGS_1` varchar(255) NOT NULL,
-  `OXTAGS_2` varchar(255) NOT NULL,
-  `OXTAGS_3` varchar(255) NOT NULL,
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
-  PRIMARY KEY  (`OXID`),
-  FULLTEXT KEY `OXTAGS`   (`OXTAGS`),
-  FULLTEXT KEY `OXTAGS_1` (`OXTAGS_1`),
-  FULLTEXT KEY `OXTAGS_2` (`OXTAGS_2`),
-  FULLTEXT KEY `OXTAGS_3` (`OXTAGS_3`)
+  PRIMARY KEY  (`OXID`)
 ) ENGINE=MyISAM COMMENT 'Additional information for articles';
 
 #
@@ -471,7 +463,7 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('4994145b9e87481c5.69580772', 'oxbaseshop', '', 'aSortCols', 'arr', 0x4dba832f74e74df4cdd5af631238e7040fc97a18cf6cb28fd522f05ae28cf374f04ceeb7bd886eb10ac36ba86043beb02e),
 ('4994145b9e8736eb6.03785000', 'oxbaseshop', '', 'iTop5Mode', 'str', 0x07),
 ('4994145b9e8678993.26056670', 'oxbaseshop', '', 'blShowSorting', 'bool', 0x07),
-('a104164f96fa51c41.58873414', 'oxbaseshop', '', 'aSearchCols', 'arr', 0x4dba682873e04af3cad2a864153fe00308ce7d1fc86bb588d225f75de58b4371f549ebf5f054a8aa5d72ff4f9b5bb590240b14921d5f21962f67c7bd29417e61149f025b96cdf815d975cc85278913ee4b505bdfea13af328807c5ddd68d655b20d74de1e812236ebd97ee),
+('a104164f96fa51c41.58873414', 'oxbaseshop', '', 'aSearchCols', 'arr', 0x4dbace2972e14bf2cbd3a965143ee10209cf7c1ec96ab489d324f65ce48a4270f448eaf4f155a9ab5c73fe4e9a5ab491250a15931c5e20972e66c6bc28407f60159e035a97ccf914d874cd84268812ef4a515adeeb12ae33896e),
 ('d144175015dcd2a39.15131643', 'oxbaseshop', '', 'aHomeCountry', 'arr', 0x4dba322c77e44ef7ced6aca1f357003cad231d1d78fe80070841979cd58fd7eca88459d4cb9ce3b72a2804d5),
 ('ce143201f7e03e110.09792514', 'oxbaseshop', '', 'aMustFillFields', 'arr', 0x4dba322775d460d7927733e9e5fb6bf2ef688abcc84baef2405f16b906eec019f3a63b927c45a833864604543fe611a86d4a9f4027235e1a3f8572bfe00be3f1f0efee2efcc915c759d77d9270c9fef10bc707cdf5bc1a299c3795b96e0b85d032c55ff31364daf0e7a37ec5362cfdfb60e2de223e8160c91b08887f22196bfa2abae5f5d862fb1d0a7e35b2ceaf862088ab34b7029b1d598e61c436d21111682cf3442e4f9f16b936b1cdc085ed0dbda4b996a2a573c0aa47d3fb73ab13d4193b4d32c87bf9994e175f864102872ef2535d5d3df359ca2b25d26640038bbe74de0c8e2ef4b4c4e887afc4d889da38c63bf1c13c57a5c8d3f66a0615e155e4c3ec6dc279693b96e5b04004171fca59cb133027c34a309d9393736914ba027d21fa8ef1b9c79ec170ffa1a2bbf4746175c0e04b9cff68ae4f2875973518b9b1abc64f8e940d42183ed4ec6e1d285b2503869374d82727fae6f33ef4dd71c52de6bf9e460837768460a9fe62570ba2f75e83fd21be7e0c8fb78106e713d0e2e79fd19f04304989166dda296361a897ad15cc9f11db0566c70e968282da76ebb76fef0409f0),
 ('79e417a3916b910c8.31517473', 'oxbaseshop', '', 'bl_perfLoadAktion', 'bool', 0x07),
@@ -528,7 +520,6 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('fd7a064bbb64466f8e6ba847902b2005', 'oxbaseshop', '', 'sShopCountry', 'str', ''),
 ('44bcd90bd1d059.053753111', 'oxbaseshop', '', 'sTagList', 'str', 0x071d33336bce8dbe0606),
 ('603a1a28ff2a421b64c631ffaf97f324', 'oxbaseshop', '', 'sGiCsvFieldEncloser', 'str', 0x95),
-('591e3b6358fc5c87a6cb81c3f79787bc', 'oxbaseshop', '', 'sTagSeparator', 'str', 0xc9),
 ('9135a582a6971656110b9a98ca5be6d2', 'oxbaseshop', '', 'blShippingCountryVat', 'bool', ''),
 ('7a59f9000f39e5d9549a5d1e29c076a0', 'oxbaseshop', '', 'blUseMultidimensionVariants', 'bool', 0x07),
 ('7a59f9000f39e5d9549a5d1e29c076a2', 'oxbaseshop', '', 'blOrderOptInEmail', 'bool', 0x07),
@@ -536,7 +527,6 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('bd320d322fa2f638086787c512329eec', 'oxbaseshop', '', 'dPointsForRegistration', 'str', 0x07c4),
 ('99065ff58e9d2c1b2e362e54c0bb54f3', 'oxbaseshop', '', 'blNewArtByInsert', 'bool', 0x07),
 ('rgk2a8c9cf8c9d23b3a7c8e9c090baf1', 'oxbaseshop', '', 'sTheme', 'str', 0x4db70f6d1a),
-('8563fba1c39367724.92308656123456', 'oxbaseshop', '', 'blShowTags', 'bool', 0x07),
 ('8563fba1c39367724.92308656123111', 'oxbaseshop', '', 'sDownloadsDir', 'str', 0x603ee70d5409aee3c7d241d291),
 ('5i1c49faf83b3fe3d6bdbfa301e2704d', 'oxbaseshop', '', 'iLinkExpirationTime', 'str', 0x070de9),
 ('5i1d215fe1d6f0e1061ba1134e0ee4f2', 'oxbaseshop', '', 'iDownloadExpirationTime', 'str', 0xb6e2),
@@ -2086,7 +2076,6 @@ INSERT INTO `oxseo` (`OXOBJECTID`, `OXIDENT`, `OXSHOPID`, `OXLANG`, `OXSTDURL`, 
 ('0563ce7f6a400737ce0e1c2b2c733e49', '5cc081514a72b0ce3d7eec4fb1e6f1dd', 'oxbaseshop', 1, 'index.php?cl=forgotpwd', 'en/forgot-password/', 'static', 0, 0, ''),
 ('f6bd7f77caae70afad276584caa6450a', '5d752e9e8302eeb21df24d1aee573234', 'oxbaseshop', 0, 'index.php?cl=wishlist', 'wunschzettel/', 'static', 0, 0, ''),
 ('6d9b5b3ee58bca1bd7be188f71e80ef2', '5eb126725ba500e6bbf1aecaa876dc48', 'oxbaseshop', 1, 'index.php?cl=review', 'en/product-review/', 'static', 0, 0, ''),
-('57cb6b2fafc870810cd48b8e1d28cf91', '63794023f46c56d329e2ee6a1462e8c2', 'oxbaseshop', 0, 'index.php?cl=tags', 'stichworte/', 'static', 0, 0, ''),
 ('56ebd65f4a7cc25de1dc1f7cf15591fb', '637daadf1eaad2b9641333c2b1572883', 'oxbaseshop', 0, 'index.php?cl=news', 'news/', 'static', 0, 0, ''),
 ('f560b18b547bca23752a154b45120980', '6b30b01fe01b80894efc0f29610e5215', 'oxbaseshop', 0, 'index.php?cl=account_password', 'mein-passwort/', 'static', 0, 0, ''),
 ('f560b18b547bca23752a154b45120980', '6c890ac1255a99f8d1eb46f1193843d6', 'oxbaseshop', 1, 'index.php?cl=account_password', 'en/my-password/', 'static', 0, 0, ''),
@@ -2112,7 +2101,6 @@ INSERT INTO `oxseo` (`OXOBJECTID`, `OXIDENT`, `OXSHOPID`, `OXLANG`, `OXSTDURL`, 
 ('882acc7454f973844d4917515181dcba', 'c74bbaf961498de897ba7eb98fea8274', 'oxbaseshop', 1, 'index.php?cl=account_downloads', 'en/my-downloads/', 'static', 0, 0, ''),
 ('6d9b5b3ee58bca1bd7be188f71e80ef2', 'cc28156a4f728c1b33e7e02fd846628e', 'oxbaseshop', 0, 'index.php?cl=review', 'bewertungen/', 'static', 0, 0, ''),
 ('ab459c0dc911137e9cc024d9fba5a68b', 'ccca27059506a916fb64d673a5dd676b', 'oxbaseshop', 0, 'index.php?cl=start', 'startseite/', 'static', 0, 0, ''),
-('57cb6b2fafc870810cd48b8e1d28cf91', 'da6c5523f7c91d108cadb0be7757c27f', 'oxbaseshop', 1, 'index.php?cl=tags', 'en/tags/', 'static', 0, 0, ''),
 ('057ef382f23bdbb84991d049af2baba9', 'e0dd29a75947539da6b1924d31c9849f', 'oxbaseshop', 0, 'index.php?cl=compare', 'mein-produktvergleich/', 'static', 0, 0, ''),
 ('56ebd65f4a7cc25de1dc1f7cf15591fb', 'e5a8de0e49e91c5728eadfcb233bdbd1', 'oxbaseshop', 1, 'index.php?cl=news', 'en/news/', 'static', 0, 0, ''),
 ('e56acdd347b0516f68a0afdd811e2382', 'e604233c5a2804d21ec0252a445e93d3', 'oxbaseshop', 0, 'index.php?cl=newsletter', 'newsletter/', 'static', 0, 0, ''),
@@ -2595,8 +2583,8 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxarticles_de AS SELECT OXID,OXS
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxarticles_en AS SELECT OXID,OXSHOPID,OXPARENTID,OXACTIVE,OXHIDDEN,OXACTIVEFROM,OXACTIVETO,OXARTNUM,OXEAN,OXDISTEAN,OXMPN,OXTITLE_1 AS OXTITLE,OXSHORTDESC_1 AS OXSHORTDESC,OXPRICE,OXBLFIXEDPRICE,OXPRICEA,OXPRICEB,OXPRICEC,OXBPRICE,OXTPRICE,OXUNITNAME,OXUNITQUANTITY,OXEXTURL,OXURLDESC_1 AS OXURLDESC,OXURLIMG,OXVAT,OXTHUMB,OXICON,OXPIC1,OXPIC2,OXPIC3,OXPIC4,OXPIC5,OXPIC6,OXPIC7,OXPIC8,OXPIC9,OXPIC10,OXPIC11,OXPIC12,OXWEIGHT,OXSTOCK,OXSTOCKFLAG,OXSTOCKTEXT_1 AS OXSTOCKTEXT,OXNOSTOCKTEXT_1 AS OXNOSTOCKTEXT,OXDELIVERY,OXINSERT,OXTIMESTAMP,OXLENGTH,OXWIDTH,OXHEIGHT,OXFILE,OXSEARCHKEYS_1 AS OXSEARCHKEYS,OXTEMPLATE,OXQUESTIONEMAIL,OXISSEARCH,OXISCONFIGURABLE,OXVARNAME_1 AS OXVARNAME,OXVARSTOCK,OXVARCOUNT,OXVARSELECT_1 AS OXVARSELECT,OXVARMINPRICE,OXVARMAXPRICE,OXBUNDLEID,OXFOLDER,OXSUBCLASS,OXSORT,OXSOLDAMOUNT,OXNONMATERIAL,OXFREESHIPPING,OXREMINDACTIVE,OXREMINDAMOUNT,OXAMITEMID,OXAMTASKID,OXVENDORID,OXMANUFACTURERID,OXSKIPDISCOUNTS,OXRATING,OXRATINGCNT,OXMINDELTIME,OXMAXDELTIME,OXDELTIMEUNIT,OXUPDATEPRICE, OXUPDATEPRICEA, OXUPDATEPRICEB, OXUPDATEPRICEC, OXUPDATEPRICETIME, OXISDOWNLOADABLE, OXSHOWCUSTOMAGREEMENT FROM oxarticles;
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxartextends AS SELECT oxartextends.* FROM oxartextends;
-CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxartextends_de AS SELECT OXID,OXLONGDESC,OXTAGS,OXTIMESTAMP FROM oxartextends;
-CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxartextends_en AS SELECT OXID,OXLONGDESC_1 AS OXLONGDESC,OXTAGS_1 AS OXTAGS,OXTIMESTAMP FROM oxartextends;
+CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxartextends_de AS SELECT OXID,OXLONGDESC,OXTIMESTAMP FROM oxartextends;
+CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxartextends_en AS SELECT OXID,OXLONGDESC_1 AS OXLONGDESC,OXTIMESTAMP FROM oxartextends;
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxattribute AS SELECT oxattribute.* FROM oxattribute;
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxattribute_de AS SELECT OXID,OXSHOPID,OXTITLE,OXPOS,OXTIMESTAMP, OXDISPLAYINBASKET FROM oxattribute;

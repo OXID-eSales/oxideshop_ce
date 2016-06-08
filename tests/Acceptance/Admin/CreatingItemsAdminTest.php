@@ -940,10 +940,8 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->type("editval[oxarticles__oxpricec]", "1.3");
         $this->type("editval[oxarticles__oxvat]", "4");
         $this->select("art_category", "label=Test category 0 [EN] šÄßüл");
-        $this->assertEquals("", $this->getValue("editval[tags]"));
         $this->assertEquals("", $this->getValue("editval[oxarticles__oxean]"));
         $this->assertEquals("", $this->getValue("editval[oxarticles__oxdistean]"));
-        $this->type("editval[tags]", "create_delete_tag_[EN]_šäßüл+-><()~*\\',[]{};:./|!@#$%^&?=`");
         $this->type("editval[oxarticles__oxean]", "EAN_šÄßüл");
         $this->type("editval[oxarticles__oxdistean]", "vendor EAN_ßÄ");
         $this->assertEquals("", $this->getEditorValue("oxarticles__oxlongdesc"));
@@ -963,7 +961,6 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("1.2", $this->getValue("editval[oxarticles__oxpriceb]"));
         $this->assertEquals("1.3", $this->getValue("editval[oxarticles__oxpricec]"));
         $this->assertEquals("4", $this->getValue("editval[oxarticles__oxvat]"));
-        $this->assertEquals("create_delete_tag_ en _šäßüл", $this->getValue("editval[tags]"));
         $this->assertEquals("EAN_šÄßüл", $this->getValue("editval[oxarticles__oxean]"));
         $this->assertEquals("vendor EAN_ßÄ", $this->getValue("editval[oxarticles__oxdistean]"));
         $this->assertEquals("long desc [EN]_šÄßüл", $this->getEditorValue("oxarticles__oxlongdesc"));
@@ -986,7 +983,6 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->type("editval[oxarticles__oxpriceb]", "1.21");
         $this->type("editval[oxarticles__oxpricec]", "1.31");
         $this->type("editval[oxarticles__oxvat]", "4.5");
-        $this->type("editval[tags]", "create_delete_tag_[DE]");
         $this->typeToEditor("oxarticles__oxlongdesc", "long desc [DE]");
         $this->clickAndWaitFrame("//input[@value='Save']", "list");
 
@@ -1003,7 +999,6 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("1.21", $this->getValue("editval[oxarticles__oxpriceb]"));
         $this->assertEquals("1.31", $this->getValue("editval[oxarticles__oxpricec]"));
         $this->assertEquals("4.5", $this->getValue("editval[oxarticles__oxvat]"));
-        $this->assertEquals("create_delete_tag_ en _šäßüл", $this->getValue("editval[tags]"));
         $this->assertEquals("EAN_šÄßüл", $this->getValue("editval[oxarticles__oxean]"));
         $this->assertEquals("vendor EAN_ßÄ", $this->getValue("editval[oxarticles__oxdistean]"));
         $this->assertEquals("long desc [EN]_šÄßüл", $this->getEditorValue("oxarticles__oxlongdesc"));
@@ -1022,7 +1017,6 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("1.21", $this->getValue("editval[oxarticles__oxpriceb]"));
         $this->assertEquals("1.31", $this->getValue("editval[oxarticles__oxpricec]"));
         $this->assertEquals("4.5", $this->getValue("editval[oxarticles__oxvat]"));
-        $this->assertEquals("create_delete_tag_ de", $this->getValue("editval[tags]"));
         $this->assertEquals("EAN_šÄßüл", $this->getValue("editval[oxarticles__oxean]"));
         $this->assertEquals("vendor EAN_ßÄ", $this->getValue("editval[oxarticles__oxdistean]"));
         $this->assertEquals("long desc [DE]", $this->getEditorValue("oxarticles__oxlongdesc"));
@@ -1183,7 +1177,6 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->type("editval[oxarticles__oxpricec]", "1.31");
         $this->type("editval[oxarticles__oxvat]", "4.5");
         $this->select("art_category", "label=Test category 0 [EN] šÄßüл");
-        $this->type("editval[tags]", "create_delete_tag_[EN]_šäßüл");
         $this->type("editval[oxarticles__oxean]", "EAN_Äß");
         $this->type("editval[oxarticles__oxdistean]", "vendor EAN_Äß");
         $this->clickAndWaitFrame("saveArticle", "list");
@@ -1192,9 +1185,8 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->type("editval[oxarticles__oxtitle]", "create_delete product [DE]");
         $this->type("editval[oxarticles__oxshortdesc]", "create_delete short desc [DE]");
         $this->type("editval[oxarticles__oxsearchkeys]", "search [DE]");
-        $this->type("editval[tags]", "create_delete_tag_[DE]");
         $this->clickAndWaitFrame("saveArticle", "list");
-        $this->selectAndWait("test_editlanguage", "label=English", "editval[tags]");
+        $this->selectAndWait("test_editlanguage", "label=English");
         //Extended tab
         $this->frame("list");
         $this->openListItem("link=Extended", "editval[oxarticles__oxweight]");

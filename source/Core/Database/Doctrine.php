@@ -266,7 +266,7 @@ class Doctrine implements DatabaseInterface
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
 
-        if ($this->isSelectStatement($sqlSelect)) {
+        if ($this->doesStatementProduceOutput($sqlSelect)) {
             return $this->getConnection()->fetchColumn($sqlSelect, $parameters);
         }
 
@@ -330,11 +330,11 @@ class Doctrine implements DatabaseInterface
      *
      * @return string
      */
-    public function quoteIdentifier($value) 
+    public function quoteIdentifier($value)
     {
         return $this->getConnection()->quoteIdentifier(trim($value, $this->getConnection()->getDatabasePlatform()->getIdentifierQuoteCharacter()));
     }
-    
+
     /**
      * Quote the given string. Same as qstr.
      *
@@ -469,7 +469,7 @@ class Doctrine implements DatabaseInterface
          * - DoctrineResultSet for "SELECT"
          * - DoctrineEmptyResultSet for the rest of queries
          */
-        if ($this->isSelectStatement($query)) {
+        if ($this->doesStatementProduceOutput($query)) {
             /** @var DoctrineResultSet $result */
             $result = $this->select($query, $parameters);
         } else {
@@ -579,7 +579,7 @@ class Doctrine implements DatabaseInterface
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
-        
+
         try{
             $rows = $this->getConnection()->fetchAll($sqlSelect, $parameters);
             $result = array();
@@ -603,7 +603,7 @@ class Doctrine implements DatabaseInterface
 
     /**
      * @todo Make this method part of the DatabaseInterface in v6.0.
-     * 
+     *
      * Closes an open connection
      */
     public function closeConnection()
@@ -707,19 +707,53 @@ class Doctrine implements DatabaseInterface
     }
 
     /**
-     * Check, if the given sql query is a select statement. We handle 'show' as a select statement.
+     * Return true, if the given SQL statement is a statement that may produce any output.
      *
-     * @todo It is not safe to have comments at the beginning of the query string.
+     * There are two classes of SQL statements.
+     * One class produces output like
+     * "SELECT * FROM `countries` ORDER BY `iso_code`DESC"
+     * Which returns something like:
+     * +----------+----------------------------------------+
+     * | iso_code | name                                   |
+     * +----------+----------------------------------------+
+     * | AF       | Afghanistan                            |
+     * | AL       | Albania                                |
+     * | AS       | American Samoa                         |
+     *
+     * The other class does not produce any output like
+     * "UPDATE countries SET (`name` = 'United States of America') WHERE iso_code = 'US'"
      *
      * @param string $query The query we want to check.
      *
-     * @return bool Is the given query a select statement?
+     * @return bool Return true, if the given SQL statement is a statement that may produce any output
      */
-    private function isSelectStatement($query)
+    private function doesStatementProduceOutput($query)
     {
-        $formedQuery = strtoupper(trim($query));
+        $allowedCommands = [
+            // Data Manipulation Statements
+            'SELECT',
+            // Commands for Prepared Statements
+            'EXECUTE',
+            // Statements for Condition Handling
+            'GET',
+            // Database Administration Statements
+            'SHOW',
+            'CHECKSUM',
+            // MySQL Utility Statements
+            'DESCRIBE',
+            'EXPLAIN',
+            'HELP',
+        ];
+        $sqlComments = '@(([\'"]).*?[^\\\]\2)|((?:\#|--).*?$|/\*(?:[^/*]|/(?!\*)|\*(?!/)|(?R))*\*\/)\s*|(?<=;)\s+@ms';
+        $uncommentedQuery = preg_replace($sqlComments, '$1', $query);
 
-        return (0 === strpos($formedQuery, 'SELECT') || 0 === strpos($formedQuery, 'SHOW'));
+        $command = strtoupper(
+            trim(
+                explode(' ', trim($uncommentedQuery))[0]
+            )
+        );
+
+        return in_array($command, $allowedCommands);
     }
 
     /**
@@ -835,7 +869,7 @@ class Doctrine implements DatabaseInterface
         }
 
 
-        if ($this->isSelectStatement($sqlSelect)) {
+        if ($this->doesStatementProduceOutput($sqlSelect)) {
             $result = $statement->fetchAll();
         }
 
@@ -1028,7 +1062,7 @@ class Doctrine implements DatabaseInterface
         /** @var string $mySqlType E.g. "CHAR(4)" or "DECIMAL(5,2)" or "tinyint(1) unsigned" */
         $mySqlType = $this->getMetaColumnValueByKey($column, 'Type');
         /** Get the maximum display width for the type */
-        
+
         /** Match Precision an scale E.g DECIMAL(5,2) */
         if (preg_match("/^(.+)\((\d+),(\d+)/", $mySqlType, $matches)) {
             if (is_numeric($matches[2])) {

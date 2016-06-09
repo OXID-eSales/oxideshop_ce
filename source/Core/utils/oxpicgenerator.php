@@ -165,18 +165,7 @@ if (!function_exists("resizeGif")) {
             list($iNewWidth, $iNewHeight) = $aResult;
             $hDestinationImage = ($iGDVer == 1) ? imagecreate($iNewWidth, $iNewHeight) : imagecreatetruecolor($iNewWidth, $iNewHeight);
             // Correction for Bug:6291 - When the source is not in GIF format, imagecreatefromgif will not work.
-            $sSrcType = preg_replace("/.*\.(png|jp(e)?g|gif)$/", "\\1", $sSrc);
-            switch ($sSrcType) {
-                case "png":
-                    $hSourceImage = imagecreatefrompng($sSrc);
-                    break;
-                case "jpg":
-                    $hSourceImage = imagecreatefromjpeg($sSrc);
-                    break;
-                case "gif":
-                    $hSourceImage = imagecreatefromgif($sSrc);
-                    break;
-            }
+            $hSourceImage = imagecreatefromfile($sSrc);
             $iTransparentColor = imagecolorresolve($hSourceImage, 255, 255, 255);
             $iFillColor = imagecolorresolve($hDestinationImage, 255, 255, 255);
             imagefill($hDestinationImage, 0, 0, $iFillColor);
@@ -221,18 +210,7 @@ if (!function_exists("resizePng")) {
                 $hDestinationImage = $iGdVer == 1 ? imagecreate($iNewWidth, $iNewHeight) : imagecreatetruecolor($iNewWidth, $iNewHeight);
             }
             // Correction for Bug:6291 - When the source is not in PNG format, imagecreatefrompng will not work.
-            $sSrcType = preg_replace("/.*\.(png|jp(e)?g|gif)$/", "\\1", $sSrc);
-            switch ($sSrcType) {
-                case "png":
-                    $hSourceImage = imagecreatefrompng($sSrc);
-                    break;
-                case "jpg":
-                    $hSourceImage = imagecreatefromjpeg($sSrc);
-                    break;
-                case "gif":
-                    $hSourceImage = imagecreatefromgif($sSrc);
-                    break;
-            }
+            $hSourceImage = imagecreatefromfile($sSrc);
             if (!imageistruecolor($hSourceImage)) {
                 $hDestinationImage = imagecreate($iNewWidth, $iNewHeight);
                 // fix for transparent images sets image to transparent
@@ -280,7 +258,7 @@ if (!function_exists("resizeJpeg")) {
             if ($hDestinationImage === null) {
                 $hDestinationImage = $iGdVer == 1 ? imagecreate($iNewWidth, $iNewHeight) : imagecreatetruecolor($iNewWidth, $iNewHeight);
             }
-            $hSourceImage = imagecreatefromjpeg($sSrc);
+            $hSourceImage = imagecreatefromfile($sSrc);
             if (copyAlteredImage($hDestinationImage, $hSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer)) {
                 imagejpeg($hDestinationImage, $sTarget, $iDefQuality);
                 imagedestroy($hDestinationImage);
@@ -289,5 +267,26 @@ if (!function_exists("resizeJpeg")) {
         }
 
         return makeReadable($sTarget);
+    }
+}
+if (!function_exists("imagecreatefromfile")) {
+    /**
+     * reads image
+     * @returns
+     */
+    function imagecreatefromfile($src) {
+        $sSrcType = preg_replace("/.*\.(png|jp(e)?g|gif)$/", "\\1", $sSrc);
+        switch ($sSrcType) {
+            case "png":
+                $hSourceImage = imagecreatefrompng($sSrc);
+                break;
+            case "jpg":
+                $hSourceImage = imagecreatefromjpeg($sSrc);
+                break;
+            case "gif":
+                $hSourceImage = imagecreatefromgif($sSrc);
+                break;
+            }
+            return $hSourceImage;
     }
 }

@@ -100,8 +100,8 @@ class Unit_Admin_DiscountArticlesAjaxTest extends OxidTestCase
     {
         $sOxid = '_testOxid';
         $sSynchoxid = '_testSynchoxid';
-        $this->setRequestParameter("oxid", $sOxid);
-        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParam("oxid", $sOxid);
+        $this->setRequestParam("synchoxid", $sSynchoxid);
         $this->setConfigParam('blVariantParentBuyable', true);
         $sArticleTable = getViewName("oxarticles");
         $sO2CView = getViewName("oxobject2category");
@@ -141,7 +141,7 @@ class Unit_Admin_DiscountArticlesAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxidParentIsBuyable()
     {
         $sSynchoxid = '_testSynchoxid';
-        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParam("synchoxid", $sSynchoxid);
         $this->setConfigParam('blVariantParentBuyable', true);
         $sArticleTable = getViewName("oxarticles");
 
@@ -232,8 +232,8 @@ class Unit_Admin_DiscountArticlesAjaxTest extends OxidTestCase
     public function testAddDiscArtAllParentIsBuyable()
     {
         $sSynchoxid = '_testDiscountNewParentIsBuyable';
-        $this->setRequestParameter("synchoxid", $sSynchoxid);
-        $this->setRequestParameter("all", true);
+        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $this->setRequestParam("all", true);
         $this->setConfigParam('blVariantParentBuyable', true);
 
         $iCount = oxDb::getDb()->getOne("select count(oxid) from oxarticles where oxparentid = ''");

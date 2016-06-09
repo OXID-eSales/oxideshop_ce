@@ -1071,12 +1071,12 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
      */
     public function testGetVarSelectKeepsZeroAsValue()
     {
-        $article = $this->createArticle();
-        $article->oxarticles__oxvarselect = new oxField('0', oxField::T_RAW);
-        $article->save();
+        $this->oArticle->oxarticles__oxvarselect = new oxField('0', oxField::T_RAW);
+        $this->oArticle->save();
+        $this->oArticle->save();
         $oBasketItem = $this->getMock('oxbasketitem', array('getArticle'));
-        $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($article));
-        $oBasketItem->UNITsetArticle($article->getId());
+        $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->oArticle));
+        $oBasketItem->UNITsetArticle($this->oArticle->getId());
 
         $this->assertEquals("0", $oBasketItem->getVarSelect());
     }

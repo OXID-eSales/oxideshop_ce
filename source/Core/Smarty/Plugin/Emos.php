@@ -39,6 +39,8 @@
  * $Id$
  */
 
+namespace OxidEsales\Eshop\Core\Smarty\Plugin;
+
 /**
  * PHP Helper Class to construct a ECONDA Monitor statement for the later
  * inclusion in a HTML/PHP Page.
@@ -693,7 +695,7 @@ class Emos
  *	A shopping cart / basket is a simple Array[] of EMOS items.
  *	Convert your cart to a Array of EMOS_Items and your job is nearly done.
  */
-class EMOS_Item
+class EmosItem
 {
     /**
      * unique Identifier of a product e.g. article number

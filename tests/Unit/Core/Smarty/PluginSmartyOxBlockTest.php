@@ -26,7 +26,12 @@ use \oxException;
 use \oxRegistry;
 use \oxTestModules;
 
-require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'Core/Smarty/Plugin/prefilter.oxblock.php';
+$filePath = oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'Core/Smarty/Plugin/prefilter.oxblock.php';
+if (file_exists($filePath)) {
+    require_once $filePath;
+} else {
+    require_once dirname(__FILE__) . '/../../../../source/Core/Smarty/Plugin/prefilter.oxblock.php';
+}
 
 class PluginSmartyOxBlockTest extends \OxidTestCase
 {
@@ -79,7 +84,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
                 ->with(
                         $this->equalTo('block tags mismatch (or there are more than 500 blocks in one file).'),
                         $this->equalTo(E_USER_ERROR),
-                        $this->equalTo(realpath($this->getConfig()->getConfigParam( 'sShopDir' ).'Core/Smarty/Plugin/prefilter.oxblock.php')),
+                        $this->equalTo(realpath($this->getProfilterPluginPath())),
                         $this->greaterThan(75)
                 )
                 ->will($this->throwException(new oxException('ok')));
@@ -373,6 +378,19 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
                 $oSmartyCompiler
             )
         );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getProfilterPluginPath()
+    {
+        $filePath = $this->getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/prefilter.oxblock.php';
+        if (!file_exists($filePath)) {
+            $filePath = dirname(__FILE__) . '/../../../../source/Core/Smarty/Plugin/prefilter.oxblock.php';
+            return $filePath;
+        }
+        return $filePath;
     }
 
 }

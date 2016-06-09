@@ -21,10 +21,8 @@
  */
 namespace Unit\Core\Smarty;
 
-use \EMOS;
+use OxidEsales\Eshop\Core\Smarty\Plugin\Emos;
 use \stdClass;
-
-require_once getShopBasePath() . '/Core/Smarty/Plugin/emos.php';
 
 /**
  * Exposes protected methods for EMOS class
@@ -32,7 +30,7 @@ require_once getShopBasePath() . '/Core/Smarty/Plugin/emos.php';
  * @author Tomas Liubinas
  *
  */
-class EmosHelper extends EMOS
+class EmosHelper extends Emos
 {
 
     /**
@@ -171,7 +169,7 @@ class EmosTest extends \OxidTestCase
      */
     public function testToString()
     {
-        $oEmos = new EMOS("xxx", "yyy");
+        $oEmos = new Emos("xxx", "yyy");
         //$oEmos->appendPreScript( 'pre' );
         //$oEmos->appendPostScript( 'post' );
         //$oEmos->jsFormatPrescript = "__JSPreScript__";

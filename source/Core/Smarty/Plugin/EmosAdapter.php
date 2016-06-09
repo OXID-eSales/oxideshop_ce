@@ -37,12 +37,12 @@
  *  $Id$
  */
 
-use OxidEsales\Eshop\Application\Controller\ContentController;
+namespace OxidEsales\Eshop\Core\Smarty\Plugin;
 
-/**
- * Includes emos script formatter class
- */
-require_once __DIR__ . '/emos.php';
+use oxDb;
+use OxidEsales\Eshop\Application\Controller\ContentController;
+use oxRegistry;
+use oxSuperCfg;
 
 /**
  * This class is a reference implementation of a PHP Function to include
@@ -51,7 +51,7 @@ require_once __DIR__ . '/emos.php';
  * The smarty tempaltes should include s tag like
  * [{insert name="oxid_tracker" title=$template_title}]
  */
-class oxEmosAdapter extends oxSuperCfg
+class EmosAdapter extends oxSuperCfg
 {
     /**
      * Current view category path
@@ -193,7 +193,7 @@ class oxEmosAdapter extends oxSuperCfg
      */
     protected function _getNewEmosItem()
     {
-        return new EMOS_Item();
+        return new EmosItem();
     }
 
     /**

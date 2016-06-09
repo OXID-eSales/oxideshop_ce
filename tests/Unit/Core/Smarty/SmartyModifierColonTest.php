@@ -23,7 +23,12 @@ namespace Unit\Core\Smarty;
 
 use \oxRegistry;
 
-require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/modifier.colon.php';
+$filePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/modifier.colon.php';
+if (file_exists($filePath)) {
+    require_once $filePath;
+} else {
+    require_once dirname(__FILE__) . '/../../../../source/Core/Smarty/Plugin/modifier.colon.php';
+}
 
 class SmartyModifierColonTest extends \OxidTestCase
 {

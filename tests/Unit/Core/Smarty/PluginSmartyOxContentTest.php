@@ -27,7 +27,12 @@ use \stdClass;
 use \oxRegistry;
 use \oxTestModules;
 
-require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxcontent.php';
+$filePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxcontent.php';
+if (file_exists($filePath)) {
+    require_once $filePath;
+} else {
+    require_once dirname(__FILE__) . '/../../../../source/Core/Smarty/Plugin/function.oxcontent.php';
+}
 
 class PluginSmartyOxContentTest extends \OxidTestCase
 {

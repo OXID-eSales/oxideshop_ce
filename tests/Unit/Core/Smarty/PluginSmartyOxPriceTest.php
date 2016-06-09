@@ -22,11 +22,17 @@
 namespace Unit\Core\Smarty;
 
 use OxidEsales\Eshop\Core\Registry;
+use oxRegistry;
 use \stdClass;
 use \oxPrice;
 use \Smarty;
 
-require_once Registry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxprice.php';
+$filePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxprice.php';
+if (file_exists($filePath)) {
+    require_once $filePath;
+} else {
+    require_once dirname(__FILE__) . '/../../../../source/Core/Smarty/Plugin/function.oxprice.php';
+}
 
 class PluginSmartyOxPriceTest extends \OxidTestCase
 {

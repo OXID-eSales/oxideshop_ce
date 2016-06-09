@@ -85,6 +85,9 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxutilsxml' => '\OxidEsales\Eshop\Core\UtilsXml',
             'oxviewconfig' => '\OxidEsales\Eshop\Core\ViewConfig',
             'oxwidgetcontrol' => '\OxidEsales\Eshop\Core\WidgetControl',
+            'emos' => 'OxidEsales\Eshop\Core\Smarty\Plugin\Emos',
+            'emos_item' => 'OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem',
+            'oxemosadapter' => 'OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter',
 
             'manufacturerlist' => '\OxidEsales\Eshop\Application\Controller\ManufacturerListController',
             'review' => '\OxidEsales\Eshop\Application\Controller\ReviewController',
@@ -107,7 +110,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxwmanufacturerlist' => '\OxidEsales\Eshop\Application\Component\Widget\ManufacturerList',
             'oxwreview' => '\OxidEsales\Eshop\Application\Component\Widget\Review',
             'oxwvendorlist' => '\OxidEsales\Eshop\Application\Component\Widget\VendorList',
-            'oxwbetanote' => '\OxidEsales\Eshop\Application\Component\Widget\BetaNote',
             'oxwidget' => '\OxidEsales\Eshop\Application\Component\Widget\Widget',
             'oxwminibasket' => '\OxidEsales\Eshop\Application\Component\Widget\MiniBasket',
             'oxwservicelist' => '\OxidEsales\Eshop\Application\Component\Widget\ServiceList',
@@ -125,7 +127,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'account_user' => '\OxidEsales\Eshop\Application\Controller\AccountUserController',
             'account_wishlist' => '\OxidEsales\Eshop\Application\Controller\AccountWishlistController',
 
-            'vendor_main' => 'OxidEsales\Eshop\Application\Controller\Admin\VendorMain',
             'vendor_main' => 'OxidEsales\Eshop\Application\Controller\Admin\VendorMain',
             'vendor_main_ajax' => 'OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax',
             'vendor_seo' => 'OxidEsales\Eshop\Application\Controller\Admin\VendorSeo',
@@ -340,7 +341,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
     {
         return [
             'oxbase' => '\OxidEsales\Eshop\Core\Base',
-            'oxadmindetails' => '\OxidEsales\Eshop\Application\Controller\Admin\AdminDetails',
             'oxsysrequirements' => '\OxidEsales\Eshop\Core\SystemRequirements',
             'oxadminview' => '\OxidEsales\Eshop\Application\Controller\Admin\AdminView',
             'oxadminlist' => '\OxidEsales\Eshop\Application\Controller\Admin\AdminList',

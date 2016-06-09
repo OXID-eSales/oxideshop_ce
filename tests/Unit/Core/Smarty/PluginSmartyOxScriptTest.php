@@ -24,7 +24,12 @@ namespace Unit\Core\Smarty;
 use \Smarty;
 use \oxRegistry;
 
-require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxscript.php';
+$filePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxscript.php';
+if (file_exists($filePath)) {
+    require_once $filePath;
+} else {
+    require_once dirname(__FILE__) . '/../../../../source/Core/Smarty/Plugin/function.oxscript.php';
+}
 
 class PluginSmartyOxScriptTest extends \OxidTestCase
 {

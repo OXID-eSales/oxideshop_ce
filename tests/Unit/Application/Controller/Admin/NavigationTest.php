@@ -166,8 +166,7 @@ class NavigationTest extends \OxidTestCase
         $this->getSession()->setVariable('paymentid', "testPaymentId");
 
         $oConfig = $this->getMock("oxConfig", array("getConfigParam"));
-        $oConfig->expects($this->at(0))->method('getConfigParam')->with($this->equalTo("blAdodbSessionHandler"))->will($this->returnValue(false));
-        $oConfig->expects($this->at(1))->method('getConfigParam')->with($this->equalTo("blClearCacheOnLogout"))->will($this->returnValue(true));
+        $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo("blClearCacheOnLogout"))->will($this->returnValue(true));
 
         $oSession = $this->getMock("oxSession", array("destroy", "getId"));
         $oSession->expects($this->once())->method('destroy');

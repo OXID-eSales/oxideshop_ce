@@ -520,4 +520,42 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
 
         $this->assertEquals(0, $this->database->affectedRows());
     }
+
+    /**
+     * Test, that the method 'getAll' leads to unique rows with the SQL clause 'ORDER BY rand()'.
+     */
+    public function testGetAllWithOrderByRand()
+    {
+        $resultSet = $this->database->select('SELECT oxid FROM oxarticles ORDER BY RAND()');
+        $rows = $resultSet->getAll();
+        $oxIds = [];
+        foreach ($rows as $row) {
+            $oxIds[] = $row[0];
+        }
+        $this->assertArrayIsUnique($oxIds);
+    }
+    /**
+     * Test, that the method 'moveNext' leads to unique rows with the SQL clause 'ORDER BY rand()'.
+     */
+    public function testMoveNextWithOrderByRand()
+    {
+        $resultSet = $this->database->select('SELECT oxid FROM oxarticles ORDER BY RAND()');
+        $oxIds = [];
+        while (!$resultSet->EOF) {
+            $oxIds[] = $resultSet->fields[0];
+            $resultSet->moveNext();
+        }
+        $this->assertArrayIsUnique($oxIds);
+    }
+    /**
+     * Assert, that the given array is unique.
+     *
+     * @param array $expectUnique The array we want to be unique.
+     */
+    private function assertArrayIsUnique($expectUnique)
+    {
+        $unique = array_unique($expectUnique);
+        $this->assertEquals($unique, $expectUnique, 'There should not be any doubled entries in the given array!');
+    }
+
 }

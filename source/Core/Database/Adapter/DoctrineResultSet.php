@@ -32,80 +32,126 @@ class DoctrineResultSet
 {
 
     /**
-     * @var bool Did we reach the end of the results?
-     */
-    public $EOF = true;
-
-    /**
-     * @var array Holds the retrieved fields of the resultSet row on the current cursor position
-     */
-    public $fields = array();
-
-    /**
      * @var Statement The doctrine adapted statement.
      */
-    protected $adapted = null;
+    protected $statement;
 
     /**
-     * @var bool Was the first element already fetched?
+     * @var array Holds the retrieved fields of the resultSet row on the current cursor position.
      */
-    private $fetchedFirst = false;
+    public $fields;
 
     /**
-     * @var bool
+     * @var int The current cursor position.
      */
-    private $isEmptyResultSet = false;
+    private $currentRow = 0;
+
+    /**
+     * @var bool Did we reach the end of the results?
+     */
+    public $EOF;
 
     /**
      * DoctrineResultSet constructor.
      *
-     * @param Statement $adapted The statement we want to wrap in this class.
+     * @param Statement $statement The statement we want to wrap in this class.
      */
-    public function __construct(Statement $adapted)
+    public function __construct(Statement $statement)
     {
-        $this->setAdapted($adapted);
+        $this->fields = array();
+        $this->setStatement($statement);
+        $this->EOF = false;
+        $this->currentRow = 0;
 
-        if (0 < $this->getAdapted()->rowCount()) {
-            $this->EOF = false;
-
-            $this->fields = $this->getAdapted()->fetch();
-            
-            $this->executeAdapted();
-        } else {
+        if( $this->recordCount() == 0) {
             $this->setToEmptyState();
+        }
+
+        $this->fetchRow();
+    }
+
+    /**
+     * Returns fields array
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * Close the pointer to the database connection.
+     */
+    public function close()
+    {
+        $this->getStatement()->closeCursor();
+        $this->fields = array();
+       // $this->statement = false;
+    }
+
+    /**
+     * Fetches the next row from a result set and fills the fields array.
+     *
+     * @return mixed The return value of this function on success depends on the fetch type.
+     *               In all cases, FALSE is returned on failure.
+     */
+    public function fetchRow()
+    {
+        $this->fields = $this->getStatement()->fetch();
+        return $this->fields;
+    }
+
+    /**
+     * Get a specific column value.
+     *
+     * @param string|int $columnKey The key of the wished column.
+     *
+     * @return null|boolean|string|array The column value (string or array). If the result set is empty or the last row is reached, we give back false. If the column name is not present, we give back null.
+     */
+    public function fields($columnKey)
+    {
+        if(empty($columnKey)) {
+            return $this->getFields();
+        } else {
+            return $this->fields[$columnKey];
         }
     }
 
     /**
-     * Fetch the next row from the database. If there is no next row, it gives back false.
+     * Returns the number of rows affected by the last execution of this statement.
      *
-     * @return false|array The next row.
-     */
-    public function fetchRow()
-    {
-        return $this->getAdapted()->fetch();
-    }
-
-    /**
-     * Count the result rows of the corresponding statement.
-     *
-     * @return int How many rows are included in the result?
+     * @return int The number of affected rows
      */
     public function recordCount()
     {
-        return $this->getAdapted()->rowCount();
+        return $this->getStatement()->rowCount();
     }
 
     /**
-     * Fetch all rows from the corresponding statement.
+     * Returns the number of columns in the result set.
      *
-     * @return array The complete result set as an array of associative arrays.
+     * @return int The number of columns.
      */
-    public function getAll()
+    public function fieldCount()
     {
-        $this->getAdapted()->execute();
+        return $this->getStatement()->columnCount();
+    }
 
-        return $this->getAdapted()->fetchAll();
+    /**
+     * Load the next row from the database.
+     *
+     * @return bool Is there another row?
+     */
+    public function moveNext()
+    {
+        if (@$this->fields = $this->getStatement()->fetch()) {
+            $this->currentRow += 1;
+            return true;
+        }
+        if (!$this->EOF) {
+            $this->currentRow += 1;
+            $this->EOF = true;
+        }
+        return false;
     }
 
     /**
@@ -115,23 +161,57 @@ class DoctrineResultSet
      */
     public function EOF()
     {
-        return $this->EOF;
+        if( $this->currentRow < $this->recordCount()) {
+            return false;
+        } else {
+            $this->EOF = true;
+            return true;
+        }
     }
 
     /**
-     * Close the pointer to the database connection.
+     * Get the given number of rows, from the current row pointer on, as an array.
+     *
+     * @param int $numberOfRows The number of rows to fetch.
+     *
+     * @return array The rows of the corresponding statement, starting at the current row pointer.
      */
-    public function close()
+    public function &getArray($numberOfRows)
     {
-        if ($this->isEmpty()) {
-            $this->EOF = true;
-            $this->fields = array();
-        } else {
-            $this->EOF = false;
-            $this->fields = array();
+        $results = array();
+        $cnt = 0;
+        while (!$this->EOF && $numberOfRows != $cnt) {
+            $results[] = $this->fields;
+            $this->moveNext();
+            $cnt++;
         }
+        return $results;
+    }
 
-        $this->getAdapted()->closeCursor();
+    /**
+     * Get the given number of rows from the current row pointer on.
+     *
+     * @param int $numberOfRows The number of rows to fetch.
+     *
+     * @return array The rows of the corresponding statement, starting at the current row pointer.
+     */
+    public function &getRows($numberOfRows)
+    {
+        $arr =& $this->getArray($numberOfRows);
+        return $arr;
+    }
+
+    /**
+     * Fetch all rows from the corresponding statement.
+     *
+     * @param int $nRows The number of rows to fetch.
+     *
+     * @return array The complete result set as an array of associative arrays.
+     */
+    public function &getAll($nRows = -1)
+    {
+        $arr =& $this->getArray($nRows);
+        return $arr;
     }
 
     /**
@@ -144,7 +224,7 @@ class DoctrineResultSet
     public function fetchField($columnIndex)
     {
         /** @todo The method getColumnMeta is specific of the PDO driver. Change to unspecific version, if not exits be creative ;-) */
-        $metaInformation = $this->getAdapted()->getColumnMeta($columnIndex);
+        $metaInformation = $this->getStatement()->getColumnMeta($columnIndex);
 
         $result = new \stdClass();
         $result->name = $metaInformation['name'];
@@ -158,229 +238,23 @@ class DoctrineResultSet
     }
 
     /**
-     * Give back the number of columns the adapted result set has.
-     *
-     * @return int The number of columns of the adapted result set.
-     */
-    public function fieldCount()
-    {
-        return $this->getAdapted()->columnCount();
-    }
-
-    /**
-     * Get a specific column value.
-     *
-     * @param string|int $columnKey The key of the wished column.
-     *
-     * @return null|boolean|string|array The column value (string or array). If the result set is empty or the last row is reached, we give back false. If the column name is not present, we give back null.
-     */
-    public function fields($columnKey)
-    {
-        if ($this->isEmpty()) {
-            if (0 === $columnKey) {
-                return false;
-            } else {
-                return null;
-            }
-        } else {
-            if (0 === $columnKey) {
-                // this case is here, cause adodblite checks with empty
-                //   empty(0) is true   =>   we give back the complete array...
-
-                return $this->fields;
-            } else {
-                return $this->fields[$columnKey];
-            }
-        }
-    }
-
-    /**
-     * Get the given number of rows, from the current row pointer on, as an array.
-     *
-     * @param int $numberOfRows The number of rows to fetch.
-     *
-     * @return array The rows of the corresponding statement, starting at the current row pointer.
-     */
-    public function getArray($numberOfRows)
-    {
-        return $this->getRows($numberOfRows);
-    }
-
-    /**
-     * Get the given number of rows from the current row pointer on.
-     *
-     * @param int $numberOfRows The number of rows to fetch.
-     *
-     * @return array The rows of the corresponding statement, starting at the current row pointer.
-     */
-    public function getRows($numberOfRows)
-    {
-        $result = array();
-
-        for ($index = 0; $index < $numberOfRows; $index++) {
-            $row = $this->fetchRow();
-
-            if (!$this->EOF() && !is_bool($row)) {
-                $result[] = $row;
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Load the next row from the database.
-     *
-     * @return bool Is there another row?
-     */
-    public function moveNext()
-    {
-        if ($this->EOF()) {
-            return false;
-        }
-
-        if (!$this->isFetchedFirst()) {
-            $this->fetchRowIntoFields();
-        }
-        $this->fetchRowIntoFields();
-
-        if (!$this->fields) {
-            $this->EOF = true;
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Load the n-th row.
-     *
-     * @param int $rowIndex The number of the row to load.
-     *
-     * @return bool Is there another row?
-     */
-    public function move($rowIndex)
-    {
-        if ($this->isEmpty()) {
-            $this->setToEmptyState();
-
-            return false;
-        }
-
-        if ($this->isFetchedFirst()) {
-            $this->executeAdapted();
-        }
-
-        if (0 === $rowIndex) {
-            return true;
-        }
-
-        while (0 < $rowIndex) {
-            $lastFields = $this->fields;
-
-            if (!$this->moveNext()) {
-                $rowIndex = 0;
-                $this->fields = $lastFields;
-                $this->EOF = false;
-            }
-
-            $rowIndex--;
-        }
-
-        return true;
-    }
-
-    /**
-     * Move the row pointer to the first row of the given result.
-     *
-     * @return bool True for empty or there exists another row, false for end of rows reached.
-     */
-    public function moveFirst()
-    {
-        if ($this->isEmpty()) {
-            return true;
-        }
-
-        $result = $this->move(0);
-
-        $this->fields = $this->getAdapted()->fetch();
-
-        return $result;
-    }
-
-    /**
-     * Move the row pointer to the last row of the given result set.
-     *
-     * @return bool Is this result set not empty?
-     */
-    public function moveLast()
-    {
-        if ($this->isEmpty()) {
-            return false;
-        } else {
-            $lastIndex = $this->recordCount();
-
-            return $this->move($lastIndex);
-        }
-    }
-
-    /**
      * Getter for the adapted statement.
      *
      * @return Statement The adapted statement.
      */
-    protected function getAdapted()
+    protected function getStatement()
     {
-        return $this->adapted;
+        return $this->statement;
     }
 
     /**
      * Setter for the adapted statement.
      *
-     * @param Statement $adapted The adapted statement.
+     * @param Statement $statement The adapted statement.
      */
-    protected function setAdapted(Statement $adapted)
+    protected function setStatement(Statement $statement)
     {
-        $this->adapted = $adapted;
-    }
-
-    /**
-     * Getter for the fetched first flag.
-     *
-     * @return boolean Is the first row of the adapted statement already fetched?
-     */
-    private function isFetchedFirst()
-    {
-        return $this->fetchedFirst;
-    }
-
-    /**
-     * Setter for the fetched first flag.
-     *
-     * @param boolean $fetchedFirst Is the first row of the adapted statement already fetched?
-     */
-    private function setFetchedFirst($fetchedFirst)
-    {
-        $this->fetchedFirst = $fetchedFirst;
-    }
-
-    /**
-     * (Re-)execute the adapted statement.
-     */
-    private function executeAdapted()
-    {
-        $this->getAdapted()->execute();
-    }
-
-    /**
-     * Fetch the next row into the fields attribute.
-     */
-    private function fetchRowIntoFields()
-    {
-        $this->fields = $this->getAdapted()->fetch();
-
-        $this->setFetchedFirst(true);
+        $this->statement = $statement;
     }
 
     /**
@@ -388,20 +262,8 @@ class DoctrineResultSet
      */
     private function setToEmptyState()
     {
-
         /** The following properties change the value for an  empty result set */
-        $this->isEmptyResultSet = true;
         $this->EOF = true;
-        $this->fields = false;
     }
 
-    /**
-     * Determine, if the wrapped result set is empty.
-     *
-     * @return bool Is the wrapped result set empty?
-     */
-    private function isEmpty()
-    {
-        return $this->isEmptyResultSet;
-    }
 }

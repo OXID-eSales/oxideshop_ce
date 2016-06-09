@@ -1407,9 +1407,8 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $sql = "SELECT VARIABLE_VALUE FROM information_schema.session_variables WHERE variable_name = 'tx_isolation';";
 
         $resultSet = $this->database->select($sql, array(), false);
-        $resultRow = $resultSet->fetchRow();
 
-        return str_replace('-', ' ', $resultRow[0]);
+        return str_replace('-', ' ', $resultSet->fields[0]);
     }
 
     /**

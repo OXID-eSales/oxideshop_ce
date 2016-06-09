@@ -404,150 +404,6 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'move' works with an empty result set.
-     */
-    public function testMoveWithEmptyResultSet()
-    {
-        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
-
-        $methodResult = $resultSet->move(7);
-
-        $this->assertFalse($methodResult);
-        $this->assertTrue($resultSet->EOF);
-        $this->assertFalse($resultSet->fields);
-    }
-
-    /**
-     * @return array The parameters we want to use for the testMove method.
-     */
-    public function dataProviderTestMove()
-    {
-        return array(
-            array(2, array(self::FIXTURE_OXID_3)),
-            array(0, array(self::FIXTURE_OXID_1)),
-            array(1, array(self::FIXTURE_OXID_2)),
-            array(300, array(self::FIXTURE_OXID_3)) // the last row (no. 239) stays
-        );
-    }
-
-    /**
-     * Test the method 'move' with the parameters given by the corresponding data provider.
-     *
-     * @dataProvider dataProviderTestMove
-     *
-     * @param int   $moveTo         The index of the line we want to check.
-     * @param array $expectedFields The expected values in the given line.
-     *
-     * @return mixed|\object_ResultSet|DoctrineResultSet The result set after the given MoveTo method call.
-     */
-    public function testMove($moveTo, $expectedFields)
-    {
-        $this->loadFixtureToTestTable();
-
-        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
-
-        $methodResult = $resultSet->move($moveTo);
-
-        $this->assertTrue($methodResult);
-        $this->assertSame($expectedFields, $resultSet->fields);
-        $this->assertFalse($resultSet->EOF);
-
-        return $resultSet;
-    }
-
-    /**
-     * Test, that the method 'moveFirst' works as expected for an empty result set.
-     */
-    public function testMoveFirstEmptyResultSet()
-    {
-        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
-
-        $methodResult = $resultSet->moveFirst();
-
-        $this->assertTrue($methodResult);
-        $this->assertSame(false, $resultSet->fields);
-        $this->assertTrue($resultSet->EOF);
-    }
-
-    /**
-     * Test, that the method 'moveFirst' works as expected for a non empty result set.
-     */
-    public function testMoveFirstNonEmptyResultSet()
-    {
-        $this->loadFixtureToTestTable();
-
-        $resultSet = $this->testMove(2, array(self::FIXTURE_OXID_3));
-
-        $methodResult = $resultSet->moveFirst();
-
-        $this->assertTrue($methodResult);
-        $this->assertSame(array(self::FIXTURE_OXID_1), $resultSet->fields);
-        $this->assertFalse($resultSet->EOF);
-    }
-
-    /**
-     * Test, that the method 'moveFirst' works as expected for a non empty result set,
-     * if we move to nearly the end of the rows.
-     */
-    public function testMoveFirstNonEmptyResultSetNearlyEndOfRows()
-    {
-        $resultSet = $this->testMove(2, array(self::FIXTURE_OXID_3));
-
-        $methodResult = $resultSet->moveFirst();
-
-        $this->assertTrue($methodResult);
-        $this->assertSame(array(self::FIXTURE_OXID_1), $resultSet->fields);
-        $this->assertFalse($resultSet->EOF);
-    }
-
-    /**
-     * Test, that the method 'moveLast' works as expected for an empty result set.
-     */
-    public function testMoveLastEmptyResultSet()
-    {
-        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
-
-        $methodResult = $resultSet->moveLast();
-
-        $this->assertFalse($methodResult);
-        $this->assertTrue($resultSet->EOF);
-        $this->assertFalse($resultSet->fields);
-    }
-
-    /**
-     * Test, that the method 'moveLast' works as expected for a non empty result set, when we call it several times.
-     */
-    public function testMoveLastNonEmptyResultSet()
-    {
-        $this->loadFixtureToTestTable();
-
-        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
-
-        $methodResult = $resultSet->moveLast();
-
-        $this->assertTrue($methodResult);
-        $this->assertFalse($resultSet->EOF);
-        $this->assertSame($resultSet->fields, array(self::FIXTURE_OXID_3));
-    }
-
-    /**
-     * Test, that the method 'moveLast' works as expected for a non empty result set, when we call it several times.
-     */
-    public function testMoveLastNonEmptyResultSetSequentialCalls()
-    {
-        $this->loadFixtureToTestTable();
-
-        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID;');
-
-        $resultSet->moveLast();
-        $methodResult = $resultSet->moveLast();
-
-        $this->assertTrue($methodResult);
-        $this->assertFalse($resultSet->EOF);
-        $this->assertSame($resultSet->fields, array(self::FIXTURE_OXID_3));
-    }
-
-    /**
      * Test, that the result set of an empty select works as expected.
      *
      * @return DoctrineResultSet The empty result set.
@@ -601,7 +457,8 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
         $row = $resultSet->fetchRow();
 
         $this->assertInternalType('array', $row);
-        $this->assertSame(self::FIXTURE_OXID_1, $row[0]);
+        // You can get the first row with getFields() method. The fetchRow() method will take the next record.
+        $this->assertSame(self::FIXTURE_OXID_2, $row[0]);
     }
 
     /**
@@ -680,7 +537,7 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
 
         $this->assertFalse($firstRow);
         $this->assertTrue($resultSet->EOF);
-        $this->assertSame(array(), $resultSet->fields);
+        $this->assertFalse($resultSet->fields);
     }
 
     /**
@@ -690,7 +547,7 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     {
         $resultSet = $this->testCreationWithRealNonEmptyResult();
 
-        $firstRow = $resultSet->fetchRow();
+        $firstRow = $resultSet->getFields();
 
         $resultSet->close();
 
@@ -712,7 +569,9 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
             [self::FIXTURE_OXID_3],
         );
 
-        $counter = 0;
+
+        $this->assertSame($expectedResults[0], $resultSet->getFields());
+        $counter = 1;
         while ($row = $resultSet->fetchRow()) {
             $this->assertSame($expectedResults[$counter], $row);
             $counter++;

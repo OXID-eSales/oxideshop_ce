@@ -304,7 +304,7 @@ class Doctrine implements DatabaseInterface
 
         try {
             $resultSet = $this->select($sqlSelect, $parameters, $executeOnSlave);
-            $result = $resultSet->fetchRow();
+            $result = $resultSet->fields;
         } catch (DatabaseException $exception) {
             /** Only log exception, do not re-throw here, as legacy code expects this behavior */
             $this->logException($exception);
@@ -518,6 +518,10 @@ class Doctrine implements DatabaseInterface
             /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
             $statement = $this->getConnection()->executeQuery($sqlSelect, $parameters);
             $result = new DoctrineResultSet($statement);
+
+
+
+
 
             $this->setAffectedRows($result->recordCount());
         } catch (DBALException $exception) {

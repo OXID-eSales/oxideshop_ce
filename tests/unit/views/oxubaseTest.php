@@ -2256,6 +2256,61 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $this->assertEquals(ksort($aParams), ksort($aParameters));
     }
 
+    /**
+     * test for getUserSelectedSorting
+     * @see https://bugs.oxid-esales.com/view.php?id=6083
+     */
+    public function testGetUserSelectedSortingValidSorting()
+    {
+        /** @var BaseController $baseController */
+        $baseController = oxNew('oxUBase');
+
+        $this->setRequestParam($baseController->getSortOrderByParameterName(), 'oxid');
+        $this->setRequestParam($baseController->getSortOrderParameterName(), 'asc');
+        $this->assertEquals(
+            array('sortby' => 'oxid', 'sortdir' => 'asc'),
+            $baseController->getUserSelectedSorting()
+        );
+
+        $this->setRequestParam($baseController->getSortOrderParameterName(), 'desc');
+        $this->assertEquals(
+            array('sortby' => 'oxid', 'sortdir' => 'desc'),
+            $baseController->getUserSelectedSorting()
+        );
+    }
+
+    /**
+     * test for getUserSelectedSorting
+     * @see https://bugs.oxid-esales.com/view.php?id=6083
+     */
+    public function testGetUserSelectedSortingInvalidSorting()
+    {
+        /** @var BaseController $baseController */
+        $baseController = oxNew('oxUBase');
+
+        //not existing field name
+        $this->setRequestParam($baseController->getSortOrderByParameterName(), 'foobar');
+        $this->setRequestParam($baseController->getSortOrderParameterName(), 'asc');
+        $this->assertNull($baseController->getUserSelectedSorting());
+
+        //empty field name
+        $this->setRequestParam($baseController->getSortOrderByParameterName(), '');
+        $this->assertNull($baseController->getUserSelectedSorting());
+
+        //invalid field name
+        $this->setRequestParam($baseController->getSortOrderByParameterName(), 42);
+        $this->assertNull($baseController->getUserSelectedSorting());
+
+        //not existing order direction
+        $this->setRequestParam($baseController->getSortOrderByParameterName(), 'oxid');
+        $this->setRequestParam($baseController->getSortOrderParameterName(), 'foobar');
+        $this->assertNull($baseController->getUserSelectedSorting());
+
+        //empty order direction
+        $this->setRequestParam($baseController->getSortOrderParameterName(), '');
+        $this->assertNull($baseController->getUserSelectedSorting());
+    }
+
     public function testGetWishlistName()
     {
         $this->setRequestParam('wishid', "testwishlist");

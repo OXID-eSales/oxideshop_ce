@@ -1002,8 +1002,10 @@ class oxUBase extends oxView
         $sSortBy = $oConfig->getRequestParameter($this->getSortOrderByParameterName());
         $sSortDir = $oConfig->getRequestParameter($this->getSortOrderParameterName());
 
-        if ($sSortBy && oxDb::getInstance()->isValidFieldName($sSortBy) && $sSortDir &&
-            oxRegistry::getUtils()->isValidAlpha($sSortDir) && in_array($oStr->strtolower($sSortDir), $aSortDirections)
+        if ($sSortBy && oxDb::getInstance()->isValidFieldName($sSortBy) && $sSortDir
+            && oxRegistry::getUtils()->isValidAlpha($sSortDir)
+            && in_array($oStr->strtolower($sSortDir), $aSortDirections)
+            && in_array($sSortBy, oxNew('oxArticle')->getFieldNames())
         ) {
             $aSorting = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);
         }

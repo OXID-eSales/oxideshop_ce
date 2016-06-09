@@ -22,6 +22,7 @@
 namespace OxidEsales\Eshop\Core\Database;
 
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
@@ -68,6 +69,18 @@ interface DatabaseInterface
      */
     public function setConnectionParameters(array $connectionParameters);
 
+    /**
+     * Connects to the database using the connection parameters set in DatabaseInterface::setConnectionParameters().
+     *
+     * @throws DatabaseConnectionException If a connection to the database cannot be established
+     */
+    public function connect();
+
+    /**
+     * Closes an open connection
+     */
+    public function closeConnection();
+        
     /**
      * Set the fetch mode of an open database connection.
      *

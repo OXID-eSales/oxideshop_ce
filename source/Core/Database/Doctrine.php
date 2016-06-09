@@ -107,7 +107,9 @@ class Doctrine implements DatabaseInterface
     }
 
     /**
-     * @throws DatabaseConnectionException
+     * Connects to the database using the connection parameters set in self::setConnectionParameters
+     *
+     * @throws DatabaseConnectionException If a connection to the database cannot be established
      */
     public function connect()
     {
@@ -143,6 +145,14 @@ class Doctrine implements DatabaseInterface
         }
     }
 
+    /**
+     * Closes an open connection
+     */
+    public function closeConnection()
+    {
+        $this->connection->close();
+    }
+    
     /**
      * Set connection
      *
@@ -599,16 +609,6 @@ class Doctrine implements DatabaseInterface
         }
 
         return $result;
-    }
-
-    /**
-     * @todo Make this method part of the DatabaseInterface in v6.0.
-     *
-     * Closes an open connection
-     */
-    public function closeConnection()
-    {
-        $this->connection->close();
     }
 
     /**

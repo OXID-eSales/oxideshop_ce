@@ -2162,7 +2162,7 @@ class oxUBase extends oxView
                 $iStartNo = 2;
                 $iFinishNo = $iTmpVal + 1;
                 // actual page is at the end
-            } elseif ($pageNavigation->actPage >= $pageNavigation->NrOfPages - $iTmpVal) {
+            } elseif ($pageNavigation->actPage >= $pageNavigation->NrOfPages - $iTmpVal + 1) {
                 $iStartNo = $pageNavigation->NrOfPages - $iTmpVal;
                 $iFinishNo = $pageNavigation->NrOfPages - 1;
                 // actual page is in the middle

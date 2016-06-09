@@ -23,6 +23,7 @@ namespace Unit\Core;
 
 use \oxarticle;
 
+use OxidEsales\Eshop\Core\UtilsObject;
 use \oxNewDummyUserModule_parent;
 use \oxNewDummyUserModule2_parent;
 use \oemodulenameoxorder_parent;
@@ -287,6 +288,20 @@ class UtilsobjectTest extends \OxidTestCase
         $this->setExpectedException('oxSystemComponentException', 'EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
 
         $oUtilsObject->getClassName($sClassName);
+    }
+
+    public function testUtilsObjectConstructedWithCEShopId()
+    {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community/Professional edition only.');
+        }
+
+        $expectedShopId = 'oxbaseshop';
+
+        $utilsObject = new UtilsObject();
+        $realShopId = $utilsObject->getShopId();
+
+        $this->assertSame($expectedShopId, $realShopId);
     }
 
     private function _prepareFakeModule($class, $extension)

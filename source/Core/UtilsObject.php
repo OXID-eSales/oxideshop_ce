@@ -96,7 +96,14 @@ class UtilsObject
 
         if (!$shopIdCalculator) {
             $moduleVariablesCache = new FileCache();
-            $shopIdCalculator = new ShopIdCalculator($moduleVariablesCache);
+
+            $editionSelector = new EditionSelector();
+
+            if ($editionSelector->getEdition() === $editionSelector::ENTERPRISE) {
+                $shopIdCalculator = new \OxidEsales\EshopEnterprise\Core\ShopIdCalculator($moduleVariablesCache);
+            } else {
+                $shopIdCalculator = new ShopIdCalculator($moduleVariablesCache);
+            }
         }
         $this->shopIdCalculator = $shopIdCalculator;
 

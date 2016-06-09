@@ -323,7 +323,7 @@ class oxDynImgGenerator
         $sPath = $this->_getShopBasePath() . $this->_getImageUri();
 
         // Correction for Bug:6291 - Changing the required nopic image format to the format of the requested image.
-        $sType = preg_replace("/.*\.(png|jp(e)?g|gif)$/", "\\1", $this->_getImageName());
+        $sType = $this->getImageType();
 
         return str_replace($this->_getImageName(), "nopic.".$sType, $sPath);
     }

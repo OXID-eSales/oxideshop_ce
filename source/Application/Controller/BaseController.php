@@ -2081,7 +2081,7 @@ class BaseController extends \oxView
                 $startNo = 2;
                 $finishNo = $tmpVal + 1;
                 // actual page is at the end
-            } elseif ($pageNavigation->actPage >= $pageNavigation->NrOfPages - $tmpVal) {
+            } elseif ($pageNavigation->actPage >= $pageNavigation->NrOfPages - $tmpVal + 1) {
                 $startNo = $pageNavigation->NrOfPages - $tmpVal;
                 $finishNo = $pageNavigation->NrOfPages - 1;
                 // actual page is in the middle

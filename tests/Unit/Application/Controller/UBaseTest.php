@@ -828,7 +828,7 @@ class UBaseTest extends \OxidTestCase
     public function testsRemoveDuplicatedWords()
     {
         $aIn = array("aaa ccc bbb ccc ddd ccc"                                                                       => "aaa, ccc, bbb, ddd",
-                     "kuyichi, t-shirt, tiger, bekleidung, fashion, ihn, shirts, &, co., shirt, tiger, organic, men" => "kuyichi, t-shirt, tiger, bekleidung, fashion, ihn, shirts, co, shirt, organic, men",
+            "kuyichi, t-shirt, tiger, bekleidung, fashion, ihn, shirts, &, co., shirt, tiger, organic, men" => "kuyichi, t-shirt, tiger, bekleidung, fashion, ihn, shirts, co, shirt, organic, men",
         );
 
         $oView = oxNew('oxubase');
@@ -1022,7 +1022,7 @@ class UBaseTest extends \OxidTestCase
 
         $this->assertEquals(
             array(
-                 0 => array('title' => 'test', 'link' => 'http://example.com/')), $a
+                0 => array('title' => 'test', 'link' => 'http://example.com/')), $a
         );
 
         $oView->addRssFeed('testd', 'http://example.com/?test=1', 'iknowthiskey');
@@ -1030,8 +1030,8 @@ class UBaseTest extends \OxidTestCase
         $a = $oView->getRssLinks();
         $this->assertEquals(
             array(
-                 0              => array('title' => 'test', 'link' => 'http://example.com/'),
-                 'iknowthiskey' => array('title' => 'testd', 'link' => 'http://example.com/?test=1')), $a
+                0              => array('title' => 'test', 'link' => 'http://example.com/'),
+                'iknowthiskey' => array('title' => 'testd', 'link' => 'http://example.com/?test=1')), $a
         );
     }
 
@@ -1296,8 +1296,8 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('recommid', 'recid');
 
         $sExpUrl = 'cl=testclass&amp;fnc=testfunc&amp;cnid=catid&amp;mnid=manId&amp;anid=artid&amp;page=2&amp;tpl=test&amp;oxloadid=test&amp;pgNr=2' .
-                   '&amp;searchparam=test&amp;searchcnid=searchcat&amp;searchvendor=searchven' .
-                   '&amp;searchmanufacturer=searchman&amp;searchrecomm=searchrec&amp;searchtag=searchtag&amp;recommid=recid';
+            '&amp;searchparam=test&amp;searchcnid=searchcat&amp;searchvendor=searchven' .
+            '&amp;searchmanufacturer=searchman&amp;searchrecomm=searchrec&amp;searchtag=searchtag&amp;recommid=recid';
         $this->assertEquals($sExpUrl, $oView->UNITgetRequestParams());
     }
 
@@ -2215,16 +2215,16 @@ class UBaseTest extends \OxidTestCase
     public function testGetNavigationParams()
     {
         $aParams = array("cnid"               => "testCategory",
-                         "mnid"               => "testManufacturer",
-                         "listtype"           => "testType",
-                         "ldtype"             => "testDisplay",
-                         "recommid"           => "paramValue",
-                         "searchrecomm"       => "testRecommendation",
-                         "searchparam"        => "testSearchParam",
-                         "searchtag"          => "testTag",
-                         "searchvendor"       => "testVendor",
-                         "searchcnid"         => "testCategory",
-                         "searchmanufacturer" => "testManufacturer",
+            "mnid"               => "testManufacturer",
+            "listtype"           => "testType",
+            "ldtype"             => "testDisplay",
+            "recommid"           => "paramValue",
+            "searchrecomm"       => "testRecommendation",
+            "searchparam"        => "testSearchParam",
+            "searchtag"          => "testTag",
+            "searchvendor"       => "testVendor",
+            "searchcnid"         => "testCategory",
+            "searchmanufacturer" => "testManufacturer",
         );
         foreach ($aParams as $sKey => $sValue) {
             $this->setRequestParameter($sKey, $sValue);
@@ -2467,5 +2467,60 @@ class UBaseTest extends \OxidTestCase
         $oUBase->expects($this->any())->method('getTitlePageSuffix')->will($this->returnValue($aParts['pageSuffix']));
 
         $this->assertEquals($sTitle, $oUBase->getPageTitle());
+    }
+
+    /**
+     * test for getUserSelectedSorting
+     * @see https://bugs.oxid-esales.com/view.php?id=6083
+     */
+    public function testGetUserSelectedSortingValidSorting()
+    {
+        /** @var BaseController $baseController */
+        $baseController = oxNew('oxUBase');
+
+        $_GET[$baseController->getSortOrderByParameterName()] = 'oxid';
+        $_GET[$baseController->getSortOrderParameterName()] = 'asc';
+        $this->assertEquals(
+            array('sortby' => 'oxid', 'sortdir' => 'asc'),
+            $baseController->getUserSelectedSorting()
+        );
+
+        $_GET[$baseController->getSortOrderParameterName()] = 'desc';
+        $this->assertEquals(
+            array('sortby' => 'oxid', 'sortdir' => 'desc'),
+            $baseController->getUserSelectedSorting()
+        );
+    }
+
+    /**
+     * test for getUserSelectedSorting
+     * @see https://bugs.oxid-esales.com/view.php?id=6083
+     */
+    public function testGetUserSelectedSortingInvalidSorting()
+    {
+        /** @var BaseController $baseController */
+        $baseController = oxNew('oxUBase');
+
+        //not existing field name
+        $_GET[$baseController->getSortOrderByParameterName()] = 'foobar';
+        $_GET[$baseController->getSortOrderParameterName()] = 'asc';
+        $this->assertNull($baseController->getUserSelectedSorting());
+
+        //empty field name
+        $_GET[$baseController->getSortOrderByParameterName()] = '';
+        $this->assertNull($baseController->getUserSelectedSorting());
+
+        //invalid field name
+        $_GET[$baseController->getSortOrderByParameterName()] = '42';
+        $this->assertNull($baseController->getUserSelectedSorting());
+
+        //not existing order direction
+        $_GET[$baseController->getSortOrderByParameterName()] = 'oxid';
+        $_GET[$baseController->getSortOrderParameterName()] = 'foobar';
+        $this->assertNull($baseController->getUserSelectedSorting());
+
+        //empty order direction
+        $_GET[$baseController->getSortOrderParameterName()] = '';
+        $this->assertNull($baseController->getUserSelectedSorting());
     }
 }

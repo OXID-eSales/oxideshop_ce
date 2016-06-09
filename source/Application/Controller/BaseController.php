@@ -28,6 +28,9 @@ use oxCategory;
 use oxCategoryList;
 use oxContent;
 use oxDb;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Request;
+use OxidEsales\Eshop\Core\Str;
 use oxManufacturer;
 use oxManufacturerList;
 use oxPrice;
@@ -919,22 +922,24 @@ class BaseController extends \oxView
     public function getUserSelectedSorting()
     {
         $sorting = null;
-        $stringModifier = getStr();
-        $config = oxRegistry::getConfig();
         $sortDirections = array('desc', 'asc');
 
-        $sortBy = $config->getRequestParameter($this->getSortOrderByParameterName());
-        $sortOrder = $config->getRequestParameter($this->getSortOrderParameterName());
+        $request = Registry::get(Request::class);
+        $sortBy = $request->getRequestParameter($this->getSortOrderByParameterName());
+        $sortOrder = $request->getRequestParameter($this->getSortOrderParameterName());
 
-        if ($sortBy && oxDb::getInstance()->isValidFieldName($sortBy) && $sortOrder &&
-            oxRegistry::getUtils()->isValidAlpha($sortOrder) && in_array($stringModifier->strtolower($sortOrder), $sortDirections)
+        if ($sortBy &&
+            oxDb::getInstance()->isValidFieldName($sortBy) &&
+            $sortOrder &&
+            Registry::getUtils()->isValidAlpha($sortOrder) &&
+            in_array(Str::getStr()->strtolower($sortOrder), $sortDirections) &&
+            in_array($sortBy, oxNew('oxArticle')->getFieldNames())
         ) {
             $sorting = array('sortby' => $sortBy, 'sortdir' => $sortOrder);
         }
 
         return $sorting;
     }
-
 
     /**
      * Returns sorting variable from session

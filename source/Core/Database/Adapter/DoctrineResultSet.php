@@ -143,7 +143,7 @@ class DoctrineResultSet
      */
     public function moveNext()
     {
-        if (@$this->fields = $this->getStatement()->fetch()) {
+        if ($this->fetchRow()) {
             $this->currentRow += 1;
             return true;
         }

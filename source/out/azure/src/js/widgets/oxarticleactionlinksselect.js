@@ -18,17 +18,16 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function( $ ) {
+( function( $, window ) {
     /**
      * Details article action links selector
      */
-    oxArticleActionLinksSelect = {
+    var oxArticleActionLinksSelect = {
 
         _create: function()
         {
             var self = this,
-                options = self.options,
-                el      = self.element;
+                el   = self.element;
 
             var targetWidth  = $("span", el).width();
             var linkboxWidth = self.getLinkboxWidth( targetWidth, $("span", el));
@@ -149,5 +148,6 @@
     };
 
     $.widget( "ui.oxArticleActionLinksSelect", oxArticleActionLinksSelect );
+    window.oxArticleActionLinksSelect = oxArticleActionLinksSelect;
 
-} )( jQuery );
+} )( jQuery, window );

@@ -20,7 +20,7 @@
  */
 ( function( $ ) {
 
-    oxManufacturerSlider = {
+    var oxManufacturerSlider = {
             options: {
                 classButtonNext    : '.nextItem',
                 classButtonPrev    : '.prevItem'

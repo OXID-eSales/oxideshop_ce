@@ -18,9 +18,9 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function ( $ ) {
+( function ( $, window ) {
 
-    oxDropDown = {
+    var oxDropDown = {
 
         options: {
             sSubmitActionClass  : 'js-fnSubmit',
@@ -153,5 +153,6 @@
     };
 
    $.widget("ui.oxDropDown", oxDropDown );
+    window.oxDropDown = oxDropDown;
 
-})( jQuery );
+})( jQuery, window );

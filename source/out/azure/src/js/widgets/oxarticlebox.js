@@ -20,7 +20,7 @@
  */
 ( function( $ ) {
 
-    oxArticleBox = {
+    var oxArticleBox = {
 
         _create: function(){
             var oSelf         = this,
@@ -76,7 +76,7 @@
                     {
                         iTitleLength--;
                         $(this).html(sTitleText.substr(0, iTitleLength)+'&hellip;' + sTitleEnd);
-                        var iTitleWidth = $(this).width();
+                        iTitleWidth = $(this).width();
                     }
                     $(this).attr('title',sTitleText);
                 }

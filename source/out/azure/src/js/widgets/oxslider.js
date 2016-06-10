@@ -18,9 +18,9 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function( $ ) {
+( function( $, window ) {
 
-    oxSlider = {
+    var oxSlider = {
             options: {
                 width                : 940,
                 height               : 220,
@@ -64,7 +64,7 @@
                         startStopped        : options.startStopped,
                         delay               : options.delay,
                         animationTime       : options.animationTime,
-                        navigationFormatter : function(i, panel){
+                        navigationFormatter : function(i){
                             return aNavigationTabs[i - 1];
                         }
                 });
@@ -155,7 +155,7 @@
              */
             showControlsWithOpacity: function(oElement, fOpacity){
 
-                oOptions = this.options;
+                var oOptions = this.options;
 
                 this.showControlWithOpacity(oElement, oOptions.classForwardArrow, fOpacity);
                 this.showControlWithOpacity(oElement, oOptions.classBackArrow, fOpacity);
@@ -206,7 +206,7 @@
              */
             hideControls: function(oElement){
 
-                oOptions = this.options;
+                var oOptions = this.options;
 
                 this.hideControl(oElement, oOptions.classStartStop);
                 this.hideControl(oElement, oOptions.classForwardArrow);
@@ -250,5 +250,6 @@
     };
 
     $.widget("ui.oxSlider", oxSlider );
+    window.oxSlider = oxSlider;
 
-} )( jQuery );
+} )( jQuery, window );

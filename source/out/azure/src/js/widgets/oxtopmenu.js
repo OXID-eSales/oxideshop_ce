@@ -20,13 +20,12 @@
  */
 ( function( $ ) {
 
-    oxTopMenu = {
+    var oxTopMenu = {
 
         _create: function(){
 
             var self = this,
-                options = self.options,
-                el      = self.element;
+                el   = self.element;
 
 
             if ($.browser.msie) {
@@ -51,11 +50,11 @@
                     $('a:first', this.parent()).addClass($.fn.superfish.op.hoverClass);
 
                     // horizontally centering top navigation first level popup according its parent
-                    activeItem = this.parent()
+                    var activeItem = this.parent()
                     if ( activeItem.parent().hasClass('sf-menu') ) {
-                        liWidth = activeItem.width();
-                        ulWidth = $('ul:first', activeItem).width();
-                        marginWidth = (liWidth - ulWidth) / 2;
+                        var liWidth = activeItem.width();
+                        var ulWidth = $('ul:first', activeItem).width();
+                        var marginWidth = (liWidth - ulWidth) / 2;
 
                         var itemleft = activeItem.position().left + marginWidth;
                         if (itemleft < 0) marginWidth -= itemleft;

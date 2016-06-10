@@ -18,9 +18,13 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function( $ ) {
+( function( $, window ) {
+    
+    var allStates = window.allStates;
+    var allCountryIds = window.allCountryIds;
+    var allStateIds = window.allStateIds;
 
-   oxCountryStateSelect = {
+   var oxCountryStateSelect = {
         options: {
             listItem        : "li",
             select          : "select",
@@ -77,7 +81,7 @@
          */
         getStateSelect: function(oCountrySelect)
         {
-            oOptions = this.options;
+            var oOptions = this.options;
             return     $( oCountrySelect ).parent(oOptions.listItem).next(oOptions.listItem).children(oOptions.span).children(oOptions.select);
         },
 
@@ -88,7 +92,7 @@
          */
         getStateSelectSpan: function(oStateSelect)
         {
-            oOptions = this.options;
+            var oOptions = this.options;
             return     $( oStateSelect ).parent(oOptions.span);
         },
 
@@ -149,5 +153,6 @@
     };
 
     $.widget("ui.oxCountryStateSelect", oxCountryStateSelect );
+    window.oxCountryStateSelect = oxCountryStateSelect;
 
-} )( jQuery );
+} )( jQuery, window );

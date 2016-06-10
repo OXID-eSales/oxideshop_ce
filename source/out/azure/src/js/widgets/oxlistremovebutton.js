@@ -20,7 +20,7 @@
  */
 ( function( $ ) {
 
-    oxListRemoveButton = {
+    var oxListRemoveButton = {
 
         _create: function(){
 

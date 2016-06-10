@@ -18,10 +18,14 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+(function( $, window ) {
+    
+    var FB = window.FB;
+    
     /*
      * Facebook related scripts
      */
-    oxFacebook = {
+    var oxFacebook = {
 
         /*
          * FB widgets/buttons array
@@ -37,7 +41,7 @@
             var self = this;
             self.key = null;
 
-            for ( key in this.buttons ) {
+            for ( var key in this.buttons ) {
                 if ( this.buttons[key].script ) {
                     self.key = key;
                     $.getScript( this.buttons[key].script, function () {
@@ -61,7 +65,7 @@
             window.fbAsyncInit = function() {
 
                 FB.init({appId: sFbAppId, status: true, cookie: true, xfbml: true, oauth: true});
-                FB.Event.subscribe('auth.login', function(response) {
+                FB.Event.subscribe('auth.login', function() {
                     // redirecting after successfull login
                     setTimeout(function(){oxFacebook.redirectPage(sLoginUrl);}, 0);
 
@@ -69,7 +73,7 @@
                           setTimeout(function(){FB.XFBML.Host.parseDomTree;}, 0 );
                 });
 
-                FB.Event.subscribe('auth.logout', function(response) {
+                FB.Event.subscribe('auth.logout', function() {
                     // redirecting after logout
                     setTimeout(function(){oxFacebook.redirectPage(sLogoutUrl);}, 0);
                 });
@@ -102,4 +106,7 @@
         }
 
     };
-
+    
+    window.oxFacebook = oxFacebook;
+    
+})( jQuery, window );

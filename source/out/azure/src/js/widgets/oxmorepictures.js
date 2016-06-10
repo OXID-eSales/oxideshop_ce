@@ -20,7 +20,7 @@
  */
 ( function( $ ) {
 
-    oxMorePictures = {
+    var oxMorePictures = {
 
         options: {
             iDefaultIndex  : -1
@@ -29,7 +29,6 @@
         _create: function() {
 
             var self    = this,
-                options = self.options,
                 el      = self.element;
 
             $("li a", el).click(function() {

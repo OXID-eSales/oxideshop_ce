@@ -18,12 +18,12 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function ( $ ) {
+( function ( $, window ) {
 
     /**
      * Beta note handler
      */
-    oxCompareLinks = {
+    var oxCompareLinks = {
 
         /**
          * Update compare links, hide add link and show remove link.
@@ -45,5 +45,6 @@
      * CompareLinks widget
      */
     $.widget("ui.oxCompareLinks", oxCompareLinks );
+    window.oxCompareLinks = oxCompareLinks;
 
-})( jQuery );
+})( jQuery, window );

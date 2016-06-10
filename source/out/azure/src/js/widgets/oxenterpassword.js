@@ -18,11 +18,11 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function( $ ) {
+( function( $, window ) {
     /**
      * Show password field if email will be changed
      */
-    oxEnterPassword = {
+    var oxEnterPassword = {
         options: {
             metodEnterPasswd      : "oxValidate_enterPass"
         },
@@ -62,5 +62,6 @@
     };
 
     $.widget( "ui.oxEnterPassword", oxEnterPassword );
+    window.oxEnterPassword = oxEnterPassword;
 
-} )( jQuery );
+} )( jQuery, window );

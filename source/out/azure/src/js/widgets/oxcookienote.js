@@ -23,7 +23,7 @@
     /**
      * Cookie note handler
      */
-    oxCookieNote = {
+    var oxCookieNote = {
         options: {
             closeButton : ".dismiss"
         },

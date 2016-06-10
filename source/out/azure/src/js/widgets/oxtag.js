@@ -18,9 +18,10 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function ( $ ) {
+( function ( $, window ) {
 
-    oxTag = {
+    var oxAjax = window.oxAjax;
+    var oxTag = {
 
          highTag : function() {
 
@@ -33,7 +34,7 @@
                 {//targetEl, onSuccess, onError, additionalData
                     'targetEl' : $("#tags"),
                     'additionalData' : {'highTags' : oSelf.prev().text(), 'blAjax' : '1'},
-                    'onSuccess' : function(response, params) {
+                    'onSuccess' : function() {
                         oSelf.prev().addClass('taggedText');
                         oSelf.hide();
                     }
@@ -50,17 +51,18 @@
                 {//targetEl, onSuccess, onError, additionalData
                     'targetEl' : $("#tags"),
                     'additionalData' : {'blAjax' : '1'},
-                    'onSuccess' : function(response, params) {
+                    'onSuccess' : function(response) {
                         response = JSON.parse(response);
+                        var tagError;
                         if ( response.tags.length > 0 ) {
                             $(".tagCloud").append("<span class='taggedText'>, " + response.tags + "</span> ");
                         }
                         if ( response.invalid.length > 0 ) {
-                            var tagError = $("p.tagError.invalid").show();
+                            tagError = $("p.tagError.invalid").show();
                             $("span", tagError).text( response.invalid );
                         }
                         if ( response.inlist.length > 0 ) {
-                            var tagError = $("p.tagError.inlist").show();
+                            tagError = $("p.tagError.inlist").show();
                             $("span", tagError).text( response.inlist );
                         }
                     }
@@ -75,7 +77,7 @@
                 {//targetEl, onSuccess, onError, additionalData
                     'targetEl' : $("#tags"),
                     'additionalData' : {'blAjax' : '1', 'fnc' : 'cancelTags'},
-                    'onSuccess' : function(response, params) {
+                    'onSuccess' : function(response) {
                         if ( response ) {
                             $('#tags').html(response);
                             $("#tags #editTag").click(oxTag.editTag);
@@ -93,7 +95,7 @@
                 { //targetEl, onSuccess, onError, additionalData
                     'targetEl' : $("#tags"),
                     'additionalData' : {'blAjax' : '1'},
-                    'onSuccess' : function(response, params) {
+                    'onSuccess' : function(response) {
 
                         if ( response ) {
                             $('#tags').html(response);
@@ -111,4 +113,4 @@
 
     $.widget("ui.oxTag", oxTag );
 
-})( jQuery );
+})( jQuery, window );

@@ -20,7 +20,7 @@
  */
 ( function( $ ) {
 
-    oxInfoPopup = {
+    var oxInfoPopup = {
             options: {
                 width         : 300,
                 resizable     : true,
@@ -54,7 +54,7 @@
                         zIndex         : options.zIndex,
                         position     : [position.left + 30, position.top - 30],
 
-                        open: function(event, ui) {
+                        open: function() {
 
                         $('div.ui-dialog-titlebar').css("visibility", "hidden");
                     }

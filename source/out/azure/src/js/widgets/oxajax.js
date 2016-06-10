@@ -18,12 +18,12 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function ( $ ) {
+( function ( $, window ) {
 
     /**
      * Ajax
      */
-    oxAjax = {
+    var oxAjax = {
 
         /**
          * Loading temporary screen when ajax call proceeds
@@ -217,9 +217,11 @@
          * @param e JS exception
          */
         reportJSError: function(e) {
+            /*eslint-disable no-console*/
             if (typeof console != 'undefined' && typeof console.error != 'undefined') {
                 console.error(e);
             }
+            /*eslint-enable no-console*/
         },
 
         /**
@@ -250,5 +252,6 @@
     };
 
     $.widget("ui.oxAjax", oxAjax );
+    window.oxAjax = oxAjax;
 
-})( jQuery );
+})( jQuery, window );

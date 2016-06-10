@@ -23,7 +23,7 @@
     /**
      * Beta note handler
      */
-    oxBetaNote = {
+    var oxBetaNote = {
         options: {
             cookieName  : "hideBetaNote",
             closeButton : ".dismiss"

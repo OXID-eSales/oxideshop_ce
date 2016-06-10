@@ -20,7 +20,7 @@
  */
 ( function( $ ) {
 
-     oxModalPopup = {
+     var oxModalPopup = {
             options: {
                 width        : 687,
                 height       : 'auto',
@@ -79,7 +79,7 @@
                     position  : options.position,
                     draggable : options.draggable,
 
-                    open: function(event, ui) {
+                    open: function() {
                         $('div.ui-dialog-titlebar').remove();
                     }
                 });

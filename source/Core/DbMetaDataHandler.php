@@ -135,6 +135,27 @@ class DbMetaDataHandler extends oxSuperCfg
     }
 
     /**
+     * Check, if the table has an index with the given name
+     * 
+     * @param string $indexName The name of the index we want to check
+     * @param string $tableName The table to check for the index
+     * 
+     * @return bool Has the table the given index?
+     */
+    public function hasIndex($indexName, $tableName)
+    {
+        $result = false;
+
+        foreach ($this->getIndices($tableName) as $index) {
+            if ($indexName === $index['Column_name']) {
+                $result = true;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Get all tables names from db. Views tables are not included in
      * this list.
      *

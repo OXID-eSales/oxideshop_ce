@@ -169,6 +169,26 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     }
 
     /**
+     * Test, that the method hasIndex gives back false, if we check for a non existing index name
+     */
+    public function testHasIndexWithNotExistingIndex()
+    {
+        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+
+        $this->assertFalse($dbMetaDataHandler->hasIndex('NON_EXISTANT_INDEX_NAME', 'oxarticles'));
+    }
+
+    /**
+     * Test, that the method hasIndex gives back false, if we check for a non existing index name
+     */
+    public function testHasIndexWithExistingIndex()
+    {
+        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+
+        $this->assertTrue($dbMetaDataHandler->hasIndex('OXID', 'oxarticles'));
+    }
+
+    /**
      * Test getting all db tables list (except views)
      */
     public function testGetAllTables()

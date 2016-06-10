@@ -104,7 +104,7 @@ class AlistTest extends \OxidTestCase
         $sCatId = "6b6b64bdcf7c25e92191b1120974af4e";
 
         // Demo data is different in EE and CE
-        $shopVersion = $this->getTestConfig()->getShopEdition() == 'EE' ? 5 : 4;
+        $shopVersion = 6;
         $sPrefix = "Woman - Jackets. OXID eShop $shopVersion";
 
         $oCategory = oxNew('oxCategory');
@@ -842,7 +842,7 @@ class AlistTest extends \OxidTestCase
         $oListView = $this->getMock("alist", array('getActiveCategory'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCategory));
 
-        $shopVersion = $this->getTestConfig()->getShopEdition() == 'EE' ? 5 : 4;
+        $shopVersion = 6;
         $sExpect = "parent category - category. OXID eShop $shopVersion";
         //expected string changed due to #2776
         $this->assertEquals(

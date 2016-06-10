@@ -96,6 +96,13 @@ class SysRequirementsTest extends \OxidTestCase
      */
     public function testCheckMysqlVersion()
     {
+        $oSysReq = oxNew('oxSysRequirements');
+        /**
+         * The following lines have been commented as they require a certain version of MySQL server to be installed in
+         * order to pass the assertion
+         *
+         */
+        /**
         $aRez = oxDb::getDb()->getAll("SHOW VARIABLES LIKE 'version'");
         foreach ($aRez as $aRecord) {
             $sVersion = $aRecord[1];
@@ -107,13 +114,15 @@ class SysRequirementsTest extends \OxidTestCase
             $iModStat = 2;
         }
 
-        //
-        $oSysReq = oxNew('oxSysRequirements');
         $this->assertEquals($iModStat, $oSysReq->checkMysqlVersion());
+        */
         $this->assertEquals(0, $oSysReq->checkMysqlVersion('5'));
         $this->assertEquals(0, $oSysReq->checkMysqlVersion('5.0.1'));
         $this->assertEquals(0, $oSysReq->checkMysqlVersion('5.0.2'));
         $this->assertEquals(2, $oSysReq->checkMysqlVersion('5.0.3'));
+        // Just test a few real versions
+        $this->assertEquals(2, $oSysReq->checkMysqlVersion('5.5.49-0ubuntu0.14.04.1'));
+        $this->assertEquals(2, $oSysReq->checkMysqlVersion('5.7.12-1~exp1+deb.sury.org~trusty+1'));
     }
 
     public function testCheckCollation()

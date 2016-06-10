@@ -108,8 +108,8 @@ class Unit_Admin_DiscountItemAjaxTest extends OxidTestCase
     {
         $sOxid = '_testOxid';
         $sSynchoxid = '_testSynchoxid';
-        $this->setRequestParameter("oxid", $sOxid);
-        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParam("oxid", $sOxid);
+        $this->setRequestParam("synchoxid", $sSynchoxid);
         $this->setConfigParam('blVariantParentBuyable', true);
         $sArticleTable = getViewName("oxarticles");
         $sO2CView = getViewName("oxobject2category");
@@ -151,7 +151,7 @@ class Unit_Admin_DiscountItemAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxidParentIsBuyable()
     {
         $sSynchoxid = '_testSynchoxid';
-        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParam("synchoxid", $sSynchoxid);
         $this->setConfigParam('blVariantParentBuyable', true);
         $sArticleTable = getViewName("oxarticles");
         $sDiscTable = getViewName('oxdiscount');

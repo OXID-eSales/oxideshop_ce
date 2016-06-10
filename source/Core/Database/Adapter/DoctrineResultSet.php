@@ -176,7 +176,7 @@ class DoctrineResultSet
      *
      * @return array The rows of the corresponding statement, starting at the current row pointer.
      */
-    public function &getArray($numberOfRows)
+    public function getArray($numberOfRows)
     {
         $results = array();
         $cnt = 0;
@@ -195,9 +195,9 @@ class DoctrineResultSet
      *
      * @return array The rows of the corresponding statement, starting at the current row pointer.
      */
-    public function &getRows($numberOfRows)
+    public function getRows($numberOfRows)
     {
-        $arr =& $this->getArray($numberOfRows);
+        $arr = $this->getArray($numberOfRows);
         return $arr;
     }
 
@@ -208,9 +208,9 @@ class DoctrineResultSet
      *
      * @return array The complete result set as an array of associative arrays.
      */
-    public function &getAll($nRows = -1)
+    public function getAll($nRows = -1)
     {
-        $arr =& $this->getArray($nRows);
+        $arr = $this->getArray($nRows);
         return $arr;
     }
 

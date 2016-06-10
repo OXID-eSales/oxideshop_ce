@@ -23,8 +23,6 @@ namespace Unit\Core;
 
 use oxDynImgGenerator;
 
-require_once getShopBasePath() . 'Core/oxdynimggenerator.php';
-
 /**
  * Tests for Actions_List class
  */

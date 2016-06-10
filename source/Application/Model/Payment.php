@@ -304,19 +304,19 @@ class Payment extends \oxI18n
         //getting basket price with applied discounts and vouchers
         $dPrice = $this->getPaymentValue($this->getBaseBasketPriceForPaymentCostCalc($oBasket));
 
-        if ($dPrice) {
-            // calculating total price
-            $oPrice = oxNew('oxPrice');
-            $oPrice->setNettoMode($this->_blPaymentVatOnTop);
+        if (!$dPrice) {
+            $dPrice = 0;
+        }
+        // calculating total price
+        $oPrice = oxNew('oxPrice');
+        $oPrice->setNettoMode($this->_blPaymentVatOnTop);
 
-            $oPrice->setPrice($dPrice);
-            if ($dPrice > 0) {
-                $oPrice->setVat($oBasket->getAdditionalServicesVatPercent());
-            }
-
-            $this->_oPrice = $oPrice;
+        $oPrice->setPrice($dPrice);
+        if ($dPrice > 0) {
+            $oPrice->setVat($oBasket->getAdditionalServicesVatPercent());
         }
 
+        $this->_oPrice = $oPrice;
     }
 
     /**

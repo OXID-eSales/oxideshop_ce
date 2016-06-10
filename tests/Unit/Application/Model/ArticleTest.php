@@ -4504,9 +4504,9 @@ class ArticleTest extends \OxidTestCase
     public function testGetAttributesDisplayableInBasket()
     {
         $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = '8a142c3f0b9527634.96987022' ";
-        $rs = oxDb::getDB()->execute($sSelect);
+        oxDb::getDB()->execute($sSelect);
         $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = 'd8842e3b7c5e108c1.63072778' "; // texture
-        $rs = oxDb::getDB()->execute($sSelect);
+        oxDb::getDB()->execute($sSelect);
 
         $oArticle = oxNew('oxArticle');
         $oArticle->load('1672');

@@ -119,7 +119,7 @@ class VarianthandlerTest extends \OxidTestCase
 
         $oVariantHandler = oxNew("oxVariantHandler");
         $aVar = $oVariantHandler->UNITassignValues($aValues, oxNew('oxArticleList'), $oArticle, array('en', 'de'));
-        $oRez = $myDB->Execute("select oxvarselect, oxvarselect_1 from oxarticles where oxparentid = '2000'");
+        $oRez = $myDB->select("select oxvarselect, oxvarselect_1 from oxarticles where oxparentid = '2000'");
         while (!$oRez->EOF) {
             $oRez->fields = array_change_key_case($oRez->fields, CASE_LOWER);
             $this->assertEquals('red', $oRez->fields[0]);

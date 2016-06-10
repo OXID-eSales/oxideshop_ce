@@ -104,7 +104,7 @@ class PriceAlarmSend extends \oxAdminList
         $activeAlarmsQuery =
             "SELECT oxprice, oxartid FROM oxpricealarm
                     WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = '$shopId'";
-        $result = $database->execute($activeAlarmsQuery);
+        $result = $database->select($activeAlarmsQuery);
         $count = 0;
         while ($result != false && !$result->EOF) {
             $alarmPrice = $result->fields['oxprice'];

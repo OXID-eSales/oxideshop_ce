@@ -479,13 +479,13 @@ class Doctrine implements DatabaseInterface
          * - DoctrineResultSet for "SELECT"
          * - DoctrineEmptyResultSet for the rest of queries
          */
-        if ($this->doesStatementProduceOutput($query)) {
+       /* if ($this->doesStatementProduceOutput($query)) {
             /** @var DoctrineResultSet $result */
-            $result = $this->select($query, $parameters);
-        } else {
+          //  $result = $this->select($query, $parameters);
+      /*  } else {*/
             /** @var DoctrineEmptyResultSet $result */
             $result = $this->executeUpdate($query, $parameters);
-        }
+     //   }
 
         return $result;
     }

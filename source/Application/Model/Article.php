@@ -4478,7 +4478,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         $oDb->execute($sDelete);
 
         $sDelete = 'delete from oxratings where oxobjectid = ' . $articleId . ' ';
-        $rs = $oDb->execute($sDelete);
+        $oDb->execute($sDelete);
 
         $sDelete = 'delete from oxaccessoire2article where oxobjectid = ' . $articleId . ' or oxarticlenid = ' . $articleId . ' ';
         $oDb->execute($sDelete);
@@ -4496,7 +4496,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         }
 
         $sDelete = 'delete from oxactions2article where oxartid = ' . $articleId . ' ';
-        $rs = $oDb->execute($sDelete);
+        $oDb->execute($sDelete);
 
         $sDelete = 'delete from oxobject2list where oxobjectid = ' . $articleId . ' ';
 

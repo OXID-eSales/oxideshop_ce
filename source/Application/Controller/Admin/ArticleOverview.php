@@ -73,7 +73,7 @@ class ArticleOverview extends \oxAdminDetails
             $sSelect = "select oxartid,sum(oxamount) as cnt from oxorderarticles " .
                        "where oxordershopid = '{$sShopID}' group by oxartid order by cnt desc";
 
-            $rs = $oDB->execute($sSelect);
+            $rs = $oDB->select($sSelect);
             $iTopPos = 0;
             $iPos = 0;
             if ($rs != false && $rs->recordCount() > 0) {

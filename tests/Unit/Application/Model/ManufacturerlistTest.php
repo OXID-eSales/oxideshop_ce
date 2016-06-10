@@ -76,7 +76,7 @@ class ManufacturerlistTest extends \OxidTestCase
 
         // checking if vendros are the same
         $sQ = 'select oxid, oxtitle_1, oxshortdesc_1 from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
-        $rs = $myDB->Execute($sQ);
+        $rs = $myDB->select($sQ);
 
         if ($rs != false && $rs->RecordCount() > 0) {
             while (!$rs->EOF) {

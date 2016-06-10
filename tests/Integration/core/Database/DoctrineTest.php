@@ -117,26 +117,6 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
     }
 
     /**
-     * Test delegation of SELECT queries to Doctrine::select()
-     */
-    public function testExecuteDelegatesSelectQueriesToSelectMethod()
-    {
-        $query = 'SELECT * FROM ' . self::TABLE_NAME . ' LIMIT 0,1';
-
-        /** @var \OxidEsales\Eshop\Core\Database\Doctrine|\PHPUnit_Framework_MockObject_MockObject $databaseMock */
-        $databaseMock = $this->getMockBuilder('\OxidEsales\Eshop\Core\Database\Doctrine')
-            ->setMethods(['select'])
-            ->getMock();
-
-        $databaseMock->expects($this->once())->method('select');
-
-        $databaseMock->execute(
-            $query,
-            array()
-        );
-    }
-
-    /**
      * Test, that the method 'selectLimit' returns the expected rows from the database for different
      * values of limit and offset.
      *

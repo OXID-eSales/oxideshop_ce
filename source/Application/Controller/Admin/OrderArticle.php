@@ -147,7 +147,7 @@ class OrderArticle extends \oxAdminDetails
             $sTable = getViewName("oxarticles");
             $sQ = "select oxid, oxparentid from $sTable where oxartnum = " . $oDb->quote($sArtNum) . " limit 1";
 
-            $rs = $oDb->execute($sQ);
+            $rs = $oDb->select($sQ);
             if ($rs != false && $rs->recordCount() > 0) {
                 $sArtId = $rs->fields['OXPARENTID'] ? $rs->fields['OXPARENTID'] : $rs->fields['OXID'];
 

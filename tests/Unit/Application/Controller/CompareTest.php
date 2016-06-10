@@ -216,7 +216,7 @@ class CompareTest extends \OxidTestCase
         $aAttributes = $oCompare->getAttributeList();
 
         $sSelect = "select oxattrid, oxvalue from oxobject2attribute where oxobjectid = '1672'";
-        $rs = oxDb::getDB()->execute($sSelect);
+        $rs = oxDb::getDB()->select($sSelect);
         $sSelect = "select oxtitle from oxattribute where oxid = '" . $rs->fields[0] . "'";
         $sTitle = oxDb::getDB()->getOne($sSelect);
 

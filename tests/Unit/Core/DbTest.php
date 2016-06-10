@@ -80,7 +80,7 @@ class DbTest extends UnitTestCase
         /** Reset the table description cache */
         $this->setProtectedClassProperty(Database::getInstance(), 'tblDescCache', []);
 
-        $rs = Database::getDb()->execute("show tables");
+        $rs = Database::getDb()->select("show tables");
         $icount = 3;
         if ($rs != false && $rs->recordCount() > 0) {
             while (!$rs->EOF && $icount--) {

@@ -210,7 +210,7 @@ class ShopConfiguration extends oxAdminDetails
         $aVarConstraints = array();
         $aGrouping = array();
         $oDb = oxDb::getDb();
-        $rs = $oDb->Execute(
+        $rs = $oDb->select(
             "select cfg.oxvarname,
                     cfg.oxvartype,
                     DECODE( cfg.oxvarvalue, " . $oDb->quote($myConfig->getConfigParam('sConfigKey')) . ") as oxvarvalue,

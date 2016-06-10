@@ -116,7 +116,7 @@ class PaymentRdfa extends \oxAdminDetails
         $oDb = oxDb::getDb();
         $aRDFaPayments = array();
         $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid=' . $oDb->quote(oxRegistry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfapayment" ';
-        $rs = $oDb->execute($sSelect);
+        $rs = $oDb->select($sSelect);
         if ($rs && $rs->recordCount()) {
             while (!$rs->EOF) {
                 $aRDFaPayments[] = $rs->fields[0];

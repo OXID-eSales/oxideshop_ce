@@ -373,7 +373,7 @@ class DynamicExportBaseController extends \oxAdminDetails
         $sQ = "select $sCatView.oxleft, $sCatView.oxright, $sCatView.oxrootid from $sO2CView as oxobject2category left join $sCatView on $sCatView.oxid = oxobject2category.oxcatnid ";
         $sQ .= "where oxobject2category.oxobjectid=" . $oDB->quote($oArticle->getId()) . " and $sCatView.oxactive = 1 order by oxobject2category.oxtime ";
 
-        $oRs = $oDB->execute($sQ);
+        $oRs = $oDB->select($sQ);
         if ($oRs != false && $oRs->recordCount() > 0) {
             $sLeft = $oRs->fields[0];
             $sRight = $oRs->fields[1];
@@ -382,7 +382,7 @@ class DynamicExportBaseController extends \oxAdminDetails
             //selecting all parent category titles
             $sQ = "select oxtitle from $sCatView where oxright >= {$sRight} and oxleft <= {$sLeft} and oxrootid = '{$sRootId}' order by oxleft ";
 
-            $oRs = $oDB->execute($sQ);
+            $oRs = $oDB->select($sQ);
             if ($oRs != false && $oRs->recordCount() > 0) {
                 while (!$oRs->EOF) {
                     if ($sCatStr) {
@@ -475,7 +475,7 @@ class DynamicExportBaseController extends \oxAdminDetails
 
         // #1070 Saulius 2005.11.28
         // check mySQL version
-        $oRs = $oDB->execute("SHOW VARIABLES LIKE 'version'");
+        $oRs = $oDB->select("SHOW VARIABLES LIKE 'version'");
         $sTableCharset = $this->_generateTableCharSet($oRs->fields[1]);
 
         // create heap table
@@ -586,9 +586,9 @@ class DynamicExportBaseController extends \oxAdminDetails
         //if MySQL >= 4.1.0 set charsets and collations
         if (version_compare($sMysqlVersion, '4.1.0', '>=') > 0) {
             $oDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
-            $oRs = $oDB->execute("SHOW FULL COLUMNS FROM `oxarticles` WHERE field like 'OXID'");
+            $oRs = $oDB->select("SHOW FULL COLUMNS FROM `oxarticles` WHERE field like 'OXID'");
             if (isset($oRs->fields['Collation']) && ($sMysqlCollation = $oRs->fields['Collation'])) {
-                $oRs = $oDB->execute("SHOW COLLATION LIKE '{$sMysqlCollation}'");
+                $oRs = $oDB->select("SHOW COLLATION LIKE '{$sMysqlCollation}'");
                 if (isset($oRs->fields['Charset']) && ($sMysqlCharacterSet = $oRs->fields['Charset'])) {
                     $sTableCharset = "DEFAULT CHARACTER SET {$sMysqlCharacterSet} COLLATE {$sMysqlCollation}";
                 }
@@ -670,35 +670,35 @@ class DynamicExportBaseController extends \oxAdminDetails
         $sO2CView = getViewName('oxobject2category', $iExpLang);
         $sArticleTable = getViewName("oxarticles", $iExpLang);
 
-        $sSelect = "insert into {$sHeapTable} select {$sArticleTable}.oxid from {$sArticleTable}, {$sO2CView} as oxobject2category where ";
-        $sSelect .= $oArticle->getSqlActiveSnippet();
+        $insertQuery = "insert into {$sHeapTable} select {$sArticleTable}.oxid from {$sArticleTable}, {$sO2CView} as oxobject2category where ";
+        $insertQuery .= $oArticle->getSqlActiveSnippet();
 
         if (!oxRegistry::getConfig()->getRequestParameter("blExportVars")) {
-            $sSelect .= " and {$sArticleTable}.oxid = oxobject2category.oxobjectid and {$sArticleTable}.oxparentid = '' ";
+            $insertQuery .= " and {$sArticleTable}.oxid = oxobject2category.oxobjectid and {$sArticleTable}.oxparentid = '' ";
         } else {
-            $sSelect .= " and ( {$sArticleTable}.oxid = oxobject2category.oxobjectid or {$sArticleTable}.oxparentid = oxobject2category.oxobjectid ) ";
+            $insertQuery .= " and ( {$sArticleTable}.oxid = oxobject2category.oxobjectid or {$sArticleTable}.oxparentid = oxobject2category.oxobjectid ) ";
         }
 
         $sSearchString = oxRegistry::getConfig()->getRequestParameter("search");
         if (isset($sSearchString)) {
-            $sSelect .= "and ( {$sArticleTable}.OXTITLE like " . $oDB->quote("%{$sSearchString}%");
-            $sSelect .= " or {$sArticleTable}.OXSHORTDESC like " . $oDB->quote("%$sSearchString%");
-            $sSelect .= " or {$sArticleTable}.oxsearchkeys like " . $oDB->quote("%$sSearchString%") . " ) ";
+            $insertQuery .= "and ( {$sArticleTable}.OXTITLE like " . $oDB->quote("%{$sSearchString}%");
+            $insertQuery .= " or {$sArticleTable}.OXSHORTDESC like " . $oDB->quote("%$sSearchString%");
+            $insertQuery .= " or {$sArticleTable}.oxsearchkeys like " . $oDB->quote("%$sSearchString%") . " ) ";
         }
 
         if ($sCatAdd) {
-            $sSelect .= $sCatAdd;
+            $insertQuery .= $sCatAdd;
         }
 
         // add minimum stock value
         if ($this->getConfig()->getConfigParam('blUseStock') && ($dMinStock = oxRegistry::getConfig()->getRequestParameter("sExportMinStock"))) {
             $dMinStock = str_replace(array(";", " ", "/", "'"), "", $dMinStock);
-            $sSelect .= " and {$sArticleTable}.oxstock >= " . $oDB->quote($dMinStock);
+            $insertQuery .= " and {$sArticleTable}.oxstock >= " . $oDB->quote($dMinStock);
         }
 
-        $sSelect .= " group by {$sArticleTable}.oxid";
+        $insertQuery .= " group by {$sArticleTable}.oxid";
 
-        return $oDB->execute($sSelect) ? true : false;
+        return $oDB->execute($insertQuery) ? true : false;
     }
 
     /**
@@ -716,7 +716,7 @@ class DynamicExportBaseController extends \oxAdminDetails
             $sQ = "select $sHeapTable.oxid from $sHeapTable, $sArticleTable where
                           $sHeapTable.oxid = $sArticleTable.oxparentid group by $sHeapTable.oxid";
 
-            $oRs = $oDB->execute($sQ);
+            $oRs = $oDB->select($sQ);
             $sDel = "delete from $sHeapTable where oxid in ( ";
             $blSep = false;
             if ($oRs != false && $oRs->recordCount() > 0) {
@@ -795,7 +795,7 @@ class DynamicExportBaseController extends \oxAdminDetails
 
             // Load all root cat's == all trees
             $sSQL = "select oxid from $sCatView where oxparentid = 'oxrootid'";
-            $oRs = $oDb->execute($sSQL);
+            $oRs = $oDb->select($sSQL);
             if ($oRs != false && $oRs->recordCount() > 0) {
                 while (!$oRs->EOF) {
                     // now load each tree
@@ -805,7 +805,7 @@ class DynamicExportBaseController extends \oxAdminDetails
                              v.oxrootid='" . $oRs->fields[0] . "' and s.oxleft BETWEEN
                              v.oxleft AND v.oxright AND s.oxhidden = '0' GROUP BY s.oxleft order by level";
 
-                    $oRs2 = $oDb->Execute($sSQL);
+                    $oRs2 = $oDb->select($sSQL);
                     if ($oRs2 != false && $oRs2->recordCount() > 0) {
                         while (!$oRs2->EOF) {
                             // store it

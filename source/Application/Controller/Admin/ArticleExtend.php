@@ -297,7 +297,7 @@ class ArticleExtend extends \oxAdminDetails
         $query .= $isVariantSelectionEnabled ? '' : " and {$articleTable}.oxparentid = '' ";
         $query .= " and {$articleTable}.oxid = " . $database->quote($article->$bundleIdField->value);
 
-        $resultFromDatabase = $database->Execute($query);
+        $resultFromDatabase = $database->select($query);
         if ($resultFromDatabase != false && $resultFromDatabase->RecordCount() > 0) {
             while (!$resultFromDatabase->EOF) {
                 $articleNumber = new oxField($resultFromDatabase->fields[1]);

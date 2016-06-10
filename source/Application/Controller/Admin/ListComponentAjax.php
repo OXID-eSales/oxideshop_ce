@@ -455,7 +455,7 @@ class ListComponentAjax extends \oxSuperCfg
     protected function _getAll($sQ)
     {
         $aReturn = array();
-        $rs = oxDb::getDb()->execute($sQ);
+        $rs = oxDb::getDb()->select($sQ);
         if ($rs != false && $rs->recordCount() > 0) {
             while (!$rs->EOF) {
                 $aReturn[] = $rs->fields[0];

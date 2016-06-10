@@ -92,11 +92,11 @@ class Attribute extends \oxI18n
         $oDb = oxDb::getDb();
         $sOxidQuoted = $oDb->quote($sOXID);
         $sDelete = "delete from oxobject2attribute where oxattrid = " . $sOxidQuoted;
-        $rs = $oDb->execute($sDelete);
+        $oDb->execute($sDelete);
 
         // #657 ADDITIONAL removes attribute connection to category
         $sDelete = "delete from oxcategory2attribute where oxattrid = " . $sOxidQuoted;
-        $rs = $oDb->execute($sDelete);
+        $oDb->execute($sDelete);
 
         return parent::delete($sOXID);
     }

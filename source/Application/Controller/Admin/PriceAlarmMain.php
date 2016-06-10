@@ -149,7 +149,7 @@ class PriceAlarmMain extends \oxAdminDetails
             SELECT oxarticles.oxid, oxpricealarm.oxprice
             FROM oxpricealarm, oxarticles
             WHERE oxarticles.oxid = oxpricealarm.oxartid AND oxpricealarm.oxsended = '000-00-00 00:00:00'";
-        $result = oxDb::getDb()->execute($query);
+        $result = oxDb::getDb()->select($query);
         $count = 0;
 
         if ($result != false && $result->recordCount() > 0) {

@@ -401,11 +401,11 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Test, that the method 'execute' works with an empty result set for the select query.
+     * Test, that the method 'select' works with an empty result set for the select query.
      */
-    public function testExecuteWithEmptyResultSelect()
+    public function testSelectWithEmptyResultSelect()
     {
-        $result = $this->database->execute('SELECT OXID FROM ' . self::TABLE_NAME);
+        $result = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
 
         $expectedRows = array();
         $allRows = $result->getAll();
@@ -413,12 +413,12 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Test, that the method 'execute' works with an empty result set for the select query,
+     * Test, that the method 'select' works with an empty result set for the select query,
      * whereby the select clause is not on the first char.
      */
     public function testExecuteWithEmptyResultAndSelectNotOnFirstChar()
     {
-        $result = $this->database->execute('   SELECT OXID FROM ' . self::TABLE_NAME);
+        $result = $this->database->select('   SELECT OXID FROM ' . self::TABLE_NAME);
 
         $expectedRows = array();
         $allRows = $result->getAll();
@@ -426,13 +426,13 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Test, that the method 'execute' works with a non empty result set for the select query.
+     * Test, that the method 'select' works with a non empty result set for the select query.
      */
     public function testExecuteWithNonEmptySelect()
     {
         $this->loadFixtureToTestTable();
 
-        $result = $this->database->execute('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
+        $result = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
 
         $this->assertFalse($result->EOF);
         $this->assertSame(array(self::FIXTURE_OXID_1), $result->fields);
@@ -892,7 +892,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      */
     public function testInsertIdWithoutInsertion()
     {
-        $this->database->execute('SELECT * FROM ' . self::TABLE_NAME);
+        $this->database->select('SELECT * FROM ' . self::TABLE_NAME);
         $firstInsertedId = $this->database->getLastInsertId();
 
         $this->assertEquals(0, $firstInsertedId);

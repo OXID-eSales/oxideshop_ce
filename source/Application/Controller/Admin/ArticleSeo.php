@@ -172,7 +172,7 @@ class ArticleSeo extends \Object_Seo
         $sQ = "select oxobject2category.oxcatnid as oxid from {$sView} as oxobject2category " .
               "where oxobject2category.oxobjectid=" . $sQuotesArticleId . " union " . $sSqlForPriceCategories;
 
-        $oRs = $oDb->execute($sQ);
+        $oRs = $oDb->select($sQ);
         if ($oRs != false && $oRs->recordCount() > 0) {
             while (!$oRs->EOF) {
                 $oCat = oxNew('oxCategory');

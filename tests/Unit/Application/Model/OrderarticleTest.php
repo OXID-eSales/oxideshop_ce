@@ -697,7 +697,7 @@ class OrderarticleTest extends \OxidTestCase
         $this->_oOrderArticle->save();
 
         $sSQL = "select * from oxorderarticles where oxid = '_testOrderArticleId' ";
-        $rs = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->execute($sSQL);
+        $rs = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->select($sSQL);
 
         $oOrderArticle = oxNew('oxorderarticle');
         $oOrderArticle->assign($rs->fields); // field names are in upercase

@@ -807,8 +807,8 @@ class Base extends \oxSuperCfg
         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $coreTable = $this->getCoreTableName();
         $deleteQuery = "delete from {$coreTable} where oxid = " . $database->quote($oxid);
-        $database->execute($deleteQuery);
-        if ($blDelete = (bool) $database->affectedRows()) {
+        $affectedRows = $database->execute($deleteQuery);
+        if ($blDelete = (bool) $affectedRows) {
             $this->onChange(ACTION_DELETE, $oxid);
         }
 

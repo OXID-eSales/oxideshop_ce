@@ -108,8 +108,7 @@ class ToolsList extends \oxAdminList
                             $aQErrorNumbers [$iQueriesCounter] = null;
 
                             try {
-                                $oDB->execute($sUpdateSQL);
-                                $aQAffectedRows[$iQueriesCounter] = $oDB->affectedRows();
+                                $aQAffectedRows[$iQueriesCounter] = $oDB->execute($sUpdateSQL);
                             } catch (Exception $exception) {
                                 // Report errors
                                 $aQErrorMessages[$iQueriesCounter] = oxStr::getStr()->htmlentities($exception->getMessage());

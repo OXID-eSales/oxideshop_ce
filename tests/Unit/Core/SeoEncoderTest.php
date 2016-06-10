@@ -1366,8 +1366,8 @@ class SeoEncoderTest extends \OxidTestCase
         $oEncoder = $this->getProxyClass('oxSeoEncoder');
         $oEncoder->UNITsaveToDb("static", 'test', 'http://std', 'http://seo', 0, 0);
         $oDb = oxDb::getDb();
-        $oDb->Execute('delete from oxseo where oxobjectid="test"');
-        $this->assertEquals(1, $oDb->affectedRows());
+        $affectedRows = $oDb->Execute('delete from oxseo where oxobjectid="test"');
+        $this->assertEquals(1, $affectedRows);
     }
 
     public function testSaveToDbKeyCollision()
@@ -1381,14 +1381,14 @@ class SeoEncoderTest extends \OxidTestCase
 
         $oDb = oxDb::getDb();
 
-        $oDb->Execute('delete from oxseo where oxobjectid="test"');
+        $affectedRows = $oDb->Execute('delete from oxseo where oxobjectid="test"');
         //assert 0 rows to be found with oxobjectid = test because the entry was overridden
         //by an other object with the same url
-        $this->assertEquals(0, $oDb->affectedRows());
+        $this->assertEquals(0, $affectedRows);
 
-        $oDb->Execute('delete from oxseo where oxobjectid="testOtherId"');
+        $affectedRows = $oDb->Execute('delete from oxseo where oxobjectid="testOtherId"');
         //assert 1 rows to be found with oxobjectid = testOtherId because the entry was saved
-        $this->assertEquals(1, $oDb->affectedRows());
+        $this->assertEquals(1, $affectedRows);
     }
 
     public function testTrimUrl()

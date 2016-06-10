@@ -336,13 +336,13 @@ class Doctrine implements DatabaseInterface
     /**
      * Quote a string in a way that it can be used as a identifier (i.e. table name or field name) in a SQL statement.
      *
-     * @param $value
+     * @param string $string The string to be quoted as a identifier. 
      *
-     * @return string
+     * @return string The quoted string
      */
-    public function quoteIdentifier($value)
+    public function quoteIdentifier($string)
     {
-        return $this->getConnection()->quoteIdentifier(trim($value, $this->getConnection()->getDatabasePlatform()->getIdentifierQuoteCharacter()));
+        return $this->getConnection()->quoteIdentifier(trim($string, $this->getConnection()->getDatabasePlatform()->getIdentifierQuoteCharacter()));
     }
 
     /**
@@ -709,7 +709,7 @@ class Doctrine implements DatabaseInterface
     /**
      * Return true, if the given SQL statement is a statement that may produce any output.
      *
-     * There are two classes of SQL statements.
+     * There are two kinds of SQL statements.
      * One class produces output like
      * "SELECT * FROM `countries` ORDER BY `iso_code`DESC"
      * Which returns something like:

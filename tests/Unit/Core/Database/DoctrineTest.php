@@ -21,8 +21,8 @@
  */
 namespace Unit\Core\Database;
 
-use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\Eshop\Core\Database\Doctrine;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
  * Unit tests for our database abstraction layer object.
@@ -112,5 +112,56 @@ class DoctrineTest extends UnitTestCase
         $expectedQuotedArray = array("'Hello'", "'quoteThis'");
 
         $this->assertEquals($expectedQuotedArray, $quotedArray);
+    }
+
+    /**
+     * @dataProvider dataProviderTestQuoteIdentifier
+     *
+     * @param $string
+     * @param $expectedResult
+     * @param $message
+     */
+    public function testQuoteIdentifier($string, $expectedResult, $message)
+    {
+        $actualResult = $this->database->quoteIdentifier($string);
+
+        $this->assertSame($expectedResult, $actualResult, $message);
+    }
+
+    /**
+     * This test is MySQL database specific, the identifier for other database platforms my be different.
+     *
+     * @return array
+     */
+    public function dataProviderTestQuoteIdentifier()
+    {
+        $identifierQuoteCharacter = '`';
+        return [
+            [
+                'string to be quoted',
+                $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
+                'A normal string will be quoted with "' . $identifierQuoteCharacter . '""'
+            ],
+            [
+                $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
+                $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
+                'An already quoted string will be quoted with "' . $identifierQuoteCharacter . '"'
+            ],
+            [
+                $identifierQuoteCharacter . 'string to ' . $identifierQuoteCharacter . ' be quoted' . $identifierQuoteCharacter,
+                $identifierQuoteCharacter . 'string to ' . $identifierQuoteCharacter . $identifierQuoteCharacter . ' be quoted' . $identifierQuoteCharacter,
+                'An already quoted string will be quoted with "' . $identifierQuoteCharacter . '"'
+            ],
+            [
+                '',
+                $identifierQuoteCharacter . '' . $identifierQuoteCharacter,
+                'An empty string will be quoted with "' . $identifierQuoteCharacter . '"'
+            ],
+            [
+                null,
+                $identifierQuoteCharacter . '' . $identifierQuoteCharacter,
+                'An empty string will be quoted as an empty string with "' . $identifierQuoteCharacter . '"'
+            ],
+        ];
     }
 }

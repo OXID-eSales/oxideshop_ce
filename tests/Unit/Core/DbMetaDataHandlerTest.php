@@ -136,6 +136,18 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     }
 
     /**
+     * Test, that the method getIndices gives back an empty array in case of a not existing table
+     */
+    public function testGetIndicesWithNotExistingTable()
+    {
+        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+
+        $indices = $dbMetaDataHandler->getIndices('NOT_EXISTING_TABLE_NAME');
+
+        $this->assertEmpty($indices);
+    }
+
+    /**
      * Test, that the method getIndices gives back an empty array in case of a table with no indices
      */
     public function testGetIndicesWithTableWithoutIndices()
@@ -175,7 +187,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     {
         $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
 
-        $this->assertFalse($dbMetaDataHandler->hasIndex('NON_EXISTANT_INDEX_NAME', 'oxarticles'));
+        $this->assertFalse($dbMetaDataHandler->hasIndex('NON_EXISTENT_INDEX_NAME', 'oxarticles'));
     }
 
     /**
@@ -186,6 +198,39 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
 
         $this->assertTrue($dbMetaDataHandler->hasIndex('OXID', 'oxarticles'));
+    }
+
+    /**
+     * Test, that the method getIndexByName gives back null, if we search for a not existing table
+     */
+    public function testGetIndexByNameWithNotExistingTable()
+    {
+        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+
+        $this->assertNull($dbMetaDataHandler->getIndexByName('OXID', 'NOT_EXISTANT_TABLE_NAME'));
+    }
+
+    /**
+     * Test, that the method getIndexByName gives back null, if we search for a not existing index name
+     */
+    public function testGetIndexByNameWithNotExistingName()
+    {
+        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+
+        $this->assertNull($dbMetaDataHandler->getIndexByName('NON_EXISTANT_INDEX_NAME', 'oxarticles'));
+    }
+
+    /**
+     * Test, that the method getIndexByName gives back the correct index array, if we search for an existing index name
+     */
+    public function testGetIndexByNameWithExistingName()
+    {
+        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+
+        $index = $dbMetaDataHandler->getIndexByName('OXID', 'oxarticles');
+
+        $this->assertNotNull($index);
+        $this->assertSame('PRIMARY', $index['Key_name']);
     }
 
     /**

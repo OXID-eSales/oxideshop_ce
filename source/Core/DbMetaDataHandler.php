@@ -131,7 +131,13 @@ class DbMetaDataHandler extends oxSuperCfg
      */
     public function getIndices($tableName)
     {
-        return oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll("SHOW INDEX FROM $tableName");
+        $result = [];
+
+        if ($this->tableExists($tableName)) {
+            $result = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll("SHOW INDEX FROM $tableName");
+        }
+
+        return $result;
     }
 
     /**
@@ -149,6 +155,29 @@ class DbMetaDataHandler extends oxSuperCfg
         foreach ($this->getIndices($tableName) as $index) {
             if ($indexName === $index['Column_name']) {
                 $result = true;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get the index of a given table by its name
+     *
+     * @param string $indexName The name of the index
+     * @param string $tableName The name of the table from which we want the index
+     *
+     * @return null|array The index with the given name
+     */
+    public function getIndexByName($indexName, $tableName) 
+    {
+        $indices = $this->getIndices($tableName);
+
+        $result = null;
+
+        foreach ($indices as $index) {
+            if ($indexName === $index['Column_name']) {
+                $result = $index;
             }
         }
 

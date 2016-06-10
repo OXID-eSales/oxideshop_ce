@@ -122,6 +122,17 @@ class DbMetaDataHandler extends oxSuperCfg
         return false;
     }
 
+    /**
+     * Get the indices of a table
+     *
+     * @param string $tableName The name of the table for which we want the 
+     *
+     * @return array The indices of the given table
+     */
+    public function getIndices($tableName)
+    {
+        return oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll("SHOW INDEX FROM $tableName");
+    }
 
     /**
      * Get all tables names from db. Views tables are not included in

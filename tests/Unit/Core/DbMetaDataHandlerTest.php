@@ -51,9 +51,9 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     }
 
     /**
-     * Test table
+     * Create a test table
      */
-    protected function _createTestTable()
+    protected function createTestTable()
     {
         $sSql = " CREATE TABLE `testDbMetaDataHandler` (
                     `OXID` char(32) NOT NULL,
@@ -67,6 +67,26 @@ class DbMetaDataHandlerTest extends \OxidTestCase
                      FULLTEXT KEY `OXLONGDESC` (`OXLONGDESC`),
                      FULLTEXT KEY `OXLONGDESC_1` (`OXLONGDESC_1`)
                   ) ENGINE = MyISAM";
+
+        oxDb::getDb()->execute($sSql);
+    }
+
+    /**
+     * Create a test table without indices
+     */
+    protected function createTestTableWithoutIndices()
+    {
+        $sSql = "CREATE TABLE `testDbMetaDataHandlerWithoutIndices` (`OXID` char(32) NOT NULL) ENGINE = MyISAM";
+
+        oxDb::getDb()->execute($sSql);
+    }
+
+    /**
+     * Drop a test table without indices
+     */
+    protected function dropTestTableWithoutIndices()
+    {
+        $sSql = "DROP TABLE `testDbMetaDataHandlerWithoutIndices`";
 
         oxDb::getDb()->execute($sSql);
     }
@@ -113,6 +133,39 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         $oDbMeta->expects($this->once())->method('getFields')->with('oxreviews')->will($this->returnValue(array("oxreviews.field1", 'oxreviews.field2Name', 'oxreviews.FIELD')));
 
         $this->assertTrue($oDbMeta->fieldExists("field2Name", "oxreviews"));
+    }
+
+    /**
+     * Test, that the method getIndices gives back an empty array in case of a table with no indices
+     */
+    public function testGetIndicesWithTableWithoutIndices()
+    {
+        $this->createTestTableWithoutIndices();
+
+        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+
+        $indices = $dbMetaDataHandler->getIndices('testDbMetaDataHandlerWithoutIndices');
+
+        $this->dropTestTableWithoutIndices();
+        $this->assertSame(0, count($indices));
+    }
+
+    /**
+     * Test, that the method getIndices gives back all indices in case of a table with indices
+     */
+    public function testGetIndicesWithTableWithIndices()
+    {
+        $this->createTestTable();
+        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+
+        $indices = $dbMetaDataHandler->getIndices('testDbMetaDataHandler');
+
+        $this->assertSame(5, count($indices));
+        $this->assertSame('OXID', $indices[0]['Column_name']);
+        $this->assertSame('OXTITLE', $indices[1]['Column_name']);
+        $this->assertSame('OXTITLE_1', $indices[2]['Column_name']);
+        $this->assertSame('OXLONGDESC', $indices[3]['Column_name']);
+        $this->assertSame('OXLONGDESC_1', $indices[4]['Column_name']);
     }
 
     /**
@@ -304,7 +357,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testAddNewMultilangFieldUpdatesTable()
     {
-        $this->_createTestTable();
+        $this->createTestTable();
 
         /** @var oxDbMetaDataHandler|PHPUnit_Framework_MockObject_MockObject $oDbMeta */
         $oDbMeta = $this->getMock('oxdbmetadatahandler', array('getCurrentMaxLangId'));
@@ -328,7 +381,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testAddNewMultilangFieldUpdatesTableIndexes()
     {
-        $this->_createTestTable();
+        $this->createTestTable();
 
         $oDbMeta = $this->getMock('oxdbmetadatahandler', array('getCurrentMaxLangId'));
         $oDbMeta->expects($this->any())->method('getCurrentMaxLangId')->will($this->returnValue(1));
@@ -365,7 +418,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testAddNewMultilangFieldAddsTable()
     {
-        $this->_createTestTable();
+        $this->createTestTable();
 
         /** @var oxDbMetaDataHandler|PHPUnit_Framework_MockObject_MockObject $oDbMeta */
         $oDbMeta = $this->getMock('oxdbmetadatahandler', array('getCurrentMaxLangId'));
@@ -435,7 +488,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testResetMultilangFields()
     {
-        $this->_createTestTable();
+        $this->createTestTable();
 
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
@@ -465,7 +518,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testResetMultilangFields_skipsResetingWhenIdIsZero()
     {
-        $this->_createTestTable();
+        $this->createTestTable();
 
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");

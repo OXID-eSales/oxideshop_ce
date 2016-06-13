@@ -297,21 +297,27 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
      */
-    public function testAddFieldIndexSql()
+    public function testGetAddFieldIndexSql()
     {
-        $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
+        $dbMetaDataHandler = oxNew('OxidEsales\Eshop\Core\DbMetaDataHandler');
 
-        $aTestSql[0] = "ALTER TABLE `oxartextends` ADD FULLTEXT KEY  (`OXTAGS_4`)";
-        $this->assertEquals($aTestSql, $oDbMeta->getAddFieldIndexSql("oxartextends", "OXTAGS", "OXTAGS_4"));
+        $expectedSqls = [
+            'ALTER TABLE `oxartextends` ADD FULLTEXT KEY  (`OXTAGS_4`)',
+            "ALTER TABLE `oxartextends` ADD FULLTEXT KEY  (`OXTAGS_5`)",
+            "ALTER TABLE `oxartextends_set1` ADD FULLTEXT KEY  (`OXTAGS_8`)",
+            "ALTER TABLE `oxartextends_set2` ADD FULLTEXT KEY  (`OXTAGS_20`)"
+        ];
 
-        $aTestSql[0] = "ALTER TABLE `oxartextends` ADD FULLTEXT KEY  (`OXTAGS_5`)";
-        $this->assertEquals($aTestSql, $oDbMeta->getAddFieldIndexSql("oxartextends", "OXTAGS", "OXTAGS_5"));
+        $resultSqls = [
+            $dbMetaDataHandler->getAddFieldIndexSql("oxartextends", "OXTAGS", "OXTAGS_4"),
+            $dbMetaDataHandler->getAddFieldIndexSql("oxartextends", "OXTAGS", "OXTAGS_5"),
+            $dbMetaDataHandler->getAddFieldIndexSql("oxartextends", "OXTAGS", "OXTAGS_8", "oxartextends_set1"),
+            $dbMetaDataHandler->getAddFieldIndexSql("oxartextends", "OXTAGS", "OXTAGS_20", "oxartextends_set2")
+        ];
 
-        $aTestSql[0] = "ALTER TABLE `oxartextends_set1` ADD FULLTEXT KEY  (`OXTAGS_8`)";
-        $this->assertEquals($aTestSql, $oDbMeta->getAddFieldIndexSql("oxartextends", "OXTAGS", "OXTAGS_8", "oxartextends_set1"));
-
-        $aTestSql[0] = "ALTER TABLE `oxartextends_set2` ADD FULLTEXT KEY  (`OXTAGS_20`)";
-        $this->assertEquals($aTestSql, $oDbMeta->getAddFieldIndexSql("oxartextends", "OXTAGS", "OXTAGS_20", "oxartextends_set2"));
+        foreach ($expectedSqls as $index => $value) {
+            $this->assertSame(array($value), $resultSqls[$index]);
+        }
     }
 
     /**

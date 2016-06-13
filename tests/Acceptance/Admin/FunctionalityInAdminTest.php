@@ -28,7 +28,6 @@ use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
 /** Admin interface functionality. */
 class FunctionalityInAdminTest extends AdminTestCase
 {
-
     /**
      * Testing downloadable product in admin ant frontend
      *

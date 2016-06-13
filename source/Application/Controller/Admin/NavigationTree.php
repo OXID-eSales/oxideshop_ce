@@ -153,7 +153,6 @@ class NavigationTree extends \oxSuperCfg
      */
     protected function _addDynLinks($oDom)
     {
-        $myConfig = $this->getConfig();
         $myUtilsFile = oxRegistry::get("oxUtilsFile");
 
         $sURL = 'index.php?'; // session parameters will be included later (after cache processor)
@@ -208,7 +207,7 @@ class NavigationTree extends \oxSuperCfg
             }
 
             // checking for setup page
-            if (file_exists($myConfig->getConfigParam('sShopDir') . "/Application/Controller/Admin/{$sFile}.php")) {
+            if (class_exists($sFile)) {
                 $oTabElem = new DOMElement('TAB');
                 $oNode->appendChild($oTabElem);
                 $oTabElem->setAttribute('id', 'dyn_interface');

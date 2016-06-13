@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 
 namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
@@ -28,6 +28,7 @@ use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
 /** Admin interface functionality. */
 class FunctionalityInAdminTest extends AdminTestCase
 {
+
     /**
      * Testing downloadable product in admin ant frontend
      *
@@ -68,7 +69,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
-        $this->addToBasket( "1002-1", 10 );
+        $this->addToBasket("1002-1", 10);
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
@@ -81,7 +82,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         //Check if file appears in My Downloads
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->clickAndWAit("//ul[@id='services']/li[8]/a");
+        $this->clickAndWait("//ul[@id='services']/li[8]/a");
         $this->assertTextPresent("%DOWNLOADS_PAYMENT_PENDING%");
 
         //Make order complete
@@ -106,7 +107,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->clickAndWAit("//ul[@id='services']/li[8]/a");
+        $this->clickAndWait("//ul[@id='services']/li[8]/a");
         $this->assertTextNotPresent("%DOWNLOADS_PAYMENT_PENDING%");
 
         $oTestFileList = $this->getElement('link=testFile3');
@@ -133,17 +134,17 @@ class FunctionalityInAdminTest extends AdminTestCase
     {
         // Information about CMS page we use in this test.
         $sCMSPageName = "standard footer";
-        $sCMSPageLink = "link=". $sCMSPageName;
+        $sCMSPageLink = "link=" . $sCMSPageName;
         $sCMSPageDemoIdent = "oxstdfooter";
         $sCMSPageNewIdent = "_test_oxstdfooter";
 
         /// Check if data corectly prepeared.
         // Check if data corectly prepeared in admin.
         $this->loginAdmin("Customer Info", "CMS Pages");
-        $this->assertElementPresent($sCMSPageLink, "There should be CMS page with title '". $sCMSPageName ."' prepeared with demo data. Trying to find it with link: '". $sCMSPageLink ."'.");
+        $this->assertElementPresent($sCMSPageLink, "There should be CMS page with title '" . $sCMSPageName . "' prepeared with demo data. Trying to find it with link: '" . $sCMSPageLink . "'.");
         $this->openListItem($sCMSPageLink);
-        $this->assertEquals("on", $this->getValue("editval[oxcontents__oxactive]"), "CMS page with title '". $sCMSPageName ."' should be turned on as active with demo data.");
-        $this->assertEquals($sCMSPageDemoIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '". $sCMSPageName ."' should have such ident so it will be visible in frontend footer.");
+        $this->assertEquals("on", $this->getValue("editval[oxcontents__oxactive]"), "CMS page with title '" . $sCMSPageName . "' should be turned on as active with demo data.");
+        $this->assertEquals($sCMSPageDemoIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '" . $sCMSPageName . "' should have such ident so it will be visible in frontend footer.");
 
         // Get CMS page content from textarea.
         $sCMSPageContent = $this->getEditorValue("oxcontents__oxcontent");
@@ -152,33 +153,33 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->clearCache();
         $this->openShop();
         // Strip HTML elements as we look only for text.
-        $this->assertTextPresent(strip_tags($sCMSPageContent), "CMS page with title '". $sCMSPageName ."' should be visible in frontend footer. Trying to find it with text: '". strip_tags($sCMSPageContent) ."' This should be prepeared with demo data.");
+        $this->assertTextPresent(strip_tags($sCMSPageContent), "CMS page with title '" . $sCMSPageName . "' should be visible in frontend footer. Trying to find it with text: '" . strip_tags($sCMSPageContent) . "' This should be prepeared with demo data.");
 
         /// Turning off CMS page by changing ident. Check if not visible in frontend.
         $this->loginAdmin("Customer Info", "CMS Pages");
         $this->openListItem($sCMSPageLink);
-        $this->assertEquals($sCMSPageDemoIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '". $sCMSPageName ."' should have such ident so it will be visible in frontend footer.");
+        $this->assertEquals($sCMSPageDemoIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '" . $sCMSPageName . "' should have such ident so it will be visible in frontend footer.");
         $this->type("editval[oxcontents__oxloadid]", $sCMSPageNewIdent);
-        $this->assertEquals($sCMSPageNewIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '". $sCMSPageName ."' should have new ident as we just chane it in this selenium test.");
+        $this->assertEquals($sCMSPageNewIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '" . $sCMSPageName . "' should have new ident as we just chane it in this selenium test.");
         $this->clickAndWait("//input[@value='Save']");
 
         $this->clearCache();
         $this->openShop();
         // Strip HTML elements as we look only for text.
-        $this->assertTextNotPresent(strip_tags($sCMSPageContent), "CMS page with title '". $sCMSPageName ."' should not be visible in frontend footer. Trying to find it with text: '". strip_tags($sCMSPageContent) ."' This is because we change ident to not existing one in this selenium test.");
+        $this->assertTextNotPresent(strip_tags($sCMSPageContent), "CMS page with title '" . $sCMSPageName . "' should not be visible in frontend footer. Trying to find it with text: '" . strip_tags($sCMSPageContent) . "' This is because we change ident to not existing one in this selenium test.");
 
         /// Turning on CMS page by changing ident. Check if visible in frontend.
         $this->loginAdmin("Customer Info", "CMS Pages");
         $this->openListItem($sCMSPageLink);
-        $this->assertEquals($sCMSPageNewIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '". $sCMSPageName ."' should have new ident as we previously chane it in this selenium test.");
+        $this->assertEquals($sCMSPageNewIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '" . $sCMSPageName . "' should have new ident as we previously chane it in this selenium test.");
         $this->type("editval[oxcontents__oxloadid]", $sCMSPageDemoIdent);
-        $this->assertEquals($sCMSPageDemoIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '". $sCMSPageName ."' should have demo ident as we just chane it in this selenium test.");
+        $this->assertEquals($sCMSPageDemoIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '" . $sCMSPageName . "' should have demo ident as we just chane it in this selenium test.");
         $this->clickAndWait("//input[@value='Save']");
 
         $this->clearCache();
         $this->openShop();
         // Strip HTML elements as we look only for text.
-        $this->assertTextPresent(strip_tags($sCMSPageContent), "CMS page with title '". $sCMSPageName ."' should be visible in frontend footer. Trying to find it with text: '". strip_tags($sCMSPageContent) ."' This is because we change ident to demo one in this selenium test.");
+        $this->assertTextPresent(strip_tags($sCMSPageContent), "CMS page with title '" . $sCMSPageName . "' should be visible in frontend footer. Trying to find it with text: '" . strip_tags($sCMSPageContent) . "' This is because we change ident to demo one in this selenium test.");
     }
 
     /**
@@ -255,7 +256,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->click("link=Current Date");
         $this->assertNotEquals("0000-00-00 00:00:00", $this->getValue("editval[oxorder__oxpaid]"));
 
-        $sDate = date("Y-m-d")." 23:59:59";
+        $sDate = date("Y-m-d") . " 23:59:59";
         $this->type("editval[oxorder__oxpaid]", $sDate);
         $this->type("editval[oxorder__oxordernr]", "125");
         $this->type("editval[oxorder__oxbillnr]", "123");
@@ -264,7 +265,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->frame("list");
         $this->frame("edit");
         $this->assertTextPresent("192.168.1.999");
-        $this->assertTextPresent("Order was paid ".$sDate);
+        $this->assertTextPresent("Order was paid " . $sDate);
         $this->assertTextPresent("Tracking code");
         $this->assertEquals("125", $this->getValue("editval[oxorder__oxordernr]"));
         $this->assertEquals("123", $this->getValue("editval[oxorder__oxbillnr]"));
@@ -281,7 +282,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->assertEquals("10,00", $this->getText("//table[@id='order.info']/tbody/tr[5]/td[2]"));
         $this->openTab("Main");
         $this->clickAndWaitFrame("//input[@name='save' and @value='  Ship Now  ']", "list");
-        $this->assertTextPresent("Shipped on ".date("Y-m-d"));
+        $this->assertTextPresent("Shipped on " . date("Y-m-d"));
         $this->clickAndWaitFrame("//input[@name='save' and @value='Reset Shipping Date']", "list");
         $this->assertTextPresent("Shipped on -");
         $this->assertTextPresent("192.168.1.999");
@@ -296,7 +297,7 @@ class FunctionalityInAdminTest extends AdminTestCase
     {
         $this->updateSubshopOrders();
 
-        $this->executeSql( "UPDATE `oxorder` SET `OXFOLDER` = 'ORDERFOLDER_FINISHED' WHERE `OXID` = 'testorder7'" );
+        $this->executeSql("UPDATE `oxorder` SET `OXFOLDER` = 'ORDERFOLDER_FINISHED' WHERE `OXID` = 'testorder7'");
         $this->loginAdmin("Administer Orders", "Orders");
         $this->selectAndWait("folder", "label=Finished", "link=1");
         $this->clickAndWaitFrame("link=1", "edit");
@@ -419,7 +420,7 @@ class FunctionalityInAdminTest extends AdminTestCase
     {
         $this->updateSubshopOrders();
 
-        $this->executeSql( "UPDATE `oxorder` SET `OXFOLDER` = 'ORDERFOLDER_FINISHED' WHERE `OXID` = 'testorder7'" );
+        $this->executeSql("UPDATE `oxorder` SET `OXFOLDER` = 'ORDERFOLDER_FINISHED' WHERE `OXID` = 'testorder7'");
         $this->loginAdmin("Administer Orders", "Orders");
         $this->selectAndWait("folder", "label=Finished");
         $this->clickAndWaitFrame("link=1", "edit");
@@ -470,12 +471,11 @@ class FunctionalityInAdminTest extends AdminTestCase
      */
     public function testEditingOrdersProducts()
     {
-        $this->captureScreenshotOnFailure = false; // Workaround for phpunit 3.6, disable screenshots before skip!
-	    $this->markTestSkipped(" fix test after bug 0004624 fix , so we need to move test to integration test with correct information");
+        $this->markTestSkipped(" fix test after bug 0004624 fix , so we need to move test to integration test with correct information");
 
         $this->updateSubshopOrders();
 
-        $this->executeSql( "UPDATE `oxorder` SET `OXFOLDER` = 'ORDERFOLDER_FINISHED' WHERE `OXID` = 'testorder7'" );
+        $this->executeSql("UPDATE `oxorder` SET `OXFOLDER` = 'ORDERFOLDER_FINISHED' WHERE `OXID` = 'testorder7'");
         $this->loginAdmin("Administer Orders", "Orders");
         $this->selectAndWait("folder", "label=Finished");
         $this->clickAndWaitFrame("link=1", "edit");
@@ -508,24 +508,24 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->assertEquals("Test product 3 [EN] šÄßüл 75,00 EUR", $this->clearString($this->getText("aid")));
         $this->type("am", "2");
         $this->clickAndWait("add");
-        $this->assertEquals("225,00",  $this->getText("//table[@id='order.info']/tbody/tr[1]/td[2]"));
+        $this->assertEquals("225,00", $this->getText("//table[@id='order.info']/tbody/tr[1]/td[2]"));
         $this->assertEquals("- 0,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
-        $this->assertEquals("199,16",  $this->getText("//table[@id='order.info']/tbody/tr[3]/td[2]"));
-        $this->assertEquals("4,29",    $this->getText("//table[@id='order.info']/tbody/tr[4]/td[2]"));
-        $this->assertEquals("21,55",   $this->getText("//table[@id='order.info']/tbody/tr[5]/td[2]"));
-        $this->assertEquals("0,00",    $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
-        $this->assertEquals("7,50",   $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"));
-        $this->assertEquals("232,50",  $this->getText("//table[@id='order.info']/tbody/tr[8]/td[2]"));
+        $this->assertEquals("199,16", $this->getText("//table[@id='order.info']/tbody/tr[3]/td[2]"));
+        $this->assertEquals("4,29", $this->getText("//table[@id='order.info']/tbody/tr[4]/td[2]"));
+        $this->assertEquals("21,55", $this->getText("//table[@id='order.info']/tbody/tr[5]/td[2]"));
+        $this->assertEquals("0,00", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
+        $this->assertEquals("7,50", $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"));
+        $this->assertEquals("232,50", $this->getText("//table[@id='order.info']/tbody/tr[8]/td[2]"));
 
-        $this->assertEquals("VAT (5%)",    $this->getText("//table[@id='order.info']/tbody/tr[4]/td[1]"));
-        $this->assertEquals("VAT (19%)",   $this->getText("//table[@id='order.info']/tbody/tr[5]/td[1]"));
+        $this->assertEquals("VAT (5%)", $this->getText("//table[@id='order.info']/tbody/tr[4]/td[1]"));
+        $this->assertEquals("VAT (19%)", $this->getText("//table[@id='order.info']/tbody/tr[5]/td[1]"));
         $this->openTab("Main");
         $this->openTab("Overview");
         $this->assertEquals("Finished", $this->getSelectedLabel("setfolder"));
         $this->assertTextPresent("Order not shipped yet.");
         $this->check("sendmail");
         $this->clickAndWait("save");
-        $this->assertTextPresent("Shipped on ".date("Y-m-d"));
+        $this->assertTextPresent("Shipped on " . date("Y-m-d"));
         $this->assertEquals("0,00", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
         $this->assertEquals("- 0,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
         $this->clickAndWait("//input[@name='save' and @value='Reset Shipping Date']");
@@ -545,7 +545,7 @@ class FunctionalityInAdminTest extends AdminTestCase
     public function testEditingNotRegisteredUserOrder()
     {
         //not registered user creates the order
-        $this->addToBasket( "1001" );
+        $this->addToBasket("1001");
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         $this->clickAndWait("//div[@id='optionNoRegistration']//button");
@@ -587,7 +587,7 @@ class FunctionalityInAdminTest extends AdminTestCase
 
         //editing previously created order.
         $this->loginAdmin("Administer Orders", "Orders");
-        $this->clickAndWaitFrame("link=12", "edit", "link=Addresses");
+        $this->clickAndWaitFrame("link=12", "edit");
         $this->openTab("Addresses");
 
         $this->assertEquals("name", $this->getValue("editval[oxorder__oxbillfname]"));
@@ -724,7 +724,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $aWindows = $this->getAllWindowNames();
         $this->selectWindow(end($aWindows));
         $this->waitForPageToLoad(5000, true);
-        $this->assertTextPresent(shopURL."en/Test-category-0-EN-Aessue/Test-product-0-EN-Aessue.html");
+        $this->assertTextPresent(shopURL . "en/Test-category-0-EN-Aessue/Test-product-0-EN-Aessue.html");
         $this->close();
 
         $this->selectWindow(null);
@@ -760,7 +760,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $aWindows = $this->getAllWindowNames();
         $this->selectWindow(end($aWindows));
         $this->waitForPageToLoad(5000, true);
-        $this->assertTextPresent(shopURL."5-DE-category-Aessue/DE-4-Test-product-0-Aessue.html");
+        $this->assertTextPresent(shopURL . "5-DE-category-Aessue/DE-4-Test-product-0-Aessue.html");
         $this->close();
 
         $this->selectWindow(null);
@@ -780,7 +780,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->click("makeact-button");
         $this->close();
         $this->selectWindow(null);
-        $this->windowMaximize(null);
+        $this->windowMaximize();
         $this->frame("navigation");
         $this->checkForErrors();
         $this->click("link=Service");
@@ -797,7 +797,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $aWindows = $this->getAllWindowNames();
         $this->selectWindow(end($aWindows));
         $this->waitForPageToLoad(5000, true);
-        $this->assertTextPresent(shopURL."1-DE-category-Aessue/DE-4-Test-product-0-Aessue.html");
+        $this->assertTextPresent(shopURL . "1-DE-category-Aessue/DE-4-Test-product-0-Aessue.html");
     }
 
     /**
@@ -865,7 +865,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->clickAndWait("link=%HOME%");
         //LT lang
         $this->switchLanguage("Lietuviu");
-        $this->getTranslator()->setLanguage( 2 );
+        $this->getTranslator()->setLanguage(2);
         $this->searchFor("1001");
         $this->assertEquals("1 Hits for [LT] \"1001\"", $this->getHeadingText("//h1"));
         $this->clickAndWait("searchList_1");
@@ -920,10 +920,10 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->assertElementText("test selection list [DE] šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
         $this->close();
         $this->selectWindow(null);
-        $this->windowMaximize(null);
+        $this->windowMaximize();
         $this->openTab("Main");
         //checking if selection list is assigned to variant also
-        $this->selectAndWaitFrame( "art_variants", "label=- var1 [DE]", "list");
+        $this->selectAndWaitFrame("art_variants", "label=- var1 [DE]", "list");
         $this->assertEquals("1002-1", $this->getValue("editval[oxarticles__oxartnum]"));
         $this->openTab("Selection");
         $this->click("//input[@value='Assign Selection Lists']");
@@ -931,7 +931,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->assertEquals("test selection list [DE] šÄßüл", $this->getText("//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]"));
         $this->close();
         //checking if in frontend it is displayed correctly
-        $this->selectWindow( null );
+        $this->selectWindow(null);
         $this->clearCache();
         $this->openShop();
         $this->searchFor("1002");
@@ -960,7 +960,6 @@ class FunctionalityInAdminTest extends AdminTestCase
      */
     public function testActiveCategoryAtStart()
     {
-        $this->captureScreenshotOnFailure = false; // Workaround for phpunit 3.6, disable screenshots before skip!
         $this->markTestSkipped("waiting for desition from management, if this option should be in azure theme at all");
 
         $this->openShop();
@@ -989,7 +988,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->assertEquals("Test category 1 [EN] šÄßüл", $this->getText("defcat_title"));
         $this->close();
         $this->selectWindow(null);
-        $this->windowMaximize(null);
+        $this->windowMaximize();
         $this->frame("relative=top");
         $this->openTab("Settings");
         $this->click("link=Shop frontend");
@@ -1018,7 +1017,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->click("helpBtn_HELP_SHOP_MAIN_PRODUCTIVE");
         $this->waitForItemAppear("helpPanel");
         $this->assertTrue($this->isVisible("helpPanel"));
-        $this->assertEquals("Non-productive eShop mode is intended", substr($this->clearString($this->getText("helpPanel")),0,37));
+        $this->assertEquals("Non-productive eShop mode is intended", substr($this->clearString($this->getText("helpPanel")), 0, 37));
         $this->click("link=Close");
         $this->waitForItemDisappear("helpPanel");
         $this->checkForErrors();
@@ -1031,6 +1030,8 @@ class FunctionalityInAdminTest extends AdminTestCase
      */
     public function testEditShopName()
     {
+        $shopVersionNumber = $this->getShopVersionNumber();
+
         if ($this->getTestConfig()->getShopEdition() === 'EE') {
             $this->markTestSkipped('Skip CE/PE related tests for EE edition');
         }
@@ -1039,7 +1040,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->frame("edit");
 
         //asserting default shop values in EN lang
-        $this->assertEquals("OXID eShop 4", $this->getValue("editval[oxshops__oxname]"));
+        $this->assertEquals("OXID eShop $shopVersionNumber", $this->getValue("editval[oxshops__oxname]"));
     }
 
     /**
@@ -1207,13 +1208,13 @@ class FunctionalityInAdminTest extends AdminTestCase
         $testConfig = $this->getTestConfig();
         $sShopId = $testConfig->getShopId();
 
-        $sql ="INSERT INTO `oxorder` (`OXID`, `OXSHOPID`, `OXUSERID`, `OXORDERDATE`, `OXORDERNR`, `OXBILLEMAIL`,
+        $sql = "INSERT INTO `oxorder` (`OXID`, `OXSHOPID`, `OXUSERID`, `OXORDERDATE`, `OXORDERNR`, `OXBILLEMAIL`,
                                       `OXBILLFNAME`, `OXBILLLNAME`, `OXBILLSTREET`, `OXBILLSTREETNR`, `OXBILLCITY`,
                                       `OXBILLCOUNTRYID`, `OXBILLSTATEID`, `OXBILLZIP`, `OXBILLSAL`, `OXPAYMENTID`, `OXPAYMENTTYPE`,
                                       `OXTOTALNETSUM`, `OXTOTALBRUTSUM`, `OXTOTALORDERSUM`, `OXARTVAT1`, `OXARTVATPRICE1`, `OXDELCOST`,
                                       `OXDELVAT`, `OXPAYCOST`, `OXPAYVAT`, `OXWRAPCOST`, `OXWRAPVAT`, `OXDISCOUNT`, `OXCURRENCY`,
                                       `OXCURRATE`, `OXFOLDER`, `OXTRANSSTATUS`, `OXLANG`, `OXDELTYPE`)
-                              VALUES ('order1', '".$sShopId."', 'testuser', '2010-04-19 16:52:56', 12, 'example_test@oxid-esales.dev',
+                              VALUES ('order1', '" . $sShopId . "', 'testuser', '2010-04-19 16:52:56', 12, 'example_test@oxid-esales.dev',
                                       'UserName', 'UserSurname', 'Musterstr.', '1', 'Musterstadt',
                                       'a7c40f631fc920687.20179984', 'HE', '79098', 'MR', 'payment1', 'oxidcashondel',
                                       85.71, 100, 97.5, 5, 4.29, 0,
@@ -1228,7 +1229,7 @@ class FunctionalityInAdminTest extends AdminTestCase
                                        VALUES ('product1', 'order1', 2, '1000', '1000', 'Test product 0 [EN]',
                                                'Test product 0 short desc [EN]',  95.2380952381, 100, 4.7619047619, 5, '', 50,
                                                50, 47.619047619, 24, 15, '2008-02-04', '2008-02-04 17:07:29', 1,
-                                               2, 2, 'oxarticle',  '".$sShopId."')";
+                                               2, 2, 'oxarticle',  '" . $sShopId . "')";
         $this->executeSql($sql);
 
         $sql = "INSERT INTO `oxuserpayments` (`OXID`, `OXUSERID`, `OXPAYMENTSID`, `OXVALUE`)
@@ -1253,7 +1254,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         //$this->clickAndConfirm("//tr[@id='art.1']/td[11]/a[@class='delete']");
         $this->assertElementNotPresent("//tr[@id='art.1']");
         $this->assertElementNotPresent("//tr[@id='art.2']");
-        $this->selectMenu("Administer Products", "Products", "btn.new", "where[oxarticles][oxartnum]");
+        $this->selectMenu("Administer Products", "Products");
         $this->type("where[oxarticles][oxartnum]", "1000");
         $this->clickAndWait("submitit");
         $this->clickAndWaitFrame("link=1000", "edit");
@@ -1316,13 +1317,13 @@ class FunctionalityInAdminTest extends AdminTestCase
         $testConfig = $this->getTestConfig();
         $sShopId = $testConfig->getShopId();
 
-        $sql ="INSERT INTO `oxorder` (`OXID`, `OXSHOPID`, `OXUSERID`, `OXORDERDATE`, `OXORDERNR`, `OXBILLEMAIL`,
+        $sql = "INSERT INTO `oxorder` (`OXID`, `OXSHOPID`, `OXUSERID`, `OXORDERDATE`, `OXORDERNR`, `OXBILLEMAIL`,
                                       `OXBILLFNAME`, `OXBILLLNAME`, `OXBILLSTREET`, `OXBILLSTREETNR`, `OXBILLCITY`,
                                       `OXBILLCOUNTRYID`, `OXBILLSTATEID`, `OXBILLZIP`, `OXBILLSAL`, `OXPAYMENTID`, `OXPAYMENTTYPE`,
                                       `OXTOTALNETSUM`, `OXTOTALBRUTSUM`, `OXTOTALORDERSUM`, `OXARTVAT1`, `OXARTVATPRICE1`, `OXDELCOST`,
                                       `OXDELVAT`, `OXPAYCOST`, `OXPAYVAT`, `OXWRAPCOST`, `OXWRAPVAT`, `OXDISCOUNT`, `OXCURRENCY`,
                                       `OXCURRATE`, `OXFOLDER`, `OXTRANSSTATUS`, `OXLANG`, `OXDELTYPE`)
-                              VALUES ('order1', '".$sShopId."', 'testuser', '2010-04-19 16:52:56', 12, 'example_test@oxid-esales.dev',
+                              VALUES ('order1', '" . $sShopId . "', 'testuser', '2010-04-19 16:52:56', 12, 'example_test@oxid-esales.dev',
                                       'UserName', 'UserSurname', 'Musterstr.', '1', 'Musterstadt',
                                       'a7c40f631fc920687.20179984', 'HE', '79098', 'MR', 'payment1', 'oxidcashondel',
                                       85.71, 100, 97.5, 5, 4.29, 0,
@@ -1337,7 +1338,7 @@ class FunctionalityInAdminTest extends AdminTestCase
                                        VALUES ('product1', 'order1', 2, '1000', '1000', 'Test product 0 [EN]',
                                                'Test product 0 short desc [EN]',  95.2380952381, 100, 4.7619047619, 5, '', 50,
                                                50, 47.619047619, 24, 15, '2008-02-04', '2008-02-04 17:07:29', 1,
-                                               2, 2, 'oxarticle',  '".$sShopId."')";
+                                               2, 2, 'oxarticle',  '" . $sShopId . "')";
         $this->executeSql($sql);
 
         $sql = "INSERT INTO `oxuserpayments` (`OXID`, `OXUSERID`, `OXPAYMENTSID`, `OXVALUE`)
@@ -1376,13 +1377,13 @@ class FunctionalityInAdminTest extends AdminTestCase
         $testConfig = $this->getTestConfig();
         $sShopId = $testConfig->getShopId();
 
-        $sql ="INSERT INTO `oxorder` (`OXID`, `OXSHOPID`, `OXUSERID`, `OXORDERDATE`, `OXORDERNR`, `OXBILLEMAIL`,
+        $sql = "INSERT INTO `oxorder` (`OXID`, `OXSHOPID`, `OXUSERID`, `OXORDERDATE`, `OXORDERNR`, `OXBILLEMAIL`,
                                       `OXBILLFNAME`, `OXBILLLNAME`, `OXBILLSTREET`, `OXBILLSTREETNR`, `OXBILLCITY`,
                                       `OXBILLCOUNTRYID`, `OXBILLSTATEID`, `OXBILLZIP`, `OXBILLSAL`, `OXPAYMENTID`, `OXPAYMENTTYPE`,
                                       `OXTOTALNETSUM`, `OXTOTALBRUTSUM`, `OXTOTALORDERSUM`, `OXARTVAT1`, `OXARTVATPRICE1`, `OXDELCOST`,
                                       `OXDELVAT`, `OXPAYCOST`, `OXPAYVAT`, `OXWRAPCOST`, `OXWRAPVAT`, `OXDISCOUNT`, `OXCURRENCY`,
                                       `OXCURRATE`, `OXFOLDER`, `OXTRANSSTATUS`, `OXLANG`, `OXDELTYPE`)
-                              VALUES ('order1', '".$sShopId."', 'testuser', '2010-04-19 16:52:56', 12, 'example_test@oxid-esales.dev',
+                              VALUES ('order1', '" . $sShopId . "', 'testuser', '2010-04-19 16:52:56', 12, 'example_test@oxid-esales.dev',
                                       'UserName', 'UserSurname', 'Musterstr.', '1', 'Musterstadt',
                                       'a7c40f631fc920687.20179984', 'HE', '79098', 'MR', 'payment1', 'oxidcashondel',
                                       85.71, 100, 97.5, 5, 4.29, 0,
@@ -1397,7 +1398,7 @@ class FunctionalityInAdminTest extends AdminTestCase
                                        VALUES ('product1', 'order1', 2, '1000', '1000', 'Test product 0 [EN]',
                                                'Test product 0 short desc [EN]',  95.2380952381, 100, 4.7619047619, 5, '', 50,
                                                50, 47.619047619, 24, 15, '2008-02-04', '2008-02-04 17:07:29', 1,
-                                               2, 2, 'oxarticle',  '".$sShopId."')";
+                                               2, 2, 'oxarticle',  '" . $sShopId . "')";
         $this->executeSql($sql);
 
         $sql = "INSERT INTO `oxuserpayments` (`OXID`, `OXUSERID`, `OXPAYMENTSID`, `OXVALUE`)
@@ -1438,7 +1439,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         //creating 2 orders
-        for ($i=0; $i<2; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $this->searchFor("1003");
             $this->selectDropDown("viewOptions", "%line%");
             $this->type("//ul[@id='searchList']/li[1]//input[@id='amountToBasket_searchList_1']", "4");
@@ -1474,7 +1475,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->selectMenu("Administer Orders", "Orders");
         $this->clickAndWait("link=Order No.");
         $this->clickDeleteListItem(1);
-        $this->selectMenu("Administer Products", "Products", "btn.help", "where[oxarticles][oxartnum]");
+        $this->selectMenu("Administer Products", "Products");
         $this->type("where[oxarticles][oxartnum]", "1003");
         $this->clickAndWait("submitit");
         $this->clickAndWaitFrame("link=1003", "edit");
@@ -1504,7 +1505,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         //creating 2 orders
-        for ($i=0; $i<2; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $this->searchFor("1003");
             $this->selectDropDown("viewOptions", "%line%");
             $this->type("//ul[@id='searchList']/li[1]//input[@id='amountToBasket_searchList_1']", "4");
@@ -1558,10 +1559,10 @@ class FunctionalityInAdminTest extends AdminTestCase
     }
 
 
-     /**
+    /**
      * checking does work in frontend multidimensional variants which have stock prices
-      *
-      * @group adminFunctionality
+     *
+     * @group adminFunctionality
      */
     public function testMultidimensionalVariantsWhichHaveStockPrices()
     {
@@ -1675,7 +1676,6 @@ class FunctionalityInAdminTest extends AdminTestCase
      */
     public function testConversionRateOptions()
     {
-        $this->captureScreenshotOnFailure = false; // Workaround for phpunit 3.6, disable screenshots before skip!
         $this->markTestSkipped("There is not done test, so we need to decide  finish or  delete test ");
 
         //basic theme on
@@ -1699,7 +1699,7 @@ class FunctionalityInAdminTest extends AdminTestCase
     public function testEconda()
     {
         //activating econda
-        $aConfigs = array("sShopCountry" => array("type" => "str", "value" => 'de'),
+        $aConfigs = array("sShopCountry"      => array("type" => "str", "value" => 'de'),
                           "blLoadDynContents" => array("type" => "bool", "value" => 'true'));
 
         $this->callShopSC("oxConfig", null, null, $aConfigs);
@@ -1717,10 +1717,10 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->clearCache();
         $this->openShop();
 
-        $sUrl = "//script[@src='".$this->getTestConfig()->getShopUrl()."modules/econda/out/emos2.js']";
+        $sUrl = "//script[@src='" . $this->getTestConfig()->getShopUrl() . "modules/econda/out/emos2.js']";
 
         $this->assertElementPresent($sUrl);
-        $this->open(shopURL."modules/econda/out/emos2.js");
+        $this->open(shopURL . "modules/econda/out/emos2.js");
         $this->assertTextPresent("function(){var URL_TRACKING_ALLOWED=true");
         $this->goBack();
         //home page checking

@@ -437,7 +437,22 @@ class DbMetaDataHandler extends oxSuperCfg
     public function addNewMultilangField($table)
     {
         $newLang = $this->getNextLangId();
+
         $this->ensureMultiLanguageFields($table, $newLang);
+    }
+
+    /**
+     * Ensure, that all multi language fields of the given table are present.
+     *
+     * @param string $table The table we want to assure, that the multi language fields are present.
+     */
+    public function ensureAllMultiLanguageFields($table)
+    {
+        $max = $this->getCurrentMaxLangId();
+
+        for ($index = 1; $index <= $max; $index++) {
+            $this->ensureMultiLanguageFields($table, $index);
+        }
     }
 
     /**

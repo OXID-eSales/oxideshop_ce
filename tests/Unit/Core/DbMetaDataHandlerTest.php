@@ -485,6 +485,29 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     }
 
     /**
+     * Test, that the ensuration is called for all language ids for the given table.
+     */
+    public function testEnsureAllMultiLanguageFields()
+    {
+        $tableName = 'OXTESTTABLE';
+
+        $dbMetaDataHandler = $this->getMock('oxDbMetaDataHandler', array('getCurrentMaxLangId', 'ensureMultiLanguageFields'));
+        $dbMetaDataHandler->expects($this->once())->method('getCurrentMaxLangId')->will($this->returnValue(8));
+        $dbMetaDataHandler->expects($this->exactly(8))->method('ensureMultiLanguageFields')->withConsecutive(
+            [$this->equalTo($tableName), $this->equalTo(1)],
+            [$this->equalTo($tableName), $this->equalTo(2)],
+            [$this->equalTo($tableName), $this->equalTo(3)],
+            [$this->equalTo($tableName), $this->equalTo(4)],
+            [$this->equalTo($tableName), $this->equalTo(5)],
+            [$this->equalTo($tableName), $this->equalTo(6)],
+            [$this->equalTo($tableName), $this->equalTo(7)],
+            [$this->equalTo($tableName), $this->equalTo(8)]
+        );
+
+        $dbMetaDataHandler->ensureAllMultiLanguageFields($tableName);
+    }
+
+    /**
      * Testing real db table update on adding correct indexes
      */
     public function testAddNewMultilangFieldAddsTable()

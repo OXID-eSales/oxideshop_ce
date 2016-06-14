@@ -185,33 +185,33 @@ class NavigationTree extends \oxSuperCfg
             // setting id to its parent
 
             // fetching class
-            $sFile = $oNode->getAttribute('cl');
+            $class = $oNode->getAttribute('cl');
 
             // always display the "about" tab no matter what licence
 
-            if ($myUtilsFile->checkFile("{$this->_sDynIncludeUrl}pages/{$sFile}_about.php")) {
+            if ($myUtilsFile->checkFile("{$this->_sDynIncludeUrl}pages/{$class}_about.php")) {
                 $oTabElem = new DOMElement('TAB');
                 $oNode->appendChild($oTabElem);
                 $oTabElem->setAttribute('external', 'true');
-                $oTabElem->setAttribute('location', "{$this->_sDynIncludeUrl}pages/{$sFile}_about.php");
+                $oTabElem->setAttribute('location', "{$this->_sDynIncludeUrl}pages/{$class}_about.php");
                 $oTabElem->setAttribute('id', 'dyn_about');
             }
 
             // checking for technics page
-            if ($myUtilsFile->checkFile("{$this->_sDynIncludeUrl}pages/{$sFile}_technics.php")) {
+            if ($myUtilsFile->checkFile("{$this->_sDynIncludeUrl}pages/{$class}_technics.php")) {
                 $oTabElem = new DOMElement('TAB');
                 $oNode->appendChild($oTabElem);
                 $oTabElem->setAttribute('external', 'true');
-                $oTabElem->setAttribute('location', "{$this->_sDynIncludeUrl}pages/{$sFile}_technics.php");
+                $oTabElem->setAttribute('location', "{$this->_sDynIncludeUrl}pages/{$class}_technics.php");
                 $oTabElem->setAttribute('id', 'dyn_interface');
             }
 
             // checking for setup page
-            if (class_exists($sFile)) {
+            if (class_exists($class)) {
                 $oTabElem = new DOMElement('TAB');
                 $oNode->appendChild($oTabElem);
                 $oTabElem->setAttribute('id', 'dyn_interface');
-                $oTabElem->setAttribute('cl', $sFile);
+                $oTabElem->setAttribute('cl', $class);
             }
         }
     }

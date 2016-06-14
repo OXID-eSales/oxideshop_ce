@@ -63,20 +63,20 @@ class NavigationTree extends \oxSuperCfg
     /**
      * clean empty nodes from tree
      *
-     * @param object $oDom         dom object
-     * @param string $sParentXPath parent xpath
-     * @param string $sChildXPath  child xpath from parent
+     * @param object $dom         dom object
+     * @param string $parentXPath parent xpath
+     * @param string $childXPath  child xpath from parent
      */
-    protected function _cleanEmptyParents($oDom, $sParentXPath, $sChildXPath)
+    protected function _cleanEmptyParents($dom, $parentXPath, $childXPath)
     {
-        $oXPath = new DomXPath($oDom);
-        $oNodeList = $oXPath->query($sParentXPath);
+        $xPath = new DomXPath($dom);
+        $nodeList = $xPath->query($parentXPath);
 
-        foreach ($oNodeList as $oNode) {
-            $sId = $oNode->getAttribute('id');
-            $oChildList = $oXPath->query("{$sParentXPath}[@id='$sId']/$sChildXPath");
-            if (!$oChildList->length) {
-                $oNode->parentNode->removeChild($oNode);
+        foreach ($nodeList as $node) {
+            $id = $node->getAttribute('id');
+            $childList = $xPath->query("{$parentXPath}[@id='$id']/$childXPath");
+            if (!$childList->length) {
+                $node->parentNode->removeChild($node);
             }
         }
     }
@@ -84,63 +84,62 @@ class NavigationTree extends \oxSuperCfg
     /**
      * Adds links to xml nodes to resolve paths
      *
-     * @param DomDocument $oDom where to add links
+     * @param DomDocument $dom where to add links
      */
-    protected function _addLinks($oDom)
+    protected function _addLinks($dom)
     {
-        $sURL = 'index.php?'; // session parameters will be included later (after cache processor)
-        $oXPath = new DomXPath($oDom);
+        $url = 'index.php?'; // session parameters will be included later (after cache processor)
+        $xPath = new DomXPath($dom);
 
         // building
-        $oNodeList = $oXPath->query("//SUBMENU[@cl]");
-        foreach ($oNodeList as $oNode) {
+        $nodeList = $xPath->query("//SUBMENU[@cl]");
+        foreach ($nodeList as $node) {
             // fetching class
-            $sCl = $oNode->getAttribute('cl');
-            $sCl = $sCl ? "cl=$sCl" : '';
+            $cl = $node->getAttribute('cl');
+            $cl = $cl ? "cl=$cl" : '';
 
             // fetching params
-            $sParam = $oNode->getAttribute('clparam');
-            $sParam = $sParam ? "&$sParam" : '';
+            $param = $node->getAttribute('clparam');
+            $param = $param ? "&$param" : '';
 
             // setting link
-            $oNode->setAttribute('link', "{$sURL}{$sCl}{$sParam}");
+            $node->setAttribute('link', "{$url}{$cl}{$param}");
         }
     }
 
     /**
      * Loads data form XML file, and merges it with main oDomXML.
      *
-     * @param string      $sMenuFile which file to load
-     * @param DomDocument $oDom      where to load
+     * @param string      $menuFile which file to load
+     * @param DomDocument $dom      where to load
      */
-    protected function _loadFromFile($sMenuFile, $oDom)
+    protected function _loadFromFile($menuFile, $dom)
     {
-        $blMerge = false;
-        $oDomFile = new DomDocument();
-        $oDomFile->preserveWhiteSpace = false;
-        if (!@$oDomFile->load($sMenuFile)) {
-            $blMerge = true;
-        } elseif (is_readable($sMenuFile) && ($sXml = @file_get_contents($sMenuFile))) {
-
+        $merge = false;
+        $domFile = new DomDocument();
+        $domFile->preserveWhiteSpace = false;
+        if (!@$domFile->load($menuFile)) {
+            $merge = true;
+        } elseif (is_readable($menuFile) && ($xml = @file_get_contents($menuFile))) {
             // looking for non supported character encoding
-            if (getStr()->preg_match("/encoding\=(.*)\?\>/", $sXml, $aMatches) !== 0) {
-                if (isset($aMatches[1])) {
-                    $sCurrEncoding = trim($aMatches[1], "\"");
-                    if (!in_array(strtolower($sCurrEncoding), $this->_aSupportedExpathXmlEncodings)) {
-                        $sXml = str_replace($aMatches[1], "\"UTF-8\"", $sXml);
-                        $sXml = iconv($sCurrEncoding, "UTF-8", $sXml);
+            if (getStr()->preg_match("/encoding\=(.*)\?\>/", $xml, $matches) !== 0) {
+                if (isset($matches[1])) {
+                    $currEncoding = trim($matches[1], "\"");
+                    if (!in_array(strtolower($currEncoding), $this->_aSupportedExpathXmlEncodings)) {
+                        $xml = str_replace($matches[1], "\"UTF-8\"", $xml);
+                        $xml = iconv($currEncoding, "UTF-8", $xml);
                     }
                 }
             }
 
             // load XML as string
-            if (@$oDomFile->loadXml($sXml)) {
-                $blMerge = true;
+            if (@$domFile->loadXml($xml)) {
+                $merge = true;
             }
         }
 
-        if ($blMerge) {
-            $this->_merge($oDomFile, $oDom);
+        if ($merge) {
+            $this->_merge($domFile, $dom);
         }
     }
 
@@ -149,69 +148,68 @@ class NavigationTree extends \oxSuperCfg
      *
      * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
      *
-     * @param object $oDom dom element to add links
+     * @param object $dom dom element to add links
      */
-    protected function _addDynLinks($oDom)
+    protected function _addDynLinks($dom)
     {
         $myUtilsFile = oxRegistry::get("oxUtilsFile");
 
-        $sURL = 'index.php?'; // session parameters will be included later (after cache processor)
+        $url = 'index.php?'; // session parameters will be included later (after cache processor)
 
-        $oXPath = new DomXPath($oDom);
-        $oNodeList = $oXPath->query("//OXMENU[@type='dyn']/MAINMENU/SUBMENU");
+        $xPath = new DomXPath($dom);
+        $nodeList = $xPath->query("//OXMENU[@type='dyn']/MAINMENU/SUBMENU");
 
-        foreach ($oNodeList as $oNode) {
-
+        foreach ($nodeList as $node) {
             // fetching class
-            $sCl = $oNode->getAttribute('cl');
-            $sCl = "cl=dynscreen&menu=$sCl";
+            $cl = $node->getAttribute('cl');
+            $cl = "cl=dynscreen&menu=$cl";
 
             // fetching params
-            $sParam = $oNode->getAttribute('clparam');
-            $sParam = $sParam ? "&$sParam" : '';
+            $param = $node->getAttribute('clparam');
+            $param = $param ? "&$param" : '';
 
             // setting list node if its is not set yet
-            if (!$oNode->getAttribute('list')) {
-                $oNode->setAttribute('list', 'dynscreen_list');
-                $oNode->setAttribute('listparam', 'menu=' . $oNode->getAttribute('cl'));
+            if (!$node->getAttribute('list')) {
+                $node->setAttribute('list', 'dynscreen_list');
+                $node->setAttribute('listparam', 'menu=' . $node->getAttribute('cl'));
             }
 
             // setting link
-            $oNode->setAttribute('link', "{$sURL}{$sCl}{$sParam}");
+            $node->setAttribute('link', "{$url}{$cl}{$param}");
 
             // setting id
-            $oNode->parentNode->setAttribute('id', 'dyn_menu');
+            $node->parentNode->setAttribute('id', 'dyn_menu');
 
             // setting id to its parent
 
             // fetching class
-            $class = $oNode->getAttribute('cl');
+            $class = $node->getAttribute('cl');
 
             // always display the "about" tab no matter what licence
 
             if ($myUtilsFile->checkFile("{$this->_sDynIncludeUrl}pages/{$class}_about.php")) {
-                $oTabElem = new DOMElement('TAB');
-                $oNode->appendChild($oTabElem);
-                $oTabElem->setAttribute('external', 'true');
-                $oTabElem->setAttribute('location', "{$this->_sDynIncludeUrl}pages/{$class}_about.php");
-                $oTabElem->setAttribute('id', 'dyn_about');
+                $tabElem = new DOMElement('TAB');
+                $node->appendChild($tabElem);
+                $tabElem->setAttribute('external', 'true');
+                $tabElem->setAttribute('location', "{$this->_sDynIncludeUrl}pages/{$class}_about.php");
+                $tabElem->setAttribute('id', 'dyn_about');
             }
 
             // checking for technics page
             if ($myUtilsFile->checkFile("{$this->_sDynIncludeUrl}pages/{$class}_technics.php")) {
-                $oTabElem = new DOMElement('TAB');
-                $oNode->appendChild($oTabElem);
-                $oTabElem->setAttribute('external', 'true');
-                $oTabElem->setAttribute('location', "{$this->_sDynIncludeUrl}pages/{$class}_technics.php");
-                $oTabElem->setAttribute('id', 'dyn_interface');
+                $tabElem = new DOMElement('TAB');
+                $node->appendChild($tabElem);
+                $tabElem->setAttribute('external', 'true');
+                $tabElem->setAttribute('location', "{$this->_sDynIncludeUrl}pages/{$class}_technics.php");
+                $tabElem->setAttribute('id', 'dyn_interface');
             }
 
             // checking for setup page
             if (class_exists($class)) {
-                $oTabElem = new DOMElement('TAB');
-                $oNode->appendChild($oTabElem);
-                $oTabElem->setAttribute('id', 'dyn_interface');
-                $oTabElem->setAttribute('cl', $class);
+                $tabElem = new DOMElement('TAB');
+                $node->appendChild($tabElem);
+                $tabElem->setAttribute('id', 'dyn_interface');
+                $tabElem->setAttribute('cl', $class);
             }
         }
     }
@@ -219,19 +217,19 @@ class NavigationTree extends \oxSuperCfg
     /**
      * add session parameters to local urls
      *
-     * @param object $oDom dom element to add links
+     * @param object $dom dom element to add links
      */
-    protected function _sessionizeLocalUrls($oDom)
+    protected function _sessionizeLocalUrls($dom)
     {
-        $sURL = $this->_getAdminUrl();
-        $oXPath = new DomXPath($oDom);
-        $oStr = getStr();
-        foreach (array('url', 'link') as $sAttrType) {
-            foreach ($oXPath->query("//OXMENU//*[@$sAttrType]") as $oNode) {
-                $sLocalUrl = $oNode->getAttribute($sAttrType);
-                if (strpos($sLocalUrl, 'index.php?') === 0) {
-                    $sLocalUrl = $oStr->preg_replace('#^index.php\?#', $sURL, $sLocalUrl);
-                    $oNode->setAttribute($sAttrType, $sLocalUrl);
+        $url = $this->_getAdminUrl();
+        $xPath = new DomXPath($dom);
+        $str = getStr();
+        foreach (array('url', 'link') as $attrType) {
+            foreach ($xPath->query("//OXMENU//*[@$attrType]") as $node) {
+                $localUrl = $node->getAttribute($attrType);
+                if (strpos($localUrl, 'index.php?') === 0) {
+                    $localUrl = $str->preg_replace('#^index.php\?#', $url, $localUrl);
+                    $node->setAttribute($attrType, $localUrl);
                 }
             }
         }
@@ -240,28 +238,28 @@ class NavigationTree extends \oxSuperCfg
     /**
      * Removes form tree elements which does not have required user rights
      *
-     * @param object $oDom DOMDocument
+     * @param object $dom DOMDocument
      */
-    protected function _checkRights($oDom)
+    protected function _checkRights($dom)
     {
-        $oXPath = new DomXPath($oDom);
-        $oNodeList = $oXPath->query('//*[@rights or @norights]');
+        $xPath = new DomXPath($dom);
+        $nodeList = $xPath->query('//*[@rights or @norights]');
 
-        foreach ($oNodeList as $oNode) {
+        foreach ($nodeList as $node) {
             // only allowed modules/user rights or so
-            if (($sReq = $oNode->getAttribute('rights'))) {
-                $aPerm = explode(',', $sReq);
-                foreach ($aPerm as $sPerm) {
-                    if ($sPerm && !$this->_hasRights($sPerm)) {
-                        $oNode->parentNode->removeChild($oNode);
+            if (($req = $node->getAttribute('rights'))) {
+                $perms = explode(',', $req);
+                foreach ($perms as $perm) {
+                    if ($perm && !$this->_hasRights($perm)) {
+                        $node->parentNode->removeChild($node);
                     }
                 }
                 // not allowed modules/user rights or so
-            } elseif (($sNoReq = $oNode->getAttribute('norights'))) {
-                $aPerm = explode(',', $sNoReq);
-                foreach ($aPerm as $sPerm) {
-                    if ($sPerm && $this->_hasRights($sPerm)) {
-                        $oNode->parentNode->removeChild($oNode);
+            } elseif (($noReq = $node->getAttribute('norights'))) {
+                $perms = explode(',', $noReq);
+                foreach ($perms as $perm) {
+                    if ($perm && $this->_hasRights($perm)) {
+                        $node->parentNode->removeChild($node);
                     }
                 }
             }
@@ -271,28 +269,28 @@ class NavigationTree extends \oxSuperCfg
     /**
      * Removes from tree elements which don't have required groups
      *
-     * @param DOMDocument $oDom document to check group
+     * @param DOMDocument $dom document to check group
      */
-    protected function _checkGroups($oDom)
+    protected function _checkGroups($dom)
     {
-        $oXPath = new DomXPath($oDom);
-        $oNodeList = $oXPath->query("//*[@nogroup or @group]");
+        $xPath = new DomXPath($dom);
+        $nodeList = $xPath->query("//*[@nogroup or @group]");
 
-        foreach ($oNodeList as $oNode) {
+        foreach ($nodeList as $node) {
             // allowed only for groups
-            if (($sReq = $oNode->getAttribute('group'))) {
-                $aPerm = explode(',', $sReq);
-                foreach ($aPerm as $sPerm) {
-                    if ($sPerm && !$this->_hasGroup($sPerm)) {
-                        $oNode->parentNode->removeChild($oNode);
+            if (($req = $node->getAttribute('group'))) {
+                $perms = explode(',', $req);
+                foreach ($perms as $perm) {
+                    if ($perm && !$this->_hasGroup($perm)) {
+                        $node->parentNode->removeChild($node);
                     }
                 }
                 // not allowed for groups
-            } elseif (($sNoReq = $oNode->getAttribute('nogroup'))) {
-                $aPerm = explode(',', $sNoReq);
-                foreach ($aPerm as $sPerm) {
-                    if ($sPerm && $this->_hasGroup($sPerm)) {
-                        $oNode->parentNode->removeChild($oNode);
+            } elseif (($noReq = $node->getAttribute('nogroup'))) {
+                $perms = explode(',', $noReq);
+                foreach ($perms as $perm) {
+                    if ($perm && $this->_hasGroup($perm)) {
+                        $node->parentNode->removeChild($node);
                     }
                 }
             }
@@ -302,22 +300,22 @@ class NavigationTree extends \oxSuperCfg
     /**
      * Removes form tree elements if this is demo shop and elements have disableForDemoShop="1"
      *
-     * @param DOMDocument $oDom document to check group
+     * @param DOMDocument $dom document to check group
      *
      * @return null
      */
-    protected function _checkDemoShopDenials($oDom)
+    protected function _checkDemoShopDenials($dom)
     {
         if (!$this->getConfig()->isDemoShop()) {
             // nothing to check for non demo shop
             return;
         }
 
-        $oXPath = new DomXPath($oDom);
-        $oNodeList = $oXPath->query("//*[@disableForDemoShop]");
-        foreach ($oNodeList as $oNode) {
-            if ($oNode->getAttribute('disableForDemoShop')) {
-                $oNode->parentNode->removeChild($oNode);
+        $xPath = new DomXPath($dom);
+        $nodeList = $xPath->query("//*[@disableForDemoShop]");
+        foreach ($nodeList as $node) {
+            if ($node->getAttribute('disableForDemoShop')) {
+                $node->parentNode->removeChild($node);
             }
         }
     }
@@ -343,49 +341,47 @@ class NavigationTree extends \oxSuperCfg
     /**
      * Copys attributes form one element to another
      *
-     * @param object $oDomElemTo   DOMElement
-     * @param object $oDomElemFrom DOMElement
+     * @param object $domElemTo   DOMElement
+     * @param object $domElemFrom DOMElement
      */
-    protected function _copyAttributes($oDomElemTo, $oDomElemFrom)
+    protected function _copyAttributes($domElemTo, $domElemFrom)
     {
-        foreach ($oDomElemFrom->attributes as $oAttr) {
-            $oDomElemTo->setAttribute($oAttr->nodeName, $oAttr->nodeValue);
+        foreach ($domElemFrom->attributes as $attr) {
+            $domElemTo->setAttribute($attr->nodeName, $attr->nodeValue);
         }
     }
 
     /**
      * Merges nodes of newly added menu xml file
      *
-     * @param object $oDomElemTo   merge target
-     * @param object $oDomElemFrom merge source
-     * @param object $oXPathTo     node path
-     * @param object $oDomDocTo    node to append child
-     * @param string $sQueryStart  node query
+     * @param object $domElemTo   merge target
+     * @param object $domElemFrom merge source
+     * @param object $xPathTo     node path
+     * @param object $domDocTo    node to append child
+     * @param string $queryStart  node query
      */
-    protected function _mergeNodes($oDomElemTo, $oDomElemFrom, $oXPathTo, $oDomDocTo, $sQueryStart)
+    protected function _mergeNodes($domElemTo, $domElemFrom, $xPathTo, $domDocTo, $queryStart)
     {
-        foreach ($oDomElemFrom->childNodes as $oFromNode) {
-            if ($oFromNode->nodeType === XML_ELEMENT_NODE) {
-
-                $sFromAttrName = $oFromNode->getAttribute('id');
-                $sFromNodeName = $oFromNode->tagName;
+        foreach ($domElemFrom->childNodes as $fromNode) {
+            if ($fromNode->nodeType === XML_ELEMENT_NODE) {
+                $fromAttrName = $fromNode->getAttribute('id');
+                $fromNodeName = $fromNode->tagName;
 
                 // find current item
-                $sQuery = "{$sQueryStart}/{$sFromNodeName}[@id='{$sFromAttrName}']";
-                $oCurNode = $oXPathTo->query($sQuery);
+                $query = "{$queryStart}/{$fromNodeName}[@id='{$fromAttrName}']";
+                $curNode = $xPathTo->query($query);
 
                 // if not found - append
-                if ($oCurNode->length == 0) {
-                    $oDomElemTo->appendChild($oDomDocTo->importNode($oFromNode, true));
+                if ($curNode->length == 0) {
+                    $domElemTo->appendChild($domDocTo->importNode($fromNode, true));
                 } else {
-
-                    $oCurNode = $oCurNode->item(0);
+                    $curNode = $curNode->item(0);
 
                     // if found copy all attributes and check childnodes
-                    $this->_copyAttributes($oCurNode, $oFromNode);
+                    $this->_copyAttributes($curNode, $fromNode);
 
-                    if ($oFromNode->childNodes->length) {
-                        $this->_mergeNodes($oCurNode, $oFromNode, $oXPathTo, $oDomDocTo, $sQuery);
+                    if ($fromNode->childNodes->length) {
+                        $this->_mergeNodes($curNode, $fromNode, $xPathTo, $domDocTo, $query);
                     }
                 }
             }
@@ -395,85 +391,85 @@ class NavigationTree extends \oxSuperCfg
     /**
      * If oDomXML exist meges nodes
      *
-     * @param DomDocument $oDomNew what to merge
-     * @param DomDocument $oDom    where to merge
+     * @param DomDocument $domNew what to merge
+     * @param DomDocument $dom    where to merge
      */
-    protected function _merge($oDomNew, $oDom)
+    protected function _merge($domNew, $dom)
     {
-        $oXPath = new DOMXPath($oDom);
-        $this->_mergeNodes($oDom->documentElement, $oDomNew->documentElement, $oXPath, $oDom, '/OX');
+        $xPath = new DOMXPath($dom);
+        $this->_mergeNodes($dom->documentElement, $domNew->documentElement, $xPath, $dom, '/OX');
     }
 
     /**
-     * Returns from oDomXML tree tabs DOMNodeList, which belongs to $sId
+     * Returns from oDomXML tree tabs DOMNodeList, which belongs to $id
      *
-     * @param string $sId         class name
-     * @param int    $iAct        current tab number
-     * @param bool   $blSetActive marks tab as active
+     * @param string $id        class name
+     * @param int    $act       current tab number
+     * @param bool   $setActive marks tab as active
      *
      * @return DOMNodeList
      */
-    public function getTabs($sId, $iAct, $blSetActive = true)
+    public function getTabs($id, $act, $setActive = true)
     {
-        $oXPath = new DOMXPath($this->getDomXml());
-        //$oNodeList = $oXPath->query( "//SUBMENU[@cl='$sId' or @list='$sId']/TAB | //SUBMENU/../TAB[@cl='$sId']" );
-        $oNodeList = $oXPath->query("//SUBMENU[@cl='$sId']/TAB | //SUBMENU[@list='$sId']/TAB | //SUBMENU/../TAB[@cl='$sId']");
+        $xPath = new DOMXPath($this->getDomXml());
+        //$nodeList = $xPath->query( "//SUBMENU[@cl='$id' or @list='$id']/TAB | //SUBMENU/../TAB[@cl='$id']" );
+        $nodeList = $xPath->query("//SUBMENU[@cl='$id']/TAB | //SUBMENU[@list='$id']/TAB | //SUBMENU/../TAB[@cl='$id']");
 
-        $iAct = ($iAct > $oNodeList->length) ? ($oNodeList->length - 1) : $iAct;
+        $act = ($act > $nodeList->length) ? ($nodeList->length - 1) : $act;
 
-        if ($blSetActive) {
-            foreach ($oNodeList as $iPos => $oNode) {
-                if ($iPos == $iAct) {
+        if ($setActive) {
+            foreach ($nodeList as $pos => $node) {
+                if ($pos == $act) {
                     // marking active node
-                    $oNode->setAttribute('active', 1);
+                    $node->setAttribute('active', 1);
                 }
             }
         }
 
-        return $oNodeList;
+        return $nodeList;
     }
 
     /**
      * Returns active TAB class name
      *
-     * @param string $sId  class name
-     * @param int    $iAct active tab number
+     * @param string $id  class name
+     * @param int    $act active tab number
      *
      * @return string
      */
-    public function getActiveTab($sId, $iAct)
+    public function getActiveTab($id, $act)
     {
-        $sTab = null;
-        $oNodeList = $this->getTabs($sId, $iAct, false);
-        $iAct = ($iAct > $oNodeList->length) ? ($oNodeList->length - 1) : $iAct;
-        if ($oNodeList->length && ($oNode = $oNodeList->item($iAct))) {
-            $sTab = $oNode->getAttribute('cl');
+        $tab = null;
+        $nodeList = $this->getTabs($id, $act, false);
+        $act = ($act > $nodeList->length) ? ($nodeList->length - 1) : $act;
+        if ($nodeList->length && ($node = $nodeList->item($act))) {
+            $tab = $node->getAttribute('cl');
         }
 
-        return $sTab;
+        return $tab;
     }
 
     /**
-     * returns from oDomXML tree buttons stdClass, which belongs to $sClass
+     * returns from oDomXML tree buttons stdClass, which belongs to $class
      *
-     * @param string $sClass class name
+     * @param string $class class name
      *
      * @return mixed
      */
-    public function getBtn($sClass)
+    public function getBtn($class)
     {
-        $oButtons = null;
-        $oXPath = new DOMXPath($this->getDomXml());
-        $oNodeList = $oXPath->query("//TAB[@cl='$sClass']/../BTN");
-        if ($oNodeList->length) {
-            $oButtons = new stdClass();
-            foreach ($oNodeList as $oNode) {
-                $sBtnID = $oNode->getAttribute('id');
-                $oButtons->$sBtnID = 1;
+        $buttons = null;
+        $xPath = new DOMXPath($this->getDomXml());
+        $nodeList = $xPath->query("//TAB[@cl='$class']/../BTN");
+        if ($nodeList->length) {
+            $buttons = new stdClass();
+            foreach ($nodeList as $node) {
+                $btnId = $node->getAttribute('id');
+                $buttons->$btnId = 1;
             }
         }
 
-        return $oButtons;
+        return $buttons;
     }
 
     /**
@@ -488,69 +484,69 @@ class NavigationTree extends \oxSuperCfg
 
         $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector()));
         $fullAdminDir = $editionPathSelector->getViewsDirectory() . 'admin' . DIRECTORY_SEPARATOR;
-        $sMenuFile = $fullAdminDir . 'menu.xml';
+        $menuFile = $fullAdminDir . 'menu.xml';
 
-        $sTmpDir = $myConfig->getConfigParam('sCompileDir');
-        $sDynLang = $this->_getDynMenuLang();
-        $sLocalDynPath = "{$sTmpDir}{$sDynLang}_dynscreen.xml";
+        $tmpDir = $myConfig->getConfigParam('sCompileDir');
+        $dynLang = $this->_getDynMenuLang();
+        $localDynPath = "{$tmpDir}{$dynLang}_dynscreen.xml";
 
         // including std file
-        if (file_exists($sMenuFile)) {
-            $aFilesToLoad[] = $sMenuFile;
+        if (file_exists($menuFile)) {
+            $filesToLoad[] = $menuFile;
         }
 
         // including custom file
         if (file_exists($fullAdminDir . 'user.xml')) {
-            $aFilesToLoad[] = $fullAdminDir . 'user.xml';
+            $filesToLoad[] = $fullAdminDir . 'user.xml';
         }
 
         // including module menu files
-        $sPath = getShopBasePath();
-        $oModulelist = oxNew('oxmodulelist');
-        $aActiveModuleInfo = $oModulelist->getActiveModuleInfo();
-        if (is_array($aActiveModuleInfo)) {
-            foreach ($aActiveModuleInfo as $sModulePath) {
-                $sFullPath = $sPath . "modules/" . $sModulePath;
+        $path = getShopBasePath();
+        $modulelist = oxNew('oxmodulelist');
+        $activeModuleInfo = $modulelist->getActiveModuleInfo();
+        if (is_array($activeModuleInfo)) {
+            foreach ($activeModuleInfo as $modulePath) {
+                $fullPath = $path . "modules/" . $modulePath;
                 // missing file/folder?
-                if (is_dir($sFullPath)) {
+                if (is_dir($fullPath)) {
                     // including menu file
-                    $sMenuFile = $sFullPath . "/menu.xml";
-                    if (file_exists($sMenuFile) && is_readable($sMenuFile)) {
-                        $aFilesToLoad[] = $sMenuFile;
+                    $menuFile = $fullPath . "/menu.xml";
+                    if (file_exists($menuFile) && is_readable($menuFile)) {
+                        $filesToLoad[] = $menuFile;
                     }
                 }
             }
         }
 
-        $blLoadDynContents = $myConfig->getConfigParam('blLoadDynContents');
-        $sShopCountry = $myConfig->getConfigParam('sShopCountry');
+        $loadDynContents = $myConfig->getConfigParam('blLoadDynContents');
+        $shopCountry = $myConfig->getConfigParam('sShopCountry');
 
         // including dyn menu file
-        $sDynPath = null;
+        $dynPath = null;
 
-        if ($blLoadDynContents) {
-            if ($sShopCountry) {
-                $sRemoteDynUrl = $this->_getDynMenuUrl($sDynLang, $blLoadDynContents);
+        if ($loadDynContents) {
+            if ($shopCountry) {
+                $remoteDynUrl = $this->_getDynMenuUrl($dynLang, $loadDynContents);
 
                 // loading remote file from server only once
-                $blLoadRemote = oxRegistry::getSession()->getVariable("loadedremotexml");
+                $loadRemote = oxRegistry::getSession()->getVariable("loadedremotexml");
 
                 // very basic check if its valid xml file
-                if ((!isset($blLoadRemote) || $blLoadRemote) && ($sDynPath = $myOxUtlis->getRemoteCachePath($sRemoteDynUrl, $sLocalDynPath))) {
-                    $sDynPath = $this->_checkDynFile($sDynPath);
+                if ((!isset($loadRemote) || $loadRemote) && ($dynPath = $myOxUtlis->getRemoteCachePath($remoteDynUrl, $localDynPath))) {
+                    $dynPath = $this->_checkDynFile($dynPath);
                 }
 
                 // caching last load state
-                oxRegistry::getSession()->setVariable("loadedremotexml", $sDynPath ? true : false);
+                oxRegistry::getSession()->setVariable("loadedremotexml", $dynPath ? true : false);
             }
         }
 
         // loading dynpages
-        if ($sDynPath) {
-            $aFilesToLoad[] = $sDynPath;
+        if ($dynPath) {
+            $filesToLoad[] = $dynPath;
         }
 
-        return $aFilesToLoad;
+        return $filesToLoad;
     }
 
     /**
@@ -558,44 +554,44 @@ class NavigationTree extends \oxSuperCfg
      *
      * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
      *
-     * @param string $sDynFilePath dyn file path
+     * @param string $dynFilePath dyn file path
      *
      * @return bool
      */
-    protected function _checkDynFile($sDynFilePath)
+    protected function _checkDynFile($dynFilePath)
     {
-        $sDynFile = null;
-        if (file_exists($sDynFilePath)) {
-            $sLine = null;
-            if (($rHandle = @fopen($sDynFilePath, 'r'))) {
-                $sLine = stream_get_line($rHandle, 100, "?>");
-                fclose($rHandle);
+        $dynFile = null;
+        if (file_exists($dynFilePath)) {
+            $line = null;
+            if (($handle = @fopen($dynFilePath, 'r'))) {
+                $line = stream_get_line($handle, 100, "?>");
+                fclose($handle);
 
                 // checking xml file header
-                if ($sLine && stripos($sLine, '<?xml') !== false) {
-                    $sDynFile = $sDynFilePath;
+                if ($line && stripos($line, '<?xml') !== false) {
+                    $dynFile = $dynFilePath;
                 }
             }
 
             // cleanup ..
-            if (!$sDynFile) {
-                @unlink($sDynFilePath);
+            if (!$dynFile) {
+                @unlink($dynFilePath);
             }
         }
 
-        return $sDynFile;
+        return $dynFile;
     }
 
     /**
      * Method is used for overriding.
      *
-     * @param string $sCacheContents
+     * @param string $cacheContents
      *
      * @return string
      */
-    protected function _processCachedFile($sCacheContents)
+    protected function _processCachedFile($cacheContents)
     {
-        return $sCacheContents;
+        return $cacheContents;
     }
 
     /**
@@ -608,33 +604,32 @@ class NavigationTree extends \oxSuperCfg
         if ($this->_oInitialDom === null) {
             $myOxUtlis = oxRegistry::getUtils();
 
-            if (is_array($aFilesToLoad = $this->_getMenuFiles())) {
-
+            if (is_array($filesToLoad = $this->_getMenuFiles())) {
                 // now checking if xml files are newer than cached file
-                $blReload = false;
-                $sDynLang = $this->_getDynMenuLang();
+                $reload = false;
+                $dynLang = $this->_getDynMenuLang();
 
-                $sShopId = $this->getConfig()->getActiveShop()->getShopId();
-                $sCacheName = 'menu_' . $sDynLang . $sShopId . '_xml';
-                $sCacheFile = $myOxUtlis->getCacheFilePath($sCacheName);
-                $sCacheContents = $myOxUtlis->fromFileCache($sCacheName);
-                if ($sCacheContents && file_exists($sCacheFile) && ($iCacheModTime = filemtime($sCacheFile))) {
-                    foreach ($aFilesToLoad as $sDynPath) {
-                        if ($iCacheModTime < filemtime($sDynPath)) {
-                            $blReload = true;
+                $shopId = $this->getConfig()->getActiveShop()->getShopId();
+                $cacheName = 'menu_' . $dynLang . $shopId . '_xml';
+                $cacheFile = $myOxUtlis->getCacheFilePath($cacheName);
+                $cacheContents = $myOxUtlis->fromFileCache($cacheName);
+                if ($cacheContents && file_exists($cacheFile) && ($cacheModTime = filemtime($cacheFile))) {
+                    foreach ($filesToLoad as $dynPath) {
+                        if ($cacheModTime < filemtime($dynPath)) {
+                            $reload = true;
                         }
                     }
                 } else {
-                    $blReload = true;
+                    $reload = true;
                 }
 
                 $this->_oInitialDom = new DOMDocument();
-                if ($blReload) {
+                if ($reload) {
                     // fully reloading and building pathes
                     $this->_oInitialDom->appendChild(new DOMElement('OX'));
 
-                    foreach ($aFilesToLoad as $sDynPath) {
-                        $this->_loadFromFile($sDynPath, $this->_oInitialDom);
+                    foreach ($filesToLoad as $dynPath) {
+                        $this->_loadFromFile($dynPath, $this->_oInitialDom);
                     }
 
                     // adds links to menu items
@@ -646,12 +641,12 @@ class NavigationTree extends \oxSuperCfg
                     // END deprecated
 
                     // writing to cache
-                    $myOxUtlis->toFileCache($sCacheName, $this->_oInitialDom->saveXML());
+                    $myOxUtlis->toFileCache($cacheName, $this->_oInitialDom->saveXML());
                 } else {
-                    $sCacheContents = $this->_processCachedFile($sCacheContents);
+                    $cacheContents = $this->_processCachedFile($cacheContents);
                     // loading from cached file
                     $this->_oInitialDom->preserveWhiteSpace = false;
-                    $this->_oInitialDom->loadXML($sCacheContents);
+                    $this->_oInitialDom->loadXML($cacheContents);
                 }
 
                 // add session params
@@ -694,33 +689,33 @@ class NavigationTree extends \oxSuperCfg
     /**
      * Returns DOMNodeList of given navigation classes
      *
-     * @param array $aNodes Node array
+     * @param array $nodes Node array
      *
      * @return DOMNodeList
      */
-    public function getListNodes($aNodes)
+    public function getListNodes($nodes)
     {
-        $oXPath = new DOMXPath($this->getDomXml());
-        $oNodeList = $oXPath->query("//SUBMENU[@cl='" . implode("' or @cl='", $aNodes) . "']");
+        $xPath = new DOMXPath($this->getDomXml());
+        $nodeList = $xPath->query("//SUBMENU[@cl='" . implode("' or @cl='", $nodes) . "']");
 
-        return ($oNodeList->length) ? $oNodeList : null;
+        return ($nodeList->length) ? $nodeList : null;
     }
 
     /**
      * Marks passed node as active
      *
-     * @param string $sNodeId node id
+     * @param string $nodeId node id
      */
-    public function markNodeActive($sNodeId)
+    public function markNodeActive($nodeId)
     {
-        $oXPath = new DOMXPath($this->getDomXml());
-        $oNodeList = $oXPath->query("//*[@cl='{$sNodeId}' or @list='{$sNodeId}']");
+        $xPath = new DOMXPath($this->getDomXml());
+        $nodeList = $xPath->query("//*[@cl='{$nodeId}' or @list='{$nodeId}']");
 
-        if ($oNodeList->length) {
-            foreach ($oNodeList as $oNode) {
+        if ($nodeList->length) {
+            foreach ($nodeList as $node) {
                 // special case for external resources
-                $oNode->setAttribute('active', 1);
-                $oNode->parentNode->setAttribute('active', 1);
+                $node->setAttribute('active', 1);
+                $node->parentNode->setAttribute('active', 1);
             }
         }
 
@@ -729,59 +724,59 @@ class NavigationTree extends \oxSuperCfg
     /**
      * Formats and returns url for list area
      *
-     * @param string $sId tab related class
+     * @param string $id tab related class
      *
      * @return string
      */
-    public function getListUrl($sId)
+    public function getListUrl($id)
     {
-        $sUrl = null;
-        $oXPath = new DOMXPath($this->getDomXml());
-        $oNodeList = $oXPath->query("//SUBMENU[@cl='{$sId}']");
-        if ($oNodeList->length && ($oNode = $oNodeList->item(0))) {
-            $sCl = $oNode->getAttribute('list');
-            $sCl = $sCl ? "cl=$sCl" : '';
+        $url = null;
+        $xPath = new DOMXPath($this->getDomXml());
+        $nodeList = $xPath->query("//SUBMENU[@cl='{$id}']");
+        if ($nodeList->length && ($node = $nodeList->item(0))) {
+            $cl = $node->getAttribute('list');
+            $cl = $cl ? "cl=$cl" : '';
 
-            $sParams = $oNode->getAttribute('listparam');
-            $sParams = $sParams ? "&$sParams" : '';
+            $params = $node->getAttribute('listparam');
+            $params = $params ? "&$params" : '';
 
-            $sUrl = "{$sCl}{$sParams}";
+            $url = "{$cl}{$params}";
         }
 
-        return $sUrl;
+        return $url;
     }
 
     /**
      * Formats and returns url for edit area
      *
-     * @param string $sId     tab related class
-     * @param int    $iActTab active tab
+     * @param string $id     tab related class
+     * @param int    $actTab active tab
      *
      * @return string
      */
-    public function getEditUrl($sId, $iActTab)
+    public function getEditUrl($id, $actTab)
     {
-        $sUrl = null;
-        $oXPath = new DOMXPath($this->getDomXml());
-        $oNodeList = $oXPath->query("//SUBMENU[@cl='{$sId}']/TAB");
+        $url = null;
+        $xPath = new DOMXPath($this->getDomXml());
+        $nodeList = $xPath->query("//SUBMENU[@cl='{$id}']/TAB");
 
-        $iActTab = ($iActTab > $oNodeList->length) ? ($oNodeList->length - 1) : $iActTab;
-        if ($oNodeList->length && ($oActTab = $oNodeList->item($iActTab))) {
+        $actTab = ($actTab > $nodeList->length) ? ($nodeList->length - 1) : $actTab;
+        if ($nodeList->length && ($actTab = $nodeList->item($actTab))) {
             // special case for external resources
-            if ($oActTab->getAttribute('external')) {
-                $sUrl = $oActTab->getAttribute('location');
+            if ($actTab->getAttribute('external')) {
+                $url = $actTab->getAttribute('location');
             } else {
-                $sCl = $oActTab->getAttribute('cl');
-                $sCl = $sCl ? "cl={$sCl}" : '';
+                $cl = $actTab->getAttribute('cl');
+                $cl = $cl ? "cl={$cl}" : '';
 
-                $sParams = $oActTab->getAttribute('clparam');
-                $sParams = $sParams ? "&{$sParams}" : '';
+                $params = $actTab->getAttribute('clparam');
+                $params = $params ? "&{$params}" : '';
 
-                $sUrl = "{$sCl}{$sParams}";
+                $url = "{$cl}{$params}";
             }
         }
 
-        return $sUrl;
+        return $url;
     }
 
     /**
@@ -793,57 +788,57 @@ class NavigationTree extends \oxSuperCfg
     {
         $myConfig = $this->getConfig();
 
-        if (($sAdminSslUrl = $myConfig->getConfigParam('sAdminSSLURL'))) {
-            $sURL = trim($sAdminSslUrl, '/');
+        if (($adminSslUrl = $myConfig->getConfigParam('sAdminSSLURL'))) {
+            $url = trim($adminSslUrl, '/');
         } else {
-            $sURL = trim($myConfig->getConfigParam('sShopURL'), '/') . '/admin';
+            $url = trim($myConfig->getConfigParam('sShopURL'), '/') . '/admin';
         }
 
-        return oxRegistry::get("oxUtilsUrl")->processUrl("{$sURL}/index.php", false);
+        return oxRegistry::get("oxUtilsUrl")->processUrl("{$url}/index.php", false);
     }
 
     /**
      * Checks if user has required rights
      *
-     * @param string $sRights session user rights
+     * @param string $rights session user rights
      *
      * @return bool
      */
-    protected function _hasRights($sRights)
+    protected function _hasRights($rights)
     {
-        return $this->getUser()->oxuser__oxrights->value == $sRights;
+        return $this->getUser()->oxuser__oxrights->value == $rights;
     }
 
     /**
      * Checks if user in required group
      *
-     * @param string $sGroupId active group id
+     * @param string $groupId active group id
      *
      * @return bool
      */
-    protected function _hasGroup($sGroupId)
+    protected function _hasGroup($groupId)
     {
-        return $this->getUser()->inGroup($sGroupId);
+        return $this->getUser()->inGroup($groupId);
     }
 
     /**
      * Returns id of class assigned to current node
      *
-     * @param string $sClassName active class name
+     * @param string $className active class name
      *
      * @return string
      */
-    public function getClassId($sClassName)
+    public function getClassId($className)
     {
-        $sClassId = null;
+        $classId = null;
 
-        $oXPath = new DOMXPath($this->_getInitialDom());
-        $oNodeList = $oXPath->query("//*[@cl='{$sClassName}' or @list='{$sClassName}']");
-        if ($oNodeList->length && ($oFirstItem = $oNodeList->item(0))) {
-            $sClassId = $oFirstItem->getAttribute('id');
+        $xPath = new DOMXPath($this->_getInitialDom());
+        $nodeList = $xPath->query("//*[@cl='{$className}' or @list='{$className}']");
+        if ($nodeList->length && ($firstItem = $nodeList->item(0))) {
+            $classId = $firstItem->getAttribute('id');
         }
 
-        return $sClassId;
+        return $classId;
     }
 
 
@@ -852,24 +847,24 @@ class NavigationTree extends \oxSuperCfg
      *
      * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
      *
-     * @param int    $iLang             language id
-     * @param string $blLoadDynContents get local or remote content path
+     * @param int    $lang             language id
+     * @param string $loadDynContents get local or remote content path
      *
      * @return string
      */
-    protected function _getDynMenuUrl($iLang, $blLoadDynContents)
+    protected function _getDynMenuUrl($lang, $loadDynContents)
     {
-        if (!$blLoadDynContents) {
+        if (!$loadDynContents) {
             // getting dyn info from oxid server is off, so getting local menu path
-            $sFullAdminDir = getShopBasePath() . 'Application/views/admin';
-            $sUrl = $sFullAdminDir . "/dynscreen_local.xml";
+            $fullAdminDir = getShopBasePath() . 'Application/views/admin';
+            $url = $fullAdminDir . "/dynscreen_local.xml";
         } else {
-            $oAdminView = oxNew('oxadminview');
-            $this->_sDynIncludeUrl = $oAdminView->getServiceUrl($iLang);
-            $sUrl .= $this->_sDynIncludeUrl . "menue/dynscreen.xml";
+            $adminView = oxNew('oxadminview');
+            $this->_sDynIncludeUrl = $adminView->getServiceUrl($lang);
+            $url .= $this->_sDynIncludeUrl . "menue/dynscreen.xml";
         }
 
-        return $sUrl;
+        return $url;
     }
 
     /**
@@ -882,15 +877,15 @@ class NavigationTree extends \oxSuperCfg
     protected function _getDynMenuLang()
     {
         $myConfig = $this->getConfig();
-        $oLang = oxRegistry::getLang();
+        $lang = oxRegistry::getLang();
 
-        $iDynLang = $myConfig->getConfigParam('iDynInterfaceLanguage');
-        $iDynLang = isset($iDynLang) ? $iDynLang : ($oLang->getTplLanguage());
+        $dynLang = $myConfig->getConfigParam('iDynInterfaceLanguage');
+        $dynLang = isset($dynLang) ? $dynLang : ($lang->getTplLanguage());
 
-        $aLanguages = $oLang->getLanguageArray();
-        $sLangAbr = $aLanguages[$iDynLang]->abbr;
+        $languages = $lang->getLanguageArray();
+        $langAbr = $languages[$dynLang]->abbr;
 
-        return $sLangAbr;
+        return $langAbr;
     }
 
     /**

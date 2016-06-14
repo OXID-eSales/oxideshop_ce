@@ -513,7 +513,7 @@ class UtilsFileTest extends \OxidTestCase
     protected function _cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePath, $sTargetFilePath)
     {
         //try to remove dir and delete files
-        if (unlink($sTargetFilePath)) {
+        if (file_exists ($sTargetFilePath) && unlink($sTargetFilePath)) {
             //$dirTargetHandle = opendir($sTargetDir);
             //closedir($dirTargetHandle);
             if (!rmDir($sTargetDir)) {
@@ -523,7 +523,7 @@ class UtilsFileTest extends \OxidTestCase
             $this->fail("could not delete $sTargetFilePath ");
         }
 
-        if (unlink($sSourceFilePath)) {
+        if (file_exists ($sSourceFilePath) && unlink($sSourceFilePath)) {
             //$dirSourceHandle = opendir($sSourceDir);
             //closedir($dirSourceHandle);
             if (!rmDir($sSourceDir)) {

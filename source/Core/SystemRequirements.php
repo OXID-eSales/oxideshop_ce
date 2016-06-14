@@ -111,7 +111,7 @@ class SystemRequirements
      *
      * @var string
      */
-    protected $_sReqInfoUrl = "http://www.oxidforge.org/wiki/Installation";
+    protected $_sReqInfoUrl = "http://oxidforge.org/en/installation.html";
 
     /**
      * Module or system configuration mapping with installation info url anchor

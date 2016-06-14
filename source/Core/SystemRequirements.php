@@ -144,7 +144,8 @@ class SystemRequirements
         "zend_optimizer"     => "Zend_Optimizer",
         "bug53632"           => "Not_recommended_PHP_versions",
         "session_autostart"  => "session.auto_start_must_be_off",
-        "magic_quotes_gpc"   => "magic_quotes_must_be_off"
+        "magic_quotes_gpc"   => "magic_quotes_must_be_off",
+        "mysql_version"      => "Not_recommended_MySQL_versions",
         // "zend_platform_or_server"
     );
 
@@ -796,8 +797,22 @@ class SystemRequirements
         }
 
         $iModStat = 0;
-        if (version_compare($sVersion, '5.0.3', '>=') && version_compare($sVersion, '5.0.37', '<>')) {
+        if (version_compare($sVersion, '5.0.3', '>=')) {
             $iModStat = 2;
+        }
+
+        /**
+         * The following version of MySQL server are reported to not be compatible with OXID eShop
+         */
+        if (
+            // https://bugs.oxid-esales.com/view.php?id=1877
+            version_compare($sVersion, '5.0.41', '=') ||
+            // https://bugs.oxid-esales.com/view.php?id=1003
+            version_compare($sVersion, '5.0.37', '=') ||
+            // Only a note in http://wiki.oxidforge.org/Installation
+            version_compare($sVersion, '5.0.36', '=')
+         ) {
+            $iModStat = 0;
         }
 
         return $iModStat;

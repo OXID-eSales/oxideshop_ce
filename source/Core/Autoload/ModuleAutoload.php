@@ -34,9 +34,6 @@ class ModuleAutoload
     /** @var array Classes, for which extension class chain was created. */
     private $triedClasses = array();
 
-    /** @var array List of active modules. */
-    private $activeModules;
-
     /**
      * Tries to autoload given class. If class was not found in module files array,
      * checks module extensions.
@@ -78,7 +75,7 @@ class ModuleAutoload
         if (is_array($moduleFiles)) {
             $basePath = getShopBasePath();
             foreach ($moduleFiles as $moduleId => $classPaths) {
-                if ($this->isModuleActive($moduleId) && array_key_exists($class, $classPaths)) {
+                if (array_key_exists($class, $classPaths)) {
                     $moduleFilePath = $basePath . 'modules/' . $classPaths[$class];
                     if (file_exists($moduleFilePath)) {
                         $filePath = $moduleFilePath;
@@ -111,32 +108,5 @@ class ModuleAutoload
                 }
             }
         }
-    }
-
-    /**
-     * Returns whether module with given id is active.
-     *
-     * @param string $moduleId
-     *
-     * @return bool
-     */
-    protected function isModuleActive($moduleId)
-    {
-        return array_key_exists($moduleId, $this->getActiveModules());
-    }
-
-    /**
-     * Returns array of all active modules and their information.
-     *
-     * @return array
-     */
-    protected function getActiveModules()
-    {
-        if ($this->activeModules === null) {
-            $moduleList = oxNew('oxModuleList');
-            $this->activeModules = $moduleList->getActiveModuleInfo();
-        }
-
-        return $this->activeModules;
     }
 }

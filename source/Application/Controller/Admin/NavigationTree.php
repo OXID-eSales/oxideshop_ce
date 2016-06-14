@@ -858,7 +858,7 @@ class NavigationTree extends \oxSuperCfg
         } else {
             $adminView = oxNew('oxadminview');
             $this->_sDynIncludeUrl = $adminView->getServiceUrl($lang);
-            $url .= $this->_sDynIncludeUrl . "menue/dynscreen.xml";
+            $url = $this->_sDynIncludeUrl . "menue/dynscreen.xml";
         }
 
         return $url;

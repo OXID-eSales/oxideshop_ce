@@ -30,8 +30,8 @@ When checking out this repository or downloading the zip file from this place, c
 
 ### Useful links
 
-* Project home page - http://www.oxid-esales.com
-* Wiki - http://www.oxidforge.org
+* Project home page - http://oxidforge.org
+* Vendor home page - http://www.oxid-esales.com
 * Bug tracker - https://bugs.oxid-esales.com
 * VM and SDK - https://github.com/OXID-eSales/oxvm_eshop
 

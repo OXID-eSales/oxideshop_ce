@@ -108,13 +108,13 @@ class Curl
     /**
      * Sets url to call
      *
-     * @param string $sUrl URL to call.
+     * @param string $url URL to call.
      *
      * @throws oxException if url is not valid
      */
-    public function setUrl($sUrl)
+    public function setUrl($url)
     {
-        $this->_sUrl = $sUrl;
+        $this->_sUrl = $url;
     }
 
     /**
@@ -134,11 +134,11 @@ class Curl
     /**
      * Set query like "param1=value1&param2=values2.."
      *
-     * @param string $sQuery Request query.
+     * @param string $query Request query.
      */
-    public function setQuery($sQuery)
+    public function setQuery($query)
     {
-        $this->_sQuery = $sQuery;
+        $this->_sQuery = $query;
     }
 
     /**
@@ -149,12 +149,12 @@ class Curl
     public function getQuery()
     {
         if (is_null($this->_sQuery)) {
-            $sQuery = "";
-            if ($aParams = $this->getParameters()) {
-                $aParams = $this->_prepareQueryParameters($aParams);
-                $sQuery = http_build_query($aParams, "", "&");
+            $query = "";
+            if ($params = $this->getParameters()) {
+                $params = $this->_prepareQueryParameters($params);
+                $query = http_build_query($params, "", "&");
             }
-            $this->setQuery($sQuery);
+            $this->setQuery($query);
         }
 
         return $this->_sQuery;
@@ -163,12 +163,12 @@ class Curl
     /**
      * Sets parameters to be added to call url.
      *
-     * @param array $aParameters parameters
+     * @param array $parameters parameters
      */
-    public function setParameters($aParameters)
+    public function setParameters($parameters)
     {
         $this->setQuery(null);
-        $this->_aParameters = $aParameters;
+        $this->_aParameters = $parameters;
     }
 
     /**
@@ -184,11 +184,11 @@ class Curl
     /**
      * Sets host.
      *
-     * @param string $sHost
+     * @param string $host
      */
-    public function setHost($sHost)
+    public function setHost($host)
     {
-        $this->_sHost = $sHost;
+        $this->_sHost = $host;
     }
 
     /**
@@ -204,22 +204,22 @@ class Curl
     /**
      * Set header.
      *
-     * @param array $aHeader
+     * @param array $header
      */
-    public function setHeader($aHeader = null)
+    public function setHeader($header = null)
     {
-        if (is_null($aHeader) && $this->getMethod() == "POST") {
-            $sHost = $this->getHost();
+        if (is_null($header) && $this->getMethod() == "POST") {
+            $host = $this->getHost();
 
-            $aHeader = array();
-            $aHeader[] = 'POST /cgi-bin/webscr HTTP/1.1';
-            $aHeader[] = 'Content-Type: application/x-www-form-urlencoded';
-            if (isset($sHost)) {
-                $aHeader[] = 'Host: ' . $sHost;
+            $header = array();
+            $header[] = 'POST /cgi-bin/webscr HTTP/1.1';
+            $header[] = 'Content-Type: application/x-www-form-urlencoded';
+            if (isset($host)) {
+                $header[] = 'Host: ' . $host;
             }
-            $aHeader[] = 'Connection: close';
+            $header[] = 'Connection: close';
         }
-        $this->_aHeader = $aHeader;
+        $this->_aHeader = $header;
     }
 
     /**
@@ -239,11 +239,11 @@ class Curl
     /**
      * Set method to send (POST/GET)
      *
-     * @param string $sMethod method to send (POST/GET)
+     * @param string $method method to send (POST/GET)
      */
-    public function setMethod($sMethod)
+    public function setMethod($method)
     {
-        $this->_sMethod = strtoupper($sMethod);
+        $this->_sMethod = strtoupper($method);
     }
 
     /**
@@ -259,24 +259,24 @@ class Curl
     /**
      * Sets an option for a cURL transfer
      *
-     * @param string $sName  curl option name to set value to.
-     * @param string $sValue curl option value to set.
+     * @param string $name  curl option name to set value to.
+     * @param string $value curl option value to set.
      *
      * @throws oxException on curl errors
      */
-    public function setOption($sName, $sValue)
+    public function setOption($name, $value)
     {
-        if (strpos($sName, 'CURLOPT_') !== 0 || !defined($sConstant = strtoupper($sName))) {
+        if (strpos($name, 'CURLOPT_') !== 0 || !defined($constant = strtoupper($name))) {
             /**
-             * @var oxException $oException
+             * @var oxException $exception
              */
-            $oException = oxNew('oxException');
-            $oLang = oxRegistry::getLang();
-            $oException->setMessage(sprintf($oLang->translateString('EXCEPTION_NOT_VALID_CURL_CONSTANT', $oLang->getTplLanguage()), $sName));
-            throw $oException;
+            $exception = oxNew('oxException');
+            $lang = oxRegistry::getLang();
+            $exception->setMessage(sprintf($lang->translateString('EXCEPTION_NOT_VALID_CURL_CONSTANT', $lang->getTplLanguage()), $name));
+            throw $exception;
         }
 
-        $this->_aOptions[$sName] = $sValue;
+        $this->_aOptions[$name] = $value;
     }
 
     /**
@@ -300,34 +300,34 @@ class Curl
     {
         $this->_setOptions();
 
-        $sResponse = $this->_execute();
+        $response = $this->_execute();
         $this->_saveStatusCode();
 
-        $iCurlErrorNumber = $this->_getErrorNumber();
+        $curlErrorNumber = $this->_getErrorNumber();
 
         $this->_close();
 
-        if ($iCurlErrorNumber) {
+        if ($curlErrorNumber) {
             /**
-             * @var oxException $oException
+             * @var oxException $exception
              */
-            $oException = oxNew('oxException');
-            $oLang = oxRegistry::getLang();
-            $oException->setMessage(sprintf($oLang->translateString('EXCEPTION_CURL_ERROR', $oLang->getTplLanguage()), $iCurlErrorNumber));
-            throw $oException;
+            $exception = oxNew('oxException');
+            $lang = oxRegistry::getLang();
+            $exception->setMessage(sprintf($lang->translateString('EXCEPTION_CURL_ERROR', $lang->getTplLanguage()), $curlErrorNumber));
+            throw $exception;
         }
 
-        return $sResponse;
+        return $response;
     }
 
     /**
      * Set connection charset
      *
-     * @param string $sCharset charset
+     * @param string $charset charset
      */
-    public function setConnectionCharset($sCharset)
+    public function setConnectionCharset($charset)
     {
-        $this->_sConnectionCharset = $sCharset;
+        $this->_sConnectionCharset = $charset;
     }
 
     /**
@@ -389,10 +389,10 @@ class Curl
             $this->_setOpt(CURLOPT_POSTFIELDS, $this->getQuery());
         }
 
-        $aOptions = $this->getOptions();
-        if (count($aOptions)) {
-            foreach ($aOptions as $sName => $mValue) {
-                $this->_setOpt(constant($sName), $mValue);
+        $options = $this->getOptions();
+        if (count($options)) {
+            foreach ($options as $name => $mValue) {
+                $this->_setOpt(constant($name), $mValue);
             }
         }
     }
@@ -419,12 +419,12 @@ class Curl
     /**
      * Wrapper function to be mocked for testing.
      *
-     * @param string $sName  curl option name to set value to.
-     * @param string $sValue curl option value to set.
+     * @param string $name  curl option name to set value to.
+     * @param string $value curl option value to set.
      */
-    protected function _setOpt($sName, $sValue)
+    protected function _setOpt($name, $value)
     {
-        curl_setopt($this->_getResource(), $sName, $sValue);
+        curl_setopt($this->_getResource(), $name, $value);
     }
 
     /**
@@ -448,16 +448,16 @@ class Curl
     /**
      * Decodes html entities.
      *
-     * @param array $aParams Parameters.
+     * @param array $params Parameters.
      *
      * @return array
      */
-    protected function _prepareQueryParameters($aParams)
+    protected function _prepareQueryParameters($params)
     {
-        $aParams = array_filter($aParams);
-        $aParams = array_map(array($this, '_htmlDecode'), $aParams);
+        $params = array_filter($params);
+        $params = array_map(array($this, '_htmlDecode'), $params);
 
-        return $aParams;
+        return $params;
     }
 
     /**

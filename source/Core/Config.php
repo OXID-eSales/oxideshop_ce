@@ -326,38 +326,38 @@ class Config extends SuperConfig
     /**
      * Returns config parameter value if such parameter exists
      *
-     * @param string $sName    config parameter name
-     * @param mixed  $sDefault default value if no config var is found default null
+     * @param string $name    config parameter name
+     * @param mixed  $default default value if no config var is found default null
      *
      * @return mixed
      */
-    public function getConfigParam($sName, $sDefault = null)
+    public function getConfigParam($name, $default = null)
     {
         $this->init();
 
-        if (isset ($this->_aConfigParams[$sName])) {
-            $sValue = $this->_aConfigParams[$sName];
-        } elseif (isset($this->$sName)) {
-            $sValue = $this->$sName;
+        if (isset($this->_aConfigParams[$name])) {
+            $value = $this->_aConfigParams[$name];
+        } elseif (isset($this->$name)) {
+            $value = $this->$name;
         } else {
-            $sValue = $sDefault;
+            $value = $default;
         }
 
-        return $sValue;
+        return $value;
     }
 
     /**
      * Stores config parameter value in config
      *
-     * @param string $sName  config parameter name
-     * @param string $sValue config parameter value
+     * @param string $name  config parameter name
+     * @param string $value config parameter value
      */
-    public function setConfigParam($sName, $sValue)
+    public function setConfigParam($name, $value)
     {
-        if (isset($this->$sName)) {
-            $this->$sName = $sValue;
+        if (isset($this->$name)) {
+            $this->$name = $value;
         } else {
-            $this->_aConfigParams[$sName] = $sValue;
+            $this->_aConfigParams[$name] = $value;
         }
     }
 
@@ -394,26 +394,26 @@ class Config extends SuperConfig
         $this->_setDefaults();
 
         try {
-            $sShopID = $this->getShopId();
-            $blConfigLoaded = $this->_loadVarsFromDb($sShopID);
+            $shopID = $this->getShopId();
+            $configLoaded = $this->_loadVarsFromDb($shopID);
             // loading shop config
-            if (empty($sShopID) || !$blConfigLoaded) {
+            if (empty($shopID) || !$configLoaded) {
                 // if no config values where loaded (some problems with DB), throwing an exception
-                $oEx = new oxConnectionException();
-                $oEx->setMessage("Unable to load shop config values from database");
-                throw $oEx;
+                $ex = new oxConnectionException();
+                $ex->setMessage("Unable to load shop config values from database");
+                throw $ex;
             }
 
             // loading theme config options
-            $this->_loadVarsFromDb($sShopID, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
+            $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
 
             // checking if custom theme (which has defined parent theme) config options should be loaded over parent theme (#3362)
             if ($this->getConfigParam('sCustomTheme')) {
-                $this->_loadVarsFromDb($sShopID, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
+                $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
             }
 
             // loading modules config
-            $this->_loadVarsFromDb($sShopID, null, Config::OXMODULE_MODULE_PREFIX);
+            $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_MODULE_PREFIX);
 
             $this->loadAdditionalConfiguration();
 
@@ -431,13 +431,13 @@ class Config extends SuperConfig
             //application initialization
             $this->_oStart = oxNew('oxStart');
             $this->_oStart->appInit();
-        } catch (oxConnectionException $oEx) {
+        } catch (oxConnectionException $ex) {
             //@TODO: use DatabaseException instead of oxConnectionException
-            $this->_handleDbConnectionException($oEx);
-        } catch (DatabaseException $oEx) {
-            $this->_handleDbConnectionException($oEx);
-        } catch (oxCookieException $oEx) {
-            $this->_handleCookieException($oEx);
+            $this->_handleDbConnectionException($ex);
+        } catch (DatabaseException $ex) {
+            $this->_handleDbConnectionException($ex);
+        } catch (oxCookieException $ex) {
+            $this->_handleCookieException($ex);
         }
     }
 
@@ -475,12 +475,12 @@ class Config extends SuperConfig
         include getShopBasePath() . '/config.inc.php';
 
         //adding trailing slashes
-        $oFileUtils = Registry::get("oxUtilsFile");
-        $this->sShopDir = $oFileUtils->normalizeDir($this->sShopDir);
-        $this->sCompileDir = $oFileUtils->normalizeDir($this->sCompileDir);
-        $this->sShopURL = $oFileUtils->normalizeDir($this->sShopURL);
-        $this->sSSLShopURL = $oFileUtils->normalizeDir($this->sSSLShopURL);
-        $this->sAdminSSLURL = $oFileUtils->normalizeDir($this->sAdminSSLURL);
+        $fileUtils = Registry::get("oxUtilsFile");
+        $this->sShopDir = $fileUtils->normalizeDir($this->sShopDir);
+        $this->sCompileDir = $fileUtils->normalizeDir($this->sCompileDir);
+        $this->sShopURL = $fileUtils->normalizeDir($this->sShopURL);
+        $this->sSSLShopURL = $fileUtils->normalizeDir($this->sSSLShopURL);
+        $this->sAdminSSLURL = $fileUtils->normalizeDir($this->sAdminSSLURL);
 
         $this->_loadCustomConfig();
     }
@@ -538,99 +538,99 @@ class Config extends SuperConfig
      */
     protected function _loadCustomConfig()
     {
-        $sCustConfig = getShopBasePath() . '/cust_config.inc.php';
-        if (is_readable($sCustConfig)) {
-            include $sCustConfig;
+        $custConfig = getShopBasePath() . '/cust_config.inc.php';
+        if (is_readable($custConfig)) {
+            include $custConfig;
         }
     }
 
     /**
      * Load config values from DB
      *
-     * @param string $sShopID   shop ID to load parameters
-     * @param array  $aOnlyVars array of params to load (optional)
-     * @param string $sModule   module vars to load, empty for base options
+     * @param string $shopID   shop ID to load parameters
+     * @param array  $onlyVars array of params to load (optional)
+     * @param string $module   module vars to load, empty for base options
      *
      * @return bool
      */
-    protected function _loadVarsFromDb($sShopID, $aOnlyVars = null, $sModule = '')
+    protected function _loadVarsFromDb($shopID, $onlyVars = null, $module = '')
     {
-        $oDb = Database::getDb();
+        $db = Database::getDb();
 
-        $sModuleSql = $sModule ? " oxmodule LIKE " . $oDb->quote($sModule . "%") : " oxmodule='' ";
-        $sOnlyVarsSql = $this->_getConfigParamsSelectSnippet($aOnlyVars);
+        $moduleSql = $module ? " oxmodule LIKE " . $db->quote($module . "%") : " oxmodule='' ";
+        $onlyVarsSql = $this->_getConfigParamsSelectSnippet($onlyVars);
 
-        $sSelect = "select
+        $select = "select
                         oxvarname, oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue
                     from oxconfig
-                    where oxshopid = '$sShopID' and " . $sModuleSql . $sOnlyVarsSql;
+                    where oxshopid = '$shopID' and " . $moduleSql . $onlyVarsSql;
 
-        $aResult = $oDb->getAll($sSelect);
+        $result = $db->getAll($select);
 
-        foreach ($aResult as $aValue) {
-            $sVarName = $aValue[0];
-            $sVarType = $aValue[1];
-            $sVarVal = $aValue[2];
+        foreach ($result as $value) {
+            $varName = $value[0];
+            $varType = $value[1];
+            $varVal = $value[2];
 
-            $this->_setConfVarFromDb($sVarName, $sVarType, $sVarVal);
+            $this->_setConfVarFromDb($varName, $varType, $varVal);
 
             //setting theme options array
-            if ($sModule) {
-                $this->_aThemeConfigParams[$sVarName] = $sModule;
+            if ($module) {
+                $this->_aThemeConfigParams[$varName] = $module;
             }
         }
 
-        return (bool) count($aResult);
+        return (bool) count($result);
     }
 
     /**
      * Allow loading from some vars only from baseshop
      *
-     * @param array $aVars
+     * @param array $vars
      *
      * @return string
      */
-    protected function _getConfigParamsSelectSnippet($aVars)
+    protected function _getConfigParamsSelectSnippet($vars)
     {
-        $sSelect = '';
-        if (is_array($aVars) && !empty($aVars)) {
-            foreach ($aVars as &$sField) {
-                $sField = '"' . $sField . '"';
+        $select = '';
+        if (is_array($vars) && !empty($vars)) {
+            foreach ($vars as &$field) {
+                $field = '"' . $field . '"';
             }
-            $sSelect = ' and oxvarname in ( ' . implode(', ', $aVars) . ' ) ';
+            $select = ' and oxvarname in ( ' . implode(', ', $vars) . ' ) ';
         }
 
-        return $sSelect;
+        return $select;
     }
 
     /**
      * Sets config variable to config object, first unserializing it by given type.
      * sShopURL and sSSLShopURL are skipped for admin or when URL values are not set
      *
-     * @param string $sVarName variable name
-     * @param string $sVarType variable type - arr, aarr, bool or str
-     * @param string $sVarVal  serialized by type value
+     * @param string $varName variable name
+     * @param string $varType variable type - arr, aarr, bool or str
+     * @param string $varVal  serialized by type value
      *
      * @return null
      */
-    protected function _setConfVarFromDb($sVarName, $sVarType, $sVarVal)
+    protected function _setConfVarFromDb($varName, $varType, $varVal)
     {
-        if (($sVarName == 'sShopURL' || $sVarName == 'sSSLShopURL') &&
-            (!$sVarVal || $this->isAdmin() === true)
+        if (($varName == 'sShopURL' || $varName == 'sSSLShopURL') &&
+            (!$varVal || $this->isAdmin() === true)
         ) {
             return;
         }
 
-        switch ($sVarType) {
+        switch ($varType) {
             case 'arr':
             case 'aarr':
-                $this->setConfigParam($sVarName, unserialize($sVarVal));
+                $this->setConfigParam($varName, unserialize($varVal));
                 break;
             case 'bool':
-                $this->setConfigParam($sVarName, ($sVarVal == 'true' || $sVarVal == '1'));
+                $this->setConfigParam($varName, ($varVal == 'true' || $varVal == '1'));
                 break;
             default:
-                $this->setConfigParam($sVarName, $sVarVal);
+                $this->setConfigParam($varName, $varVal);
                 break;
         }
     }
@@ -653,20 +653,20 @@ class Config extends SuperConfig
     /**
      * Returns value of parameter stored in POST,GET.
      * For security reasons performed Config->checkParamSpecialChars().
-     * use $blRaw very carefully if you want to get unescaped
+     * use $raw very carefully if you want to get unescaped
      * parameter.
      *
-     * @param string $name  Name of parameter.
-     * @param bool   $blRaw Get unescaped parameter.
+     * @param string $name Name of parameter.
+     * @param bool   $raw  Get unescaped parameter.
      *
      * @deprecated on b-dev (2015-06-10); Use Request::getRequestParameter() or Request::getRequestEscapedParameter().
      *
      * @return mixed
      */
-    public function getRequestParameter($name, $blRaw = false)
+    public function getRequestParameter($name, $raw = false)
     {
         $request = Registry::get(Request::class);
-        return $blRaw ? $request->getRequestParameter($name) : $request->getRequestEscapedParameter($name);
+        return $raw ? $request->getRequestParameter($name) : $request->getRequestEscapedParameter($name);
     }
 
     /**
@@ -702,37 +702,37 @@ class Config extends SuperConfig
     /**
      * Returns uploaded file parameter
      *
-     * @param string $sParamName param name
+     * @param string $paramName param name
      *
      * @return null
      */
-    public function getUploadedFile($sParamName)
+    public function getUploadedFile($paramName)
     {
-        return $_FILES[$sParamName];
+        return $_FILES[$paramName];
     }
 
     /**
      * Sets global parameter value
      *
-     * @param string $sName  name of parameter
-     * @param mixed  $sValue value to store
+     * @param string $name  name of parameter
+     * @param mixed  $value value to store
      */
-    public function setGlobalParameter($sName, $sValue)
+    public function setGlobalParameter($name, $value)
     {
-        $this->_aGlobalParams[$sName] = $sValue;
+        $this->_aGlobalParams[$name] = $value;
     }
 
     /**
      * Returns global parameter value
      *
-     * @param string $sName name of cached parameter
+     * @param string $name name of cached parameter
      *
      * @return mixed
      */
-    public function getGlobalParameter($sName)
+    public function getGlobalParameter($name)
     {
-        if (isset($this->_aGlobalParams[$sName])) {
-            return $this->_aGlobalParams[$sName];
+        if (isset($this->_aGlobalParams[$name])) {
+            return $this->_aGlobalParams[$name];
         } else {
             return null;
         }
@@ -742,14 +742,14 @@ class Config extends SuperConfig
      * Checks if passed parameter has special chars and replaces them.
      * Returns checked value.
      *
-     * @param mixed &$sValue value to process escaping
-     * @param array $aRaw    keys of unescaped values
+     * @param mixed &$value value to process escaping
+     * @param array $raw    keys of unescaped values
      *
      * @return mixed
      */
-    public function checkParamSpecialChars(& $sValue, $aRaw = null)
+    public function checkParamSpecialChars(&$value, $raw = null)
     {
-        return Registry::get(Request::class)->checkParamSpecialChars($sValue, $aRaw);
+        return Registry::get(Request::class)->checkParamSpecialChars($value, $raw);
     }
 
     /**
@@ -788,11 +788,11 @@ class Config extends SuperConfig
     /**
      * Set is shop url
      *
-     * @param bool $blIsSsl - state bool value
+     * @param bool $isSsl - state bool value
      */
-    public function setIsSsl($blIsSsl = false)
+    public function setIsSsl($isSsl = false)
     {
-        $this->_blIsSsl = $blIsSsl;
+        $this->_blIsSsl = $isSsl;
     }
 
     /**
@@ -801,11 +801,11 @@ class Config extends SuperConfig
     protected function _checkSsl()
     {
         $myUtilsServer = Registry::get("oxUtilsServer");
-        $aServerVars = $myUtilsServer->getServerVar();
-        $aHttpsServerVar = $myUtilsServer->getServerVar('HTTPS');
+        $serverVars = $myUtilsServer->getServerVar();
+        $httpsServerVar = $myUtilsServer->getServerVar('HTTPS');
 
         $this->setIsSsl();
-        if (isset($aHttpsServerVar) && ($aHttpsServerVar === 'on' || $aHttpsServerVar === 'ON' || $aHttpsServerVar == '1')) {
+        if (isset($httpsServerVar) && ($httpsServerVar === 'on' || $httpsServerVar === 'ON' || $httpsServerVar == '1')) {
             // "1&1" hoster provides "1"
             $this->setIsSsl($this->getConfigParam('sSSLShopURL') || $this->getConfigParam('sMallSSLShopURL'));
             if ($this->isAdmin() && !$this->_blIsSsl) {
@@ -815,9 +815,9 @@ class Config extends SuperConfig
         }
 
         //additional special handling for profihost customers
-        if (isset($aServerVars['HTTP_X_FORWARDED_SERVER']) &&
-            (strpos($aServerVars['HTTP_X_FORWARDED_SERVER'], 'ssl') !== false ||
-             strpos($aServerVars['HTTP_X_FORWARDED_SERVER'], 'secure-online-shopping.de') !== false)
+        if (isset($serverVars['HTTP_X_FORWARDED_SERVER']) &&
+            (strpos($serverVars['HTTP_X_FORWARDED_SERVER'], 'ssl') !== false ||
+             strpos($serverVars['HTTP_X_FORWARDED_SERVER'], 'secure-online-shopping.de') !== false)
         ) {
             $this->setIsSsl(true);
         }
@@ -844,101 +844,102 @@ class Config extends SuperConfig
      *
      * @return bool
      */
-    public function isHttpsOnly() {
+    public function isHttpsOnly()
+    {
         return $this->isSsl() && $this->getSslShopUrl() == $this->getShopUrl();
     }
 
     /**
      * Compares current URL to supplied string
      *
-     * @param string $sURL URL
+     * @param string $url URL
      *
-     * @return bool true if $sURL is equal to current page URL
+     * @return bool true if $url is equal to current page URL
      */
-    public function isCurrentUrl($sURL)
+    public function isCurrentUrl($url)
     {
-        /** @var UtilsServer $oUtilsServer */
-        $oUtilsServer = Registry::get("oxUtilsServer");
-        return $oUtilsServer->isCurrentUrl($sURL);
+        /** @var UtilsServer $utilsServer */
+        $utilsServer = Registry::get("oxUtilsServer");
+        return $utilsServer->isCurrentUrl($url);
     }
 
     /**
      * Compares current protocol to supplied url string
      *
-     * @param string $sURL URL
+     * @param string $url URL
      *
-     * @return bool true if $sURL is equal to current page URL
+     * @return bool true if $url is equal to current page URL
      */
-    public function isCurrentProtocol($sURL)
+    public function isCurrentProtocol($url)
     {
         // Missing protocol, cannot proceed, assuming true.
-        if (!$sURL || (strpos($sURL, "http") !== 0)) {
+        if (!$url || (strpos($url, "http") !== 0)) {
             return true;
         }
 
-        return (strpos($sURL, "https:") === 0) == $this->isSsl();
+        return (strpos($url, "https:") === 0) == $this->isSsl();
     }
 
     /**
      * Returns config sShopURL or sMallShopURL if secondary shop
      *
-     * @param int  $iLang   language
-     * @param bool $blAdmin if set true, function returns shop url without checking language/subshops for different url.
+     * @param int  $lang  language
+     * @param bool $admin if set true, function returns shop url without checking language/subshops for different url.
      *
      * @return string
      */
-    public function getShopUrl($iLang = null, $blAdmin = null)
+    public function getShopUrl($lang = null, $admin = null)
     {
-        $sUrl = null;
-        $blAdmin = isset($blAdmin) ? $blAdmin : $this->isAdmin();
+        $url = null;
+        $admin = isset($admin) ? $admin : $this->isAdmin();
 
-        if (!$blAdmin) {
-            $sUrl = $this->getShopUrlByLanguage($iLang);
-            if (!$sUrl) {
-                $sUrl = $this->getMallShopUrl();
+        if (!$admin) {
+            $url = $this->getShopUrlByLanguage($lang);
+            if (!$url) {
+                $url = $this->getMallShopUrl();
             }
         }
 
-        if (!$sUrl) {
-            $sUrl = $this->getConfigParam('sShopURL');
+        if (!$url) {
+            $url = $this->getConfigParam('sShopURL');
         }
 
-        return $sUrl;
+        return $url;
     }
 
     /**
      * Returns config sSSLShopURL or sMallSSLShopURL if secondary shop
      *
-     * @param int $iLang language (default is null)
+     * @param int $lang language (default is null)
      *
      * @return string
      */
-    public function getSslShopUrl($iLang = null)
+    public function getSslShopUrl($lang = null)
     {
-        $sUrl = null;
+        $url = null;
 
-        if (!$sUrl) {
-            $sUrl = $this->getShopUrlByLanguage($iLang, true);
+        if (!$url) {
+            $url = $this->getShopUrlByLanguage($lang, true);
         }
 
-        if (!$sUrl) {
-            $sUrl = $this->getMallShopUrl(true);
+        if (!$url) {
+            $url = $this->getMallShopUrl(true);
         }
 
-        if (!$sUrl) {
-            $sUrl = $this->getMallShopUrl();
+        if (!$url) {
+            $url = $this->getMallShopUrl();
         }
 
         //normal section
-        if (!$sUrl) {
-            $sUrl = $this->getConfigParam('sSSLShopURL');
+        if (!$url) {
+            $url = $this->getConfigParam('sSSLShopURL');
         }
 
-        if (!$sUrl) {
-            $sUrl = $this->getShopUrl($iLang);
+        if (!$url) {
+            $url = $this->getShopUrl($lang);
         }
 
-        return $sUrl;
+        return $url;
     }
 
     /**
@@ -955,24 +956,23 @@ class Config extends SuperConfig
      * Returns SSL or non SSL shop URL without index.php depending on Mall
      * affecting environment is admin mode and current ssl usage status
      *
-     * @param bool $blAdmin if admin
+     * @param bool $admin if admin
      *
      * @return string
      */
-    public function getCurrentShopUrl($blAdmin = null)
+    public function getCurrentShopUrl($admin = null)
     {
-        if ($blAdmin === null) {
-            $blAdmin = $this->isAdmin();
+        if ($admin === null) {
+            $admin = $this->isAdmin();
         }
-        if ($blAdmin) {
+        if ($admin) {
             if ($this->isSsl()) {
-
-                $sUrl = $this->getConfigParam('sAdminSSLURL');
-                if (!$sUrl) {
+                $url = $this->getConfigParam('sAdminSSLURL');
+                if (!$url) {
                     return $this->getSslShopUrl() . $this->getConfigParam('sAdminDir') . '/';
                 }
 
-                return $sUrl;
+                return $url;
             } else {
                 return $this->getShopUrl() . $this->getConfigParam('sAdminDir') . '/';
             }
@@ -984,39 +984,39 @@ class Config extends SuperConfig
     /**
      * Returns SSL or not SSL shop URL with index.php and sid
      *
-     * @param int $iLang language (optional)
+     * @param int $lang language (optional)
      *
      * @return string
      */
-    public function getShopCurrentUrl($iLang = null)
+    public function getShopCurrentUrl($lang = null)
     {
         if ($this->isSsl()) {
-            $sURL = $this->getSSLShopURL($iLang);
+            $url = $this->getSSLShopURL($lang);
         } else {
-            $sURL = $this->getShopURL($iLang);
+            $url = $this->getShopURL($lang);
         }
 
-        return Registry::get("oxUtilsUrl")->processUrl($sURL . 'index.php', false);
+        return Registry::get("oxUtilsUrl")->processUrl($url . 'index.php', false);
     }
 
     /**
      * Returns shop non SSL URL including index.php and sid.
      *
-     * @param int  $iLang   language
-     * @param bool $blAdmin if admin
+     * @param int  $lang  language
+     * @param bool $admin if admin
      *
      * @return string
      */
-    public function getShopHomeUrl($iLang = null, $blAdmin = null)
+    public function getShopHomeUrl($lang = null, $admin = null)
     {
-        return Registry::get("oxUtilsUrl")->processUrl($this->getShopUrl($iLang, $blAdmin) . 'index.php', false);
+        return Registry::get("oxUtilsUrl")->processUrl($this->getShopUrl($lang, $admin) . 'index.php', false);
     }
 
     /**
      * Returns widget start non SSL URL including widget.php and sid.
      *
-     * @param int  $languageId   language
-     * @param bool $inAdmin if admin
+     * @param int  $languageId language
+     * @param bool $inAdmin    if admin
      * @param array $urlParameters parameters which should be added to URL.
      *
      * @return string
@@ -1056,14 +1056,14 @@ class Config extends SuperConfig
      */
     public function getShopCurrency()
     {
-        $iCurr = null;
-        if ((null === ($iCurr = $this->getRequestParameter('cur')))) {
-            if (null === ($iCurr = $this->getRequestParameter('currency'))) {
-                $iCurr = $this->getSession()->getVariable('currency');
+        $curr = null;
+        if ((null === ($curr = $this->getRequestParameter('cur')))) {
+            if (null === ($curr = $this->getRequestParameter('currency'))) {
+                $curr = $this->getSession()->getVariable('currency');
             }
         }
 
-        return (int) $iCurr;
+        return (int) $curr;
     }
 
     /**
@@ -1073,25 +1073,25 @@ class Config extends SuperConfig
      */
     public function getActShopCurrencyObject()
     {
-        $iCur = $this->getShopCurrency();
-        $aCurrencies = $this->getCurrencyArray();
-        if (!isset($aCurrencies[$iCur])) {
-            return $this->_oActCurrencyObject = reset($aCurrencies); // reset() returns the first element
+        $cur = $this->getShopCurrency();
+        $currencies = $this->getCurrencyArray();
+        if (!isset($currencies[$cur])) {
+            return $this->_oActCurrencyObject = reset($currencies); // reset() returns the first element
         }
 
-        return $this->_oActCurrencyObject = $aCurrencies[$iCur];
+        return $this->_oActCurrencyObject = $currencies[$cur];
     }
 
     /**
      * Sets the actual currency
      *
-     * @param int $iCur 0 = EUR, 1 = GBP, 2 = CHF
+     * @param int $cur 0 = EUR, 1 = GBP, 2 = CHF
      */
-    public function setActShopCurrency($iCur)
+    public function setActShopCurrency($cur)
     {
-        $aCurrencies = $this->getCurrencyArray();
-        if (isset($aCurrencies[$iCur])) {
-            $this->getSession()->setVariable('currency', $iCur);
+        $currencies = $this->getCurrencyArray();
+        if (isset($currencies[$cur])) {
+            $this->getSession()->setVariable('currency', $cur);
             $this->_oActCurrencyObject = null;
         }
     }
@@ -1099,13 +1099,13 @@ class Config extends SuperConfig
     /**
      * Returns path to out dir
      *
-     * @param bool $blAbsolute mode - absolute/relative path
+     * @param bool $absolute mode - absolute/relative path
      *
      * @return string
      */
-    public function getOutDir($blAbsolute = true)
+    public function getOutDir($absolute = true)
     {
-        if ($blAbsolute) {
+        if ($absolute) {
             return $this->getConfigParam('sShopDir') . $this->_sOutDir . '/';
         } else {
             return $this->_sOutDir . '/';
@@ -1115,13 +1115,13 @@ class Config extends SuperConfig
     /**
      * Returns path to out dir
      *
-     * @param bool $blAbsolute mode - absolute/relative path
+     * @param bool $absolute mode - absolute/relative path
      *
      * @return string
      */
-    public function getViewsDir($blAbsolute = true)
+    public function getViewsDir($absolute = true)
     {
-        if ($blAbsolute) {
+        if ($absolute) {
             return $this->getConfigParam('sShopDir') . 'Application/views/';
         } else {
             return 'Application/views/';
@@ -1131,18 +1131,18 @@ class Config extends SuperConfig
     /**
      * Returns path to translations dir
      *
-     * @param string $sFile      File name
-     * @param string $sDir       Directory name
-     * @param bool   $blAbsolute mode - absolute/relative path
+     * @param string $file     File name
+     * @param string $dir      Directory name
+     * @param bool   $absolute mode - absolute/relative path
      *
      * @return string
      */
-    public function getTranslationsDir($sFile, $sDir, $blAbsolute = true)
+    public function getTranslationsDir($file, $dir, $absolute = true)
     {
-        $sPath = $blAbsolute ? $this->getConfigParam('sShopDir') : '';
-        $sPath .= 'Application/translations/';
-        if (is_readable($sPath . $sDir . '/' . $sFile)) {
-            return $sPath . $sDir . '/' . $sFile;
+        $path = $absolute ? $this->getConfigParam('sShopDir') : '';
+        $path .= 'Application/translations/';
+        if (is_readable($path . $dir . '/' . $file)) {
+            return $path . $dir . '/' . $file;
         }
 
         return false;
@@ -1151,13 +1151,13 @@ class Config extends SuperConfig
     /**
      * Returns path to out dir
      *
-     * @param bool $blAbsolute mode - absolute/relative path
+     * @param bool $absolute mode - absolute/relative path
      *
      * @return string
      */
-    public function getAppDir($blAbsolute = true)
+    public function getAppDir($absolute = true)
     {
-        if ($blAbsolute) {
+        if ($absolute) {
             return $this->getConfigParam('sShopDir') . 'Application/';
         } else {
             return 'Application/';
@@ -1167,312 +1167,312 @@ class Config extends SuperConfig
     /**
      * Returns url to out dir
      *
-     * @param bool $blSSL       Whether to force ssl
-     * @param bool $blAdmin     Whether to force admin
-     * @param bool $blNativeImg Whether to force native image dirs
+     * @param bool $ssl       Whether to force ssl
+     * @param bool $admin     Whether to force admin
+     * @param bool $nativeImg Whether to force native image dirs
      *
      * @return string
      */
-    public function getOutUrl($blSSL = null, $blAdmin = null, $blNativeImg = false)
+    public function getOutUrl($ssl = null, $admin = null, $nativeImg = false)
     {
-        $blSSL = is_null($blSSL) ? $this->isSsl() : $blSSL;
-        $blAdmin = is_null($blAdmin) ? $this->isAdmin() : $blAdmin;
+        $ssl = is_null($ssl) ? $this->isSsl() : $ssl;
+        $admin = is_null($admin) ? $this->isAdmin() : $admin;
 
-        if ($blSSL) {
-            if ($blNativeImg && !$blAdmin) {
-                $sUrl = $this->getSslShopUrl();
+        if ($ssl) {
+            if ($nativeImg && !$admin) {
+                $url = $this->getSslShopUrl();
             } else {
-                $sUrl = $this->getConfigParam('sSSLShopURL');
-                if (!$sUrl && $blAdmin) {
-                    $sUrl = $this->getConfigParam('sAdminSSLURL') . '../';
+                $url = $this->getConfigParam('sSSLShopURL');
+                if (!$url && $admin) {
+                    $url = $this->getConfigParam('sAdminSSLURL') . '../';
                 }
             }
         } else {
-            $sUrl = ($blNativeImg && !$blAdmin) ? $this->getShopUrl() : $this->getConfigParam('sShopURL');
+            $url = ($nativeImg && !$admin) ? $this->getShopUrl() : $this->getConfigParam('sShopURL');
         }
 
-        return $sUrl . $this->_sOutDir . '/';
+        return $url . $this->_sOutDir . '/';
     }
 
     /**
      * Finds and returns files or folders path in out dir
      *
-     * @param string $sFile        File name
-     * @param string $sDir         Directory name
-     * @param bool   $blAdmin      Whether to force admin
-     * @param int    $iLang        Language id
-     * @param int    $iShop        Shop id
-     * @param string $sTheme       Theme name
-     * @param bool   $blAbsolute   mode - absolute/relative path
-     * @param bool   $blIgnoreCust Ignore custom theme
+     * @param string $file       File name
+     * @param string $dir        Directory name
+     * @param bool   $admin      Whether to force admin
+     * @param int    $lang       Language id
+     * @param int    $shop       Shop id
+     * @param string $theme      Theme name
+     * @param bool   $absolute   mode - absolute/relative path
+     * @param bool   $ignoreCust Ignore custom theme
      *
      * @return string
      */
-    public function getDir($sFile, $sDir, $blAdmin, $iLang = null, $iShop = null, $sTheme = null, $blAbsolute = true, $blIgnoreCust = false)
+    public function getDir($file, $dir, $admin, $lang = null, $shop = null, $theme = null, $absolute = true, $ignoreCust = false)
     {
-        if (is_null($sTheme)) {
-            $sTheme = $this->getConfigParam('sTheme');
+        if (is_null($theme)) {
+            $theme = $this->getConfigParam('sTheme');
         }
 
-        if ($blAdmin) {
-            $sTheme = 'admin';
+        if ($admin) {
+            $theme = 'admin';
         }
 
-        if ($sDir != $this->_sTemplateDir) {
-            $sBase = $this->getOutDir($blAbsolute);
-            $sAbsBase = $this->getOutDir();
+        if ($dir != $this->_sTemplateDir) {
+            $base = $this->getOutDir($absolute);
+            $absBase = $this->getOutDir();
         } else {
-            $sBase = $this->getViewsDir($blAbsolute);
-            $sAbsBase = $this->getViewsDir();
+            $base = $this->getViewsDir($absolute);
+            $absBase = $this->getViewsDir();
         }
 
-        $sLang = '-';
-        // FALSE means skip language folder check
-        if ($iLang !== false) {
-            $oLang = Registry::getLang();
+        $langAbbr = '-';
+        // false means skip language folder check
+        if ($langId !== false) {
+            $lang = Registry::getLang();
 
-            if (is_null($iLang)) {
-                $iLang = $oLang->getEditLanguage();
+            if (is_null($langId)) {
+                $langId = $lang->getEditLanguage();
             }
 
-            $sLang = $oLang->getLanguageAbbr($iLang);
+            $langAbbr = $lang->getLanguageAbbr($langId);
         }
 
-        if (is_null($iShop)) {
-            $iShop = $this->getShopId();
+        if (is_null($shop)) {
+            $shop = $this->getShopId();
         }
 
         //Load from
-        $sPath = "{$sTheme}/{$iShop}/{$sLang}/{$sDir}/{$sFile}";
-        $sCacheKey = $sPath . "_{$blIgnoreCust}{$blAbsolute}";
+        $path = "{$theme}/{$shop}/{$langAbbr}/{$dir}/{$file}";
+        $cacheKey = $path . "_{$ignoreCust}{$absolute}";
 
-        if (($sReturn = Registry::getUtils()->fromStaticCache($sCacheKey)) !== null) {
-            return $sReturn;
+        if (($return = Registry::getUtils()->fromStaticCache($cacheKey)) !== null) {
+            return $return;
         }
 
-        $sReturn = $this->getEditionTemplate("{$sTheme}/{$sDir}/{$sFile}");
+        $return = $this->getEditionTemplate("{$theme}/{$dir}/{$file}");
 
         // Check for custom template
-        $sCustomTheme = $this->getConfigParam('sCustomTheme');
-        if (!$sReturn && !$blAdmin && !$blIgnoreCust && $sCustomTheme && $sCustomTheme != $sTheme) {
-            $sReturn = $this->getDir($sFile, $sDir, $blAdmin, $iLang, $iShop, $sCustomTheme, $blAbsolute);
+        $customTheme = $this->getConfigParam('sCustomTheme');
+        if (!$return && !$admin && !$ignoreCust && $customTheme && $customTheme != $theme) {
+            $return = $this->getDir($file, $dir, $admin, $langId, $shop, $customTheme, $absolute);
         }
 
         //test lang level ..
-        if (!$sReturn && !$blAdmin && is_readable($sAbsBase . $sPath)) {
-            $sReturn = $sBase . $sPath;
+        if (!$return && !$admin && is_readable($absBase . $path)) {
+            $return = $base . $path;
         }
 
         //test shop level ..
-        if (!$sReturn && !$blAdmin) {
-            $sReturn = $this->getShopLevelDir($sBase, $sAbsBase, $sFile, $sDir, $blAdmin, $iLang, $iShop, $sTheme, $blAbsolute, $blIgnoreCust);
+        if (!$return && !$admin) {
+            $return = $this->getShopLevelDir($base, $absBase, $file, $dir, $admin, $langId, $shop, $theme, $absolute, $ignoreCust);
         }
 
         //test theme language level ..
-        $sPath = "$sTheme/$sLang/$sDir/$sFile";
-        if (!$sReturn && $iLang !== false && is_readable($sAbsBase . $sPath)) {
-            $sReturn = $sBase . $sPath;
+        $path = "$theme/$langAbbr/$dir/$file";
+        if (!$return && $langId !== false && is_readable($absBase . $path)) {
+            $return = $base . $path;
         }
 
         //test theme level ..
-        $sPath = "$sTheme/$sDir/$sFile";
-        if (!$sReturn && is_readable($sAbsBase . $sPath)) {
-            $sReturn = $sBase . $sPath;
+        $path = "$theme/$dir/$file";
+        if (!$return && is_readable($absBase . $path)) {
+            $return = $base . $path;
         }
 
         //test out language level ..
-        $sPath = "$sLang/$sDir/$sFile";
-        if (!$sReturn && $iLang !== false && is_readable($sAbsBase . $sPath)) {
-            $sReturn = $sBase . $sPath;
+        $path = "$langAbbr/$dir/$file";
+        if (!$return && $langId !== false && is_readable($absBase . $path)) {
+            $return = $base . $path;
         }
 
         //test out level ..
-        $sPath = "$sDir/$sFile";
-        if (!$sReturn && is_readable($sAbsBase . $sPath)) {
-            $sReturn = $sBase . $sPath;
+        $path = "$dir/$file";
+        if (!$return && is_readable($absBase . $path)) {
+            $return = $base . $path;
         }
 
         // TODO: implement logic to log missing paths
 
         // to cache
-        Registry::getUtils()->toStaticCache($sCacheKey, $sReturn);
+        Registry::getUtils()->toStaticCache($cacheKey, $return);
 
-        return $sReturn;
+        return $return;
     }
 
     /**
-     * @param $sBase
-     * @param $sAbsBase
-     * @param $sFile
-     * @param $sDir
-     * @param $blAdmin
-     * @param $iLang
-     * @param $iShop
-     * @param $sTheme
-     * @param $blAbsolute
-     * @param $blIgnoreCust
+     * @param $base
+     * @param $absBase
+     * @param $file
+     * @param $dir
+     * @param $admin
+     * @param $lang
+     * @param $shop
+     * @param $theme
+     * @param $absolute
+     * @param $ignoreCust
      *
      * @return bool|string
      */
-    protected function getShopLevelDir($sBase, $sAbsBase, $sFile, $sDir, $blAdmin, $iLang, $iShop, $sTheme, $blAbsolute, $blIgnoreCust)
+    protected function getShopLevelDir($base, $absBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreCust)
     {
-        $sReturn = false;
+        $return = false;
 
-        $sPath = "$sTheme/$iShop/$sDir/$sFile";
-        if (is_readable($sAbsBase . $sPath)) {
-            $sReturn = $sBase . $sPath;
+        $path = "$theme/$shop/$dir/$file";
+        if (is_readable($absBase . $path)) {
+            $return = $base . $path;
         }
 
-        return $sReturn;
+        return $return;
     }
 
     /**
      * Finds and returns file or folder url in out dir
      *
-     * @param string $sFile       File name
-     * @param string $sDir        Directory name
-     * @param bool   $blAdmin     Whether to force admin
-     * @param bool   $blSSL       Whether to force ssl
-     * @param bool   $blNativeImg Whether to force native image dirs
-     * @param int    $iLang       Language id
-     * @param int    $iShop       Shop id
-     * @param string $sTheme      Theme name
+     * @param string $file      File name
+     * @param string $dir       Directory name
+     * @param bool   $admin     Whether to force admin
+     * @param bool   $ssl       Whether to force ssl
+     * @param bool   $nativeImg Whether to force native image dirs
+     * @param int    $lang      Language id
+     * @param int    $shop      Shop id
+     * @param string $theme     Theme name
      *
      * @return string
      */
-    public function getUrl($sFile, $sDir, $blAdmin = null, $blSSL = null, $blNativeImg = false, $iLang = null, $iShop = null, $sTheme = null)
+    public function getUrl($file, $dir, $admin = null, $ssl = null, $nativeImg = false, $lang = null, $shop = null, $theme = null)
     {
-        $sUrl = str_replace(
+        $url = str_replace(
             $this->getOutDir(),
-            $this->getOutUrl($blSSL, $blAdmin, $blNativeImg),
-            $this->getDir($sFile, $sDir, $blAdmin, $iLang, $iShop, $sTheme)
+            $this->getOutUrl($ssl, $admin, $nativeImg),
+            $this->getDir($file, $dir, $admin, $lang, $shop, $theme)
         );
 
-        return $sUrl;
+        return $url;
     }
 
     /**
      * Finds and returns image files or folders path
      *
-     * @param string $sFile   File name
-     * @param bool   $blAdmin Whether to force admin
+     * @param string $file  File name
+     * @param bool   $admin Whether to force admin
      *
      * @return string
      */
-    public function getImagePath($sFile, $blAdmin = false)
+    public function getImagePath($file, $admin = false)
     {
-        return $this->getDir($sFile, $this->_sImageDir, $blAdmin);
+        return $this->getDir($file, $this->_sImageDir, $admin);
     }
 
     /**
      * Finds and returns image folder url
      *
-     * @param bool   $blAdmin     Whether to force admin
-     * @param bool   $blSSL       Whether to force ssl
-     * @param bool   $blNativeImg Whether to force native image dirs
-     * @param string $sFile       Image file name
+     * @param bool   $admin     Whether to force admin
+     * @param bool   $ssl       Whether to force ssl
+     * @param bool   $nativeImg Whether to force native image dirs
+     * @param string $file      Image file name
      *
      * @return string
      */
-    public function getImageUrl($blAdmin = false, $blSSL = null, $blNativeImg = null, $sFile = null)
+    public function getImageUrl($admin = false, $ssl = null, $nativeImg = null, $file = null)
     {
-        $blNativeImg = is_null($blNativeImg) ? $this->getConfigParam('blNativeImages') : $blNativeImg;
+        $nativeImg = is_null($nativeImg) ? $this->getConfigParam('blNativeImages') : $nativeImg;
 
-        return $this->getUrl($sFile, $this->_sImageDir, $blAdmin, $blSSL, $blNativeImg);
+        return $this->getUrl($file, $this->_sImageDir, $admin, $ssl, $nativeImg);
     }
 
     /**
      * Finds and returns image folders path
      *
-     * @param bool $blAdmin Whether to force admin
+     * @param bool $admin Whether to force admin
      *
      * @return string
      */
-    public function getImageDir($blAdmin = false)
+    public function getImageDir($admin = false)
     {
-        return $this->getDir(null, $this->_sImageDir, $blAdmin);
+        return $this->getDir(null, $this->_sImageDir, $admin);
     }
 
     /**
      * Finds and returns product pictures files or folders path
      *
-     * @param string $sFile   File name
-     * @param bool   $blAdmin Whether to force admin
-     * @param int    $iLang   Language
-     * @param int    $iShop   Shop id
-     * @param string $sTheme  theme name
+     * @param string $file  File name
+     * @param bool   $admin Whether to force admin
+     * @param int    $lang  Language
+     * @param int    $shop  Shop id
+     * @param string $theme theme name
      *
      * @return string
      */
-    public function getPicturePath($sFile, $blAdmin = false, $iLang = null, $iShop = null, $sTheme = null)
+    public function getPicturePath($file, $admin = false, $lang = null, $shop = null, $theme = null)
     {
-        return $this->getDir($sFile, $this->_sPictureDir, $blAdmin, $iLang, $iShop, $sTheme);
+        return $this->getDir($file, $this->_sPictureDir, $admin, $lang, $shop, $theme);
     }
 
     /**
      * Finds and returns master pictures folder path
      *
-     * @param bool $blAdmin Whether to force admin
+     * @param bool $admin Whether to force admin
      *
      * @return string
      */
-    public function getMasterPictureDir($blAdmin = false)
+    public function getMasterPictureDir($admin = false)
     {
-        return $this->getDir(null, $this->_sPictureDir . "/" . $this->_sMasterPictureDir, $blAdmin);
+        return $this->getDir(null, $this->_sPictureDir . "/" . $this->_sMasterPictureDir, $admin);
     }
 
     /**
      * Finds and returns master picture path
      *
-     * @param string $sFile   File name
-     * @param bool   $blAdmin Whether to force admin
+     * @param string $file  File name
+     * @param bool   $admin Whether to force admin
      *
      * @return string
      */
-    public function getMasterPicturePath($sFile, $blAdmin = false)
+    public function getMasterPicturePath($file, $admin = false)
     {
-        return $this->getDir($sFile, $this->_sPictureDir . "/" . $this->_sMasterPictureDir, $blAdmin);
+        return $this->getDir($file, $this->_sPictureDir . "/" . $this->_sMasterPictureDir, $admin);
     }
 
     /**
      * Finds and returns product picture file or folder url
      *
-     * @param string $sFile   File name
-     * @param bool   $blAdmin Whether to force admin
-     * @param bool   $blSSL   Whether to force ssl
-     * @param int    $iLang   Language
-     * @param int    $iShopId Shop id
-     * @param string $sDefPic Default (nopic) image path ["0/nopic.jpg"]
+     * @param string $file   File name
+     * @param bool   $admin  Whether to force admin
+     * @param bool   $ssl    Whether to force ssl
+     * @param int    $lang   Language
+     * @param int    $shopId Shop id
+     * @param string $defPic Default (nopic) image path ["0/nopic.jpg"]
      *
      * @return string
      */
-    public function getPictureUrl($sFile, $blAdmin = false, $blSSL = null, $iLang = null, $iShopId = null, $sDefPic = "master/nopic.jpg")
+    public function getPictureUrl($file, $admin = false, $ssl = null, $lang = null, $shopId = null, $defPic = "master/nopic.jpg")
     {
-        if ($sAltUrl = Registry::get("oxPictureHandler")->getAltImageUrl('', $sFile, $blSSL)) {
-            return $sAltUrl;
+        if ($altUrl = Registry::get("oxPictureHandler")->getAltImageUrl('', $file, $ssl)) {
+            return $altUrl;
         }
 
-        $blNativeImg = $this->getConfigParam('blNativeImages');
-        $sUrl = $this->getUrl($sFile, $this->_sPictureDir, $blAdmin, $blSSL, $blNativeImg, $iLang, $iShopId);
+        $nativeImg = $this->getConfigParam('blNativeImages');
+        $url = $this->getUrl($file, $this->_sPictureDir, $admin, $ssl, $nativeImg, $lang, $shopId);
 
         //anything is better than empty name, because <img src=""> calls shop once more = x2 SLOW.
-        if (!$sUrl && $sDefPic) {
-            $sUrl = $this->getUrl($sDefPic, $this->_sPictureDir, $blAdmin, $blSSL, $blNativeImg, $iLang, $iShopId);
+        if (!$url && $defPic) {
+            $url = $this->getUrl($defPic, $this->_sPictureDir, $admin, $ssl, $nativeImg, $lang, $shopId);
         }
 
-        return $sUrl;
+        return $url;
     }
 
     /**
      * Finds and returns product pictures folders path
      *
-     * @param bool $blAdmin Whether to force admin
+     * @param bool $admin Whether to force admin
      *
      * @return string
      */
-    public function getPictureDir($blAdmin)
+    public function getPictureDir($admin)
     {
-        return $this->getDir(null, $this->_sPictureDir, $blAdmin);
+        return $this->getDir(null, $this->_sPictureDir, $admin);
     }
 
     /**
@@ -1492,7 +1492,7 @@ class Config extends SuperConfig
             $templatePathCalculator->setModulesPath($this->getConfig()->getModulesDir());
             try {
                 $finalTemplatePath = $templatePathCalculator->calculateModuleTemplatePath($templateName);
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 $finalTemplatePath = '';
             }
         }
@@ -1513,66 +1513,66 @@ class Config extends SuperConfig
     /**
      * Finds and returns templates folders path
      *
-     * @param bool $blAdmin Whether to force admin
+     * @param bool $admin Whether to force admin
      *
      * @return string
      */
-    public function getTemplateDir($blAdmin = false)
+    public function getTemplateDir($admin = false)
     {
-        return $this->getDir(null, $this->_sTemplateDir, $blAdmin);
+        return $this->getDir(null, $this->_sTemplateDir, $admin);
     }
 
     /**
      * Finds and returns template file or folder url
      *
-     * @param string $sFile   File name
-     * @param bool   $blAdmin Whether to force admin
-     * @param bool   $blSSL   Whether to force ssl
-     * @param int    $iLang   Language id
+     * @param string $file  File name
+     * @param bool   $admin Whether to force admin
+     * @param bool   $ssl   Whether to force ssl
+     * @param int    $lang  Language id
      *
      * @return string
      */
-    public function getTemplateUrl($sFile = null, $blAdmin = false, $blSSL = null, $iLang = null)
+    public function getTemplateUrl($file = null, $admin = false, $ssl = null, $lang = null)
     {
-        return $this->getShopMainUrl() . $this->getDir($sFile, $this->_sTemplateDir, $blAdmin, $iLang, null, null, false);
+        return $this->getShopMainUrl() . $this->getDir($file, $this->_sTemplateDir, $admin, $lang, null, null, false);
     }
 
     /**
      * Finds and returns base template folder url
      *
-     * @param bool $blAdmin Whether to force admin
+     * @param bool $admin Whether to force admin
      *
      * @return string
      */
-    public function getTemplateBase($blAdmin = false)
+    public function getTemplateBase($admin = false)
     {
         // Base template dir is the parent dir of template dir
-        return str_replace($this->_sTemplateDir . '/', '', $this->getDir(null, $this->_sTemplateDir, $blAdmin, null, null, null, false));
+        return str_replace($this->_sTemplateDir . '/', '', $this->getDir(null, $this->_sTemplateDir, $admin, null, null, null, false));
     }
 
     /**
      * Finds and returns resource (css, js, etc..) files or folders path
      *
-     * @param string $sFile   File name
-     * @param bool   $blAdmin Whether to force admin
+     * @param string $file  File name
+     * @param bool   $admin Whether to force admin
      *
      * @return string
      */
-    public function getResourcePath($sFile = '', $blAdmin = false)
+    public function getResourcePath($file = '', $admin = false)
     {
-        return $this->getDir($sFile, $this->_sResourceDir, $blAdmin);
+        return $this->getDir($file, $this->_sResourceDir, $admin);
     }
 
     /**
      * Returns path to modules dir
      *
-     * @param bool $blAbsolute mode - absolute/relative path
+     * @param bool $absolute mode - absolute/relative path
      *
      * @return string
      */
-    public function getModulesDir($blAbsolute = true)
+    public function getModulesDir($absolute = true)
     {
-        if ($blAbsolute) {
+        if ($absolute) {
             return $this->getConfigParam('sShopDir') . $this->_sModulesDir . '/';
         } else {
             return $this->_sModulesDir . '/';
@@ -1582,72 +1582,72 @@ class Config extends SuperConfig
     /**
      * Finds and returns resource (css, js, etc..) file or folder url
      *
-     * @param string $sFile   File name
-     * @param bool   $blAdmin Whether to force admin
-     * @param bool   $blSSL   Whether to force ssl
-     * @param int    $iLang   Language id
+     * @param string $file  File name
+     * @param bool   $admin Whether to force admin
+     * @param bool   $ssl   Whether to force ssl
+     * @param int    $lang  Language id
      *
      * @return string
      */
-    public function getResourceUrl($sFile = '', $blAdmin = false, $blSSL = null, $iLang = null)
+    public function getResourceUrl($file = '', $admin = false, $ssl = null, $lang = null)
     {
-        $blNativeImg = $this->getConfigParam('blNativeImages');
+        $nativeImg = $this->getConfigParam('blNativeImages');
 
-        return $this->getUrl($sFile, $this->_sResourceDir, $blAdmin, $blSSL, $blNativeImg, $iLang);
+        return $this->getUrl($file, $this->_sResourceDir, $admin, $ssl, $nativeImg, $lang);
     }
 
     /**
      * Finds and returns resource (css, js, etc..) folders path
      *
-     * @param bool $blAdmin Whether to force admin
+     * @param bool $admin Whether to force admin
      *
      * @return string
      */
-    public function getResourceDir($blAdmin)
+    public function getResourceDir($admin)
     {
-        return $this->getDir(null, $this->_sResourceDir, $blAdmin);
+        return $this->getDir(null, $this->_sResourceDir, $admin);
     }
 
     /**
      * Returns array of available currencies
      *
-     * @param integer $iCurrency Active currency number (default null)
+     * @param integer $currency Active currency number (default null)
      *
      * @return array
      */
-    public function getCurrencyArray($iCurrency = null)
+    public function getCurrencyArray($currency = null)
     {
-        $aConfCurrencies = $this->getConfigParam('aCurrencies');
-        if (!is_array($aConfCurrencies)) {
+        $confCurrencies = $this->getConfigParam('aCurrencies');
+        if (!is_array($confCurrencies)) {
             return array();
         }
 
         // processing currency configuration data
-        $aCurrencies = array();
-        reset($aConfCurrencies);
-        while (list($key, $val) = each($aConfCurrencies)) {
+        $currencies = array();
+        reset($confCurrencies);
+        while (list($key, $val) = each($confCurrencies)) {
             if ($val) {
-                $oCur = new stdClass();
-                $oCur->id = $key;
-                $sCur = explode('@', $val);
-                $oCur->name = trim($sCur[0]);
-                $oCur->rate = trim($sCur[1]);
-                $oCur->dec = trim($sCur[2]);
-                $oCur->thousand = trim($sCur[3]);
-                $oCur->sign = trim($sCur[4]);
-                $oCur->decimal = trim($sCur[5]);
+                $cur = new stdClass();
+                $cur->id = $key;
+                $curValues = explode('@', $val);
+                $cur->name = trim($curValues[0]);
+                $cur->rate = trim($curValues[1]);
+                $cur->dec = trim($curValues[2]);
+                $cur->thousand = trim($curValues[3]);
+                $cur->sign = trim($curValues[4]);
+                $cur->decimal = trim($curValues[5]);
 
                 // change for US version
-                if (isset($sCur[6])) {
-                    $oCur->side = trim($sCur[6]);
+                if (isset($curValues[6])) {
+                    $cur->side = trim($curValues[6]);
                 }
 
-                if (isset($iCurrency) && $key == $iCurrency) {
-                    $oCur->selected = 1;
+                if (isset($currency) && $key == $currency) {
+                    $cur->selected = 1;
                 } else {
-                    $oCur->selected = 0;
+                    $cur->selected = 0;
                 }
-                $aCurrencies[$key] = $oCur;
+                $currencies[$key] = $cur;
             }
 
             // #861C -  performance, do not load other currencies
@@ -1656,22 +1656,22 @@ class Config extends SuperConfig
             }
         }
 
-        return $aCurrencies;
+        return $currencies;
     }
 
     /**
      * Returns currency object.
      *
-     * @param string $sName Name of active currency
+     * @param string $name Name of active currency
      *
      * @return object
      */
-    public function getCurrencyObject($sName)
+    public function getCurrencyObject($name)
     {
-        $aSearch = $this->getCurrencyArray();
-        foreach ($aSearch as $oCur) {
-            if ($oCur->name == $sName) {
-                return $oCur;
+        $search = $this->getCurrencyArray();
+        foreach ($search as $cur) {
+            if ($cur->name == $name) {
+                return $cur;
             }
         }
     }
@@ -1703,12 +1703,12 @@ class Config extends SuperConfig
      */
     public function getFullEdition()
     {
-        $sEdition = $this->getEdition();
-        if ($sEdition == "CE") {
-            $sEdition = "Community Edition";
+        $edition = $this->getEdition();
+        if ($edition == "CE") {
+            $edition = "Community Edition";
         }
 
-        return $sEdition;
+        return $edition;
     }
 
     /**
@@ -1718,9 +1718,9 @@ class Config extends SuperConfig
      */
     public function getVersion()
     {
-        $sVersion = $this->getActiveShop()->oxshops__oxversion->value;
+        $version = $this->getActiveShop()->oxshops__oxversion->value;
 
-        return $sVersion;
+        return $version;
     }
 
     /**
@@ -1730,14 +1730,14 @@ class Config extends SuperConfig
      */
     public function getRevision()
     {
-        $sFileName = $this->getConfigParam('sShopDir') . "/pkg.rev";
-        $sRev = trim(@file_get_contents($sFileName));
+        $fileName = $this->getConfigParam('sShopDir') . "/pkg.rev";
+        $rev = trim(@file_get_contents($fileName));
 
-        if (!$sRev) {
+        if (!$rev) {
             return false;
         }
 
-        return $sRev;
+        return $rev;
     }
 
     /**
@@ -1747,15 +1747,15 @@ class Config extends SuperConfig
      */
     public function getPackageInfo()
     {
-        $sFileName = $this->getConfigParam('sShopDir') . "/pkg.info";
-        $sRev = @file_get_contents($sFileName);
-        $sRev = str_replace("\n", "<br>", $sRev);
+        $fileName = $this->getConfigParam('sShopDir') . "/pkg.info";
+        $rev = @file_get_contents($fileName);
+        $rev = str_replace("\n", "<br>", $rev);
 
-        if (!$sRev) {
+        if (!$rev) {
             return false;
         }
 
-        return $sRev;
+        return $rev;
     }
 
     /**
@@ -1795,130 +1795,130 @@ class Config extends SuperConfig
      * Updates or adds new shop configuration parameters to DB.
      * Arrays must be passed not serialized, serialized values are supported just for backward compatibility.
      *
-     * @param string $sVarType Variable Type
-     * @param string $sVarName Variable name
-     * @param mixed  $sVarVal  Variable value (can be string, integer or array)
-     * @param string $sShopId  Shop ID, default is current shop
-     * @param string $sModule  Module name (empty for base options)
+     * @param string $varType Variable Type
+     * @param string $varName Variable name
+     * @param mixed  $varVal  Variable value (can be string, integer or array)
+     * @param string $shopId  Shop ID, default is current shop
+     * @param string $module  Module name (empty for base options)
      */
-    public function saveShopConfVar($sVarType, $sVarName, $sVarVal, $sShopId = null, $sModule = '')
+    public function saveShopConfVar($varType, $varName, $varVal, $shopId = null, $module = '')
     {
-        switch ($sVarType) {
+        switch ($varType) {
             case 'arr':
             case 'aarr':
-                $sValue = serialize($sVarVal);
+                $value = serialize($varVal);
                 break;
             case 'bool':
                 //config param
-                $sVarVal = (($sVarVal == 'true' || $sVarVal) && $sVarVal && strcasecmp($sVarVal, "false"));
+                $varVal = (($varVal == 'true' || $varVal) && $varVal && strcasecmp($varVal, "false"));
                 //db value
-                $sValue = $sVarVal ? "1" : "";
+                $value = $varVal ? "1" : "";
                 break;
             case 'num':
                 //config param
-                $sVarVal = $sVarVal != '' ? Registry::getUtils()->string2Float($sVarVal) : '';
-                $sValue = $sVarVal;
+                $varVal = $varVal != '' ? Registry::getUtils()->string2Float($varVal) : '';
+                $value = $varVal;
                 break;
             default:
-                $sValue = $sVarVal;
+                $value = $varVal;
                 break;
         }
 
-        if (!$sShopId) {
-            $sShopId = $this->getShopId();
+        if (!$shopId) {
+            $shopId = $this->getShopId();
         }
 
         // Update value only for current shop
-        if ($sShopId == $this->getShopId()) {
-            $this->setConfigParam($sVarName, $sVarVal);
+        if ($shopId == $this->getShopId()) {
+            $this->setConfigParam($varName, $varVal);
         }
 
-        $oDb = Database::getDb();
-        $sShopIdQuoted = $oDb->quote($sShopId);
-        $sModuleQuoted = $oDb->quote($sModule);
-        $sVarNameQuoted = $oDb->quote($sVarName);
-        $sVarTypeQuoted = $oDb->quote($sVarType);
-        $sVarValueQuoted = $oDb->quote($sValue);
-        $sConfigKeyQuoted = $oDb->quote($this->getConfigParam('sConfigKey'));
-        $sNewOXIDdQuoted = $oDb->quote(UtilsObject::getInstance()->generateUID());
+        $db = Database::getDb();
+        $shopIdQuoted = $db->quote($shopId);
+        $moduleQuoted = $db->quote($module);
+        $varNameQuoted = $db->quote($varName);
+        $varTypeQuoted = $db->quote($varType);
+        $varValueQuoted = $db->quote($value);
+        $configKeyQuoted = $db->quote($this->getConfigParam('sConfigKey'));
+        $newOXIDdQuoted = $db->quote(UtilsObject::getInstance()->generateUID());
 
-        $sQ = "delete from oxconfig where oxshopid = $sShopIdQuoted and oxvarname = $sVarNameQuoted and oxmodule = $sModuleQuoted";
-        $oDb->execute($sQ);
+        $query = "delete from oxconfig where oxshopid = $shopIdQuoted and oxvarname = $varNameQuoted and oxmodule = $moduleQuoted";
+        $db->execute($query);
 
-        $sQ = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
-               values($sNewOXIDdQuoted, $sShopIdQuoted, $sModuleQuoted, $sVarNameQuoted, $sVarTypeQuoted, ENCODE( $sVarValueQuoted, $sConfigKeyQuoted) )";
-        $oDb->execute($sQ);
+        $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
+               values($newOXIDdQuoted, $shopIdQuoted, $moduleQuoted, $varNameQuoted, $varTypeQuoted, ENCODE( $varValueQuoted, $configKeyQuoted) )";
+        $db->execute($query);
     }
 
     /**
      * Retrieves shop configuration parameters from DB.
      *
-     * @param string $sVarName Variable name
-     * @param string $sShopId  Shop ID
-     * @param string $sModule  module identifier
+     * @param string $varName Variable name
+     * @param string $shopId  Shop ID
+     * @param string $module  module identifier
      *
      * @return object - raw configuration value in DB
      */
-    public function getShopConfVar($sVarName, $sShopId = null, $sModule = '')
+    public function getShopConfVar($varName, $shopId = null, $module = '')
     {
-        if (!$sShopId) {
-            $sShopId = $this->getShopId();
+        if (!$shopId) {
+            $shopId = $this->getShopId();
         }
 
-        if ($sShopId == $this->getShopId() && (!$sModule || $sModule == Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'))) {
-            $sVarValue = $this->getConfigParam($sVarName);
-            if ($sVarValue !== null) {
-                return $sVarValue;
+        if ($shopId == $this->getShopId() && (!$module || $module == Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'))) {
+            $varValue = $this->getConfigParam($varName);
+            if ($varValue !== null) {
+                return $varValue;
             }
         }
 
-        $oDb = Database::getDb(Database::FETCH_MODE_ASSOC);
+        $db = Database::getDb(Database::FETCH_MODE_ASSOC);
 
-        $sQ = "select oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue from oxconfig where oxshopid = '{$sShopId}' and oxmodule = '{$sModule}' and oxvarname = " . $oDb->quote($sVarName);
-        $oRs = $oDb->select($sQ);
+        $query = "select oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue from oxconfig where oxshopid = '{$shopId}' and oxmodule = '{$module}' and oxvarname = " . $db->quote($varName);
+        $rs = $db->select($query);
 
-        $sValue = null;
-        if ($oRs != false && $oRs->recordCount() > 0) {
-            $sValue = $this->decodeValue($oRs->fields['oxvartype'], $oRs->fields['oxvarvalue']);
+        $value = null;
+        if ($rs != false && $rs->recordCount() > 0) {
+            $value = $this->decodeValue($rs->fields['oxvartype'], $rs->fields['oxvarvalue']);
         }
 
-        return $sValue;
+        return $value;
     }
 
     /**
      * Decodes and returns database value
      *
-     * @param string $sType      parameter type
+     * @param string $type      parameter type
      * @param mixed  $mOrigValue parameter db value
      *
      * @return mixed
      */
-    public function decodeValue($sType, $mOrigValue)
+    public function decodeValue($type, $mOrigValue)
     {
-        $sValue = $mOrigValue;
-        switch ($sType) {
+        $value = $mOrigValue;
+        switch ($type) {
             case 'arr':
             case 'aarr':
-                $sValue = unserialize($mOrigValue);
+                $value = unserialize($mOrigValue);
                 break;
             case 'bool':
-                $sValue = ($mOrigValue == 'true' || $mOrigValue == '1');
+                $value = ($mOrigValue == 'true' || $mOrigValue == '1');
                 break;
         }
 
-        return $sValue;
+        return $value;
     }
 
     /**
      * Returns decode query part user to decode config field value
      *
-     * @param string $sFieldName field name, default "oxvarvalue" [optional]
+     * @param string $fieldName field name, default "oxvarvalue" [optional]
      *
      * @return string
      */
-    public function getDecodeValueQuery($sFieldName = "oxvarvalue")
+    public function getDecodeValueQuery($fieldName = "oxvarvalue")
     {
-        return " DECODE( {$sFieldName}, '" . $this->getConfigParam('sConfigKey') . "') ";
+        return " DECODE( {$fieldName}, '" . $this->getConfigParam('sConfigKey') . "') ";
     }
 
     /**
@@ -1928,14 +1928,14 @@ class Config extends SuperConfig
      */
     public function isProductiveMode()
     {
-        $blProductive = $this->getConfigParam('blProductive');
-        if (!isset($blProductive)) {
-            $sQ = 'select oxproductive from oxshops where oxid = "' . $this->getShopId() . '"';
-            $blProductive = ( bool ) Database::getDb()->getOne($sQ);
-            $this->setConfigParam('blProductive', $blProductive);
+        $productive = $this->getConfigParam('blProductive');
+        if (!isset($productive)) {
+            $query = 'select oxproductive from oxshops where oxid = "' . $this->getShopId() . '"';
+            $productive = ( bool ) Database::getDb()->getOne($query);
+            $this->setConfigParam('blProductive', $productive);
         }
 
-        return $blProductive;
+        return $productive;
     }
 
     /**
@@ -1975,14 +1975,14 @@ class Config extends SuperConfig
     public function getActiveView()
     {
         if (count($this->_aActiveViews)) {
-            $oActView = end($this->_aActiveViews);
+            $actView = end($this->_aActiveViews);
         }
-        if (!isset($oActView) || $oActView == null) {
-            $oActView = oxNew('oxubase');
-            $this->_aActiveViews[] = $oActView;
+        if (!isset($actView) || $actView == null) {
+            $actView = oxNew('oxubase');
+            $this->_aActiveViews[] = $actView;
         }
 
-        return $oActView;
+        return $actView;
     }
 
     /**
@@ -2012,11 +2012,11 @@ class Config extends SuperConfig
     /**
      * View object setter
      *
-     * @param object $oView view object
+     * @param object $view view object
      */
-    public function setActiveView($oView)
+    public function setActiveView($view)
     {
-        $this->_aActiveViews[] = $oView;
+        $this->_aActiveViews[] = $view;
     }
 
     /**
@@ -2044,15 +2044,15 @@ class Config extends SuperConfig
      */
     public function getActiveViewsNames()
     {
-        $aNames = array();
+        $names = array();
 
         if (is_array($this->getActiveViewsList())) {
-            foreach ($this->getActiveViewsList() as $oView) {
-                $aNames[] = $oView->getClassName();
+            foreach ($this->getActiveViewsList() as $view) {
+                $names[] = $view->getClassName();
             }
         }
 
-        return $aNames;
+        return $names;
     }
 
     /**
@@ -2078,13 +2078,13 @@ class Config extends SuperConfig
     /**
      * Returns true if option is theme option
      *
-     * @param string $sName option name
+     * @param string $name option name
      *
      * @return bool
      */
-    public function isThemeOption($sName)
+    public function isThemeOption($name)
     {
-        return (bool) isset($this->_aThemeConfigParams[$sName]);
+        return (bool) isset($this->_aThemeConfigParams[$name]);
     }
 
     /**
@@ -2122,26 +2122,26 @@ class Config extends SuperConfig
     /**
      * Parse array of module chains to nested array
      *
-     * @param array $aModules Module array (config format)
+     * @param array $modules Module array (config format)
      *
      * @return array
      */
-    public function parseModuleChains($aModules)
+    public function parseModuleChains($modules)
     {
-        $aModuleArray = array();
+        $moduleArray = array();
 
-        if (is_array($aModules)) {
-            foreach ($aModules as $sClass => $sModuleChain) {
-                if (strstr($sModuleChain, '&')) {
-                    $aModuleChain = explode('&', $sModuleChain);
+        if (is_array($modules)) {
+            foreach ($modules as $class => $moduleChain) {
+                if (strstr($moduleChain, '&')) {
+                    $moduleChain = explode('&', $moduleChain);
                 } else {
-                    $aModuleChain = array($sModuleChain);
+                    $moduleChain = array($moduleChain);
                 }
-                $aModuleArray[$sClass] = $aModuleChain;
+                $moduleArray[$class] = $moduleChain;
             }
         }
 
-        return $aModuleArray;
+        return $moduleArray;
     }
 
     /**
@@ -2158,57 +2158,57 @@ class Config extends SuperConfig
      * Function returns shop url by given language.
      * #680 per language another URL
      *
-     * @param integer $iLang Language id.
-     * @param bool    $blSSL Whether to use ssl.
+     * @param integer $lang Language id.
+     * @param bool    $ssl Whether to use ssl.
      *
      * @return null|string
      */
-    public function getShopUrlByLanguage($iLang, $blSSL = false)
+    public function getShopUrlByLanguage($lang, $ssl = false)
     {
-        $sLanguageUrl = null;
-        $sConfigParameter = $blSSL ? 'aLanguageSSLURLs' : 'aLanguageURLs';
-        $iLang = isset($iLang) ? $iLang : Registry::getLang()->getBaseLanguage();
-        $aLanguageURLs = $this->getConfigParam($sConfigParameter);
-        if (isset($iLang) && isset($aLanguageURLs[$iLang]) && !empty($aLanguageURLs[$iLang])) {
-            $aLanguageURLs[$iLang] = Registry::getUtils()->checkUrlEndingSlash($aLanguageURLs[$iLang]);
-            $sLanguageUrl = $aLanguageURLs[$iLang];
+        $languageUrl = null;
+        $configParameter = $ssl ? 'aLanguageSSLURLs' : 'aLanguageURLs';
+        $lang = isset($lang) ? $lang : Registry::getLang()->getBaseLanguage();
+        $languageURLs = $this->getConfigParam($configParameter);
+        if (isset($lang) && isset($languageURLs[$lang]) && !empty($languageURLs[$lang])) {
+            $languageURLs[$lang] = Registry::getUtils()->checkUrlEndingSlash($languageURLs[$lang]);
+            $languageUrl = $languageURLs[$lang];
         }
 
-        return $sLanguageUrl;
+        return $languageUrl;
     }
 
     /**
      * Function returns mall shop url.
      *
-     * @param bool $blSSL
+     * @param bool $ssl
      *
      * @return null|string
      */
-    public function getMallShopUrl($blSSL = false)
+    public function getMallShopUrl($ssl = false)
     {
-        $sUrl = null;
-        $sConfigParameter = $blSSL ? 'sMallSSLShopURL' : 'sMallShopURL';
-        $sMallShopURL = $this->getConfigParam($sConfigParameter);
-        if ($sMallShopURL) {
-            $sMallShopURL = Registry::getUtils()->checkUrlEndingSlash($sMallShopURL);
-            $sUrl = $sMallShopURL;
+        $url = null;
+        $configParameter = $ssl ? 'sMallSSLShopURL' : 'sMallShopURL';
+        $mallShopUrl = $this->getConfigParam($configParameter);
+        if ($mallShopUrl) {
+            $mallShopUrl = Registry::getUtils()->checkUrlEndingSlash($mallShopUrl);
+            $url = $mallShopUrl;
         }
 
-        return $sUrl;
+        return $url;
     }
 
     /**
      * Shows exception message if debug mode is enabled, redirects otherwise.
      *
-     * @param oxException $oEx message to show on exit
+     * @param oxException $ex message to show on exit
      *
      * @return bool
      */
-    protected function _handleDbConnectionException($oEx)
+    protected function _handleDbConnectionException($ex)
     {
-        $oEx->debugOut();
+        $ex->debugOut();
         if (0 != $this->getConfigParam('iDebug')) {
-            Registry::getUtils()->showMessageAndExit($oEx->getString());
+            Registry::getUtils()->showMessageAndExit($ex->getString());
         } else {
             header("HTTP/1.1 500 Internal Server Error");
             header("Location: offline.html");
@@ -2220,9 +2220,9 @@ class Config extends SuperConfig
     /**
      * Redirect to start page and display the error
      *
-     * @param oxException $oEx message to show on exit
+     * @param oxException $ex message to show on exit
      */
-    protected function _handleCookieException($oEx)
+    protected function _handleCookieException($ex)
     {
         $this->_processSeoCall();
 
@@ -2230,32 +2230,32 @@ class Config extends SuperConfig
         $this->getSession()->start();
 
         // redirect to start page and display the error
-        Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+        Registry::get("oxUtilsView")->addErrorToDisplay($ex);
         Registry::getUtils()->redirect($this->getShopHomeURL() . 'cl=start', true, 302);
     }
 
     /**
      * Save system configuration parameters, which is the same for sub-shops.
      *
-     * @param string $sParameterType  Type
-     * @param string $sParameterName  Name
-     * @param mixed  $sParameterValue Value (can be string, integer or array)
+     * @param string $parameterType  Type
+     * @param string $parameterName  Name
+     * @param mixed  $parameterValue Value (can be string, integer or array)
      */
-    public function saveSystemConfigParameter($sParameterType, $sParameterName, $sParameterValue)
+    public function saveSystemConfigParameter($parameterType, $parameterName, $parameterValue)
     {
-        $this->saveShopConfVar($sParameterType, $sParameterName, $sParameterValue, $this->getBaseShopId());
+        $this->saveShopConfVar($parameterType, $parameterName, $parameterValue, $this->getBaseShopId());
     }
 
     /**
      * Retrieves system configuration parameters, which is the same for sub-shops.
      *
-     * @param string $sParameterName Variable name
+     * @param string $parameterName Variable name
      *
      * @return mixed
      */
-    public function getSystemConfigParameter($sParameterName)
+    public function getSystemConfigParameter($parameterName)
     {
-        return $this->getShopConfVar($sParameterName, $this->getBaseShopId());
+        return $this->getShopConfVar($parameterName, $this->getBaseShopId());
     }
 
     /**

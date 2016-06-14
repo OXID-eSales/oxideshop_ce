@@ -31,36 +31,36 @@ class Decryptor
     /**
      * Decrypts string with given key.
      *
-     * @param string $sString string
-     * @param string $sKey    key
+     * @param string $string string
+     * @param string $key    key
      *
      * @return string
      */
-    public function decrypt($sString, $sKey)
+    public function decrypt($string, $key)
     {
-        $sKey = $this->_formKey($sKey, $sString);
+        $key = $this->_formKey($key, $string);
 
-        $sString = substr($sString, 3);
-        $sString = str_replace('!', '=', $sString);
-        $sString = base64_decode($sString);
-        $sString = $sString ^ $sKey;
+        $string = substr($string, 3);
+        $string = str_replace('!', '=', $string);
+        $string = base64_decode($string);
+        $string = $string ^ $key;
 
-        return substr($sString, 2, -2);
+        return substr($string, 2, -2);
     }
 
     /**
      * Forms key for use in encoding.
      *
-     * @param string $sKey
-     * @param string $sString
+     * @param string $key
+     * @param string $string
      *
      * @return string
      */
-    protected function _formKey($sKey, $sString)
+    protected function _formKey($key, $string)
     {
-        $sKey = '_' . $sKey;
-        $iKeyLength = (strlen($sString) / strlen($sKey)) + 5;
+        $key = '_' . $key;
+        $keyLength = (strlen($string) / strlen($key)) + 5;
 
-        return str_repeat($sKey, $iKeyLength);
+        return str_repeat($key, $keyLength);
     }
 }

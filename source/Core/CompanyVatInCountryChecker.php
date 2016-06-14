@@ -46,11 +46,11 @@ class CompanyVatInCountryChecker extends \oxCompanyVatInChecker implements \oxIC
     /**
      * Country setter
      *
-     * @param oxCountry $oCountry
+     * @param oxCountry $country
      */
-    public function setCountry(oxCountry $oCountry)
+    public function setCountry(oxCountry $country)
     {
-        $this->_oCountry = $oCountry;
+        $this->_oCountry = $country;
     }
 
     /**
@@ -66,21 +66,21 @@ class CompanyVatInCountryChecker extends \oxCompanyVatInChecker implements \oxIC
     /**
      * Validates.
      *
-     * @param oxCompanyVatIn $oVatIn
+     * @param oxCompanyVatIn $vatIn
      *
      * @return bool
      */
-    public function validate(oxCompanyVatIn $oVatIn)
+    public function validate(oxCompanyVatIn $vatIn)
     {
-        $blResult = false;
-        $oCountry = $this->getCountry();
-        if (!is_null($oCountry)) {
-            $blResult = ($oCountry->getVATIdentificationNumberPrefix() === $oVatIn->getCountryCode());
-            if (!$blResult) {
+        $result = false;
+        $country = $this->getCountry();
+        if (!is_null($country)) {
+            $result = ($country->getVATIdentificationNumberPrefix() === $vatIn->getCountryCode());
+            if (!$result) {
                 $this->setError(self::ERROR_ID_NOT_VALID);
             }
         }
 
-        return $blResult;
+        return $result;
     }
 }

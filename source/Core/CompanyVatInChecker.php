@@ -41,11 +41,11 @@ abstract class CompanyVatInChecker
     /**
      * Error message setter
      *
-     * @param string $sError
+     * @param string $error
      */
-    public function setError($sError)
+    public function setError($error)
     {
-        $this->_sError = $sError;
+        $this->_sError = $error;
     }
 
     /**
@@ -61,9 +61,9 @@ abstract class CompanyVatInChecker
     /**
      * Validates company VAT identification number
      *
-     * @param oxCompanyVatIn $oVatIn
+     * @param oxCompanyVatIn $vatIn
      *
      * @return mixed
      */
-    abstract public function validate(oxCompanyVatIn $oVatIn);
+    abstract public function validate(oxCompanyVatIn $vatIn);
 }

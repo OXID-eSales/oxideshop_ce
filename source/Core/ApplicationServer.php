@@ -93,11 +93,11 @@ class ApplicationServer
     /**
      * Sets ip.
      *
-     * @param string $sIp
+     * @param string $ip
      */
-    public function setIp($sIp)
+    public function setIp($ip)
     {
-        $this->_sIp = $sIp;
+        $this->_sIp = $ip;
     }
 
     /**
@@ -113,11 +113,11 @@ class ApplicationServer
     /**
      * Sets timestamp.
      *
-     * @param int $iTimestamp
+     * @param int $timestamp
      */
-    public function setTimestamp($iTimestamp)
+    public function setTimestamp($timestamp)
     {
-        $this->_iTimestamp = $iTimestamp;
+        $this->_iTimestamp = $timestamp;
     }
 
     /**
@@ -133,11 +133,11 @@ class ApplicationServer
     /**
      * Sets last admin usage.
      *
-     * @param int|null $iLastAdminUsage
+     * @param int|null $lastAdminUsage
      */
-    public function setLastAdminUsage($iLastAdminUsage)
+    public function setLastAdminUsage($lastAdminUsage)
     {
-        $this->_iLastAdminUsage = $iLastAdminUsage;
+        $this->_iLastAdminUsage = $lastAdminUsage;
     }
 
     /**
@@ -153,11 +153,11 @@ class ApplicationServer
     /**
      * Sets last frontend usage.
      *
-     * @param int|null $iLastFrontendUsage Admin server flag which stores timestamp.
+     * @param int|null $lastFrontendUsage Admin server flag which stores timestamp.
      */
-    public function setLastFrontendUsage($iLastFrontendUsage)
+    public function setLastFrontendUsage($lastFrontendUsage)
     {
-        $this->_iLastFrontendUsage = $iLastFrontendUsage;
+        $this->_iLastFrontendUsage = $lastFrontendUsage;
     }
 
     /**
@@ -173,11 +173,11 @@ class ApplicationServer
     /**
      * Sets whether is valid.
      *
-     * @param bool $blValid Flag to set if application server is valid
+     * @param bool $valid Flag to set if application server is valid
      */
-    public function setIsValid($blValid = true)
+    public function setIsValid($valid = true)
     {
-        $this->_blIsValid = $blValid;
+        $this->_blIsValid = $valid;
     }
 
     /**

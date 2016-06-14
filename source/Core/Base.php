@@ -437,8 +437,8 @@ class Base extends \oxSuperCfg
         if ($this->getId() && in_array($fieldName, $this->getFieldNames())) {
             $database = oxDb::getDb();
             $tableName = $this->getCoreTableName();
-            $sQuotedOxid = $database->quote($this->getId());
-            $title = $database->getOne("select `{$fieldName}` from `{$tableName}` where `oxid` = {$sQuotedOxid}");
+            $quotedOxid = $database->quote($this->getId());
+            $title = $database->getOne("select `{$fieldName}` from `{$tableName}` where `oxid` = {$quotedOxid}");
             $fieldValue = "{$tableName}__{$fieldName}";
             $currentTime = $this->$fieldValue->value;
 
@@ -1233,7 +1233,7 @@ class Base extends \oxSuperCfg
      */
     protected function _setFieldData($fieldName, $fieldValue, $dataType = oxField::T_TEXT)
     {
-        $sLongFieldName = $this->_getFieldLongName($fieldName);
+        $longFieldName = $this->_getFieldLongName($fieldName);
         //$sLongFieldName = $this->_sCoreTable . "__" . strtolower($sFieldName);
 
         // doing this because in lazy loaded lists on first load it is harmful to have initialised fields but not yet set
@@ -1243,22 +1243,22 @@ class Base extends \oxSuperCfg
 
 
         //in non lazy loading case we just add a field and do not care about it more
-        if (!$this->_blUseLazyLoading && !isset($this->$sLongFieldName)) {
+        if (!$this->_blUseLazyLoading && !isset($this->$longFieldName)) {
             $fieldsList = $this->_getAllFields(true);
             if (isset($fieldsList[strtolower($fieldName)])) {
                 $this->_addField($fieldName, $this->_getFieldStatus($fieldName));
             }
         }
         // if we have a double field we replace "," with "." in case somebody enters it in european format
-        if (isset($this->$sLongFieldName) && isset($this->$sLongFieldName->fldtype) && $this->$sLongFieldName->fldtype == 'double') {
+        if (isset($this->$longFieldName) && isset($this->$longFieldName->fldtype) && $this->$longFieldName->fldtype == 'double') {
             $fieldValue = str_replace(',', '.', $fieldValue);
         }
 
         // isset is REQUIRED here not to use getter
-        if (isset($this->$sLongFieldName) && is_object($this->$sLongFieldName)) {
-            $this->$sLongFieldName->setValue($fieldValue, $dataType);
+        if (isset($this->$longFieldName) && is_object($this->$longFieldName)) {
+            $this->$longFieldName->setValue($fieldValue, $dataType);
         } else {
-            $this->$sLongFieldName = new oxField($fieldValue, $dataType);
+            $this->$longFieldName = new oxField($fieldValue, $dataType);
         }
     }
 
@@ -1344,8 +1344,8 @@ class Base extends \oxSuperCfg
         $useSeparator = false;
 
         foreach (array_keys($this->_aFieldNames) as $oneFieldName) {
-            $sLongName = $this->_getFieldLongName($oneFieldName);
-            $field = $this->$sLongName;
+            $longName = $this->_getFieldLongName($oneFieldName);
+            $field = $this->$longName;
 
             if (!$this->checkFieldCanBeUpdated($oneFieldName)) {
                 continue;

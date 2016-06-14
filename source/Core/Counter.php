@@ -34,57 +34,57 @@ class Counter
     /**
      * Returns next counter value
      *
-     * @param string $sIdent counter ident
+     * @param string $ident counter ident
      *
      * @return int
      */
-    public function getNext($sIdent)
+    public function getNext($ident)
     {
-        $oDb = oxDb::getDb();
-        $oDb->startTransaction();
+        $db = oxDb::getDb();
+        $db->startTransaction();
 
-        $sQ = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $oDb->quote($sIdent) . " FOR UPDATE";
+        $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $db->quote($ident) . " FOR UPDATE";
 
-        if (($iCnt = $oDb->getOne($sQ, false, false)) === false) {
-            $sQ = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, '0')";
-            $oDb->execute($sQ, array($sIdent));
+        if (($cnt = $db->getOne($query, false, false)) === false) {
+            $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, '0')";
+            $db->execute($query, array($ident));
         }
 
-        $iCnt = ((int) $iCnt) + 1;
-        $sQ = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ?";
-        $oDb->execute($sQ, array($iCnt, $sIdent));
+        $cnt = ((int) $cnt) + 1;
+        $query = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ?";
+        $db->execute($query, array($cnt, $ident));
 
-        $oDb->commitTransaction();
+        $db->commitTransaction();
 
-        return $iCnt;
+        return $cnt;
     }
 
     /**
      * update counter value, only when it is greater than old one,
      * if counter ident not exist creates counter and sets value
      *
-     * @param string  $sIdent counter ident
-     * @param integer $iCount value
+     * @param string  $ident counter ident
+     * @param integer $count value
      *
      * @return int
      */
-    public function update($sIdent, $iCount)
+    public function update($ident, $count)
     {
-        $oDb = oxDb::getDb();
-        $oDb->startTransaction();
+        $db = oxDb::getDb();
+        $db->startTransaction();
 
-        $sQ = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $oDb->quote($sIdent) . " FOR UPDATE";
+        $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $db->quote($ident) . " FOR UPDATE";
 
-        if (($iCnt = $oDb->getOne($sQ, false, false)) === false) {
-            $sQ = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, ?)";
-            $blResult = $oDb->execute($sQ, array($sIdent, $iCount));
+        if (($cnt = $db->getOne($query, false, false)) === false) {
+            $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, ?)";
+            $result = $db->execute($query, array($ident, $count));
         } else {
-            $sQ = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ? AND `oxcount` < ?";
-            $blResult = $oDb->execute($sQ, array($iCount, $sIdent, $iCount));
+            $query = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ? AND `oxcount` < ?";
+            $result = $db->execute($query, array($count, $ident, $count));
         }
 
-        $oDb->commitTransaction();
+        $db->commitTransaction();
 
-        return $blResult;
+        return $result;
     }
 }

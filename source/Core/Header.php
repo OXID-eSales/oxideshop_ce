@@ -35,12 +35,12 @@ class Header
     /**
      * Sets header.
      *
-     * @param string $sHeader header value.
+     * @param string $header header value.
      */
-    public function setHeader($sHeader)
+    public function setHeader($header)
     {
-        $sHeader = str_replace(array("\n", "\r"), '', $sHeader);
-        $this->_aHeader[] = (string) $sHeader . "\r\n";
+        $header = str_replace(array("\n", "\r"), '', $header);
+        $this->_aHeader[] = (string) $header . "\r\n";
     }
 
     /**
@@ -58,9 +58,9 @@ class Header
      */
     public function sendHeader()
     {
-        foreach ($this->_aHeader as $sHeader) {
-            if (isset($sHeader)) {
-                header($sHeader);
+        foreach ($this->_aHeader as $header) {
+            if (isset($header)) {
+                header($header);
             }
         }
     }
@@ -72,7 +72,7 @@ class Header
      */
     public function setNonCacheable()
     {
-        $sHeader = "Cache-Control: no-cache;";
-        $this->setHeader($sHeader);
+        $header = "Cache-Control: no-cache;";
+        $this->setHeader($header);
     }
 }

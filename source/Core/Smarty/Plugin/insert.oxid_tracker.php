@@ -41,7 +41,6 @@ function smarty_insert_oxid_tracker($params, &$smarty)
 {
     $config = oxRegistry::getConfig();
     if ($config->getConfigParam('blEcondaActive')) {
-        include_once __DIR__ . '/oxemosadapter.php';
 
         $output = oxRegistry::get("oxEmosAdapter")->getCode($params, $smarty);
 

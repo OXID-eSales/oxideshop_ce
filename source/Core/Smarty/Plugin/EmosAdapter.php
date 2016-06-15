@@ -137,7 +137,7 @@ class EmosAdapter extends oxSuperCfg
     public function getEmos()
     {
         if ($this->_oEmos === null) {
-            $this->_oEmos = new EMOS($this->_getScriptPath());
+            $this->_oEmos = new Emos($this->_getScriptPath());
 
             // make output more readable
             $this->_oEmos->prettyPrint();

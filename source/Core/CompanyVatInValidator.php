@@ -21,6 +21,7 @@
  */
 
 namespace OxidEsales\Eshop\Core;
+
 use oxCountry;
 use oxCompanyVatIn;
 use oxICountryAware;
@@ -54,11 +55,11 @@ class CompanyVatInValidator
     /**
      * Country setter
      *
-     * @param oxCountry $oCountry
+     * @param oxCountry $country
      */
-    public function setCountry(oxCountry $oCountry)
+    public function setCountry(oxCountry $country)
     {
-        $this->_oCountry = $oCountry;
+        $this->_oCountry = $country;
     }
 
     /**
@@ -74,11 +75,11 @@ class CompanyVatInValidator
     /**
      * Error setter
      *
-     * @param string $sError
+     * @param string $error
      */
-    public function setError($sError)
+    public function setError($error)
     {
-        $this->_sError = $sError;
+        $this->_sError = $error;
     }
 
     /**
@@ -94,21 +95,21 @@ class CompanyVatInValidator
     /**
      * Constructor
      *
-     * @param oxCountry $oCountry
+     * @param oxCountry $country
      */
-    public function __construct(oxCountry $oCountry)
+    public function __construct(oxCountry $country)
     {
-        $this->setCountry($oCountry);
+        $this->setCountry($country);
     }
 
     /**
      * Adds validator
      *
-     * @param oxCompanyVatInChecker $oValidator
+     * @param oxCompanyVatInChecker $validator
      */
-    public function addChecker(oxCompanyVatInChecker $oValidator)
+    public function addChecker(oxCompanyVatInChecker $validator)
     {
-        $this->_aCheckers[] = $oValidator;
+        $this->_aCheckers[] = $validator;
     }
 
     /**
@@ -124,28 +125,28 @@ class CompanyVatInValidator
     /**
      * Validate company VAT identification number.
      *
-     * @param oxCompanyVatIn $oCompanyVatNumber
+     * @param oxCompanyVatIn $companyVatNumber
      *
      * @return bool
      */
-    public function validate(oxCompanyVatIn $oCompanyVatNumber)
+    public function validate(oxCompanyVatIn $companyVatNumber)
     {
-        $blResult = false;
-        $aValidators = $this->getCheckers();
+        $result = false;
+        $validators = $this->getCheckers();
 
-        foreach ($aValidators as $oValidator) {
-            $blResult = true;
-            if ($oValidator instanceof oxICountryAware) {
-                $oValidator->setCountry($this->getCountry());
+        foreach ($validators as $validator) {
+            $result = true;
+            if ($validator instanceof oxICountryAware) {
+                $validator->setCountry($this->getCountry());
             }
 
-            if (!$oValidator->validate($oCompanyVatNumber)) {
-                $blResult = false;
-                $this->setError($oValidator->getError());
+            if (!$validator->validate($companyVatNumber)) {
+                $result = false;
+                $this->setError($validator->getError());
                 break;
             }
         }
 
-        return $blResult;
+        return $result;
     }
 }

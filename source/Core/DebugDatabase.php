@@ -48,37 +48,37 @@ class DebugDatabase
     /**
      * Removes special chars (' ', "\t", "\r", "\n") from passed string
      *
-     * @param string $sStr string to cleanup
+     * @param string $str string to cleanup
      *
      * @return string
      */
-    protected static function _skipWhiteSpace($sStr)
+    protected static function _skipWhiteSpace($str)
     {
-        return str_replace(array(' ', "\t", "\r", "\n"), '', $sStr);
+        return str_replace(array(' ', "\t", "\r", "\n"), '', $str);
     }
 
     /**
      * Checks if query is already in log file
      *
-     * @param string $sSql sql query to check
+     * @param string $sql sql query to check
      *
      * @return bool
      */
-    protected static function _isSkipped($sSql)
+    protected static function _isSkipped($sql)
     {
         if (!count(self::$_aSkipSqls)) {
-            $sFile = oxRegistry::getConfig()->getLogsDir() . 'oxdebugdb_skipped.sql';
-            if (is_readable($sFile)) {
-                $aSkip = explode('-- -- ENTRY END', file_get_contents($sFile));
-                foreach ($aSkip as $sQ) {
-                    if (($sQ = self::_skipWhiteSpace($sQ))) {
-                        self::$_aSkipSqls[md5($sQ)] = true;
+            $file = oxRegistry::getConfig()->getLogsDir() . 'oxdebugdb_skipped.sql';
+            if (is_readable($file)) {
+                $skip = explode('-- -- ENTRY END', file_get_contents($file));
+                foreach ($skip as $q) {
+                    if (($q = self::_skipWhiteSpace($q))) {
+                        self::$_aSkipSqls[md5($q)] = true;
                     }
                 }
             }
         }
-        $checkTpl = md5(self::_skipWhiteSpace(self::_getSqlTemplate($sSql)));
-        $check = md5(self::_skipWhiteSpace($sSql));
+        $checkTpl = md5(self::_skipWhiteSpace(self::_getSqlTemplate($sql)));
+        $check = md5(self::_skipWhiteSpace($sql));
 
         return self::$_aSkipSqls[$check] || self::$_aSkipSqls[$checkTpl];
     }
@@ -90,103 +90,103 @@ class DebugDatabase
      */
     public function getWarnings()
     {
-        $aWarnings = array();
-        $aHistory = array();
-        $oDb = oxDb::getDb();
-        if (method_exists($oDb, "logSQL")) {
-            $iLastDbgState = $oDb->logSQL(false);
+        $warnings = array();
+        $history = array();
+        $db = oxDb::getDb();
+        if (method_exists($db, "logSQL")) {
+            $lastDbgState = $db->logSQL(false);
         }
-        $rs = $oDb->select("select sql0, sql1, tracer from adodb_logsql order by created limit 5000");
+        $rs = $db->select("select sql0, sql1, tracer from adodb_logsql order by created limit 5000");
         if ($rs != false && $rs->recordCount() > 0) {
-            $aLastRecord = null;
+            $lastRecord = null;
             while (!$rs->EOF) {
-                $sId = $rs->fields[0];
-                $sSql = $rs->fields[1];
+                $id = $rs->fields[0];
+                $sql = $rs->fields[1];
 
-                if (!self::_isSkipped($sSql)) {
-                    if ($this->_checkMissingKeys($sSql)) {
-                        $aWarnings['MissingKeys'][$sId] = true;
-                        // debug: echo "<li> <pre>".self::_getSqlTemplate($sSql)." </pre><br>";
+                if (!self::_isSkipped($sql)) {
+                    if ($this->_checkMissingKeys($sql)) {
+                        $warnings['MissingKeys'][$id] = true;
+                        // debug: echo "<li> <pre>".self::_getSqlTemplate($sql)." </pre><br>";
                     }
                 }
 
                 // multiple executed single statements
-                if ($aLastRecord && $this->_checkMess($sSql, $aLastRecord[1])) {
+                if ($lastRecord && $this->_checkMess($sql, $lastRecord[1])) {
                     // sql0 matches, also, this is exactly following statement: MESS?
-                    $aWarnings['MESS'][$sId] = true;
-                    $aWarnings['MESS'][$aLastRecord[0]] = true;
+                    $warnings['MESS'][$id] = true;
+                    $warnings['MESS'][$lastRecord[0]] = true;
                 }
 
-                foreach ($aHistory as $aHistItem) {
-                    if ($this->_checkMess($sSql, $aHistItem[1])) {
+                foreach ($history as $histItem) {
+                    if ($this->_checkMess($sql, $histItem[1])) {
                         // sql0 matches, also, this is exactly following statement: MESS?
-                        $aWarnings['MESS_ALL'][$sId] = true;
-                        $aWarnings['MESS_ALL'][$aHistItem[0]] = true;
+                        $warnings['MESS_ALL'][$id] = true;
+                        $warnings['MESS_ALL'][$histItem[0]] = true;
                     }
                 }
 
-                $aHistory[] = $aLastRecord = $rs->fields;
+                $history[] = $lastRecord = $rs->fields;
                 /*
-                if (preg_match('/select[^\*]*(?<!(from))\*.*?(?<!(from))from/im', $sSql)) {
-                    $aWarnings['Select fields not strict'][$sId] = true;
+                if (preg_match('/select[^\*]*(?<!(from))\*.*?(?<!(from))from/im', $sql)) {
+                    $warnings['Select fields not strict'][$id] = true;
                 }*/
                 $rs->moveNext();
             }
         }
-        $aWarnings = $this->_generateWarningsResult($aWarnings);
-        $this->_logToFile($aWarnings);
-        if (method_exists($oDb, "logSQL")) {
-            $oDb->logSQL($iLastDbgState);
+        $warnings = $this->_generateWarningsResult($warnings);
+        $this->_logToFile($warnings);
+        if (method_exists($db, "logSQL")) {
+            $db->logSQL($lastDbgState);
         }
 
-        return $aWarnings;
+        return $warnings;
     }
 
     /**
      * returns nice formatted array
      *
-     * @param array $aInput messages array
+     * @param array $input messages array
      *
      * @return array
      */
-    protected function _generateWarningsResult($aInput)
+    protected function _generateWarningsResult($input)
     {
-        $aOutput = array();
-        $oDb = oxDb::getDb();
-        foreach ($aInput as $fnc => $aWarnings) {
-            $ids = implode(",", oxDb::getInstance()->quoteArray(array_keys($aWarnings)));
-            $rs = $oDb->select("select sql1, timer, tracer from adodb_logsql where sql0 in ($ids)");
+        $output = array();
+        $db = oxDb::getDb();
+        foreach ($input as $fnc => $warnings) {
+            $ids = implode(",", oxDb::getInstance()->quoteArray(array_keys($warnings)));
+            $rs = $db->select("select sql1, timer, tracer from adodb_logsql where sql0 in ($ids)");
             if ($rs != false && $rs->recordCount() > 0) {
                 while (!$rs->EOF) {
-                    $aOutputEntry = array();
-                    $aOutputEntry['check'] = $fnc;
-                    $aOutputEntry['sql'] = $rs->fields[0];
-                    $aOutputEntry['time'] = $rs->fields[1];
-                    $aOutputEntry['trace'] = $rs->fields[2];
-                    $aOutput[] = $aOutputEntry;
+                    $outputEntry = array();
+                    $outputEntry['check'] = $fnc;
+                    $outputEntry['sql'] = $rs->fields[0];
+                    $outputEntry['time'] = $rs->fields[1];
+                    $outputEntry['trace'] = $rs->fields[2];
+                    $output[] = $outputEntry;
                     $rs->moveNext();
                 }
             }
         }
 
-        return $aOutput;
+        return $output;
     }
 
     /**
      * check missing keys - use explain
      * return true on warning
      *
-     * @param string $sSql query string
+     * @param string $sql query string
      *
      * @return bool
      */
-    protected function _checkMissingKeys($sSql)
+    protected function _checkMissingKeys($sql)
     {
-        if (strpos(strtolower(trim($sSql)), 'select ') !== 0) {
+        if (strpos(strtolower(trim($sql)), 'select ') !== 0) {
             return false;
         }
 
-        $rs = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->execute("explain $sSql");
+        $rs = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->execute("explain $sql");
         if ($rs != false && $rs->recordCount() > 0) {
             while (!$rs->EOF) {
                 if ($this->_missingKeysChecker($rs->fields)) {
@@ -203,43 +203,43 @@ class DebugDatabase
      * check if remark of explain is not using keys
      * true if not using
      *
-     * @param array $aExplain db explain response array
+     * @param array $explain db explain response array
      *
      * @return bool
      */
-    private function _missingKeysChecker($aExplain)
+    private function _missingKeysChecker($explain)
     {
-        if ($aExplain['type'] == 'system') {
+        if ($explain['type'] == 'system') {
             return false;
         }
 
-        if (strstr($aExplain['Extra'], 'Impossible WHERE') !== false) {
+        if (strstr($explain['Extra'], 'Impossible WHERE') !== false) {
             return false;
         }
 
-        if ($aExplain['key'] === null) {
+        if ($explain['key'] === null) {
             return true;
         }
 
-        if (strpos($aExplain['type'], 'range')) {
+        if (strpos($explain['type'], 'range')) {
             return true;
         }
 
-        if (strpos($aExplain['type'], 'index')) {
+        if (strpos($explain['type'], 'index')) {
             return true;
         }
 
-        if (strpos($aExplain['type'], 'ALL')) {
+        if (strpos($explain['type'], 'ALL')) {
             return true;
         }
 
-        if (strpos($aExplain['Extra'], 'filesort')) {
-            if (strpos($aExplain['ref'], 'const') === false) {
+        if (strpos($explain['Extra'], 'filesort')) {
+            if (strpos($explain['ref'], 'const') === false) {
                 return true;
             }
         }
 
-        if (strpos($aExplain['Extra'], 'temporary')) {
+        if (strpos($explain['Extra'], 'temporary')) {
             return true;
         }
 
@@ -278,32 +278,32 @@ class DebugDatabase
     /**
      * strips sql down of its values
      *
-     * @param string $sSql sql to process
+     * @param string $sql sql to process
      *
      * @return string
      */
-    protected static function _getSqlTemplate($sSql)
+    protected static function _getSqlTemplate($sql)
     {
-        $sSql = preg_replace("/'.*?(?<!\\\\)'/", "'#VALUE#'", $sSql);
-        $sSql = preg_replace('/".*?(?<!\\\\)"/', '"#VALUE#"', $sSql);
-        $sSql = preg_replace('/[0-9]/', '#NUMVALUE#', $sSql);
+        $sql = preg_replace("/'.*?(?<!\\\\)'/", "'#VALUE#'", $sql);
+        $sql = preg_replace('/".*?(?<!\\\\)"/', '"#VALUE#"', $sql);
+        $sql = preg_replace('/[0-9]/', '#NUMVALUE#', $sql);
 
-        return $sSql;
+        return $sql;
     }
 
     /**
      * logs warnings to file
      *
-     * @param array $aWarnings warnings
+     * @param array $warnings warnings
      */
-    protected function _logToFile($aWarnings)
+    protected function _logToFile($warnings)
     {
-        $oStr = getStr();
-        $sLogMsg = "\n\n\n\n\n\n-- " . date("m-d  H:i:s") . " --\n\n";
-        foreach ($aWarnings as $w) {
-            $sLogMsg .= "{$w['check']}: {$w['time']} - " . $oStr->htmlentities($w['sql']) . "\n\n";
-            $sLogMsg .= $w['trace'] . "\n\n\n\n";
+        $str = getStr();
+        $logMsg = "\n\n\n\n\n\n-- " . date("m-d  H:i:s") . " --\n\n";
+        foreach ($warnings as $w) {
+            $logMsg .= "{$w['check']}: {$w['time']} - " . $str->htmlentities($w['sql']) . "\n\n";
+            $logMsg .= $w['trace'] . "\n\n\n\n";
         }
-        oxRegistry::getUtils()->writeToLog($sLogMsg, 'oxdebugdb.txt');
+        oxRegistry::getUtils()->writeToLog($logMsg, 'oxdebugdb.txt');
     }
 }

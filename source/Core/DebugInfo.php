@@ -35,21 +35,21 @@ class DebugInfo
     /**
      * format template data for debug view
      *
-     * @param array $aViewData template data
+     * @param array $viewData template data
      *
      * @return string
      */
-    public function formatTemplateData($aViewData = array())
+    public function formatTemplateData($viewData = array())
     {
-        $sLog = '';
-        reset($aViewData);
-        while (list($sViewName, $oViewData) = each($aViewData)) {
+        $log = '';
+        reset($viewData);
+        while (list($viewName, $viewDataObject) = each($viewData)) {
             // show debbuging information
-            $sLog .= "TemplateData[$sViewName] : <br />\n";
-            $sLog .= print_r($oViewData, 1);
+            $log .= "TemplateData[$viewName] : <br />\n";
+            $log .= print_r($viewDataObject, 1);
         }
 
-        return $sLog;
+        return $log;
     }
 
     /**
@@ -59,34 +59,34 @@ class DebugInfo
      */
     public function formatMemoryUsage()
     {
-        $sLog = '';
+        $log = '';
         if (function_exists('memory_get_usage')) {
-            $iKb = ( int ) (memory_get_usage() / 1024);
-            $iMb = round($iKb / 1024, 3);
-            $sLog .= 'Memory usage: ' . $iMb . ' MB';
+            $kb = ( int ) (memory_get_usage() / 1024);
+            $mb = round($kb / 1024, 3);
+            $log .= 'Memory usage: ' . $mb . ' MB';
 
             if (function_exists('memory_get_peak_usage')) {
-                $iPeakKb = ( int ) (memory_get_peak_usage() / 1024);
-                $iPeakMb = round($iPeakKb / 1024, 3);
-                $sLog .= ' (peak: ' . $iPeakMb . ' MB)';
+                $peakKb = ( int ) (memory_get_peak_usage() / 1024);
+                $peakMb = round($peakKb / 1024, 3);
+                $log .= ' (peak: ' . $peakMb . ' MB)';
             }
-            $sLog .= '<br />';
+            $log .= '<br />';
 
             if (version_compare(PHP_VERSION, '5.2.0', '>=')) {
-                $iKb = ( int ) (memory_get_usage(true) / 1024);
-                $iMb = round($iKb / 1024, 3);
-                $sLog .= 'System memory usage: ' . $iMb . ' MB';
+                $kb = ( int ) (memory_get_usage(true) / 1024);
+                $mb = round($kb / 1024, 3);
+                $log .= 'System memory usage: ' . $mb . ' MB';
 
                 if (function_exists('memory_get_peak_usage')) {
-                    $iPeakKb = ( int ) (memory_get_peak_usage(true) / 1024);
-                    $iPeakMb = round($iPeakKb / 1024, 3);
-                    $sLog .= ' (peak: ' . $iPeakMb . ' MB)';
+                    $peakKb = ( int ) (memory_get_peak_usage(true) / 1024);
+                    $peakMb = round($peakKb / 1024, 3);
+                    $log .= ' (peak: ' . $peakMb . ' MB)';
                 }
-                $sLog .= '<br />';
+                $log .= '<br />';
             }
         }
 
-        return $sLog;
+        return $log;
     }
 
     /**
@@ -98,48 +98,48 @@ class DebugInfo
      */
     public function formatExecutionTime($dTotalTime)
     {
-        $sLog = 'Execution time:' . round($dTotalTime, 4) . '<br />';
-        global $aProfileTimes;
-        global $aExecutionCounts;
-        global $aProfileBacktraces;
-        if (is_array($aProfileTimes)) {
-            $sLog .= "----------------------------------------------------------<br>" . PHP_EOL;
-            arsort($aProfileTimes);
-            $sLog .= "<table cellspacing='10px' style='border: 1px solid #000'>";
-            $iNr = 1;
-            foreach ($aProfileTimes as $sKey => $sVal) {
-                $sLog .= "<tr><td style='border-bottom: 1px dotted #000;min-width:300px;'>Profile $sKey: </td><td style='border-bottom: 1px dotted #000;min-width:100px;'>" . round($sVal, 5) . "s</td>";
+        $log = 'Execution time:' . round($dTotalTime, 4) . '<br />';
+        global $profileTimes;
+        global $executionCounts;
+        global $profileBacktraces;
+        if (is_array($profileTimes)) {
+            $log .= "----------------------------------------------------------<br>" . PHP_EOL;
+            arsort($profileTimes);
+            $log .= "<table cellspacing='10px' style='border: 1px solid #000'>";
+            $nr = 1;
+            foreach ($profileTimes as $key => $val) {
+                $log .= "<tr><td style='border-bottom: 1px dotted #000;min-width:300px;'>Profile $key: </td><td style='border-bottom: 1px dotted #000;min-width:100px;'>" . round($val, 5) . "s</td>";
                 if ($dTotalTime) {
-                    $sLog .= "<td style='border-bottom: 1px dotted #000;min-width:100px;'>" . round($sVal * 100 / $dTotalTime, 2) . "%</td>";
+                    $log .= "<td style='border-bottom: 1px dotted #000;min-width:100px;'>" . round($val * 100 / $dTotalTime, 2) . "%</td>";
                 }
-                if ($aExecutionCounts[$sKey]) {
-                    $sLog .= " <td style='border-bottom: 1px dotted #000;min-width:50px;padding-right:30px;' align='right'>" . $aExecutionCounts[$sKey] . "</td>"
+                if ($executionCounts[$key]) {
+                    $log .= " <td style='border-bottom: 1px dotted #000;min-width:50px;padding-right:30px;' align='right'>" . $executionCounts[$key] . "</td>"
                              . "<td style='border-bottom: 1px dotted #000;min-width:15px; '>*</td>"
-                             . "<td style='border-bottom: 1px dotted #000;min-width:100px;'>" . round($sVal / $aExecutionCounts[$sKey], 5) . "s</td>" . PHP_EOL;
+                             . "<td style='border-bottom: 1px dotted #000;min-width:100px;'>" . round($val / $executionCounts[$key], 5) . "s</td>" . PHP_EOL;
                 } else {
-                    $sLog .= " <td colspan=3 style='border-bottom: 1px dotted #000;min-width:100px;'> not stopped correctly! </td>" . PHP_EOL;
+                    $log .= " <td colspan=3 style='border-bottom: 1px dotted #000;min-width:100px;'> not stopped correctly! </td>" . PHP_EOL;
                 }
 
-                if (isset($aProfileBacktraces[$sKey])) {
-                    $sLog .= "<td style='border-bottom: 1px dotted #000;min-width:15px; '>";
-                    foreach ($aProfileBacktraces[$sKey] as $sBtId => $aBt) {
-                        $iCnt = (int) $aProfileBacktraceCounts[$sBtId];
-                        $sLog .= "<a style='color:#00AA00;margin:5px;cursor:pointer' onclick='var el=document.getElementById(\"profdbg_trace_$iNr\"); if (el.style.display==\"block\")el.style.display=\"none\"; else el.style.display = \"block\";'>Count($iCnt) - TRACE (show/hide)</a><br><br>";
-                        $sLog .= "<div id='profdbg_trace_$iNr' style='display:none'>";
-                        foreach ($aBt as $iLevel => $aInfo) {
-                            $sLog .= "<i><strong>$iLevel: {$aInfo['function']}</strong></i> at {$aInfo['file']}:{$aInfo['line']}<br>";
+                if (isset($profileBacktraces[$key])) {
+                    $log .= "<td style='border-bottom: 1px dotted #000;min-width:15px; '>";
+                    foreach ($profileBacktraces[$key] as $btId => $bt) {
+                        $cnt = (int) $profileBacktraceCounts[$btId];
+                        $log .= "<a style='color:#00AA00;margin:5px;cursor:pointer' onclick='var el=document.getElementById(\"profdbg_trace_$nr\"); if (el.style.display==\"block\")el.style.display=\"none\"; else el.style.display = \"block\";'>Count($cnt) - TRACE (show/hide)</a><br><br>";
+                        $log .= "<div id='profdbg_trace_$nr' style='display:none'>";
+                        foreach ($bt as $level => $info) {
+                            $log .= "<i><strong>$level: {$info['function']}</strong></i> at {$info['file']}:{$info['line']}<br>";
                         }
-                        $sLog .= "</div>";
-                        $iNr++;
+                        $log .= "</div>";
+                        $nr++;
                     }
-                    $sLog .= "</td>";
+                    $log .= "</td>";
                 }
-                $sLog .= '</tr>';
+                $log .= '</tr>';
             }
-            $sLog .= "</table>";
+            $log .= "</table>";
         }
 
-        return $sLog;
+        return $log;
     }
 
     /**
@@ -149,12 +149,12 @@ class DebugInfo
      */
     public function formatGeneralInfo()
     {
-        $sLog = "cl=" . oxRegistry::getConfig()->getActiveView()->getClassName();
-        if (($sFnc = oxRegistry::getConfig()->getActiveView()->getFncName())) {
-            $sLog .= " fnc=$sFnc";
+        $log = "cl=" . oxRegistry::getConfig()->getActiveView()->getClassName();
+        if (($fnc = oxRegistry::getConfig()->getActiveView()->getFncName())) {
+            $log .= " fnc=$fnc";
         }
 
-        return $sLog;
+        return $log;
     }
 
     /**
@@ -164,19 +164,19 @@ class DebugInfo
      */
     public function formatDbInfo()
     {
-        $sLog = "----------------------------------------------------------<br>" . PHP_EOL;
-        $sLog .= "-- oxdebugdb --<br>" . PHP_EOL;
-        $oDbgDb = oxNew('oxdebugdb');
-        $aWarnings = $oDbgDb->getWarnings();
-        $iNr = 1;
-        foreach ($aWarnings as $w) {
-            $sLog .= "{$w['check']}: {$w['time']} - <span style='color:#900000;margin:5px'>" . htmlentities($w['sql'], ENT_QUOTES, 'UTF-8') . "</span>";
-            $sLog .= "<div id='dbgdb_trace_$iNr' style='display:none'>" . nl2br($w['trace']) . "</div>";
-            $sLog .= "<a style='color:#00AA00;margin:5px;cursor:pointer' onclick='var el=document.getElementById(\"dbgdb_trace_$iNr\"); if (el.style.display==\"block\")el.style.display=\"none\"; else el.style.display = \"block\";'>TRACE (show/hide)</a><br><br>";
-            ++$iNr;
+        $log = "----------------------------------------------------------<br>" . PHP_EOL;
+        $log .= "-- oxdebugdb --<br>" . PHP_EOL;
+        $dbgDb = oxNew('oxdebugdb');
+        $warnings = $dbgDb->getWarnings();
+        $nr = 1;
+        foreach ($warnings as $w) {
+            $log .= "{$w['check']}: {$w['time']} - <span style='color:#900000;margin:5px'>" . htmlentities($w['sql'], ENT_QUOTES, 'UTF-8') . "</span>";
+            $log .= "<div id='dbgdb_trace_$nr' style='display:none'>" . nl2br($w['trace']) . "</div>";
+            $log .= "<a style='color:#00AA00;margin:5px;cursor:pointer' onclick='var el=document.getElementById(\"dbgdb_trace_$nr\"); if (el.style.display==\"block\")el.style.display=\"none\"; else el.style.display = \"block\";'>TRACE (show/hide)</a><br><br>";
+            ++$nr;
         }
 
-        return $sLog;
+        return $log;
     }
 
     /**
@@ -186,10 +186,10 @@ class DebugInfo
      */
     public function formatAdoDbPerf()
     {
-        $oPerfMonitor = @NewPerfMonitor(oxDb::getDb());
-        if ($oPerfMonitor) {
+        $perfMonitor = @NewPerfMonitor(oxDb::getDb());
+        if ($perfMonitor) {
             ob_start();
-            $oPerfMonitor->UI(5);
+            $perfMonitor->UI(5);
 
             return ob_get_clean();
         }
@@ -204,11 +204,11 @@ class DebugInfo
      */
     public function formatTimeStamp()
     {
-        $sLog = '';
-        $sClassName = oxRegistry::getConfig()->getActiveView()->getClassName();
-        $sLog .= "<div id='" . $sClassName . "_executed'>Executed: " . date('Y-m-d H:i:s') . "</div>";
-        $sLog .= "<div id='" . $sClassName . "_timestamp'>Timestamp: " . microtime(true) . "</div>";
+        $log = '';
+        $className = oxRegistry::getConfig()->getActiveView()->getClassName();
+        $log .= "<div id='" . $className . "_executed'>Executed: " . date('Y-m-d H:i:s') . "</div>";
+        $log .= "<div id='" . $className . "_timestamp'>Timestamp: " . microtime(true) . "</div>";
 
-        return $sLog;
+        return $log;
     }
 }

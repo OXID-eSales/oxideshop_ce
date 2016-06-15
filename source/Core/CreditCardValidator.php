@@ -49,95 +49,90 @@ class CreditCardValidator
     /**
      * Checks credit card type. Returns TRUE if card is valid
      *
-     * @param string $sType   credit card type
-     * @param string $sNumber credit card number
+     * @param string $type   credit card type
+     * @param string $number credit card number
      *
      * @return bool
      */
-    protected function _isValidType($sType, $sNumber)
+    protected function _isValidType($type, $number)
     {
-        $blValid = true;
-
         // testing if card type is known and matches pattern
-        if (isset($this->_aCardsInfo[$sType])) {
-            $blValid = preg_match($this->_aCardsInfo[$sType], $sNumber);
+        if (isset($this->_aCardsInfo[$type])) {
+            return preg_match($this->_aCardsInfo[$type], $number);
         }
 
-        return $blValid;
+        return true;
     }
 
     /**
      * Checks credit card expiration date. Returns TRUE if card is not expired
      *
-     * @param string $sDate credit card type
+     * @param string $date credit card type
      *
      * @return bool
      */
-    protected function _isExpired($sDate)
+    protected function _isExpired($date)
     {
-        $blExpired = false;
+        if ($date) {
+            $years = substr($date, 2, 2);
+            $month = substr($date, 0, 2);
+            $day = date("t", mktime(11, 59, 59, $month, 1, $years));
 
-        if ($sDate) {
-            $sYears = substr($sDate, 2, 2);
-            $sMonth = substr($sDate, 0, 2);
-            $sDay = date("t", mktime(11, 59, 59, $sMonth, 1, $sYears));
-
-            $iExpDate = mktime(23, 59, 59, $sMonth, $sDay, $sYears);
-            if (time() > $iExpDate) {
-                $blExpired = true;
+            $expDate = mktime(23, 59, 59, $month, $day, $years);
+            if (time() > $expDate) {
+                return true;
             }
         }
 
-        return $blExpired;
+        return false;
     }
 
     /**
      * checks credit card number. Returns TRUE if card number is valid
      *
-     * @param string $sNumber credit card number
+     * @param string $number credit card number
      *
      * @return bool
      */
-    protected function _isValidNumer($sNumber)
+    protected function _isValidNumer($number)
     {
-        $blValid = false;
-        if (($iLength = strlen($sNumber))) {
-            $iModSum = 0;
-            $iMod = $iLength % 2;
+        $valid = false;
+        if (($length = strlen($number))) {
+            $modSum = 0;
+            $mod = $length % 2;
 
             // Luhn algorithm
-            for ($iPos = 0; $iPos < $iLength; $iPos++) {
-
+            for ($pos = 0; $pos < $length; $pos++) {
                 // taking digit to check..
-                $iCurrDigit = ( int ) $sNumber{$iPos};
+                $currDigit = ( int ) $number{$pos};
 
                 // multiplying if needed..
-                $iAddValue = (($iPos % 2 == $iMod) ? 2 : 1) * $iCurrDigit;
+                $addValue = (($pos % 2 == $mod) ? 2 : 1) * $currDigit;
 
                 // adding prepared current digit
-                $iModSum += ($iAddValue > 9) ? $iAddValue - 9 : $iAddValue;
+                $modSum += ($addValue > 9) ? $addValue - 9 : $addValue;
             }
 
-            $blValid = ($iModSum % 10) == 0;
+            $valid = ($modSum % 10) == 0;
         }
 
-        return $blValid;
+        return $valid;
     }
 
     /**
      * Checks if provided credit card information is valid. Returns TRUE if valid
      *
-     * @param object $sNumber credit card number
-     * @param string $sType   credit card type [optional]
-     * @param string $sDate   card expiration date [optional]
+     * @param object $number credit card number
+     * @param string $type   credit card type [optional]
+     * @param string $date   card expiration date [optional]
      *
      * @return bool
      */
-    public function isValidCard($sNumber, $sType = "", $sDate = "")
+    public function isValidCard($number, $type = "", $date = "")
     {
         // cleanup
-        $sNumber = preg_replace("/[^0-9]/", "", $sNumber);
+        $number = preg_replace("/[^0-9]/", "", $number);
 
-        return (!$this->_isExpired($sDate) && $this->_isValidType($sType, $sNumber) && $this->_isValidNumer($sNumber));
+        return (!$this->_isExpired($date) && $this->_isValidType($type, $number) && $this->_isValidNumer($number));
     }
 }

@@ -31,9 +31,9 @@ abstract class Hasher
     /**
      * Hash string.
      *
-     * @param string $sString string for hashing.
+     * @param string $string string for hashing.
      *
      * @return string
      */
-    abstract public function hash($sString);
+    abstract public function hash($string);
 }

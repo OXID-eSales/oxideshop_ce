@@ -46,32 +46,32 @@ class DisplayError implements \oxIDisplayError
      */
     public function getOxMessage()
     {
-        $sTranslatedMessage = oxRegistry::getLang()->translateString($this->_sMessage);
+        $translatedMessage = oxRegistry::getLang()->translateString($this->_sMessage);
         if (!empty($this->_aFormatParameters)) {
-            $sTranslatedMessage = vsprintf($sTranslatedMessage, $this->_aFormatParameters);
+            $translatedMessage = vsprintf($translatedMessage, $this->_aFormatParameters);
         }
 
-        return $sTranslatedMessage;
+        return $translatedMessage;
     }
 
     /**
      * Stored the message.
      *
-     * @param string $sMessage message
+     * @param string $message message
      */
-    public function setMessage($sMessage)
+    public function setMessage($message)
     {
-        $this->_sMessage = $sMessage;
+        $this->_sMessage = $message;
     }
 
     /**
      * Stes format parameters for message.
      *
-     * @param array $aFormatParameters
+     * @param array $formatParameters
      */
-    public function setFormatParameters($aFormatParameters)
+    public function setFormatParameters($formatParameters)
     {
-        $this->_aFormatParameters = $aFormatParameters;
+        $this->_aFormatParameters = $formatParameters;
     }
 
     /**
@@ -87,11 +87,11 @@ class DisplayError implements \oxIDisplayError
     /**
      * Returns value (currently returns empty string)
      *
-     * @param string $sName value ignored
+     * @param string $name value ignored
      *
      * @return string
      */
-    public function getValue($sName)
+    public function getValue($name)
     {
         return '';
     }

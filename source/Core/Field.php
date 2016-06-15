@@ -91,13 +91,13 @@ class Field // extends oxSuperCfg
     /**
      * Checks if $name is set
      *
-     * @param string $sName Variable name
+     * @param string $name Variable name
      *
      * @return boolean
      */
-    public function __isset($sName)
+    public function __isset($name)
     {
-        switch ($sName) {
+        switch ($name) {
             case 'rawValue':
                 return ($this->rawValue !== null);
                 break;
@@ -112,13 +112,13 @@ class Field // extends oxSuperCfg
     /**
      * Magic getter
      *
-     * @param string $sName Variable name
+     * @param string $name Variable name
      *
      * @return string | null
      */
-    public function __get($sName)
+    public function __get($name)
     {
-        switch ($sName) {
+        switch ($name) {
             case 'rawValue':
                 return $this->value;
                 break;

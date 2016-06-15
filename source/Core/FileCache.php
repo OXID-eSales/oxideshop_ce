@@ -70,8 +70,8 @@ class FileCache
      */
     public function setToCache($key, $value)
     {
-        $sFileName = $this->getCacheFilePath($key);
-        file_put_contents($sFileName, serialize($value), LOCK_EX);
+        $fileName = $this->getCacheFilePath($key);
+        file_put_contents($fileName, serialize($value), LOCK_EX);
     }
 
     /**
@@ -100,9 +100,9 @@ class FileCache
      */
     protected function getCacheFilePath($key)
     {
-        $sFileName = $this->getCacheDir() . "/" . $this->getCacheFileName($key);
+        $fileName = $this->getCacheDir() . "/" . $this->getCacheFileName($key);
 
-        return $sFileName;
+        return $fileName;
     }
 
     /**
@@ -112,9 +112,9 @@ class FileCache
      */
     protected function getCacheDir()
     {
-        $sDir = oxRegistry::get("oxConfigFile")->getVar("sCompileDir");
+        $dir = oxRegistry::get("oxConfigFile")->getVar("sCompileDir");
 
-        return $sDir;
+        return $dir;
     }
 
     /**

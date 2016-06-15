@@ -337,14 +337,14 @@ class Database
     /**
      * Return local config value by given name.
      *
-     * @param string $sConfigName returning config name.
+     * @param string $configName returning config name.
      *
      * @return mixed
      */
-    protected static function _getConfigParam($sConfigName)
+    protected static function _getConfigParam($configName)
     {
-        if (isset(self::$$sConfigName)) {
-            return self::$$sConfigName;
+        if (isset(self::$$configName)) {
+            return self::$$configName;
         }
 
         return null;
@@ -526,23 +526,23 @@ class Database
     }
 
     /**
-     * Returns $oMailer instance
+     * Returns $mailer instance
      *
-     * @param string $sEmail   email address
-     * @param string $sSubject subject
-     * @param string $sBody    email body
+     * @param string $email   email address
+     * @param string $subject subject
+     * @param string $body    email body
      *
      * @return PHPMailer
      */
-    protected function _sendMail($sEmail, $sSubject, $sBody)
+    protected function _sendMail($email, $subject, $body)
     {
         $mailer = new PHPMailer();
         $mailer->isMail();
 
-        $mailer->From = $sEmail;
-        $mailer->AddAddress($sEmail);
-        $mailer->Subject = $sSubject;
-        $mailer->Body = $sBody;
+        $mailer->From = $email;
+        $mailer->AddAddress($email);
+        $mailer->Subject = $subject;
+        $mailer->Body = $body;
 
         return $mailer->send();
     }

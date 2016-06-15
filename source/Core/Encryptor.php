@@ -31,37 +31,37 @@ class Encryptor
     /**
      * Encrypts string with given key.
      *
-     * @param string $sString
-     * @param string $sKey
+     * @param string $string
+     * @param string $key
      *
      * @return string
      */
-    public function encrypt($sString, $sKey)
+    public function encrypt($string, $key)
     {
-        $sString = "ox{$sString}id";
+        $string = "ox{$string}id";
 
-        $sKey = $this->_formKey($sKey, $sString);
+        $key = $this->_formKey($key, $string);
 
-        $sString = $sString ^ $sKey;
-        $sString = base64_encode($sString);
-        $sString = str_replace("=", "!", $sString);
+        $string = $string ^ $key;
+        $string = base64_encode($string);
+        $string = str_replace("=", "!", $string);
 
-        return "ox_$sString";
+        return "ox_$string";
     }
 
     /**
      * Forms key for use in encoding.
      *
-     * @param string $sKey
-     * @param string $sString
+     * @param string $key
+     * @param string $string
      *
      * @return string
      */
-    protected function _formKey($sKey, $sString)
+    protected function _formKey($key, $string)
     {
-        $sKey = '_' . $sKey;
-        $iKeyLength = (strlen($sString) / strlen($sKey)) + 5;
+        $key = '_' . $key;
+        $keyLength = (strlen($string) / strlen($key)) + 5;
 
-        return str_repeat($sKey, $iKeyLength);
+        return str_repeat($key, $keyLength);
     }
 }

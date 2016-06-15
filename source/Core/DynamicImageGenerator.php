@@ -21,6 +21,7 @@
  */
 
 namespace {
+
     /** Checks if instance name getter does not exist */
     if (!function_exists("getGeneratorInstanceName")) {
         /**
@@ -43,21 +44,21 @@ namespace {
          */
         function getGdVersion()
         {
-            static $iVersion = null;
+            static $version = null;
 
-            if ($iVersion === null) {
-                $iVersion = false;
+            if ($version === null) {
+                $version = false;
                 if (function_exists("gd_info")) {
                     // extracting GD version from php
-                    $aInfo = gd_info();
-                    if (isset($aInfo["GD Version"])) {
-                        $iVersion = version_compare(preg_replace("/[^0-9\.]/", "", $aInfo["GD Version"]), 1, '>') ? 2 : 1;
+                    $info = gd_info();
+                    if (isset($info["GD Version"])) {
+                        $version = version_compare(preg_replace("/[^0-9\.]/", "", $info["GD Version"]), 1, '>') ? 2 : 1;
                     }
                 }
 
             }
 
-            return $iVersion;
+            return $version;
         }
     }
 
@@ -154,8 +155,8 @@ namespace OxidEsales\Eshop\Core {
         public static function getInstance()
         {
             if (self::$_oInstance === null) {
-                $sInstanceName = getGeneratorInstanceName();
-                self::$_oInstance = new $sInstanceName();
+                $instanceName = getGeneratorInstanceName();
+                self::$_oInstance = new $instanceName();
             }
 
             return self::$_oInstance;
@@ -165,25 +166,25 @@ namespace OxidEsales\Eshop\Core {
          * Only used for convenience in UNIT tests by doing so we avoid
          * writing extended classes for testing protected or private methods
          *
-         * @param string $sMethod Methods name
-         * @param array  $aArgs   Argument array
+         * @param string $method Methods name
+         * @param array  $args   Argument array
          *
          * @throws oxSystemComponentException Throws an exception if the called method does not exist or is not accessable in current class
          *
          * @return string
          */
-        public function __call($sMethod, $aArgs)
+        public function __call($method, $args)
         {
             if (defined('OXID_PHP_UNIT')) {
-                if (substr($sMethod, 0, 4) == "UNIT") {
-                    $sMethod = str_replace("UNIT", "_", $sMethod);
+                if (substr($method, 0, 4) == "UNIT") {
+                    $method = str_replace("UNIT", "_", $method);
                 }
-                if (method_exists($this, $sMethod)) {
-                    return call_user_func_array(array(& $this, $sMethod), $aArgs);
+                if (method_exists($this, $method)) {
+                    return call_user_func_array(array(& $this, $method), $args);
                 }
             }
 
-            throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+            throw new oxSystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
         }
 
         /**
@@ -204,13 +205,12 @@ namespace OxidEsales\Eshop\Core {
         protected function _getImageUri()
         {
             if ($this->_sImageUri === null) {
-
                 $this->_sImageUri = "";
-                $sReqPath = 'out/pictures/generated';
+                $reqPath = 'out/pictures/generated';
 
-                $sReqImg = isset($_SERVER["REQUEST_URI"]) ? urldecode($_SERVER["REQUEST_URI"]) : "";
-                if (($iPos = strpos($sReqImg, $sReqPath)) !== false) {
-                    $this->_sImageUri = substr($sReqImg, $iPos);
+                $reqImg = isset($_SERVER["REQUEST_URI"]) ? urldecode($_SERVER["REQUEST_URI"]) : "";
+                if (($pos = strpos($reqImg, $reqPath)) !== false) {
+                    $this->_sImageUri = substr($reqImg, $pos);
                 }
 
                 $this->_sImageUri = trim($this->_sImageUri, "/");
@@ -236,14 +236,14 @@ namespace OxidEsales\Eshop\Core {
          */
         protected function _getImageMasterPath()
         {
-            $sUri = $this->_getImageUri();
-            $sPath = false;
+            $uri = $this->_getImageUri();
+            $path = false;
 
-            if ($sUri && ($sPath = dirname(dirname($sUri)))) {
-                $sPath = preg_replace("/\/([^\/]*)\/([^\/]*)\/([^\/]*)$/", "/master/\\2/\\3/", $sPath);
+            if ($uri && ($path = dirname(dirname($uri)))) {
+                $path = preg_replace("/\/([^\/]*)\/([^\/]*)\/([^\/]*)$/", "/master/\\2/\\3/", $path);
             }
 
-            return $sPath;
+            return $path;
         }
 
         /**
@@ -253,12 +253,12 @@ namespace OxidEsales\Eshop\Core {
          */
         protected function _getImageInfo()
         {
-            $aInfo = array();
-            if (($sUri = $this->_getImageUri())) {
-                $aInfo = explode($this->_sImageInfoSep, basename(dirname($sUri)));
+            $info = array();
+            if (($uri = $this->_getImageUri())) {
+                $info = explode($this->_sImageInfoSep, basename(dirname($uri)));
             }
 
-            return $aInfo;
+            return $info;
         }
 
         /**
@@ -278,9 +278,9 @@ namespace OxidEsales\Eshop\Core {
          */
         protected function _getNopicImageTarget()
         {
-            $sPath = $this->_getShopBasePath() . $this->_getImageUri();
+            $path = $this->_getShopBasePath() . $this->_getImageUri();
 
-            return str_replace($this->_getImageName(), "nopic.jpg", $sPath);
+            return str_replace($this->_getImageName(), "nopic.jpg", $path);
         }
 
         /**
@@ -290,185 +290,180 @@ namespace OxidEsales\Eshop\Core {
          */
         protected function _getImageType()
         {
-            $sType = preg_replace("/.*\.(png|jp(e)?g|gif)$/", "\\1", $this->_getImageName());
-            $sType = (strcmp($sType, "jpg") == 0) ? "jpeg" : $sType;
+            $type = preg_replace("/.*\.(png|jp(e)?g|gif)$/", "\\1", $this->_getImageName());
+            $type = (strcmp($type, "jpg") == 0) ? "jpeg" : $type;
 
-            return in_array($sType, $this->_aAllowedImgTypes) ? $sType : false;
+            return in_array($type, $this->_aAllowedImgTypes) ? $type : false;
         }
 
         /**
          * Generates PNG type image and returns its location on file system
          *
-         * @param string $sSource image source
-         * @param string $sTarget image target
-         * @param int    $iWidth  image width
-         * @param int    $iHeight image height
+         * @param string $source image source
+         * @param string $target image target
+         * @param int    $width  image width
+         * @param int    $height image height
          *
          * @return string
          */
-        protected function _generatePng($sSource, $sTarget, $iWidth, $iHeight)
+        protected function _generatePng($source, $target, $width, $height)
         {
-            return resizePng($sSource, $sTarget, $iWidth, $iHeight, @getimagesize($sSource), getGdVersion(), null);
+            return resizePng($source, $target, $width, $height, @getimagesize($source), getGdVersion(), null);
         }
 
         /**
          * Generates JPG type image and returns its location on file system
          *
-         * @param string $sSource  image source
-         * @param string $sTarget  image target
-         * @param int    $iWidth   image width
-         * @param int    $iHeight  image height
-         * @param int    $iQuality new image quality
+         * @param string $source  image source
+         * @param string $target  image target
+         * @param int    $width   image width
+         * @param int    $height  image height
+         * @param int    $quality new image quality
          *
          * @return string
          */
-        protected function _generateJpg($sSource, $sTarget, $iWidth, $iHeight, $iQuality)
+        protected function _generateJpg($source, $target, $width, $height, $quality)
         {
-            return resizeJpeg($sSource, $sTarget, $iWidth, $iHeight, @getimagesize($sSource), getGdVersion(), null, $iQuality);
+            return resizeJpeg($source, $target, $width, $height, @getimagesize($source), getGdVersion(), null, $quality);
         }
 
         /**
          * Generates GIF type image and returns its location on file system
          *
-         * @param string $sSource image source
-         * @param string $sTarget image target
-         * @param int    $iWidth  image width
-         * @param int    $iHeight image height
+         * @param string $source image source
+         * @param string $target image target
+         * @param int    $width  image width
+         * @param int    $height image height
          *
          * @return string
          */
-        protected function _generateGif($sSource, $sTarget, $iWidth, $iHeight)
+        protected function _generateGif($source, $target, $width, $height)
         {
-            $aImageInfo = @getimagesize($sSource);
+            $imageInfo = @getimagesize($source);
 
-            return resizeGif($sSource, $sTarget, $iWidth, $iHeight, $aImageInfo[0], $aImageInfo[1], getGdVersion());
+            return resizeGif($source, $target, $width, $height, $imageInfo[0], $imageInfo[1], getGdVersion());
         }
 
         /**
          * Checks if requested image path is valid. If path is valid
          * but is not created - creates directory structure
          *
-         * @param string $sPath image path name to check
+         * @param string $path image path name to check
          *
          * @return bool
          */
-        protected function _isTargetPathValid($sPath)
+        protected function _isTargetPathValid($path)
         {
-            $blValid = true;
-            $sDir = dirname(trim($sPath));
+            $valid = true;
+            $dir = dirname(trim($path));
 
             // first time folder access?
-            if (!is_dir($sDir) && ($blValid = $this->_isValidPath($sDir))) {
+            if (!is_dir($dir) && ($valid = $this->_isValidPath($dir))) {
                 // creating missing folders
-                $blValid = $this->_createFolders($sDir);
+                $valid = $this->_createFolders($dir);
             }
 
-            return $blValid;
+            return $valid;
         }
 
         /**
          * Checks if valid and creates missing needed folders
          *
-         * @param string $sDir folder(s) to create
+         * @param string $dir folder(s) to create
          *
          * @return bool
          */
-        protected function _createFolders($sDir)
+        protected function _createFolders($dir)
         {
-            $oConfig = Registry::getConfig();
-            $sPicFolderPath = dirname($oConfig->getMasterPictureDir());
+            $config = Registry::getConfig();
+            $picFolderPath = dirname($config->getMasterPictureDir());
 
-            $blDone = false;
-            if ($sPicFolderPath && is_dir($sPicFolderPath)) {
-
+            $done = false;
+            if ($picFolderPath && is_dir($picFolderPath)) {
                 // if its in main path..
-                if (strcmp($sPicFolderPath, substr($sDir, 0, strlen($sPicFolderPath))) == 0) {
+                if (strcmp($picFolderPath, substr($dir, 0, strlen($picFolderPath))) == 0) {
                     // folder does not exist yet?
-                    if (!($blDone = file_exists($sDir))) {
+                    if (!($done = file_exists($dir))) {
                         clearstatcache();
                         // in case creation did not succeed, maybe another process allready created folder?
-                        $iMode = 0755;
-                        $blDone = mkdir($sDir, $iMode, true) || file_exists($sDir);
+                        $mode = 0755;
+                        $done = mkdir($dir, $mode, true) || file_exists($dir);
                     }
                 }
             }
 
-            return $blDone;
+            return $done;
         }
 
         /**
          * Checks if main folder matches requested
          *
-         * @param string $sPath image path name to check
+         * @param string $path image path name to check
          *
          * @return bool
          */
-        protected function _isValidPath($sPath)
+        protected function _isValidPath($path)
         {
-            $blValid = false;
+            $valid = false;
 
-            list($iWidth, $iHeight, $sQuality) = $this->_getImageInfo();
-            if ($iWidth && $iHeight && $sQuality) {
-
-                $oConfig = Registry::getConfig();
-                $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+            list($width, $height, $quality) = $this->_getImageInfo();
+            if ($width && $height && $quality) {
+                $config = Registry::getConfig();
+                $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 
                 // parameter names
-                $sNames = '';
-                foreach ($this->_aConfParamToPath as $sParamName => $sPathReg) {
-                    if (preg_match($sPathReg, $sPath)) {
-                        if ($sNames) {
-                            $sNames .= ", ";
+                $names = '';
+                foreach ($this->_aConfParamToPath as $paramName => $pathReg) {
+                    if (preg_match($pathReg, $path)) {
+                        if ($names) {
+                            $names .= ", ";
                         }
-                        $sNames .= $oDb->quote($sParamName);
+                        $names .= $db->quote($paramName);
 
-                        if ($sParamName == "sManufacturerIconsize" || $sParamName == "sCatIconsize") {
-                            $sNames .= ", " . $oDb->quote("sIconsize");
+                        if ($paramName == "sManufacturerIconsize" || $paramName == "sCatIconsize") {
+                            $names .= ", " . $db->quote("sIconsize");
                         }
                     }
                 }
 
                 // any name matching path?
-                if ($sNames) {
-
-                    $sDecodeField = $oConfig->getDecodeValueQuery();
+                if ($names) {
+                    $decodeField = $config->getDecodeValueQuery();
 
                     // selecting shop which image quality matches user given
-                    $sQ = "select oxshopid from oxconfig where oxvarname = 'sDefaultImageQuality' and
-                       {$sDecodeField} = " . $oDb->quote($sQuality);
+                    $q = "select oxshopid from oxconfig where oxvarname = 'sDefaultImageQuality' and
+                       {$decodeField} = " . $db->quote($quality);
 
-                    $aShopIds = $oDb->getAll($sQ);
+                    $shopIdsArray = $db->getAll($q);
 
                     // building query:
                     // shop id
-                    $sShopIds = '';
-                    foreach ($aShopIds as $aShopId) {
-
+                    $shopIds = '';
+                    foreach ($shopIdsArray as $shopId) {
                         // probably here we can resolve and check shop id to shorten check?
 
 
-                        if ($sShopIds) {
-                            $sShopIds .= ", ";
+                        if ($shopIds) {
+                            $shopIds .= ", ";
                         }
-                        $sShopIds .= $oDb->quote($aShopId["oxshopid"]);
+                        $shopIds .= $db->quote($shopId["oxshopid"]);
                     }
 
                     // any shop matching quality
-                    if ($sShopIds) {
-
+                    if ($shopIds) {
                         //
-                        $sCheckSize = "$iWidth*$iHeight";
+                        $checkSize = "$width*$height";
 
                         // selecting config variables to check
-                        $sQ = "select oxvartype, {$sDecodeField} as oxvarvalue from oxconfig
-                           where oxvarname in ( {$sNames} ) and oxshopid in ( {$sShopIds} ) order by oxshopid";
+                        $q = "select oxvartype, {$decodeField} as oxvarvalue from oxconfig
+                           where oxvarname in ( {$names} ) and oxshopid in ( {$shopIds} ) order by oxshopid";
 
-                        $aValues = $oDb->getAll($sQ);
-                        foreach ($aValues as $aValue) {
-                            $aConfValues = (array) $oConfig->decodeValue($aValue["oxvartype"], $aValue["oxvarvalue"]);
-                            foreach ($aConfValues as $sValue) {
-                                if (strcmp($sCheckSize, $sValue) == 0) {
-                                    $blValid = true;
+                        $values = $db->getAll($q);
+                        foreach ($values as $value) {
+                            $confValues = (array) $config->decodeValue($value["oxvartype"], $value["oxvarvalue"]);
+                            foreach ($confValues as $confValue) {
+                                if (strcmp($checkSize, $confValue) == 0) {
+                                    $valid = true;
                                     break;
                                 }
                             }
@@ -477,84 +472,82 @@ namespace OxidEsales\Eshop\Core {
                 }
             }
 
-            return $blValid;
+            return $valid;
         }
 
         /**
          * Generates requested image
          *
-         * @param string $sImageSource image source
-         * @param string $sImageTarget image target
+         * @param string $imageSource image source
+         * @param string $imageTarget image target
          *
          * @return string
          */
-        protected function _generateImage($sImageSource, $sImageTarget)
+        protected function _generateImage($imageSource, $imageTarget)
         {
-            $sPath = false;
+            $path = false;
 
-            if (getGdVersion() !== false && $this->_isTargetPathValid($sImageTarget) && ($sImageType = $this->_getImageType())) {
-
+            if (getGdVersion() !== false && $this->_isTargetPathValid($imageTarget) && ($imageType = $this->_getImageType())) {
                 // including generator files
                 includeImageUtils();
 
                 // in case lock file creation failed should check if another process did not created image yet
-                if ($this->_lock($sImageTarget)) {
-
+                if ($this->_lock($imageTarget)) {
                     // extracting image info - size/quality
-                    list($iWidth, $iHeight, $iQuality) = $this->_getImageInfo();
-                    switch ($sImageType) {
+                    list($width, $height, $quality) = $this->_getImageInfo();
+                    switch ($imageType) {
                         case "png":
-                            $sPath = $this->_generatePng($sImageSource, $sImageTarget, $iWidth, $iHeight);
+                            $path = $this->_generatePng($imageSource, $imageTarget, $width, $height);
                             break;
                         case "jpeg":
-                            $sPath = $this->_generateJpg($sImageSource, $sImageTarget, $iWidth, $iHeight, $iQuality);
+                            $path = $this->_generateJpg($imageSource, $imageTarget, $width, $height, $quality);
                             break;
                         case "gif":
-                            $sPath = $this->_generateGif($sImageSource, $sImageTarget, $iWidth, $iHeight);
+                            $path = $this->_generateGif($imageSource, $imageTarget, $width, $height);
                             break;
                     }
 
                     // releasing..
-                    if ($sPath) {
-                        $this->_unlock($sImageTarget);
+                    if ($path) {
+                        $this->_unlock($imageTarget);
                     }
                 } else {
                     // assuming that image was created by another process
-                    $sPath = file_exists($sImageTarget) ? $sImageTarget : false;
+                    $path = file_exists($imageTarget) ? $imageTarget : false;
                 }
             }
 
-            return $sPath;
+            return $path;
         }
 
         /**
          * Returns lock file name
          *
-         * @param string $sName original file name
+         * @param string $name original file name
          *
          * @return string
          */
-        protected function _getLockName($sName)
+        protected function _getLockName($name)
         {
-            return "$sName.lck";
+            return "$name.lck";
         }
 
         /**
          * Locks file and returns locking state
          *
-         * @param string $sSource source file which should be locked
+         * @param string $source source file which should be locked
          *
          * @return bool
          */
-        protected function _lock($sSource)
+        protected function _lock($source)
         {
-            $blLocked = false;
-            $sLockName = $this->_getLockName($sSource);
+            $locked = false;
+            $lockName = $this->_getLockName($source);
 
             // creating lock file
-            $this->_hLockHandle = @fopen($sLockName, "w");
+            $this->_hLockHandle = @fopen($lockName, "w");
             if (is_resource($this->_hLockHandle)) {
-                if (!($blLocked = flock($this->_hLockHandle, LOCK_EX))) {
+                if (!($locked = flock($this->_hLockHandle, LOCK_EX))) {
                     // on failure - closing
                     fclose($this->_hLockHandle);
                     $this->_hLockHandle = null;
@@ -562,30 +555,30 @@ namespace OxidEsales\Eshop\Core {
             }
 
             // in case system does not support file lockings
-            if (!$blLocked) {
+            if (!$locked) {
                 // start a blank file to inform other processes we are dealing with it.
-                if (!(file_exists($sLockName) && abs(time() - filectime($sLockName) < 40))) {
-                    if ($this->_hLockHandle = @fopen($sLockName, "w")) {
-                        $blLocked = true;
+                if (!(file_exists($lockName) && abs(time() - filectime($lockName) < 40))) {
+                    if ($this->_hLockHandle = @fopen($lockName, "w")) {
+                        $locked = true;
                     }
                 }
             }
 
-            return $blLocked;
+            return $locked;
         }
 
         /**
          * Deletes lock file
          *
-         * @param string $sSource source file which should be locked
+         * @param string $source source file which should be locked
          */
-        protected function _unlock($sSource)
+        protected function _unlock($source)
         {
             if (is_resource($this->_hLockHandle)) {
                 flock($this->_hLockHandle, LOCK_UN);
                 fclose($this->_hLockHandle);
                 $this->_hLockHandle = null;
-                unlink($this->_getLockName($sSource));
+                unlink($this->_getLockName($source));
             }
         }
 
@@ -593,42 +586,42 @@ namespace OxidEsales\Eshop\Core {
          * Returns path to image file which needs should be rendered. If file cannot
          * be found - return false
          *
-         * @param string $sAbsPath absolute requested image path (not url, but real path on file system)
+         * @param string $absPath absolute requested image path (not url, but real path on file system)
          *
          * @return string | false
          */
-        public function getImagePath($sAbsPath = false)
+        public function getImagePath($absPath = false)
         {
-            if ($sAbsPath) {
-                $this->_sImageUri = str_replace($this->_getShopBasePath(), "", $sAbsPath);
+            if ($absPath) {
+                $this->_sImageUri = str_replace($this->_getShopBasePath(), "", $absPath);
             }
 
-            $sImagePath = false;
-            $sMasterPath = $this->_getImageMasterPath();
+            $imagePath = false;
+            $masterPath = $this->_getImageMasterPath();
 
             // building base path + extracting image name + extracting master image path
-            $sMasterImagePath = $this->_getShopBasePath() . $sMasterPath . $this->_getImageName();
+            $masterImagePath = $this->_getShopBasePath() . $masterPath . $this->_getImageName();
 
-            if (file_exists($sMasterImagePath)) {
-                $sGenImagePath = $this->_getImageTarget();
+            if (file_exists($masterImagePath)) {
+                $genImagePath = $this->_getImageTarget();
             } else {
                 // nopic master path
-                $sMasterImagePath = $this->_getShopBasePath() . dirname(dirname($sMasterPath)) . "/nopic.jpg";
-                $sGenImagePath = $this->_getNopicImageTarget();
+                $masterImagePath = $this->_getShopBasePath() . dirname(dirname($masterPath)) . "/nopic.jpg";
+                $genImagePath = $this->_getNopicImageTarget();
 
                 // 404 header for nopic
                 $this->_setHeader("HTTP/1.0 404 Not Found");
             }
 
             // checking if master image is accessible
-            if (file_exists($sGenImagePath)) {
-                $sImagePath = $sGenImagePath;
-            } elseif (file_exists($sMasterImagePath)) {
+            if (file_exists($genImagePath)) {
+                $imagePath = $genImagePath;
+            } elseif (file_exists($masterImagePath)) {
                 // generating image
-                $sImagePath = $this->_generateImage($sMasterImagePath, $sGenImagePath);
+                $imagePath = $this->_generateImage($masterImagePath, $genImagePath);
             }
 
-            if ($sImagePath) {
+            if ($imagePath) {
                 // image type header
                 $this->_setHeader("Content-Type: image/" . $this->_getImageType());
             } else {
@@ -636,7 +629,7 @@ namespace OxidEsales\Eshop\Core {
                 $this->_setHeader("HTTP/1.0 404 Not Found");
             }
 
-            return $sImagePath;
+            return $imagePath;
         }
 
         /**
@@ -646,47 +639,47 @@ namespace OxidEsales\Eshop\Core {
          */
         public function outputImage()
         {
-            $blBuffer = true;
+            $buffer = true;
 
             // starting output buffering
-            if ($blBuffer) {
+            if ($buffer) {
                 ob_start();
             }
 
             //
-            $sImgPath = $this->getImagePath();
+            $imgPath = $this->getImagePath();
 
             // cleaning extra output
-            if ($blBuffer) {
+            if ($buffer) {
                 ob_clean();
             }
 
             // outputting headers
-            $aHeaders = $this->_getHeaders();
-            foreach ($aHeaders as $sHeader) {
-                header($sHeader);
+            $headers = $this->_getHeaders();
+            foreach ($headers as $header) {
+                header($header);
             }
 
             // sending headers
-            if ($blBuffer) {
+            if ($buffer) {
                 ob_end_flush();
             }
 
             // file is generated?
-            if ($sImgPath) {
+            if ($imgPath) {
                 // outputting file
-                @readfile($sImgPath);
+                @readfile($imgPath);
             }
         }
 
         /**
          * Custom header setter
          *
-         * @param string $sHeader header
+         * @param string $header header
          */
-        protected function _setHeader($sHeader)
+        protected function _setHeader($header)
         {
-            $this->_aHeaders[] = $sHeader;
+            $this->_aHeaders[] = $header;
         }
 
         /**

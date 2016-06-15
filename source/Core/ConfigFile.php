@@ -29,24 +29,24 @@ class ConfigFile
     /**
      * Initializes the instance. Loads config variables from the file.
      *
-     * @param string $sFileName Configuration file name
+     * @param string $fileName Configuration file name
      */
-    public function __construct($sFileName)
+    public function __construct($fileName)
     {
-        $this->_loadVars($sFileName);
+        $this->_loadVars($fileName);
     }
 
     /**
      * Returns loaded variable value by name.
      *
-     * @param string $sVarName Variable name
+     * @param string $varName Variable name
      *
      * @return mixed
      */
-    public function getVar($sVarName)
+    public function getVar($varName)
     {
-        if (isset ($this->$sVarName)) {
-            return $this->$sVarName;
+        if (isset($this->$varName)) {
+            return $this->$varName;
         }
 
         return null;
@@ -55,24 +55,24 @@ class ConfigFile
     /**
      * Set config variable.
      *
-     * @param string $sVarName Variable name
-     * @param string $sValue   Variable value
+     * @param string $varName Variable name
+     * @param string $value   Variable value
      */
-    public function setVar($sVarName, $sValue)
+    public function setVar($varName, $value)
     {
-        $this->$sVarName = $sValue;
+        $this->$varName = $value;
     }
 
     /**
      * Checks by name if variable is set
      *
-     * @param string $sVarName Variable name
+     * @param string $varName Variable name
      *
      * @return bool
      */
-    public function isVarSet($sVarName)
+    public function isVarSet($varName)
     {
-        return isset($this->$sVarName);
+        return isset($this->$varName);
     }
 
     /**
@@ -82,20 +82,20 @@ class ConfigFile
      */
     public function getVars()
     {
-        $aAllVars = get_object_vars($this);
+        $allVars = get_object_vars($this);
 
-        return $aAllVars;
+        return $allVars;
     }
 
     /**
      * Sets custom config file to include
      *
-     * @param string $sFileName custom configuration file name
+     * @param string $fileName custom configuration file name
      */
-    public function setFile($sFileName)
+    public function setFile($fileName)
     {
-        if (is_readable($sFileName)) {
-            $this->_loadVars($sFileName);
+        if (is_readable($fileName)) {
+            $this->_loadVars($fileName);
         }
     }
     /**
@@ -104,10 +104,10 @@ class ConfigFile
      * however in case the variable storage format is not satisfactory
      * this method is a subject to be changed.
      *
-     * @param string $sFileName Configuration file name
+     * @param string $fileName Configuration file name
      */
-    private function _loadVars($sFileName)
+    private function _loadVars($fileName)
     {
-        include $sFileName;
+        include $fileName;
     }
 }

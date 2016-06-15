@@ -338,7 +338,7 @@ class oxcmp_user extends oxView
      */
     public function logout()
     {
-        $myConfig = $this->getConfig();
+        $oConfig = $this->getConfig();
         $oUser = oxNew('oxuser');
 
         if ($oUser->logout()) {
@@ -354,7 +354,7 @@ class oxcmp_user extends oxView
             }
 
             // redirecting if user logs out in SSL mode
-            if (oxRegistry::getConfig()->getRequestParameter('redirect') && $myConfig->getConfigParam('sSSLShopURL')) {
+            if (oxRegistry::getConfig()->getRequestParameter('redirect') && $oConfig->getConfigParam('sSSLShopURL')) {
                 oxRegistry::getUtils()->redirect($this->_getLogoutLink());
             }
         }

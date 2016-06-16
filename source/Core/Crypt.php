@@ -23,28 +23,23 @@
 namespace OxidEsales\Eshop\Core;
 
 /**
- * Class oxEncryptor
+ * Class Crypt
  */
-class Encryptor extends Crypt
+abstract class Crypt
 {
     /**
-     * Encrypts string with given key.
+     * Forms key for use in encoding.
      *
-     * @param string $string
      * @param string $key
+     * @param string $string
      *
      * @return string
      */
-    public function encrypt($string, $key)
+    protected function _formKey($key, $string)
     {
-        $string = "ox{$string}id";
+        $key = '_' . $key;
+        $keyLength = (strlen($string) / strlen($key)) + 5;
 
-        $key = $this->_formKey($key, $string);
-
-        $string = $string ^ $key;
-        $string = base64_encode($string);
-        $string = str_replace("=", "!", $string);
-
-        return "ox_$string";
+        return str_repeat($key, $keyLength);
     }
 }

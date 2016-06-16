@@ -25,9 +25,8 @@ namespace OxidEsales\Eshop\Core;
 /**
  * Class oxDecryptor
  */
-class Decryptor
+class Decryptor extends Crypt
 {
-
     /**
      * Decrypts string with given key.
      *
@@ -46,21 +45,5 @@ class Decryptor
         $string = $string ^ $key;
 
         return substr($string, 2, -2);
-    }
-
-    /**
-     * Forms key for use in encoding.
-     *
-     * @param string $key
-     * @param string $string
-     *
-     * @return string
-     */
-    protected function _formKey($key, $string)
-    {
-        $key = '_' . $key;
-        $keyLength = (strlen($string) / strlen($key)) + 5;
-
-        return str_repeat($key, $keyLength);
     }
 }

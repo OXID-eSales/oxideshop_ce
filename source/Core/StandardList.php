@@ -80,11 +80,7 @@ class StandardList extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Coun
      */
     public function offsetExists($offset)
     {
-        if (isset($this->_aArray[$offset])) {
-            return true;
-        } else {
-            return false;
-        }
+        return isset($this->_aArray[$offset]);
     }
 
     /**
@@ -98,9 +94,9 @@ class StandardList extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Coun
     {
         if ($this->offsetExists($offset)) {
             return $this->_aArray[$offset];
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -391,11 +387,9 @@ class StandardList extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Coun
         }
 
         if ($rs != false && $rs->recordCount() > 0) {
-
             $oSaved = clone $this->getBaseObject();
 
             while (!$rs->EOF) {
-
                 $oListObject = clone $oSaved;
 
                 $this->_assignElement($oListObject, $rs->fields);
@@ -430,7 +424,6 @@ class StandardList extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Coun
     {
         $this->clear();
         if (count($aData)) {
-
             $oSaved = clone $this->getBaseObject();
 
             foreach ($aData as $aItem) {

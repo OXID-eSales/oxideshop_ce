@@ -100,9 +100,7 @@ class FileCache
      */
     protected function getCacheFilePath($key)
     {
-        $fileName = $this->getCacheDir() . "/" . $this->getCacheFileName($key);
-
-        return $fileName;
+        return $this->getCacheDir() . "/" . $this->getCacheFileName($key);
     }
 
     /**
@@ -112,9 +110,7 @@ class FileCache
      */
     protected function getCacheDir()
     {
-        $dir = oxRegistry::get("oxConfigFile")->getVar("sCompileDir");
-
-        return $dir;
+        return oxRegistry::get("oxConfigFile")->getVar("sCompileDir");
     }
 
     /**

@@ -130,7 +130,7 @@ abstract class OnlineCaller
      */
     protected function _castExceptionAndWriteToLog(Exception $oEx)
     {
-        if(!($oEx instanceof oxException)){
+        if (!($oEx instanceof oxException)) {
             $oOxException = oxNew("oxException");
             $oOxException->setMessage($oEx->getMessage());
             $oOxException->debugOut();
@@ -211,9 +211,8 @@ abstract class OnlineCaller
             oxCurl::EXECUTION_TIMEOUT_OPTION,
             static::CURL_EXECUTION_TIMEOUT
         );
-        $sOutput = $oCurl->execute();
 
-        return $sOutput;
+        return $oCurl->execute();
     }
 
     /**

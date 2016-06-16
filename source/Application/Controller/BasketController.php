@@ -388,9 +388,7 @@ class BasketController extends \oxUBase
     public function getBasketContentMarkGenerator()
     {
         /** @var oxBasketContentMarkGenerator $oBasketContentMarkGenerator */
-        $oBasketContentMarkGenerator = oxNew('oxBasketContentMarkGenerator', $this->getSession()->getBasket());
-
-        return $oBasketContentMarkGenerator;
+        return oxNew('oxBasketContentMarkGenerator', $this->getSession()->getBasket());
     }
 
     /**

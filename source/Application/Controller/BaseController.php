@@ -901,7 +901,6 @@ class BaseController extends \oxView
      */
     public function getUserSelectedSorting()
     {
-        $sorting = null;
         $sortDirections = array('desc', 'asc');
 
         $request = Registry::get(Request::class);
@@ -915,10 +914,8 @@ class BaseController extends \oxView
             in_array(Str::getStr()->strtolower($sortOrder), $sortDirections) &&
             in_array($sortBy, oxNew('oxArticle')->getFieldNames())
         ) {
-            $sorting = array('sortby' => $sortBy, 'sortdir' => $sortOrder);
+            return array('sortby' => $sortBy, 'sortdir' => $sortOrder);
         }
-
-        return $sorting;
     }
 
     /**
@@ -1467,8 +1464,6 @@ class BaseController extends \oxView
      */
     public function getPageTitle()
     {
-        $title = '';
-
         $titleParts = array();
         $titleParts[] = $this->getTitlePrefix();
         $titleParts[] = $this->getTitle();
@@ -1477,12 +1472,7 @@ class BaseController extends \oxView
 
         $titleParts = array_filter($titleParts);
 
-        if (count($titleParts)) {
-            $title = implode(' | ', $titleParts);
-        }
-
-
-        return $title;
+        return implode(' | ', $titleParts);
     }
 
 
@@ -1740,12 +1730,7 @@ class BaseController extends \oxView
      */
     public function showSearch()
     {
-        $show = true;
-        if ($this->getConfig()->getConfigParam('blDisableNavBars') && $this->getIsOrderStep()) {
-            $show = false;
-        }
-
-        return (int) $show;
+        return !($this->getConfig()->getConfigParam('blDisableNavBars') && $this->getIsOrderStep());
     }
 
     /**
@@ -2005,9 +1990,7 @@ class BaseController extends \oxView
      */
     public function getPageNavigationLimitedTop($positionCount = 7)
     {
-        $this->_oPageNavigation = $this->generatePageNavigation($positionCount);
-
-        return $this->_oPageNavigation;
+        return $this->_oPageNavigation = $this->generatePageNavigation($positionCount);
     }
 
     /**
@@ -2019,9 +2002,7 @@ class BaseController extends \oxView
      */
     public function getPageNavigationLimitedBottom($positionCount = 11)
     {
-        $this->_oPageNavigation = $this->generatePageNavigation($positionCount);
-
-        return $this->_oPageNavigation;
+        return $this->_oPageNavigation = $this->generatePageNavigation($positionCount);
     }
 
     /**
@@ -2107,7 +2088,6 @@ class BaseController extends \oxView
         parent::render();
 
         if ($this->getIsOrderStep()) {
-
             // disabling navigation during order ...
             if ($this->getConfig()->getConfigParam('blDisableNavBars')) {
                 $this->_iNewsRealStatus = 1;
@@ -2201,7 +2181,6 @@ class BaseController extends \oxView
         // this may be useful when category component was unable to load active Manufacturer
         // and we still need some object to mount navigation info
         if ($this->_oActManufacturer === null) {
-
             $this->_oActManufacturer = false;
             $manufacturerId = $this->getConfig()->getRequestParameter('mnid');
             $manufacturer = oxNew('oxManufacturer');
@@ -2585,13 +2564,7 @@ class BaseController extends \oxView
      */
     public function isFieldRequired($field)
     {
-        if ($mustFillFields = $this->getMustFillFields()) {
-            if (isset($mustFillFields[$field])) {
-                return true;
-            }
-        }
-
-        return false;
+        return isset($this->getMustFillFields()[$field]);
     }
 
     /**
@@ -2921,7 +2894,6 @@ class BaseController extends \oxView
      */
     public function isVatIncluded()
     {
-        $result = true;
         $config = $this->getConfig();
         $user = $this->getUser();
 
@@ -2949,10 +2921,10 @@ class BaseController extends \oxView
             $config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder') ||
             $countryBillsNotVat
         ) {
-            $result = false;
+            return false;
         }
 
-        return $result;
+        return true;
     }
 
     /**

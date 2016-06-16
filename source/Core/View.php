@@ -209,9 +209,7 @@ class View extends \oxSuperCfg
      */
     public function getViewParameter($sKey)
     {
-        $sValue = (isset($this->_aViewParams[$sKey])) ? $this->_aViewParams[$sKey] : $this->getConfig()->getRequestParameter($sKey);
-
-        return $sValue;
+        return (isset($this->_aViewParams[$sKey])) ? $this->_aViewParams[$sKey] : $this->getConfig()->getRequestParameter($sKey);
     }
 
     /**
@@ -513,7 +511,7 @@ class View extends \oxSuperCfg
                 $sNewAction = $this->$sFunction();
                 self::$_blExecuted = true;
 
-                if (isset ($sNewAction)) {
+                if (isset($sNewAction)) {
                     $this->_executeNewAction($sNewAction);
                 }
             } else {
@@ -703,13 +701,7 @@ class View extends \oxSuperCfg
      */
     public function isBetaVersion()
     {
-        $blBetaVersion = false;
-
-        if (stripos($this->getConfig()->getVersion(), 'beta') !== false) {
-            $blBetaVersion = true;
-        }
-
-        return $blBetaVersion;
+        return (stripos($this->getConfig()->getVersion(), 'beta') !== false);
     }
 
     /**
@@ -719,13 +711,7 @@ class View extends \oxSuperCfg
      */
     public function isRCVersion()
     {
-        $blRCVersion = false;
-
-        if (stripos($this->getConfig()->getVersion(), 'rc') !== false) {
-            $blRCVersion = true;
-        }
-
-        return $blRCVersion;
+        return (stripos($this->getConfig()->getVersion(), 'rc') !== false);
     }
 
     /**
@@ -735,13 +721,7 @@ class View extends \oxSuperCfg
      */
     public function showBetaNote()
     {
-        $blBetaNote = false;
-
-        if ($this->isBetaVersion() || $this->isRCVersion()) {
-            $blBetaNote = true;
-        }
-
-        return $blBetaNote;
+        return ($this->isBetaVersion() || $this->isRCVersion());
     }
 
     /**
@@ -765,11 +745,7 @@ class View extends \oxSuperCfg
      */
     public function showNewsletter()
     {
-        if ($this->_iNewsStatus === null) {
-            return 1;
-        }
-
-        return $this->_iNewsStatus;
+        return $this->_iNewsStatus === null ? 1 : $this->_iNewsStatus;
     }
 
     /**
@@ -823,7 +799,6 @@ class View extends \oxSuperCfg
         // this may be usefull when category component was unable to load active category
         // and we still need some object to mount navigation info
         if ($this->_oClickCat === null) {
-
             $this->_oClickCat = false;
             $oCategory = oxNew('oxCategory');
             if ($oCategory->load($this->getCategoryId())) {
@@ -915,14 +890,11 @@ class View extends \oxSuperCfg
      */
     public function getSidForWidget()
     {
-        $sRet = null;
         $oSession = $this->getSession();
 
         if (!$oSession->isActualSidInCookie()) {
-            $sRet = $oSession->getId();
+            return $oSession->getId();
         }
-
-        return $sRet;
     }
 
     /**

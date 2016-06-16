@@ -25,7 +25,6 @@ namespace OxidEsales\Eshop\Core;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use oxRegistry;
 
-
 /**
  * View config data access class. Keeps most
  * of getters needed for formatting various urls,
@@ -125,9 +124,7 @@ class ViewConfig extends \oxSuperCfg
         $shopConfig = $this->getConfig();
         $isSeoActive = oxRegistry::getUtils()->seoIsActive();
 
-        $isStartRequired = $isSeoActive && ($baseLanguage != $shopConfig->getConfigParam('sDefaultLang'));
-
-        return $isStartRequired;
+        return $isSeoActive && ($baseLanguage != $shopConfig->getConfigParam('sDefaultLang'));
     }
 
     /**
@@ -456,7 +453,6 @@ class ViewConfig extends \oxSuperCfg
     public function getBaseDir()
     {
         if (($sValue = $this->getViewConfigParam('basedir')) === null) {
-
             if ($this->getConfig()->isSsl()) {
                 $sValue = $this->getConfig()->getSSLShopURL();
             } else {
@@ -1086,9 +1082,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getRemoteAccessToken()
     {
-        $sRaToken = oxRegistry::getSession()->getRemoteAccessToken();
-
-        return $sRaToken;
+        return oxRegistry::getSession()->getRemoteAccessToken();
     }
 
     /**
@@ -1155,9 +1149,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getPasswordLength()
     {
-        $inputValidator = oxRegistry::get('oxInputValidator');
-
-        return $inputValidator->getPasswordLength();
+        return oxRegistry::get('oxInputValidator')->getPasswordLength();
     }
 
     /**
@@ -1267,7 +1259,6 @@ class ViewConfig extends \oxSuperCfg
     public function getViewThemeParam($sName)
     {
         $sValue = false;
-
         if ($this->getConfig()->isThemeOption($sName)) {
             $sValue = $this->getConfig()->getConfigParam($sName);
         }
@@ -1392,13 +1383,7 @@ class ViewConfig extends \oxSuperCfg
      */
     private function _moduleExists($sModuleId, $aModuleVersions)
     {
-        $blModuleExists = false;
-
-        if (in_array($sModuleId, array_keys($aModuleVersions) )) {
-            $blModuleExists = true;
-        }
-
-        return $blModuleExists;
+        return (in_array($sModuleId, array_keys($aModuleVersions)));
     }
 
     /**
@@ -1410,13 +1395,9 @@ class ViewConfig extends \oxSuperCfg
      */
     private function _isModuleEnabled($sModuleId)
     {
-        $blModuleIsActive = false;
-
         $aDisabledModules = $this->getConfig()->getConfigParam('aDisabledModules');
-        if (!(is_array($aDisabledModules) && in_array($sModuleId, $aDisabledModules))) {
-            $blModuleIsActive = true;
-        }
-        return $blModuleIsActive;
+
+        return !in_array($sModuleId, (array) $aDisabledModules);
     }
 
     /**

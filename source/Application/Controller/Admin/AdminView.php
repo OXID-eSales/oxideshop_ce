@@ -252,7 +252,6 @@ class AdminView extends \oxView
     public function getServiceUrl($sLangAbbr = null)
     {
         if ($this->_sServiceUrl === null) {
-
             $sProtocol = $this->_getServiceProtocol();
 
             $editionSelector = new EditionSelector();
@@ -289,9 +288,7 @@ class AdminView extends \oxView
             $sVersion = oxDb::getDb()->getOne($sQ, false, false);
         }
 
-        $sVersion = preg_replace("/(^[^0-9]+)(.+)$/", "$2", $sVersion);
-
-        return trim($sVersion);
+        return trim(preg_replace("/(^[^0-9]+)(.+)$/", "$2", $sVersion));
     }
 
     /**
@@ -303,7 +300,6 @@ class AdminView extends \oxView
     {
         // navigation according to class
         if ($sNode) {
-
             $myAdminNavig = $this->getNavigation();
 
             // active tab

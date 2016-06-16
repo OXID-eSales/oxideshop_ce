@@ -45,11 +45,7 @@ class ConfigFile
      */
     public function getVar($varName)
     {
-        if (isset($this->$varName)) {
-            return $this->$varName;
-        }
-
-        return null;
+        return isset($this->$varName) ? $this->$varName : null;
     }
 
     /**
@@ -82,9 +78,7 @@ class ConfigFile
      */
     public function getVars()
     {
-        $allVars = get_object_vars($this);
-
-        return $allVars;
+        return get_object_vars($this);
     }
 
     /**

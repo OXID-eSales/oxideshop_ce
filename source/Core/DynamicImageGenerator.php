@@ -253,7 +253,7 @@ namespace OxidEsales\Eshop\Core {
          */
         protected function _getImageInfo()
         {
-            $info = array();
+            $info = [];
             if (($uri = $this->_getImageUri())) {
                 $info = explode($this->_sImageInfoSep, basename(dirname($uri)));
             }

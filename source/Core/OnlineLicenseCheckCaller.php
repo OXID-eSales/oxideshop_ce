@@ -62,9 +62,7 @@ class OnlineLicenseCheckCaller extends \oxOnlineCaller
      */
     public function doRequest(oxOnlineLicenseCheckRequest $oRequest)
     {
-        $sResponse = $this->call($oRequest);
-
-        return $this->_formResponse($sResponse);
+        return $this->_formResponse($this->call($oRequest));
     }
 
     /**

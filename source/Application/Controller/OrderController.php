@@ -251,7 +251,6 @@ class OrderController extends \oxUBase
         // get basket contents
         $oBasket = $this->getSession()->getBasket();
         if ($oBasket->getProductsCount()) {
-
             try {
                 $oOrder = oxNew('oxorder');
 
@@ -556,10 +555,7 @@ class OrderController extends \oxUBase
      */
     public function getBasketContentMarkGenerator()
     {
-        /** @var oxBasketContentMarkGenerator $oBasketContentMarkGenerator */
-        $oBasketContentMarkGenerator = oxNew('oxBasketContentMarkGenerator', $this->getBasket());
-
-        return $oBasketContentMarkGenerator;
+        return oxNew('oxBasketContentMarkGenerator', $this->getBasket());
     }
 
     /**

@@ -65,13 +65,7 @@ class ServerChecker
      */
     public function check(oxApplicationServer $oServer)
     {
-        $blResult = false;
-
-        if ($this->_isValid($oServer) && $this->_isServerTimeValid($oServer->getTimestamp())) {
-            $blResult = true;
-        }
-
-        return $blResult;
+        return $this->_isValid($oServer) && $this->_isServerTimeValid($oServer->getTimestamp());
     }
 
     /**

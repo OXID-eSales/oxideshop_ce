@@ -175,7 +175,6 @@ class PaymentController extends \oxUBase
         $blAlreadyRedirected = oxRegistry::getConfig()->getRequestParameter('sslredirect') == 'forced';
 
         if ($this->getIsOrderStep()) {
-
             //additional check if we really really have a user now
             //and the basket is not empty
             $oBasket = $this->getSession()->getBasket();

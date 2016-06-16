@@ -85,9 +85,8 @@ class SystemRequirementsMain extends \oxAdminDetails
     public function getReqInfoUrl($sIdent)
     {
         $oSysReq = new oxSysRequirements();
-        $sUrl = $oSysReq->getReqInfoUrl($sIdent);
 
-        return $sUrl;
+        return $oSysReq->getReqInfoUrl($sIdent);
     }
 
     /**

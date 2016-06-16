@@ -433,9 +433,9 @@ class GenericImport
 
         if ($fieldEncloser = $config->getConfigParam('sGiCsvFieldEncloser')) {
             return $fieldEncloser;
-        } else {
-            return $this->defaultStringEncloser;
         }
+
+        return $this->defaultStringEncloser;
     }
 
     /**
@@ -463,6 +463,7 @@ class GenericImport
     protected function createImportObject($type)
     {
         $className = __NAMESPACE__ . "\\ImportObject\\".$type;
+
         return oxNew($className);
     }
 }

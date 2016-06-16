@@ -178,12 +178,9 @@ class ManufacturerListController extends \AList
      */
     protected function _getSeoObjectId()
     {
-        $sId = null;
         if (($oManufacturer = $this->getActManufacturer())) {
-            $sId = $oManufacturer->getId();
+            return $oManufacturer->getId();
         }
-
-        return $sId;
     }
 
     /**
@@ -201,13 +198,11 @@ class ManufacturerListController extends \AList
         if (oxRegistry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer())) {
             if ($iPage) {
                 // only if page number > 0
-                $sUrl = $oManufacturer->getBaseSeoLink($iLang, $iPage);
+                return $oManufacturer->getBaseSeoLink($iLang, $iPage);
             }
-        } else {
-            $sUrl = parent::_addPageNrParam($sUrl, $iPage, $iLang);
         }
 
-        return $sUrl;
+        return parent::_addPageNrParam($sUrl, $iPage, $iLang);
     }
 
     /**
@@ -309,12 +304,9 @@ class ManufacturerListController extends \AList
      */
     public function getTreePath()
     {
-        $aPath = null;
         if ($oManufacturerTree = $this->getManufacturerTree()) {
-            $aPath = $oManufacturerTree->getPath();
+            return $oManufacturerTree->getPath();
         }
-
-        return $aPath;
     }
 
     /**
@@ -360,12 +352,9 @@ class ManufacturerListController extends \AList
      */
     public function getTitleSuffix()
     {
-        $sSuffix = null;
         if ($this->getActManufacturer()->oxmanufacturers__oxshowsuffix->value) {
-            $sSuffix = $this->getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
+            return $this->getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
         }
-
-        return $sSuffix;
     }
 
     /**

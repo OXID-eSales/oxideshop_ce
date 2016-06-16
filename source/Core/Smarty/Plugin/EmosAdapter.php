@@ -183,6 +183,7 @@ class EmosAdapter extends oxSuperCfg
     protected function _getScriptPath()
     {
         $sShopUrl = $this->getConfig()->getCurrentShopUrl();
+
         return "{$sShopUrl}modules/econda/out/";
     }
 
@@ -209,6 +210,7 @@ class EmosAdapter extends oxSuperCfg
         if (!$myConfig->isUtf()) {
             $sContent = iconv(oxRegistry::getLang()->translateString('charset'), 'UTF-8', $sContent);
         }
+
         return $sContent;
     }
 
@@ -226,8 +228,8 @@ class EmosAdapter extends oxSuperCfg
         if ($oProduct->oxarticles__oxvarselect->value) {
             $sTitle .= " " . $oProduct->oxarticles__oxvarselect->value;
         }
-        $sTitle = $this->_convertToUtf($sTitle);
-        return $sTitle;
+
+        return $this->_convertToUtf($sTitle);
     }
 
     /**
@@ -286,6 +288,7 @@ class EmosAdapter extends oxSuperCfg
         } else {
             $sCl = $oActView->getClassName();
         }
+
         return $sCl ? strtolower($sCl) : 'start';
     }
 
@@ -307,6 +310,7 @@ class EmosAdapter extends oxSuperCfg
             $this->_sEmosCatPath = (count($aCatTitle) ? strip_tags(implode('/', $aCatTitle)) : 'NULL');
             $this->_sEmosCatPath = $this->_convertToUtf($this->_sEmosCatPath);
         }
+
         return $this->_sEmosCatPath;
     }
 
@@ -340,9 +344,8 @@ class EmosAdapter extends oxSuperCfg
                 }
             }
         }
-        $sCatPath = $this->_convertToUtf($sCatPath);
 
-        return $sCatPath;
+        return $this->_convertToUtf($sCatPath);
     }
 
     /**
@@ -375,6 +378,7 @@ class EmosAdapter extends oxSuperCfg
             // in case template was not defined in request
             $sCurrTpl = $this->getConfig()->getActiveView()->getTemplateName();
         }
+
         return $sCurrTpl;
     }
 
@@ -554,7 +558,8 @@ class EmosAdapter extends oxSuperCfg
         $oConfig = $this->getConfig();
         $oCur = $oConfig->getActShopCurrencyObject();
 
-        $oEmos->addEmosBillingPageArray($this->_convertToUtf($oOrder->oxorder__oxordernr->value),
+        $oEmos->addEmosBillingPageArray(
+            $this->_convertToUtf($oOrder->oxorder__oxordernr->value),
             $this->_convertToUtf($oUser->oxuser__oxusername->value),
             $oBasket->getPrice()->getBruttoPrice() * (1 / $oCur->rate),
             $this->_convertToUtf($oOrder->oxorder__oxbillcountry->value),

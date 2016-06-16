@@ -149,7 +149,6 @@ class Registry
      */
     public static function instanceExists($className)
     {
-        $className = strtolower($className);
-        return isset(self::$instances[$className]);
+        return isset(self::$instances[strtolower($className)]);
     }
 }

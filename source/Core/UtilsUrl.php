@@ -291,6 +291,7 @@ class UtilsUrl extends \oxSuperCfg
     public function getActiveShopHost()
     {
         $shopUrl = $this->getConfig()->getShopUrl();
+
         return $this->extractHost($shopUrl);
     }
 
@@ -303,14 +304,7 @@ class UtilsUrl extends \oxSuperCfg
      */
     public function extractHost($url)
     {
-        $host = $url;
-        $sUrlHost = $this->parseUrlAndAppendSchema($host, PHP_URL_HOST);
-
-        if (!is_null($sUrlHost)) {
-            $host = $sUrlHost;
-        }
-
-        return $host;
+        return $this->parseUrlAndAppendSchema($url, PHP_URL_HOST) ?: $url;
     }
 
     /**
@@ -334,9 +328,7 @@ class UtilsUrl extends \oxSuperCfg
      */
     public function extractUrlPath($shopUrl)
     {
-        $urlPath = $this->parseUrlAndAppendSchema($shopUrl, PHP_URL_PATH);
-
-        return $urlPath;
+        return $this->parseUrlAndAppendSchema($shopUrl, PHP_URL_PATH);
     }
 
     /**
@@ -479,9 +471,7 @@ class UtilsUrl extends \oxSuperCfg
             $sProtocol = 'https://';
         }
 
-        $sUrl = $sProtocol . $aServerParams['HTTP_HOST'] . $aServerParams['REQUEST_URI'];
-
-        return $sUrl;
+        return $sProtocol . $aServerParams['HTTP_HOST'] . $aServerParams['REQUEST_URI'];
     }
 
     /**
@@ -518,10 +508,7 @@ class UtilsUrl extends \oxSuperCfg
      */
     public function getUrlLanguageParameter($languageId)
     {
-        $language = oxRegistry::getLang();
-        $languageParameter = array($language->getName() => $languageId);
-
-        return $languageParameter;
+        return [oxRegistry::getLang()->getName() => $languageId];
     }
 
     /**
@@ -650,6 +637,7 @@ class UtilsUrl extends \oxSuperCfg
             $newFilteredParameters = array_diff_key($aAddParams, $currentUrlParameters);
             $newParameters = array_merge($currentUrlParameters, $newFilteredParameters);
         }
+
         return $newParameters;
     }
 
@@ -660,8 +648,6 @@ class UtilsUrl extends \oxSuperCfg
      */
     private function rightTrimAmp($url)
     {
-        /** @var oxStrRegular $oStr */
-        $oStr = getStr();
-        return $oStr->preg_replace('/(\?|&(amp;)?)$/i', '', $url);
+        return getStr()->preg_replace('/(\?|&(amp;)?)$/i', '', $url);
     }
 }

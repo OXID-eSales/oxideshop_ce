@@ -190,11 +190,10 @@ class ManufacturerMainAjax extends \ajaxListComponent
     protected function formArticleToManufacturerAdditionQuery($manufacturerId, $articlesToAdd)
     {
         $database = oxDb::getDb();
-        $query = "
+
+        return "
             UPDATE oxarticles
             SET oxmanufacturerid = " . $database->quote($manufacturerId) . "
             WHERE oxid IN ( " . implode(", ", $database->quoteArray($articlesToAdd)) . " )";
-
-        return $query;
     }
 }

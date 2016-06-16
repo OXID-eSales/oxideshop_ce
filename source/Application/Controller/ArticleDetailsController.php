@@ -471,7 +471,6 @@ class ArticleDetailsController extends \oxUBase
         }
     }
 
-
     /**
      * Returns current product
      *
@@ -640,9 +639,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getActPictureId()
     {
-        $picturesGallery = $this->getPictureGallery();
-
-        return $picturesGallery['ActPicID'];
+        return $this->getPictureGallery()['ActPicID'];
     }
 
     /**
@@ -652,9 +649,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getActPicture()
     {
-        $picturesGallery = $this->getPictureGallery();
-
-        return $picturesGallery['ActPic'];
+        return $this->getPictureGallery()['ActPic'];
     }
 
     /**
@@ -664,9 +659,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getPictures()
     {
-        $picturesGallery = $this->getPictureGallery();
-
-        return $picturesGallery['Pics'];
+        return $this->getPictureGallery()['Pics'];
     }
 
     /**
@@ -678,9 +671,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function getArtPic($pictureNumber)
     {
-        $picturesGallery = $this->getPictureGallery();
-
-        return $picturesGallery['Pics'][$pictureNumber];
+        return $this->getPictureGallery()['Pics'][$pictureNumber];
     }
 
     /**
@@ -887,7 +878,8 @@ class ArticleDetailsController extends \oxUBase
             $variantSelectionId = $article->oxarticles__oxvarselect->value;
 
             $variantSelectionValue = $variantSelectionId ? ' ' . $variantSelectionId : '';
-            return $articleTitle . $variantSelectionValue ;
+
+            return $articleTitle . $variantSelectionValue;
         }
     }
 
@@ -1256,9 +1248,7 @@ class ArticleDetailsController extends \oxUBase
      */
     public function showZoomPics()
     {
-        $pictureGallery = $this->getPictureGallery();
-
-        return $pictureGallery['ZoomPic'];
+        return $this->getPictureGallery()['ZoomPic'];
     }
 
     /**

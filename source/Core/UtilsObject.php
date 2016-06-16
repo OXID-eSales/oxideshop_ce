@@ -349,9 +349,7 @@ class UtilsObject
 
         $class = $classNameProvider->getClassName($classAlias);
 
-        $class = $this->getModuleChainsGenerator()->createClassChain($class, $classAlias);
-
-        return $class;
+        return $this->getModuleChainsGenerator()->createClassChain($class, $classAlias);
     }
 
     /**

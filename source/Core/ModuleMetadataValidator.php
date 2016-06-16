@@ -45,8 +45,6 @@ class ModuleMetadataValidator implements \oxIModuleValidator
      */
     public function validate(oxModule $oModule)
     {
-        $sMetadataPath = $oModule->getMetadataPath();
-
-        return file_exists($sMetadataPath);
+        return file_exists($oModule->getMetadataPath());
     }
 }

@@ -210,7 +210,6 @@ class Module extends \oxSuperCfg
     public function getInfo($sName, $iLang = null)
     {
         if (isset($this->_aModule[$sName])) {
-
             if ($iLang !== null && is_array($this->_aModule[$sName])) {
                 $sValue = null;
 
@@ -378,9 +377,7 @@ class Module extends \oxSuperCfg
 
         $sShopId = $this->getConfig()->getShopId();
 
-        $aTemplates = oxDb::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = '$sModuleId' AND oxshopid = '$sShopId'");
-
-        return $aTemplates;
+        return oxDb::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = '$sModuleId' AND oxshopid = '$sShopId'");
     }
 
     /**
@@ -442,9 +439,8 @@ class Module extends \oxSuperCfg
         $aInstalledExtensions = $this->getConfig()->getModulesWithExtendedClass();
         $iModuleExtensionsCount = $this->_countExtensions($aModuleExtensions);
         $iActivatedModuleExtensionsCount = $this->_countActivatedExtensions($aModuleExtensions, $aInstalledExtensions);
-        $blActive = $iModuleExtensionsCount > 0 && $iActivatedModuleExtensionsCount == $iModuleExtensionsCount;
 
-        return $blActive;
+        return $iModuleExtensionsCount > 0 && $iActivatedModuleExtensionsCount == $iModuleExtensionsCount;
     }
 
     /**
@@ -456,13 +452,6 @@ class Module extends \oxSuperCfg
      */
     protected function _isInDisabledList($sId)
     {
-        $blInDisabledList = false;
-
-        $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
-        if (in_array($sId, $aDisabledModules)) {
-            $blInDisabledList = true;
-        }
-
-        return $blInDisabledList;
+        return in_array($sId, (array) $this->getConfig()->getConfigParam('aDisabledModules'));
     }
 }

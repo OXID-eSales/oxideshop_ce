@@ -39,9 +39,7 @@ class ModuleValidatorFactory
      */
     public function getModuleMetadataValidator()
     {
-        $oModuleValidator = oxNew('oxModuleMetadataValidator');
-
-        return $oModuleValidator;
+        return oxNew('oxModuleMetadataValidator');
     }
 
     /**
@@ -52,8 +50,6 @@ class ModuleValidatorFactory
      */
     public function getModuleFilesValidator()
     {
-        $oModuleValidator = oxNew('oxModuleFilesValidator');
-
-        return $oModuleValidator;
+        return oxNew('oxModuleFilesValidator');
     }
 }

@@ -264,7 +264,8 @@ class GenericImportMain extends oxAdminDetails
                 $oEx = oxNew("oxExceptionToDisplay");
                 $oEx->setMessage('GENIMPORT_ERRORUPLOADINGFILE');
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'genimport');
-                $iNavStep = 1;
+
+                return 1;
             }
         }
 
@@ -282,7 +283,8 @@ class GenericImportMain extends oxAdminDetails
                 $oEx = oxNew("oxExceptionToDisplay");
                 $oEx->setMessage('GENIMPORT_ERRORASSIGNINGFIELDS');
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'genimport');
-                $iNavStep = 2;
+
+                return 2;
             }
         }
 

@@ -124,6 +124,7 @@ class ActionsGroupsAjax extends \ajaxListComponent
                 $oObject2Promotion->oxobject2action__oxclass = new oxField("oxgroups");
                 $oObject2Promotion->save();
             }
+
             $promotionAdded = true;
         }
 

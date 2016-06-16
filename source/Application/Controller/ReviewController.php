@@ -180,7 +180,6 @@ class ReviewController extends \Details
         if (!($this->getReviewUser())) {
             $this->_sThisTemplate = $this->_sThisLoginTemplate;
         } else {
-
             // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             $oActiveRecommList = $this->getActiveRecommList();
             $oList = $this->getActiveRecommItems();
@@ -212,9 +211,7 @@ class ReviewController extends \Details
         }
 
         if (($oRevUser = $this->getReviewUser()) && $this->canAcceptFormData()) {
-
             if (($oActObject = $this->_getActiveObject()) && ($sType = $this->_getActiveType())) {
-
                 if (($dRating = oxRegistry::getConfig()->getRequestParameter('rating')) === null) {
                     $dRating = oxRegistry::getConfig()->getRequestParameter('artrating');
                 }
@@ -320,16 +317,13 @@ class ReviewController extends \Details
      */
     protected function _getActiveType()
     {
-        $sType = null;
         if ($this->getProduct()) {
-            $sType = 'oxarticle';
+            return 'oxarticle';
             // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         } elseif ($this->getActiveRecommList()) {
-            $sType = 'oxrecommlist';
+            return 'oxrecommlist';
             // END deprecated
         }
-
-        return $sType;
     }
 
     /**

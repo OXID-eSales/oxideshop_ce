@@ -239,13 +239,12 @@ class DbMetaDataHandler extends oxSuperCfg
         $tableSet = getLangTableName($table, $lang);
 
         $res = oxDb::getDb()->getAll("show create table {$table}");
+
         $collation = $this->getConfig()->isUtf() ? '' : 'COLLATE latin1_general_ci';
-        $sql = "CREATE TABLE `{$tableSet}` (" .
+        return "CREATE TABLE `{$tableSet}` (" .
                 "`OXID` char(32) $collation NOT NULL, " .
                 "PRIMARY KEY (`OXID`)" .
                 ") " . strstr($res[0][1], 'ENGINE=');
-
-        return $sql;
     }
 
     /**
@@ -358,9 +357,7 @@ class DbMetaDataHandler extends oxSuperCfg
             $fieldSet = $field . '_' . $lang;
         }
 
-        $this->_iCurrentMaxLangId = --$lang;
-
-        return $this->_iCurrentMaxLangId;
+        return $this->_iCurrentMaxLangId = --$lang;
     }
 
     /**

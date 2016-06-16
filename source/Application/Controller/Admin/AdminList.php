@@ -318,7 +318,6 @@ class AdminList extends \oxAdminView
         $sortFields = $this->getListSorting();
 
         if (is_array($sortFields) && count($sortFields)) {
-
             // only add order by at full sql not for count(*)
             $query .= ' order by ';
             $addSeparator = false;
@@ -330,10 +329,8 @@ class AdminList extends \oxAdminView
             $descending = $descending !== null ? (bool)$descending : $this->_blDesc;
 
             foreach ($sortFields as $table => $fieldData) {
-
                 $table = $table ? (getViewName($table, $languageId) . '.') : '';
                 foreach ($fieldData as $column => $sortDirectory) {
-
                     $field = $table . $column;
 
                     //add table name to column name if no table name found attached to column name
@@ -414,15 +411,7 @@ class AdminList extends \oxAdminView
      */
     protected function _isSearchValue($fieldValue)
     {
-        //check if this is search string (contains % sign at beginning and end of string)
-        $isSearchValue = false;
-        $stringModifier = getStr();
-        if ($stringModifier->preg_match('/^%/', $fieldValue) && $stringModifier->preg_match('/%$/', $fieldValue)) {
-            $isSearchValue = true;
-        }
-
-        //removing % symbols
-        return $isSearchValue;
+        return (getStr()->preg_match('/^%/', $fieldValue) && getStr()->preg_match('/%$/', $fieldValue));
     }
 
     /**
@@ -507,11 +496,9 @@ class AdminList extends \oxAdminView
     public function buildWhere()
     {
         if ($this->_aWhere === null && ($list = $this->getItemList())) {
-
             $this->_aWhere = array();
             $filter = $this->getListFilter();
             if (is_array($filter)) {
-
                 $listItem = $this->getItemListBaseObject();
                 $languageId = $listItem->isMultilang() ? $listItem->getLanguage() : oxRegistry::getLang()->getBaseLanguage();
                 $localDateFormat = $this->getConfig()->getConfigParam('sLocalDateFormat');
@@ -519,7 +506,6 @@ class AdminList extends \oxAdminView
                 foreach ($filter as $table => $filterData) {
                     foreach ($filterData as $name => $value) {
                         if ($value || '0' === ( string )$value) {
-
                             $field = "{$table}__{$name}";
 
                             // if no table name attached to field name, add it
@@ -668,8 +654,10 @@ class AdminList extends \oxAdminView
             // yes, we need to build the navigation object
             $pageNavigation = new stdClass();
             $pageNavigation->pages = round((($this->_iListSize - 1) / $adminListSize) + 0.5, 0);
-            $pageNavigation->actpage = ($pageNavigation->actpage > $pageNavigation->pages) ? $pageNavigation->pages : round(($this->_iCurrListPos / $adminListSize) + 0.5,
-                0);
+            $pageNavigation->actpage = ($pageNavigation->actpage > $pageNavigation->pages) ? $pageNavigation->pages : round(
+                ($this->_iCurrListPos / $adminListSize) + 0.5,
+                0
+            );
             $pageNavigation->lastlink = ($pageNavigation->pages - 1) * $adminListSize;
             $pageNavigation->nextlink = null;
             $pageNavigation->backlink = null;
@@ -746,7 +734,6 @@ class AdminList extends \oxAdminView
     {
         // navigation according to class
         if ($node) {
-
             $adminNavigation = $this->getNavigation();
 
             $objectId = $this->getEditObjectId();
@@ -782,7 +769,6 @@ class AdminList extends \oxAdminView
     public function getItemList()
     {
         if ($this->_oList === null && $this->_sListClass) {
-
             $this->_oList = oxNew($this->_sListType);
             $this->_oList->clear();
             $this->_oList->init($this->_sListClass);

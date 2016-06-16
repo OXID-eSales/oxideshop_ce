@@ -320,8 +320,7 @@ class Database
      */
     public function escapeString($string)
     {
-        $result = trim(self::getDb()->quote($string), "'");
-        return $result;
+        return trim(self::getDb()->quote($string), "'");
     }
 
     /**
@@ -346,8 +345,6 @@ class Database
         if (isset(self::$$configName)) {
             return self::$$configName;
         }
-
-        return null;
     }
 
     /**

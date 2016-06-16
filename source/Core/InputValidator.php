@@ -152,18 +152,15 @@ class InputValidator extends \oxSuperCfg
         // check only for users with password during registration
         // if user wants to change user name - we must check if passwords are ok before changing
         if ($oUser->oxuser__oxpassword->value && $sLogin != $oUser->oxuser__oxusername->value) {
-
             // on this case password must be taken directly from request
             $sNewPass = (isset($aInvAddress['oxuser__oxpassword']) && $aInvAddress['oxuser__oxpassword']) ? $aInvAddress['oxuser__oxpassword'] : oxRegistry::getConfig()->getRequestParameter('user_password');
             if (!$sNewPass) {
-
                 // 1. user forgot to enter password
                 $oEx = oxNew('oxInputException');
                 $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 
                 return $this->_addValidationError("oxuser__oxpassword", $oEx);
             } else {
-
                 // 2. entered wrong password
                 if (!$oUser->isSamePassword($sNewPass)) {
                     $oEx = oxNew('oxUserException');
@@ -257,15 +254,7 @@ class InputValidator extends \oxSuperCfg
      */
     public function getPasswordLength()
     {
-        $passwordLength = 6;
-
-        $config = $this->getConfig();
-
-        if ($config->getConfigParam("iPasswordLength")) {
-            $passwordLength = $config->getConfigParam("iPasswordLength");
-        }
-
-        return $passwordLength;
+        return $this->getConfig()->getConfigParam("iPasswordLength") ?: 6;
     }
 
     /**
@@ -390,11 +379,9 @@ class InputValidator extends \oxSuperCfg
     public function checkVatId($oUser, $aInvAddress)
     {
         if ($this->_hasRequiredParametersForVatInCheck($aInvAddress)) {
-
             $oCountry = $this->_getCountry($aInvAddress['oxuser__oxcountryid']);
 
             if ($oCountry && $oCountry->isInEU()) {
-
                 $oVatInValidator = $this->getCompanyVatInValidator($oCountry);
 
                 /** @var oxCompanyVatIn $oVatIn */
@@ -450,13 +437,10 @@ class InputValidator extends \oxSuperCfg
      */
     public function getFirstValidationError()
     {
-        $oErr = null;
         $aErr = reset($this->_aInputValidationErrors);
         if (is_array($aErr)) {
-            $oErr = reset($aErr);
+            return reset($aErr);
         }
-
-        return $oErr;
     }
 
     /**
@@ -585,9 +569,9 @@ class InputValidator extends \oxSuperCfg
 
         if ($oStr->strlen($aDebitInfo['lsktonr']) < 10) {
             $sNewNum = str_repeat(
-                           '0',
-                           10 - $oStr->strlen($aDebitInfo['lsktonr'])
-                       ) . $aDebitInfo['lsktonr'];
+                '0',
+                10 - $oStr->strlen($aDebitInfo['lsktonr'])
+            ) . $aDebitInfo['lsktonr'];
             $aDebitInfo['lsktonr'] = $sNewNum;
         }
 
@@ -652,9 +636,7 @@ class InputValidator extends \oxSuperCfg
      */
     protected function _getVatIdValidator()
     {
-        $oVatCheck = oxNew('oxOnlineVatIdCheck');
-
-        return $oVatCheck;
+        return oxNew('oxOnlineVatIdCheck');
     }
 
     /**
@@ -677,7 +659,6 @@ class InputValidator extends \oxSuperCfg
     public function getCompanyVatInValidator($oCountry)
     {
         if (is_null($this->_oCompanyVatInValidator)) {
-
             /** @var oxCompanyVatInValidator $oVatInValidator */
             $oVatInValidator = oxNew('oxCompanyVatInValidator', $oCountry);
 

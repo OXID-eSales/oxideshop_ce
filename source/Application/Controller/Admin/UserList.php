@@ -90,6 +90,7 @@ class UserList extends \oxAdminList
     {
         if ($this->_allowAdminEdit($this->getEditObjectId())) {
             $this->_oList = null;
+
             return parent::deleteEntry();
         }
     }

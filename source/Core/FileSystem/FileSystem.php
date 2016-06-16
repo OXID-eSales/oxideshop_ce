@@ -55,10 +55,6 @@ class FileSystem
      */
     public function isReadable($filePath)
     {
-        if (is_file($filePath) && is_readable($filePath)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (is_file($filePath) && is_readable($filePath));
     }
 }

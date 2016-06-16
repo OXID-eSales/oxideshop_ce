@@ -76,9 +76,7 @@ class UtilsString
             $sString = $oStr->substr($sString, 0, $iLength);
         }
 
-        $sString = $oStr->preg_replace("/,+$/", "", $sString);
-
-        return $sString;
+        return $oStr->preg_replace("/,+$/", "", $sString);
     }
 
     /**

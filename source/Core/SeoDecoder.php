@@ -206,7 +206,6 @@ class SeoDecoder extends \oxSuperCfg
 
         $sPath = $sPath ? $sPath : str_replace('oxseo.php', '', $_SERVER['SCRIPT_NAME']);
         if (($sParams = $this->_getParams($sRequest, $sPath))) {
-
             // in case SEO url is actual
             if (is_array($aGet = $this->decodeUrl($sParams))) {
                 $_GET = array_merge($aGet, $_GET);
@@ -244,14 +243,12 @@ class SeoDecoder extends \oxSuperCfg
         $sUrl = null;
 
         if ($sLastParam) {
-
             $iLanguage = oxRegistry::getLang()->getBaseLanguage();
 
             // article ?
             if (strpos($sLastParam, '.htm') !== false) {
                 $sUrl = $this->_getObjectUrl($sLastParam, 'oxarticles', $iLanguage, 'oxarticle');
             } else {
-
                 // category ?
                 if (!($sUrl = $this->_getObjectUrl($sLastParam, 'oxcategories', $iLanguage, 'oxcategory'))) {
                     // maybe manufacturer ?
@@ -280,17 +277,14 @@ class SeoDecoder extends \oxSuperCfg
     {
         $oDb = oxDb::getDb();
         $sTable = getViewName($sTable, $iLanguage);
-        $sSeoUrl = null;
 
         // first checking of field exists at all
         if ($oDb->getOne("show columns from {$sTable} where field = 'oxseoid'")) {
             // if field exists - searching for object id
             if ($sObjectId = $oDb->getOne("select oxid from {$sTable} where oxseoid = " . $oDb->quote($sSeoId))) {
-                $sSeoUrl = $oDb->getOne("select oxseourl from oxseo where oxtype = " . $oDb->quote($sType) . " and oxobjectid = " . $oDb->quote($sObjectId) . " and oxlang = " . $oDb->quote($iLanguage) . " ");
+                return $oDb->getOne("select oxseourl from oxseo where oxtype = " . $oDb->quote($sType) . " and oxobjectid = " . $oDb->quote($sObjectId) . " and oxlang = " . $oDb->quote($iLanguage) . " ");
             }
         }
-
-        return $sSeoUrl;
     }
 
     /**

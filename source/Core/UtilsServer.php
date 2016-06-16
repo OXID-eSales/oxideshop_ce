@@ -77,7 +77,7 @@ class UtilsServer extends \oxSuperCfg
             return;
         }
         $config = $this->getConfig();
-        //if shop runs in https only mode we can set secure flag to all cookies 
+        //if shop runs in https only mode we can set secure flag to all cookies
         $blSecure = $blSecure || ($config->isSsl() && $config->getSslShopUrl() == $config->getShopUrl());
         return setcookie(
             $sName,

@@ -192,7 +192,6 @@ class UtilsFile extends \oxSuperCfg
         while (false !== ($file = readdir($handle))) {
             if ($file != '.' && $file != '..') {
                 if (is_dir($sSourceDir . '/' . $file)) {
-
                     // recursive
                     $sNewSourceDir = $sSourceDir . '/' . $file;
                     $sNewTargetDir = $sTargetDir . '/' . $file;
@@ -225,7 +224,6 @@ class UtilsFile extends \oxSuperCfg
     {
         if (is_dir($sSourceDir)) {
             if ($oDir = dir($sSourceDir)) {
-
                 while (false !== $sFile = $oDir->read()) {
                     if ($sFile == '.' || $sFile == '..') {
                         continue;
@@ -290,7 +288,6 @@ class UtilsFile extends \oxSuperCfg
             $sFileType = trim($aFilename[count($aFilename) - 1]);
 
             if (isset($sFileType)) {
-
                 $oStr = getStr();
 
                 // unallowed files ?
@@ -325,9 +322,8 @@ class UtilsFile extends \oxSuperCfg
     protected function _getImagePath($sType)
     {
         $sFolder = array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
-        $sPath = $this->normalizeDir($this->getConfig()->getPictureDir(false)) . "{$sFolder}/";
 
-        return $sPath;
+        return $this->normalizeDir($this->getConfig()->getPictureDir(false)) . "{$sFolder}/";
     }
 
     /**
@@ -429,7 +425,6 @@ class UtilsFile extends \oxSuperCfg
     {
         $aFiles = $aFiles ? $aFiles : $_FILES;
         if (isset($aFiles['myfile']['name'])) {
-
             $oConfig = $this->getConfig();
             $oStr = getStr();
 
@@ -447,7 +442,6 @@ class UtilsFile extends \oxSuperCfg
             $oEx = oxNew("oxExceptionToDisplay");
             // process all files
             while (list($sKey, $sValue) = each($aFiles['myfile']['name'])) {
-
                 $sSource = $aSource[$sKey];
                 $iError = $aError[$sKey];
                 $aFiletype = explode("@", $sKey);
@@ -471,7 +465,6 @@ class UtilsFile extends \oxSuperCfg
                     $sProcessPath = $sTmpFolder . basename($sSource);
 
                     if ($sProcessPath) {
-
                         if ($blUseMasterImage) {
                             //using master image as source, so only copying it to
                             $blMoved = $this->_copyFile($sSource, $sImagePath . $sValue);
@@ -540,7 +533,6 @@ class UtilsFile extends \oxSuperCfg
         $aUrlParts = @parse_url($sLink);
         $sHost = (isset($aUrlParts["host"]) && $aUrlParts["host"]) ? $aUrlParts["host"] : null;
 
-        $blValid = false;
         if ($sHost) {
             $sDocumentPath = (isset($aUrlParts["path"]) && $aUrlParts["path"]) ? $aUrlParts["path"] : '/';
             $sDocumentPath .= (isset($aUrlParts["query"]) && $aUrlParts["query"]) ? '?' . $aUrlParts["query"] : '';
@@ -554,12 +546,12 @@ class UtilsFile extends \oxSuperCfg
                 fclose($oConn);
 
                 if (preg_match("/200 OK/", $sResponse)) {
-                    $blValid = true;
+                    return true;
                 }
             }
         }
 
-        return $blValid;
+        return false;
     }
 
     /**
@@ -609,9 +601,9 @@ class UtilsFile extends \oxSuperCfg
 
         if ($this->_moveImage($aFileInfo['tmp_name'], $sBasePath . $sUploadPath . "/" . $sFileName)) {
             return $sFileName;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**

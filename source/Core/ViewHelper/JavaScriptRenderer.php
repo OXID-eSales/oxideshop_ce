@@ -200,14 +200,12 @@ JS;
      */
     protected function enclose($scriptsOutput, $widget, $isAjaxRequest)
     {
-        $output = '';
         if ($scriptsOutput) {
             if ($widget && !$isAjaxRequest) {
                 $scriptsOutput = "window.addEventListener('load', function() { $scriptsOutput }, false )";
             }
-            $output = "<script type='text/javascript'>$scriptsOutput</script>";
-        }
 
-        return $output;
+            return "<script type='text/javascript'>$scriptsOutput</script>";
+        }
     }
 }

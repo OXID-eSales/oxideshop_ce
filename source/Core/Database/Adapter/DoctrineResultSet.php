@@ -28,13 +28,8 @@ use Doctrine\DBAL\Driver\Statement;
  *
  * @package OxidEsales\Eshop\Core\Database\Adapter
  */
-class DoctrineResultSet
+class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
 {
-
-    /**
-     * @var Statement The doctrine adapted statement.
-     */
-    protected $statement;
 
     /**
      * @var array Holds the retrieved fields of the resultSet row on the current cursor position.
@@ -42,14 +37,19 @@ class DoctrineResultSet
     public $fields;
 
     /**
-     * @var int The current cursor position.
-     */
-    private $currentRow = 0;
-
-    /**
      * @var bool Did we reach the end of the results?
      */
     public $EOF;
+
+    /**
+     * @var Statement The doctrine adapted statement.
+     */
+    protected $statement;
+
+    /**
+     * @var int The current cursor position.
+     */
+    private $currentRow = 0;
 
     /**
      * DoctrineResultSet constructor.
@@ -63,7 +63,7 @@ class DoctrineResultSet
         $this->EOF = false;
         $this->currentRow = 0;
 
-        if( $this->recordCount() == 0) {
+        if ($this->recordCount() == 0) {
             $this->setToEmptyState();
         }
 
@@ -71,21 +71,13 @@ class DoctrineResultSet
     }
 
     /**
-     * Returns fields array
-     */
-    public function getFields()
-    {
-        return $this->fields;
-    }
-
-    /**
-     * Close the pointer to the database connection.
+     * @inheritdoc
      */
     public function close()
     {
         $this->getStatement()->closeCursor();
         $this->fields = array();
-       // $this->statement = false;
+        // $this->statement = false;
     }
 
     /**
@@ -97,23 +89,18 @@ class DoctrineResultSet
     public function fetchRow()
     {
         $this->fields = $this->getStatement()->fetch();
+
         return $this->fields;
     }
 
     /**
-     * Get a specific column value.
+     * Returns an array containing all of the result set rows
      *
-     * @param string|int $columnKey The key of the wished column.
-     *
-     * @return null|boolean|string|array The column value (string or array). If the result set is empty or the last row is reached, we give back false. If the column name is not present, we give back null.
+     * @return array
      */
-    public function fields($columnKey)
+    public function fetchAll()
     {
-        if(empty($columnKey)) {
-            return $this->getFields();
-        } else {
-            return $this->fields[$columnKey];
-        }
+        return $this->getStatement()->fetchAll();
     }
 
     /**
@@ -137,46 +124,71 @@ class DoctrineResultSet
     }
 
     /**
-     * Load the next row from the database.
-     *
-     * @return bool Is there another row?
+    * @inheritdoc
+    */
+    public function getIterator()
+     {
+         $data = $this->fetchAll();
+
+         return new \ArrayIterator($data);
+     }
+
+    /**
+     * Returns fields array
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fields($columnKey)
+    {
+        if (empty($columnKey)) {
+            return $this->getFields();
+        } else {
+            return $this->fields[$columnKey];
+        }
+    }
+
+    /**
+     * @inheritdoc
      */
     public function moveNext()
     {
         if ($this->fetchRow()) {
             $this->currentRow += 1;
+
             return true;
         }
         if (!$this->EOF) {
             $this->currentRow += 1;
             $this->EOF = true;
         }
+
         return false;
     }
 
     /**
-     * Check, if we already reached the end of the results.
-     *
-     * @return bool Is the end of the result set reached?
+     * @inheritdoc
      */
     public function EOF()
     {
-        if( $this->currentRow < $this->recordCount()) {
+        if ($this->currentRow < $this->recordCount()) {
             return false;
         } else {
             $this->EOF = true;
+
             return true;
         }
     }
 
     /**
-     * Get the given number of rows, from the current row pointer on, as an array.
-     *
-     * @param int $numberOfRows The number of rows to fetch.
-     *
-     * @return array The rows of the corresponding statement, starting at the current row pointer.
+     * @inheritdoc
      */
-    public function getArray($numberOfRows)
+    public function getArray($numberOfRows = -1)
     {
         $results = array();
         $cnt = 0;
@@ -185,56 +197,28 @@ class DoctrineResultSet
             $this->moveNext();
             $cnt++;
         }
+
         return $results;
     }
 
     /**
-     * Get the given number of rows from the current row pointer on.
-     *
-     * @param int $numberOfRows The number of rows to fetch.
-     *
-     * @return array The rows of the corresponding statement, starting at the current row pointer.
+     * @inheritdoc
      */
-    public function getRows($numberOfRows)
+    public function getRows($numberOfRows = -1)
     {
         $arr = $this->getArray($numberOfRows);
+
         return $arr;
     }
 
     /**
-     * Fetch all rows from the corresponding statement.
-     *
-     * @param int $nRows The number of rows to fetch.
-     *
-     * @return array The complete result set as an array of associative arrays.
+     * @inheritdoc
      */
-    public function getAll($nRows = -1)
+    public function getAll($numberOfRows = -1)
     {
-        $arr = $this->getArray($nRows);
+        $arr = $this->getArray($numberOfRows);
+
         return $arr;
-    }
-
-    /**
-     * Get information about the column, specified by the given index.
-     *
-     * @param int $columnIndex The index of the column of this result set.
-     *
-     * @return \stdClass An object, filled with the column information.
-     */
-    public function fetchField($columnIndex)
-    {
-        /** @todo The method getColumnMeta is specific of the PDO driver. Change to unspecific version, if not exits be creative ;-) */
-        $metaInformation = $this->getStatement()->getColumnMeta($columnIndex);
-
-        $result = new \stdClass();
-        $result->name = $metaInformation['name'];
-        $result->table = $metaInformation['table'];
-        $result->max_length = $metaInformation['len'];
-        $result->not_null = (int) in_array('not_null', $metaInformation['flags']);
-        $result->primary_key = (int) in_array('primary_key', $metaInformation['flags']);
-        $result->type = strtolower($metaInformation['native_type']);
-
-        return $result;
     }
 
     /**
@@ -260,10 +244,68 @@ class DoctrineResultSet
     /**
      * Set the state of this wrapper to 'empty'.
      */
-    private function setToEmptyState()
+    protected function setToEmptyState()
     {
         /** The following properties change the value for an  empty result set */
         $this->EOF = true;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function fetchField($columnIndex = -1)
+    {
+        /** @todo The method getColumnMeta is specific of the PDO driver. Change to unspecific version, if not exits be creative ;-) */
+        $metaInformation = $this->getStatement()->getColumnMeta($columnIndex);
+
+        $result = new \stdClass();
+        $result->name = $metaInformation['name'];
+        $result->table = $metaInformation['table'];
+        $result->max_length = $metaInformation['len'];
+        $result->not_null = (int) in_array('not_null', $metaInformation['flags']);
+        $result->primary_key = (int) in_array('primary_key', $metaInformation['flags']);
+        $result->type = strtolower($metaInformation['native_type']);
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function Move($rowNumber = 0)
+    {
+        // TODO: Implement Move() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function MoveFirst()
+    {
+        // TODO: Implement MoveFirst() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function MoveLast()
+    {
+        // TODO: Implement MoveFirst() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function _fetch()
+    {
+        // TODO: Implement _fetch() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function _seek($row)
+    {
+        // TODO: Implement _seek() method.
+    }
 }

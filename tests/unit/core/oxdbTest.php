@@ -391,5 +391,39 @@ class Unit_Core_oxdbTest extends OxidTestCase
         $oDb->expects($this->once())->method('_notifyConnectionErrors')->with($this->equalTo('odb'));
         $oDb->_onConnectionError('odb');
     }
+    
+    public function testAdodbLiteResultSetCount() {
 
+        $expectedCount = 2;
+        
+        $sQuery = "SELECT oxid from oxarticles LIMIT 0, $expectedCount";
+        $oDb = oxNew("oxDb");
+        $oDbInst = $oDb->getDb();
+
+        /** Test 1 **/ // commiting transaction
+        $oDbInst->startTransaction();
+        $resultSet = $oDbInst->select($sQuery);
+        
+        $actualCount = $resultSet->count();
+        
+        $this->assertEquals($expectedCount, $actualCount);
+
+    }
+
+    public function testAdodbLiteResultIsIteratable() {
+
+        $expectedCount = 2;
+
+        $sQuery = "SELECT oxid from oxarticles LIMIT 0, $expectedCount";
+        $oDb = oxNew("oxDb");
+        $oDbInst = $oDb->getDb(ADODB_FETCH_ASSOC);
+
+        /** Test 1 **/ // commiting transaction
+        $oDbInst->startTransaction();
+        $resultSet = $oDbInst->select($sQuery);
+
+        foreach ($resultSet as $row) {
+            $this->assertTrue(array_key_exists('oxid', $row));
+        }
+    }
 }

@@ -20,6 +20,8 @@
  * @version       OXID eShop CE
  */
 
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'ResultSetInterface.php';
+
 /**
  * The database connection interface specifies how a database connection should look and act.
  */
@@ -85,7 +87,7 @@ interface DatabaseInterface
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
      * $result = DatabaseInterfaceImplementation::getDb->getOne(
-     *   'SELECT ´id´ FROM ´mytable´ WHERE ´id´ = ? LIMIT 0, 1',
+     *   'SELECT `id` FROM `mytable` WHERE `id` = ? LIMIT 0, 1',
      *   array($id1)
      * );
      * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
@@ -107,7 +109,7 @@ interface DatabaseInterface
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
      * $result = DatabaseInterfaceImplementation::getDb->getRow(
-     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? LIMIT 0, 1',
+     *   'SELECT * FROM `mytable` WHERE `id` = ? LIMIT 0, 1',
      *   array($id1)
      * );
      * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
@@ -132,7 +134,7 @@ interface DatabaseInterface
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
      * $result = DatabaseInterfaceImplementation::getDb->getAll(
-     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ? LIMIT 0, 1',
+     *   'SELECT * FROM `mytable` WHERE `id` = ? OR `id` = ? LIMIT 0, 1',
      *   array($id1, $id2)
      * );
      * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
@@ -160,7 +162,7 @@ interface DatabaseInterface
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
      * $resultSet = DatabaseInterfaceImplementation::getDb->select(
-     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
+     *   'SELECT * FROM `mytable` WHERE `id` = ? OR `id` = ?',
      *   array($id1, $id2)
      * );
      * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
@@ -169,6 +171,11 @@ interface DatabaseInterface
      * @param string $sqlSelect      The sql select statement
      * @param array  $parameters     The parameters array.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
+     *                               
+     * @throws Exception The exception, that can occur while executing the sql statement.
+     *
+     * @return object   The result of the given query. @deprecated since v5.3.0 (2016-06-16) This method will return an
+     *                  instance of ResultSetInterface in v6.0.
      */
     public function select($sqlSelect, $parameters = array(), $executeOnSlave = true);
 
@@ -183,7 +190,7 @@ interface DatabaseInterface
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
      * $resultSet = DatabaseInterfaceImplementation::getDb->selectLimit(
-     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
+     *   'SELECT * FROM `mytable` WHERE `id` = ? OR `id` = ?',
      *   $rowCount,
      *   $offset,
      *   array($id1, $id2)
@@ -199,18 +206,22 @@ interface DatabaseInterface
      *
      * @throws Exception The exception, that can occur while executing the sql statement.
      *
-     * @return object The result of the given query.
+     * @return object   The result of the given query. @deprecated since v5.3.0 (2016-06-16) This method will return an
+     *                  instance of ResultSetInterface in v6.0.
      */
     public function selectLimit($sqlSelect, $rowCount = -1, $offset = -1, $parameters = array(), $executeOnSlave = true);
 
     /**
-     * Execute read statements like SELECT or SHOW and return the results as a ResultSet.
      * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
+     * 
+     * Execute read statements like SELECT or SHOW and return the results as a ResultSet.
+     * (This behavior is deprecated since v5.3.0 (2016-06-06) This method has to be used EXCLUSIVELY for non read
+     * statements in v6.0)
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
      * $resultSet = DatabaseInterfaceImplementation::getDb->execute(
-     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
+     *   'DELETE * FROM `mytable` WHERE `id` = ? OR `id` = ?',
      *   array($id1, $id2)
      * );
      * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
@@ -219,8 +230,9 @@ interface DatabaseInterface
      * @param string $query      The sql statement we want to execute.
      * @param array  $parameters The parameters array.
      *
-     * @return object deprecated since v5.3.0 (2016-06-06) . This method will return an integer as the number of rows
-     *                affected by the statement for non read statements and DoctrineResultSet for read statements
+     * @return object @deprecated since v5.3.0 (2016-06-06) This method will return an integer as the number of rows
+     *                affected by the statement for non read statements. An exception will be thrown, if a read statement
+     *                is passed to this function.
      */
     public function execute($query, $parameters = array());
 
@@ -233,12 +245,12 @@ interface DatabaseInterface
      * You are strongly encouraged to always use prepared statements instead of quoting the values on your own.
      * E.g. use
      * $resultSet = DatabaseInterfaceImplementation::getDb->select(
-     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
+     *   'SELECT * FROM `mytable` WHERE `id` = ? OR `id` = ?',
      *   array($id1, $id2)
      * );
      * instead of
      * $resultSet = DatabaseInterfaceImplementation::getDb->select(
-     *  'SELECT * FROM ´mytable´ WHERE ´id´ = ' . DatabaseInterfaceImplementation::getDb->quote($id1) . ' OR ´id´ = ' . DatabaseInterfaceImplementation::getDb->quote($id1)
+     *  'SELECT * FROM `mytable` WHERE `id` = ' . DatabaseInterfaceImplementation::getDb->quote($id1) . ' OR `id` = ' . DatabaseInterfaceImplementation::getDb->quote($id1)
      * );
      *
      * @param mixed $value The string or numeric value to be quoted.

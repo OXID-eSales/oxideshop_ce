@@ -401,7 +401,10 @@ class mysql_driver_ADOConnection extends ADOConnection
 	} 
 }
 
-class mysql_driver_ResultSet
+
+require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'interface' . DIRECTORY_SEPARATOR . 'ResultSetInterface.php';
+
+class mysql_driver_ResultSet implements IteratorAggregate, \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface
 {
 	var $connectionId;
 	var $fields;
@@ -652,6 +655,41 @@ class mysql_driver_ResultSet
 		return $fieldObject;
 	}
 
-}
+	/**
+	 * This method will be implemented as of v6.0.
+	 *
+	 * @inheritdoc
+	 */
+	function fetchAll()
+	{
+	}
 
-?>
+	/**
+	 * This method will be implemented as of v6.0.
+	 *
+	 * @inheritdoc
+	 */
+	function fetchRow()
+	{
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	function count()
+	{
+		$count = count($data = $this->GetAll());
+
+		return $count;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	function getIterator()
+	{
+		$data = $this->GetAll();
+
+		return new ArrayIterator($data);
+	}
+}

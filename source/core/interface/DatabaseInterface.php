@@ -69,6 +69,7 @@ interface DatabaseInterface
      * @param string $query          The sql SELECT or SHOW statement.
      * @param array  $parameters     Array of parameters for the given sql statement.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
+     *                               This parameter is deprecated since v5.3.0 (2016-06-17). Different solution in 6.0.
      *
      * @return string|false          Returns a string for SELECT or SHOW statements and FALSE for any other statement.
      */
@@ -97,6 +98,7 @@ interface DatabaseInterface
      * @param string $sqlSelect      The sql select statement we want to execute.
      * @param array  $parameters     Array of parameters, for the given sql statement.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
+     *                               This parameter is deprecated since v5.3.0 (2016-06-17). Different solution in 6.0.
      *
      * @return array
      */
@@ -118,6 +120,7 @@ interface DatabaseInterface
      * @param string $sqlSelect      The sql select statement
      * @param array  $parameters     The parameters array.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
+     *                               This parameter is deprecated since v5.3.0 (2016-06-17). Different solution in 6.0.
      *
      * @return array The values of the first column of a corresponding sql query.
      */
@@ -143,6 +146,7 @@ interface DatabaseInterface
      * @param string $query          If parameters are given, the "?" in the string will be replaced by the values in the array
      * @param array  $parameters     Array of parameters, for the given sql statement.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
+     *                               This parameter is deprecated since v5.3.0 (2016-06-17). Different solution in 6.0.
      *
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
@@ -171,7 +175,7 @@ interface DatabaseInterface
      * @param string $sqlSelect      The sql select statement
      * @param array  $parameters     The parameters array.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
-     *                               
+     *                               This parameter is deprecated since v5.3.0 (2016-06-17). Different solution in 6.0.
      * @throws Exception The exception, that can occur while executing the sql statement.
      *
      * @return object   The result of the given query. @deprecated since v5.3.0 (2016-06-16) This method will return an
@@ -203,6 +207,7 @@ interface DatabaseInterface
      * @param int    $offset         Offset of the first row to return
      * @param array  $parameters     The parameters array.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
+     *                               This parameter is deprecated since v5.3.0 (2016-06-17). Different solution in 6.0.
      *
      * @throws Exception The exception, that can occur while executing the sql statement.
      *
@@ -213,7 +218,7 @@ interface DatabaseInterface
 
     /**
      * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
-     * 
+     *
      * Execute read statements like SELECT or SHOW and return the results as a ResultSet.
      * (This behavior is deprecated since v5.3.0 (2016-06-06) This method has to be used EXCLUSIVELY for non read
      * statements in v6.0)

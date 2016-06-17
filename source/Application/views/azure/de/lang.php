@@ -36,6 +36,6 @@ $sLangName  = "Deutsch";
 // -------------------------------
 $aLang = array(
 
-'charset'                                                     => "ISO-8859-15",
+'charset'                                                     => "UTF-8",
 
 );

@@ -25,15 +25,15 @@
  * @var array SEO replacement list
  */
 $aSeoReplaceChars = array(
-    'ä' => 'ae',
-    'ö' => 'oe',
-    'ü' => 'ue',
-    'Ä' => 'Ae',
-    'Ö' => 'Oe',
-    'Ü' => 'Ue',
-    'ß' => 'ss',
+    'Ã¤' => 'ae',
+    'Ã¶' => 'oe',
+    'Ã¼' => 'ue',
+    'Ã„' => 'Ae',
+    'Ã–' => 'Oe',
+    'Ãœ' => 'Ue',
+    'ÃŸ' => 'ss',
 );
 
 $aLang = array(
-    'charset' => "ISO-8859-15",
+    'charset' => "UTF-8",
 );

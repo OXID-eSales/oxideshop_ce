@@ -770,13 +770,15 @@ $aLang = array(
 'NAVIGATION_HOME'                                          => 'Home',
 'NAVIGATION_PAGE'                                          => 'Seite',
 'NAVIGATION_NEWVERSIONAVAILABLE'                           => 'Version %s ist verfügbar!',
-'NEWS_LIST_TITLE'                                          => '[OXID Newsverwaltung]',
-'NEWS_LIST_SHORTTEXT'                                      => 'Titel',
-'NEWS_LIST_MENUITEM'                                       => 'Kundeninformation',
-'NEWS_LIST_MENUSUBITEM'                                    => 'Nachrichten',
-'NEWS_MAIN_SHORTDESC'                                      => 'Titel',
-'NEWS_MAIN_SHOWFORGROUP'                                   => 'Sichtbar für Benutzergruppe',
-'NEWS_MAIN_NOTSHOWFORGROUP'                                => 'Nicht sichtbar für Benutzergruppe',
+// @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+'NEWS_LIST_TITLE'           => '[OXID Newsverwaltung]',
+'NEWS_LIST_SHORTTEXT'       => 'Titel',
+'NEWS_LIST_MENUITEM'        => 'Kundeninformation',
+'NEWS_LIST_MENUSUBITEM'     => 'Nachrichten',
+'NEWS_MAIN_SHORTDESC'       => 'Titel',
+'NEWS_MAIN_SHOWFORGROUP'    => 'Sichtbar für Benutzergruppe',
+'NEWS_MAIN_NOTSHOWFORGROUP' => 'Nicht sichtbar für Benutzergruppe',
+// END deprecated
 'NAVIGATION_FAVORITES'                                     => 'Favoriten',
 'NAVIGATION_FAVORITES_EDIT'                                => '[ändern]',
 'FAVORITES_DESC'                                           => 'Beschreibung der Favoriten ...',
@@ -848,7 +850,9 @@ $aLang = array(
 'ORDER_REMARK_REMARK'                                      => '[Bem.]',
 'ORDER_REMARK_ORDER'                                       => '[Best.]',
 'ORDER_REMARK_USER'                                        => '[Reg.]',
-'ORDER_REMARK_NEWS'                                        => '[News]',
+// @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+'ORDER_REMARK_NEWS' => '[News]',
+// END deprecated
 'ORDER_OVERVIEW_VATIDCHECKFAIL'                            => 'Umsatzsteuer-Identnummer Validierung fehlgeschlagen',
 'ORDER_OVERVIEW_VATID'                                     => 'Umsatzsteuer-Identnummer:',
 'ORDER_OVERVIEW_DELTYPE'                                   => 'Versandart',
@@ -1009,7 +1013,9 @@ $aLang = array(
 'SHOP_MALL_MALLINHERIT_OXDISCOUNT'                         => 'Alle <b>Rabatte</b> vom Elternshop erben',
 'SHOP_MALL_MALLINHERIT_OXLINKS'                            => 'Alle <b>Links</b> vom Elternshop erben',
 'SHOP_MALL_MALLINHERIT_OXVOUCHERSERIES'                    => 'Alle <b>Gutscheinserien</b> vom Elternshop erben',
-'SHOP_MALL_MALLINHERIT_OXNEWS'                             => 'Alle <b>Nachrichten</b> vom Elternshop erben',
+// @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+'SHOP_MALL_MALLINHERIT_OXNEWS' => 'Alle <b>Nachrichten</b> vom Elternshop erben',
+// END deprecated
 'SHOP_MALL_MALLINHERIT_OXSELECTLIST'                       => 'Alle <b>Auswahllisten</b> vom Elternshop erben',
 'SHOP_MALL_MALLINHERIT_OXVENDOR'                           => 'Alle <b>Lieferanten</b> vom Elternshop erben',
 'SHOP_MALL_MALLINHERIT_OXMANUFACTURER'                     => 'Alle <b>Hersteller</b> vom Elternshop erben',
@@ -1374,7 +1380,9 @@ $aLang = array(
 'USER_REMARK_REMARK'                                       => '[Bem.]',
 'USER_REMARK_ORDER'                                        => '[Best.]',
 'USER_REMARK_USER'                                         => '[Reg.]',
-'USER_REMARK_NEWS'                                         => '[News]',
+// @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+'USER_REMARK_NEWS' => '[News]',
+// END deprecated
 'USERGROUP_LIST_MENUITEM'                                  => 'Benutzer verwalten',
 'USERGROUP_LIST_MENUSUBITEM'                               => 'Benutzergruppen',
 'USERGROUP_MAIN_MEMBERINGROUP'                             => 'Mitglieder der Benutzergruppe',

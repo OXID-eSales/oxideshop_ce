@@ -25,7 +25,7 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
+ * @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
  */
 class News_Main extends \OxidEsales\Eshop\Application\Controller\Admin\NewsMain
 {

@@ -28,7 +28,7 @@ use oxDb;
 /**
  * Newsletter user group selection manager.
  * Adds/removes chosen user group to/from newsletter mailing.
- * Admin Menu: Customer News -> Newsletter -> Selection.
+ * Admin Menu: Customer Info -> Newsletter -> Selection.
  */
 class NewsletterSelection extends \oxAdminDetails
 {

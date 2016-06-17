@@ -644,7 +644,7 @@ class UserComponent extends \oxView
             if (($blOptin = oxRegistry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
                 $blOptin = $oUser->getNewsSubscription()->getOptInStatus();
             }
-            // check if email address changed, if so, force check news subscription settings.
+            // check if email address changed, if so, force check newsletter subscription settings.
             $sBillingUsername = $aInvAdress['oxuser__oxusername'];
             $blForceCheckOptIn = ($sBillingUsername !== null && $sBillingUsername !== $sUserName);
             $blEmailParam = $this->getConfig()->getConfigParam('blOrderOptInEmail');

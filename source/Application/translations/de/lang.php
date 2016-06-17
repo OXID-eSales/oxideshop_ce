@@ -245,8 +245,10 @@ $aLang = array(
 'LABEL'                                                       => 'Beschriftung',
 'LAST_NAME'                                                   => 'Nachname',
 'LAST_SEEN_PRODUCTS'                                          => 'Zuletzt angesehene Artikel',
-'LATEST_NEWS_AND_UPDATES_AT'                                  => 'Neuigkeiten bei',  // try to generalize
-'LATEST_NEWS_NOACTIVENEWS'                                    => 'Es gibt momentan keine neuen Nachrichten',
+// @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+'LATEST_NEWS_AND_UPDATES_AT' => 'Neuigkeiten bei',  // try to generalize
+'LATEST_NEWS_NOACTIVENEWS'   => 'Es gibt momentan keine neuen Nachrichten',
+// END deprecated
 'LINKS'                                                       => 'Links',
 'LISTMANIA'                                                   => 'Lieblingslisten',
 'LISTMANIA_2'                                                 => 'Lieblingsliste/%s',
@@ -346,7 +348,9 @@ $aLang = array(
 'MY_WISH_LIST'                                                => 'Mein Merkzettel',
 'NEWEST_SHOP_PRODUCTS'                                        => 'Neue Artikel im Shop',
 'NEWLIST'                                                     => 'Neue Lieblingsliste',
-'NEWS'                                                        => 'News',
+// @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+'NEWS' => 'News',
+// END deprecated
 'NEWSLETTER'                                                  => 'Newsletter',
 'NEWSLETTER_SETTINGS'                                         => 'Newslettereinstellungen',
 'NEWSLETTER_SUBSCRIBE_CANCEL'                                 => 'Newsletter abonnieren/abbestellen',
@@ -729,7 +733,9 @@ $aLang = array(
 'PAGE_TITLE_SEARCH'                                           => 'Suche',
 'PAGE_TITLE_TAGS'                                             => 'Tags',
 'PAGE_TITLE_CLEARCOOKIES'                                     => 'Information über Cookies',
-'PAGE_TITLE_NEWS'                                             => 'News',
+// @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+'PAGE_TITLE_NEWS' => 'News',
+// END deprecated
 'PAGE_TITLE_SUGGEST'                                          => 'Artikel weiterempfehlen',
 'PAGE_TITLE_INVITE'                                           => 'Freunde einladen',
 'PAGE_TITLE_REVIEW'                                           => 'Bewerten',

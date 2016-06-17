@@ -774,13 +774,15 @@ $aLang = array(
 'NAVIGATION_HOME'                                          => 'Home',
 'NAVIGATION_PAGE'                                          => 'Page',
 'NAVIGATION_NEWVERSIONAVAILABLE'                           => 'Version %s is available.',
-'NEWS_LIST_TITLE'                                          => '[OXID News Administration]',
-'NEWS_LIST_SHORTTEXT'                                      => 'Title',
-'NEWS_LIST_MENUITEM'                                       => 'Customer Information',
-'NEWS_LIST_MENUSUBITEM'                                    => 'News',
-'NEWS_MAIN_SHORTDESC'                                      => 'Title',
-'NEWS_MAIN_SHOWFORGROUP'                                   => 'Visible for User Group',
-'NEWS_MAIN_NOTSHOWFORGROUP'                                => 'Invisible for User Group',
+// @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+'NEWS_LIST_TITLE'           => '[OXID News Administration]',
+'NEWS_LIST_SHORTTEXT'       => 'Title',
+'NEWS_LIST_MENUITEM'        => 'Customer Information',
+'NEWS_LIST_MENUSUBITEM'     => 'News',
+'NEWS_MAIN_SHORTDESC'       => 'Title',
+'NEWS_MAIN_SHOWFORGROUP'    => 'Visible for User Group',
+'NEWS_MAIN_NOTSHOWFORGROUP' => 'Invisible for User Group',
+// END deprecated
 'NAVIGATION_FAVORITES'                                     => 'Favorites',
 'NAVIGATION_FAVORITES_EDIT'                                => '[ edit ]',
 'FAVORITES_DESC'                                           => 'favorites description ...',
@@ -852,7 +854,9 @@ $aLang = array(
 'ORDER_REMARK_REMARK'                                      => '[Remark]',
 'ORDER_REMARK_ORDER'                                       => '[Order]',
 'ORDER_REMARK_USER'                                        => '[Reg.]',
-'ORDER_REMARK_NEWS'                                        => '[News]',
+// @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+'ORDER_REMARK_NEWS' => '[News]',
+// END deprecated
 'ORDER_OVERVIEW_VATIDCHECKFAIL'                            => 'VAT ID validation failed',
 'ORDER_OVERVIEW_VATID'                                     => 'VAT ID:',
 'ORDER_OVERVIEW_DELTYPE'                                   => 'Shipped with',
@@ -1013,7 +1017,9 @@ $aLang = array(
 'SHOP_MALL_MALLINHERIT_OXDISCOUNT'                         => 'Inherit all <b>discounts</b> from parent shop',
 'SHOP_MALL_MALLINHERIT_OXLINKS'                            => 'Inherit all <b>shop links</b> from parent shop',
 'SHOP_MALL_MALLINHERIT_OXVOUCHERSERIES'                    => 'Inherit all <b>coupon series</b> from parent shop',
-'SHOP_MALL_MALLINHERIT_OXNEWS'                             => 'Inherit <b>shop news</b> from parent shop',
+// @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+'SHOP_MALL_MALLINHERIT_OXNEWS' => 'Inherit <b>shop news</b> from parent shop',
+// END deprecated
 'SHOP_MALL_MALLINHERIT_OXSELECTLIST'                       => 'Inherit all <b>select lists</b> from parent shop',
 'SHOP_MALL_MALLINHERIT_OXVENDOR'                           => 'Inherit all <b>distributors</b> from parent shop',
 'SHOP_MALL_MALLINHERIT_OXMANUFACTURER'                     => 'Inherit all <b>manufacturers</b> from parent shop',
@@ -1077,7 +1083,9 @@ $aLang = array(
 'SHOP_CONFIG_CALCULATEVATOFORPAYCHARGE'                    => 'Display VAT contained in Payment Method Charges in Shopping Cart and Invoice',
 'SHOP_CONFIG_CALCPAYVATONTOP'                              => 'Enter Payment Method Charges as net Price (plus VAT)',
 'SHOP_CONFIG_CMSFOLDER'                                    => 'CMS Page Folders',
-'SHOP_CONFIG_CNTOFNEWS'                                    => 'Number of News which are displayed in the News Box',
+// @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+'SHOP_CONFIG_CNTOFNEWS' => 'Number of News which are displayed in the News Box',
+// END deprecated
 'SHOP_CONFIG_DATEFORMAT'                                   => 'Date Format in eShop Admin',
 'SHOP_CONFIG_DELIVERYCOSTS'                                => 'Calculate default Shipping costs when User is not logged in yet',
 'SHOP_CONFIG_DEFAULTVAT'                                   => 'Default VAT for all Products',
@@ -1378,7 +1386,9 @@ $aLang = array(
 'USER_REMARK_REMARK'                                       => '[Remark]',
 'USER_REMARK_ORDER'                                        => '[Order]',
 'USER_REMARK_USER'                                         => '[Reg.]',
-'USER_REMARK_NEWS'                                         => '[News]',
+// @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+'USER_REMARK_NEWS' => '[News]',
+// END deprecated
 'USERGROUP_LIST_MENUITEM'                                  => 'Administer Users',
 'USERGROUP_LIST_MENUSUBITEM'                               => 'User Groups',
 'USERGROUP_MAIN_MEMBERINGROUP'                             => 'User Group Members',
@@ -1457,7 +1467,9 @@ $aLang = array(
 'SHOP_PERF_LOADCURRENCY'                                   => 'Display Currencies',
 'SHOP_PERF_LOADLANGUAGES'                                  => 'Display Languages',
 'SHOP_PERF_LOADNEWS'                                       => 'Load News',
-'SHOP_PERF_LOADNEWSONLYSTART'                              => 'Load News only on Start Page',
+// @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+'SHOP_PERF_LOADNEWSONLYSTART' => 'Load News only on Start Page',
+// END deprecated
 'SHOP_PERF_LOADVARIANTS'                                   => 'Load Variants in Lists (Search Results, Categories). This uses much Memory and may cause Performance Problems on small Servers',
 'SHOP_PERF_LOADMANUFACTURERTREE'                           => 'Load and display Manufacturer List',
 'SHOP_PERF_NEWESTARTICLES'                                 => 'List of newest Products (Just arrived!)',

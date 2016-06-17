@@ -1171,7 +1171,11 @@ class Language extends \oxSuperCfg
         $aTables = array("oxarticles", "oxartextends", "oxattribute",
                          "oxcategories", "oxcontents", "oxcountry",
                          "oxdelivery", "oxdiscount", "oxgroups",
-                         "oxlinks", "oxnews", "oxobject2attribute",
+                         "oxlinks",
+                         // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+                         "oxnews",
+                         // END deprecated 
+                         "oxobject2attribute",
                          "oxpayments", "oxselectlist", "oxshops",
                          "oxactions", "oxwrapping", "oxdeliveryset",
                          "oxvendor", "oxmanufacturers", "oxmediaurls",

@@ -120,7 +120,9 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxcmp_utils' => '\OxidEsales\Eshop\Application\Component\UtilsComponent',
             'oxcmp_basket' => '\OxidEsales\Eshop\Application\Component\BasketComponent',
             'oxcmp_cur' => '\OxidEsales\Eshop\Application\Component\CurrencyComponent',
+            // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
             'oxcmp_news' => '\OxidEsales\Eshop\Application\Component\NewsComponent',
+            // END deprecated
             'oxcmp_user' => '\OxidEsales\Eshop\Application\Component\UserComponent',
             'oxlocator' => '\OxidEsales\Eshop\Application\Component\Locator',
 
@@ -162,9 +164,11 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'module_sortlist' => 'OxidEsales\Eshop\Application\Controller\Admin\ModuleSortList',
             'navigation' => 'OxidEsales\Eshop\Application\Controller\Admin\NavigationController',
             'news_list' => 'OxidEsales\Eshop\Application\Controller\Admin\NewsList',
-            'news_main' => 'OxidEsales\Eshop\Application\Controller\Admin\NewsMain',
+            // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+            'news_main'      => 'OxidEsales\Eshop\Application\Controller\Admin\NewsMain',
             'news_main_ajax' => 'OxidEsales\Eshop\Application\Controller\Admin\NewsMainAjax',
-            'news_text' => 'OxidEsales\Eshop\Application\Controller\Admin\NewsText',
+            'news_text'      => 'OxidEsales\Eshop\Application\Controller\Admin\NewsText',
+            // END deprecated
             'newsletter_list' => 'OxidEsales\Eshop\Application\Controller\Admin\NewsletterList',
             'newsletter_main' => 'OxidEsales\Eshop\Application\Controller\Admin\NewsletterMain',
             'newsletter_plain' => 'OxidEsales\Eshop\Application\Controller\Admin\NewsletterPlain',
@@ -235,7 +239,9 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'actions_order_ajax' => 'OxidEsales\Eshop\Application\Controller\Admin\ActionsOrderAjax',
             'admin_content' => 'OxidEsales\Eshop\Application\Controller\Admin\AdminContent',
             'admin_links' => 'OxidEsales\Eshop\Application\Controller\Admin\AdminLinks',
+            // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
             'admin_news' => 'OxidEsales\Eshop\Application\Controller\Admin\AdminNews',
+            // END deprecated
             'admin_newsletter' => 'OxidEsales\Eshop\Application\Controller\Admin\AdminNewsletter',
             'admin_order' => 'OxidEsales\Eshop\Application\Controller\Admin\AdminOrder',
             'admin_payment' => 'OxidEsales\Eshop\Application\Controller\Admin\AdminPayment',
@@ -326,7 +332,9 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
 
             'content' => 'OxidEsales\Eshop\Application\Controller\ContentController',
             'links' => 'OxidEsales\Eshop\Application\Controller\LinksController',
+            // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
             'news' => 'OxidEsales\Eshop\Application\Controller\NewsController',
+            // END deprecated
             'newsletter' => 'OxidEsales\Eshop\Application\Controller\NewsletterController',
             'pricealarm' => 'OxidEsales\Eshop\Application\Controller\PriceAlarmController',
             'tag' => 'OxidEsales\Eshop\Application\Controller\TagController',
@@ -492,7 +500,9 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxmanufacturerlist' => 'OxidEsales\Eshop\Application\Model\ManufacturerList',
             'oxmdvariant' => 'OxidEsales\Eshop\Application\Model\MdVariant',
             'oxmediaurl' => 'OxidEsales\Eshop\Application\Model\MediaUrl',
+            // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
             'oxnews' => 'OxidEsales\Eshop\Application\Model\News',
+            // END deprecated
             'oxnewsletter' => 'OxidEsales\Eshop\Application\Model\Newsletter',
             'oxnewslist' => 'OxidEsales\Eshop\Application\Model\NewsList',
             'oxnewssubscribed' => 'OxidEsales\Eshop\Application\Model\NewsSubscribed',

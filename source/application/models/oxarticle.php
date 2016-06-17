@@ -26,7 +26,9 @@ define('OXARTICLE_LINKTYPE_VENDOR', 1);
 define('OXARTICLE_LINKTYPE_MANUFACTURER', 2);
 define('OXARTICLE_LINKTYPE_PRICECATEGORY', 3);
 define('OXARTICLE_LINKTYPE_TAG', 4);
+// @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
 define('OXARTICLE_LINKTYPE_RECOMM', 5);
+// END deprecated
 
 /**
  * Article manager.

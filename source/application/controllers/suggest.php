@@ -58,6 +58,8 @@ class Suggest extends oxUBase
 
     /**
      * Recommlist
+     * 
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @var object
      */
@@ -66,6 +68,8 @@ class Suggest extends oxUBase
     /**
      * Recommlist
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @var object
      */
     protected $_aSuggestData = null;
@@ -221,6 +225,8 @@ class Suggest extends oxUBase
     /**
      * Template variable getter. Returns recommlist's reviews
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @return array
      */
     public function getRecommList()

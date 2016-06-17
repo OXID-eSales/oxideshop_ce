@@ -60,6 +60,8 @@ class Basket extends oxUBase
     /**
      * Recomm List
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @var object
      */
     protected $_oRecommList = null;
@@ -96,6 +98,8 @@ class Basket extends oxUBase
     /**
      * Array of id to form recommendation list.
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @var array
      */
     protected $_aSimilarRecommListIds = null;
@@ -179,6 +183,8 @@ class Basket extends oxUBase
     /**
      * Return array of id to form recommend list.
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @return array
      */
     public function getSimilarRecommListIds()

@@ -25,6 +25,8 @@
  * When user is logged in in this manager window he can modify his
  * own recommlists status - remove articles from list or store
  * them to shopping basket, view detail information.
+ *
+ * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
 class Account_Recommlist extends Account
 {

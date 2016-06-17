@@ -181,6 +181,9 @@ class Rss extends oxUBase
      * loads recommendation lists
      *
      * @access public
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @return void
      */
     public function recommlists()
@@ -200,6 +203,9 @@ class Rss extends oxUBase
      * loads recommendation list articles
      *
      * @access public
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @return void
      */
     public function recommlistarts()

@@ -446,6 +446,8 @@ class oxArticleList extends oxList
      *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
+     *                                
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.                               
      */
     public function loadRecommArticles($sRecommId, $sArticlesFilter = null)
     {
@@ -458,6 +460,8 @@ class oxArticleList extends oxList
      *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
+     *                                
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.                               
      */
     public function loadRecommArticleIds($sRecommId, $sArticlesFilter)
     {
@@ -475,6 +479,8 @@ class oxArticleList extends oxList
      *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return string
      */

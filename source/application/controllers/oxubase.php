@@ -119,6 +119,8 @@ class oxUBase extends oxView
     /**
      * Active recommendation's list
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @var object
      */
     protected $_oActiveRecommList = null;
@@ -1456,9 +1458,11 @@ class oxUBase extends oxView
         $aParams['ldtype'] = $this->getCustomListDisplayType();
         $aParams['actcontrol'] = $this->getClassName();
 
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         $aParams['recommid'] = $oConfig->getRequestParameter('recommid');
 
         $aParams['searchrecomm'] = $oConfig->getRequestParameter('searchrecomm', true);
+        // END deprecated
         $aParams['searchparam'] = $oConfig->getRequestParameter('searchparam', true);
         // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         $aParams['searchtag'] = $oConfig->getRequestParameter('searchtag', true);
@@ -1694,6 +1698,8 @@ class oxUBase extends oxView
      * Return array of id to form recommend list.
      * Should be overridden if need.
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @return array
      */
     public function getSimilarRecommListIds()
@@ -1787,9 +1793,11 @@ class oxUBase extends oxView
         }
         // END deprecated
 
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         if ($sVal = oxRegistry::getConfig()->getRequestParameter('recommid')) {
             $sURL .= "&amp;recommid={$sVal}";
         }
+        // END deprecated
 
         return $sURL;
     }
@@ -1896,6 +1904,8 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns search string
+     * 
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      */
     public function getRecommSearch()
     {
@@ -1911,6 +1921,8 @@ class oxUBase extends oxView
     /**
      * Template variable getter. Returns active recommendation lists
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @return oxRecommList
      */
     public function getActiveRecommList()

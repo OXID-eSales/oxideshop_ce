@@ -179,6 +179,8 @@ class Details extends oxUBase
     /**
      * Array of id to form recommendation list.
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @var array
      */
     protected $_aSimilarRecommListIds = null;
@@ -332,12 +334,14 @@ class Details extends oxUBase
                 $oLocator = oxNew('oxLocator', $this->getListType());
                 $oLocator->setLocatorData($oProduct, $this);
 
+                // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
                 if ($myConfig->getConfigParam('bl_rssRecommLists') && $this->getSimilarRecommListIds()) {
                     $oRss = oxNew('oxRssFeed');
                     $sTitle = $oRss->getRecommListsTitle($oProduct);
                     $sUrl = $oRss->getRecommListsUrl($oProduct);
                     $this->addRssFeed($sTitle, $sUrl, 'recommlists');
                 }
+                // END deprecated                
 
                 return $this->_sThisTemplate;
         }
@@ -454,6 +458,8 @@ class Details extends oxUBase
 
     /**
      * Adds article to selected recommendation list
+     * 
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return null
      */
@@ -738,8 +744,10 @@ class Details extends oxUBase
             } elseif ('tag' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_TAG;
                 // END deprecated
+                // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             } elseif ('recommlist' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
+                // END deprecated
             } else {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_CATEGORY;
 
@@ -937,6 +945,8 @@ class Details extends oxUBase
     /**
      * Return array of id to form recommend list.
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @return array
      */
     public function getSimilarRecommListIds()
@@ -1148,8 +1158,10 @@ class Details extends oxUBase
         } elseif ('tag' == $this->getListType()) {
             $aPaths = $this->_getTagBreadCrumb();
             // END deprecated
+            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         } elseif ('recommlist' == $this->getListType()) {
             $aPaths = $this->_getRecommendationListBredCrumb();
+            // END deprecated
         } elseif ('vendor' == $this->getListType()) {
             $aPaths = $this->_getVendorBreadCrumb();
         } else {
@@ -1626,6 +1638,8 @@ class Details extends oxUBase
     /**
      * Recommendation list bread crumb
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @return array
      */
     protected function _getRecommendationListBredCrumb()

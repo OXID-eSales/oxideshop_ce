@@ -174,7 +174,9 @@ class oxViewConfig extends oxSuperCfg
         // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         $sSearchTag = $this->getActSearchTag();
         // END deprecated
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         $sRecommId = $this->getActRecommendationId();
+        // END deprecated
         $sListType = $this->getActListType();
 
         $oConfig = $this->getConfig();
@@ -188,7 +190,9 @@ class oxViewConfig extends oxSuperCfg
                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
                . ($sSearchTag ? "&amp;searchtag={$sSearchTag}" : '')
                // END deprecated
+               // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
                . ($sRecommId ? "&amp;recommid={$sRecommId}" : '')
+               // END deprecated
                . ($sListType ? "&amp;listtype={$sListType}" : '')
                . "&amp;fnc=logout"
                . ($sTplName ? "&amp;tpl=" . basename($sTplName) : '')
@@ -275,6 +279,8 @@ class oxViewConfig extends oxSuperCfg
     /**
      * Returns active recommendation id parameter
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @return string
      */
     public function getActRecommendationId()
@@ -873,6 +879,8 @@ class oxViewConfig extends oxSuperCfg
     /**
      * Returns config param "bl_showListmania" value
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @return bool
      */
     public function getShowListmania()

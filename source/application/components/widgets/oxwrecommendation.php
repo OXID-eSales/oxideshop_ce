@@ -24,6 +24,8 @@
 /**
  * Recomendation list.
  * Forms recomendation list.
+ * 
+ * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
 class oxwRecommendation extends oxWidget
 {
@@ -61,7 +63,7 @@ class oxwRecommendation extends oxWidget
 
     /**
      * Return recomm list object.
-     *
+     * 
      * @return object
      */
     public function getRecommList()

@@ -23,6 +23,7 @@
 /**
  * Seo encoder base
  *
+ * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
 class oxSeoEncoderRecomm extends oxSeoEncoder
 {
@@ -33,6 +34,8 @@ class oxSeoEncoderRecomm extends oxSeoEncoder
      * @param oxrecommlist $oRecomm recomm list object
      * @param int          $iLang   language
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @return string
      */
     public function getRecommUri($oRecomm, $iLang = null)
@@ -64,6 +67,8 @@ class oxSeoEncoderRecomm extends oxSeoEncoder
      * @param oxrecommlist $oRecomm recomendation list object
      * @param int          $iLang   language
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *             
      * @return string
      */
     public function getRecommUrl($oRecomm, $iLang = null)
@@ -82,6 +87,8 @@ class oxSeoEncoderRecomm extends oxSeoEncoder
      * @param int          $iPage   page tu prepare number
      * @param int          $iLang   language
      * @param bool         $blFixed fixed url marker (default is false)
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return string
      */

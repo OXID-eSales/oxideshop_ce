@@ -150,6 +150,8 @@ class oxDb
     private static $_sAdminEmail;
 
     /**
+     * @deprecated since v5.3.0 (2016-06-17). Different solution in 6.0.
+     *
      * Value for master slave balance
      *
      * @var int
@@ -187,7 +189,9 @@ class oxDb
         self::$_iUtfMode = $oConfig->getVar('iUtfMode');
         self::$_sDefaultDatabaseConnection = $oConfig->getVar('sDefaultDatabaseConnection');
         self::$_aSlaveHosts = $oConfig->getVar('aSlaveHosts');
+        //deprecated since v5.3.0 (2016-06-17). Different solution in 6.0.
         self::$_iMasterSlaveBalance = $oConfig->getVar('iMasterSlaveBalance');
+        //end deprecated
         self::$_sAdminEmail = $oConfig->getVar('sAdminEmail');
         self::$_sLocalTimeFormat = $oConfig->getVar('sLocalTimeFormat');
         self::$_sLocalDateFormat = $oConfig->getVar('sLocalDateFormat');

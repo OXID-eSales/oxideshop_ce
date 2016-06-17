@@ -37,7 +37,7 @@
  */
 
 $aLang =  array(
-'charset'                                     => 'ISO-8859-15',
+'charset'                                     => 'UTF-8',
 
 'HELP_SHOP_SYSTEM_OTHERCOUNTRYORDER'          => 'Here you can set if orders can be made in countries for which no shipping costs are defined:' .
                                                  '<ul><li>If the setting is checked, users can order: The users are notified that they are informed about the shipping costs manually.</li>' .

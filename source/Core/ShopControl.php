@@ -542,8 +542,6 @@ class ShopControl extends \oxSuperCfg
      */
     protected function _getErrorReportingLevel()
     {
-        $oldReporting = error_reporting();
-
         $errorReporting = E_ALL ^ E_NOTICE;
         // some 3rd party libraries still use deprecated functions
         if (defined('E_DEPRECATED')) {

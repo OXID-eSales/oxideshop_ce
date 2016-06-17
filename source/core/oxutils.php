@@ -1341,6 +1341,8 @@ class oxUtils extends oxSuperCfg
     /**
      * Processes logging.
      *
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     *
      * @param string $sText     Log message text
      * @param bool   $blNewline If true, writes message to new line (default false)
      */
@@ -1448,6 +1450,8 @@ class oxUtils extends oxSuperCfg
 
     /**
      * Writes given log message. Returns write state
+     *
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
      *
      * @param string $sLogMessage  log message
      * @param string $sLogFileName log file name

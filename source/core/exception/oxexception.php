@@ -30,6 +30,8 @@ class oxException extends Exception
     /**
      * Log file path/name
      *
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     *
      * @var string
      */
     protected $_sFileName = 'EXCEPTION_LOG.txt';
@@ -63,6 +65,8 @@ class oxException extends Exception
     /**
      * Set log file path/name
      *
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     *
      * @param string $sFile File name
      */
     public function setLogFileName($sFile)
@@ -72,6 +76,8 @@ class oxException extends Exception
 
     /**
      * Get log file path/name
+     *
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
      *
      * @return string
      */
@@ -134,7 +140,9 @@ class oxException extends Exception
         //We are most likely are already dealing with an exception so making sure no other exceptions interfere
         try {
             $sLogMsg = $this->getString() . "\n---------------------------------------------\n";
+            //deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
             oxRegistry::getUtils()->writeToLog($sLogMsg, $this->getLogFileName());
+            //end deprecated
         } catch (Exception $e) {
         }
     }

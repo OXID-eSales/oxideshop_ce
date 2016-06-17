@@ -23,7 +23,7 @@
 /**
  * Admin pricealarm list manager.
  * Performs collection and managing (such as filtering or deleting) function.
- * Admin Menu: Customer News -> pricealarm.
+ * Admin Menu: Customer Info -> pricealarm.
  */
 class PriceAlarm_List extends oxAdminList
 {

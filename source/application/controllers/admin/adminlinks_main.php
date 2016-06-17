@@ -23,7 +23,7 @@
 /**
  * Admin links details manager.
  * Creates form for submitting new admin links or modifying old ones.
- * Admin Menu: Customer News -> Links.
+ * Admin Menu: Customer Info -> Links.
  */
 class Adminlinks_Main extends oxAdminDetails
 {

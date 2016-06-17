@@ -23,7 +23,7 @@
 /**
  * Admin article main newsletter manager.
  * Performs collection and updatind (on user submit) main item information.
- * Admin Menu: Customer News -> Newsletter -> Main.
+ * Admin Menu: Customer Info -> Newsletter -> Main.
  */
 class Newsletter_Main extends oxAdminDetails
 {

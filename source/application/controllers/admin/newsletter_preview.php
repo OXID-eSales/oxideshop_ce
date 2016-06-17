@@ -23,7 +23,7 @@
 /**
  * Newsletter preview manager.
  * Creates plaintext and HTML format newsletter preview.
- * Admin Menu: Customer News -> Newsletter -> Preview.
+ * Admin Menu: Customer Info -> Newsletter -> Preview.
  */
 class Newsletter_Preview extends oxAdminDetails
 {

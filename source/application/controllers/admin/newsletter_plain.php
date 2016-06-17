@@ -23,7 +23,7 @@
 /**
  * Newsletter plain manager.
  * Performs newsletter creation (plain text format, collects neccessary information).
- * Admin Menu: Customer News -> Newsletter -> Text.
+ * Admin Menu: Customer Info -> Newsletter -> Text.
  */
 class Newsletter_Plain extends oxAdminDetails
 {

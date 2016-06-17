@@ -24,7 +24,7 @@
  * Admin links collection.
  * Collects list of admin links. Links may be viewed by language, sorted by date,
  * url or any keyword.
- * Admin Menu: Customer News -> Links.
+ * Admin Menu: Customer Info -> Links.
  */
 class Adminlinks_List extends oxAdminList
 {

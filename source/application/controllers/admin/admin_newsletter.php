@@ -24,7 +24,7 @@
  * Admin newsletter manager.
  * Returns template, that arranges two other templates ("newsletter_list.tpl"
  * and "newsletter_main.tpl") to frame.
- * Admin Menu: Customer News -> Newsletter.
+ * Admin Menu: Customer Info -> Newsletter.
  */
 class Admin_Newsletter extends oxAdminView
 {

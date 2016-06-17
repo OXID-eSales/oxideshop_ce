@@ -23,7 +23,7 @@
 /**
  * Admin newsletter list manager.
  * Performs collection and managing (such as filtering or deleting) function.
- * Admin Menu: Customer News -> Newsletter.
+ * Admin Menu: Customer Info -> Newsletter.
  */
 class Newsletter_List extends oxAdminList
 {

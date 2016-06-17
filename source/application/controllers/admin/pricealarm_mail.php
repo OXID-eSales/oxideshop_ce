@@ -23,7 +23,7 @@
 /**
  * Admin article main pricealarm manager.
  * Performs collection and updatind (on user submit) main item information.
- * Admin Menu: Customer News -> pricealarm -> Main.
+ * Admin Menu: Customer Info -> pricealarm -> Main.
  */
 class PriceAlarm_Mail extends oxAdminDetails
 {

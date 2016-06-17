@@ -84,7 +84,7 @@ class oxNewsSubscribed extends oxBase
     }
 
     /**
-     * Loader which loads news subscription according to subscribers email address
+     * Loader which loads newsletter subscription according to subscribers email address
      *
      * @param string $sEmailAddress subscribers email address
      *
@@ -100,7 +100,7 @@ class oxNewsSubscribed extends oxBase
     }
 
     /**
-     * Loader which loads news subscription according to subscribers oxid
+     * Loader which loads newsletter subscription according to subscribers oxid
      *
      * @param string $sOxUserId subscribers oxid
      *

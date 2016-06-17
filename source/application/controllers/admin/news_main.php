@@ -24,7 +24,9 @@
 /**
  * Admin article main news manager.
  * Performs collection and updatind (on user submit) main item information.
- * Admin Menu: Customer News -> News -> Main.
+ * Admin Menu: Customer Info -> News -> Main.
+ * 
+ * @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
  */
 class News_Main extends oxAdminDetails
 {

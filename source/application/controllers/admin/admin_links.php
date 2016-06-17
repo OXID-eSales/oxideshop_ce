@@ -24,7 +24,7 @@
  * Admins links manager.
  * Sets template, that arranges two other templates ("adminlinks_lis.tpl"
  * and "adminlinks_main.tpl") to frame.
- * Admin Menu: Customer News -> Links.
+ * Admin Menu: Customer Info -> Links.
  */
 class Admin_Links extends oxAdminView
 {

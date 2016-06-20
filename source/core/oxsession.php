@@ -916,6 +916,8 @@ class oxSession extends oxSuperCfg
 
     /**
      * Checking if this sid is old
+     * 
+     * @deprecated since v5.3.0 (2016-05-24); Implement your own session handler with a module.
      *
      * @return bool
      */

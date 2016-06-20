@@ -25,14 +25,14 @@ namespace OxidEsales\Eshop\Core\Database\Adapter;
 /**
  * Interface ResultSetInterface
  */
-interface ResultSetInterface extends \Traversable
+interface ResultSetInterface extends \Traversable, \Countable
 {
 
     /**
-    * Closes the cursor, enabling the statement to be executed again.
-    *
-    * @return boolean Returns true on success or false on failure.
-    */
+     * Closes the cursor, enabling the statement to be executed again.
+     *
+     * @return boolean Returns true on success or false on failure.
+     */
     public function close();
 
     /**
@@ -51,18 +51,20 @@ interface ResultSetInterface extends \Traversable
     public function fetchRow();
 
     /**
+     * Returns the number of columns in the result set
+     *
+     * @return integer Returns the number of columns in the result set represented by the PDOStatement object.
+     */
+    public function fieldCount();
+
+    /**
      * Returns the number of rows affected by the last DELETE, INSERT, or UPDATE statement.
+     *
+     * @deprecated since v5.3.0 (2016-06-16) This method will be removed in v6.0.
      *
      * @return integer Number of rows
      */
     public function recordCount();
-
-    /**
-     * Returns the number of columns in the result set
-     *
-     * @return integer Returns the number of columns in the result set represented by the PDOStatement object. If there is no result set, this method should return 0
-     */
-    public function fieldCount();
 
     /**
      * Returns field name from select query
@@ -83,7 +85,7 @@ interface ResultSetInterface extends \Traversable
     public function moveNext();
 
     /**
-     * Move to the first row in the recordset. Many databases do NOT support this.
+     * Move to the first row in the record set. Many databases do NOT support this.
      *
      * @deprecated since v5.3.0 (2016-06-16) This method will be removed in v6.0.
      *
@@ -146,7 +148,7 @@ interface ResultSetInterface extends \Traversable
      *
      * @deprecated since v5.3.0 (2016-06-16)     This method will be removed in v6.0. Use self::fetchAll() to retrieve
      *                                           all rows or self::fetchRow to retrieve a single row
-     *             
+     *
      * @param  integer $nRows The number of rows to return. -1 means every row.
      */
     public function getArray($nRows = -1);
@@ -158,7 +160,7 @@ interface ResultSetInterface extends \Traversable
      *
      * @deprecated since v5.3.0 (2016-06-16)     This method will be removed in v6.0. Use self::fetchAll() to retrieve all rows
      *                                          or self::fetchRow to retrieve a single row
-     *             
+     *
      * @param  integer $nRows The number of rows to return. -1 means every row.
      */
     public function getRows($nRows = -1);
@@ -168,7 +170,7 @@ interface ResultSetInterface extends \Traversable
      *
      * @deprecated since v5.3.0 (2016-06-16)     This method will be removed in v6.0. Use self::fetchAll() to retrieve all rows
      *                                          or self::fetchRow to retrieve a single row
-     *             
+     *
      * @param  integer $nRows The number of rows to return. -1 means every row.
      */
     public function getAll($nRows = -1);

@@ -270,11 +270,19 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
     }
 
     /**
+     * @inheritdoc 
+     */
+    public function count()
+    {
+        // TODO: Implement count() method.
+    }
+
+    /**
      * @inheritdoc
      */
     public function Move($rowNumber = 0)
     {
-        // TODO: Implement Move() method.
+        // This method is deprecated and will not be implemented.
     }
 
     /**
@@ -282,7 +290,7 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
      */
     public function MoveFirst()
     {
-        // TODO: Implement MoveFirst() method.
+        // This method is deprecated and will not be implemented.
     }
 
     /**
@@ -290,7 +298,7 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
      */
     public function MoveLast()
     {
-        // TODO: Implement MoveFirst() method.
+        // This method is deprecated and will not be implemented.
     }
 
     /**
@@ -298,7 +306,7 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
      */
     public function _fetch()
     {
-        // TODO: Implement _fetch() method.
+        // This method is deprecated and will not be implemented.
     }
 
     /**
@@ -306,6 +314,6 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
      */
     public function _seek($row)
     {
-        // TODO: Implement _seek() method.
+        // This method is deprecated and will not be implemented.
     }
 }

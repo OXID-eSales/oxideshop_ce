@@ -698,6 +698,7 @@ class UserComponent extends \oxView
     {
         if (is_array($aBillingAddress)) {
             $skipFields = array('oxuser__oxid', 'oxid', 'oxuser__oxpoints', 'oxpoints', 'oxuser__oxboni', 'oxboni');
+            $aBillingAddress = array_change_key_case($aBillingAddress);
             $aBillingAddress = array_diff_key($aBillingAddress, array_flip($skipFields));
         }
         return $aBillingAddress;
@@ -714,6 +715,7 @@ class UserComponent extends \oxView
     {
         if (is_array($aDeliveryAddress)) {
             $skipFields = array('oxaddress__oxid', 'oxid', 'oxaddress__oxuserid', 'oxuserid', 'oxaddress__oxaddressuserid', 'oxaddressuserid');
+            $aDeliveryAddress = array_change_key_case($aDeliveryAddress);
             $aDeliveryAddress = array_diff_key($aDeliveryAddress, array_flip($skipFields));
         }
         return $aDeliveryAddress;

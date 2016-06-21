@@ -148,6 +148,6 @@ class Unit_Admin_ContentMainTest extends OxidTestCase
     {
         // testing..
         $oView = new Content_Main();
-        $this->assertTrue($oView->UNITcheckIdent("oxstartwelcome", ""));
+        $this->assertTrue($oView->UNITcheckIdent("oxstartmetadescription", ""));
     }
 }

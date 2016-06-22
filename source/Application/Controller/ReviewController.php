@@ -51,12 +51,16 @@ class ReviewController extends \Details
     /**
      * Active recommendations list
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @var object
      */
     protected $_oActiveRecommList = null;
 
     /**
      * Active recommlist's items
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @var object
      */
@@ -147,9 +151,11 @@ class ReviewController extends \Details
      */
     public function init()
     {
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         if (oxRegistry::getConfig()->getRequestParameter('recommid') && !$this->getActiveRecommList()) {
             oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeURL(), true, 302);
         }
+        // END deprecated
 
         oxUBase::init();
     }
@@ -175,6 +181,7 @@ class ReviewController extends \Details
             $this->_sThisTemplate = $this->_sThisLoginTemplate;
         } else {
 
+            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             $oActiveRecommList = $this->getActiveRecommList();
             $oList = $this->getActiveRecommItems();
 
@@ -187,6 +194,7 @@ class ReviewController extends \Details
                 $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
                 $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
             }
+            // END deprecated
         }
 
         return $this->_sThisTemplate;
@@ -295,8 +303,10 @@ class ReviewController extends \Details
 
             if (($oProduct = $this->getProduct())) {
                 $this->_oActObject = $oProduct;
+                // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             } elseif (($oRecommList = $this->getActiveRecommList())) {
                 $this->_oActObject = $oRecommList;
+                // END deprecated
             }
         }
 
@@ -313,8 +323,10 @@ class ReviewController extends \Details
         $sType = null;
         if ($this->getProduct()) {
             $sType = 'oxarticle';
+            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         } elseif ($this->getActiveRecommList()) {
             $sType = 'oxrecommlist';
+            // END deprecated
         }
 
         return $sType;
@@ -322,6 +334,8 @@ class ReviewController extends \Details
 
     /**
      * Template variable getter. Returns active recommlist
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return oxRecommList
      */
@@ -387,6 +401,8 @@ class ReviewController extends \Details
     /**
      * Template variable getter. Returns recommlists
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @return object
      */
     public function getRecommList()
@@ -404,6 +420,8 @@ class ReviewController extends \Details
 
     /**
      * Template variable getter. Returns active recommlist's items
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return object
      */
@@ -453,9 +471,11 @@ class ReviewController extends \Details
     {
         if ($this->_oPageNavigation === null) {
             $this->_oPageNavigation = false;
+            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             if ($this->getActiveRecommList()) {
                 $this->_oPageNavigation = $this->generatePageNavigation();
             }
+            // END deprecated
         }
 
         return $this->_oPageNavigation;
@@ -469,9 +489,11 @@ class ReviewController extends \Details
     public function getAdditionalParams()
     {
         $sAddParams = oxUBase::getAdditionalParams();
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         if ($oActRecommList = $this->getActiveRecommList()) {
             $sAddParams .= '&amp;recommid=' . $oActRecommList->getId();
         }
+        // END deprecated
 
         return $sAddParams;
     }
@@ -494,9 +516,11 @@ class ReviewController extends \Details
         if ($sListType = oxRegistry::getConfig()->getRequestParameter('listtype')) {
             $sParams .= "&amp;listtype={$sListType}";
         }
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         if ($sRecommId = oxRegistry::getConfig()->getRequestParameter('recommid')) {
             $sParams .= "&amp;recommid={$sRecommId}";
         }
+        // END deprecated
 
         return $sParams;
     }

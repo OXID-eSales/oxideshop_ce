@@ -76,6 +76,8 @@ class SeoEncoderArticle extends \oxSeoEncoder
     /**
      * Returns SEO uri for passed article and active tag
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @param oxArticle $oArticle article object
      * @param int       $iLang    language id
      *
@@ -122,6 +124,8 @@ class SeoEncoderArticle extends \oxSeoEncoder
      *
      * @param oxArticle $oArticle product
      * @param int       $iLang    language id
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return oxRecommList | null
      */
@@ -630,10 +634,12 @@ class SeoEncoderArticle extends \oxSeoEncoder
             case OXARTICLE_LINKTYPE_TAG:
                 $sUri = $this->getArticleTagUri($oArticle, $iLang);
                 break;
-            // END deprecated 
+            // END deprecated
+            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             case OXARTICLE_LINKTYPE_RECOMM:
                 $sUri = $this->getArticleRecommUri($oArticle, $iLang);
                 break;
+            // END deprecated
             case OXARTICLE_LINKTYPE_PRICECATEGORY: // goes price category urls to default (category urls)
             default:
                 $sUri = $this->getArticleUri($oArticle, $iLang);

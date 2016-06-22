@@ -45,8 +45,10 @@ class RssFeed extends \oxSuperCfg
     const RSS_TOPSHOP = 'RSS_TopShop';
     const RSS_NEWARTS = 'RSS_NewArts';
     const RSS_CATARTS = 'RSS_CatArts';
+    // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
     const RSS_ARTRECOMMLISTS = 'RSS_ARTRECOMMLISTS';
     const RSS_RECOMMLISTARTS = 'RSS_RECOMMLISTARTS';
+    // END deprecated
     const RSS_BARGAIN = 'RSS_Bargain';
 
     /**
@@ -742,6 +744,8 @@ class RssFeed extends \oxSuperCfg
      *
      * @param oxArticle $oArticle load lists for this article
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @return string
      */
     public function getRecommListsTitle(Article $oArticle)
@@ -756,6 +760,8 @@ class RssFeed extends \oxSuperCfg
      * get url for 'Recommendation lists' rss feed
      *
      * @param oxArticle $oArticle load lists for this article
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return string
      */
@@ -774,6 +780,8 @@ class RssFeed extends \oxSuperCfg
      * make rss data array from given oxlist
      *
      * @param oxList $oList recommlist object
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return array
      */
@@ -798,6 +806,8 @@ class RssFeed extends \oxSuperCfg
      * loads 'Recommendation lists' rss data
      *
      * @param oxArticle $oArticle load lists for this article
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return null
      */
@@ -831,6 +841,8 @@ class RssFeed extends \oxSuperCfg
      *
      * @param oxRecommList $oRecommList recomm list to load articles from
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @return string
      */
     public function getRecommListArticlesTitle(RecommendationList $oRecommList)
@@ -845,6 +857,8 @@ class RssFeed extends \oxSuperCfg
      * get url for 'Recommendation lists' rss feed
      *
      * @param oxRecommList $oRecommList recomm list to load articles from
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return string
      */
@@ -861,6 +875,8 @@ class RssFeed extends \oxSuperCfg
 
     /**
      * loads 'Recommendation lists' rss data
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @param oxRecommList $oRecommList recomm list to load articles from
      *

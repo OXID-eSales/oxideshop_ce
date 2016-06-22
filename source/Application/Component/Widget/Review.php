@@ -89,6 +89,8 @@ class Review extends \oxWidget
     /**
      * Template variable getter. Returns recommlist id
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @return string
      */
     public function getRecommListId()

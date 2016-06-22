@@ -220,6 +220,8 @@ class ArticleDetails extends \oxWidget
     /**
      * Array of id to form recommendation list.
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @var array
      */
     protected $_aSimilarRecommListIds = null;
@@ -411,8 +413,10 @@ class ArticleDetails extends \oxWidget
             } elseif ('tag' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_TAG;
                 // END deprecated
+                // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             } elseif ('recommlist' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
+                // END deprecated
             } else {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_CATEGORY;
 
@@ -704,6 +708,8 @@ class ArticleDetails extends \oxWidget
 
     /**
      * Return array of id to form recommend list.
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return array
      */

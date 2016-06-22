@@ -183,6 +183,8 @@ class ArticleDetailsController extends \oxUBase
     /**
      * Array of id to form recommendation list.
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @var array
      */
     protected $_aSimilarRecommListIds = null;
@@ -328,12 +330,14 @@ class ArticleDetailsController extends \oxUBase
                 $locator = oxNew('oxLocator', $this->getListType());
                 $locator->setLocatorData($article, $this);
 
+                // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
                 if ($config->getConfigParam('bl_rssRecommLists') && $this->getSimilarRecommListIds()) {
                     $rssFeeds = oxNew('oxRssFeed');
                     $title = $rssFeeds->getRecommListsTitle($article);
                     $url = $rssFeeds->getRecommListsUrl($article);
                     $this->addRssFeed($title, $url, 'recommlists');
                 }
+                // END deprecated
 
                 return $this->_sThisTemplate;
         }
@@ -449,6 +453,8 @@ class ArticleDetailsController extends \oxUBase
 
     /**
      * Adds article to selected recommendation list
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return null
      */
@@ -730,8 +736,10 @@ class ArticleDetailsController extends \oxUBase
             } elseif ('tag' == $listType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_TAG;
                 // END deprecated
+                // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             } elseif ('recommlist' == $listType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
+                // END deprecated
             } else {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_CATEGORY;
 
@@ -929,6 +937,8 @@ class ArticleDetailsController extends \oxUBase
 
     /**
      * Return array of id to form recommend list.
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return array
      */
@@ -1134,9 +1144,11 @@ class ArticleDetailsController extends \oxUBase
             // @deprecated v5.3 (2016-05-04); Will be moved to own module.
         } elseif ('tag' == $this->getListType()) {
             $paths = $this->_getTagBreadCrumb();
-            // END deprecated 
+            // END deprecated
+            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         } elseif ('recommlist' == $this->getListType()) {
             $paths = $this->_getRecommendationListBredCrumb();
+            // END deprecated
         } elseif ('vendor' == $this->getListType()) {
             $paths = $this->_getVendorBreadCrumb();
         } else {
@@ -1579,6 +1591,8 @@ class ArticleDetailsController extends \oxUBase
 
     /**
      * Recommendation list bread crumb
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return array
      */

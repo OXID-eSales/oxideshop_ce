@@ -185,6 +185,8 @@ class RssController extends oxUBase
     /**
      * loads recommendation lists
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @access public
      * @return void
      */
@@ -203,6 +205,8 @@ class RssController extends oxUBase
 
     /**
      * loads recommendation list articles
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @access public
      * @return void

@@ -25,7 +25,7 @@ namespace OxidEsales\Eshop\Tests\Acceptance;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\TestingLibrary\TestSqlPathProvider;
 
-class AcceptanceTestCase extends \OxidEsales\TestingLibrary\AcceptanceTestCase
+abstract class AcceptanceTestCase extends \OxidEsales\TestingLibrary\AcceptanceTestCase
 {
     /**
      * Adds tests sql data to database.

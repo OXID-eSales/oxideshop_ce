@@ -22,6 +22,6 @@
 
 namespace OxidEsales\Eshop\Tests\Acceptance;
 
-class AdminTestCase extends AcceptanceTestCase
+abstract class AdminTestCase extends AcceptanceTestCase
 {
 }

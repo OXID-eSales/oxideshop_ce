@@ -16,6 +16,18 @@ OXID eShop is just e-commerce software for agencies with deadlines :-)
 ![Image alt](frontend.png)
 
 
+### Installation
+
+Please note: if you don't know what the following is about, please download the OXID eShop package from this place: https://www.oxid-esales.com/en/community/download-oxid-eshop.html and follow the [installation instruction] (https://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-new-installation/server-and-system-requirements.html "OXID eShop installation instruction").
+
+When checking out this repository or downloading the zip file from this place, Flow theme has to be installed.
+
+1. `$ git clone https://github.com/OXID-eSales/oxideshop_ce.git --branch b-5.3-ce`
+2. `$ cd oxideshop_ce/source/application/views`
+3. `$ git clone https://github.com/OXID-eSales/flow_theme.git flow --branch b-1.0`
+4. `$ cp -R flow/out/flow ../../out/`
+
+
 Useful links:<br>
 Project home page - http://www.oxid-esales.com<br>
 Wiki - http://www.oxidforge.org<br>

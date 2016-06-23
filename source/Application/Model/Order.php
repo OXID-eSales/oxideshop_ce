@@ -1087,6 +1087,18 @@ class Order extends \oxBase
      */
     protected function _updateNoticeList($aArticleList, $oUser)
     {
+        /*
+         * #6141
+         * If there is no noticelist, don't create an empty one.
+         * Because loading the list via $user->getBasket('noticelist') will create it if there isn't one, but it will
+         * only exists in the session for now. So it is possible to check if it has an oxid. If yes then we had a list.
+         * If no then it was just created and will cause a new row in oxuserbaskets without content in oxuserbasketitems.
+         * Also it will prevent creating a row for guests.
+         */
+        if ($oUser->getBasket('noticelist')->oxuserbaskets__oxid->value === null) {
+            return;
+        }
+
         // loading users notice list ..
         if ($oUserBasket = $oUser->getBasket('noticelist')) {
             // only if wishlist is enabled

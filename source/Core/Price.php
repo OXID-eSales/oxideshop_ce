@@ -454,14 +454,19 @@ class Price
         $aDiscounts = $this->getDiscounts();
 
         if ($aDiscounts) {
+            $sumOfCalculatedDiscounts = 0;
+
             foreach ($aDiscounts as $aDiscount) {
 
                 if ($aDiscount['type'] == 'abs') {
                     $dPrice = $dPrice - $aDiscount['value'];
                 } else {
-                    $dPrice = $dPrice * (100 - $aDiscount['value']) / 100;
+                    $sumOfCalculatedDiscounts += $dPrice - $dPrice * (100 - $aDiscount['value']) / 100;
                 }
             }
+
+            $dPrice -= $sumOfCalculatedDiscounts;
+
             if ($dPrice < 0) {
                 $this->setPrice(0);
             } else {

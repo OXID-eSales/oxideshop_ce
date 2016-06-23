@@ -608,4 +608,24 @@ class PriceTest extends \OxidTestCase
         $this->assertFalse($oPrice->isNettoMode());
     }
 
+    /**
+     * Test case for Price::calculateDiscount
+     * It is wrong to subtract a percentual discount from a basic price and use it then for further subtraction of
+     * further percentual discounts
+     *
+     * #6375
+     * @see https://bugs.oxid-esales.com/view.php?id=6375
+     */
+    public function testMultipleDiscounts()
+    {
+        /** @var oxPrice $price */
+        $price = oxNew('oxPrice');
+        $price->setNettoMode(false);
+        $price->setPrice(879.0);
+        $price->setDiscount(10.0, '%');
+        $price->setDiscount(18.0, '%');
+        $price->calculateDiscount();
+
+        $this->assertEquals(632.88, $price->getPrice());
+    }
 }

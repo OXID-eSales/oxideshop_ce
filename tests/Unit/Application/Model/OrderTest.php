@@ -3627,4 +3627,95 @@ class OrderTest extends \OxidTestCase
         $oOrder->load($sId);
         $this->assertEquals($ipv6, $oOrder->oxorder__oxip->value);
     }
+
+    /**
+     * Test case for the noticelist if the current user is a guest (so we don't want one)
+     *
+     * #6141
+     * @see https://bugs.oxid-esales.com/view.php?id=6141
+     */
+    public function testFinalizeOrderDoNotHandleNoticelistWhenUserIsGuest()
+    {
+        /** @var \oxUser $user */
+        $user = oxNew('oxUser');
+        $user->setId('_testUserId');
+        $user->setPassword();
+        $user->save();
+
+        /** @var \oxBasket $basket */
+        $basket = oxNew('oxBasket');
+        $basket->addToBasket("2000", 1.0);
+
+        $order = $this->getMock('oxOrder', array('validateOrder', '_setUser', '_loadFromBasket', '_sendOrderByEmail'));
+        $order->expects($this->once())->method('_setUser');
+        $order->expects($this->once())->method('_loadFromBasket');
+        $order->expects($this->once())->method('_sendOrderByEmail');
+
+        $order->finalizeOrder($basket, $user);
+
+        $query = 'select 1 from oxuserbaskets where oxtitle = "noticelist"';
+        $this->assertFalse((bool) oxDb::getDb()->getOne($query));
+    }
+
+    /**
+     * Test case for the noticelist if the current user hasn't a noticelist (so we don't want one)
+     *
+     * #6141
+     * @see https://bugs.oxid-esales.com/view.php?id=6141
+     */
+    public function testFinalizeOrderDoNotHandleNoticelistWhenThereIsNoNoticelist()
+    {
+        /** @var oxUser $oUser */
+        $user = oxNew('oxUser');
+        $user->setId('_testUserId');
+        $user->setPassword('foobar');
+        $user->save();
+
+        /** @var \oxBasket $basket */
+        $basket = oxNew('oxBasket');
+        $basket->addToBasket("2000", 1.0);
+
+        $order = $this->getMock('oxOrder', array('validateOrder', '_setUser', '_loadFromBasket', '_sendOrderByEmail'));
+        $order->expects($this->once())->method('_setUser');
+        $order->expects($this->once())->method('_loadFromBasket');
+        $order->expects($this->once())->method('_sendOrderByEmail');
+
+        $order->finalizeOrder($basket, $user);
+
+        $query = 'select 1 from oxuserbaskets where oxtitle = "noticelist"';
+        $this->assertFalse((bool) oxDb::getDb()->getOne($query));
+    }
+
+
+    /**
+     * Test case for the noticelist if the current user has a noticelist.
+     *
+     * #6141
+     * @see https://bugs.oxid-esales.com/view.php?id=6141
+     */
+    public function testFinalizeOrderHandleNoticelist()
+    {
+        $query = 'insert into oxuserbaskets (oxid, oxtitle) values ("_test", "noticelist")';
+        oxDb::getDb()->execute($query);
+
+        /** @var oxUser $oUser */
+        $user = oxNew('oxUser');
+        $user->setId('_testUserId');
+        $user->setPassword('foobar');
+        $user->save();
+
+        /** @var \oxBasket $basket */
+        $basket = oxNew('oxBasket');
+        $basket->addToBasket("2000", 1.0);
+
+        $order = $this->getMock('oxOrder', array('validateOrder', '_setUser', '_loadFromBasket', '_sendOrderByEmail'));
+        $order->expects($this->once())->method('_setUser');
+        $order->expects($this->once())->method('_loadFromBasket');
+        $order->expects($this->once())->method('_sendOrderByEmail');
+
+        $order->finalizeOrder($basket, $user);
+
+        $query = 'select 1 from oxuserbaskets where oxid = "_test" and oxtitle = "noticelist"';
+        $this->assertTrue((bool) oxDb::getDb()->getOne($query));
+    }
 }

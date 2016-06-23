@@ -421,8 +421,21 @@ class Price
      *
      * @param double $dValue discount value
      * @param string $sType  discount type: abs or %
+     *
+     * @deprecated Use Price::addDiscount instead
      */
     public function setDiscount($dValue, $sType)
+    {
+        $this->addDiscount($dValue, $sType);
+    }
+
+    /**
+     * Adds discount to price
+     *
+     * @param double $dValue discount value
+     * @param string $sType  discount type: abs or %
+     */
+    public function addDiscount($dValue, $sType)
     {
         $this->_aDiscounts[] = array('value' => $dValue, 'type' => $sType);
     }

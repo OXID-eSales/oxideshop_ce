@@ -115,9 +115,9 @@ $aData = array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
         'articles' => array (
              111 => array ( '0,50', '0,50' ),
-             1112 => array ( '4,97', '4,97' ),
+             1112 => array ( '5,02', '5,02' ),
              1113 => array ( '0,90', '0,90' ),
-             1114 => array ( '990,99', '990,99' ),
+             1114 => array ( '1.001,00', '1.001,00' ),
         ),
         // Expectations of other totals
         'totals' => array (

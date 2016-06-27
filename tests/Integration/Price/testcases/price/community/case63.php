@@ -76,7 +76,7 @@ $aData = array (
         'expected' => array (
                 1000 => array (
                         'base_price'        => '10,00',
-                        'price'             => '10,45',
+                        'price'             => '10,50',
                 ),
         ),
         'options' => array (

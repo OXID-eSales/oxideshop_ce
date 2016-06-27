@@ -472,9 +472,11 @@ class Price
             foreach ($aDiscounts as $aDiscount) {
 
                 if ($aDiscount['type'] == 'abs') {
-                    $dPrice = $dPrice - $aDiscount['value'];
+                    //$dPrice = $dPrice - $aDiscount['value'];
+                    $sumOfCalculatedDiscounts += $aDiscount['value'];
                 } else {
-                    $sumOfCalculatedDiscounts += $dPrice - $dPrice * (100 - $aDiscount['value']) / 100;
+                    //$sumOfCalculatedDiscounts += $dPrice * (100 - $aDiscount['value']) / 100;
+                    $sumOfCalculatedDiscounts += $dPrice - ($dPrice * (100 - $aDiscount['value']) / 100);
                 }
             }
 

@@ -127,7 +127,7 @@ $aData = array(
             'totalNetto'  => '997,36',
             // Total VAT amount: vat% => total cost
             'vats' => array (
-                19 => '189,50',
+                19 => '191,41',
             ),
 
             // Total delivery amounts

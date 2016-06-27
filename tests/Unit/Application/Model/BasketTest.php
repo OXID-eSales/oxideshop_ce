@@ -2248,9 +2248,44 @@ class BasketTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('blEnterNetPrice', true);
         $aTestValues = array('aDiscounts');
 
-        // deleting discounts to ignore bundle problems
+        // Changing discount types to % from itm
         foreach ($this->aDiscounts as $oDiscount) {
             $oDiscount->oxdiscount__oxaddsumtype = new oxField('%', oxField::T_RAW);
+            $oDiscount->save();
+        }
+
+        $oBasket = oxNew('oxbasket');
+        $oBasket->setPayment('oxidcashondel');
+        $oBasket->setCardId($this->oCard->getId());
+        $oBasket->setCardMessage('message');
+
+        $oItem = $oBasket->addToBasket($this->oArticle->getId(), 10);
+        $oItem->setWrapping($this->oWrap->getId());
+
+
+        $oBasket->addToBasket($this->oVariant->getId(), 10);
+        $oBasket->calculateBasket(false);
+
+        foreach ($aTestValues as $sName) {
+            $this->assertFalse(isset($oBasket->{$sName}), " $sName is not set ");
+        }
+    }
+
+    /**
+     * Tests if formatting discounts
+     *
+     * @return null
+     */
+    public function testFormatDiscountWithDiscountValueIsMoreThanPrice()
+    {
+        $this->getConfig()->setConfigParam('blEnterNetPrice', true);
+        $aTestValues = array('aDiscounts');
+
+        // Changing discount types to % from itm
+        // Changing discount value to 10 (else we have more discount value than price and the assert would fail)
+        foreach ($this->aDiscounts as $oDiscount) {
+            $oDiscount->oxdiscount__oxaddsumtype = new oxField('%', oxField::T_RAW);
+            $oDiscount->oxdiscount__oxaddsum = new oxField(10, oxField::T_RAW);
             $oDiscount->save();
         }
 

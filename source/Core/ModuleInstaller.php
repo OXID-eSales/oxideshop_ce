@@ -673,6 +673,7 @@ class ModuleInstaller extends \oxSuperCfg
             $this->getModuleCache()->resetCache();
         }
         //clear utilsObject internal cache
-        UtilsObject::resetModuleVariables();        
+        //UtilsObject::resetModuleVariables();
+        ModuleVariablesLocator::resetModuleVariables();
     }
 }

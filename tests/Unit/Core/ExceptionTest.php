@@ -52,7 +52,7 @@ class ExceptionTest extends \OxidTestCase
         $this->assertInstanceOf('Psr\Log\NullLogger',$logger);
         $this->assertInstanceOf('Psr\Log\LoggerInterface',$logger);
 
-        $logger->expects($this->once())->method('error')->with($this->matchesRegularExpression($sMsg));
+        $logger->expects($this->once())->method('error')->with($this->matchesRegularExpression("/oxException.*$sMsg/"));
         $oTestObject->setLogger($logger);
         
         $this->assertEquals('OxidEsales\Eshop\Core\Exception\StandardException', get_class($oTestObject));

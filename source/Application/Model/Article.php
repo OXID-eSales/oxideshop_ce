@@ -800,7 +800,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     public function isPriceAlarm()
     {
         // #419 disabling price alarm if article has fixed price
-        return !(isset($this->oxarticles__oxblfixedprice->value) && $this->oxarticles__oxblfixedprice->value);
+        return !(($this->__isset('oxarticles__oxblfixedprice') || $this->__get('oxarticles__oxblfixedprice')) && $this->__get('oxarticles__oxblfixedprice')->value);
     }
 
     /**

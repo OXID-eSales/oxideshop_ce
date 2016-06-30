@@ -333,7 +333,7 @@ class EmosAdapter extends oxSuperCfg
                              {$sTable}.oxrootid = " . $oDb->quote($oCategory->oxcategories__oxrootid->value) . "
                        order by {$sTable}.oxleft";
 
-            $oRs = $oDb->execute($sQ);
+            $oRs = $oDb->select($sQ);
             if ($oRs != false && $oRs->recordCount() > 0) {
                 while (!$oRs->EOF) {
                     if ($sCatPath) {

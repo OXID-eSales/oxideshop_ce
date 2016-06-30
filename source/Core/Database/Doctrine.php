@@ -473,19 +473,7 @@ class Doctrine implements DatabaseInterface
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
 
-        /**
-         * We divide the execution here, cause it is easier to achieve the ADOdb Lite behavior this way:
-         * ADOdb Lite returns different kinds of result sets:
-         * - DoctrineResultSet for "SELECT"
-         * - DoctrineEmptyResultSet for the rest of queries
-         */
-       /* if ($this->doesStatementProduceOutput($query)) {
-            /** @var DoctrineResultSet $result */
-          //  $result = $this->select($query, $parameters);
-      /*  } else {*/
-            /** @var DoctrineEmptyResultSet $result */
-            $result = $this->executeUpdate($query, $parameters);
-     //   }
+        $result = $this->executeUpdate($query, $parameters);
 
         return $result;
     }

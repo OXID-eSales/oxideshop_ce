@@ -71,8 +71,8 @@ class ExceptionhandlerTest extends \OxidTestCase
        
         $oTestObject = oxNew('oxexceptionhandler', '1'); // iDebug = 1
         /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utilsMock */
-        $utilsMock = $this->getMock('oxUtils', array('showMessageAndExit'));
-        $utilsMock->expects($this->once())->method('showMessageAndExit');
+        $utilsMock = $this->getMock('oxUtils', array('redirectOffline'));
+        $utilsMock->expects($this->once())->method('redirectOffline');
         Registry::set('oxUtils', $utilsMock);
 
         $oTestObject->handleUncaughtException(new Exception("test exception"));

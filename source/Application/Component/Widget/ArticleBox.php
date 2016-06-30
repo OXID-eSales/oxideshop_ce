@@ -203,6 +203,8 @@ class ArticleBox extends \oxWidget
     /**
      * Returns recommendation id
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @return string
      */
     public function getRecommId()
@@ -299,9 +301,11 @@ class ArticleBox extends \oxWidget
         if ($iLinkType) {
             $oArticle->setLinkType($iLinkType);
         }
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         if ($oRecommList = $this->getActiveRecommList()) {
             $oArticle->text = $oRecommList->getArtDescription($oArticle->getId());
         }
+        // END deprecated
 
         return $oArticle;
     }

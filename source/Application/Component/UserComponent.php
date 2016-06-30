@@ -776,9 +776,11 @@ class UserComponent extends \oxView
         if ($sParam = $oConfig->getRequestParameter('oxloadid')) {
             $sLogoutLink .= '&amp;oxloadid=' . $sParam;
         }
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         if ($sParam = $oConfig->getRequestParameter('recommid')) {
             $sLogoutLink .= '&amp;recommid=' . $sParam;
         }
+        // END deprecated
 
         return $sLogoutLink . '&amp;fnc=logout';
     }

@@ -122,6 +122,8 @@ class ArticleListController extends \oxUBase
     /**
      * Recomendation list
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @var object
      */
     protected $_oRecommList = null;
@@ -151,6 +153,8 @@ class ArticleListController extends \oxUBase
 
     /**
      * Array of id to form recommendation list.
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @var array
      */
@@ -836,6 +840,8 @@ class ArticleListController extends \oxUBase
 
     /**
      * Return array of id to form recommend list.
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return array
      */

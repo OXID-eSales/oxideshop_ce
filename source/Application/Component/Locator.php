@@ -368,6 +368,8 @@ class Locator extends \oxSuperCfg
      *
      * @param oxubase   $oLocatorTarget oxubase object
      * @param oxarticle $oCurrArticle   current article
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      */
     protected function _setRecommlistLocatorData($oLocatorTarget, $oCurrArticle)
     {

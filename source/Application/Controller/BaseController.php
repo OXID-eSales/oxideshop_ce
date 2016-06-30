@@ -127,6 +127,8 @@ class BaseController extends \oxView
     /**
      * Active recommendation's list
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @var oxRecommList
      */
     protected $_oActiveRecommList = null;
@@ -1372,9 +1374,11 @@ class BaseController extends \oxView
         $params['ldtype'] = $this->getCustomListDisplayType();
         $params['actcontrol'] = $this->getClassName();
 
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         $params['recommid'] = $config->getRequestParameter('recommid');
 
         $params['searchrecomm'] = $config->getRequestParameter('searchrecomm', true);
+        // END deprecated
         $params['searchparam'] = $config->getRequestParameter('searchparam', true);
         // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         $params['searchtag'] = $config->getRequestParameter('searchtag', true);
@@ -1610,6 +1614,8 @@ class BaseController extends \oxView
      * Return array of id to form recommend list.
      * Should be overridden if need.
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @return array
      */
     public function getSimilarRecommListIds()
@@ -1701,9 +1707,11 @@ class BaseController extends \oxView
             $url .= "&amp;searchtag={$value}";
         }
         // END deprecated
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         if ($value = oxRegistry::getConfig()->getRequestParameter('recommid')) {
             $url .= "&amp;recommid={$value}";
         }
+        // END deprecated
 
         return $url;
     }
@@ -1810,6 +1818,8 @@ class BaseController extends \oxView
 
     /**
      * Template variable getter. Returns search string
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      */
     public function getRecommSearch()
     {
@@ -1824,6 +1834,8 @@ class BaseController extends \oxView
 
     /**
      * Template variable getter. Returns active recommendation lists
+     * 
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return oxRecommList
      */

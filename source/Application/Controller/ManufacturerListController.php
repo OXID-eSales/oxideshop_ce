@@ -58,6 +58,8 @@ class ManufacturerListController extends \AList
 
     /**
      * Recommlist
+     * 
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @var object
      */

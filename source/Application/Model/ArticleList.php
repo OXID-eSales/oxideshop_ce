@@ -449,6 +449,8 @@ class ArticleList extends \oxList
     /**
      * Loads articles for the recommlist
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
      */
@@ -460,6 +462,8 @@ class ArticleList extends \oxList
 
     /**
      * Loads only ID's and create Fake objects.
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
@@ -477,6 +481,8 @@ class ArticleList extends \oxList
 
     /**
      * Returns the appropriate SQL select
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items

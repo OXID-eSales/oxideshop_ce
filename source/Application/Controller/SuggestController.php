@@ -62,12 +62,16 @@ class SuggestController extends \oxUBase
     /**
      * Recommlist
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @var object
      */
     protected $_oRecommList = null;
 
     /**
      * Recommlist
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @var object
      */
@@ -203,6 +207,8 @@ class SuggestController extends \oxUBase
 
     /**
      * Template variable getter. Returns recommlist's reviews
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return array
      */

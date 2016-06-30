@@ -32,6 +32,8 @@ use oxField;
  * Article suggestion page.
  * Collects some article base information, sets default recomendation text,
  * sends suggestion mail to user.
+ * 
+ * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
 class RecommListController extends \AList
 {

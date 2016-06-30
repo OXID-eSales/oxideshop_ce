@@ -920,26 +920,23 @@ class Language extends \oxSuperCfg
             $aLang = array();
             $aLangSeoReplaceChars = array();
             foreach ($aLangFiles as $sLangFile) {
-
                 if (file_exists($sLangFile) && is_readable($sLangFile)) {
                     $aSeoReplaceChars = array();
                     include $sLangFile;
 
-                    // including only (!) those, which has charset defined
-                    if (isset($aLang['charset'])) {
+                    $aLang = array_merge(['charset' => 'UTF-8'], $aLang);
 
-                        $aLang = $this->_recodeLangArray($aLang, $aLang['charset']);
+                    $aLang = $this->_recodeLangArray($aLang, $aLang['charset']);
 
-                        if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
-                            $aSeoReplaceChars = $this->_recodeLangArray($aSeoReplaceChars, $aLang['charset'], true);
-                        }
-
-                        if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
-                            $aLangSeoReplaceChars = array_merge($aLangSeoReplaceChars, $aSeoReplaceChars);
-                        }
-
-                        $aLangCache = array_merge($aLangCache, $aLang);
+                    if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
+                        $aSeoReplaceChars = $this->_recodeLangArray($aSeoReplaceChars, $aLang['charset'], true);
                     }
+
+                    if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
+                        $aLangSeoReplaceChars = array_merge($aLangSeoReplaceChars, $aSeoReplaceChars);
+                    }
+
+                    $aLangCache = array_merge($aLangCache, $aLang);
                 }
             }
 

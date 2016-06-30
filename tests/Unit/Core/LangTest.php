@@ -303,6 +303,54 @@ class LangTest extends \OxidTestCase
         $this->assertEquals($aResult, $oLangFilesData);
     }
 
+    public function testSetCharsetToUtf8IfMissing()
+    {
+        $this->setConfigParam('iUtfMode', 1);
+        $sFilePrefix = md5(uniqid(rand(), true));
+
+        //writing a test lang file
+        $sFilePath = $this->getConfig()->getConfigParam('sCompileDir');
+        file_put_contents($sFilePath . "/baselang$sFilePrefix.txt", '<?php $aLang = array( "TESTKEY" => "value");');
+
+        $aLangFilesPath = array($sFilePath . "/baselang$sFilePrefix.txt");
+
+        $aResult = array(
+            "charset" => "UTF-8",
+            "TESTKEY" => "value",
+            "_aSeoReplaceChars" => [],
+        );
+
+        $oLang = $this->getMock("oxlang", array("_getLangFilesPathArray"));
+        $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
+        $oLangFilesData = $oLang->UNITgetLanguageFileData(false, 0);
+
+        $this->assertEquals($aResult, $oLangFilesData);
+    }
+
+    public function testSetCharsetToIsoIfMissing()
+    {
+        $this->setConfigParam('iUtfMode', 0);
+        $sFilePrefix = md5(uniqid(rand(), true));
+
+        //writing a test lang file
+        $sFilePath = $this->getConfig()->getConfigParam('sCompileDir');
+        file_put_contents($sFilePath . "/baselang$sFilePrefix.txt", '<?php $aLang = array( "TESTKEY" => "value");');
+
+        $aLangFilesPath = array($sFilePath . "/baselang$sFilePrefix.txt");
+
+        $aResult = array(
+            "charset" => "ISO-8859-15",
+            "TESTKEY" => "value",
+            "_aSeoReplaceChars" => [],
+        );
+
+        $oLang = $this->getMock("oxlang", array("_getLangFilesPathArray"));
+        $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
+        $oLangFilesData = $oLang->UNITgetLanguageFileData(false, 0);
+
+        $this->assertEquals($aResult, $oLangFilesData);
+    }
+
     public function testGetLanguageFileDataInUtfMode()
     {
         $this->setConfigParam('iUtfMode', 1);

@@ -50,7 +50,7 @@ class ExceptionhandlerTest extends \OxidTestCase
         
         $logger->expects($this->once())->method('error');
         $oExc->setLogger($logger);
-
+        $this->expectOffline();
        
         $sMsg = $oTestObject->handleUncaughtException($oExc); // actuall test
         $this->assertNotEquals($this->_sMsg, $sMsg);
@@ -61,6 +61,7 @@ class ExceptionhandlerTest extends \OxidTestCase
     // We can only test if a log file is not written - screen output must be checked manually or with selenium
     public function testExceptionHandlerNotRendererNoDebug()
     {
+        $this->expectOffline();
         $oExc = oxNew('oxexception', $this->_sMsg);
         $oTestObject = oxNew('oxexceptionhandler');            
         $oTestObject->handleUncaughtException($oExc); // actuall test
@@ -70,14 +71,17 @@ class ExceptionhandlerTest extends \OxidTestCase
     {
        
         $oTestObject = oxNew('oxexceptionhandler', '1'); // iDebug = 1
+        $this->expectOffline();
+
+        $oTestObject->handleUncaughtException(new Exception("test exception"));      
+    }
+
+    private function expectOffline()
+    {
         /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utilsMock */
         $utilsMock = $this->getMock('oxUtils', array('redirectOffline'));
         $utilsMock->expects($this->once())->method('redirectOffline');
         Registry::set('oxUtils', $utilsMock);
-
-        $oTestObject->handleUncaughtException(new Exception("test exception"));
-        
-        
     }
 
     public function testSetIDebug()
@@ -91,12 +95,8 @@ class ExceptionhandlerTest extends \OxidTestCase
     public function testDealWithNoOxException()
     {
         $oTestObject = oxNew("oxexceptionhandler",'-1');
-
-        $oTestUtils = $this->getMock("oxUtils", array("showMessageAndExit", "getTime"));
-        $oTestException = new Exception("testMsg");
-
-        oxTestModules::addModuleObject('oxUtils', $oTestUtils);
-
+        $this->expectOffline();       
+        $oTestException = new Exception("testMsg");       
         $oTestObject->UNITdealWithNoOxException($oTestException);
     }
 

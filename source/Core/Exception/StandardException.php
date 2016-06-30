@@ -123,8 +123,10 @@ class StandardException extends \Exception implements \Psr\Log\LoggerAwareInterf
         //We are most likely are already dealing with an exception so making sure no other exceptions interfere
         try {
             $sLogMsg = $this->getString() . "\n---------------------------------------------\n";
-            oxRegistry::get('Logger')->error($sLogMsg);
+            $this->logger->error($sLogMsg);
         } catch (\Exception $e) {
+            //TODO log some basic information e.g.
+            //original error name/class and error during logging that error to some very basic place e.g. STDERR
         }
     }
 

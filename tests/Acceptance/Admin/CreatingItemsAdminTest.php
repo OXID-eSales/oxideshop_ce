@@ -2004,11 +2004,11 @@ class CreatingItemsAdminTest extends AdminTestCase
             $sql = "INSERT INTO `oxuser` (`OXID`, `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`, `OXUSERNAME`, `OXPASSWORD`, `OXPASSSALT`,
                                   `OXCUSTNR`, `OXUSTID`, `OXUSTIDSTATUS`, `OXCOMPANY`, `OXFNAME`, `OXLNAME`, `OXSTREET`, `OXSTREETNR`, `OXADDINFO`, `OXCITY`,
                                   `OXCOUNTRYID`, `OXSTATEID`, `OXZIP`, `OXFON`, `OXFAX`, `OXSAL`, `OXBONI`, `OXCREATE`, `OXREGISTER`,
-                                  `OXPRIVFON`, `OXMOBFON`, `OXBIRTHDATE`, `OXURL`, `OXLDAPKEY`, `OXWRONGLOGINS`, `OXUPDATEKEY`, `OXUPDATEEXP`)
+                                  `OXPRIVFON`, `OXMOBFON`, `OXBIRTHDATE`, `OXURL`, `OXWRONGLOGINS`, `OXUPDATEKEY`, `OXUPDATEEXP`)
                           VALUES ('ddesdr', 0, 'malladmin', $shopId, 'example00@oxid-esales.dev', '1397d0b4392f452a5bd058891c9b255e', '6634653730386562303132363065393735333334386530353233323337346435',
                                   121, '111222', 0, 'company1', 'Name1', 'Surname1', 'street1', '11', 'additional info1', 'City11',
                                   'a7c40f632e04633c9.47194042', 'BE', '30001', '1112223331', '2223334441', 'MR', 1000, '2010-02-05 09:23:13', '2010-02-05 09:23:19',
-                                  '', '', '1979-01-03', '', '', 0, '', 0);";
+                                  '', '', '1979-01-03', '', 0, '', 0);";
         }
         $this->executeSql($sql);
         $this->loginAdmin("Administer Users", "Users");
@@ -2068,11 +2068,11 @@ class CreatingItemsAdminTest extends AdminTestCase
             $sql = "INSERT INTO `oxuser` (`OXID`, `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`, `OXUSERNAME`, `OXPASSWORD`, `OXPASSSALT`,
                                      `OXCUSTNR`, `OXUSTID`, `OXUSTIDSTATUS`, `OXCOMPANY`, `OXFNAME`, `OXLNAME`, `OXSTREET`, `OXSTREETNR`, `OXADDINFO`, `OXCITY`,
                                      `OXCOUNTRYID`, `OXSTATEID`, `OXZIP`, `OXFON`, `OXFAX`, `OXSAL`, `OXBONI`, `OXCREATE`, `OXREGISTER`, `OXPRIVFON`, `OXMOBFON`,
-                                     `OXBIRTHDATE`, `OXURL`, `OXLDAPKEY`, `OXWRONGLOGINS`, `OXUPDATEKEY`, `OXUPDATEEXP`)
+                                     `OXBIRTHDATE`, `OXURL`, `OXWRONGLOGINS`, `OXUPDATEKEY`, `OXUPDATEEXP`)
                              VALUES ('ddesdr', 0, 'malladmin', $shopId, 'example00@oxid-esales.dev', '1397d0b4392f452a5bd058891c9b255e', '6634653730386562303132363065393735333334386530353233323337346435',
                                      121, '111222', 0, 'company1', 'Name1', 'Surname1', 'street1', '11', 'additional info1', 'City11',
                                      'a7c40f632e04633c9.47194042', 'BE', '30001', '1112223331', '2223334441', 'MR', 1000, '2010-02-05 09:23:13', '2010-02-05 09:23:19', '5554445551', '6665556661',
-                                     '1979-01-03', 'http://www.url1.com', '', 0, '', 0);";
+                                     '1979-01-03', 'http://www.url1.com', 0, '', 0);";
         }
         $this->executeSql($sql);
         $this->loginAdmin("Administer Users", "Users");

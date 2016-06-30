@@ -90,7 +90,7 @@ class ExceptionhandlerTest extends \OxidTestCase
 
     public function testDealWithNoOxException()
     {
-        $oTestObject = oxNew("exceptionhandler",'-1');
+        $oTestObject = oxNew("oxexceptionhandler",'-1');
 
         $oTestUtils = $this->getMock("oxUtils", array("showMessageAndExit", "getTime"));
         $oTestException = new Exception("testMsg");

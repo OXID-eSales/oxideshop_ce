@@ -221,13 +221,5 @@ class DoctrineResultSet implements \IteratorAggregate, ResultSetInterface
     {
         return $this->getStatement()->rowCount();
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function Move($rowNumber = 0)
-    {
-        // This method is deprecated and will not be implemented.
-    }
     
 }

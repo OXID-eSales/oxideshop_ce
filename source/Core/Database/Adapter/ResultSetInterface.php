@@ -65,18 +65,6 @@ interface ResultSetInterface extends \Traversable, \Countable
     public function moveNext();
 
     /**
-     * Random access to a specific row in the record set. Some databases do not support
-     * access to previous rows in the databases (no scrolling backwards).
-     *
-     * @param integer $rowNumber The row to move to (0-based)
-     *
-     * @deprecated since v5.3.0 (2016-06-16) This method will be removed in v6.0.
-     *
-     * @return true if there still rows available, or false if there are no more rows (EOF).
-     */
-    public function move($rowNumber = 0);
-
-    /**
      * Returns All Records in an array
      *
      * @access public

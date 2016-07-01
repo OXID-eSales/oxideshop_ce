@@ -233,14 +233,6 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
     /**
      * @inheritdoc
      */
-    public function MoveFirst()
-    {
-        // This method is deprecated and will not be implemented.
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function MoveLast()
     {
         // This method is deprecated and will not be implemented.

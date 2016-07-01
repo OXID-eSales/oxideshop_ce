@@ -65,15 +65,6 @@ interface ResultSetInterface extends \Traversable, \Countable
     public function moveNext();
 
     /**
-     * Move to the first row in the record set. Many databases do NOT support this.
-     *
-     * @deprecated since v5.3.0 (2016-06-16) This method will be removed in v6.0.
-     *
-     * @return true or false
-     */
-    public function moveFirst();
-
-    /**
      * Returns the Last Record
      *
      * @deprecated since v5.3.0 (2016-06-16) This method will be removed in v6.0.

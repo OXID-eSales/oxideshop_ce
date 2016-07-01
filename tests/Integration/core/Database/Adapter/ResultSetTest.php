@@ -297,42 +297,6 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'fetchField' works as expected.
-     */
-    public function testFetchField()
-    {
-        $this->loadFixtureToTestTable();
-        $resultSet = $this->database->select('SELECT * FROM ' . self::TABLE_NAME);
-
-        $columnInformationOne = $resultSet->fetchField(0);
-
-        $this->assertSame('stdClass', get_class($columnInformationOne));
-
-        /**
-         * We are skipping the doctrine unsupported features here.
-         */
-        $fields = array(
-            'name'        => 'oxid',
-            'table'       => self::TABLE_NAME,
-            'max_length'  => 96,
-            'not_null'    => 0,
-            'primary_key' => 0,
-            'type'        => 'string',
-            // 'unsigned'     => 0,
-            // 'zerofill'     => 0
-            // 'def'          => '',
-            // 'multiple_key' => 0,
-            // 'unique_key'   => 0,
-            // 'numeric'      => 0,
-            // 'blob'         => 0,
-        );
-
-        foreach ($fields as $attributeName => $attributeValue) {
-            $this->assertObjectHasAttributeWithValue($columnInformationOne, $attributeName, $attributeValue);
-        }
-    }
-
-    /**
      * @return array The parameters we want to use for the testFieldCount method.
      */
     public function dataProviderTestFieldCount()

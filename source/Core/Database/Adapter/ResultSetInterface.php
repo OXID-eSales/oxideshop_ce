@@ -174,15 +174,4 @@ interface ResultSetInterface extends \Traversable, \Countable
      * @param  integer $nRows The number of rows to return. -1 means every row.
      */
     public function getAll($nRows = -1);
-
-    /**
-     * Fetch field information for a table.
-     *
-     * @param int $fieldOffset
-     *
-     * @deprecated since v5.3.0 (2016-06-16) This method will be removed in v6.0.
-     *
-     * @return object containing the name, type and max_length
-     */
-    public function fetchField($fieldOffset = -1);
 }

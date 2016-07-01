@@ -251,25 +251,6 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
     }
 
     /**
-     * @inheritdoc
-     */
-    public function fetchField($columnIndex = -1)
-    {
-        /** @todo The method getColumnMeta is specific of the PDO driver. Change to unspecific version, if not exits be creative ;-) */
-        $metaInformation = $this->getStatement()->getColumnMeta($columnIndex);
-
-        $result = new \stdClass();
-        $result->name = $metaInformation['name'];
-        $result->table = $metaInformation['table'];
-        $result->max_length = $metaInformation['len'];
-        $result->not_null = (int) in_array('not_null', $metaInformation['flags']);
-        $result->primary_key = (int) in_array('primary_key', $metaInformation['flags']);
-        $result->type = strtolower($metaInformation['native_type']);
-
-        return $result;
-    }
-
-    /**
      * @inheritdoc 
      */
     public function count()

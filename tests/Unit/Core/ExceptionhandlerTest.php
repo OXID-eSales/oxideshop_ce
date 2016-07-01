@@ -107,7 +107,7 @@ class ExceptionhandlerTest extends \OxidTestCase
     public function testDealWithNoOxException()
     {
         $oTestObject = oxNew("oxexceptionhandler",'-1');
-        $this->expectOffline();       
+        $this->expectShowMessageAndExit();       
         $oTestException = new Exception("testMsg");       
         $oTestObject->UNITdealWithNoOxException($oTestException);
     }

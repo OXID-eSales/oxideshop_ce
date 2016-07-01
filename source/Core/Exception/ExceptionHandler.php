@@ -99,9 +99,9 @@ class ExceptionHandler implements LoggerAwareInterface
 
         if (0 != $this->_iDebug) {
             oxRegistry::getUtils()->showMessageAndExit($oEx->getString());
+        } else {
+            oxRegistry::getUtils()->redirectOffline(500);
         }
-
-        oxRegistry::getUtils()->redirectOffline(500);
     }
 
     /**
@@ -118,9 +118,9 @@ class ExceptionHandler implements LoggerAwareInterface
 
         if (0 != $this->_iDebug) {
             oxRegistry::getUtils()->showMessageAndExit($sLogMsg);
+        } else {
+           oxRegistry::getUtils()->redirectOffline(500);
         }
-
-        oxRegistry::getUtils()->redirectOffline(500);
     }
 
     /**

@@ -90,9 +90,9 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * @return array The parameters we want to use for the testGetRows and testGetArray methods.
+     * @return array The parameters we want to use for the testGetArray method.
      */
-    public function dataProviderTestGetRowsTestGetArray()
+    public function dataProviderTestGetArray()
     {
         return array(
             array('SELECT OXID FROM ' . self::TABLE_NAME, 0, false, array()),
@@ -107,7 +107,7 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     /**
      * Test, that the method 'getArray' works as expected.
      *
-     * @dataProvider dataProviderTestGetRowsTestGetArray
+     * @dataProvider dataProviderTestGetArray
      *
      * @param string $query         The sql statement we want to execute.
      * @param int    $numberOfRows  The number of rows we want to fetch.
@@ -166,47 +166,6 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
         $this->assertArrayContentSame($resultOne, $expectedOne);
         $this->assertArrayContentSame($resultTwo, $expectedTwo);
         $this->assertArrayContentSame($resultThree, $expectedThree);
-    }
-
-    /**
-     * Test, that the method 'getRows' works as expected.
-     *
-     * @dataProvider dataProviderTestGetRowsTestGetArray
-     *
-     * @param string $query         The sql statement to execute.
-     * @param int    $numberOfRows  The number of rows to fetch.
-     * @param bool   $loadFixtures  Should we load the test fixtures before running the actual test.
-     * @param array  $expectedArray The resulting array, which we expect.
-     */
-    public function testGetRows($query, $numberOfRows, $loadFixtures, $expectedArray)
-    {
-        if ($loadFixtures) {
-            $this->loadFixtureToTestTable();
-        }
-
-        $resultSet = $this->database->select($query);
-
-        $result = $resultSet->getRows($numberOfRows);
-
-        $this->assertSame($expectedArray, $result);
-    }
-
-    /**
-     * Test, that the method 'getRows' works as expected, if we call it consecutive. Thereby we assure, that the internal row pointer is used correct.
-     */
-    public function testGetRowsSequentialCalls()
-    {
-        $this->loadFixtureToTestTable();
-
-        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
-
-        $resultOne = $resultSet->getRows(1);
-        $resultTwo = $resultSet->getRows(1);
-        $resultThree = $resultSet->getRows(1);
-
-        $this->assertSame($resultOne, array(array(self::FIXTURE_OXID_1)));
-        $this->assertSame($resultTwo, array(array(self::FIXTURE_OXID_2)));
-        $this->assertSame($resultThree, array(array(self::FIXTURE_OXID_3)));
     }
 
     /**

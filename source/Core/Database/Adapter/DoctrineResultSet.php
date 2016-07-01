@@ -155,16 +155,6 @@ class DoctrineResultSet implements \IteratorAggregate, ResultSetInterface
     /**
      * @inheritdoc
      */
-    public function getRows($numberOfRows = -1)
-    {
-        $arr = $this->getArray($numberOfRows);
-
-        return $arr;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getAll($numberOfRows = -1)
     {
         $arr = $this->getArray($numberOfRows);

@@ -82,7 +82,7 @@ class DbTest extends UnitTestCase
 
         $rs = Database::getDb()->select("show tables");
         $icount = 3;
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF && $icount--) {
                 $sTable = $rs->fields[0];
 

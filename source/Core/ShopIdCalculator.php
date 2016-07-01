@@ -105,7 +105,7 @@ class ShopIdCalculator
 
         $oRs = $oDb->select($sSelect, false, false);
 
-        if ($oRs && $oRs->recordCount() > 0) {
+        if ($oRs && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $iShp = (int) $oRs->fields[0];
                 $sVar = $oRs->fields[1];

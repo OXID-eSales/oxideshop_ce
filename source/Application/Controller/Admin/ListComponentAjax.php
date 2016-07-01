@@ -456,7 +456,7 @@ class ListComponentAjax extends \oxSuperCfg
     {
         $aReturn = array();
         $rs = oxDb::getDb()->select($sQ);
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $aReturn[] = $rs->fields[0];
                 $rs->moveNext();

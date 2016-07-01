@@ -946,7 +946,7 @@ class I18ntest extends \OxidTestCase
             $sQVal = "";
             $sQ = "show columns from {$sTable}";
             $rs = $oDb->select($sQ);
-            if ($rs != false && $rs->recordCount() > 0) {
+            if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     $sValue = $rs->fields["Default"];
                     $sType = $rs->fields["Type"];

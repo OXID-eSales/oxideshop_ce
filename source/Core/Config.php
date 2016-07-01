@@ -1869,7 +1869,7 @@ class Config extends SuperConfig
         $query = "select oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue from oxconfig where oxshopid = '{$shopId}' and oxmodule = '{$module}' and oxvarname = " . $db->quote($varName);
         $rs = $db->select($query);
 
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             return $this->decodeValue($rs->fields['oxvartype'], $rs->fields['oxvarvalue']);
         }
     }

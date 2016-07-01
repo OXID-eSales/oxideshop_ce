@@ -95,7 +95,7 @@ class NewsletterSend extends \Newsletter_Selection
            group by oxnewssubscribed.oxemail";
 
         $oRs = $oDB->selectLimit($sQ, 100, $iStart);
-        $blContinue = ($oRs != false && $oRs->recordCount() > 0);
+        $blContinue = ($oRs != false && $oRs->count() > 0);
 
         if ($blContinue) {
             $blLoadAction = $myConfig->getConfigParam('bl_perfLoadAktion');

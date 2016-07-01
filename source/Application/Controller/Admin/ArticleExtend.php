@@ -298,7 +298,7 @@ class ArticleExtend extends \oxAdminDetails
         $query .= " and {$articleTable}.oxid = " . $database->quote($article->$bundleIdField->value);
 
         $resultFromDatabase = $database->select($query);
-        if ($resultFromDatabase != false && $resultFromDatabase->RecordCount() > 0) {
+        if ($resultFromDatabase != false && $resultFromDatabase->count() > 0) {
             while (!$resultFromDatabase->EOF) {
                 $articleNumber = new oxField($resultFromDatabase->fields[1]);
                 $articleTitle = new oxField($resultFromDatabase->fields[0] . " " . $resultFromDatabase->fields[2]);

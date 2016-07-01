@@ -581,7 +581,7 @@ class CategoryList extends \oxList
 
         // Get all root categories
         $rs = $oDb->select("select oxid, oxtitle from oxcategories where oxparentid = 'oxrootid' and $sWhere order by oxsort", false, false);
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $this->_aUpdateInfo[] = "<b>Processing : " . $rs->fields[1] . "</b>(" . $rs->fields[0] . ")<br>";
                 if ($blVerbose) {
@@ -641,7 +641,7 @@ class CategoryList extends \oxList
         $rs = $oDb->execute("update oxcategories set oxrootid = " . $oDb->quote($thisRoot) . " where oxparentid = " . $oDb->quote($oxRootId));
         $rs = $oDb->select("select oxid, oxparentid from oxcategories where oxparentid = " . $oDb->quote($oxRootId) . " order by oxsort", false, false);
         // If there are sub categories
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $parentId = $rs->fields[1];
                 $actOxid = $rs->fields[0];

@@ -194,7 +194,7 @@ class ShopMain extends \oxAdminDetails
             DECODE( oxvarvalue, " . $db->quote($config->getConfigParam('sConfigKey')) . ") as oxvarvalue, oxmodule
             from oxconfig where oxshopid = '1'";
         $shopConfiguration = $db->select($selectShopConfigurationQuery);
-        if ($shopConfiguration != false && $shopConfiguration->recordCount() > 0) {
+        if ($shopConfiguration != false && $shopConfiguration->count() > 0) {
             while (!$shopConfiguration->EOF) {
                 $configName = $shopConfiguration->fields[0];
                 if (!in_array($configName, $nonCopyVars)) {

@@ -334,7 +334,7 @@ class EmosAdapter extends oxSuperCfg
                        order by {$sTable}.oxleft";
 
             $oRs = $oDb->select($sQ);
-            if ($oRs != false && $oRs->recordCount() > 0) {
+            if ($oRs != false && $oRs->count() > 0) {
                 while (!$oRs->EOF) {
                     if ($sCatPath) {
                         $sCatPath .= '/';

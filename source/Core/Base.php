@@ -303,7 +303,7 @@ class Base extends \oxSuperCfg
                         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
                         $query = 'SELECT * FROM ' . $viewName . ' WHERE `oxid` = ' . $database->quote($id);
                         $queryResult = $database->select($query);
-                        if ($queryResult && $queryResult->RecordCount()) {
+                        if ($queryResult && $queryResult->count()) {
                             $this->_aInnerLazyCache = array_change_key_case($queryResult->fields, CASE_UPPER);
                             if (array_key_exists($cacheFieldName, $this->_aInnerLazyCache)) {
                                 $fieldValue = $this->_aInnerLazyCache[$cacheFieldName];
@@ -729,7 +729,7 @@ class Base extends \oxSuperCfg
     {
         $record = $this->getRecordByQuery($select);
 
-        if ($record != false && $record->recordCount() > 0) {
+        if ($record != false && $record->count() > 0) {
             $this->assign($record->fields);
             return true;
         }

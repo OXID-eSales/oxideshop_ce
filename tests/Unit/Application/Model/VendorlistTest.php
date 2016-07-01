@@ -68,7 +68,7 @@ class VendorlistTest extends \OxidTestCase
         $sQ = 'select oxid, oxtitle_1, oxshortdesc_1 from oxvendor where oxvendor.oxshopid = "' . $myConfig->getShopID() . '"';
         $rs = $myDB->select($sQ);
 
-        if ($rs != false && $rs->RecordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $this->assertEquals($rs->fields[1], $oVendorlist[$rs->fields[0]]->oxvendor__oxtitle->value);
                 $this->assertEquals($rs->fields[2], $oVendorlist[$rs->fields[0]]->oxvendor__oxshortdesc->value);

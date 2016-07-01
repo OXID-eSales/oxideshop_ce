@@ -224,7 +224,7 @@ class ShopConfiguration extends oxAdminDetails
                 order by disp.oxpos, cfg.oxvarname"
         );
 
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 list($sName, $sType, $sValue, $sConstraint, $sGrouping) = $rs->fields;
                 $aConfVars[$sType][$sName] = $this->_unserializeConfVar($sType, $sName, $sValue);

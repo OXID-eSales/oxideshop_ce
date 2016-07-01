@@ -76,7 +76,7 @@ class ArticleOverview extends \oxAdminDetails
             $rs = $oDB->select($sSelect);
             $iTopPos = 0;
             $iPos = 0;
-            if ($rs != false && $rs->recordCount() > 0) {
+            if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     $iPos++;
                     if ($rs->fields[0] == $soxId) {

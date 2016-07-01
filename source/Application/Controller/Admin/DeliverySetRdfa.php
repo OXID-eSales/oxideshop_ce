@@ -113,7 +113,7 @@ class DeliverySetRdfa extends \payment_rdfa
         $aRDFaDeliveries = array();
         $sSelect = 'select oxobjectid from oxobject2delivery where oxdeliveryid=' . $oDb->quote(oxRegistry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfadeliveryset" ';
         $rs = $oDb->select($sSelect);
-        if ($rs && $rs->recordCount()) {
+        if ($rs && $rs->count()) {
             while (!$rs->EOF) {
                 $aRDFaDeliveries[] = $rs->fields[0];
                 $rs->moveNext();

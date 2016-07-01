@@ -1268,7 +1268,7 @@ class BaseTest extends \OxidTestCase
 
         $rs = $oDB->select($sSelect);
         $expectedCount = $this->getConfig()->getEdition() === 'EE' ? 6 : 1;
-        $this->assertEquals($expectedCount, $rs->RecordCount());
+        $this->assertEquals($expectedCount, $rs->count());
     }
 
     /**

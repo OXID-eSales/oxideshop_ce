@@ -173,7 +173,7 @@ class ArticleSeo extends \Object_Seo
               "where oxobject2category.oxobjectid=" . $sQuotesArticleId . " union " . $sSqlForPriceCategories;
 
         $oRs = $oDb->select($sQ);
-        if ($oRs != false && $oRs->recordCount() > 0) {
+        if ($oRs != false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $oCat = oxNew('oxCategory');
                 if ($oCat->loadInLang($iLang, current($oRs->fields))) {

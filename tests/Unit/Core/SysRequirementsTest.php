@@ -355,10 +355,10 @@ class SysRequirementsTest extends \OxidTestCase
      */
     public function testGetMissingTemplateBlocksIfNotFound()
     {
-        $oRs = $this->getMock('stdclass', array('moveNext', 'recordCount'));
+        $oRs = $this->getMock('stdclass', array('moveNext', 'count'));
         $oRs->expects($this->exactly(1))->method('moveNext')
             ->will($this->evalFunction('{$_this->EOF = true;}'));
-        $oRs->expects($this->exactly(1))->method('recordCount')
+        $oRs->expects($this->exactly(1))->method('count')
             ->will($this->returnValue(1));
         $oRs->fields = array(
             'OXTEMPLATE'  => '_OXTEMPLATE_',
@@ -392,10 +392,10 @@ class SysRequirementsTest extends \OxidTestCase
      */
     public function testGetMissingTemplateBlocksIfFound()
     {
-        $oRs = $this->getMock('stdclass', array('moveNext', 'recordCount'));
+        $oRs = $this->getMock('stdclass', array('moveNext', 'count'));
         $oRs->expects($this->exactly(1))->method('moveNext')
             ->will($this->evalFunction('{$_this->EOF = true;}'));
-        $oRs->expects($this->exactly(1))->method('recordCount')
+        $oRs->expects($this->exactly(1))->method('count')
             ->will($this->returnValue(1));
         $oRs->fields = array(
             'OXTEMPLATE'  => '_OXTEMPLATE_',

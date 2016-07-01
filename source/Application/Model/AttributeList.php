@@ -80,7 +80,7 @@ class AttributeList extends \oxList
     {
         $aAttributes = array();
         $rs = oxDb::getDb()->select($sSelect);
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 if (!isset($aAttributes[$rs->fields[0]])) {
                     $aAttributes[$rs->fields[0]] = new stdClass();
@@ -201,7 +201,7 @@ class AttributeList extends \oxList
 
             $rs = $oDb->select($sSelect);
 
-            if ($rs != false && $rs->recordCount() > 0) {
+            if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF && list($sAttId, $sAttTitle, $sAttValue) = $rs->fields) {
 
                     if (!$this->offsetExists($sAttId)) {

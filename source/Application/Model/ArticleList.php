@@ -833,7 +833,7 @@ class ArticleList extends \oxList
     protected function _createIdListFromSql($sSql)
     {
         $rs = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->select($sSql);
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $rs->fields = array_change_key_case($rs->fields, CASE_LOWER);
                 $this[$rs->fields['oxid']] = $rs->fields['oxid']; //only the oxid

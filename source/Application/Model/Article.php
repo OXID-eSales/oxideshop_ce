@@ -2453,7 +2453,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
 
         $iOnStock = 0;
         $iStockFlag = 0;
-        if ($rs !== false && $rs->recordCount() > 0) {
+        if ($rs !== false && $rs->count() > 0) {
             $iOnStock = $rs->fields['oxstock'] - $dArtStockAmount;
             $iStockFlag = $rs->fields['oxstockflag'];
 
@@ -3854,7 +3854,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             $sQ = "select oxid from " . $this->getViewName(true) . " where oxparentid = " . $oDb->quote($sId) .
                   $sActiveSqlSnippet . " order by oxsort";
             $oRs = $oDb->select($sQ);
-            if ($oRs != false && $oRs->recordCount() > 0) {
+            if ($oRs != false && $oRs->count() > 0) {
                 while (!$oRs->EOF) {
                     $aSelect[] = reset($oRs->fields);
                     $oRs->moveNext();
@@ -4054,7 +4054,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         // adding variants
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $oRs = $oDb->select("select oxid from {$sArtTable} where oxparentid = " . $oDb->quote($sParentIdForVariants) . " and oxid != " . $oDb->quote($this->oxarticles__oxid->value));
-        if ($oRs != false && $oRs->recordCount() > 0) {
+        if ($oRs != false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $sIn .= ", " . $oDb->quote(current($oRs->fields)) . " ";
                 $oRs->moveNext();
@@ -4516,7 +4516,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             $sQ = 'select oxid from ' . $this->getViewName() . ' where oxparentid = ' . $oDb->quote($sOXID);
             $rs = $oDb->select($sQ, false, false);
             $oArticle = oxNew("oxArticle");
-            if ($rs != false && $rs->recordCount() > 0) {
+            if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     $oArticle->setId($rs->fields[0]);
                     $oArticle->delete();

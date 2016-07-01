@@ -545,7 +545,7 @@ class SeoEncoder extends \oxSuperCfg
         if (($sSeoUrl = $this->_loadFromCache($sIdent, $sType, $iLang, $iShopId, $sParams)) === false) {
             $oRs = $oDb->select($sQ);
 
-            if ($oRs && $oRs->recordCount() > 0 && !$oRs->EOF) {
+            if ($oRs && $oRs->count() > 0 && !$oRs->EOF) {
                 // moving expired static urls to history ..
                 if ($oRs->fields['oxexpired'] && ($oRs->fields['oxtype'] == 'static' || $oRs->fields['oxtype'] == 'dynamic')) {
                     // if expired - copying to history, marking as not expired
@@ -750,7 +750,7 @@ class SeoEncoder extends \oxSuperCfg
         $sQ .= "limit 1";
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $oRs = $oDb->select($sQ);
-        if ($oRs && $oRs->recordCount() > 0 && !$oRs->EOF) {
+        if ($oRs && $oRs->count() > 0 && !$oRs->EOF) {
             if ($oRs->fields['samestdurl'] && $oRs->fields['sameseourl'] && $oRs->fields['oxexpired']) {
                 // fixed state change
                 $sFixed = isset($blFixed) ? ", oxfixed = " . ((int) $blFixed) . " " : '';

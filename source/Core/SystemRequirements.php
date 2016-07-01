@@ -1153,7 +1153,7 @@ class SystemRequirements
         $sql = "select * from oxtplblocks where oxactive=1 and oxshopid=? and oxtheme in ('', ?)";
         $blockRecords = $db->select($sql, array($config->getShopId(), $activeThemeId));
 
-        if ($blockRecords != false && $blockRecords->recordCount() > 0) {
+        if ($blockRecords != false && $blockRecords->count() > 0) {
             while (!$blockRecords->EOF) {
                 $template = $blockRecords->fields['OXTEMPLATE'];
                 $blockName = $blockRecords->fields['OXBLOCKNAME'];

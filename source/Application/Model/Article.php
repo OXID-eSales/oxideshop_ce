@@ -2157,15 +2157,15 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         $this->_onChangeResetCounts($sOXID, $this->oxarticles__oxvendorid->value, $this->oxarticles__oxmanufacturerid->value);
 
         // delete self
-        parent::delete($sOXID);
+        $deleted = parent::delete($sOXID);
 
-        $rs = $this->_deleteRecords($sOXID);
+        $this->_deleteRecords($sOXID);
 
         oxRegistry::get("oxSeoEncoderArticle")->onDeleteArticle($this);
 
         $this->onChange(ACTION_DELETE, $sOXID, $this->oxarticles__oxparentid->value);
 
-        return $rs->EOF;
+        return $deleted;
     }
 
     /**
@@ -2222,7 +2222,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             }
         }
 
-        return $rs;
+        return (bool) $rs;
     }
 
     /**
@@ -2234,7 +2234,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     {
         $oDb = oxDb::getDb();
 
-        return $oDb->execute("update oxarticles set oxarticles.oxremindactive = 2 where oxarticles.oxid = " . $oDb->quote($this->oxarticles__oxid->value));
+        return (bool) $oDb->execute("update oxarticles set oxarticles.oxremindactive = 2 where oxarticles.oxid = " . $oDb->quote($this->oxarticles__oxid->value));
     }
 
     /**

@@ -90,14 +90,6 @@ class DoctrineEmptyResultSet implements \IteratorAggregate, ResultSetInterface
     /**
      * @inheritdoc
      */
-    function MoveLast()
-    {
-        throw new \LogicException('You cannot call this method on a empty result set');
-    }
-
-    /**
-     * @inheritdoc
-     */
     function Move($rowNumber = 0)
     {
         throw new \LogicException('You cannot call this method on a empty result set');

@@ -28,7 +28,7 @@ use Doctrine\DBAL\Driver\Statement;
  *
  * @package OxidEsales\Eshop\Core\Database\Adapter
  */
-class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
+class DoctrineResultSet implements \IteratorAggregate, ResultSetInterface
 {
 
     /**
@@ -114,14 +114,14 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function getIterator()
-     {
-         $data = $this->fetchAll();
+    {
+        $data = $this->fetchAll();
 
-         return new \ArrayIterator($data);
-     }
+        return new \ArrayIterator($data);
+    }
 
     /**
      * Returns fields array
@@ -215,7 +215,7 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
     }
 
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
     public function count()
     {
@@ -229,13 +229,5 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
     {
         // This method is deprecated and will not be implemented.
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function MoveLast()
-    {
-        // This method is deprecated and will not be implemented.
-    }
-
+    
 }

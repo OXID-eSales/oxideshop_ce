@@ -65,13 +65,6 @@ interface ResultSetInterface extends \Traversable, \Countable
     public function moveNext();
 
     /**
-     * Returns the Last Record
-     *
-     * @deprecated since v5.3.0 (2016-06-16) This method will be removed in v6.0.
-     */
-    public function moveLast();
-
-    /**
      * Random access to a specific row in the record set. Some databases do not support
      * access to previous rows in the databases (no scrolling backwards).
      *

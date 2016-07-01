@@ -108,11 +108,12 @@
          * @errors - array of errors
          */
         updatePageErrors : function(errors) {
+            var content = $('#content');
+            var errlist = content.find("> .status.error");
             if (errors.length) {
-                var errlist = $("#content > .status.error");
                 if (errlist.length == 0) {
-                    $("#content").prepend("<div class='status error corners'>");
-                    errlist = $("#content > .status.error");
+                    content.prepend("<div class='status error corners'>");
+                    errlist = content.find("> .status.error");
                 }
                 if (errlist) {
                     errlist.children().remove();
@@ -124,7 +125,7 @@
                     }
                 }
             } else {
-                $("#content > .status.error").remove();
+                errlist.remove();
             }
         },
 

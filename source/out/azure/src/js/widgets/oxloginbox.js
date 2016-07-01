@@ -28,24 +28,25 @@
                 options = self.options,
                 el      = self.element;
 
+            var loginBox = $('#loginBox');
             el.click(function(){
-                $("#loginBox").show();
+                loginBox.show();
                 return false;
             });
 
             $(".altLoginBox .fb_button").on("click", function(){
-                $("#loginBox").hide();
+                loginBox.hide();
             });
 
             $(document).click( function( e ){
                 if( ! $(e.target).parents("div").hasClass("loginBox") ){
-                    $("#loginBox").hide();
+                    loginBox.hide();
                 }
             });
 
             $(document).keydown( function( e ) {
                if( e.which == 27) {
-                    $("#loginBox").hide();
+                    loginBox.hide();
                }
             });
         }

@@ -30,7 +30,8 @@
 
             var timeout;
 
-            $( "form.js-oxWidgetReload-miniBasket" ).submit( formSubmit );
+            var widgetReload = $( "form.js-oxWidgetReload-miniBasket" );
+            widgetReload.submit( formSubmit );
 
             // show on hover after some time
             $("#minibasketIcon", el).hover(function(){
@@ -47,8 +48,9 @@
             });
 
             // close basket
+            var basketFlyout = $(".basketFlyout");
             $(".closePop").click(function(){
-                $(".basketFlyout").hide();
+                basketFlyout.hide();
                 clearTimeout(timeout);
                 return false;
             });
@@ -56,17 +58,19 @@
             // close basket on ESC key
             $(document).keydown( function( e ) {
                 if( e.which == 27) {
-                    $(".basketFlyout").hide();
+                    basketFlyout.hide();
                     clearTimeout(timeout);
                 }
              });
 
             // show / hide added article message
-            if($("#newItemMsg").length > 0){
-                $("#countValue").hide();
-                $("#newItemMsg").delay(3000).fadeTo("fast", 0, function(){
-                    $("#countValue").fadeTo("fast", 1);
-                    $("#newItemMsg").remove()
+            var newItemMsg = $("#newItemMsg");
+            var countValue = $("#countValue");
+            if(newItemMsg.length > 0){
+                countValue.hide();
+                newItemMsg.delay(3000).fadeTo("fast", 0, function(){
+                    countValue.fadeTo("fast", 1);
+                    newItemMsg.remove()
                 });
             }
 
@@ -75,11 +79,11 @@
                     if (count <= 1) {
                         //closing and emptying the basket
                         $(element).parents("#basketFlyout").hide();
-                        $("#countValue").parent('span').remove();
-                        $("#basketFlyout").remove();
+                        countValue.parent('span').remove();
+                        basketFlyout.remove();
                         $("#miniBasket #minibasketIcon").unbind('mouseenter mouseleave');
                         // refresh mini basket widget
-                        $( "form.js-oxWidgetReload-miniBasket" ).submit();
+                        widgetReload.submit();
                         return container.not(element);
                     }
                     return null;
@@ -91,8 +95,9 @@
         showMiniBasket : function(){
             $("#basketFlyout").show();
 
-            if ($(".scrollable .scrollbarBox").length > 0) {
-                $('.scrollable .scrollbarBox').jScrollPane({
+            var scrollBox = $(".scrollable .scrollbarBox");
+            if (scrollBox.length > 0) {
+                scrollBox.jScrollPane({
                     showArrows: true,
                     verticalArrowPositions: 'split'
                 });

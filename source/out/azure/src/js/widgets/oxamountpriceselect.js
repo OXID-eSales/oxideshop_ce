@@ -77,8 +77,9 @@
          */
         hideAll : function()
         {
-            $('a.js-amountPriceSelector').next( 'ul' ).hide();
-            $('a.js-amountPriceSelector').removeClass('js-selected');
+            var amount = $('a.js-amountPriceSelector');
+            amount.next( 'ul' ).hide();
+            amount.removeClass('js-selected');
         },
 
         /**

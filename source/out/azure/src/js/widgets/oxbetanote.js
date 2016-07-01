@@ -33,15 +33,15 @@
          * Enable beta note dismiss and set cookie to keep it hidden on next pages
          */
         _create: function() {
-            
+            var cookieNote = $('#cookieNote');
             var self = this;
             $(self.options.closeButton, self.element).click(
                 function(){
                     self.element.fadeOut('slow').remove();
                     $.cookie(self.options.cookieName,1,{path: '/'});
                     
-                    if(  $('#cookieNote:visible') ) {
-                        $('#cookieNote').animate({ "top": "-=40px" }, 500);
+                    if(  cookieNote.is(':visible') ) {
+                        cookieNote.animate({ "top": "-=40px" }, 500);
                     }
                     
                     return false;
@@ -52,8 +52,8 @@
                 $('#betaNote').show();
             } 
             
-            if(  $('#cookieNote:visible') ) {
-                $('#cookieNote').css('top', '40px');
+            if(  cookieNote.is(':visible') ) {
+                cookieNote.css('top', '40px');
             }
             
         }

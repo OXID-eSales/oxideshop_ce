@@ -32,8 +32,9 @@
             el.change(function() {
                 var selectValue = $(this).val();
 
-                if ($("input[name=reloadaddress]")) {
-                    $("input[name=reloadaddress]").val(self.getReloadValue(selectValue));
+                var reloadAddress = $("input[name=reloadaddress]");
+                if (reloadAddress) {
+                    reloadAddress.val(self.getReloadValue(selectValue));
                 }
                 if (selectValue !== '-1') {
                     $( ".js-oxValidate" ).unbind('submit');
@@ -63,9 +64,10 @@
          */
         submitForm : function()
         {
-            $("form[name='order'] input[name=cl]").val($("input[name=changeClass]").val());
-            $("form[name='order'] input[name=fnc]").val("");
-            $("form[name='order']").submit();
+            var form = $("form[name='order'] ");
+            form.("input[name=cl]").val($("input[name=changeClass]").val());
+            form.("input[name=fnc]").val("");
+            form.submit();
         },
 
         /**

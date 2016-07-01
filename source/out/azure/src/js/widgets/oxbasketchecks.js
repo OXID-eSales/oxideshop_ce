@@ -44,11 +44,12 @@
         },
 
         toggleMainCheck : function(){
-            if ( $( "#checkAll" ).prop( "checked" ) ) {
-                $( "#checkAll" ).prop( "checked", false );
+            var checkAll = $('#checkAll');
+            if ( checkAll.prop( "checked" ) ) {
+                checkAll.prop( "checked", false );
                 return false;
             } else {
-                $( "#checkAll" ).prop( "checked", true );
+                checkAll.prop( "checked", true );
                 return true;
             }
         }

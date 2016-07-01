@@ -48,7 +48,7 @@
             oxAjax.ajax(
                 activator, {//targetEl, onSuccess, onError, additionalData
                     'targetEl'  : highlightTargets,
-                    'iconPosEl' : $("#variants .dropDown"),
+                    'iconPosEl' : $("#variants").find(".dropDown"),
                     'additionalData' : aOptions,
                     'onSuccess' : function(r) {
                         $( contentTarget ).html( r );
@@ -83,7 +83,8 @@
         if ( obj.parents().hasClass("js-disabled") ) {
             resetVariantSelections();
         } else {
-            $( "form.js-oxProductForm input[name=anid]" ).attr( "value", $( "form.js-oxProductForm input[name=parentid]" ).attr( "value" ) );
+            var productForm = $('form.js-oxProductForm');
+            productForm.find('input[name=anid]').attr('value', productForm.find('input[name=parentid]').attr('value'));
         }
 
         // setting new selection
@@ -113,11 +114,10 @@
      * Resets variant selections
      */
     function resetVariantSelections() {
-        var aVarSelections = $( "form.js-oxProductForm input[name^=varselid], form.js-oxWidgetReload input[name^=varselid]" );
-        for (var i = 0; i < aVarSelections.length; i++) {
-            $( aVarSelections[i] ).attr( "value", "" );
-        }
-        $( "form.js-oxProductForm input[name=anid]" ).attr( "value", $( "form.js-oxProductForm input[name=parentid]" ).attr( "value" ) );
+        var productForm = $('form.js-oxProductForm');
+        var aVarSelections = productForm.find('input[name^=varselid]').add('form.js-oxWidgetReload input[name^=varselid]');
+        aVarSelections.attr('value', '');
+        productForm.find('input[name=anid]').attr('value', productForm.find('input[name=parentid]').attr('value'));
     }
 
     /**
@@ -128,6 +128,8 @@
     function  formSubmit() {
         var aOptions = {}, target = $(this);
         if (!$("input[name='fnc']", this).val()) {
+            var detailsContainer = $('#details_container');
+            
             if (($( "input[name=aid]", this ).val() == $( "input[name=parentid]", this ).val() )) {
                 var aSelectionInputs = $("input[name^=varselid]", $("form.js-oxProductForm"));
                 if (aSelectionInputs.length) {
@@ -136,12 +138,9 @@
                         sHash = sHash+i+':'+$(this).val()+"|";
                         aOptions[$(this).attr( "name" )] = $(this).val();
                     });
-                    if ( jQuery.inArray( sHash, oxVariantSelections ) === -1 ) {
-                        return oxArticleVariant.reload( $(target), $("#details_container"), $("#details_container")[0], aOptions);
-                    }
                 }
             }
-            return oxArticleVariant.reload( $(target),$("#details_container"),$("#details_container")[0], aOptions);
+            return oxArticleVariant.reload( $(target), detailsContainer, detailsContainer[0], aOptions);
         }
     }
 

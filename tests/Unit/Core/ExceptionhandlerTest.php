@@ -50,9 +50,10 @@ class ExceptionhandlerTest extends \OxidTestCase
         
         $logger->expects($this->once())->method('error');
         $oExc->setLogger($logger);
-        $this->expectOffline();
+        
+        $this->expectShowMessageAndExit();
        
-        $sMsg = $oTestObject->handleUncaughtException($oExc); // actuall test
+        $sMsg = $oTestObject->handleUncaughtException($oExc); // actual test
         $this->assertNotEquals($this->_sMsg, $sMsg);
         
        
@@ -64,7 +65,12 @@ class ExceptionhandlerTest extends \OxidTestCase
         $this->expectOffline();
         $oExc = oxNew('oxexception', $this->_sMsg);
         $oTestObject = oxNew('oxexceptionhandler');            
-        $oTestObject->handleUncaughtException($oExc); // actuall test
+        $oTestObject->handleUncaughtException($oExc); // actual test
+    }
+
+    private function expectShowMessageAndExit()
+    {
+        $this->expectUtilsMethod('showMessageAndExit');
     }
 
     public function testExceptionHandlerNotRendererDebugNotOxidException()
@@ -78,11 +84,17 @@ class ExceptionhandlerTest extends \OxidTestCase
 
     private function expectOffline()
     {
+        $this->expectUtilsMethod('redirectOffline');
+    }
+
+    private function expectUtilsMethod($methodName)
+    {
         /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utilsMock */
-        $utilsMock = $this->getMock('oxUtils', array('redirectOffline'));
-        $utilsMock->expects($this->once())->method('redirectOffline');
+        $utilsMock = $this->getMock('oxUtils', array($methodName));
+        $utilsMock->expects($this->once())->method($methodName);
         Registry::set('oxUtils', $utilsMock);
     }
+
 
     public function testSetIDebug()
     {

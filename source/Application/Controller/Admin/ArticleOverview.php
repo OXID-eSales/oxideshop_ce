@@ -82,7 +82,7 @@ class ArticleOverview extends \oxAdminDetails
                     if ($rs->fields[0] == $soxId) {
                         $iTopPos = $iPos;
                     }
-                    $rs->moveNext();
+                    $rs->fetchRow();
                 }
             }
 

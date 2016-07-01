@@ -336,7 +336,7 @@ class UtilsCount extends \oxSuperCfg
                     if (isset($aCatData[$rs->fields[0]])) {
                         unset($aCatData[$rs->fields[0]]);
                     }
-                    $rs->moveNext();
+                    $rs->fetchRow();
                 }
 
                 // writing back to cache

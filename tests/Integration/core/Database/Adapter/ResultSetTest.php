@@ -90,93 +90,6 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'moveNext' works for an empty result set.
-     */
-    public function testMoveNextWithEmptyResultSet()
-    {
-        $resultSet = $this->testCreationWithRealEmptyResult();
-
-        $methodResult = $resultSet->moveNext();
-
-        $this->assertTrue($resultSet->EOF);
-        $this->assertFalse($resultSet->fields);
-        $this->assertFalse($methodResult);
-    }
-
-    /**
-     * Test, that the method 'moveNext' works for a non empty result set.
-     */
-    public function testMoveNextWithNonEmptyResultSet()
-    {
-        $resultSet = $this->testCreationWithRealNonEmptyResult();
-
-        $this->assertFalse($resultSet->EOF);
-        $this->assertSame(array(self::FIXTURE_OXID_1), $resultSet->fields);
-
-        $methodResult = $resultSet->moveNext();
-
-        $this->assertFalse($resultSet->EOF);
-        $this->assertSame(array(self::FIXTURE_OXID_2), $resultSet->fields);
-        $this->assertTrue($methodResult);
-
-        $methodResult = $resultSet->moveNext();
-
-        $this->assertFalse($resultSet->EOF);
-        $this->assertSame(array(self::FIXTURE_OXID_3), $resultSet->fields);
-        $this->assertTrue($methodResult);
-    }
-
-    /**
-     * Test, that the method 'moveNext' works for a non empty result set.
-     */
-    public function testMoveNextWithNonEmptyResultSetReachingEnd()
-    {
-        $this->loadFixtureToTestTable();
-        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
-
-        $resultSet->moveNext();
-        $resultSet->moveNext();
-        $methodResult = $resultSet->moveNext();
-
-        $this->assertTrue($resultSet->EOF);
-        $this->assertFalse($resultSet->fields);
-        $this->assertFalse($methodResult);
-
-        $methodResult = $resultSet->moveNext();
-
-        $this->assertTrue($resultSet->EOF);
-        $this->assertFalse($resultSet->fields);
-        $this->assertFalse($methodResult);
-    }
-
-    /**
-     * Test, that the method 'moveNext' works for a non empty result set and the fetch mode associative array.
-     */
-    public function testMoveNextWithNonEmptyResultSetFetchModeAssociative()
-    {
-        $this->loadFixtureToTestTable();
-
-        $this->database->setFetchMode(Doctrine::FETCH_MODE_ASSOC);
-        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
-        $this->initializeDatabase();
-
-        $this->assertFalse($resultSet->EOF);
-        $this->assertSame(array('OXID' => self::FIXTURE_OXID_1), $resultSet->fields);
-
-        $methodResult = $resultSet->moveNext();
-
-        $this->assertFalse($resultSet->EOF);
-        $this->assertSame(array('OXID' => self::FIXTURE_OXID_2), $resultSet->fields);
-        $this->assertTrue($methodResult);
-
-        $methodResult = $resultSet->moveNext();
-
-        $this->assertFalse($resultSet->EOF);
-        $this->assertSame(array('OXID' => self::FIXTURE_OXID_3), $resultSet->fields);
-        $this->assertTrue($methodResult);
-    }
-
-    /**
      * @return array The parameters we want to use for the testGetRows and testGetArray methods.
      */
     public function dataProviderTestGetRowsTestGetArray()
@@ -398,9 +311,11 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     {
         $resultSet = $this->testCreationWithRealEmptyResult();
 
-        $row = $resultSet->fetchRow();
+        $methodResult = $resultSet->fetchRow();
 
-        $this->assertFalse($row);
+        $this->assertTrue($resultSet->EOF);
+        $this->assertFalse($resultSet->getFields());
+        $this->assertFalse($methodResult);
     }
 
     /**
@@ -410,11 +325,70 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     {
         $resultSet = $this->testCreationWithRealNonEmptyResult();
 
-        $row = $resultSet->fetchRow();
+        $this->assertFalse($resultSet->EOF);
+        $this->assertSame(array(self::FIXTURE_OXID_1), $resultSet->fields);
 
-        $this->assertInternalType('array', $row);
-        // You can get the first row with getFields() method. The fetchRow() method will take the next record.
-        $this->assertSame(self::FIXTURE_OXID_2, $row[0]);
+        $methodResult = $resultSet->fetchRow();
+
+        $this->assertFalse($resultSet->EOF);
+        $this->assertSame(array(self::FIXTURE_OXID_2), $resultSet->fields);
+        $this->assertSame(array(self::FIXTURE_OXID_2), $methodResult);
+
+        $methodResult = $resultSet->fetchRow();
+
+        $this->assertFalse($resultSet->EOF);
+        $this->assertSame(array(self::FIXTURE_OXID_3), $resultSet->fields);
+        $this->assertSame(array(self::FIXTURE_OXID_3), $methodResult);
+    }
+
+    /**
+     * Test, that the method 'fetchRow' works for a non empty result set.
+     */
+    public function testFetchRowWithNonEmptyResultSetReachingEnd()
+    {
+        $this->loadFixtureToTestTable();
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
+
+        $resultSet->fetchRow();
+        $resultSet->fetchRow();
+        $methodResult = $resultSet->fetchRow();
+
+        $this->assertTrue($resultSet->EOF);
+        $this->assertFalse($resultSet->fields);
+        $this->assertFalse($methodResult);
+
+        $methodResult = $resultSet->fetchRow();
+
+        $this->assertTrue($resultSet->EOF);
+        $this->assertFalse($resultSet->fields);
+        $this->assertFalse($methodResult);
+    }
+
+    /**
+     * Test, that the method 'fetchRow' works for a non empty result set and the fetch mode associative array.
+     */
+    public function testFetchRowWithNonEmptyResultSetFetchModeAssociative()
+    {
+        $this->loadFixtureToTestTable();
+
+        $this->database->setFetchMode(Doctrine::FETCH_MODE_ASSOC);
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
+        $this->initializeDatabase();
+
+        $this->assertFalse($resultSet->EOF);
+        $this->assertSame(array('OXID' => self::FIXTURE_OXID_1), $resultSet->fields);
+
+        $methodResult = $resultSet->fetchRow();
+
+        $this->assertFalse($resultSet->EOF);
+        $this->assertSame(array('OXID' => self::FIXTURE_OXID_2), $resultSet->fields);
+        $this->assertSame(array('OXID' => self::FIXTURE_OXID_2), $methodResult);
+
+        $methodResult = $resultSet->fetchRow();
+
+        $this->assertFalse($resultSet->EOF);
+        $this->assertSame(array('OXID' => self::FIXTURE_OXID_3), $resultSet->fields);
+        $this->assertSame(array('OXID' => self::FIXTURE_OXID_3), $methodResult);
     }
 
     /**

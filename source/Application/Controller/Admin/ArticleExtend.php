@@ -302,7 +302,7 @@ class ArticleExtend extends \oxAdminDetails
             while (!$resultFromDatabase->EOF) {
                 $articleNumber = new oxField($resultFromDatabase->fields[1]);
                 $articleTitle = new oxField($resultFromDatabase->fields[0] . " " . $resultFromDatabase->fields[2]);
-                $resultFromDatabase->MoveNext();
+                $resultFromDatabase->fetchRow();
             }
         }
         $this->_aViewData['bundle_artnum'] = $articleNumber;

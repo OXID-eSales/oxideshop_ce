@@ -136,7 +136,7 @@ class NewsletterSend extends \Newsletter_Selection
                     }
                 }
 
-                $oRs->moveNext();
+                $oRs->fetchRow();
                 $iStart++;
             }
         }

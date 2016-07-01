@@ -116,7 +116,7 @@ class DeliverySetRdfa extends \payment_rdfa
         if ($rs && $rs->count()) {
             while (!$rs->EOF) {
                 $aRDFaDeliveries[] = $rs->fields[0];
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
 

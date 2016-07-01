@@ -1475,7 +1475,7 @@ class User extends \oxBase
                         $sUserID = $rs->fields[0];
                         break;
                     }
-                    $rs->moveNext();
+                    $rs->fetchRow();
                 }
             }
             // if cookie info is not valid, remove it.
@@ -1688,7 +1688,7 @@ class User extends \oxBase
                         break;
                     }
 
-                    $oRs->moveNext();
+                    $oRs->fetchRow();
                 }
             }
         }

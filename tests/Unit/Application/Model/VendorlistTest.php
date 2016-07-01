@@ -72,7 +72,7 @@ class VendorlistTest extends \OxidTestCase
             while (!$rs->EOF) {
                 $this->assertEquals($rs->fields[1], $oVendorlist[$rs->fields[0]]->oxvendor__oxtitle->value);
                 $this->assertEquals($rs->fields[2], $oVendorlist[$rs->fields[0]]->oxvendor__oxshortdesc->value);
-                $rs->MoveNext();
+                $rs->fetchRow();
             }
         } else {
             $this->fail('No records found in vendors table with lang id = 1');

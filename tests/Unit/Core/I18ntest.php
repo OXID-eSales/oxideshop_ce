@@ -965,7 +965,7 @@ class I18ntest extends \OxidTestCase
                         $sQVal .= ", ";
                     }
                     $sQVal .= "'$sValue'";
-                    $rs->moveNext();
+                    $rs->fetchRow();
                 }
             }
 

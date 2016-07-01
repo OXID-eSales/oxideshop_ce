@@ -113,7 +113,7 @@ class PriceAlarmSend extends \oxAdminList
             if ($article->getPrice()->getBruttoPrice() <= $alarmPrice) {
                 $count++;
             }
-            $result->moveNext();
+            $result->fetchRow();
         }
 
         return $count;
@@ -146,7 +146,7 @@ class PriceAlarmSend extends \oxAdminList
                     $result->fields['oxprice']
                 );
             }
-            $result->moveNext();
+            $result->fetchRow();
         }
     }
 

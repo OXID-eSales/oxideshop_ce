@@ -93,7 +93,7 @@ class ShopSeo extends \Shop_Config
             if ($oRs != false && $oRs->count() > 0) {
                 while (!$oRs->EOF) {
                     $aSeoUrls[$oRs->fields['oxlang']] = array($sActObject, $oRs->fields['oxseourl']);
-                    $oRs->moveNext();
+                    $oRs->fetchRow();
                 }
                 $this->_aViewData['aSeoUrls'] = $aSeoUrls;
             }

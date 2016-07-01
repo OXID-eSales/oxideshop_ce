@@ -389,7 +389,7 @@ class DynamicExportBaseController extends \oxAdminDetails
                         $sCatStr .= $sSeparator;
                     }
                     $sCatStr .= $oRs->fields[0];
-                    $oRs->moveNext();
+                    $oRs->fetchRow();
                 }
             }
         }
@@ -726,7 +726,7 @@ class DynamicExportBaseController extends \oxAdminDetails
                     }
                     $sDel .= $oDB->quote($oRs->fields[0]);
                     $blSep = true;
-                    $oRs->moveNext();
+                    $oRs->fetchRow();
                 }
             }
             $sDel .= " )";
@@ -816,10 +816,10 @@ class DynamicExportBaseController extends \oxAdminDetails
                             $oCat->ilevel = $oRs2->fields[3];
                             $this->_aCatLvlCache[$oCat->_sOXID] = $oCat;
 
-                            $oRs2->moveNext();
+                            $oRs2->fetchRow();
                         }
                     }
-                    $oRs->moveNext();
+                    $oRs->fetchRow();
                 }
             }
         }

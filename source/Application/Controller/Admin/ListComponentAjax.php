@@ -459,7 +459,7 @@ class ListComponentAjax extends \oxSuperCfg
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $aReturn[] = $rs->fields[0];
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
 

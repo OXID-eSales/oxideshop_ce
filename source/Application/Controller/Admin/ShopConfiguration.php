@@ -236,7 +236,7 @@ class ShopConfiguration extends oxAdminDetails
                         $aGrouping[$sGrouping][$sName] = $sType;
                     }
                 }
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
 

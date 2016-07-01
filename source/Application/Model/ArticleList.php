@@ -837,7 +837,7 @@ class ArticleList extends \oxList
             while (!$rs->EOF) {
                 $rs->fields = array_change_key_case($rs->fields, CASE_LOWER);
                 $this[$rs->fields['oxid']] = $rs->fields['oxid']; //only the oxid
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
     }

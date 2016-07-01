@@ -590,7 +590,7 @@ class CategoryList extends \oxList
                 $oxRootId = $rs->fields[0];
 
                 $this->_updateNodes($oxRootId, true, $oxRootId);
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
 
@@ -652,14 +652,14 @@ class CategoryList extends \oxList
                 while (!$rs3->EOF) {
                     $parentOxRootId = $rs3->fields[0];
                     $parentRight = (int) $rs3->fields[1];
-                    $rs3->moveNext();
+                    $rs3->fetchRow();
                 }
                 $sParentOxRootIdQuoted = $oDb->quote($parentOxRootId);
                 $oDb->execute("update oxcategories set oxleft = oxleft + 2 where oxrootid = $sParentOxRootIdQuoted and oxleft > '$parentRight' and oxright >= '$parentRight' and oxid != $sActOxidQuoted");
                 $oDb->execute("update oxcategories set oxright = oxright + 2 where oxrootid = $sParentOxRootIdQuoted and oxright >= '$parentRight' and oxid != $sActOxidQuoted");
                 $oDb->execute("update oxcategories set oxleft = $parentRight, oxright = ($parentRight + 1) where oxid = $sActOxidQuoted");
                 $this->_updateNodes($actOxid, false, $thisRoot);
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
     }

@@ -89,6 +89,11 @@ class DoctrineResultSet implements \IteratorAggregate, ResultSetInterface
     public function fetchRow()
     {
         $this->fields = $this->getStatement()->fetch();
+        
+        // @todo: test the following functionality
+        if (false === $this->fields) {
+            $this->EOF = true;
+        }
 
         return $this->fields;
     }
@@ -134,31 +139,13 @@ class DoctrineResultSet implements \IteratorAggregate, ResultSetInterface
     /**
      * @inheritdoc
      */
-    public function moveNext()
-    {
-        if ($this->fetchRow()) {
-            $this->currentRow += 1;
-
-            return true;
-        }
-        if (!$this->EOF) {
-            $this->currentRow += 1;
-            $this->EOF = true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getArray($numberOfRows = -1)
     {
         $results = array();
         $cnt = 0;
         while (!$this->EOF && $numberOfRows != $cnt) {
             $results[] = $this->fields;
-            $this->moveNext();
+            $this->fetchRow();
             $cnt++;
         }
 

@@ -290,7 +290,7 @@ class BasketReservation extends \oxSuperCfg
         $aFinished = array();
         while (!$oRs->EOF) {
             $aFinished[] = $oDb->quote($oRs->fields['oxid']);
-            $oRs->MoveNext();
+            $oRs->fetchRow();
         }
         $oRs = $oDb->select("select oxartid, oxamount from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")", false, false);
         while (!$oRs->EOF) {
@@ -298,7 +298,7 @@ class BasketReservation extends \oxSuperCfg
             if ($oArticle->load($oRs->fields['oxartid'])) {
                 $oArticle->reduceStock(-$oRs->fields['oxamount'], true);
             }
-            $oRs->MoveNext();
+            $oRs->fetchRow();
         }
         $oDb->execute("delete from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")");
         $oDb->execute("delete from oxuserbaskets where oxid in (" . implode(",", $aFinished) . ")");

@@ -204,7 +204,7 @@ class VoucherSerieExport extends \VoucherSerie_Main
             while (!$rs->EOF) {
                 $this->write(current($rs->fields));
                 $iExported++;
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
 

@@ -124,7 +124,7 @@ class VarianthandlerTest extends \OxidTestCase
             $oRez->fields = array_change_key_case($oRez->fields, CASE_LOWER);
             $this->assertEquals('red', $oRez->fields[0]);
             $this->assertEquals('rot', $oRez->fields[1]);
-            $oRez->moveNext();
+            $oRez->fetchRow();
         }
     }
 

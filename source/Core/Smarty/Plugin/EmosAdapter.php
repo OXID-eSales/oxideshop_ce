@@ -340,7 +340,7 @@ class EmosAdapter extends oxSuperCfg
                         $sCatPath .= '/';
                     }
                     $sCatPath .= strip_tags($oRs->fields['oxtitle']);
-                    $oRs->moveNext();
+                    $oRs->fetchRow();
                 }
             }
         }

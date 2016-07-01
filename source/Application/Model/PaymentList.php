@@ -186,7 +186,7 @@ class PaymentList extends \oxList
                 $oListObject = clone $oSaved;
                 $this->_assignElement($oListObject, $rs->fields);
                 $this->_aArray[] = $oListObject;
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
     }

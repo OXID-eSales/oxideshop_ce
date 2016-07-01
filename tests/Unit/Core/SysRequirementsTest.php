@@ -355,8 +355,8 @@ class SysRequirementsTest extends \OxidTestCase
      */
     public function testGetMissingTemplateBlocksIfNotFound()
     {
-        $oRs = $this->getMock('stdclass', array('moveNext', 'count'));
-        $oRs->expects($this->exactly(1))->method('moveNext')
+        $oRs = $this->getMock('stdclass', array('fetchRow', 'count'));
+        $oRs->expects($this->exactly(1))->method('fetchRow')
             ->will($this->evalFunction('{$_this->EOF = true;}'));
         $oRs->expects($this->exactly(1))->method('count')
             ->will($this->returnValue(1));
@@ -392,8 +392,8 @@ class SysRequirementsTest extends \OxidTestCase
      */
     public function testGetMissingTemplateBlocksIfFound()
     {
-        $oRs = $this->getMock('stdclass', array('moveNext', 'count'));
-        $oRs->expects($this->exactly(1))->method('moveNext')
+        $oRs = $this->getMock('stdclass', array('fetchRow', 'count'));
+        $oRs->expects($this->exactly(1))->method('fetchRow')
             ->will($this->evalFunction('{$_this->EOF = true;}'));
         $oRs->expects($this->exactly(1))->method('count')
             ->will($this->returnValue(1));

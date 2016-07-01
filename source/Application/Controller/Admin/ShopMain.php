@@ -210,7 +210,7 @@ class ShopMain extends \oxAdminDetails
                         . ", " . $db->quote($shopConfiguration->fields[3]) . " )";
                     $db->execute($insertNewConfigQuery);
                 }
-                $shopConfiguration->moveNext();
+                $shopConfiguration->fetchRow();
             }
         }
 

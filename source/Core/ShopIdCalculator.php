@@ -122,7 +122,7 @@ class ShopIdCalculator
                     $aMap[$sURL] = $iShp;
                 }
 
-                $oRs->moveNext();
+                $oRs->fetchRow();
             }
         }
 

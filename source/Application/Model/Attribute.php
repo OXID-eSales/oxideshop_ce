@@ -202,7 +202,7 @@ class Attribute extends \oxI18n
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     $aIds[] = $rs->fields[0];
-                    $rs->moveNext();
+                    $rs->fetchRow();
                 }
             }
 

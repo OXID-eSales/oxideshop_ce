@@ -71,7 +71,7 @@ class PriceAlarmMail extends \oxAdminDetails
                         }
                     }
                 }
-                $result->moveNext();
+                $result->fetchRow();
             }
         }
 

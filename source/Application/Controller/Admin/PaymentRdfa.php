@@ -120,7 +120,7 @@ class PaymentRdfa extends \oxAdminDetails
         if ($rs && $rs->count()) {
             while (!$rs->EOF) {
                 $aRDFaPayments[] = $rs->fields[0];
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
 

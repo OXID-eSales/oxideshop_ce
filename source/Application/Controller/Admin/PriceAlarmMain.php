@@ -159,7 +159,7 @@ class PriceAlarmMain extends \oxAdminDetails
                 if ($article->getPrice()->getBruttoPrice() <= $result->fields[1]) {
                     $count++;
                 }
-                $result->moveNext();
+                $result->fetchRow();
             }
         }
 

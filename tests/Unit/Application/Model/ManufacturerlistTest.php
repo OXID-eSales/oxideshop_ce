@@ -82,7 +82,7 @@ class ManufacturerlistTest extends \OxidTestCase
             while (!$rs->EOF) {
                 $this->assertEquals($rs->fields[1], $oManufacturerlist[$rs->fields[0]]->oxmanufacturers__oxtitle->value);
                 $this->assertEquals(str_replace("'", "&#039;", $rs->fields[2]), $oManufacturerlist[$rs->fields[0]]->oxmanufacturers__oxshortdesc->value);
-                $rs->MoveNext();
+                $rs->fetchRow();
             }
         } else {
             $this->fail('No records found in Manufacturers table with lang id = 1');

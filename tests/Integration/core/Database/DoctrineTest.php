@@ -487,7 +487,7 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
         $oxIds = [];
         while (!$resultSet->EOF) {
             $oxIds[] = $resultSet->fields[0];
-            $resultSet->moveNext();
+            $resultSet->fetchRow();
         }
         $this->assertArrayIsUnique($oxIds);
     }

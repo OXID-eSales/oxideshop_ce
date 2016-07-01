@@ -93,7 +93,7 @@ class DbTest extends UnitTestCase
                 $this->assertEquals($amc, $rmc1, "not cached return is bad [shouldn't be] of $sTable.");
                 $this->assertEquals($amc, $rmc2, "cached [simple] return is bad of $sTable.");
 
-                $rs->MoveNext();
+                $rs->fetchRow();
             }
         } else {
             $this->fail("no tables???");

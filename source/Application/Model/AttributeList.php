@@ -91,7 +91,7 @@ class AttributeList extends \oxList
                     $aAttributes[$rs->fields[0]]->aProd[$rs->fields[3]] = new stdClass();
                 }
                 $aAttributes[$rs->fields[0]]->aProd[$rs->fields[3]]->value = $rs->fields[2];
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
 
@@ -220,7 +220,7 @@ class AttributeList extends \oxList
                     }
 
                     $oAttribute->addValue($sAttValue);
-                    $rs->moveNext();
+                    $rs->fetchRow();
                 }
             }
         }

@@ -978,7 +978,7 @@ class User extends \oxBase
      * User birthday converter. Usually this data comes in array form, so before
      * writing into DB it must be converted into string
      *
-     * @param array $aData dirthday data
+     * @param array $aData birthday data
      *
      * @return string
      */

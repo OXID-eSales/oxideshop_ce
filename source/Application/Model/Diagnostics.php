@@ -257,9 +257,9 @@ class Diagnostics
             $sRequest .= ' WHERE oxactive = 1';
         }
 
-        $aRes = $oDb->select($sRequest)->fields(0);
+         $aRes = $oDb->select($sRequest)->fields[0];
 
-        return $aRes[0];
+        return $aRes;
     }
 
 

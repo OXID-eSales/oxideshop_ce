@@ -134,18 +134,6 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
     /**
      * @inheritdoc
      */
-    public function fields($columnKey)
-    {
-        if (empty($columnKey)) {
-            return $this->getFields();
-        } else {
-            return $this->fields[$columnKey];
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function moveNext()
     {
         if ($this->fetchRow()) {

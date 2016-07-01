@@ -328,15 +328,9 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     public function dataProviderTestFields()
     {
         return array(
-            array('SELECT OXID FROM ' . self::TABLE_NAME, 0, false, false),
-            array('SELECT OXID FROM ' . self::TABLE_NAME, 'OXID', false, null),
-            array('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 0, true, array(self::FIXTURE_OXID_1)),
-            array('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 'OXID', true, null),
-            array('SELECT OXID,OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 0, true, array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1)),
-            array('SELECT OXID,OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 1, true, self::FIXTURE_OXUSERID_1),
-            array('SELECT OXID,OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 'OXID', true, self::FIXTURE_OXID_1, true),
-            array('SELECT OXID,OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 0, true, array('OXID' => self::FIXTURE_OXID_1, 'OXUSERID' => self::FIXTURE_OXUSERID_1), true),
-            array('SELECT OXID,OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', 'NOTNULL', true, null, true),
+            array('SELECT OXID FROM ' . self::TABLE_NAME, false, false),
+            array('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', true, array(self::FIXTURE_OXID_1)),
+            array('SELECT OXID,OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', true, array('OXID' => self::FIXTURE_OXID_1, 'OXUSERID' => self::FIXTURE_OXUSERID_1), true),
         );
     }
 
@@ -346,12 +340,11 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
      * @dataProvider dataProviderTestFields
      *
      * @param string $query                The sql statement to execute.
-     * @param mixed  $parameter            The parameter for the fields method.
      * @param bool   $loadFixture          Should the fixture be loaded to the test database table?
      * @param mixed  $expected             The expected result of the fields method under the given specification.
      * @param bool   $fetchModeAssociative Should the fetch mode be set to associative array before running the statement?
      */
-    public function testFields($query, $parameter, $loadFixture, $expected, $fetchModeAssociative = false)
+    public function testFields($query, $loadFixture, $expected, $fetchModeAssociative = false)
     {
         if ($loadFixture) {
             $this->loadFixtureToTestTable();
@@ -361,10 +354,9 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
         }
 
         $resultSet = $this->database->select($query);
-        $result = $resultSet->fields($parameter);
 
         $this->truncateTestTable();
-        $this->assertSame($expected, $result);
+        $this->assertSame($expected, $resultSet->getFields());
     }
 
     /**

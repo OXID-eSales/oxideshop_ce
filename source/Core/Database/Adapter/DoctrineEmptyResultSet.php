@@ -67,14 +67,6 @@ class DoctrineEmptyResultSet implements \IteratorAggregate, ResultSetInterface
     /**
      * @inheritdoc
      */
-    function fields($field)
-    {
-        throw new \LogicException('You cannot call this method on a empty result set');
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getIterator(){
         throw new \LogicException('You cannot call this method on a empty result set');
     }

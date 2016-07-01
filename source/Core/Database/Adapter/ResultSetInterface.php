@@ -104,17 +104,6 @@ interface ResultSetInterface extends \Traversable, \Countable
     public function move($rowNumber = 0);
 
     /**
-     * Perform Seek to specific row
-     *
-     * @param $row
-     *
-     * @deprecated since v5.3.0 (2016-06-16) This method will be removed in v6.0.
-     *
-     * @return mixed
-     */
-    public function _seek($row);
-
-    /**
      * Fills field array with first database element when query initially executed
      *
      * @deprecated since v5.3.0 (2016-06-16) This method will be removed in v6.0.

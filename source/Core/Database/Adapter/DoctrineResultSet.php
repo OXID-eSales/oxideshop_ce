@@ -280,11 +280,4 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
         // This method is deprecated and will not be implemented.
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function _seek($row)
-    {
-        // This method is deprecated and will not be implemented.
-    }
 }

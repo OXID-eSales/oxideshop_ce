@@ -272,12 +272,4 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
         // This method is deprecated and will not be implemented.
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function _fetch()
-    {
-        // This method is deprecated and will not be implemented.
-    }
-
 }

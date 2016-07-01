@@ -104,15 +104,6 @@ interface ResultSetInterface extends \Traversable, \Countable
     public function move($rowNumber = 0);
 
     /**
-     * Fills field array with first database element when query initially executed
-     *
-     * @deprecated since v5.3.0 (2016-06-16) This method will be removed in v6.0.
-     *
-     * @access private
-     */
-    public function _fetch();
-
-    /**
      * Check to see if last record reached
      *
      * @deprecated since v5.3.0 (2016-06-16) This method will be removed in v6.0.

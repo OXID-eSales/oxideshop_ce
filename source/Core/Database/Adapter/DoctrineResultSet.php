@@ -164,20 +164,6 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
     /**
      * @inheritdoc
      */
-    public function EOF()
-    {
-        if ($this->currentRow < $this->count()) {
-            return false;
-        } else {
-            $this->EOF = true;
-
-            return true;
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getArray($numberOfRows = -1)
     {
         $results = array();

@@ -104,15 +104,6 @@ interface ResultSetInterface extends \Traversable, \Countable
     public function move($rowNumber = 0);
 
     /**
-     * Check to see if last record reached
-     *
-     * @deprecated since v5.3.0 (2016-06-16) This method will be removed in v6.0.
-     *
-     * @access public
-     */
-    public function EOF();
-
-    /**
      * Returns All Records in an array
      *
      * @access public

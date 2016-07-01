@@ -461,7 +461,6 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
         $resultSet = $this->testCreationWithRealEmptyResult();
 
         $this->assertTrue($resultSet->EOF);
-        $this->assertTrue($resultSet->EOF());
     }
 
     /**
@@ -472,7 +471,6 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
         $resultSet = $this->testCreationWithRealNonEmptyResult();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertFalse($resultSet->EOF());
     }
 
     /**

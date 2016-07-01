@@ -77,7 +77,7 @@ class ExceptionhandlerTest extends \OxidTestCase
     {
        
         $oTestObject = oxNew('oxexceptionhandler', '1'); // iDebug = 1
-        $this->expectOffline();
+        $this->expectShowMessageAndExit();
 
         $oTestObject->handleUncaughtException(new Exception("test exception"));      
     }

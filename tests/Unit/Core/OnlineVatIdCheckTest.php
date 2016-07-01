@@ -44,10 +44,10 @@ class OnlineVatIdCheckTest extends \OxidTestCase
     public function testCatchWarning()
     {
         $oOnlineVatIdCheck = oxNew('oxOnlineVatIdCheck');
-        $aResult = $oOnlineVatIdCheck->catchWarning(1, "best shop system found", "allShops.list", 1);
         $logger = $this->getMock('Psr\Log\NullLogger');
         $logger->expects($this->once())->method('error')->with("Warning: best shop system found in allShops.list on line 1");
         $oOnlineVatIdCheck->setLogger($logger);
+        $aResult = $oOnlineVatIdCheck->catchWarning(1, "best shop system found", "allShops.list", 1);
     }
 
     /**

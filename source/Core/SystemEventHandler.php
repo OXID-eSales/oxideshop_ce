@@ -42,7 +42,7 @@ use oxServerProcessor;
  * Contains system event handler methods
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class SystemEventHandler
 {

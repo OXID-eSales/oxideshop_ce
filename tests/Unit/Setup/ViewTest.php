@@ -213,7 +213,7 @@ class ViewTest extends \OxidTestCase
      */
     public function testGetReqInfoUrl()
     {
-        $sUrl = "http://www.oxidforge.org/wiki/Installation";
+        $sUrl = "http://oxidforge.org/en/installation.html";
 
         $oSetupView = new View();
         $this->assertEquals($sUrl . "#PHP_version_at_least_5.3.25", $oSetupView->getReqInfoUrl("php_version", false));

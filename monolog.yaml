@@ -1,0 +1,42 @@
+scopes:
+   root:
+      handlers: [stderr,oxidlogfile,exception_log]
+      processors: [PsrLogMessageProcessor]
+      use_microseconds: true
+   security:
+      extends: root
+      handlers: [syslog]
+   exampleScope:
+      extends: false
+      handlers: 
+          - type: stream
+            file: 'log/mymodule.log'
+            level: debug
+      use_microseconds: false
+handlers:
+   stderr:
+       type: stream
+       file: 'php://stderr'
+       level: error
+   oxidlogfile:
+       type: stream
+       file: 'log/oxid.log'
+       level: info
+   exception_log:
+       type: stream
+       file: 'log/EXCEPTION_LOG'
+       level: error
+   syslog:
+       type: syslog 
+       level: info
+   allOnError:
+       type: fingers_crossed
+       action_level: error
+       handler: oxidlogfile
+   custom:
+       class: \Namespace\MyHandler
+       constructor: [param1]
+       level: error
+processors:
+   PsrLogMessageProcessor:
+       class: PsrLogMessageProcessor

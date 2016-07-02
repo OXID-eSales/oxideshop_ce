@@ -7,7 +7,6 @@ scopes:
       extends: root
       handlers: [syslog]
    exampleScope:
-      extends: false
       handlers: 
           - type: stream
             file: 'log/mymodule.log'

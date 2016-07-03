@@ -57,7 +57,7 @@ class MonologFactory implements LoggerFactoryInterface
         //Do not try catch parse erors because the system should
         // not continue to work until the configuration is fixed
         $loggerConfig = Yaml::parse(file_get_contents($path));
-        $channelConfig = loggerConfig['channels'][$name];
+        $channelConfig = $loggerConfig['channels'][$name];
 
          
 

@@ -61,7 +61,7 @@ class MonologFactory implements LoggerFactoryInterface
 
          
 
-        if(array_key_exists('use_microseconds',$channelConfig){
+        if(array_key_exists('use_microseconds',$channelConfig)){
             $log->useMicrosecondTimestamps($channelConfig['use_microseconds']);
         }
 

@@ -1,12 +1,12 @@
-scopes:
-   root:
-      handlers: [stderr,oxidlogfile,exception_log]
+channels:
+   default:
+      handlers: [stderr,LogFileOxid,EXCEPTION_LOG]
       processors: [PsrLogMessageProcessor]
       use_microseconds: true
    security:
       extends: root
       handlers: [syslog]
-   exampleScope:
+   example:
       handlers: 
           - type: stream
             file: 'log/mymodule.log'
@@ -17,11 +17,11 @@ handlers:
        type: stream
        file: 'php://stderr'
        level: error
-   oxidlogfile:
+   LogFileOxid:
        type: stream
        file: 'log/oxid.log'
        level: info
-   exception_log:
+   EXCEPTION_LOG:
        type: stream
        file: 'log/EXCEPTION_LOG'
        level: error
@@ -31,7 +31,7 @@ handlers:
    allOnError:
        type: fingers_crossed
        action_level: error
-       handler: oxidlogfile
+       handler: LogFileOxid
    custom:
        class: \Namespace\MyHandler
        constructor: [param1]

@@ -25,6 +25,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
 use OxidEsales\Eshop\Core\Contract\LoggerFactoryInterface;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class LoggerFactory
@@ -38,19 +39,42 @@ class MonologFactory implements LoggerFactoryInterface
      * no internal caching is done because logger object can be stored in caller or registry
      *
      * this method is called during bootstrap be careful to not create cycle dependencies
-     * @param $name string name of the Logger default is 'root' in the moment of writing 
-     * the only use case is to generate the 'root' logger which is the default if $name is not given.
-     * There is not yet any support for channels
-     * in this default implementation giving an other name then root only guarantees to get a mono logger with that name, but
-     * the configuration is not defined, it might be the same like on the root logger or a logger with no configuration at all.
-     * Plan is to make this somehow configurable by configuration files.
+     * @param $name string name of the Logger default is 'default'
+     * the name will be used as channel and each channel can be configured in the monolog.yaml file
      * @return Logger
      *      
      */
-    public function getLogger($name = 'root'){
-        // create root logger
+    public function getLogger($name = 'default'){
+        
+        // create logger
         $log = new Logger($name);
 
+        $config = Registry::get("oxConfigFile");
+        $path = $config->getVar('sShopDir') . '../monolog.yaml';
+        if(!file_exists($path)){
+            $path = $config->getVar('sShopDir') . '../monolog.yaml.dist';
+        }
+        //Do not try catch parse erors because the system should
+        // not continue to work until the configuration is fixed
+        $loggerConfig = Yaml::parse(file_get_contents($path));
+        $channelConfig = loggerConfig['channels'][$name];
+
+         
+
+        if(array_key_exists('use_microseconds',$channelConfig){
+            $log->useMicrosecondTimestamps($channelConfig['use_microseconds']);
+        }
+
+        $handlers = $channelConfig['handlers'];
+        if(is_array($handlers)){
+           //getHandler
+           //PushHandler
+        }
+
+
+        
+        
+        //Todo replace with configuration 
         $this->basicLoggerConfiguration($log);
         $this->standardLoggerConfiguration($log);
 
@@ -67,9 +91,15 @@ class MonologFactory implements LoggerFactoryInterface
      * This should not be changed in subclasses unless you have a good reason to do so
      * because it provides the basic contract that errors are logged to STDERR and PSR3 interpolation is supported
      * @param $log Logger Monolog implementation that should be configured
+     * @depricated
      */
     public function basicLoggerConfiguration($log)
     {
+        
+
+        
+
+
         //add monolog psr3 interpolation support (using context)
         //because its part of psr3 standard
         $log->pushProcessor(new PsrLogMessageProcessor());
@@ -81,7 +111,7 @@ class MonologFactory implements LoggerFactoryInterface
     }
 
     /**
-     *
+     * @depricated
      * @param $log Logger Monolog implementation that should be configured
      */
     public function standardLoggerConfiguration($log){

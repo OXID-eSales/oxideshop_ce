@@ -33,6 +33,20 @@ use Symfony\Component\Yaml\Yaml;
  */
 class MonologFactory implements LoggerFactoryInterface
 {
+    protected $monologConfig;
+
+    protected function loadMonologConfig()
+    {
+        $config = Registry::get("oxConfigFile");
+        $path = $config->getVar('sShopDir') . '../monolog.yaml';
+        if(!file_exists($path)){
+            $path = $config->getVar('sShopDir') . '../monolog.yaml.dist';
+        }
+        //Do not try catch parse erors because the system should
+        // not continue to work until the configuration is fixed
+        $this->monologConfig = Yaml::parse(file_get_contents($path));
+    }
+
     /**
      * creates a logger object
      * this method should be called only once during a request
@@ -46,20 +60,19 @@ class MonologFactory implements LoggerFactoryInterface
      */
     public function getLogger($name = 'default'){
         
-        // create logger
-        $log = new Logger($name);
-
-        $config = Registry::get("oxConfigFile");
-        $path = $config->getVar('sShopDir') . '../monolog.yaml';
-        if(!file_exists($path)){
-            $path = $config->getVar('sShopDir') . '../monolog.yaml.dist';
+        
+        $this->loadMonologConfig();
+        
+        $channelConfig = $this->monologConfig['channels'][$name];
+        
+        if(array_key_exists('extends',$channelConfig)){
+            // extend logger
+            $log = $this->getLogger($channelConfig['extends']);
+            $log = $log->withName($name);
+        } else {
+            // create logger
+            $log = new Logger($name)
         }
-        //Do not try catch parse erors because the system should
-        // not continue to work until the configuration is fixed
-        $loggerConfig = Yaml::parse(file_get_contents($path));
-        $channelConfig = $loggerConfig['channels'][$name];
-
-         
 
         if(array_key_exists('use_microseconds',$channelConfig)){
             $log->useMicrosecondTimestamps($channelConfig['use_microseconds']);
@@ -67,16 +80,15 @@ class MonologFactory implements LoggerFactoryInterface
 
         $handlers = $channelConfig['handlers'];
         if(is_array($handlers)){
-           //getHandler
-           //PushHandler
+           foreach($handlers as $handlerConfig){
+               $handler = $this->getHandler($handlerConfig);
+               $log->pushHandler($handler);
+           }
         }
-
-
         
+        //Todo pushProcessors
         
-        //Todo replace with configuration 
-        $this->basicLoggerConfiguration($log);
-        $this->standardLoggerConfiguration($log);
+
 
         /*
          * every enhancing of the root logger that would create cycle dependencies during bootstrap
@@ -84,6 +96,26 @@ class MonologFactory implements LoggerFactoryInterface
          */
 
         return $log;
+    }
+
+    public function getHandler($handlerConfig)
+    {
+        if(!is_array($handlerConfig)){
+             $handlerConfig = $this->monologConfig['handlers'][$handlerConfig];
+        }
+        
+        $type = $handlerConfig['type'];
+        $args = [];
+        if ($type) {            
+            $class = '\Monolog\Handler\' . $type . 'Handler';
+            if ($handlerConfig['file']) {
+                $args[] = $handlerConfig['file'];
+            }
+        } else {
+            $class = $handlerConfig['class'];
+        }
+        $rc = new ReflectionClass($class);
+        $handler = $rc->newInstanceArgs($args);
     }
 
     /**
@@ -95,11 +127,6 @@ class MonologFactory implements LoggerFactoryInterface
      */
     public function basicLoggerConfiguration($log)
     {
-        
-
-        
-
-
         //add monolog psr3 interpolation support (using context)
         //because its part of psr3 standard
         $log->pushProcessor(new PsrLogMessageProcessor());

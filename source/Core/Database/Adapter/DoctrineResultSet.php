@@ -123,12 +123,15 @@ class DoctrineResultSet implements \IteratorAggregate, ResultSetInterface
 
     /**
      * @inheritdoc
+     *
+     * @todo write test for this
      */
     public function getIterator()
     {
-        $data = $this->fetchAll();
+        $this->close();
+        $this->getStatement()->execute();
 
-        return new \ArrayIterator($data);
+        return $this->getStatement();
     }
 
     /**

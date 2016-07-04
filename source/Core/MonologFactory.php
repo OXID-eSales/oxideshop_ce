@@ -134,7 +134,7 @@ class MonologFactory implements LoggerFactoryInterface
                     $args[] = $default;
                 }
                 return false;
-            }
+            };
             if ($type == 'buffer' ) {
                 if ($parentHandler){
                     $args[] = $parentHandler

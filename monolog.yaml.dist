@@ -4,7 +4,7 @@ channels:
       processors: [PsrLogMessageProcessor]
       use_microseconds: true
    security:
-      extends: root
+      extends: default
       handlers: [syslog]
    example:
       handlers: 

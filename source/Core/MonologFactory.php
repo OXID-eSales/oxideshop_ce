@@ -23,6 +23,7 @@ namespace OxidEsales\Eshop\Core;
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use Monolog\ErrorHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
 use OxidEsales\Eshop\Core\Contract\LoggerFactoryInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -65,7 +66,7 @@ class MonologFactory implements LoggerFactoryInterface
         
         $channelConfig = $this->monologConfig['channels'][$name];
         
-        if(array_key_exists('extends',$channelConfig)){
+        if (array_key_exists('extends',$channelConfig)){
             // extend logger
             $log = $this->getLogger($channelConfig['extends']);
             $log = $log->withName($name);
@@ -74,8 +75,12 @@ class MonologFactory implements LoggerFactoryInterface
             $log = new Logger($name);
         }
 
-        if(array_key_exists('use_microseconds',$channelConfig)){
+        if (array_key_exists('use_microseconds',$channelConfig)){
             $log->useMicrosecondTimestamps($channelConfig['use_microseconds']);
+        }
+
+        if ($channelConfig['registerPhpHandlers']) {
+            ErrorHandler::register($log);
         }
 
         $handlers = $channelConfig['handlers'];

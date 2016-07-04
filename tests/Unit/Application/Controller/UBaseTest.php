@@ -2484,10 +2484,6 @@ class UBaseTest extends \OxidTestCase
         $_GET[$baseController->getSortOrderByParameterName()] = '';
         $this->assertNull($baseController->getUserSelectedSorting());
 
-        //invalid field name
-        $_GET[$baseController->getSortOrderByParameterName()] = '42';
-        $this->assertNull($baseController->getUserSelectedSorting());
-
         //not existing order direction
         $_GET[$baseController->getSortOrderByParameterName()] = 'oxid';
         $_GET[$baseController->getSortOrderParameterName()] = 'foobar';

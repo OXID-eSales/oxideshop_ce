@@ -111,7 +111,8 @@ class MonologFactory implements LoggerFactoryInterface
         
         $type = $handlerConfig['type'];
         $levels = Logger::getLevels();
-        $level = $levels[strtoupper($handlerConfig['level'])];
+        $level =  $levels[strtoupper($handlerConfig['level'])];
+        $bubble = $handlerConfig['bubble'];
         $args = [];
         if ($type) {            
             $class = '\\Monolog\\Handler\\' . $type . 'Handler';
@@ -144,12 +145,17 @@ class MonologFactory implements LoggerFactoryInterface
                     $addParameter('flushOnOverflow');
                 }
             }
-            
+
+            if ($type == 'couchdb' ) {
+                $args[] = $handlerConfig;
+            }
+
             if ($type == 'stream' ) {
                 $addParameter('file');
             }
         } else {
             $class = $handlerConfig['class'];
+            $args = $handlerConfig['arguments'];
         }
         $rc = new ReflectionClass($class);
         $handler = $rc->newInstanceArgs($args);

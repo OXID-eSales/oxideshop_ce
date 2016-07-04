@@ -40,7 +40,7 @@ class MonologFactory implements LoggerFactoryInterface
         $config = Registry::get("oxConfigFile");
         $path = $config->getVar('sShopDir') . '../monolog.yaml';
         if(!file_exists($path)){
-            $path = $config->getVar('sShopDir') . '../monolog.yaml.dist';
+            $path = $config->getVar('sShopDir') . '../monolog.dist.yaml';
         }
         //Do not try catch parse erors because the system should
         // not continue to work until the configuration is fixed

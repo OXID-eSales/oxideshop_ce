@@ -138,7 +138,7 @@ class MonologFactory implements LoggerFactoryInterface
             };
             if ($type == 'buffer' ) {
                 if ($parentHandler){
-                    $args[] = $parentHandler
+                    $args[] = $parentHandler;
                     $addParameter('bufferLimit',0);
                     $args[] = $level;
                     $args[] = $bubble;

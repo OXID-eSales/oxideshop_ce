@@ -71,7 +71,7 @@ class MonologFactory implements LoggerFactoryInterface
             $log = $log->withName($name);
         } else {
             // create logger
-            $log = new Logger($name)
+            $log = new Logger($name);
         }
 
         if(array_key_exists('use_microseconds',$channelConfig)){
@@ -105,12 +105,43 @@ class MonologFactory implements LoggerFactoryInterface
         }
         
         $type = $handlerConfig['type'];
+        $levels = Logger::getLevels();
+        $level = $levels[strtoupper($handlerConfig['level'])];
         $args = [];
         if ($type) {            
             $class = '\\Monolog\\Handler\\' . $type . 'Handler';
             $type = strtolower($type);
-            if ($type == 'stream' && $handlerConfig['file']) {
-                $args[] = $handlerConfig['file'];
+            
+            if ($handlerConfig['handler']) {
+                $parentHandler = $this->getHandler($handlerConfig['handler']);
+            }
+            
+            /**
+            * adds constructor argument for the new handler
+            * @return boolean true if the argument was configured and added
+            **/
+            $addParameter = function($name,$default) use (&$args,$handlerConfig){
+                if (array_key_exists($name,$handlerConfig)) {
+                    $args[] = $handlerConfig[$name];
+                    return true;
+                }
+                if ($default !== null ){
+                    $args[] = $default;
+                }
+                return false;
+            }
+            if ($type == 'buffer' ) {
+                if ($parentHandler){
+                    $args[] = $parentHandler
+                    $addParameter('bufferLimit',0);
+                    $args[] = $level;
+                    $args[] = $bubble;
+                    $addParameter('flushOnOverflow');
+                }
+            }
+            
+            if ($type == 'stream' ) {
+                $addParameter('file');
             }
         } else {
             $class = $handlerConfig['class'];

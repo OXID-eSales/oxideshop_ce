@@ -11,6 +11,7 @@ channels:
       handlers: [stderr,LogFileOxid]
       processors: [PsrLogMessageProcessor]
       use_microseconds: true
+      register_php_handlers: true
    security:
       extends: default
       handlers: [syslog]

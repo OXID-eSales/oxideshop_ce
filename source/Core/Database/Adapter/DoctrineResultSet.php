@@ -105,7 +105,7 @@ class DoctrineResultSet implements \IteratorAggregate, ResultSetInterface
      */
     public function fetchAll()
     {
-        // @todo: check, that the next line is ok (without it the method fetchAll leads to all rows, without the first)
+        $this->close();
         $this->getStatement()->execute();
 
         return $this->getStatement()->fetchAll();

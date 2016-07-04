@@ -6,12 +6,13 @@ channels:
    security:
       extends: default
       handlers: [syslog]
-   example:
-      handlers: 
-          - type: stream
-            file: 'log/mymodule.log'
-            level: debug
-      use_microseconds: false
+########### Some examples #############      
+#   custom:
+#      handlers: 
+#          - type: stream
+#            file: 'log/mymodule.log'
+#            level: debug
+#      use_microseconds: false
 handlers:
    stderr:
        type: stream

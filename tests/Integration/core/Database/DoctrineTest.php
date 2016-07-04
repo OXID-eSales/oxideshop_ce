@@ -143,7 +143,7 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
             'Parameters rowCount and offset have to be numeric in DatabaseInterface::selectLimit(). ' .
             'Please fix your code as this error may trigger an exception in future versions of OXID eShop.'
         );
-        $actualResult = $resultSet->getAll();
+        $actualResult = $resultSet->fetchAll();
 
         $this->assertSame($expectedResult, $actualResult, $assertionMessage);
     }
@@ -345,7 +345,7 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
         ];
         $resultSet = $this->database
             ->select("SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "' ORDER BY " . $quotedIdentifier);
-        $actualResult = $resultSet->getAll();
+        $actualResult = $resultSet->fetchAll();
         
         $this->assertSame($expectedResult, $actualResult);
     }
@@ -399,9 +399,8 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
         $this->setExpectedException($expectedException);
 
         $query = "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = {$actualQuotedValue}";
-        $resultSet = $this->database
-            ->select($query);
-        $resultSet->getAll();
+        $resultSet = $this->database->select($query);
+        $resultSet->fetchAll();
     }
 
     public function dataProviderTestQuoteWithInvalidValues()
@@ -471,7 +470,7 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
     public function testGetAllWithOrderByRand()
     {
         $resultSet = $this->database->select('SELECT oxid FROM oxarticles ORDER BY RAND()');
-        $rows = $resultSet->getAll();
+        $rows = $resultSet->fetchAll();
         $oxIds = [];
         foreach ($rows as $row) {
             $oxIds[] = $row[0];

@@ -105,6 +105,9 @@ class DoctrineResultSet implements \IteratorAggregate, ResultSetInterface
      */
     public function fetchAll()
     {
+        // @todo: check, that the next line is ok (without it the method fetchAll leads to all rows, without the first)
+        $this->getStatement()->execute();
+
         return $this->getStatement()->fetchAll();
     }
 
@@ -150,16 +153,6 @@ class DoctrineResultSet implements \IteratorAggregate, ResultSetInterface
         }
 
         return $results;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAll($numberOfRows = -1)
-    {
-        $arr = $this->getArray($numberOfRows);
-
-        return $arr;
     }
 
     /**

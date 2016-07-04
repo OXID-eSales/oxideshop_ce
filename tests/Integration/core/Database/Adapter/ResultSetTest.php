@@ -351,31 +351,34 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Test, that the method 'getAll' works for an empty result set.
+     * Test, that the method 'fetchAll' works for an empty result set.
      */
-    public function testGetAllWithEmptyResultSet()
+    public function testFetchAllWithEmptyResultSet()
     {
         $resultSet = $this->testCreationWithRealEmptyResult();
 
-        $rows = $resultSet->getAll();
+        $rows = $resultSet->fetchAll();
 
         $this->assertInternalType('array', $rows);
         $this->assertEmpty($rows);
     }
 
     /**
-     * Test, that the method 'getAll' works for a non empty result set.
+     * Test, that the method 'fetchAll' works for a non empty result set.
      */
-    public function testGetAllWithNonEmptyResultSet()
+    public function testFetchAllWithNonEmptyResultSet()
     {
         $resultSet = $this->testCreationWithRealNonEmptyResult();
 
-        $rows = $resultSet->getAll();
+        $this->assertSame(array(self::FIXTURE_OXID_1), $resultSet->fields);
+        $rows = $resultSet->fetchAll();
 
         $this->assertInternalType('array', $rows);
         $this->assertNotEmpty($rows);
         $this->assertSame(3, count($rows));
         $this->assertSame(self::FIXTURE_OXID_1, $rows[0][0]);
+        $this->assertSame(self::FIXTURE_OXID_2, $rows[1][0]);
+        $this->assertSame(self::FIXTURE_OXID_3, $rows[2][0]);
     }
 
     /**

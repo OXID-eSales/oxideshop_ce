@@ -243,7 +243,7 @@ class UtilsCount extends \oxSuperCfg
 
         $resultSet = $database->select($query, $parameters, $executeOnSlave);
 
-        $rows = $resultSet->getAll();
+        $rows = $resultSet->fetchAll();
 
         if (!$rows) {
             return array();

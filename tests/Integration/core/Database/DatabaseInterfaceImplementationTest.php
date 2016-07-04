@@ -291,7 +291,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE OXID = ?', array(self::FIXTURE_OXID_2), false);
 
-        $result = $resultSet->getAll();
+        $result = $resultSet->fetchAll();
 
         $this->assertEquals(array(array(self::FIXTURE_OXID_2)), $result);
     }
@@ -312,7 +312,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE OXID = ?', array(array('key' => 'value')), false);
 
-        $result = $resultSet->getAll();
+        $result = $resultSet->fetchAll();
 
         $this->assertEquals(array(), $result);
     }
@@ -326,7 +326,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE OXID <> ?', array(self::FIXTURE_OXID_2), false);
 
-        $result = $resultSet->getAll();
+        $result = $resultSet->fetchAll();
 
         $this->assertEquals(array(array(self::FIXTURE_OXID_1), array(self::FIXTURE_OXID_3)), $result);
     }
@@ -395,7 +395,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                ')';
 
         $resultSet = $this->database->selectLimit($sql, $rowCount, $offset);
-        $actualResult = $resultSet->getAll();
+        $actualResult = $resultSet->fetchAll();
 
         $this->assertSame($expectedResult, $actualResult, $assertionMessage);
     }
@@ -408,7 +408,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $result = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
 
         $expectedRows = array();
-        $allRows = $result->getAll();
+        $allRows = $result->fetchAll();
         $this->assertSame($expectedRows, $allRows);
     }
 
@@ -421,7 +421,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $result = $this->database->select('   SELECT OXID FROM ' . self::TABLE_NAME);
 
         $expectedRows = array();
-        $allRows = $result->getAll();
+        $allRows = $result->fetchAll();
         $this->assertSame($expectedRows, $allRows);
     }
 
@@ -442,7 +442,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             array(self::FIXTURE_OXID_2),
             array(self::FIXTURE_OXID_3)
         );
-        $allRows = $result->getAll();
+        $allRows = $result->fetchAll();
         $this->assertSame($expectedRows, $allRows);
     }
 
@@ -1237,9 +1237,8 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertSame($expectedQuotedValue, $actualQuotedValue, $message);
 
         $query = "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = {$actualQuotedValue}";
-        $resultSet = $this->database
-            ->select($query);
-        $actualResult = $resultSet->getAll();
+        $resultSet = $this->database->select($query);
+        $actualResult = $resultSet->fetchAll();
 
         $this->assertSame($expectedResult, $actualResult, $message);
     }
@@ -1461,7 +1460,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     {
         return $this->database
             ->select('SELECT * FROM ' . self::TABLE_NAME, array(), false)
-            ->getAll();
+            ->fetchAll();
     }
 
     /**

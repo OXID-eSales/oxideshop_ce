@@ -1,4 +1,7 @@
 # Monolog Configuration File
+# you can copy this content to a file named monolog.yaml 
+# to protect it from beeing overridden by updates
+#
 # first section are channels
 # the application can use different channels to make it possible to 
 # bring things in different log files (or send it to different handlers)

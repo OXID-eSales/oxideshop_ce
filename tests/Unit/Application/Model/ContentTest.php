@@ -87,6 +87,7 @@ class ContentTest extends \OxidTestCase
 
         $oContent = oxNew('oxContent');
         $oContent->loadByIdent("oxagb");
+        $oContent->oxcontents__oxtermversion = new oxField("testVersion");
         $oContent->save();
 
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxacceptedterms"));

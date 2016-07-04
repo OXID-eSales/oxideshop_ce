@@ -79,7 +79,7 @@ class MonologFactory implements LoggerFactoryInterface
             $log->useMicrosecondTimestamps($channelConfig['use_microseconds']);
         }
 
-        if ($channelConfig['registerPhpHandlers']) {
+        if ($channelConfig['register_php_handlers']) {
             ErrorHandler::register($log);
         }
 

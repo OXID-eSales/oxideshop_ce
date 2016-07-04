@@ -90,85 +90,6 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * @return array The parameters we want to use for the testGetArray method.
-     */
-    public function dataProviderTestGetArray()
-    {
-        return array(
-            array('SELECT OXID FROM ' . self::TABLE_NAME, 0, false, array()),
-            array('SELECT OXID FROM ' . self::TABLE_NAME, 1, false, array()),
-            array('SELECT OXID FROM ' . self::TABLE_NAME, 10, false, array()),
-            array('SELECT OXID FROM ' . self::TABLE_NAME, 0, true, array()),
-            array('SELECT OXID FROM ' . self::TABLE_NAME, 1, true, array(array(self::FIXTURE_OXID_1))),
-            array('SELECT OXID FROM ' . self::TABLE_NAME, 5, true, array(array(self::FIXTURE_OXID_1), array(self::FIXTURE_OXID_2), array(self::FIXTURE_OXID_3))),
-        );
-    }
-
-    /**
-     * Test, that the method 'getArray' works as expected.
-     *
-     * @dataProvider dataProviderTestGetArray
-     *
-     * @param string $query         The sql statement we want to execute.
-     * @param int    $numberOfRows  The number of rows we want to fetch.
-     * @param bool   $loadFixtures  Should we load the test fixtures before running the actual test.
-     * @param array  $expectedArray The result the method should give back.
-     */
-    public function testGetArray($query, $numberOfRows, $loadFixtures, $expectedArray)
-    {
-        if ($loadFixtures) {
-            $this->loadFixtureToTestTable();
-        }
-
-        $resultSet = $this->database->select($query);
-
-        $result = $resultSet->getArray($numberOfRows);
-
-        $this->assertSame($expectedArray, $result);
-    }
-
-    /**
-     * Test, that the method 'getArray' works as expected, if we call it consecutive. Thereby we assure, that the internal row pointer is used correct.
-     */
-    public function testGetArraySequentialCalls()
-    {
-        $this->loadFixtureToTestTable();
-
-        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
-
-        $resultOne = $resultSet->getArray(1);
-        $resultTwo = $resultSet->getArray(1);
-        $resultThree = $resultSet->getArray(1);
-
-        $this->assertSame($resultOne, array(array(self::FIXTURE_OXID_1)));
-        $this->assertSame($resultTwo, array(array(self::FIXTURE_OXID_2)));
-        $this->assertSame($resultThree, array(array(self::FIXTURE_OXID_3)));
-    }
-
-    /**
-     * Test, that the method 'getArray' works as expected, if we set first a fetch mode different from the default.
-     */
-    public function testGetArrayWithDifferentFetchMode()
-    {
-        $this->loadFixtureToTestTable();
-        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_BOTH);
-
-        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
-
-        $resultOne = $resultSet->getArray(1);
-        $resultTwo = $resultSet->getArray(1);
-        $resultThree = $resultSet->getArray(1);
-
-        $expectedOne = array(array('OXID' => self::FIXTURE_OXID_1, self::FIXTURE_OXID_1));
-        $expectedTwo = array(array('OXID' => self::FIXTURE_OXID_2, self::FIXTURE_OXID_2));
-        $expectedThree = array(array('OXID' => self::FIXTURE_OXID_3, self::FIXTURE_OXID_3));
-
-        $this->assertArrayContentSame($resultOne, $expectedOne);
-        $this->assertArrayContentSame($resultTwo, $expectedTwo);
-        $this->assertArrayContentSame($resultThree, $expectedThree);
-    }
-
-    /**
      * @return array The parameters we want to use for the testFieldCount method.
      */
     public function dataProviderTestFieldCount()
@@ -379,6 +300,27 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
         $this->assertSame(self::FIXTURE_OXID_1, $rows[0][0]);
         $this->assertSame(self::FIXTURE_OXID_2, $rows[1][0]);
         $this->assertSame(self::FIXTURE_OXID_3, $rows[2][0]);
+    }
+
+    /**
+     * Test, that the method 'fetchAll' works as expected, if we set first a fetch mode different from the default.
+     */
+    public function testFetchAllWithDifferentFetchMode()
+    {
+        $this->loadFixtureToTestTable();
+        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_BOTH);
+
+        $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
+
+        $rows = $resultSet->fetchAll();
+
+        $expectedRows = array(
+            array('OXID' => self::FIXTURE_OXID_1, self::FIXTURE_OXID_1),
+            array('OXID' => self::FIXTURE_OXID_2, self::FIXTURE_OXID_2),
+            array('OXID' => self::FIXTURE_OXID_3, self::FIXTURE_OXID_3)
+        );
+
+        $this->assertArrayContentSame($rows, $expectedRows);
     }
 
     /**

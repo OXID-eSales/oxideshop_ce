@@ -140,22 +140,6 @@ class DoctrineResultSet implements \IteratorAggregate, ResultSetInterface
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getArray($numberOfRows = -1)
-    {
-        $results = array();
-        $cnt = 0;
-        while (!$this->EOF && $numberOfRows != $cnt) {
-            $results[] = $this->fields;
-            $this->fetchRow();
-            $cnt++;
-        }
-
-        return $results;
-    }
-
-    /**
      * Getter for the adapted statement.
      *
      * @return Statement The adapted statement.

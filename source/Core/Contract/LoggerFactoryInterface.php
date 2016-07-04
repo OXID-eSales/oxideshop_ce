@@ -20,53 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\Eshop\Core\Contract;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use oxCompanyVatIn;
-
-/**
- * Company VAT identification number (VATIN) checker
- *
- */
-abstract class CompanyVatInChecker implements LoggerAwareInterface
+interface LoggerFactoryInterface
 {
-     use LoggerAwareTrait;
-
     /**
-     * Error message
-     *
-     * @var string
+     * @param $name
+     * @return LoggerInterface
      */
-    protected $_sError = '';
-
-    /**
-     * Error message setter
-     *
-     * @param string $error
-     */
-    public function setError($error)
-    {
-        $this->_sError = $error;
-    }
-
-    /**
-     * Error message getter
-     *
-     * @return string
-     */
-    public function getError()
-    {
-        return $this->_sError;
-    }
-
-    /**
-     * Validates company VAT identification number
-     *
-     * @param oxCompanyVatIn $vatIn
-     *
-     * @return mixed
-     */
-    abstract public function validate(oxCompanyVatIn $vatIn);
+    public function getLogger($name);
 }

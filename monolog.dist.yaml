@@ -1,0 +1,57 @@
+# Monolog Configuration File
+# you can copy this content to a file named monolog.yaml 
+# to protect it from beeing overridden by updates
+#
+# channels
+# the application can use different channels to make it possible to 
+# bring things in different log files (or send it to different handlers)
+channels:
+   # the default channel is the main channel
+   default:
+      handlers: [stderr,LogFileOxid]
+      processors: [PsrLogMessageProcessor]
+      use_microseconds: true
+      register_php_handlers: true
+   security:
+      extends: default
+      handlers: [syslog]
+########### Some example channels #############      
+#   custom:
+#      handlers: 
+#          - type: stream
+#            file: 'log/mymodule.log'
+#            level: debug
+#      use_microseconds: false
+###############################################  
+#
+handlers:
+   stderr:
+       type: stream
+       file: 'php://stderr'
+       level: error
+   LogFileOxid:
+       type: stream
+       file: 'log/oxid.log'
+       level: info
+#### For legacy use if you need the EXCEPTION_LOG.txt 
+# you can uncomment the following 4 Lines and add EXCEPTION_LOG to the list of handlers in the default channel
+#   EXCEPTION_LOG:
+#       type: stream
+#       file: 'log/EXCEPTION_LOG.txt'
+#       level: error
+########### Some example handlers #############       
+#   syslog:
+#     type: syslog 
+#     level: info
+#   allOnError:
+#       type: fingers_crossed
+#       action_level: error
+#       handler: LogFileOxid
+#   custom:
+#       class: \Namespace\MyHandler
+#       constructor: [param1]
+#       level: error
+###############################################
+processors:
+   PsrLogMessageProcessor:
+       class: PsrLogMessageProcessor

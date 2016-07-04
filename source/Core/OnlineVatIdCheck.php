@@ -177,13 +177,7 @@ class OnlineVatIdCheck extends \oxCompanyVatInChecker
     {
         // message to write to exception log
         $sLogMessage = "Warning: $sErrStr in $sErrFile on line $iErrLine";
-
-        // fetching exception log file name
-        $oEx = oxNew("oxException");
-        $sLogFileName = $oEx->getLogFileName();
-
-        // logs error message
-        return oxRegistry::getUtils()->writeToLog($sLogMessage, $sLogFileName);
+        $this->logger->error($sLogMessage);      
     }
 
     /**

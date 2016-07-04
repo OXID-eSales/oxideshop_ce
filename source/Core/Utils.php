@@ -1137,6 +1137,14 @@ class Utils extends \oxSuperCfg
     public function showMessageAndExit($sMsg)
     {
         $this->prepareToExit();
+        if (defined('OXID_PHP_UNIT')) {
+            //do not allow calling exit in a unit tests because this will stop all tests
+            //without error report. test code should always mock this method and must not depend on this exception
+            //it is only a protection against incompatible tests
+            // - with one exception the test that tests this method is allowed to check for this exception.
+            throw new \Exception("attempt to call exit from within a phpunit test");
+        }
+
         exit($sMsg);
     }
 

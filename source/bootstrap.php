@@ -46,6 +46,7 @@ registerComposerAutoload();
 //init config.inc.php file reader
 $oConfigFile = new ConfigFile(OX_BASE_PATH . "config.inc.php");
 Registry::set("oxConfigFile", $oConfigFile);
+Registry::set("Logger", createLoggerFactory()->getLogger());
 
 registerModuleDependenciesAutoload();
 registerShopAutoLoad();

@@ -23,27 +23,23 @@
 namespace OxidEsales\Eshop\Core\Exception;
 
 use oxRegistry;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 
 /**
  * Basic exception class
  *
  */
-class StandardException extends \Exception
+class StandardException extends \Exception implements \Psr\Log\LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * Exception type, currently old class name is used.
      *
      * @var string
      */
     protected $type = 'oxException';
-
-    /**
-     * Log file path/name
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
-     *
-     * @var string
-     */
-    protected $_sFileName = 'EXCEPTION_LOG.txt';
 
     /**
      * Not caught means the exception was not caught and occured in the rendering process,
@@ -69,31 +65,9 @@ class StandardException extends \Exception
     public function __construct($sMessage = "not set", $iCode = 0)
     {
         parent::__construct($sMessage, $iCode);
+        $this->setLogger(oxRegistry::get('Logger'));
     }
 
-    /**
-     * Set log file path/name
-     *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
-     *
-     * @param string $sFile File name
-     */
-    public function setLogFileName($sFile)
-    {
-        $this->_sFileName = $sFile;
-    }
-
-    /**
-     * Get log file path/name
-     *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
-     *
-     * @return string
-     */
-    public function getLogFileName()
-    {
-        return $this->_sFileName;
-    }
 
     /**
      * Sets the exception message
@@ -149,10 +123,10 @@ class StandardException extends \Exception
         //We are most likely are already dealing with an exception so making sure no other exceptions interfere
         try {
             $sLogMsg = $this->getString() . "\n---------------------------------------------\n";
-            //deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
-            oxRegistry::getUtils()->writeToLog($sLogMsg, $this->getLogFileName());
-            //end deprecated
+            $this->logger->error($sLogMsg);
         } catch (\Exception $e) {
+            //TODO log some basic information e.g.
+            //original error name/class and error during logging that error to some very basic place e.g. STDERR
         }
     }
 

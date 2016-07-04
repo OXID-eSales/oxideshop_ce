@@ -21,10 +21,10 @@
  */
 namespace Unit\Core;
 
-use \stdClass;
-use \oxCompanyVatIn;
-use \oxTestModules;
-
+use stdClass;
+use oxCompanyVatIn;
+use oxTestModules;
+use Psr\Log\NullLogger;
 class OnlineVatIdCheckTest extends \OxidTestCase
 {
 
@@ -43,12 +43,11 @@ class OnlineVatIdCheckTest extends \OxidTestCase
      */
     public function testCatchWarning()
     {
-        oxTestModules::addFunction('oxUtils', 'writeToLog', '{ return $aA; }');
-
         $oOnlineVatIdCheck = oxNew('oxOnlineVatIdCheck');
-        $aResult = $oOnlineVatIdCheck->catchWarning(1, 1, 1, 1);
-
-        $this->assertEquals(array("Warning: 1 in 1 on line 1", "EXCEPTION_LOG.txt"), $aResult);
+        $logger = $this->getMock('Psr\Log\NullLogger');
+        $logger->expects($this->once())->method('error')->with("Warning: best shop system found in allShops.list on line 1");
+        $oOnlineVatIdCheck->setLogger($logger);
+        $aResult = $oOnlineVatIdCheck->catchWarning(1, "best shop system found", "allShops.list", 1);
     }
 
     /**
@@ -59,7 +58,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oOnlineVatIdCheck = $this->getMock("oxOnlineVatIdCheck", array("_checkOnline", "_getError"));
         $oOnlineVatIdCheck->expects($this->once())->method('_checkOnline')->will($this->returnValue(false));
         $oOnlineVatIdCheck->expects($this->once())->method('_getError')->will($this->returnValue(false));
-
+        $oOnlineVatIdCheck->setLogger(new NullLogger());
         $this->setExpectedException('Exception', 'VAT_MESSAGE_ID_NOT_VALID');
         $oOnlineVatIdCheck->checkUid("testVatId");
     }
@@ -89,6 +88,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oCheckVat->vatNumber = '123456789';
 
         $oOnlineVatCheck = $this->getMock('oxOnlineVatIdCheck', array('_checkOnline'));
+        $oOnlineVatCheck->setLogger(new NullLogger());
         $oOnlineVatCheck->expects($this->never())->method('_checkOnline');
 
         $this->setExpectedException('oxConnectionException', 'VAT_MESSAGE_SERVER_BUSY');
@@ -126,7 +126,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oOnlineVatCheck = $this->getMock('oxOnlineVatIdCheck', array('_checkOnline', '_getError'));
         $oOnlineVatCheck->expects($this->once())->method('_checkOnline')->will($this->returnValue(false));
         $oOnlineVatCheck->expects($this->once())->method('_getError')->will($this->returnValue('INVALID_INPUT'));
-
+        $oOnlineVatCheck->setLogger(new NullLogger());
         $this->setExpectedException('oxInputException', 'VAT_MESSAGE_INVALID_INPUT');
         $this->assertTrue($oOnlineVatCheck->checkUid('DE123456789'));
     }
@@ -143,7 +143,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oOnlineVatCheck = $this->getMock('oxOnlineVatIdCheck', array('_checkOnline', '_getError'));
         $oOnlineVatCheck->expects($this->once())->method('_checkOnline')->will($this->returnValue(false));
         $oOnlineVatCheck->expects($this->once())->method('_getError')->will($this->returnValue('MY_ERROR_MSG'));
-
+        $oOnlineVatCheck->setLogger(new NullLogger());
         $this->setExpectedException('oxConnectionException', 'VAT_MESSAGE_MY_ERROR_MSG');
         $this->assertTrue($oOnlineVatCheck->checkUid('DE123456789'));
     }
@@ -195,6 +195,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oCheckVat->vatNumber = '111111';
 
         $oOnlineVatCheck = $this->getProxyClass('oxOnlineVatIdCheck');
+        $oOnlineVatCheck->setLogger(new NullLogger());
         if (!$oOnlineVatCheck->UNITisServiceAvailable()) {
             $this->markTestSkipped('VAT check service is not available');
         }
@@ -217,6 +218,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oCheckVat->vatNumber = '111111';
 
         $oOnlineVatCheck = $this->getProxyClass('oxOnlineVatIdCheck');
+        $oOnlineVatCheck->setLogger(new NullLogger());
         if (!$oOnlineVatCheck->UNITisServiceAvailable()) {
             $this->markTestSkipped('VAT check service is not available');
         }
@@ -238,6 +240,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
     public function testCheckOnlineWithServiceNotReachable()
     {
         $oOnlineVatIdCheck = $this->getMock($this->getProxyClassName("oxOnlineVatIdCheck"), array("_isServiceAvailable"));
+        $oOnlineVatIdCheck->setLogger(new NullLogger());
         $oOnlineVatIdCheck->expects($this->once())->method('_isServiceAvailable')->will($this->returnValue(false));
 
         $this->assertEquals(false, $oOnlineVatIdCheck->UNITcheckOnline(new stdClass()));
@@ -251,7 +254,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
     {
         $oOnlineVatCheck = $this->getProxyClass('oxOnlineVatIdCheck');
         $oOnlineVatCheck->setNonPublicVar('_sError', null);
-
+        $oOnlineVatCheck->setLogger(new NullLogger());
         $this->assertSame('', $oOnlineVatCheck->UNITgetError());
     }
 
@@ -261,6 +264,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
     public function testGetErrorWithError()
     {
         $oOnlineVatCheck = $this->getProxyClass('oxOnlineVatIdCheck');
+        $oOnlineVatCheck->setLogger(new NullLogger());
         $sErrMsg = "soapenv:Server.userException: javax.xml.rpc.soap.SOAPFaultException: { 'INVALID_INPUT' }";
         $oOnlineVatCheck->setNonPublicVar('_sError', $sErrMsg);
 
@@ -273,6 +277,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
     public function testGetErrorWithUnknownErrorMsg()
     {
         $oOnlineVatCheck = $this->getProxyClass('oxOnlineVatIdCheck');
+        $oOnlineVatCheck->setLogger(new NullLogger());
         $sErrMsg = "soapenv:Server.userException: bla bla bla bla ";
         $oOnlineVatCheck->setNonPublicVar('_sError', $sErrMsg);
 
@@ -320,6 +325,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oExpect->vatNumber = '1212';
 
         $oOnlineVatCheck = $this->getMock('oxOnlineVatIdCheck', array('_checkOnline'));
+        $oOnlineVatCheck->setLogger(new NullLogger());
         $oOnlineVatCheck->expects($this->once())->method('_checkOnline')->with($this->equalTo($oExpect));
 
         $oOnlineVatCheck->validate($oVatIn);
@@ -334,6 +340,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oExpect->vatNumber = '1212';
 
         $oOnlineVatCheck = $this->getMock('oxOnlineVatIdCheck', array('_checkOnline'));
+        $oOnlineVatCheck->setLogger(new NullLogger());
         $oOnlineVatCheck->expects($this->once())->method('_checkOnline')->with($this->equalTo($oExpect))->will($this->returnValue(false));
 
         $this->assertFalse($oOnlineVatCheck->validate($oVatIn));

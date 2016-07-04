@@ -27,13 +27,21 @@ use oxRegistry;
 use oxSession;
 use oxSystemComponentException;
 use oxUser;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
 
 /**
- * Super config class
+ * Super config class is the base class of most classes in Oxid
+ * it provided some basic access to things like 
+ * config,session,current user and rights,admin(in backend) mode
+ * usually all objects based on this class should be created with oxNew
+ * so dependencies can get injected and classes can be overloaded by modules.
  */
-class SuperConfig
+class SuperConfig implements LoggerAwareInterface
 {
-
+    use LoggerAwareTrait;
+    
     /**
      * oxconfig instance
      *
@@ -101,6 +109,13 @@ class SuperConfig
      */
     public function __construct()
     {
+       /* because not all objects that extending this are initialised by oxNew
+       the logger can not always be set by dependency injection */
+       if (Registry::instanceExists('Logger')){
+          $this->logger = Registry::get('Logger');
+       }
+       // do not use the Logger within this constructor
+       // because it can't guaranteed that it was already created
     }
 
     /**

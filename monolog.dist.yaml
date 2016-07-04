@@ -21,10 +21,7 @@ channels:
 #            file: 'log/mymodule.log'
 #            level: debug
 #      use_microseconds: false
-###############################################
-   # the php channel is a special channel 
-   php:
-      extends: default
+###############################################  
 #
 handlers:
    stderr:

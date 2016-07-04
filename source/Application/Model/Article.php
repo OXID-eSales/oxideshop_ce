@@ -2245,11 +2245,9 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     public function save()
     {
         $this->_assignParentDependFields();
-
-        if (($blRet = parent::save())) {
-            // saving long description
-            $this->_saveArtLongDesc();
-        }
+        $blRet = parent::save();
+        // saving long description
+        $this->_saveArtLongDesc();
 
         return $blRet;
     }

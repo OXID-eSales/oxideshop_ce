@@ -108,7 +108,8 @@ class MonologFactory implements LoggerFactoryInterface
         $args = [];
         if ($type) {            
             $class = '\Monolog\Handler\' . $type . 'Handler';
-            if ($handlerConfig['file']) {
+            $type = strtolower($type);
+            if ($type == 'stream' && $handlerConfig['file']) {
                 $args[] = $handlerConfig['file'];
             }
         } else {

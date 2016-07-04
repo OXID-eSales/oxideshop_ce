@@ -24,6 +24,7 @@ namespace OxidEsales\Eshop\Application\Model;
 
 use oxRegistry;
 use oxDb;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 
 /**
  * Shop manager.
@@ -372,7 +373,10 @@ class Shop extends \oxI18n
         $aQueries = $this->getQueries();
         $bSuccess = true;
         foreach ($aQueries as $sQuery) {
-            if (!$oDb->execute($sQuery)) {
+            try {
+                $oDb->execute($sQuery);
+            } catch (StandardException $exception) {
+                $exception->debugOut();
                 $bSuccess = false;
             }
         }

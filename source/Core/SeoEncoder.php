@@ -25,6 +25,7 @@ namespace OxidEsales\Eshop\Core;
 use oxRegistry;
 use oxDb;
 use oxStr;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 
 /**
  * Seo encoder base
@@ -760,7 +761,7 @@ class SeoEncoder extends \oxSuperCfg
                 $sSql .= $sParams ? " and oxparams = {$sQtedParams} " : '';
                 $sSql .= " limit 1";
 
-                return $oDb->execute($sSql);
+                return $this->executeQuery($sSql);
             } elseif ($oRs->fields['oxexpired']) {
                 // copy to history
                 $this->_copyToHistory($sObjectId, $iShopId, $iLang, $sType);
@@ -778,7 +779,29 @@ class SeoEncoder extends \oxSuperCfg
                 on duplicate key update
                     oxobjectid = {$sQtedObjectId}, oxident = {$sQtedIdent}, oxstdurl = {$sQtedStdUrl}, oxseourl = {$sQtedSeoUrl}, oxfixed = '$blFixed', oxexpired = '0'";
 
-        return $oDb->execute($sQ);
+        return $this->executeQuery($sQ);
+    }
+
+    /**
+     * Runs query.
+     * Returns false when the query fail, otherwise return true
+     *
+     * @param string $query Query to execute.
+     *
+     * @return bool
+     */
+    protected function executeQuery($query)
+    {
+        $dataBase = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $success = true;
+        try {
+            $dataBase->execute($query);
+        } catch (StandardException $exception) {
+            $exception->debugOut();
+            $success = false;
+        }
+
+        return $success;
     }
 
     /**

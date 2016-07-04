@@ -66,7 +66,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
                      KEY `OXTITLE_1` (`OXTITLE_1`),
                      FULLTEXT KEY `OXLONGDESC` (`OXLONGDESC`),
                      FULLTEXT KEY `OXLONGDESC_1` (`OXLONGDESC_1`)
-                  ) ENGINE = MyISAM";
+                  ) ENGINE = InnoDB";
 
         oxDb::getDb()->execute($sSql);
     }

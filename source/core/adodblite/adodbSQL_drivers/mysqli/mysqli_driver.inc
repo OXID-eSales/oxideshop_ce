@@ -391,7 +391,7 @@ class mysqli_driver_ADOConnection extends ADOConnection
 	} 
 }
 
-require_once __DIR__ . '..' . DIRECTORY_SEPARATOR. '..' . DIRECTORY_SEPARATOR. '..' . DIRECTORY_SEPARATOR. 'interface' . DIRECTORY_SEPARATOR. 'ResultSetInterface.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR. '..' . DIRECTORY_SEPARATOR. '..' . DIRECTORY_SEPARATOR. 'interface' . DIRECTORY_SEPARATOR. 'ResultSetInterface.php';
 
 class mysqli_driver_ResultSet implements IteratorAggregate, \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface
 {

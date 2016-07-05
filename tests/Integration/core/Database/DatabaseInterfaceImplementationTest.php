@@ -1415,19 +1415,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      */
 
     /**
-     * Assure, that the given result set is empty.
-     *
-     * @param object $resultSet The result set we want to be empty.
-     */
-    protected function assertEmptyResultSet($resultSet)
-    {
-        $this->assertTrue($resultSet->EOF);
-        $this->assertEmpty($resultSet->fields);
-
-        $this->assertSame($this->getEmptyResultSetClassName(), get_class($resultSet));
-    }
-
-    /**
      * Assure, that the table oxdoctrinetest has only the given oxId.
      *
      * @param string $oxId The oxId we want to be the only one in the oxdoctrinetest table.

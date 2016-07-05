@@ -50,12 +50,6 @@ class DoctrineResultSetTest extends ResultSetTest
     const RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet';
 
     /**
-     * @var string The empty result set class class
-     */
-    const EMPTY_RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet';
-
-
-    /**
      * Create the database object under test.
      *
      * @return Doctrine The database object under test.

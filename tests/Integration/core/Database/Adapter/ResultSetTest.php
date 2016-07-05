@@ -51,11 +51,6 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     const RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet';
 
     /**
-     * @var string The empty result set class class
-     */
-    const EMPTY_RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet';
-
-    /**
      * @return string The name of the database exception class
      */
     protected function getDatabaseExceptionClassName()
@@ -69,14 +64,6 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     protected function getResultSetClassName()
     {
         return static::RESULT_SET_CLASS;
-    }
-
-    /**
-     * @return string The name of the empty result set class
-     */
-    protected function getEmptyResultSetClassName()
-    {
-        return static::EMPTY_RESULT_SET_CLASS;
     }
 
     /**

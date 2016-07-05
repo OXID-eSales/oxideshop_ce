@@ -46,11 +46,6 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
     const RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet';
 
     /**
-     * @var string The empty result set class class
-     */
-    const EMPTY_RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineEmptyResultSet';
-
-    /**
      * @var DatabaseInterface|Doctrine The database to test.
      */
     protected $database = null;
@@ -87,14 +82,6 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
     protected function getResultSetClassName()
     {
         return self::RESULT_SET_CLASS;
-    }
-
-    /**
-     * @return string The name of the empty result set class
-     */
-    protected function getEmptyResultSetClassName()
-    {
-        return self::EMPTY_RESULT_SET_CLASS;
     }
 
     /**

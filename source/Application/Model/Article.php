@@ -2135,7 +2135,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
 
     /**
      * Deletes record and other information related to this article such as images from DB,
-     * also removes variants. Returns true on success.
+     * also removes variants. Returns true if entry was deleted.
      *
      * @param string $sOXID Article id
      *
@@ -2196,7 +2196,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
 
     /**
      * Recursive function. Updates quantity of sold articles.
-     * Return true on success
+     * Return true if amount was changed in database.
      *
      * @param float $dAmount Number of articles sold
      *

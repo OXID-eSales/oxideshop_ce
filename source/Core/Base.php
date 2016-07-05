@@ -789,7 +789,7 @@ class Base extends \oxSuperCfg
     }
 
     /**
-     * Delete this object from the database, returns true on success.
+     * Delete this object from the database, returns true if entry was deleted.
      *
      * @param string $oxid Object ID(default null)
      *

@@ -363,4 +363,24 @@ class Database
     {
         return isAdmin();
     }
+
+    /**
+     * Database connection object getter
+     *
+     * @return Database
+     */
+    public static function getDbObject()
+    {
+        return self::$db;
+    }
+
+    /**
+     * Setter for database connection object
+     *
+     * @param Database $newDbObject
+     */
+    public static function setDbObject($newDbObject)
+    {
+        self::$db = $newDbObject;
+    }
 }

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-#
+
     /** database connection information */
     $this->dbType = 'mysql';
     $this->dbHost = '<dbHost>'; // database host name

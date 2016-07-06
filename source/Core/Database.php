@@ -76,7 +76,7 @@ class Database
 
     /**
      * This class is a singleton and should be instantiated with getInstance().
-     * 
+     *
      * @deprecated in v5.3.0 (2016-06-08) The constructor will be protected in the future. Use getInstance() instead.
      *
      * Database constructor.
@@ -362,5 +362,15 @@ class Database
     protected function isAdmin()
     {
         return isAdmin();
+    }
+
+    /**
+     * Database connection object getter
+     *
+     * @return Database
+     */
+    public static function getDbObject()
+    {
+        return self::$db;
     }
 }

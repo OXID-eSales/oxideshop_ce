@@ -40,7 +40,7 @@ function ShowMenueFields( iVal)
 
         <table cellspacing="0" cellpadding="0" border="0" width="98%">
           <colgroup><col width="30%"><col width="5%"><col width="65%"></colgroup>
-          <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" onSubmit="copyLongDesc( 'oxcontents__oxcontent' );">
+          <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" onSubmit="copyLongDesc( 'oxcontents__oxcontent' );" enctype="multipart/form-data">
           [{$oViewConf->getHiddenSid()}]
           <input type="hidden" name="cl" value="content_main">
           <input type="hidden" name="fnc" value="">

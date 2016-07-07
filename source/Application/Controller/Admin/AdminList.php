@@ -428,7 +428,7 @@ class AdminList extends \oxAdminView
     {
         if (count($whereQuery)) {
             $myUtilsString = oxRegistry::get("oxUtilsString");
-            while (list($fieldName, $fieldValue) = each($whereQuery)) {
+            while (list($identifierName, $fieldValue) = each($whereQuery)) {
                 $fieldValue = trim($fieldValue);
 
                 //check if this is search string (contains % sign at beginning and end of string)
@@ -451,8 +451,8 @@ class AdminList extends \oxAdminView
                             $queryBoolAction .= '(';
                         }
 
-                        // $fieldName = oxDb::getDb()->quoteIdentifier($fieldName);
-                        $fullQuery .= " {$queryBoolAction} {$fieldName} ";
+                        $quotedIdentifierName = oxDb::getDb()->quoteIdentifier($identifierName);
+                        $fullQuery .= " {$queryBoolAction} {$quotedIdentifierName} ";
 
                         //for search in same field for different values using AND
                         $queryBoolAction = ' and ';
@@ -460,7 +460,7 @@ class AdminList extends \oxAdminView
                         $fullQuery .= $this->_buildFilter($value, $isSearchValue);
 
                         if ($uml) {
-                            $fullQuery .= " or {$fieldName} ";
+                            $fullQuery .= " or {$quotedIdentifierName} ";
 
                             $fullQuery .= $this->_buildFilter($uml, $isSearchValue);
                             $fullQuery .= ')'; // end of OR section

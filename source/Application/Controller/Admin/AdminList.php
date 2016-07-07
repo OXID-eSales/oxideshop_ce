@@ -451,7 +451,7 @@ class AdminList extends \oxAdminView
                             $queryBoolAction .= '(';
                         }
 
-                        $fieldName = oxDb::getDb()->quoteIdentifier($fieldName);
+                        // $fieldName = oxDb::getDb()->quoteIdentifier($fieldName);
                         $fullQuery .= " {$queryBoolAction} {$fieldName} ";
 
                         //for search in same field for different values using AND

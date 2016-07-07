@@ -651,21 +651,52 @@ class Language extends \oxSuperCfg
         if ($sCharset == $newEncoding) {
             return $aLangArray;
         }
+        if ($blRecodeKeys) {
+            $aLangArray = $this->_recodeLangArrayWithKeys($aLangArray, $sCharset, $newEncoding);
+        } else {
+            $this->_recodeLangArrayValues($aLangArray, $sCharset, $newEncoding);
+        }
+
+        return $aLangArray;
+    }
+
+     /**
+     * Goes through language array and recodes its values.
+     * 
+     * @param array  $aLangArray   language data
+     * @param string $sCharset     charset which was used while making file
+     * @param string $newEncoding  charset which was used while making file
+     *
+     */
+    protected function _recodeLangArrayValues(&$aLangArray, $sCharset, $newEncoding)
+    {
+        foreach ($aLangArray as $sItemKey => &$sValue) {
+            $sValue = iconv($sCharset, $newEncoding, $sValue);
+        }
+    }
+
+    /**
+     * Goes through language array and recodes its values and keys. Returns recoded data
+     *
+     * @param array  $aLangArray   language data
+     * @param string $sCharset     charset which was used while making file
+     * @param string $newEncoding  charset which was used while making file
+     *
+     * @return array
+     */
+    protected function _recodeLangArrayWithKeys($aLangArray, $sCharset, $newEncoding)
+    {
 
         $aLangs = array();
-        foreach ($aLangArray as $sKey => $sValue) {
-            $sItemKey = $sKey;
-            if ($blRecodeKeys === true) {
-                $sItemKey = iconv($sCharset, $newEncoding, $sItemKey);
-            }
-
+        foreach ($aLangArray as $sItemKey => $sValue) {
+            $sItemKey = iconv($sCharset, $newEncoding, $sItemKey);
             $aLangs[$sItemKey] = iconv($sCharset, $newEncoding, $sValue);
-            unset($aLangArray[$sKey]);
         }
 
         return $aLangs;
     }
 
+    
     /**
      * Returns the encoding all translations will be converted to.
      *
@@ -917,23 +948,25 @@ class Language extends \oxSuperCfg
         }
         if (!$aLangCache && $aLangFiles) {
             $aLangCache = array();
+            $sBaseCharset = $this->getTranslationsExpectedEncoding();
             $aLang = array();
             $aLangSeoReplaceChars = array();
             foreach ($aLangFiles as $sLangFile) {
 
                 if (file_exists($sLangFile) && is_readable($sLangFile)) {
-                    $aSeoReplaceChars = array();
+                    //$aSeoReplaceChars null indicates that there is no setting made
+                    $aSeoReplaceChars = null;
                     include $sLangFile;
 
                     // including only (!) those, which has charset defined
                     if (isset($aLang['charset'])) {
+                        if ($aLang['charset'] != $sBaseCharset) {
+                            $aLang = $this->_recodeLangArray($aLang, $aLang['charset']);
 
-                        $aLang = $this->_recodeLangArray($aLang, $aLang['charset']);
-
-                        if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
-                            $aSeoReplaceChars = $this->_recodeLangArray($aSeoReplaceChars, $aLang['charset'], true);
+                            if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
+                                $aSeoReplaceChars = $this->_recodeLangArray($aSeoReplaceChars, $aLang['charset'], true);
+                            }
                         }
-
                         if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
                             $aLangSeoReplaceChars = array_merge($aLangSeoReplaceChars, $aSeoReplaceChars);
                         }
@@ -943,7 +976,7 @@ class Language extends \oxSuperCfg
                 }
             }
 
-            $aLangCache['charset'] = $this->getTranslationsExpectedEncoding();
+            $aLangCache['charset'] = $sBaseCharset;
 
             // special character replacement list
             $aLangCache['_aSeoReplaceChars'] = $aLangSeoReplaceChars;

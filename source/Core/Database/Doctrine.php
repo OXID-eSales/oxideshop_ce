@@ -326,7 +326,11 @@ class Doctrine implements DatabaseInterface
      */
     public function quoteIdentifier($string)
     {
-        return $this->getConnection()->quoteIdentifier(trim($string, $this->getConnection()->getDatabasePlatform()->getIdentifierQuoteCharacter()));
+        $identifierQuoteCharacter = $this->getConnection()->getDatabasePlatform()->getIdentifierQuoteCharacter();
+        if (!$identifierQuoteCharacter) {
+            $identifierQuoteCharacter = '`';
+        }
+        return $this->getConnection()->quoteIdentifier(trim($string, $identifierQuoteCharacter));
     }
 
     /**

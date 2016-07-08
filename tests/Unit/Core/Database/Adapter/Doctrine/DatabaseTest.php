@@ -159,7 +159,7 @@ class DatabaseTest extends UnitTestCase
             ],
             [
                 $identifierQuoteCharacter . 'string to ' . $identifierQuoteCharacter . ' be quoted' . $identifierQuoteCharacter,
-                $identifierQuoteCharacter . 'string to ' . $identifierQuoteCharacter . $identifierQuoteCharacter . ' be quoted' . $identifierQuoteCharacter,
+                $identifierQuoteCharacter . 'string to  be quoted' . $identifierQuoteCharacter,
                 'An already quoted string will be quoted with "' . $identifierQuoteCharacter . '"'
             ],
             [

@@ -529,46 +529,31 @@ class ArticlelistTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testGetFilterSql()
+    public function testGetFilterIdsSql()
     {
-        $sCatId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e60a535f16.78077188';
+        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e60a535f16.78077188';
 
-        $oTest = $this->getProxyClass('oxArticleList');
-        $sRes = '';
+        $articleList = $this->getProxyClass('oxArticleList');
 
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())
-            ->method('getAll')
-            ->will(
-                $this->returnCallback(
-                    function ($s) {
-                        throw new Exception($s);
-                    }
-                )
-            );
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
+        $objectToCategoryView = getViewName('oxobject2category');
+        $objectToAttributeView = getViewName('oxobject2attribute');
 
-        try {
-            $oTest->UNITgetFilterSql($sCatId, array("8a142c3ee0edb75d4.80743302" => "Zeiger", "8a142c3e9cd961518.80299776" => "originell"));
-        } catch (Exception $e) {
-            $sRes = $e->getMessage();
-        }
+        $result = $articleList->UNITgetFilterIdsSql($categoryId, array("8a142c3ee0edb75d4.80743302" => "Zeiger", "8a142c3e9cd961518.80299776" => "originell"));
+
         $this->setLanguage(0);
         modDB::getInstance()->cleanup();
 
-        $sO2CView = getViewName('oxobject2category');
-        $sO2AView = getViewName('oxobject2attribute');
-        $sExpt = "select oc.oxobjectid as oxobjectid, count(*)as cnt from
-            (SELECT * FROM $sO2CView WHERE $sO2CView.oxcatnid='$sCatId' GROUP BY $sO2CView.oxobjectid, $sO2CView.oxcatnid) as oc
-            INNER JOIN {$sO2AView} as oa ON(oa.oxobjectid=oc.oxobjectid)
+        $expected = "select oc.oxobjectid as oxobjectid, count(*)as cnt from
+            (SELECT * FROM $objectToCategoryView WHERE $objectToCategoryView.oxcatnid='$categoryId' GROUP BY $objectToCategoryView.oxobjectid, $objectToCategoryView.oxcatnid) as oc
+            INNER JOIN {$objectToAttributeView} as oa ON(oa.oxobjectid=oc.oxobjectid)
             WHERE (oa.oxattrid='8a142c3ee0edb75d4.80743302' and oa.oxvalue='Zeiger')
                 or (oa.oxattrid='8a142c3e9cd961518.80299776'andoa.oxvalue='originell')
             GROUPBY oa.oxobjectid
             HAVING cnt=2";
+        $expected = str_replace(array("\n", "\r", " ", "\t"), "", $expected);
+        $result = str_replace(array("\n", "\r", " ", "\t"), "", $result);
 
-        $sExpt = str_replace(array("\n", "\r", " ", "\t"), "", $sExpt);
-        $sRes = str_replace(array("\n", "\r", " ", "\t"), "", $sRes);
-        $this->assertEquals($sExpt, $sRes);
+        $this->assertEquals($expected, $result);
     }
 
     /**

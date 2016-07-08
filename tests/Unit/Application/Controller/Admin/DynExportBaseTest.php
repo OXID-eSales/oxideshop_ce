@@ -704,33 +704,6 @@ class DynExportBaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testInitArticleProductIsNotAwailable()
-    {
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())
-            ->method('selectLimit')
-            ->will($this->returnCallback(function ($s, $i, $c) {
-                throw new Exception($s . $i . $c);
-            }));
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock);
-
-        $oView = new _DynExportBase();
-        $blClose = true;
-        try {
-            $oView->initArticle("testdynexportbasetable", 0, $blClose);
-        } catch (Exception $oExcp) {
-            $this->assertEquals("select oxid from testdynexportbasetable10", $oExcp->getMessage(), "Error in DynExportBase::InitArticle()");
-
-            return;
-        }
-        $this->fail("Error in DynExportBase::InitArticle()");
-    }
-
-    /**
-     * DynExportBase::InitArticle() test case
-     *
-     * @return null
-     */
     public function testInitArticle()
     {
         $blContinue = true;

@@ -3215,24 +3215,63 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     /**
      * Checks if article is assigned to price category $sCatNID.
      *
-     * @param string $sCatNid Price category ID
+     * @param string $categoryPriceId Price category ID
      *
      * @return bool
      */
-    public function inPriceCategory($sCatNid)
+    public function inPriceCategory($categoryPriceId)
     {
-        $oDb = oxDb::getDb();
+        return (bool) $this->fetchFirstInPriceCategory($categoryPriceId);
+    }
 
-        $sQuotedPrice = $oDb->quote($this->oxarticles__oxprice->value);
-        $sQuotedCnid = $oDb->quote($sCatNid);
+    /**
+     * Fetch the article corresponding to this object in the price category with the given id.  
+     * 
+     * @param string $categoryPriceId The id of the category we want to check, if this article is in.
+     *
+     * @return string One, if the given article is in the given price category, else empty string. 
+     */
+    protected function fetchFirstInPriceCategory($categoryPriceId)
+    {
+        $database = $this->getDatabase();
 
-        return (bool) $oDb->getOne(
-            "select 1 from " . $this->_getObjectViewName('oxcategories') . " where oxid=$sQuotedCnid and"
-            . "(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= $sQuotedPrice and oxpriceto >= $sQuotedPrice)"
-            . " or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= $sQuotedPrice)"
-            . " or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= $sQuotedPrice)"
-            . ")"
-        );
+        $query = $this->createFetchFirstInPriceCategorySql($categoryPriceId, $database);
+
+        $result = $database->getOne($query);
+
+        return $result;
+    }
+
+    /**
+     * Get the database object.
+     *
+     * @return \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface
+     */
+    protected function getDatabase()
+    {
+        return oxDb::getDb();
+    }
+
+    /**
+     * Create the sql for the fetchFirstInPriceCategory method.
+     *
+     * @param string                                                    $categoryPriceId The price category id.
+     * @param \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface $database        The database object.          
+     *
+     * @return string The wished sql.
+     */
+    protected function createFetchFirstInPriceCategorySql($categoryPriceId, $database)
+    {
+        $sQuotedPrice = $database->quote($this->oxarticles__oxprice->value);
+        $sQuotedCnid = $database->quote($categoryPriceId);
+
+        $query = "select 1 from " . $this->_getObjectViewName('oxcategories') . " where oxid=$sQuotedCnid and"
+                 . "(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= $sQuotedPrice and oxpriceto >= $sQuotedPrice)"
+                 . " or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= $sQuotedPrice)"
+                 . " or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= $sQuotedPrice)"
+                 . ")";
+
+        return $query;
     }
 
     /**
@@ -4690,6 +4729,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         }
     }
 
+
     /**
      * Checks if article has uploaded master image for selected picture
      *
@@ -4719,6 +4759,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
 
         return false;
     }
+
 
     /**
      * Checks and return true if price view mode is netto
@@ -4761,7 +4802,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
 
         return $oPrice;
     }
-
 
     /**
      * Depending on view mode prepare price for viewing
@@ -4809,6 +4849,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         return $dPrice;
     }
 
+
     /**
      * Return price suffix
      *
@@ -4832,7 +4873,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         return $sPriceSuffix;
     }
 
-
     /**
      * Return prepared price
      *
@@ -4853,7 +4893,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
 
         return $dPrice;
     }
-
 
     /**
      * Return variant min price
@@ -4963,6 +5002,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         return oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getRow($sSelect);
     }
 
+
     /**
      * Place to hook and change amount if it should be calculated by different logic,
      * for example VPE.
@@ -4995,7 +5035,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
 
         return $oDb->execute($sSql);
     }
-
 
     /**
      * Returns array of fields which should not changed in variants
@@ -5070,4 +5109,5 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     {
         $oManufacturer->setReadOnly(true);
     }
+
 }

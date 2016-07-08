@@ -108,8 +108,6 @@ class ArticleTest extends \OxidTestCase
         $oDB->Execute('delete from oxselectlist where oxid = "_testoxsellist" ');
         $oDB->Execute('delete from oxobject2selectlist where oxselnid = "_testoxsellist" ');
 
-        $this->setProtectedClassProperty(Database::getInstance(), 'tblDescCache', []);
-
         parent::tearDown();
     }
 
@@ -6433,15 +6431,12 @@ class ArticleTest extends \OxidTestCase
      */
     public function testInPriceCategoryNoException($return, $expected)
     {
-        $oA = oxNew('oxArticle');
+        $articleMock = $this->getMock('oxArticle', array('fetchFirstInPriceCategory'));
+        $articleMock->expects($this->any())
+            ->method('fetchFirstInPriceCategory')
+            ->willReturn($return);
 
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())
-            ->method('getOne')
-            ->will($this->returnValue($return));
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock);
-
-        $this->assertEquals($expected, $oA->inPriceCategory('sCatNid'));
+        $this->assertEquals($expected, $articleMock->inPriceCategory('sCatNid'));
     }
 
     /**
@@ -6451,31 +6446,26 @@ class ArticleTest extends \OxidTestCase
      */
     public function testInPriceCategoryException()
     {
-        $oA = oxNew('oxArticle');
-        $oA->setId('_testx');
-        $oA->oxarticles__oxprice = new oxField(95);
-
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())
-            ->method('getOne')
-            ->will($this->returnCallback(function ($s) {
-                    throw new Exception($s);
-            }));
-
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock);
-
-        try {
-            $oA->inPriceCategory('sCatNid');
-        } catch (Exception $e) {
-            if ($this->getConfig()->getEdition() === 'EE') {
-                $this->assertEquals("select 1 from oxv_oxcategories_1_de where oxid='sCatNid' and(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= '95' and oxpriceto >= '95') or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= '95') or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= '95'))", $e->getMessage());
-            } else {
-                $this->assertEquals("select 1 from oxv_oxcategories_de where oxid='sCatNid' and(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= '95' and oxpriceto >= '95') or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= '95') or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= '95'))", $e->getMessage());
-            }
-
-            return;
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $expected = "select 1 from oxv_oxcategories_1_de where oxid='sCatNid' and(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= '95' and oxpriceto >= '95') or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= '95') or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= '95'))";
+        } else {
+            $expected = "select 1 from oxv_oxcategories_de where oxid='sCatNid' and(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= '95' and oxpriceto >= '95') or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= '95') or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= '95'))";
         }
-        $this->fail('exception from oxdb not thrown');
+
+        $dbMock = $this->getMock('OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database', array('getOne', 'quote'));
+        $dbMock->expects($this->once())->method('getOne')->with($this->equalTo($expected));
+
+        $dbMock->expects($this->any())->method('quote')->will($this->returnValueMap(array(
+            array('sCatNid', "'sCatNid'"),
+            array('95', "'95'"),
+        )));
+
+        $articleMock = $this->getMock('oxArticle', array('getDatabase'));
+        $articleMock->expects($this->any())->method('getDatabase')->willReturn($dbMock);
+        $articleMock->setId('_testx');
+        $articleMock->oxarticles__oxprice = new oxField('95');
+
+        $articleMock->inPriceCategory('sCatNid');
     }
 
     /**

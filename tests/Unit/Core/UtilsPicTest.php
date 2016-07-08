@@ -235,13 +235,10 @@ class UtilsPicTest extends \OxidTestCase
      */
     public function testIsPicDeletable($filename, $response, $expectedResult)
     {
-        $myUtils = oxNew('oxUtilsPic');
+        $utilsPicMock = $this->getMock('oxUtilsPic', array('fetchIsImageDeletable'));
+        $utilsPicMock->method('fetchIsImageDeletable')->willReturn($response);
 
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())->method('getOne')->will($this->returnValue($response));
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
-
-        $this->assertEquals($expectedResult, $myUtils->UNITisPicDeletable($filename, 'test', 'file'));
+        $this->assertEquals($expectedResult, $utilsPicMock->UNITisPicDeletable($filename, 'test', 'file'));
     }
 
     /**
@@ -249,13 +246,10 @@ class UtilsPicTest extends \OxidTestCase
      */
     public function testIsPicDeletableNoPic()
     {
-        $myUtils = oxNew('oxUtilsPic');
+        $utilsPicMock = $this->getMock('oxUtilsPic', array('fetchIsImageDeletable'));
+        $utilsPicMock->expects($this->never())->method('fetchIsImageDeletable');
 
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->never())->method('getOne');
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
-
-        $this->assertEquals(false, $myUtils->UNITisPicDeletable('nopic.jpg', 'test', 'file'));
+        $this->assertEquals(false, $utilsPicMock->UNITisPicDeletable('nopic.jpg', 'test', 'file'));
     }
 
     /**

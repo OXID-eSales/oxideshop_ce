@@ -406,6 +406,7 @@ if (!function_exists('getViewName')) {
     function getViewName($table, $languageId = null, $shopId = null)
     {
         $viewNameGenerator = Registry::get('oxTableViewNameGenerator');
+        
         return $viewNameGenerator->getViewName($table, $languageId, $shopId);
     }
 }

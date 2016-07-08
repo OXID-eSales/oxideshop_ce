@@ -238,21 +238,12 @@ class ActionListTest extends \OxidTestCase
      *
      * @dataProvider testAreAnyActivePromotionsDataProvider
      */
-    public function testAreAnyActivePromotions($response, $expected)
+    public function testAreAnyPromotionsActive($response, $expected)
     {
-        $sShopId = $this->getConfig()->getShopId();
-        $sView = getViewName('oxactions');
-        $sSql = "select 1 from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' limit 1";
-
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())
-            ->method('getOne')
-            ->with($this->equalTo($sSql))
-            ->will($this->returnValue($response));
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
-
-        $oAL = oxNew('oxActionList');
-        $this->assertEquals($expected, $oAL->areAnyActivePromotions());
+        $actionListMock = $this->getMock('oxActionList', array('fetchExistsActivePromotion'));
+        $actionListMock->expects($this->any())->method('fetchExistsActivePromotion')->willReturn($response);
+        
+        $this->assertEquals($expected, $actionListMock->areAnyActivePromotions());
     }
 
     /**

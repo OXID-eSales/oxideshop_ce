@@ -338,51 +338,41 @@ class ActionsTest extends \OxidTestCase
         $this->assertEquals('regenerated', $this->_oPromo->getLongDesc());
     }
 
-    /**
-     * test
-     */
     public function testGetBannerArticle_notAssigned()
     {
-        $dbMock = $this->getBannerArticleMockWithSpecificReturn(false);
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
+        $databaseResult = false;
 
         $oArticle = $this->getMock('stdclass', array('load'));
         $oArticle->expects($this->never())->method('load');
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        $oPromo = oxNew('oxActions');
-        $oPromo->setId('promoid');
-        $this->assertNull($oPromo->getBannerArticle());
+        $promotionMock = $this->getMock('oxActions', array('fetchBannerArticleId'));
+        $promotionMock->expects($this->any())->method('fetchBannerArticleId')->willReturn($databaseResult);
+        $promotionMock->setId('promoid');
+        $this->assertNull($promotionMock->getBannerArticle());
     }
 
-    /**
-     * test
-     */
     public function testGetBannerArticle_notExisting()
     {
-        $dbMock = $this->getBannerArticleMockWithSpecificReturn('asdabsdbdsf');
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
+        $databaseResult = 'asdabsdbdsf';
 
         $oArticle = $this->getMock('stdclass', array('load'));
         $oArticle->expects($this->once())->method('load')
-            ->with($this->equalTo('asdabsdbdsf'))
+            ->with($this->equalTo($databaseResult))
             ->will($this->returnValue(false));
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        $oPromo = oxNew('oxActions');
-        $oPromo->setId('promoid');
-        $this->assertNull($oPromo->getBannerArticle());
+        $promotionMock = $this->getMock('oxActions', array('fetchBannerArticleId'));
+        $promotionMock->expects($this->any())->method('fetchBannerArticleId')->willReturn($databaseResult);
+        $promotionMock->setId('promoid');
+        $this->assertNull($promotionMock->getBannerArticle());
     }
 
-    /**
-     * test
-     */
     public function testGetBannerArticle_Existing()
     {
-        $dbMock = $this->getBannerArticleMockWithSpecificReturn('2000');
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
+        $databaseResult = '2000';
 
         $oArticle = $this->getMock('stdclass', array('load'));
         $oArticle->expects($this->once())->method('load')
@@ -391,9 +381,10 @@ class ActionsTest extends \OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        $oPromo = oxNew('oxActions');
-        $oPromo->setId('promoid');
-        $oArt = $oPromo->getBannerArticle();
+        $promotionMock = $this->getMock('oxActions', array('fetchBannerArticleId'));
+        $promotionMock->expects($this->any())->method('fetchBannerArticleId')->willReturn($databaseResult);
+        $promotionMock->setId('promoid');
+        $oArt = $promotionMock->getBannerArticle();
         $this->assertNotNull($oArt);
         $this->assertSame($oArticle, $oArt);
     }

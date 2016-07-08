@@ -158,9 +158,21 @@ class ActionList extends \oxList
      */
     public function areAnyActivePromotions()
     {
-        return (bool) oxDb::getDb()->getOne("select 1 from " . getViewName('oxactions') . " where oxtype=2 and oxactive=1 and oxshopid='" . $this->getConfig()->getShopId() . "' limit 1");
+        return (bool) $this->fetchExistsActivePromotion();
     }
 
+
+    /**
+     * Fetch the information, if there is an active promotion.
+     * 
+     * @return string One, if there is an active promotion.
+     */
+    protected function fetchExistsActivePromotion()
+    {
+        $query = "select 1 from " . getViewName('oxactions') . " where oxtype=2 and oxactive=1 and oxshopid='" . $this->getConfig()->getShopId() . "' limit 1";
+
+        return oxDb::getDb()->getOne($query);
+    }
 
     /**
      * load active shop banner list

@@ -1412,7 +1412,7 @@ class Base extends \oxSuperCfg
      */
     protected function executeDatabaseQuery($query)
     {
-        $database = oxDb::getDb();
+        $database = Database::getDb();
 
         return $database->execute($query);
     }
@@ -1426,7 +1426,6 @@ class Base extends \oxSuperCfg
      */
     protected function _insert()
     {
-        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $myConfig = $this->getConfig();
         $myUtils = oxRegistry::getUtils();
 
@@ -1447,7 +1446,7 @@ class Base extends \oxSuperCfg
 
         $insertSql .= $this->_getUpdateFields($this->getUseSkipSaveFields());
 
-        return (bool) $database->execute($insertSql);
+        return $result = (bool) $this->executeDatabaseQuery($insertSql);
     }
 
     /**

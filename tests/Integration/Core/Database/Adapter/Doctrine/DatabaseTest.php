@@ -183,7 +183,7 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
     {
         $this->setExpectedException(self::DATABASE_EXCEPTION_CLASS);
 
-        $connectionMock =  $this->getMockBuilder('\Database')
+        $connectionMock =  $this->getMockBuilder('\OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database')
             ->setMethods(['beginTransaction'])
             ->getMock();
         $connectionMock->expects($this->once())
@@ -208,7 +208,7 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
     {
         $this->setExpectedException(self::DATABASE_EXCEPTION_CLASS);
 
-        $connectionMock =  $this->getMockBuilder('\Database')
+        $connectionMock =  $this->getMockBuilder('\OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database')
             ->setMethods(['commit'])
             ->getMock();
         $connectionMock->expects($this->once())
@@ -233,7 +233,7 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
     {
         $this->setExpectedException(self::DATABASE_EXCEPTION_CLASS);
 
-        $connectionMock =  $this->getMockBuilder('\Database')
+        $connectionMock =  $this->getMockBuilder('\OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database')
             ->setMethods(['rollBack'])
             ->getMock();
         $connectionMock->expects($this->once())

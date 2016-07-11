@@ -38,6 +38,68 @@ use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
  */
 class DatabaseTest extends UnitTestCase
 {
+    /** @var mixed Backing up for earlier value of database link object */
+    private $dbObjectBackup = null;
+
+    /**
+     * Initialize the fixture.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->dbObjectBackup = $this->getProtectedClassProperty(Database::getInstance(), 'db');
+    }
+
+    /**
+     * Executed after test is down.
+     */
+    protected function tearDown()
+    {
+        Database::getDb()->closeConnection();
+
+        $this->setProtectedClassProperty(Database::getInstance(), 'db', $this->dbObjectBackup);
+        
+        Database::getDb()->closeConnection();
+
+        parent::tearDown();
+    }
+
+    /**
+     * Set a given protected property of a given class instance to a given value.
+     *
+     * @param object $classInstance Instance of the class of which the property will be set
+     * @param string $property      Name of the property to be set
+     * @param mixed  $value         Value to which the property will be set
+     */
+    protected function setProtectedClassProperty($classInstance, $property, $value)
+    {
+        $className = get_class($classInstance);
+
+        $reflectionClass = new ReflectionClass($className);
+
+        $reflectionProperty = $reflectionClass->getProperty($property);
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($classInstance, $value);
+    }
+
+    /**
+     * Get a given protected property of a given class instance.
+     *
+     * @param object $classInstance Instance of the class of which the property will be set
+     * @param string $property      Name of the property to be retrieved
+     */
+    protected function getProtectedClassProperty($classInstance, $property)
+    {
+        $className = get_class($classInstance);
+
+        $reflectionClass = new ReflectionClass($className);
+
+        $reflectionProperty = $reflectionClass->getProperty($property);
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->getValue($classInstance);
+    }
+
     public function testGetDbThrowsDatabaseConnectionException()
     {
         /** @var ConfigFile $configFileBackup Backup of the configFile as stored in Registry. This object must be restored  */
@@ -77,6 +139,54 @@ class DatabaseTest extends UnitTestCase
             Registry::set('oxConfigFile',$configFileBackup);
             throw $exception;
         }
+    }
+
+    /**
+     * Test, that the cache will not 
+     */
+    public function testUnflushedCacheDoesntWorks()
+    {
+        $database = Database::getInstance();
+        $connection = Database::getDb();
+
+        $connection->execute('CREATE TABLE IF NOT EXISTS TEST(OXID char(32));');
+
+        $tableDescription = $database->getTableDescription('TEST');
+
+        $connection->execute('ALTER TABLE TEST ADD OXTITLE CHAR(32); ');
+
+        $tableDescriptionTwo = $database->getTableDescription('TEST');
+
+        // clean up
+        $connection->execute('DROP TABLE IF EXISTS TEST;');
+
+        $this->assertSame(1, count($tableDescription));
+        $this->assertSame(1, count($tableDescriptionTwo));
+    }
+
+    /**
+     * Test, that the flushing really refreshes the table description cache.
+     */
+    public function testFlushedCacheHasActualInformation()
+    {
+        $database = Database::getInstance();
+        $connection = Database::getDb();
+
+        $connection->execute('CREATE TABLE IF NOT EXISTS TEST(OXID char(32));');
+
+        $tableDescription = $database->getTableDescription('TEST');
+
+        $connection->execute('ALTER TABLE TEST ADD OXTITLE CHAR(32); ');
+
+        $database->flushTableDescriptionCache();
+        
+        $tableDescriptionTwo = $database->getTableDescription('TEST');
+
+        // clean up
+        $connection->execute('DROP TABLE IF EXISTS TEST;');
+
+        $this->assertSame(1, count($tableDescription));
+        $this->assertSame(2, count($tableDescriptionTwo));
     }
 
     /**

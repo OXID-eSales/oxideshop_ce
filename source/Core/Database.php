@@ -162,6 +162,14 @@ class Database
     }
 
     /**
+     * Flush the table description cache of this class.
+     */
+    public function flushTableDescriptionCache()
+    {
+        self::$tblDescCache = [];
+    }
+    
+    /**
      * Extracts and returns table metadata from DB.
      * This method is extended in the Enterprise Edition.
      *

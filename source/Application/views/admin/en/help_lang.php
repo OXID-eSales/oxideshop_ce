@@ -50,8 +50,6 @@ $aLang =  array(
                                                  '<li>Above 80 hardly any quality improvement can be detected, but the filesize increases enormously.</li></ul><br>'.
                                                  'The default value is 75.',
 
-'HELP_SHOP_SYSTEM_LDAP'                       => 'Please edit file Core/oxldap.php.',
-
 'HELP_SHOP_SYSTEM_SHOWVARIANTREVIEWS'         => 'This setting affects how reviews for variants are handled: If the setting is checked, remarks from variants are also shown at the parent product.',
 
 'HELP_SHOP_SYSTEM_VARIANTSSELECTION'          => 'In eShop there are many lists for assigning products, e.g. assigning products to discounts. If this setting is checked, variants are shown in these lists, too.',

@@ -1492,69 +1492,6 @@ class User extends \oxBase
     }
 
     /**
-     * Login for Ldap
-     *
-     * @param string $sUser       User username
-     * @param string $sPassword   User password
-     * @param string $sShopID     Shop id
-     * @param string $sShopSelect Shop select
-     *
-     * @throws $oEx if user is wrong
-     */
-    protected function _ldapLogin($sUser, $sPassword, $sShopID, $sShopSelect)
-    {
-        $aLDAPParams = $this->getConfig()->getConfigParam('aLDAPParams');
-        $oLDAP = oxNew("oxLDAP", $aLDAPParams['HOST'], $aLDAPParams['PORT']);
-
-        // maybe this is LDAP user but supplied email Address instead of LDAP login
-        $oDb = oxDb::getDb();
-        $sLDAPKey = $oDb->getOne("select oxldapkey from oxuser where oxuser.oxactive = 1 and oxuser.oxusername = " . $oDb->quote($sUser) . " $sShopSelect");
-        if (isset($sLDAPKey) && $sLDAPKey) {
-            $sUser = $sLDAPKey;
-        }
-
-        //$throws oxConnectionException
-        $oLDAP->login($sUser, $sPassword, $aLDAPParams['USERQUERY'], $aLDAPParams['BASEDN'], $aLDAPParams['FILTER']);
-
-        $aData = $oLDAP->mapData($aLDAPParams['DATAMAP']);
-        if (isset($aData['OXUSERNAME']) && $aData['OXUSERNAME']) {
-            // login successful
-
-            // check if user is already in database
-            $sSelect = "select oxid from oxuser where oxuser.oxusername = " . $oDb->quote($aData['OXUSERNAME']) . " $sShopSelect";
-            $sOXID = $oDb->getOne($sSelect);
-
-            if (!isset($sOXID) || !$sOXID) {
-                // we need to create a new user
-                //$oUser->oxuser__oxid->setValue($oUser->setId());
-                $this->setId();
-
-                // map all user data fields
-                foreach ($aData as $fldname => $value) {
-                    $sField = "oxuser__" . strtolower($fldname);
-                    $this->$sField = new oxField($aData[$fldname]);
-                }
-
-                $this->oxuser__oxactive = new oxField(1);
-                $this->oxuser__oxshopid = new oxField($sShopID);
-                $this->oxuser__oxldapkey = new oxField($sUser);
-                $this->oxuser__oxrights = new oxField("user");
-                $this->setPassword("ldap user");
-
-                $this->save();
-            } else {
-                // LDAP user is already in OXID DB, load it
-                $this->load($sOXID);
-            }
-        } else {
-            /** @var oxUserException $oEx */
-            $oEx = oxNew('oxUserException');
-            $oEx->setMessage('ERROR_MESSAGE_USER_NOVALUES');
-            throw $oEx;
-        }
-    }
-
-    /**
      * Returns user rights index. Index cannot be higher than current session
      * user rights index.
      *

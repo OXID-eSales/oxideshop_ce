@@ -2240,7 +2240,7 @@ class UserTest extends \OxidTestCase
      */
     public function testLoginOxidNotSet()
     {
-        $oUser = $this->getMock('oxuser', array('load', '_ldapLogin'));
+        $oUser = $this->getMock('oxuser', array('load'));
         $oUser->expects($this->atLeastOnce())->method('load')->will($this->returnValue(true));
 
         try {

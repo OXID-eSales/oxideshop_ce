@@ -845,7 +845,7 @@ INSERT INTO `oxfiles` (`OXID`, `OXARTID`, `OXFILENAME`, `OXSTOREHASH`, `OXPURCHA
 # Data for table `oxlinks`
 #
 INSERT INTO `oxlinks` (`OXID`, `OXSHOPID`, `OXACTIVE`, `OXURL`, `OXURLDESC`, `OXURLDESC_1`, `OXURLDESC_2`, `OXURLDESC_3`, `OXINSERT`) VALUES
-  ('ce342e8acb69f1748.25672556', 'oxbaseshop', 1, 'http://www.oxid-esales.com', '<p>OXID eSales AG bietet Shopsoftware und Enterprise eCommerce Lösungen für erfolgreiches Online Business. PHP Shopsystem auf Basis führender Open Source Technologie. OXID eShop: Software für Webshop und E-Business Aktivitäten.</p>', '<p>Shopping cart software and enterprise ecommerce solutions for successful online business. PHP store software based on cutting-edge open source technology. Software for webshop and e-business activities, also available as free open source software.</p>', '', '', '2011-10-24 11:41:12');
+  ('ce342e8acb69f1748.25672556', 'oxbaseshop', 1, 'http://www.oxid-esales.com', '<p>OXID eSales AG bietet Shopsoftware und Enterprise E-Commerce Lösungen für erfolgreiches Online Business. PHP Shopsystem auf Basis führender Open Source Technologie. OXID eShop: Software für Webshop und E-Business Aktivitäten.</p>', '<p>Shopping cart software and enterprise e-commerce solutions for successful online business. PHP store software based on cutting-edge open source technology. Software for webshop and e-business activities, also available as free open source software.</p>', '', '', '2011-10-24 11:41:12');
 
 #
 # Data for table `oxmanufacturers`

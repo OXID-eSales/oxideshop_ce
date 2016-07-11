@@ -650,40 +650,53 @@ class I18ntest extends \OxidTestCase
     public static $aLoggedSqls = array();
 
     /**
-     * base test
+     * Test the method 'update' of the Base class.
      */
     public function testUpdate()
     {
-        $oObj = oxNew('oxi18n');
-        $oObj->init('oxstates');
+        $tableName = 'oxstates';
+        $oxId = "test_update";
+        $oxTitle = 'test_x';
 
+        $expectedUpdateSql = "update $tableName set oxid = '$oxId',oxcountryid = '',oxtitle = '$oxTitle',oxisoalpha2 = '' where oxstates.oxid = '$oxId'";
 
-        $oObj->setId("test_update");
-        $oObj->oxstates__oxtitle = new oxField('test_x');
+        $I18n = $this->getMock('OxidEsales\Eshop\Core\I18n', array('executeDatabaseQuery'));
+        $I18n->expects($this->any())->method('executeDatabaseQuery')->with($this->equalTo($expectedUpdateSql));
+        $I18n->init($tableName);
 
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())->method('select')->will($this->returnValue(false));
-        $dbMock->expects($this->any())->method('execute')->will($this->evalFunction('{\Unit\Core\I18nTest::$aLoggedSqls[] = $args[0];return true;}'));
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
+        $I18n->setId($oxId);
+        $I18n->oxstates__oxtitle = new oxField($oxTitle);
 
-        $oObj->setLanguage(0);
-        I18nTest::$aLoggedSqls = array();
-        $oObj->UNITupdate();
-        $this->assertEquals(
-            array("update oxstates set oxid = 'test_update',oxcountryid = '',oxtitle = 'test_x',oxisoalpha2 = '' where oxstates.oxid = 'test_update'"),
-            array_map('trim', I18ntest::$aLoggedSqls)
-        );
+        $I18n->setLanguage(0);
 
-        $oObj->setLanguage(90);
-        I18nTest::$aLoggedSqls = array();
-        $oObj->UNITupdate();
-        $this->assertEquals(
-            array(
-                 "update oxstates set oxid = 'test_update',oxcountryid = '',oxisoalpha2 = '' where oxstates.oxid = 'test_update'",
-                 "insert into oxstates_set11 set oxid = 'test_update',oxtitle_90 = 'test_x' on duplicate key update oxid = 'test_update',oxtitle_90 = 'test_x'",
-            ),
-            array_map('trim', I18ntest::$aLoggedSqls)
-        );
+        $I18n->UNITupdate();
+    }
+
+    /**
+     * Test the method 'update' of the Base class.
+     */
+    public function testUpdateTwo()
+    {
+        $tableName = 'oxstates';
+        $oxId = "test_update";
+        $oxTitle = 'test_x';
+
+        $expectedUpdateSql = "update $tableName set oxid = '$oxId',oxcountryid = '',oxisoalpha2 = '' where oxstates.oxid = '$oxId'";
+        $expectedInsertSql = "insert into oxstates_set11 set oxid = '$oxId',oxtitle_90 = '$oxTitle' on duplicate key update oxid = '$oxId',oxtitle_90 = '$oxTitle'";
+
+        $I18n = $this->getMock('OxidEsales\Eshop\Core\I18n', array('executeDatabaseQuery'));
+        $I18n->expects($this->at(0))
+            ->method('executeDatabaseQuery')
+            ->with($this->equalTo($expectedUpdateSql))
+            ->will($this->returnValue(true));
+        $I18n->expects($this->at(1))->method('executeDatabaseQuery')->with($this->equalTo($expectedInsertSql));
+        $I18n->init($tableName);
+
+        $I18n->setId($oxId);
+        $I18n->oxstates__oxtitle = new oxField($oxTitle);
+
+        $I18n->setLanguage(90);
+        $I18n->UNITupdate();
     }
 
     /**

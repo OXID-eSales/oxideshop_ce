@@ -898,22 +898,17 @@ class SeoEncoderTest extends \OxidTestCase
 
     public function testDeleteSeoEntry()
     {
-        $oEncoder = oxNew('oxSeoEncoder');
+        $objectId = 'xxx';
+        $shopId = 'yyy';
+        $language = 'zzz';
+        $type = 'ggg';
 
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())->method('execute')->will($this->returnCallback(array($this, 'fillDbQueryBuffer')));
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock);
+        $expectedQuery = "delete from oxseo where oxobjectid = '{$objectId}' and oxshopid = '{$shopId}' and oxlang = '{$language}' and oxtype = '{$type}' ";
 
-        $sObjectId = 'xxx';
-        $iShopId = 'yyy';
-        $iLang = 'zzz';
-        $sType = 'ggg';
+        $encoderMock = $this->getMock('oxSeoEncoder', array('executeDatabaseQuery'));
+        $encoderMock->expects($this->once())->method('executeDatabaseQuery')->with($this->equalTo($expectedQuery));
 
-        $oEncoder->deleteSeoEntry($sObjectId, $iShopId, $iLang, $sType);
-
-        $sQ = "delete from oxseo where oxobjectid = '{$sObjectId}' and oxshopid = '{$iShopId}' and oxlang = '{$iLang}' and oxtype = '{$sType}' ";
-
-        $this->assertEquals($sQ, $this->dbQueryBuffer[0]);
+        $encoderMock->deleteSeoEntry($objectId, $shopId, $language, $type);
     }
 
     //
@@ -944,48 +939,40 @@ class SeoEncoderTest extends \OxidTestCase
 
     public function testEncodeStaticUrlsOnlyDeletingOldRecords()
     {
-        $aStaticUrl = array('oxseo__oxseourl'   => array('de/de', 'eng/eng', 'be/be'),
-                            'oxseo__oxstdurl'   => 'xxx',
-                            'oxseo__oxobjectid' => 'yyy'
+        $objectId = 'OBJECT_ID';
+        $standardUrl = 'STANDARD_URL';
+
+        $staticUrl = array('oxseo__oxseourl'   => array('de/de', 'eng/eng', 'be/be'),
+                           'oxseo__oxstdurl'   => $standardUrl,
+                           'oxseo__oxobjectid' => $objectId
         );
 
-        $oEncoder = $this->getMock('oxSeoEncoder', array('_getUniqueSeoUrl', '_trimUrl'));
-        $oEncoder->expects($this->exactly(3))->method('_getUniqueSeoUrl')->will($this->returnValue(0));
-        $oEncoder->expects($this->atLeastOnce())->method('_trimUrl')->will($this->returnValue('xxx'));
+        $expectedSql = "delete from oxseo where oxobjectid in ( '$objectId', '" . md5(strtolower('1' . $standardUrl)) . "' )";
 
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())->method('execute')->will($this->returnCallback(array($this, 'fillDbQueryBuffer')));
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock);
+        $seoEncoderMock = $this->getMock('oxSeoEncoder', array('_getUniqueSeoUrl', '_trimUrl', 'executeDatabaseQuery'));
+        $seoEncoderMock->expects($this->exactly(3))->method('_getUniqueSeoUrl')->will($this->returnValue(0));
+        $seoEncoderMock->expects($this->atLeastOnce())->method('_trimUrl')->will($this->returnValue($standardUrl));
+        $seoEncoderMock->expects($this->atLeastOnce())->method('executeDatabaseQuery')->with($this->equalTo($expectedSql));
 
-        $oEncoder->encodeStaticUrls($aStaticUrl, 1, 0);
-
-        $this->assertEquals(4, count($this->dbQueryBuffer));
-        $this->assertEquals("delete from oxseo where oxobjectid in ( 'yyy', '" . md5(strtolower('1' . 'xxx')) . "' )", $this->dbQueryBuffer[3]);
+        $seoEncoderMock->encodeStaticUrls($staticUrl, 1, 0);
     }
 
     public function testEncodeStaticUrlsInsertingNewRecords()
     {
-        $aStaticUrl = array('oxseo__oxseourl'   => array('de/de', 'eng/eng'),
+        $staticUrl = array('oxseo__oxseourl'   => array('de/de', 'eng/eng'),
                             'oxseo__oxstdurl'   => 'xxx',
                             'oxseo__oxobjectid' => '-1'
         );
+        $expectedSql = "insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype ) values " .
+                       "( '" . md5('1yyy') . "', '" . md5('yyy') . "', '1', '0', 'yyy', 'yyy', 'static' ), " .
+                       "( '" . md5('1yyy') . "', '" . md5('yyy') . "', '1', '1', 'yyy', 'yyy', 'static' ) ";
 
-        $oEncoder = $this->getMock('oxSeoEncoder', array('_getUniqueSeoUrl', '_trimUrl'));
-        $oEncoder->expects($this->exactly(2))->method('_getUniqueSeoUrl')->will($this->returnValue('yyy'));
-        $oEncoder->expects($this->atLeastOnce())->method('_trimUrl')->will($this->returnValue('yyy'));
+        $seoEncoderMock = $this->getMock('oxSeoEncoder', array('_getUniqueSeoUrl', '_trimUrl', 'executeDatabaseQuery'));
+        $seoEncoderMock->expects($this->exactly(2))->method('_getUniqueSeoUrl')->will($this->returnValue('yyy'));
+        $seoEncoderMock->expects($this->atLeastOnce())->method('_trimUrl')->will($this->returnValue('yyy'));
+        $seoEncoderMock->expects($this->once())->method('executeDatabaseQuery')->with($this->equalTo($expectedSql));
 
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())->method('execute')->will($this->returnCallback(array($this, 'fillDbQueryBuffer')));
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock);
-
-        $oEncoder->encodeStaticUrls($aStaticUrl, 1, 0);
-
-        $this->assertEquals(1, count($this->dbQueryBuffer));
-        $sQ = "insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype ) values ";
-        $sQ .= "( '" . md5('1yyy') . "', '" . md5('yyy') . "', '1', '0', 'yyy', 'yyy', 'static' ), ";
-        $sQ .= "( '" . md5('1yyy') . "', '" . md5('yyy') . "', '1', '1', 'yyy', 'yyy', 'static' ) ";
-
-        $this->assertEquals($sQ, $this->dbQueryBuffer[0]);
+        $seoEncoderMock->encodeStaticUrls($staticUrl, 1, 0);
     }
 
     public function testCopyStaticUrlsForBaseShop()

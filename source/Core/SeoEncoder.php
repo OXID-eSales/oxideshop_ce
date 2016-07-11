@@ -1064,13 +1064,13 @@ class SeoEncoder extends \oxSuperCfg
 
         // must delete old before insert/update
         if ($sOldObjectId) {
-            $oDb->execute("delete from oxseo where oxobjectid in ( " . $oDb->quote($sOldObjectId) . ", " . $oDb->quote($sObjectId) . " )");
+            $this->executeDatabaseQuery("delete from oxseo where oxobjectid in ( " . $oDb->quote($sOldObjectId) . ", " . $oDb->quote($sObjectId) . " )");
         }
 
         // (re)inserting
         if ($sValues) {
-            $sQ = "insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype ) values {$sValues} ";
-            $oDb->execute($sQ);
+            $sql = "insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype ) values {$sValues} ";
+            $this->executeDatabaseQuery($sql);
         }
 
         return $sObjectId;
@@ -1184,18 +1184,32 @@ class SeoEncoder extends \oxSuperCfg
     }
 
     /**
-     * Removes seo entry from db
+     * Remove a SEO entry from the database.
      *
-     * @param string $sObjectId objects id
-     * @param int    $iShopId   shop id
-     * @param int    $iLang     objects language
-     * @param string $sType     object type
+     * @param string $objectId The id of the object to delete.
+     * @param int    $shopId   The shop id of the object to delete.
+     * @param int    $language The language of the object to delete.
+     * @param string $type     The type of the object to delete.
      */
-    public function deleteSeoEntry($sObjectId, $iShopId, $iLang, $sType)
+    public function deleteSeoEntry($objectId, $shopId, $language, $type)
     {
-        $oDb = oxDb::getDb();
-        $sQ = "delete from oxseo where oxobjectid = " . $oDb->quote($sObjectId) . " and oxshopid = " . $oDb->quote($iShopId) . " and oxlang = " . $oDb->quote($iLang) . " and oxtype = " . $oDb->quote($sType) . " ";
-        $oDb->execute($sQ);
+        $database = oxDb::getDb();
+
+        $query = "delete from oxseo where oxobjectid = " . $database->quote($objectId) . " and oxshopid = " . $database->quote($shopId) . " and oxlang = " . $database->quote($language) . " and oxtype = " . $database->quote($type) . " ";
+
+        $this->executeDatabaseQuery($query);
+    }
+
+    /**
+     * Execute a query on the database.
+     *
+     * @param string $query The command to execute on the database.
+     */
+    protected function executeDatabaseQuery($query)
+    {
+        $database = oxDb::getDb();
+
+        $database->execute($query);
     }
 
     /**

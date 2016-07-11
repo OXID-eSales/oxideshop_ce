@@ -25,6 +25,7 @@ use Exception;
 use modDB;
 use oxField;
 use OxidEsales\Eshop\Core\Database;
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxSystemComponentException;
 use oxTestModules;
@@ -889,50 +890,52 @@ class UtilsTest extends \OxidTestCase
     public function testCheckAccessRightsChecksSubshopAdminShop()
     {
 
-        $mySession = oxRegistry::getSession();
-        $backUpAuth = $mySession->getVariable("auth");
+        $session = Registry::getSession();
+        $backUpAuth = $session->getVariable("auth");
 
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())->method('getOne')->will($this->returnValue(1));
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
-
-        $e = null;
+        $exception = null;
+        
         try {
-            $mySession->setVariable("auth", "blafooUser");
-            $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
+            $utils = $this->getMock('OxidEsales\Eshop\Core\Utils', array('fetchRightsForUser', 'fetchShopAdminById'));
+            $utils->expects($this->any())->method('fetchRightsForUser')->will($this->returnValue(1));
+            $utils->expects($this->any())->method('fetchShopAdminById')->will($this->returnValue(1));
+
+
+            $session->setVariable("auth", "blafooUser");
+            $this->assertEquals(true, $utils->checkAccessRights());
             $this->setRequestParameter('fnc', 'chshp');
-            $this->assertEquals(false, oxRegistry::getUtils()->checkAccessRights());
+            $this->assertEquals(false, $utils->checkAccessRights());
             $this->setRequestParameter('fnc', null);
-            $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
+            $this->assertEquals(true, $utils->checkAccessRights());
 
             $this->setRequestParameter('actshop', 1);
-            $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
+            $this->assertEquals(true, $utils->checkAccessRights());
             $this->setRequestParameter('actshop', 2);
-            $this->assertEquals(false, oxRegistry::getUtils()->checkAccessRights());
+            $this->assertEquals(false, $utils->checkAccessRights());
             $this->setRequestParameter('actshop', null);
-            $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
+            $this->assertEquals(true, $utils->checkAccessRights());
 
             $this->setRequestParameter('shp', 1);
-            $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
+            $this->assertEquals(true, $utils->checkAccessRights());
             $this->setRequestParameter('shp', 2);
-            $this->assertEquals(false, oxRegistry::getUtils()->checkAccessRights());
+            $this->assertEquals(false, $utils->checkAccessRights());
             $this->setRequestParameter('shp', null);
-            $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
+            $this->assertEquals(true, $utils->checkAccessRights());
 
             $this->setRequestParameter('currentadminshop', 1);
-            $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
+            $this->assertEquals(true, $utils->checkAccessRights());
             $this->setRequestParameter('currentadminshop', 2);
-            $this->assertEquals(false, oxRegistry::getUtils()->checkAccessRights());
+            $this->assertEquals(false, $utils->checkAccessRights());
             $this->setRequestParameter('currentadminshop', null);
-            $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
-        } catch (Exception  $e) {
+            $this->assertEquals(true, $utils->checkAccessRights());
+        } catch (Exception  $exception) {
 
         }
 
-        $mySession->setVariable("auth", $backUpAuth);
+        $session->setVariable("auth", $backUpAuth);
 
-        if ($e) {
-            throw $e;
+        if ($exception) {
+            throw $exception;
         }
     }
 

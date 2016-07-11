@@ -942,7 +942,7 @@ class Utils extends \oxSuperCfg
         if ($sUserID) {
             // escaping
             $oDb = oxDb::getDb();
-            $sRights = $oDb->getOne("select oxrights from oxuser where oxid = " . $oDb->quote($sUserID));
+            $sRights = $this->fetchRightsForUser($sUserID);
 
             if ($sRights != "user") {
                 // malladmin ?
@@ -961,7 +961,7 @@ class Utils extends \oxSuperCfg
                     $blIsAuth = true;
                 } else {
                     // Shopadmin... check if this shop is valid and exists
-                    $sShopID = $oDb->getOne("select oxid from oxshops where oxid = " . $oDb->quote($sRights));
+                    $sShopID = $this->fetchShopAdminById($sRights);
                     if (isset($sShopID) && $sShopID) {
                         // success, this shop exists
 
@@ -994,6 +994,34 @@ class Utils extends \oxSuperCfg
         }
 
         return $blIsAuth;
+    }
+
+    /**
+     * Fetch the rights for the user given by its oxid
+     *
+     * @param string $userOxId The oxId of the user we want the rights for.
+     *
+     * @return mixed The rights
+     */
+    protected function fetchRightsForUser($userOxId)
+    {
+        $database = oxDb::getDb();
+
+        return $database->getOne("select oxrights from oxuser where oxid = " . $database->quote($userOxId));
+    }
+
+    /**
+     * Fetch the oxId from the oxshops table. 
+     * 
+     * @param string $oxId The oxId of the shop.
+     *
+     * @return mixed The oxId of the shop with the given oxId.
+     */
+    protected function fetchShopAdminById($oxId)
+    {
+        $database = oxDb::getDb();
+
+        return $database->getOne("select oxid from oxshops where oxid = " . $database->quote($oxId));
     }
 
     /**

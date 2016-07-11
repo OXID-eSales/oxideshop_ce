@@ -80,23 +80,23 @@ class DbTest extends UnitTestCase
         /** Reset the table description cache */
         $this->setProtectedClassProperty(Database::getInstance(), 'tblDescCache', []);
 
-        $rs = Database::getDb()->select("show tables");
-        $icount = 3;
-        if ($rs != false && $rs->count() > 0) {
-            while (!$rs->EOF && $icount--) {
-                $sTable = $rs->fields[0];
+        $resultSet = Database::getDb()->select("SHOW TABLES");
+        $count = 3;
+        if ($resultSet != false && $resultSet->count() > 0) {
+            while (!$resultSet->EOF && $count--) {
+                $tableName = $resultSet->fields[0];
 
-                $amc = Database::getDb()->metaColumns($sTable);
-                $rmc1 = Database::getInstance()->getTableDescription($sTable);
-                $rmc2 = Database::getInstance()->getTableDescription($sTable);
+                $metaColumns = Database::getDb()->metaColumns($tableName);
+                $metaColumnOne = Database::getInstance()->getTableDescription($tableName);
+                $metaColumnOneCached = Database::getInstance()->getTableDescription($tableName);
 
-                $this->assertEquals($amc, $rmc1, "not cached return is bad [shouldn't be] of $sTable.");
-                $this->assertEquals($amc, $rmc2, "cached [simple] return is bad of $sTable.");
+                $this->assertEquals($metaColumns, $metaColumnOne, "not cached return is bad [shouldn't be] of $tableName.");
+                $this->assertEquals($metaColumns, $metaColumnOneCached, "cached [simple] return is bad of $tableName.");
 
-                $rs->fetchRow();
+                $resultSet->fetchRow();
             }
         } else {
-            $this->fail("no tables???");
+            $this->fail("No tables found with 'SHOW TABLES'!");
         }
     }
 

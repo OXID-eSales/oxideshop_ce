@@ -478,10 +478,10 @@ class I18n extends \oxBase
                 $updateTables = $this->_getLanguageSetTables();
             }
             foreach ($updateTables as $langTable) {
-                $update = "insert into $langTable set " . $this->_getUpdateFieldsForTable($langTable, $this->getUseSkipSaveFields()) .
-                           " on duplicate key update " . $this->_getUpdateFieldsForTable($langTable);
+                $insertSql = "insert into $langTable set " . $this->_getUpdateFieldsForTable($langTable, $this->getUseSkipSaveFields()) .
+                             " on duplicate key update " . $this->_getUpdateFieldsForTable($langTable);
 
-                $ret = (bool) oxDb::getDb()->execute($update);
+                $ret = (bool) $this->executeDatabaseQuery($insertSql);
             }
         }
 

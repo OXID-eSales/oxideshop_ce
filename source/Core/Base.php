@@ -1395,12 +1395,26 @@ class Base extends \oxSuperCfg
         $this->$idKey = new oxField($this->getId(), oxField::T_RAW);
         $database = oxDb::getDb();
 
-        $updateQuery = "update {$coreTableName} set " . $this->_getUpdateFields()
-                   . " where {$coreTableName}.oxid = " . $database->quote($this->getId());
+        $updateQuery = "update {$coreTableName} set " . $this->_getUpdateFields() .
+                     " where {$coreTableName}.oxid = " . $database->quote($this->getId());
 
         $this->beforeUpdate();
 
-        return (bool) $database->execute($updateQuery);
+        return (bool) $this->executeDatabaseQuery($updateQuery);
+    }
+
+    /**
+     * Execute a query on the database.
+     *
+     * @param string $query The command to execute on the database.
+     *
+     * @return int The number of affected rows.
+     */
+    protected function executeDatabaseQuery($query)
+    {
+        $database = oxDb::getDb();
+
+        return $database->execute($query);
     }
 
     /**

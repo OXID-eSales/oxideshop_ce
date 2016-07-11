@@ -194,7 +194,7 @@ $aLang = array(
 'SELECT_SETUP_LANG'                             => 'Sprache für Installation',
 'SELECT_SHOP_LOCATION'                          => 'Ihre Region',
 'SELECT_PLEASE_CHOOSE'                          => 'Bitte auswählen',
-'SELECT_SHOP_LOCATION_HINT'                     => 'Bitte wählen Sie eine Region, auf die der Shop ausgerichtet ist. Abhängig davon werden zusätzliche eCommerce Services vom OXID Server nachgeladen, wenn Sie das erlauben.',
+'SELECT_SHOP_LOCATION_HINT'                     => 'Bitte wählen Sie eine Region, auf die der Shop ausgerichtet ist. Abhängig davon werden zusätzliche E-Commerce Services vom OXID Server nachgeladen, wenn Sie das erlauben.',
 'SELECT_DELIVERY_COUNTRY'                       => 'Hauptlieferland',
 'SELECT_DELIVERY_COUNTRY_HINT'                  => 'Aktivieren Sie weitere Lieferländer im Administrationsbereich, falls benötigt.',
 'SELECT_SHOP_LANG'                              => 'Sprache für Shop',
@@ -203,7 +203,7 @@ $aLang = array(
 'USE_DYNAMIC_PAGES'                             => 'Verbindung mit den OXID Servern erlauben. Mehr Informationen in unseren ',
 'PRIVACY_POLICY'                                => 'Datenschutzerläuterungen',
 
-'LOAD_DYN_CONTENT_NOTICE'                       => '<p>Wenn diese Option gesetzt ist, sehen Sie ein zusätzliches Menü im Administrationsbereich Ihres OXID eShop.</p><p>Über dieses Menü erhalten Sie weitere Informationen über eCommerce Services, wie z.B. Google Produktsuche oder econda.</p> <p>Sie können diese Einstellung im Administrationsbereich jederzeit wieder ändern.</p>',
+'LOAD_DYN_CONTENT_NOTICE'                       => '<p>Wenn diese Option gesetzt ist, sehen Sie ein zusätzliches Menü im Administrationsbereich Ihres OXID eShop.</p><p>Über dieses Menü erhalten Sie weitere Informationen über E-Commerce Services, wie z.B. Google Produktsuche oder econda.</p> <p>Sie können diese Einstellung im Administrationsbereich jederzeit wieder ändern.</p>',
 'ERROR_SETUP_CANCELLED'                         => 'Das Setup wurde abgebrochen, weil Sie die Lizenzvereinbarungen nicht akzeptiert haben.',
 'BUTTON_START_INSTALL'                          => 'Setup erneut starten',
 );

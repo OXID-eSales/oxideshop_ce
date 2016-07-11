@@ -163,7 +163,7 @@ class DynExportBaseTest extends \OxidTestCase
     {
         $oDb = oxDb::getDb();
         $sTableName = 'testdynexportbasetable';
-        $oDb->execute("CREATE TABLE `{$sTableName}` (`oxid` TINYINT( 1 ) NOT NULL) ENGINE = InnoDB");
+        $oDb->execute("CREATE TABLE `{$sTableName}` (`oxid` TINYINT( 1 ) NOT NULL) ENGINE = MYISAM");
         $this->assertEquals(0, $oDb->getOne("select count(*) from {$sTableName}"));
 
         $oView = $this->getMock("DynExportBase", array("_getHeapTableName"));
@@ -530,7 +530,7 @@ class DynExportBaseTest extends \OxidTestCase
         $sCatAdd = '';
 
         $oDb = oxDb::getDb();
-        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` TINYINT( 1 ) NOT NULL) ENGINE = InnoDB");
+        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` TINYINT( 1 ) NOT NULL) ENGINE = MYISAM");
 
         $oView = oxNew('DynExportBase');
         $this->assertTrue($oView->UNITinsertArticles($sHeapTable, $sCatAdd));
@@ -560,7 +560,7 @@ class DynExportBaseTest extends \OxidTestCase
         $sO2CView = getViewName('oxobject2category');
 
         $sHeapTable = "testdynexportbasetable";
-        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` varchar( 32 ) NOT NULL) ENGINE = InnoDB");
+        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` varchar( 32 ) NOT NULL) ENGINE = MYISAM");
 
         $sCatAdd = "and ( oxobject2category.oxcatnid = '" . $oDb->getOne("select oxcatnid from $sO2CView where oxobjectid='1126'") . "')";
 
@@ -592,7 +592,7 @@ class DynExportBaseTest extends \OxidTestCase
 
         // defining parameters
         $sHeapTable = "testdynexportbasetable";
-        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` varchar( 32 ) NOT NULL) ENGINE = InnoDB");
+        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` varchar( 32 ) NOT NULL) ENGINE = MYISAM");
 
         $sQ = "insert into {$sHeapTable} ( select oxid from ( select oxid from oxarticles where oxparentid != '' union select oxparentid from oxarticles where oxparentid != '') as toptable group by oxid )";
         $oDb->execute($sQ);
@@ -723,7 +723,7 @@ class DynExportBaseTest extends \OxidTestCase
 
         // defining parameters
         $sHeapTable = "testdynexportbasetable";
-        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` varchar( 32 ) NOT NULL) ENGINE = InnoDB");
+        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` varchar( 32 ) NOT NULL) ENGINE = MYISAM");
         $oDb->execute("INSERT INTO `{$sHeapTable}` values ( '{$sProdId}' )");
 
         $oView = new _DynExportBase();

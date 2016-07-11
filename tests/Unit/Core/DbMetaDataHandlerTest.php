@@ -66,7 +66,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
                      KEY `OXTITLE_1` (`OXTITLE_1`),
                      FULLTEXT KEY `OXLONGDESC` (`OXLONGDESC`),
                      FULLTEXT KEY `OXLONGDESC_1` (`OXLONGDESC_1`)
-                  ) ENGINE = InnoDB";
+                  ) ENGINE = MyISAM";
 
         oxDb::getDb()->execute($sSql);
     }
@@ -257,7 +257,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testGetCreateTableSetSql()
     {
-        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
 
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
 
@@ -271,7 +271,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     public function testGetCreateTableSetSqlInIsoMode()
     {
         $this->setConfigParam('iUtfMode', 0);
-        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) COLLATE latin1_general_ci NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) COLLATE latin1_general_ci NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
 
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
 
@@ -411,7 +411,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testAddNewMultilangFieldCreateTable()
     {
-        $aTestSql[] = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+        $aTestSql[] = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXTITLE_8` char(128) NOT NULL DEFAULT '' ";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXSHORTDESC_8` char(128) NOT NULL DEFAULT '' ";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXLONGDESC_8` char(255) NOT NULL DEFAULT '' ";

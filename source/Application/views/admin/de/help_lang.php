@@ -450,6 +450,7 @@ $aLang =  array(
                                                  '<li><span class="userinput_or_code">itm</span>: Rabatt in Form eines kostenfreien Artikels (Dreingabe). Legen Sie die Menge für diesen Artikel fest. Wählen Sie "Multiplizieren", wenn die Menge des rabattierten Artikels im Warenkorb mit der Menge des kostenlosen Artikels multipliziert werden soll.</li>'.
                                                  '</ul>',
 
+'HELP_DISCOUNT_MAIN_SORTING'                  => 'Bei <span class="navipath_or_inputname">Sortierung</span> stellen Sie ein, in welcher Reihenfolge die Rabatte berechnet werden sollen.',
 
 
 'HELP_GENERAL_SEO_ACTCAT'                     => 'Sie können für einen Artikel unterschiedliche SEO URLs festlegen: Für bestimmte Kategorien und für den Hersteller des Artikels. Mit <span class="navipath_or_inputname">Aktive Kategorie/Hersteller</span> können Sie wählen, welche SEO URL Sie anpassen möchten.',

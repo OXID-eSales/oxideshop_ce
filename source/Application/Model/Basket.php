@@ -1238,6 +1238,11 @@ class Basket extends \oxSuperCfg
             $this->_aDiscountedVats = $oPriceList->getVatInfo($this->isCalculationModeNetto());
         }
 
+        //sorting
+        usort($aDiscounts, function($a, $b) {
+            return $a->oxdiscount__oxsort->value - $b->oxdiscount__oxsort->value;
+        });
+
         /** @var \oxDiscount $oDiscount */
         foreach ($aDiscounts as $oDiscount) {
 

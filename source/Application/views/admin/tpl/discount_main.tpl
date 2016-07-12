@@ -110,6 +110,15 @@ function ChangeDiscountType(oObj)
                         [{oxinputhelp ident="HELP_DISCOUNT_MAIN_REBATE"}]
                     </td>
                 </tr>
+                <tr>
+                    <td class="edittext" height="30">
+                        [{oxmultilang ident="GENERAL_SORT"}]
+                    </td>
+                    <td class="edittext">
+                        <input type="text" class="editinput" size="5" maxlength="[{$edit->oxdiscount__oxsort->fldmax_length}]" name="editval[oxdiscount__oxsort]" id="editval[oxdiscount__oxsort]" value="[{$edit->oxdiscount__oxsort->value}]" [{$readonly}]>
+                        [{oxinputhelp ident="HELP_DISCOUNT_MAIN_SORTING"}]
+                    </td>
+                 </tr>
                 <tr id="itmart"[{if $edit->oxdiscount__oxaddsumtype->value != "itm"}] style="display:none;"[{/if}]>
                   <td class="edittext">
                     [{oxmultilang ident="DISCOUNT_MAIN_EXTRA"}]

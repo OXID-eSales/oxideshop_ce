@@ -117,7 +117,7 @@ class SeoEncoder extends \oxSuperCfg
         $iDefLang = (int) $this->getConfig()->getConfigParam('iDefSeoLang');
         $aLangIds = oxRegistry::getLang()->getLanguageIds();
 
-        if ($iLang != $iDefLang && isset($aLangIds[$iLang]) && getStr()->strpos($sSeoUrl, $aLangIds[$iLang] . '/') !== 0) {
+        if ($iLang != $iDefLang && isset($aLangIds[$iLang]) && getStr()->strpos($sSeoUrl, str_replace("_", "-", $aLangIds[$iLang]) . '/') !== 0) {
             $sSeoUrl = $aLangIds[$iLang] . '/' . $sSeoUrl;
         }
 

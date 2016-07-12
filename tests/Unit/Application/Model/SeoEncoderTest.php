@@ -1807,4 +1807,31 @@ class SeoEncoderTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('blSEOLowerCaseUrls', false);
         $this->assertEquals($sSeoUrlBefore, $oEncoder->UNITprepareUri($sSeoUrlBefore));
     }
+
+    /**
+     * This test was written for the bug
+     * https://bugs.oxid-esales.com/view.php?id=6407
+     */
+    public function testAddLanguageParam()
+    {
+        $baseId = 2;
+        $oLang = $this->getMock('oxlang', array('getLanguageIds'));
+        $oLang
+            ->expects($this->any())
+            ->method('getLanguageIds')
+            ->will($this->returnValue(array($baseId => 'en_US')));
+        oxRegistry::set('oxLang', $oLang);
+
+        $sUrl = "Angebote/Transportcontainer-THE-BARREL.html";
+        $oEncoder = oxNew('oxSeoEncoder');
+
+        // The addLanguageParam() method should add the language code to the uri only once irrespective of the
+        // number of times the method gets called.
+        // Hence calling the same method twice in the below code.
+        $sUri = $oEncoder->UNITprepareUri($oEncoder->addLanguageParam($sUrl, $baseId), $baseId);
+        $this->assertEquals("en-US/Angebote/Transportcontainer-THE-BARREL.html", $sUri);
+
+        $sUri = $oEncoder->UNITprepareUri($oEncoder->addLanguageParam($sUrl, $baseId), $baseId);
+        $this->assertEquals("en-US/Angebote/Transportcontainer-THE-BARREL.html", $sUri);
+    }
 }

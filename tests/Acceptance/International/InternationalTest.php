@@ -419,7 +419,7 @@ class InternationalTest extends AcceptanceTestCase
             $this->clearCache();
             $this->loginAdmin("Master Settings", "Core Settings");
             $this->frame("navigation");
-            $this->assertElementNotPresent("link=eCommerce Services");
+            $this->assertElementNotPresent("link=E-Commerce Services");
             $this->assertElementNotPresent("link=Shop connector");
             $this->assertElementPresent("link=History");
             $this->waitForElement("link=Master Settings");

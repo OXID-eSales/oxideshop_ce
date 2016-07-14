@@ -2240,27 +2240,18 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * Testing oxUBase::isVatIncluded()
-     *
-     * @return null
-     */
-    public function testIsVatIncluded()
-    {
-        $oView = oxNew('oxUbase');
-        $this->assertTrue($oView->isVatIncluded());
-    }
-
-    /**
-     * Testing oxUBase::isVatIncluded()
-     * if user buys in netto mode
+     * b2b mode is activated
      *
      * @return null
      */
     public function testIsVatIncludedNettoUser()
     {
-        $oUser = $this->getMock("oxuser", array("isPriceViewModeNetto"));
-        $oUser->expects($this->once())->method('isPriceViewModeNetto')->will($this->returnValue(true));
+        $this->getConfig()->setConfigParam('blShowNetPrice', true);
 
-        $oView = $this->getMock("oxubase", array("getUser"));
+        $oUser = $this->getMock("oxuser", array('getActiveCountry'));
+        $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue(''));
+
+        $oView = $this->getMock('oxubase', array('getUser'));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $this->assertFalse($oView->isVatIncluded());
     }
@@ -2273,7 +2264,7 @@ class UBaseTest extends \OxidTestCase
      */
     public function testIsVatIncludedNettoShop()
     {
-        $this->setConfigParam("blShowNetPrice", true);
+        $this->getConfig()->setConfigParam("blShowNetPrice", true);
 
         $oView = oxNew('oxUbase');
         $this->assertFalse($oView->isVatIncluded());
@@ -2287,10 +2278,74 @@ class UBaseTest extends \OxidTestCase
      */
     public function testIsVatIncludedVatOnlyInBasket()
     {
-        $this->setConfigParam("blShowNetPrice", false);
-        $this->setConfigParam("bl_perfCalcVatOnlyForBasketOrder", true);
+        $this->getConfig()->setConfigParam("blShowNetPrice", false);
+        $this->getConfig()->setConfigParam("bl_perfCalcVatOnlyForBasketOrder", true);
 
         $oView = oxNew('oxUbase');
+        $this->assertFalse($oView->isVatIncluded());
+    }
+
+    /**
+     * Testing oxUBase::isVatIncluded()
+     * If country does bill VAT or not
+     *
+     * no session (no country)
+     */
+    public function testIsVatIncludedVatBilledInCountryNoSession()
+    {
+        $this->getConfig()->setConfigParam("blShowNetPrice", false);
+        $this->getConfig()->setConfigParam("bl_perfCalcVatOnlyForBasketOrder", false);
+
+        $oUser = $this->getMock("oxuser", array('getActiveCountry'));
+        $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue(''));
+
+        $oView = $this->getMock('oxubase', array('getUser'));
+        $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+
+        $this->assertTrue($oView->isVatIncluded());
+    }
+
+    /**
+     * Testing oxUBase::isVatIncluded()
+     * If country does bill VAT or not
+     *
+     * country does bill vat
+     */
+    public function testIsVatIncludedVatInCountryIsBilled()
+    {
+        oxDb::getDB()->Execute("insert into oxcountry (oxid, oxvatstatus ) values ( 'oxcountry_0', 1)");
+
+        $this->getConfig()->setConfigParam("blShowNetPrice", false);
+        $this->getConfig()->setConfigParam("bl_perfCalcVatOnlyForBasketOrder", false);
+
+        $oUser = $this->getMock("oxuser", array('getActiveCountry'));
+        $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('oxcountry_0'));
+
+        $oView = $this->getMock('oxubase', array('getUser'));
+        $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+
+        $this->assertTrue($oView->isVatIncluded());
+    }
+
+    /**
+     * Testing oxUBase::isVatIncluded()
+     * If country does bill VAT or not
+     *
+     * country does not bill vat
+     */
+    public function testIsVatIncludedVatInCountryIsNotBilled()
+    {
+        oxDb::getDB()->Execute("insert into oxcountry (oxid, oxvatstatus ) values ( 'oxcountry_1', 0)");
+
+        $this->getConfig()->setConfigParam("blShowNetPrice", false);
+        $this->getConfig()->setConfigParam("bl_perfCalcVatOnlyForBasketOrder", false);
+
+        $oUser = $this->getMock("oxuser", array('getActiveCountry'));
+        $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('oxcountry_1'));
+
+        $oView = $this->getMock('oxubase', array('getUser'));
+        $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+
         $this->assertFalse($oView->isVatIncluded());
     }
 

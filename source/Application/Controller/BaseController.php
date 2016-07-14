@@ -2915,21 +2915,40 @@ class BaseController extends \oxView
 
     /**
      * Returns true if articles shown in shop with VAT.
-     * Checks users VAT and options.
+     * Checks country VAT and options (show vat only in basket and check if b2b mode is activated).
      *
      * @return boolean
      */
     public function isVatIncluded()
     {
         $result = true;
-        $user = $this->getUser();
         $config = $this->getConfig();
+        $user = $this->getUser();
 
-        $showNetPriceParameter = $config->getConfigParam('blShowNetPrice');
-        $calculateVatOnlyForBasketOrderParameter = $config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder');
-        if ($showNetPriceParameter || $calculateVatOnlyForBasketOrderParameter) {
-            $result = false;
-        } elseif ($user && $user->isPriceViewModeNetto()) {
+        if ($user === false) {
+            $user = oxNew('oxUser');
+        }
+
+        $country = oxNew('oxCountry');
+        $country->load($user->getActiveCountry());
+        $countryBillsNotVat = $country->oxcountry__oxvatstatus->value !== null && $country->oxcountry__oxvatstatus->value == 0;
+
+        /*
+         * Do not show "inclusive VAT" when:
+         *
+         *   B2B mode is activated
+         * OR
+         *   the VAT will only be calculated in the basket
+         * OR
+         *   the country does not bill VAT
+         *
+         * oxcountry__oxvatstatus: Vat status: 0 - Do not bill VAT, 1 - Do not bill VAT only if provided valid VAT ID
+         * if country is not available (no session) oxvatstatus->value will return null
+         */
+        if ($config->getConfigParam('blShowNetPrice') ||
+            $config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder') ||
+            $countryBillsNotVat
+        ) {
             $result = false;
         }
 

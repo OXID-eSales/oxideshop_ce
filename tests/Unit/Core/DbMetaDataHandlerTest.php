@@ -21,7 +21,7 @@
  */
 namespace Unit\Core;
 
-use \oxDb;
+use oxDb;
 
 class DbMetaDataHandlerTest extends \OxidTestCase
 {
@@ -66,7 +66,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
                      KEY `OXTITLE_1` (`OXTITLE_1`),
                      FULLTEXT KEY `OXLONGDESC` (`OXLONGDESC`),
                      FULLTEXT KEY `OXLONGDESC_1` (`OXLONGDESC_1`)
-                  ) ENGINE = InnoDB";
+                  ) ENGINE = MyISAM";
 
         oxDb::getDb()->execute($sSql);
     }
@@ -308,7 +308,6 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         ];
 
         $resultSqls = [
-            $dbMetaDataHandler->getAddFieldIndexSql("testDbMetaDataHandler", "OXTITLE", "OXTITLE_4"),
             $dbMetaDataHandler->getAddFieldIndexSql("testDbMetaDataHandler", "OXLONGDESC", "OXLONGDESC_4"),
             $dbMetaDataHandler->getAddFieldIndexSql("testDbMetaDataHandler", "OXLONGDESC", "OXLONGDESC_5"),
             $dbMetaDataHandler->getAddFieldIndexSql("testDbMetaDataHandler", "OXLONGDESC", "OXLONGDESC_8", "testDbMetaDataHandler_set1"),
@@ -457,31 +456,41 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         $oDbMeta = $this->getMock('oxdbmetadatahandler', array('getCurrentMaxLangId'));
         $oDbMeta->expects($this->any())->method('getCurrentMaxLangId')->will($this->returnValue(1));
 
-        /** @var oxDbMetaDataHandler|PHPUnit_Framework_MockObject_MockObject $oDbMeta */
+        /** @var \oxDbMetaDataHandler| \PHPUnit_Framework_MockObject_MockObject $oDbMeta */
         $oDbMeta->addNewMultilangField("testDbMetaDataHandler");
 
         $aIndexes = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getAll("show index from testDbMetaDataHandler");
 
+        /** Sort $aIndexes by value of 'Column_name' to be independent of RDBMS sorting issues */
+        usort(
+            $aIndexes, function ($a, $b) {
+            if ($a['Column_name'] == $b['Column_name']) {
+                return 0;
+            }
+
+            return ($a['Column_name'] < $b['Column_name']) ? -1 : 1;
+        }
+        );
+
         $this->assertEquals("PRIMARY", $aIndexes[0]["Key_name"]);
         $this->assertEquals("OXID", $aIndexes[0]["Column_name"]);
 
-        //checking newly added index for column OXTITLE
-        $this->assertEquals("OXTITLE", $aIndexes[1]["Key_name"]);
-        $this->assertEquals("OXTITLE", $aIndexes[1]["Column_name"]);
-        $this->assertEquals("OXTITLE_1", $aIndexes[2]["Key_name"]);
-        $this->assertEquals("OXTITLE_1", $aIndexes[2]["Column_name"]);
-        $this->assertEquals("OXTITLE_2", $aIndexes[5]["Key_name"]);
-        $this->assertEquals("OXTITLE_2", $aIndexes[5]["Column_name"]);
-
-
         //checking newly added index for column OXLONGDESC
-        $this->assertEquals("OXLONGDESC", $aIndexes[3]["Key_name"]);
-        $this->assertEquals("OXLONGDESC", $aIndexes[3]["Column_name"]);
-        $this->assertEquals("OXLONGDESC_1", $aIndexes[4]["Key_name"]);
-        $this->assertEquals("OXLONGDESC_1", $aIndexes[4]["Column_name"]);
-        $this->assertEquals("OXLONGDESC_2", $aIndexes[6]["Key_name"]);
-        $this->assertEquals("OXLONGDESC_2", $aIndexes[6]["Column_name"]);
-        $this->assertEquals("BTREE", $aIndexes[6]["Index_type"]);
+        $this->assertEquals("OXLONGDESC", $aIndexes[1]["Key_name"]);
+        $this->assertEquals("OXLONGDESC", $aIndexes[1]["Column_name"]);
+        $this->assertEquals("OXLONGDESC_1", $aIndexes[2]["Key_name"]);
+        $this->assertEquals("OXLONGDESC_1", $aIndexes[2]["Column_name"]);
+        $this->assertEquals("OXLONGDESC_2", $aIndexes[3]["Key_name"]);
+        $this->assertEquals("OXLONGDESC_2", $aIndexes[3]["Column_name"]);
+        $this->assertEquals("FULLTEXT", $aIndexes[3]["Index_type"]);
+
+        //checking newly added index for column OXTITLE
+        $this->assertEquals("OXTITLE", $aIndexes[4]["Key_name"]);
+        $this->assertEquals("OXTITLE", $aIndexes[4]["Column_name"]);
+        $this->assertEquals("OXTITLE_1", $aIndexes[5]["Key_name"]);
+        $this->assertEquals("OXTITLE_1", $aIndexes[5]["Column_name"]);
+        $this->assertEquals("OXTITLE_2", $aIndexes[6]["Key_name"]);
+        $this->assertEquals("OXTITLE_2", $aIndexes[6]["Column_name"]);
     }
 
     /**

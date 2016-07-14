@@ -223,9 +223,10 @@ class PaymentMain extends \oxAdminDetails
             $oField = new stdClass();
             $oField->name = oxRegistry::getConfig()->getRequestParameter("sAddField");
 
-            $this->_aFieldArray[] = $oField;
-
-            $this->save();
+            if (!empty($oField->name)) {
+                $this->_aFieldArray[] = $oField;
+                $this->save();
+            }
         }
     }
 }

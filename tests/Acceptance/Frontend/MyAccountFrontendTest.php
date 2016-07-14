@@ -1018,9 +1018,16 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->assertEquals("%WRITE_REVIEW%", $this->getText("writeNewReview"));
         $this->assertEquals("recommendation for this list", $this->getText("reviewText_1"));
 
-        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("productList_1"));
-        $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("productList_2"));
-        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("productList_3"));
+        $expected = array("Test product 0 [EN] šÄßüл",
+                          "Test product 1 [EN] šÄßüл",
+                          "Test product 2 [EN] šÄßüл");
+
+        $check = array($this->getText("productList_1"),
+                       $this->getText("productList_2"),
+                       $this->getText("productList_3"));
+        sort($check);
+
+        $this->assertEquals($expected, $check);
         $this->assertEquals("title", $this->getValue("searchRecomm"));
         $this->type("searchRecomm", "no entry");
         $this->clickAndWait("//article[@id='recommendationsBox']//button");
@@ -1081,12 +1088,18 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->clickAndWait("//section[@id='content']//div[2]/dl[4]/dt/a");
         $this->clickAndWait("//section[@id='content']//ul/li[1]//button[@name='editList']");
 
+        $first = $this->getText("recommendProductList_1");
+        $check = 2;
+        if (false !== strpos($first, 'product 1 [EN]')) {
+            $check = 1;
+        }
+        $expected = "selvar1 [EN] šÄßüл +1,00 € selvar2 [EN] šÄßüл selvar3 [EN] šÄßüл -2,00 € selvar4 [EN] šÄßüл +2%";
+        $this->assertEquals($expected, $this->clearString($this->getText("//div[@id='selectlistsselector_recommendProductList_{$check}']//ul")));
+
         //removing articles from list
-        $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("recommendProductList_2"));
-        $this->assertEquals("selvar1 [EN] šÄßüл +1,00 € selvar2 [EN] šÄßüл selvar3 [EN] šÄßüл -2,00 € selvar4 [EN] šÄßüл +2%", $this->clearString($this->getText("//div[@id='selectlistsselector_recommendProductList_2']//ul")));
         $this->clickAndWait("//button[@triggerform='remove_removeArticlerecommendProductList_2']");
         $this->assertEquals("%PAGE_TITLE_ACCOUNT_RECOMMLIST%", $this->getText("//h1"));
-        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("recommendProductList_1"));
+        $this->assertEquals($first, $this->getText("recommendProductList_1"));
         $this->assertElementNotPresent("recommendProductList_2");
         $this->clickAndWait("//aside[@id='sidebar']//a[text()='%MY_LISTMANIA%']");
         $this->assertEquals("recomm title", $this->getText("//ul[@id='recommendationsLists']/li[1]//a"));

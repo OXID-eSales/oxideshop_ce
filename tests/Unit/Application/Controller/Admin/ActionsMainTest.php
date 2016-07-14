@@ -100,7 +100,7 @@ class ActionsMainTest extends \OxidTestCase
      */
     public function testRenderForArticlePromotions()
     {
-        $sPromotion = oxDb::getDb()->getOne("select oxid from oxactions");
+        $sPromotion = oxDb::getDb()->getOne("select oxid from oxactions WHERE oxid = 'd51545e80843be666a9326783a73e91d'");
         $this->setRequestParameter("oxid", $sPromotion);
         $this->setRequestParameter("oxpromotionaoc", 'article');
 
@@ -135,7 +135,7 @@ class ActionsMainTest extends \OxidTestCase
      */
     public function testRenderForGroupPromotions()
     {
-        $sPromotion = oxDb::getDb()->getOne("select oxid from oxactions");
+        $sPromotion = oxDb::getDb()->getOne("select oxid from oxactions WHERE oxid = 'd51545e80843be666a9326783a73e91d'");
         $this->setRequestParameter("oxid", $sPromotion);
         $this->setRequestParameter("oxpromotionaoc", 'groups');
 

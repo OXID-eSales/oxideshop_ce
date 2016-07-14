@@ -76,7 +76,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     protected function createTestTableWithoutIndices()
     {
-        $sSql = "CREATE TABLE `testDbMetaDataHandlerWithoutIndices` (`OXID` char(32) NOT NULL) ENGINE = MyISAM";
+        $sSql = "CREATE TABLE `testDbMetaDataHandlerWithoutIndices` (`OXID` char(32) NOT NULL) ENGINE = InnoDB";
 
         oxDb::getDb()->execute($sSql);
     }
@@ -257,7 +257,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testGetCreateTableSetSql()
     {
-        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list'";
 
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
 
@@ -271,7 +271,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     public function testGetCreateTableSetSqlInIsoMode()
     {
         $this->setConfigParam('iUtfMode', 0);
-        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) COLLATE latin1_general_ci NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) COLLATE latin1_general_ci NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list'";
 
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
 
@@ -308,6 +308,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         ];
 
         $resultSqls = [
+            $dbMetaDataHandler->getAddFieldIndexSql("testDbMetaDataHandler", "OXTITLE", "OXTITLE_4"),
             $dbMetaDataHandler->getAddFieldIndexSql("testDbMetaDataHandler", "OXLONGDESC", "OXLONGDESC_4"),
             $dbMetaDataHandler->getAddFieldIndexSql("testDbMetaDataHandler", "OXLONGDESC", "OXLONGDESC_5"),
             $dbMetaDataHandler->getAddFieldIndexSql("testDbMetaDataHandler", "OXLONGDESC", "OXLONGDESC_8", "testDbMetaDataHandler_set1"),
@@ -409,7 +410,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testAddNewMultilangFieldCreateTable()
     {
-        $aTestSql[] = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+        $aTestSql[] = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list'";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXTITLE_8` char(128) NOT NULL DEFAULT '' ";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXSHORTDESC_8` char(128) NOT NULL DEFAULT '' ";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXLONGDESC_8` char(255) NOT NULL DEFAULT '' ";
@@ -469,18 +470,18 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         $this->assertEquals("OXTITLE", $aIndexes[1]["Column_name"]);
         $this->assertEquals("OXTITLE_1", $aIndexes[2]["Key_name"]);
         $this->assertEquals("OXTITLE_1", $aIndexes[2]["Column_name"]);
-        $this->assertEquals("OXTITLE_2", $aIndexes[3]["Key_name"]);
-        $this->assertEquals("OXTITLE_2", $aIndexes[3]["Column_name"]);
+        $this->assertEquals("OXTITLE_2", $aIndexes[5]["Key_name"]);
+        $this->assertEquals("OXTITLE_2", $aIndexes[5]["Column_name"]);
 
 
         //checking newly added index for column OXLONGDESC
-        $this->assertEquals("OXLONGDESC", $aIndexes[4]["Key_name"]);
-        $this->assertEquals("OXLONGDESC", $aIndexes[4]["Column_name"]);
-        $this->assertEquals("OXLONGDESC_1", $aIndexes[5]["Key_name"]);
-        $this->assertEquals("OXLONGDESC_1", $aIndexes[5]["Column_name"]);
+        $this->assertEquals("OXLONGDESC", $aIndexes[3]["Key_name"]);
+        $this->assertEquals("OXLONGDESC", $aIndexes[3]["Column_name"]);
+        $this->assertEquals("OXLONGDESC_1", $aIndexes[4]["Key_name"]);
+        $this->assertEquals("OXLONGDESC_1", $aIndexes[4]["Column_name"]);
         $this->assertEquals("OXLONGDESC_2", $aIndexes[6]["Key_name"]);
         $this->assertEquals("OXLONGDESC_2", $aIndexes[6]["Column_name"]);
-        $this->assertEquals("FULLTEXT", $aIndexes[6]["Index_type"]);
+        $this->assertEquals("BTREE", $aIndexes[6]["Index_type"]);
     }
 
     /**

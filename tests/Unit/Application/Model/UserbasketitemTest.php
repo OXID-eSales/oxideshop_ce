@@ -259,32 +259,32 @@ class UserbasketitemTest extends \OxidTestCase
 
         $oR = new stdclass();
         $oR->name = 'R, 10';
-        $oR->value = null;
-        $oR->selected = 1;
+        $oR->value = '';
 
         $oG = new stdclass();
         $oG->name = 'G, 20';
-        $oG->value = null;
+        $oG->value = '';
+        $oG->selected = 1;
 
         $oB = new stdclass();
         $oB->name = 'B, 30';
-        $oB->value = null;
+        $oB->value = '';
 
         $oS = new stdclass();
         $oS->name = 'S, 10';
-        $oS->value = null;
+        $oS->value = '';
+        $oS->selected = 1;
 
         $oM = new stdclass();
         $oM->name = 'M, 20';
-        $oM->value = null;
-        $oM->selected = 1;
+        $oM->value = '';
 
         $oL = new stdclass();
         $oL->name = 'L, 30';
-        $oL->value = null;
+        $oL->value = '';
 
-        $aSel[] = array($oR, $oG, $oB, 'name' => null);
-        $aSel[] = array($oS, $oM, $oL, 'name' => null);
+        $aSel[] = array($oS, $oM, $oL, 'name' => '');
+        $aSel[] = array($oR, $oG, $oB, 'name' => '');
 
         // if this assertion will fail, probably due to protected variable
         $this->assertEquals($aSel, $oArticle->getDispSelList());

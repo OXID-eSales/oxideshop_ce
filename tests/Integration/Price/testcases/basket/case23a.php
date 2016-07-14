@@ -27,7 +27,6 @@
  * Uset 7 different discount
  */
 $aData = array(
-    'skipped' => 1, //skipped due to #  as we have a different order of discounts in db after switiching to innodb, which affects the results.
     'articles' => array (
         0 => array (
             'oxid'                     => 10005,
@@ -45,13 +44,12 @@ $aData = array(
 
     'discounts' => array (
         0 => array (
-            'oxid'         => 'shopdiscount5for10005',
-            'oxaddsum'     => 5.5,
-            'oxaddsumtype' => '%',
-            'oxamount' => 0,
+            'oxid'         => 'absolutebasketdiscount',
+            'oxaddsum'     => 5,
+            'oxaddsumtype' => 'abs',
+            'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
-            'oxarticles' => array ( 10005 ),
         ),
         1 => array (
             'oxid'         => 'shopdiscount5for1004',
@@ -63,15 +61,6 @@ $aData = array(
             'oxarticles' => array ( 1004 ),
         ),
         2 => array (
-            'oxid'         => 'basketdiscount5for10005',
-            'oxaddsum'     => 5,
-            'oxaddsumtype' => 'abs',
-            'oxamount' => 1,
-            'oxamountto' => 99999,
-            'oxactive' => 1,
-            'oxarticles' => array ( 10005 ),
-        ),
-        3 => array (
             'oxid'         => 'basketdiscount5for1004',
             'oxaddsum'     => 6,
             'oxaddsumtype' => '%',
@@ -80,15 +69,7 @@ $aData = array(
             'oxactive' => 1,
             'oxarticles' => array ( 1004 ),
         ),
-        4 => array (
-            'oxid'         => 'absolutebasketdiscount',
-            'oxaddsum'     => 5,
-            'oxaddsumtype' => 'abs',
-            'oxamount' => 1,
-            'oxamountto' => 99999,
-            'oxactive' => 1,
-		),
-	    5 => array (
+        3 => array (
             // -10% discount for product 10005
             'oxid'         => 'procdiscountfor10005',
             'oxaddsum'     => 5,
@@ -98,7 +79,7 @@ $aData = array(
             'oxactive' => 1,
             'oxarticles' => array ( 10005 ),
         ),
-        6 => array (
+        4 => array (
             // 5.5% discount for product 1004
             'oxid'         => 'procdiscountfor1004',
             'oxaddsum'     => -10,
@@ -107,6 +88,24 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array (  1004 ),
+        ),
+        5 => array (
+            'oxid'         => 'basketdiscount5for10005',
+            'oxaddsum'     => 5,
+            'oxaddsumtype' => 'abs',
+            'oxamount' => 1,
+            'oxamountto' => 99999,
+            'oxactive' => 1,
+            'oxarticles' => array ( 10005 ),
+        ),
+        6 => array (
+            'oxid'         => 'shopdiscount5for10005',
+            'oxaddsum'     => 5.5,
+            'oxaddsumtype' => '%',
+            'oxamount' => 0,
+            'oxamountto' => 99999,
+            'oxactive' => 1,
+            'oxarticles' => array ( 10005 ),
         ),
 
     ),
@@ -161,14 +160,14 @@ $aData = array(
     ),
     'expected' => array (
         'articles' => array (
-             10005 => array ( '1.115,67', '1.115,67' ),
-             1004 => array ( '0,59', '0,59' ),
+            10005 => array ( '1.115,95', '1.115,95' ),
+            1004 => array ( '0,59', '0,59' ),
         ),
         'totals' => array (
-            'totalBrutto' => '1.116,26',
-            'totalNetto'  => '928,79',
+            'totalBrutto' => '1.116,54',
+            'totalNetto'  => '929,03',
             'vats' => array (
-                19 => '176,47'
+                19 => '176,51'
             ),
             'discounts' => array (
                 'absolutebasketdiscount' => '5,00',
@@ -191,16 +190,16 @@ $aData = array(
             'voucher' => array (
                 'brutto' => '6,00',
             ),
-            'grandTotal'  => '1.127,26'
+            'grandTotal'  => '1.127,54'
         ),
     ),
     'options' => array (
         'config' => array(
-                'blEnterNetPrice' => true,
-                'blShowNetPrice' => false,
-                'blShowVATForWrapping' => true,
-                'blShowVATForPayCharge' => true,
-                'blShowVATForDelivery' => true,
+            'blEnterNetPrice' => true,
+            'blShowNetPrice' => false,
+            'blShowVATForWrapping' => true,
+            'blShowVATForPayCharge' => true,
+            'blShowVATForDelivery' => true,
         ),
         'activeCurrencyRate' => 1.00,
     ),

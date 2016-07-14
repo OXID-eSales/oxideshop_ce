@@ -194,7 +194,7 @@ $aLang = array(
 'SELECT_SETUP_LANG'                             => 'Installation language',
 'SELECT_SHOP_LOCATION'                          => 'Your market',
 'SELECT_PLEASE_CHOOSE'                          => 'Please choose',
-'SELECT_SHOP_LOCATION_HINT'                     => 'Please choose the market to which shop is focused. According to it, additional eCommerce Services will be loaded from OXID server, if you allow that.',
+'SELECT_SHOP_LOCATION_HINT'                     => 'Please choose the market to which shop is focused. According to it, additional e-commerce Services will be loaded from OXID server, if you allow that.',
 'SELECT_DELIVERY_COUNTRY'                       => 'Main delivery country',
 'SELECT_DELIVERY_COUNTRY_HINT'                  => 'If needed, activate easily more delivery countries in admin.',
 'SELECT_SHOP_LANG'                              => 'Shop language',
@@ -203,7 +203,7 @@ $aLang = array(
 'USE_DYNAMIC_PAGES'                             => 'Enable connection with the OXID servers. You find more information in our ',
 'PRIVACY_POLICY'                                => 'privacy statements',
 
-'LOAD_DYN_CONTENT_NOTICE'                       => '<p>If checkbox is set, you will see an additional menu in the admin area of your OXID eShop.</p><p>In that menu you get further information about eCommerce services like Google product search.</p> <p>You can change these settings at any time.</p>',
+'LOAD_DYN_CONTENT_NOTICE'                       => '<p>If checkbox is set, you will see an additional menu in the admin area of your OXID eShop.</p><p>In that menu you get further information about e-commerce services like Google product search.</p> <p>You can change these settings at any time.</p>',
 'ERROR_SETUP_CANCELLED'                         => 'Setup has been cancelled because you didn\'t accept the license conditions.',
 'BUTTON_START_INSTALL'                          => 'Restart setup',
 );

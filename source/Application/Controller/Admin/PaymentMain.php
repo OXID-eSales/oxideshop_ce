@@ -225,8 +225,8 @@ class PaymentMain extends \oxAdminDetails
 
             if (!empty($oField->name)) {
                 $this->_aFieldArray[] = $oField;
-                $this->save();
             }
+            $this->save();
         }
     }
 }

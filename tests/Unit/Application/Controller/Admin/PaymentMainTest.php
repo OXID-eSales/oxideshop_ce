@@ -137,12 +137,16 @@ class PaymentMainTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxPayment', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ return array( "testField1", "testField2"); }');
-        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
-        $_POST['sAddField'] = 'foobar';
+        $this->getConfig()->setConfigParam('blAllowSharedEdit', true);
+        $this->setRequestParameter('sAddField', 'foobar');
 
-        $view = $this->getMock("Payment_Main", array("save"));
+        $view = $this->getMock($this->getProxyClassName('Payment_Main'), array('save'));
         $view->expects($this->once())->method('save');
         $view->addField();
+
+        $fields = $view->getNonPublicVar('_aFieldArray');
+        $this->assertCount(3, $fields);
+        $this->assertEquals('foobar', $fields[2]->name);
     }
 
     /**
@@ -154,11 +158,14 @@ class PaymentMainTest extends \OxidTestCase
     public function testAddFieldDoNotSaveEmptyField()
     {
         oxTestModules::addFunction('oxPayment', 'loadInLang', '{ return true; }');
-        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
-        $_POST['sAddField'] = '';
+        oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ return array( "testField1", "testField2"); }');
+        $this->getConfig()->setConfigParam('blAllowSharedEdit', true);
+        $this->setRequestParameter('sAddField', '');
 
-        $view = $this->getMock('Payment_Main', array('save'));
-        $view->expects($this->never())->method('save');
+        $view = $this->getMock($this->getProxyClassName('Payment_Main'), array('save'));
+        $view->expects($this->once())->method('save');
         $view->addField();
+
+        $this->assertCount(2, $view->getNonPublicVar('_aFieldArray'));
     }
 }

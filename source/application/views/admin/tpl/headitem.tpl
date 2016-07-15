@@ -6,7 +6,7 @@
   [{if isset($meta_refresh_sec,$meta_refresh_url) }]
   <meta http-equiv=Refresh content="[{$meta_refresh_sec}];URL=[{$meta_refresh_url|replace:"&amp;":"&"}]">
   [{/if}]
-  <link rel="shortcut icon" href="[{ $oViewConf->getBaseDir() }]favicon.ico">
+  <link rel="shortcut icon" href="[{$oViewConf->getImageUrl()}]favicon.ico">
 
   [{block name="admin_headitem_inccss"}]
       <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]main.css">

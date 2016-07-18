@@ -36,12 +36,12 @@ use stdClass;
 class _DynExportBase extends DynExportBase
 {
 
-    public function initArticle($sHeapTable, $iCnt, & $blContinue)
+    public function initArticle($heapTable, $count, & $continue)
     {
         try {
-            return $this->_initArticle($sHeapTable, $iCnt, $blContinue);
-        } catch (Exception $oExcp) {
-            throw $oExcp;
+            return $this->_initArticle($heapTable, $count, $continue);
+        } catch (Exception $exception) {
+            throw $exception;
         }
     }
 
@@ -697,6 +697,28 @@ class DynExportBaseTest extends \OxidTestCase
         $oView = $this->getMock("DynExportBase", array("_loadRootCats"));
         $oView->expects($this->once())->method('_loadRootCats')->will($this->returnValue($aCache));
         $this->assertEquals("cat1/cat2/cat3", $oView->UNITfindDeepestCatPath($oArticle));
+    }
+
+    /**
+     * DynExportBase::InitArticle() test case
+     *
+     * @return null
+     */
+    public function testInitArticleProductIsNotAvailable()
+    {
+        $heapTableName = "testdynexportbasetable";
+
+        $databaseMock = $this->getMock('OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database', array('selectLimit'));
+        $databaseMock->expects($this->any())
+            ->method('selectLimit')
+            ->with($this->equalTo("select oxid from $heapTableName"));
+
+        $dynamicExportControllerMock = $this->getMock('OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController', array('getDb', '_getHeapTableName'));
+        $dynamicExportControllerMock->expects($this->any())->method('getDb')->willReturn($databaseMock);
+        $dynamicExportControllerMock->expects($this->any())->method('_getHeapTableName')->willReturn($heapTableName);
+
+        $close = true;
+        $dynamicExportControllerMock->getOneArticle($heapTableName, $close);
     }
 
     /**

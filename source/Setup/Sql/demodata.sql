@@ -4012,10 +4012,10 @@ INSERT INTO `oxobject2delivery` (`OXID`, `OXDELIVERYID`, `OXOBJECTID`, `OXTYPE`)
 # Data for table `oxobject2discount`
 #
 INSERT INTO `oxobject2discount` (`OXID`, `OXDISCOUNTID`, `OXOBJECTID`, `OXTYPE`) VALUES
-  ('4e542e4e8f60a0562.61817542', '4e542e4e8dd127836.00288451', '1771', 'oxarticles'),
-  ('79042e787b414fae9.16540313', '4e542e4e8dd127836.00288451', '85b42c94a32b3fdd2.66642220', 'oxarticles'),
-  ('0a842e4fd23a60e04.47404876', '4e542e4e8dd127836.00288451', '1431', 'oxarticles'),
-  ('79042e787aea9e9d9.36926408', '4e542e4e8dd127836.00288451', 'd8842e3cbf9290351.59301740', 'oxarticles'),
+  ('4e542e4e8f60a0562.61817542', '4e542e4e8dd127836.00288451', 'dc5b9cfeb5bd96fdbd9b4e43974661a1', 'oxarticles'),
+  ('79042e787b414fae9.16540313', '4e542e4e8dd127836.00288451', 'f4fe052346b4ec271011e25c052682c5', 'oxarticles'),
+  ('0a842e4fd23a60e04.47404876', '4e542e4e8dd127836.00288451', 'f4f0cb3606e231c3fdb34fcaee2d6d04', 'oxarticles'),
+  ('79042e787aea9e9d9.36926408', '4e542e4e8dd127836.00288451', 'dc57391739360d306c8dfcb3a4295e19', 'oxarticles'),
   ('1b842e75a0d186fa8.13645432', '0693e8aab9b01dc46.38765070', 'a7c40f6320aeb2ec2.72885259', 'oxcountry'),
   ('1b842e75a0d181dc5.03163547', '0693e8aab9b01dc46.38765070', 'a7c40f631fc920687.20179984', 'oxcountry'),
   ('f4faded76bd9f53a0385f1023a32e008', '4e542e4e8dd127836.00288451', 'fad21eb148918c8f4d9f0077fedff1ba', 'oxarticles'),

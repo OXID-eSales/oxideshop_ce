@@ -152,6 +152,7 @@ class SelectListMainAjax extends \ajaxListComponent
                 $oNewGroup->init("oxobject2selectlist");
                 $oNewGroup->oxobject2selectlist__oxobjectid = new oxField($sAdd);
                 $oNewGroup->oxobject2selectlist__oxselnid = new oxField($soxId);
+                //must read from master, see ESDEV-3804 for details
                 $oNewGroup->oxobject2selectlist__oxsort = new oxField(( int ) $oDb->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $oDb->quote($sAdd) . " ", false, false));
                 $oNewGroup->save();
 

@@ -163,6 +163,7 @@ class CategoryMainAjax extends \ajaxListComponent
                 // check, if it's already in, then don't add it again
                 $sSelect = "select 1 from $sO2CView as oxobject2category where oxobject2category.oxcatnid= "
                            . $oDb->quote($sCategoryID) . " and oxobject2category.oxobjectid = " . $oDb->quote($sAdd) . "";
+                //must read from master, see ESDEV-3804 for details
                 if ($oDb->getOne($sSelect, false, false)) {
                     continue;
                 }

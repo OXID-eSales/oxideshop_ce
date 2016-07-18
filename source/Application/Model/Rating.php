@@ -113,6 +113,7 @@ class Rating extends \oxBase
             LIMIT 1";
 
         $fRating = 0;
+        //must read from master, see ESDEV-3804 for details
         if ($fRating = $oDb->getOne($sSelect, false, false)) {
             $fRating = round($fRating, 1);
         }
@@ -150,6 +151,7 @@ class Rating extends \oxBase
             LIMIT 1";
 
         $iCount = 0;
+        //must read from master, see ESDEV-3804 for details
         $iCount = $oDb->getOne($sSelect, false, false);
 
         return $iCount;

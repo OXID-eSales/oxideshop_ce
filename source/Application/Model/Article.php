@@ -4552,6 +4552,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             $oDb = oxDb::getDb();
             //collect variants to remove recursively
             $sQ = 'select oxid from ' . $this->getViewName() . ' where oxparentid = ' . $oDb->quote($sOXID);
+            //must read from master, see ESDEV-3804 for details
             $rs = $oDb->select($sQ, false, false);
             $oArticle = oxNew("oxArticle");
             if ($rs != false && $rs->count() > 0) {
@@ -4625,12 +4626,14 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             $oDb = oxDb::getDb();
             $sParentIdQuoted = $oDb->quote($sParentID);
             $sQ = 'select oxstock, oxvendorid, oxmanufacturerid from oxarticles where oxid = ' . $sParentIdQuoted;
+            //must read from master, see ESDEV-3804 for details
             $rs = $oDb->select($sQ, false, false);
             $iOldStock = $rs->fields[0];
             $iVendorID = $rs->fields[1];
             $iManufacturerID = $rs->fields[2];
 
             $sQ = 'select sum(oxstock) from ' . $this->getViewName(true) . ' where oxparentid = ' . $sParentIdQuoted . ' and ' . $this->getSqlActiveSnippet(true) . ' and oxstock > 0 ';
+            //must read from master, see ESDEV-3804 for details
             $iStock = (float) $oDb->getOne($sQ, false, false);
 
             $sQ = 'update oxarticles set oxvarstock = ' . $iStock . ' where oxid = ' . $sParentIdQuoted;
@@ -4683,6 +4686,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             $oDb = oxDb::getDb();
             $sParentIdQuoted = $oDb->quote($sParentID);
             $sQ = "select count(*) as varcount from oxarticles where oxparentid = {$sParentIdQuoted}";
+            //must read from master, see ESDEV-3804 for details
             $iVarCount = (int) $oDb->getOne($sQ, false, false);
 
             $sQ = "update oxarticles set oxvarcount = {$iVarCount} where oxid = {$sParentIdQuoted}";
@@ -4708,6 +4712,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
                 WHERE ' . $this->getSqlActiveSnippet(true) . '
                     AND ( `oxarticles`.`oxparentid` = ' . $oDb->quote($sParentId) . ' )';
             $oDb->setFetchMode(oxDb::FETCH_MODE_ASSOC);
+            //must read from master, see ESDEV-3804 for details
             $aPrices = $oDb->getRow($sQ, false, false);
             if (!is_null($aPrices['varminprice']) || !is_null($aPrices['varmaxprice'])) {
                 $sQ = '

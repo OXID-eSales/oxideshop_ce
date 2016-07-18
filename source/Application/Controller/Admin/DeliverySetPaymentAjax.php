@@ -113,6 +113,7 @@ class DeliverySetPaymentAjax extends \ajaxListComponent
             $oDb = oxDb::getDb();
             foreach ($aChosenSets as $sChosenSet) {
                 // check if we have this entry already in
+                //must read from master, see ESDEV-3804 for details
                 $sID = $oDb->getOne("select oxid from oxobject2payment where oxpaymentid = " . $oDb->quote($sChosenSet) . "  and oxobjectid = " . $oDb->quote($soxId) . " and oxtype = 'oxdelset'", false, false);
                 if (!isset($sID) || !$sID) {
                     $oObject = oxNew('oxBase');

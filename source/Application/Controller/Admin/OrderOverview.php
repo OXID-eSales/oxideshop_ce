@@ -206,6 +206,7 @@ class OrderOverview extends \oxAdminDetails
             $sOrderId = $this->getEditObjectId();
             $sTable = getViewName("oxorderarticles");
             $sQ = "select count(oxid) from {$sTable} where oxorderid = " . $oDb->quote($sOrderId) . " and oxstorno = 0";
+            //must read from master, see ESDEV-3804 for details
             $blCan = (bool) $oDb->getOne($sQ, false, false);
         }
 

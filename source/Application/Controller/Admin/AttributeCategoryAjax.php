@@ -141,6 +141,7 @@ class AttributeCategoryAjax extends \ajaxListComponent
                 $oNewGroup->$sObjectIdField = new oxField($sAdd);
                 $oNewGroup->$sAttributeIdField = new oxField($oAttribute->$sOxIdField->value);
                 $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ";
+                //must read from master, see ESDEV-3804 for details
                 $oNewGroup->$sOxSortField = new oxField(( int ) $oDb->getOne($sSql, false, false));
                 $oNewGroup->save();
             }

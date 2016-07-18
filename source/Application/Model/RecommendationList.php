@@ -223,6 +223,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
         $blAdd = false;
         if ($sOXID) {
             $oDb = oxDb::getDb();
+            //must read from master, see ESDEV-3804 for details
             if (!$oDb->getOne("select oxid from oxobject2list where oxobjectid=" . $oDb->quote($sOXID) . " and oxlistid=" . $oDb->quote($this->getId()), false, false)) {
                 $sUid = oxUtilsObject::getInstance()->generateUID();
                 $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $oDb->quote($sOXID) . ", " . $oDb->quote($this->getId()) . ", " . $oDb->quote($sDesc) . " )";

@@ -45,6 +45,7 @@ class Counter
 
         $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $db->quote($ident) . " FOR UPDATE";
 
+        //must read from master, see ESDEV-3804 for details
         if (($cnt = $db->getOne($query, false, false)) === false) {
             $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, '0')";
             $db->execute($query, array($ident));
@@ -75,6 +76,7 @@ class Counter
 
         $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $db->quote($ident) . " FOR UPDATE";
 
+        //must read from master, see ESDEV-3804 for details
         if (($cnt = $db->getOne($query, false, false)) === false) {
             $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, ?)";
             $result = $db->execute($query, array($ident, $count));

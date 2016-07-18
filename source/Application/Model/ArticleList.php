@@ -799,6 +799,7 @@ class ArticleList extends \oxList
             // Collect article id's for later recalculation.
             $sQ = "SELECT `oxid` FROM `oxarticles`
                    WHERE `oxupdatepricetime` > 0 AND `oxupdatepricetime` <= '{$sCurrUpdateTime}'";
+            //must read from master, see ESDEV-3804 for details
             $aUpdatedArticleIds = $oDb->getCol($sQ, false, false);
 
             // updating oxarticles
@@ -1165,6 +1166,7 @@ class ArticleList extends \oxList
         $oDb = oxDb::getDb();
         // fetching next update time
         $sQ = $this->getQueryToFetchNextUpdateTime();
+        //must read from master, see ESDEV-3804 for details
         $iTimeToUpdate = $oDb->getOne(sprintf($sQ, "`oxarticles`"), false, false);
 
         return $iTimeToUpdate;

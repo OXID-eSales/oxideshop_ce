@@ -197,6 +197,7 @@ class ActionsMainAjax extends \ajaxListComponent
               "where oxactions2article.oxactionid = " . $oDb->quote($soxId) .
               " and oxactions2article.oxshopid = '" . $myConfig->getShopId() .
               "'and $sArtTable.oxid is not null";
+        //must read from master, see ESDEV-3804 for details
         $iSort = ((int) $oDb->getOne($sQ, false, false)) + 1;
 
         $articleAdded = false;

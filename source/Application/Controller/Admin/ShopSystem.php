@@ -67,6 +67,7 @@ class ShopSystem extends \Shop_Config
         }
 
         $oDb = oxDb::getDb();
+        //must read from master, see ESDEV-3804 for details
         $sShopCountry = $oDb->getOne("select DECODE( oxvarvalue, " . $oDb->quote($myConfig->getConfigParam('sConfigKey')) . ") as oxvarvalue from oxconfig where oxshopid = '$soxId' and oxvarname = 'sShopCountry'", false, false);
 
         $this->_aViewData["shop_countries"] = $aLocationCountries[$sLangAbbr];

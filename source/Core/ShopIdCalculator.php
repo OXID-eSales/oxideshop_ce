@@ -103,6 +103,7 @@ class ShopIdCalculator
         $sSelect = "SELECT oxshopid, oxvarname, DECODE( oxvarvalue , " . $oDb->quote($sConfKey) . " ) as oxvarvalue " .
             "FROM oxconfig WHERE oxvarname in ('aLanguageURLs','sMallShopURL','sMallSSLShopURL')";
 
+        //must read from master, see ESDEV-3804 for details
         $oRs = $oDb->select($sSelect, false, false);
 
         if ($oRs && $oRs->count() > 0) {

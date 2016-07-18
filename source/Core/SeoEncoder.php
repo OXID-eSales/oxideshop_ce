@@ -1044,6 +1044,7 @@ class SeoEncoder extends \oxSuperCfg
 
             if ($sOldObjectId) {
                 // move changed records to history
+                //must read from master, see ESDEV-3804 for details
                 if (!$oDb->getOne("select (" . $oDb->quote($sSeoUrl) . " like oxseourl) & (" . $oDb->quote($sStdUrl) . " like oxstdurl) from oxseo where oxobjectid = " . $oDb->quote($sOldObjectId) . " and oxshopid = '{$iShopId}' and oxlang = '{$iLang}' ", false, false)) {
                     $this->_copyToHistory($sOldObjectId, $iShopId, $iLang, 'static', $sObjectId);
                 }

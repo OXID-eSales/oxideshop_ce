@@ -901,6 +901,7 @@ class Category extends \oxI18n implements \oxIUrl
         $this->_setUpdateSeoOnFieldChange('oxtitle');
 
         $oDb = oxDb::getDb();
+        //must read from master, see ESDEV-3804 for details
         $sOldParentID = $oDb->getOne("select oxparentid from oxcategories where oxid = " . $oDb->quote($this->getId()), false, false);
 
         if ($this->_blIsSeoObject && $this->isAdmin()) {
@@ -924,6 +925,7 @@ class Category extends \oxI18n implements \oxIUrl
 
             $iTreeSize = $sOldParentRight - $sOldParentLeft + 1;
 
+            //must read from master, see ESDEV-3804 for details
             $sNewRootID = $oDb->getOne("select oxrootid from oxcategories where oxid = " . $oDb->quote($this->oxcategories__oxparentid->value), false, false);
 
             //If empty rootID, we set it to categorys oxid
@@ -931,7 +933,7 @@ class Category extends \oxI18n implements \oxIUrl
                 //echo "<br>* ) Creating new root tree ( {$this->_sOXID} )";
                 $sNewRootID = $this->getId();
             }
-
+            //must read from master, see ESDEV-3804 for details
             $sNewParentLeft = $oDb->getOne("select oxleft from oxcategories where oxid = " . $oDb->quote($this->oxcategories__oxparentid->value), false, false);
 
             //if(!$sNewParentLeft){

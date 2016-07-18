@@ -69,6 +69,7 @@ class ArticleSelectionAjax extends \ajaxListComponent
         $sQ = "select oxparentid from {$sArtViewName} where oxid = " . $oDb->quote($sOxid) . " and oxparentid != '' ";
         $sQ .= "and (select count(oxobjectid) from oxobject2selectlist " .
                "where oxobjectid = " . $oDb->quote($sOxid) . ") = 0";
+        //must read from master, see ESDEV-3804 for details
         $sParentId = oxDb::getDb()->getOne($sQ, false, false);
 
         // all selectlists article is in
@@ -133,6 +134,7 @@ class ArticleSelectionAjax extends \ajaxListComponent
                 $oNew->$sObjectIdField = new oxField($soxId);
                 $oNew->$sSelectetionIdField = new oxField($sAdd);
                 $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  {$oDb->quote($soxId)} ";
+                //must read from master, see ESDEV-3804 for details
                 $oNew->$sOxSortField = new oxField(( int ) $oDb->getOne($sSql, false, false));
                 $oNew->save();
             }

@@ -114,6 +114,7 @@ class DeliverySetMainAjax extends \ajaxListComponent
             $oDb = oxDb::getDb();
             foreach ($aChosenSets as $sChosenSet) {
                 // check if we have this entry already in
+                //must read from master, see ESDEV-3804 for details
                 $sID = $oDb->getOne("select oxid from oxdel2delset where oxdelid =  " . $oDb->quote($sChosenSet) . " and oxdelsetid = " . $oDb->quote($soxId), false, false);
                 if (!isset($sID) || !$sID) {
                     $oDel2delset = oxNew('oxBase');

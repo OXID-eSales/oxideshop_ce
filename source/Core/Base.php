@@ -911,6 +911,7 @@ class Base extends \oxSuperCfg
         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $query = "select {$this->_sExistKey} from {$viewName} where {$this->_sExistKey} = " . $database->quote($oxid);
 
+        //must read from master, see ESDEV-3804 for details
         return ( bool ) $database->getOne($query, false, false);
     }
 

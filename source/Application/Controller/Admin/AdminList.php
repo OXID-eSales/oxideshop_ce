@@ -277,6 +277,7 @@ class AdminList extends \oxAdminView
         $sql = $stringModifier->preg_replace('/order by .*$/i', '', $sql);
 
         // con of list items which fits current search conditions
+        //must read from master, see ESDEV-3804 for details
         $this->_iListSize = oxDb::getDb()->getOne($sql, false, false);
 
         // set it into session that other frames know about size of DB

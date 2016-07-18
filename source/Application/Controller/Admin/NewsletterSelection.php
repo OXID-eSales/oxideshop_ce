@@ -113,6 +113,7 @@ class NewsletterSelection extends \oxAdminDetails
                    and (not(oxnewssubscribed.oxemailfailed = '1')) and oxnewssubscribed.oxshopid = '{$sShopId}'
                    group by oxnewssubscribed.oxemail ) as _tmp";
 
+                //must read from master, see ESDEV-3804 for details
                 $this->_iUserCount = $oDB->getOne($sQ, false, false);
             }
         }

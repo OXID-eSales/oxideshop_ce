@@ -67,6 +67,7 @@ class Object2Group extends \oxBase
         $sQ .= " and oxobjectid = " . $oDb->quote($this->oxobject2group__oxobjectid->value);
 
         // does not exist
+        //must read from master, see ESDEV-3804 for details
         if (!$oDb->getOne($sQ, false, false)) {
             return parent::save();
         }

@@ -580,6 +580,7 @@ class CategoryList extends \oxList
         $oDb->execute("update oxcategories set oxleft = 1, oxright = 2 where oxparentid = 'oxrootid' and $sWhere");
 
         // Get all root categories
+        //must read from master, see ESDEV-3804 for details
         $rs = $oDb->select("select oxid, oxtitle from oxcategories where oxparentid = 'oxrootid' and $sWhere order by oxsort", false, false);
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
@@ -639,6 +640,7 @@ class CategoryList extends \oxList
 
         // Get sub categories of root categories
         $rs = $oDb->execute("update oxcategories set oxrootid = " . $oDb->quote($thisRoot) . " where oxparentid = " . $oDb->quote($oxRootId));
+        //must read from master, see ESDEV-3804 for details
         $rs = $oDb->select("select oxid, oxparentid from oxcategories where oxparentid = " . $oDb->quote($oxRootId) . " order by oxsort", false, false);
         // If there are sub categories
         if ($rs != false && $rs->count() > 0) {
@@ -648,6 +650,7 @@ class CategoryList extends \oxList
                 $sActOxidQuoted = $oDb->quote($actOxid);
 
                 // Get the data of the parent category to the current Cat
+                //must read from master, see ESDEV-3804 for details
                 $rs3 = $oDb->select("select oxrootid, oxright from oxcategories where oxid = " . $oDb->quote($parentId), false, false);
                 while (!$rs3->EOF) {
                     $parentOxRootId = $rs3->fields[0];

@@ -106,6 +106,7 @@ class NewsletterSend extends \Newsletter_Selection
                     $iSendCnt++;
 
                     // must check if such user is in DB
+                    //must read from master, see ESDEV-3804 for details
                     if (!$oDB->getOne("select oxid from oxuser where oxid = " . $oDB->quote($sUserId), false, false)) {
                         $sUserId = null;
                     }

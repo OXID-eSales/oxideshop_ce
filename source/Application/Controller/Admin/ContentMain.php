@@ -240,6 +240,7 @@ class ContentMain extends \oxAdminDetails
         // null not allowed
         if (!strlen($sIdent)) {
             $blAllow = true;
+        //must read from master, see ESDEV-3804 for details
         } elseif ($oDb->getOne("select oxid from oxcontents where oxloadid = " . $oDb->quote($sIdent) . " and oxid != " . $oDb->quote($sOxId) . " and oxshopid = '" . $this->getConfig()->getShopId() . "'", false, false)) {
             $blAllow = true;
         }

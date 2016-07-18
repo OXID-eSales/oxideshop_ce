@@ -163,6 +163,7 @@ class UtilsPic extends \oxSuperCfg
 
         $query = "select count(*) from $sTable where $sField = " . $oDb->quote($sPicName) . " group by $sField ";
 
+        //must read from master, see ESDEV-3804 for details
         return $oDb->getOne($query, false, false);
     }
 

@@ -157,6 +157,7 @@ class UserPayment extends \oxBase
         //encode sensitive data
         if ($sValue = $this->oxuserpayments__oxvalue->value) {
             $oDb = oxDb::getDb();
+            //must read from master, see ESDEV-3804 for details
             $sEncodedValue = $oDb->getOne("select encode( " . $oDb->quote($sValue) . ", '" . $this->getPaymentKey() . "' )", false, false);
             $this->oxuserpayments__oxvalue->setValue($sEncodedValue);
         }
@@ -182,6 +183,7 @@ class UserPayment extends \oxBase
 
         //encode sensitive data
         if ($sValue = $this->oxuserpayments__oxvalue->value) {
+            //must read from master, see ESDEV-3804 for details
             $sEncodedValue = $oDb->getOne("select encode( " . $oDb->quote($sValue) . ", '" . $this->getPaymentKey() . "' )", false, false);
             $this->oxuserpayments__oxvalue->setValue($sEncodedValue);
         }

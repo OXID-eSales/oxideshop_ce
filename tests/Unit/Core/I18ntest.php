@@ -715,7 +715,7 @@ class I18ntest extends \OxidTestCase
         $expectedUpdateSql = "update $tableName set oxid = '$oxId',oxcountryid = '',oxtitle = '$oxTitle',oxisoalpha2 = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '' where oxstates.oxid = '$oxId'";
         $expectedInsertSql = "insert into oxstates_set11 set oxid = '$oxId',oxtitle_90 = '$oxTitleAnotherLanguage' on duplicate key update oxid = '$oxId',oxtitle_90 = '$oxTitleAnotherLanguage'";
 
-        $extendedI18nMock = $this->createMegaMockObject();
+        $extendedI18nMock = $this->createProtectedAccessI18nMock();
         $i18nMock = $this->getMock($extendedI18nMock, array('_getLanguageSetTables', 'executeDatabaseQuery'));
         $i18nMock->expects($this->at(0))->method('executeDatabaseQuery')->with($this->equalTo($expectedUpdateSql))->willReturn(true);
         $i18nMock->expects($this->at(1))->method('_getLanguageSetTables')->will($this->returnValue(array($extendedTableName)));
@@ -749,7 +749,7 @@ class I18ntest extends \OxidTestCase
         $expectedUpdateSql = "update $tableName set oxid = '$oxId',oxcountryid = '',oxtitle = '$oxTitle',oxisoalpha2 = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '' where oxstates.oxid = '$oxId'";
         $expectedInsertSql = "insert into $tableNameExtended set oxid = '$oxId',oxtitle_90 = '$oxTitleAnotherLanguage' on duplicate key update oxid = '$oxId',oxtitle_90 = '$oxTitleAnotherLanguage'";
 
-        $extendedI18nMock = $this->createMegaMockObject();
+        $extendedI18nMock = $this->createProtectedAccessI18nMock();
         $i18nMock = $this->getMock($extendedI18nMock, array('_getLanguageSetTables', 'executeDatabaseQuery'));
         $i18nMock->expects($this->at(0))->method('executeDatabaseQuery')->with($this->equalTo($expectedUpdateSql))->willReturn(true);
         $i18nMock->expects($this->at(1))->method('_getLanguageSetTables')->will($this->returnValue(array($tableNameExtended)));
@@ -773,9 +773,9 @@ class I18ntest extends \OxidTestCase
      *
      * @return string The class definition we wanted.
      */
-    protected function createMegaMockObject()
+    protected function createProtectedAccessI18nMock()
     {
-        $cl = oxTestModules::addFunction(
+        $classDefinition = oxTestModules::addFunction(
             oxTestModules::addFunction(
                 'oxi18n',
                 '__setFieldNames($fn)',
@@ -785,7 +785,7 @@ class I18ntest extends \OxidTestCase
             '{return $this->_aFieldNames;}'
         );
 
-        return $cl;
+        return $classDefinition;
     }
 
     public function testGetLanguageSetTables()

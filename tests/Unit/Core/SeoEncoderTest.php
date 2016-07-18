@@ -950,7 +950,7 @@ class SeoEncoderTest extends \OxidTestCase
         $expectedSql = "delete from oxseo where oxobjectid in ( '$objectId', '" . md5(strtolower('1' . $standardUrl)) . "' )";
 
         $seoEncoderMock = $this->getMock('oxSeoEncoder', array('_getUniqueSeoUrl', '_trimUrl', 'executeDatabaseQuery'));
-        $seoEncoderMock->expects($this->exactly(3))->method('_getUniqueSeoUrl')->will($this->returnValue(0));
+        $seoEncoderMock->expects($this->any())->method('_getUniqueSeoUrl')->will($this->returnValue(0));
         $seoEncoderMock->expects($this->atLeastOnce())->method('_trimUrl')->will($this->returnValue($standardUrl));
         $seoEncoderMock->expects($this->atLeastOnce())->method('executeDatabaseQuery')->with($this->equalTo($expectedSql));
 

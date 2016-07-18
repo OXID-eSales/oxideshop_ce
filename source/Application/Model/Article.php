@@ -3235,11 +3235,34 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     {
         $database = $this->getDatabase();
 
-        $query = $this->createFetchFirstInPriceCategorySql($categoryPriceId, $database);
+        $query = $this->createFetchFirstInPriceCategorySql($categoryPriceId);
 
         $result = $database->getOne($query);
 
         return $result;
+    }
+
+    /**
+     * Create the sql for the fetchFirstInPriceCategory method.
+     *
+     * @param string $categoryPriceId The price category id.
+     *
+     * @return string The wished sql.
+     */
+    protected function createFetchFirstInPriceCategorySql($categoryPriceId)
+    {
+        $database = $this->getDatabase();
+
+        $quotedPrice = $database->quote($this->oxarticles__oxprice->value);
+        $quotedCategoryId = $database->quote($categoryPriceId);
+
+        $query = "select 1 from " . $this->_getObjectViewName('oxcategories') . " where oxid=$quotedCategoryId and"
+                 . "(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= $quotedPrice and oxpriceto >= $quotedPrice)"
+                 . " or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= $quotedPrice)"
+                 . " or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= $quotedPrice)"
+                 . ")";
+
+        return $query;
     }
 
     /**
@@ -3250,28 +3273,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     protected function getDatabase()
     {
         return oxDb::getDb();
-    }
-
-    /**
-     * Create the sql for the fetchFirstInPriceCategory method.
-     *
-     * @param string                                                    $categoryPriceId The price category id.
-     * @param \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface $database        The database object.          
-     *
-     * @return string The wished sql.
-     */
-    protected function createFetchFirstInPriceCategorySql($categoryPriceId, $database)
-    {
-        $sQuotedPrice = $database->quote($this->oxarticles__oxprice->value);
-        $sQuotedCnid = $database->quote($categoryPriceId);
-
-        $query = "select 1 from " . $this->_getObjectViewName('oxcategories') . " where oxid=$sQuotedCnid and"
-                 . "(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= $sQuotedPrice and oxpriceto >= $sQuotedPrice)"
-                 . " or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= $sQuotedPrice)"
-                 . " or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= $sQuotedPrice)"
-                 . ")";
-
-        return $query;
     }
 
     /**

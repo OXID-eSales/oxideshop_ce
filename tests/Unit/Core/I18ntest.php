@@ -701,9 +701,28 @@ class I18ntest extends \OxidTestCase
     }
 
     /**
-     * base test
+     * Data provider for the test method testUpdateMultiLanguageLangDisabled.
      */
-    public function testUpdate_MLangDisabled()
+    public function dataProviderTestUpdateMultiLanguageLangDisabled()
+    {
+        return [
+            [
+                'testedLanuageId' => 0,
+                'testDescription' => 'the default language'
+            ],
+            [
+                'testedLanguageId' => 90,
+                'testDescription' => 'another language'
+            ] 
+        ];
+    }
+
+    /**
+     * base test
+     *
+     * @dataProvider dataProviderTestUpdateMultiLanguageLangDisabled
+     */
+    public function testUpdateMultiLanguageLangDisabled($testedLanuageId)
     {
         $tableName = 'oxstates';
         $extendedTableName = 'oxstates_set11';
@@ -713,57 +732,23 @@ class I18ntest extends \OxidTestCase
         $oxTitleKeyAnotherLanguage = 'oxtitle_90';
 
         $expectedUpdateSql = "update $tableName set oxid = '$oxId',oxcountryid = '',oxtitle = '$oxTitle',oxisoalpha2 = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '' where oxstates.oxid = '$oxId'";
-        $expectedInsertSql = "insert into oxstates_set11 set oxid = '$oxId',oxtitle_90 = '$oxTitleAnotherLanguage' on duplicate key update oxid = '$oxId',oxtitle_90 = '$oxTitleAnotherLanguage'";
+        $expectedInsertSql = "insert into $extendedTableName set oxid = '$oxId',oxtitle_90 = '$oxTitleAnotherLanguage' on duplicate key update oxid = '$oxId',oxtitle_90 = '$oxTitleAnotherLanguage'";
 
         $extendedI18nMock = $this->createProtectedAccessI18nMock();
         $i18nMock = $this->getMock($extendedI18nMock, array('_getLanguageSetTables', 'executeDatabaseQuery'));
+        $i18nMock->setEnableMultilang(false);
+        $i18nMock->init($tableName);
+        $i18nMock->__setFieldNames(array_merge($i18nMock->__getFieldNames(), array($oxTitleKeyAnotherLanguage => 0)));
+
+        $i18nMock->setId($oxId);
+        $i18nMock->oxstates__oxtitle = new oxField($oxTitle);
+        $i18nMock->oxstates__oxtitle_90 = new oxField($oxTitleAnotherLanguage);
+
         $i18nMock->expects($this->at(0))->method('executeDatabaseQuery')->with($this->equalTo($expectedUpdateSql))->willReturn(true);
         $i18nMock->expects($this->at(1))->method('_getLanguageSetTables')->will($this->returnValue(array($extendedTableName)));
         $i18nMock->expects($this->at(2))->method('executeDatabaseQuery')->with($this->equalTo($expectedInsertSql));
 
-        $i18nMock->setEnableMultilang(false);
-        $i18nMock->init($tableName);
-        $i18nMock->__setFieldNames(array_merge($i18nMock->__getFieldNames(), array($oxTitleKeyAnotherLanguage => 0)));
-
-        $i18nMock->setId($oxId);
-        $i18nMock->oxstates__oxtitle = new oxField($oxTitle);
-        $i18nMock->oxstates__oxtitle_90 = new oxField($oxTitleAnotherLanguage);
-
-        $i18nMock->setLanguage(0);
-
-        $i18nMock->UNITupdate();
-    }
-
-    /**
-     * base test
-     */
-    public function testUpdate_MLangDisabledAnotherLanguage()
-    {
-        $tableName = 'oxstates';
-        $tableNameExtended = 'oxstates_set11';
-        $oxId = "test_update";
-        $oxTitle = 'test_x';
-        $oxTitleAnotherLanguage = 'test_y';
-        $oxTitleKeyAnotherLanguage = 'oxtitle_90';
-
-        $expectedUpdateSql = "update $tableName set oxid = '$oxId',oxcountryid = '',oxtitle = '$oxTitle',oxisoalpha2 = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '' where oxstates.oxid = '$oxId'";
-        $expectedInsertSql = "insert into $tableNameExtended set oxid = '$oxId',oxtitle_90 = '$oxTitleAnotherLanguage' on duplicate key update oxid = '$oxId',oxtitle_90 = '$oxTitleAnotherLanguage'";
-
-        $extendedI18nMock = $this->createProtectedAccessI18nMock();
-        $i18nMock = $this->getMock($extendedI18nMock, array('_getLanguageSetTables', 'executeDatabaseQuery'));
-        $i18nMock->expects($this->at(0))->method('executeDatabaseQuery')->with($this->equalTo($expectedUpdateSql))->willReturn(true);
-        $i18nMock->expects($this->at(1))->method('_getLanguageSetTables')->will($this->returnValue(array($tableNameExtended)));
-        $i18nMock->expects($this->at(2))->method('executeDatabaseQuery')->with($this->equalTo($expectedInsertSql));
-
-        $i18nMock->setEnableMultilang(false);
-        $i18nMock->init($tableName);
-        $i18nMock->__setFieldNames(array_merge($i18nMock->__getFieldNames(), array($oxTitleKeyAnotherLanguage => 0)));
-
-        $i18nMock->setId($oxId);
-        $i18nMock->oxstates__oxtitle = new oxField($oxTitle);
-        $i18nMock->oxstates__oxtitle_90 = new oxField($oxTitleAnotherLanguage);
-
-        $i18nMock->setLanguage(90);
+        $i18nMock->setLanguage($testedLanuageId);
 
         $i18nMock->UNITupdate();
     }
@@ -812,17 +797,46 @@ class I18ntest extends \OxidTestCase
     }
 
     /**
-     * base test
+     * Data provider for the test method testUpdateMultiLanguageLangDisabled.
      */
-    public function testInsertDefaultLanguage()
+    public function dataProviderTestInsertDefaultLanguage()
+    {
+        return [
+            [
+                'languageId'      => 0,
+                'isOxTitleInParent' => true,
+                'testDescription' => 'The default language.'
+            ],
+            [
+                'languageId'      => 90,
+                'isOxTitleInParent' => false,
+                'testDescription' => 'Another language.'
+            ],
+        ];
+    }
+
+    /**
+     * base test
+     *
+     * @dataProvider dataProviderTestInsertDefaultLanguage
+     *
+     * @param int  $testedLanguageId  The language id, we want to test here.
+     * @param bool $isOxTitleInParent Is in this test the oxtitle in the parent or in the child SQL?
+     */
+    public function testInsertDefaultLanguage($testedLanguageId, $isOxTitleInParent)
     {
         $tableName = 'oxstates';
         $tableNameExtended = 'oxstates_set11';
         $oxId = "test_insert";
         $oxTitle = 'test_x';
 
-        $expectedInsertSqlParent = "Insert into $tableName set oxid = '$oxId',oxcountryid = '',oxtitle = '$oxTitle',oxisoalpha2 = ''";
-        $expectedInsertSqlChild = "insert into $tableNameExtended set oxid = '$oxId'";
+        if ($isOxTitleInParent) {
+            $expectedInsertSqlParent = "Insert into $tableName set oxid = '$oxId',oxcountryid = '',oxtitle = '$oxTitle',oxisoalpha2 = ''";
+            $expectedInsertSqlChild = "insert into $tableNameExtended set oxid = '$oxId'";
+        } else {
+            $expectedInsertSqlParent = "Insert into $tableName set oxid = '$oxId',oxcountryid = '',oxisoalpha2 = ''";
+            $expectedInsertSqlChild = "insert into $tableNameExtended set oxid = '$oxId',oxtitle_90 = '$oxTitle'";
+        }
 
         $i18nMock = $this->getMock('OxidEsales\Eshop\Core\I18n', array('executeDatabaseQuery','_getLanguageSetTables'));
         $i18nMock->expects($this->at(0))->method('executeDatabaseQuery')->with($this->equalTo($expectedInsertSqlParent))->willReturn(true);
@@ -833,38 +847,10 @@ class I18ntest extends \OxidTestCase
         $i18nMock->setId($oxId);
         $i18nMock->oxstates__oxtitle = new oxField($oxTitle);
 
-        $i18nMock->setLanguage(0);
+        $i18nMock->setLanguage($testedLanguageId);
 
         $i18nMock->UNITinsert();
     }
-
-    /**
-     * base test
-     */
-    public function testInsertAnotherLanguage()
-    {
-        $tableName = 'oxstates';
-        $tableNameExtended = 'oxstates_set11';
-        $oxId = "test_insert";
-        $oxTitle = 'test_x';
-
-        $expectedInsertSqlParent = "Insert into $tableName set oxid = '$oxId',oxcountryid = '',oxisoalpha2 = ''";
-        $expectedInsertSqlChild = "insert into $tableNameExtended set oxid = '$oxId',oxtitle_90 = '$oxTitle'";
-
-        $i18nMock = $this->getMock('oxi18n', array('_getLanguageSetTables', 'executeDatabaseQuery'));
-        $i18nMock->expects($this->at(0))->method('executeDatabaseQuery')->with($this->equalTo($expectedInsertSqlParent))->willReturn(true);
-        $i18nMock->expects($this->at(1))->method('_getLanguageSetTables')->will($this->returnValue(array($tableNameExtended)));
-        $i18nMock->expects($this->at(2))->method('executeDatabaseQuery')->with($this->equalTo($expectedInsertSqlChild))->willReturn(true);
-        $i18nMock->init($tableName);
-
-        $i18nMock->setId($oxId);
-        $i18nMock->oxstates__oxtitle = new oxField($oxTitle);
-
-        $i18nMock->setLanguage(90);
-
-        $i18nMock->UNITinsert();
-    }
-
 
     /**
      * base test

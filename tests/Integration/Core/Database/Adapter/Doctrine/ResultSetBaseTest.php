@@ -102,6 +102,27 @@ abstract class ResultSetBaseTest extends DatabaseInterfaceImplementationBaseTest
         $this->assertSame($expectedCount, $resultSet->fieldCount());
     }
 
+
+    /**
+     * Test, that an empty resultSet leads to zero iterations.
+     */
+    public function testGetIteratorEmptyResultSet()
+    {
+        $count = $this->countQueryIterations('SELECT * FROM oxvouchers');
+
+        $this->assertEquals(0, $count);
+    }
+
+    /**
+     * Test, that a non empty resultSet leads to multiple iterations.
+     */
+    public function testGetIteratorNonEmptyResultSet()
+    {
+        $count = $this->countQueryIterations('SELECT * FROM oxarticles');
+
+        $this->assertGreaterThan(200, $count);
+    }
+
     /**
      * @return array The parameters we want to use for the testFields method.
      */
@@ -417,6 +438,25 @@ abstract class ResultSetBaseTest extends DatabaseInterfaceImplementationBaseTest
             ),
             $resultSet->fields
         );
+    }
+
+    /**
+     * Get a resultSet and count the iterations of the iterator.
+     *
+     * @param string $query The query we want to check, how many iterations it will lead to.
+     *
+     * @return int The number of iterations the iterator has done.
+     */
+    protected function countQueryIterations($query)
+    {
+        $resultSet = $this->database->select($query);
+
+        $count = 0;
+        foreach ($resultSet->getIterator() as $row) {
+            $count++;
+        }
+
+        return $count;
     }
 
     /**

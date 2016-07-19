@@ -125,8 +125,6 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
 
     /**
      * @inheritdoc
-     *
-     * @todo write test for this
      */
     public function getIterator()
     {

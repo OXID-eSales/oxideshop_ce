@@ -182,7 +182,6 @@ class ShopViewValidator
             ($blEndsWithShopId && $aMatchEndsWithShopId[1] == $this->getShopId()) ||
             ($blContainsShopId && $aMatchContainsShopId[1] == $this->getShopId())
         ) {
-
             $blResult = true;
         }
 
@@ -198,12 +197,10 @@ class ShopViewValidator
     protected function _getShopViews()
     {
         if (empty($this->_aShopViews)) {
-
             $this->_aShopViews = array();
             $aAllViews = $this->_getAllViews();
 
             foreach ($aAllViews as $sView) {
-
                 if ($this->_isCurrentShopView($sView)) {
                     $this->_aShopViews[] = $sView;
                 }
@@ -221,7 +218,6 @@ class ShopViewValidator
     protected function _getValidShopViews()
     {
         if (empty($this->_aValidShopViews)) {
-
             $aTables = $this->getShopTables();
             $this->_aValidShopViews = array();
 
@@ -246,7 +242,9 @@ class ShopViewValidator
     }
 
     /**
-     * Appends possible table views to $this->_aValidShopViews variable
+     * Appends possible table views to $this->_aValidShopViews variable.
+     *
+     * @param string $tableName
      */
     protected function prepareShopTableViewNames($tableName)
     {

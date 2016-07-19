@@ -22,6 +22,7 @@
 namespace Unit\Application\Model;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use \oxRegistry;
 
 /**
@@ -192,7 +193,7 @@ class AttributelistTest extends \OxidTestCase
 
         $myDB = oxDb::getDB();
 
-        $sSql = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', 'oxbaseshop', 'test3', '3'), ('test1', 'oxbaseshop', 'test1', '1'), ('test2', 'oxbaseshop', 'test2', '2')";
+        $sSql = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', ".ShopIdCalculator::BASE_SHOP_ID.", 'test3', '3'), ('test1', ".ShopIdCalculator::BASE_SHOP_ID.", 'test1', '1'), ('test2', ".ShopIdCalculator::BASE_SHOP_ID.", 'test2', '2')";
         $myDB->execute($sSql);
 
         $sArtId = 'testArt';

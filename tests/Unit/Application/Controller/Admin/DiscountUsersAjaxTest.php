@@ -22,6 +22,7 @@
 namespace Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 
 /**
  * Tests for Discount_Users_Ajax class
@@ -35,7 +36,7 @@ class DiscountUsersAjaxTest extends \OxidTestCase
     {
         parent::setUp();
 
-        $shopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        $shopId = ShopIdCalculator::BASE_SHOP_ID;
         oxDb::getDb()->execute("insert into oxuser set oxid='_testUser1', oxusername='_testUserName1', oxshopid='$shopId'");
         oxDb::getDb()->execute("insert into oxuser set oxid='_testUser2', oxusername='_testUserName2', oxshopid='$shopId'");
         oxDb::getDb()->execute("insert into oxuser set oxid='_testUser3', oxusername='_testUserName3', oxshopid='$shopId'");

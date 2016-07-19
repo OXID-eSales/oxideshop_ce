@@ -357,6 +357,6 @@ class ActionsMainAjaxTest extends \OxidTestCase
 
     public function getShopIdTest()
     {
-        return $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        return 1;
     }
 }

@@ -24,6 +24,7 @@ namespace Unit\Application\Controller\Admin;
 use \oxField;
 use \Exception;
 use \oxDb;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use \oxTestModules;
 
 /**
@@ -44,7 +45,7 @@ class NewsletterSelectionTest extends \OxidTestCase
         parent::setUp();
         $oDB = oxDb::getDb();
 
-        $shopId = 'oxbaseshop';
+        $shopId = ShopIdCalculator::BASE_SHOP_ID;
         if ($this->getConfig()->getEdition() == 'EE') {
             $shopId = 1;
         }

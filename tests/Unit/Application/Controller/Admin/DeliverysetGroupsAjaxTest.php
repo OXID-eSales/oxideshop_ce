@@ -29,7 +29,7 @@ use \oxDb;
 class DeliverysetGroupsAjaxTest extends \OxidTestCase
 {
 
-    protected $_sShopId = 'oxbaseshop';
+    protected $_sShopId = '1';
     protected $_sGroupsView = 'oxv_oxgroups_de';
 
     /**

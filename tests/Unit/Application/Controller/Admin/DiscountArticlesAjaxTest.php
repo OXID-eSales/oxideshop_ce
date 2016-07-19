@@ -22,6 +22,7 @@
 namespace Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 
 /**
  * Tests for Discount_Article_Ajax class
@@ -38,9 +39,9 @@ class DiscountArticlesAjaxTest extends \OxidTestCase
     {
         parent::setUp();
 
-        $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove1', oxtitle='_testArticle1', oxshopid='oxbaseshop'", 'oxarticles');
-        $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove2', oxtitle='_testArticle2', oxshopid='oxbaseshop'", 'oxarticles');
-        $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove3', oxtitle='_testArticle3', oxshopid='oxbaseshop'", 'oxarticles');
+        $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove1', oxtitle='_testArticle1', oxshopid=" . ShopIdCalculator::BASE_SHOP_ID, 'oxarticles');
+        $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove2', oxtitle='_testArticle2', oxshopid=" . ShopIdCalculator::BASE_SHOP_ID, 'oxarticles');
+        $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove3', oxtitle='_testArticle3', oxshopid=" . ShopIdCalculator::BASE_SHOP_ID, 'oxarticles');
 
         $this->addToDatabase("insert into oxobject2discount set oxid='_testO2DRemove1', oxdiscountid='_testDiscount', oxobjectid = '_testObjectRemove1', oxtype = 'oxarticles'", 'oxobject2discount');
         $this->addToDatabase("insert into oxobject2discount set oxid='_testO2DRemove2', oxdiscountid='_testDiscount', oxobjectid = '_testObjectRemove2', oxtype = 'oxarticles'", 'oxobject2discount');

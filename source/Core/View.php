@@ -638,7 +638,7 @@ class View extends \oxSuperCfg
      */
     public function getShopEdition()
     {
-        return $this->getConfig()->getActiveShop()->oxshops__oxedition->value;
+        return $this->getConfig()->getEdition();
     }
 
     /**

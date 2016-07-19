@@ -586,17 +586,13 @@ class UtilsCountTest extends \OxidTestCase
 
     public function testZeroArtManufaturerCache()
     {
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $this->markTestSkipped('This test is for Community/Professional edition only.');
-        }
-
         $myUtilsTest = $this->getMock('oxUtilsCount', array('_setManufacturerCache'));
         $myUtilsTest->expects($this->once())->method('_setManufacturerCache')->with(
             $this->equalTo(
                 array(
                      '_testManufacturerId' =>
                          array(
-                             '973fb5f4ea0bcdf38b56557db40cb509' => 0,
+                             '2fb5911b89dddda329c256f56d1f60c5' => 0,
                          ),
                 )
             )

@@ -281,7 +281,7 @@ class BaseTest extends \OxidTestCase
 
     public function getUpdateShopId()
     {
-        $shopId = $this->getConfig()->getEdition() === 'EE' ? '1' : '';
+        $shopId = 1;
         return $shopId;
     }
 
@@ -1841,8 +1841,8 @@ class BaseTest extends \OxidTestCase
 
         $oField2 = oxNew('ADOFieldObject');
         $oField2->name = 'OXSHOPID';
-        $oField2->max_length = '32';
-        $oField2->type = 'varchar';
+        $oField2->max_length = '11';
+        $oField2->type = 'int';
         $oField2->scale = null;
         $oField2->not_null = true;
         $oField2->primary_key = false;
@@ -1850,12 +1850,8 @@ class BaseTest extends \OxidTestCase
         $oField2->binary = false;
         $oField2->unsigned = false;
         $oField2->has_default = false;
-        if ($this->getConfig()->getEdition() === 'EE') :
-            $oField2->max_length = '11';
-            $oField2->type = 'int';
-            $oField2->has_default = true;
-            $oField2->default_value = 1;
-        endif;
+        $oField2->has_default = true;
+        $oField2->default_value = 1;
 
         $oField3 = oxNew('ADOFieldObject');
         $oField3->name = 'OXTYPE';

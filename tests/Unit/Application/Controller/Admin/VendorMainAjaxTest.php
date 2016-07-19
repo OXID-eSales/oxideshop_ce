@@ -22,6 +22,7 @@
 namespace Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 
 /**
  * Tests for Attribute_Category_Ajax class
@@ -64,7 +65,7 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     public function getShopId()
     {
-        return $this->getConfig()->getEdition() === 'EE' ? 1 : 'oxbaseshop';
+        return ShopIdCalculator::BASE_SHOP_ID;
     }
 
     /**

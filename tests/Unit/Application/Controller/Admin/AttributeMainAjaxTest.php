@@ -44,7 +44,6 @@ class AttributeMainAjaxTest extends \OxidTestCase
         parent::setUp();
 
         if ($this->getConfig()->getEdition() !== 'EE') {
-            $this->setShopId('oxbaseshop');
             $this->setArticleViewTable('oxv_oxarticles_de');
             $this->setObject2AttributeViewTable('oxv_oxobject2attribute_de');
             $this->setObject2CategoryViewTable('oxv_oxobject2category_de');

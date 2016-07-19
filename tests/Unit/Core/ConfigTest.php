@@ -21,6 +21,7 @@
  */
 namespace Unit\Core;
 
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use \oxubase;
 
 use \oxConfig;
@@ -495,7 +496,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
 
-        $this->assertEquals('oxbaseshop', $oConfig->getBaseShopId());
+        $this->assertEquals(ShopIdCalculator::BASE_SHOP_ID, $oConfig->getBaseShopId());
     }
 
     /**
@@ -1801,7 +1802,7 @@ class ConfigTest extends \OxidTestCase
 
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
-        $this->assertEquals('oxbaseshop', $oConfig->getShopId());
+        $this->assertEquals(ShopIdCalculator::BASE_SHOP_ID, $oConfig->getShopId());
     }
 
     public function testGetUploadedFile()

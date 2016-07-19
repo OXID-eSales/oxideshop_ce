@@ -22,6 +22,7 @@
 namespace Unit\Application\Model;
 
 use modDB;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use \oxSeoEncoder;
 use \Exception;
 use \oxField;
@@ -838,7 +839,7 @@ class SeoEncoderTest extends \OxidTestCase
         $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('static'), $this->equalTo(md5('1xxx')), $this->equalTo(1));
         $oEncoder->getStaticUrl('xxx', 1, 1);
         // default params:
-        $shop = $this->getTestConfig()->getShopEdition() == 'EE' ? "1" : "oxbaseshop";
+        $shop = ShopIdCalculator::BASE_SHOP_ID;
         $oEncoder = $this->getMock('oxSeoEncoder', array('_getStaticUri', '_getFullUrl'));
         $oEncoder->expects($this->once())->method('_getStaticUri')->with($this->equalTo('xxx'), $this->equalTo($shop), $this->equalTo(oxRegistry::getLang()->getEditLanguage()))->will($this->returnValue('seourl'));
         $oEncoder->expects($this->once())->method('_getFullUrl')->with($this->equalTo('seourl'))->will($this->returnValue('fullseourl'));

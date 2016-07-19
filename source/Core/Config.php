@@ -1948,7 +1948,7 @@ class Config extends SuperConfig
      */
     public function getBaseShopId()
     {
-        return 'oxbaseshop';
+        return ShopIdCalculator::BASE_SHOP_ID;
     }
 
     /**

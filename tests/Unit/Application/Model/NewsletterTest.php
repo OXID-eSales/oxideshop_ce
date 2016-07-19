@@ -23,6 +23,7 @@ namespace Unit\Application\Model;
 
 use Exception;
 use oxException;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use \oxNewsLetter;
 use \oxEmail;
 use \oxDb;
@@ -112,7 +113,7 @@ class NewsletterTest extends \OxidTestCase
         $oDB = oxDb::getDb();
 
         $additionalFieldInQuery = '';
-        $shopId = 'oxbaseshop';
+        $shopId = ShopIdCalculator::BASE_SHOP_ID;
         if ($this->getConfig()->getEdition() === 'EE') {
             $shopId = 1;
             $additionalFieldInQuery = ", ''";
@@ -146,7 +147,7 @@ class NewsletterTest extends \OxidTestCase
       `OXTOTALNETSUM` = 3.9,
       `OXTOTALBRUTSUM` = 0,
       `OXTOTALORDERSUM` = 20.9,
-      `OXREMARK` = 'Hier können Sie uns noch etwas mitteilen.',
+      `OXREMARK` = 'Hier kÃ¶nnen Sie uns noch etwas mitteilen.',
       `OXVOUCHERDISCOUNT` = 0,
       `OXCURRENCY` = 'EUR',
       `OXCURRATE` = 1,
@@ -158,7 +159,7 @@ class NewsletterTest extends \OxidTestCase
     ";
         $oDB->Execute($sInsert);
 
-        $sInsert = "INSERT INTO `oxorderarticles` VALUES ('9a9456981a6530fe2.51471234', '9a94569819f6c7368.72892345', 1, '2080', '2080', 'Eiswürfel HERZ', 'Das Original aus Filmen wie Eis am Stil & Co.', '', 68.88, 68.88, 0, 0, '', 79.9, 0, 89.9, '', '', '', '', '0/1964_th.jpg', '1/1964_p1.jpg', '2/nopic.jpg', '3/nopic.jpg', '4/nopic.jpg', '5/nopic.jpg', 0, 0, 0x303030302d30302d3030, 0x303030302d30302d3030, 0x323030352d30372d32382030303a30303a3030, 0, 0, 0, '', '', '', '', 1, '', '', '', '{$shopId}'$additionalFieldInQuery, 0 )";
+        $sInsert = "INSERT INTO `oxorderarticles` VALUES ('9a9456981a6530fe2.51471234', '9a94569819f6c7368.72892345', 1, '2080', '2080', 'EiswÃ¼rfel HERZ', 'Das Original aus Filmen wie Eis am Stil & Co.', '', 68.88, 68.88, 0, 0, '', 79.9, 0, 89.9, '', '', '', '', '0/1964_th.jpg', '1/1964_p1.jpg', '2/nopic.jpg', '3/nopic.jpg', '4/nopic.jpg', '5/nopic.jpg', 0, 0, 0x303030302d30302d3030, 0x303030302d30302d3030, 0x323030352d30372d32382030303a30303a3030, 0, 0, 0, '', '', '', '', 1, '', '', '', '{$shopId}'$additionalFieldInQuery, 0 )";
         $oDB->Execute($sInsert);
 
         $sInsert = "INSERT INTO `oxactions2article` VALUES ('d8842e3ca1c35e146.46512345', '{$shopId}', 'oxnewsletter', '1351', 0, NOW())";

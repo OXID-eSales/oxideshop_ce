@@ -21,10 +21,10 @@
  */
 namespace Unit\Application\Model;
 
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use \oxList;
 use \oxSimpleVariant;
 use \oxArticle;
-
 use oxArticleHelper;
 use \oxField;
 use \Exception;
@@ -3048,6 +3048,7 @@ class ArticleTest extends \OxidTestCase
     {
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->oxarticles__oxvat = new oxField(7, oxField::T_RAW);
+        //$this->getConfig()->setConfigParam('aCurrencies', array(0 => 'EUR@ 1.00@ ,@ .@ EUR@ 2'));
         $oArticle->oxarticles__oxtprice = new oxField(25, oxField::T_RAW);
         $oTPrice = $oArticle->getTPrice();
         $this->assertEquals(25, $oTPrice->getBruttoPrice());
@@ -4453,10 +4454,7 @@ class ArticleTest extends \OxidTestCase
     public function testGetAttributesWithSort()
     {
         $oArticle = $this->_createArticle('_testArt', '_testVar');
-        $sShopId = "oxbaseshop";
-        if ($this->getConfig()->getEdition() === 'EE') {
-            $sShopId = "1";
-        }
+        $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         $sSql = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', '{$sShopId}', 'test3', '3')";
         $this->addToDatabase($sSql, 'oxattribute');

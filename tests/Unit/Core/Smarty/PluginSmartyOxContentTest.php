@@ -22,6 +22,7 @@
 namespace Unit\Core\Smarty;
 
 use \oxField;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use \Smarty;
 use \stdClass;
 use \oxRegistry;
@@ -57,7 +58,7 @@ class PluginSmartyOxContentTest extends \OxidTestCase
 
     public function testGetContentLoadByIdent()
     {
-        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         $aParams['ident'] = 'oxsecurityinfo';
         $oSmarty = $this->getMock("Smarty", array("fetch"));
@@ -72,7 +73,7 @@ class PluginSmartyOxContentTest extends \OxidTestCase
 
     public function testGetContentLoadByIdentLangChange()
     {
-        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         $aParams['ident'] = 'oxsecurityinfo';
         $oSmarty = $this->getMock("smarty", array("fetch"));
@@ -89,7 +90,7 @@ class PluginSmartyOxContentTest extends \OxidTestCase
 
     public function testGetContentLoadByOxId()
     {
-        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        $sShopId = ShopIdCalculator::BASE_SHOP_ID;
         $aParams['oxid'] = 'f41427a099a603773.44301043';
         $aParams['assign'] = true;
 

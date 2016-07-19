@@ -22,6 +22,7 @@
 namespace Unit\Application\Model;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use oxVoucherException;
 
 /**
@@ -159,7 +160,7 @@ class VoucherExcludeTest extends \OxidTestCase
 
         */
         $sShopFields = "`OXSHOPID`";
-        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1': "'oxbaseshop'";
+        $sShopId = ShopIdCalculator::BASE_SHOP_ID;
         $sShopValues = $sShopId;
 
         $sInsertSeriesPart = "

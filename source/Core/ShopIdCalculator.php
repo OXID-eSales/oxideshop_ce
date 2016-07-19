@@ -32,6 +32,9 @@ use oxDb;
  */
 class ShopIdCalculator
 {
+    /** Shop id which is used for CE/PE eShops. */
+    const BASE_SHOP_ID = 1;
+
     /** @var array */
     private static $urlMap;
 
@@ -53,7 +56,7 @@ class ShopIdCalculator
      */
     public function getShopId()
     {
-        return 'oxbaseshop';
+        return static::BASE_SHOP_ID;
     }
 
     /**

@@ -22,6 +22,7 @@
 namespace Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 
 /**
  * Tests for Delivery_Groups_Ajax class
@@ -253,6 +254,6 @@ class DeliverysetUsersAjaxTest extends \OxidTestCase
      */
     protected function getShopIdTest()
     {
-        return $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        return ShopIdCalculator::BASE_SHOP_ID;
     }
 }

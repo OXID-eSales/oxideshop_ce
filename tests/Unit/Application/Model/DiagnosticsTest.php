@@ -22,6 +22,7 @@
 namespace Unit\Application\Model;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 
 class DiagnosticsTest extends \OxidTestCase
 {
@@ -122,7 +123,7 @@ class DiagnosticsTest extends \OxidTestCase
         for ($i = 2; $i < 9; $i++) {
             $oDb->execute(
                 "INSERT INTO `oxarticles` (`OXID`, `OXSHOPID`, `OXPARENTID`, `OXACTIVE`, `OXACTIVEFROM`, `OXACTIVETO`, `OXARTNUM` ) VALUES " .
-                "('_testArtId" . $i . "', 'oxbaseshop', '', " . ($i % 2) . ", '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0802-85-823-7-1')"
+                "('_testArtId" . $i . "', ".ShopIdCalculator::BASE_SHOP_ID.", '', " . ($i % 2) . ", '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0802-85-823-7-1')"
             );
         }
 

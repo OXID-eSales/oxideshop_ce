@@ -22,6 +22,8 @@
 
 namespace OxidEsales\Eshop\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\ShopIdCalculator;
+
 /**
  * Admin shop manager.
  * Returns template, that arranges two other templates ("shop_list.tpl"
@@ -32,7 +34,7 @@ class ShopController extends \oxAdminView
 {
     const CURRENT_TEMPLATE = 'shop.tpl';
 
-    const SHOP_ID = 'oxbaseshop';
+    const SHOP_ID = ShopIdCalculator::BASE_SHOP_ID;
 
     /**
      * Executes parent method parent::render() and returns name of template

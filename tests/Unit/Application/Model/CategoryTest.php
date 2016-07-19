@@ -23,6 +23,7 @@ namespace Unit\Application\Model;
 
 use oxCategory;
 use oxCategoryHelper;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use oxUtilsObject;
 use \oxUtilsView;
 use \oxField;
@@ -102,7 +103,7 @@ class CategoryTest extends \OxidTestCase
      */
     private function saveParent()
     {
-        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         $sInsert = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
                    "values ('test','test','{$sShopId}','1','4','test','','','','','1','10','50')";
@@ -117,7 +118,7 @@ class CategoryTest extends \OxidTestCase
      */
     private function saveChild()
     {
-        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         $sInsert = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXPARENTID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
                    "values ('test2','test','" . $sShopId . "','test','2','3','test','','','','','1','10','50')";

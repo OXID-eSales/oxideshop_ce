@@ -24,6 +24,7 @@ namespace Integration\Seo;
 use oxBase;
 use oxDb;
 use oxField;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use oxRegistry;
 use oxSeoEncoder;
 
@@ -453,6 +454,6 @@ class SeoTest extends \OxidTestCase
      */
     protected function _getShopId()
     {
-        return $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        return ShopIdCalculator::BASE_SHOP_ID;
     }
 }

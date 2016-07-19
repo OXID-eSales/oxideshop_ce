@@ -40,8 +40,7 @@ class TimestampTest extends \OxidTestCase
             $this->cleanUpTable($aTable[1]);
         }
 
-        // OXID is not string in oxshops table !!!
-        oxDb::getDb()->execute("DELETE FROM `oxshops` WHERE `oxid` = '0'");
+        oxDb::getDb()->execute("DELETE FROM `oxshops` WHERE `oxid` = 1");
 
         parent::tearDown();
     }
@@ -103,8 +102,8 @@ class TimestampTest extends \OxidTestCase
      */
     public function testOnInsertDb($objectName, $tableName)
     {
-        $sInsertSql = "INSERT INTO `$tableName` SET `oxid` = '_testId'";
-        $sSelectSql = "SELECT `oxtimestamp` FROM `$tableName` WHERE `oxid` = '_testId'";
+        $sInsertSql = "INSERT INTO `$tableName` SET `oxid` = '".$this->formTestIdByTable($tableName)."'";
+        $sSelectSql = "SELECT `oxtimestamp` FROM `$tableName` WHERE `oxid` = '".$this->formTestIdByTable($tableName)."'";
 
         $oDb = oxDb::getDb();
 
@@ -121,9 +120,9 @@ class TimestampTest extends \OxidTestCase
      */
     public function testOnUpdateDb($objectName, $tableName, $modifyField)
     {
-        $sInsertSql = "INSERT INTO `$tableName` SET `oxid` = '_testId', `oxtimestamp` = '0000-00-00 00:00:00' ";
-        $sUpdateSql = "UPDATE `$tableName` SET `$modifyField` = '_testmodified' WHERE `oxid` = '_testId'";
-        $sSelectSql = "SELECT `oxtimestamp` FROM `$tableName` WHERE `oxid` = '_testId'";
+        $sInsertSql = "INSERT INTO `$tableName` SET `oxid` = '".$this->formTestIdByTable($tableName)."', `oxtimestamp` = '0000-00-00 00:00:00' ";
+        $sUpdateSql = "UPDATE `$tableName` SET `$modifyField` = '_testmodified' WHERE `oxid` = '".$this->formTestIdByTable($tableName)."'";
+        $sSelectSql = "SELECT `oxtimestamp` FROM `$tableName` WHERE `oxid` = '".$this->formTestIdByTable($tableName)."'";
 
         $oDb = oxDb::getDb();
 
@@ -145,12 +144,12 @@ class TimestampTest extends \OxidTestCase
         $attNameMod = $tableName . '__' . $modifyField;
 
         $oObject = oxNew($objectName);
-        $oObject->setId('_testId');
+        $oObject->setId($this->formTestIdByTable($tableName));
         $oObject->$attNameMod = new oxField('test');
         $oObject->save();
 
         $oObject = oxNew($objectName);
-        $oObject->load('_testId');
+        $oObject->load($this->formTestIdByTable($tableName));
 
         $attName = $tableName . '__oxtimestamp';
 
@@ -168,18 +167,18 @@ class TimestampTest extends \OxidTestCase
         $attNameMod = $tableName . '__' . $modifyField;
 
         $oObject = oxNew($objectName);
-        $oObject->setId('_testId');
+        $oObject->setId($this->formTestIdByTable($tableName));
         $oObject->$attName = new oxField('0000-00-00 00:00:00');
         $oObject->$attNameMod = new oxField('test');
         $oObject->save();
 
         $oObject = oxNew($objectName);
-        $oObject->load('_testId');
+        $oObject->load($this->formTestIdByTable($tableName));
         $oObject->$attNameMod = new oxField('testmodyfied');
         $oObject->save();
 
         $oObject = oxNew($objectName);
-        $oObject->load('_testId');
+        $oObject->load($this->formTestIdByTable($tableName));
 
         $this->assertTrue($oObject->$attName->value != '0000-00-00 00:00:00');
     }
@@ -198,5 +197,20 @@ class TimestampTest extends \OxidTestCase
             $sSelectSql = "SHOW COLUMNS FROM `$sTableName` LIKE 'oxtimestamp'";
             $this->assertEquals("OXTIMESTAMP", $oDb->getOne($sSelectSql), "No OXTIMESTAMP field in TABLE: $sTableName");
         }
+    }
+
+    /**
+     * @param string $tableName
+     *
+     * @return string
+     */
+    protected function formTestIdByTable($tableName)
+    {
+        $id = '_testId';
+        if ($tableName === 'oxshops') {
+            $id = 1;
+        }
+
+        return $id;
     }
 }

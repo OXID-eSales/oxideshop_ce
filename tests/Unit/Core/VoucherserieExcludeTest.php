@@ -22,6 +22,7 @@
 namespace Unit\Core;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 
 /**
  * Testing myvoucherserie class
@@ -41,7 +42,7 @@ class VoucherserieExcludeTest extends \OxidTestCase
     protected function _insertData()
     {
         $sShopIdFields = "`OXSHOPID`";
-        $sShopIdValues = $this->getTestConfig()->getShopEdition() == 'EE' ? "1" : "'oxbaseshop'";
+        $sShopIdValues = ShopIdCalculator::BASE_SHOP_ID;
 
         $sInsertSeries = "
         INSERT INTO `oxvoucherseries`

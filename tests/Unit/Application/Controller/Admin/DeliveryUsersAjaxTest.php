@@ -22,6 +22,7 @@
 namespace Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 
 /**
  * Tests for Delivery_Groups_Ajax class
@@ -29,7 +30,7 @@ use \oxDb;
 class DeliveryUsersAjaxTest extends \OxidTestCase
 {
 
-    protected $_sShopId = 'oxbaseshop';
+    protected $_sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
     /**
      * Initialize the fixture.

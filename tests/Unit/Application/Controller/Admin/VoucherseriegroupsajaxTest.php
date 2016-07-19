@@ -22,6 +22,7 @@
 namespace Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 
 /**
  * Tests for Actions_List class
@@ -38,7 +39,7 @@ class VoucherseriegroupsajaxTest extends \OxidTestCase
     {
         parent::setUp();
 
-        $shopId = $this->getConfig()->getEdition() === 'EE' ? 1 : 'oxbaseshop';
+        $shopId = ShopIdCalculator::BASE_SHOP_ID;
 
         oxDb::getDb()->execute("replace into oxobject2group set oxid='_testId1', oxshopid='$shopId', oxobjectid='_testVoucherId1', oxgroupsid='_testGroupId1'");
         oxDb::getDb()->execute("replace into oxobject2group set oxid='_testId2', oxshopid='$shopId', oxobjectid='_testVoucherId1', oxgroupsid='_testGroupId2'");

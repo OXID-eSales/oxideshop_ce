@@ -21,6 +21,7 @@
  */
 namespace Unit\Modules\Oe\Invoicepdf\Models;
 
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use \stdClass;
 use \InvoicepdfArticleSummary;
 use \oxField;
@@ -505,7 +506,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
      */
     public function testInvoicepdfOxOrder_getActShop()
     {
-        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         $invoicePdfOxOrder = $this->getProxyClass("InvoicepdfOxOrder");
         $oShop = $invoicePdfOxOrder->UNITgetActShop();

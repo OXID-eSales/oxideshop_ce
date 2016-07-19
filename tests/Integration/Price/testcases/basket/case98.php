@@ -1,7 +1,7 @@
 <?php
 /**
  * Price enter mode: netto
- * Price view mode: netto 
+ * Price view mode: netto
  * Product count: 6
  * VAT info: count of used vat =2(99% and 9%)
  * Currency rate: 1.00
@@ -12,13 +12,13 @@
  *  4.  20% discount for basket
  *  5.  35% discount for basket
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Vouchers: -
  * Wrapping:  -
  * Gift cart: -
- * Short description: 
+ * Short description:
  * Vat and rounding issue. 6 products.
  * for all products VAT=99%, spec. vat for one product 9%,  two discount for product, three discount for basket.Mode Neto-Neto
  */
@@ -34,7 +34,7 @@ $aData = array(
             'amount'                   => 3,
         ),
         1 => array (
-         // oxarticles db fields
+            // oxarticles db fields
             'oxid'                     => 1112,
             'oxprice'                  => 5.02,
             'oxvat'                    => 99,
@@ -42,7 +42,7 @@ $aData = array(
             'amount'                   => 2,
         ),
         2 => array (
-         // oxarticles db fields
+            // oxarticles db fields
             'oxid'                     => 1113,
             'oxprice'                  => 1001,
             'oxvat'                    => 99,
@@ -50,7 +50,7 @@ $aData = array(
             'amount'                   => 1,
         ),
         3 => array (
-         // oxarticles db fields
+            // oxarticles db fields
             'oxid'                     => 1114,
             'oxprice'                  => 5.02,
             'oxvat'                    => 99,
@@ -58,7 +58,7 @@ $aData = array(
             'amount'                   => 1,
         ),
         4 => array (
-         // oxarticles db fields
+            // oxarticles db fields
             'oxid'                     => 1115,
             'oxprice'                  => 100.55,
             'oxvat'                    => 99,
@@ -66,7 +66,7 @@ $aData = array(
             'amount'                   => 1,
         ),
         5 => array (
-         // oxarticles db fields
+            // oxarticles db fields
             'oxid'                     => 1116,
             'oxprice'                  => 5,
             'oxvat'                    => 9,
@@ -86,8 +86,9 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 0,
         ),
-         1 => array (
+        1 => array (
             // -10% discount for product 111, 1112
             'oxid'         => 'procdiscountfor111',
             'oxaddsum'     => -10,
@@ -96,6 +97,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 111, 1112 ),
+            'oxsort' => 1,
         ),
         2 => array (
             // 5.5% discount for product 1113, 1114
@@ -106,6 +108,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 1113, 1114, 1115 ),
+            'oxsort' => 2,
         ),
         3 => array (
             // 20% discount for basket
@@ -115,6 +118,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 3,
         ),
         4 => array (
             // 35% discount for basket
@@ -124,6 +128,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 4,
         ),
     ),
     // Additional costs
@@ -138,7 +143,7 @@ $aData = array(
                 'oxaddsumtype' => '%',
                 'oxdeltype' => 'p',
                 'oxfinalize' => 1,
-                 'oxparam'=> 0.1,
+                'oxparam'=> 0.1,
                 'oxparamend' => 99999,
             ),
         ),
@@ -159,12 +164,12 @@ $aData = array(
     'expected' => array (
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
         'articles' => array (
-             111 => array ( '0,55', '1,65' ),
-             1112 => array ( '5,52', '11,04' ),
-             1113 => array ( '945,95', '945,95' ),
-             1114 => array ( '4,74', '4,74' ),
-             1115 => array ( '95,02', '95,02' ),
-             1116 => array ( '5,00', '5,00' ),
+            111 => array ( '0,55', '1,65' ),
+            1112 => array ( '5,52', '11,04' ),
+            1113 => array ( '945,95', '945,95' ),
+            1114 => array ( '4,74', '4,74' ),
+            1115 => array ( '95,02', '95,02' ),
+            1116 => array ( '5,00', '5,00' ),
         ),
         // Expectations of other totals
         'totals' => array (

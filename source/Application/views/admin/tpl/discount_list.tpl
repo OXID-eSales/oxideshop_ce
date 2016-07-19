@@ -26,8 +26,9 @@ window.onload = function ()
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
     <colgroup>
         [{block name="admin_discount_list_colgroup"}]
-        	<col width="3%">
-            <col width="95%">
+            <col width="3%">
+            <col width="5%">
+            <col width="90%">
             <col width="2%">
         [{/block}]
     </colgroup>
@@ -53,7 +54,8 @@ window.onload = function ()
     </tr>
     <tr>
         [{block name="admin_discount_list_sorting"}]
-        	<td class="listheader first" height="15" width="30" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxdiscount', 'oxactive', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_ACTIVTITLE"}]</a></td>
+            <td class="listheader first" height="15" width="30" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxdiscount', 'oxactive', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_ACTIVTITLE"}]</a></td>
+            <td class="listheader" height="15" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxdiscount', 'oxsort', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_SORT" }]</a></td>
             <td class="listheader" height="15" colspan="2">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxdiscount', 'oxtitle', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_NAME"}]</a></td>
         [{/block}]
     </tr>
@@ -73,6 +75,7 @@ window.onload = function ()
                 [{assign var="listclass" value=listitem4}]
             [{/if}]
             <td valign="top" class="[{$listclass}][{if $listitem->oxdiscount__oxactive->value == 1}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
+            <td valign="top" align="center" class="[{ $listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxdiscount__oxid->value}]');" class="[{ $listclass}]">[{ $listitem->oxdiscount__oxsort->value }]</a></div></td>
             <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxdiscount__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxdiscount__oxtitle->value}]</a></div></td>
             <td class="[{$listclass}]">
             [{if !$readonly}]

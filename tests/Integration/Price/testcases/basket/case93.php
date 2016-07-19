@@ -68,6 +68,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 0,
         ),
          1 => array (
             // -10% discount for products 111, 1112
@@ -79,6 +80,7 @@ $aData = array(
             'oxactive' => 1,
             // If for article, specify here
             'oxarticles' => array ( 111, 1112 ),
+            'oxsort' => 1,
         ),
         2 => array (
             // 5.5% discount for product's 1113 and 1114
@@ -90,6 +92,7 @@ $aData = array(
             'oxactive' => 1,
             // If for article, specify here
             'oxarticles' => array ( 1113, 1114 ),
+            'oxsort' => 2,
         ),
         3 => array (
             // 20% discount for basket
@@ -99,6 +102,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 3,
         ),
         4 => array (
             //35% discount for basket
@@ -108,6 +112,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 4,
         ),
     ),
     // Additional costs

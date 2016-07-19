@@ -419,12 +419,17 @@ class Price
     /**
      * Sets discount to price
      *
-     * @param double $dValue discount value
-     * @param string $sType  discount type: abs or %
+     * @param double $value discount value
+     * @param string $type discount type: abs or %
+     * @param int $sort determines the discount calculation sequence
      */
-    public function setDiscount($dValue, $sType)
+    public function setDiscount($value, $type, $sort = 0)
     {
-        $this->_aDiscounts[] = array('value' => $dValue, 'type' => $sType);
+        $this->_aDiscounts[] = array(
+            'value' => $value,
+            'type' => $type,
+            'sort' => $sort
+        );
     }
 
     /**
@@ -451,10 +456,15 @@ class Price
     public function calculateDiscount()
     {
         $dPrice = $this->getPrice();
-        $aDiscounts = $this->getDiscounts();
 
-        if ($aDiscounts) {
-            foreach ($aDiscounts as $aDiscount) {
+        if ($this->_aDiscounts) {
+
+            //sorting
+            usort($this->_aDiscounts, function($a, $b) {
+                return $a['sort'] - $b['sort'];
+            });
+
+            foreach ($this->_aDiscounts as $aDiscount) {
 
                 if ($aDiscount['type'] == 'abs') {
                     $dPrice = $dPrice - $aDiscount['value'];

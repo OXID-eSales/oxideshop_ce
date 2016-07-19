@@ -449,6 +449,7 @@ $aLang =  array(
                                                  '<li><span class="userinput_or_code">itm</span>: Discount in the form of a free product. Set the amount of this product. Choose "Multiply" if the amount of discounted product in shopping cart should be multiplied with the amount of the free product.</li>'.
                                                  '</ul>',
 
+'HELP_DISCOUNT_MAIN_SORTING'                  => 'In <span class="navipath_or_inputname">Sorting</span> you can specify the sequence in which the discounts are calculated.',
 
 
 'HELP_GENERAL_SEO_ACTCAT'                     => 'You can define several SEO URLs for products: For certain categories and manufacturer pages. With <span class="navipath_or_inputname">Active Category/Vendor</span> you can select the SEO URL you want to edit.',

@@ -96,10 +96,6 @@ class Database implements DatabaseInterface
         if (array_key_exists('default', $connectionParameters)) {
             $this->connectionParameters = $this->getPdoMysqlConnectionParameters($connectionParameters['default']);
         }
-
-        if (array_key_exists('slaves', $connectionParameters)) {
-            $this->setConnectionParametersForMasterSlave($connectionParameters['slaves']);
-        }
     }
 
     /**
@@ -157,18 +153,6 @@ class Database implements DatabaseInterface
     protected function setConnection($connection)
     {
         $this->connection = $connection;
-    }
-
-    /**
-     * @todo to be implemented
-     *
-     * @param array $connectionParameters
-     */
-    protected function setConnectionParametersForMasterSlave(array $connectionParameters)
-    {
-        $wrapperClass = array('wrapperClass' => 'Doctrine\DBAL\Connections\MasterSlaveConnection');
-
-        $this->connectionParameters = array_merge($connectionParameters, $wrapperClass);
     }
 
     /**

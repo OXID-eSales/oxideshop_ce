@@ -38,7 +38,7 @@ use OxidEsales\Eshop\Core\Exception\StandardException;
 /**
  * The doctrine implementation of our database.
  *
- * @package OxidEsales\Eshop\Core\Database
+ * @package OxidEsales\Eshop\Core\Database\Adapter\Doctrine;
  */
 class Database implements DatabaseInterface
 {

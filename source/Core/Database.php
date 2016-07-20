@@ -135,6 +135,24 @@ class Database
     }
 
     /**
+     * Return the database master connection instance as a singleton.
+     * In case the shop is not allowed a master/slave setup, this function
+     * is simply a wrapper for Database::getDb.
+     *
+     * @param int $fetchMode - fetch mode default numeric - 0
+     *
+     * @throws DatabaseConnectionException error while initiating connection to DB
+     *
+     * @return DatabaseInterface
+     */
+    public static function getMaster($fetchMode = Database::FETCH_MODE_NUM)
+    {
+        $db = static::getDb($fetchMode);
+        $db->connect(true);
+        return $db;
+    }
+
+    /**
      * Sets class properties needed for a successful database connection
      *
      * @param ConfigFile $configFile The file config.inc.php wrapped in an object
@@ -168,7 +186,7 @@ class Database
     {
         self::$tblDescCache = [];
     }
-    
+
     /**
      * Extracts and returns table metadata from DB.
      * This method is extended in the Enterprise Edition.

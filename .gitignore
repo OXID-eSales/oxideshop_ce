@@ -36,6 +36,17 @@
 !/source/out/pictures/vendor/
 !/source/out/pictures/wysiwigpro/
 
+# Modules
+/source/modules/*
+!/source/modules/composer.json
+!/source/modules/functions.php
+
+# Except our own modules
+!/source/modules/oe/
+/source/modules/oe/*
+!/source/modules/oe/vendormetadata.php
+!/source/modules/oe/invoicepdf
+
 # Composer
 /vendor/
 /composer.lock

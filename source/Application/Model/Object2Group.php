@@ -62,13 +62,13 @@ class Object2Group extends \oxBase
      */
     public function save()
     {
-        $oDb = oxDb::getDb();
-        $sQ = "select 1 from oxobject2group where oxgroupsid = " . $oDb->quote($this->oxobject2group__oxgroupsid->value);
-        $sQ .= " and oxobjectid = " . $oDb->quote($this->oxobject2group__oxobjectid->value);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        $sQ = "select 1 from oxobject2group where oxgroupsid = " . $masterDb->quote($this->oxobject2group__oxgroupsid->value);
+        $sQ .= " and oxobjectid = " . $masterDb->quote($this->oxobject2group__oxobjectid->value);
 
         // does not exist
-        //must read from master, see ESDEV-3804 for details
-        if (!$oDb->getOne($sQ, false, false)) {
+        if (!$masterDb->getOne($sQ, false, false)) {
             return parent::save();
         }
     }

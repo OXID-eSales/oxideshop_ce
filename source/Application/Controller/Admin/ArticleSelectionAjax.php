@@ -69,8 +69,8 @@ class ArticleSelectionAjax extends \ajaxListComponent
         $sQ = "select oxparentid from {$sArtViewName} where oxid = " . $oDb->quote($sOxid) . " and oxparentid != '' ";
         $sQ .= "and (select count(oxobjectid) from oxobject2selectlist " .
                "where oxobjectid = " . $oDb->quote($sOxid) . ") = 0";
-        //must read from master, see ESDEV-3804 for details
-        $sParentId = oxDb::getDb()->getOne($sQ, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $sParentId = oxDb::getMaster()->getOne($sQ, false, false);
 
         // all selectlists article is in
         $sQAdd = " from oxobject2selectlist left join {$sSLViewName} " .
@@ -124,7 +124,8 @@ class ArticleSelectionAjax extends \ajaxListComponent
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddSel)) {
-            $oDb = oxDb::getDb();
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $masterDb = oxDb::getMaster();
             foreach ($aAddSel as $sAdd) {
                 $oNew = oxNew("oxBase");
                 $oNew->init("oxobject2selectlist");
@@ -133,9 +134,9 @@ class ArticleSelectionAjax extends \ajaxListComponent
                 $sOxSortField = 'oxobject2selectlist__oxsort';
                 $oNew->$sObjectIdField = new oxField($soxId);
                 $oNew->$sSelectetionIdField = new oxField($sAdd);
-                $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  {$oDb->quote($soxId)} ";
-                //must read from master, see ESDEV-3804 for details
-                $oNew->$sOxSortField = new oxField(( int ) $oDb->getOne($sSql, false, false));
+                $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  {$masterDb->quote($soxId)} ";
+                // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+                $oNew->$sOxSortField = new oxField(( int ) $masterDb->getOne($sSql, false, false));
                 $oNew->save();
             }
 

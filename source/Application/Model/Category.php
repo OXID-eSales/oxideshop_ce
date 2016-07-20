@@ -900,9 +900,9 @@ class Category extends \oxI18n implements \oxIUrl
         $this->setUpdateSeo(true);
         $this->_setUpdateSeoOnFieldChange('oxtitle');
 
-        $oDb = oxDb::getDb();
-        //must read from master, see ESDEV-3804 for details
-        $sOldParentID = $oDb->getOne("select oxparentid from oxcategories where oxid = " . $oDb->quote($this->getId()), false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        $sOldParentID = $masterDb->getOne("select oxparentid from oxcategories where oxid = " . $masterDb->quote($this->getId()), false, false);
 
         if ($this->_blIsSeoObject && $this->isAdmin()) {
             oxRegistry::get("oxSeoEncoderCategory")->markRelatedAsExpired($this);
@@ -925,16 +925,16 @@ class Category extends \oxI18n implements \oxIUrl
 
             $iTreeSize = $sOldParentRight - $sOldParentLeft + 1;
 
-            //must read from master, see ESDEV-3804 for details
-            $sNewRootID = $oDb->getOne("select oxrootid from oxcategories where oxid = " . $oDb->quote($this->oxcategories__oxparentid->value), false, false);
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $sNewRootID = $masterDb->getOne("select oxrootid from oxcategories where oxid = " . $masterDb->quote($this->oxcategories__oxparentid->value), false, false);
 
             //If empty rootID, we set it to categorys oxid
             if ($sNewRootID == "") {
                 //echo "<br>* ) Creating new root tree ( {$this->_sOXID} )";
                 $sNewRootID = $this->getId();
             }
-            //must read from master, see ESDEV-3804 for details
-            $sNewParentLeft = $oDb->getOne("select oxleft from oxcategories where oxid = " . $oDb->quote($this->oxcategories__oxparentid->value), false, false);
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $sNewParentLeft = $masterDb->getOne("select oxleft from oxcategories where oxid = " . $masterDb->quote($this->oxcategories__oxparentid->value), false, false);
 
             //if(!$sNewParentLeft){
             //the current node has become root node, (oxrootid == "oxrootid")
@@ -948,8 +948,8 @@ class Category extends \oxI18n implements \oxIUrl
                 //echo "<br>* ) Can't asign category to it's child";
 
                 //Restoring old parentid, stoping further actions
-                $sRestoreOld = "UPDATE oxcategories SET OXPARENTID = " . $oDb->quote($sOldParentID) . " WHERE oxid = " . $oDb->quote($this->getId());
-                $oDb->execute($sRestoreOld);
+                $sRestoreOld = "UPDATE oxcategories SET OXPARENTID = " . $masterDb->quote($sOldParentID) . " WHERE oxid = " . $masterDb->quote($this->getId());
+                $masterDb->execute($sRestoreOld);
 
                 return false;
             }
@@ -964,27 +964,27 @@ class Category extends \oxI18n implements \oxIUrl
 
             //echo "Size=$iTreeSize, NewStart=$iMoveAfter, delta=$iDelta";
 
-            $sAddOld = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = " . $oDb->quote($this->oxcategories__oxrootid->value) . ";";
-            $sAddNew = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = " . $oDb->quote($sNewRootID) . ";";
+            $sAddOld = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = " . $masterDb->quote($this->oxcategories__oxrootid->value) . ";";
+            $sAddNew = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = " . $masterDb->quote($sNewRootID) . ";";
 
             //Updating everything after new position
-            $oDb->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + " . $iTreeSize . ") WHERE OXLEFT >= " . $iMoveAfter . $sAddNew);
-            $oDb->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT + " . $iTreeSize . ") WHERE OXRIGHT >= " . $iMoveAfter . $sAddNew);
+            $masterDb->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + " . $iTreeSize . ") WHERE OXLEFT >= " . $iMoveAfter . $sAddNew);
+            $masterDb->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT + " . $iTreeSize . ") WHERE OXRIGHT >= " . $iMoveAfter . $sAddNew);
             //echo "<br>1.) + $iTreeSize, >= $iMoveAfter";
 
             $sChangeRootID = "";
             if ($this->oxcategories__oxrootid->value != $sNewRootID) {
                 //echo "<br>* ) changing root IDs ( {$this->oxcategories__oxrootid->value} -> {$sNewRootID} )";
-                $sChangeRootID = ", OXROOTID=" . $oDb->quote($sNewRootID);
+                $sChangeRootID = ", OXROOTID=" . $masterDb->quote($sNewRootID);
             }
 
             //Updating subtree
-            $oDb->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + " . $iDelta . "), OXRIGHT = (OXRIGHT + " . $iDelta . ") " . $sChangeRootID . " WHERE OXLEFT >= " . $sOldParentLeft . " AND OXRIGHT <= " . $sOldParentRight . $sAddOld);
+            $masterDb->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + " . $iDelta . "), OXRIGHT = (OXRIGHT + " . $iDelta . ") " . $sChangeRootID . " WHERE OXLEFT >= " . $sOldParentLeft . " AND OXRIGHT <= " . $sOldParentRight . $sAddOld);
             //echo "<br>2.) + $iDelta, >= $sOldParentLeft and <= $sOldParentRight";
 
             //Updating everything after old position
-            $oDb->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT - " . $iTreeSize . ") WHERE OXLEFT >=   " . ($sOldParentRight + 1) . $sAddOld);
-            $oDb->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT - " . $iTreeSize . ") WHERE OXRIGHT >=   " . ($sOldParentRight + 1) . $sAddOld);
+            $masterDb->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT - " . $iTreeSize . ") WHERE OXLEFT >=   " . ($sOldParentRight + 1) . $sAddOld);
+            $masterDb->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT - " . $iTreeSize . ") WHERE OXRIGHT >=   " . ($sOldParentRight + 1) . $sAddOld);
             //echo "<br>3.) - $iTreeSize, >= ".($sOldParentRight+1);
         }
 

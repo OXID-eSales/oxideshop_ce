@@ -146,14 +146,14 @@ class SelectListMainAjax extends \ajaxListComponent
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {
-            $oDb = oxDb::getDb();
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $masterDb = oxDb::getMaster();
             foreach ($aAddArticle as $sAdd) {
                 $oNewGroup = oxNew("oxBase");
                 $oNewGroup->init("oxobject2selectlist");
                 $oNewGroup->oxobject2selectlist__oxobjectid = new oxField($sAdd);
                 $oNewGroup->oxobject2selectlist__oxselnid = new oxField($soxId);
-                //must read from master, see ESDEV-3804 for details
-                $oNewGroup->oxobject2selectlist__oxsort = new oxField(( int ) $oDb->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $oDb->quote($sAdd) . " ", false, false));
+                $oNewGroup->oxobject2selectlist__oxsort = new oxField(( int ) $masterDb->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $masterDb->quote($sAdd) . " ", false, false));
                 $oNewGroup->save();
 
                 $this->onArticleAddToSelectionList($sAdd);

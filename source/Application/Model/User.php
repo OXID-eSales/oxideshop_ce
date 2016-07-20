@@ -675,13 +675,14 @@ class User extends \oxBase
         if (!$this->_blMallUsers && $this->oxuser__oxrights->value != 'malladmin') {
             $sShopSelect = ' AND oxshopid = "' . $this->getConfig()->getShopId() . '" ';
         }
-        $oDb = oxDb::getDb();
+
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
         $sSelect = 'SELECT oxid FROM ' . $this->getViewName() . '
-                    WHERE ( oxusername = ' . $oDb->quote($this->oxuser__oxusername->value) . ' ) ';
+                    WHERE ( oxusername = ' . $masterDb->quote($this->oxuser__oxusername->value) . ' ) ';
         $sSelect .= $sShopSelect;
 
-        //must read from master, see ESDEV-3804 for details
-        if (($sOxid = $oDb->getOne($sSelect, false, false))) {
+        if (($sOxid = $masterDb->getOne($sSelect, false, false))) {
             // update - set oxid
             $this->setId($sOxid);
 
@@ -831,8 +832,9 @@ class User extends \oxBase
         if (!$this->_blMallUsers) {
             $sSelect .= " and oxshopid = '{$sShopID}' ";
         }
-        //must read from master, see ESDEV-3804 for details
-        $sOXID = $oDb->getOne($sSelect, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        $sOXID = $masterDb ->getOne($sSelect, false, false);
 
         // user without password found - lets use
         if (isset($sOXID) && $sOXID) {
@@ -841,8 +843,8 @@ class User extends \oxBase
         } elseif ($this->_blMallUsers) {
             // must be sure if there is no duplicate user
             $sQ = "select oxid from oxuser where oxusername = " . $oDb->quote($this->oxuser__oxusername->value) . " and oxusername != '' ";
-            //must read from master, see ESDEV-3804 for details
-            if ($oDb->getOne($sQ, false, false)) {
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            if ($masterDb->getOne($sQ, false, false)) {
                 /** @var oxUserException $oEx */
                 $oEx = oxNew('oxUserException');
                 $oLang = oxRegistry::getLang();
@@ -1656,16 +1658,16 @@ class User extends \oxBase
     public function checkIfEmailExists($sEmail)
     {
         $myConfig = $this->getConfig();
-        $oDb = oxDb::getDb();
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
         $iShopId = $myConfig->getShopId();
         $blExists = false;
 
-        $sQ = 'select oxshopid, oxrights, oxpassword from oxuser where oxusername = ' . $oDb->quote($sEmail);
+        $sQ = 'select oxshopid, oxrights, oxpassword from oxuser where oxusername = ' . $masterDb->quote($sEmail);
         if (($sOxid = $this->getId())) {
-            $sQ .= " and oxid <> " . $oDb->quote($sOxid);
+            $sQ .= " and oxid <> " . $masterDb->quote($sOxid);
         }
-        //must read from master, see ESDEV-3804 for details
-        $oRs = $oDb->select($sQ, false, false);
+        $oRs = $masterDb->select($sQ, false, false);
         if ($oRs != false && $oRs->count() > 0) {
 
             if ($this->_blMallUsers) {
@@ -2087,8 +2089,9 @@ class User extends \oxBase
         $oDb = oxDb::getDb();
         $iPoints = $this->getConfig()->getConfigParam('dPointsForRegistration');
         // check if this invitation is still not accepted
-        //must read from master, see ESDEV-3804 for details
-        $iPending = $oDb->getOne("select count(oxuserid) from oxinvitations where oxuserid = " . $oDb->quote($sUserId) . " and md5(oxemail) = " . $oDb->quote($sRecEmail) . " and oxpending = 1 and oxaccepted = 0", false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        $iPending = $masterDb->getOne("select count(oxuserid) from oxinvitations where oxuserid = " . $oDb->quote($sUserId) . " and md5(oxemail) = " . $oDb->quote($sRecEmail) . " and oxpending = 1 and oxaccepted = 0", false, false);
         if ($iPoints && $iPending) {
             $this->oxuser__oxpoints = new oxField($iPoints, oxField::T_RAW);
             if ($blSet = $this->save()) {

@@ -222,12 +222,12 @@ class RecommendationList extends \oxBase implements \oxIUrl
     {
         $blAdd = false;
         if ($sOXID) {
-            $oDb = oxDb::getDb();
-            //must read from master, see ESDEV-3804 for details
-            if (!$oDb->getOne("select oxid from oxobject2list where oxobjectid=" . $oDb->quote($sOXID) . " and oxlistid=" . $oDb->quote($this->getId()), false, false)) {
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $masterDb = oxDb::getMaster();
+            if (!$masterDb->getOne("select oxid from oxobject2list where oxobjectid=" . $masterDb->quote($sOXID) . " and oxlistid=" . $masterDb->quote($this->getId()), false, false)) {
                 $sUid = oxUtilsObject::getInstance()->generateUID();
-                $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $oDb->quote($sOXID) . ", " . $oDb->quote($this->getId()) . ", " . $oDb->quote($sDesc) . " )";
-                $blAdd = $oDb->execute($sQ);
+                $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $masterDb->quote($sOXID) . ", " . $masterDb->quote($this->getId()) . ", " . $masterDb->quote($sDesc) . " )";
+                $blAdd = $masterDb->execute($sQ);
             }
         }
 

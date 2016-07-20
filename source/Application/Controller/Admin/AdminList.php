@@ -276,9 +276,9 @@ class AdminList extends \oxAdminView
         // removing order by
         $sql = $stringModifier->preg_replace('/order by .*$/i', '', $sql);
 
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         // con of list items which fits current search conditions
-        //must read from master, see ESDEV-3804 for details
-        $this->_iListSize = oxDb::getDb()->getOne($sql, false, false);
+        $this->_iListSize = oxDb::getMaster()->getOne($sql, false, false);
 
         // set it into session that other frames know about size of DB
         oxRegistry::getSession()->setVariable('iArtCnt', $this->_iListSize);

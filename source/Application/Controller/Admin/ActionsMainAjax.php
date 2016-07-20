@@ -190,15 +190,16 @@ class ActionsMainAjax extends \ajaxListComponent
             $aArticles = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        $oDb = oxDb::getDb();
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
         $sArtTable = $this->_getViewName('oxarticles');
         $sQ = "select max(oxactions2article.oxsort) from oxactions2article join {$sArtTable} " .
               "on {$sArtTable}.oxid=oxactions2article.oxartid " .
-              "where oxactions2article.oxactionid = " . $oDb->quote($soxId) .
+              "where oxactions2article.oxactionid = " . $masterDb->quote($soxId) .
               " and oxactions2article.oxshopid = '" . $myConfig->getShopId() .
               "'and $sArtTable.oxid is not null";
-        //must read from master, see ESDEV-3804 for details
-        $iSort = ((int) $oDb->getOne($sQ, false, false)) + 1;
+
+        $iSort = ((int) $masterDb->getOne($sQ, false, false)) + 1;
 
         $articleAdded = false;
         if ($soxId && $soxId != "-1" && is_array($aArticles)) {

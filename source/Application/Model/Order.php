@@ -1628,8 +1628,8 @@ class Order extends \oxBase
             $sSelect .= 'and oxorderdate like "' . date('Y-m-d') . '%" ';
         }
 
-        //must read from master, see ESDEV-3804 for details
-        return ( double ) oxDb::getDb()->getOne($sSelect, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        return ( double ) oxDb::getMaster()->getOne($sSelect, false, false);
     }
 
     /**
@@ -1648,8 +1648,8 @@ class Order extends \oxBase
             $sSelect .= 'and oxorderdate like "' . date('Y-m-d') . '%" ';
         }
 
-        //must read from master, see ESDEV-3804 for details
-        return ( int ) oxDb::getDb()->getOne($sSelect, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        return ( int ) oxDb::getMaster()->getOne($sSelect, false, false);
     }
 
 
@@ -1666,9 +1666,9 @@ class Order extends \oxBase
             return false;
         }
 
-        $oDb = oxDb::getDb();
-        //must read from master, see ESDEV-3804 for details
-        if ($oDb->getOne('select oxid from oxorder where oxid = ' . $oDb->quote($sOxId), false, false)) {
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        if ($masterDb->getOne('select oxid from oxorder where oxid = ' . $masterDb->quote($sOxId), false, false)) {
             return true;
         }
 
@@ -1805,10 +1805,10 @@ class Order extends \oxBase
      */
     public function getLastUserPaymentType($sUserId)
     {
-        $oDb = oxDb::getDb();
-        $sQ = 'select oxorder.oxpaymenttype from oxorder where oxorder.oxshopid="' . $this->getConfig()->getShopId() . '" and oxorder.oxuserid=' . $oDb->quote($sUserId) . ' order by oxorder.oxorderdate desc ';
-        //must read from master, see ESDEV-3804 for details
-        $sLastPaymentId = $oDb->getOne($sQ, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        $sQ = 'select oxorder.oxpaymenttype from oxorder where oxorder.oxshopid="' . $this->getConfig()->getShopId() . '" and oxorder.oxuserid=' . $masterDb->quote($sUserId) . ' order by oxorder.oxorderdate desc ';
+        $sLastPaymentId = $masterDb->getOne($sQ, false, false);
 
         return $sLastPaymentId;
     }
@@ -2090,16 +2090,17 @@ class Order extends \oxBase
         if ($oBasket->getPaymentId() == 'oxempty') {
             return;
         }
-        $oDb = oxDb::getDb();
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
 
         $oDelSet = oxNew("oxdeliveryset");
         $sTable = $oDelSet->getViewName();
 
         $sQ = "select 1 from {$sTable} where {$sTable}.oxid=" .
-              $oDb->quote($oBasket->getShippingId()) . " and " . $oDelSet->getSqlActiveSnippet();
+              $masterDb->quote($oBasket->getShippingId()) . " and " . $oDelSet->getSqlActiveSnippet();
 
-        //must read from master, see ESDEV-3804 for details
-        if (!$oDb->getOne($sQ, false, false)) {
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        if (!$masterDb->getOne($sQ, false, false)) {
             // throwing exception
             return self::ORDER_STATE_INVALIDDELIVERY;
         }
@@ -2115,16 +2116,16 @@ class Order extends \oxBase
      */
     public function validatePayment($oBasket)
     {
-        $oDb = oxDb::getDb();
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
 
         $oPayment = oxNew("oxpayment");
         $sTable = $oPayment->getViewName();
 
         $sQ = "select 1 from {$sTable} where {$sTable}.oxid=" .
-              $oDb->quote($oBasket->getPaymentId()) . " and " . $oPayment->getSqlActiveSnippet();
+              $masterDb->quote($oBasket->getPaymentId()) . " and " . $oPayment->getSqlActiveSnippet();
 
-        //must read from master, see ESDEV-3804 for details
-        if (!$oDb->getOne($sQ, false, false)) {
+        if (!$masterDb->getOne($sQ, false, false)) {
             return self::ORDER_STATE_INVALIDPAYMENT;
         }
     }

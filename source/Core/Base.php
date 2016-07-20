@@ -908,11 +908,11 @@ class Base extends \oxSuperCfg
         }
 
         $viewName = $this->getCoreTableName();
-        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $query = "select {$this->_sExistKey} from {$viewName} where {$this->_sExistKey} = " . $database->quote($oxid);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster(oxDb::FETCH_MODE_ASSOC);
+        $query = "select {$this->_sExistKey} from {$viewName} where {$this->_sExistKey} = " . $masterDb->quote($oxid);
 
-        //must read from master, see ESDEV-3804 for details
-        return ( bool ) $database->getOne($query, false, false);
+        return ( bool ) $masterDb->getOne($query, false, false);
     }
 
     /**

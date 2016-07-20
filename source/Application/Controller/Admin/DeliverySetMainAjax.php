@@ -111,11 +111,12 @@ class DeliverySetMainAjax extends \ajaxListComponent
             $aChosenSets = $this->_getAll($this->_addFilter("select $sDeliveryViewName.oxid " . $this->_getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenSets)) {
-            $oDb = oxDb::getDb();
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $masterDb = oxDb::getMaster();
             foreach ($aChosenSets as $sChosenSet) {
                 // check if we have this entry already in
-                //must read from master, see ESDEV-3804 for details
-                $sID = $oDb->getOne("select oxid from oxdel2delset where oxdelid =  " . $oDb->quote($sChosenSet) . " and oxdelsetid = " . $oDb->quote($soxId), false, false);
+                // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+                $sID = $masterDb->getOne("select oxid from oxdel2delset where oxdelid =  " . $masterDb->quote($sChosenSet) . " and oxdelsetid = " . $masterDb->quote($soxId), false, false);
                 if (!isset($sID) || !$sID) {
                     $oDel2delset = oxNew('oxBase');
                     $oDel2delset->init('oxdel2delset');

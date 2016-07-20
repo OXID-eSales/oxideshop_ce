@@ -789,28 +789,28 @@ class ArticleList extends \oxList
         $blUpdated = false;
 
         if ($blForceUpdate || $this->_canUpdatePrices()) {
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $masterDb = oxDb::getMaster();
 
-            $oDb = oxDb::getDb();
-
-            $oDb->startTransaction();
+            $masterDb->startTransaction();
 
             $sCurrUpdateTime = date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime());
 
             // Collect article id's for later recalculation.
             $sQ = "SELECT `oxid` FROM `oxarticles`
                    WHERE `oxupdatepricetime` > 0 AND `oxupdatepricetime` <= '{$sCurrUpdateTime}'";
-            //must read from master, see ESDEV-3804 for details
-            $aUpdatedArticleIds = $oDb->getCol($sQ, false, false);
+            
+            $aUpdatedArticleIds = $masterDb->getCol($sQ, false, false);
 
             // updating oxarticles
-            $blUpdated = $this->updateOxArticles($sCurrUpdateTime, $oDb);
+            $blUpdated = $this->updateOxArticles($sCurrUpdateTime, $masterDb);
 
             // renew update time in case update is not forced
             if (!$blForceUpdate) {
                 $this->renewPriceUpdateTime();
             }
 
-            $oDb->commitTransaction();
+            $masterDb->commitTransaction();
 
             // recalculate oxvarminprice and oxvarmaxprice for parent
             if (is_array($aUpdatedArticleIds)) {
@@ -1163,11 +1163,13 @@ class ArticleList extends \oxList
      */
     protected function fetchNextUpdateTime()
     {
-        $oDb = oxDb::getDb();
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        
         // fetching next update time
         $sQ = $this->getQueryToFetchNextUpdateTime();
-        //must read from master, see ESDEV-3804 for details
-        $iTimeToUpdate = $oDb->getOne(sprintf($sQ, "`oxarticles`"), false, false);
+        
+        $iTimeToUpdate = $masterDb->getOne(sprintf($sQ, "`oxarticles`"), false, false);
 
         return $iTimeToUpdate;
     }

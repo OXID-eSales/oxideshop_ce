@@ -173,16 +173,16 @@ class ArticleExtendAjax extends \ajaxListComponent
         }
 
         if (isset($categoriesToAdd) && is_array($categoriesToAdd)) {
-            $database = oxDb::getDb();
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $masterDb = oxDb::getMaster();
 
             $objectToCategory = oxNew('oxobject2category');
 
             foreach ($categoriesToAdd as $sAdd) {
                 // check, if it's already in, then don't add it again
                 $sSelect = "select 1 from " . $objectToCategoryView . " as oxobject2category where oxobject2category.oxcatnid= "
-                           . $database->quote($sAdd) . " and oxobject2category.oxobjectid = " . $database->quote($oxId) . " ";
-                //must read from master, see ESDEV-3804 for details
-                if ($database->getOne($sSelect, false, false)) {
+                           . $masterDb->quote($sAdd) . " and oxobject2category.oxobjectid = " . $masterDb->quote($oxId) . " ";
+                if ($masterDb->getOne($sSelect, false, false)) {
                     continue;
                 }
 

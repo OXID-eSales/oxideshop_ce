@@ -281,20 +281,21 @@ class BasketReservation extends \oxSuperCfg
      */
     public function discardUnusedReservations($iLimit)
     {
-        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster(oxDb::FETCH_MODE_ASSOC);
         $iStartTime = oxRegistry::get("oxUtilsDate")->getTime() - (int) $this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
-        //must read from master, see ESDEV-3804 for details
-        $oRs = $oDb->select("select oxid from oxuserbaskets where oxtitle = 'reservations' and oxupdate <= $iStartTime limit $iLimit", false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $oRs = $masterDb->select("select oxid from oxuserbaskets where oxtitle = 'reservations' and oxupdate <= $iStartTime limit $iLimit", false, false);
         if ($oRs->EOF) {
             return;
         }
         $aFinished = array();
         while (!$oRs->EOF) {
-            $aFinished[] = $oDb->quote($oRs->fields['oxid']);
+            $aFinished[] = $masterDb->quote($oRs->fields['oxid']);
             $oRs->fetchRow();
         }
-        //must read from master, see ESDEV-3804 for details
-        $oRs = $oDb->select("select oxartid, oxamount from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")", false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $oRs = $masterDb->select("select oxartid, oxamount from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")", false, false);
         while (!$oRs->EOF) {
             $oArticle = oxNew('oxArticle');
             if ($oArticle->load($oRs->fields['oxartid'])) {
@@ -302,11 +303,11 @@ class BasketReservation extends \oxSuperCfg
             }
             $oRs->fetchRow();
         }
-        $oDb->execute("delete from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")");
-        $oDb->execute("delete from oxuserbaskets where oxid in (" . implode(",", $aFinished) . ")");
+        $masterDb->execute("delete from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")");
+        $masterDb->execute("delete from oxuserbaskets where oxid in (" . implode(",", $aFinished) . ")");
 
         // cleanup basket history also..
-        $oDb->execute("delete from oxuserbaskets where oxtitle = 'savedbasket' and oxupdate <= $iStartTime");
+        $masterDb->execute("delete from oxuserbaskets where oxtitle = 'savedbasket' and oxupdate <= $iStartTime");
 
         $this->_aCurrentlyReserved = null;
     }

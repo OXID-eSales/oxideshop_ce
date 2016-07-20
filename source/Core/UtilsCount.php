@@ -330,8 +330,8 @@ class UtilsCount extends \oxSuperCfg
             $sTable = getViewName('oxcategories');
             $sSelect = "select $sTable.oxid from $sTable where " . (double) $iPrice . " >= $sTable.oxpricefrom and " . (double) $iPrice . " <= $sTable.oxpriceto ";
 
-            //must read from master, see ESDEV-3804 for details
-            $rs = oxDb::getDb()->select($sSelect, false, false);
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $rs = oxDb::getMaster()->select($sSelect, false, false);
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     if (isset($aCatData[$rs->fields[0]])) {

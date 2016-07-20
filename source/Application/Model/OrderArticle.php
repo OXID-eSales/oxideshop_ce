@@ -183,12 +183,12 @@ class OrderArticle extends \oxBase implements ArticleInterface
      */
     protected function _getArtStock($dAddAmount = 0, $blAllowNegativeStock = false)
     {
-        $oDb = oxDb::getDb();
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
 
         // #1592A. must take real value
-        $sQ = 'select oxstock from oxarticles where oxid = ' . $oDb->quote($this->oxorderarticles__oxartid->value);
-        //must read from master, see ESDEV-3804 for details
-        $iStockCount = ( float ) $oDb->getOne($sQ, false, false);
+        $sQ = 'select oxstock from oxarticles where oxid = ' . $masterDb->quote($this->oxorderarticles__oxartid->value);
+        $iStockCount = ( float ) $masterDb->getOne($sQ, false, false);
 
         $iStockCount += $dAddAmount;
 

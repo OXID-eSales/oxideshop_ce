@@ -112,9 +112,10 @@ class Rating extends \oxBase
                    . $sQuerySnipet . "
             LIMIT 1";
 
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $fRating = 0;
-        //must read from master, see ESDEV-3804 for details
-        if ($fRating = $oDb->getOne($sSelect, false, false)) {
+        $masterDb = oxDb::getMaster();
+        if ($fRating = $masterDb->getOne($sSelect, false, false)) {
             $fRating = round($fRating, 1);
         }
 
@@ -151,8 +152,9 @@ class Rating extends \oxBase
             LIMIT 1";
 
         $iCount = 0;
-        //must read from master, see ESDEV-3804 for details
-        $iCount = $oDb->getOne($sSelect, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        $iCount = $masterDb->getOne($sSelect, false, false);
 
         return $iCount;
     }

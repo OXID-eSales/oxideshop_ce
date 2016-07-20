@@ -4549,11 +4549,11 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     protected function _deleteVariantRecords($sOXID)
     {
         if ($sOXID) {
-            $oDb = oxDb::getDb();
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $masterDb = oxDb::getMaster();
             //collect variants to remove recursively
             $sQ = 'select oxid from ' . $this->getViewName() . ' where oxparentid = ' . $oDb->quote($sOXID);
-            //must read from master, see ESDEV-3804 for details
-            $rs = $oDb->select($sQ, false, false);
+            $rs = $masterDb->select($sQ, false, false);
             $oArticle = oxNew("oxArticle");
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
@@ -4623,21 +4623,20 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     protected function _onChangeUpdateStock($sParentID)
     {
         if ($sParentID) {
-            $oDb = oxDb::getDb();
-            $sParentIdQuoted = $oDb->quote($sParentID);
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $masterDb = oxDb::getMaster();
+            $sParentIdQuoted = $masterDb->quote($sParentID);
             $sQ = 'select oxstock, oxvendorid, oxmanufacturerid from oxarticles where oxid = ' . $sParentIdQuoted;
-            //must read from master, see ESDEV-3804 for details
-            $rs = $oDb->select($sQ, false, false);
+            $rs = $masterDb->select($sQ, false, false);
             $iOldStock = $rs->fields[0];
             $iVendorID = $rs->fields[1];
             $iManufacturerID = $rs->fields[2];
 
             $sQ = 'select sum(oxstock) from ' . $this->getViewName(true) . ' where oxparentid = ' . $sParentIdQuoted . ' and ' . $this->getSqlActiveSnippet(true) . ' and oxstock > 0 ';
-            //must read from master, see ESDEV-3804 for details
-            $iStock = (float) $oDb->getOne($sQ, false, false);
+            $iStock = (float) $masterDb->getOne($sQ, false, false);
 
             $sQ = 'update oxarticles set oxvarstock = ' . $iStock . ' where oxid = ' . $sParentIdQuoted;
-            $oDb->execute($sQ);
+            $masterDb->execute($sQ);
 
             //now lets update category counts
             //first detect stock status change for this article (to or from 0)
@@ -4683,14 +4682,15 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     protected function _onChangeUpdateVarCount($sParentID)
     {
         if ($sParentID) {
-            $oDb = oxDb::getDb();
-            $sParentIdQuoted = $oDb->quote($sParentID);
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $masterDb = oxDb::getMaster();
+
+            $sParentIdQuoted = $masterDb->quote($sParentID);
             $sQ = "select count(*) as varcount from oxarticles where oxparentid = {$sParentIdQuoted}";
-            //must read from master, see ESDEV-3804 for details
-            $iVarCount = (int) $oDb->getOne($sQ, false, false);
+            $iVarCount = (int) $masterDb->getOne($sQ, false, false);
 
             $sQ = "update oxarticles set oxvarcount = {$iVarCount} where oxid = {$sParentIdQuoted}";
-            $oDb->execute($sQ);
+            $masterDb->execute($sQ);
         }
     }
 
@@ -4712,16 +4712,18 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
                 WHERE ' . $this->getSqlActiveSnippet(true) . '
                     AND ( `oxarticles`.`oxparentid` = ' . $oDb->quote($sParentId) . ' )';
             $oDb->setFetchMode(oxDb::FETCH_MODE_ASSOC);
-            //must read from master, see ESDEV-3804 for details
-            $aPrices = $oDb->getRow($sQ, false, false);
+            
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $masterDb = oxDb::getMaster(oxDb::FETCH_MODE_ASSOC);
+            $aPrices = $masterDb->getRow($sQ, false, false);
             if (!is_null($aPrices['varminprice']) || !is_null($aPrices['varmaxprice'])) {
                 $sQ = '
                     UPDATE `oxarticles`
                     SET
-                        `oxvarminprice` = ' . $oDb->quote($aPrices['varminprice']) . ',
-                        `oxvarmaxprice` = ' . $oDb->quote($aPrices['varmaxprice']) . '
+                        `oxvarminprice` = ' . $masterDb->quote($aPrices['varminprice']) . ',
+                        `oxvarmaxprice` = ' . $masterDb->quote($aPrices['varmaxprice']) . '
                     WHERE
-                        `oxid` = ' . $oDb->quote($sParentId);
+                        `oxid` = ' . $masterDb->quote($sParentId);
             } else {
                 $sQ = '
                     UPDATE `oxarticles`
@@ -4729,9 +4731,9 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
                         `oxvarminprice` = `oxprice`,
                         `oxvarmaxprice` = `oxprice`
                     WHERE
-                        `oxid` = ' . $oDb->quote($sParentId);
+                        `oxid` = ' . $masterDb->quote($sParentId);
             }
-            $oDb->execute($sQ);
+            $masterDb->execute($sQ);
         }
     }
 

@@ -40,22 +40,23 @@ class Counter
      */
     public function getNext($ident)
     {
-        $db = oxDb::getDb();
-        $db->startTransaction();
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        $masterDb->startTransaction();
 
-        $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $db->quote($ident) . " FOR UPDATE";
+        $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $masterDb->quote($ident) . " FOR UPDATE";
 
-        //must read from master, see ESDEV-3804 for details
-        if (($cnt = $db->getOne($query, false, false)) === false) {
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        if (($cnt = $masterDb->getOne($query, false, false)) === false) {
             $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, '0')";
-            $db->execute($query, array($ident));
+            $masterDb->execute($query, array($ident));
         }
 
         $cnt = ((int) $cnt) + 1;
         $query = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ?";
-        $db->execute($query, array($cnt, $ident));
+        $masterDb->execute($query, array($cnt, $ident));
 
-        $db->commitTransaction();
+        $masterDb->commitTransaction();
 
         return $cnt;
     }
@@ -71,21 +72,22 @@ class Counter
      */
     public function update($ident, $count)
     {
-        $db = oxDb::getDb();
-        $db->startTransaction();
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        $masterDb->startTransaction();
 
-        $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $db->quote($ident) . " FOR UPDATE";
+        $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $masterDb->quote($ident) . " FOR UPDATE";
 
-        //must read from master, see ESDEV-3804 for details
-        if (($cnt = $db->getOne($query, false, false)) === false) {
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        if (($cnt = $masterDb->getOne($query, false, false)) === false) {
             $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, ?)";
-            $result = $db->execute($query, array($ident, $count));
+            $result = $masterDb->execute($query, array($ident, $count));
         } else {
             $query = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ? AND `oxcount` < ?";
-            $result = $db->execute($query, array($count, $ident, $count));
+            $result = $masterDb->execute($query, array($count, $ident, $count));
         }
 
-        $db->commitTransaction();
+        $masterDb->commitTransaction();
 
         return $result;
     }

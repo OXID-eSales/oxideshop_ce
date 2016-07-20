@@ -395,7 +395,7 @@ class ArticleSeo extends \Object_Seo
                    oxseo.oxobjectid = " . $oDb->quote($sId) . " and
                    oxseo.oxshopid = '{$iShopId}' and oxseo.oxlang = {$iLang} and oxparams = " . $oDb->quote($sParam);
 
-        //must read from master, see ESDEV-3804 for details
-        return (bool) oxDb::getDb()->getOne($sQ, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        return (bool) oxDb::getMaster()->getOne($sQ, false, false);
     }
 }

@@ -264,8 +264,8 @@ class OrderArticle extends \oxAdminDetails
 
         //get article id
         $sQ = "select oxartid from oxorderarticles where oxid = " . $oDb->quote($sOrderArtId);
-        //must read from master, see ESDEV-3804 for details
-        if (($sArtId = oxDb::getDb()->getOne($sQ, false, false))) {
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        if (($sArtId = oxDb::getMaster()->getOne($sQ, false, false))) {
             $oOrder = oxNew('oxorder');
             if ($oOrder->load($this->getEditObjectId())) {
                 $oOrder->recalculateOrder();

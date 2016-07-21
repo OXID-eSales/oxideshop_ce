@@ -119,14 +119,14 @@ class Database implements DatabaseInterface
         try {
             $connection = DriverManager::getConnection($connectionParameters, $configuration);
             $forceMaster ? $connection->connect('master') : $connection->connect();
-            if (! $connection->isConnected()) {
-                $dsn = $connection->getDriver()->getName() .
-                       '://' .
-                       '****:****@' .
-                       $connection->getHost() . ':' .  $connection->getPort() .
-                       '/' . $connection->getDatabase();
-                throw new DBALException('Not connected to database. dsn: ' . $dsn);
-            }
+//            if (! $connection->isConnected()) {
+//                $dsn = $connection->getDriver()->getName() .
+//                       '://' .
+//                       '****:****@' .
+//                       $connection->getHost() . ':' .  $connection->getPort() .
+//                       '/' . $connection->getDatabase();
+//                throw new DBALException('Not connected to database. dsn: ' . $dsn);
+//            }
             $this->setConnection($connection);
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);

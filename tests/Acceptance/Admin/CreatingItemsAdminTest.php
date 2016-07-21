@@ -1472,11 +1472,11 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->selectAndWait("test_editlanguage", "label=English");
         //Extended tab
         $this->openTab("Extended");
-        $this->type("mediaUrl", "http://www.youtube.com/watch?v=OPqV4ipyMsg");
+        $this->type("mediaUrl", "https://www.youtube.com/watch?v=iQ69Hv8WP_g");
         $this->clickAndWait("save");
         $this->assertTextPresent("Please enter description");
         $this->type("mediaDesc", "media file [EN]_šÄßüл");
-        $this->type("mediaUrl", "http://www.youtube.com/watch?v=OPqV4ipyMsg");
+        $this->type("mediaUrl", "https://www.youtube.com/watch?v=iQ69Hv8WP_g");
         $this->clickAndWait("save");
         $this->assertEquals("media file [EN]_šÄßüл", $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"));
         $this->selectAndWait("test_editlanguage", "label=Deutsch");
@@ -1487,7 +1487,7 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->selectAndWait("test_editlanguage", "label=English");
         $this->assertEquals("media file [EN]_šÄßüл", $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"));
         $this->type("mediaDesc", "second media file");
-        $this->type("mediaUrl", "http://www.youtube.com/watch?v=OPqV4ipyMsg");
+        $this->type("mediaUrl", "https://www.youtube.com/watch?v=iQ69Hv8WP_g");
         $this->clickAndWait("save");
         $this->assertElementPresent("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input");
         $this->assertElementPresent("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[3]/input");

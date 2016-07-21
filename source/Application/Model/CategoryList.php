@@ -581,7 +581,7 @@ class CategoryList extends \oxList
         $masterDb->execute("update oxcategories set oxleft = 1, oxright = 2 where oxparentid = 'oxrootid' and $sWhere");
 
         // Get all root categories
-        $rs = $masterDb->select("select oxid, oxtitle from oxcategories where oxparentid = 'oxrootid' and $sWhere order by oxsort", false, false);
+        $rs = $masterDb->select("select oxid, oxtitle from oxcategories where oxparentid = 'oxrootid' and $sWhere order by oxsort", false);
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $this->_aUpdateInfo[] = "<b>Processing : " . $rs->fields[1] . "</b>(" . $rs->fields[0] . ")<br>";
@@ -641,7 +641,7 @@ class CategoryList extends \oxList
 
         // Get sub categories of root categories
         $rs = $masterDb->execute("update oxcategories set oxrootid = " . $masterDb->quote($thisRoot) . " where oxparentid = " . $masterDb->quote($oxRootId));
-        $rs = $masterDb->select("select oxid, oxparentid from oxcategories where oxparentid = " . $masterDb->quote($oxRootId) . " order by oxsort", false, false);
+        $rs = $masterDb->select("select oxid, oxparentid from oxcategories where oxparentid = " . $masterDb->quote($oxRootId) . " order by oxsort", false);
         // If there are sub categories
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
@@ -650,7 +650,7 @@ class CategoryList extends \oxList
                 $sActOxidQuoted = $masterDb->quote($actOxid);
 
                 // Get the data of the parent category to the current Cat
-                $rs3 = $masterDb->select("select oxrootid, oxright from oxcategories where oxid = " . $masterDb->quote($parentId), false, false);
+                $rs3 = $masterDb->select("select oxrootid, oxright from oxcategories where oxid = " . $masterDb->quote($parentId), false);
                 while (!$rs3->EOF) {
                     $parentOxRootId = $rs3->fields[0];
                     $parentRight = (int) $rs3->fields[1];

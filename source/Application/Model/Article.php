@@ -4553,7 +4553,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             $masterDb = oxDb::getMaster();
             //collect variants to remove recursively
             $sQ = 'select oxid from ' . $this->getViewName() . ' where oxparentid = ' . $oDb->quote($sOXID);
-            $rs = $masterDb->select($sQ, false, false);
+            $rs = $masterDb->select($sQ, false);
             $oArticle = oxNew("oxArticle");
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
@@ -4627,7 +4627,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             $masterDb = oxDb::getMaster();
             $sParentIdQuoted = $masterDb->quote($sParentID);
             $sQ = 'select oxstock, oxvendorid, oxmanufacturerid from oxarticles where oxid = ' . $sParentIdQuoted;
-            $rs = $masterDb->select($sQ, false, false);
+            $rs = $masterDb->select($sQ, false);
             $iOldStock = $rs->fields[0];
             $iVendorID = $rs->fields[1];
             $iManufacturerID = $rs->fields[2];

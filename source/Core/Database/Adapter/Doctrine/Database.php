@@ -299,7 +299,7 @@ class Database implements DatabaseInterface
         // END deprecated
 
         try {
-            $resultSet = $this->select($sqlSelect, $parameters, $executeOnSlave);
+            $resultSet = $this->select($sqlSelect, $parameters);
             $result = $resultSet->fields;
         } catch (DatabaseException $exception) {
             /** Only log exception, do not re-throw here, as legacy code expects this behavior */
@@ -474,13 +474,12 @@ class Database implements DatabaseInterface
      *
      * @param string $sqlSelect      The sql select statement we want to execute.
      * @param array  $parameters     The parameters for the given query.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @throws DatabaseException The exception, that can occur while running the sql statement.
      *
      * @return ResultSet The result of the given query.
      */
-    public function select($sqlSelect, $parameters = array(), $executeOnSlave = true)
+    public function select($sqlSelect, $parameters = array())
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -522,7 +521,7 @@ class Database implements DatabaseInterface
      *
      * @return ResultSet The result of the given query.
      */
-    public function selectLimit($sqlSelect, $rowCount = -1, $offset = -1, $parameters = false, $executeOnSlave = true)
+    public function selectLimit($sqlSelect, $rowCount = -1, $offset = -1, $parameters = false)
     {
         /**
          * Parameter validation.
@@ -548,7 +547,7 @@ class Database implements DatabaseInterface
             $limitClause = "LIMIT $rowCount OFFSET $offset";
         }
 
-        return $this->select($sqlSelect . " $limitClause ", $parameters, $executeOnSlave);
+        return $this->select($sqlSelect . " $limitClause ", $parameters);
     }
 
     /**

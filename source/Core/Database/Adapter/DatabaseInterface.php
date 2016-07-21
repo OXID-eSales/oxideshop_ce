@@ -212,13 +212,12 @@ interface DatabaseInterface
      *
      * @param string $sqlSelect      The sql select statement
      * @param array  $parameters     The parameters array.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
      *
      * @throws DatabaseException The exception, that can occur while executing the sql statement.
      *
      * @return ResultSetInterface
      */
-    public function select($sqlSelect, $parameters = array(), $executeOnSlave = true);
+    public function select($sqlSelect, $parameters = array());
 
     /**
      * Return the results of a given sql SELECT or SHOW statement limited by a LIMIT clause as a ResultSet.
@@ -243,13 +242,12 @@ interface DatabaseInterface
      * @param int    $rowCount   Maximum number of rows to return
      * @param int    $offset     Offset of the first row to return
      * @param array  $parameters The parameters array.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
      *
      * @throws DatabaseException The exception, that can occur while executing the sql statement.
      *
      * @return ResultSetInterface The result of the given query.
      */
-    public function selectLimit($sqlSelect, $rowCount = -1, $offset = -1, $parameters = array(), $executeOnSlave = true);
+    public function selectLimit($sqlSelect, $rowCount = -1, $offset = -1, $parameters = array());
 
     /**
      * Execute read statements like SELECT or SHOW and return the results as a ResultSet.

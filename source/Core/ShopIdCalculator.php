@@ -105,7 +105,7 @@ class ShopIdCalculator
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = oxDb::getMaster();
-        $oRs = $masterDb->select($sSelect, false, false);
+        $oRs = $masterDb->select($sSelect, false);
 
         if ($oRs && $oRs->count() > 0) {
             while (!$oRs->EOF) {

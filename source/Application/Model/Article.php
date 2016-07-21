@@ -4702,20 +4702,17 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     protected function _setVarMinMaxPrice($sParentId)
     {
         if ($sParentId) {
-            $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-            $sQ = '
+          // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+          $masterDb = oxDb::getMaster(oxDb::FETCH_MODE_ASSOC);
+          $sQ = '
                 SELECT
                     MIN( IF( `oxarticles`.`oxprice` > 0, `oxarticles`.`oxprice`, `p`.`oxprice` ) ) AS `varminprice`,
                     MAX( IF( `oxarticles`.`oxprice` > 0, `oxarticles`.`oxprice`, `p`.`oxprice` ) ) AS `varmaxprice`
                 FROM ' . $this->getViewName(true) . ' AS `oxarticles`
                     LEFT JOIN ' . $this->getViewName(true) . ' AS `p` ON ( `p`.`oxid` = `oxarticles`.`oxparentid` AND `p`.`oxprice` > 0 )
                 WHERE ' . $this->getSqlActiveSnippet(true) . '
-                    AND ( `oxarticles`.`oxparentid` = ' . $oDb->quote($sParentId) . ' )';
-            $oDb->setFetchMode(oxDb::FETCH_MODE_ASSOC);
-            
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $masterDb = oxDb::getMaster(oxDb::FETCH_MODE_ASSOC);
-            $aPrices = $masterDb->getRow($sQ, false, false);
+                    AND ( `oxarticles`.`oxparentid` = ' . $masterDb->quote($sParentId) . ' )';
+            $aPrices = $masterDb->getRow($sQ);
             if (!is_null($aPrices['varminprice']) || !is_null($aPrices['varmaxprice'])) {
                 $sQ = '
                     UPDATE `oxarticles`

@@ -4552,7 +4552,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
             $masterDb = oxDb::getMaster();
             //collect variants to remove recursively
-            $sQ = 'select oxid from ' . $this->getViewName() . ' where oxparentid = ' . $oDb->quote($sOXID);
+            $sQ = 'select oxid from ' . $this->getViewName() . ' where oxparentid = ' . $masterDb->quote($sOXID);
             $rs = $masterDb->select($sQ, false);
             $oArticle = oxNew("oxArticle");
             if ($rs != false && $rs->count() > 0) {

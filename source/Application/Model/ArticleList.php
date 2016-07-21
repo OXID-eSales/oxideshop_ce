@@ -800,7 +800,7 @@ class ArticleList extends \oxList
             $sQ = "SELECT `oxid` FROM `oxarticles`
                    WHERE `oxupdatepricetime` > 0 AND `oxupdatepricetime` <= '{$sCurrUpdateTime}'";
             
-            $aUpdatedArticleIds = $masterDb->getCol($sQ, false, false);
+            $aUpdatedArticleIds = $masterDb->getCol($sQ);
 
             // updating oxarticles
             $blUpdated = $this->updateOxArticles($sCurrUpdateTime, $masterDb);

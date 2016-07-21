@@ -552,11 +552,10 @@ class Database implements DatabaseInterface
      *
      * @param string $sqlSelect      The sql select statement we want to execute.
      * @param array  $parameters     The parameters array.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return array The values of a column of a corresponding sql query.
      */
-    public function getCol($sqlSelect, $parameters = array(), $executeOnSlave = true)
+    public function getCol($sqlSelect, $parameters = array())
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);

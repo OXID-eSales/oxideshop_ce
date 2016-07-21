@@ -104,8 +104,8 @@ class PaymentRDFaTest extends \OxidTestCase
         $oView->save();
 
         $aCurrObjIDs = $oDB->GetCol(
-            'SELECT oxobjectid FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?'
-            , array($sTestID, 'rdfapayment')
+            'SELECT oxobjectid FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?', 
+            array($sTestID, 'rdfapayment')
         );
         sort($aObjIDs);
         sort($aCurrObjIDs);

@@ -152,13 +152,12 @@ interface DatabaseInterface
      *
      * @param string $sqlSelect      The sql select statement
      * @param array  $parameters     The parameters array.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
      *
      * @throws DatabaseException
      *
      * @return array The values of the first column of a corresponding sql query.
      */
-    public function getCol($sqlSelect, $parameters = array(), $executeOnSlave = true);
+    public function getCol($sqlSelect, $parameters = array());
 
     /**
      * Get an multi-dimensional array of arrays with the values of the all rows of a given sql SELECT or SHOW statement.

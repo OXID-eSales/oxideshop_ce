@@ -104,8 +104,8 @@ class DeliverySetRDFaTest extends \OxidTestCase
         $oView->save();
 
         $aCurrObjIDs = $oDB->GetCol(
-            'SELECT oxobjectid FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?'
-            , array($sTestID, 'rdfadeliveryset')
+            'SELECT oxobjectid FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?', 
+            array($sTestID, 'rdfadeliveryset')
         );
         sort($aObjIDs);
         sort($aCurrObjIDs);

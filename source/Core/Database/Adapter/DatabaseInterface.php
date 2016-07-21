@@ -181,7 +181,6 @@ interface DatabaseInterface
      *
      * @param string $query          If parameters are given, the "?" in the string will be replaced by the values in the array
      * @param array  $parameters     Array of parameters, for the given sql statement.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
      *
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
@@ -191,7 +190,7 @@ interface DatabaseInterface
      *
      * @return array
      */
-    public function getAll($query, $parameters = array(), $executeOnSlave = true);
+    public function getAll($query, $parameters = array());
 
     /**
      * Return the results of a given sql SELECT or SHOW statement as a ResultSet.

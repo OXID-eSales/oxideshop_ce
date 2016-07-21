@@ -520,7 +520,7 @@ class ListComponentAjax extends \oxSuperCfg
     protected function _getDataFields($sQ)
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return oxDb::getMaster(oxDB::FETCH_MODE_ASSOC)->getAll($sQ, false, false);
+        return oxDb::getMaster(oxDB::FETCH_MODE_ASSOC)->getAll($sQ, false);
     }
 
     /**

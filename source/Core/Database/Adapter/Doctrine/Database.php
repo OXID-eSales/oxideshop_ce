@@ -793,7 +793,6 @@ class Database implements DatabaseInterface
      *
      * @param string $sqlSelect      The sql select statement we want to execute.
      * @param array  $parameters     must loosely evaluate to false or must be an array
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
@@ -803,7 +802,7 @@ class Database implements DatabaseInterface
      *
      * @return array
      */
-    public function getAll($sqlSelect, $parameters = array(), $executeOnSlave = true)
+    public function getAll($sqlSelect, $parameters = array())
     {
         $result = array();
         $statement = null;

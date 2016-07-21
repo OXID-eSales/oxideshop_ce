@@ -287,11 +287,10 @@ class Database implements DatabaseInterface
      *
      * @param string $sqlSelect      The sql select statement we want to execute.
      * @param array  $parameters     Array of parameters, for the given sql statement.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @return array The row, we selected with the given sql statement.
      */
-    public function getRow($sqlSelect, $parameters = array(), $executeOnSlave = true)
+    public function getRow($sqlSelect, $parameters = array())
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -514,7 +513,6 @@ class Database implements DatabaseInterface
      * @param int        $rowCount       Maximum number of rows to return
      * @param int        $offset         Offset of the first row to return
      * @param array|bool $parameters     The parameters array.
-     * @param bool       $executeOnSlave Execute this statement on the slave database. Only evaluated in a master - slave setup.
      *
      * @throws DatabaseException
      *

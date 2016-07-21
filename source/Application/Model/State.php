@@ -59,9 +59,8 @@ class State extends \oxI18n
         $oDb = oxDb::getDb();
 
         return $oDb->getOne(
-            "SELECT oxid FROM oxstates WHERE oxisoalpha2 = " . $oDb->quote(
-                $sCode
-            ) . " AND oxcountryid = " . $oDb->quote($sCountryId)
+            "SELECT oxid FROM oxstates WHERE oxisoalpha2 = " . $oDb->quote($sCode) . 
+            " AND oxcountryid = " . $oDb->quote($sCountryId)
         );
     }
 

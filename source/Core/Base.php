@@ -912,7 +912,7 @@ class Base extends \oxSuperCfg
         $masterDb = oxDb::getMaster(oxDb::FETCH_MODE_ASSOC);
         $query = "select {$this->_sExistKey} from {$viewName} where {$this->_sExistKey} = " . $masterDb->quote($oxid);
 
-        return ( bool ) $masterDb->getOne($query, false, false);
+        return ( bool ) $masterDb->getOne($query);
     }
 
     /**

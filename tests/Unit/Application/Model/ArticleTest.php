@@ -1651,7 +1651,7 @@ class ArticleTest extends \OxidTestCase
 
         $this->assertEquals(4, $oArticle->oxarticles__oxrating->value);
         $this->assertEquals(3, $oArticle->oxarticles__oxratingcnt->value);
-        $dRating = oxDb::getDB()->getOne("select oxrating from oxarticles where oxid='" . $oArticle->getId() . "'");
+        $dRating = oxDb::getDb()->getOne("select oxrating from oxarticles where oxid='" . $oArticle->getId() . "'");
         $this->assertEquals(4, $dRating);
     }
 

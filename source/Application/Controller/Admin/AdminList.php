@@ -278,7 +278,7 @@ class AdminList extends \oxAdminView
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         // con of list items which fits current search conditions
-        $this->_iListSize = oxDb::getMaster()->getOne($sql, false, false);
+        $this->_iListSize = oxDb::getMaster()->getOne($sql);
 
         // set it into session that other frames know about size of DB
         oxRegistry::getSession()->setVariable('iArtCnt', $this->_iListSize);

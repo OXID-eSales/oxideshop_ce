@@ -337,7 +337,7 @@ class File extends \oxBase
         $sHash = $this->oxfiles__oxstorehash->value;
         $oDb = oxDb::getDb();
         $iCount = $oDb->getOne(
-            'SELECT COUNT(*) FROM `oxfiles` WHERE `OXSTOREHASH` = ' . $oDb->quote($sHash), false, false
+            'SELECT COUNT(*) FROM `oxfiles` WHERE `OXSTOREHASH` = ' . $oDb->quote($sHash)
         );
         if (!$iCount) {
             $sPath = $this->getStoreLocation();

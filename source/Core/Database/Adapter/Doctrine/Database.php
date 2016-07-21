@@ -262,11 +262,10 @@ class Database implements DatabaseInterface
      *
      * @param string $sqlSelect      The sql select statement
      * @param array  $parameters     Array of parameters, for the given sql statement.
-     * @param bool   $executeOnSlave Should the given sql statement executed on the slave?
      *
      * @return string The first column of the first row, which is fitting to the given sql select statement.
      */
-    public function getOne($sqlSelect, $parameters = array(), $executeOnSlave = true)
+    public function getOne($sqlSelect, $parameters = array())
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);

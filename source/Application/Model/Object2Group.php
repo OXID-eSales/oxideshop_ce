@@ -68,7 +68,7 @@ class Object2Group extends \oxBase
         $sQ .= " and oxobjectid = " . $masterDb->quote($this->oxobject2group__oxobjectid->value);
 
         // does not exist
-        if (!$masterDb->getOne($sQ, false, false)) {
+        if (!$masterDb->getOne($sQ)) {
             return parent::save();
         }
     }

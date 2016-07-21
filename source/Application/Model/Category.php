@@ -902,7 +902,7 @@ class Category extends \oxI18n implements \oxIUrl
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = oxDb::getMaster();
-        $sOldParentID = $masterDb->getOne("select oxparentid from oxcategories where oxid = " . $masterDb->quote($this->getId()), false, false);
+        $sOldParentID = $masterDb->getOne("select oxparentid from oxcategories where oxid = " . $masterDb->quote($this->getId()));
 
         if ($this->_blIsSeoObject && $this->isAdmin()) {
             oxRegistry::get("oxSeoEncoderCategory")->markRelatedAsExpired($this);
@@ -926,7 +926,7 @@ class Category extends \oxI18n implements \oxIUrl
             $iTreeSize = $sOldParentRight - $sOldParentLeft + 1;
 
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $sNewRootID = $masterDb->getOne("select oxrootid from oxcategories where oxid = " . $masterDb->quote($this->oxcategories__oxparentid->value), false, false);
+            $sNewRootID = $masterDb->getOne("select oxrootid from oxcategories where oxid = " . $masterDb->quote($this->oxcategories__oxparentid->value));
 
             //If empty rootID, we set it to categorys oxid
             if ($sNewRootID == "") {
@@ -934,7 +934,7 @@ class Category extends \oxI18n implements \oxIUrl
                 $sNewRootID = $this->getId();
             }
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $sNewParentLeft = $masterDb->getOne("select oxleft from oxcategories where oxid = " . $masterDb->quote($this->oxcategories__oxparentid->value), false, false);
+            $sNewParentLeft = $masterDb->getOne("select oxleft from oxcategories where oxid = " . $masterDb->quote($this->oxcategories__oxparentid->value));
 
             //if(!$sNewParentLeft){
             //the current node has become root node, (oxrootid == "oxrootid")

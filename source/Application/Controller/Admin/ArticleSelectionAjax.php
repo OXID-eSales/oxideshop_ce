@@ -70,7 +70,7 @@ class ArticleSelectionAjax extends \ajaxListComponent
         $sQ .= "and (select count(oxobjectid) from oxobject2selectlist " .
                "where oxobjectid = " . $oDb->quote($sOxid) . ") = 0";
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $sParentId = oxDb::getMaster()->getOne($sQ, false, false);
+        $sParentId = oxDb::getMaster()->getOne($sQ);
 
         // all selectlists article is in
         $sQAdd = " from oxobject2selectlist left join {$sSLViewName} " .
@@ -136,7 +136,7 @@ class ArticleSelectionAjax extends \ajaxListComponent
                 $oNew->$sSelectetionIdField = new oxField($sAdd);
                 $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  {$masterDb->quote($soxId)} ";
                 // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                $oNew->$sOxSortField = new oxField(( int ) $masterDb->getOne($sSql, false, false));
+                $oNew->$sOxSortField = new oxField(( int ) $masterDb->getOne($sSql));
                 $oNew->save();
             }
 

@@ -199,7 +199,7 @@ class ActionsMainAjax extends \ajaxListComponent
               " and oxactions2article.oxshopid = '" . $myConfig->getShopId() .
               "'and $sArtTable.oxid is not null";
 
-        $iSort = ((int) $masterDb->getOne($sQ, false, false)) + 1;
+        $iSort = ((int) $masterDb->getOne($sQ)) + 1;
 
         $articleAdded = false;
         if ($soxId && $soxId != "-1" && is_array($aArticles)) {

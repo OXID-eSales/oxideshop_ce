@@ -1169,7 +1169,7 @@ class ArticleList extends \oxList
         // fetching next update time
         $sQ = $this->getQueryToFetchNextUpdateTime();
         
-        $iTimeToUpdate = $masterDb->getOne(sprintf($sQ, "`oxarticles`"), false, false);
+        $iTimeToUpdate = $masterDb->getOne(sprintf($sQ, "`oxarticles`"));
 
         return $iTimeToUpdate;
     }

@@ -224,7 +224,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
         if ($sOXID) {
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
             $masterDb = oxDb::getMaster();
-            if (!$masterDb->getOne("select oxid from oxobject2list where oxobjectid=" . $masterDb->quote($sOXID) . " and oxlistid=" . $masterDb->quote($this->getId()), false, false)) {
+            if (!$masterDb->getOne("select oxid from oxobject2list where oxobjectid=" . $masterDb->quote($sOXID) . " and oxlistid=" . $masterDb->quote($this->getId()))) {
                 $sUid = oxUtilsObject::getInstance()->generateUID();
                 $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $masterDb->quote($sOXID) . ", " . $masterDb->quote($this->getId()) . ", " . $masterDb->quote($sDesc) . " )";
                 $blAdd = $masterDb->execute($sQ);

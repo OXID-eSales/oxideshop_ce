@@ -157,7 +157,7 @@ class ObjectSeo extends \oxAdminDetails
                    oxseo.oxshopid = '{$iShopId}' and oxseo.oxlang = {$iLang} and oxparams = '' ";
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return (bool) oxDb::getMaster()->getOne($sQ, false, false);
+        return (bool) oxDb::getMaster()->getOne($sQ);
     }
 
     /**

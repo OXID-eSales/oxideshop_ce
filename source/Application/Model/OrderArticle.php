@@ -188,7 +188,7 @@ class OrderArticle extends \oxBase implements ArticleInterface
 
         // #1592A. must take real value
         $sQ = 'select oxstock from oxarticles where oxid = ' . $masterDb->quote($this->oxorderarticles__oxartid->value);
-        $iStockCount = ( float ) $masterDb->getOne($sQ, false, false);
+        $iStockCount = ( float ) $masterDb->getOne($sQ);
 
         $iStockCount += $dAddAmount;
 

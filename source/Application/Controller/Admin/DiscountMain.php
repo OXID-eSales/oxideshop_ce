@@ -115,7 +115,7 @@ class DiscountMain extends \oxAdminDetails
             $sQ = "select concat( $sViewName.oxartnum, ' ', $sViewName.oxtitle ) from oxdiscount
                    left join $sViewName on $sViewName.oxid=oxdiscount.oxitmartid
                    where oxdiscount.oxitmartid != '' and oxdiscount.oxid=" . $masterDb->quote($sOxId);
-            $sTitle = $masterDb->getOne($sQ, false, false);
+            $sTitle = $masterDb->getOne($sQ);
         }
 
         return $sTitle ? $sTitle : " -- ";

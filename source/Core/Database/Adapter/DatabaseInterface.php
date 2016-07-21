@@ -105,11 +105,10 @@ interface DatabaseInterface
      *
      * @param string $query          The sql SELECT or SHOW statement.
      * @param array  $parameters     Array of parameters for the given sql statement.
-     * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
      *
      * @return string|false          Returns a string for SELECT or SHOW statements and FALSE for any other statement.
      */
-    public function getOne($query, $parameters = array(), $executeOnSlave = true);
+    public function getOne($query, $parameters = array());
 
     /**
      * Get an array with the values of the first row of a given sql SELECT or SHOW statement .

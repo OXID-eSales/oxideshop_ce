@@ -47,7 +47,7 @@ class Counter
         $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $masterDb->quote($ident) . " FOR UPDATE";
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        if (($cnt = $masterDb->getOne($query, false, false)) === false) {
+        if (($cnt = $masterDb->getOne($query)) === false) {
             $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, '0')";
             $masterDb->execute($query, array($ident));
         }
@@ -79,7 +79,7 @@ class Counter
         $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $masterDb->quote($ident) . " FOR UPDATE";
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        if (($cnt = $masterDb->getOne($query, false, false)) === false) {
+        if (($cnt = $masterDb->getOne($query)) === false) {
             $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, ?)";
             $result = $masterDb->execute($query, array($ident, $count));
         } else {

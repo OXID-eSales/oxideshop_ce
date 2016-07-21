@@ -139,7 +139,7 @@ class CategoryOrderAjax extends \ajaxListComponent
 
             // simply echoing "1" if some items found, and 0 if nothing was found
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            echo (int) oxDb::getMaster()->getOne($sSelect, false, false);
+            echo (int) oxDb::getMaster()->getOne($sSelect);
         }
     }
 
@@ -177,7 +177,7 @@ class CategoryOrderAjax extends \ajaxListComponent
 
             // simply echoing "1" if some items found, and 0 if nothing was found
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            echo (int) oxDb::getMaster()->getOne($sSelect, false, false);
+            echo (int) oxDb::getMaster()->getOne($sSelect);
         }
     }
 

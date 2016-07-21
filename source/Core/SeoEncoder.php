@@ -1046,7 +1046,7 @@ class SeoEncoder extends \oxSuperCfg
                 // move changed records to history
                 // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
                 $masterDb = oxDb::getMaster();
-                if (!$masterDb->getOne("select (" . $masterDb->quote($sSeoUrl) . " like oxseourl) & (" . $masterDb->quote($sStdUrl) . " like oxstdurl) from oxseo where oxobjectid = " . $masterDb->quote($sOldObjectId) . " and oxshopid = '{$iShopId}' and oxlang = '{$iLang}' ", false, false)) {
+                if (!$masterDb->getOne("select (" . $masterDb->quote($sSeoUrl) . " like oxseourl) & (" . $masterDb->quote($sStdUrl) . " like oxstdurl) from oxseo where oxobjectid = " . $masterDb->quote($sOldObjectId) . " and oxshopid = '{$iShopId}' and oxlang = '{$iLang}' ")) {
                     $this->_copyToHistory($sOldObjectId, $iShopId, $iLang, 'static', $sObjectId);
                 }
             }

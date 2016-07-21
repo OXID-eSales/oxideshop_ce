@@ -162,9 +162,9 @@ class UtilsPic extends \oxSuperCfg
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = oxDb::getMaster();
 
-        $query = "select count(*) from $sTable where $sField = " . $oDb->quote($sPicName) . " group by $sField ";
+        $query = "select count(*) from $sTable where $sField = " . $masterDb->quote($sPicName) . " group by $sField ";
 
-        return $masterDb->getOne($query, false, false);
+        return $masterDb->getOne($query);
     }
 
     /**

@@ -507,7 +507,7 @@ class ListComponentAjax extends \oxSuperCfg
         // $sCountCacheKey = md5( $sQ );
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return (int) oxDb::getMaster()->getOne($sQ, false, false);
+        return (int) oxDb::getMaster()->getOne($sQ);
     }
 
     /**

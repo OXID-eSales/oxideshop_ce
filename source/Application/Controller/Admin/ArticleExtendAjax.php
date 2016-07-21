@@ -182,7 +182,7 @@ class ArticleExtendAjax extends \ajaxListComponent
                 // check, if it's already in, then don't add it again
                 $sSelect = "select 1 from " . $objectToCategoryView . " as oxobject2category where oxobject2category.oxcatnid= "
                            . $masterDb->quote($sAdd) . " and oxobject2category.oxobjectid = " . $masterDb->quote($oxId) . " ";
-                if ($masterDb->getOne($sSelect, false, false)) {
+                if ($masterDb->getOne($sSelect)) {
                     continue;
                 }
 

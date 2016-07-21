@@ -114,7 +114,7 @@ class NewsletterSelection extends \oxAdminDetails
                    group by oxnewssubscribed.oxemail ) as _tmp";
 
                 // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                $this->_iUserCount = oxDb::getMaster()->getOne($sQ, false, false);
+                $this->_iUserCount = oxDb::getMaster()->getOne($sQ);
             }
         }
 

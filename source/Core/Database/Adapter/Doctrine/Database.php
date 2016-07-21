@@ -489,6 +489,33 @@ class Database implements DatabaseInterface
     }
 
     /**
+     * This method is a helper in a master-slave context to be able to execute SET statements without the need to use
+     * more appropriate use of self::execute(), which would force the connection to pick the master.
+     *
+     * @param string $query The sql statement we want to execute.
+     *
+     * @throws \InvalidArgumentException If the statement is not a SET statement
+     * @throws DatabaseException         The exception, that can occur while running the sql statement.
+     */
+    public function executeSet($query)
+    {
+        if (strtoupper($this->getFristCommandInStatement($query)) !== 'SET') {
+            throw new \InvalidArgumentException();
+        }
+
+        try {
+            /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
+            $this->getConnection()->executeQuery($query);
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+    }
+
+    /**
      * Run a given select sql statement with a limit clause.
      * Be aware that only a few database vendors have the LIMIT clause as known from MySQL.
      * The Doctrine Query Builder should be used here.
@@ -545,7 +572,7 @@ class Database implements DatabaseInterface
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
 
-        try{
+        try {
             $rows = $this->getConnection()->fetchAll($sqlSelect, $parameters);
             $result = array();
             foreach ($rows as $row) {
@@ -675,14 +702,7 @@ class Database implements DatabaseInterface
             'EXPLAIN',
             'HELP',
         ];
-        $sqlComments = '@(([\'"]).*?[^\\\]\2)|((?:\#|--).*?$|/\*(?:[^/*]|/(?!\*)|\*(?!/)|(?R))*\*\/)\s*|(?<=;)\s+@ms';
-        $uncommentedQuery = preg_replace($sqlComments, '$1', $query);
-
-        $command = strtoupper(
-            trim(
-                explode(' ', trim($uncommentedQuery))[0]
-            )
-        );
+        $command = $this->getFristCommandInStatement($query);
 
         return in_array($command, $allowedCommands);
     }
@@ -872,7 +892,7 @@ class Database implements DatabaseInterface
             $item->primary_key = (strtolower($key) == 'pri');
             $item->auto_increment = strtolower($extra) == 'auto_increment';
             $item->binary = (false !== strpos(strtolower($type), 'blob'));
-            $item->unsigned =  (false !== strpos(strtolower($type), 'unsigned'));
+            $item->unsigned = (false !== strpos(strtolower($type), 'unsigned'));
             $item->has_default = ('' === $default || is_null($default)) ? false : true;
             if ($item->has_default) {
                 $item->default_value = $default;
@@ -883,13 +903,13 @@ class Database implements DatabaseInterface
              * We do it the same way here for compatibility.
              */
             list($max_length, $scale) = $this->getColumnMaxLengthAndScale($column, $item->type);
-            if(-1 !== $max_length){
-                $item->max_length = (string)$max_length;
+            if (-1 !== $max_length) {
+                $item->max_length = (string) $max_length;
             } else {
                 $item->max_length = $max_length;
             }
-            if(-1 !== $scale){
-                $item->scale = (string)$scale;
+            if (-1 !== $scale) {
+                $item->scale = (string) $scale;
             } else {
                 $item->scale = null;
             }
@@ -943,27 +963,27 @@ class Database implements DatabaseInterface
     {
         if (array_key_exists('Field', $column)) {
             $keyMap = array(
-                'Field' => 'Field',
-                'Type' => 'Type',
-                'Null' => 'Null',
-                'Key' => 'Key',
-                'Default' => 'Default',
-                'Extra' => 'Extra',
-                'Comment' => 'Comment',
+                'Field'        => 'Field',
+                'Type'         => 'Type',
+                'Null'         => 'Null',
+                'Key'          => 'Key',
+                'Default'      => 'Default',
+                'Extra'        => 'Extra',
+                'Comment'      => 'Comment',
                 'CharacterSet' => 'CharacterSet',
-                'Collation' => 'Collation',
+                'Collation'    => 'Collation',
             );
         } else {
             $keyMap = array(
-                'Field' => 0,
-                'Type' => 1,
-                'Null' => 2,
-                'Key' => 3,
-                'Default' => 4,
-                'Extra' => 5,
-                'Comment' => 6,
+                'Field'        => 0,
+                'Type'         => 1,
+                'Null'         => 2,
+                'Key'          => 3,
+                'Default'      => 4,
+                'Extra'        => 5,
+                'Comment'      => 6,
                 'CharacterSet' => 7,
-                'Collation' => 8,
+                'Collation'    => 8,
             );
         }
 
@@ -1002,14 +1022,14 @@ class Database implements DatabaseInterface
                 $scale = $matches[3];
             }
             /** Match max length E.g CHAR(4) */
-        } elseif (preg_match("/^(.+)\((\d+)/", $mySqlType, $matches)){
+        } elseif (preg_match("/^(.+)\((\d+)/", $mySqlType, $matches)) {
             if (is_numeric($matches[2])) {
                 $maxLength = $matches[2];
             }
-        /**
-         * Match List type E.g. SET('A', 'B', 'CDE)
-         * In this case the length will be the string length of the longest element
-         */
+            /**
+             * Match List type E.g. SET('A', 'B', 'CDE)
+             * In this case the length will be the string length of the longest element
+             */
         } elseif (preg_match("/^(enum|set)\((.*)\)$/i", strtolower($mySqlType), $matches)) {
             if ($matches[2]) {
                 $pieces = explode(",", $matches[2]);
@@ -1048,5 +1068,24 @@ class Database implements DatabaseInterface
         }
 
         return array((int) $maxLength, (int) $scale);
+    }
+
+    /**
+     * @param $query
+     *
+     * @return string
+     */
+    private function getFristCommandInStatement($query)
+    {
+        $sqlComments = '@(([\'"]).*?[^\\\]\2)|((?:\#|--).*?$|/\*(?:[^/*]|/(?!\*)|\*(?!/)|(?R))*\*\/)\s*|(?<=;)\s+@ms';
+        $uncommentedQuery = preg_replace($sqlComments, '$1', $query);
+
+        $command = strtoupper(
+            trim(
+                explode(' ', trim($uncommentedQuery))[0]
+            )
+        );
+
+        return $command;
     }
 }

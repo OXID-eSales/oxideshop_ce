@@ -119,14 +119,9 @@ class Database implements DatabaseInterface
         try {
             $connection = DriverManager::getConnection($connectionParameters, $configuration);
             $connection->connect();
-//            if (! $connection->isConnected()) {
-//                $dsn = $connection->getDriver()->getName() .
-//                       '://' .
-//                       '****:****@' .
-//                       $connection->getHost() . ':' .  $connection->getPort() .
-//                       '/' . $connection->getDatabase();
-//                throw new DBALException('Not connected to database. dsn: ' . $dsn);
-//            }
+
+            $this->ensureConnectionIsEstablished($connection);
+
             $this->setConnection($connection);
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
@@ -1112,4 +1107,39 @@ class Database implements DatabaseInterface
 
         return $command;
     }
+
+    /**
+     * Ensure, that the given connection is established successful.
+     *
+     * @param \Doctrine\DBAL\Connection $connection The connection we want to ensure, if it is established.
+     *
+     * @todo: test this method
+     *
+     * @throws DBALException If we are not connected correctly to the database.
+     */
+    protected function ensureConnectionIsEstablished($connection)
+    {
+        if (!$this->isConnectionEstablished($connection)) {
+            $dsn = $connection->getDriver()->getName() .
+                   '://' .
+                   '****:****@' .
+                   $connection->getHost() . ':' . $connection->getPort() .
+                   '/' . $connection->getDatabase();
+            
+            throw new DBALException('Not connected to database. dsn: ' . $dsn);
+        }
+    }
+
+    /**
+     * Determine, if the connection is established successful.
+     *
+     * @param \Doctrine\DBAL\Connection $connection The connection we want to know, if it is established.
+     *
+     * @return bool Is the connection successfully established?
+     */
+    protected function isConnectionEstablished($connection)
+    {
+        return $connection->isConnected();
+    }
+    
 }

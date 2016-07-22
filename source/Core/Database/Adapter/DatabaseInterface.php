@@ -83,6 +83,11 @@ interface DatabaseInterface
     public function forceMasterConnection();
 
     /**
+     * Force database slave connection.
+     */
+    public function forceSlaveConnection();
+
+    /**
      * Closes an open connection
      */
     public function closeConnection();

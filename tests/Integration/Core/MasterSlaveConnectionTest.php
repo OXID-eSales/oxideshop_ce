@@ -28,11 +28,11 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 use ReflectionClass;
 
 /**
- * Class MasterSlaveTest
+ * Class MasterSlaveConnectionTest
  *
  * @covers OxidEsales\Eshop\Core\Database
  */
-class MasterConnectionTest extends UnitTestCase
+class MasterSlaveConnectionTest extends UnitTestCase
 {
     /** @var mixed Backing up for earlier value of database link object */
     private $dbObjectBackup = null;
@@ -92,6 +92,44 @@ class MasterConnectionTest extends UnitTestCase
         }
 
         $connection = Database::getMaster();
+        $this->assertTrue(is_a($connection, 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database'));
+
+        $dbConnection = $this->getProtectedClassProperty($connection, 'connection');
+        $this->assertTrue(is_a($dbConnection, 'Doctrine\DBAL\Connection'));
+        $this->assertFalse(is_a($dbConnection, 'Doctrine\DBAL\Connections\MasterSlaveConnection'));
+        $this->assertSame($this->getConfig()->getConfigParam('dbHost'), $dbConnection->getHost());
+    }
+
+    /**
+     * Test case that we have no master slave setup and force master.
+     */
+    public function testForceMasterNoMasterSlaveSetup()
+    {
+        if('EE' == $this->getTestConfig()->getShopEdition()) {
+            $this->markTestSkipped('Test is for CE/PE only.');
+        }
+
+        $connection = Database::getDb();
+        $connection->forceMasterConnection();
+        $this->assertTrue(is_a($connection, 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database'));
+
+        $dbConnection = $this->getProtectedClassProperty($connection, 'connection');
+        $this->assertTrue(is_a($dbConnection, 'Doctrine\DBAL\Connection'));
+        $this->assertFalse(is_a($dbConnection, 'Doctrine\DBAL\Connections\MasterSlaveConnection'));
+        $this->assertSame($this->getConfig()->getConfigParam('dbHost'), $dbConnection->getHost());
+    }
+
+    /**
+     * Test case that we have no master slave setup and force slave.
+     */
+    public function testForceSlaveNoMasterSlaveSetup()
+    {
+        if('EE' == $this->getTestConfig()->getShopEdition()) {
+            $this->markTestSkipped('Test is for CE/PE only.');
+        }
+
+        $connection = Database::getDb();
+        $connection->forceSlaveConnection();
         $this->assertTrue(is_a($connection, 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database'));
 
         $dbConnection = $this->getProtectedClassProperty($connection, 'connection');

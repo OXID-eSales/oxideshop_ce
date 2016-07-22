@@ -138,16 +138,27 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Getter for master connection object.
+     * Force database master connection.
      *
-     * @return Connection
+     * @return null
      */
     public function forceMasterConnection()
     {
         if (is_null($this->connection)) {
             $this->connect();
         }
-        $this->connection->connect('master');
+    }
+
+    /**
+     * Force database slave connection.
+     *
+     * @return null
+     */
+    public function forceSlaveConnection()
+    {
+        if (is_null($this->connection)) {
+            $this->connect();
+        }
     }
 
     /**

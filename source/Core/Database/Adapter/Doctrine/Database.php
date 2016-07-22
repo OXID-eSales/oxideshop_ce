@@ -103,7 +103,7 @@ class Database implements DatabaseInterface
      *
      * @throws DatabaseConnectionException If a connection to the database cannot be established
      */
-    public function connect($forceMaster = false)
+    public function connect()
     {
         $connection = null;
 
@@ -118,7 +118,7 @@ class Database implements DatabaseInterface
 
         try {
             $connection = DriverManager::getConnection($connectionParameters, $configuration);
-            $forceMaster ? $connection->connect('master') : $connection->connect();
+            $connection->connect();
 //            if (! $connection->isConnected()) {
 //                $dsn = $connection->getDriver()->getName() .
 //                       '://' .
@@ -135,6 +135,19 @@ class Database implements DatabaseInterface
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
+    }
+
+    /**
+     * Getter for master connection object.
+     *
+     * @return Connection
+     */
+    public function forceMasterConnection()
+    {
+        if (is_null($this->connection)) {
+            $this->connect();
+        }
+        $this->connection->connect('master');
     }
 
     /**

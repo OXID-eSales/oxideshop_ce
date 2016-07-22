@@ -147,9 +147,9 @@ class Database
      */
     public static function getMaster($fetchMode = Database::FETCH_MODE_NUM)
     {
-        $db = static::getDb($fetchMode);
-        $db->connect(true);
-        return $db;
+        static::getDb($fetchMode)->forceMasterConnection();
+
+        return static::getDb($fetchMode);
     }
 
     /**

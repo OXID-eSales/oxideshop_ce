@@ -73,11 +73,14 @@ interface DatabaseInterface
     /**
      * Connects to the database using the connection parameters set in DatabaseInterface::setConnectionParameters().
      *
-     * @param bool $forceMaster Set to force master connection in master slave setup.
-     *
      * @throws DatabaseConnectionException If a connection to the database cannot be established
      */
-    public function connect($forceMaster = false);
+    public function connect();
+
+    /**
+     * Force database master connection.
+     */
+    public function forceMasterConnection();
 
     /**
      * Closes an open connection

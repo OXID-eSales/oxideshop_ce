@@ -48,7 +48,7 @@ class Database implements DatabaseInterface
      */
     protected $connectionParameters = array();
     /**
-     * @var \Doctrine\DBAL\Connection The database connection.
+     * @var \Doctrine\DBAL\Connection|\Doctrine\DBAL\Connections\MasterSlaveConnection The database connection.
      */
     protected $connection = null;
 
@@ -518,7 +518,7 @@ class Database implements DatabaseInterface
      */
     public function executeSet($query)
     {
-        if (strtoupper($this->getFristCommandInStatement($query)) !== 'SET') {
+        if (strtoupper($this->getFirstCommandInStatement($query)) !== 'SET') {
             throw new \InvalidArgumentException();
         }
 
@@ -721,7 +721,7 @@ class Database implements DatabaseInterface
             'EXPLAIN',
             'HELP',
         ];
-        $command = $this->getFristCommandInStatement($query);
+        $command = $this->getFirstCommandInStatement($query);
 
         return in_array($command, $allowedCommands);
     }
@@ -961,16 +961,6 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Calls the database UI method.
-     *
-     * @param integer $pollSeconds poll seconds
-     */
-    public function UI($pollSeconds = 5)
-    {
-        // @todo to be implemented or deprecated in DatabaseInterface
-    }
-
-    /**
      * Get the value of a meta column key.
      *
      * @param array  $column The meta column, where the value has to be fetched.
@@ -1094,7 +1084,7 @@ class Database implements DatabaseInterface
      *
      * @return string
      */
-    private function getFristCommandInStatement($query)
+    protected function getFirstCommandInStatement($query)
     {
         $sqlComments = '@(([\'"]).*?[^\\\]\2)|((?:\#|--).*?$|/\*(?:[^/*]|/(?!\*)|\*(?!/)|(?R))*\*\/)\s*|(?<=;)\s+@ms';
         $uncommentedQuery = preg_replace($sqlComments, '$1', $query);

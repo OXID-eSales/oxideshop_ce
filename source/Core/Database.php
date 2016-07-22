@@ -56,7 +56,7 @@ class Database
     /**
      * Database connection object
      *
-     * @var null|DatabaseAdapter
+     * @var null|DatabaseAdapter|\OxidEsales\EshopEnterprise\Core\Database\Adapter\Doctrine\Database
      */
     protected static $db = null;
 
@@ -230,7 +230,8 @@ class Database
     }
 
     /**
-     * Post connect hook. This method is called right after the connection to the database has been established.
+     * Post connect hook. This method is called only once per connection right after the connection to the database has
+     * been established.
      */
     protected function onPostConnect()
     {
@@ -245,7 +246,7 @@ class Database
      */
     protected function setSqlMode()
     {
-        static::getDb()->executeSet('SET @@sql_mode = ""');
+        static::getDb()->executeSet('SET @@SESSION.sql_mode = ""');
     }
 
     /**

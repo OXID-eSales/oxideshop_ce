@@ -32,7 +32,7 @@ use ReflectionClass;
  *
  * @covers OxidEsales\Eshop\Core\Database
  */
-class MasterSlaveTest extends UnitTestCase
+class MasterConnectionTest extends UnitTestCase
 {
     /** @var mixed Backing up for earlier value of database link object */
     private $dbObjectBackup = null;

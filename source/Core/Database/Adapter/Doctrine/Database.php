@@ -107,9 +107,6 @@ class Database implements DatabaseInterface
     {
         $connection = null;
 
-        $connectionParameters = $this->getConnectionParameters();
-
-        $configuration = new Configuration();
         /**
          * @todo we need a SQLLogger that logs to a (CSV?) file, as we probably do not want to log into the database.
          *
@@ -117,7 +114,7 @@ class Database implements DatabaseInterface
          */
 
         try {
-            $connection = DriverManager::getConnection($connectionParameters, $configuration);
+            $connection = $this->getConnectionFromDriverManager();
             $connection->connect();
 
             $this->ensureConnectionIsEstablished($connection);
@@ -1103,20 +1100,14 @@ class Database implements DatabaseInterface
      *
      * @param \Doctrine\DBAL\Connection $connection The connection we want to ensure, if it is established.
      *
-     * @todo: test this method
-     *
      * @throws DBALException If we are not connected correctly to the database.
      */
     protected function ensureConnectionIsEstablished($connection)
     {
         if (!$this->isConnectionEstablished($connection)) {
-            $dsn = $connection->getDriver()->getName() .
-                   '://' .
-                   '****:****@' .
-                   $connection->getHost() . ':' . $connection->getPort() .
-                   '/' . $connection->getDatabase();
-            
-            throw new DBALException('Not connected to database. dsn: ' . $dsn);
+            $message = $this->createConnectionErrorMessage($connection);
+
+            throw new \Exception($message);
         }
     }
 
@@ -1131,5 +1122,40 @@ class Database implements DatabaseInterface
     {
         return $connection->isConnected();
     }
-    
+
+    /**
+     * Get the connection from the Doctrine DBAL DriverManager.
+     * 
+     * @throws DBALException 
+     * 
+     * @return Connection The connection to the database.
+     */
+    protected function getConnectionFromDriverManager()
+    {
+        $configuration = new Configuration();
+        $connectionParameters = $this->getConnectionParameters();
+        
+        return DriverManager::getConnection($connectionParameters, $configuration);
+    }
+
+    /**
+     * Create the message we want to throw, if there was a connection error.
+     * 
+     * @param Connection $connection The connection.
+     *
+     * @return string The message, we want throw, if there was a connection error.
+     */
+    protected function createConnectionErrorMessage($connection)
+    {
+        $message =
+            'Not connected to database. dsn: ' .
+            $connection->getDriver()->getName() .
+            '://' .
+            '****:****@' .
+            $connection->getHost() . ':' . $connection->getPort() .
+            '/' . $connection->getDatabase();
+
+        return $message;
+    }
+
 }

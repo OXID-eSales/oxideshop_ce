@@ -38,6 +38,7 @@ use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
  */
 class DatabaseTest extends UnitTestCase
 {
+
     /** @var mixed Backing up for earlier value of database link object */
     private $dbObjectBackup = null;
 
@@ -63,6 +64,34 @@ class DatabaseTest extends UnitTestCase
         Database::getDb()->closeConnection();
 
         parent::tearDown();
+    }
+
+    public function testEnsureConnectionIsEstablishedExceptionPath()
+    {
+        $exceptionMessage = "Exception: the database connection couldn't be established!";
+
+        $dbMock = $this->createDatabaseMock($exceptionMessage);
+        $dbMock->expects($this->once())
+            ->method('isConnectionEstablished')
+            ->willReturn(false);
+
+        $this->setProtectedClassProperty(Database::getInstance(), 'db', $dbMock);
+
+        $this->setExpectedException('Exception', $exceptionMessage);
+
+        Database::getDb()->connect();
+    }
+
+    public function testEnsureConnectionIsEstablishedNonExceptionPath()
+    {
+        $dbMock = $this->createDatabaseMock();
+        $dbMock->expects($this->once())
+            ->method('isConnectionEstablished')
+            ->willReturn(true);
+
+        $this->setProtectedClassProperty(Database::getInstance(), 'db', $dbMock);
+
+        Database::getDb()->connect();
     }
 
     public function testGetDbThrowsDatabaseConnectionException()
@@ -164,5 +193,46 @@ class DatabaseTest extends UnitTestCase
     protected function getBlankConfigFile()
     {
         return new ConfigFile($this->createFile('config.inc.php', '<?php '));
+    }
+
+    /**
+     * Create mock of the connection. Only the connect method is mocked.
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function createConnectionMock()
+    {
+        $connectionMock = $this->getMock('Connection', array('connect'));
+        $connectionMock->expects($this->once())->method('connect');
+
+        return $connectionMock;
+    }
+
+    /**
+     * Create a mock of the database. If there is an exception message, we expect, that it will be created by the
+     * connection error message creation method.
+     * 
+     * @param string $exceptionMessage The optional method of the maybe thrown exception. 
+     * 
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function createDatabaseMock($exceptionMessage = '')
+    {
+        $connectionMock = $this->createConnectionMock();
+
+        $dbMock = $this->getMock(
+            'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database',
+            array('isConnectionEstablished', 'getConnectionFromDriverManager', 'createConnectionErrorMessage', 'setFetchMode', 'closeConnection')
+        );
+        $dbMock->expects($this->once())
+            ->method('getConnectionFromDriverManager')
+            ->willReturn($connectionMock);
+        if ('' != $exceptionMessage) {
+            $dbMock->expects($this->once())->method('createConnectionErrorMessage')->willReturn($exceptionMessage);
+        } else {
+            $dbMock->expects($this->never())->method('createConnectionErrorMessage');
+        }
+
+        return $dbMock;
     }
 }

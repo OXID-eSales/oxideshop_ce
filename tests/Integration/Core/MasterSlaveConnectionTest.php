@@ -138,42 +138,4 @@ class MasterSlaveConnectionTest extends UnitTestCase
         $this->assertSame($this->getConfig()->getConfigParam('dbHost'), $dbConnection->getHost());
     }
 
-    /**
-     * Set a given protected property of a given class instance to a given value.
-     *
-     * @param object $classInstance Instance of the class of which the property will be set
-     * @param string $property      Name of the property to be set
-     * @param mixed  $value         Value to which the property will be set
-     */
-    protected function setProtectedClassProperty($classInstance, $property, $value)
-    {
-        $className = get_class($classInstance);
-
-        $reflectionClass = new ReflectionClass($className);
-
-        $reflectionProperty = $reflectionClass->getProperty($property);
-        $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue($classInstance, $value);
-    }
-
-    /**
-     * Get a given protected property of a given class instance.
-     *
-     * @param object $classInstance Instance of the class of which the property will be set
-     * @param string $property      Name of the property to be retrieved
-     *
-     * @return mixed
-     */
-    protected function getProtectedClassProperty($classInstance, $property)
-    {
-        $className = get_class($classInstance);
-
-        $reflectionClass = new ReflectionClass($className);
-
-        $reflectionProperty = $reflectionClass->getProperty($property);
-        $reflectionProperty->setAccessible(true);
-
-        return $reflectionProperty->getValue($classInstance);
-    }
-
 }

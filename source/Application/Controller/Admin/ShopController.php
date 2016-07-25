@@ -34,6 +34,7 @@ class ShopController extends \oxAdminView
 {
     const CURRENT_TEMPLATE = 'shop.tpl';
 
+    /** @deprecated since 6.0 (2016-07-25); Instead use ShopIdCalculator::BASE_SHOP_ID */
     const SHOP_ID = ShopIdCalculator::BASE_SHOP_ID;
 
     /**

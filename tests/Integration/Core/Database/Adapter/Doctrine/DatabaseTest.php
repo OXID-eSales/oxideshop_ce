@@ -465,6 +465,7 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
         }
         $this->assertArrayIsUnique($oxIds);
     }
+
     /**
      * Test, that the method 'moveNext' leads to unique rows with the SQL clause 'ORDER BY rand()'.
      */
@@ -478,6 +479,7 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
         }
         $this->assertArrayIsUnique($oxIds);
     }
+    
     /**
      * Assert, that the given array is unique.
      *

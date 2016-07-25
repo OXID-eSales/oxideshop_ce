@@ -479,6 +479,58 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
         }
         $this->assertArrayIsUnique($oxIds);
     }
+
+    /*
+     * Use Case: All possible parameters for db connection are set
+     */
+    public function testSetConnectionParametersAllParametersSet()
+    {
+        $connectionParametersFromConfigInc = array(
+            'default' => array(
+                'databaseHost'     => 'myDatabaseHost',
+                'databaseName'     => 'myDatabaseName',
+                'databaseUser'     => 'myDatabaseUser',
+                'databasePassword' => 'myDatabasePassword',
+                'databasePort'     => 'myDatabasePort'
+            )
+        );
+        $this->database->setConnectionParameters($connectionParametersFromConfigInc);
+        $expectedConnectionParameters = array(
+            'driver'   => 'pdo_mysql',
+            'host'     => 'myDatabaseHost',
+            'dbname'   => 'myDatabaseName',
+            'user'     => 'myDatabaseUser',
+            'password' => 'myDatabasePassword',
+            'port'     => 'myDatabasePort'
+        );;
+        $this->assertEquals(
+            $expectedConnectionParameters,
+            $this->getProtectedClassProperty($this->database, 'connectionParameters')
+        );
+    }
+
+    /*
+     * Use Case: parameters for db connection are not set
+     */
+    public function testSetConnectionParametersNoParametersSet()
+    {
+        $connectionParametersFromConfigInc = array(
+            'default' => array()
+        );
+        $this->database->setConnectionParameters($connectionParametersFromConfigInc);
+        $expectedConnectionParameters = array(
+            'driver'   => 'pdo_mysql',
+            'host'     => null,
+            'dbname'   => null,
+            'user'     => null,
+            'password' => null,
+            'port'     => null
+        );
+        $this->assertEquals(
+            $expectedConnectionParameters,
+            $this->getProtectedClassProperty($this->database, 'connectionParameters')
+        );
+    }
     
     /**
      * Assert, that the given array is unique.

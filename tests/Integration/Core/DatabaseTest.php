@@ -60,7 +60,7 @@ class DatabaseTest extends UnitTestCase
         Database::getDb()->closeConnection();
 
         $this->setProtectedClassProperty(Database::getInstance(), 'db', $this->dbObjectBackup);
-        
+
         Database::getDb()->closeConnection();
 
         parent::tearDown();
@@ -96,47 +96,47 @@ class DatabaseTest extends UnitTestCase
 
     public function testGetDbThrowsDatabaseConnectionException()
     {
-        /** @var ConfigFile $configFileBackup Backup of the configFile as stored in Registry. This object must be restored  */
+        /** @var ConfigFile $configFileBackup Backup of the configFile as stored in Registry. This object must be restored */
         $configFileBackup = Registry::get('oxConfigFile');
 
         $configFile = $this->getBlankConfigFile();
-        Registry::set('oxConfigFile',$configFile);
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , null);
+        Registry::set('oxConfigFile', $configFile);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db', null);
 
         $this->setExpectedException('OxidEsales\Eshop\Core\Exception\DatabaseConnectionException');
 
         try {
             Database::getDb();
-        } catch (DatabaseConnectionException $exception ) {
+        } catch (DatabaseConnectionException $exception) {
             /** Restore original configFile object */
-            Registry::set('oxConfigFile',$configFileBackup);
+            Registry::set('oxConfigFile', $configFileBackup);
             throw $exception;
         }
     }
 
     public function testGetDbThrowsDatabaseNotConfiguredException()
     {
-        /** @var ConfigFile $configFileBackup Backup of the configFile as stored in Registry. This object must be restored  */
+        /** @var ConfigFile $configFileBackup Backup of the configFile as stored in Registry. This object must be restored */
         $configFileBackup = Registry::get('oxConfigFile');
 
         $configFile = $this->getBlankConfigFile();
-        $configFile->setVar('dbHost','<');
-        Registry::set('oxConfigFile',$configFile);
-        $this->setProtectedClassProperty(Database::getInstance(), 'db' , null);
+        $configFile->setVar('dbHost', '<');
+        Registry::set('oxConfigFile', $configFile);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db', null);
 
         $this->setExpectedException('OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException');
-        
+
         try {
-            Database::getDb();            
-        } catch (DatabaseNotConfiguredException $exception ) {
+            Database::getDb();
+        } catch (DatabaseNotConfiguredException $exception) {
             /** Restore original configFile object */
-            Registry::set('oxConfigFile',$configFileBackup);
+            Registry::set('oxConfigFile', $configFileBackup);
             throw $exception;
         }
     }
 
     /**
-     * Test, that the cache will not 
+     * Test, that the cache will not
      */
     public function testUnflushedCacheDoesntWorks()
     {
@@ -173,7 +173,7 @@ class DatabaseTest extends UnitTestCase
         $connection->execute('ALTER TABLE TEST ADD OXTITLE CHAR(32); ');
 
         $database->flushTableDescriptionCache();
-        
+
         $tableDescriptionTwo = $database->getTableDescription('TEST');
 
         // clean up
@@ -211,9 +211,9 @@ class DatabaseTest extends UnitTestCase
     /**
      * Create a mock of the database. If there is an exception message, we expect, that it will be created by the
      * connection error message creation method.
-     * 
-     * @param string $exceptionMessage The optional method of the maybe thrown exception. 
-     * 
+     *
+     * @param string $exceptionMessage The optional method of the maybe thrown exception.
+     *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
     protected function createDatabaseMock($exceptionMessage = '')

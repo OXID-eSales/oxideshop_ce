@@ -1700,6 +1700,19 @@ class FunctionalityInAdminTest extends AdminTestCase
     }
 
     /**
+     * @group subshop
+     */
+    public function testChecksIfThereAreNoSubshops()
+    {
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $this->markTestSkipped('Skip CE/PE related tests for EE edition');
+        }
+        $this->loginAdmin("Master Settings", "Core Settings");
+        $this->frame('edit');
+        $this->assertElementNotPresent("btn.new", "Subshop link should not exist.");
+    }
+
+    /**
      * checking if econda is loaded in frontend
      *
      * @group adminFunctionality

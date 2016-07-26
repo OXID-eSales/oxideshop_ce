@@ -1700,16 +1700,21 @@ class FunctionalityInAdminTest extends AdminTestCase
     }
 
     /**
+     * This simple test runs in all editions for subshop and varnish groups.
+     * In this way CI generates test results for CE/PE editions.
+     *
      * @group subshop
+     * @group varnish
      */
     public function testChecksIfThereAreNoSubshops()
     {
-        if ($this->getTestConfig()->getShopEdition() === 'EE') {
-            $this->markTestSkipped('Skip CE/PE related tests for EE edition');
-        }
         $this->loginAdmin("Master Settings", "Core Settings");
         $this->frame('edit');
-        $this->assertElementNotPresent("btn.new", "Subshop link should not exist.");
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $this->assertElementPresent("btn.new", "Subshop link should exist.");
+        } else {
+            $this->assertElementNotPresent("btn.new", "Subshop link should not exist.");
+        }
     }
 
     /**

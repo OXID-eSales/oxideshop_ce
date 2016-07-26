@@ -26,6 +26,7 @@ use oxRegistry;
 use oxDb;
 use oxStr;
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * Seo encoder base
@@ -1012,7 +1013,7 @@ class SeoEncoder extends \oxSuperCfg
      */
     public function encodeStaticUrls($aStaticUrl, $iShopId, $iLang)
     {
-        $oDb = oxDb::getDb();
+        $db = oxDb::getDb();
         $sValues = '';
         $sOldObjectId = null;
 
@@ -1041,14 +1042,21 @@ class SeoEncoder extends \oxSuperCfg
                 $sSeoUrl = $this->_processSeoUrl($sSeoUrl, $sObjectId, $iLang);
             }
 
-
             if ($sOldObjectId) {
-                // move changed records to history
-                // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                $masterDb = oxDb::getMaster();
-                if (!$masterDb->getOne("select (" . $masterDb->quote($sSeoUrl) . " like oxseourl) & (" . $masterDb->quote($sStdUrl) . " like oxstdurl) from oxseo where oxobjectid = " . $masterDb->quote($sOldObjectId) . " and oxshopid = '{$iShopId}' and oxlang = '{$iLang}' ")) {
-                    $this->_copyToHistory($sOldObjectId, $iShopId, $iLang, 'static', $sObjectId);
+                // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
+                $db->startTransaction();
+
+                try{
+                    // move changed records to history
+                    if (!$db->getOne("select (" . $db->quote($sSeoUrl) . " like oxseourl) & (" . $db->quote($sStdUrl) . " like oxstdurl) from oxseo where oxobjectid = " . $db->quote($sOldObjectId) . " and oxshopid = '{$iShopId}' and oxlang = '{$iLang}' ")) {
+                        $this->_copyToHistory($sOldObjectId, $iShopId, $iLang, 'static', $sObjectId);
+                    }
+                } catch (DatabaseException $exception) {
+                    Database::getDb()->rollbackTransaction();
+                    throw $exception;
                 }
+
+                $db->commitTransaction();
             }
 
             if (!$sSeoUrl || !$sStdUrl) {
@@ -1061,12 +1069,12 @@ class SeoEncoder extends \oxSuperCfg
                 $sValues .= ', ';
             }
 
-            $sValues .= "( " . $oDb->quote($sObjectId) . ", " . $oDb->quote($sIdent) . ", " . $oDb->quote($iShopId) . ", '{$iLang}', " . $oDb->quote($sStdUrl) . ", " . $oDb->quote($sSeoUrl) . ", 'static' )";
+            $sValues .= "( " . $db->quote($sObjectId) . ", " . $db->quote($sIdent) . ", " . $db->quote($iShopId) . ", '{$iLang}', " . $db->quote($sStdUrl) . ", " . $db->quote($sSeoUrl) . ", 'static' )";
         }
 
         // must delete old before insert/update
         if ($sOldObjectId) {
-            $this->executeDatabaseQuery("delete from oxseo where oxobjectid in ( " . $oDb->quote($sOldObjectId) . ", " . $oDb->quote($sObjectId) . " )");
+            $this->executeDatabaseQuery("delete from oxseo where oxobjectid in ( " . $db->quote($sOldObjectId) . ", " . $db->quote($sObjectId) . " )");
         }
 
         // (re)inserting

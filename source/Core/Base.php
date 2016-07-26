@@ -38,6 +38,7 @@ use oxRegistry;
 use oxField;
 use oxDb;
 use oxUtilsObject;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 class Base extends \oxSuperCfg
 {
@@ -849,26 +850,37 @@ class Base extends \oxSuperCfg
             }
         }
 
-        if ($this->exists()) {
-            //do not allow derived update
-            if (!$this->allowDerivedUpdate()) {
-                return false;
+        $return = false;
+
+        // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
+        Database::getDb()->startTransaction();
+        try {
+            $action = null;
+            $response = null;
+            if ($this->exists()) {
+                //only update if derived update is allowed
+                if ($this->allowDerivedUpdate()) {
+                    $response = $this->_update();
+                    $action = ACTION_UPDATE;
+                }
+            } else {
+                $response = $this->_insert();
+                $action = ACTION_INSERT;
             }
 
-            $response = $this->_update();
-            $action = ACTION_UPDATE;
-        } else {
-            $response = $this->_insert();
-            $action = ACTION_INSERT;
-        }
+            $this->onChange($action);
 
-        $this->onChange($action);
+            if ($response) {
+                $return = $this->getId();
+            }
 
-        if ($response) {
-            return $this->getId();
-        } else {
-            return false;
+        } catch (DatabaseException $exception) {
+            Database::getDb()->rollbackTransaction();
+            throw $exception;
         }
+        Database::getDb()->commitTransaction();
+
+        return $return;
     }
 
     /**
@@ -908,11 +920,10 @@ class Base extends \oxSuperCfg
         }
 
         $viewName = $this->getCoreTableName();
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = oxDb::getMaster(oxDb::FETCH_MODE_ASSOC);
-        $query = "select {$this->_sExistKey} from {$viewName} where {$this->_sExistKey} = " . $masterDb->quote($oxid);
+        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $query = "select {$this->_sExistKey} from {$viewName} where {$this->_sExistKey} = " . $database->quote($oxid);
 
-        return ( bool ) $masterDb->getOne($query);
+        return ( bool ) $database->getOne($query);
     }
 
     /**

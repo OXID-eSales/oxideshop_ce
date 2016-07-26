@@ -23,6 +23,7 @@
 namespace OxidEsales\Eshop\Core;
 
 use oxDb;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * Counter class
@@ -40,23 +41,27 @@ class Counter
      */
     public function getNext($ident)
     {
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = oxDb::getMaster();
-        $masterDb->startTransaction();
+        // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
+        $database = oxDb::getDb();
+        $database->startTransaction();
+        try {
+            $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $database->quote($ident) . " FOR UPDATE";
 
-        $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $masterDb->quote($ident) . " FOR UPDATE";
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            if (($cnt = $database->getOne($query)) === false) {
+                $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, '0')";
+                $database->execute($query, array($ident));
+            }
 
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        if (($cnt = $masterDb->getOne($query)) === false) {
-            $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, '0')";
-            $masterDb->execute($query, array($ident));
+            $cnt = ((int) $cnt) + 1;
+            $query = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ?";
+            $database->execute($query, array($cnt, $ident));
+
+        } catch (DatabaseException $exception) {
+            Database::getDb()->rollbackTransaction();
+            throw $exception;
         }
-
-        $cnt = ((int) $cnt) + 1;
-        $query = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ?";
-        $masterDb->execute($query, array($cnt, $ident));
-
-        $masterDb->commitTransaction();
+        $database->commitTransaction();
 
         return $cnt;
     }
@@ -72,22 +77,28 @@ class Counter
      */
     public function update($ident, $count)
     {
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = oxDb::getMaster();
-        $masterDb->startTransaction();
+        // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
+        $database = oxDb::getDb();
+        $database->startTransaction();
 
-        $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $masterDb->quote($ident) . " FOR UPDATE";
+        try {
+            $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $database->quote($ident) . " FOR UPDATE";
 
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        if (($cnt = $masterDb->getOne($query)) === false) {
-            $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, ?)";
-            $result = $masterDb->execute($query, array($ident, $count));
-        } else {
-            $query = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ? AND `oxcount` < ?";
-            $result = $masterDb->execute($query, array($count, $ident, $count));
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            if (($cnt = $database->getOne($query)) === false) {
+                $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, ?)";
+                $result = $database->execute($query, array($ident, $count));
+            } else {
+                $query = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ? AND `oxcount` < ?";
+                $result = $database->execute($query, array($count, $ident, $count));
+            }
+
+        } catch (DatabaseException $exception) {
+            Database::getDb()->rollbackTransaction();
+            throw $exception;
         }
 
-        $masterDb->commitTransaction();
+        $database->commitTransaction();
 
         return $result;
     }

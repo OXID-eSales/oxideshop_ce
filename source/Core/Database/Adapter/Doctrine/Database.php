@@ -117,9 +117,9 @@ class Database implements DatabaseInterface
             $connection = $this->getConnectionFromDriverManager();
             $connection->connect();
 
-            $this->ensureConnectionIsEstablished($connection);
-
             $this->setConnection($connection);
+
+            $this->ensureConnectionIsEstablished($connection);
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
@@ -1100,7 +1100,7 @@ class Database implements DatabaseInterface
      *
      * @param \Doctrine\DBAL\Connection $connection The connection we want to ensure, if it is established.
      *
-     * @throws DBALException If we are not connected correctly to the database.
+     * @throws \Exception If we are not connected correctly to the database.
      */
     protected function ensureConnectionIsEstablished($connection)
     {

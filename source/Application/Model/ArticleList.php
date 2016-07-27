@@ -27,6 +27,7 @@ use oxRegistry;
 use oxDb;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * Article list manager.
@@ -789,28 +790,32 @@ class ArticleList extends \oxList
         $blUpdated = false;
 
         if ($blForceUpdate || $this->_canUpdatePrices()) {
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $masterDb = oxDb::getMaster();
+            // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
+            $database = oxDb::getDb();
 
-            $masterDb->startTransaction();
+            $database->startTransaction();
+            try {
+                $sCurrUpdateTime = date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime());
 
-            $sCurrUpdateTime = date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime());
-
-            // Collect article id's for later recalculation.
-            $sQ = "SELECT `oxid` FROM `oxarticles`
+                // Collect article id's for later recalculation.
+                $sQ = "SELECT `oxid` FROM `oxarticles`
                    WHERE `oxupdatepricetime` > 0 AND `oxupdatepricetime` <= '{$sCurrUpdateTime}'";
-            
-            $aUpdatedArticleIds = $masterDb->getCol($sQ);
 
-            // updating oxarticles
-            $blUpdated = $this->updateOxArticles($sCurrUpdateTime, $masterDb);
+                $aUpdatedArticleIds = $database->getCol($sQ);
 
-            // renew update time in case update is not forced
-            if (!$blForceUpdate) {
-                $this->renewPriceUpdateTime();
+                // updating oxarticles
+                $blUpdated = $this->updateOxArticles($sCurrUpdateTime, $database);
+
+                // renew update time in case update is not forced
+                if (!$blForceUpdate) {
+                    $this->renewPriceUpdateTime();
+                }
+            } catch (DatabaseException $exception) {
+                $database->rollbackTransaction();
+                throw $exception;
             }
 
-            $masterDb->commitTransaction();
+            $database->commitTransaction();
 
             // recalculate oxvarminprice and oxvarmaxprice for parent
             if (is_array($aUpdatedArticleIds)) {
@@ -1163,13 +1168,14 @@ class ArticleList extends \oxList
      */
     protected function fetchNextUpdateTime()
     {
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = oxDb::getMaster();
-        
+        // Function is called inside a transaction or from admin backend which uses master connection only.
+        // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
+        $database = oxDb::getDb();
+
         // fetching next update time
         $sQ = $this->getQueryToFetchNextUpdateTime();
-        
-        $iTimeToUpdate = $masterDb->getOne(sprintf($sQ, "`oxarticles`"));
+
+        $iTimeToUpdate = $database->getOne(sprintf($sQ, "`oxarticles`"));
 
         return $iTimeToUpdate;
     }

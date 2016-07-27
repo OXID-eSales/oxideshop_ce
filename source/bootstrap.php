@@ -35,7 +35,9 @@ if (!defined('OX_BASE_PATH')) {
 }
 
 // custom functions file
-require_once OX_BASE_PATH . 'modules/functions.php';
+if (file_exists(OX_BASE_PATH . 'modules/functions.php')) {
+    include_once OX_BASE_PATH . 'modules/functions.php';
+}
 
 // Generic utility method file including autoloading definition
 require_once OX_BASE_PATH . 'oxfunctions.php';

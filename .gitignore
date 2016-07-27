@@ -41,7 +41,7 @@
 # Modules
 /source/modules/*
 !/source/modules/composer.json
-!/source/modules/functions.php
+!/source/modules/functions.php.dist
 
 # Except our own modules
 !/source/modules/oe/

@@ -900,9 +900,10 @@ class Category extends \oxI18n implements \oxIUrl
         $this->setUpdateSeo(true);
         $this->_setUpdateSeoOnFieldChange('oxtitle');
 
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = oxDb::getMaster();
-        $sOldParentID = $masterDb->getOne("select oxparentid from oxcategories where oxid = " . $masterDb->quote($this->getId()));
+        // Function is called from inside a transaction in Category::save (see ESDEV-3804 and ESDEV-3822).
+        // No need to explicitly force master here.
+        $database = oxDb::getDb();
+        $sOldParentID = $database->getOne("select oxparentid from oxcategories where oxid = " . $database->quote($this->getId()));
 
         if ($this->_blIsSeoObject && $this->isAdmin()) {
             oxRegistry::get("oxSeoEncoderCategory")->markRelatedAsExpired($this);
@@ -926,7 +927,7 @@ class Category extends \oxI18n implements \oxIUrl
             $iTreeSize = $sOldParentRight - $sOldParentLeft + 1;
 
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $sNewRootID = $masterDb->getOne("select oxrootid from oxcategories where oxid = " . $masterDb->quote($this->oxcategories__oxparentid->value));
+            $sNewRootID = $database->getOne("select oxrootid from oxcategories where oxid = " . $database->quote($this->oxcategories__oxparentid->value));
 
             //If empty rootID, we set it to categorys oxid
             if ($sNewRootID == "") {
@@ -934,7 +935,7 @@ class Category extends \oxI18n implements \oxIUrl
                 $sNewRootID = $this->getId();
             }
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $sNewParentLeft = $masterDb->getOne("select oxleft from oxcategories where oxid = " . $masterDb->quote($this->oxcategories__oxparentid->value));
+            $sNewParentLeft = $database->getOne("select oxleft from oxcategories where oxid = " . $database->quote($this->oxcategories__oxparentid->value));
 
             //if(!$sNewParentLeft){
             //the current node has become root node, (oxrootid == "oxrootid")
@@ -948,8 +949,8 @@ class Category extends \oxI18n implements \oxIUrl
                 //echo "<br>* ) Can't asign category to it's child";
 
                 //Restoring old parentid, stoping further actions
-                $sRestoreOld = "UPDATE oxcategories SET OXPARENTID = " . $masterDb->quote($sOldParentID) . " WHERE oxid = " . $masterDb->quote($this->getId());
-                $masterDb->execute($sRestoreOld);
+                $sRestoreOld = "UPDATE oxcategories SET OXPARENTID = " . $database->quote($sOldParentID) . " WHERE oxid = " . $database->quote($this->getId());
+                $database->execute($sRestoreOld);
 
                 return false;
             }
@@ -964,27 +965,27 @@ class Category extends \oxI18n implements \oxIUrl
 
             //echo "Size=$iTreeSize, NewStart=$iMoveAfter, delta=$iDelta";
 
-            $sAddOld = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = " . $masterDb->quote($this->oxcategories__oxrootid->value) . ";";
-            $sAddNew = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = " . $masterDb->quote($sNewRootID) . ";";
+            $sAddOld = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = " . $database->quote($this->oxcategories__oxrootid->value) . ";";
+            $sAddNew = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = " . $database->quote($sNewRootID) . ";";
 
             //Updating everything after new position
-            $masterDb->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + " . $iTreeSize . ") WHERE OXLEFT >= " . $iMoveAfter . $sAddNew);
-            $masterDb->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT + " . $iTreeSize . ") WHERE OXRIGHT >= " . $iMoveAfter . $sAddNew);
+            $database->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + " . $iTreeSize . ") WHERE OXLEFT >= " . $iMoveAfter . $sAddNew);
+            $database->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT + " . $iTreeSize . ") WHERE OXRIGHT >= " . $iMoveAfter . $sAddNew);
             //echo "<br>1.) + $iTreeSize, >= $iMoveAfter";
 
             $sChangeRootID = "";
             if ($this->oxcategories__oxrootid->value != $sNewRootID) {
                 //echo "<br>* ) changing root IDs ( {$this->oxcategories__oxrootid->value} -> {$sNewRootID} )";
-                $sChangeRootID = ", OXROOTID=" . $masterDb->quote($sNewRootID);
+                $sChangeRootID = ", OXROOTID=" . $database->quote($sNewRootID);
             }
 
             //Updating subtree
-            $masterDb->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + " . $iDelta . "), OXRIGHT = (OXRIGHT + " . $iDelta . ") " . $sChangeRootID . " WHERE OXLEFT >= " . $sOldParentLeft . " AND OXRIGHT <= " . $sOldParentRight . $sAddOld);
+            $database->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + " . $iDelta . "), OXRIGHT = (OXRIGHT + " . $iDelta . ") " . $sChangeRootID . " WHERE OXLEFT >= " . $sOldParentLeft . " AND OXRIGHT <= " . $sOldParentRight . $sAddOld);
             //echo "<br>2.) + $iDelta, >= $sOldParentLeft and <= $sOldParentRight";
 
             //Updating everything after old position
-            $masterDb->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT - " . $iTreeSize . ") WHERE OXLEFT >=   " . ($sOldParentRight + 1) . $sAddOld);
-            $masterDb->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT - " . $iTreeSize . ") WHERE OXRIGHT >=   " . ($sOldParentRight + 1) . $sAddOld);
+            $database->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT - " . $iTreeSize . ") WHERE OXLEFT >=   " . ($sOldParentRight + 1) . $sAddOld);
+            $database->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT - " . $iTreeSize . ") WHERE OXRIGHT >=   " . ($sOldParentRight + 1) . $sAddOld);
             //echo "<br>3.) - $iTreeSize, >= ".($sOldParentRight+1);
         }
 

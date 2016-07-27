@@ -28,6 +28,7 @@ use oxField;
 use oxDb;
 use OxidEsales\Eshop\Application\Model\Basket;
 use oxuserbasket;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * Basket reservations handler class
@@ -281,33 +282,44 @@ class BasketReservation extends \oxSuperCfg
      */
     public function discardUnusedReservations($iLimit)
     {
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = oxDb::getMaster(oxDb::FETCH_MODE_ASSOC);
-        $iStartTime = oxRegistry::get("oxUtilsDate")->getTime() - (int) $this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $oRs = $masterDb->select("select oxid from oxuserbaskets where oxtitle = 'reservations' and oxupdate <= $iStartTime limit $iLimit", false);
-        if ($oRs->EOF) {
-            return;
-        }
-        $aFinished = array();
-        while (!$oRs->EOF) {
-            $aFinished[] = $masterDb->quote($oRs->fields['oxid']);
-            $oRs->fetchRow();
-        }
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $oRs = $masterDb->select("select oxartid, oxamount from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")", false);
-        while (!$oRs->EOF) {
-            $oArticle = oxNew('oxArticle');
-            if ($oArticle->load($oRs->fields['oxartid'])) {
-                $oArticle->reduceStock(-$oRs->fields['oxamount'], true);
-            }
-            $oRs->fetchRow();
-        }
-        $masterDb->execute("delete from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")");
-        $masterDb->execute("delete from oxuserbaskets where oxid in (" . implode(",", $aFinished) . ")");
+        // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
+        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $database->startTransaction();
 
-        // cleanup basket history also..
-        $masterDb->execute("delete from oxuserbaskets where oxtitle = 'savedbasket' and oxupdate <= $iStartTime");
+        try{
+            $iStartTime = oxRegistry::get("oxUtilsDate")->getTime() - (int) $this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $oRs = $database->select("select oxid from oxuserbaskets where oxtitle = 'reservations' and oxupdate <= $iStartTime limit $iLimit", false);
+            if ($oRs->EOF) {
+                $database->commitTransaction();
+                return;
+            }
+            $aFinished = array();
+            while (!$oRs->EOF) {
+                $aFinished[] = $database->quote($oRs->fields['oxid']);
+                $oRs->fetchRow();
+            }
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $oRs = $database->select("select oxartid, oxamount from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")", false);
+            while (!$oRs->EOF) {
+                $oArticle = oxNew('oxArticle');
+                if ($oArticle->load($oRs->fields['oxartid'])) {
+                    $oArticle->reduceStock(-$oRs->fields['oxamount'], true);
+                }
+                $oRs->fetchRow();
+            }
+            $database->execute("delete from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")");
+            $database->execute("delete from oxuserbaskets where oxid in (" . implode(",", $aFinished) . ")");
+
+            // cleanup basket history also..
+            $database->execute("delete from oxuserbaskets where oxtitle = 'savedbasket' and oxupdate <= $iStartTime");
+
+        } catch (DatabaseException $exception) {
+            $database->rollbackTransaction();
+            throw $exception;
+        }
+
+        $database->commitTransaction();
 
         $this->_aCurrentlyReserved = null;
     }

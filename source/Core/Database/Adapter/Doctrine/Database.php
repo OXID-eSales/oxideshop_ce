@@ -24,6 +24,7 @@ namespace OxidEsales\Eshop\Core\Database\Adapter\Doctrine;
 
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ConnectionException;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\DriverManager;
@@ -738,6 +739,14 @@ class Database implements DatabaseInterface
 
         switch (true) {
             case $exception instanceof Exception\ConnectionException:
+                /**
+                 * Doctrine does not recognise "SQLSTATE[HY000] [2003] Can't connect to MySQL server on 'mysql.example'"
+                 * as a connection error, as the error code 2003 is simply not treated in
+                 * Doctrine\DBAL\Driver\AbstractMySQLDriver::convertException.
+                 * We fix this here.
+                 */
+            case is_a($exception->getPrevious(), '\Exception') &&
+                 in_array($exception->getPrevious()->getCode(), ['2003']):
                 $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseConnectionException';
                 break;
             case $exception instanceof DBALException:
@@ -1107,7 +1116,7 @@ class Database implements DatabaseInterface
         if (!$this->isConnectionEstablished($connection)) {
             $message = $this->createConnectionErrorMessage($connection);
 
-            throw new \Exception($message);
+            throw new ConnectionException($message);
         }
     }
 

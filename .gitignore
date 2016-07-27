@@ -20,16 +20,18 @@
 !/source/tmp/.htaccess
 
 # Theme
-/source/Application/views/
+/source/Application/views/*
 !/source/Application/views/admin/
 !/source/Application/views/azure/
 
 # out Folder
-/source/out/
+/source/out/*
 !/source/out/admin/
 !/source/out/azure/
 !/source/out/downloads/
 !/source/out/media/
+!/source/out/pictures/
+/source/out/pictures/*
 !/source/out/pictures/master/
 !/source/out/pictures/media/
 !/source/out/pictures/promo/

@@ -27,6 +27,7 @@ use oxRegistry;
 use oxList;
 use oxUtilsObject;
 use oxField;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * Recommendation list manager class.
@@ -222,13 +223,24 @@ class RecommendationList extends \oxBase implements \oxIUrl
     {
         $blAdd = false;
         if ($sOXID) {
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $masterDb = oxDb::getMaster();
-            if (!$masterDb->getOne("select oxid from oxobject2list where oxobjectid=" . $masterDb->quote($sOXID) . " and oxlistid=" . $masterDb->quote($this->getId()))) {
-                $sUid = oxUtilsObject::getInstance()->generateUID();
-                $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $masterDb->quote($sOXID) . ", " . $masterDb->quote($this->getId()) . ", " . $masterDb->quote($sDesc) . " )";
-                $blAdd = $masterDb->execute($sQ);
+
+            // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
+            $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+            $database->startTransaction();
+
+            try {
+                if (!$database->getOne("select oxid from oxobject2list where oxobjectid=" . $database->quote($sOXID) . " and oxlistid=" . $database->quote($this->getId()))) {
+                    $sUid = oxUtilsObject::getInstance()->generateUID();
+                    $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $database->quote($sOXID) . ", " . $database->quote($this->getId()) . ", " . $database->quote($sDesc) . " )";
+                    $blAdd = $database->execute($sQ);
+                }
+            } catch (DatabaseException $exception) {
+                $database->rollbackTransaction();
+                throw $exception;
             }
+
+            $database->commitTransaction();
+
         }
 
         return $blAdd;

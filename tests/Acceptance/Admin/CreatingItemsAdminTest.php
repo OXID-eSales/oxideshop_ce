@@ -1478,8 +1478,6 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->type("mediaDesc", "media file [EN]_šÄßüл");
         $this->type("mediaUrl", "https://www.youtube.com/watch?v=iQ69Hv8WP_g");
         $this->clickAndWait("save");
-        // Needed because of sorting. It adds 2 records at the same time and it's hard to compare in which place is first record.
-        sleep(1);
         $this->assertEquals("media file [EN]_šÄßüл", $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"));
         $this->selectAndWait("test_editlanguage", "label=Deutsch");
         $this->assertEquals("", $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"));

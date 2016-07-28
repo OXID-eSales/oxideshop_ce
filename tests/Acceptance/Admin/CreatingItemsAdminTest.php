@@ -1491,8 +1491,14 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->clickAndWait("save");
         $this->assertElementPresent("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input");
         $this->assertElementPresent("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[3]/input");
-        $this->assertEquals("media file [EN]_šÄßüл", $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"));
-        $this->assertEquals("second media file", $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[3]/input"));
+
+        $expected = array('media file [EN]_šÄßüл',
+                          'second media file');
+        $result = array($this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"),
+                        $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[3]/input"));
+        sort($result);
+        $this->assertEquals($expected, $result);
+
         $this->clickAndConfirm("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[2]/a");
         $this->assertEquals("media file [EN]_šÄßüл", $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"));
         $this->assertElementNotPresent("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[3]/input");

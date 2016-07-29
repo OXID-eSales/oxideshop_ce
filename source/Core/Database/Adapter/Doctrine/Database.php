@@ -48,6 +48,7 @@ class Database implements DatabaseInterface
      * Holds the necessary parameters to connect to the database
      */
     protected $connectionParameters = array();
+
     /**
      * @var \Doctrine\DBAL\Connection|\Doctrine\DBAL\Connections\MasterSlaveConnection The database connection.
      */
@@ -80,7 +81,6 @@ class Database implements DatabaseInterface
 
     /**
      * The standard constructor.
-     *
      */
     public function __construct()
     {
@@ -214,7 +214,7 @@ class Database implements DatabaseInterface
          * connection itself (depending on the driver) for it to affect PDO::quote().
          */
         /**
-         * @var array Map charset as passed by the caller to doctrine charsets
+         * @var array Map charset as passed by the caller to doctrine charsets.
          */
         $sanitizedCharset = trim(strtolower($connectionParameters['connectionCharset']));
 
@@ -286,8 +286,8 @@ class Database implements DatabaseInterface
      * @see DatabaseInterface::setFetchMode() for how to set the fetch mode
      * @see Doctrine::$fetchMode for the default fetch mode
      *
-     * @param string $sqlSelect      The sql select statement we want to execute.
-     * @param array  $parameters     Array of parameters, for the given sql statement.
+     * @param string $sqlSelect  The sql select statement we want to execute.
+     * @param array  $parameters Array of parameters, for the given sql statement.
      *
      * @return array The row, we selected with the given sql statement.
      */
@@ -323,21 +323,23 @@ class Database implements DatabaseInterface
      *
      * @param string $string The string to be quoted as a identifier.
      *
-     * @return string The quoted string
+     * @return string The quoted identifier string.
      */
     public function quoteIdentifier($string)
     {
         $identifierQuoteCharacter = $this->getConnection()->getDatabasePlatform()->getIdentifierQuoteCharacter();
+        
         if (!$identifierQuoteCharacter) {
             $identifierQuoteCharacter = '`';
         }
+        
         $string = trim(str_replace($identifierQuoteCharacter, '', $string));
 
         return $this->getConnection()->quoteIdentifier($string);
     }
 
     /**
-     * Quote the given string. Same as qstr.
+     * Quote the given string.
      *
      * @param string $value The string we want to quote.
      *
@@ -493,6 +495,7 @@ class Database implements DatabaseInterface
              */
             /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
             $statement = $this->getConnection()->executeQuery($sqlSelect, $parameters);
+            
             $result = new ResultSet($statement);
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
@@ -589,9 +592,10 @@ class Database implements DatabaseInterface
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
 
+        $result = array();
+        
         try {
             $rows = $this->getConnection()->fetchAll($sqlSelect, $parameters);
-            $result = array();
             foreach ($rows as $row) {
                 // cause there is no doctrine equivalent, we take this little detour and restructure the result
                 $columnNames = array_keys($row);
@@ -629,6 +633,8 @@ class Database implements DatabaseInterface
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
 
+        $affectedRows = 0;
+        
         try {
             $affectedRows = $this->getConnection()->executeUpdate($query, $parameters, $types);
         } catch (DBALException $exception) {
@@ -760,7 +766,9 @@ class Database implements DatabaseInterface
                 /** @var $pdoException PDOException */
                 $code = $pdoException->errorInfo[1];
                 $message = $pdoException->errorInfo[2];
+                
                 $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
+                
                 break;
             case $exception instanceof PDOException:
                 /**
@@ -770,7 +778,9 @@ class Database implements DatabaseInterface
                  */
                 $code = $exception->errorInfo[1];
                 $message = $exception->errorInfo[2];
+                
                 $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
+                
                 break;
             default:
                 $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
@@ -842,8 +852,7 @@ class Database implements DatabaseInterface
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
-
-
+        
         if ($this->doesStatementProduceOutput($sqlSelect)) {
             $result = $statement->fetchAll();
         }
@@ -952,7 +961,7 @@ class Database implements DatabaseInterface
             /**
              * ADODB lite properties not implemented
              *
-             * Todo implement the enums property for SET and ENUM fields
+             * @todo: implement the enums property for SET and ENUM fields
              */
             // $item->enums
 
@@ -1056,7 +1065,6 @@ class Database implements DatabaseInterface
             }
         }
 
-
         /** Numeric types, which may have a maximum length */
         $integerTypes = array('INTEGER', 'INT', 'SMALLINT', 'TINYINT', 'MEDIUMINT', 'BIGINT');
         $fixedPointTypes = array('DECIMAL', 'NUMERIC');
@@ -1078,7 +1086,7 @@ class Database implements DatabaseInterface
             ) && -1 == $maxLength
         ) {
             /**
-             * Todo If the assigned type is one of the following and maxLength is -1, then, if applicable the default max length ot that type should be assigned.
+             * @todo: If the assigned type is one of the following and maxLength is -1, then, if applicable the default max length ot that type should be assigned.
              */
         }
 

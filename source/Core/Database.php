@@ -33,44 +33,32 @@ class Database
 {
 
     /**
-     * Fetch mode - numeric
-     *
-     * @var int
+     * @var int Fetch mode - numeric
      */
     const FETCH_MODE_NUM = DatabaseInterface::FETCH_MODE_NUM;
 
     /**
-     * Fetch mode - associative
-     *
-     * @var int
+     * @var int Fetch mode - associative
      */
     const FETCH_MODE_ASSOC = DatabaseInterface::FETCH_MODE_ASSOC;
 
     /**
-     * A singleton instance of this class or a sub class of this class
-     *
-     * @var null|Database
+     * @var null|Database A singleton instance of this class or a sub class of this class
      */
     protected static $instance = null;
 
     /**
-     * Database connection object
-     *
-     * @var null|DatabaseAdapter|\OxidEsales\EshopEnterprise\Core\Database\Adapter\Doctrine\Database
+     * @var null|DatabaseAdapter|\OxidEsales\EshopEnterprise\Core\Database\Adapter\Doctrine\Database Database connection object
      */
     protected static $db = null;
 
     /**
-     * Database tables descriptions cache array
-     *
-     * @var array
+     * @var array Database tables descriptions cache array
      */
     protected static $tblDescCache = array();
 
     /**
-     * Database type
-     *
-     * @var null|ConfigFile
+     * @var null|ConfigFile Database type
      */
     protected $configFile;
 
@@ -96,7 +84,7 @@ class Database
     }
 
     /**
-     * Returns the singleton instance of this class or of a sub class of this class
+     * Returns the singleton instance of this class or of a sub class of this class.
      *
      * @return Database The singleton instance.
      */
@@ -112,9 +100,9 @@ class Database
     /**
      * Return the database connection instance as a singleton.
      *
-     * @param int $fetchMode - fetch mode default numeric - 0
+     * @param int $fetchMode The fetch mode. Default is numeric (0).
      *
-     * @throws DatabaseConnectionException error while initiating connection to DB
+     * @throws DatabaseConnectionException Error while initiating connection to DB.
      *
      * @return DatabaseInterface
      */
@@ -139,9 +127,9 @@ class Database
      * In case the shop is not allowed a master/slave setup, this function
      * is simply a wrapper for Database::getDb.
      *
-     * @param int $fetchMode - fetch mode default numeric - 0
+     * @param int $fetchMode The fetch mode. Default is numeric (0).
      *
-     * @throws DatabaseConnectionException error while initiating connection to DB
+     * @throws DatabaseConnectionException Error while initiating connection to DB
      *
      * @return DatabaseInterface
      */
@@ -279,6 +267,7 @@ class Database
     protected function validateConfigFile(ConfigFile $configFile)
     {
         $isDatabaseConfigured = $this->isDatabaseConfigured($configFile);
+        
         if (!$isDatabaseConfigured) {
             throw new DatabaseNotConfiguredException('The database connection has not been configured in config.inc.php', 0);
         }
@@ -291,39 +280,34 @@ class Database
      */
     protected function getConnectionParameters()
     {
-        /** Collect the parameters, that are necessary to initialize the database connection */
+        /** Collect the parameters, that are necessary to initialize the database connection: */
+        
         /**
-         * @var string $databaseDriver
-         * At the moment the database adapter uses always 'pdo_mysql'
+         * @var string $databaseDriver At the moment the database adapter uses always 'pdo_mysql'.
          */
         $databaseDriver = $this->getConfigParam('dbType');
         /**
-         * @var string $databaseHost
-         * The database host to connect to.
+         * @var string $databaseHost The database host to connect to.
          * Be aware, that the connection between the MySQL client and the server is unencrypted.
          */
         $databaseHost = $this->getConfigParam('dbHost');
         /**
-         * @var integer $databasePort
-         * TCP port to connect to
+         * @var integer $databasePort TCP port to connect to.
          */
         $databasePort = (int) $this->getConfigParam('dbPort');
         if (!$databasePort) {
             $databasePort = 3306;
         }
         /**
-         * @var string $databaseName
-         * The name of the database or scheme to connect to
+         * @var string $databaseName The name of the database or scheme to connect to.
          */
         $databaseName = $this->getConfigParam('dbName');
         /**
-         * @var string $databaseUser
-         * The user id of the database user
+         * @var string $databaseUser The user id of the database user.
          */
         $databaseUser = $this->getConfigParam('dbUser');
         /**
-         * @var string $databasePassword
-         * The password of the database user
+         * @var string $databasePassword The password of the database user.
          */
         $databasePassword = $this->getConfigParam('dbPwd');
 
@@ -373,6 +357,7 @@ class Database
     protected function isDatabaseConfigured(ConfigFile $config)
     {
         $isValid = true;
+        
         // If the shop has not been configured yet the hostname has the format '<dbHost>'
         if (false  !== strpos($config->getVar('dbHost'), '<')) {
             $isValid = false;

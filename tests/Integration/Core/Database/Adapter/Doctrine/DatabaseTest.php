@@ -138,6 +138,7 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
 
     /**
      * Data provider for testing selectLimit() with invalid parameters
+     *
      * @return array
      */
     public function dataProviderTestSelectLimitForInvalidOffsetAndLimit()
@@ -318,6 +319,7 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
                 return true;
             }
         }
+
         $this->fail(
             "No error with level " . $errorLevel . " and message '" . $errorMessage . "' was triggered"
         );
@@ -460,9 +462,11 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
         $resultSet = $this->database->select('SELECT oxid FROM oxarticles ORDER BY RAND()');
         $rows = $resultSet->fetchAll();
         $oxIds = [];
+
         foreach ($rows as $row) {
             $oxIds[] = $row[0];
         }
+
         $this->assertArrayIsUnique($oxIds);
     }
 
@@ -473,10 +477,12 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
     {
         $resultSet = $this->database->select('SELECT oxid FROM oxarticles ORDER BY RAND()');
         $oxIds = [];
+
         while (!$resultSet->EOF) {
             $oxIds[] = $resultSet->fields[0];
             $resultSet->fetchRow();
         }
+
         $this->assertArrayIsUnique($oxIds);
     }
 

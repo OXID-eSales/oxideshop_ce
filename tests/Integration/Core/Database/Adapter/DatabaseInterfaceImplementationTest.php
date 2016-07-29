@@ -224,7 +224,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertEquals($expectedRows, $rows);
     }
 
-
     /**
      * Data provider for the default fetch mode
      *
@@ -445,9 +444,9 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             array(self::FIXTURE_OXID_3)
         );
         $allRows = $result->fetchAll();
+
         $this->assertSame($expectedRows, $allRows);
     }
-
 
     /**
      * Test that the expected exception is thrown when passing an invalid non "SELECT" query.
@@ -627,8 +626,8 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      * Test that getAll returns an array with integer keys, if setFetchMode is not called before calling getArray.
      * Test that getAll returns an array with integer keys, if setFetchMode is not called before calling getAll.
      *
-     * @todo IMHO This is an inconsistent implementation of ADOdb Lite, as not calling setFetchMode should give the same results
-     *       as calling setFetchMode with the param DatabaseInterface::FETCH_MODE_DEFAULT
+     * @todo: IMHO This is an inconsistent implementation of ADOdb Lite, as not calling setFetchMode should give the same results
+     *        as calling setFetchMode with the param DatabaseInterface::FETCH_MODE_DEFAULT
      *
      * assertSame is not used here as the order of element in the result can crash the test and the order of elements
      * does not matter in this test case.
@@ -677,11 +676,11 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     public function dataProviderTestGetAllRespectsFetchMode()
     {
         return array(
-            [
+            array(
                 'An array with both integer and string keys is returned for fetch mode DatabaseInterface::FETCH_MODE_DEFAULT',
                 DatabaseInterface::FETCH_MODE_DEFAULT,
                 [[0 => self::FIXTURE_OXID_1, 'OXID' => self::FIXTURE_OXID_1]]
-            ],
+            ),
             array(
                 'An array with integer keys is returned for fetch mode DatabaseInterface::FETCH_MODE_NUM',
                 DatabaseInterface::FETCH_MODE_NUM,
@@ -839,8 +838,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "'",
             $validParameter
         );
-
-        //$this->truncateTestTable();
 
         $this->assertEquals($actualResult, $expectedResult, $message);
     }
@@ -1253,7 +1250,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         ];
     }
 
-
     /*
      * There is a another special table needed for testMetaColumns.
      *
@@ -1274,11 +1270,10 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             OXFLOAT FLOAT(5,2) UNSIGNED NOT NULL DEFAULT 1.3 COMMENT 'a column with type FLOAT',
             PRIMARY KEY (OXINT)
         ) ENGINE innoDb;");
-
     }
 
     /*
-     * specify which results the function metaColumns() expects for each column of the testing table
+     * Specify which results the method 'metaColumns' expects for each column of the testing table.
      */
     protected function getExpectedColumnsByTestMetaColumns()
     {
@@ -1491,7 +1486,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertEmpty($this->fetchAllTestTableRows(), "Table '" . self::TABLE_NAME . "' is empty");
     }
 
-
     /**
      * Get an instance of ConfigFile based on a empty file.
      *
@@ -1502,11 +1496,13 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         return new ConfigFile($this->createFile('config.inc.php', '<?php '));
     }
 
-    public static function resetDbProperty($class) {
+    public static function resetDbProperty($class)
+    {
         $reflectionClass = new ReflectionClass('OxidEsales\Eshop\Core\Database');
 
         $reflectionProperty = $reflectionClass->getProperty('db');
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($class, null);
     }
+
 }

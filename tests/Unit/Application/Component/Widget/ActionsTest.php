@@ -29,18 +29,6 @@ use oxArticleList;
  */
 class ActionsTest extends \OxidTestCase
 {
-
-    /**
-     * Fixture tearDown
-     */
-    protected function tearDown()
-    {
-        $query = "UPDATE oxactions2article set OXSORT = 0 WHERE OXACTIONID = 'oxtop5' AND OXSORT = 666";
-        \oxDb::getDb()->execute($query);
-
-        parent::tearDown();
-    }
-
     /**
      * Testing oxwAction::render()
      */
@@ -55,9 +43,6 @@ class ActionsTest extends \OxidTestCase
      */
     public function testGetAction()
     {
-        $query = "UPDATE oxactions2article set OXSORT = 666 WHERE OXACTIONID = 'oxtop5' AND OXSORT = 0 AND OXARTID not in (2028, 2080)";
-        \oxDb::getDb()->execute($query);
-
         $topProductCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 4;
         $topProductId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2028' : '2080';
 

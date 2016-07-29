@@ -21,7 +21,7 @@
  */
 namespace Unit\Core;
 
-use oxDb;
+use \oxDb;
 
 class DbMetaDataHandlerTest extends \OxidTestCase
 {
@@ -76,7 +76,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     protected function createTestTableWithoutIndices()
     {
-        $sSql = "CREATE TABLE `testDbMetaDataHandlerWithoutIndices` (`OXID` char(32) NOT NULL) ENGINE = InnoDB";
+        $sSql = "CREATE TABLE `testDbMetaDataHandlerWithoutIndices` (`OXID` char(32) NOT NULL) ENGINE = MyISAM";
 
         oxDb::getDb()->execute($sSql);
     }
@@ -257,7 +257,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testGetCreateTableSetSql()
     {
-        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
 
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
 
@@ -271,7 +271,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     public function testGetCreateTableSetSqlInIsoMode()
     {
         $this->setConfigParam('iUtfMode', 0);
-        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) COLLATE latin1_general_ci NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) COLLATE latin1_general_ci NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
 
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
 
@@ -409,7 +409,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testAddNewMultilangFieldCreateTable()
     {
-        $aTestSql[] = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+        $aTestSql[] = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXTITLE_8` char(128) NOT NULL DEFAULT '' ";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXSHORTDESC_8` char(128) NOT NULL DEFAULT '' ";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXLONGDESC_8` char(255) NOT NULL DEFAULT '' ";
@@ -456,41 +456,31 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         $oDbMeta = $this->getMock('oxdbmetadatahandler', array('getCurrentMaxLangId'));
         $oDbMeta->expects($this->any())->method('getCurrentMaxLangId')->will($this->returnValue(1));
 
-        /** @var \oxDbMetaDataHandler| \PHPUnit_Framework_MockObject_MockObject $oDbMeta */
+        /** @var oxDbMetaDataHandler|PHPUnit_Framework_MockObject_MockObject $oDbMeta */
         $oDbMeta->addNewMultilangField("testDbMetaDataHandler");
 
         $aIndexes = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getAll("show index from testDbMetaDataHandler");
 
-        /** Sort $aIndexes by value of 'Column_name' to be independent of RDBMS sorting issues */
-        usort(
-            $aIndexes, function ($a, $b) {
-            if ($a['Column_name'] == $b['Column_name']) {
-                return 0;
-            }
-
-            return ($a['Column_name'] < $b['Column_name']) ? -1 : 1;
-        }
-        );
-
         $this->assertEquals("PRIMARY", $aIndexes[0]["Key_name"]);
         $this->assertEquals("OXID", $aIndexes[0]["Column_name"]);
 
-        //checking newly added index for column OXLONGDESC
-        $this->assertEquals("OXLONGDESC", $aIndexes[1]["Key_name"]);
-        $this->assertEquals("OXLONGDESC", $aIndexes[1]["Column_name"]);
-        $this->assertEquals("OXLONGDESC_1", $aIndexes[2]["Key_name"]);
-        $this->assertEquals("OXLONGDESC_1", $aIndexes[2]["Column_name"]);
-        $this->assertEquals("OXLONGDESC_2", $aIndexes[3]["Key_name"]);
-        $this->assertEquals("OXLONGDESC_2", $aIndexes[3]["Column_name"]);
-        $this->assertEquals("FULLTEXT", $aIndexes[3]["Index_type"]);
-
         //checking newly added index for column OXTITLE
-        $this->assertEquals("OXTITLE", $aIndexes[4]["Key_name"]);
-        $this->assertEquals("OXTITLE", $aIndexes[4]["Column_name"]);
-        $this->assertEquals("OXTITLE_1", $aIndexes[5]["Key_name"]);
-        $this->assertEquals("OXTITLE_1", $aIndexes[5]["Column_name"]);
-        $this->assertEquals("OXTITLE_2", $aIndexes[6]["Key_name"]);
-        $this->assertEquals("OXTITLE_2", $aIndexes[6]["Column_name"]);
+        $this->assertEquals("OXTITLE", $aIndexes[1]["Key_name"]);
+        $this->assertEquals("OXTITLE", $aIndexes[1]["Column_name"]);
+        $this->assertEquals("OXTITLE_1", $aIndexes[2]["Key_name"]);
+        $this->assertEquals("OXTITLE_1", $aIndexes[2]["Column_name"]);
+        $this->assertEquals("OXTITLE_2", $aIndexes[3]["Key_name"]);
+        $this->assertEquals("OXTITLE_2", $aIndexes[3]["Column_name"]);
+
+
+        //checking newly added index for column OXLONGDESC
+        $this->assertEquals("OXLONGDESC", $aIndexes[4]["Key_name"]);
+        $this->assertEquals("OXLONGDESC", $aIndexes[4]["Column_name"]);
+        $this->assertEquals("OXLONGDESC_1", $aIndexes[5]["Key_name"]);
+        $this->assertEquals("OXLONGDESC_1", $aIndexes[5]["Column_name"]);
+        $this->assertEquals("OXLONGDESC_2", $aIndexes[6]["Key_name"]);
+        $this->assertEquals("OXLONGDESC_2", $aIndexes[6]["Column_name"]);
+        $this->assertEquals("FULLTEXT", $aIndexes[6]["Index_type"]);
     }
 
     /**

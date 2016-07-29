@@ -15,17 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link          http://www.oxid-esales.com
+ * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * @version   OXID eShop CE
  */
 namespace Unit\Application\Model;
 
-use oxField;
-use OxidEsales\EshopEnterprise\Application\Model\Country;
+use \oxField;
 
 class CountryListTest extends \OxidTestCase
 {
+
+    public $aList = array();
+
     /**
      * Initialize the fixture.
      *
@@ -34,28 +36,28 @@ class CountryListTest extends \OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        /** Insert a total of 8 inactive countries with different titles and the same oxorder */
-        $aCountryTitle = array(
-        '_CountryListTestId_0' =>  "_CountryListTestTitle_0",
-        '_CountryListTestId_1' =>  "_CountryListTestTitle_1",
-        '_CountryListTestId_2' =>  "_CountryListTestTitle_ä",
-        '_CountryListTestId_3' =>  "_CountryListTestTitle_á",
-        '_CountryListTestId_4' =>  "_CountryListTestTitle_à",
-        '_CountryListTestId_5' =>  "_CountryListTestTitle_a",
-        '_CountryListTestId_6' =>  "_CountryListTestTitle_b",
-        '_CountryListTestId_7' =>  "_CountryListTestTitle_c"
-        );
+        $aCountryTitle = array("oxCountryListTest_ä",
+                               "oxCountryListTest_1",
+                               "oxCountryListTest_a",
+                               "oxCountryListTest_ö",
+                               "oxCountryListTest_b");
 
-        foreach ($aCountryTitle as $oxid => $title) {
-            /** @var Country $country */
-            $country = oxNew('oxCountry');
-            $country->setId($oxid);
-            $country->oxcountry__oxactive = new oxField(0, oxField::T_RAW);
-            $country->oxcountry__oxorder = new oxField(0, oxField::T_RAW);
-            $country->oxcountry__oxtitle = new oxField($title, oxField::T_RAW);
-            
-            $country->save();
+        $this->aList = array();
+        foreach ($aCountryTitle as $iPos => $sTitle) {
+            $this->aList[$iPos] = oxNew('oxCountry');
+            $this->aList[$iPos]->setId('_testCountryId' . $iPos);
+            $this->aList[$iPos]->oxcountry__oxorder = new oxField('123', oxField::T_RAW);
+            $this->aList[$iPos]->oxcountry__oxtitle = new oxField($sTitle, oxField::T_RAW);
+            $this->aList[$iPos]->Save();
         }
+
+        // and one with diff order number
+        $oCountry = oxNew('oxCountry');
+        $oCountry->setId('_testCountryId5');
+        $oCountry->oxcountry__oxorder = new oxField('0', oxField::T_RAW);
+        $oCountry->oxcountry__oxtitle = new oxField("oxCountryListTest_ä", oxField::T_RAW);
+        $oCountry->save();
+        $this->aList[] = $oCountry;
     }
 
     /**
@@ -67,94 +69,46 @@ class CountryListTest extends \OxidTestCase
     {
         $this->cleanUpTable('oxcountry');
 
+        /*
+        foreach ( $this->aList as $oCountry )
+            $oCountry->delete();
+        */
         parent::tearDown();
     }
 
     /**
      * Tests selectString and _localCompare
      */
-    public function testSelectStringRetrievesProperNumberOfRecords()
+    public function testSelectString()
     {
-        /** @var \oxCountryList $countryList */
-        $countryList = oxNew('oxCountryList');
-        $viewName = $countryList->getBaseObject()->getViewName();
-        $query = "SELECT oxid FROM $viewName WHERE oxid LIKE '\_CountryListTestId\_%'";
-        $countryList->selectString($query);
+        $oCountryList = oxNew('oxCountryList');
+        $sVN = $oCountryList->getBaseObject()->getViewName();
+        $sSelect = "SELECT oxid, oxtitle, oxisoalpha2 FROM $sVN WHERE oxtitle like 'oxCountryListTest%' ORDER BY oxorder, oxtitle";
+        $oCountryList->selectString($sSelect);
 
-        $this->assertEquals(8, $countryList->count(), 'A total of 8 records is retrieved');
+        $aList = array('_testCountryId5', '_testCountryId1', '_testCountryId0', '_testCountryId2', '_testCountryId4', '_testCountryId3');
+
+        $this->assertEquals(6, $oCountryList->count());
+        $this->assertEquals($aList, $oCountryList->arrayKeys());
     }
 
-    public function testSelectStringOrderByOxOrder()
+    /**
+     * Tests selectString and _localCompare
+     */
+    public function testSelectStringChangeOrder()
     {
-        /** @var \oxCountryList $countryList */
-        $countryList = oxNew('oxCountryList');
-        $query = "SELECT oxid FROM oxcountry WHERE oxid LIKE '\_CountryListTestId\_%' ORDER BY oxorder, oxtitle";
-        $countryList ->selectString($query);
+        $oCountry = oxNew('oxCountry');
+        $oCountry->load('_testCountryId4');
+        $oCountry->oxcountry__oxorder = new oxField('999', oxField::T_RAW);
+        $oCountry->save();
+        $oCountryList = oxNew('oxCountryList');
+        $sSelect = "SELECT oxid, oxtitle as oxtitle FROM oxcountry WHERE oxtitle like 'oxCountryListTest%' ORDER BY oxorder, oxtitle";
+        $oCountryList->selectString($sSelect);
 
-        $expectedArrayKeys = array(
-            '_CountryListTestId_0',
-            '_CountryListTestId_1',
-            '_CountryListTestId_2',
-            '_CountryListTestId_3',
-            '_CountryListTestId_4',
-            '_CountryListTestId_5',
-            '_CountryListTestId_6',
-            '_CountryListTestId_7',
-            );
-        $actualArrayKeys = $countryList->arrayKeys();
+        $aList = array('_testCountryId5', '_testCountryId1', '_testCountryId2', '_testCountryId0', '_testCountryId3', '_testCountryId4');
 
-        $this->assertEquals($expectedArrayKeys, $actualArrayKeys, 'The countries are properly sorted by the field oxorder');
-    }
-
-    public function testSelectStringChangeOrderRetrievesResultInProperOrder()
-    {
-
-        /** Put the first row to the end of the results by giving it an oxsort of 999 */
-        /** @var \oxCountry $country */
-        $country = oxNew('oxCountry');
-        $country->load('_CountryListTestId_0');
-        $country->oxcountry__oxorder = new oxField('999', oxField::T_RAW);
-        $country->save();
-
-        /** @var \oxCountryList $countryList */
-        $countryList = oxNew('oxCountryList');
-        $query = "SELECT oxid FROM oxcountry WHERE oxid LIKE '\_CountryListTestId\_%' ORDER BY oxorder, oxtitle";
-        $countryList->selectString($query);
-
-        $expectedArrayKeys = array(
-            '_CountryListTestId_1',
-            '_CountryListTestId_2',
-            '_CountryListTestId_3',
-            '_CountryListTestId_4',
-            '_CountryListTestId_5',
-            '_CountryListTestId_6',
-            '_CountryListTestId_7',
-            '_CountryListTestId_0');
-        $actualArrayKeys = $countryList->arrayKeys();
-
-        $this->assertEquals($expectedArrayKeys, $actualArrayKeys, 'The countries are properly sorted by the field oxorder after the field oxd order is changed');
-    }
-
-    public function testSelectStringOrderByOxTitle()
-    {
-        /** @var \oxCountryList $countryList */
-        $countryList = oxNew('oxCountryList');
-        $query = "SELECT oxid FROM oxcountry WHERE oxid LIKE '\_CountryListTestId\_%' ORDER BY oxorder, oxtitle";
-        $countryList->selectString($query);
-
-        $expectedArrayKeys = array(
-            '_CountryListTestId_0',
-            '_CountryListTestId_1',
-            '_CountryListTestId_2',
-            '_CountryListTestId_3',
-            '_CountryListTestId_4',
-            '_CountryListTestId_5',
-            '_CountryListTestId_6',
-            '_CountryListTestId_7',
-        );
-        $actualArrayKeys = $countryList->arrayKeys();
-
-        $this->assertEquals($expectedArrayKeys, $actualArrayKeys, 'The countries are properly sorted by the field oxtitle');
+        $this->assertEquals(6, $oCountryList->count());
+        $this->assertEquals($aList, $oCountryList->arrayKeys());
     }
 
     /**
@@ -162,11 +116,10 @@ class CountryListTest extends \OxidTestCase
      */
     public function testLoadActiveCountries()
     {
-        /** @var \oxCountryList $countryList */
-        $countryList = oxNew('oxCountryList');
-        $countryList->loadActiveCountries();
+        $oCountryList = oxNew('oxCountryList');
+        $oCountryList->loadActiveCountries();
 
-        $this->assertEquals(5, $countryList->count());
+        $this->assertEquals(5, $oCountryList->count());
     }
 
     /**
@@ -174,9 +127,8 @@ class CountryListTest extends \OxidTestCase
      */
     public function testLoadActiveCountriesInEN()
     {
-        /** @var \oxCountryList $countryList */
-        $countryList = oxNew('oxCountryList');
-        $countryList->loadActiveCountries(1);
-        $this->assertEquals('Germany', $countryList['a7c40f631fc920687.20179984']->oxcountry__oxtitle->value);
+        $oCountryList = oxNew('oxCountryList');
+        $oCountryList->loadActiveCountries(1);
+        $this->assertEquals('Germany', $oCountryList['a7c40f631fc920687.20179984']->oxcountry__oxtitle->value);
     }
 }

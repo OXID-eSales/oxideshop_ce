@@ -1,33 +1,32 @@
 <?php
 /*
 /**
- * Price enter mode: netto
+ * Price enter mode: netto 
  * Price view mode:  brutto
  * Product count: 2
- * VAT info: 19% Default VAT for all Products
- * Currency rate: 1.0
+ * VAT info: 19% Default VAT for all Products 
+ * Currency rate: 1.0 
  * Discounts: 5
- *  1. shop discount 5.5% for product 10005
+ *  1. shop discount 5.5% for product 10005 
  *  2. shop discount 5% for product 1004
  *  3. basket discount 5 abs for product 10005
  *  4. basket discount 6% for product 1004
  *  5. absolute basket discount 5 abs
  *  6. shop discount 5abs for product 10005
-
+ 
  * Vouchers: 1
  *  1.  vouchers 6.00 abs
 
- * Wrapping: +
- * Costs VAT caclulation rule: max
+ * Wrapping: + 
+ * Costs VAT caclulation rule: max 
  * Costs:
- *  1. Payment +
- *  2. Delivery +
+ *  1. Payment + 
+ *  2. Delivery + 
  *  3. TS -
  * Short description:
  * Uset 7 different discount
  */
 $aData = array(
-    'skipped' => 1, //skipped due to #  as we have a different order of discounts in db after switiching to innodb, which affects the results.
     'articles' => array (
         0 => array (
             'oxid'                     => 10005,
@@ -87,7 +86,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
-		),
+		),	
 	    5 => array (
             // -10% discount for product 10005
             'oxid'         => 'procdiscountfor10005',

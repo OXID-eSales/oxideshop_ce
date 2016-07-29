@@ -8,16 +8,6 @@
         "GPL-3.0",
         "proprietary"
     ],
-    "repositories": {
-        "oxid-esales/oxideshop-composer-plugin": {
-            "type": "vcs",
-            "url": "git@github.com:OXID-eSales/oxideshop_composer_plugin.git"
-        },
-        "oxid-esales/flow-theme": {
-            "type": "vcs",
-            "url": "git@github.com:OXID-eSales/flow_theme.git"
-        }
-    },
     "require": {
         "phpmailer/phpmailer": "^5.2.14",
         "smarty/smarty": "^2.6.30",

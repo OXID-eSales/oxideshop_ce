@@ -24,6 +24,8 @@ namespace OxidEsales\Eshop\Application\Model;
 
 use OxidEsales\Eshop\Application\Model\Contract\ArticleInterface;
 use oxDb;
+use OxidEsales\Eshop\Core\Database;
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxField;
 use oxPrice;
@@ -2139,6 +2141,8 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      *
      * @param string $sOXID Article id
      *
+     * @throws \Exception
+     *
      * @return bool
      */
     public function delete($sOXID = null)
@@ -2150,20 +2154,29 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             return false;
         }
 
-        // #2339 delete first variants before deleting parent product
-        $this->_deleteVariantRecords($sOXID);
-        $this->load($sOXID);
-        $this->_deletePics();
-        $this->_onChangeResetCounts($sOXID, $this->oxarticles__oxvendorid->value, $this->oxarticles__oxmanufacturerid->value);
+        $database = Database::getDb();
+        $database->startTransaction();
+        try {
+            // #2339 delete first variants before deleting parent product
+            $this->_deleteVariantRecords($sOXID);
+            $this->load($sOXID);
+            $this->_deletePics();
+            $this->_onChangeResetCounts($sOXID, $this->oxarticles__oxvendorid->value, $this->oxarticles__oxmanufacturerid->value);
 
-        // delete self
-        $deleted = parent::delete($sOXID);
+            // delete self
+            $deleted = parent::delete($sOXID);
 
-        $this->_deleteRecords($sOXID);
+            $this->_deleteRecords($sOXID);
 
-        oxRegistry::get("oxSeoEncoderArticle")->onDeleteArticle($this);
+            Registry::get("oxSeoEncoderArticle")->onDeleteArticle($this);
 
-        $this->onChange(ACTION_DELETE, $sOXID, $this->oxarticles__oxparentid->value);
+            $this->onChange(ACTION_DELETE, $sOXID, $this->oxarticles__oxparentid->value);
+
+            $database->commitTransaction();
+        } catch (\Exception $exception) {
+            $database->rollbackTransaction();
+            throw $exception;
+        }
 
         return $deleted;
     }
@@ -4550,10 +4563,10 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     {
         if ($sOXID) {
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $masterDb = oxDb::getMaster();
+            $database = Database::getDb();
             //collect variants to remove recursively
-            $sQ = 'select oxid from ' . $this->getViewName() . ' where oxparentid = ' . $masterDb->quote($sOXID);
-            $rs = $masterDb->select($sQ, false);
+            $query= 'select oxid from ' . $this->getViewName() . ' where oxparentid = ?';
+            $rs = $database->select($query, array($sOXID));
             $oArticle = oxNew("oxArticle");
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {

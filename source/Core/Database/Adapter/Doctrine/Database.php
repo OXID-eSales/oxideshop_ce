@@ -745,6 +745,7 @@ class Database implements DatabaseInterface
 
         switch (true) {
             case $exception instanceof Exception\ConnectionException:
+            case $exception instanceof ConnectionException:
                 /**
                  * Doctrine does not recognise "SQLSTATE[HY000] [2003] Can't connect to MySQL server on 'mysql.example'"
                  * as a connection error, as the error code 2003 is simply not treated in
@@ -755,13 +756,6 @@ class Database implements DatabaseInterface
                  in_array($exception->getPrevious()->getCode(), ['2003']):
 
                 $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseConnectionException';
-                break;
-            case $exception instanceof ConnectionException:
-                $code = $exception->getCode();
-                $message = $exception->getMessage();
-
-                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
-
                 break;
             case $exception instanceof DBALException:
                 /**

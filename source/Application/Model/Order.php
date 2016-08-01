@@ -1613,7 +1613,7 @@ class Order extends \oxBase
      *
      * @param bool $blToday if true calculates only current day orders
      *
-     * @return int
+     * @return double
      */
     public function getOrderSum($blToday = false)
     {

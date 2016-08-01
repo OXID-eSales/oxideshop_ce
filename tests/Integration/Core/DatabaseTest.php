@@ -227,7 +227,8 @@ class DatabaseTest extends UnitTestCase
         $dbMock->expects($this->once())
             ->method('getConnectionFromDriverManager')
             ->willReturn($connectionMock);
-        if ('' != $exceptionMessage) {
+
+        if ('' !== $exceptionMessage) {
             $dbMock->expects($this->once())->method('createConnectionErrorMessage')->willReturn($exceptionMessage);
         } else {
             $dbMock->expects($this->never())->method('createConnectionErrorMessage');

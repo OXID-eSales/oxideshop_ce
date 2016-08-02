@@ -13,7 +13,7 @@ and customized to individual requirements with the greatest of ease.
 
 OXID eShop is just e-commerce software for agencies with deadlines :-)
 
-![Image alt](frontend.png)
+![Image alt](frontend-flow.png)
 
 
 ### Installation

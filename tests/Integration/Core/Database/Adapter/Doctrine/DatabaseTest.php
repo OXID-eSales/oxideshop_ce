@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter\Doctrine;
 
+use PDO;
 use Doctrine\DBAL\DBALException;
 use OxidEsales\Eshop\Core\Exception\DatabaseException;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
@@ -487,10 +488,12 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
     }
 
     /*
-     * Use Case: All possible parameters for db connection are set
+     * Test Case: All possible parameters for setConnectionParameters are set correctly.
+     *
      */
     public function testSetConnectionParametersAllParametersSet()
     {
+        $this->setProtectedClassProperty($this->database, 'connectionParameters', array());
         $connectionParametersFromConfigInc = array(
             'default' => array(
                 'databaseHost'     => 'myDatabaseHost',
@@ -507,34 +510,47 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
             'dbname'   => 'myDatabaseName',
             'user'     => 'myDatabaseUser',
             'password' => 'myDatabasePassword',
-            'port'     => 'myDatabasePort'
-        );;
+            'port'     => 'myDatabasePort',
+            'driverOptions' => array(
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET @@SESSION.sql_mode=''"
+            )
+        );
         $this->assertEquals(
             $expectedConnectionParameters,
-            $this->getProtectedClassProperty($this->database, 'connectionParameters')
+            $this->getProtectedClassProperty($this->database, 'connectionParameters'),
+            "Not all input parameters are set to the correct place in the output array."
         );
     }
 
     /*
-     * Use Case: parameters for db connection are not set
+     * Test Case: not all parameters for setConnectionParameters are set
      */
     public function testSetConnectionParametersNoParametersSet()
     {
-        $connectionParametersFromConfigInc = array(
-            'default' => array()
-        );
+        $this->setProtectedClassProperty($this->database, 'connectionParameters', array());
+        $connectionParametersFromConfigInc = array();
         $this->database->setConnectionParameters($connectionParametersFromConfigInc);
-        $expectedConnectionParameters = array(
-            'driver'   => 'pdo_mysql',
-            'host'     => null,
-            'dbname'   => null,
-            'user'     => null,
-            'password' => null,
-            'port'     => null
-        );
+        $expectedConnectionParameters = array();
         $this->assertEquals(
             $expectedConnectionParameters,
-            $this->getProtectedClassProperty($this->database, 'connectionParameters')
+            $this->getProtectedClassProperty($this->database, 'connectionParameters'),
+            "There can be no parameters in the array with no input parameters."
+        );
+    }
+
+    /*
+     * After applying the driverOptions to the Doctrine DriverManager, in our case the sql_mode should be
+     * set on the database connection.
+     */
+    public function testAddDriverOptionsSetsSqlMode()
+    {
+        $query = 'SELECT @@SESSION.sql_mode';
+
+        $expectedSqlMode = '';
+        $actualSqlMode = $this->database->getOne($query);
+        $this->assertSame($expectedSqlMode,
+            $actualSqlMode,
+            "The sql_mode variable on the database is not the expected one."
         );
     }
     

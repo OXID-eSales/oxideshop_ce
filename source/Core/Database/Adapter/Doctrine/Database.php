@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Core\Database\Adapter\Doctrine;
 
+use PDO;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ConnectionException;
@@ -57,7 +58,7 @@ class Database implements DatabaseInterface
     /**
      * @var int The current fetch mode.
      */
-    protected $fetchMode = \PDO::FETCH_NUM;
+    protected $fetchMode = PDO::FETCH_NUM;
 
     /**
      * @var array Map strings used in the shop to Doctrine constants
@@ -73,10 +74,10 @@ class Database implements DatabaseInterface
      * @var array Map fetch modes used in the shop to doctrine constants
      */
     protected $fetchModeMap = array(
-        DatabaseInterface::FETCH_MODE_DEFAULT => \PDO::FETCH_BOTH,
-        DatabaseInterface::FETCH_MODE_NUM     => \PDO::FETCH_NUM,
-        DatabaseInterface::FETCH_MODE_ASSOC   => \PDO::FETCH_ASSOC,
-        DatabaseInterface::FETCH_MODE_BOTH    => \PDO::FETCH_BOTH
+        DatabaseInterface::FETCH_MODE_DEFAULT => PDO::FETCH_BOTH,
+        DatabaseInterface::FETCH_MODE_NUM     => PDO::FETCH_NUM,
+        DatabaseInterface::FETCH_MODE_ASSOC   => PDO::FETCH_ASSOC,
+        DatabaseInterface::FETCH_MODE_BOTH    => PDO::FETCH_BOTH
     );
 
     /**
@@ -202,27 +203,49 @@ class Database implements DatabaseInterface
             'port'     => $connectionParameters['databasePort'],
         );
 
-        /**
-         * Determine the charset to be used when connecting to the database.
-         *
-         * Please be aware that different database drivers may need different options/values for setting the charset
-         * or may not support setting charset at all.
-         * See http://doctrine-orm.readthedocs.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connection-details
-         * for details.
-         *
-         * Take into account that the character set must be set either on the server level, or within the database
-         * connection itself (depending on the driver) for it to affect PDO::quote().
-         */
-        /**
-         * @var array Map charset as passed by the caller to doctrine charsets.
-         */
-        $sanitizedCharset = trim(strtolower($connectionParameters['connectionCharset']));
-
-        if (!empty($sanitizedCharset)) {
-            $pdoMysqlConnectionParameters['charset'] = $sanitizedCharset;
-        }
+        $this->addDriverOptions($pdoMysqlConnectionParameters);
+        $this->addConnectionCharset(
+            $pdoMysqlConnectionParameters,
+            $connectionParameters['connectionCharset']
+        );
 
         return $pdoMysqlConnectionParameters;
+    }
+
+    /*
+     * Adds the param driverOptions to an existing array of connection parameters
+     *
+     * @param array $existingParameters
+     */
+    protected function addDriverOptions(array &$existingParameters)
+    {
+        $existingParameters['driverOptions'] = array(
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET @@SESSION.sql_mode=''"
+        );
+    }
+
+    /**
+     * Determine the charset to be used when connecting to the database.
+     *
+     * Please be aware that different database drivers may need different options/values for setting the charset
+     * or may not support setting charset at all.
+     * See http://doctrine-orm.readthedocs.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connection-details
+     * for details.
+     *
+     * Take into account that the character set must be set either on the server level, or within the database
+     * connection itself (depending on the driver) for it to affect PDO::quote().
+     *
+     * @param array $existingParameters
+     * @param string $connectionCharset
+     *
+     */
+    protected function addConnectionCharset(array &$existingParameters, $connectionCharset)
+    {
+        $sanitizedCharset = trim(strtolower((string) $connectionCharset));
+
+        if (!empty($sanitizedCharset)) {
+            $existingParameters['charset'] = $sanitizedCharset;
+        }
     }
 
     /**
@@ -506,33 +529,6 @@ class Database implements DatabaseInterface
         }
 
         return $result;
-    }
-
-    /**
-     * This method is a helper in a master-slave context to be able to execute SET statements without the need to use
-     * more appropriate use of self::execute(), which would force the connection to pick the master.
-     *
-     * @param string $query The sql statement we want to execute.
-     *
-     * @throws \InvalidArgumentException If the statement is not a SET statement
-     * @throws DatabaseException         The exception, that can occur while running the sql statement.
-     */
-    public function executeSet($query)
-    {
-        if (strtoupper($this->getFirstCommandInStatement($query)) !== 'SET') {
-            throw new \InvalidArgumentException();
-        }
-
-        try {
-            /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
-            $this->getConnection()->executeQuery($query);
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        }
     }
 
     /**

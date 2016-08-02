@@ -223,18 +223,8 @@ class Database
      */
     protected function onPostConnect()
     {
-        $this->setSqlMode();
-
         // @todo Set database logging from iDebug
         // @todo Set user auditing from blLogChangesInAdmin
-    }
-
-    /**
-     * Set the sql_mode of the MySQL server for the session.
-     */
-    protected function setSqlMode()
-    {
-        static::getDb()->executeSet('SET @@SESSION.sql_mode = ""');
     }
 
     /**

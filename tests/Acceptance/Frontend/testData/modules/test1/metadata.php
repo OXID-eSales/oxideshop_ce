@@ -45,7 +45,7 @@ $aModule = array(
         array('group' => 'settingsFilled', 'name' => 'testFilledStrConfig',      'type' => 'str',      'value' => 'testStr'),
         array('group' => 'settingsFilled', 'name' => 'testFilledArrConfig',      'type' => 'arr',      'value' => array('option1', 'option2')),
         array('group' => 'settingsFilled', 'name' => 'testFilledAArrConfig',     'type' => 'aarr',     'value' => array('key1' => 'option1', 'key2' => 'option2')),
-        array('group' => 'settingsFilled', 'name' => 'testFilledSelectConfig',   'type' => 'select',   'value' => '2', 'constrains' => '0|1|2', 'position' => 3),
+        array('group' => 'settingsFilled', 'name' => 'testFilledSelectConfig',   'type' => 'select',   'value' => '2', 'constrains' => '0|1|2'),
         array('group' => 'settingsFilled', 'name' => 'testFilledPasswordConfig', 'type' => 'password', 'value' => 'testPassword'),
     )
 );

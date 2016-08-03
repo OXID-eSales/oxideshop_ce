@@ -212,16 +212,27 @@ class Database implements DatabaseInterface
         return $pdoMysqlConnectionParameters;
     }
 
-    /*
+    /**
      * Adds the param driverOptions to an existing array of connection parameters
      *
      * @param array $existingParameters
+     *
      */
     protected function addDriverOptions(array &$existingParameters)
     {
         $existingParameters['driverOptions'] = array(
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET @@SESSION.sql_mode=''"
+            PDO::MYSQL_ATTR_INIT_COMMAND => $this->getMySqlInitCommand()
         );
+    }
+
+    /**
+     * This function can be extended to add own init command for the database connection
+     *
+     * @return string
+     */
+    protected function getMySqlInitCommand()
+    {
+        return "SET @@SESSION.sql_mode=''";
     }
 
     /**
@@ -453,6 +464,7 @@ class Database implements DatabaseInterface
      */
     public function setTransactionIsolationLevel($level)
     {
+        $result = false;
         $availableLevels = array_keys($this->transactionIsolationLevelMap);
 
         if (!in_array(strtoupper($level), $availableLevels)) {
@@ -460,17 +472,14 @@ class Database implements DatabaseInterface
         }
 
         try {
-            $result = false;
-
             if (in_array(strtoupper($level), $availableLevels)) {
                 $result = $this->execute('SET SESSION TRANSACTION ISOLATION LEVEL ' . $level);
             }
-
-            return $result;
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
+        return $result;
     }
 
     /**

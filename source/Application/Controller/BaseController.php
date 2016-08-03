@@ -31,7 +31,6 @@ use oxDb;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Str;
-use OxidEsales\Eshop\Core\Database;
 use oxManufacturer;
 use oxManufacturerList;
 use oxPrice;
@@ -1425,7 +1424,7 @@ class BaseController extends \oxView
     {
         $sorting = $this->getSorting($ident);
         if (is_array($sorting)) {
-            $sortBy = Database::getDb()->quoteIdentifier($sorting['sortby']);
+            $sortBy = oxDb::getDb()->quoteIdentifier($sorting['sortby']);
             $sortDir = isset($sorting['sortdir']) ? $sorting['sortdir'] : '';
             $sortString = trim($sortBy . ' ' . $sortDir);
 

@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter\Doctrine;
 
+use oxDb;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
@@ -259,7 +260,7 @@ abstract class ResultSetBaseTest extends DatabaseInterfaceImplementationBaseTest
     {
         $this->loadFixtureToTestTable();
 
-        $this->database->setFetchMode(Database::FETCH_MODE_ASSOC);
+        $this->database->setFetchMode(oxDb::FETCH_MODE_ASSOC);
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
         $this->initializeDatabase();
 

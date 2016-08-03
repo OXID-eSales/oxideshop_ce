@@ -22,11 +22,11 @@
 
 namespace Integration\Core;
 
+use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Database;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use ReflectionClass;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
 
@@ -49,7 +49,7 @@ class DatabaseTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->dbObjectBackup = $this->getProtectedClassProperty(Database::getInstance(), 'db');
+        $this->dbObjectBackup = $this->getProtectedClassProperty(oxDb::getInstance(), 'db');
     }
 
     /**
@@ -57,11 +57,11 @@ class DatabaseTest extends UnitTestCase
      */
     protected function tearDown()
     {
-        Database::getDb()->closeConnection();
+        oxDb::getDb()->closeConnection();
 
-        $this->setProtectedClassProperty(Database::getInstance(), 'db', $this->dbObjectBackup);
+        $this->setProtectedClassProperty(oxDb::getInstance(), 'db', $this->dbObjectBackup);
 
-        Database::getDb()->closeConnection();
+        oxDb::getDb()->closeConnection();
 
         parent::tearDown();
     }
@@ -75,11 +75,11 @@ class DatabaseTest extends UnitTestCase
             ->method('isConnectionEstablished')
             ->willReturn(false);
 
-        $this->setProtectedClassProperty(Database::getInstance(), 'db', $dbMock);
+        $this->setProtectedClassProperty(oxDb::getInstance(), 'db', $dbMock);
 
         $this->setExpectedException('Exception', $exceptionMessage);
 
-        Database::getDb()->connect();
+        oxDb::getDb()->connect();
     }
 
     public function testEnsureConnectionIsEstablishedNonExceptionPath()
@@ -89,9 +89,9 @@ class DatabaseTest extends UnitTestCase
             ->method('isConnectionEstablished')
             ->willReturn(true);
 
-        $this->setProtectedClassProperty(Database::getInstance(), 'db', $dbMock);
+        $this->setProtectedClassProperty(oxDb::getInstance(), 'db', $dbMock);
 
-        Database::getDb()->connect();
+        oxDb::getDb()->connect();
     }
 
     public function testGetDbThrowsDatabaseConnectionException()
@@ -101,12 +101,12 @@ class DatabaseTest extends UnitTestCase
 
         $configFile = $this->getBlankConfigFile();
         Registry::set('oxConfigFile', $configFile);
-        $this->setProtectedClassProperty(Database::getInstance(), 'db', null);
+        $this->setProtectedClassProperty(oxDb::getInstance(), 'db', null);
 
         $this->setExpectedException('OxidEsales\Eshop\Core\Exception\DatabaseConnectionException');
 
         try {
-            Database::getDb();
+            oxDb::getDb();
         } catch (DatabaseConnectionException $exception) {
             /** Restore original configFile object */
             Registry::set('oxConfigFile', $configFileBackup);
@@ -122,12 +122,12 @@ class DatabaseTest extends UnitTestCase
         $configFile = $this->getBlankConfigFile();
         $configFile->setVar('dbHost', '<');
         Registry::set('oxConfigFile', $configFile);
-        $this->setProtectedClassProperty(Database::getInstance(), 'db', null);
+        $this->setProtectedClassProperty(oxDb::getInstance(), 'db', null);
 
         $this->setExpectedException('OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException');
 
         try {
-            Database::getDb();
+            oxDb::getDb();
         } catch (DatabaseNotConfiguredException $exception) {
             /** Restore original configFile object */
             Registry::set('oxConfigFile', $configFileBackup);
@@ -140,8 +140,8 @@ class DatabaseTest extends UnitTestCase
      */
     public function testUnflushedCacheDoesntWorks()
     {
-        $database = Database::getInstance();
-        $connection = Database::getDb();
+        $database = oxDb::getInstance();
+        $connection = oxDb::getDb();
 
         $connection->execute('CREATE TABLE IF NOT EXISTS TEST(OXID char(32));');
 
@@ -163,8 +163,8 @@ class DatabaseTest extends UnitTestCase
      */
     public function testFlushedCacheHasActualInformation()
     {
-        $database = Database::getInstance();
-        $connection = Database::getDb();
+        $database = oxDb::getInstance();
+        $connection = oxDb::getDb();
 
         $connection->execute('CREATE TABLE IF NOT EXISTS TEST(OXID char(32));');
 

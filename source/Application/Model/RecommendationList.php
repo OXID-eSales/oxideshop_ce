@@ -22,12 +22,12 @@
 
 namespace OxidEsales\Eshop\Application\Model;
 
+use Exception;
 use oxDb;
 use oxRegistry;
 use oxList;
 use oxUtilsObject;
 use oxField;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * Recommendation list manager class.
@@ -217,6 +217,8 @@ class RecommendationList extends \oxBase implements \oxIUrl
      * @param string $sOXID Object ID
      * @param string $sDesc recommended article description
      *
+     * @throws Exception
+     *
      * @return bool
      */
     public function addArticle($sOXID, $sDesc)
@@ -226,21 +228,21 @@ class RecommendationList extends \oxBase implements \oxIUrl
 
             // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
             $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-            $database->startTransaction();
 
+            $database->startTransaction();
             try {
                 if (!$database->getOne("select oxid from oxobject2list where oxobjectid=" . $database->quote($sOXID) . " and oxlistid=" . $database->quote($this->getId()))) {
                     $sUid = oxUtilsObject::getInstance()->generateUID();
                     $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $database->quote($sOXID) . ", " . $database->quote($this->getId()) . ", " . $database->quote($sDesc) . " )";
                     $blAdd = $database->execute($sQ);
                 }
-            } catch (DatabaseException $exception) {
+
+                $database->commitTransaction();
+            } catch (Exception $exception) {
                 $database->rollbackTransaction();
+
                 throw $exception;
             }
-
-            $database->commitTransaction();
-
         }
 
         return $blAdd;

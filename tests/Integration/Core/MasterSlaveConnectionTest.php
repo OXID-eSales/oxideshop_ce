@@ -22,10 +22,9 @@
 
 namespace OxidEsales\Eshop\Tests\Integration\Core;
 
+use oxDb;
 use OxidEsales\Eshop\Core\Database;
-use OxidEsales\EshopEnterprise\Core\Database as EnterpriseDatabase;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use ReflectionClass;
 
 /**
  * Class MasterSlaveConnectionTest
@@ -44,10 +43,10 @@ class MasterSlaveConnectionTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->dbObjectBackup = $this->getProtectedClassProperty(Database::getInstance(), 'db');
+        $this->dbObjectBackup = $this->getProtectedClassProperty(oxDb::getInstance(), 'db');
 
-        $this->setProtectedClassProperty(Database::getInstance(), 'db', null);
-        $this->assertNull($this->getProtectedClassProperty(Database::getInstance(), 'db'));
+        $this->setProtectedClassProperty(oxDb::getInstance(), 'db', null);
+        $this->assertNull($this->getProtectedClassProperty(oxDb::getInstance(), 'db'));
     }
 
     /**
@@ -55,11 +54,11 @@ class MasterSlaveConnectionTest extends UnitTestCase
      */
     protected function tearDown()
     {
-        Database::getDb()->closeConnection();
+        oxDb::getDb()->closeConnection();
 
-        $this->setProtectedClassProperty(Database::getInstance(), 'db', $this->dbObjectBackup);
+        $this->setProtectedClassProperty(oxDb::getInstance(), 'db', $this->dbObjectBackup);
 
-        Database::getDb()->closeConnection();
+        oxDb::getDb()->closeConnection();
 
         parent::tearDown();
     }
@@ -73,7 +72,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
             $this->markTestSkipped('Test is for CE/PE only.');
         }
 
-        $connection = Database::getDb();
+        $connection = oxDb::getDb();
         $this->assertTrue(is_a($connection, 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database'));
 
         $dbConnection = $this->getProtectedClassProperty($connection, 'connection');
@@ -91,7 +90,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
             $this->markTestSkipped('Test is for CE/PE only.');
         }
 
-        $connection = Database::getMaster();
+        $connection = oxDb::getMaster();
         $this->assertTrue(is_a($connection, 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database'));
 
         $dbConnection = $this->getProtectedClassProperty($connection, 'connection');
@@ -109,7 +108,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
             $this->markTestSkipped('Test is for CE/PE only.');
         }
 
-        $connection = Database::getDb();
+        $connection = oxDb::getDb();
         $connection->forceMasterConnection();
         $this->assertTrue(is_a($connection, 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database'));
 
@@ -128,7 +127,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
             $this->markTestSkipped('Test is for CE/PE only.');
         }
 
-        $connection = Database::getDb();
+        $connection = oxDb::getDb();
         $connection->forceSlaveConnection();
         $this->assertTrue(is_a($connection, 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database'));
 

@@ -23,7 +23,6 @@
 namespace OxidEsales\Eshop\Application\Model;
 
 use oxDb;
-use OxidEsales\Eshop\Core\Database;
 use oxRegistry;
 use stdClass;
 
@@ -59,7 +58,7 @@ class AttributeList extends \oxList
         $sAttrViewName = getViewName('oxattribute');
         $sViewName = getViewName('oxobject2attribute');
 
-        $oxObjectIdsSql = implode (',', Database::getDb()->quoteArray($aIds));
+        $oxObjectIdsSql = implode (',', oxDb::getDb()->quoteArray($aIds));
 
         $sSelect = "select $sAttrViewName.oxid, $sAttrViewName.oxtitle, {$sViewName}.oxvalue, {$sViewName}.oxobjectid ";
         $sSelect .= "from {$sViewName} left join $sAttrViewName on $sAttrViewName.oxid = {$sViewName}.oxattrid ";

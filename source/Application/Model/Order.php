@@ -1190,7 +1190,9 @@ class Order extends \oxBase
      *
      * @param object $oBasket basket object
      *
-     * @throws oxOutOfStockException exception
+     * @throws oxNoArticleException
+     * @throws oxArticleInputException
+     * @throws oxOutOfStockException
      */
     public function validateStock($oBasket)
     {
@@ -1346,7 +1348,6 @@ class Order extends \oxBase
     public function recalculateOrder($aNewArticles = array())
     {
         oxDb::getDb()->startTransaction();
-
         try {
             $oBasket = $this->_getOrderBasket();
 
@@ -1368,10 +1369,10 @@ class Order extends \oxBase
             } else {
                 oxDb::getDb()->commitTransaction();
             }
-
-        } catch (Exception $oE) {
-            // if exception, rollBack everything
+        } catch (Exception $exception) {
             oxDb::getDb()->rollbackTransaction();
+
+            throw $exception;
         }
     }
 

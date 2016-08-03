@@ -21,16 +21,17 @@
  */
 namespace OxidEsales\Eshop\Core;
 
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
-use Smarty;
-use oxRegistry;
-use oxIDisplayError;
 use oxException;
-use oxSystemComponentException;
 use oxField;
-use oxDb;
+use OxidEsales\Eshop\Core\Contract\IDisplayError;
+use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
+use oxIDisplayError;
+use oxRegistry;
+use oxSystemComponentException;
+use Smarty;
 
 /**
  * View utility class
@@ -134,15 +135,19 @@ class UtilsView extends \oxSuperCfg
     }
 
     /**
-     * adds a exception to the array of displayed exceptions for the view
+     * Adds an exception to the array of displayed exceptions for the view
      * by default is displayed in the inc_header, but with the custom destination set to true
      * the exception won't be displayed by default but can be displayed where ever wanted in the tpl
      *
-     * @param exception $oEr                  a exception object or just a language local (string) which will be converted into a oxExceptionToDisplay object
-     * @param bool      $blFull               if true the whole object is add to display (default false)
-     * @param bool      $useCustomDestination true if the exception shouldn't be displayed at the default position (default false)
-     * @param string    $customDestination    defines a name of the view variable containing the messages, overrides Parameter 'CustomError' ("default")
-     * @param string    $activeController     defines a name of the controller, which should handle the error.
+     * @param StandardException|IDisplayError|string $oEr                  an exception object or just a language local (string),
+     *                                                                     which will be converted into a oxExceptionToDisplay object
+     * @param bool                                   $blFull               if true the whole object is add to display (default false)
+     * @param bool                                   $useCustomDestination true if the exception shouldn't be displayed
+     *                                                                     at the default position (default false)
+     * @param string                                 $customDestination    defines a name of the view variable containing
+     *                                                                     the messages, overrides Parameter 'CustomError' ("default")
+     * @param string                                 $activeController     defines a name of the controller, which should
+     *                                                                     handle the error.
      */
     public function addErrorToDisplay($oEr, $blFull = false, $useCustomDestination = false, $customDestination = "", $activeController = "")
     {

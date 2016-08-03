@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 
 namespace OxidEsales\Eshop\Core\Contract;
@@ -32,7 +32,7 @@ interface IDisplayError
     /**
      * This method should return a localized message for displaying
      *
-     * @return a string to display to the user
+     * @return string A string to display to the user
      */
     public function getOxMessage();
 
@@ -40,7 +40,7 @@ interface IDisplayError
      * Returns a type of the error, e.g. the class of the exception or whatever class
      * implemented this interface
      *
-     * @return String of Error Type
+     * @return string The error type
      */
     public function getErrorClassType();
 
@@ -49,7 +49,7 @@ interface IDisplayError
      *
      * @param string $sName Value name
      *
-     * @return an additional value (string) by its name
+     * @return string An additional value (string) by its name
      */
     public function getValue($sName);
 }

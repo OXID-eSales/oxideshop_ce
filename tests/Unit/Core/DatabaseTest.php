@@ -21,6 +21,7 @@
  */
 namespace Unit\Core;
 
+use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Database;
 use OxidEsales\Eshop\Core\Registry;
@@ -80,7 +81,7 @@ class DatabaseTest extends UnitTestCase
         $configFile = $this->getBlankConfigFile();
         $configFile->iDebug = $debug;
 
-        $database = Database::getInstance();
+        $database = oxDb::getInstance();
         $database->setConfigFile($configFile);
 
         $actualResult = $this->callProtectedClassMethod($database, 'getConfigParam', array('iDebug'));
@@ -98,18 +99,18 @@ class DatabaseTest extends UnitTestCase
     public function testGetTableDescription()
     {
         /** Reset the table description cache */
-        $database = Database::getInstance();
+        $database = oxDb::getInstance();
         $database->flushTableDescriptionCache();
 
-        $resultSet = Database::getDb()->select("SHOW TABLES");
+        $resultSet = oxDb::getDb()->select("SHOW TABLES");
         $count = 3;
         if ($resultSet != false && $resultSet->count() > 0) {
             while (!$resultSet->EOF && $count--) {
                 $tableName = $resultSet->fields[0];
 
-                $metaColumns = Database::getDb()->metaColumns($tableName);
-                $metaColumnOne = Database::getInstance()->getTableDescription($tableName);
-                $metaColumnOneCached = Database::getInstance()->getTableDescription($tableName);
+                $metaColumns = oxDb::getDb()->metaColumns($tableName);
+                $metaColumnOne = oxDb::getInstance()->getTableDescription($tableName);
+                $metaColumnOneCached = oxDb::getInstance()->getTableDescription($tableName);
 
                 $this->assertEquals($metaColumns, $metaColumnOne, "not cached return is bad [shouldn't be] of $tableName.");
                 $this->assertEquals($metaColumns, $metaColumnOneCached, "cached [simple] return is bad of $tableName.");
@@ -123,21 +124,21 @@ class DatabaseTest extends UnitTestCase
 
     public function testGetInstanceReturnsInstanceOfDatabase()
     {
-        $database = Database::getInstance();
+        $database = oxDb::getInstance();
 
         $this->assertInstanceOf('OxidEsales\Eshop\Core\Database', $database);
     }
 
     public function testGetDbReturnsAnInstanceOfDatabaseInterface()
     {
-        $database = Database::getDb();
+        $database = oxDb::getDb();
 
         $this->assertInstanceOf('OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface', $database);
     }
 
     public function testGetDbReturnsAnInstanceOfDoctrine()
     {
-        $database = Database::getDb();
+        $database = oxDb::getDb();
 
         $this->assertInstanceOf('OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database', $database);
     }

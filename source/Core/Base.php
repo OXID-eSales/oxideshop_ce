@@ -38,7 +38,6 @@ use oxRegistry;
 use oxField;
 use oxDb;
 use oxUtilsObject;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 class Base extends \oxSuperCfg
 {
@@ -828,6 +827,8 @@ class Base extends \oxSuperCfg
     /**
      * Save this Object to database, insert or update as needed.
      *
+     * @throws Exception
+     *
      * @return string|bool
      */
     public function save()
@@ -853,7 +854,9 @@ class Base extends \oxSuperCfg
         $return = false;
 
         // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
-        Database::getDb()->startTransaction();
+        $database = oxDb::getDb();
+
+        $database->startTransaction();
         try {
             $action = null;
             $response = null;
@@ -874,11 +877,12 @@ class Base extends \oxSuperCfg
                 $return = $this->getId();
             }
 
-        } catch (DatabaseException $exception) {
-            Database::getDb()->rollbackTransaction();
+            $database->commitTransaction();
+        } catch (Exception $exception) {
+            $database->rollbackTransaction();
+
             throw $exception;
         }
-        Database::getDb()->commitTransaction();
 
         return $return;
     }
@@ -1424,7 +1428,7 @@ class Base extends \oxSuperCfg
      */
     protected function executeDatabaseQuery($query)
     {
-        $database = Database::getDb();
+        $database = oxDb::getDb();
 
         return $database->execute($query);
     }

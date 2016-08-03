@@ -22,8 +22,8 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use Exception;
 use oxDb;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * Counter class
@@ -37,12 +37,15 @@ class Counter
      *
      * @param string $ident counter ident
      *
+     * @throws Exception
+     *
      * @return int
      */
     public function getNext($ident)
     {
         // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
         $database = oxDb::getDb();
+
         $database->startTransaction();
         try {
             $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $database->quote($ident) . " FOR UPDATE";
@@ -57,11 +60,12 @@ class Counter
             $query = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ?";
             $database->execute($query, array($cnt, $ident));
 
-        } catch (DatabaseException $exception) {
-            Database::getDb()->rollbackTransaction();
+            $database->commitTransaction();
+        } catch (Exception $exception) {
+            oxDb::getDb()->rollbackTransaction();
+
             throw $exception;
         }
-        $database->commitTransaction();
 
         return $cnt;
     }
@@ -73,14 +77,16 @@ class Counter
      * @param string  $ident counter ident
      * @param integer $count value
      *
+     * @throws Exception
+     *
      * @return int
      */
     public function update($ident, $count)
     {
         // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
         $database = oxDb::getDb();
-        $database->startTransaction();
 
+        $database->startTransaction();
         try {
             $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $database->quote($ident) . " FOR UPDATE";
 
@@ -93,12 +99,12 @@ class Counter
                 $result = $database->execute($query, array($count, $ident, $count));
             }
 
-        } catch (DatabaseException $exception) {
-            Database::getDb()->rollbackTransaction();
+            $database->commitTransaction();
+        } catch (Exception $exception) {
+            oxDb::getDb()->rollbackTransaction();
+
             throw $exception;
         }
-
-        $database->commitTransaction();
 
         return $result;
     }

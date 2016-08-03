@@ -1126,10 +1126,10 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $savedIUtfMode = $configFile->getVar('iUtfMode');
 
         $configFile->setVar('iUtfMode', 0);
-        $this->resetDbProperty(Database::getInstance());
-        $database = Database::getInstance();
+        $this->resetDbProperty(oxDb::getInstance());
+        $database = oxDb::getInstance();
         $database->setConfigFile($configFile);
-        $databaseConnection = $database::getDb(Database::FETCH_MODE_ASSOC);
+        $databaseConnection = $database::getDb(oxDb::FETCH_MODE_ASSOC);
 
         $configFile->setVar('iUtfMode', $savedIUtfMode);
 
@@ -1152,10 +1152,10 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $savedIUtfMode = $configFile->getVar('iUtfMode');
         // Set new values
         $configFile->setVar('iUtfMode', 1);
-        $this->resetDbProperty(Database::getInstance());
-        $database = Database::getInstance();
+        $this->resetDbProperty(oxDb::getInstance());
+        $database = oxDb::getInstance();
         $database->setConfigFile($configFile);
-        $databaseConnection = $database::getDb(Database::FETCH_MODE_ASSOC);
+        $databaseConnection = $database::getDb(oxDb::FETCH_MODE_ASSOC);
 
         // restore original values
         $configFile->setVar('iUtfMode', $savedIUtfMode);
@@ -1182,10 +1182,10 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $configFile->setVar('iUtfMode', 0);
         $configFile->setVar('sDefaultDatabaseConnection', $character_set);
 
-        $this->resetDbProperty(Database::getInstance());
-        $database = Database::getInstance();
+        $this->resetDbProperty(oxDb::getInstance());
+        $database = oxDb::getInstance();
         $database->setConfigFile($configFile);
-        $databaseConnection = $database::getDb(Database::FETCH_MODE_ASSOC);
+        $databaseConnection = $database::getDb(oxDb::FETCH_MODE_ASSOC);
 
         // restore original values
         $configFile->setVar('iUtfMode', $savedIUtfMode);

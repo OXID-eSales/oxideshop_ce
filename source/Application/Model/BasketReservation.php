@@ -22,13 +22,13 @@
 
 namespace OxidEsales\Eshop\Application\Model;
 
+use Exception;
 use oxRegistry;
 use oxUtilsObject;
 use oxField;
 use oxDb;
 use OxidEsales\Eshop\Application\Model\Basket;
 use oxuserbasket;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * Basket reservations handler class
@@ -278,14 +278,16 @@ class BasketReservation extends \oxSuperCfg
      *
      * @param int $iLimit limit for discarding (performance related)
      *
+     * @throws Exception
+     *
      * @return null
      */
     public function discardUnusedReservations($iLimit)
     {
         // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $database->startTransaction();
 
+        $database->startTransaction();
         try{
             $iStartTime = oxRegistry::get("oxUtilsDate")->getTime() - (int) $this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
@@ -314,12 +316,13 @@ class BasketReservation extends \oxSuperCfg
             // cleanup basket history also..
             $database->execute("delete from oxuserbaskets where oxtitle = 'savedbasket' and oxupdate <= $iStartTime");
 
-        } catch (DatabaseException $exception) {
+            $database->commitTransaction();
+        } catch (Exception $exception) {
             $database->rollbackTransaction();
+
             throw $exception;
         }
 
-        $database->commitTransaction();
 
         $this->_aCurrentlyReserved = null;
     }

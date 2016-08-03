@@ -21,6 +21,7 @@
  */
 namespace OxidEsales\Eshop\Core;
 
+use oxDb;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database as DatabaseAdapter;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
@@ -106,7 +107,7 @@ class Database
      *
      * @return DatabaseInterface
      */
-    public static function getDb($fetchMode = Database::FETCH_MODE_NUM)
+    public static function getDb($fetchMode = oxDb::FETCH_MODE_NUM)
     {
         if (null === static::$db) {
             $databaseFactory = static::getInstance();
@@ -133,7 +134,7 @@ class Database
      *
      * @return DatabaseInterface
      */
-    public static function getMaster($fetchMode = Database::FETCH_MODE_NUM)
+    public static function getMaster($fetchMode = oxDb::FETCH_MODE_NUM)
     {
         static::getDb($fetchMode)->forceMasterConnection();
 

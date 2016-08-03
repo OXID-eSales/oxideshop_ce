@@ -22,6 +22,11 @@
 
 namespace OxidEsales\Eshop\Application\Component;
 
+use OxidEsales\Eshop\Core\Exception\ConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\InputException;
+use OxidEsales\Eshop\Core\Exception\UserException;
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxUser;
 use oxUserException;
@@ -391,12 +396,12 @@ class UserComponent extends \oxView
     }
 
     /**
-     * First test if all MUST FILL fields were filled, then performed
+     * First test if all required fields were filled, then performed
      * additional checking oxcmp_user::CheckValues(). If no errors
      * occured - trying to create new user (oxuser::CreateUser()),
      * logging him to shop (oxuser::Login() if user has entered password).
      * If oxuser::CreateUser() returns false - this means user is
-     * allready created - we only logging him to shop (oxcmp_user::Login()).
+     * already created - we only logging him to shop (oxcmp_user::Login()).
      * If there is any error with missing data - function will return
      * false and set error code (oxcmp_user::iError). If user was
      * created successfully - will return "payment" to redirect to
@@ -419,7 +424,7 @@ class UserComponent extends \oxView
         if ($blActiveLogin && !$oConfig->getRequestParameter('ord_agb') && $oConfig->getConfigParam('blConfirmAGB')) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('READ_AND_CONFIRM_TERMS', false, true);
 
-            return;
+            return false;
         }
 
         // collecting values to check
@@ -437,10 +442,11 @@ class UserComponent extends \oxView
         $aDelAdress = $this->_getDelAddressData();
         $aDelAdress = $this->cleanDeliveryAddress($aDelAdress);
 
-        /** @var oxUser $oUser */
-        $oUser = oxNew('oxuser');
-
+        $database = oxDb::getDb();
+        $database->startTransaction();
         try {
+            /** @var oxUser $oUser */
+            $oUser = oxNew('oxuser');
             $oUser->checkValues($sUser, $sPassword, $sPassword2, $aInvAdress, $aDelAdress);
 
             $iActState = $blActiveLogin ? 0 : 1;
@@ -486,25 +492,36 @@ class UserComponent extends \oxView
 
             $oUser->addToGroup('oxidnotyetordered');
             $oUser->logout();
-
-        } catch (oxUserException $oEx) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
-
-            return false;
-        } catch (oxInputException $oEx) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
+            $database->commitTransaction();
+        } catch (UserException $exception) {
+            Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
+            $database->rollbackTransaction();
 
             return false;
-        } catch (oxConnectionException $oEx) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
+        } catch (InputException $exception) {
+            Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
+            $database->rollbackTransaction();
 
             return false;
+        } catch (DatabaseConnectionException $exception) {
+            Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
+            $database->rollbackTransaction();
+
+            return false;
+        } catch (ConnectionException $exception) {
+            Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
+            $database->rollbackTransaction();
+
+            return false;
+        } catch (Exception $exception) {
+            $database->rollbackTransaction();
+
+            throw $exception;
         }
 
         if (!$blActiveLogin) {
             oxRegistry::getSession()->setVariable('usr', $oUser->getId());
             $this->_afterLogin($oUser);
-
 
             // order remark
             //V #427: order remark for new users
@@ -554,7 +571,7 @@ class UserComponent extends \oxView
     public function registerUser()
     {
         // registered new user ?
-        if ($this->createuser() != false && $this->_blIsNewUser) {
+        if ($this->createUser() != false && $this->_blIsNewUser) {
             if ($this->_blNewsSubscriptionStatus === null || $this->_blNewsSubscriptionStatus) {
                 return 'register?success=1';
             } else {

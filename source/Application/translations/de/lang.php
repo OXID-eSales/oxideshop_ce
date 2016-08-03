@@ -736,10 +736,10 @@ $aLang = array(
 'WISHLIST_PRODUCTS'                                           => 'Diese Artikel hat sich %s gewünscht. Wenn Sie ihr/ihm eine Freude machen wollen, dann kaufen Sie einen oder mehrere von diesen Artikeln.',
 
 
-'BETA_NOTE'                                                   => 'Willkommen zum ',
-'BETA_NOTE_RELEASE_BETA'                                      => 'Beta',
-'BETA_NOTE_RELEASE_RC'                                        => 'Release-Kandidat',
-'BETA_NOTE_MIDDLE'                                            => ' von OXID eShop ',
+'BETA_NOTE'                                                   => 'Willkommen ',
+'BETA_NOTE_RELEASE_BETA'                                      => 'zur Beta',
+'BETA_NOTE_RELEASE_RC'                                        => 'zum Release-Kandidaten',
+'BETA_NOTE_MIDDLE'                                            => ' des OXID eShop ',
 'BETA_NOTE_FAQ'                                               => '. Häufig gestellte Fragen und Antworten sind in der %s gelistet.',
 
 

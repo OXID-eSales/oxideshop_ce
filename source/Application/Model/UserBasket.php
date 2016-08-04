@@ -345,6 +345,7 @@ class UserBasket extends \oxBase
             $oDb = oxDb::getDb();
             $sQ = "delete from oxuserbasketitems where oxbasketid = " . $oDb->quote($sOXID);
             $oDb->execute($sQ);
+            $this->_aBasketItems = null;
         }
 
         return $blDelete;

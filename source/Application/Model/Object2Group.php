@@ -23,7 +23,7 @@
 namespace OxidEsales\Eshop\Application\Model;
 
 use oxField;
-use oxDb;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * Manages object (users, discounts, deliveries...) assignment to groups.
@@ -58,18 +58,23 @@ class Object2Group extends \oxBase
      * Extends the default save method.
      * Saves only if this kind of entry do not exists.
      *
+     * @throws DatabaseException
+     *
      * @return bool
      */
     public function save()
     {
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = oxDb::getMaster();
-        $sQ = "select 1 from oxobject2group where oxgroupsid = " . $masterDb->quote($this->oxobject2group__oxgroupsid->value);
-        $sQ .= " and oxobjectid = " . $masterDb->quote($this->oxobject2group__oxobjectid->value);
-
-        // does not exist
-        if (!$masterDb->getOne($sQ)) {
+        try {
             return parent::save();
+        } catch (DatabaseException $exception) {
+            /**
+             * The table oxobject2group has an UNIQUE index on (OXGROUPSID, OXOBJECTID, OXSHOPID)
+             * If there is a DatabaseException and the exception code is 1062 i.e. "Duplicate entry",
+             * the exception will be discarded and the record will not be inserted.
+             */
+            if ($exception->getCode() != '1062') {
+                throw $exception;
+            }
         }
     }
 }

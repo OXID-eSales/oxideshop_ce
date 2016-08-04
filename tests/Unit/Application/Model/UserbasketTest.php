@@ -239,6 +239,19 @@ class UserbasketTest extends \OxidTestCase
         $this->assertEquals('2000', $oArticle->getId());
     }
 
+    public function testDontGetCachedItemsAfterDelete()
+    {
+        $oBasket = oxNew('oxUserBasket');
+        $oBasket->load("testUserBasket");
+        $aItems = $oBasket->getItems();
+        $oItem = current($aItems);
+        $oArticle = $oItem->getArticle('xxx');
+        $this->assertEquals('2000', $oArticle->getId());
+
+        $oBasket->delete();
+        $this->assertEquals(0, count($oBasket->getItems()));
+    }
+
     public function testGetItemsReload()
     {
         $oBasket = oxNew('oxUserBasket');

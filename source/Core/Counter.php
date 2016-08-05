@@ -90,7 +90,7 @@ class Counter
 
             /** Insert or update the counter, if the value to be updated is greater, than the current value */
             $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `oxcount` = IF(? > oxcount, ?, oxcount)";
-            $result = $database->execute($query, array($ident));
+            $result = $database->execute($query, array($ident, $count, $count, $count ));
 
             $database->commitTransaction();
         } catch (Exception $exception) {

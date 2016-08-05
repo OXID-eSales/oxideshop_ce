@@ -352,8 +352,7 @@ class PaymentlistTest extends \OxidTestCase
         $oPayment->save();
 
         // assigning groups
-        $oObjectToGroup = oxNew('oxBase');
-        $oObjectToGroup->init('oxobject2group');
+        $oObjectToGroup = oxNew('oxObject2Group');
         $oObjectToGroup->setId($this->_getUId());
         $oObjectToGroup->oxobject2group__oxshopid = new oxField($iShopId);
         $oObjectToGroup->oxobject2group__oxobjectid = new oxField($oPayment->getId());
@@ -382,8 +381,7 @@ class PaymentlistTest extends \OxidTestCase
         $oPayment->save();
 
         // assigning groups
-        $oObjectToGroup = oxNew('oxBase');
-        $oObjectToGroup->init('oxobject2group');
+        $oObjectToGroup = oxNew('oxObject2Group');
         $oObjectToGroup->setId($this->_getUId());
         $oObjectToGroup->oxobject2group__oxshopid = new oxField($iShopId);
         $oObjectToGroup->oxobject2group__oxobjectid = new oxField($oPayment->getId());
@@ -511,7 +509,6 @@ class PaymentlistTest extends \OxidTestCase
         $oDel2delset->oxdel2delset__oxdelsetid = new oxField($oDelSet->getId());
         $oDel2delset->save();
 
-
         //
         $oDelSet = oxNew('oxDeliverySet');
         $oDelSet->setId($this->_getUId());
@@ -555,7 +552,6 @@ class PaymentlistTest extends \OxidTestCase
         $oDel2delset->oxdel2delset__oxdelid = new oxField("1b842e738970d31e3.71258328");
         $oDel2delset->oxdel2delset__oxdelsetid = new oxField($oDelSet->getId());
         $oDel2delset->save();
-
 
         //
         $oDelSet = oxNew('oxDeliverySet');

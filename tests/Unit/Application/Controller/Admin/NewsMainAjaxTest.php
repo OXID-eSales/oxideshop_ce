@@ -38,16 +38,16 @@ class NewsMainAjaxTest extends \OxidTestCase
     {
         parent::setUp();
 
-        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemove1', oxobjectid='_testGroupRemove'");
-        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemove2', oxobjectid='_testGroupRemove'");
+        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testPayRemove1', oxobjectid='_testPayRemove1', oxgroupsid='_testRemoveGroup1'");
+        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testPayRemove2', oxobjectid='_testPayRemove2', oxgroupsid='_testRemoveGroup2'");
 
-        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemoveAll1', oxobjectid='_testGroupRemoveAll', oxgroupsid='_testGroup1'");
-        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemoveAll2', oxobjectid='_testGroupRemoveAll', oxgroupsid='_testGroup2'");
-        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemoveAll3', oxobjectid='_testGroupRemoveAll', oxgroupsid='_testGroup3'");
+        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testPayRemoveAll1', oxgroupsid='_testGroup1', oxobjectid='_testPayRemoveAll'");
+        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testPayRemoveAll2', oxgroupsid='_testGroup2', oxobjectid='_testPayRemoveAll'");
+        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testPayRemoveAll3', oxgroupsid='_testGroup3', oxobjectid='_testPayRemoveAll'");
 
-        oxDb::getDb()->execute("insert into oxgroups set oxid='_testGroup1', oxtitle='_testGroup1'");
-        oxDb::getDb()->execute("insert into oxgroups set oxid='_testGroup2', oxtitle='_testGroup2'");
-        oxDb::getDb()->execute("insert into oxgroups set oxid='_testGroup3', oxtitle='_testGroup3'");
+        oxDb::getDb()->execute("insert into oxgroups set oxid='_testGroup1', oxtitle='_testGroup1', oxactive=1");
+        oxDb::getDb()->execute("insert into oxgroups set oxid='_testGroup2', oxtitle='_testGroup2', oxactive=1");
+        oxDb::getDb()->execute("insert into oxgroups set oxid='_testGroup3', oxtitle='_testGroup3', oxactive=1");
     }
 
     /**
@@ -57,10 +57,7 @@ class NewsMainAjaxTest extends \OxidTestCase
      */
     protected function tearDown()
     {
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testGroupRemove'");
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testGroupRemoveAll'");
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testGroupAdd'");
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testGroupAddAll'");
+        oxDb::getDb()->execute("delete from oxobject2group where oxid LIKE '\_testPayRemove%'");
 
         oxDb::getDb()->execute("delete from oxgroups where oxid='_testGroup1'");
         oxDb::getDb()->execute("delete from oxgroups where oxid='_testGroup2'");
@@ -132,9 +129,9 @@ class NewsMainAjaxTest extends \OxidTestCase
     public function testRemoveGroupFromNews()
     {
         $oView = $this->getMock("news_main_ajax", array("_getActionIds"));
-        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testGroupRemove1', '_testGroupRemove2')));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testPayRemove1', '_testPayRemove2')));
 
-        $sSql = "select count(oxid) from oxobject2group where oxid in ('_testGroupRemove1', '_testGroupRemove2')";
+        $sSql = "select count(oxid) from oxobject2group where oxid in ('_testPayRemove1', '_testPayRemove2')";
         $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
         $oView->removeGroupFromNews();
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
@@ -147,7 +144,7 @@ class NewsMainAjaxTest extends \OxidTestCase
      */
     public function testRemoveGroupFromNewsAll()
     {
-        $sOxid = '_testGroupRemoveAll';
+        $sOxid = '_testPayRemoveAll';
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("all", true);
 

@@ -559,7 +559,6 @@ $aLang = array(
 'WRAPPING_DESCRIPTION'                                        => 'Wir verpacken gern Ihr Geschenk oder legen eine Karte mit Ihrer persönlichen Nachricht bei.',
 'WRAPPING_NET'                                                => 'Geschenkverpackung/Grußkarte (netto)',
 'WRITES'                                                      => 'schreibt',
-'WRITE_ENTRY'                                                 => 'Eintrag schreiben',
 'WRITE_PRODUCT_REVIEW'                                        => 'Einen Kommentar schreiben',
 'WRITE_REVIEW'                                                => 'Einen Kommentar schreiben.',
 'WRITE_REVIEW_2'                                              => 'Bewerten Sie unseren Shop!',

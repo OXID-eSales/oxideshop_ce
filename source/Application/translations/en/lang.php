@@ -559,7 +559,6 @@ $aLang = array(
 'WRAPPING_DESCRIPTION'                                        => 'We\'re happy to wrap your gift or to add a card with your personal message.',
 'WRAPPING_NET'                                                => 'Gift wrapping/greeting card (w/o tax)',
 'WRITES'                                                      => 'writes',
-'WRITE_ENTRY'                                                 => 'Write an entry',
 'WRITE_PRODUCT_REVIEW'                                        => 'Review a product',
 'WRITE_REVIEW'                                                => 'Write a review.',
 'WRITE_REVIEW_2'                                              => 'Write a review!',

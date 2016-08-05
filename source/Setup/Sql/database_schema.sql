@@ -919,7 +919,7 @@ CREATE TABLE `oxobject2group` (
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
   PRIMARY KEY  (`OXID`),
   KEY `OXOBJECTID` (`OXOBJECTID`),
-  KEY `OXGROUPSID` (`OXGROUPSID`)
+  UNIQUE INDEX `UNIQ_OBJECTGROUP` (`OXGROUPSID`, `OXOBJECTID`, `OXSHOPID`)
 ) ENGINE=MyISAM COMMENT 'Shows many-to-many relationship between users and groups';
 
 #

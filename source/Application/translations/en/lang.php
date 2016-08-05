@@ -552,7 +552,6 @@ $aLang = array(
 'WEIGHT'                                                      => 'Weight',
 'WHAT_I_WANTED_TO_SAY'                                        => 'Drop us a message',
 'WHO_BOUGHT_ALSO_BOUGHT'                                      => 'Customers who bought this products, also bought',
-'WISHLIST_BY'                                                 => 'Wishlist by',
 'WISH_LIST'                                                   => 'Wish List',
 'WISH_LIST_EMPTY'                                             => 'Your Wish List is empty.',
 'WITH_LOVE'                                                   => 'With love,',

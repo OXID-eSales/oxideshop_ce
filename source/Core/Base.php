@@ -853,35 +853,27 @@ class Base extends \oxSuperCfg
 
         $return = false;
 
-        // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
         $database = oxDb::getDb();
 
-        $database->startTransaction();
-        try {
-            $action = null;
-            $response = null;
-            if ($this->exists()) {
-                //only update if derived update is allowed
-                if ($this->allowDerivedUpdate()) {
-                    $response = $this->_update();
-                    $action = ACTION_UPDATE;
-                }
-            } else {
-                $response = $this->_insert();
-                $action = ACTION_INSERT;
+        $action = null;
+        $response = null;
+        /** We must check on the master database, if an entry exists. */
+        $database->forceMasterConnection();
+        if ($this->exists()) {
+            //only update if derived update is allowed
+            if ($this->allowDerivedUpdate()) {
+                $response = $this->_update();
+                $action = ACTION_UPDATE;
             }
+        } else {
+            $response = $this->_insert();
+            $action = ACTION_INSERT;
+        }
 
-            $this->onChange($action);
+        $this->onChange($action);
 
-            if ($response) {
-                $return = $this->getId();
-            }
-
-            $database->commitTransaction();
-        } catch (Exception $exception) {
-            $database->rollbackTransaction();
-
-            throw $exception;
+        if ($response) {
+            $return = $this->getId();
         }
 
         return $return;

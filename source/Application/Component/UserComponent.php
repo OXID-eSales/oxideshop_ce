@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Component;
 
+use oxDb;
 use OxidEsales\Eshop\Core\Exception\ConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\InputException;

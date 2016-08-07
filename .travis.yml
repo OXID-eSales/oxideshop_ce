@@ -1,0 +1,26 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+  - hhvm
+
+
+before_script:
+  - composer self-update
+  - composer install --dev --prefer-source;
+  - mysql -e "create database IF NOT EXISTS oxid_test;" -u root
+
+script:
+  - ./vendor/bin/phpunit --bootstrap ./tests/bootstrap-travis.php ./tests/AllTestsUnit.php
+
+notifications:
+  email: false
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: 5.6
+    - php: hhvm

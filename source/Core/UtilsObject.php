@@ -122,10 +122,7 @@ class UtilsObject
      */
     public static function getInstance()
     {
-        // disable caching for test modules
-        if (defined('OXID_PHP_UNIT')) {
-            self::$_instance = null;
-        }
+        
 
         if (!self::$_instance instanceof UtilsObject) {
             // allow modules
@@ -142,6 +139,11 @@ class UtilsObject
             $moduleChainsGenerator = $oUtilsObject->oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
 
             self::$_instance = $oUtilsObject->oxNew('oxUtilsObject', $classNameProvider, $moduleChainsGenerator, $shopIdCalculator);
+        }
+
+        // disable caching for test modules
+        if (defined('OXID_PHP_UNIT')) {
+            self::$_instance->_aClassNameCache = [];
         }
 
         return self::$_instance;

@@ -508,21 +508,14 @@ class Session extends \oxSuperCfg
      */
     public function sid($blForceSid = false)
     {
-        $myConfig = $this->getConfig();
-        $blUseCookies = $this->_getSessionUseCookies();
         $sRet = '';
 
-        $blDisableSid = oxRegistry::getUtils()->isSearchEngine()
-                        && is_array($myConfig->getConfigParam('aCacheViews'))
-                        && !$this->isAdmin();
-
-        //no cookie?
-        if (!$blDisableSid && $this->getId() && ($blForceSid || !$blUseCookies || !$this->_getCookieSid())) {
+        if ($this->isSidAllowedInUrl($blForceSid)) {
             $sRet = ($blForceSid ? $this->getForcedName() : $this->getName()) . "=" . $this->getId();
         }
 
         if ($this->isAdmin()) {
-            // admin mode always has to have token
+            // admin mode exspects token . Todo: refactor admin so it works without
             if ($sRet) {
                 $sRet .= '&amp;';
             }
@@ -531,6 +524,26 @@ class Session extends \oxSuperCfg
 
         return $sRet;
     }
+
+   /**
+    * Returns true if session id is allowed in urls
+    *
+    * @param bool $blForceSid forces sid getter, ignores cookie check (optional)
+    * @return bool
+    */
+   public function isSidAllowedInUrl($blForceSid = false){
+        $myConfig = $this->getConfig();
+
+        $blAllowSid = ($myConfig->getConfigParam('blAllowSidInUrl')
+                        && ! oxRegistry::getUtils()->isSearchEngine()
+                        && ! is_array($myConfig->getConfigParam('aCacheViews'))
+                      );
+       
+        $blUseCookies = $this->_getSessionUseCookies();
+        //Is allowed if the check above is ok and we have an id to append and (not using session cookie or forcing)
+        $blAllowSid = $blAllowSid && $this->getId() && ($blForceSid || !$blUseCookies || !$this->_getCookieSid());
+        return $blAllowSid;     
+   }
 
     /**
      * Forms input ("hidden" type) to pass session ID after submitting forms.
@@ -652,6 +665,18 @@ class Session extends \oxSuperCfg
     {
         if ($this->isAdmin()) {
             return true;
+        }
+        $config = $this->getConfig();
+        
+        if ($config == null){
+             throw new \Exception("stacktrace to config init - initialtation loop");
+        }
+        assert('$config != null');
+        if ($sUrl != null && !$config->getConfigParam('blAllowSidInUrl')) {
+            //if it is not allowed to add session ids to urls
+            //there is no need to do other checks
+            //even if the id would be needed it is not allowed so return false to indicate the sid must not be added
+            return false;
         }
 
         $oConfig = $this->getConfig();

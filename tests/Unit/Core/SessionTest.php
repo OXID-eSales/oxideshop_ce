@@ -317,11 +317,18 @@ class SessionTest extends \OxidTestCase
     public function testIsSidNeededPassingCustomUrl()
     {
         $sUrl = "someurl";
+        $config = $this->getConfig();
+        $configMock = clone $config;
 
+        $configMock->setConfigParam('blAllowSidInUrl',true);
         $oSession = $this->getMock("oxSession", array("getConfig", '_getSessionUseCookies', 'isSessionStarted'));
-        $oSession->expects($this->once())->method('_getSessionUseCookies')->will($this->returnValue(false));
+        $oSession->expects($this->any())->method('getConfig')->will($this->returnValue($configMock));
+        $oSession->expects($this->any())->method('_getSessionUseCookies')->will($this->returnValue(false));
         $oSession->expects($this->any())->method('isSessionStarted')->will($this->returnValue(true));
         $this->assertTrue($oSession->isSidNeeded($sUrl));
+        $configMock->setConfigParam('blAllowSidInUrl',false);
+        $this->assertFalse($oSession->isSidNeeded($sUrl));
+
     }
 
     public function testIsSidNeededPassingCustomUrlChangeSsl()
@@ -329,22 +336,28 @@ class SessionTest extends \OxidTestCase
         $sUrl = "https://someurl";
 
         $oConfig = $this->getMock("oxconfig", array("isCurrentProtocol"));
-        $oConfig->expects($this->once())->method('isCurrentProtocol')->will($this->returnValue(false));
+        $oConfig->expects($this->any())->method('isCurrentProtocol')->will($this->returnValue(false));
 
         $oSession = $this->getMock("oxSession", array("getConfig", '_getSessionUseCookies', '_getCookieSid', 'isSessionStarted'));
-        $oSession->expects($this->once())->method('_getSessionUseCookies')->will($this->returnValue(true));
-        $oSession->expects($this->once())->method('_getCookieSid')->will($this->returnValue(true));
-        $oSession->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        $oSession->expects($this->any())->method('_getSessionUseCookies')->will($this->returnValue(true));
+        $oSession->expects($this->any())->method('_getCookieSid')->will($this->returnValue(true));
+        $oSession->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oSession->expects($this->any())->method('isSessionStarted')->will($this->returnValue(true));
+        $oConfig->setConfigParam('blAllowSidInUrl',true);
         $this->assertTrue($oSession->isSidNeeded($sUrl));
+        $oConfig->setConfigParam('blAllowSidInUrl',false);
+        $this->assertFalse($oSession->isSidNeeded($sUrl));
     }
 
     public function testAllowSessionStartWhenSearchEngine()
     {
         oxTestModules::addFunction("oxUtils", "isSearchEngine", "{return true;}");
         $this->setRequestParameter('skipSession', 0);
-
+        $config = $this->getConfig();
         $oSession = oxNew('oxSession');
+        $config->setConfigParam('blAllowSidInUrl',true);
+        $this->assertFalse($oSession->UNITallowSessionStart());
+        $config->setConfigParam('blAllowSidInUrl',false);
         $this->assertFalse($oSession->UNITallowSessionStart());
     }
 
@@ -1085,20 +1098,32 @@ class SessionTest extends \OxidTestCase
      */
     function testSidNormal()
     {
-        $this->getConfig()->setConfigParam('blSessionUseCookies', false);
-        $oSession = $this->getMock('\Unit\Core\testSession', array('_getCookieSid', 'isAdmin'));
-        $oSession->expects($this->any())->method('_getCookieSid')->will($this->returnValue('admin_sid'));
+        $oSession = $this->getMock('\Unit\Core\testSession', array('isSidInUrlAllowed', 'isAdmin'));
+        $oSession->expects($this->any())->method('isSidInUrlAllowed')->will($this->returnValue(true));
         $oSession->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oSession->UNITsetSessionId('testSid');
-        $this->assertEquals('sid=testSid', $oSession->sid());
 
-        $this->getConfig()->setConfigParam('blSessionUseCookies', true);
         $oSession->UNITsetSessionId('testSid');
-        $this->assertEquals('', $oSession->sid());
+        
+        $this->assertEquals('sid=testSid', $oSession->sid());
     }
 
     /**
-     * oxsession::sid() test normal case
+     * oxsession::sid() test normal case no session in url
+     */
+    function testSidNormalNotAllowed()
+    {
+        $oSession = $this->getMock('\Unit\Core\testSession', array('isSidInUrlAllowed', 'isAdmin'));
+        $oSession->expects($this->any())->method('isSidInUrlAllowed')->will($this->returnValue(false));
+        $oSession->expects($this->any())->method('isAdmin')->will($this->returnValue(false));  
+        $oSession->UNITsetSessionId('testSid');
+
+        $this->assertEquals('', $oSession->sid());
+    }
+
+    
+    /**
+     * oxsession::sid() test usage in admin
+     * Todo: no stoken on urls (only forms)
      */
     function testSidInAdmin()
     {

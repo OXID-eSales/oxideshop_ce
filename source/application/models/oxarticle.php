@@ -1194,21 +1194,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
 
         if ( !isset( self::$_aSelList[$sKey] ) ) {
-            $oDb = oxDb::getDb();
-            $sSLViewName = getViewName( 'oxselectlist' );
-
-            $sQ = "select {$sSLViewName}.* from oxobject2selectlist join {$sSLViewName} on $sSLViewName.oxid=oxobject2selectlist.oxselnid
-                   where oxobject2selectlist.oxobjectid=%s order by oxobject2selectlist.oxsort";
-
-            // all selectlists this article has
-            $oLists = oxNew( 'oxlist' );
-            $oLists->init( 'oxselectlist' );
-            $oLists->selectString( sprintf( $sQ, $oDb->quote( $this->getId() ) ) );
-
-            //#1104S if this is variant ant it has no selectlists, trying with parent
-            if ( $oLists->count() == 0 && $this->oxarticles__oxparentid->value ) {
-                $oLists->selectString( sprintf( $sQ, $oDb->quote( $this->oxarticles__oxparentid->value ) ) );
-            }
+            $oLists = $this->_getSelectListByWithParentFallback();
 
             // We do not need to calculate price here as there are method to get current article vat
             /*if ( $this->getPrice() != null ) {
@@ -1225,6 +1211,43 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
         }
         return self::$_aSelList[$sKey];
+    }
+
+    /**
+     * Select a select list form DB
+     *
+     * @param integer $iLimit
+     * @param douple $dBaseVat
+     *
+     * @return oxlist
+     */
+    protected function _getSelectListByWithParentFallback( $iLimit = null, $dBaseVat = null)
+    {
+        $oDb = oxDb::getDb();
+        $sSLViewName = getViewName( 'oxselectlist' );
+
+        $sQ = "select {$sSLViewName}.* from oxobject2selectlist join {$sSLViewName} on $sSLViewName.oxid=oxobject2selectlist.oxselnid
+               where oxobject2selectlist.oxobjectid=%s order by oxobject2selectlist.oxsort";
+
+        if ( ( $iLimit = (int) $iLimit ) ) {
+            $sQ .= " limit $iLimit ";
+        }
+
+        // all selectlists this article has
+        $oLists = oxNew( 'oxlist' );
+        $oLists->init( 'oxselectlist' );
+        if ( $dBaseVat !== null ) {
+            $oLists->getBaseObject()->setVat( $dBaseVat );
+        }
+
+        $oLists->selectString( sprintf( $sQ, $oDb->quote( $this->getId() ) ) );
+
+        //#1104S if this is variant ant it has no selectlists, trying with parent
+        if ( $oLists->count() == 0 && $this->oxarticles__oxparentid->value ) {
+            $oLists->selectString( sprintf( $sQ, $oDb->quote( $this->oxarticles__oxparentid->value ) ) );
+        }
+
+        return $oLists;
     }
 
     /**
@@ -1329,32 +1352,13 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $sId = $this->getId() . ( (int) $iLimit );
         if ( !array_key_exists( $sId, self::$_aSelections ) ) {
 
-            $oDb = oxDb::getDb();
-            $sSLViewName = getViewName( 'oxselectlist' );
-
-            $sQ = "select {$sSLViewName}.* from oxobject2selectlist join {$sSLViewName} on $sSLViewName.oxid=oxobject2selectlist.oxselnid
-                   where oxobject2selectlist.oxobjectid=%s order by oxobject2selectlist.oxsort";
-
-            if ( ( $iLimit = (int) $iLimit ) ) {
-                $sQ .= " limit $iLimit ";
-            }
-
             // vat value for price
             $dVat = 0;
             if ( ( $oPrice = $this->getPrice() ) != null ) {
                 $dVat = $oPrice->getVat();
             }
 
-            // all selectlists this article has
-            $oList = oxNew( 'oxlist' );
-            $oList->init( 'oxselectlist' );
-            $oList->getBaseObject()->setVat( $dVat );
-            $oList->selectString( sprintf( $sQ, $oDb->quote( $this->getId() ) ) );
-
-            //#1104S if this is variant and it has no selectlists, trying with parent
-            if ( $oList->count() == 0 && $this->oxarticles__oxparentid->value ) {
-                $oList->selectString( sprintf( $sQ, $oDb->quote( $this->oxarticles__oxparentid->value ) ) );
-            }
+            $oList = $this->_getSelectListByWithParentFallback( $iLimit, $dVat);
 
             self::$_aSelections[$sId] = $oList->count() ? $oList : false;
         }
@@ -1974,17 +1978,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         // apply currency
         $this->_applyCurrency( $oPrice );
-        // apply discounts
-        if ( !$this->skipDiscounts() ) {
-            $oDiscountList = oxRegistry::get("oxDiscountList");
-            $aDiscounts = $oDiscountList->getArticleDiscounts( $this, $this->getArticleUser() );
 
-            reset( $aDiscounts );
-            foreach ( $aDiscounts as $oDiscount ) {
-                $oPrice->setDiscount($oDiscount->getAddSum(), $oDiscount->getAddSumType());
-            }
-            $oPrice->calculateDiscount();
-        }
+        $this->applyDiscountsForPrice( $oPrice );
 
         return $oPrice;
     }
@@ -3393,11 +3388,24 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Applies discounts which should be applied in general case (for 0 amount)
      *
+     * @see self::applyDiscountsForPrice
      * @param oxprice $oPrice Price object
      *
      * @return null
      */
     public function applyDiscountsForVariant( $oPrice )
+    {
+        $this->applyDiscountsForPrice( $oPrice );
+    }
+
+    /**
+     * Applies discounts which should be applied in general case (for 0 amount)
+     *
+     * @param oxprice $oPrice Price object
+     *
+     * @return null
+     */
+    public function applyDiscountsForPrice( $oPrice )
     {
         // apply discounts
         if ( !$this->skipDiscounts() ) {

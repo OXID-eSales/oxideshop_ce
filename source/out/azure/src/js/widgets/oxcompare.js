@@ -25,8 +25,12 @@
      */
     oxCompare = {
         options: {
-            browserMozzila  : "mozilla",
-            browserIE       : "msie",
+            browsers: {
+                chrome  : "chrome",
+                mozilla : "mozilla",
+                msie    : "msie",
+                safari  : "safari"
+            },
             propertyHeight  : "height",
             classFirstCol   : ".js-firstCol",
             idDataTable     : "#compareDataDiv",
@@ -90,10 +94,12 @@
          */
         getColumnHeight: function(sBrowser, oColumn)
         {
-            if(sBrowser == this.options.browserMozzila){
+            if( sBrowser == this.options.browsers.mozilla || sBrowser == this.options.browsers.chrome )
+            {
                 return oColumn.outerHeight();
             }
-            else if(sBrowser == this.options.browserIE){
+            else if( sBrowser == this.options.browsers.msie )
+            {
                 return oColumn.innerHeight();
             }
             else {
@@ -128,13 +134,17 @@
          */
         getBrowser: function(){
 
-            var sBrowser = this.options.browserMozzila;
+            var __this   = this,
+                sBrowser = this.options.browsers.mozilla;
 
-            jQuery.each( jQuery.browser, function( i, val ) {
-                if ( val == true ){
-                   sBrowser = i.toString();
-                 }
-             });
+            jQuery.each( jQuery.browser, function( i, val )
+            {
+                if ( typeof __this.options.browsers[ i ] != 'undefined' && val == true )
+                {
+                    sBrowser = i.toString();
+                    return true;
+                }
+            });
 
             return sBrowser;
         },

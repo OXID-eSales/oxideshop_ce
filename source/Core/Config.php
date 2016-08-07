@@ -466,7 +466,7 @@ class Config extends SuperConfig
     protected function initializeShop()
     {
         $this->_processSeoCall();
-        $this->getSession()->start();
+        $this->getSession()->start(false);
     }
 
     /**
@@ -2228,9 +2228,6 @@ class Config extends SuperConfig
     protected function _handleCookieException($ex)
     {
         $this->_processSeoCall();
-
-        //starting up the session
-        $this->getSession()->start();
 
         // redirect to start page and display the error
         Registry::get("oxUtilsView")->addErrorToDisplay($ex);

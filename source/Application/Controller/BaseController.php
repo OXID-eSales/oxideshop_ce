@@ -2046,11 +2046,11 @@ class BaseController extends \oxView
             $startNo = 2;
             $finishNo = $pageNavigation->NrOfPages;
         } else {
-            $tmpVal = $positionCount - 3;
+            $tmpVal = $positionCount - 4;
             $tmpVal2 = floor(($positionCount - 4) / 2);
 
             // actual page is at the start
-            if ($pageNavigation->actPage <= $tmpVal) {
+            if ($pageNavigation->actPage < $tmpVal) {
                 $startNo = 2;
                 $finishNo = $tmpVal + 1;
                 // actual page is at the end

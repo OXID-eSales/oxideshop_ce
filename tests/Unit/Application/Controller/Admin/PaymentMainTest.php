@@ -132,19 +132,40 @@ class PaymentMainTest extends \OxidTestCase
 
     /**
      * Payment_Main::AddField() test case
-     *
-     * @return null
      */
     public function testAddField()
     {
-        oxTestModules::addFunction('oxpayment', 'loadInLang', '{ return true; }');
+        oxTestModules::addFunction('oxPayment', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ return array( "testField1", "testField2"); }');
-        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
-        $this->setRequestParameter("aFields", array("testField2"));
+        $this->getConfig()->setConfigParam('blAllowSharedEdit', true);
+        $this->setRequestParameter('sAddField', 'foobar');
 
-        // testing..
-        $oView = $this->getMock("Payment_Main", array("save"));
-        $oView->expects($this->once())->method('save');
-        $oView->addField();
+        $view = $this->getMock($this->getProxyClassName('Payment_Main'), array('save'));
+        $view->expects($this->once())->method('save');
+        $view->addField();
+
+        $fields = $view->getNonPublicVar('_aFieldArray');
+        $this->assertCount(3, $fields);
+        $this->assertEquals('foobar', $fields[2]->name);
+    }
+
+    /**
+     * Payment_Main::AddField() test case
+     *
+     * Do not add field if it is empty
+     * @see https://bugs.oxid-esales.com/view.php?id=6450
+     */
+    public function testAddFieldDoNotSaveEmptyField()
+    {
+        oxTestModules::addFunction('oxPayment', 'loadInLang', '{ return true; }');
+        oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ return array( "testField1", "testField2"); }');
+        $this->getConfig()->setConfigParam('blAllowSharedEdit', true);
+        $this->setRequestParameter('sAddField', '');
+
+        $view = $this->getMock($this->getProxyClassName('Payment_Main'), array('save'));
+        $view->expects($this->once())->method('save');
+        $view->addField();
+
+        $this->assertCount(2, $view->getNonPublicVar('_aFieldArray'));
     }
 }

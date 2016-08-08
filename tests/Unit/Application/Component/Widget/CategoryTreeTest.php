@@ -61,4 +61,19 @@ class CategoryTreeTest extends \OxidTestCase
         $oCategoryTree->setViewParameters(array("deepLevel" => 2));
         $this->assertEquals(2, $oCategoryTree->getDeepLevel());
     }
+
+    public function testChecksIfContentCategoryNotReturned()
+    {
+        $categoryTree = oxNew('OxidEsales\Eshop\Application\Component\Widget\CategoryTree');
+
+        $this->assertSame(false, $categoryTree->getContentCategory());
+    }
+
+    public function testChecksIfContentCategoryReturned()
+    {
+        $categoryTree = oxNew('OxidEsales\Eshop\Application\Component\Widget\CategoryTree');
+        $_GET['oxcid'] = 'test';
+
+        $this->assertSame('test', $categoryTree->getContentCategory());
+    }
 }

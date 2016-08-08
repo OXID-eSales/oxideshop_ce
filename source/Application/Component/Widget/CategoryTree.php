@@ -76,15 +76,13 @@ class CategoryTree extends \oxWidget
     }
 
     /**
-     * Content category getter
+     * Content category getter.
      *
      * @return bool|string
      */
     public function getContentCategory()
     {
-        if (\oxRegistry::getConfig()->getRequestParameter('oxcid')) {
-            return \oxRegistry::getConfig()->getRequestParameter('oxcid');
-        }
-        return false;
+        $request = oxNew('OxidEsales\Eshop\Core\Request');
+        return $request->getRequestParameter('oxcid', false);
     }
 }

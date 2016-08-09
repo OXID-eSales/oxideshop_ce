@@ -177,13 +177,13 @@ $aLang =  array(
 
 'HELP_SHOP_CONFIG_SHOP_CONFIG_FACEBOOKAPPID'  => 'Um Ihren eShop mit Facebook zu verbinden, müssen Sie die Facebook \'Application ID\' angeben. ' .
                                                  'Weitere Informationen finden Sie im ' .
-                                                 '<a href="http://wiki.oxidforge.org/Tutorials/Connecting_website_to_facebook" target="_blank">Tutorial</a>.',
+                                                 '<a href="http://oxidforge.org/en/connecting-website-to-facebook.html" target="_blank">Tutorial</a>.',
 
 'HELP_SHOP_CONFIG_SHOP_CONFIG_FACEBOOKCONFIRM'=> 'Um die Privatsphäre des Kunden zu schützen, muss die Anzeige der Facebook Social Plugins explizit bestätigt werden. Erst nach Bestätigung werden Daten mit Facebook ausgetauscht.',
 
 'HELP_SHOP_CONFIG_SHOP_CONFIG_FBSECRETKEY'    => 'Um die Verbindung zwischen eShop und Facebook abzusichern, geben Sie den \'Secure Key\' hier ein. ' .
                                                  'Weitere Informationen finden Sie im ' .
-                                                 '<a href="http://wiki.oxidforge.org/Tutorials/Connecting_website_to_facebook" target="_blank">Tutorial</a>.',
+                                                 '<a href="http://oxidforge.org/en/connecting-website-to-facebook.html" target="_blank">Tutorial</a>.',
 
 'HELP_SHOP_CONFIG_FBCOMMENTS'                 => 'Erlaubt den Shopbesuchern, Kommentare zu Produkten abzugeben.',
 
@@ -291,7 +291,7 @@ $aLang =  array(
 
 'HELP_SHOP_MAIN_PRODUCTIVE'                   => 'Für Installation, Konfiguration, Anpassung der Templates und Modul-Debugging sollte der Shop nicht im Produktivmodus sein. Sobald der Produktivmodus aktiviert ist, wird das Cache Handling und das Error Reporting für den Livebetrieb des Shops optimiert.<br>' .
                                                  '<span class="warning_or_important_hint">Aktivieren Sie diese Einstellung, bevor ihr eShop öffentlich zugänglich gemacht wird.</span><br>' .
-                                                 'Weitere wichtige Hinweise für den Livegang des OXID eShop finden Sie in unserer <a href="http://wiki.oxidforge.org/Tutorials/Check_vor_dem_Livegang" target="_blank">OXIDforge</a>.',
+                                                 'Weitere wichtige Hinweise für den Livegang des OXID eShop finden Sie in unserer <a href="http://oxidforge.org/de/check-vor-dem-livegang.html" target="_blank">OXIDforge</a>.',
 
 'HELP_SHOP_MAIN_ACTIVE'                       => 'Mit <span class="navipath_or_inputname">Aktiv</span> können Sie ihren kompletten eShop ein- und ausschalten. Wenn ihr eShop ausgeschaltet ist, wird Ihren Kunden eine Meldung angezeigt, dass der eShop vorübergehend offline ist. Das kann für Wartungsarbeiten am eShop nützlich sein.',
 
@@ -309,7 +309,7 @@ $aLang =  array(
 
 'HELP_ARTICLE_MAIN_TAGS'                      => 'Hier können Sie passende Stichworte zum Artikel eingeben. Aus diesen Stichworten wird die Tagcloud (Stichwortwolke) auf der Startseite generiert. Tags werden durch Komma getrennt.',
 
-'HELP_ARTICLE_EXTEND_UNITQUANTITY'            => 'Mit <span class="navipath_or_inputname">Menge</span> und <span class="navipath_or_inputname">Mengeneinheit</span> können Sie den Grundpreis des Artikels (Preis pro Mengeneinheit) einstellen. Dieser wird berechnet und beim Artikel angezeigt (z.B. 1,43 EUR pro Liter). Geben Sie bei <span class="navipath_or_inputname">Menge</span> die Menge des Artikels (z.B. 1,5) ein und legen Sie bei <span class="navipath_or_inputname">Mengeneinheit</span> die entsprechende Mengeneinheit (z.B. Liter) fest. Sie können eine Mengeneinheit aus der Liste auswählen oder eine Mengeneinheit eintragen, ohne eine Mengeneinheit auszuwählen ("-"). </br> Wie Sie die Liste der Mengeneinheiten erweitern können, wird in diesem <a href="http://wiki.oxidforge.org/Tutorials/Adding_new_unit_types" target="_blank">Tutorial</a> beschrieben.',
+'HELP_ARTICLE_EXTEND_UNITQUANTITY'            => 'Mit <span class="navipath_or_inputname">Menge</span> und <span class="navipath_or_inputname">Mengeneinheit</span> können Sie den Grundpreis des Artikels (Preis pro Mengeneinheit) einstellen. Dieser wird berechnet und beim Artikel angezeigt (z.B. 1,43 EUR pro Liter). Geben Sie bei <span class="navipath_or_inputname">Menge</span> die Menge des Artikels (z.B. 1,5) ein und legen Sie bei <span class="navipath_or_inputname">Mengeneinheit</span> die entsprechende Mengeneinheit (z.B. Liter) fest. Sie können eine Mengeneinheit aus der Liste auswählen oder eine Mengeneinheit eintragen, ohne eine Mengeneinheit auszuwählen ("-"). </br> Wie Sie die Liste der Mengeneinheiten erweitern können, wird in diesem <a href="http://oxidforge.org/en/adding-new-unit-types.html" target="_blank">Tutorial</a> beschrieben.',
 
 'HELP_ARTICLE_EXTEND_EXTURL'                  => 'Bei <span class="navipath_or_inputname">Externe URL</span> können Sie einen Link eingeben, wo weitere Informationen zu dem Artikel erhältlich sind (z. B. auf der Hersteller-Website). Bei <span class="navipath_or_inputname">Text für ext. URL</span> können Sie den Text eingeben, der verlinkt wird (z. B. <span class="userinput_or_code">weitere Informationen vom Hersteller</span>).',
 

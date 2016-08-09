@@ -24,7 +24,7 @@
  * System requirements class.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class oxSysRequirements
 {
@@ -109,7 +109,7 @@ class oxSysRequirements
      *
      * @var string
      */
-    protected $_sReqInfoUrl = "http://www.oxidforge.org/wiki/Installation";
+    protected $_sReqInfoUrl = "http://oxidforge.org/en/installation.html";
 
     /**
      * Module or system configuration mapping with installation info url anchor

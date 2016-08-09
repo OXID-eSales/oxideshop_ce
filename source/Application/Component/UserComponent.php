@@ -94,7 +94,9 @@ class UserComponent extends \oxView
         'content',
         'account',
         'clearcookies',
-        'oxwServiceMenu',
+        //allowing some widgets so login page can use same layout as the normal shop
+        'oxwservicemenu',
+        'oxwminibasket',
     );
 
     /**

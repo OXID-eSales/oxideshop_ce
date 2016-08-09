@@ -983,6 +983,14 @@ class Database implements DatabaseInterface
     }
 
     /**
+     * Return true, if a transaction is marked rollbackOnly
+     * @return bool
+     */
+    public function isRollbackOnly() {
+        return $this->connection->isRollbackOnly();
+    }
+
+    /**
      * Get the value of a meta column key.
      *
      * @param array  $column The meta column, where the value has to be fetched.

@@ -161,6 +161,7 @@ class Database implements DatabaseInterface
     public function closeConnection()
     {
         $this->connection->close();
+        gc_collect_cycles();
     }
 
     /**

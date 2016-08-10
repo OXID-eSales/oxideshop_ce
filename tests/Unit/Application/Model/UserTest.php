@@ -22,6 +22,7 @@
 namespace Unit\Application\Model;
 
 use oxEmailHelper;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 use \oxnewssubscribed;
 use oxUser;
 use oxUtilsObject;
@@ -1754,8 +1755,17 @@ class UserTest extends \OxidTestCase
         $sUserId = $oUser->getId();
         $sShopId = $this->getConfig()->getShopId();
 
-        $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
-        $oDb->Execute($sQ);
+        try {
+            $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
+            $oDb->Execute($sQ);
+        } catch (DatabaseException $exception) {
+            /**
+             * Rethrow the exception only, if it is not a "Duplicate entry '...' for key 'UNIQ_OBJECTGROUP'"
+             */
+            if ($exception->getCode() != 1062) {
+                throw $exception;
+            }
+        }
 
         $oBasket = $this->getProxyClass("oxBasket");
         $oPrice = oxNew('oxPrice');
@@ -1786,8 +1796,17 @@ class UserTest extends \OxidTestCase
         $sUserId = $oUser->getId();
         $sShopId = $this->getConfig()->getShopId();
 
-        $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
-        $oDb->Execute($sQ);
+        try {
+            $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
+            $oDb->Execute($sQ);
+        } catch (DatabaseException $exception) {
+            /**
+             * Rethrow the exception only, if it is not a "Duplicate entry '...' for key 'UNIQ_OBJECTGROUP'"
+             */
+            if ($exception->getCode() != 1062) {
+                throw $exception;
+            }
+        }
 
         $oBasket = $this->getProxyClass("oxBasket");
         $oPrice = oxNew('oxPrice');

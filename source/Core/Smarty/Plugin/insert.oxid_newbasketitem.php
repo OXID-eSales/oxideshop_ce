@@ -54,7 +54,6 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
 
     //fetching article data
     $oNewItem = oxRegistry::getSession()->getVariable( '_newitem' );
-    $oBasket  = oxRegistry::getSession()->getBasket();
 
     if ( $oNewItem ) {
         // loading article object here because on some system passing article by session couses problems

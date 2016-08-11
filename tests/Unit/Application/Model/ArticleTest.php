@@ -4485,27 +4485,24 @@ class ArticleTest extends \OxidTestCase
     }
 
     /**
-     * Test get displayable in basket/order attributes, when all are not dispayable.
+     * Test get displayable in basket/order attributes
      *
      * @return null
      */
     public function testGetAttributesDisplayableInBasket()
     {
-        $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = '8a142c3f0b9527634.96987022' ";
-        oxDb::getDB()->execute($sSelect);
-        $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = 'd8842e3b7c5e108c1.63072778' "; // texture
-        oxDb::getDB()->execute($sSelect);
 
-        $oArticle = oxNew('oxArticle');
-        $oArticle->load('1672');
+        $attrList = $this->getMock('oxAttributeList',array('loadAttributesDisplayableInBasket'));
+        $attrList
+            ->expects($this->once())
+            ->method('loadAttributesDisplayableInBasket')
+            ->with($this->equalTo('1672'),$this->equalTo('1351'));
+        $oArticle = $this->getMock('oxArticle',array('newAttributeList'));
+        $oArticle->expects($this->once())->method('newAttributeList')->willReturn($attrList);
+        $oArticle->setId('1672');
         $oArticle->oxarticles__oxparentid = new oxField('1351');
-        $oArticle->save();
 
-        $aAttrList = $oArticle->getAttributesDisplayableInBasket();
-        $sAttribValue = $aAttrList['8a142c3f0c0baa3f4.54955953']->oxattribute__oxvalue->rawValue;
-        $sAttribParentValue = $aAttrList['d8842e3b7d4e7acb1.34583879']->oxattribute__oxvalue->rawValue;
-        $this->assertEquals('25 cm', $sAttribValue);
-        $this->assertEquals('Granit', $sAttribParentValue);
+        $oArticle->getAttributesDisplayableInBasket();
     }
 
     /**

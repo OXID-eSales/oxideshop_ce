@@ -155,6 +155,12 @@ class NavigationController extends \oxAdminView
         oxRegistry::getUtils()->redirect('index.php', true, 302);
     }
 
+    public function shopfront()
+    {
+        $redirect = $this->getConfig()->getShopConfVar('sMallShopURL',$this->getSession()->getVariable('shp'));
+        oxRegistry::getUtils()->redirect($redirect);
+    }
+    
     /**
      * Caches external url file locally, adds <base> tag with original url to load images and other links correcly
      */

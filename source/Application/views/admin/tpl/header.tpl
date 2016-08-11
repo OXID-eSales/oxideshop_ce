@@ -16,7 +16,7 @@
               <a href="[{$oViewConf->getSelfLink()}]&cl=navigation&amp;item=home.tpl" id="homelink" target="basefrm" class="rc"><b>[{oxmultilang ident="NAVIGATION_HOME"}]</b></a>
           </li>
           <li class="sep">
-              <a href="[{$oConfig->getShopURL()}]" id="shopfrontlink" target="_blank" class="rc"><b>[{oxmultilang ident="NAVIGATION_SHOPFRONT"}]</b></a>
+              <a href="[{$oViewConf->getSelfLink()|replace:'shp':''}]&cl=navigation&amp;fnc=shopfront" id="shopfrontlink" target="_blank" class="rc"><b>[{oxmultilang ident="NAVIGATION_SHOPFRONT"}]</b></a>
           </li>
           <li class="sep">
               <a href="[{$oViewConf->getSelfLink()}]&cl=navigation&amp;fnc=logout" id="logoutlink" target="_parent" class="rc"><b>[{oxmultilang ident="NAVIGATION_LOGOUT"}]</b></a>

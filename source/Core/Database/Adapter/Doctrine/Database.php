@@ -984,7 +984,12 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Return true, if a transaction is marked rollbackOnly
+     * Return true, if the connection is marked rollbackOnly.
+     *
+     * Doctrine manages nested transaction the following way:
+     * If any of the inner transactions is rolled back, all the outer transactions will have to be rolled back also.
+     * For that reason the connection will be marked as rollbackOnly and any commitTransaction will throw an exception.
+     *
      * @return bool
      */
     public function isRollbackOnly() {

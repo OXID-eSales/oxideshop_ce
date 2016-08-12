@@ -403,7 +403,6 @@ class BasketItem extends \oxSuperCfg
                 } else {
                     // limited stock
                     $this->_dAmount = $iOnStock;
-                    $blOverride = true;
                 }
             }
         }

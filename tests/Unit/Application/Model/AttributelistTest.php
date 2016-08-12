@@ -142,8 +142,8 @@ class AttributelistTest extends \OxidTestCase
 
         $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributesDisplayableInBasket('1672', '1351');
-        $sAttribValue = $oAttrList['8a142c3f0c0baa3f4.54955953']->oxattribute__oxvalue->rawValue;
-        $sAttribParentValue = $oAttrList['d8842e3b7d4e7acb1.34583879']->oxattribute__oxvalue->rawValue;
+        $sAttribValue = $oAttrList['8a142c3f0b9527634.96987022']->oxattribute__oxvalue->rawValue;
+        $sAttribParentValue = $oAttrList['d8842e3b7c5e108c1.63072778']->oxattribute__oxvalue->rawValue;
         $this->assertEquals('25 cm', $sAttribValue);
         $this->assertEquals('Granit', $sAttribParentValue);
     }

@@ -809,7 +809,7 @@ class SystemRequirements
             version_compare($sVersion, '5.0.41', '=') ||
             // https://bugs.oxid-esales.com/view.php?id=1003
             version_compare($sVersion, '5.0.37', '=') ||
-            // Only a note in http://wiki.oxidforge.org/Installation
+            // Only a note in http://oxidforge.org/en/installation.html
             version_compare($sVersion, '5.0.36', '=')
          ) {
             $iModStat = 0;

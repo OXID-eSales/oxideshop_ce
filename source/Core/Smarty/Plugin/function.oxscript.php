@@ -29,6 +29,7 @@
  * Purpose: Collect given javascript includes/calls, but include/call them at the bottom of the page.
  *
  * Add [{oxscript add="oxid.popup.load();"}] to add script call.
+ * Add [{oxscript add="$('#anylist').equalizer();" event="onload"}] to add script call.
  * Add [{oxscript include="oxid.js"}] to include local javascript file.
  * Add [{oxscript include="oxid.js?20120413"}] to include local javascript file with query string part.
  * Add [{oxscript include="http://www.oxid-esales.com/oxid.js"}] to include external javascript file.
@@ -57,7 +58,7 @@ function smarty_function_oxscript($params, &$smarty)
         }
 
         $register = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator');
-        $register->addSnippet($params['add'], $isDynamic);
+        $register->addSnippet($params['add'], $isDynamic, $params['event']);
     } elseif (isset($params['include'])) {
         if (empty($params['include'])) {
             $smarty->trigger_error("{oxscript} parameter 'include' can not be empty!");

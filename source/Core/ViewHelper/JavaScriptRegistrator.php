@@ -37,12 +37,23 @@ class JavaScriptRegistrator
      *
      * @param string $script
      * @param bool   $isDynamic
+     * @param string $event
      */
-    public function addSnippet($script, $isDynamic = false)
+    public function addSnippet($script, $isDynamic = false, $event = '')
     {
         $config = oxRegistry::getConfig();
+        if(!empty($event)) {
+            $eventsParameterName = static::SNIPPETS_PARAMETER_NAME . '_events';
+            $events = (array) $config->getGlobalParameter($eventsParameterName);
+            $event = trim($event);
+            if (!in_array($event, $events)) {
+                $events[] = $event;
+            }
+            $config->setGlobalParameter( $eventsParameterName, $events );
+        }
         $suffix = $isDynamic ? '_dynamic' : '';
-        $scriptsParameterName = static::SNIPPETS_PARAMETER_NAME . $suffix;
+        $event = empty($event) ? '' : '_'.$event;
+        $scriptsParameterName = static::SNIPPETS_PARAMETER_NAME . $suffix . $event;
         $scripts = (array) $config->getGlobalParameter($scriptsParameterName);
         $script = trim($script);
         if (!in_array($script, $scripts)) {

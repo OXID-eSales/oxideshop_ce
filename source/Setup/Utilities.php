@@ -218,7 +218,7 @@ class Utilities extends Core
             if ($sParamName[0] != 'i') {
                 $sParamValue = "'{$sParamValue}'";
             }
-            $sConfFile = preg_replace("/(this->{$sParamName}).*'<.*>'.*;/", "\\1 = " . $sParamValue . ";", $sConfFile);
+            $sConfFile = str_replace("<$sParamName>", $sParamValue, $sConfFile);
         }
 
         if (($fp = fopen($sConfPath, "w"))) {

@@ -235,7 +235,7 @@ class UtilitiesTest extends \OxidTestCase
         $this->assertTrue(function_exists('getDefaultConfigFileMode'), 'missing function getDefaultConfigFileMode');
 
         $utilities = new Utilities();
-        $password = 'l3$z4f#buzhdcv5745XC$lic';
+        $password = 'l3$z4f#buzhdc$1\1\\1\2v5745XC$lic';
         $url = 'http://test.myoxidshop.com';
 
         $originalFile = $this->configTestPath . '/config.inc.php.dist';

@@ -750,7 +750,7 @@ class Config extends SuperConfig
      *
      * @return mixed
      */
-    public function checkParamSpecialChars(&$value, $raw = null)
+    public function checkParamSpecialChars($value, $raw = null)
     {
         return Registry::get(Request::class)->checkParamSpecialChars($value, $raw);
     }

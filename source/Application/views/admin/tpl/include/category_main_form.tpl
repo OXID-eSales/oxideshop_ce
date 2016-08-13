@@ -203,8 +203,8 @@
 </td>
 <!-- Anfang rechte Seite -->
 <td valign="top" class="edittext" align="left" width="50%">
-    [{if $oxid != "-1"}]
-
-        <input [{$readonly}] type="button" name="assignArticle" value="[{oxmultilang ident="GENERAL_ASSIGNARTICLES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=category_main&aoc=1&oxid=[{$oxid}]');" [{if $edit->oxcategories__oxpriceto->value > 0}] disabled [{/if}]>
-
-    [{/if}]
+    [{block name="admin_category_main_assign_articles"}]
+        [{if $oxid != "-1"}]
+            <input [{$readonly}] type="button" name="assignArticle" value="[{oxmultilang ident="GENERAL_ASSIGNARTICLES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=category_main&aoc=1&oxid=[{$oxid}]');" [{if $edit->oxcategories__oxpriceto->value > 0}] disabled [{/if}]>
+        [{/if}]
+    [{/block}]

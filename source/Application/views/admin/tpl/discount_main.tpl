@@ -158,11 +158,11 @@ function ChangeDiscountType(oObj)
         </table>
     </td>
     <td valign="top" width="50%">
-        [{if $oxid != "-1"}]
-
-        <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=discount_main&aoc=1&oxid=[{$oxid}]');">
-
-        [{/if}]
+        [{block name="admin_discount_main_assign_countries"}]
+            [{if $oxid != "-1"}]
+                <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=discount_main&aoc=1&oxid=[{$oxid}]');">
+            [{/if}]
+        [{/block}]
     </td>
     </tr>
 </table>

@@ -176,9 +176,11 @@
     </td>
     <!-- Anfang rechte Seite -->
     <td valign="top" class="edittext" align="left" width="50%">
-        [{if $oxid != "-1"}]
-            <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNGROUPS"}]" class="edittext" style="margin-bottom:20px;" onclick="JavaScript:showDialog('&cl=payment_main&aoc=1&oxid=[{$oxid}]');">
-        [{/if}]
+        [{block name="admin_payment_main_assign_groups"}]
+            [{if $oxid != "-1"}]
+                <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNGROUPS"}]" class="edittext" style="margin-bottom:20px;" onclick="JavaScript:showDialog('&cl=payment_main&aoc=1&oxid=[{$oxid}]');">
+            [{/if}]
+        [{/block}]
 
         [{block name="admin_payment_main_editor"}]
             [{oxhasrights object=$edit field='oxlongdesc' readonly=$readonly}]

@@ -32,36 +32,38 @@ function editThis( sID )
     [{assign var="readonly" value=""}]
 [{/if}]
 
-  <table cellspacing="0" cellpadding="0" border="0" width="96%">
-
+<table cellspacing="0" cellpadding="0" border="0" width="96%">
     <tr>
-      <td valign="top" class="edittext">
+        <td valign="top" class="edittext">
+            [{if $oxparentid}]
+                <b>[{oxmultilang ident="GENERAL_VARIANTE"}]<a href="Javascript:editThis('[{$parentarticle->oxarticles__oxid->value}]');" class="edittext"><b>[{$parentarticle->oxarticles__oxartnum->value}] [{$parentarticle->oxarticles__oxtitle->value}]</b></a><br>
+                <br>
+            [{/if}]
 
-        [{if $oxparentid}]
-          <b>[{oxmultilang ident="GENERAL_VARIANTE"}]<a href="Javascript:editThis('[{$parentarticle->oxarticles__oxid->value}]');" class="edittext"><b>[{$parentarticle->oxarticles__oxartnum->value}] [{$parentarticle->oxarticles__oxtitle->value}]</b></a><br>
-          <br>
-        [{/if}]
+            [{block name="admin_article_attribute_assign_attribute"}]
+                [{oxhasrights object=$edit readonly=$readonly}]
+                    <input type="button" value="[{oxmultilang ident="ARTICLE_ATTRIBUTE_ASSIGNATTRIBUTE"}]" class="edittext" onclick="JavaScript:showDialog('&cl=article_attribute&aoc=1&oxid=[{$oxid}]');">
+                [{/oxhasrights}]
+            [{/block}]
 
-          [{oxhasrights object=$edit readonly=$readonly}]
-          <input type="button" value="[{oxmultilang ident="ARTICLE_ATTRIBUTE_ASSIGNATTRIBUTE"}]" class="edittext" onclick="JavaScript:showDialog('&cl=article_attribute&aoc=1&oxid=[{$oxid}]');">
-          [{/oxhasrights}]
+            [{if !$edit->blForeignArticle}]
+                <br><br>
+                <a class="edittext" href="[{$oViewConf->getSelfLink()}]&cl=attribute" target="_new"><b>[{oxmultilang ident="ARTICLE_ATTRIBUTE_OPENINNEWWINDOW"}]</b></a>
+            [{/if}]
 
-          [{if !$edit->blForeignArticle}]
-          <br><br>
-          <a class="edittext" href="[{$oViewConf->getSelfLink()}]&cl=attribute" target="_new"><b>[{oxmultilang ident="ARTICLE_ATTRIBUTE_OPENINNEWWINDOW"}]</b></a>
-          [{/if}]
+        </td>
 
-      </td>
-
-      <!-- Anfang rechte Seite -->
-      <td valign="top" class="edittext" align="left" width="50%">
-        [{oxhasrights object=$edit readonly=$readonly}]
-          <input type="button" value="[{oxmultilang ident="ARTICLE_ATTRIBUTE_ASSIGNSELECTLIST"}]" class="edittext" onclick="JavaScript:showDialog('&cl=article_attribute&aoc=2&oxid=[{$oxid}]');">
-        [{/oxhasrights}]
-      </td>
-      <!-- Ende rechte Seite -->
+        <!-- Anfang rechte Seite -->
+        <td valign="top" class="edittext" align="left" width="50%">
+            [{block name="admin_article_attribute_assign_selectlist"}]
+                [{oxhasrights object=$edit readonly=$readonly}]
+                    <input type="button" value="[{oxmultilang ident="ARTICLE_ATTRIBUTE_ASSIGNSELECTLIST"}]" class="edittext" onclick="JavaScript:showDialog('&cl=article_attribute&aoc=2&oxid=[{$oxid}]');">
+                [{/oxhasrights}]
+            [{/block}]
+        </td>
+        <!-- Ende rechte Seite -->
     </tr>
-  </table>
+</table>
 
 [{include file="bottomnaviitem.tpl"}]
 [{include file="bottomitem.tpl"}]

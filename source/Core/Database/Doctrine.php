@@ -23,6 +23,7 @@ namespace OxidEsales\Eshop\Core\Database;
 
 use Doctrine\DBAL\DriverManager;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
+use OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet;
 use oxLegacyDb;
 
 /**
@@ -37,6 +38,11 @@ class Doctrine extends oxLegacyDb
      * @var \Doctrine\DBAL\Connection The database connection.
      */
     protected $connection = null;
+
+    /**
+     * @var int The number of rows affected by the last sql query.
+     */
+    protected $affectedRows = 0;
 
     /**
      * The standard constructor.
@@ -57,9 +63,40 @@ class Doctrine extends oxLegacyDb
     }
 
     /**
+     * Get the number of rows, which where changed during the last sql statement.
+     *
+     * @return int The number of rows affected by the sql statement.
+     */
+    public function affected_rows()
+    {
+        return $this->getAffectedRows();
+    }
+
+    /**
+     * Execute the given query and return the corresponding result set.
+     *
+     * @todo: implement and test switch, so that SELECT gets handled different (no empty result set)!
+     *
+     * @param string     $query      The query we want to execute.
+     * @param array|bool $parameters The parameters for the given query.
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     *
+     * @return mixed|DoctrineEmptyResultSet
+     */
+    public function execute($query, $parameters = false)
+    {
+        $affectedRows = $this->getConnection()->exec($query);
+
+        $this->setAffectedRows($affectedRows);
+
+        return new DoctrineEmptyResultSet();
+    }
+
+    /**
      * Run a given select sql statement on the database.
      *
-     * @param string $query The query we want to execute.
+     * @param string $query      The query we want to execute.
      * @param bool   $parameters The parameters for the given query.
      * @param bool   $type
      *
@@ -73,7 +110,9 @@ class Doctrine extends oxLegacyDb
             $parameters = array();
         }
 
-        return new DoctrineResultSet($this->getConnection()->executeQuery($query, $parameters));
+        return new DoctrineResultSet(
+            $this->getConnection()->executeQuery($query, $parameters)
+        );
     }
 
     /**
@@ -84,6 +123,26 @@ class Doctrine extends oxLegacyDb
     protected function getConnection()
     {
         return $this->connection;
+    }
+
+    /**
+     * Set the number of the rows, changed by the last query.
+     *
+     * @param int $affectedRows How many rows did the last query changed?
+     */
+    protected function setAffectedRows($affectedRows)
+    {
+        $this->affectedRows = $affectedRows;
+    }
+
+    /**
+     * Get the number of the rows, changed by the last query.
+     *
+     * @return int How many rows did the last query changed?
+     */
+    protected function getAffectedRows()
+    {
+        return $this->affectedRows;
     }
 
     /**

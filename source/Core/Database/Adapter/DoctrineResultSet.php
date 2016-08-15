@@ -21,15 +21,11 @@
  */
 namespace OxidEsales\Eshop\Core\Database\Adapter;
 
+use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Driver\PDOStatement;
 
 class DoctrineResultSet
 {
-
-    /**
-     * @var PDOStatement The doctrine adapted statement.
-     */
-    protected $adapted = null;
 
     /**
      * @var bool Did we reach the end of the results?
@@ -39,11 +35,16 @@ class DoctrineResultSet
     public $fields = array();
 
     /**
+     * @var PDOStatement The doctrine adapted statement.
+     */
+    protected $adapted = null;
+
+    /**
      * DoctrineResultSet constructor.
      *
-     * @param PDOStatement $adapted The statement we want to wrap in this class.
+     * @param Statement $adapted The statement we want to wrap in this class.
      */
-    public function __construct(PDOStatement $adapted)
+    public function __construct(Statement $adapted)
     {
         $this->setAdapted($adapted);
 

@@ -21,19 +21,30 @@
  */
 namespace OxidEsales\Eshop\Core\Database;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception;
+use OxidEsales\Eshop;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
-use OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet;
+use OxidEsales\Eshop\Core\exception\DatabaseException;
 use oxLegacyDb;
-use PDO;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * The doctrine implementation of our database.
  *
  * @package OxidEsales\Eshop\Core\Database
  */
-class Doctrine extends oxLegacyDb
+class Doctrine extends oxLegacyDb implements DatabaseInterface, LoggerAwareInterface
 {
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * @var \Doctrine\DBAL\Connection The database connection.
@@ -50,12 +61,36 @@ class Doctrine extends oxLegacyDb
      */
     protected $fetchMode = 1;
 
+    protected $transactionIsolationLevelMap = array(
+        'READ UNCOMMITTED' => Connection::TRANSACTION_READ_UNCOMMITTED,
+        'READ COMMITTED'   => Connection::TRANSACTION_READ_COMMITTED,
+        'REPEATABLE READ'  => Connection::TRANSACTION_REPEATABLE_READ,
+        'SERIALIZABLE'     => Connection::TRANSACTION_SERIALIZABLE
+    );
+
     /**
      * The standard constructor.
+     *
      */
     public function __construct()
     {
         $this->setConnection($this->createConnection());
+
+        /** Set the logger to the NullLogger until setLogger is called */
+        $logger = new NullLogger();
+        $this->setLogger($logger);
+    }
+
+    /**
+     * Sets a logger instance on the object
+     *
+     * @param LoggerInterface $logger
+     *
+     * @return null
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 
     /**
@@ -182,37 +217,56 @@ class Doctrine extends oxLegacyDb
     /**
      * Start a mysql transaction.
      *
-     * @todo: find out what the return value means
-     *
      * @return bool
      */
     public function startTransaction()
     {
-        return $this->getConnection()->beginTransaction();
+
+        try {
+            $this->getConnection()->beginTransaction();
+            $result = true;
+        } catch (DBALException $exception) {
+            $this->logException($exception);
+            $result = false;
+        }
+
+        return $result;
     }
 
     /**
      * Commit a mysql transaction.
      *
-     * @todo: find out what the return value means
-     *
      * @return bool
      */
     public function commitTransaction()
     {
-        return $this->getConnection()->commit();
+        try {
+            $this->getConnection()->commit();
+            $result = true;
+        } catch (DBALException $exception) {
+            $this->logException($exception);
+            $result = false;
+        }
+
+        return $result;
     }
 
     /**
      * Rollback a mysql transaction.
      *
-     * @todo: find out what the return value means
-     *
      * @return bool
      */
     public function rollbackTransaction()
     {
-        return $this->getConnection()->rollBack();
+        try {
+            $this->getConnection()->rollBack();
+            $result = true;
+        } catch (DBALException $exception) {
+            $this->logException($exception);
+            $result = false;
+        }
+
+        return $result;
     }
 
     /**
@@ -228,9 +282,14 @@ class Doctrine extends oxLegacyDb
     {
         $result = false;
 
-        $availableLevels = array('READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE');
-        if (in_array(strtoupper($level), $availableLevels)) {
-            $result = $this->execute("SET TRANSACTION ISOLATION LEVEL $level;");
+        if (!array_key_exists(strtoupper($level), $this->transactionIsolationLevelMap)) {
+            return $result;
+        }
+
+        try {
+            $result = (bool) $this->getConnection()->setTransactionIsolation($this->transactionIsolationLevelMap[$level]);
+        } catch (DBALException $exception) {
+            $this->logException($exception);
         }
 
         return $result;
@@ -242,21 +301,22 @@ class Doctrine extends oxLegacyDb
      * @param string     $query      The query we want to execute.
      * @param array|bool $parameters The parameters for the given query.
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DatabaseException
      *
-     * @return mixed|DoctrineEmptyResultSet|DoctrineResultSet
+     * @return DoctrineEmptyResultSet|DoctrineResultSet
      */
     public function execute($query, $parameters = false)
     {
-        if ($this->isSelectStatement($query)) {
-            return $this->select($query, $parameters);
-        } else {
-            $affectedRows = $this->getConnection()->exec($query);
-
-            $this->setAffectedRows($affectedRows);
-
-            return new DoctrineEmptyResultSet();
+        {
+            /** TODO explain , why there is an if ... else block here */
+            if ($this->isSelectStatement($query)) {
+                $result = $this->select($query, $parameters);
+            } else {
+                $result = $this->executeUpdate($query, $parameters);
+            }
         }
+
+        return $result;
     }
 
     /**
@@ -268,17 +328,51 @@ class Doctrine extends oxLegacyDb
      *
      * @throws \Doctrine\DBAL\DBALException The exception, that can occur while running the sql statement.
      *
-     * @todo: set affected rows to zero and add test!
+     * @todo: add test!
      *
      * @return DoctrineResultSet The result of the given query.
      */
     public function select($query, $parameters = false, $type = true)
     {
+        $result = null;
         $parameters = $this->assureParameterIsAnArray($parameters);
+        try {
+            /** @var \Doctrine\DBAL\Driver\Statement $statement */
+            $statement = $this->getConnection()->executeQuery($query, $parameters);
+            $this->setAffectedRows(0);
 
-        return new DoctrineResultSet(
-            $this->getConnection()->executeQuery($query, $parameters)
-        );
+            $result = new DoctrineResultSet($statement);
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Executes an SQL INSERT/UPDATE/DELETE query with the given parameters, sets the number of affected rows and returns
+     * an empty DoctrineResultSet.
+     *
+     * This method supports PDO binding types as well as DBAL mapping types.
+     *
+     * @param string $query  The SQL query.
+     * @param array  $params The query parameters.
+     * @param array  $types  The parameter types.
+     *
+     * @throws DBALException
+     *
+     * @return DoctrineEmptyResultSet
+     */
+    protected function executeUpdate($query, array $params = array(), array $types = array())
+    {
+        $affectedRows = $this->getConnection()->executeUpdate($query, $params, $types);
+
+        $this->setAffectedRows($affectedRows);
+
+        $result = new DoctrineEmptyResultSet();
+
+        return $result;
     }
 
     /**
@@ -371,7 +465,7 @@ class Doctrine extends oxLegacyDb
      *
      * @throws \Doctrine\DBAL\DBALException
      *
-     * @return \Doctrine\DBAL\Connection The dataabase connection.
+     * @return \Doctrine\DBAL\Connection The database connection.
      */
     protected function createConnection()
     {
@@ -487,6 +581,65 @@ class Doctrine extends oxLegacyDb
         $formedQuery = strtoupper(trim($query));
 
         return 0 === strpos($formedQuery, 'SELECT');
+    }
+
+    /**
+     * Convert a given native Doctrine exception into an OxidEsales exception.
+     *
+     * @todo: add test!
+     *
+     * @param \Exception $exception Doctrine exception to be converted
+     *
+     * @return \Exception Converted exception
+     */
+    protected function convertException(\Exception $exception)
+    {
+        $message = $exception->getMessage();
+        $code = $exception->getCode();
+
+        switch (true) {
+            case $exception instanceof Exception\ConnectionException:
+                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\ConnectionException';
+                break;
+            case $exception instanceof DBALException:
+            default:
+                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
+        }
+
+
+        return new $exceptionClass($message, $code, $exception);
+    }
+
+    /**
+     * Handle a given exception
+     *
+     * @todo: add test!
+     *
+     * @param \Exception $exception
+     */
+    protected function handleException(\Exception $exception)
+    {
+        $this->logException($exception);
+
+        throw new $exception;
+    }
+
+    /**
+     * Log a given Exception
+     *
+     * @todo: add test!
+     *
+     * @param \Exception $exception
+     */
+    protected function logException(\Exception $exception)
+    {
+
+        $message = $exception->getCode() . ' ' . $exception->getMessage();
+        $context = array(
+            'exception'         => $exception,
+            'previousException' => $exception->getPrevious()
+        );
+        $this->logger->error($message, $context);
     }
 
 }

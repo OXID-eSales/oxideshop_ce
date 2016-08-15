@@ -1368,6 +1368,8 @@ class Order extends \oxBase
         } catch (Exception $oE) {
             // if exception, rollBack everything
             oxDb::getDb()->rollbackTransaction();
+            
+            throw $oE;
         }
     }
 

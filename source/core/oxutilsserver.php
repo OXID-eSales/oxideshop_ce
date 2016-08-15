@@ -437,8 +437,8 @@ class oxUtilsServer extends oxSuperCfg
         preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sServerHost, $matches);
         $sRealHost = $matches[3];
 
-        $sCurrentHost = preg_replace('/\/\w*\.php.*/', '', $sServerHost . $this->getServerVar('SCRIPT_NAME'));
-
+        $sScriptName = $this->getServerVar('SCRIPT_NAME'));
+        $sCurrentHost = preg_replace('/\/((?:modules|core)\/[\w\/]*)?\w*\.php.*/', '', $sServerHost . $sScriptName);
         //remove double slashes all the way
         $sCurrentHost = str_replace('/', '', $sCurrentHost);
         $sURL = str_replace('/', '', $sURL);

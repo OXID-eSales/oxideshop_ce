@@ -402,6 +402,7 @@ class UtilsView extends \oxSuperCfg
             $smarty->security_settings['MODIFIER_FUNCS'][] = 'trim';
             $smarty->security_settings['MODIFIER_FUNCS'][] = 'implode';
             $smarty->security_settings['MODIFIER_FUNCS'][] = 'is_array';
+            $smarty->security_settings['MODIFIER_FUNCS'][] = 'getimagesize';
             $smarty->security_settings['ALLOW_CONSTANTS'] = true;
             $smarty->secure_dir = $smarty->template_dir;
         }

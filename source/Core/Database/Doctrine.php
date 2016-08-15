@@ -21,25 +21,31 @@
  */
 namespace OxidEsales\Eshop\Core\Database;
 
+use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\DBAL\Logging\EchoSQLLogger;
 use OxidEsales\Eshop;
-use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineEmptyResultSet;
+use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
+use OxidEsales\Eshop\Core\exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\exception\DatabaseException;
-use oxLegacyDb;
 
 /**
  * The doctrine implementation of our database.
  *
  * @package OxidEsales\Eshop\Core\Database
  */
-class Doctrine extends oxLegacyDb implements DatabaseInterface
+class Doctrine implements DatabaseInterface
 {
 
+    /**
+     * Holds the necessary parameters to connect to the database
+     */
+    protected $connectionParameters = array();
     /**
      * @var \Doctrine\DBAL\Connection The database connection.
      */
@@ -81,17 +87,148 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
      */
     public function __construct()
     {
-        $this->setConnection($this->createConnection());
     }
 
     /**
-     * Set the database connection.
+     * Set the connection parameters to connect to the database.
+     * Each database driver needs different parameters. At the moment only the driver 'pdo_mysql' is supported.
      *
-     * @param \Doctrine\DBAL\Connection $connection The database connection we want to use.
+     * @param array $connectionParameters The parameters to connect to the database using the doctrine pdo_mysql driver
+     */
+    public function setConnectionParameters(array $connectionParameters)
+    {
+        if (array_key_exists('master', $connectionParameters) && array_key_exists('slaves', $connectionParameters)) {
+            $this->setConnectionParametersForMasterSlave($connectionParameters);
+        } else {
+            /** @var $connectionParameters */
+            $connectionParameters = $this->getPdoMysqlConnectionParameters($connectionParameters);
+
+            $this->connectionParameters = $connectionParameters;
+        }
+    }
+
+    /**
+     * @throws DatabaseConnectionException
+     */
+    public function connect()
+    {
+        $connection = null;
+
+        $connectionParameters = $this->getConnectionParameters();
+        
+        $configuration = new Configuration();
+        /**
+         * TODO we need a SQLLogger that logs to a (CSV?) file, as we probably do not want to log into the database.
+         *
+         * $configuration->setSQLLogger(new EchoSQLLogger());
+         */
+
+        try {
+            $connection = DriverManager::getConnection($connectionParameters, $configuration);
+            $connection->connect();
+            if (! $connection->isConnected()) {
+                $dsn = $connection->getDriver()->getName() .
+                       '://' .
+                       '****:****@' .
+                       $connection->getHost() . ':' .  $connection->getPort() .
+                       '/' . $connection->getDatabase();
+                throw new DBALException('Not connected to database. dsn: ' . $dsn);
+            }
+            $this->setConnection($connection);
+        } catch (DBALException $exception) {
+            $exception = new DatabaseConnectionException($exception->getMessage(), $exception->getCode(), $exception);
+            $this->handleException($exception);
+        }
+    }
+
+    /**
+     * Set connection
+     *
+     * @param Connection $connection
      */
     public function setConnection($connection)
     {
         $this->connection = $connection;
+    }
+
+    /**
+     * TODO to be implemented
+     *
+     * @param array $connectionParameters
+     */
+    protected function setConnectionParametersForMasterSlave(array $connectionParameters)
+    {
+        $wrapperClass = array('wrapperClass' => 'Doctrine\DBAL\Connections\MasterSlaveConnection');
+
+        $this->connectionParameters = array_merge($connectionParameters, $wrapperClass);
+    }
+
+    /**
+     * Get the connection parameters for the doctrine pdo_mysql driver
+     *
+     * The pdo_mysql driver accepts an array with the following keys
+     *
+     * user (string): Username to use when connecting to the database.
+     * password (string): Password to use when connecting to the database.
+     * host (string): Hostname of the database to connect to.
+     * port (integer): Port of the database to connect to.
+     * dbname (string): Name of the database/schema to connect to.
+     * charset (string): The charset used when connecting to the database.
+     * unix_socket (string): Name of the socket used to connect to the database.
+     *
+     * host/port and unix_socket are mutually exclusive. Currently only host/port is supported by this database adapter
+     *
+     * @param array $connectionParameters The parameters to connect to the database using the doctrine pdo_mysql driver
+     *
+     * @return array
+     */
+    protected function getPdoMysqlConnectionParameters(array $connectionParameters)
+    {
+        /**
+         * Determine the charset to be used when connecting to the database.
+         *
+         * Please be aware that different database drivers may need different options/values for setting the charset
+         * or may not support setting charset at all.
+         * See http://doctrine-orm.readthedocs.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connection-details
+         * for details.
+         *
+         * Take into account that the character set must be set either on the server level, or within the database
+         * connection itself (depending on the driver) for it to affect PDO::quote().
+         */
+        /**
+         * @var array Map charset as passed by the caller to doctrine charsets
+         */
+        $charsetMap = array(
+            'utf-8'  => 'utf8',
+            'utf8'   => 'utf8',
+            'latin1' => 'latin1'
+        );
+        $sanitizedCharset = trim(strtolower($connectionParameters['connectionCharset']));
+        $pdoCharset = $charsetMap[$sanitizedCharset];
+
+        $connectionParameters = array(
+            'driver'   => 'pdo_mysql',
+            'host'     => $connectionParameters['databaseHost'],
+            'dbname'   => $connectionParameters['databaseName'],
+            'user'     => $connectionParameters['databaseUser'],
+            'password' => $connectionParameters['databasePassword'],
+            'port'     => $connectionParameters['databasePort'],
+            'charset'  => $pdoCharset,
+        );
+        
+        return $connectionParameters;
+    }
+
+    /**
+     * Get the connection parameter array.
+     *
+     * @todo: Map the iDebug config.inc parameter to the doctrine settings.
+     *
+     * @return array The connection settings parameters.
+     */
+    protected function getConnectionParameters()
+    {
+        return $this->connectionParameters;
     }
 
     /**
@@ -518,94 +655,6 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
     }
 
     /**
-     * Create the database connection.
-     *
-     * @throws DatabaseException
-     *
-     * @todo write test
-     *
-     * @return \Doctrine\DBAL\Connection The database connection.
-     */
-    protected function createConnection()
-    {
-        $connection = null;
-
-        try {
-            $connection = DriverManager::getConnection($this->getConnectionParameters());
-            $connection->setFetchMode($this->fetchMode);
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        }
-
-        return $connection;
-    }
-
-    /**
-     * Get the connection parameter array.
-     *
-     * @todo: Map the iDebug config.inc parameter to the doctrine settings.
-     *
-     * @return array The connection settings parameters.
-     */
-    protected function getConnectionParameters()
-    {
-        $config = $this->getConfig();
-
-        $connectionParameters = array(
-            'dbname'   => $config->getConfigParam('dbName'),
-            'user'     => $config->getConfigParam('dbUser'),
-            'password' => $config->getConfigParam('dbPwd'),
-            'host'     => $config->getConfigParam('dbHost'),
-            'driver'   => $this->mapConnectionParameterDriver($config->getConfigParam('dbType'))
-        );
-
-        /**
-         * IMPORTANT:
-         * Please be aware that different database drivers may need different options/values for setting the charset
-         * or may not support setting charset at all.
-         * See http://doctrine-orm.readthedocs.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connection-details
-         * for details.
-         *
-         * Take into account that the character set must be set either on the server level, or within the database
-         * connection itself (depending on the driver) for it to affect PDO::quote().
-         */
-        if ($config->getConfigParam('iUtfMode')) {
-            switch ($connectionParameters['driver']) {
-                case 'pdo_mysql':
-                default:
-                    $connectionParameters['charset'] = 'utf8';
-            }
-        } else {
-            switch ($connectionParameters['driver']) {
-                case 'pdo_mysql':
-                default:
-                    $connectionParameters['charset'] = 'latin1';
-            }
-        }
-
-        return $connectionParameters;
-    }
-
-    /**
-     * Map the driver name from the config to the doctrine driver name.
-     *
-     * @param string $configDriver The driver name from the config.
-     *
-     * @return string The doctrine driver name.
-     */
-    private function mapConnectionParameterDriver($configDriver)
-    {
-        $doctrineDriver = $configDriver;
-
-        if (false !== strpos($doctrineDriver, 'mysql')) {
-            $doctrineDriver = 'pdo_mysql';
-        }
-
-        return $doctrineDriver;
-    }
-
-    /**
      * Sanitize the given parameter to be an array.
      * In v5.3.0 in many places in the code false is passed instead of an empty array.
      *
@@ -677,7 +726,7 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately we can access PDOException and recover the original SQL error code and message.
                  */
-                /** @var PDOException $pdoException */
+                /** @var PDOException  $pdoException*/
                 $pdoException = $exception->getPrevious();
                 $code = $pdoException->errorInfo[1];
                 $message = $pdoException->errorInfo[2];
@@ -704,7 +753,8 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
     }
 
     /**
-     * Handle a given exception
+     * Handle a given exception. The standard behavior at the moment is to throw the exception passed in the parameter.
+     * A second exception handling including logging will be done by the ShopControl class.
      *
      * @param \oxException $exception
      *
@@ -712,13 +762,12 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
      */
     protected function handleException(\oxException $exception)
     {
-        $this->logException($exception);
-
         throw $exception;
     }
 
     /**
      * Log a given Exception the log file using the standard eShop logging mechanism.
+     * Use this function whenever a exception is caught and not re-thrown.
      *
      * @param \Exception $exception
      */
@@ -816,4 +865,15 @@ class Doctrine extends oxLegacyDb implements DatabaseInterface
 
         return $result;
     }
+
+    /**
+     * Calls the database UI method.
+     *
+     * @param integer $pollSeconds poll seconds
+     */
+    public function UI($pollSeconds = 5)
+    {
+        // TODO to be implemented or deprecated in DatabaseInterface
+    }
 }
+

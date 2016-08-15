@@ -26,6 +26,7 @@ use oxCookieException;
 use oxDb;
 use oxException;
 use OxidEsales\Eshop\Application\Controller\BaseController;
+use OxidEsales\Eshop\Core\exception\DatabaseConnectionException;
 use OxidEsales\EshopEnterprise\Core\Cache\DynamicContent\ContentCache;
 use oxOutput;
 use oxRegistry;
@@ -138,8 +139,8 @@ class ShopControl extends \oxSuperCfg
             $this->_handleSystemException($ex);
         } catch (oxCookieException $ex) {
             $this->_handleCookieException($ex);
-        } catch (oxConnectionException $ex) {
-            $this->_handleDbConnectionException($ex);
+        } catch (DatabaseConnectionException $exception) {
+            $this->_handleDbConnectionException($exception);
         } catch (oxException $ex) {
             $this->_handleBaseException($ex);
         }
@@ -701,9 +702,9 @@ class ShopControl extends \oxSuperCfg
     /**
      * Shows exception message if debug mode is enabled, redirects otherwise.
      *
-     * @param oxConnectionException $exception message to show on exit
+     * @param DatabaseConnectionException $exception message to show on exit
      */
-    protected function _handleDbConnectionException($exception)
+    protected function _handleDbConnectionException(DatabaseConnectionException $exception)
     {
         $exception->debugOut();
 

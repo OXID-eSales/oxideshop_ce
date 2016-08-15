@@ -40,14 +40,14 @@ class oxDbPublicized extends oxDb
         return parent::_getConfigParam($sConfigName);
     }
 
-    public function _onConnectionError(Exception $exception)
+    public function onConnectionError(Exception $exception)
     {
-        parent::_onConnectionError($exception);
+        parent::onConnectionError($exception);
     }
 
-    public function _notifyConnectionErrors(Exception $exception)
+    public function notifyConnectionErrors(Exception $exception)
     {
-        parent::_notifyConnectionErrors($exception);
+        parent::notifyConnectionErrors($exception);
     }
 
     public function _setUp($connection)

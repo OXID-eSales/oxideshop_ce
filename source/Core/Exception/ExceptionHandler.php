@@ -130,7 +130,12 @@ class ExceptionHandler
         if (defined('OXID_PHP_UNIT')) {
             return $oEx->getString();
         } elseif (0 != $this->_iDebug) {
-            oxRegistry::getUtils()->showMessageAndExit($oEx->getString());
+            /** Added try catch block as showMessageAndExit may throw and exception, if there is a database connection problem */
+            try {
+                oxRegistry::getUtils()->showMessageAndExit($oEx->getString());
+            } catch (Exception $oException) {
+                oxRegistry::getUtils()->redirectOffline(500);
+            }
         }
 
         try {

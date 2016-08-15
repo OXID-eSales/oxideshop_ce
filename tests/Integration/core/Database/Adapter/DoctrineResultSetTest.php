@@ -1,4 +1,6 @@
 <?php
+namespace OxidEsales\Eshop\Tests\integration\core\Database\Adapter;
+
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -21,15 +23,14 @@
  */
 
 use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
-
-require_once realpath(dirname(__FILE__)) . '/../DoctrineBaseTest.php';
+use OxidEsales\Eshop\Tests\integration\core\Database\DoctrineTest;
 
 /**
  * Tests for our database object.
  *
  * @group doctrine
  */
-class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integration_Core_Database_DoctrineBaseTest
+class DoctrineResultSetTest extends DoctrineTest
 {
 
     /**
@@ -104,7 +105,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     {
         $this->loadFixtureToTestTable();
 
-        $this->database->setFetchMode(PDO::FETCH_ASSOC);
+        $this->database->setFetchMode(\PDO::FETCH_ASSOC);
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
         $this->initializeDatabase();
 
@@ -127,7 +128,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     /**
      * @return array The parameters we want to use for the testGetRows and testGetArray methods.
      */
-    public function dataProvider_testGetRows_testGetArray()
+    public function dataProviderTestGetRowsTestGetArray()
     {
         return array(
             array('SELECT OXID FROM ' . self::TABLE_NAME, 0, false, array()),
@@ -142,7 +143,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     /**
      * Test, that the method 'GetArray' works as expected.
      *
-     * @dataProvider dataProvider_testGetRows_testGetArray
+     * @dataProvider dataProviderTestGetRowsTestGetArray
      *
      * @param string $query         The sql statement we want to execute.
      * @param int    $numberOfRows  The number of rows we want to fetch.
@@ -208,7 +209,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     /**
      * Test, that the method 'GetRows' works as expected.
      *
-     * @dataProvider dataProvider_testGetRows_testGetArray
+     * @dataProvider dataProviderTestGetRowsTestGetArray
      *
      * @param string $query         The sql statement to execute.
      * @param int    $numberOfRows  The number of rows to fetch.
@@ -285,7 +286,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     /**
      * @return array The parameters we want to use for the testFieldCount method.
      */
-    public function dataProvider_testFieldCount()
+    public function dataProviderTestFieldCount()
     {
         return array(
             array('SELECT OXID FROM ' . self::TABLE_NAME, 1),
@@ -296,7 +297,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     /**
      * Test, that the method 'FieldCount' works as expected.
      *
-     * @dataProvider dataProvider_testFieldCount
+     * @dataProvider dataProviderTestFieldCount
      *
      * @param string $query         The sql statement we want to test.
      * @param int    $expectedCount The expected number of fields.
@@ -311,7 +312,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     /**
      * @return array The parameters we want to use for the testFields method.
      */
-    public function dataProvider_testFields()
+    public function dataProviderTestFields()
     {
         return array(
             array('SELECT OXID FROM ' . self::TABLE_NAME, 0, false, false),
@@ -329,7 +330,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     /**
      * Test, that the method Fields works as expected.
      *
-     * @dataProvider dataProvider_testFields
+     * @dataProvider dataProviderTestFields
      *
      * @param string $query                The sql statement to execute.
      * @param mixed  $parameter            The parameter for the Fields method.
@@ -339,6 +340,8 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     public function testFields($query, $parameter, $loadFixture, $expected, $fetchModeAssociative = false)
     {
+        $oldFetchMode = null;
+            
         if ($loadFixture) {
             $this->loadFixtureToTestTable();
         }
@@ -374,7 +377,7 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     /**
      * @return array The parameters we want to use for the testMove method.
      */
-    public function dataProvider_testMove()
+    public function dataProviderTestMove()
     {
         return array(
             array(2, array(self::FIXTURE_OXID_3)),
@@ -387,12 +390,12 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     /**
      * Test the method 'Move' with the parameters given by the corresponding data provider.
      *
-     * @dataProvider dataProvider_testMove
+     * @dataProvider dataProviderTestMove
      *
      * @param int   $moveTo         The index of the line we want to check.
      * @param array $expectedFields The expected values in the given line.
      *
-     * @return mixed|object_ResultSet|DoctrineResultSet The result set after the given MoveTo method call.
+     * @return mixed|\object_ResultSet|DoctrineResultSet The result set after the given MoveTo method call.
      */
     public function testMove($moveTo, $expectedFields)
     {
@@ -660,11 +663,9 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
      */
     private function assertDoctrineResultSet($resultSet)
     {
-        if (self::USELEGACYDATABASE) {
-            $this->assertSame('object_ResultSet', get_class($resultSet));
-        } else {
-            $this->assertSame(self::CLASS_NAME_WITH_PATH, get_class($resultSet));
-        }
+        $resultSetClassName = $this->getResultSetClassName();
+
+        $this->assertSame($resultSetClassName, get_class($resultSet));
     }
 
     /**
@@ -677,5 +678,4 @@ class Integration_Core_Database_Adapter_DoctrineResultSetTest extends Integratio
     {
         $this->assertSame(sort($resultArray), sort($expectedArray));
     }
-
 }

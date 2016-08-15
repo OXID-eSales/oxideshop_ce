@@ -186,7 +186,6 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
         $oLocatorTarget->expects($this->once())->method('getCategoryTree')->will($this->returnValue(oxNew('oxcategorylist')));
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
         $oLocator = new testOxLocator();
@@ -223,7 +222,6 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
         $oLocatorTarget->expects($this->once())->method('getCategoryTree')->will($this->returnValue(oxNew('oxcategorylist')));
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
         $oConfig = $this->getMock('oxconfig', array('getConfigParam'));
@@ -285,7 +283,6 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('setCatTreePath');
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActVendor')->will($this->returnValue($oVendor));
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_VENDOR));
 
         $oLocator = new testOxLocator();
@@ -322,7 +319,6 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('setCatTreePath');
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActVendor')->will($this->returnValue($oVendor));
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_VENDOR));
 
         $oLocator = new testOxLocator();
@@ -381,7 +377,6 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
         $oLocatorTarget->expects($this->once())->method('getManufacturerTree')->will($this->returnValue(oxNew('oxmanufacturerlist')));
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_MANUFACTURER));
 
         $oLocator = new testOxLocator();
@@ -419,7 +414,6 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
         $oLocatorTarget->expects($this->once())->method('getManufacturerTree')->will($this->returnValue(oxNew('oxmanufacturerlist')));
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_MANUFACTURER));
 
         $oLocator = new testOxLocator();
@@ -471,7 +465,6 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('addTplParam');
         $oLocatorTarget->expects($this->any())->method('setSearchTitle');
         $oLocatorTarget->expects($this->any())->method('getSearchTitle');
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
         $this->setRequestParameter("searchparam", 'Bier');
@@ -517,7 +510,6 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('addTplParam');
         $oLocatorTarget->expects($this->any())->method('setSearchTitle');
         $oLocatorTarget->expects($this->any())->method('getSearchTitle');
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
         $sSearchVendor = $this->getTestConfig()->getShopEdition() == 'EE'? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
@@ -556,7 +548,6 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('addTplParam');
         $oLocatorTarget->expects($this->any())->method('setSearchTitle');
         $oLocatorTarget->expects($this->any())->method('getSearchTitle');
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
 
@@ -602,7 +593,6 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('addTplParam');
         $oLocatorTarget->expects($this->any())->method('setSearchTitle');
         $oLocatorTarget->expects($this->any())->method('getSearchTitle');
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_TAG));
 
         $this->setRequestParameter("searchtag", 'wanduhr');

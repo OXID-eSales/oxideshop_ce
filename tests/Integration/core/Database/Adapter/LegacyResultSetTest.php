@@ -20,47 +20,34 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter;
-
-use OxidEsales\Eshop\Core\Database\Doctrine;
+namespace OxidEsales\Eshop\Tests\integration\core\Database\Adapter;
 
 /**
- * Class DoctrineResultSetTest
+ * Class LegacyResultSetTest
  *
  * @package OxidEsales\Eshop\Tests\integration\core\Database\Adapter
  */
-class DoctrineResultSetTest extends ResultSetTest
+class LegacyResultSetTest extends ResultSetTest
 {
-
-    /**
-     * @var string The name of the class, including the complete namespace.
-     */
-    const CLASS_NAME_WITH_PATH = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet';
-
-    /**
-     * @var string The database exception class to be thrown
-     */
-    const DATABASE_EXCEPTION_CLASS = 'OxidEsales\Eshop\Core\exception\DatabaseException';
 
     /**
      * @var string The result set class class
      */
-    const RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet';
+    const RESULT_SET_CLASS = 'object_ResultSet';
 
     /**
      * @var string The empty result set class class
      */
     const EMPTY_RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\DoctrineEmptyResultSet';
 
-
     /**
      * Create the database object under test.
      *
-     * @return Doctrine The database object under test.
+     * @return \oxLegacyDb The database object under test.
      */
     protected function createDatabase()
     {
-        return new Doctrine();
+        return \oxDb::getDb();
     }
 
     /**
@@ -70,6 +57,6 @@ class DoctrineResultSetTest extends ResultSetTest
      */
     protected static function createDatabaseStatic()
     {
-        return new Doctrine();
+        return \oxDb::getDb();
     }
 }

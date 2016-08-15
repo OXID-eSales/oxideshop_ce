@@ -1,6 +1,4 @@
 <?php
-namespace OxidEsales\Eshop\Tests\Integration\Core\Database;
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -21,6 +19,9 @@ namespace OxidEsales\Eshop\Tests\Integration\Core\Database;
  * @copyright (C) OXID eSales AG 2003-2016
  * @version       OXID eShop CE
  */
+
+namespace OxidEsales\Eshop\Tests\Integration\Core\Database;
+
 use OxidEsales\Eshop\Core\Database\DatabaseInterface;
 
 /**
@@ -377,7 +378,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     public function testSelectLimitReturnsExpectedResultForDifferentOffsetAndLimit($assertionMessage, $rowCount, $offset, $expectedResult)
     {
         $this->loadFixtureToTestTable();
-        $sql = 'SELECT OXID FROM ' . self::TABLE_NAME  . ' WHERE OXID IN (' .
+        $sql = 'SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE OXID IN (' .
                '"' . self::FIXTURE_OXID_1 . '",' .
                '"' . self::FIXTURE_OXID_2 . '",' .
                '"' . self::FIXTURE_OXID_3 . '"' .
@@ -1079,8 +1080,8 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 'getRow will return an array with integer keys for DatabaseInterface::FETCH_MODE_NUM',
                 DatabaseInterface::FETCH_MODE_NUM,
                 array(
-                    0          => self::FIXTURE_OXID_1,
-                    1          => self::FIXTURE_OXUSERID_1,
+                    0 => self::FIXTURE_OXID_1,
+                    1 => self::FIXTURE_OXUSERID_1,
                 )
             ),
             array(

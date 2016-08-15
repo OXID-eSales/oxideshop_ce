@@ -1,6 +1,4 @@
 <?php
-namespace OxidEsales\Eshop\Tests\Integration\Core\Database;
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -21,6 +19,8 @@ namespace OxidEsales\Eshop\Tests\Integration\Core\Database;
  * @copyright (C) OXID eSales AG 2003-2016
  * @version       OXID eShop CE
  */
+
+namespace OxidEsales\Eshop\Tests\Integration\Core\Database;
 
 use Doctrine\DBAL\DBALException;
 use OxidEsales\Eshop\Core\Database\DatabaseInterface;

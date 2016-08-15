@@ -382,6 +382,7 @@ class oxUtilsView extends oxSuperCfg
             $oSmarty->security_settings['MODIFIER_FUNCS'][] = 'trim';
             $oSmarty->security_settings['MODIFIER_FUNCS'][] = 'implode';
             $oSmarty->security_settings['MODIFIER_FUNCS'][] = 'is_array';
+            $oSmarty->security_settings['MODIFIER_FUNCS'][] = 'getimagesize';
             $oSmarty->security_settings['ALLOW_CONSTANTS'] = true;
             $oSmarty->secure_dir = $oSmarty->template_dir;
         }

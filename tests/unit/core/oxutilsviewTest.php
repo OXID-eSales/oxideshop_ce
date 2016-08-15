@@ -390,6 +390,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                                     3 => 'trim',
                                     4 => 'implode',
                                     5 => 'is_array',
+                                    6 => 'getimagesize',
                                 ),
                             'ALLOW_CONSTANTS'     => true,
                             'ALLOW_SUPER_GLOBALS' => true,

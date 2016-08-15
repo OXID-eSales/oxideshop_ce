@@ -62,16 +62,6 @@ class DoctrineResultSetTest extends ResultSetTest
      */
     protected function createDatabase()
     {
-        return new Doctrine();
-    }
-
-    /**
-     * Create the database object under test - the static pendant to use in the setUpBeforeClass and tearDownAfterClass.
-     *
-     * @return \oxLegacyDb The database object under test.
-     */
-    protected static function createDatabaseStatic()
-    {
-        return new Doctrine();
+        return \oxDb::getDb();
     }
 }

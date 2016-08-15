@@ -25,8 +25,11 @@ namespace OxidEsales\Eshop\Tests\Integration\Core\Database;
 use OxidEsales\Eshop\Core\Database\DatabaseInterface;
 
 /**
- * This class tests an implementation of the DatabaseInterface.
- * All implementation MUST extend this test.
+ * Abstract base class for all implementations of the DatabaseInterface.
+ * All implementation MUST extend this class in order to assure the correct implementation of the interface.
+ * If the interface is changed update or add the tests here.
+ * Tests, which do not test mere interface implementation should go to the concrete tests.
+ * If the implementation is changed update or add the tests in the concrete class e.g. DoctrineTest.
  *
  * @package OxidEsales\Eshop\Tests\Integration\Core\Database
  *
@@ -34,7 +37,7 @@ use OxidEsales\Eshop\Core\Database\DatabaseInterface;
  */
 abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImplementationBaseTest
 {
-
+    
     /**
      * The data provider for the method testGetAllForAllFetchModes.
      *
@@ -471,7 +474,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      */
     public function testExecuteWithInsertAndDelete()
     {
-        $this->assureTestTableIsEmpty();
+        $this->truncateTestTable();
 
         $exampleOxId = self::FIXTURE_OXID_1;
 
@@ -616,10 +619,9 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      */
     public function testRollbackTransactionRevertsChanges()
     {
-        $this->assureTestTableIsEmpty();
-
         $exampleOxId = 'XYZ';
 
+        $this->truncateTestTable();
         $this->database->startTransaction();
         $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('$exampleOxId');", array());
 
@@ -639,7 +641,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     {
         $exampleOxId = 'XYZ';
 
-        $this->assureTestTableIsEmpty();
+        $this->truncateTestTable();
         $this->database->startTransaction();
         $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('$exampleOxId');", array());
 
@@ -649,9 +651,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         // assure, that the changes persist the transaction
         $this->assertTestTableHasOnly($exampleOxId);
-
-        // clean up
-        $this->cleanTestTable();
     }
 
     /**
@@ -670,12 +669,10 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $message = 'An array with integer keys is returned, if setFetchMode is not called before calling getAll';
 
         $database = $this->getDb();
-        self::assureTestTableIsEmpty();
+        $this->truncateTestTable();
         $database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_1 . "')");
 
         $actualResult = $database->getAll("SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "'");
-
-        self::assureTestTableIsEmpty();
 
         $this->assertEquals($actualResult, $expectedResult, $message);
     }
@@ -693,13 +690,11 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      */
     public function testGetAllRespectsTheGivenFetchMode($message, $fetchMode, $expectedResult)
     {
-        self::assureTestTableIsEmpty();
+        $this->truncateTestTable();
         $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_1 . "')");
         $this->database->setFetchMode($fetchMode);
 
         $actualResult = $this->database->getAll("SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "'");
-
-        self::assureTestTableIsEmpty();
 
         $this->assertEquals($actualResult, $expectedResult, $message);
     }
@@ -744,7 +739,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $fetchMode = DatabaseInterface::FETCH_MODE_NUM;
         $expectedResult = array(array(self::FIXTURE_OXID_1));
 
-        self::assureTestTableIsEmpty();
+        $this->truncateTestTable();
         $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_1 . "')");
         $this->database->setFetchMode($fetchMode);
 
@@ -752,8 +747,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "'",
             array()
         );
-
-        self::assureTestTableIsEmpty();
 
         $this->assertEquals($actualResult, $expectedResult, $message);
     }
@@ -767,7 +760,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $fetchMode = DatabaseInterface::FETCH_MODE_NUM;
         $expectedResult = array(array(self::FIXTURE_OXID_1));
 
-        self::assureTestTableIsEmpty();
+        $this->truncateTestTable();
         $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_1 . "')");
         $this->database->setFetchMode($fetchMode);
 
@@ -775,8 +768,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = ?",
             array(self::FIXTURE_OXID_1)
         );
-
-        self::assureTestTableIsEmpty();
 
         $this->assertEquals($actualResult, $expectedResult, $message);
     }
@@ -793,7 +784,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             array(self::FIXTURE_OXID_2)
         );
 
-        self::assureTestTableIsEmpty();
+        $this->truncateTestTable();
         $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_1 . "')");
         $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_2 . "')");
         $this->database->setFetchMode($fetchMode);
@@ -802,8 +793,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID IN (?, ?)",
             array(self::FIXTURE_OXID_1, self::FIXTURE_OXID_2)
         );
-
-        self::assureTestTableIsEmpty();
 
         $this->assertEquals($actualResult, $expectedResult, $message);
     }
@@ -872,7 +861,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $fetchMode = DatabaseInterface::FETCH_MODE_NUM;
         $expectedResult = array(array(self::FIXTURE_OXID_1));
 
-        self::assureTestTableIsEmpty();
+        $this->truncateTestTable();
         $this->database->execute("INSERT INTO " . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_1 . "')");
         $this->database->setFetchMode($fetchMode);
 
@@ -881,7 +870,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             $validParameter
         );
 
-        self::assureTestTableIsEmpty();
+        //$this->truncateTestTable();
 
         $this->assertEquals($actualResult, $expectedResult, $message);
     }
@@ -1223,6 +1212,10 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
+     * Helper methods used in this class only
+     */
+
+    /**
      * Assure, that the given result set is empty.
      *
      * @param object $resultSet The result set we want to be empty.
@@ -1233,5 +1226,75 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertEmpty($resultSet->fields);
 
         $this->assertSame($this->getEmptyResultSetClassName(), get_class($resultSet));
+    }
+
+    /**
+     * Assure, that the table oxdoctrinetest has only the given oxId.
+     *
+     * @param string $oxId The oxId we want to be the only one in the oxdoctrinetest table.
+     */
+    protected function assertTestTableHasOnly($oxId)
+    {
+        $oxIds = $this->fetchAllTestTableRows();
+
+        $this->assertNotEmpty($oxIds);
+        $this->assertSame(1, count($oxIds));
+        $this->assertArrayHasKey('0', $oxIds);
+
+        $this->assertSame($oxId, $oxIds[0][0]);
+    }
+
+    /**
+     * Assert, that the table oxdoctrinetest is empty.
+     */
+    protected function assertTestTableIsEmpty()
+    {
+        $this->assertTrue($this->isEmptyTestTable());
+    }
+
+    /**
+     * Fetch all the rows of the oxdoctrinetest table.
+     *
+     * @return array All rows of the oxdoctrinetest table.
+     */
+    protected function fetchAllTestTableRows()
+    {
+        return $this->database
+            ->select('SELECT * FROM ' . self::TABLE_NAME, array(), false)
+            ->getAll();
+    }
+
+    /**
+     * Fetch the oxId of the first oxdoctrinetest table row.
+     *
+     * @return array|false The oxId of the first oxdoctrinetest table row.
+     */
+    protected function fetchFirstTestTableOxId()
+    {
+        $rows = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME, array(), false);
+        $row = $rows->fetchRow();
+
+        return $row;
+    }
+
+    /**
+     * Check, if the table oxdoctrinetest is empty.
+     *
+     * @return bool Is the table oxdoctrinetest empty?
+     */
+    protected function isEmptyTestTable()
+    {
+        return empty($this->fetchAllTestTableRows());
+    }
+
+    /**
+     * Helper methods to be used in all tests extending this class
+     */
+    /**
+     * Assure, that the table oxdoctrinetest is empty. If it is not empty, the test will fail.
+     */
+    protected function assureTestTableIsEmpty()
+    {
+        $this->assertEmpty($this->fetchAllTestTableRows(), "Table '" . self::TABLE_NAME . "' is empty");
     }
 }

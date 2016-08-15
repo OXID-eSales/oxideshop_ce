@@ -80,46 +80,6 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     }
 
     /**
-     * Set up before beginning with tests
-     */
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-
-        self::createDatabaseTable();
-    }
-
-    /**
-     * Tear down after all tests are done
-     */
-    public static function tearDownAfterClass()
-    {
-        self::removeDatabaseTable();
-
-        parent::tearDownAfterClass();
-    }
-
-    /**
-     * Create a table in the database especially for this test.
-     */
-    protected static function createDatabaseTable()
-    {
-        $db = self::createDatabaseStatic();
-
-        $db->execute('CREATE TABLE IF NOT EXISTS ' . self::TABLE_NAME . ' (oxid CHAR(32), oxuserid CHAR(32)) ENGINE innoDb;');
-    }
-
-    /**
-     * Drop the test database table.
-     */
-    protected static function removeDatabaseTable()
-    {
-        $db = self::createDatabaseStatic();
-
-        $db->execute('DROP TABLE ' . self::TABLE_NAME . ';');
-    }
-
-    /**
      * Close the database connection.
      */
     protected function closeConnection()
@@ -439,7 +399,7 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
         $resultSet = $this->database->select($query);
         $result = $resultSet->fields($parameter);
 
-        $this->cleanTestTable();
+        $this->truncateTestTable();
         $this->assertSame($expected, $result);
     }
 

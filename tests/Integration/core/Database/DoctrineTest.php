@@ -62,53 +62,13 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
     protected $database = null;
 
     /**
-     * Set up before beginning with tests
-     */
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-
-        self::createDatabaseTable();
-    }
-
-    /**
-     * Tear down after all tests are done
-     */
-    public static function tearDownAfterClass()
-    {
-        self::removeDatabaseTable();
-
-        parent::tearDownAfterClass();
-    }
-
-    /**
-     * Create a table in the database especially for this test.
-     */
-    protected static function createDatabaseTable()
-    {
-        $db = self::createDatabaseStatic();
-
-        $db->execute('CREATE TABLE IF NOT EXISTS ' . self::TABLE_NAME . ' (oxid CHAR(32), oxuserid CHAR(32)) ENGINE innoDb;');
-    }
-
-    /**
-     * Drop the test database table.
-     */
-    protected static function removeDatabaseTable()
-    {
-        $db = self::createDatabaseStatic();
-
-        $db->execute('DROP TABLE ' . self::TABLE_NAME . ';');
-    }
-
-    /**
      * Create the database object under test.
      *
      * @return Doctrine The database object under test.
      */
     protected function createDatabase()
     {
-        return new Doctrine();
+        return \oxDb::getDb();
     }
 
     /**
@@ -117,16 +77,6 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
     protected function closeConnection()
     {
         $this->database->closeConnection();
-    }
-    
-    /**
-     * Create the database object under test - the static pendant to use in the setUpBeforeClass and tearDownAfterClass.
-     *
-     * @return Doctrine The database object under test.
-     */
-    protected static function createDatabaseStatic()
-    {
-        return new Doctrine();
     }
 
     /**
@@ -386,5 +336,28 @@ class DoctrineTest extends DatabaseInterfaceImplementationTest
 
         $this->assertSame($expectedCode, $actualCode, 'A mysql syntax error should produce an exception with the expected code');
         $this->assertSame($expectedMessage, $actualMessage, 'A mysql syntax error should produce an exception with the expected message');
+    }
+
+    
+    /**
+     * Assert a given error level and a given error message
+     *
+     * @param integer $errorLevel   Error number as defined in http://php.net/manual/en/errorfunc.constants.php
+     * @param string  $errorMessage Error message
+     *
+     * @return boolean Returns true on assertion success
+     */
+    protected function assertError($errorLevel, $errorMessage)
+    {
+        foreach ($this->errors as $error) {
+            if ($error["errorMessage"] === $errorMessage
+                && $error["errorLevel"] === $errorLevel
+            ) {
+                return true;
+            }
+        }
+        $this->fail(
+            "No error with level " . $errorLevel . " and message '" . $errorMessage . "' was triggered"
+        );
     }
 }

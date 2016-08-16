@@ -21,17 +21,11 @@
  */
 namespace OxidEsales\Eshop\Core;
 
-use ADOConnection;
-use ADODB_Exception;
-use mysql_driver_ADOConnection;
-use mysqli_driver_ADOConnection;
-use oxAdoDbException;
 use oxConnectionException;
 use OxidEsales\Eshop\Core\Database\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Doctrine as DatabaseAdapter;
 use OxidEsales\Eshop\Core\exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\exception\DatabaseException;
-use PHPMailer;
+use OxidEsales\Eshop\Core\exception\DatabaseNotConfiguredException;
 
 /**
  * Database connection class
@@ -83,8 +77,8 @@ class Database
 
     /**
      * This class is a singleton and should be instantiated with getInstance().
-     *
-     * @Deprecated in v6.0. The constructor will be protected in the future. Use getInstance() instead.
+     * TODO Deprecate in 5.3
+     * @Deprecated in v5.3. The constructor will be protected in the future. Use getInstance() instead.
      *
      * Database constructor.
      */
@@ -117,7 +111,7 @@ class Database
     }
 
     /**
-     * Returns database object
+     * Return the database connection instance as a singleton.
      *
      * @param int $fetchMode - fetch mode default numeric - 0
      *
@@ -142,90 +136,175 @@ class Database
     }
 
     /**
-     * Creates database instance and returns it.
+     * Sets class properties needed for a successful database connection
+     *
+     * @param ConfigFile $configFile The file config.inc.php wrapped in an object
+     */
+    public function setConfigFile(ConfigFile $configFile)
+    {
+        $this->configFile = $configFile;
+    }
+
+    /**
+     * Extracts and returns table metadata from DB.
+     *
+     * @param string $tableName Name of table to invest.
+     *
+     * @return array
+     */
+    public function getTableDescription($tableName)
+    {
+        // simple cache
+        if (!isset(self::$_aTblDescCache[$tableName])) {
+            self::$_aTblDescCache[$tableName] = $this->fetchTableDescription($tableName);
+        }
+
+        return self::$_aTblDescCache[$tableName];
+    }
+
+    /**
+     * Call to reset table description cache
+     * TODO Check, if this could be protected, it is used only in tests and is not supposed to be called by anyone.
+     */
+    public function resetTblDescCache()
+    {
+        self::$_aTblDescCache = array();
+    }
+
+    /**
+     * Checks if given string is valid database field name.
+     * It must contain from alphanumeric plus dot and underscore symbols
+     * TODO Refactor and move to Doctrine class
+     * @See http://stackoverflow.com/questions/4977898/check-for-valid-sql-column-name, especially the notes on portability
+     *
+     * @param string $field field name
+     *
+     * @return bool
+     */
+    public function isValidFieldName($field)
+    {
+        return (boolean) getStr()->preg_match("#^[\w\d\._]*$#", $field);
+    }
+
+    /**
+     * Escape string for using in mysql statements
+     * TODO Deprecate in 5.3 and move to doctrine class
+     *
+     * @param string $string string which will be escaped
+     *
+     * @return string
+     */
+    public function escapeString($string)
+    {
+        $result = trim(static::getDb()->quote($string), "'");
+
+        return $result;
+    }
+
+    /**
+     * Todo This method is deprecated since v5.2.0 and has to be removed
+     *
+     * @param array $array
+     *
+     * @return array
+     */
+    public function quoteArray(array $array)
+    {
+        return static::getDb()->quoteArray($array);
+    }
+
+    /**
+     * Creates database connection and returns it.
+     *
+     * @throws DatabaseConnectionException
+     * @throws DatabaseNotConfiguredException
      *
      * @return DatabaseInterface
      */
     protected function createDatabase()
     {
-        /**
-         * We use an instance here in order to be able to call non static methods.
-         * It will be nicer to test, if we do not have a lot of static methods.
-         */
-        $databaseFactory = static::getInstance();
+        /** Call to fetchConfigFile redirects to setup wizard, if shop has not been configured. */
+        $configFile = $this->fetchConfigFile();
 
-        /** @var array $connectionParameters Parameters for the database connection */
-        $connectionParameters = $databaseFactory->getConnectionParameters($databaseFactory);
+        /** Validate the configuration file */
+        $this->validateConfigFile($configFile);
+
+        /** Set config file to be able to read shop configuration within the class */
+        $this->setConfigFile($configFile);
+
+        /** @var array $connectionParameters Parameters needed for the database connection */
+        $connectionParameters = $this->getConnectionParameters();
 
         $databaseAdapter = new DatabaseAdapter();
         $databaseAdapter->setConnectionParameters($connectionParameters);
-        // TODO Set debug mode
-        try {
-            $databaseAdapter->connect();
-        } catch (DatabaseConnectionException $exception) {
-            $databaseFactory->onConnectionError($exception);
-        }
+        $databaseAdapter->connect();
 
         return $databaseAdapter;
     }
 
     /**
-     *
+     * Post connect hook. This method is called right after the connection to the database has been established.
      */
     protected function onPostConnect()
     {
-        // Todo implement functionality of prepareDatabaseConnection here and than refactor it to a own method
-        // $databaseFactory->prepareDatabaseConnection(static::$_oDB);
+        /**
+         * TODO remove this comment after all work is done
+         * The original post connect functionality was found in prepareDatabaseConnection
+         * It did the following things:
+         * - if needed, truncate table adodb_logsql and trigger the adodb lite logging. This is a todo
+         * - Set connection cacheSecs to 600, this feature did not work. This is a Won't do
+         * - Set sql mode. This is done in Database::setSqlMode()
+         * - Set character set of the connection via "SET NAMES". This is done in Database::buildConnectionParameters()
+         */
         $this->setSqlMode();
+
+        // TODO Set database logging from iDebug
+        // TODO Set user auditing from blLogChangesInAdmin
     }
 
     /**
-     * Get all parameters needed to connect to the database.
-     * The parameters are validated and on failure the method behaves like this:
-     * - if the shop is has not been configured yet, redirect to setup page
-     * - Todo Add more validations
+     * Get an instance of the config file.
      *
-     * @param Database $databaseFactory A singleton instance of this class
+     * @throws DatabaseNotConfiguredException
      *
-     * @return array
+     * @return ConfigFile
      */
-    protected function getConnectionParameters($databaseFactory)
+    protected function fetchConfigFile()
     {
         /**
          * Do the configuration of the database connection parameters
          */
         /** @var ConfigFile $configFile */
-        // TODO This has to use namespaces
         $configFile = Registry::get('oxConfigFile');
 
-        /*
-         * Validate configuration.
-         */
-
-        /** If the shop has not already been configured, the user is redirected to the OXID eShop setup page. */
-        $isDatabaseConfigured = $databaseFactory->isDatabaseConfigured($configFile);
-        if (!$isDatabaseConfigured) {
-            self::redirectToSetupWizard();
-        }
-
-        /** Set local configuration parameters */
-        $databaseFactory->setConfigFile($configFile);
-
-        /** ------- TODO split this method here ------ */
-
-        /** Collect the parameters, that are necessary to initialize the database connection */
-        $connectionParameters = $databaseFactory->buildConnectionParameters();
-
-        return $connectionParameters;
+        return $configFile;
     }
 
     /**
-     * Retrieve the connection related configuration parameters from the class configuration and return them in an array.
+     * Validate configuration file.
+     * The parameters are validated and on failure the method behaves like this:
+     * - if the shop is has not been configured yet, throws a DatabaseNotConfiguredException
+     *
+     * @param ConfigFile $configFile
+     *
+     * @throws DatabaseNotConfiguredException
+     */
+    protected function validateConfigFile(ConfigFile $configFile)
+    {
+        $isDatabaseConfigured = $this->isDatabaseConfigured($configFile);
+        if (!$isDatabaseConfigured) {
+            throw new DatabaseNotConfiguredException('The database connection has not been configured in config.inc.php', 0);
+        }
+    }
+
+    /**
+     * Get all parameters needed to connect to the database.
      *
      * @return array
      */
-    protected function buildConnectionParameters()
+    protected function getConnectionParameters()
     {
+        /** Collect the parameters, that are necessary to initialize the database connection */
         /**
          * @var string $databaseDriver
          * At the moment the database adapter uses always 'pdo_mysql'
@@ -290,10 +369,9 @@ class Database
      *
      * @return bool
      */
-    protected static function isDatabaseConfigured(ConfigFile $config)
+    protected function isDatabaseConfigured(ConfigFile $config)
     {
         $isValid = true;
-
         // If the shop has not been configured yet the hostname has the format '<dbHost>'
         if (false  !== strpos($config->getVar('dbHost'), '<')) {
             $isValid = false;
@@ -445,262 +523,6 @@ class Database
     }
 
     /**
-     * Redirect to the OXID eShop setup wizard
-     */
-    protected static function redirectToSetupWizard()
-    {
-        $headerCode = "HTTP/1.1 302 Found";
-        header($headerCode);
-        header("Location: Setup/index.php");
-        header("Connection: close");
-        exit();
-    }
-
-    /**
-     * Redirect to the OXID eShop maintenance wizard
-     */
-    protected function redirectToMaintenancePage()
-    {
-        $headerCode = "HTTP/1.1 302 Found";
-        header($headerCode);
-        header("Location: offline.html");
-        header("Connection: close");
-        exit();
-    }
-
-    /**
-     * Returns database instance object for given type
-     * Todo Remove this method
-     *
-     * @param bool $instanceType instance type
-     *
-     * @return mysql_driver_ADOConnection|mysqli_driver_ADOConnection
-     */
-    protected function createDatabaseConnection($instanceType)
-    {
-        $databaseType = $this->getConfigParam("dbType");
-
-        /** @var mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection */
-        $connection = ADONewConnection($databaseType, $this->_getModules());
-
-        try {
-            $this->connectToDatabase($connection, $instanceType);
-        } catch (oxAdoDbException $e) {
-            $this->onConnectionError($e);
-        }
-        self::_setUp($connection);
-
-        return $connection;
-    }
-
-    /**
-     * Returns which AdoDbLite modules should be loaded when creating database connection.
-     * Todo Implement admin auditing/logging with doctrine
-     * Todo Implement perfmon with doctrine (?)
-     * Todo remove this method
-     *
-     * @return string
-     */
-    protected function _getModules()
-    {
-        $debugLevel = $this->getConfigParam('iDebug');
-
-        $this->_registerAdoDbExceptionHandler();
-
-        $modules = '';
-        if ($debugLevel == 2 || $debugLevel == 3 || $debugLevel == 4 || $debugLevel == 7) {
-            $modules = 'perfmon';
-        }
-
-        if ($this->isAdmin() && $this->getConfigParam('blLogChangesInAdmin')) {
-            $modules .= ($modules ? ':' : '') . 'oxadminlog';
-        }
-
-        return $modules;
-    }
-
-    /**
-     * Initiates actual database connection.
-     * Todo remove this method
-     *
-     * @param mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection
-     * @param bool                                                   $instanceType
-     */
-    protected function connectToDatabase($connection, $instanceType)
-    {
-        $host = $this->getConfigParam("dbHost");
-        $user = $this->getConfigParam("dbUser");
-        $password = $this->getConfigParam("dbPwd");
-        $databaseName = $this->getConfigParam("dbName");
-
-        $connection->connect($host, $user, $password, $databaseName);
-    }
-
-    /**
-     * Registers AdoDb exceptions handler for SQL errors
-     * Todo remove this method
-     */
-    protected function _registerAdoDbExceptionHandler()
-    {
-        global $ADODB_EXCEPTION;
-        $ADODB_EXCEPTION = 'oxAdoDbException';
-
-        include_once __DIR__ . '/adodblite/adodb-exceptions.inc.php';
-    }
-
-    /**
-     * Setting up connection parameters - sql mode, encoding, logging etc
-     * Todo remove this method
-     *
-     * @deprecated on b-dev (2015-10-23); Use self::prepareDatabaseConnection() instead.
-     *
-     * @param ADOConnection $connection database connection instance
-     */
-    protected function _setUp($connection)
-    {
-        $this->prepareDatabaseConnection($connection);
-    }
-
-    /**
-     * Setting up connection parameters - sql mode, encoding, logging etc.
-     * Todo remove this method
-     *
-     * @param DatabaseInterface $connection database connection instance
-     */
-    protected function prepareDatabaseConnection(DatabaseInterface $connection)
-    {
-        $debugLevel = $this->getConfigParam('iDebug');
-        if ($debugLevel == 2 || $debugLevel == 3 || $debugLevel == 4 || $debugLevel == 7) {
-            try {
-                $connection->execute('truncate table adodb_logsql');
-            } catch (ADODB_Exception $e) {
-                // nothing
-            }
-            if (method_exists($connection, "logSQL")) {
-                $connection->logSQL(true);
-            }
-        }
-
-        /**
-         * This property does not exist in ADODB lite
-         * $connection->cacheSecs = 60 * 10; // 10 minute caching
-         */
-
-        /**
-         * Reset sql_mode
-         */
-        $connection->execute('SET @@session.sql_mode = ""');
-    }
-
-    /**
-     * Returns $mailer instance
-     *
-     * @param string $email   email address
-     * @param string $subject subject
-     * @param string $body    email body
-     *
-     * @return PHPMailer
-     */
-    protected function sendMail($email, $subject, $body)
-    {
-        $mailer = new PHPMailer();
-        $mailer->isMail();
-
-        $mailer->setFrom($email);
-        $mailer->addAddress($email);
-        $mailer->Subject = $subject;
-        $mailer->Body = $body;
-
-        return $mailer->send();
-    }
-
-    /**
-     * Notify the shop owner about connection problems
-     *
-     * @param \Exception $exception Database exception
-     *
-     * @throws DatabaseException
-     */
-    protected function notifyConnectionErrors(\Exception $exception)
-    {
-        if (($adminEmail = $this->getConfigParam('sAdminEmail'))) {
-            $failedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
-
-            $date = date(DATE_RFC822); // RFC 822 (example: Mon, 15 Aug 05 15:52:01 +0000)
-            $script = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
-            $referrer = $_SERVER['HTTP_REFERER'];
-
-            //sending a message to admin
-            $warningSubject = 'Offline warning!';
-            $warningBody = "
-                Database error in OXID eShop:
-                Date: {$date}
-                Shop: {$failedShop}
-
-                mysql error: " . $exception->getMessage() . "
-                mysql error no: " . $exception->getCode() . "
-
-                Script: {$script}
-                Referrer: {$referrer}";
-
-            $this->sendMail($adminEmail, $warningSubject, $warningBody);
-        }
-
-        // Re throw the exception
-        $message = 'EXCEPTION_CONNECTION_NODB';
-        $code = $exception->getCode();
-        // @todo Add DatabaseConnectionException, which implements oxConnectionException methods and is used instead
-        $exception = new DatabaseException($message, $code, $exception);
-        // $exception->setConnectionError(self::_getConfigParam('dbUser') . 's' . getShopBasePath() . $exception->getMessage());
-        throw $exception;
-    }
-
-    /**
-     * In case of connection error - redirects to setup
-     * or send notification message for shop owner
-     * The exception is not rethrown as the shop tries t6o use the database during its exception handling which will cause an uncaught exception
-     *
-     * @param DatabaseConnectionException $exception Database exception
-     */
-    protected function onConnectionError(DatabaseConnectionException $exception)
-    {
-        /**
-         * Log the exception
-         */
-        $this->logException($exception);
-
-        /**
-         * Notify the the admin about the connection error
-         */
-        $this->notifyConnectionErrors($exception);
-
-        /**
-         * Redirect to maintenance page
-         */
-        $this->redirectToMaintenancePage();
-    }
-
-    /**
-     * Todo This method is deprecated since v5.2.0 and has to be removed
-     *
-     * @param array $array
-     *
-     * @return array
-     */
-    public function quoteArray(array $array)
-    {
-        return static::getDb()->quoteArray($array);
-    }
-
-    /**
-     * @param DatabaseConnectionException $exception
-     */
-    protected function logException(DatabaseConnectionException $exception)
-    {
-        $exception->debugOut();
-    }
-
-    /**
      * Extracts and returns table metadata from DB.
      * This method is extended in the Enterprise Edition.
      *
@@ -708,13 +530,48 @@ class Database
      *
      * @return array
      */
-    protected function formTableDescription($tableName)
+    protected function fetchTableDescription($tableName)
     {
         return static::getDb()->metaColumns($tableName);
     }
 
+    /**
+     * Call function is admin from oxFunction. Need to mock in tests.
+     *
+     * @return bool
+     */
+    protected function isAdmin()
+    {
+        return isAdmin();
+    }
+
+    /**
+     * Set the sql_mode of the MySQL server for the session.
+     */
     protected function setSqlMode()
     {
         static::getDb()->execute('SET @@session.sql_mode = ""');
+    }
+
+    /**
+     * Setter for database connection object
+     * TODO This must be removed, it is used only in tests and is not supposed to be called by anyone.
+     *
+     * @param null|Database $newDbObject
+     */
+    public static function setDbObject($newDbObject)
+    {
+        self::$db = $newDbObject;
+    }
+
+    /**
+     * Database connection object getter
+     * TODO This must be removed, it is used only in tests and is not supposed to be called by anyone.
+     *
+     * @return Database
+     */
+    public static function getDbObject()
+    {
+        return self::$db;
     }
 }

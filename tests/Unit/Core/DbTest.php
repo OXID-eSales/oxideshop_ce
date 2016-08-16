@@ -21,8 +21,6 @@
  */
 namespace Unit\Core;
 
-use Exception;
-use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Database;
 use OxidEsales\Eshop\Core\Registry;
@@ -32,13 +30,9 @@ use OxidEsales\Eshop\Core\exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
 
 /**
- * @group database-adapter
- */
-
-/**
  * Class DbTest
  * TODO rename to DatabaseTest
- *
+ * @group database-adapter
  * @covers OxidEsales\Eshop\Core\Database
  * @package Unit\Core
  */
@@ -178,133 +172,8 @@ class DbTest extends UnitTestCase
     }
 
     /**
-     *
+     * Helper methods
      */
-    public function testOnPostConnectIsCalled()
-    {
-        $this->markTestSkipped('Figure out how to test that onPostConnect has been called');
-        $databaseMock = $this->getMockBuilder('OxidEsales\Eshop\Core\Database')
-            ->setMethods(['onPostConnect'])
-            ->getMock();
-
-        $databaseMock->expects($this->once())->method('onPostConnect');
-
-        $this->resetDbProperty($databaseMock);
-        $databaseMock::getDb();
-    }
-
-    /**
-     * TODO Remove this test
-     */
-    public function testGetDbFetchMode()
-    {
-        $this->markTestSkipped('This kind of global fetch mode saving is not supported by the new doctine dbal database adapter.');
-        $oDb = oxNew("oxDb");
-
-        //unfortunately we should use globals in order to test this behaviour
-        global $ADODB_FETCH_MODE;
-
-        $oDb->getDb();
-        $this->assertEquals($ADODB_FETCH_MODE, ADODB_FETCH_NUM);
-
-        $oDb->getDb(true);
-        $this->assertEquals($ADODB_FETCH_MODE, ADODB_FETCH_ASSOC);
-
-        $oDb->getDb(oxDb::FETCH_MODE_ASSOC);
-        $this->assertEquals($ADODB_FETCH_MODE, ADODB_FETCH_ASSOC);
-
-        $oDb->getDb(oxDb::FETCH_MODE_NUM);
-        $this->assertEquals($ADODB_FETCH_MODE, ADODB_FETCH_NUM);
-    }
-
-    /**
-     * Test case for oxDb::startTransaction(), oxDb::commitTransaction() and
-     * oxDb::rollbackTransaction()
-     *
-     * TODO Remove completely or move to tests/Integration
-     */
-    public function testTransactions()
-    {
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $sQ1 = "INSERT INTO `oxarticles` (`OXID`, `OXSHOPID`, `OXPARENTID`, `OXACTIVE`, `OXACTIVEFROM`, `OXACTIVETO`, `OXARTNUM`, `OXEAN`, `OXDISTEAN`, `OXMPN`, `OXTITLE`, `OXSHORTDESC`, `OXPRICE`, `OXBLFIXEDPRICE`, `OXPRICEA`, `OXPRICEB`, `OXPRICEC`, `OXBPRICE`, `OXTPRICE`, `OXUNITNAME`, `OXUNITQUANTITY`, `OXEXTURL`, `OXURLDESC`, `OXURLIMG`, `OXVAT`, `OXTHUMB`, `OXICON`, `OXPIC1`, `OXPIC2`, `OXPIC3`, `OXPIC4`, `OXPIC5`, `OXPIC6`, `OXPIC7`, `OXPIC8`, `OXPIC9`, `OXPIC10`, `OXPIC11`, `OXPIC12`, `OXWEIGHT`, `OXSTOCK`, `OXSTOCKFLAG`, `OXSTOCKTEXT`, `OXNOSTOCKTEXT`, `OXDELIVERY`, `OXINSERT`, `OXTIMESTAMP`, `OXLENGTH`, `OXWIDTH`, `OXHEIGHT`, `OXFILE`, `OXSEARCHKEYS`, `OXTEMPLATE`, `OXQUESTIONEMAIL`, `OXISSEARCH`, `OXISCONFIGURABLE`, `OXVARNAME`, `OXVARSTOCK`, `OXVARCOUNT`, `OXVARSELECT`, `OXVARMINPRICE`, `OXVARNAME_1`, `OXVARSELECT_1`, `OXVARNAME_2`, `OXVARSELECT_2`, `OXVARNAME_3`, `OXVARSELECT_3`, `OXTITLE_1`, `OXSHORTDESC_1`, `OXURLDESC_1`, `OXSEARCHKEYS_1`, `OXTITLE_2`, `OXSHORTDESC_2`, `OXURLDESC_2`, `OXSEARCHKEYS_2`, `OXTITLE_3`, `OXSHORTDESC_3`, `OXURLDESC_3`, `OXSEARCHKEYS_3`, `OXFOLDER`, `OXSUBCLASS`, `OXSTOCKTEXT_1`, `OXSTOCKTEXT_2`, `OXSTOCKTEXT_3`, `OXNOSTOCKTEXT_1`, `OXNOSTOCKTEXT_2`, `OXNOSTOCKTEXT_3`, `OXSORT`, `OXSOLDAMOUNT`, `OXNONMATERIAL`, `OXFREESHIPPING`, `OXREMINDACTIVE`, `OXREMINDAMOUNT`, `OXAMITEMID`, `OXAMTASKID`, `OXVENDORID`, `OXMANUFACTURERID`, `OXSKIPDISCOUNTS`, `OXORDERINFO`, `OXPIXIEXPORT`, `OXPIXIEXPORTED`, `OXVPE`, `OXRATING`, `OXRATINGCNT`, `OXMINDELTIME`, `OXMAXDELTIME`, `OXDELTIMEUNIT`, `OXUPDATEPRICE`, `OXUPDATEPRICEA`, `OXUPDATEPRICEB`, `OXUPDATEPRICEC`, `OXUPDATEPRICETIME`, `OXISDOWNLOADABLE`) VALUES
-                    ('_testArtId', '1', '', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0802-85-823-7-1', '', '', '', '', '', 109, 0, 0, 0, 0, 0, 0, '', 0, '', '', '', NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0, 1, '', '', '0000-00-00', '0000-00-00', '2010-03-02 17:09:35', 0, 0, 0, '', '', '', '', 0, 0, '', 0, 0, 'W 32/L 30 | Blau', 0, '', 'W 32/L 30 | Blue ', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 12001, 0, 0, 0, 0, 0, '', '', '', '', 0, '', 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 0, '', 0, 0, 0, 0, '0000-00-00 00:00:00', 0)";
-        } else {
-            $sQ1 = "INSERT INTO `oxarticles` (`OXID`, `OXSHOPID`, `OXPARENTID`, `OXACTIVE`, `OXACTIVEFROM`, `OXACTIVETO`, `OXARTNUM`, `OXEAN`, `OXDISTEAN`, `OXMPN`, `OXTITLE`, `OXSHORTDESC`, `OXPRICE`, `OXBLFIXEDPRICE`, `OXPRICEA`, `OXPRICEB`, `OXPRICEC`, `OXBPRICE`, `OXTPRICE`, `OXUNITNAME`, `OXUNITQUANTITY`, `OXEXTURL`, `OXURLDESC`, `OXURLIMG`, `OXVAT`, `OXTHUMB`, `OXICON`, `OXPIC1`, `OXPIC2`, `OXPIC3`, `OXPIC4`, `OXPIC5`, `OXPIC6`, `OXPIC7`, `OXPIC8`, `OXPIC9`, `OXPIC10`, `OXPIC11`, `OXPIC12`, `OXWEIGHT`, `OXSTOCK`, `OXSTOCKFLAG`, `OXSTOCKTEXT`, `OXNOSTOCKTEXT`, `OXDELIVERY`, `OXINSERT`, `OXTIMESTAMP`, `OXLENGTH`, `OXWIDTH`, `OXHEIGHT`, `OXFILE`, `OXSEARCHKEYS`, `OXTEMPLATE`, `OXQUESTIONEMAIL`, `OXISSEARCH`, `OXISCONFIGURABLE`, `OXVARNAME`, `OXVARSTOCK`, `OXVARCOUNT`, `OXVARSELECT`, `OXVARMINPRICE`, `OXVARNAME_1`, `OXVARSELECT_1`, `OXVARNAME_2`, `OXVARSELECT_2`, `OXVARNAME_3`, `OXVARSELECT_3`, `OXTITLE_1`, `OXSHORTDESC_1`, `OXURLDESC_1`, `OXSEARCHKEYS_1`, `OXTITLE_2`, `OXSHORTDESC_2`, `OXURLDESC_2`, `OXSEARCHKEYS_2`, `OXTITLE_3`, `OXSHORTDESC_3`, `OXURLDESC_3`, `OXSEARCHKEYS_3`, `OXBUNDLEID`, `OXFOLDER`, `OXSUBCLASS`, `OXSTOCKTEXT_1`, `OXSTOCKTEXT_2`, `OXSTOCKTEXT_3`, `OXNOSTOCKTEXT_1`, `OXNOSTOCKTEXT_2`, `OXNOSTOCKTEXT_3`, `OXSORT`, `OXSOLDAMOUNT`, `OXNONMATERIAL`, `OXFREESHIPPING`, `OXREMINDACTIVE`, `OXREMINDAMOUNT`, `OXAMITEMID`, `OXAMTASKID`, `OXVENDORID`, `OXMANUFACTURERID`, `OXSKIPDISCOUNTS`, `OXRATING`, `OXRATINGCNT`, `OXMINDELTIME`, `OXMAXDELTIME`, `OXDELTIMEUNIT`) VALUES
-                    ('_testArtId', ".ShopIdCalculator::BASE_SHOP_ID.", '', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0802-85-823-7-1', '', '', '', '', '', 109, 0, 0, 0, 0, 0, 0, '', 0, '', '', '', NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0, 1, '', '', '0000-00-00', '0000-00-00', '2010-03-02 20:07:21', 0, 0, 0, '', '', '', '', 0, 0, '', 0, 0, 'W 32/L 30 | Blau', 0, '', 'W 32/L 30 | Blue ', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 12001, 0, 0, 0, 0, 0, '', '', '', '', 0, 0, 0, 0, 0, '')";
-        }
-
-        $sQ2 = 'select 1 from oxarticles where oxid = "_testArtId"';
-        $sQ3 = 'delete from oxarticles where oxid = "_testArtId"';
-
-        $oDb = oxNew("oxDb");
-        $oDbInst = $oDb->getDb();
-
-        /** Test 1 **/ // commiting transaction
-        $oDbInst->startTransaction();
-        $oDbInst->execute($sQ1);
-        $oDbInst->commitTransaction();
-
-        // testing
-        $this->assertTrue((bool) $oDbInst->getOne($sQ2));
-
-        // deleting
-        $oDbInst->execute($sQ3);
-
-        /** Test 2 **/ // rollbacking transaction
-        $oDbInst->startTransaction();
-        $oDbInst->execute($sQ1);
-        $oDbInst->rollbackTransaction();
-
-        // testing
-        $this->assertFalse((bool) $oDbInst->getOne($sQ2));
-    }
-
-    /**
-     * Test case for oxDb::notifyConnectionErrors()
-     *
-     * TODO Move this test to integration tests
-     */
-    public function testNotifyConnectionErrors()
-    {
-        // TODO Put this in PHPDoc block again: @expectedException DatabaseConnectionException
-
-        $this->markTestSkipped('Move this test to integration tests');
-
-        $oDbInst = $this->getMock("oxDb", array("errorMsg", "errorNo"));
-        $oDbInst->expects($this->never())->method('errorMsg');
-        $oDbInst->expects($this->never())->method('errorNo');
-
-        $oConfigFile = $this->getBlankConfigFile();
-        $oConfigFile->sAdminEmail = "adminemail";
-        $oConfigFile->dbUser = "dbuser";
-
-        $exception = oxNew('Exception');
-
-        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("getConfig", "sendMail"));
-        $oDb->setConfig($oConfigFile);
-        $oDb->expects($this->once())->method('sendMail')->with($this->equalTo('adminemail'), $this->equalTo('Offline warning!'));
-
-        $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseException');
-        $oDb->notifyConnectionErrors($exception);
-    }
-
-    /**
-     * Test case for oxDb::onConnectionError()
-     *
-     * TODO Move this test to integration tests
-     */
-    public function testOnConnectionError()
-    {
-        $this->markTestSkipped('Move this test to integration tests');
-
-        $exception = oxNew('OxidEsales\Eshop\Core\exception\DatabaseConnectionException', 'THE CONNECTION ERROR MESSAGE!', 42, new \Exception());
-
-        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array('notifyConnectionErrors', 'redirectToMaintenancePage'));
-        $oDb->expects($this->once())->method('notifyConnectionErrors')->with($this->equalTo($exception));
-        $oDb->expects($this->once())->method('redirectToMaintenancePage');
-
-        $oDb->onConnectionError($exception);
-    }
 
     /**
      * @return ConfigFile

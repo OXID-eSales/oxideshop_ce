@@ -21,16 +21,16 @@
  */
 namespace OxidEsales\Eshop\Core;
 
-use oxConnectionException;
 use oxCookieException;
-use oxDb;
 use oxException;
 use OxidEsales\Eshop\Application\Controller\BaseController;
 use OxidEsales\Eshop\Core\exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\exception\DatabaseNotConfiguredException;
 use OxidEsales\EshopEnterprise\Core\Cache\DynamicContent\ContentCache;
 use oxOutput;
 use oxRegistry;
 use oxSystemComponentException;
+use PHPMailer;
 use ReflectionMethod;
 
 /**
@@ -139,6 +139,8 @@ class ShopControl extends \oxSuperCfg
             $this->_handleSystemException($ex);
         } catch (oxCookieException $ex) {
             $this->_handleCookieException($ex);
+        } catch (DatabaseNotConfiguredException $exception) {
+            $this->_handleDbNotConfiguredException();
         } catch (DatabaseConnectionException $exception) {
             $this->_handleDbConnectionException($exception);
         } catch (oxException $ex) {
@@ -700,22 +702,47 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
-     * Shows exception message if debug mode is enabled, redirects otherwise.
-     *
-     * @param DatabaseConnectionException $exception message to show on exit
+     * If the database connection has not been configured, redirect to the OXID eShop setup wizard
      */
-    protected function _handleDbConnectionException(DatabaseConnectionException $exception)
-    {
-        $exception->debugOut();
-
-        if ($this->_isDebugMode()) {
-            oxRegistry::getUtils()->showMessageAndExit($exception->getString());
-        }
-        oxRegistry::getUtils()->redirectOffline();
+    protected function _handleDbNotConfiguredException () {
+        /**
+         * The shop standard redirect mechanism needs a working database connection.
+         * Use a special method here.
+         */
+        $this->redirectToSetupWizardWithoutDbConnection();
     }
 
     /**
-     * Catching other not caught exceptions.
+     * Report the exception and in case that iDebug is not set, redirect to maintenance page.
+     * Special methods are used here as the normal exception handling routines always need a database connection and
+     * this would create a loop.
+     *
+     * @param DatabaseConnectionException $exception Exception to handle
+     */
+    protected function _handleDbConnectionException(DatabaseConnectionException $exception)
+    {
+        /**
+         * Report the database connection exception
+         */
+        $this->reportDatabaseConnectionException($exception);
+
+        /**
+         * Render the database connection exception
+         */
+        if ($this->_isDebugMode()) {
+            echo '<pre>' . $exception->getString() . '</pre>';
+            exit();
+        } else {
+            /**
+             * The shop standard redirect mechanism needs a working database connection.
+             * Use a special method here.
+             */
+            $this->redirectToMaintenancePageWithoutDbConnection();
+        }
+    }
+
+    /**
+     * Handling other not caught exceptions.
      *
      * @param oxException $exception
      */
@@ -726,6 +753,114 @@ class ShopControl extends \oxSuperCfg
         if ($this->_isDebugMode()) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception);
             $this->_process('exceptionError', 'displayExceptionError');
+        }
+    }
+
+    /**
+     * Log an exception.
+     *
+     * @param \Exception $exception
+     */
+    protected function logException(\Exception $exception)
+    {
+        if ( ! $exception instanceof oxException) {
+            $exception = new oxException($exception->getMessage(), $exception->getCode(), $exception);
+        }
+        $exception->debugOut();
+    }
+
+    /**
+     * Redirect to the OXID eShop maintenance page.
+     * This method is used instead of the eShop standard redirection mechanism
+     * in case no database connection is available.
+     */
+    protected function redirectToMaintenancePageWithoutDbConnection()
+    {
+        $headerCode = "HTTP/1.1 302 Found";
+        header($headerCode);
+        header("Location: offline.html");
+        header("Connection: close");
+        exit();
+    }
+
+    /**
+     * Redirect to the OXID eShop setup wizard.
+     * This method is used instead of the eShop standard redirection mechanism
+     * in case no database connection is available.
+     */
+    protected static function redirectToSetupWizardWithoutDbConnection()
+    {
+        $headerCode = "HTTP/1.1 302 Found";
+        header($headerCode);
+        header("Location: Setup/index.php");
+        header("Connection: close");
+        exit();
+    }
+
+    /**
+     * Notify the shop owner about connection problems
+     *
+     * @param DatabaseConnectionException $exception Database connection exception to report
+     */
+    protected function reportDatabaseConnectionException(DatabaseConnectionException $exception)
+    {
+        /**
+         * Log the exception
+         */
+        $this->logException($exception);
+
+        /**
+         * If not in debug mode, send email to shop admin, if email
+         * address has been configured in shop config file config.inc.php
+         */
+        $adminEmail = Registry::get("OxConfigFile")->getVar('sAdminEmail');
+        if ($adminEmail && ! $this->_isDebugMode()) {
+            $this->sendMail($adminEmail, $exception);
+        }
+    }
+
+    /**
+     * Send an email with a given subject and body to a given email address
+     *
+     * @param string      $emailAddress
+     * @param oxException $exception
+     *
+     * @return bool
+     */
+    protected function sendMail($emailAddress, oxException $exception)
+    {
+        $failedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
+
+        $date = date(DATE_RFC822); // RFC 822 (example: Mon, 15 Aug 05 15:52:01 +0000)
+        $script = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
+        $referrer = $_SERVER['HTTP_REFERER'];
+
+        //sending a message to admin
+        $emailSubject = 'Offline warning!';
+        $emailBody = "
+            Database connection error in OXID eShop:
+            Date: {$date}
+            Shop: {$failedShop}
+
+            mysql error: " . $exception->getMessage() . "
+            mysql error no: " . $exception->getCode() . "
+
+            Script: {$script}
+            Referrer: {$referrer}";
+
+        /** As we are inside the exception handling process, any further exceptions must be caught */
+        try {
+            $mailer = new PHPMailer();
+            $mailer->isMail();
+
+            $mailer->setFrom($emailAddress);
+            $mailer->addAddress($emailAddress);
+            $mailer->Subject = $emailSubject;
+            $mailer->Body = $emailBody;
+
+            return $mailer->send();
+        } catch (\Exception $exception) {
+            $this->logException($exception);
         }
     }
 }

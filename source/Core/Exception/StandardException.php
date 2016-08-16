@@ -173,7 +173,9 @@ class StandardException extends \Exception
             $sWarning .= "--!--RENDERER--!--";
         }
 
-        return $sWarning . __CLASS__ . " (time: " . date('Y-m-d H:i:s') . "): [{$this->code}]: {$this->message} \n Stack Trace: {$this->getTraceAsString()}\n\n";
+        $currentTime = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
+
+        return $sWarning . __CLASS__ . " (time: " . $currentTime . "): [{$this->code}]: {$this->message} \n Stack Trace: {$this->getTraceAsString()}\n\n";
     }
 
     /**

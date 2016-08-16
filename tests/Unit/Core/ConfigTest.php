@@ -291,6 +291,8 @@ class ConfigTest extends \OxidTestCase
      */
     public function testInit_noConnection()
     {
+        $this->setTime(time());
+
         /** @var oxConnectionException $oEx */
         $oEx = oxNew("oxConnectionException");
 

@@ -23,6 +23,7 @@ namespace Unit\Application\Model;
 
 use oxDb;
 use oxField;
+use OxidEsales\Eshop\Core\Database;
 use oxRegistry;
 use oxTestModules;
 

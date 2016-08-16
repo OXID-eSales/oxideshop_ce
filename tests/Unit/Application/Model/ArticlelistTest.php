@@ -26,6 +26,7 @@ use modDB;
 use oxArticle;
 use oxDb;
 use oxField;
+use OxidEsales\Eshop\Core\Database;
 use oxRegistry;
 use oxTestModules;
 

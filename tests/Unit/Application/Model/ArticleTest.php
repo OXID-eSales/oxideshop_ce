@@ -22,6 +22,7 @@
 namespace Unit\Application\Model;
 
 use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\Eshop\Core\Database;
 use \oxList;
 use \oxSimpleVariant;
 use \oxArticle;

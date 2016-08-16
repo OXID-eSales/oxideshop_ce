@@ -332,7 +332,9 @@ class Database implements DatabaseInterface
         if (!$identifierQuoteCharacter) {
             $identifierQuoteCharacter = '`';
         }
-        return $this->getConnection()->quoteIdentifier(trim($string, $identifierQuoteCharacter));
+        $string = trim(str_replace($identifierQuoteCharacter, '', $string));
+
+        return $this->getConnection()->quoteIdentifier($string);
     }
 
     /**
@@ -476,7 +478,7 @@ class Database implements DatabaseInterface
      *
      * @throws DatabaseException The exception, that can occur while running the sql statement.
      *
-     * @return DoctrineResultSet The result of the given query.
+     * @return ResultSet The result of the given query.
      */
     public function select($sqlSelect, $parameters = array(), $executeOnSlave = true)
     {
@@ -493,9 +495,7 @@ class Database implements DatabaseInterface
              */
             /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
             $statement = $this->getConnection()->executeQuery($sqlSelect, $parameters);
-            $result = new DoctrineResultSet($statement);
-
-            $this->setAffectedRows($result->count());
+            $result = new ResultSet($statement);
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
@@ -520,7 +520,7 @@ class Database implements DatabaseInterface
      *
      * @throws DatabaseException
      *
-     * @return DoctrineResultSet The result of the given query.
+     * @return ResultSet The result of the given query.
      */
     public function selectLimit($sqlSelect, $rowCount = -1, $offset = -1, $parameters = false, $executeOnSlave = true)
     {

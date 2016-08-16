@@ -26,6 +26,7 @@ use OxidEsales\Eshop\Core\Database;
 use oxRegistry;
 use oxDb;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 
 /**
  * Article list manager.

@@ -21,8 +21,8 @@
  */
 namespace OxidEsales\Eshop\Core;
 
-use OxidEsales\Eshop\Core\Database\DatabaseInterface;
-use OxidEsales\Eshop\Core\Database\Doctrine as DatabaseAdapter;
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database as DatabaseAdapter;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
 
@@ -362,25 +362,5 @@ class Database
     protected function isAdmin()
     {
         return isAdmin();
-    }
-
-    /**
-     * Database connection object getter
-     *
-     * @return Database
-     */
-    public static function getDbObject()
-    {
-        return self::$db;
-    }
-
-    /**
-     * Setter for database connection object
-     *
-     * @param Database $newDbObject
-     */
-    public static function setDbObject($newDbObject)
-    {
-        self::$db = $newDbObject;
     }
 }

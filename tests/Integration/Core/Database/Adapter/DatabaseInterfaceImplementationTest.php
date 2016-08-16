@@ -20,11 +20,11 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Integration\Core\Database;
+namespace OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter;
 
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Database;
-use OxidEsales\Eshop\Core\Database\DatabaseInterface;
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Registry;
 use ReflectionClass;
 
@@ -41,6 +41,7 @@ use ReflectionClass;
  */
 abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImplementationBaseTest
 {
+
     /**
      * The data provider for the method testGetAllForAllFetchModes.
      *
@@ -1117,7 +1118,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertInternalType('array', $result);
         $this->assertEquals(array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1), $result);
     }
-    
+
     public function testCharsetIsNotUtf8WhenUtfModeIsZero()
     {
         $character_set = 'utf8';
@@ -1261,9 +1262,9 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     {
         $dbh = self::getDatabaseHandler();
         $dbh->exec("CREATE TABLE IF NOT EXISTS " . $metaColumnsTestTable . " (
-            OXINT INT(11) NOT NULL AUTO_INCREMENT COMMENT 'a column with type INT',            
+            OXINT INT(11) NOT NULL AUTO_INCREMENT COMMENT 'a column with type INT',
             OXUSERID CHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'  COMMENT 'a column with type CHAR',
-            OXTIME TIME COMMENT 'a column of type TIME',                        
+            OXTIME TIME COMMENT 'a column of type TIME',
             OXBIT BIT(6) NOT NULL  COMMENT 'a column with type BIT',
             OXDEC DEC(6,2) UNSIGNED NOT NULL DEFAULT 1.3 COMMENT 'a column with type DECIMAL',
             OXTEXT TEXT  CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NOT NULL COMMENT 'a column with type TEXT',

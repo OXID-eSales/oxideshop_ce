@@ -19,9 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version       OXID eShop CE
  */
-namespace OxidEsales\Eshop\Core\Database;
 
-use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
+namespace OxidEsales\Eshop\Core\Database\Adapter;
+
+use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
@@ -80,7 +81,7 @@ interface DatabaseInterface
      * Closes an open connection
      */
     public function closeConnection();
-        
+
     /**
      * Set the fetch mode of an open database connection.
      *
@@ -117,7 +118,7 @@ interface DatabaseInterface
      *
      * NOTE: Although you might pass any SELECT or SHOW statement to this method, try to limit the result of the
      * statement to one single row, as the rest of the rows is simply discarded.
-     * 
+     *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
      * $result = Database::getDb->getOne(
@@ -166,7 +167,7 @@ interface DatabaseInterface
      * The keys of the first level array are numeric.
      * The keys of the second level arrays may be numeric, strings or both, depending on the FETCH_MODE_* of the connection.
      * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
-     * 
+     *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
      * $result = Database::getDb->getAll(
@@ -213,7 +214,7 @@ interface DatabaseInterface
      *
      * @throws DatabaseException The exception, that can occur while executing the sql statement.
      *
-     * @return DoctrineResultSet
+     * @return ResultSetInterface
      */
     public function select($sqlSelect, $parameters = array(), $executeOnSlave = true);
 
@@ -244,7 +245,7 @@ interface DatabaseInterface
      *
      * @throws DatabaseException The exception, that can occur while executing the sql statement.
      *
-     * @return DoctrineResultSet The result of the given query.
+     * @return ResultSetInterface The result of the given query.
      */
     public function selectLimit($sqlSelect, $rowCount = -1, $offset = -1, $parameters = array(), $executeOnSlave = true);
 
@@ -299,7 +300,7 @@ interface DatabaseInterface
      * NOTE: It is not safe to use the return value of this function in a query. There will be no risk of SQL injection,
      * but when the statement is executed and the value could not have been quoted, a DatabaseException is thrown.
      * You are strongly encouraged to always use prepared statements instead of quoting the values on your own.
-     * 
+     *
      * @param array $array The strings to quote as an array.
      *
      * @return array Array with all string and numeric values quoted with single quotes or set to false, if the value could not have been quoted.
@@ -307,7 +308,8 @@ interface DatabaseInterface
     public function quoteArray($array);
 
     /**
-     * Quote every string in the given array.
+     * Quote a string in a way, that it can be used as a identifier (i.e. table name or field name) in a sql statement.
+     * You are strongly encouraged to always use quote identifiers.
      *
      * @param string $string The string to be quoted.
      *

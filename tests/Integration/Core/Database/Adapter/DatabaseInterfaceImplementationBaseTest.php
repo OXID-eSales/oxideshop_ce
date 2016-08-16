@@ -20,10 +20,10 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Integration\Core\Database;
+namespace OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter;
 
-use OxidEsales\Eshop\Core\Database\DatabaseInterface;
-use OxidEsales\Eshop\Core\Database\Doctrine;
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
@@ -70,7 +70,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
      * @var string The first fixture oxUserId.
      */
     const FIXTURE_OXUSERID_3 = 'OXUSERID_3';
-    
+
     const EXPECTED_MYSQL_SYNTAX_ERROR_CODE  = 1064;
     const EXPECTED_MYSQL_SYNTAX_ERROR_MESSAGE  = 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'INVALID SQL QUERY\' at line 1';
 
@@ -189,7 +189,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
         $password = $configFile->getVar('dbPwd');
 
         $dbh = new \PDO($dsn, $username, $password);
-        
+
         return $dbh;
     }
 

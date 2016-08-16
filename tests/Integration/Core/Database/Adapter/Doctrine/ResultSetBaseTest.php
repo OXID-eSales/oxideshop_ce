@@ -20,25 +20,25 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\integration\core\Database\Adapter;
+namespace OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter\Doctrine;
 
-use OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet;
-use OxidEsales\Eshop\Core\Database\DatabaseInterface;
-use OxidEsales\Eshop\Core\Database\Doctrine;
-use OxidEsales\Eshop\Tests\Integration\Core\Database\DatabaseInterfaceImplementationBaseTest;
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet;
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
+use OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter\DatabaseInterfaceImplementationBaseTest;
 
 /**
  * Tests for our database object.
  *
  * @group database-adapter
  */
-abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
+abstract class ResultSetBaseTest extends DatabaseInterfaceImplementationBaseTest
 {
 
     /**
      * @var string The name of the class, including the complete namespace.
      */
-    const CLASS_NAME_WITH_PATH = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet';
+    const CLASS_NAME_WITH_PATH = 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet';
 
     /**
      * @var string The database exception class to be thrown
@@ -48,7 +48,7 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     /**
      * @var string The result set class class
      */
-    const RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\DoctrineResultSet';
+    const RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet';
 
     /**
      * @return string The name of the database exception class
@@ -142,7 +142,7 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     /**
      * Test, that the result set of an empty select works as expected.
      *
-     * @return DoctrineResultSet The empty result set.
+     * @return ResultSet The empty result set.
      */
     public function testCreationWithRealEmptyResult()
     {
@@ -157,7 +157,7 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     /**
      * Test, that the result set of a non empty select works as expected.
      *
-     * @return DoctrineResultSet The non empty result set.
+     * @return ResultSet The non empty result set.
      */
     public function testCreationWithRealNonEmptyResult()
     {
@@ -238,7 +238,7 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     {
         $this->loadFixtureToTestTable();
 
-        $this->database->setFetchMode(Doctrine::FETCH_MODE_ASSOC);
+        $this->database->setFetchMode(Database::FETCH_MODE_ASSOC);
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
         $this->initializeDatabase();
 
@@ -422,7 +422,7 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     /**
      * Assert, that the given object is a doctrine result set.
      *
-     * @param DoctrineResultSet $resultSet The object to check.
+     * @param ResultSet $resultSet The object to check.
      */
     private function assertDoctrineResultSet($resultSet)
     {

@@ -111,14 +111,14 @@ class DbTest extends UnitTestCase
     {
         $database = Database::getDb();
 
-        $this->assertInstanceOf('OxidEsales\Eshop\Core\Database\DatabaseInterface', $database);
+        $this->assertInstanceOf('OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface', $database);
     }
 
     public function testGetDbReturnsAnInstanceOfDoctrine()
     {
         $database = Database::getDb();
 
-        $this->assertInstanceOf('OxidEsales\Eshop\Core\Database\Doctrine', $database);
+        $this->assertInstanceOf('OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database', $database);
     }
 
     public function testGetDbThrowsDatabaseConnectionException()

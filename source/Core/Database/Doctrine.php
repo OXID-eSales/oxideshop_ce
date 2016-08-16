@@ -147,7 +147,7 @@ class Doctrine implements DatabaseInterface
     {
         $this->connection->close();
     }
-    
+
     /**
      * Set connection
      *
@@ -321,7 +321,7 @@ class Doctrine implements DatabaseInterface
     /**
      * Quote a string in a way that it can be used as a identifier (i.e. table name or field name) in a SQL statement.
      *
-     * @param string $string The string to be quoted as a identifier. 
+     * @param string $string The string to be quoted as a identifier.
      *
      * @return string The quoted string
      */
@@ -489,6 +489,8 @@ class Doctrine implements DatabaseInterface
             /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
             $statement = $this->getConnection()->executeQuery($sqlSelect, $parameters);
             $result = new DoctrineResultSet($statement);
+
+            $this->setAffectedRows($result->count());
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);

@@ -58,15 +58,6 @@ interface ResultSetInterface extends \Traversable, \Countable
     public function fieldCount();
 
     /**
-     * Returns the number of rows affected by the last DELETE, INSERT, or UPDATE statement.
-     *
-     * @deprecated since v5.3.0 (2016-06-16) This method will be removed in v6.0.
-     *
-     * @return integer Number of rows
-     */
-    public function recordCount();
-
-    /**
      * Returns field name from select query
      *
      * @param string $field

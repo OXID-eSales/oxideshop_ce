@@ -377,7 +377,7 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
 
         $this->assertDoctrineResultSet($resultSet);
-        $this->assertSame(0, $resultSet->recordCount());
+        $this->assertSame(0, $resultSet->count());
 
         return $resultSet;
     }
@@ -394,7 +394,7 @@ abstract class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
         $resultSet = $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
 
         $this->assertDoctrineResultSet($resultSet);
-        $this->assertSame(3, $resultSet->recordCount());
+        $this->assertSame(3, $resultSet->count());
 
         return $resultSet;
     }

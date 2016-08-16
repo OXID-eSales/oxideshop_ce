@@ -63,7 +63,7 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
         $this->EOF = false;
         $this->currentRow = 0;
 
-        if ($this->recordCount() == 0) {
+        if ($this->count() == 0) {
             $this->setToEmptyState();
         }
 
@@ -101,16 +101,6 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
     public function fetchAll()
     {
         return $this->getStatement()->fetchAll();
-    }
-
-    /**
-     * Returns the number of rows affected by the last execution of this statement.
-     *
-     * @return int The number of affected rows
-     */
-    public function recordCount()
-    {
-        return $this->getStatement()->rowCount();
     }
 
     /**
@@ -176,7 +166,7 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
      */
     public function EOF()
     {
-        if ($this->currentRow < $this->recordCount()) {
+        if ($this->currentRow < $this->count()) {
             return false;
         } else {
             $this->EOF = true;
@@ -255,7 +245,7 @@ class DoctrineResultSet implements \IteratorAggregate,  ResultSetInterface
      */
     public function count()
     {
-        // TODO: Implement count() method.
+        return $this->getStatement()->rowCount();
     }
 
     /**

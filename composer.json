@@ -19,7 +19,7 @@
         "psr/log": "1.0.0"
     },
     "require-dev": {
-        "oxid-esales/testing-library": "dev-integrate_doctrine-ESDEV-3462",
+        "oxid-esales/testing-library": "dev-HR_rebase_doctrine_ESDEV-3852",
         "oxid-esales/coding-standards": "dev-master",
         "oxid-esales/coding-standards-wrapper": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0"

@@ -107,7 +107,8 @@ class ShopInstaller
         $this->query('create database `' . $this->dbName . '` collate ' . $this->getCharsetMode() . '_general_ci');
 
         $sSetupPath = $this->getSetupDirectory();
-        $this->importFileToDatabase($sSetupPath . '/sql' . OXID_VERSION_SUFIX . '/' . 'database.sql');
+        $this->importFileToDatabase($sSetupPath . '/sql' . OXID_VERSION_SUFIX . '/' . 'database_schema.sql');
+        $this->importFileToDatabase($sSetupPath . '/sql' . OXID_VERSION_SUFIX . '/' . 'initial_data.sql');
     }
 
     /**

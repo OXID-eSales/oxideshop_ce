@@ -36,7 +36,8 @@ before_script:
   - sudo sed -e 's|utf8_unicode_ci|latin1_general_ci|g; s|utf8|latin1|g' --in-place /etc/mysql/my.cnf
   - sudo service mysql restart
   - mysql -e 'CREATE SCHEMA `oxidehop_ce` DEFAULT CHARACTER SET latin1 COLLATE latin1_general_ci;'
-  - mysql --default-character-set=latin1 oxidehop_ce < source/setup/sql/database.sql
+  - mysql --default-character-set=latin1 oxidehop_ce < source/setup/sql/database_schema.sql
+  - mysql --default-character-set=latin1 oxidehop_ce < source/setup/sql/initial_data.sql
   - mysql --default-character-set=latin1 oxidehop_ce < tests/testsql/testdata.sql
 
   # replace configuration values in config.inc.php

@@ -469,7 +469,8 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oDb->expects($this->at(2))->method("execSql")->will($this->throwException(new Exception));
         $oDb->expects($this->at(3))->method("setMySqlCollation");
         $oDb->expects($this->at(4))->method("queryFile");
-        $oDb->expects($this->at(5))->method("queryFile")->will($this->throwException(new Exception));
+        $oDb->expects($this->at(5))->method("queryFile");
+        $oDb->expects($this->at(6))->method("queryFile")->will($this->throwException(new Exception));
 
         $oController = $this->getMock("oxSetupController", array("getView", "getInstance"));
         $oController->expects($this->at(0))->method("getInstance")->with($this->equalTo("oxSetup"))->will($this->returnValue($oSetup));
@@ -512,7 +513,8 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oDb->expects($this->at(3))->method("setMySqlCollation");
         $oDb->expects($this->at(4))->method("queryFile");
         $oDb->expects($this->at(5))->method("queryFile");
-        $oDb->expects($this->at(6))->method("queryFile")->will($this->throwException(new Exception));
+        $oDb->expects($this->at(6))->method("queryFile");
+        $oDb->expects($this->at(7))->method("queryFile")->will($this->throwException(new Exception));
 
         $oController = $this->getMock("oxSetupController", array("getView", "getInstance"));
         $oController->expects($this->at(0))->method("getInstance")->with($this->equalTo("oxSetup"))->will($this->returnValue($oSetup));

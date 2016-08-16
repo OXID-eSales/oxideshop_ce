@@ -2280,7 +2280,8 @@ class oxSetupController extends oxSetupCore
         $oDb->setMySqlCollation($iUtfMode);
 
         try {
-            $oDb->queryFile("$sqlDir/database.sql");
+            $oDb->queryFile("$sqlDir/database_schema.sql");
+            $oDb->queryFile("$sqlDir/initial_data.sql");
         } catch (Exception $oExcp) {
             $oView->setMessage($oExcp->getMessage());
 
@@ -2616,7 +2617,8 @@ class oxSetupAps extends oxSetupCore
         $oDb->setMySqlCollation($iUtfMode);
 
         // setupping db
-        $oDb->queryFile("database.sql");
+        $oDb->queryFile("database_schema.sql");
+        $oDb->queryFile("initial_data.sql");
 
         // install demo data?
         if ($blInstallDemoData) {

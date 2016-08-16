@@ -21,10 +21,10 @@
  */
 namespace Unit\Application\Model;
 
-use \oxField;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
+use oxDb;
+use oxField;
+use oxRegistry;
+use oxTestModules;
 
 /**
  * Testing oxactions class.
@@ -343,7 +343,7 @@ class ActionsTest extends \OxidTestCase
     public function testGetBannerArticle_notAssigned()
     {
         $dbMock = $this->getBannerArticleMockWithSpecificReturn(false);
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
 
         $oArticle = $this->getMock('stdclass', array('load'));
         $oArticle->expects($this->never())->method('load');
@@ -361,7 +361,7 @@ class ActionsTest extends \OxidTestCase
     public function testGetBannerArticle_notExisting()
     {
         $dbMock = $this->getBannerArticleMockWithSpecificReturn('asdabsdbdsf');
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
 
         $oArticle = $this->getMock('stdclass', array('load'));
         $oArticle->expects($this->once())->method('load')
@@ -381,7 +381,7 @@ class ActionsTest extends \OxidTestCase
     public function testGetBannerArticle_Existing()
     {
         $dbMock = $this->getBannerArticleMockWithSpecificReturn('2000');
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
 
         $oArticle = $this->getMock('stdclass', array('load'));
         $oArticle->expects($this->once())->method('load')

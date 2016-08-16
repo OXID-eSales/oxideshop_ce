@@ -21,15 +21,14 @@
  */
 namespace Unit\Core;
 
+use Exception;
 use modDB;
-use \oxUtils;
-use \oxSystemComponentException;
-use \Exception;
-use \stdClass;
-use \oxField;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
+use oxField;
+use oxRegistry;
+use oxSystemComponentException;
+use oxTestModules;
+use oxUtils;
+use stdClass;
 
 class testOxUtils extends oxUtils
 {
@@ -894,7 +893,7 @@ class UtilsTest extends \OxidTestCase
 
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->any())->method('getOne')->will($this->returnValue(1));
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
 
         $e = null;
         try {

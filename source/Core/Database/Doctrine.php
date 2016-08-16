@@ -117,7 +117,7 @@ class Doctrine implements DatabaseInterface
 
         $configuration = new Configuration();
         /**
-         * TODO we need a SQLLogger that logs to a (CSV?) file, as we probably do not want to log into the database.
+         * @todo we need a SQLLogger that logs to a (CSV?) file, as we probably do not want to log into the database.
          *
          * $configuration->setSQLLogger(new EchoSQLLogger());
          */
@@ -151,7 +151,7 @@ class Doctrine implements DatabaseInterface
     }
 
     /**
-     * TODO to be implemented
+     * @todo to be implemented
      *
      * @param array $connectionParameters
      */
@@ -183,6 +183,15 @@ class Doctrine implements DatabaseInterface
      */
     protected function getPdoMysqlConnectionParameters(array $connectionParameters)
     {
+        $connectionParameters = array(
+            'driver'   => 'pdo_mysql',
+            'host'     => $connectionParameters['databaseHost'],
+            'dbname'   => $connectionParameters['databaseName'],
+            'user'     => $connectionParameters['databaseUser'],
+            'password' => $connectionParameters['databasePassword'],
+            'port'     => $connectionParameters['databasePort'],
+        );
+
         /**
          * Determine the charset to be used when connecting to the database.
          *
@@ -199,15 +208,9 @@ class Doctrine implements DatabaseInterface
          */
         $sanitizedCharset = trim(strtolower($connectionParameters['connectionCharset']));
 
-        $connectionParameters = array(
-            'driver'   => 'pdo_mysql',
-            'host'     => $connectionParameters['databaseHost'],
-            'dbname'   => $connectionParameters['databaseName'],
-            'user'     => $connectionParameters['databaseUser'],
-            'password' => $connectionParameters['databasePassword'],
-            'port'     => $connectionParameters['databasePort'],
-            'charset'  => $sanitizedCharset,
-        );
+        if (!empty($sanitizedCharset)) {
+            $connectionParameters['charset'] = $sanitizedCharset;
+        }
 
         return $connectionParameters;
     }
@@ -315,6 +318,19 @@ class Doctrine implements DatabaseInterface
         return $this->getAffectedRows();
     }
 
+    /**
+     * @todo Make this method part of the DatabaseInterface in v6.0
+     * Quote a string in a way that it can be used as a identifier (i.e. table name or field name) in a SQL statement.
+     *
+     * @param $value
+     *
+     * @return string
+     */
+    public function quoteIdentifier($value) 
+    {
+        return $this->getConnection()->quoteIdentifier($value);
+    }
+    
     /**
      * Quote the given string. Same as qstr.
      *
@@ -577,6 +593,8 @@ class Doctrine implements DatabaseInterface
     }
 
     /**
+     * @todo Make this method part of the DatabaseInterface in v6.0.
+     * 
      * Closes an open connection
      */
     public function closeConnection()
@@ -931,7 +949,7 @@ class Doctrine implements DatabaseInterface
      */
     public function UI($pollSeconds = 5)
     {
-        // TODO to be implemented or deprecated in DatabaseInterface
+        // @todo to be implemented or deprecated in DatabaseInterface
     }
 
     /**

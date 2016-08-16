@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 namespace Unit\Core;
 
@@ -32,24 +32,22 @@ use OxidEsales\Eshop\Core\ShopIdCalculator;
 /**
  * Class DbTest
  * TODO rename to DatabaseTest
- * @group database-adapter
- * @covers OxidEsales\Eshop\Core\Database
+ *
+ * @group   database-adapter
+ * @covers  OxidEsales\Eshop\Core\Database
  * @package Unit\Core
  */
 class DbTest extends UnitTestCase
 {
-    protected function setUp() {
-        parent::setUp();
-
-        $database = Database::getInstance();
-        $database->setConfigFile(Registry::get('oxConfigFile'));
-    }
 
     /**
      * Clean-up oxarticles table + parent::tearDown()
      */
     protected function tearDown()
     {
+        $configFile = new ConfigFile(OX_BASE_PATH . 'config.inc.php');
+        Registry::set('oxConfigFile', $configFile);
+
         $this->cleanUpTable('oxarticles');
 
         parent::tearDown();
@@ -64,47 +62,23 @@ class DbTest extends UnitTestCase
 
         $database = Database::getInstance();
         $database->setConfigFile($configFile);
-        $methodGetConfigParam = self::getReflectedMethod('getConfigParam');
 
-        $actualResult = $methodGetConfigParam->invokeArgs($database, array('iDebug'));
+        $actualResult = $this->callProtectedClassMethod($database, 'getConfigParam', array('iDebug'));
 
         $this->assertEquals($debug, $actualResult, 'Result of getConfigParam(iDebug) should match value in config.inc.php');
 
         $debug = 8;
         $configFile->iDebug = $debug;
         $database->setConfigFile($configFile);
-        $methodGetConfigParam = self::getReflectedMethod('getConfigParam');
-
-        $actualResult = $methodGetConfigParam->invokeArgs($database, array('iDebug'));
+        $actualResult = $this->callProtectedClassMethod($database, 'getConfigParam', array('iDebug'));
 
         $this->assertEquals($debug, $actualResult, 'Result of getConfigParam(iDebug) should match value in config.inc.php');
     }
 
-    public function testSetDbObject()
-    {
-        $database = Database::getInstance();
-        $dbMock = $this->getDbObjectMock();
-
-        $database->setDbObject($dbMock);
-
-        $realResult = $database->getDb();
-        $this->assertEquals($dbMock, $realResult);
-    }
-
-    public function testGetDbObject()
-    {
-        $database = Database::getInstance();
-        $dbMock = $this->getDbObjectMock();
-
-        $database->setDbObject($dbMock);
-
-        $realResult = $database->getDbObject();
-        $this->assertEquals($dbMock, $realResult);
-    }
-
     public function testGetTableDescription()
     {
-        self::callMethod('resetTblDescCache');
+        /** Reset the table description cache */
+        $this->setProtectedClassProperty(Database::getInstance(), 'tblDescCache', []);
 
         $rs = Database::getDb()->execute("show tables");
         $icount = 3;
@@ -133,6 +107,8 @@ class DbTest extends UnitTestCase
         $this->assertTrue($database->isValidFieldName('oxid'));
         $this->assertTrue($database->isValidFieldName('oxid_1'));
         $this->assertTrue($database->isValidFieldName('oxid.1'));
+        $this->assertTrue($database->isValidFieldName('.oxid.1'));
+        $this->assertTrue($database->isValidFieldName('_oxid.1'));
         $this->assertFalse($database->isValidFieldName('oxid{1'));
     }
 
@@ -147,7 +123,6 @@ class DbTest extends UnitTestCase
         $database = Database::getInstance();
 
         $this->assertEquals('\0 \n \r \\\' \\\, \" \Z', $database->escapeString($sString));
-
     }
 
     public function testGetInstanceReturnsInstanceOfDatabase()
@@ -171,6 +146,33 @@ class DbTest extends UnitTestCase
         $this->assertInstanceOf('OxidEsales\Eshop\Core\Database\Doctrine', $database);
     }
 
+    public function testGetDbThrowsDatabaseConnectionException()
+    {
+        /** Set an invalid config file */
+        $configFile = $this->getBlankConfigFile();
+        Registry::set('oxConfigFile', $configFile);
+        /** Reset the db property */
+        $this->setProtectedClassProperty(Database::getInstance(), 'db', null);
+
+        $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseConnectionException');
+
+        Database::getDb();
+    }
+
+    public function testGetDbThrowsDatabaseNotConfiguredException()
+    {
+        /** Set an invalid config file */
+        $configFile = $this->getBlankConfigFile();
+        $configFile->setVar('dbHost', '<');
+        Registry::set('oxConfigFile', $configFile);
+        /** Reset the db property */
+        $this->setProtectedClassProperty(Database::getInstance(), 'db', null);
+
+        $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseNotConfiguredException');
+
+        Database::getDb();
+    }
+
     /**
      * Helper methods
      */
@@ -181,42 +183,5 @@ class DbTest extends UnitTestCase
     protected function getBlankConfigFile()
     {
         return new ConfigFile($this->createFile('config.inc.php', '<?php '));
-    }
-
-    /**
-     * @param $methodName
-     * @param $params
-     */
-    protected static function callMethod($methodName, array $params = array())
-    {
-        $class = new Database();
-        $reflectedMethod = self::getReflectedMethod($methodName);
-
-        return $reflectedMethod->invokeArgs($class, $params);
-    }
-
-    /**
-     * Helper method for accessing protected class methods
-     *
-     * @param string $name Name of the protected method
-     *
-     * @return mixed The reflected method
-     */
-    protected static function getReflectedMethod($name)
-    {
-        $class = new ReflectionClass('OxidEsales\Eshop\Core\Database');
-        $method = $class->getMethod($name);
-        $method->setAccessible(true);
-
-        return $method;
-    }
-
-    public static function resetDbProperty($class) {
-        $reflectionClass = new ReflectionClass('OxidEsales\Eshop\Core\Database');
-
-        $reflectionProperty = $reflectionClass->getProperty('db');
-        $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue($class, null);
-
     }
 }

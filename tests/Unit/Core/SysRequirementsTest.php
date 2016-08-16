@@ -21,7 +21,7 @@
  */
 namespace Unit\Core;
 
-use \oxDb;
+use oxDb;
 
 class SysRequirementsTest extends \OxidTestCase
 {
@@ -369,7 +369,7 @@ class SysRequirementsTest extends \OxidTestCase
         $dbMock->expects($this->any())
             ->method('execute')
             ->will($this->returnValue($oRs));
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
 
         $oSR = $this->getMock('oxSysRequirements', array('_checkTemplateBlock'));
         $oSR->expects($this->exactly(1))->method('_checkTemplateBlock')
@@ -406,7 +406,7 @@ class SysRequirementsTest extends \OxidTestCase
         $dbMock->expects($this->any())
             ->method('execute')
             ->will($this->returnValue($oRs));
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
 
         $oSR = $this->getMock('oxSysRequirements', array('_checkTemplateBlock'));
         $oSR->expects($this->exactly(1))->method('_checkTemplateBlock')

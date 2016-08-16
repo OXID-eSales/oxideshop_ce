@@ -21,14 +21,14 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxarticle;
-
-use \DynExportBase;
-use \Exception;
-use \stdClass;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
+use DynExportBase;
+use Exception;
+use oxarticle;
+use oxDb;
+use OxidEsales\Eshop\Core\Database;
+use oxRegistry;
+use oxTestModules;
+use stdClass;
 
 /**
  * Tests module for DynExportBase class
@@ -712,7 +712,7 @@ class DynExportBaseTest extends \OxidTestCase
             ->will($this->returnCallback(function ($s, $i, $c) {
                 throw new Exception($s . $i . $c);
             }));
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock);
 
         $oView = new _DynExportBase();
         $blClose = true;

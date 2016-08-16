@@ -21,14 +21,13 @@
  */
 namespace Unit\Application\Model;
 
-use \oxArticle;
-
+use Exception;
 use modDB;
-use \oxField;
-use \Exception;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
+use oxArticle;
+use oxDb;
+use oxField;
+use oxRegistry;
+use oxTestModules;
 
 /**
  * Testing oxArticleList class
@@ -546,7 +545,7 @@ class ArticlelistTest extends \OxidTestCase
                     }
                 )
             );
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
 
         try {
             $oTest->UNITgetFilterSql($sCatId, array("8a142c3ee0edb75d4.80743302" => "Zeiger", "8a142c3e9cd961518.80299776" => "originell"));

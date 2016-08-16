@@ -248,7 +248,7 @@ class ActionListTest extends \OxidTestCase
             ->method('getOne')
             ->with($this->equalTo($sSql))
             ->will($this->returnValue($response));
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
 
         $oAL = oxNew('oxActionList');
         $this->assertEquals($expected, $oAL->areAnyActivePromotions());

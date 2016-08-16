@@ -901,7 +901,7 @@ class SeoEncoderTest extends \OxidTestCase
 
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->any())->method('execute')->will($this->returnCallback(array($this, 'fillDbQueryBuffer')));
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock);
 
         $sObjectId = 'xxx';
         $iShopId = 'yyy';
@@ -954,7 +954,7 @@ class SeoEncoderTest extends \OxidTestCase
 
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->any())->method('execute')->will($this->returnCallback(array($this, 'fillDbQueryBuffer')));
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock);
 
         $oEncoder->encodeStaticUrls($aStaticUrl, 1, 0);
 
@@ -975,7 +975,7 @@ class SeoEncoderTest extends \OxidTestCase
 
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->any())->method('execute')->will($this->returnCallback(array($this, 'fillDbQueryBuffer')));
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock);
 
         $oEncoder->encodeStaticUrls($aStaticUrl, 1, 0);
 

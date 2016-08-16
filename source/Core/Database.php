@@ -66,7 +66,7 @@ class Database
      *
      * @var array
      */
-    protected static $_aTblDescCache = array();
+    protected static $tblDescCache = array();
 
     /**
      * Database type
@@ -77,7 +77,7 @@ class Database
 
     /**
      * This class is a singleton and should be instantiated with getInstance().
-     * TODO Deprecate in 5.3
+     * @todo Deprecate in 5.3
      * @Deprecated in v5.3. The constructor will be protected in the future. Use getInstance() instead.
      *
      * Database constructor.
@@ -155,27 +155,30 @@ class Database
     public function getTableDescription($tableName)
     {
         // simple cache
-        if (!isset(self::$_aTblDescCache[$tableName])) {
-            self::$_aTblDescCache[$tableName] = $this->fetchTableDescription($tableName);
+        if (!isset(self::$tblDescCache[$tableName])) {
+            self::$tblDescCache[$tableName] = $this->fetchTableDescription($tableName);
         }
 
-        return self::$_aTblDescCache[$tableName];
+        return self::$tblDescCache[$tableName];
     }
 
     /**
      * Call to reset table description cache
-     * TODO Check, if this could be protected, it is used only in tests and is not supposed to be called by anyone.
+     * 
+     * @deprecated since v5.3.0 (2016-05-20); Do not use any more. This method will be removed.
      */
     public function resetTblDescCache()
     {
-        self::$_aTblDescCache = array();
+        self::$tblDescCache = array();
     }
 
     /**
      * Checks if given string is valid database field name.
      * It must contain from alphanumeric plus dot and underscore symbols
-     * TODO Refactor and move to Doctrine class
+     * @todo Refactor and move to Doctrine class
      * @See http://stackoverflow.com/questions/4977898/check-for-valid-sql-column-name, especially the notes on portability
+     * @todo Deprecate in 5.3
+     * @deprecated since v5.3.0 (2016-05-20); Do not use any more. This method will be removed. Use DatabaseInterface::quote() or DatabaseInterface::quoteIdentifier()
      *
      * @param string $field field name
      *
@@ -188,7 +191,8 @@ class Database
 
     /**
      * Escape string for using in mysql statements
-     * TODO Deprecate in 5.3 and move to doctrine class
+     * @todo Deprecate in 5.3
+     * @deprecated since v5.3.0 (2016-05-20); Do not use any more. This method will be removed. Use DatabaseInterface::quote() or DatabaseInterface::quoteIdentifier()
      *
      * @param string $string string which will be escaped
      *
@@ -197,7 +201,7 @@ class Database
     public function escapeString($string)
     {
         $result = trim(static::getDb()->quote($string), "'");
-
+        
         return $result;
     }
 
@@ -205,6 +209,8 @@ class Database
      * Todo This method is deprecated since v5.2.0 and has to be removed
      *
      * @param array $array
+     *
+     * @deprecated since v5.2.0 (2014-03-12); use DatabaseInterface::quoteArray()
      *
      * @return array
      */
@@ -248,7 +254,7 @@ class Database
     protected function onPostConnect()
     {
         /**
-         * TODO remove this comment after all work is done
+         * @todo remove this comment after all work is done
          * The original post connect functionality was found in prepareDatabaseConnection
          * It did the following things:
          * - if needed, truncate table adodb_logsql and trigger the adodb lite logging. This is a todo
@@ -258,8 +264,8 @@ class Database
          */
         $this->setSqlMode();
 
-        // TODO Set database logging from iDebug
-        // TODO Set user auditing from blLogChangesInAdmin
+        // @todo Set database logging from iDebug
+        // @todo Set user auditing from blLogChangesInAdmin
     }
 
     /**
@@ -555,7 +561,8 @@ class Database
 
     /**
      * Setter for database connection object
-     * TODO This must be removed, it is used only in tests and is not supposed to be called by anyone.
+     * @todo This must be removed, it is used only in tests and is not supposed to be called by anyone.
+     * @deprecated since v5.3.0 (2016-05-20); Do not use any more. This method will be removed. 
      *
      * @param null|Database $newDbObject
      */
@@ -566,7 +573,8 @@ class Database
 
     /**
      * Database connection object getter
-     * TODO This must be removed, it is used only in tests and is not supposed to be called by anyone.
+     * @todo This must be removed, it is used only in tests and is not supposed to be called by anyone.
+     * @deprecated since v5.3.0 (2016-05-20); Do not use any more. This method will be removed.
      *
      * @return Database
      */

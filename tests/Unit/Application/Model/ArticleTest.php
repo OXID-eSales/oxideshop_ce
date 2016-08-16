@@ -107,7 +107,7 @@ class ArticleTest extends \OxidTestCase
         $oDB->Execute('delete from oxselectlist where oxid = "_testoxsellist" ');
         $oDB->Execute('delete from oxobject2selectlist where oxselnid = "_testoxsellist" ');
 
-        oxDb::getInstance()->resetTblDescCache();
+        $this->setProtectedClassProperty(oxDb::getInstance(), 'tblDescCache', []);
 
         parent::tearDown();
     }
@@ -3062,7 +3062,6 @@ class ArticleTest extends \OxidTestCase
     {
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->oxarticles__oxvat = new oxField(7, oxField::T_RAW);
-        //$this->getConfig()->setConfigParam('aCurrencies', array(0 => 'EUR@ 1.00@ ,@ .@ EUR@ 2'));
         $oArticle->oxarticles__oxtprice = new oxField(25, oxField::T_RAW);
         $oTPrice = $oArticle->getTPrice();
         $this->assertEquals(25, $oTPrice->getBruttoPrice());
@@ -6437,7 +6436,7 @@ class ArticleTest extends \OxidTestCase
         $dbMock->expects($this->any())
             ->method('getOne')
             ->will($this->returnValue($return));
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock);
 
         $this->assertEquals($expected, $oA->inPriceCategory('sCatNid'));
     }
@@ -6460,7 +6459,7 @@ class ArticleTest extends \OxidTestCase
                     throw new Exception($s);
             }));
 
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock);
 
         try {
             $oA->inPriceCategory('sCatNid');

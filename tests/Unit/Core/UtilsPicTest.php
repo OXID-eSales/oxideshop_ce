@@ -21,11 +21,10 @@
  */
 namespace Unit\Core;
 
-use \stdClass;
-use \oxField;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
+use oxField;
+use oxRegistry;
+use oxTestModules;
+use stdClass;
 
 class UtilsPicTest extends \OxidTestCase
 {
@@ -239,7 +238,7 @@ class UtilsPicTest extends \OxidTestCase
 
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->any())->method('getOne')->will($this->returnValue($response));
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
 
         $this->assertEquals($expectedResult, $myUtils->UNITisPicDeletable($filename, 'test', 'file'));
     }
@@ -253,7 +252,7 @@ class UtilsPicTest extends \OxidTestCase
 
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->never())->method('getOne');
-        oxDb::setDbObject($dbMock);
+        $this->setProtectedClassProperty(Database::getInstance(), 'db' , $dbMock); 
 
         $this->assertEquals(false, $myUtils->UNITisPicDeletable('nopic.jpg', 'test', 'file'));
     }

@@ -24,7 +24,9 @@ namespace Integration\Core;
 
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Database;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
+use ReflectionClass;
 
 /**
  * Class DatabaseTest
@@ -34,49 +36,27 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  */
 class DatabaseTest extends UnitTestCase
 {
-    /**
-     * Test case for oxDb::reportDatabaseConnectionException()
-     */
-    public function testNotifyConnectionErrors()
+    public function testGetDbThrowsDatabaseConnectionException()
     {
-        // TODO Put this in PHPDoc block again: @expectedException DatabaseConnectionException
+        $configFile = $this->getBlankConfigFile();
+        Registry::set('oxConfigFile',$configFile);
+        self::resetDbProperty(Database::getInstance());
 
-        $this->markTestSkipped('Fix this test');
+        $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseConnectionException');
 
-        $oDbInst = $this->getMock("oxDb", array("errorMsg", "errorNo"));
-        $oDbInst->expects($this->never())->method('errorMsg');
-        $oDbInst->expects($this->never())->method('errorNo');
-
-        $oConfigFile = $this->getBlankConfigFile();
-        $oConfigFile->sAdminEmail = "adminemail";
-        $oConfigFile->dbUser = "dbuser";
-
-        $exception = oxNew('Exception');
-
-        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array("getConfig", "sendMail"));
-        $oDb->setConfig($oConfigFile);
-        $oDb->expects($this->once())->method('sendMail')->with($this->equalTo('adminemail'), $this->equalTo('Offline warning!'));
-
-        $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseException');
-        $oDb->notifyConnectionErrors($exception);
+        Database::getDb();
     }
 
-    /**
-     * Test case for oxDb::onConnectionError()
-     *
-     * TODO Move this test to integration tests
-     */
-    public function testOnConnectionError()
+    public function testGetDbThrowsDatabaseNotConfiguredException()
     {
-        $this->markTestSkipped('Fix this test');
+        $configFile = $this->getBlankConfigFile();
+        $configFile->setVar('dbHost','<');
+        Registry::set('oxConfigFile',$configFile);
+        self::resetDbProperty(Database::getInstance());
 
-        $exception = oxNew('OxidEsales\Eshop\Core\exception\DatabaseConnectionException', 'THE CONNECTION ERROR MESSAGE!', 42, new \Exception());
+        $this->setExpectedException('OxidEsales\Eshop\Core\exception\DatabaseNotConfiguredException');
 
-        $oDb = $this->getMock('Unit\Core\oxDbPublicized', array('reportDatabaseConnectionException', 'redirectToMaintenancePageWithoutDbConnection'));
-        $oDb->expects($this->once())->method('reportDatabaseConnectionException')->with($this->equalTo($exception));
-        $oDb->expects($this->once())->method('redirectToMaintenancePageWithoutDbConnection');
-
-        $oDb->onConnectionError($exception);
+        Database::getDb();
     }
 
     /**
@@ -91,15 +71,12 @@ class DatabaseTest extends UnitTestCase
         return new ConfigFile($this->createFile('config.inc.php', '<?php '));
     }
 
-    /**
-     * @param $methodName
-     * @param $params
-     */
-    protected static function callMethod($methodName, array $params = array())
-    {
-        $class = new Database();
-        $reflectedMethod = self::getReflectedMethod($methodName);
+    public static function resetDbProperty($class) {
+        $reflectionClass = new ReflectionClass('OxidEsales\Eshop\Core\Database');
 
-        return $reflectedMethod->invokeArgs($class, $params);
+        $reflectionProperty = $reflectionClass->getProperty('db');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($class, null);
+
     }
 }

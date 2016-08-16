@@ -1855,7 +1855,10 @@ class BaseTest extends \OxidTestCase
         $oField2->binary = false;
         $oField2->unsigned = false;
         $oField2->has_default = true;
-        $oField2->default_value = 1;
+        $oField2->default_value = '1';
+        $oField2->comment = 'Shop id (oxshops)';
+        $oField2->characterSet = null;
+        $oField2->collation = '';
 
         $oField3 = new stdClass();
         $oField3->name = 'OXTYPE';

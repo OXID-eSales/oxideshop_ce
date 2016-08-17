@@ -530,7 +530,7 @@ class UserTest extends \OxidTestCase
 
         // overriding utility functions
         oxTestModules::addFunction("oxUtilsObject", "generateUId", "{ return 'xxx'; }");
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
+        $this->setTime($iCurrTime);
 
         $oUser = $this->getMock('oxuser', array('save'));
         $oUser->expects($this->once())->method('save');

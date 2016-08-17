@@ -363,7 +363,12 @@ class ArticleTest extends \OxidTestCase
     public function testGetActiveCheckQuery()
     {
         $this->getConfig()->setConfigParam('blUseTimeCheck', true);
-        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{return 0;}");
+
+        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue(0));
+        /** @var oxUtilsDate $oUtils */
+        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+
         $sDate = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getRequestTime());
 
         $oArticle = oxNew('oxArticle');
@@ -383,7 +388,12 @@ class ArticleTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('blUseStock', true);
         $this->getConfig()->setConfigParam('blVariantParentBuyable', false);
         $this->getConfig()->setConfigParam('blUseTimeCheck', true);
-        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{return 0;}");
+
+        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue(0));
+        /** @var oxUtilsDate $oUtils */
+        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+
         $sDate = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getRequestTime());
 
         $oArticle = oxNew('oxArticle');
@@ -1932,7 +1942,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGenerateSearchStrForCustomerBought()
     {
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
+        $this->setTime(0);
 
         $oArticle = $this->_createArticle('_testArt', '_testVar');
 
@@ -1962,7 +1972,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGenerateSearchStrForCustomerBoughtForVariants()
     {
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
+        $this->setTime(0);
 
         $oVariant = $this->_createVariant('_testVar', '_testArt');
         $sSelect = $oVariant->UNITgenerateSearchStrForCustomerBought();
@@ -1991,7 +2001,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGenerateSearchStrForCustomerBoughtForVariants2()
     {
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
+        $this->setTime(0);
         $oArticle = $this->_createArticle('_testArt', '_testVar');
 
         $oArticle2 = oxNew('oxArticle');
@@ -2165,7 +2175,11 @@ class ArticleTest extends \OxidTestCase
     public function testGetSqlActiveSnippetDontUseStock()
     {
         $iCurrTime = 0;
-        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{ return $iCurrTime; }");
+
+        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
+        /** @var oxUtilsDate $oUtils */
+        oxRegistry::set('oxUtilsDate', $oUtilsDate);
 
         $this->getConfig()->setConfigParam('blUseStock', false);
         $oArticle = $this->_createArticle('_testArt');
@@ -6836,7 +6850,7 @@ class ArticleTest extends \OxidTestCase
 
         $aQ[] = "CREATE TABLE oxartextends_set1 (OXID char(32) COLLATE latin1_general_ci NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci";
         $aQ[] = "ALTER TABLE oxartextends_set1 ADD OXLONGDESC_5 text COLLATE latin1_general_ci NOT NULL";
-        
+
         $aQ[] = "CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxarticles_1_1 AS SELECT oxarticles.* FROM oxarticles";
         $aQ[] = "CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxarticles_1_0 AS SELECT oxarticles.* FROM oxarticles";
         $aQ[] = "CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxartextends_0 AS SELECT oxartextends.* FROM oxartextends";

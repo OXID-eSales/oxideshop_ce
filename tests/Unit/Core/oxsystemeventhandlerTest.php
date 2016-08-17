@@ -264,9 +264,6 @@ class oxSystemEventHandlerTest extends \oxUnitTestCase
      */
     private function _prepareCurrentTime($iCurrentTime)
     {
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getTime'));
-        $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($iCurrentTime));
-        /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+        $this->setTime($iCurrentTime);
     }
 }

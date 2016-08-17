@@ -193,7 +193,12 @@ class DiscountlistTest extends \OxidTestCase
     public function testGetFilterSelectNoUser()
     {
         $iCurrTime = 0;
-        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{ return $iCurrTime; }");
+
+        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
+        /** @var oxUtilsDate $oUtils */
+        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+
         $sUserTable = getViewName('oxuser');
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
@@ -221,7 +226,7 @@ class DiscountlistTest extends \OxidTestCase
     // admin user
     public function testGetFilterSelectAdminUser()
     {
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
+        $this->setTime(0);
         $sUserTable = getViewName('oxuser');
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');

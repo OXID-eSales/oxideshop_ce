@@ -26,6 +26,7 @@ use OxidEsales\Eshop\Application\Model\Search;
 use OxidEsales\Eshop\Core\Database;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\TestingLibrary\UnitTestCase;
+use oxRegistry;
 use oxTestModules;
 
 class SearchTest extends UnitTestCase
@@ -33,7 +34,7 @@ class SearchTest extends UnitTestCase
 
     /** @var  Search */
     private $_oSearchHandler;
-    
+
     /** @var TableViewNameGenerator */
     private $tableViewNameGenerator;
 
@@ -651,7 +652,7 @@ class SearchTest extends UnitTestCase
     public function testGetWhere()
     {
         $this->cleanTmpDir();
-        
+
         $articleTable = $this->tableViewNameGenerator->getViewName('oxarticles', 1);
         $expectedWhere = " and ( (  $articleTable.oxtitle like '%a%' or  $articleTable.oxshortdesc like '%a%' or  $articleTable.oxsearchkeys like '%a%' or  $articleTable.oxartnum like '%a%' )  ) ";
 
@@ -705,7 +706,7 @@ class SearchTest extends UnitTestCase
     public function testGetSearchSelectPassingAllWhatIsNeeded()
     {
         $iCurrTime = time();
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
+        $this->setTime($iCurrTime);
 
         $this->getConfig()->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
 
@@ -761,7 +762,7 @@ class SearchTest extends UnitTestCase
         $this->addToDatabase($sInsert, 'oxcategories');
 
         $iCurrTime = time();
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
+        $this->setTime($iCurrTime);
 
         $this->getConfig()->setConfigParam('aSearchCols', array('oxtitle'));
 
@@ -802,7 +803,11 @@ class SearchTest extends UnitTestCase
         $this->getConfig()->setConfigParam('blUseRightsRoles', 0);
 
         $iCurrTime = 0;
-        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{ return $iCurrTime; }");
+
+        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
+        /** @var oxUtilsDate $oUtils */
+        oxRegistry::set('oxUtilsDate', $oUtilsDate);
 
         $sSearchDate = date('Y-m-d H:i:s', $iCurrTime);
         $sArticleTable = $sTable = $this->tableViewNameGenerator->getViewName('oxarticles');

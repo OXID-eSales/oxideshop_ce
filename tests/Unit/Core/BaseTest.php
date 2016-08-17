@@ -40,7 +40,6 @@ require_once TEST_LIBRARY_HELPERS_PATH . 'oxBaseHelper.php';
  */
 class _oxBase extends oxBase
 {
-
     /**
      * Constructor, with clean cache key.
      *
@@ -233,6 +232,7 @@ class oxUtilsNoCaching extends oxUtils
  */
 class BaseTest extends \OxidTestCase
 {
+    private static $count = 0;
 
     /**
      * Initialize the fixture.
@@ -241,6 +241,8 @@ class BaseTest extends \OxidTestCase
      */
     protected function setup()
     {
+        self::$count++;
+
         parent::setUp();
 
         $this->cleanUpTable('oxactions');
@@ -2126,7 +2128,11 @@ class BaseTest extends \OxidTestCase
     public function  testGetSqlActiveSnippet()
     {
         $iCurrTime = 1453734000; //some rounded timestamp
-        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{ return $iCurrTime; }");
+
+        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
+        /** @var oxUtilsDate $oUtils */
+        oxRegistry::set('oxUtilsDate', $oUtilsDate);
 
         $aFields = array('oxactive' => 1, 'oxactivefrom' => 1, 'oxactiveto' => 1);
         $sDate = date('Y-m-d H:i:s', $iCurrTime);

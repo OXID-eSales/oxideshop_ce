@@ -32,8 +32,6 @@ class ServerCheckerTest extends \OxidTestCase
     public function tearDown()
     {
         parent::tearDown();
-        $oUtilsDate = oxNew('oxUtilsDate');
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
     }
 
     public function providerCheckWhenNodeIsValid()
@@ -56,7 +54,7 @@ class ServerCheckerTest extends \OxidTestCase
      */
     public function testCheckWhenNodeIsValid($iCurrentTime)
     {
-        $this->_prepareCurrentTime($iCurrentTime);
+        $this->setTime($iCurrentTime);
         $oServerNodeChecker = oxNew('oxServerChecker');
 
         $this->assertTrue($oServerNodeChecker->check($this->_getMockedNode()), 'Server node must be valid.');
@@ -86,7 +84,7 @@ class ServerCheckerTest extends \OxidTestCase
      */
     public function testCheckIfNodeIsNotValid($iCurrentTime)
     {
-        $this->_prepareCurrentTime($iCurrentTime);
+        $this->setTime($iCurrentTime);
         $oServerNodeChecker = oxNew('oxServerChecker');
 
         $this->assertFalse($oServerNodeChecker->check($this->_getMockedNode()), 'Server node must be not valid.');
@@ -100,17 +98,6 @@ class ServerCheckerTest extends \OxidTestCase
         $oNode->expects($this->any())->method('getTimestamp')->will($this->returnValue(null));
 
         $this->assertFalse($oServerNodeChecker->check($oNode), 'Server node must be not valid when returns timestamp null.');
-    }
-
-    /**
-     * @param int $iCurrentTime
-     */
-    private function _prepareCurrentTime($iCurrentTime)
-    {
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getTime'));
-        $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($iCurrentTime));
-        /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
     }
 
     /**

@@ -460,7 +460,11 @@ class I18ntest extends \OxidTestCase
     public function testGetSqlActiveSnippetForceCoreActiveMultilang()
     {
         $iCurrTime = 1453734000; //some rounded timestamp
-        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{ return $iCurrTime; }");
+
+        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
+        /** @var oxUtilsDate $oUtils */
+        oxRegistry::set('oxUtilsDate', $oUtilsDate);
 
         $oI18n = $this->getMock('oxI18n', array('getViewName'));
         $oI18n->expects($this->once())->method('getViewName')->with($this->equalTo(null))->will($this->returnValue('oxi18n'));
@@ -484,7 +488,11 @@ class I18ntest extends \OxidTestCase
     public function testGetSqlActiveSnippet()
     {
         $iCurrTime = 1453734000; //some rounded timestamp
-        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{ return $iCurrTime; }");
+
+        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
+        /** @var oxUtilsDate $oUtils */
+        oxRegistry::set('oxUtilsDate', $oUtilsDate);
 
         $sTable = 'oxi18n';
 

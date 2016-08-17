@@ -517,7 +517,7 @@ class DeliverylistTest extends \OxidTestCase
      */
     public function testGetFilterSelectWithoutUserAndCountryId()
     {
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
+        $this->setTime(0);
         $sUserTable = getViewName('oxuser');
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
@@ -553,7 +553,7 @@ class DeliverylistTest extends \OxidTestCase
      */
     public function testGetFilterSelectWitoutUserAndWithCountryId()
     {
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
+        $this->setTime(0);
         $sUserTable = getViewName('oxuser');
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
@@ -591,7 +591,7 @@ class DeliverylistTest extends \OxidTestCase
      */
     public function testGetFilterSelectWithUserAndCountryId()
     {
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
+        $this->setTime(0);
         $sUserTable = getViewName('oxuser');
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
@@ -628,7 +628,7 @@ class DeliverylistTest extends \OxidTestCase
      */
     public function testGetFilterSelectWithUserAndCountryIdAndWithoutGroups()
     {
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
+        $this->setTime(0);
         $sUserTable = getViewName('oxuser');
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');

@@ -42,7 +42,7 @@ class ReviewTest extends \OxidTestCase
     {
         parent::setUp();
         $this->_iReviewTime = time();
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $this->_iReviewTime; }");
+        $this->setTime($this->_iReviewTime);
 
         $this->_oReview = oxNew('oxReview');
         $this->_oReview->setId('_testId');

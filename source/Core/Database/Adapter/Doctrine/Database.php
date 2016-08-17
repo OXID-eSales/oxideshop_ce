@@ -997,6 +997,15 @@ class Database implements DatabaseInterface
     }
 
     /**
+     * Checks whether a transaction is currently active.
+     *
+     * @return boolean TRUE if a transaction is currently active, FALSE otherwise.
+     */
+    public function isTransactionActive() {
+        return $this->connection->isTransactionActive();
+    }
+
+    /**
      * Get the value of a meta column key.
      *
      * @param array  $column The meta column, where the value has to be fetched.

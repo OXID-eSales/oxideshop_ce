@@ -367,6 +367,24 @@ interface DatabaseInterface
     public function setTransactionIsolationLevel($level);
 
     /**
+     * Return true, if the connection is marked rollbackOnly.
+     *
+     * Doctrine manages nested transaction the following way:
+     * If any of the inner transactions is rolled back, all the outer transactions will have to be rolled back also.
+     * For that reason the connection will be marked as rollbackOnly and any commitTransaction will throw an exception.
+     *
+     * @return bool
+     */
+    public function isRollbackOnly();
+
+    /**
+     * Checks whether a transaction is currently active.
+     *
+     * @return boolean TRUE if a transaction is currently active, FALSE otherwise.
+     */
+    public function isTransactionActive();
+
+    /**
      * Return string representing the row ID of the last row that was inserted into
      * the database.
      * Returns 0 for tables without autoincrement field.

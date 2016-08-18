@@ -352,7 +352,8 @@ class Controller extends Core
         $oDb->setMySqlCollation($iUtfMode);
 
         try {
-            $oDb->queryFile("$sqlDir/database.sql");
+            $oDb->queryFile("$sqlDir/database_schema.sql");
+            $oDb->queryFile("$sqlDir/initial_data.sql");
         } catch (Exception $oExcp) {
             $oView->setMessage($oExcp->getMessage());
 

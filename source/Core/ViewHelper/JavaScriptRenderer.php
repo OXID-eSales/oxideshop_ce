@@ -44,7 +44,7 @@ class JavaScriptRenderer
         $output = '';
         $suffix = $isDynamic ? '_dynamic' : '';
         $filesParameterName = JavaScriptRegistrator::FILES_PARAMETER_NAME . $suffix;
-        $filesParameterNameAsync = JavaScriptRegistrator::FILES_PARAMETER_NAME . '_async' . $suffix;
+        $filesParameterNameAsync = JavaScriptRegistrator::FILES_PARAMETER_NAME . '_async';
         $scriptsParameterName = JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . $suffix;
 
         $isAjaxRequest = $this->isAjaxRequest();

@@ -49,7 +49,7 @@ class StyleRenderer
             $conditionalStyles = (array) $config->getGlobalParameter(StyleRegistrator::CONDITIONAL_STYLES_PARAMETER_NAME . $suffix);
             $output .= $this->formConditionalStylesOutput($conditionalStyles);
 
-            $stylesAsync = (array) $config->getGlobalParameter(StyleRegistrator::STYLES_PARAMETER_NAME . '_async' . $suffix);
+            $stylesAsync = (array) $config->getGlobalParameter(StyleRegistrator::STYLES_PARAMETER_NAME . '_async');
             $this->formStylesAsyncOutput($stylesAsync);
         }
 

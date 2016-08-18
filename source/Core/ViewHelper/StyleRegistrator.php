@@ -78,8 +78,8 @@ class StyleRegistrator
         preg_match("/\.min\./", $parts[0], $match);
         if (!count($match)) {
             $info = pathinfo($file);
-            $filename = basename($info['filename'].'.min.'.$info['extension']);
-            $minifiedPath = 'css/min/' . $filename;
+            $filename = basename($info['filename'] . '.min.' . $info['extension']);
+            $minifiedPath = $info['dirname'] . $filename;
             $url = $config->getResourceUrl($minifiedPath, $config->isAdmin());
         }
         if (!isset($url) || empty($url)) {

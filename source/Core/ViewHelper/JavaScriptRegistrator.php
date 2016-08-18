@@ -96,16 +96,7 @@ class JavaScriptRegistrator
     {
         $config = oxRegistry::getConfig();
         $parts = explode('?', $file);
-        preg_match("/.min./", $parts[0], $match);
-        if (!count($match)) {
-            $info = pathinfo($file);
-            $filename = basename($info['filename'].'.min.'.$info['extension']);
-            $minifiedPath = 'js/min/' . $filename;
-            $url = $config->getResourceUrl($minifiedPath, $config->isAdmin());
-        }
-        if (!isset($url) || empty($url)) {
-            $url = $config->getResourceUrl($parts[0], $config->isAdmin());
-        }
+        $url = $config->getResourceUrl($parts[0], $config->isAdmin());
         $parameters = $parts[1];
         if (empty($parameters)) {
             $path = $config->getResourcePath($file, $config->isAdmin());

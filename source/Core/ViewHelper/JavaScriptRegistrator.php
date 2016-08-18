@@ -63,9 +63,7 @@ class JavaScriptRegistrator
         $config = oxRegistry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
         $filesParameterName = static::FILES_PARAMETER_NAME . $suffix;
-        $filesParameterNameAsync = static::FILES_PARAMETER_NAME . '_async' . $suffix;
         $includes = (array) $config->getGlobalParameter($filesParameterName);
-        $includesAsync = (array) $config->getGlobalParameter($filesParameterNameAsync);
 
         if (!preg_match('#^https?://#', $file)) {
             $file = $this->formLocalFileUrl($file);

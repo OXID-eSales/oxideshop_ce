@@ -22,6 +22,10 @@
 
 namespace OxidEsales\Eshop\Application\Model;
 
+use Exception;
+use oxArticleInputException;
+use oxNoArticleException;
+use oxOutOfStockException;
 use oxField;
 use oxRegistry;
 use oxDb;

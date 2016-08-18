@@ -49,7 +49,6 @@ function smarty_function_oxscript($params, &$smarty)
     $priority = !empty($params['priority']) ? $params['priority'] : 3;
     $widget = !empty($params['widget']) ? $params['widget'] : '';
     $isInWidget = !empty($params['inWidget']) ? $params['inWidget'] : false;
-    $isAsync = (!empty($params['async']) && ( $params['async'] == 'true' || $params['async'] == '1')) ? true : false;
     $output = '';
 
     if (isset($params['add'])) {
@@ -67,7 +66,7 @@ function smarty_function_oxscript($params, &$smarty)
         }
 
         $register = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator');
-        $register->addFile($params['include'], $priority, $isDynamic, $isAsync);
+        $register->addFile($params['include'], $priority, $isDynamic);
     } else {
         $renderer = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptRenderer');
         $output = $renderer->render($widget, $isInWidget, $isDynamic);

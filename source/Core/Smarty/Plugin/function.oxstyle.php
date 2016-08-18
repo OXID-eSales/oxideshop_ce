@@ -47,12 +47,11 @@ function smarty_function_oxstyle($params, &$smarty)
     $widget = !empty($params['widget']) ? $params['widget'] : '';
     $forceRender = !empty($params['inWidget']) ? $params['inWidget'] : false;
     $isDynamic = isset($smarty->_tpl_vars["__oxid_include_dynamic"]) ? (bool)$smarty->_tpl_vars["__oxid_include_dynamic"] : false;
-    $isAsync = (!empty($params['async']) && ( $params['async'] == "true" || $params['async'] == "1")) ? true : false;
 
     $output = '';
     if (!empty($params['include'])) {
         $registrator = oxNew('OxidEsales\Eshop\Core\ViewHelper\StyleRegistrator');
-        $registrator->addFile($params['include'], $params['if'], $isDynamic, $isAsync);
+        $registrator->addFile($params['include'], $params['if'], $isDynamic);
     } else {
         $renderer = oxNew('OxidEsales\Eshop\Core\ViewHelper\StyleRenderer');
         $output = $renderer->render($widget, $forceRender, $isDynamic);

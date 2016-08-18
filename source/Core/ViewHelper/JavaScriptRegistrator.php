@@ -57,9 +57,8 @@ class JavaScriptRegistrator
      * @param string $file
      * @param int    $priority
      * @param bool   $isDynamic
-     * @param bool   $isAsync
      */
-    public function addFile($file, $priority, $isDynamic = false, $isAsync = false)
+    public function addFile($file, $priority, $isDynamic = false)
     {
         $config = oxRegistry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
@@ -73,15 +72,9 @@ class JavaScriptRegistrator
         }
 
         if ($file) {
-            if(!$isAsync) {
-                $includes[$priority][] = $file;
-                $includes[$priority] = array_unique($includes[$priority]);
-                $config->setGlobalParameter($filesParameterName, $includes);
-            } else {
-                $includesAsync[$priority][] = $file;
-                $includesAsync[$priority] = array_unique($includesAsync[$priority]);
-                $config->setGlobalParameter($filesParameterNameAsync, $includesAsync);
-            }
+            $includes[$priority][] = $file;
+            $includes[$priority] = array_unique($includes[$priority]);
+            $config->setGlobalParameter($filesParameterName, $includes);
         }
     }
 

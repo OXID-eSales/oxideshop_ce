@@ -43,7 +43,7 @@ class StyleRegistrator
     public function addFile($style, $condition, $isDynamic, $isAsync)
     {
         $config = oxRegistry::getConfig();
-        $suffix = $isDynamic ? '_dynamic' : '';
+        $suffix = $isDynamic ? '_dynamic' : $isAsync ? '_async' : '';
 
         if (!preg_match('#^https?://#', $style)) {
             $style = $this->formLocalFileUrl($style);
@@ -56,11 +56,7 @@ class StyleRegistrator
                 $conditionalStyles[$style] = $condition;
                 $config->setGlobalParameter($conditionalStylesParameterName, $conditionalStyles);
             } else {
-                if(!$isAsync) {
-                    $stylesParameterName = static::STYLES_PARAMETER_NAME . $suffix;
-                } else {
-                    $stylesParameterName = static::STYLES_PARAMETER_NAME . '_async' . $suffix;
-                }
+                $stylesParameterName = static::STYLES_PARAMETER_NAME . $suffix;
                 $styles = (array)$config->getGlobalParameter($stylesParameterName);
                 $styles[] = $style;
                 $styles = array_unique($styles);

@@ -62,7 +62,7 @@ class JavaScriptRenderer
                 }
 
                 $files = $this->prepareFilesForRendering($config->getGlobalParameter($filesParameterNameAsync), $widget);
-                $output .= $this->formFilesAsyncOutput($files, $widget);
+                $output .= $this->formFilesOutput($files, $widget, true);
                 $config->setGlobalParameter($filesParameterNameAsync, null);
             }
 
@@ -122,10 +122,11 @@ class JavaScriptRenderer
      *
      * @param array  $includes String files to include.
      * @param string $widget   Widget name.
+     * @param bool   $isAsync load js async
      *
      * @return string
      */
-    protected function formFilesOutput($includes, $widget)
+    protected function formFilesOutput($includes, $widget, $isAsync = false)
     {
         if (!count($includes)) {
             return '';
@@ -135,48 +136,8 @@ class JavaScriptRenderer
         $usedSources = array();
         $widgets = array();
         $widgetTemplate = "WidgetsHandler.registerFile('%s', '%s');";
-        $scriptTemplate = '<script type="text/javascript" src="%s"></script>';
-        foreach ($includes as $priority) {
-            foreach ($priority as $source) {
-                if (!in_array($source, $usedSources)) {
-                    $widgets[] = sprintf(($widget ? $widgetTemplate : $scriptTemplate), $source, $widget);
-                    $usedSources[] = $source;
-                }
-            }
-        }
-        $output = implode(PHP_EOL, $widgets);
-        if ($widget && !empty($output)) {
-            $output = <<<JS
-<script type='text/javascript'>
-    window.addEventListener('load', function() {
-        $output
-    }, false)
-</script>
-JS;
-        }
-
-        return $output;
-    }
-
-    /**
-     * Form output for async includes.
-     *
-     * @param array  $includes String files to include.
-     * @param string $widget   Widget name.
-     *
-     * @return string
-     */
-    protected function formFilesAsyncOutput($includes, $widget)
-    {
-        if (!count($includes)) {
-            return '';
-        }
-
-        ksort($includes); // Sort by priority.
-        $usedSources = array();
-        $widgets = array();
-        $widgetTemplate = "WidgetsHandler.registerFile('%s', '%s');";
-        $scriptTemplate = '<script type="text/javascript" src="%s" async></script>';
+        $async = $isAsync ? ' async' : '';
+        $scriptTemplate = '<script type="text/javascript" src="%s"'.$async.'></script>';
         foreach ($includes as $priority) {
             foreach ($priority as $source) {
                 if (!in_array($source, $usedSources)) {

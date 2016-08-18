@@ -62,26 +62,18 @@ class JavaScriptRegistrator
     public function addFile($file, $priority, $isDynamic = false, $isAsync = false)
     {
         $config = oxRegistry::getConfig();
-        $suffix = $isDynamic ? '_dynamic' : '';
+        $suffix = $isDynamic ? '_dynamic' : $isAsync ? '_async' : '';
         $filesParameterName = static::FILES_PARAMETER_NAME . $suffix;
-        $filesParameterNameAsync = static::FILES_PARAMETER_NAME . '_async' . $suffix;
         $includes = (array) $config->getGlobalParameter($filesParameterName);
-        $includesAsync = (array) $config->getGlobalParameter($filesParameterNameAsync);
 
         if (!preg_match('#^https?://#', $file)) {
             $file = $this->formLocalFileUrl($file);
         }
 
         if ($file) {
-            if(!$isAsync) {
-                $includes[$priority][] = $file;
-                $includes[$priority] = array_unique($includes[$priority]);
-                $config->setGlobalParameter($filesParameterName, $includes);
-            } else {
-                $includesAsync[$priority][] = $file;
-                $includesAsync[$priority] = array_unique($includesAsync[$priority]);
-                $config->setGlobalParameter($filesParameterNameAsync, $includesAsync);
-            }
+            $includes[$priority][] = $file;
+            $includes[$priority] = array_unique($includes[$priority]);
+            $config->setGlobalParameter($filesParameterName, $includes);
         }
     }
 

@@ -31,7 +31,6 @@
  * Add [{oxstyle include="oxid.css"}] to include local css file.
  * Add [{oxstyle include="oxid.css?20120413"}] to include local css file with query string part.
  * Add [{oxstyle include="http://www.oxid-esales.com/oxid.css"}] to include external css file.
- * Add [{oxstyle include=oxid.css" async="true"}] to include local css async
  *
  * IMPORTANT!
  * Do not forget to add plain [{oxstyle}] tag where you need to output all collected css includes.

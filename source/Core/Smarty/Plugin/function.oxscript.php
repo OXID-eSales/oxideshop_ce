@@ -32,7 +32,6 @@
  * Add [{oxscript include="oxid.js"}] to include local javascript file.
  * Add [{oxscript include="oxid.js?20120413"}] to include local javascript file with query string part.
  * Add [{oxscript include="http://www.oxid-esales.com/oxid.js"}] to include external javascript file.
- * Add [{oxscript include="oxid.js" async="true"}] to include local javascript async
  *
  * IMPORTANT!
  * Do not forget to add plain [{oxscript}] tag before closing body tag, to output all collected script includes and calls.

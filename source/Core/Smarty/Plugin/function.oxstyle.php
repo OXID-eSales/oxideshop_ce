@@ -31,6 +31,7 @@
  * Add [{oxstyle include="oxid.css"}] to include local css file.
  * Add [{oxstyle include="oxid.css?20120413"}] to include local css file with query string part.
  * Add [{oxstyle include="http://www.oxid-esales.com/oxid.css"}] to include external css file.
+ * Add [{oxstyle include=oxid.css" async="true"}] to include local css async
  *
  * IMPORTANT!
  * Do not forget to add plain [{oxstyle}] tag where you need to output all collected css includes.
@@ -46,11 +47,12 @@ function smarty_function_oxstyle($params, &$smarty)
     $widget = !empty($params['widget']) ? $params['widget'] : '';
     $forceRender = !empty($params['inWidget']) ? $params['inWidget'] : false;
     $isDynamic = isset($smarty->_tpl_vars["__oxid_include_dynamic"]) ? (bool)$smarty->_tpl_vars["__oxid_include_dynamic"] : false;
+    $isAsync = (!empty($params['async']) && ( $params['async'] == "true" || $params['async'] == "1")) ? true : false;
 
     $output = '';
     if (!empty($params['include'])) {
         $registrator = oxNew('OxidEsales\Eshop\Core\ViewHelper\StyleRegistrator');
-        $registrator->addFile($params['include'], $params['if'], $isDynamic);
+        $registrator->addFile($params['include'], $params['if'], $isDynamic, $isAsync);
     } else {
         $renderer = oxNew('OxidEsales\Eshop\Core\ViewHelper\StyleRenderer');
         $output = $renderer->render($widget, $forceRender, $isDynamic);

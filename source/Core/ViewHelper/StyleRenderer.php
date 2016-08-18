@@ -48,6 +48,9 @@ class StyleRenderer
             $output .= PHP_EOL;
             $conditionalStyles = (array) $config->getGlobalParameter(StyleRegistrator::CONDITIONAL_STYLES_PARAMETER_NAME . $suffix);
             $output .= $this->formConditionalStylesOutput($conditionalStyles);
+
+            $stylesAsync = (array) $config->getGlobalParameter(StyleRegistrator::STYLES_PARAMETER_NAME . '_async' . $suffix);
+            $this->formStylesAsyncOutput($stylesAsync);
         }
 
         return $output;
@@ -79,6 +82,32 @@ class StyleRenderer
         }
 
         return implode(PHP_EOL, $preparedStyles);
+    }
+
+    /**
+     * @param array $styles
+     *
+     * @return null
+     */
+    protected function formStylesAsyncOutput($styles)
+    {
+        if(!count($styles)) return;
+
+        $register = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator');
+        $loadCSS = <<<JS
+/*!
+ loadCSS: load a CSS file asynchronously.
+ [c]2014 @scottjehl, Filament Group, Inc.
+ Licensed MIT
+ */
+function loadCSS(href,before,media){var ss=window.document.createElement("link");var ref=before||window.document.getElementsByTagName("script")[0];ss.rel="stylesheet";ss.href=href;ss.media="only x";ref.parentNode.insertBefore(ss,ref);setTimeout(function(){ss.media=media||"all";});}
+JS;
+        $register->addSnippet($loadCSS);
+
+        $template = 'loadCSS("%s", null, null);';
+        foreach ($styles as $style) {
+            $register->addSnippet(sprintf($template, $style), false);
+        }
     }
 
     /**

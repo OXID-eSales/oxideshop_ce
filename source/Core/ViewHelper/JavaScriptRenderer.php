@@ -44,6 +44,7 @@ class JavaScriptRenderer
         $output = '';
         $suffix = $isDynamic ? '_dynamic' : '';
         $filesParameterName = JavaScriptRegistrator::FILES_PARAMETER_NAME . $suffix;
+        $filesParameterNameAsync = JavaScriptRegistrator::FILES_PARAMETER_NAME . '_async' . $suffix;
         $scriptsParameterName = JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . $suffix;
 
         $isAjaxRequest = $this->isAjaxRequest();
@@ -59,6 +60,10 @@ class JavaScriptRenderer
                     $output .= $this->formFilesOutput($dynamicIncludes, $widget);
                     $config->setGlobalParameter(JavaScriptRegistrator::FILES_PARAMETER_NAME . '_dynamic', null);
                 }
+
+                $files = $this->prepareFilesForRendering($config->getGlobalParameter($filesParameterNameAsync), $widget);
+                $output .= $this->formFilesAsyncOutput($files, $widget);
+                $config->setGlobalParameter($filesParameterNameAsync, null);
             }
 
             // Form output for adds.
@@ -131,6 +136,47 @@ class JavaScriptRenderer
         $widgets = array();
         $widgetTemplate = "WidgetsHandler.registerFile('%s', '%s');";
         $scriptTemplate = '<script type="text/javascript" src="%s"></script>';
+        foreach ($includes as $priority) {
+            foreach ($priority as $source) {
+                if (!in_array($source, $usedSources)) {
+                    $widgets[] = sprintf(($widget ? $widgetTemplate : $scriptTemplate), $source, $widget);
+                    $usedSources[] = $source;
+                }
+            }
+        }
+        $output = implode(PHP_EOL, $widgets);
+        if ($widget && !empty($output)) {
+            $output = <<<JS
+<script type='text/javascript'>
+    window.addEventListener('load', function() {
+        $output
+    }, false)
+</script>
+JS;
+        }
+
+        return $output;
+    }
+
+    /**
+     * Form output for async includes.
+     *
+     * @param array  $includes String files to include.
+     * @param string $widget   Widget name.
+     *
+     * @return string
+     */
+    protected function formFilesAsyncOutput($includes, $widget)
+    {
+        if (!count($includes)) {
+            return '';
+        }
+
+        ksort($includes); // Sort by priority.
+        $usedSources = array();
+        $widgets = array();
+        $widgetTemplate = "WidgetsHandler.registerFile('%s', '%s');";
+        $scriptTemplate = '<script type="text/javascript" src="%s" async></script>';
         foreach ($includes as $priority) {
             foreach ($priority as $source) {
                 if (!in_array($source, $usedSources)) {

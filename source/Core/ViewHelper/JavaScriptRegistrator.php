@@ -57,22 +57,31 @@ class JavaScriptRegistrator
      * @param string $file
      * @param int    $priority
      * @param bool   $isDynamic
+     * @param bool   $isAsync
      */
-    public function addFile($file, $priority, $isDynamic = false)
+    public function addFile($file, $priority, $isDynamic = false, $isAsync = false)
     {
         $config = oxRegistry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
         $filesParameterName = static::FILES_PARAMETER_NAME . $suffix;
+        $filesParameterNameAsync = static::FILES_PARAMETER_NAME . '_async' . $suffix;
         $includes = (array) $config->getGlobalParameter($filesParameterName);
+        $includesAsync = (array) $config->getGlobalParameter($filesParameterNameAsync);
 
         if (!preg_match('#^https?://#', $file)) {
             $file = $this->formLocalFileUrl($file);
         }
 
         if ($file) {
-            $includes[$priority][] = $file;
-            $includes[$priority] = array_unique($includes[$priority]);
-            $config->setGlobalParameter($filesParameterName, $includes);
+            if(!$isAsync) {
+                $includes[$priority][] = $file;
+                $includes[$priority] = array_unique($includes[$priority]);
+                $config->setGlobalParameter($filesParameterName, $includes);
+            } else {
+                $includesAsync[$priority][] = $file;
+                $includesAsync[$priority] = array_unique($includesAsync[$priority]);
+                $config->setGlobalParameter($filesParameterNameAsync, $includesAsync);
+            }
         }
     }
 
@@ -87,7 +96,16 @@ class JavaScriptRegistrator
     {
         $config = oxRegistry::getConfig();
         $parts = explode('?', $file);
-        $url = $config->getResourceUrl($parts[0], $config->isAdmin());
+        preg_match("/.min./", $parts[0], $match);
+        if (!count($match)) {
+            $info = pathinfo($file);
+            $filename = basename($info['filename'].'.min.'.$info['extension']);
+            $minifiedPath = 'js/min/' . $filename;
+            $url = $config->getResourceUrl($minifiedPath, $config->isAdmin());
+        }
+        if (!isset($url) || empty($url)) {
+            $url = $config->getResourceUrl($parts[0], $config->isAdmin());
+        }
         $parameters = $parts[1];
         if (empty($parameters)) {
             $path = $config->getResourcePath($file, $config->isAdmin());

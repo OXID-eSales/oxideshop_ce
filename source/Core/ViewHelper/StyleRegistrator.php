@@ -38,8 +38,9 @@ class StyleRegistrator
      * @param string $style
      * @param string $condition
      * @param bool   $isDynamic
+     * @param bool   $isAsync
      */
-    public function addFile($style, $condition, $isDynamic)
+    public function addFile($style, $condition, $isDynamic, $isAsync)
     {
         $config = oxRegistry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
@@ -55,8 +56,12 @@ class StyleRegistrator
                 $conditionalStyles[$style] = $condition;
                 $config->setGlobalParameter($conditionalStylesParameterName, $conditionalStyles);
             } else {
-                $stylesParameterName = static::STYLES_PARAMETER_NAME . $suffix;
-                $styles = (array) $config->getGlobalParameter($stylesParameterName);
+                if(!$isAsync) {
+                    $stylesParameterName = static::STYLES_PARAMETER_NAME . $suffix;
+                } else {
+                    $stylesParameterName = static::STYLES_PARAMETER_NAME . '_async' . $suffix;
+                }
+                $styles = (array)$config->getGlobalParameter($stylesParameterName);
                 $styles[] = $style;
                 $styles = array_unique($styles);
                 $config->setGlobalParameter($stylesParameterName, $styles);
@@ -75,7 +80,16 @@ class StyleRegistrator
     {
         $config = oxRegistry::getConfig();
         $parts = explode('?', $file);
-        $url = $config->getResourceUrl($parts[0], $config->isAdmin());
+        preg_match("/.min./", $parts[0], $match);
+        if (!count($match)) {
+            $info = pathinfo($file);
+            $filename = basename($info['filename'].'.min.'.$info['extension']);
+            $minifiedPath = 'css/min/' . $filename;
+            $url = $config->getResourceUrl($minifiedPath, $config->isAdmin());
+        }
+        if (!isset($url) || empty($url)) {
+            $url = $config->getResourceUrl($parts[0], $config->isAdmin());
+        }
         $parameters = $parts[1];
         if (empty($parameters)) {
             $path = $config->getResourcePath($file, $config->isAdmin());

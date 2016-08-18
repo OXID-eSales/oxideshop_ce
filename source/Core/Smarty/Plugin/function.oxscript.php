@@ -32,6 +32,7 @@
  * Add [{oxscript include="oxid.js"}] to include local javascript file.
  * Add [{oxscript include="oxid.js?20120413"}] to include local javascript file with query string part.
  * Add [{oxscript include="http://www.oxid-esales.com/oxid.js"}] to include external javascript file.
+ * Add [{oxscript include="oxid.js" async="true"}] to include local javascript async
  *
  * IMPORTANT!
  * Do not forget to add plain [{oxscript}] tag before closing body tag, to output all collected script includes and calls.
@@ -48,6 +49,7 @@ function smarty_function_oxscript($params, &$smarty)
     $priority = !empty($params['priority']) ? $params['priority'] : 3;
     $widget = !empty($params['widget']) ? $params['widget'] : '';
     $isInWidget = !empty($params['inWidget']) ? $params['inWidget'] : false;
+    $isAsync = (!empty($params['async']) && ( $params['async'] == 'true' || $params['async'] == '1')) ? true : false;
     $output = '';
 
     if (isset($params['add'])) {
@@ -65,7 +67,7 @@ function smarty_function_oxscript($params, &$smarty)
         }
 
         $register = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator');
-        $register->addFile($params['include'], $priority, $isDynamic);
+        $register->addFile($params['include'], $priority, $isDynamic, $isAsync);
     } else {
         $renderer = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptRenderer');
         $output = $renderer->render($widget, $isInWidget, $isDynamic);

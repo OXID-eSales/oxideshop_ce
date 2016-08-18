@@ -89,7 +89,7 @@ class JavaScriptRegistrator
     {
         $config = oxRegistry::getConfig();
         $parts = explode('?', $file);
-        preg_match("/.min./", $parts[0], $match);
+        preg_match("/\.min\./", $parts[0], $match);
         if (!count($match)) {
             $info = pathinfo($file);
             $filename = basename($info['filename'].'.min.'.$info['extension']);

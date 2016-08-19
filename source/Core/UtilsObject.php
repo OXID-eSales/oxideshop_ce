@@ -128,11 +128,12 @@ class UtilsObject
         }
 
         if (!self::$_instance instanceof UtilsObject) {
-            // allow modules
+            
             $oUtilsObject = new UtilsObject();
-
-            $classMapProvider = new ClassMapProvider(new EditionSelector());
-            $classNameProvider = new ClassNameProvider($classMapProvider->getOverridableClassMap());
+            // set the not overloaded(by modules) version early so oxnew can be used internally 
+            self::$_instance = $oUtilsObject;
+            // null for classNameProvider because it is generated in the constructor
+            $classNameProvider = null;
 
             $moduleVariablesCache = $oUtilsObject->oxNew('oxFileCache');
             $shopIdCalculator = $oUtilsObject->oxNew('oxShopIdCalculator', $moduleVariablesCache);
@@ -140,7 +141,8 @@ class UtilsObject
             $subShopSpecific = $oUtilsObject->oxNew('oxSubShopSpecificFileCache', $shopIdCalculator);
             $moduleVariablesLocator = $oUtilsObject->oxNew('oxModuleVariablesLocator', $subShopSpecific, $shopIdCalculator);
             $moduleChainsGenerator = $oUtilsObject->oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
-
+            
+            //generate UtilsObject again by oxnew to allow overloading by modules
             self::$_instance = $oUtilsObject->oxNew('oxUtilsObject', $classNameProvider, $moduleChainsGenerator, $shopIdCalculator);
         }
 

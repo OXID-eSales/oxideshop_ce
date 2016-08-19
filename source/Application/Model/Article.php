@@ -1551,20 +1551,36 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         if (!isset($this->_aVariantSelections[$iLimit])) {
             $aVariantSelections = false;
             if ($this->oxarticles__oxvarcount->value) {
-                $oVariants = $this->getVariants(false);
-                $aVariantSelections = oxNew("oxVariantHandler")->buildVariantSelections($this->oxarticles__oxvarname->getRawValue(),
-                    $oVariants, $aFilterIds, $sActVariantId, $iLimit);
-
-                if (!empty($oVariants) && empty($aVariantSelections['rawselections'])) {
+                $aVariants = $this->getVariantsVarSelect();
+                $aVariantSelections = oxNew("oxVariantHandler")->buildVariantSelections($this->oxarticles__oxvarname->getRawValue(), $aVariants, $aFilterIds, $sActVariantId, $iLimit);
+                if (!empty($aVariants) && empty($aVariantSelections['rawselections'])) {
                     $aVariantSelections = false;
+                } else {
                 }
+
             }
             $this->_aVariantSelections[$iLimit] = $aVariantSelections;
         }
-
         return $this->_aVariantSelections[$iLimit];
     }
 
+    /**
+     * Returns array of oxid and oxvarselect for buyable variants
+     *
+     * @return array
+     */
+    public function getVariantsVarSelect()
+    {
+        $sArticleTable = 'oxarticles';
+        $blUseCoreTable = true;
+        $blRemoveNotOrderables = true;
+        $sSelect = "SELECT oxid, oxvarselect FROM  $sArticleTable WHERE " .
+            $this->getActiveCheckQuery($blUseCoreTable) .
+            $this->getVariantsQuery($blRemoveNotOrderables, $blUseCoreTable) .
+            " ORDER BY $sArticleTable.oxsort";
+        return oxDb::getDb()->getArray($sSelect);
+    }
+   
     /**
      * Returns product selections lists array (used in azure theme)
      *

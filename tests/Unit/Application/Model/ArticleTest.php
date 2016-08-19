@@ -6684,13 +6684,13 @@ class ArticleTest extends \OxidTestCase
         oxTestModules::addFunction("oxVariantHandler", "buildVariantSelections", "{return 'buildVariantSelections';}");
         $oVariantHandler = $this->getMock('oxVariantHandler', array("buildVariantSelections"));
         $aVariantSelections = array('selections' => 'asd', 'rawselections' => 'asd');
+        $oProduct = $this->getMock("oxArticle", array("getVariantsVarSelect"));
+        $oProduct->expects($this->once())->method('getVariantsVarSelect')->will($this->returnValue(array()));
         $oVariantHandler->expects($this->once())->method("buildVariantSelections")
-            ->with($this->equalTo('varname'), $this->equalTo('variants'), $this->equalTo(1), $this->equalTo(2), $this->equalTo(3))
+            ->with($this->equalTo('varname'), $this->equalTo(array()), $this->equalTo(1), $this->equalTo(2), $this->equalTo(3))
             ->will($this->returnValue($aVariantSelections));
         oxTestModules::addModuleObject("oxVariantHandler", $oVariantHandler);
 
-        $oProduct = $this->getMock("oxArticle", array("getVariants"));
-        $oProduct->expects($this->once())->method('getVariants')->will($this->returnValue('variants'));
         $oProduct->oxarticles__oxvarcount = new oxField(3);
         $oProduct->oxarticles__oxvarname = new oxField('varname');
         $this->assertEquals($aVariantSelections, $oProduct->getVariantSelections(1, 2, 3));
@@ -6707,13 +6707,13 @@ class ArticleTest extends \OxidTestCase
         oxTestModules::addFunction("oxVariantHandler", "buildVariantSelections", "{return 'buildVariantSelections';}");
         $oVariantHandler = $this->getMock('oxVariantHandler', array("buildVariantSelections"));
         $aVariantSelections = array('selections' => 'asd', 'rawselections' => '');
+        $oProduct = $this->getMock("oxArticle", array("getVariantsVarSelect"));
+        $oProduct->expects($this->once())->method('getVariantsVarSelect')->will($this->returnValue(array(0)));
         $oVariantHandler->expects($this->once())->method("buildVariantSelections")
-            ->with($this->equalTo('varname'), $this->equalTo('variants'), $this->equalTo(1), $this->equalTo(2), $this->equalTo(3))
+            ->with($this->equalTo('varname'), $this->equalTo(array(0)), $this->equalTo(1), $this->equalTo(2), $this->equalTo(3))
             ->will($this->returnValue($aVariantSelections));
         oxTestModules::addModuleObject("oxVariantHandler", $oVariantHandler);
 
-        $oProduct = $this->getMock("oxArticle", array("getVariants"));
-        $oProduct->expects($this->once())->method('getVariants')->will($this->returnValue('variants'));
         $oProduct->oxarticles__oxvarcount = new oxField(3);
         $oProduct->oxarticles__oxvarname = new oxField('varname');
         $this->assertFalse($oProduct->getVariantSelections(1, 2, 3));
@@ -6734,8 +6734,8 @@ class ArticleTest extends \OxidTestCase
             ->will($this->returnValue($aVariantSelections));
         oxTestModules::addModuleObject("oxVariantHandler", $oVariantHandler);
 
-        $oProduct = $this->getMock("oxArticle", array("getVariants"));
-        $oProduct->expects($this->once())->method('getVariants')->will($this->returnValue(array()));
+        $oProduct = $this->getMock("oxArticle", array("getVariantsVarSelect"));
+        $oProduct->expects($this->once())->method('getVariantsVarSelect')->will($this->returnValue(array()));
         $oProduct->oxarticles__oxvarcount = new oxField(3);
         $oProduct->oxarticles__oxvarname = new oxField('varname');
         $this->assertEquals($aVariantSelections, $oProduct->getVariantSelections(1, 2, 3));

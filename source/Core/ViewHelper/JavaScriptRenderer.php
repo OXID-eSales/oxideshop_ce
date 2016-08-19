@@ -35,16 +35,16 @@ class JavaScriptRenderer
      * @param string $widget      Widget name
      * @param bool   $forceRender Force rendering of scripts.
      * @param bool   $isDynamic   Force rendering of scripts.
+     * @param bool   $isAsync     Async load of scripts.
      *
      * @return string
      */
-    public function render($widget, $forceRender, $isDynamic = false)
+    public function render($widget, $forceRender, $isDynamic = false, $isAsync = false)
     {
         $config = oxRegistry::getConfig();
         $output = '';
-        $suffix = $isDynamic ? '_dynamic' : '';
+        $suffix = $isDynamic ? '_dynamic' : $isAsync ? '_async' : '';
         $filesParameterName = JavaScriptRegistrator::FILES_PARAMETER_NAME . $suffix;
-        $filesParameterNameAsync = JavaScriptRegistrator::FILES_PARAMETER_NAME . '_async';
         $scriptsParameterName = JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . $suffix;
 
         $isAjaxRequest = $this->isAjaxRequest();
@@ -53,17 +53,13 @@ class JavaScriptRenderer
         if (!$widget || $forceRender) {
             if (!$isAjaxRequest) {
                 $files = $this->prepareFilesForRendering($config->getGlobalParameter($filesParameterName), $widget);
-                $output .= $this->formFilesOutput($files, $widget);
+                $output .= $this->formFilesOutput($files, $widget, $isAsync);
                 $config->setGlobalParameter($filesParameterName, null);
                 if ($widget) {
                     $dynamicIncludes = (array)$config->getGlobalParameter(JavaScriptRegistrator::FILES_PARAMETER_NAME . '_dynamic');
-                    $output .= $this->formFilesOutput($dynamicIncludes, $widget);
+                    $output .= $this->formFilesOutput($dynamicIncludes, $widget, $isAsync);
                     $config->setGlobalParameter(JavaScriptRegistrator::FILES_PARAMETER_NAME . '_dynamic', null);
                 }
-
-                $files = $this->prepareFilesForRendering($config->getGlobalParameter($filesParameterNameAsync), $widget);
-                $output .= $this->formFilesOutput($files, $widget, true);
-                $config->setGlobalParameter($filesParameterNameAsync, null);
             }
 
             // Form output for adds.

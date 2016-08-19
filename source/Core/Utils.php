@@ -1069,16 +1069,29 @@ class Utils extends \oxSuperCfg
     }
 
     /**
-     * Redirects to shop offline page
-     *
+     * Shows offline page
+     * @deprecated since v.5.3.0 (2016-06-28); Use Utils::showOfflinePage().
      * @param int $iHeaderCode header code, default 302
      */
     public function redirectOffline($iHeaderCode = 302)
     {
-        $sUrl = $this->getConfig()->getShopUrl() . 'offline.html';
-        $this->redirect($sUrl, false, $iHeaderCode);
+        $this->showOfflinePage();
     }
 
+    /**
+     * shows offline page
+     * directly displays the offline page to the client (browser)
+     * with a 500 status code header
+     * @return null or exit;
+     */
+    public function showOfflinePage()
+    {
+        $this->setHeader("HTTP/1.1 500 Internal Server Error");
+        $offlineMessageFile = $this->getConfig()->getConfigParam('sShopDir') . 'offline.html';
+        $offline = file_get_contents($offlineMessageFile);
+        $this->showMessageAndExit($offline);
+    }
+    
     /**
      * redirect user to the specified URL
      *

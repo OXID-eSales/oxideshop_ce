@@ -57,7 +57,7 @@ class StyleRegistrator
                 $config->setGlobalParameter($conditionalStylesParameterName, $conditionalStyles);
             } else {
                 $stylesParameterName = static::STYLES_PARAMETER_NAME . $suffix;
-                $styles = (array)$config->getGlobalParameter($stylesParameterName);
+                $styles = (array) $config->getGlobalParameter($stylesParameterName);
                 $styles[] = $style;
                 $styles = array_unique($styles);
                 $config->setGlobalParameter($stylesParameterName, $styles);

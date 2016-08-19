@@ -1069,8 +1069,8 @@ class Utils extends \oxSuperCfg
     }
 
     /**
-     * Shows offline page
-     * @deprecated since v.5.3.0 (2016-06-28); Use Utils::showOfflinePage().
+     * Shows offline page.
+     * @deprecated since v6.0.0 (2016-06-28); Use Utils::showOfflinePage().
      * @param int $iHeaderCode header code, default 302
      */
     public function redirectOffline($iHeaderCode = 302)
@@ -1079,10 +1079,9 @@ class Utils extends \oxSuperCfg
     }
 
     /**
-     * shows offline page
-     * directly displays the offline page to the client (browser)
-     * with a 500 status code header
-     * @return null or exit;
+     * Shows offline page.
+     * Directly displays the offline page to the client (browser)
+     * with a 500 status code header.
      */
     public function showOfflinePage()
     {

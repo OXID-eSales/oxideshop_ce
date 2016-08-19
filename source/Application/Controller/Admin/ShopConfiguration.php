@@ -25,6 +25,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxAdminDetails;
+use Exception;
 
 /**
  * Admin shop config manager.

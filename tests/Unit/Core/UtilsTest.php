@@ -1009,9 +1009,6 @@ class UtilsTest extends \OxidTestCase
         $this->assertEquals($sCode, "zloynnSbbFgevat!");
     }
 
-    /**
-     * 
-     */
     public function testShowOfflinePage()
     {
         $utils = $this->getMock('oxutils', array('setHeader','showMessageAndExit'));
@@ -1020,7 +1017,6 @@ class UtilsTest extends \OxidTestCase
         
         $utils->showOfflinePage();
     }
-    
 
     public function testRedirect()
     {

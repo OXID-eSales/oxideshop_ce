@@ -23,6 +23,7 @@ namespace Unit\Application\Controller;
 
 use \oxField;
 use \oxException;
+use OxidEsales\Eshop\Core\Registry;
 use \oxTestModules;
 
 /**
@@ -33,11 +34,9 @@ class CmpShopTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_shop::render()
-     *
-     * @return null
      */
     public function testRenderNoActiveShop()
-    {        
+    {
         $oView = $this->getMock("oxView", array("getClassName"));
         $oView->expects($this->once())->method('getClassName')->will($this->returnValue("test"));
 
@@ -46,7 +45,7 @@ class CmpShopTest extends \OxidTestCase
 
         $oUtils = $this->getMock('oxUtils', array('showOfflinePage'));
         $oUtils->expects($this->once())->method('showOfflinePage');
-        oxTestModules::addModuleObject('oxUtils', $oUtils);
+        Registry::set('oxUtils', $oUtils);
         
         $oConfig = $this->getMock("oxConfig", array("getConfigParam", "getActiveView", "getActiveShop"));
         $oConfig->expects($this->once())->method('getActiveView')->will($this->returnValue($oView));
@@ -60,4 +59,3 @@ class CmpShopTest extends \OxidTestCase
         $oCmp->render();
     }
 }
-

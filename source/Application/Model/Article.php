@@ -1578,7 +1578,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             $this->getActiveCheckQuery($blUseCoreTable) .
             $this->getVariantsQuery($blRemoveNotOrderables, $blUseCoreTable) .
             " ORDER BY $sArticleTable.oxsort";
-        return oxDb::getDb()->getArray($sSelect);
+        return oxDb::getDb()->getAll($sSelect);
     }
    
     /**

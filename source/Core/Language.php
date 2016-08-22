@@ -662,7 +662,7 @@ class Language extends \oxSuperCfg
 
      /**
      * Goes through language array and recodes its values.
-     * 
+     *
      * @param array  $aLangArray   language data
      * @param string $sCharset     charset which was used while making file
      * @param string $newEncoding  charset which was used while making file
@@ -696,7 +696,7 @@ class Language extends \oxSuperCfg
         return $aLangs;
     }
 
-    
+
     /**
      * Returns the encoding all translations will be converted to.
      *
@@ -952,27 +952,24 @@ class Language extends \oxSuperCfg
             $aLang = array();
             $aLangSeoReplaceChars = array();
             foreach ($aLangFiles as $sLangFile) {
-
                 if (file_exists($sLangFile) && is_readable($sLangFile)) {
                     //$aSeoReplaceChars null indicates that there is no setting made
                     $aSeoReplaceChars = null;
                     include $sLangFile;
 
-                    // including only (!) those, which has charset defined
-                    if (isset($aLang['charset'])) {
-                        if ($aLang['charset'] != $sBaseCharset) {
-                            $aLang = $this->_recodeLangArray($aLang, $aLang['charset']);
+                    $aLang = array_merge(['charset' => 'UTF-8'], $aLang);
 
-                            if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
-                                $aSeoReplaceChars = $this->_recodeLangArray($aSeoReplaceChars, $aLang['charset'], true);
-                            }
-                        }
-                        if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
-                            $aLangSeoReplaceChars = array_merge($aLangSeoReplaceChars, $aSeoReplaceChars);
-                        }
+                    $aLang = $this->_recodeLangArray($aLang, $aLang['charset']);
 
-                        $aLangCache = array_merge($aLangCache, $aLang);
+                    if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
+                        $aSeoReplaceChars = $this->_recodeLangArray($aSeoReplaceChars, $aLang['charset'], true);
                     }
+
+                    if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
+                        $aLangSeoReplaceChars = array_merge($aLangSeoReplaceChars, $aSeoReplaceChars);
+                    }
+
+                    $aLangCache = array_merge($aLangCache, $aLang);
                 }
             }
 

@@ -440,11 +440,9 @@ class User extends \oxBase
      * Sets in the array oxuser::_aAddresses selected address.
      * Returns user selected address object.
      *
-     * @param bool $sWishId wishlist user id
-     *
      * @return object $oSelectedAddress
      */
-    public function getSelectedAddress($sWishId = false)
+    public function getSelectedAddress()
     {
         if ($this->_oSelAddress !== null) {
             return $this->_oSelAddress;
@@ -598,21 +596,21 @@ class User extends \oxBase
             $sOXIDQuoted = $oDb->quote($sOXID);
 
             // deleting stored payment, address, group dependencies, remarks info
-            $rs = $oDb->execute("delete from oxaddress where oxaddress.oxuserid = {$sOXIDQuoted}");
-            $rs = $oDb->execute("delete from oxobject2group where oxobject2group.oxobjectid = {$sOXIDQuoted}");
+            $oDb->execute("delete from oxaddress where oxaddress.oxuserid = {$sOXIDQuoted}");
+            $oDb->execute("delete from oxobject2group where oxobject2group.oxobjectid = {$sOXIDQuoted}");
 
             // deleting notice/wish lists
-            $rs = $oDb->execute("delete oxuserbasketitems.* from oxuserbasketitems, oxuserbaskets where oxuserbasketitems.oxbasketid = oxuserbaskets.oxid and oxuserid = {$sOXIDQuoted}");
-            $rs = $oDb->execute("delete from oxuserbaskets where oxuserid = {$sOXIDQuoted}");
+            $oDb->execute("delete oxuserbasketitems.* from oxuserbasketitems, oxuserbaskets where oxuserbasketitems.oxbasketid = oxuserbaskets.oxid and oxuserid = {$sOXIDQuoted}");
+            $oDb->execute("delete from oxuserbaskets where oxuserid = {$sOXIDQuoted}");
 
             // deleting newsletter subscription
-            $rs = $oDb->execute("delete from oxnewssubscribed where oxuserid = {$sOXIDQuoted}");
+            $oDb->execute("delete from oxnewssubscribed where oxuserid = {$sOXIDQuoted}");
 
             // delivery and delivery sets
-            $rs = $oDb->execute("delete from oxobject2delivery where oxobjectid = {$sOXIDQuoted}");
+            $oDb->execute("delete from oxobject2delivery where oxobjectid = {$sOXIDQuoted}");
 
             // discounts
-            $rs = $oDb->execute("delete from oxobject2discount where oxobjectid = {$sOXIDQuoted}");
+            $oDb->execute("delete from oxobject2discount where oxobjectid = {$sOXIDQuoted}");
 
             $this->deleteAdditionally($sOXIDQuoted);
 
@@ -1005,7 +1003,7 @@ class User extends \oxBase
             $iMonth = 1;
         }
 
-        // maximum nuber of days in month
+        // maximum number of days in month
         $iMaxDays = 31;
         switch ($iMonth) {
             case 2:
@@ -1031,7 +1029,7 @@ class User extends \oxBase
     }
 
     /**
-     * Return standart credit rating, can be set in config option iCreditRating;
+     * Return standard credit rating, can be set in config option iCreditRating;
      *
      * @return integer
      */
@@ -1104,8 +1102,6 @@ class User extends \oxBase
     {
         // assigning to newsletter
         $blSuccess = false;
-        $myConfig = $this->getConfig();
-        $mySession = $this->getSession();
 
         // user wants to get newsletter messages or no ?
         $oNewsSubscription = $this->getNewsSubscription();
@@ -1901,13 +1897,11 @@ class User extends \oxBase
     /**
      * Returns safe salt value (heximal representation)
      *
-     * @param string $sSalt any unique string value
-     *
      * @deprecated since v5.2 (2014-08-12); Use oxPasswordSaltGenerator
      *
      * @return string
      */
-    public function prepareSalt($sSalt)
+    public function prepareSalt()
     {
         /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
         $oOpenSSLFunctionalityChecker = oxNew('oxOpenSSLFunctionalityChecker');

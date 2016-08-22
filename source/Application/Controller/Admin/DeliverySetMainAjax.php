@@ -25,6 +25,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
+use Exception;
 
 /**
  * Class manages deliveryset and delivery configuration
@@ -99,6 +100,8 @@ class DeliverySetMainAjax extends \ajaxListComponent
 
     /**
      * Adds this delivery cost to these sets
+     *
+     * @throws Exception
      */
     public function addToSet()
     {
@@ -111,20 +114,27 @@ class DeliverySetMainAjax extends \ajaxListComponent
             $aChosenSets = $this->_getAll($this->_addFilter("select $sDeliveryViewName.oxid " . $this->_getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenSets)) {
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $masterDb = oxDb::getMaster();
-            foreach ($aChosenSets as $sChosenSet) {
-                // check if we have this entry already in
-                // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                $sID = $masterDb->getOne("select oxid from oxdel2delset where oxdelid =  " . $masterDb->quote($sChosenSet) . " and oxdelsetid = " . $masterDb->quote($soxId));
-                if (!isset($sID) || !$sID) {
-                    $oDel2delset = oxNew('oxBase');
-                    $oDel2delset->init('oxdel2delset');
-                    $oDel2delset->oxdel2delset__oxdelid = new oxField($sChosenSet);
-                    $oDel2delset->oxdel2delset__oxdelsetid = new oxField($soxId);
-                    $oDel2delset->save();
+
+            oxDb::getDb()->startTransaction();
+            try {
+                $database = oxDb::getDb();
+                foreach ($aChosenSets as $sChosenSet) {
+                    // check if we have this entry already in
+                    // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+                    $sID = $database->getOne("select oxid from oxdel2delset where oxdelid =  " . $database->quote($sChosenSet) . " and oxdelsetid = " . $database->quote($soxId));
+                    if (!isset($sID) || !$sID) {
+                        $oDel2delset = oxNew('oxBase');
+                        $oDel2delset->init('oxdel2delset');
+                        $oDel2delset->oxdel2delset__oxdelid = new oxField($sChosenSet);
+                        $oDel2delset->oxdel2delset__oxdelsetid = new oxField($soxId);
+                        $oDel2delset->save();
+                    }
                 }
+            } catch (Exception $exception) {
+                oxDb::getDb()->rollbackTransaction();
+                throw $exception;
             }
+            oxDb::getDb()->commitTransaction();
         }
     }
 }

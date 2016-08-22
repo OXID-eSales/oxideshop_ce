@@ -24,6 +24,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
 
 use oxDb;
 use oxField;
+use Exception;
 
 /**
  * Class manages deliveryset payment
@@ -98,6 +99,8 @@ class DeliverySetPaymentAjax extends \ajaxListComponent
 
     /**
      * Adds this payments to this set
+     *
+     * @throws Exception
      */
     public function addPayToSet()
     {
@@ -110,21 +113,29 @@ class DeliverySetPaymentAjax extends \ajaxListComponent
             $aChosenSets = $this->_getAll($this->_addFilter("select $sPayTable.oxid " . $this->_getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenSets)) {
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $masterDb = oxDb::getMaster();
-            foreach ($aChosenSets as $sChosenSet) {
-                // check if we have this entry already in
-                // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                $sID = $masterDb->getOne("select oxid from oxobject2payment where oxpaymentid = " . $masterDb->quote($sChosenSet) . "  and oxobjectid = " . $masterDb->quote($soxId) . " and oxtype = 'oxdelset'");
-                if (!isset($sID) || !$sID) {
-                    $oObject = oxNew('oxBase');
-                    $oObject->init('oxobject2payment');
-                    $oObject->oxobject2payment__oxpaymentid = new oxField($sChosenSet);
-                    $oObject->oxobject2payment__oxobjectid = new oxField($soxId);
-                    $oObject->oxobject2payment__oxtype = new oxField("oxdelset");
-                    $oObject->save();
+
+            oxDb::getDb()->startTransaction();
+            try {
+                $database = oxDb::getDb();
+                foreach ($aChosenSets as $sChosenSet) {
+                    // check if we have this entry already in
+                    // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+                    $sID = $database->getOne("select oxid from oxobject2payment where oxpaymentid = " . $database->quote($sChosenSet) . "  and oxobjectid = " . $database->quote($soxId) . " and oxtype = 'oxdelset'");
+                    if (!isset($sID) || !$sID) {
+                        $oObject = oxNew('oxBase');
+                        $oObject->init('oxobject2payment');
+                        $oObject->oxobject2payment__oxpaymentid = new oxField($sChosenSet);
+                        $oObject->oxobject2payment__oxobjectid = new oxField($soxId);
+                        $oObject->oxobject2payment__oxtype = new oxField("oxdelset");
+                        $oObject->save();
+                    }
                 }
+            } catch (Exception $exception) {
+                oxDb::getDb()->rollbackTransaction();
+                throw $exception;
             }
+            oxDb::getDb()->commitTransaction();
+
         }
     }
 }

@@ -25,6 +25,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
+use Exception;
 
 /**
  * Class manages category attributes
@@ -116,6 +117,8 @@ class AttributeCategoryAjax extends \ajaxListComponent
 
     /**
      * Adds category to Attributes list
+     *
+     * @throws Exception
      */
     public function addCatToAttr()
     {
@@ -130,23 +133,29 @@ class AttributeCategoryAjax extends \ajaxListComponent
         }
 
         if ($oAttribute->load($soxId) && is_array($aAddCategory)) {
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $masterDb = oxDb::getMaster();
-            foreach ($aAddCategory as $sAdd) {
-                $oNewGroup = oxNew("oxBase");
-                $oNewGroup->init("oxcategory2attribute");
-                $sOxSortField = 'oxcategory2attribute__oxsort';
-                $sObjectIdField = 'oxcategory2attribute__oxobjectid';
-                $sAttributeIdField = 'oxcategory2attribute__oxattrid';
-                $sOxIdField = 'oxattribute__oxid';
-                $oNewGroup->$sObjectIdField = new oxField($sAdd);
-                $oNewGroup->$sAttributeIdField = new oxField($oAttribute->$sOxIdField->value);
-                $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ";
-                // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                $oNewGroup->$sOxSortField = new oxField(( int ) $masterDb->getOne($sSql));
-                $oNewGroup->save();
+            oxDb::getDb()->startTransaction();
+            try {
+                $database = oxDb::getDb();
+                foreach ($aAddCategory as $sAdd) {
+                    $oNewGroup = oxNew("oxBase");
+                    $oNewGroup->init("oxcategory2attribute");
+                    $sOxSortField = 'oxcategory2attribute__oxsort';
+                    $sObjectIdField = 'oxcategory2attribute__oxobjectid';
+                    $sAttributeIdField = 'oxcategory2attribute__oxattrid';
+                    $sOxIdField = 'oxattribute__oxid';
+                    $oNewGroup->$sObjectIdField = new oxField($sAdd);
+                    $oNewGroup->$sAttributeIdField = new oxField($oAttribute->$sOxIdField->value);
+                    $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ";
+
+                    $oNewGroup->$sOxSortField = new oxField(( int ) $database->getOne($sSql));
+                    $oNewGroup->save();
+                }
+            } catch (Exception $exception) {
+                oxDb::getDb()->rollbackTransaction();
+                throw $exception;
             }
         }
+        oxDb::getDb()->commitTransaction();
 
         $this->resetContentCache();
     }

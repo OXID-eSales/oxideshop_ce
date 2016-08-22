@@ -25,6 +25,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
+use Exception;
 
 /**
  * Class controls article assignment to selection lists
@@ -111,6 +112,8 @@ class ArticleSelectionAjax extends \ajaxListComponent
 
     /**
      * Adds selection lists to article.
+     *
+     * @throws Exception
      */
     public function addSel()
     {
@@ -124,21 +127,28 @@ class ArticleSelectionAjax extends \ajaxListComponent
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddSel)) {
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $masterDb = oxDb::getMaster();
-            foreach ($aAddSel as $sAdd) {
-                $oNew = oxNew("oxBase");
-                $oNew->init("oxobject2selectlist");
-                $sObjectIdField = 'oxobject2selectlist__oxobjectid';
-                $sSelectetionIdField = 'oxobject2selectlist__oxselnid';
-                $sOxSortField = 'oxobject2selectlist__oxsort';
-                $oNew->$sObjectIdField = new oxField($soxId);
-                $oNew->$sSelectetionIdField = new oxField($sAdd);
-                $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  {$masterDb->quote($soxId)} ";
-                // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                $oNew->$sOxSortField = new oxField(( int ) $masterDb->getOne($sSql));
-                $oNew->save();
+
+            oxDb::getDb()->startTransaction();
+            try {
+                $database = oxDb::getDb();
+                foreach ($aAddSel as $sAdd) {
+                    $oNew = oxNew("oxBase");
+                    $oNew->init("oxobject2selectlist");
+                    $sObjectIdField = 'oxobject2selectlist__oxobjectid';
+                    $sSelectetionIdField = 'oxobject2selectlist__oxselnid';
+                    $sOxSortField = 'oxobject2selectlist__oxsort';
+                    $oNew->$sObjectIdField = new oxField($soxId);
+                    $oNew->$sSelectetionIdField = new oxField($sAdd);
+                    $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  {$database->quote($soxId)} ";
+                    // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+                    $oNew->$sOxSortField = new oxField(( int ) $database->getOne($sSql));
+                    $oNew->save();
+                }
+            } catch (Exception $exception) {
+                oxDb::getDb()->rollbackTransaction();
+                throw $exception;
             }
+            oxDb::getDb()->commitTransaction();
 
             $this->onArticleSelectionListChange($soxId);
         }

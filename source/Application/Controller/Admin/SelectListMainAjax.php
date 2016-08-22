@@ -25,6 +25,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
+use Exception;
 
 /**
  * Class manages article select lists configuration
@@ -134,6 +135,8 @@ class SelectListMainAjax extends \ajaxListComponent
 
     /**
      * Adds article to Selection list
+     *
+     * @throws Exception
      */
     public function addArtToSel()
     {
@@ -146,18 +149,25 @@ class SelectListMainAjax extends \ajaxListComponent
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $masterDb = oxDb::getMaster();
-            foreach ($aAddArticle as $sAdd) {
-                $oNewGroup = oxNew("oxBase");
-                $oNewGroup->init("oxobject2selectlist");
-                $oNewGroup->oxobject2selectlist__oxobjectid = new oxField($sAdd);
-                $oNewGroup->oxobject2selectlist__oxselnid = new oxField($soxId);
-                $oNewGroup->oxobject2selectlist__oxsort = new oxField(( int ) $masterDb->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $masterDb->quote($sAdd) . " "));
-                $oNewGroup->save();
 
-                $this->onArticleAddToSelectionList($sAdd);
+            oxDb::getDb()->startTransaction();
+            try {
+                $database = oxDb::getDb();
+                foreach ($aAddArticle as $sAdd) {
+                    $oNewGroup = oxNew("oxBase");
+                    $oNewGroup->init("oxobject2selectlist");
+                    $oNewGroup->oxobject2selectlist__oxobjectid = new oxField($sAdd);
+                    $oNewGroup->oxobject2selectlist__oxselnid = new oxField($soxId);
+                    $oNewGroup->oxobject2selectlist__oxsort = new oxField(( int ) $database->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $database->quote($sAdd) . " "));
+                    $oNewGroup->save();
+
+                    $this->onArticleAddToSelectionList($sAdd);
+                }
+            } catch (Exception $exception) {
+                oxDb::getDb()->rollbackTransaction();
+                throw $exception;
             }
+            oxDb::getDb()->commitTransaction();
         }
     }
 

@@ -26,6 +26,7 @@ use oxRegistry;
 use oxDb;
 use oxField;
 use oxUtilsObject;
+use Exception;
 
 /**
  * Class manages category articles
@@ -133,6 +134,8 @@ class CategoryMainAjax extends \ajaxListComponent
     /**
      * Adds article to category
      * Creates new list
+     *
+     * @throws Exception
      */
     public function addArticle()
     {
@@ -141,53 +144,61 @@ class CategoryMainAjax extends \ajaxListComponent
         $aArticles = $this->_getActionIds('oxarticles.oxid');
         $sCategoryID = $myConfig->getRequestParameter('synchoxid');
         $sShopID = $myConfig->getShopId();
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = oxDb::getMaster();
-        $sArticleTable = $this->_getViewName('oxarticles');
 
-        // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
-            $aArticles = $this->_getAll($this->_addFilter("select $sArticleTable.oxid " . $this->_getQuery()));
-        }
+        oxDb::getDb()->startTransaction();
+        try {
+            $database = oxDb::getDb();
+            $sArticleTable = $this->_getViewName('oxarticles');
 
-        if (is_array($aArticles)) {
-
-            $sO2CView = $this->_getViewName('oxobject2category');
-
-            $oNew = oxNew('oxobject2category');
-            $myUtilsObject = oxUtilsObject::getInstance();
-            $oActShop = $myConfig->getActiveShop();
-
-            $sProdIds = "";
-            foreach ($aArticles as $sAdd) {
-
-                // check, if it's already in, then don't add it again
-                $sSelect = "select 1 from $sO2CView as oxobject2category where oxobject2category.oxcatnid= "
-                           . $masterDb->quote($sCategoryID) . " and oxobject2category.oxobjectid = " . $masterDb->quote($sAdd) . "";
-                // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                if ($masterDb->getOne($sSelect, false, false)) {
-                    continue;
-                }
-
-                $oNew->oxobject2category__oxid = new oxField($oNew->setId(md5($sAdd . $sCategoryID . $sShopID)));
-                $oNew->oxobject2category__oxobjectid = new oxField($sAdd);
-                $oNew->oxobject2category__oxcatnid = new oxField($sCategoryID);
-                $oNew->oxobject2category__oxtime = new oxField(time());
-
-                $oNew->save();
-
-                if ($sProdIds) {
-                    $sProdIds .= ",";
-                }
-                $sProdIds .= $masterDb->quote($sAdd);
+            // adding
+            if (oxRegistry::getConfig()->getRequestParameter('all')) {
+                $aArticles = $this->_getAll($this->_addFilter("select $sArticleTable.oxid " . $this->_getQuery()));
             }
 
-            // updating oxtime values
-            $this->_updateOxTime($sProdIds);
+            if (is_array($aArticles)) {
 
-            $this->resetArtSeoUrl($aArticles);
-            $this->resetCounter("catArticle", $sCategoryID);
+                $sO2CView = $this->_getViewName('oxobject2category');
+
+                $oNew = oxNew('oxobject2category');
+                $myUtilsObject = oxUtilsObject::getInstance();
+                $oActShop = $myConfig->getActiveShop();
+
+                $sProdIds = "";
+                foreach ($aArticles as $sAdd) {
+
+                    // check, if it's already in, then don't add it again
+                    $sSelect = "select 1 from $sO2CView as oxobject2category where oxobject2category.oxcatnid= "
+                               . $database->quote($sCategoryID) . " and oxobject2category.oxobjectid = " . $database->quote($sAdd) . "";
+                    // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+                    if ($database->getOne($sSelect, false, false)) {
+                        continue;
+                    }
+
+                    $oNew->oxobject2category__oxid = new oxField($oNew->setId(md5($sAdd . $sCategoryID . $sShopID)));
+                    $oNew->oxobject2category__oxobjectid = new oxField($sAdd);
+                    $oNew->oxobject2category__oxcatnid = new oxField($sCategoryID);
+                    $oNew->oxobject2category__oxtime = new oxField(time());
+
+                    $oNew->save();
+
+                    if ($sProdIds) {
+                        $sProdIds .= ",";
+                    }
+                    $sProdIds .= $database->quote($sAdd);
+                }
+
+                // updating oxtime values
+                $this->_updateOxTime($sProdIds);
+
+                $this->resetArtSeoUrl($aArticles);
+                $this->resetCounter("catArticle", $sCategoryID);
+            }
+        } catch (Exception $exception) {
+            oxDb::getDb()->rollbackTransaction();
+            throw $exception;
         }
+
+        oxDb::getDb()->commitTransaction();
     }
 
     /**

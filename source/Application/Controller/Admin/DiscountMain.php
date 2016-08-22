@@ -110,12 +110,12 @@ class DiscountMain extends \oxAdminDetails
         $sOxId = $this->getEditObjectId();
         if (isset($sOxId) && $sOxId != "-1") {
             $sViewName = getViewName("oxarticles", $this->_iEditLang);
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $masterDb = oxDb::getMaster();
+            // Reading from slave is ok here (see ESDEV-3804 and ESDEV-3822).
+            $database = oxDb::getDb();
             $sQ = "select concat( $sViewName.oxartnum, ' ', $sViewName.oxtitle ) from oxdiscount
                    left join $sViewName on $sViewName.oxid=oxdiscount.oxitmartid
-                   where oxdiscount.oxitmartid != '' and oxdiscount.oxid=" . $masterDb->quote($sOxId);
-            $sTitle = $masterDb->getOne($sQ);
+                   where oxdiscount.oxitmartid != '' and oxdiscount.oxid=" . $database->quote($sOxId);
+            $sTitle = $database->getOne($sQ);
         }
 
         return $sTitle ? $sTitle : " -- ";

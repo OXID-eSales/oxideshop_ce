@@ -203,8 +203,5 @@
     /**
      * Database master-slave configuration:
      * aSlaveHosts - array of slave hosts: array('localhost', '10.2.3.12')
-     * iMasterSlaveBalance - balance between master and slaves from 0 to 100; 0 - all select queries on slaves, 100 - all on master;
-     * To turn on balance between Master and Slave, Mater IP or host must be added to aSlaveHost array.
      */
     $this->aSlaveHosts = null;
-    $this->iMasterSlaveBalance = 0;

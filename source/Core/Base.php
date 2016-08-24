@@ -853,12 +853,10 @@ class Base extends \oxSuperCfg
 
         $return = false;
 
-        $database = oxDb::getDb();
-
         $action = null;
         $response = null;
-        /** We must check on the master database, if an entry exists. */
-        $database->forceMasterConnection();
+        /** We must check on the master database, if an entry exists, so we switch to master connection.*/
+        oxDb::getMaster();
         if ($this->exists()) {
             //only update if derived update is allowed
             if ($this->allowDerivedUpdate()) {

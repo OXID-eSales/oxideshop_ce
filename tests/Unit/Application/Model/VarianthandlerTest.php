@@ -492,13 +492,13 @@ class VarianthandlerTest extends \OxidTestCase
      */
     public function testBuildVariantSelectionsNoLimit()
     {
-        $oHandler = $this->getMock("oxVariantHandler", array('_getSelections', "_fillVariantSelections", "_applyVariantSelectionsFilter", "_buildVariantSelectionsList"));
-        $oHandler->expects($this->once())->method('_getSelections')
+        $oHandler = $this->getMock("oxVariantHandler", array('_getSelections', "_fillVariantSelectionsFromArray", "_applyVariantSelectionsFilter", "_buildVariantSelectionsList"));
+        $oHandler->expects($this->any())->method('_getSelections')
             ->with($this->equalTo("testvarname"))
             ->will($this->returnValue(array('t1', 't2', 't3')));
-        $oHandler->expects($this->once())->method('_fillVariantSelections')
+        $oHandler->expects($this->once())->method('_fillVariantSelectionsFromArray')
             ->with(
-                $this->equalTo(array('xdxvarid' => 'oVariant')),
+                $this->equalTo(array(0 => array(0 => 'xdxvarid', 1  => 'oVariant'))),
                 $this->equalTo(3),
                 $this->equalTo('$aFilter'),
                 $this->equalTo('$sActVariantId')
@@ -513,9 +513,11 @@ class VarianthandlerTest extends \OxidTestCase
             ->with($this->equalTo(array('t1', 't2', 't3')), $this->equalTo("rawselections"))
             ->will($this->returnValue("selections"));
 
+        $oArticle = oxNew('oxarticle');
+        $oArticle->load('$sActVariantId');
         $this->assertEquals(
-            array("selections" => "selections", "rawselections" => "rawselections", 'oActiveVariant' => 'oVariant', 'blPerfectFit' => 'perfecto?'),
-            $oHandler->buildVariantSelections("testvarname", array('xdxvarid' => 'oVariant'), '$aFilter', '$sActVariantId')
+            array("selections" => "selections", "rawselections" => "rawselections", 'oActiveVariant' => $oArticle, 'blPerfectFit' => 'perfecto?'),
+            $oHandler->buildVariantSelections("testvarname", array(0 => array(0 => 'xdxvarid', 1  => 'oVariant')), '$aFilter', '$sActVariantId')
         );
     }
 
@@ -526,13 +528,13 @@ class VarianthandlerTest extends \OxidTestCase
      */
     public function testBuildVariantSelectionsWithLimit()
     {
-        $oHandler = $this->getMock("oxVariantHandler", array('_getSelections', "_fillVariantSelections", "_applyVariantSelectionsFilter", "_buildVariantSelectionsList"));
-        $oHandler->expects($this->once())->method('_getSelections')
+        $oHandler = $this->getMock("oxVariantHandler", array('_getSelections', "_fillVariantSelectionsFromArray", "_applyVariantSelectionsFilter", "_buildVariantSelectionsList"));
+        $oHandler->expects($this->any())->method('_getSelections')
             ->with($this->equalTo("testvarname"))
             ->will($this->returnValue(array('t1', 't2', 't3')));
-        $oHandler->expects($this->once())->method('_fillVariantSelections')
+        $oHandler->expects($this->once())->method('_fillVariantSelectionsFromArray')
             ->with(
-                $this->equalTo(array('xdxvarid' => 'oVariant')),
+                $this->equalTo(array(0 => array(0 => 'xdxvarid', 1 => 'oVariant'))),
                 $this->equalTo(2),
                 $this->equalTo('$aFilter'),
                 $this->equalTo('$sActVariantId')
@@ -547,9 +549,11 @@ class VarianthandlerTest extends \OxidTestCase
             ->with($this->equalTo(array('t1', 't2')), $this->equalTo("rawselections"))
             ->will($this->returnValue("selections"));
 
+        $oArticle = oxNew('oxarticle');
+        $oArticle->load('$sActVariantId');
         $this->assertEquals(
-            array("selections" => "selections", "rawselections" => "rawselections", 'oActiveVariant' => 'oVariant', 'blPerfectFit' => 'perfecto?'),
-            $oHandler->buildVariantSelections("testvarname", array('xdxvarid' => 'oVariant'), '$aFilter', '$sActVariantId', 2)
+            array("selections" => "selections", "rawselections" => "rawselections", 'oActiveVariant' => $oArticle, 'blPerfectFit' => 'perfecto?'),
+            $oHandler->buildVariantSelections("testvarname", array(0 => array(0 => 'xdxvarid', 1 => 'oVariant')), '$aFilter', '$sActVariantId', 2)
         );
     }
 }

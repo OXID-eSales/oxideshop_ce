@@ -926,7 +926,6 @@ class Category extends \oxI18n implements \oxIUrl
 
             $iTreeSize = $sOldParentRight - $sOldParentLeft + 1;
 
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
             $sNewRootID = $database->getOne("select oxrootid from oxcategories where oxid = " . $database->quote($this->oxcategories__oxparentid->value));
 
             //If empty rootID, we set it to categorys oxid
@@ -934,7 +933,6 @@ class Category extends \oxI18n implements \oxIUrl
                 //echo "<br>* ) Creating new root tree ( {$this->_sOXID} )";
                 $sNewRootID = $this->getId();
             }
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
             $sNewParentLeft = $database->getOne("select oxleft from oxcategories where oxid = " . $database->quote($this->oxcategories__oxparentid->value));
 
             //if(!$sNewParentLeft){

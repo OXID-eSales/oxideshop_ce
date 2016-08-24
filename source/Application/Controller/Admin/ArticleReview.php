@@ -161,6 +161,8 @@ class ArticleReview extends \oxAdminDetails
         $article = oxNew('oxArticle');
         $article->load($articleId);
 
+        //switch database connection to master for the following read/write access.
+        oxDB::getMaster();
         $article->setRatingAverage($rating->getRatingAverage($articleId, 'oxarticle'));
         $article->setRatingCount($rating->getRatingCount($articleId, 'oxarticle'));
         $article->save();

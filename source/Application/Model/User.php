@@ -2086,17 +2086,16 @@ class User extends \oxBase
     public function setCreditPointsForRegistrant($sUserId, $sRecEmail)
     {
         $blSet = false;
-        $oDb = oxDb::getDb();
         $iPoints = $this->getConfig()->getConfigParam('dPointsForRegistration');
         // check if this invitation is still not accepted
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = oxDb::getMaster();
-        $iPending = $masterDb->getOne("select count(oxuserid) from oxinvitations where oxuserid = " . $oDb->quote($sUserId) . " and md5(oxemail) = " . $oDb->quote($sRecEmail) . " and oxpending = 1 and oxaccepted = 0");
+        $iPending = $masterDb->getOne("select count(oxuserid) from oxinvitations where oxuserid = " . $masterDb->quote($sUserId) . " and md5(oxemail) = " . $masterDb->quote($sRecEmail) . " and oxpending = 1 and oxaccepted = 0");
         if ($iPoints && $iPending) {
             $this->oxuser__oxpoints = new oxField($iPoints, oxField::T_RAW);
             if ($blSet = $this->save()) {
                 // updating users statistics
-                $oDb->execute("UPDATE oxinvitations SET oxpending = '0', oxaccepted = '1' where oxuserid = " . $oDb->quote($sUserId) . " and md5(oxemail) = " . $oDb->quote($sRecEmail));
+                $masterDb->execute("UPDATE oxinvitations SET oxpending = '0', oxaccepted = '1' where oxuserid = " . $masterDb->quote($sUserId) . " and md5(oxemail) = " . $masterDb->quote($sRecEmail));
                 $oInvUser = oxNew("oxuser");
                 if ($oInvUser->load($sUserId)) {
                     $blSet = $oInvUser->setCreditPointsForInviter();

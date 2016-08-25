@@ -1555,7 +1555,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
                 $aVariantSelections = oxNew("oxVariantHandler")->buildVariantSelections($this->oxarticles__oxvarname->getRawValue(), $aVariants, $aFilterIds, $sActVariantId, $iLimit);
                 if (!empty($aVariants) && empty($aVariantSelections['rawselections'])) {
                     $aVariantSelections = false;
-                } else {
                 }
 
             }

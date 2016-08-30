@@ -674,8 +674,7 @@ class ViewConfig extends \oxSuperCfg
     }
 
     /**
-     * Returns dynamic (language related) image url
-     * Left for compatibility reasons for a while. Will be removed in future
+     * Returns url to pictures directory.
      *
      * @return string
      */

@@ -427,7 +427,7 @@ class ListComponentAjax extends \oxSuperCfg
                     $sValue = $oStr->preg_replace('/^\*/', '%', $sValue);
 
                     $sQ .= $this->_getViewName($aCols[$iCol][1]) . '.' . $aCols[$iCol][0];
-                    $sQ .= ' like ' . $oDb->Quote($sValue . '%') . ' ';
+                    $sQ .= ' like ' . $oDb->Quote('%' . $sValue . '%') . ' ';
                 }
 
             }

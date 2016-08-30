@@ -117,7 +117,7 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('bd3e73e699331eb92c557113bac02fc4', 1, '', 'dPointsForInvitation', 'str', 0x07c4),
 ('bd320d322fa2f638086787c512329eec', 1, '', 'dPointsForRegistration', 'str', 0x07c4),
 ('99065ff58e9d2c1b2e362e54c0bb54f3', 1, '', 'blNewArtByInsert', 'bool', 0x07),
-('rgk2a8c9cf8c9d23b3a7c8e9c090baf1', 1, '', 'sTheme', 'str', 0x4db70f6d1a),
+('rgk2a8c9cf8c9d23b3a7c8e9c090baf1', 1, '', 'sTheme', 'str', 0x79d904cb),
 ('8563fba1c39367724.92308656123111', 1, '', 'sDownloadsDir', 'str', 0x603ee70d5409aee3c7d241d291),
 ('5i1c49faf83b3fe3d6bdbfa301e2704d', 1, '', 'iLinkExpirationTime', 'str', 0x070de9),
 ('5i1d215fe1d6f0e1061ba1134e0ee4f2', 1, '', 'iDownloadExpirationTime', 'str', 0xb6e2),

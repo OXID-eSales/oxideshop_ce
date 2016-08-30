@@ -179,7 +179,7 @@ function changeFnc( fncName )
                         [{oxmultilang ident="VOUCHERSERIE_MAIN_RANDOMNUM"}]
                     </td>
                     <td>
-                        <input type="radio" name="randomVoucherNr" value="1" checked [{$readonly}] onclick="document.getElementById('voucherNr').required = false;>
+                        <input type="radio" name="randomVoucherNr" value="1" checked [{$readonly}] onclick="document.getElementById('voucherNr').required = false;">
                         [{oxinputhelp ident="HELP_VOUCHERSERIE_MAIN_RANDOMNUM"}]
                     </td>
                 </tr>

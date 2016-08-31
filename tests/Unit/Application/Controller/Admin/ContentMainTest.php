@@ -154,6 +154,6 @@ class ContentMainTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Content_Main');
-        $this->assertTrue($oView->UNITcheckIdent("oxstartwelcome", ""));
+        $this->assertTrue($oView->UNITcheckIdent("oxstartmetadescription", ""));
     }
 }

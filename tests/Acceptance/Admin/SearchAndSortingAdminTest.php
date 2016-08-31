@@ -3061,7 +3061,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
 
         $iLastPage = 6;
         $iPreviousPageBeforeLastPage = $iLastPage - 1;
-        $iLastPageLastElementId = 4;
+        $iLastPageLastElementId = 3;
         $this->loginAdmin( "Customer Info", "CMS Pages" );
 
         $iTitleCol = 2;

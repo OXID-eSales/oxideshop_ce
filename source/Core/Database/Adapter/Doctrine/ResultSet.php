@@ -92,7 +92,6 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     {
         $this->fields = $this->getStatement()->fetch();
 
-        // @todo: test the following functionality
         if (false === $this->fields) {
             $this->EOF = true;
         }

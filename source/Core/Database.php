@@ -49,7 +49,7 @@ class Database
     protected static $instance = null;
 
     /**
-     * @var null|DatabaseAdapter|\OxidEsales\EshopEnterprise\Core\Database\Adapter\Doctrine\Database Database connection object
+     * @var null|DatabaseAdapter|DatabaseInterface Database connection object
      */
     protected static $db = null;
 
@@ -258,7 +258,7 @@ class Database
     protected function validateConfigFile(ConfigFile $configFile)
     {
         $isDatabaseConfigured = $this->isDatabaseConfigured($configFile);
-        
+
         if (!$isDatabaseConfigured) {
             throw new DatabaseNotConfiguredException('The database connection has not been configured in config.inc.php', 0);
         }
@@ -272,7 +272,7 @@ class Database
     protected function getConnectionParameters()
     {
         /** Collect the parameters, that are necessary to initialize the database connection: */
-        
+
         /**
          * @var string $databaseDriver At the moment the database adapter uses always 'pdo_mysql'.
          */
@@ -348,7 +348,7 @@ class Database
     protected function isDatabaseConfigured(ConfigFile $config)
     {
         $isValid = true;
-        
+
         // If the shop has not been configured yet the hostname has the format '<dbHost>'
         if (false  !== strpos($config->getVar('dbHost'), '<')) {
             $isValid = false;

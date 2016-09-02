@@ -88,7 +88,8 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Set the connection parameters to connect to the database.
+     * @inheritdoc
+     *
      * Each database driver needs different parameters. At the moment only the driver 'pdo_mysql' is supported.
      *
      * @param array $connectionParameters The parameters to connect to the database using the doctrine pdo_mysql driver
@@ -101,9 +102,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Connects to the database using the connection parameters set in self::setConnectionParameters
-     *
-     * @throws DatabaseConnectionException If a connection to the database cannot be established
+     * @inheritdoc
      */
     public function connect()
     {
@@ -132,9 +131,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Force database master connection.
-     *
-     * @return null
+     * @inheritdoc
      */
     public function forceMasterConnection()
     {
@@ -144,9 +141,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Force database slave connection.
-     *
-     * @return null
+     * @inheritdoc
      */
     public function forceSlaveConnection()
     {
@@ -156,7 +151,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Closes an open connection
+     * @inheritdoc
      */
     public function closeConnection()
     {
@@ -273,7 +268,8 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Set the fetch mode of an open database connection.
+     * @inheritdoc
+     *
      * The given fetch mode as used be the DatabaseInterface Class will be mapped to the Doctrine specific fetch mode.
      *
      * When the connection is opened the fetch mode will be set to a default value as defined in Doctrine::$fetchMode.
@@ -293,13 +289,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Get one column, which you have to give into the sql select statement, of the first row, corresponding to the
-     * given sql statement.
-     *
-     * @param string $sqlSelect      The sql select statement
-     * @param array  $parameters     Array of parameters, for the given sql statement.
-     *
-     * @return string The first column of the first row, which is fitting to the given sql select statement.
+     * @inheritdoc
      */
     public function getOne($sqlSelect, $parameters = array())
     {
@@ -315,16 +305,9 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Get one row of the corresponding sql select statement.
-     * The returned value depends on the fetch mode.
+     * @inheritdoc
      *
-     * @see DatabaseInterface::setFetchMode() for how to set the fetch mode
      * @see Doctrine::$fetchMode for the default fetch mode
-     *
-     * @param string $sqlSelect  The sql select statement we want to execute.
-     * @param array  $parameters Array of parameters, for the given sql statement.
-     *
-     * @return array The row, we selected with the given sql statement.
      */
     public function getRow($sqlSelect, $parameters = array())
     {
@@ -354,31 +337,23 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Quote a string in a way that it can be used as a identifier (i.e. table name or field name) in a SQL statement.
-     *
-     * @param string $string The string to be quoted as a identifier.
-     *
-     * @return string The quoted identifier string.
+     * @inheritdoc
      */
     public function quoteIdentifier($string)
     {
         $identifierQuoteCharacter = $this->getConnection()->getDatabasePlatform()->getIdentifierQuoteCharacter();
-        
+
         if (!$identifierQuoteCharacter) {
             $identifierQuoteCharacter = '`';
         }
-        
+
         $string = trim(str_replace($identifierQuoteCharacter, '', $string));
 
         return $this->getConnection()->quoteIdentifier($string);
     }
 
     /**
-     * Quote the given string.
-     *
-     * @param string $value The string we want to quote.
-     *
-     * @return string The given string in quotes.
+     * @inheritdoc
      */
     public function quote($value)
     {
@@ -386,11 +361,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Quote every string in the given array.
-     *
-     * @param array $array The strings to quote as an array.
-     *
-     * @return array The given strings quoted.
+     * @inheritdoc
      */
     public function quoteArray($array)
     {
@@ -404,9 +375,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Start a mysql transaction.
-     *
-     * @throws DatabaseException
+     * @inheritdoc
      */
     public function startTransaction()
     {
@@ -419,9 +388,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Commit a mysql transaction.
-     *
-     * @throws DatabaseException
+     * @inheritdoc
      */
     public function commitTransaction()
     {
@@ -434,9 +401,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Rollback a mysql transaction.
-     *
-     * @throws DatabaseException
+     * @inheritdoc
      */
     public function rollbackTransaction()
     {
@@ -449,17 +414,11 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Set the transaction isolation level.
+     * @inheritdoc
      *
      * Note: This method is MySQL specific, as we use the MySQL syntax for setting the transaction isolation level.
      *
-     * Allowed values are 'READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE'.
-     *
-     * @param string $level The level of transaction isolation we want to set.
-     *
      * @see Doctrine::transactionIsolationLevelMap
-     *
-     * @throws \InvalidArgumentException|DatabaseException
      *
      * @return bool|integer
      */
@@ -484,14 +443,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Execute the given query and return the number of affected rows.
-     *
-     * @param string $query      The query we want to execute.
-     * @param array  $parameters The parameters for the given query.
-     *
-     * @throws DatabaseException
-     *
-     * @return integer The number of affected rows.
+     * @inheritdoc
      */
     public function execute($query, $parameters = array())
     {
@@ -503,15 +455,10 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Run a given select sql statement on the database.
+     * @inheritdoc
+     *
      * Affected rows will be set to 0 by this query.
      *
-     * @param string $sqlSelect      The sql select statement we want to execute.
-     * @param array  $parameters     The parameters for the given query.
-     *
-     * @throws DatabaseException The exception, that can occur while running the sql statement.
-     *
-     * @return ResultSet The result of the given query.
      */
     public function select($sqlSelect, $parameters = array())
     {
@@ -528,7 +475,7 @@ class Database implements DatabaseInterface
              */
             /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
             $statement = $this->getConnection()->executeQuery($sqlSelect, $parameters);
-            
+
             $result = new ResultSet($statement);
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
@@ -542,18 +489,11 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Run a given select sql statement with a limit clause.
+     * @inheritdoc
+     *
      * Be aware that only a few database vendors have the LIMIT clause as known from MySQL.
      * The Doctrine Query Builder should be used here.
      *
-     * @param string     $sqlSelect      The sql select statement we want to execute.
-     * @param int        $rowCount       Maximum number of rows to return
-     * @param int        $offset         Offset of the first row to return
-     * @param array|bool $parameters     The parameters array.
-     *
-     * @throws DatabaseException
-     *
-     * @return ResultSet The result of the given query.
      */
     public function selectLimit($sqlSelect, $rowCount = -1, $offset = -1, $parameters = false)
     {
@@ -585,12 +525,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Get the values of a column.
-     *
-     * @param string $sqlSelect      The sql select statement we want to execute.
-     * @param array  $parameters     The parameters array.
-     *
-     * @return array The values of a column of a corresponding sql query.
+     * @inheritdoc
      */
     public function getCol($sqlSelect, $parameters = array())
     {
@@ -599,7 +534,7 @@ class Database implements DatabaseInterface
         // END deprecated
 
         $result = array();
-        
+
         try {
             $rows = $this->getConnection()->fetchAll($sqlSelect, $parameters);
             foreach ($rows as $row) {
@@ -640,7 +575,7 @@ class Database implements DatabaseInterface
         // END deprecated
 
         $affectedRows = 0;
-        
+
         try {
             $affectedRows = $this->getConnection()->executeUpdate($query, $parameters, $types);
         } catch (DBALException $exception) {
@@ -829,21 +764,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Get all values as an array.
-     * The format of returned the array depends on the fetch mode.
-     * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
-     * The default fetch mode is defined in Doctrine::$fetchMode
-     *
-     * @param string $sqlSelect      The sql select statement we want to execute.
-     * @param array  $parameters     must loosely evaluate to false or must be an array
-     *
-     * @see DatabaseInterface::setFetchMode()
-     * @see Doctrine::$fetchMode
-     *
-     * @throws     DatabaseException
-     * @throws     \InvalidArgumentException
-     *
-     * @return array
+     * @inheritdoc
      */
     public function getAll($sqlSelect, $parameters = array())
     {
@@ -860,7 +781,7 @@ class Database implements DatabaseInterface
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
-        
+
         if ($this->doesStatementProduceOutput($sqlSelect)) {
             $result = $statement->fetchAll();
         }
@@ -869,9 +790,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Get the last inserted ID.
-     *
-     * @return string The last inserted ID.
+     * @inheritdoc
      */
     public function getLastInsertId()
     {
@@ -879,12 +798,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Get the meta information about all the columns of the given table.
-     * This is kind of a poor man's schema manager, which only works for MySQL.
-     *
-     * @param string $table Table name.
-     *
-     * @return array Array of objects with meta information of each column.
+     * @inheritdoc
      */
     public function metaColumns($table)
     {
@@ -997,9 +911,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Checks whether a transaction is currently active.
-     *
-     * @return boolean TRUE if a transaction is currently active, FALSE otherwise.
+     * @inheritdoc
      */
     public function isTransactionActive() {
         return $this->connection->isTransactionActive();
@@ -1172,25 +1084,25 @@ class Database implements DatabaseInterface
 
     /**
      * Get the connection from the Doctrine DBAL DriverManager.
-     * 
-     * @throws DBALException 
-     * 
+     *
+     * @throws DBALException
+     *
      * @return Connection The connection to the database.
      */
     protected function getConnectionFromDriverManager()
     {
         $configuration = new Configuration();
         $connectionParameters = $this->getConnectionParameters();
-        
+
         return DriverManager::getConnection($connectionParameters, $configuration);
     }
 
     /**
      * Create the message we want to throw, if there was a connection error.
-     * 
+     *
      * @param Connection $connection The connection.
      *
-     * @return string The message, we want throw, if there was a connection error.
+     * @return string The message we want throw if there was a connection error.
      */
     protected function createConnectionErrorMessage($connection)
     {

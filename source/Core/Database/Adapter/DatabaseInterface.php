@@ -79,16 +79,22 @@ interface DatabaseInterface
 
     /**
      * Force database master connection.
+     *
+     * @return null
      */
     public function forceMasterConnection();
 
     /**
      * Force database slave connection.
+     *
+     * @return null
      */
     public function forceSlaveConnection();
 
     /**
      * Closes an open connection
+     *
+     * @return null
      */
     public function closeConnection();
 
@@ -121,6 +127,8 @@ interface DatabaseInterface
     /**
      * Get an array with the values of the first row of a given sql SELECT or SHOW statement .
      * Returns an empty array for any other statement.
+     * The returned value depends on the fetch mode.
+     *  @see DatabaseInterface::setFetchMode() for how to set the fetch mode
      *
      * The keys of the array may be numeric, strings or both, depending on the FETCH_MODE_* of the connection.
      * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
@@ -141,7 +149,7 @@ interface DatabaseInterface
      * @param string $sqlSelect      The sql select statement we want to execute.
      * @param array  $parameters     Array of parameters, for the given sql statement.
      *
-     * @return array
+     * @return array The row, we selected with the given sql statement.
      */
     public function getRow($sqlSelect, $parameters = array());
 
@@ -215,11 +223,11 @@ interface DatabaseInterface
      * SQL injection vulnerability.
      *
      * @param string $sqlSelect      The sql select statement
-     * @param array  $parameters     The parameters array.
+     * @param array  $parameters     The parameters array for the given query.
      *
      * @throws DatabaseException The exception, that can occur while executing the sql statement.
      *
-     * @return ResultSetInterface
+     * @return ResultSetInterface The result of the given query.
      */
     public function select($sqlSelect, $parameters = array());
 
@@ -252,7 +260,6 @@ interface DatabaseInterface
      * @return ResultSetInterface The result of the given query.
      */
     public function selectLimit($sqlSelect, $rowCount = -1, $offset = -1, $parameters = array());
-
     /**
      * Execute read statements like SELECT or SHOW and return the results as a ResultSet.
      * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
@@ -268,6 +275,8 @@ interface DatabaseInterface
      *
      * @param string $query      The sql statement we want to execute.
      * @param array  $parameters The parameters array.
+     *
+     * @throws DatabaseException
      *
      * @return integer Number of rows affected by the SQL statement
      */
@@ -322,11 +331,12 @@ interface DatabaseInterface
     public function quoteIdentifier($string);
 
     /**
-     * Return the meta data for the columns of a table.
+     * Get the meta information about all the columns of the given table.
+     * This is kind of a poor man's schema manager, which only works for MySQL.
      *
      * @param string $table The name of the table.
      *
-     * @return array The meta information about the columns.
+     * @return array Array of objects with meta information of each column.
      */
     public function metaColumns($table);
 
@@ -352,6 +362,16 @@ interface DatabaseInterface
     public function rollbackTransaction();
 
     /**
+     * @inheritdoc
+     *
+     * Note: This method is MySQL specific, as we use the MySQL syntax for setting the transaction isolation level.
+     *
+     * @see Doctrine::transactionIsolationLevelMap
+     *
+     * @return bool|integer
+     */
+
+    /**
      * Set the transaction isolation level.
      * Allowed values 'READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ' and 'SERIALIZABLE'.
      *
@@ -368,10 +388,6 @@ interface DatabaseInterface
 
     /**
      * Return true, if the connection is marked rollbackOnly.
-     *
-     * Doctrine manages nested transaction the following way:
-     * If any of the inner transactions is rolled back, all the outer transactions will have to be rolled back also.
-     * For that reason the connection will be marked as rollbackOnly and any commitTransaction will throw an exception.
      *
      * @return bool
      */

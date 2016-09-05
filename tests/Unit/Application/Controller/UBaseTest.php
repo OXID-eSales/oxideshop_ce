@@ -1089,11 +1089,11 @@ class UBaseTest extends \OxidTestCase
 
         $articleId = '1964';
         $sVndExp = "Nach-Hersteller/Bush/Original-BUSH-Beach-Radio.html";
-        $sVndExpEng = "en/By-Manufacturer/Bush/Original-BUSH-Beach-Radio.html";
+        $sVndExpEng = "en/By-manufacturer/Bush/Original-BUSH-Beach-Radio.html";
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $articleId = '1889';
             $sVndExp = "Nach-Hersteller/Hersteller-2/Bierspiel-OANS-ZWOA-GSUFFA.html";
-            $sVndExpEng = "en/By-Manufacturer/Manufacturer-2/Beergame-OANS-ZWOA-GSUFFA.html";
+            $sVndExpEng = "en/By-manufacturer/Manufacturer-2/Beergame-OANS-ZWOA-GSUFFA.html";
         }
 
         $oArt = oxNew('oxArticle');

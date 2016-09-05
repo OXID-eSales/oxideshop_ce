@@ -45,7 +45,7 @@ function ShowMenueFields( iVal)
     <input type="hidden" name="editval[oxcontents__oxid]" value="[{$oxid}]">
     <input type="hidden" name="folderclass" value="oxcontent">
     <input type="hidden" name="editval[oxcontents__oxcontent]" value="">
-    
+
     <table cellspacing="0" cellpadding="0" border="0" width="98%">
       <colgroup><col width="30%"><col width="5%"><col width="65%"></colgroup>
       <tr>

@@ -439,14 +439,11 @@ class NavigationTree extends \oxSuperCfg
      */
     public function getActiveTab($id, $act)
     {
-        $tab = null;
         $nodeList = $this->getTabs($id, $act, false);
         $act = ($act > $nodeList->length) ? ($nodeList->length - 1) : $act;
         if ($nodeList->length && ($node = $nodeList->item($act))) {
-            $tab = $node->getAttribute('cl');
+            return $node->getAttribute('cl');
         }
-
-        return $tab;
     }
 
     /**
@@ -861,7 +858,7 @@ class NavigationTree extends \oxSuperCfg
         } else {
             $adminView = oxNew('oxadminview');
             $this->_sDynIncludeUrl = $adminView->getServiceUrl($lang);
-            $url .= $this->_sDynIncludeUrl . "menue/dynscreen.xml";
+            $url = $this->_sDynIncludeUrl . "menue/dynscreen.xml";
         }
 
         return $url;
@@ -883,9 +880,8 @@ class NavigationTree extends \oxSuperCfg
         $dynLang = isset($dynLang) ? $dynLang : ($lang->getTplLanguage());
 
         $languages = $lang->getLanguageArray();
-        $langAbr = $languages[$dynLang]->abbr;
 
-        return $langAbr;
+        return $languages[$dynLang]->abbr;
     }
 
     /**

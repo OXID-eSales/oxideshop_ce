@@ -21,22 +21,22 @@
 
 # Theme
 /source/Application/views/*
-!/source/Application/views/admin/
-!/source/Application/views/azure/
+!/source/Application/views/admin
+!/source/Application/views/azure
 
 # out Folder
 /source/out/*
-!/source/out/admin/
-!/source/out/azure/
-!/source/out/downloads/
-!/source/out/media/
-!/source/out/pictures/
+!/source/out/admin
+!/source/out/azure
+!/source/out/downloads
+!/source/out/media
+!/source/out/pictures
 /source/out/pictures/*
-!/source/out/pictures/master/
-!/source/out/pictures/media/
-!/source/out/pictures/promo/
-!/source/out/pictures/vendor/
-!/source/out/pictures/wysiwigpro/
+!/source/out/pictures/master
+!/source/out/pictures/media
+!/source/out/pictures/promo
+!/source/out/pictures/vendor
+!/source/out/pictures/wysiwigpro
 
 # Modules
 /source/modules/*
@@ -44,7 +44,7 @@
 !/source/modules/functions.php.dist
 
 # Except our own modules
-!/source/modules/oe/
+!/source/modules/oe
 /source/modules/oe/*
 !/source/modules/oe/vendormetadata.php
 !/source/modules/oe/invoicepdf

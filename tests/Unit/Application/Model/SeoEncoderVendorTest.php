@@ -91,7 +91,7 @@ class SeoEncoderVendorTest extends \OxidTestCase
         $oVendor->resetRootVendor();
 
         $sVndId = $this->getTestConfig()->getShopEdition() == 'EE' ? 'd2e44d9b32fd2c224.65443178' : '77442e37fdf34ccd3.94620745';
-        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-Distributor/Manufacturer-2/' : 'en/By-Distributor/Bush/';
+        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-distributor/Manufacturer-2/' : 'en/By-distributor/Bush/';
 
         $oVendor = oxNew('oxVendor');
         $oVendor->loadInLang(1, $sVndId);
@@ -122,7 +122,7 @@ class SeoEncoderVendorTest extends \OxidTestCase
         $oVendor->resetRootVendor();
 
         $sVndId = $this->getTestConfig()->getShopEdition() == 'EE' ? 'd2e44d9b32fd2c224.65443178' : '77442e37fdf34ccd3.94620745';
-        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-Distributor/Manufacturer-2/' : 'en/By-Distributor/Bush/';
+        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-distributor/Manufacturer-2/' : 'en/By-distributor/Bush/';
 
         $oVendor = oxNew('oxVendor');
         $oVendor->loadInLang(0, $sVndId);
@@ -189,7 +189,7 @@ class SeoEncoderVendorTest extends \OxidTestCase
         $oEncoder = $this->getMock('oxSeoEncoderVendor', array('_loadFromDb', '_saveToDb'));
         $oEncoder->expects($this->exactly(2))->method('_loadFromDb')->will($this->returnValue(false));
 
-        $sUrl = 'en/By-Distributor/xxx/';
+        $sUrl = 'en/By-distributor/xxx/';
         $sSeoUrl = $oEncoder->getVendorUri($oVendor);
 
         $this->assertEquals($sUrl, $sSeoUrl);
@@ -203,7 +203,7 @@ class SeoEncoderVendorTest extends \OxidTestCase
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $sVndId = $this->getTestConfig()->getShopEdition() == 'EE' ? 'd2e44d9b32fd2c224.65443178' : '77442e37fdf34ccd3.94620745';
-        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-Distributor/Manufacturer-2/101/' : 'en/By-Distributor/Bush/101/';
+        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-distributor/Manufacturer-2/101/' : 'en/By-distributor/Bush/101/';
 
         $oVendor = oxNew('oxVendor');
         $oVendor->loadInLang(1, $sVndId);
@@ -217,7 +217,7 @@ class SeoEncoderVendorTest extends \OxidTestCase
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $sVndId = $this->getTestConfig()->getShopEdition() == 'EE' ? 'd2e44d9b32fd2c224.65443178' : '77442e37fdf34ccd3.94620745';
-        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-Distributor/Manufacturer-2/101/' : 'en/By-Distributor/Bush/101/';
+        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-distributor/Manufacturer-2/101/' : 'en/By-distributor/Bush/101/';
 
         $oVendor = oxNew('oxVendor');
         $oVendor->loadInLang(0, $sVndId);
@@ -262,9 +262,9 @@ class SeoEncoderVendorTest extends \OxidTestCase
         $oVendor->oxvendor__oxtitle = new oxField('root', oxField::T_RAW);
 
         $oEncoder = $this->getMock('oxSeoEncoderVendor', array('_saveToDb'));
-        $oEncoder->expects($this->once())->method('_saveToDb')->with($this->equalTo('oxvendor'), $this->equalTo('root'), $this->equalTo($oVendor->getBaseStdLink(1)), $this->equalTo('en/By-Distributor/'), $this->equalTo(1));
+        $oEncoder->expects($this->once())->method('_saveToDb')->with($this->equalTo('oxvendor'), $this->equalTo('root'), $this->equalTo($oVendor->getBaseStdLink(1)), $this->equalTo('en/By-distributor/'), $this->equalTo(1));
 
-        $sUrl = 'en/By-Distributor/';
+        $sUrl = 'en/By-distributor/';
         $sSeoUrl = $oEncoder->getVendorUri($oVendor, 1);
         $this->assertEquals($sUrl, $sSeoUrl);
     }

@@ -188,7 +188,7 @@ class ManufacturerTest extends \OxidTestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(1, $sManufacturerId);
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-Manufacturer/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink());
+        $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-manufacturer/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink());
     }
 
     public function testGetLink()
@@ -246,7 +246,7 @@ class ManufacturerTest extends \OxidTestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(0, $sManufacturerId);
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-Manufacturer/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink(1));
+        $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-manufacturer/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink(1));
     }
 
     public function testGetLinkWithLangParam()

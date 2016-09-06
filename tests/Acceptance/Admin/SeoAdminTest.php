@@ -123,7 +123,7 @@ class SeoAdminTest extends AdminTestCase
         $this->selectAndWait("test_editlanguage", "label=English");
         $this->assertEquals("off", $this->getValue("aSeoData[oxfixed]"));
         $this->assertEquals("off", $this->getValue("blShowSuffix"));
-        $this->assertEquals("en/By-Distributor/last-EN-distributor-Aessue/", $this->getValue("aSeoData[oxseourl]"));
+        $this->assertEquals("en/By-distributor/last-EN-distributor-Aessue/", $this->getValue("aSeoData[oxseourl]"));
         $this->assertEquals("", $this->getValue("aSeoData[oxkeywords]"));
         $this->assertEquals("", $this->getValue("aSeoData[oxdescription]"));
         $this->check("blShowSuffix");
@@ -187,7 +187,7 @@ class SeoAdminTest extends AdminTestCase
         $this->selectAndWait("test_editlanguage", "label=English");
         $this->assertEquals("off", $this->getValue("aSeoData[oxfixed]"));
         $this->assertEquals("off", $this->getValue("blShowSuffix"));
-        $this->assertEquals("en/By-Manufacturer/last-EN-manufacturer-Aessue/", $this->getValue("aSeoData[oxseourl]"));
+        $this->assertEquals("en/By-manufacturer/last-EN-manufacturer-Aessue/", $this->getValue("aSeoData[oxseourl]"));
         $this->assertEquals("", $this->getValue("aSeoData[oxkeywords]"));
         $this->assertEquals("", $this->getValue("aSeoData[oxdescription]"));
         $this->check("blShowSuffix");
@@ -299,7 +299,7 @@ class SeoAdminTest extends AdminTestCase
         $this->selectAndWait("test_editlanguage", "label=English");
         $this->assertEquals("Distributor [EN] šÄßüл", $this->getSelectedLabel("aSeoData[oxparams]"));
         $this->assertEquals("off", $this->getValue("aSeoData[oxfixed]"));
-        $this->assertEquals("en/By-Distributor/Distributor-EN-Aessue/Test-product-0-EN-Aessue.html", $this->getValue("aSeoData[oxseourl]"));
+        $this->assertEquals("en/By-distributor/Distributor-EN-Aessue/Test-product-0-EN-Aessue.html", $this->getValue("aSeoData[oxseourl]"));
         $this->assertEquals("keywords EN", $this->getValue("aSeoData[oxkeywords]"));
         $this->assertEquals("description EN", $this->getValue("aSeoData[oxdescription]"));
         $this->check("aSeoData[oxfixed]");
@@ -347,7 +347,7 @@ class SeoAdminTest extends AdminTestCase
         $this->selectAndWait("test_editlanguage", "label=English");
         $this->assertEquals("Manufacturer [EN] šÄßüл", $this->getSelectedLabel("aSeoData[oxparams]"));
         $this->assertEquals("off", $this->getValue("aSeoData[oxfixed]"));
-        $this->assertEquals("en/By-Manufacturer/Manufacturer-EN-Aessue/Test-product-0-EN-Aessue.html", $this->getValue("aSeoData[oxseourl]"));
+        $this->assertEquals("en/By-manufacturer/Manufacturer-EN-Aessue/Test-product-0-EN-Aessue.html", $this->getValue("aSeoData[oxseourl]"));
         $this->assertEquals("distributor keywords EN", $this->getValue("aSeoData[oxkeywords]"));
         $this->assertEquals("distributor description EN", $this->getValue("aSeoData[oxdescription]"));
         $this->check("aSeoData[oxfixed]");

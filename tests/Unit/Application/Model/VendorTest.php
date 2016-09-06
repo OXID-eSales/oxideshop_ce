@@ -205,7 +205,7 @@ class VendorTest extends \OxidTestCase
         $oVendor = oxNew('oxvendor');
         $oVendor->loadInLang(1, $sVendorId);
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-Distributor/' . str_replace(' ', '-', $sVendorTitle) . '/', $oVendor->getLink());
+        $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-distributor/' . str_replace(' ', '-', $sVendorTitle) . '/', $oVendor->getLink());
     }
 
     public function testGetLink()
@@ -262,7 +262,7 @@ class VendorTest extends \OxidTestCase
         $oVendor = oxNew('oxvendor');
         $oVendor->loadInLang(0, $sVendorId);
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-Distributor/' . str_replace(' ', '-', $sVendorTitle) . '/', $oVendor->getLink(1));
+        $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-distributor/' . str_replace(' ', '-', $sVendorTitle) . '/', $oVendor->getLink(1));
     }
 
     public function testGetLinkWithLangParam()

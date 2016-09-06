@@ -508,27 +508,27 @@ class SeoEncoderTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $sArticleId = "6b63f459c781fa42edeb889242304014";
             $sArticleSeoUrl = $sShopUrl . "en/Eco-Fashion/Woman/Shirts/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
-            $sArticleVendorSeoUrl = $sShopUrl . "en/By-Distributor/true-fashion-com/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
-            $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Stewart-Brown/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
+            $sArticleVendorSeoUrl = $sShopUrl . "en/By-distributor/true-fashion-com/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
+            $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-manufacturer/Stewart-Brown/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
             $sArticlePriceCatSeoUrl = $sShopUrl . "en/Test-Price-Category-DE/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
             $sCategoryId = "30e44ab82c03c3848.49471214";
             $sCategorySeoUrl = $sShopUrl . "en/For-Her/";
             $sManufacturerId = "88a996f859f94176da943f38ee067984";
-            $sManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Manufacturer-1/";
+            $sManufacturerSeoUrl = $sShopUrl . "en/By-manufacturer/Manufacturer-1/";
             $sVendorId = "d2e44d9b31fcce448.08890330";
-            $sVendorSeoUrl = $sShopUrl . "en/By-Distributor/Manufacturer-1/";
+            $sVendorSeoUrl = $sShopUrl . "en/By-distributor/Manufacturer-1/";
         } else {
             $sArticleId = "1964";
             $sArticleSeoUrl = $sShopUrl . "en/Gifts/Original-BUSH-Beach-Radio.html";
-            $sArticleVendorSeoUrl = $sShopUrl . "en/By-Distributor/Bush/Original-BUSH-Beach-Radio.html";
-            $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Bush/Original-BUSH-Beach-Radio.html";
+            $sArticleVendorSeoUrl = $sShopUrl . "en/By-distributor/Bush/Original-BUSH-Beach-Radio.html";
+            $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-manufacturer/Bush/Original-BUSH-Beach-Radio.html";
             $sArticlePriceCatSeoUrl = $sShopUrl . "en/Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
             $sCategoryId = "8a142c3e4143562a5.46426637";
             $sCategorySeoUrl = $sShopUrl . "en/Gifts/";
             $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
-            $sManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Haller-Stahlwaren/";
+            $sManufacturerSeoUrl = $sShopUrl . "en/By-manufacturer/Haller-Stahlwaren/";
             $sVendorId = "68342e2955d7401e6.18967838";
-            $sVendorSeoUrl = $sShopUrl . "en/By-Distributor/Haller-Stahlwaren/";
+            $sVendorSeoUrl = $sShopUrl . "en/By-distributor/Haller-Stahlwaren/";
         }
 
         $sContentId = "f41427a099a603773.44301043";

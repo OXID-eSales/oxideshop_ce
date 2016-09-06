@@ -272,7 +272,8 @@ class Database implements DatabaseInterface
      *
      * The given fetch mode as used be the DatabaseInterface Class will be mapped to the Doctrine specific fetch mode.
      *
-     * When the connection is opened the fetch mode will be set to a default value as defined in Doctrine::$fetchMode.
+     * When the connection is opened the fetch mode will be set to a default value as defined in
+     * OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database::$fetchMode.
      *
      * Once the connection has been opened, the fetch mode might be set to any of the valid fetch modes as defined in
      * DatabaseInterface::FETCH_MODE_*

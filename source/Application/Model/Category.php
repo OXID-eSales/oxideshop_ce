@@ -644,7 +644,7 @@ class Category extends \oxI18n implements \oxIUrl
     public function getStdLink($iLang = null, $aParams = array())
     {
         if (isset($this->oxcategories__oxextlink) && $this->oxcategories__oxextlink->value) {
-            return oxRegistry::get("oxUtilsUrl")->processUrl($this->oxcategories__oxextlink->value, false);
+            return oxRegistry::get("oxUtilsUrl")->processUrl($this->oxcategories__oxextlink->value, true);
         }
 
         if ($iLang === null) {

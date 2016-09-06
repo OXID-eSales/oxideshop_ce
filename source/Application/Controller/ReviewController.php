@@ -153,7 +153,7 @@ class ReviewController extends \Details
     {
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         if (oxRegistry::getConfig()->getRequestParameter('recommid') && !$this->getActiveRecommList()) {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeURL(), true, 302);
+            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl(), true, 302);
         }
         // END deprecated
 
@@ -173,7 +173,7 @@ class ReviewController extends \Details
         $oConfig = $this->getConfig();
 
         if (!$oConfig->getConfigParam("bl_perfLoadReviews")) {
-            oxRegistry::getUtils()->redirect($oConfig->getShopHomeURL());
+            oxRegistry::getUtils()->redirect($oConfig->getShopHomeUrl());
         }
 
         oxUBase::render();

@@ -421,7 +421,7 @@ class ViewConfig extends \oxSuperCfg
     public function getSelfLink()
     {
         if (($sValue = $this->getViewConfigParam('selflink')) === null) {
-            $sValue = $this->getConfig()->getShopHomeURL();
+            $sValue = $this->getConfig()->getShopHomeUrl();
             $this->setViewConfigParam('selflink', $sValue);
         }
 
@@ -522,7 +522,7 @@ class ViewConfig extends \oxSuperCfg
     public function getBasketLink()
     {
         if (($sValue = $this->getViewConfigParam('basketlink')) === null) {
-            $sValue = $this->getConfig()->getShopHomeURL() . 'cl=basket';
+            $sValue = $this->getConfig()->getShopHomeUrl() . 'cl=basket';
             $this->setViewConfigParam('basketlink', $sValue);
         }
 

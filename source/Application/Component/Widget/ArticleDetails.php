@@ -936,7 +936,7 @@ class ArticleDetails extends \oxWidget
                 $this->_oProduct = oxNew('oxArticle');
 
                 if (!$this->_oProduct->load($sOxid)) {
-                    $myUtils->redirect($myConfig->getShopHomeURL());
+                    $myUtils->redirect($myConfig->getShopHomeUrl());
                     $myUtils->showMessageAndExit('');
                 }
 
@@ -1038,7 +1038,7 @@ class ArticleDetails extends \oxWidget
         }
 
         if (!$blContinue) {
-            $myUtils->redirect($myConfig->getShopHomeURL());
+            $myUtils->redirect($myConfig->getShopHomeUrl());
             $myUtils->showMessageAndExit('');
         }
 

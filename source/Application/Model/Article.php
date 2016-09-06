@@ -2806,7 +2806,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     {
         if ($this->_sMoreDetailLink == null) {
             // and assign special article values
-            $this->_sMoreDetailLink = $this->getConfig()->getShopHomeURL() . 'cl=moredetails';
+            $this->_sMoreDetailLink = $this->getConfig()->getShopHomeUrl() . 'cl=moredetails';
 
             // not always it is okey, as not all the time active category is the same as primary article cat.
             if ($sActCat = oxRegistry::getConfig()->getRequestParameter('cnid')) {
@@ -2833,7 +2833,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
                 $this->_sToBasketLink = $this->getLink();
             } else {
                 // and assign special article values
-                $this->_sToBasketLink = $myConfig->getShopHomeURL();
+                $this->_sToBasketLink = $myConfig->getShopHomeUrl();
 
                 // override some classes as these should never showup
                 $sActClass = oxRegistry::getConfig()->getRequestParameter('cl');

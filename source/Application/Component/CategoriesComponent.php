@@ -152,7 +152,7 @@ class CategoriesComponent extends \oxView
             }
         }
         // END deprecated
-        
+
         return $sActCat;
     }
 
@@ -187,7 +187,7 @@ class CategoriesComponent extends \oxView
         $myConfig = $this->getConfig();
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
             $oManufacturerTree = oxNew('oxmanufacturerlist');
-            $shopHomeURL = $myConfig->getShopHomeURL();
+            $shopHomeURL = $myConfig->getShopHomeUrl();
             $oManufacturerTree->buildManufacturerTree('manufacturerlist', $sActManufacturer, $shopHomeURL);
 
             $oParentView = $this->getParent();
@@ -237,7 +237,7 @@ class CategoriesComponent extends \oxView
      * @param string    $sActVendor       active vendor
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module. So the parameter sActTag will be removed.
-     *             
+     *
      * @return string $sActCat
      */
     protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActTag, $sActVendor)

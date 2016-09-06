@@ -106,7 +106,7 @@ class VendorList extends \oxList
      *
      * @param string $sLinkTarget  Name of class, responsible for category rendering
      * @param string $sActCat      Active category
-     * @param string $sShopHomeUrl base shop url ($myConfig->getShopHomeURL())
+     * @param string $sShopHomeUrl base shop url ($myConfig->getShopHomeUrl())
      */
     public function buildVendorTree($sLinkTarget, $sActCat, $sShopHomeUrl)
     {

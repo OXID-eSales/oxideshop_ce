@@ -148,7 +148,7 @@ class ContentController extends \oxUBase
 
         $oContent = $this->getContent();
         if ($oContent && !$this->_canShowContent($oContent->oxcontents__oxloadid->value)) {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeURL() . 'cl=account');
+            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=account');
         }
 
         $sTpl = false;

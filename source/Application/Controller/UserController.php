@@ -106,7 +106,7 @@ class UserController extends \oxUBase
             $isPsBasketReservationsEnabled = $config->getConfigParam('blPsBasketReservationEnabled');
             if ($this->_blIsOrderStep && $isPsBasketReservationsEnabled &&
                 (!$basket || ($basket && !$basket->getProductsCount()))) {
-                oxRegistry::getUtils()->redirect($config->getShopHomeURL() . 'cl=basket', true, 302);
+                oxRegistry::getUtils()->redirect($config->getShopHomeUrl() . 'cl=basket', true, 302);
             }
         }
 

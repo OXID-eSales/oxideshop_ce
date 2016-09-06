@@ -32,7 +32,7 @@ use oxField;
  * Article suggestion page.
  * Collects some article base information, sets default recomendation text,
  * sends suggestion mail to user.
- * 
+ *
  * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
 class RecommListController extends \AList
@@ -452,7 +452,7 @@ class RecommListController extends \AList
         $aPath[0]->oxcategories__oxtitle = new oxField($oLang->translateString('RECOMMLIST'));
 
         if ($sSearchParam = $this->getRecommSearch()) {
-            $shopHomeURL = $this->getConfig()->getShopHomeURL();
+            $shopHomeURL = $this->getConfig()->getShopHomeUrl();
             $sUrl = $shopHomeURL . "cl=recommlist&amp;searchrecomm=" . rawurlencode($sSearchParam);
             $sTitle = $oLang->translateString('RECOMMLIST_SEARCH') . ' "' . $sSearchParam . '"';
 

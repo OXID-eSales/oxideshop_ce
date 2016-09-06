@@ -168,7 +168,7 @@ class Config extends SuperConfig
                                         'oxlinks', 'oxvoucherseries', 'oxmanufacturers',
                                         // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
                                         'oxnews',
-                                        // END deprecated 
+                                        // END deprecated
                                         'oxselectlist', 'oxwrapping',
                                         'oxdeliveryset', 'oxdelivery', 'oxvendor', 'oxobject2category');
 
@@ -2234,7 +2234,7 @@ class Config extends SuperConfig
 
         // redirect to start page and display the error
         Registry::get("oxUtilsView")->addErrorToDisplay($ex);
-        Registry::getUtils()->redirect($this->getShopHomeURL() . 'cl=start', true, 302);
+        Registry::getUtils()->redirect($this->getShopHomeUrl() . 'cl=start', true, 302);
     }
 
     /**

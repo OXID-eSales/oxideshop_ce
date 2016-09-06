@@ -1555,7 +1555,7 @@ class BaseController extends \oxView
                 $url = $displayObj->getLink($languageId);
             } else {
                 $encoder = oxRegistry::get("oxSeoEncoder");
-                $constructedUrl = $config->getShopHomeURL($languageId) . $this->_getSeoRequestParams();
+                $constructedUrl = $config->getShopHomeUrl($languageId) . $this->_getSeoRequestParams();
                 $url = $encoder->getStaticUrl($constructedUrl, $languageId);
             }
         }
@@ -1959,7 +1959,7 @@ class BaseController extends \oxView
      */
     public function generatePageNavigationUrl()
     {
-        return $this->getConfig()->getShopHomeURL() . $this->_getRequestParams(false);
+        return $this->getConfig()->getShopHomeUrl() . $this->_getRequestParams(false);
     }
 
     /**
@@ -2242,7 +2242,7 @@ class BaseController extends \oxView
     {
         if ($this->_oActSearch === null) {
             $this->_oActSearch = new stdClass();
-            $url = $this->getConfig()->getShopHomeURL();
+            $url = $this->getConfig()->getShopHomeUrl();
             $this->_oActSearch->link = "{$url}cl=search";
         }
 
@@ -2516,7 +2516,7 @@ class BaseController extends \oxView
      */
     public function getCatMoreUrl()
     {
-        return $this->getConfig()->getShopHomeURL() . 'cnid=oxmore';
+        return $this->getConfig()->getShopHomeUrl() . 'cnid=oxmore';
     }
 
     /**

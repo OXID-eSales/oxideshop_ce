@@ -460,7 +460,7 @@ class VendorListController extends \AList
             $oVendorTree->buildVendorTree(
                 'vendorlist',
                 $this->getActVendor()->getId(),
-                $this->getConfig()->getShopHomeURL()
+                $this->getConfig()->getShopHomeUrl()
             );
             $this->_oVendorTree = $oVendorTree;
         }

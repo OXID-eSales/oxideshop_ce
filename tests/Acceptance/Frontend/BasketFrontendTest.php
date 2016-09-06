@@ -947,7 +947,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_confirmAndOrder();
         $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
         //testing info in 5th page
-        $this->assertTextPresent("We registered your order under the number: 12");
+        $this->assertTextPresent("We registered your order with number 12");
         $this->assertElementPresent("backToShop");
         $this->assertEquals("%BACK_TO_START_PAGE%", $this->getText("backToShop"));
 

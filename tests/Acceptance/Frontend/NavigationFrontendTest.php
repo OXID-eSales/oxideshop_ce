@@ -1207,7 +1207,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("subject", $this->getValue("c_subject"));
         $this->assertEquals("message text", $this->getValue("c_message"));
         $this->clickAndWait("//button[text()='%SEND%']");
-        $this->assertTextPresent("%THANK_YOU%.");
+        $this->assertTextPresent("%THANK_YOU%");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_CONTACT%", $this->getText("breadCrumb"));
     }
 

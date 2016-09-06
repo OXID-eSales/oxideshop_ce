@@ -282,7 +282,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->type("pa[email]", "example_test@oxid-esales.dev");
         $this->type("pa[price]", "99.99");
         $this->clickAndWait("//form[@name='pricealarm']//button");
-        $this->assertTextPresent("We will inform you as soon as the price falls below 99,99");
+        $this->assertTextPresent("We'll inform you as soon as the price decreases below 99,99");
         $this->click("//ul[@id='itemTabs']//a[text()='%DESCRIPTION%']");
         $this->waitForItemAppear("//*[@id='description']");
         $this->click("link=%PRICE_ALERT%");

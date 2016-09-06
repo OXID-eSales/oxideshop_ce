@@ -614,7 +614,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->type("editval[rec_name]", "recipient");
         $this->type("editval[send_message]", "Hi, I created a Gift Registry at OXID.");
         $this->clickAndWait("//button[text()='%SUBMIT%']");
-        $this->assertTextPresent("Your Gift Registry was sent successfully to: example@oxid-esales.dev");
+        $this->assertTextPresent("Your gift registry was sent successfully to example@oxid-esales.dev");
         $this->assertEquals("recipient", $this->getValue("editval[rec_name]"));
         $this->assertEquals("example@oxid-esales.dev", $this->getValue("editval[rec_email]"));
         $this->assertEquals("Hi, I created a Gift Registry at OXID.", $this->getValue("editval[send_message]"));

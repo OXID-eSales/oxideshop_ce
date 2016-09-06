@@ -493,7 +493,7 @@ class ArticleDetailsController extends \oxUBase
             $this->_oProduct = oxNew('oxArticle');
 
             if (!$this->_oProduct->load($articleId)) {
-                $utils->redirect($config->getShopHomeURL());
+                $utils->redirect($config->getShopHomeUrl());
                 $utils->showMessageAndExit('');
             }
 
@@ -531,7 +531,7 @@ class ArticleDetailsController extends \oxUBase
         }
 
         if (!$shouldContinue) {
-            $utils->redirect($config->getShopHomeURL());
+            $utils->redirect($config->getShopHomeUrl());
             $utils->showMessageAndExit('');
         }
 

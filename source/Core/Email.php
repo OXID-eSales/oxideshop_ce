@@ -884,7 +884,7 @@ class Email extends \PHPMailer
         $myConfig = $this->getConfig();
         $actShopLang = $myConfig->getActiveShop()->getLanguage();
 
-        $url = $myConfig->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=' . $id;
+        $url = $myConfig->getShopHomeUrl() . 'cl=newsletter&amp;fnc=addme&amp;uid=' . $id;
         $url .= '&amp;lang=' . $actShopLang;
         $url .= ($confirmCode) ? '&amp;confirm=' . $confirmCode : "";
 

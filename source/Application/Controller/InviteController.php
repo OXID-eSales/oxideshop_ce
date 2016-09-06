@@ -68,7 +68,7 @@ class InviteController extends \oxUBase
 
     /**
      * Recommlist
-     * 
+     *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @var object
@@ -99,7 +99,7 @@ class InviteController extends \oxUBase
         $oConfig = $this->getConfig();
 
         if (!$oConfig->getConfigParam("blInvitationsEnabled")) {
-            oxRegistry::getUtils()->redirect($oConfig->getShopHomeURL());
+            oxRegistry::getUtils()->redirect($oConfig->getShopHomeUrl());
 
             return;
         }
@@ -120,7 +120,7 @@ class InviteController extends \oxUBase
         $oConfig = $this->getConfig();
 
         if (!$oConfig->getConfigParam("blInvitationsEnabled")) {
-            oxRegistry::getUtils()->redirect($oConfig->getShopHomeURL());
+            oxRegistry::getUtils()->redirect($oConfig->getShopHomeUrl());
         }
 
         $aParams = oxRegistry::getConfig()->getRequestParameter('editval', true);

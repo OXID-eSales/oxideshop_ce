@@ -147,11 +147,11 @@ class UserComponent extends \oxView
 
             // no session user
             if (!$oUser && !in_array($sClass, $this->_aAllowedClasses)) {
-                oxRegistry::getUtils()->redirect($oConfig->getShopHomeURL() . 'cl=account', false, 302);
+                oxRegistry::getUtils()->redirect($oConfig->getShopHomeUrl() . 'cl=account', false, 302);
             }
 
             if ($oUser && !$oUser->isTermsAccepted() && !in_array($sClass, $this->_aAllowedClasses)) {
-                oxRegistry::getUtils()->redirect($oConfig->getShopHomeURL() . 'cl=account&term=1', false, 302);
+                oxRegistry::getUtils()->redirect($oConfig->getShopHomeUrl() . 'cl=account&term=1', false, 302);
             }
         }
     }
@@ -173,7 +173,7 @@ class UserComponent extends \oxView
 
         // this user is blocked, deny him
         if ($oUser->inGroup('oxidblocked')) {
-            $sUrl = $myConfig->getShopHomeURL() . 'cl=content&tpl=user_blocked.tpl';
+            $sUrl = $myConfig->getShopHomeUrl() . 'cl=content&tpl=user_blocked.tpl';
             oxRegistry::getUtils()->redirect($sUrl, true, 302);
         }
 
@@ -257,7 +257,7 @@ class UserComponent extends \oxView
 
         // this user is blocked, deny him
         if ($oUser->inGroup('oxidblocked')) {
-            $sUrl = $myConfig->getShopHomeURL() . 'cl=content&tpl=user_blocked.tpl';
+            $sUrl = $myConfig->getShopHomeUrl() . 'cl=content&tpl=user_blocked.tpl';
             oxRegistry::getUtils()->redirect($sUrl, true, 302);
         }
 

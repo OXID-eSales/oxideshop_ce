@@ -234,36 +234,35 @@ class Delivery extends \oxI18n
         } else {
 
             $this->_blFreeShipping = false;
-
-            switch ($this->getConditionType()) {
-                case self::CONDITION_TYPE_PRICE: // price
-                    if ($this->getCalculationRule() == self::CALCULATION_RULE_FOR_EACH_PRODUCT) {
-                        $dAmount += $oProduct->getPrice()->getPrice();
-                    } else {
-                        $dAmount += $oBasketItem->getPrice()->getPrice(); // price// currency conversion must allready be done in price class / $oCur->rate; // $oBasketItem->oPrice->getPrice() / $oCur->rate;
-                    }
-                    break;
-                case self::CONDITION_TYPE_WEIGHT: // weight
-                    if ($this->getCalculationRule() == self::CALCULATION_RULE_FOR_EACH_PRODUCT) {
-                        $dAmount += $oProduct->getWeight();
-                    } else {
-                        $dAmount += $oBasketItem->getWeight();
-                    }
-                    break;
-                case self::CONDITION_TYPE_SIZE: // size
-                    $dAmount += $oProduct->getSize();
-                    if ($this->getCalculationRule() != self::CALCULATION_RULE_FOR_EACH_PRODUCT) {
-                        $dAmount *= $oBasketItem->getAmount();
-                    }
-                    break;
-                case self::CONDITION_TYPE_AMOUNT: // amount
-                    $dAmount += $oBasketItem->getAmount();
-                    break;
-            }
-
             if ($oBasketItem->getPrice()) {
                 $this->_dPrice += $oBasketItem->getPrice()->getPrice();
-            }
+            }  
+        }
+
+        switch ($this->getConditionType()) {
+            case self::CONDITION_TYPE_PRICE: // price
+                if ($this->getCalculationRule() == self::CALCULATION_RULE_FOR_EACH_PRODUCT) {
+                    $dAmount += $oProduct->getPrice()->getPrice();
+                } else {
+                    $dAmount += $oBasketItem->getPrice()->getPrice(); // price// currency conversion must allready be done in price class / $oCur->rate; // $oBasketItem->oPrice->getPrice() / $oCur->rate;
+                }
+                break;
+            case self::CONDITION_TYPE_WEIGHT: // weight
+                if ($this->getCalculationRule() == self::CALCULATION_RULE_FOR_EACH_PRODUCT) {
+                    $dAmount += $oProduct->getWeight();
+                } else {
+                    $dAmount += $oBasketItem->getWeight();
+                }
+                break;
+            case self::CONDITION_TYPE_SIZE: // size
+                $dAmount += $oProduct->getSize();
+                if ($this->getCalculationRule() != self::CALCULATION_RULE_FOR_EACH_PRODUCT) {
+                    $dAmount *= $oBasketItem->getAmount();
+                }
+                break;
+            case self::CONDITION_TYPE_AMOUNT: // amount
+                $dAmount += $oBasketItem->getAmount();
+                break;                        
         }
 
         return $dAmount;

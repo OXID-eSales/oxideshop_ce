@@ -94,7 +94,6 @@ class UserPayment extends \oxAdminDetails
             $this->_aViewData['readonly'] = true;
         }
 
-
         return "user_payment.tpl";
     }
 
@@ -107,7 +106,6 @@ class UserPayment extends \oxAdminDetails
 
         $soxId = $this->getEditObjectId();
         if ($this->_allowAdminEdit($soxId)) {
-
             $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
             $aDynvalues = oxRegistry::getConfig()->getRequestParameter("dynvalue");
 
@@ -196,7 +194,6 @@ class UserPayment extends \oxAdminDetails
     public function getPaymentTypes()
     {
         if ($this->_oPaymentTypes == null) {
-
             // all paymenttypes
             $this->_oPaymentTypes = oxNew("oxlist");
             $this->_oPaymentTypes->init("oxpayment");

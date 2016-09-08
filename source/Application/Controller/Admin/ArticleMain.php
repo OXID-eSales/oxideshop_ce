@@ -298,7 +298,6 @@ class ArticleMain extends \oxAdminDetails
         $oArticle = oxNew('oxBase');
         $oArticle->init('oxarticles');
         if ($oArticle->load($sOldId)) {
-
             if ($myConfig->getConfigParam('blDisableDublArtOnCopy')) {
                 $oArticle->oxarticles__oxactive->setValue(0);
                 $oArticle->oxarticles__oxactivefrom->setValue(0);
@@ -362,7 +361,6 @@ class ArticleMain extends \oxAdminDetails
 
             // only for top articles
             if (!$sParentId) {
-
                 $this->setEditObjectId($oArticle->getId());
 
                 //article number handling, warns for artnum duplicates
@@ -451,7 +449,6 @@ class ArticleMain extends \oxAdminDetails
         $oRs = $oDb->execute($sQ);
         if ($oRs !== false && $oRs->recordCount() > 0) {
             while (!$oRs->EOF) {
-
                 $oFile = oxNew("oxfile");
                 $oFile->setId($myUtilsObject->generateUID());
                 $oFile->oxfiles__oxartid = new oxField($sNewId);
@@ -726,11 +723,9 @@ class ArticleMain extends \oxAdminDetails
     protected function formQueryForCopyingToCategory($newArticleId, $sUid, $sCatId, $sTime)
     {
         $oDb = oxDb::getDb();
-        $sql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid, oxtime) " .
+        return "insert into oxobject2category (oxid, oxobjectid, oxcatnid, oxtime) " .
             "VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($newArticleId) . ", " .
             $oDb->quote($sCatId) . ", " . $oDb->quote($sTime) . ") ";
-
-        return $sql;
     }
 
     /**

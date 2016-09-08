@@ -117,10 +117,7 @@ class ModuleFilesValidator implements \oxIModuleValidator
      */
     protected function _allModuleExtensionsExists($oModule)
     {
-        $aModuleExtendedFiles = $oModule->getExtensions();
-        $blAllModuleExtensionsExists = $this->_allFilesExists($aModuleExtendedFiles, true, 'extensions');
-
-        return $blAllModuleExtensionsExists;
+        return $this->_allFilesExists($oModule->getExtensions(), true, 'extensions');
     }
 
     /**
@@ -132,11 +129,7 @@ class ModuleFilesValidator implements \oxIModuleValidator
      */
     protected function _allModuleFilesExists($oModule)
     {
-        $aModuleExtendedFiles = $oModule->getFiles();
-        $blAllModuleFilesExists = $this->_allFilesExists($aModuleExtendedFiles);
-
-        return $blAllModuleFilesExists;
-
+        return $this->_allFilesExists($oModule->getFiles());
     }
 
     /**

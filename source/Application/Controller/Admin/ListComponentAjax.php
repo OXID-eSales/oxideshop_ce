@@ -328,13 +328,9 @@ class ListComponentAjax extends \oxSuperCfg
      */
     protected function _isExtendedColumn($sColumn)
     {
-        $blBuild = false;
         $blVariantsSelectionParameter = oxRegistry::getConfig()->getConfigParam('blVariantsSelection');
-        if ($this->_blAllowExtColumns && $blVariantsSelectionParameter && $sColumn == 'oxtitle') {
-            $blBuild = true;
-        }
 
-        return $blBuild;
+        return $this->_blAllowExtColumns && $blVariantsSelectionParameter && $sColumn == 'oxtitle';
     }
 
     /**
@@ -352,11 +348,9 @@ class ListComponentAjax extends \oxSuperCfg
         // multilanguage
         $sVarSelect = "$sViewTable.oxvarselect";
 
-        $sSql = " IF( {$sViewTable}.{$sColumn} != '', {$sViewTable}.{$sColumn}, CONCAT((select oxart.{$sColumn} " .
+        return " IF( {$sViewTable}.{$sColumn} != '', {$sViewTable}.{$sColumn}, CONCAT((select oxart.{$sColumn} " .
                 "from {$sViewTable} as oxart " .
                 "where oxart.oxid = {$sViewTable}.oxparentid),', ',{$sVarSelect})) as _{$iCnt}";
-
-        return $sSql;
     }
 
     /**
@@ -404,7 +398,6 @@ class ListComponentAjax extends \oxSuperCfg
             $sCharset = $oLang->translateString("charset");
 
             foreach ($aFilter as $sCol => $sValue) {
-
                 // skipping empty filters
                 if ($sValue === '') {
                     continue;

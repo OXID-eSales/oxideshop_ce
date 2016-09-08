@@ -119,9 +119,8 @@ class ArticleFiles extends \oxAdminDetails
 
         $oProduct = oxNew('oxArticle');
         $oProduct->load($sProductId);
-        $this->_oArticle = $oProduct;
 
-        return $this->_oArticle;
+        return $this->_oArticle = $oProduct;
     }
 
     /**
@@ -211,9 +210,7 @@ class ArticleFiles extends \oxAdminDetails
      */
     public function getConfigOptionValue($iOption)
     {
-        $iOption = ($iOption < 0) ? "" : $iOption;
-
-        return $iOption;
+        return ($iOption < 0) ? "" : $iOption;
     }
 
     /**

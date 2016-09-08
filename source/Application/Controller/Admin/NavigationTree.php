@@ -727,7 +727,6 @@ class NavigationTree extends \oxSuperCfg
      */
     public function getListUrl($id)
     {
-        $url = null;
         $xPath = new DOMXPath($this->getDomXml());
         $nodeList = $xPath->query("//SUBMENU[@cl='{$id}']");
         if ($nodeList->length && ($node = $nodeList->item(0))) {
@@ -737,10 +736,8 @@ class NavigationTree extends \oxSuperCfg
             $params = $node->getAttribute('listparam');
             $params = $params ? "&$params" : '';
 
-            $url = "{$cl}{$params}";
+            return "{$cl}{$params}";
         }
-
-        return $url;
     }
 
     /**
@@ -753,7 +750,6 @@ class NavigationTree extends \oxSuperCfg
      */
     public function getEditUrl($id, $actTab)
     {
-        $url = null;
         $xPath = new DOMXPath($this->getDomXml());
         $nodeList = $xPath->query("//SUBMENU[@cl='{$id}']/TAB");
 
@@ -761,19 +757,16 @@ class NavigationTree extends \oxSuperCfg
         if ($nodeList->length && ($actTab = $nodeList->item($actTab))) {
             // special case for external resources
             if ($actTab->getAttribute('external')) {
-                $url = $actTab->getAttribute('location');
-            } else {
-                $cl = $actTab->getAttribute('cl');
-                $cl = $cl ? "cl={$cl}" : '';
-
-                $params = $actTab->getAttribute('clparam');
-                $params = $params ? "&{$params}" : '';
-
-                $url = "{$cl}{$params}";
+                return $actTab->getAttribute('location');
             }
-        }
+            $cl = $actTab->getAttribute('cl');
+            $cl = $cl ? "cl={$cl}" : '';
 
-        return $url;
+            $params = $actTab->getAttribute('clparam');
+            $params = $params ? "&{$params}" : '';
+
+            return "{$cl}{$params}";
+        }
     }
 
     /**
@@ -827,15 +820,11 @@ class NavigationTree extends \oxSuperCfg
      */
     public function getClassId($className)
     {
-        $classId = null;
-
         $xPath = new DOMXPath($this->_getInitialDom());
         $nodeList = $xPath->query("//*[@cl='{$className}' or @list='{$className}']");
         if ($nodeList->length && ($firstItem = $nodeList->item(0))) {
-            $classId = $firstItem->getAttribute('id');
+            return $firstItem->getAttribute('id');
         }
-
-        return $classId;
     }
 
 
@@ -854,14 +843,13 @@ class NavigationTree extends \oxSuperCfg
         if (!$loadDynContents) {
             // getting dyn info from oxid server is off, so getting local menu path
             $fullAdminDir = getShopBasePath() . 'Application/views/admin';
-            $url = $fullAdminDir . "/dynscreen_local.xml";
-        } else {
-            $adminView = oxNew('oxadminview');
-            $this->_sDynIncludeUrl = $adminView->getServiceUrl($lang);
-            $url = $this->_sDynIncludeUrl . "menue/dynscreen.xml";
-        }
 
-        return $url;
+            return $fullAdminDir . "/dynscreen_local.xml";
+        }
+        $adminView = oxNew('oxadminview');
+        $this->_sDynIncludeUrl = $adminView->getServiceUrl($lang);
+
+        return $this->_sDynIncludeUrl . "menue/dynscreen.xml";
     }
 
     /**
@@ -879,9 +867,7 @@ class NavigationTree extends \oxSuperCfg
         $dynLang = $myConfig->getConfigParam('iDynInterfaceLanguage');
         $dynLang = isset($dynLang) ? $dynLang : ($lang->getTplLanguage());
 
-        $languages = $lang->getLanguageArray();
-
-        return $languages[$dynLang]->abbr;
+        return $lang->getLanguageArray()[$dynLang]->abbr;
     }
 
     /**

@@ -220,10 +220,8 @@ class Emos
      *
      * @param string $sPathToFile     The path to the js-bib (/opt/myjs)
      * @param string $sScriptFileName If we want to have annother Filename than emos2.js you can set it here
-     *
-     * @return null
      */
-    public function __construct( $sPathToFile = "", $sScriptFileName = "emos2.js" )
+    public function __construct($sPathToFile = "", $sScriptFileName = "emos2.js")
     {
         $this->_sPathToFile = $sPathToFile;
         $this->_sScriptFileName = $sScriptFileName;
@@ -232,8 +230,6 @@ class Emos
     /**
      * switch on pretty printing of generated code. If not called, the output
      * will be in one line of html.
-     *
-     * @return null
      */
     public function prettyPrint()
     {
@@ -259,10 +255,8 @@ class Emos
      * sets content tracking
      *
      * @param string $sContent content to add
-     *
-     * @return null
      */
-    public function addContent( $sContent )
+    public function addContent($sContent)
     {
         $this->_content = $sContent;
     }
@@ -271,10 +265,8 @@ class Emos
      * sets orderprocess tracking
      *
      * @param string $sProcessStep process step to add
-     *
-     * @return null
      */
-    public function addOrderProcess( $sProcessStep )
+    public function addOrderProcess($sProcessStep)
     {
         $this->_orderProcess = $sProcessStep;
     }
@@ -283,10 +275,8 @@ class Emos
      * sets siteid tracking
      *
      * @param string $sIiteId site id to add
-     *
-     * @return null
      */
-    public function addSiteId( $sIiteId )
+    public function addSiteId($sIiteId)
     {
         $this->_siteid = $sIiteId;
     }
@@ -295,10 +285,8 @@ class Emos
      * sets language tracking
      *
      * @param string $sLangId language id to add
-     *
-     * @return null
      */
-    public function addLangId( $sLangId )
+    public function addLangId($sLangId)
     {
         $this->_langid = $sLangId;
     }
@@ -307,10 +295,8 @@ class Emos
      * sets country tracking
      *
      * @param string $sCountryId country id to add
-     *
-     * @return null
      */
-    public function addCountryId( $sCountryId )
+    public function addCountryId($sCountryId)
     {
         $this->_countryid = $sCountryId;
     }
@@ -319,10 +305,8 @@ class Emos
      * adds tracker Page ID
      *
      * @param string $sPageId page id to add
-     *
-     * @return null
      */
-    public function addPageId( $sPageId )
+    public function addPageId($sPageId)
     {
         $this->_pageid = $sPageId;
     }
@@ -332,10 +316,8 @@ class Emos
      *
      * @param string $sQueryString  query string
      * @param int    $iNumberOfHits number of hits
-     *
-     * @return null
      */
-    public function addSearch( $sQueryString, $iNumberOfHits )
+    public function addSearch($sQueryString, $iNumberOfHits)
     {
         // #4018: The emospro.search string is URL-encoded forwarded to econda instead of URL-escaped
         $this->_searchQuery = $this->_emos_DataFormat($sQueryString);
@@ -348,10 +330,8 @@ class Emos
      *
      * @param string $sUserId user id
      * @param string $sResult registration result
-     *
-     * @return null
      */
-    public function addRegister( $sUserId, $sResult )
+    public function addRegister($sUserId, $sResult)
     {
         $this->_registerUser = md5($sUserId);
         $this->_registerResult = $sResult;
@@ -363,10 +343,8 @@ class Emos
      *
      * @param string $sUserId user id
      * @param string $sResult login result
-     *
-     * @return null
      */
-    public function addLogin( $sUserId, $sResult )
+    public function addLogin($sUserId, $sResult)
     {
         $this->_loginUser = md5($sUserId);
         $this->_loginResult = $sResult;
@@ -376,10 +354,8 @@ class Emos
      * sets contact tracking
      *
      * @param string $sContactType contant type
-     *
-     * @return null
      */
-    public function addContact( $sContactType )
+    public function addContact($sContactType)
     {
         $this->_scontact = $sContactType;
     }
@@ -388,10 +364,8 @@ class Emos
      * sets download tracking
      *
      * @param string $sDownloadLabel download label
-     *
-     * @return null
      */
-    public function addDownload( $sDownloadLabel )
+    public function addDownload($sDownloadLabel)
     {
         $this->_download = $sDownloadLabel;
     }
@@ -403,15 +377,15 @@ class Emos
      *
      * @return null
      */
-    public function addEmosBasketPageArray( $aBasket )
+    public function addEmosBasketPageArray($aBasket)
     {
         if (!is_array($aBasket)) {
-            return ;
+            return;
         }
 
         $aBasketItems = array();
-        foreach ( $aBasket as $oItem ) {
-            $oItem = $this->_emos_ItemFormat( $oItem );
+        foreach ($aBasket as $oItem) {
+            $oItem = $this->_emos_ItemFormat($oItem);
             $aBasketItems[] = array("buy", $oItem->productId, $oItem->productName,
                                   $oItem->price, $oItem->productGroup, $oItem->quantity,
                                   $oItem->variant1, $oItem->variant2, $oItem->variant3 );
@@ -424,36 +398,30 @@ class Emos
      * adds a detailView to the preScript
      *
      * @param EMOS_Item $oItem item to add to view
-     *
-     * @return null
      */
-    public function addDetailView( $oItem )
+    public function addDetailView($oItem)
     {
-        $this->_setEmosECPageArray( $oItem, "view" );
+        $this->_setEmosECPageArray($oItem, "view");
     }
 
     /**
      * adds a removeFromBasket to the preScript
      *
      * @param EMOS_Item $oItem item to remove from basket
-     *
-     * @return null
      */
-    public function removeFromBasket( $oItem )
+    public function removeFromBasket($oItem)
     {
-        $this->_setEmosECPageArray( $oItem, "c_rmv" );
+        $this->_setEmosECPageArray($oItem, "c_rmv");
     }
 
     /**
      * adds a addToBasket to the preScript
      *
      * @param EMOS_Item $oItem item to add to basket
-     *
-     * @return null
      */
-    public function addToBasket( $oItem )
+    public function addToBasket($oItem)
     {
-        $this->_setEmosECPageArray( $oItem, "c_add" );
+        $this->_setEmosECPageArray($oItem, "c_add");
     }
 
     /**
@@ -465,12 +433,10 @@ class Emos
      * @param string $sCountry        customer country title
      * @param string $sCip            customer ip
      * @param string $sCity           customer city title
-     *
-     * @return null
      */
-    public function addEmosBillingPageArray( $sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "" )
+    public function addEmosBillingPageArray($sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "")
     {
-        $this->_setEmosBillingArray( $sBillingId, $sCustomerNumber, $iTotal, $sCountry, $sCip, $sCity);
+        $this->_setEmosBillingArray($sBillingId, $sCustomerNumber, $iTotal, $sCountry, $sCip, $sCity);
     }
 
     /**
@@ -482,34 +448,32 @@ class Emos
      * @param string $sCountry        customer country title
      * @param string $sCip            customer ip
      * @param string $sCity           customer city title
-     *
-     * @return string
      */
-    protected function _setEmosBillingArray( $sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "")
+    protected function _setEmosBillingArray($sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "")
     {
         /******************* prepare data *************************************/
         /* md5 the customer id to fullfill requirements of german datenschutzgeesetz */
-        $sCustomerNumber = md5( $sCustomerNumber );
+        $sCustomerNumber = md5($sCustomerNumber);
 
-        $sCountry = $this->_emos_DataFormat( $sCountry );
-        $sCip = $this->_emos_DataFormat( $sCip) ;
-        $sCity = $this->_emos_DataFormat( $sCity );
+        $sCountry = $this->_emos_DataFormat($sCountry);
+        $sCip = $this->_emos_DataFormat($sCip) ;
+        $sCity = $this->_emos_DataFormat($sCity);
 
         /* get a / separated location stzring for later drilldown */
         $ort = "";
-        if ( $sCountry ) {
+        if ($sCountry) {
             $ort .= "$sCountry/";
         }
 
-        if ( $sCip ) {
-            $ort .= getStr()->substr( $sCip, 0, 1 )."/".getStr()->substr( $sCip, 0, 2 )."/";
+        if ($sCip) {
+            $ort .= getStr()->substr($sCip, 0, 1)."/".getStr()->substr($sCip, 0, 2)."/";
         }
 
-        if ( $sCity ) {
+        if ($sCity) {
             $ort .= "$sCity/";
         }
 
-        if ( $sCip ) {
+        if ($sCip) {
             $ort.=$sCip;
         }
 
@@ -521,12 +485,10 @@ class Emos
      *
      * @param EMOS_Item $oItem      an instance of class EMOS_Item
      * @param string    $sEvent     Type of this event ("view","c_rmv","c_add")
-     *
-     * @return string
      */
-    protected function _setEmosECPageArray( $oItem, $sEvent)
+    protected function _setEmosECPageArray($oItem, $sEvent)
     {
-        $oItem = $this->_emos_ItemFormat( $oItem );
+        $oItem = $this->_emos_ItemFormat($oItem);
 
         $this->_ecEvent = array(array($sEvent, $oItem->productId, $oItem->productName,
                  $oItem->price, $oItem->productGroup,
@@ -541,14 +503,14 @@ class Emos
      *
      * @return null
      */
-    protected function _emos_ItemFormat( $oItem )
+    protected function _emos_ItemFormat($oItem)
     {
-        $oItem->productId = $this->_emos_DataFormat( $oItem->productId );
-        $oItem->productName = $this->_emos_DataFormat( $oItem->productName );
-        $oItem->productGroup = $this->_emos_DataFormat( $oItem->productGroup );
-        $oItem->variant1 = $this->_emos_DataFormat( $oItem->variant1 );
-        $oItem->variant2 = $this->_emos_DataFormat( $oItem->variant2 );
-        $oItem->variant3 = $this->_emos_DataFormat( $oItem->variant3 );
+        $oItem->productId = $this->_emos_DataFormat($oItem->productId);
+        $oItem->productName = $this->_emos_DataFormat($oItem->productName);
+        $oItem->productGroup = $this->_emos_DataFormat($oItem->productGroup);
+        $oItem->variant1 = $this->_emos_DataFormat($oItem->variant1);
+        $oItem->variant2 = $this->_emos_DataFormat($oItem->variant2);
+        $oItem->variant3 = $this->_emos_DataFormat($oItem->variant3);
 
         return $oItem;
     }
@@ -560,7 +522,7 @@ class Emos
      *
      * @return null
      */
-    protected function _emos_DataFormat( $sStr )
+    protected function _emos_DataFormat($sStr)
     {
         //null check
         if (is_null($sStr)) {
@@ -568,41 +530,39 @@ class Emos
         }
 
         //$sStr = urldecode($sStr);
-        $sStr = htmlspecialchars_decode( $sStr, ENT_QUOTES );
-        $sStr = getStr()->html_entity_decode( $sStr );
-        $sStr = strip_tags( $sStr );
-        $sStr = trim( $sStr );
+        $sStr = htmlspecialchars_decode($sStr, ENT_QUOTES);
+        $sStr = getStr()->html_entity_decode($sStr);
+        $sStr = strip_tags($sStr);
+        $sStr = trim($sStr);
 
         //2007-05-10 replace translated &nbsp; with spaces
         $nbsp = chr(0xa0);
-        $sStr = str_replace( $nbsp, " ", $sStr );
-        $sStr = str_replace( "\"", "", $sStr );
-        $sStr = str_replace( "'", "", $sStr );
-        $sStr = str_replace( "%", "", $sStr );
-        $sStr = str_replace( ",", "", $sStr );
-        $sStr = str_replace( ";", "", $sStr );
+        $sStr = str_replace($nbsp, " ", $sStr);
+        $sStr = str_replace("\"", "", $sStr);
+        $sStr = str_replace("'", "", $sStr);
+        $sStr = str_replace("%", "", $sStr);
+        $sStr = str_replace(",", "", $sStr);
+        $sStr = str_replace(";", "", $sStr);
         /* remove unnecessary white spaces*/
-        while ( true ) {
+        while (true) {
             $sStr_temp = $sStr;
-            $sStr = str_replace( "  ", " ", $sStr );
+            $sStr = str_replace("  ", " ", $sStr);
 
-            if ( $sStr == $sStr_temp ) {
+            if ($sStr == $sStr_temp) {
                 break;
             }
         }
-        $sStr = str_replace( " / ", "/", $sStr );
-        $sStr = str_replace( " /", "/", $sStr );
-        $sStr = str_replace( "/ ", "/", $sStr );
+        $sStr = str_replace(" / ", "/", $sStr);
+        $sStr = str_replace(" /", "/", $sStr);
+        $sStr = str_replace("/ ", "/", $sStr);
 
-        $sStr = getStr()->substr( $sStr, 0, 254 );
+        $sStr = getStr()->substr($sStr, 0, 254);
         //$sStr = rawurlencode( $sStr );
         return $sStr;
     }
 
-    /*
+    /**
      * formats up the connector script in a Econda ver 2 JS format
-     *
-     * @return null
      */
     public function _prepareScript()
     {
@@ -615,25 +575,24 @@ class Emos
         $this->_sPostscript  = '<script type="text/javascript"><!--' . $this->_br;
         $this->_sPostscript .= $this->_tab . 'var emospro = {};' . $this->_br;
 
-        $this->_sPostscript .= $this->_addJsFormat( "content", $this->_content);
-        $this->_sPostscript .= $this->_addJsFormat( "orderProcess", $this->_orderProcess);
-        $this->_sPostscript .= $this->_addJsFormat( "siteid", $this->_siteid);
-        $this->_sPostscript .= $this->_addJsFormat( "langid", $this->_langid);
-        $this->_sPostscript .= $this->_addJsFormat( "countryid", $this->_countryid);
-        $this->_sPostscript .= $this->_addJsFormat( "pageId", $this->_pageid);
-        $this->_sPostscript .= $this->_addJsFormat( "scontact", $this->_scontact);
-        $this->_sPostscript .= $this->_addJsFormat( "download", $this->_download);
-        $this->_sPostscript .= $this->_addJsFormat( "billing", array($this->_billing));
+        $this->_sPostscript .= $this->_addJsFormat("content", $this->_content);
+        $this->_sPostscript .= $this->_addJsFormat("orderProcess", $this->_orderProcess);
+        $this->_sPostscript .= $this->_addJsFormat("siteid", $this->_siteid);
+        $this->_sPostscript .= $this->_addJsFormat("langid", $this->_langid);
+        $this->_sPostscript .= $this->_addJsFormat("countryid", $this->_countryid);
+        $this->_sPostscript .= $this->_addJsFormat("pageId", $this->_pageid);
+        $this->_sPostscript .= $this->_addJsFormat("scontact", $this->_scontact);
+        $this->_sPostscript .= $this->_addJsFormat("download", $this->_download);
+        $this->_sPostscript .= $this->_addJsFormat("billing", array($this->_billing));
 
-        $this->_sPostscript .= $this->_addJsFormat( "search", array(array($this->_searchQuery, $this->_searchNumberOfHits)) );
-        $this->_sPostscript .= $this->_addJsFormat( "register", array(array($this->_registerUser, $this->_registerResult)) );
-        $this->_sPostscript .= $this->_addJsFormat( "login", array(array($this->_loginUser, $this->_loginResult)));
+        $this->_sPostscript .= $this->_addJsFormat("search", array(array($this->_searchQuery, $this->_searchNumberOfHits)));
+        $this->_sPostscript .= $this->_addJsFormat("register", array(array($this->_registerUser, $this->_registerResult)));
+        $this->_sPostscript .= $this->_addJsFormat("login", array(array($this->_loginUser, $this->_loginResult)));
 
-        $this->_sPostscript .= $this->_addJsFormat( "ec_Event", $this->_ecEvent);
+        $this->_sPostscript .= $this->_addJsFormat("ec_Event", $this->_ecEvent);
 
         $this->_sPostscript .= $this->_tab . 'window.emosPropertiesEvent(emospro);' . $this->_br;
         $this->_sPostscript .= '//-->' . $this->_br . '</script>' . $this->_br;
-
     }
 
     /**
@@ -646,7 +605,6 @@ class Emos
      */
     protected function _addJsFormat($sVarName, $mContents)
     {
-
         //get the first non array $mContents element
         $mVal = $mContents;
         while (is_array($mVal)) {
@@ -654,14 +612,12 @@ class Emos
         }
 
         if (is_null($mVal)) {
-            return ;
+            return;
         }
 
         $sEncoded = $this->_jsEncode(($mContents));
 
-        $sJsLine = $this->_tab . 'emospro.' . $sVarName . ' = ' . $sEncoded . ';' . $this->_br;
-
-        return $sJsLine;
+        return $this->_tab . 'emospro.' . $sVarName . ' = ' . $sEncoded . ';' . $this->_br;
     }
 
     /**

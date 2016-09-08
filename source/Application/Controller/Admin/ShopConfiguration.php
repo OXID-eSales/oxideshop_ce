@@ -381,12 +381,7 @@ class ShopConfiguration extends oxAdminDetails
      */
     protected function _arrayToMultiline($aInput)
     {
-        $sVal = '';
-        if (is_array($aInput)) {
-            $sVal = implode("\n", $aInput);
-        }
-
-        return $sVal;
+        return implode("\n", (array) $aInput);
     }
 
     /**
@@ -469,8 +464,8 @@ class ShopConfiguration extends oxAdminDetails
         $sEditId = parent::getEditObjectId();
         if (!$sEditId) {
             return $this->getConfig()->getShopId();
-        } else {
-            return $sEditId;
         }
+
+        return $sEditId;
     }
 }

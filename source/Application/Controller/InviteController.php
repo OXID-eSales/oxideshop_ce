@@ -204,12 +204,7 @@ class InviteController extends \oxUBase
      */
     public function getInviteSendStatus()
     {
-        //checking if email was sent
-        if ($this->_iMailStatus == 1) {
-            return true;
-        }
-
-        return false;
+        return ($this->_iMailStatus == 1);
     }
 
     /**

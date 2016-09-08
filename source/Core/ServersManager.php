@@ -67,9 +67,7 @@ class ServersManager
      */
     public function getServer($sServerId)
     {
-        $aServerData = $this->_getServerData($sServerId);
-
-        return $this->_createServer($sServerId, $aServerData);
+        return $this->_createServer($sServerId, $this->_getServerData($sServerId));
     }
 
     /**

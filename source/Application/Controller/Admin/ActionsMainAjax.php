@@ -89,7 +89,6 @@ class ActionsMainAjax extends \ajaxListComponent
         } else {
             // selected category ?
             if ($sSynchSelId && $sSelId != $sSynchSelId) {
-
                 $sQAdd = " from {$sView} left join $sArtTable on ";
                 $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
                 $sSqlIfTrue = " ( $sArtTable.oxid={$sView}.oxobjectid or $sArtTable.oxparentid={$sView}.oxobjectid) ";
@@ -97,7 +96,6 @@ class ActionsMainAjax extends \ajaxListComponent
                 $sQAdd .= $blVariantsSelectionParameter ? $sSqlIfTrue : $sSqlIfFalse;
                 $sQAdd .= " where {$sView}.oxcatnid = " . $oDb->quote($sSelId);
             } else {
-
                 $sQAdd = " from {$sArtTable} left join oxactions2article " .
                          "on {$sArtTable}.oxid=oxactions2article.oxartid " .
                          " where oxactions2article.oxactionid = " . $oDb->quote($sSelId) .
@@ -135,7 +133,6 @@ class ActionsMainAjax extends \ajaxListComponent
             }
         }
 
-        //echo $sQ;
         return $sQ;
     }
 
@@ -254,7 +251,6 @@ class ActionsMainAjax extends \ajaxListComponent
         if (($iKey = array_search(oxRegistry::getConfig()->getRequestParameter('sortoxid'), $aIdx2Id)) !== false) {
             $iDir = (oxRegistry::getConfig()->getRequestParameter('direction') == 'up') ? ($iKey - 1) : ($iKey + 1);
             if (isset($aIdx2Id[$iDir])) {
-
                 // exchanging indexes
                 $oDir1 = $oList->offsetGet($aIdx2Id[$iDir]);
                 $oDir2 = $oList->offsetGet($aIdx2Id[$iKey]);
@@ -285,5 +281,4 @@ class ActionsMainAjax extends \ajaxListComponent
     {
         return oxNew('oxRssFeed');
     }
-
 }

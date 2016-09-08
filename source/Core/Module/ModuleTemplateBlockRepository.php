@@ -49,9 +49,8 @@ class ModuleTemplateBlockRepository
                             where oxactive=1
                                 and oxshopid = ?
                                 and oxmodule in ( " . $modulesIdQuery . " )";
-        $rs = $db->getOne($sql, array($shopId));
 
-        return $rs;
+        return $db->getOne($sql, array($shopId));
     }
 
     /**
@@ -78,9 +77,8 @@ class ModuleTemplateBlockRepository
                         and oxtheme in (" . $activeThemesIdQuery . ")
                         order by oxpos asc, oxtheme asc, oxid asc";
         $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $activeBlockTemplates = $db->getAll($sql, [$shopId, $shopTemplateName]);
 
-        return $activeBlockTemplates;
+        return $db->getAll($sql, [$shopId, $shopTemplateName]);
     }
 
     /**
@@ -93,11 +91,8 @@ class ModuleTemplateBlockRepository
     private function formActiveThemesIdQuery($activeThemeIds = [])
     {
         $defaultThemeIndicator = '';
-
         array_unshift($activeThemeIds, $defaultThemeIndicator);
 
-        $activeThemesIdQuery = implode(', ', oxDb::getInstance()->quoteArray($activeThemeIds));
-
-        return $activeThemesIdQuery;
+        return implode(', ', oxDb::getInstance()->quoteArray($activeThemeIds));
     }
 }

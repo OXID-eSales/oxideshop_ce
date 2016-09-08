@@ -183,9 +183,7 @@ class SystemEventHandler
      */
     protected function _isSendingShopDataEnabled()
     {
-        $isSendingShopDataEnabled = (bool) $this->_getConfig()->getConfigParam('blLoadDynContents');
-
-        return $isSendingShopDataEnabled;
+        return (bool) $this->_getConfig()->getConfigParam('blLoadDynContents');
     }
 
     /**
@@ -208,13 +206,7 @@ class SystemEventHandler
      */
     private function _needToSendShopInformation()
     {
-        $blNeedToSend = false;
-
-        if ($this->_getNextCheckTime() < $this->_getCurrentTime()) {
-            $blNeedToSend = true;
-        }
-
-        return $blNeedToSend;
+        return $this->_getNextCheckTime() < $this->_getCurrentTime();
     }
 
     /**
@@ -272,9 +264,8 @@ class SystemEventHandler
     {
         /** @var oxUtilsDate $oUtilsDate */
         $oUtilsDate = oxRegistry::get('oxUtilsDate');
-        $iCurrentTime = $oUtilsDate->getTime();
 
-        return $iCurrentTime;
+        return $oUtilsDate->getTime();
     }
 
     /**

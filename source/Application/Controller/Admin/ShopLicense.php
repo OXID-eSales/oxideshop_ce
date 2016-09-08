@@ -125,8 +125,7 @@ class ShopLicense extends \Shop_Config
             $sUpdateLink = oxRegistry::getLang()->translateString("VERSION_UPDATE_LINK");
             $aResult[5] = "<a id='linkToUpdate' href='$sUpdateLink' target='_blank'>" . $aResult[5] . "</a>";
         }
-        $sOutput = implode("<br>", $aResult);
 
-        return $sOutput;
+        return implode("<br>", $aResult);
     }
 }

@@ -110,7 +110,6 @@ class OnlineModuleVersionNotifier
         $oRequestParams->modules = new stdClass();
         $oRequestParams->modules->module = $this->_prepareModulesInformation();
 
-
         return $oRequestParams;
     }
 

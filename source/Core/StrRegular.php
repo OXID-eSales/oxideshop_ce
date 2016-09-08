@@ -83,9 +83,8 @@ class StrRegular
     {
         if (is_null($iLength)) {
             return substr($sStr, $iStart);
-        } else {
-            return substr($sStr, $iStart, $iLength);
         }
+        return substr($sStr, $iStart, $iLength);
     }
 
     /**
@@ -297,8 +296,8 @@ class StrRegular
 
     /**
      * Recodes and returns passed input:
-     * if $blToHtmlEntities == true  ä -> &auml;
-     * if $blToHtmlEntities == false &auml; -> ä
+     * if $blToHtmlEntities == true  Ã¤ -> &auml;
+     * if $blToHtmlEntities == false &auml; -> Ã¤
      *
      * @param string $sInput           text to recode
      * @param bool   $blToHtmlEntities recode direction

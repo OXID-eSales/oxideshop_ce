@@ -109,8 +109,7 @@ class ModuleTemplateBlockPathFormatter
         $modulePath = $activeModuleInfo[$this->moduleId];
 
         $fileSystem = oxNew(FileSystem::class);
-        $connectedPath = $fileSystem->combinePaths($this->modulesPath, $modulePath, $fileName);
 
-        return $connectedPath;
+        return $fileSystem->combinePaths($this->modulesPath, $modulePath, $fileName);
     }
 }

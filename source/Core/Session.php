@@ -231,7 +231,6 @@ class Session extends \oxSuperCfg
 
         //starting session if only we can
         if ($this->_allowSessionStart()) {
-
             //creating new sid
             if (!$sid) {
                 self::$_blIsNewSession = true;
@@ -326,7 +325,6 @@ class Session extends \oxSuperCfg
             if (isset($_SERVER['HTTP_USER_AGENT']) &&
                 strpos($_SERVER['HTTP_USER_AGENT'], 'AOL') !== false
             ) {
-
                 session_cache_limiter(false);
                 header("Cache-Control: no-store, private, must-revalidate, proxy-revalidate, post-check=0, pre-check=0, max-age=0, s-maxage=0");
             }
@@ -477,19 +475,13 @@ class Session extends \oxSuperCfg
      */
     public function getVariable($name)
     {
-        if (isset($_SESSION[$name])) {
-            return $_SESSION[$name];
-        } else {
-            return null;
-        }
+        return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
     }
 
     /**
      * Destroys a single element (passed to method) of an session array.
      *
      * @param string $name Name of parameter to destroy
-     *
-     * @return null
      */
     public function deleteVariable($name)
     {
@@ -679,7 +671,6 @@ class Session extends \oxSuperCfg
                     if ($blSidNeeded = $this->getVariable('blSidNeeded')) {
                         $this->_blSidNeeded = true;
                     } elseif ($this->_isSessionRequiredAction()) {
-
                         if (!count($_COOKIE)) {
                             $this->_blSidNeeded = true;
 
@@ -703,9 +694,7 @@ class Session extends \oxSuperCfg
      */
     public function isActualSidInCookie()
     {
-        $blReturn = (isset($_COOKIE[$this->getName()]) && ($_COOKIE[$this->getName()] == $this->getId()));
-
-        return $blReturn;
+        return isset($_COOKIE[$this->getName()]) && ($_COOKIE[$this->getName()] == $this->getId());
     }
 
     /**
@@ -790,7 +779,6 @@ class Session extends \oxSuperCfg
             } elseif (oxRegistry::get("oxUtilsServer")->getOxCookie('oxid_' . $myConfig->getShopId() . '_autologin') === '1') {
                 $blAllowSessionStart = true;
             } elseif (!$this->_forceSessionStart() && !oxRegistry::get("oxUtilsServer")->getOxCookie('sid_key')) {
-
                 // session is not needed to start when it is not necessary:
                 // - no sid in request and also user executes no session connected action
                 // - no cookie set and user executes no session connected action
@@ -820,7 +808,6 @@ class Session extends \oxSuperCfg
 
         // check only for non search engines
         if (!oxRegistry::getUtils()->isSearchEngine() && !$myUtilsServer->isTrustedClientIp() && !$this->_isValidRemoteAccessToken()) {
-
             $myConfig = $this->getConfig();
 
             // checking if session user agent matches actual
@@ -854,7 +841,6 @@ class Session extends \oxSuperCfg
     protected function _checkUserAgent($sAgent, $sExistingAgent)
     {
         $blCheck = false;
-
         // processing
         $oUtils = oxRegistry::get("oxUtilsServer");
         $sAgent = $oUtils->processUserAgentInfo($sAgent);
@@ -1066,9 +1052,8 @@ class Session extends \oxSuperCfg
     {
         $inputToken = $this->getConfig()->getRequestParameter('rtoken');
         $token = $this->getRemoteAccessToken(false);
-        $isValid = !empty($inputToken) ? ($token === $inputToken) : false;
 
-        return $isValid;
+        return !empty($inputToken) ? ($token === $inputToken) : false;
     }
 
     /**

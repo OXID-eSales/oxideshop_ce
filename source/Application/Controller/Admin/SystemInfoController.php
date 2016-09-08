@@ -91,16 +91,13 @@ class SystemInfoController extends \oxAdminView
      */
     protected function isClassVariableVisible($varName)
     {
-        $skipNames = array(
+        return !in_array($varName, [
             'oDB',
             'dbUser',
             'dbPwd',
             'oSerial',
             'aSerials',
             'sSerialNr'
-        );
-        $result = !in_array($varName, $skipNames);
-
-        return $result;
+        ]);
     }
 }

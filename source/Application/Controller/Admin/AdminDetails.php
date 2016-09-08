@@ -70,13 +70,9 @@ class AdminDetails extends \oxAdminView
     protected function getDocumentationLanguageId()
     {
         $language = oxRegistry::getLang();
-        $languageId = 1;
         $languageAbbr = $language->getLanguageAbbr($language->getTplLanguage());
-        if ($languageAbbr === "de") {
-            $languageId = 0;
-        }
 
-        return $languageId;
+        return $languageAbbr === "de" ? 0 : 1;
     }
 
     /**
@@ -104,7 +100,6 @@ class AdminDetails extends \oxAdminView
     {
         $sEditObjectValue = '';
         if ($oObject && $sField && isset($oObject->$sField)) {
-
             if ($oObject->$sField instanceof oxField) {
                 $sEditObjectValue = $oObject->$sField->getRawValue();
             } else {
@@ -324,7 +319,6 @@ class AdminDetails extends \oxAdminView
     {
         // navigation according to class
         if ($sNode) {
-
             $myAdminNavig = $this->getNavigation();
 
             // default tab

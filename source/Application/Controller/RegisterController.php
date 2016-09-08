@@ -118,13 +118,7 @@ class RegisterController extends \User
      */
     public function isFieldRequired($sField)
     {
-        if ($aMustFillFields = $this->getMustFillFields()) {
-            if (isset($aMustFillFields[$sField])) {
-                return true;
-            }
-        }
-
-        return false;
+        return isset($this->getMustFillFields()[$sField]);
     }
 
     /**
@@ -138,7 +132,6 @@ class RegisterController extends \User
     {
         $oUser = oxNew('oxuser');
         if ($oUser->loadUserByUpdateId($this->getUpdateId())) {
-
             // resetting update key parameter
             $oUser->setUpdateKey(true);
 

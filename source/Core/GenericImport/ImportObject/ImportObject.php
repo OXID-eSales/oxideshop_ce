@@ -181,6 +181,7 @@ abstract class ImportObject
     protected function getTableName()
     {
         $shopId = oxRegistry::getConfig()->getShopId();
+
         return getViewName($this->tableName, -1, $shopId);
     }
 

@@ -102,7 +102,7 @@ class ShopAutoload
     protected function generateDirectories()
     {
         $shopBasePath = __DIR__ . "/../../";
-        $aClassDirs = array(
+        return [
             $shopBasePath . 'Core/',
             $shopBasePath . 'Application/Component/Widget/',
             $shopBasePath . 'Application/Component/',
@@ -111,8 +111,6 @@ class ShopAutoload
             $shopBasePath . 'Application/Controller/Admin/',
             $shopBasePath . 'Core/exception/',
             $shopBasePath . 'Core/interface/'
-        );
-
-        return $aClassDirs;
+        ];
     }
 }

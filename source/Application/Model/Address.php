@@ -100,9 +100,7 @@ class Address extends \oxBase
         }
         $sAddress .= "$sStreet $sStreetNr, $sCity";
 
-        $sAddress = trim($sAddress);
-
-        return $sAddress;
+        return trim($sAddress);
     }
 
     /**

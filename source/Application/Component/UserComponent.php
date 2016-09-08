@@ -179,7 +179,6 @@ class UserComponent extends \oxView
 
         // TODO: move this to a proper place
         if ($oUser->isLoadedFromCookie() && !$myConfig->getConfigParam('blPerfNoBasketSaving')) {
-
             if ($oBasket = $this->getSession()->getBasket()) {
                 $oBasket->load();
                 $oBasket->onUpdate();
@@ -335,7 +334,6 @@ class UserComponent extends \oxView
         $oUser = oxNew('oxuser');
 
         if ($oUser->logout()) {
-
             $this->setLoginStatus(USER_LOGOUT);
 
             // finalizing ..
@@ -372,13 +370,7 @@ class UserComponent extends \oxView
      */
     public function changeUser()
     {
-        $blUserRegistered = $this->_changeUser_noRedirect();
-
-        if ($blUserRegistered === true) {
-            return 'payment';
-        } else {
-            return $blUserRegistered;
-        }
+        return ($this->_changeUser_noRedirect() === true) ? 'payment' : false;
     }
 
     /**
@@ -449,7 +441,6 @@ class UserComponent extends \oxView
         $oUser = oxNew('oxuser');
 
         try {
-
             $oUser->checkValues($sUser, $sPassword, $sPassword2, $aInvAdress, $aDelAdress);
 
             $iActState = $blActiveLogin ? 0 : 1;
@@ -511,7 +502,6 @@ class UserComponent extends \oxView
         }
 
         if (!$blActiveLogin) {
-
             oxRegistry::getSession()->setVariable('usr', $oUser->getId());
             $this->_afterLogin($oUser);
 

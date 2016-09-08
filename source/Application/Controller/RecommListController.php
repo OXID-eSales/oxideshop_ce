@@ -220,7 +220,6 @@ class RecommListController extends \AList
         if ($this->canAcceptFormData() &&
             ($oRecommList = $this->getActiveRecommList()) && ($oUser = $this->getUser())
         ) {
-
             //save rating
             $dRating = oxRegistry::getConfig()->getRequestParameter('recommlistrating');
             if ($dRating !== null) {
@@ -487,12 +486,10 @@ class RecommListController extends \AList
     public function generatePageNavigationUrl()
     {
         if ((oxRegistry::getUtils()->seoIsActive() && ($oRecomm = $this->getActiveRecommList()))) {
-            $sUrl = $oRecomm->getLink();
-        } else {
-            $sUrl = oxUBase::generatePageNavigationUrl();
+            return $oRecomm->getLink();
         }
 
-        return $sUrl;
+        return oxUBase::generatePageNavigationUrl();
     }
 
     /**
@@ -590,13 +587,12 @@ class RecommListController extends \AList
             $sTranslatedString = $oLang->translateString('LIST_BY', $oLang->getBaseLanguage(), false);
             $sTitleField = 'oxrecommlists__oxtitle';
             $sAuthorField = 'oxrecommlists__oxauthor';
-            $sTitle = $aActiveList->$sTitleField->value . ' (' . $sTranslatedString . ' ' .
-                      $aActiveList->$sAuthorField->value . ')';
-        } else {
-            $sTranslatedString = $oLang->translateString('HITS_FOR', $oLang->getBaseLanguage(), false);
-            $sTitle = $this->getArticleCount() . ' ' . $sTranslatedString . ' "' . $this->getSearchForHtml() . '"';
-        }
 
-        return $sTitle;
+            return $aActiveList->$sTitleField->value . ' (' . $sTranslatedString . ' ' .
+                      $aActiveList->$sAuthorField->value . ')';
+        }
+        $sTranslatedString = $oLang->translateString('HITS_FOR', $oLang->getBaseLanguage(), false);
+
+        return $this->getArticleCount() . ' ' . $sTranslatedString . ' "' . $this->getSearchForHtml() . '"';
     }
 }

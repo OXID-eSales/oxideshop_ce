@@ -368,8 +368,7 @@ class CategoryMain extends \oxAdminDetails
         $category->setLanguage($this->_iEditLang);
 
         $utilsFile = oxRegistry::get("oxUtilsFile");
-        $category = $utilsFile->processFiles($category);
 
-        return $category;
+        return $utilsFile->processFiles($category);
     }
 }

@@ -41,9 +41,7 @@ class AdminLogSqlDecorator
     {
         $userId = $this->getUserId();
 
-        $preparedSql = "insert into {$this->table} (oxuserid, oxsql) values ('{$userId}', " . $this->quote($originalSql) . ")";
-
-        return $preparedSql;
+        return "insert into {$this->table} (oxuserid, oxsql) values ('{$userId}', " . $this->quote($originalSql) . ")";
     }
 
     /**
@@ -54,11 +52,9 @@ class AdminLogSqlDecorator
     protected function getUserId()
     {
         $user = oxNew('oxUser');
-        $result = '';
         if ($user->loadAdminUser()) {
-            $result = $user->getId();
+            return $user->getId();
         }
-        return $result;
     }
 
     /**
@@ -69,8 +65,6 @@ class AdminLogSqlDecorator
      */
     protected function quote($str)
     {
-        $db = oxDb::getDb();
-        $result = $db->quote($str);
-        return $result;
+        return oxDb::getDb()->quote($str);
     }
 }

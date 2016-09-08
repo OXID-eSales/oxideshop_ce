@@ -164,9 +164,9 @@ class SepaValidator
             $this->_aIBANCodeLengths = $aIBANRegistry;
 
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**

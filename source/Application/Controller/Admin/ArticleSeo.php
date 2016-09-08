@@ -96,7 +96,7 @@ class ArticleSeo extends \Object_Seo
     /**
      * Returns active category (manufacturer/vendor) id
      *
-     * @return string
+     * @return false|string
      */
     public function getActCatId()
     {
@@ -107,9 +107,11 @@ class ArticleSeo extends \Object_Seo
             $iStartPos = $oStr->strpos($aData["oxparams"], "#");
             $iEndPos = $oStr->strpos($aData["oxparams"], "#", $iStartPos + 1);
             $iLen = $oStr->strlen($aData["oxparams"]);
+
             $sId = $oStr->substr($aData["oxparams"], $iStartPos + 1, $iEndPos - $iLen);
         } elseif ($aList = $this->getSelectionList()) {
             $oItem = reset($aList[$this->getActCatType()][$this->getActCatLang()]);
+
             $sId = $oItem->getId();
         }
 
@@ -223,7 +225,6 @@ class ArticleSeo extends \Object_Seo
             }
         }
     }
-
 
     /**
      * Returns active category object, used for seo url getter
@@ -373,9 +374,7 @@ class ArticleSeo extends \Object_Seo
      */
     protected function _getSaveObjectId()
     {
-        $sId = $this->getEditObjectId();
-
-        return $sId;
+        return $this->getEditObjectId();
     }
 
     /**

@@ -88,10 +88,7 @@ class ModuleInstaller extends \oxSuperCfg
     public function activate(oxModule $oModule)
     {
         $blResult = false;
-
-        $sModuleId = $oModule->getId();
-
-        if ($sModuleId) {
+        if ($sModuleId = $oModule->getId()) {
             $this->_addExtensions($oModule);
             $this->_removeFromDisabledList($sModuleId);
 
@@ -122,10 +119,7 @@ class ModuleInstaller extends \oxSuperCfg
     public function deactivate(oxModule $oModule)
     {
         $blResult = false;
-
-        $sModuleId = $oModule->getId();
-
-        if ($sModuleId) {
+        if ($sModuleId = $oModule->getId()) {
             $this->_callEvent('onDeactivate', $sModuleId);
 
             $this->_addToDisabledList($sModuleId);
@@ -201,7 +195,7 @@ class ModuleInstaller extends \oxSuperCfg
                         }
                     }
                     if (!count($aAllModuleArray[$sClass])) {
-                        unset ($aAllModuleArray[$sClass]);
+                        unset($aAllModuleArray[$sClass]);
                     }
                 } else {
                     $aAllModuleArray[$sClass] = $aModuleChain;

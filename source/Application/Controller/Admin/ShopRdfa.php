@@ -65,6 +65,7 @@ class ShopRdfa extends \Shop_Config
                                     AND OXLOADID IN ('oxagb', 'oxdeliveryinfo', 'oximpressum', 'oxrightofwithdrawal')
                                     AND OXSHOPID = '" . oxRegistry::getConfig()->getRequestParameter("oxid") . "'"
         ); // $this->getEditObjectId()
+
         return $oContentList;
     }
 

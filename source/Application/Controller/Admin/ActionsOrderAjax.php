@@ -55,10 +55,8 @@ class ActionsOrderAjax extends \ajaxListComponent
         $sSelTable = $this->_getViewName('oxselectlist');
         $sArtId = oxRegistry::getConfig()->getRequestParameter('oxid');
 
-        $sQAdd = " from $sSelTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sSelTable.oxid " .
+        return " from $sSelTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sSelTable.oxid " .
                  "where oxobjectid = " . oxDb::getDb()->quote($sArtId) . "  ";
-
-        return $sQAdd;
     }
 
     /**
@@ -88,7 +86,6 @@ class ActionsOrderAjax extends \ajaxListComponent
         $iSelCnt = 0;
         $aIdx2Id = array();
         foreach ($oList as $sKey => $oSel) {
-
             if ($oSel->oxobject2selectlist__oxsort->value != $iSelCnt) {
                 $oSel->oxobject2selectlist__oxsort->setValue($iSelCnt);
 

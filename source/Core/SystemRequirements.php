@@ -284,14 +284,13 @@ class SystemRequirements
             return 2;
         }
 
-        $iState = 1;
         if (version_compare($this->getPhpVersion(), "5.3", ">=")) {
             if (version_compare($this->getPhpVersion(), "5.3.5", ">=") && version_compare($this->getPhpVersion(), "5.3.7", "!=")) {
-                $iState = 2;
+                return 2;
             }
         }
 
-        return $iState;
+        return 1;
     }
 
     /**
@@ -408,9 +407,9 @@ class SystemRequirements
                 'dir'  => $sScript,
                 'ssl'  => $blSsl,
             );
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -476,9 +475,9 @@ class SystemRequirements
     {
         if ($this->isAdmin()) {
             return $this->_getShopHostInfoFromConfig();
-        } else {
-            return $this->_getShopHostInfoFromServerVars();
         }
+
+        return $this->_getShopHostInfoFromServerVars();
     }
 
     /**
@@ -582,9 +581,8 @@ class SystemRequirements
                 fclose($oRes);
             }
         }
-        $iModStat = (!$iModStat) ? 1 : $iModStat;
 
-        return $iModStat;
+        return $iModStat ?: 1;
     }
 
     /**
@@ -804,8 +802,7 @@ class SystemRequirements
         /**
          * The following version of MySQL server are reported to not be compatible with OXID eShop
          */
-        if (
-            // https://bugs.oxid-esales.com/view.php?id=1877
+        if (// https://bugs.oxid-esales.com/view.php?id=1877
             version_compare($sVersion, '5.0.41', '=') ||
             // https://bugs.oxid-esales.com/view.php?id=1003
             version_compare($sVersion, '5.0.37', '=') ||
@@ -863,9 +860,9 @@ class SystemRequirements
     {
         if (function_exists('get_magic_quotes_gpc')) {
             return get_magic_quotes_gpc() ? 0 : 2;
-        } else {
-            return 2;
         }
+
+        return 2;
     }
 
     /**
@@ -887,11 +884,10 @@ class SystemRequirements
 
             $iMemLimit = $this->_getBytes($sMemLimit);
 
-            if($iMemLimit === '-1') {
+            if ($iMemLimit === '-1') {
                 // -1 is equivalent to no memory limit
                 $iModStat = 2;
-            }
-            else {
+            } else {
                 $iModStat = ($iMemLimit >= $this->_getBytes($sDefLimit)) ? 1 : 0;
                 $iModStat = $iModStat ? (($iMemLimit >= $this->_getBytes($sRecLimit)) ? 2 : $iModStat) : $iModStat;
             }
@@ -1203,9 +1199,7 @@ class SystemRequirements
      */
     protected function _getMinimumMemoryLimit()
     {
-        $requiredMinimalMemory = '14M';
-
-        return $requiredMinimalMemory;
+        return '14M';
     }
 
     /**
@@ -1215,8 +1209,6 @@ class SystemRequirements
      */
     protected function _getRecommendMemoryLimit()
     {
-        $recommendedMemory = '30M';
-
-        return $recommendedMemory;
+        return '30M';
     }
 }

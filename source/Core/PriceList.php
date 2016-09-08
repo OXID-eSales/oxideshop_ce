@@ -157,9 +157,7 @@ class PriceList
             return;
         }
 
-        $aVats = array_keys($aPrices, max($aPrices));
-
-        return max($aVats);
+        return max(array_keys($aPrices, max($aPrices)));
     }
 
     /**

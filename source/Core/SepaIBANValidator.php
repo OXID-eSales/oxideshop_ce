@@ -65,7 +65,6 @@ class SepaIBANValidator
     public function isValidCodeLengths($aCodeLengths)
     {
         $blValid = false;
-
         if ($this->_isNotEmptyArray($aCodeLengths)) {
             $blValid = $this->_isEachCodeLengthValid($aCodeLengths);
         }
@@ -89,7 +88,6 @@ class SepaIBANValidator
         } else {
             return false;
         }
-
     }
 
     /**
@@ -133,7 +131,7 @@ class SepaIBANValidator
 
         $sCountryCode = getStr()->substr($sIBAN, 0, 2);
 
-        $iCorrectLength = (isset ($aIBANRegistry[$sCountryCode])) ? $aIBANRegistry[$sCountryCode] : null;
+        $iCorrectLength = (isset($aIBANRegistry[$sCountryCode])) ? $aIBANRegistry[$sCountryCode] : null;
 
         return $iCorrectLength;
     }
@@ -167,9 +165,8 @@ class SepaIBANValidator
 
         $sInitialChars = $oStr->substr($sIBAN, 0, 4);
         $sIBAN = $oStr->substr($sIBAN, 4);
-        $sIBAN = $sIBAN . $sInitialChars;
 
-        return $sIBAN;
+        return $sIBAN . $sInitialChars;
     }
 
     /**
@@ -210,13 +207,11 @@ class SepaIBANValidator
             'Z' => 35
         );
 
-        $sIBAN = str_replace(
+        return str_replace(
             array_keys($aReplaceArray),
             $aReplaceArray,
             $sIBAN
         );
-
-        return $sIBAN;
     }
 
     /**
@@ -228,14 +223,7 @@ class SepaIBANValidator
      */
     protected function _isIBANChecksumValid($sIBAN)
     {
-        $blValid = true;
-
-        $sModulus = bcmod($sIBAN, self::IBAN_ALGORITHM_MOD_VALUE);
-        if ((int) $sModulus != 1) {
-            $blValid = false;
-        }
-
-        return $blValid;
+        return (int) bcmod($sIBAN, self::IBAN_ALGORITHM_MOD_VALUE) === 1;
     }
 
     /**
@@ -262,11 +250,9 @@ class SepaIBANValidator
         $blValid = true;
 
         foreach ($aCodeLengths as $sCountryAbbr => $iLength) {
-
             if (!$this->_isCodeLengthKeyValid($sCountryAbbr) ||
                 !$this->_isCodeLengthValueValid($iLength)
             ) {
-
                 $blValid = false;
                 break;
             }

@@ -139,9 +139,8 @@ class ModuleVariablesLocator
         $query = "SELECT DECODE( oxvarvalue , ? ) FROM oxconfig WHERE oxvarname = ? AND oxshopid = ?";
 
         $value = $database->getOne($query, array($configKey, $name, $shopId), false);
-        $value = unserialize($value);
 
-        return $value;
+        return unserialize($value);
     }
 
     /**

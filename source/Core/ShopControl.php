@@ -138,8 +138,7 @@ class ShopControl extends \oxSuperCfg
             $this->_handleSystemException($ex);
         } catch (oxCookieException $ex) {
             $this->_handleCookieException($ex);
-        }
-        catch (oxConnectionException $ex) {
+        } catch (oxConnectionException $ex) {
             $this->_handleDbConnectionException($ex);
         } catch (oxException $ex) {
             $this->_handleBaseException($ex);
@@ -367,7 +366,6 @@ class ShopControl extends \oxSuperCfg
     protected function _canExecuteFunction($view, $function)
     {
         $canExecute = true;
-
         if (method_exists($view, $function)) {
             $reflectionMethod = new ReflectionMethod($view, $function);
             if (!$reflectionMethod->isPublic()) {
@@ -563,11 +561,7 @@ class ShopControl extends \oxSuperCfg
      */
     protected function _isDebugMode()
     {
-        if (oxRegistry::get("OxConfigFile")->getVar('iDebug')) {
-            return true;
-        }
-
-        return false;
+        return (bool) oxRegistry::get("OxConfigFile")->getVar('iDebug');
     }
 
     /**

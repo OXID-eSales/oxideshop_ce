@@ -314,9 +314,8 @@ class UtilsView extends \oxSuperCfg
     {
         $shopId = $this->getConfig()->getShopId();
         $templateDirectories = $this->getTemplateDirs();
-        $templateDirectory = reset($templateDirectories);
 
-        return md5($templateDirectory . '__' . $shopId);
+        return md5(reset($templateDirectories) . '__' . $shopId);
     }
 
     /**
@@ -540,9 +539,7 @@ class UtilsView extends \oxSuperCfg
             $themeId = 'admin';
         }
 
-        $fullThemePath = $themePath . $themeId . "/tpl/";
-
-        return $fullThemePath;
+        return $themePath . $themeId . "/tpl/";
     }
 
     /**
@@ -673,6 +670,7 @@ class UtilsView extends \oxSuperCfg
                 $templateBlocks[] = $activeBlockTemplate;
             }
         }
+
         return $templateBlocks;
     }
 
@@ -696,6 +694,7 @@ class UtilsView extends \oxSuperCfg
                 $templateBlocks[] = $activeBlockTemplate;
             }
         }
+
         return $templateBlocks;
     }
 

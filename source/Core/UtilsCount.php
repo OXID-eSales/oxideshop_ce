@@ -329,7 +329,6 @@ class UtilsCount extends \oxSuperCfg
     {
         // loading from cache
         if ($aCatData = $this->_getCatCache()) {
-
             $sTable = getViewName('oxcategories');
             $sSelect = "select $sTable.oxid from $sTable where " . (double) $iPrice . " >= $sTable.oxpricefrom and " . (double) $iPrice . " <= $sTable.oxpriceto ";
 

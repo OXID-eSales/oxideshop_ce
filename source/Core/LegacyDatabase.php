@@ -270,14 +270,10 @@ class LegacyDatabase extends \oxSuperCfg
      */
     public function setTransactionIsolationLevel($level = null)
     {
-        $result = false;
-
         $availableLevels = array('READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE');
         if (in_array(strtoupper($level), $availableLevels)) {
-            $result = $this->getDb(false)->Execute('SET SESSION TRANSACTION ISOLATION LEVEL ' . $level);
+            return $this->getDb(false)->Execute('SET SESSION TRANSACTION ISOLATION LEVEL ' . $level);
         }
-
-        return $result;
     }
 
     /**

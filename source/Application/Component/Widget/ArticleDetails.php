@@ -300,11 +300,9 @@ class ArticleDetails extends \oxWidget
     public function canRate()
     {
         if ($this->_blCanRate === null) {
-
             $this->_blCanRate = false;
 
             if ($this->ratingIsActive() && $oUser = $this->getUser()) {
-
                 $oRating = oxNew('oxrating');
                 $this->_blCanRate = $oRating->allowRating($oUser->getId(), 'oxarticle', $this->getProduct()->getId());
             }
@@ -322,12 +320,7 @@ class ArticleDetails extends \oxWidget
      */
     public function canChangeTags()
     {
-        if ($oUser = $this->getUser()) {
-
-            return true;
-        }
-
-        return false;
+        return (bool) $this->getUser();
     }
 
     /**
@@ -922,7 +915,6 @@ class ArticleDetails extends \oxWidget
         $myUtils = oxRegistry::getUtils();
 
         if ($this->_oProduct === null) {
-
             if ($this->getViewParameter('_object')) {
                 $this->_oProduct = $this->getViewParameter('_object');
             } else {

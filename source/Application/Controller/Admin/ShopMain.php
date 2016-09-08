@@ -228,7 +228,6 @@ class ShopMain extends \oxAdminDetails
      */
     protected function renderNewShop()
     {
-
         return '';
     }
 
@@ -265,6 +264,7 @@ class ShopMain extends \oxAdminDetails
     protected function updateParameters($parameters)
     {
         $parameters['oxshops__oxid'] = null;
+
         return $parameters;
     }
 

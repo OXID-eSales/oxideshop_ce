@@ -219,6 +219,7 @@ class DiscountlistTest extends \OxidTestCase
                         0,
                         1)
             )";
+        $sQ .= " order by $sTable.oxsort ";
 
         $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->UNITgetFilterSelect(null)));
     }
@@ -258,6 +259,7 @@ class DiscountlistTest extends \OxidTestCase
                         EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxgroups' and oxobject2discount.OXOBJECTID in ($sGroupIds) ),
                         1)
             )";
+        $sQ .= " order by $sTable.oxsort ";
 
         $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->UNITgetFilterSelect($oUser)));
     }

@@ -1,7 +1,7 @@
 <?php
-/* 
+/*
  * Price enter mode: netto
- * Price view mode: brutto 
+ * Price view mode: brutto
  * Discounts: 2
  *  1. shop; abs
  *  2. shop; %
@@ -18,7 +18,7 @@ $aData = array (
                         'oxprice'                  => 100.55,
                         'oxvat'                    => 20,
                 ),
-                
+
         ),
         'discounts' => array (
                 0 => array (
@@ -31,6 +31,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1001_a' ),
+                        'oxsort'       => 10,
                 ),
                 1 => array (
                         'oxid'         => 'percent',
@@ -42,6 +43,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1001_b' ),
+                        'oxsort'       => 20,
                 ),
         ),
         'expected' => array (

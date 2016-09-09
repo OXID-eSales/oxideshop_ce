@@ -1,7 +1,7 @@
 <?php
-/* 
+/*
  * Price enter mode: netto
- * Price view mode: netto 
+ * Price view mode: netto
  * Articles: 8 with prices of 0.5
  * Discounts: 8
  *  1. shop + abs : 20, -10, -5.2, 5.5
@@ -53,6 +53,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1001_a' ),
+                        'oxsort'           => 10,
                 ),
                 2 => array (
                         'oxid'         => 'percentFor1001',
@@ -64,6 +65,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1001_b' ),
+                        'oxsort'           => 20,
                 ),
                 3 => array (
                         'oxid'         => 'absFor1002',
@@ -75,6 +77,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1002_a' ),
+                        'oxsort'           => 30,
                 ),
                 4 => array (
                         'oxid'         => 'percentFor1002',
@@ -86,6 +89,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1002_b' ),
+                        'oxsort'           => 40,
                 ),
                 5 => array (
                         'oxid'         => 'absFor1003',
@@ -97,6 +101,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1003_a' ),
+                        'oxsort'           => 50,
                 ),
                 6 => array (
                         'oxid'         => 'percentFor1003',
@@ -108,6 +113,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1003_b' ),
+                        'oxsort'           => 60,
                 ),
                 7 => array (
                         'oxid'         => 'absFor1004',
@@ -119,6 +125,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1004_a' ),
+                        'oxsort'           => 70,
                 ),
                 8 => array (
                         'oxid'         => 'percentFor1004',
@@ -130,6 +137,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1004_b' ),
+                        'oxsort'           => 80,
                 ),
         ),
         'expected' => array (

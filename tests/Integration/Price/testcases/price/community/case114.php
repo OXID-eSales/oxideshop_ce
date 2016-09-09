@@ -1,7 +1,7 @@
 <?php
-/* 
+/*
  * Price enter mode: brutto
- * Price view mode: brutto 
+ * Price view mode: brutto
  * Discounts: 1
  *  1. shop 10 %
  */
@@ -27,6 +27,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( 'tomatoes' ),
+                        'oxsort'       => 10
                 ),
         ),
         'expected' => array (

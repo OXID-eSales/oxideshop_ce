@@ -38,9 +38,9 @@ class DiscountItemAjaxTest extends \OxidTestCase
     {
         parent::setUp();
 
-        oxDb::getDb()->execute("insert into oxdiscount set oxid='_testO2DRemove1', oxitmartid = '_testObjectRemove1'");
-        oxDb::getDb()->execute("insert into oxdiscount set oxid='_testO2DRemove2', oxitmartid = '_testObjectRemove2'");
-        oxDb::getDb()->execute("insert into oxdiscount set oxid='_testO2DRemove3', oxitmartid = '_testObjectRemove3'");
+        oxDb::getDb()->execute("insert into oxdiscount set oxid='_testO2DRemove1', oxitmartid = '_testObjectRemove1', oxsort = '1900'");
+        oxDb::getDb()->execute("insert into oxdiscount set oxid='_testO2DRemove2', oxitmartid = '_testObjectRemove2', oxsort = '1910'");
+        oxDb::getDb()->execute("insert into oxdiscount set oxid='_testO2DRemove3', oxitmartid = '_testObjectRemove3', oxsort = '1920'");
         oxDb::getDb()->execute("insert into oxdiscount set oxid='_testO2DRemove4', oxitmartid = ''");
     }
 

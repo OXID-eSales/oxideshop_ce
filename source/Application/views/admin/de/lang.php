@@ -660,6 +660,7 @@ $aLang = array(
 'DISCOUNT_MAIN_MULTIPLY_DISCOUNT_ARTICLES'                 => 'Multiplizieren',
 'DISCOUNT_MAIN_MULTIPLY_DISCOUNT_AMOUNT'                   => 'Menge',
 'DISCOUNT_USERS_ALLUSERSINGROUP'                           => 'Alle Benutzer',
+'DISCOUNT_MAIN_SORT'                                       => 'Sortierung',
 'DISCOUNT_USERS_SETGROUPS'                                 => 'Zugeordnete Benutzergruppen',
 'DISCOUNT_USERS_SETUSER'                                   => 'Zugeordnete Benutzer',
 'DYN_ECONDA_ACTIVE'                                        => 'ECONDA Webcontrolling aktivieren',

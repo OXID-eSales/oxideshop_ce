@@ -661,6 +661,7 @@ $aLang = array(
 'DISCOUNT_MAIN_PRICE'                                      => 'Purchase Price',
 'DISCOUNT_MAIN_REBATE'                                     => 'Discount',
 'DISCOUNT_MAIN_EXTRA'                                      => 'Free Product',
+'DISCOUNT_MAIN_SORT'                                       => 'Sorting',
 'DISCOUNT_MAIN_MULTIPLY_DISCOUNT_ARTICLES'                 => 'Multiply',
 'DISCOUNT_MAIN_MULTIPLY_DISCOUNT_AMOUNT'                   => 'Amount',
 'DISCOUNT_USERS_ALLUSERSINGROUP'                           => 'All Users',

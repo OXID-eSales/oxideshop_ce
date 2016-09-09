@@ -438,6 +438,8 @@ $aLang =  array(
                                                  '<li>Die Versandart mit der höchsten Zahl wird ganz unten angezeigt.</li></ul>',
 
 
+'HELP_DISCOUNT_MAIN_SORT'                     => 'Mit <span class="navipath_or_inputname">Sortierung</span> können Sie festlegen, in welcher Reihenfolge die Rabatte auf Produkte oder den Warenkorb angewendet werden: ' .
+                                                 'Der Rabatt mit der kleinsten Zahl wird zuerst angewendet, die Rabatt mit der größten Zahl zuletzt.',
 
 'HELP_DISCOUNT_MAIN_PRICE'                    => 'Mit <span class="navipath_or_inputname">Einkaufswert</span> können Sie einstellen, dass der Rabatt nur für bestimmte Einkaufswerte gültig ist. Wenn der Rabatt für alle Einkaufswerte gültig sein soll, dann geben Sie in <span class="navipath_or_inputname">von</span> und in <span class="navipath_or_inputname">bis</span> <span class="userinput_or_code">0</span> ein.',
 

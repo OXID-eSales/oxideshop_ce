@@ -56,6 +56,15 @@ function ChangeDiscountType(oObj)
                     [{oxinputhelp ident="HELP_GENERAL_NAME"}]
                     </td>
                 </tr>
+                <tr>
+                    <td class="edittext">
+                        [{oxmultilang ident="DISCOUNT_MAIN_SORT"}]
+                    </td>
+                    <td class="edittext" colspan="2">
+                        <input type="text" class="editinput" size="25" maxlength="[{$edit->oxdiscount__oxsort->fldmax_length}]" name="editval[oxdiscount__oxsort]" value="[{$edit->oxdiscount__oxsort->value}]" [{$readonly}]>
+                        [{oxinputhelp ident="HELP_DISCOUNT_MAIN_SORT"}]
+                    </td>
+                </tr>
                 [{if $oxid != "-1"}]
                 <tr>
                     <td class="edittext" width="120">

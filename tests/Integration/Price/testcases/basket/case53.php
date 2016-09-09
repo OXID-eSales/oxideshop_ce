@@ -142,7 +142,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
-
+            'oxsort' => 10,
         ),
 
     ),
@@ -167,7 +167,7 @@ $aData = array(
             'vats' => array (
                 19 => '288,13',
                 13 => '2,39',
-                3  => '208,69', 
+                3  => '208,69',
                 17 => '5,22',
                 33 => '0,89',
             ),
@@ -177,7 +177,7 @@ $aData = array(
                 'tenpercentdiscount' => '947,20',
             ),
             // GRAND TOTAL
-            'grandTotal'  => '9.030,12' 
+            'grandTotal'  => '9.030,12'
         ),
     ),
     // Test case options

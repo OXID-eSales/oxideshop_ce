@@ -4,13 +4,13 @@
  * Price view mode:  brutto
  * Product count: count of used products
  * VAT info: 17%
- * Currency rate: 1.0 
+ * Currency rate: 1.0
  * Discounts: count
  *  1. shop  4.32 abs for 9201
  * Vouchers: -;
  * Wrapping: -;
  * Gift cart: -;
- * Costs VAT caclulation rule: max 
+ * Costs VAT caclulation rule: max
  * Costs:
  *  1. Payment -
  *  2. Delivery  -
@@ -37,6 +37,7 @@ $aData = array(
                 'oxamountto' => 99999,
                 'oxactive' => 1,
                 'oxarticles' => array( 9201 ),
+                'oxsort' => 10,
         ),
     ),
     'expected' => array (
@@ -52,7 +53,7 @@ $aData = array(
                 'grandTotal'  => '73,58'
         ),
     ),
-    'options' => array (    
+    'options' => array (
         'config' => array(
                 'blEnterNetPrice' => true,
                 'blShowNetPrice' => false,

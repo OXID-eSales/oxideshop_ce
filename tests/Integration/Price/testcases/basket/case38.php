@@ -1,10 +1,10 @@
 <?php
 /**
- * Price enter mode: netto 
- * Price view mode: netto 
+ * Price enter mode: netto
+ * Price view mode: netto
  * Product count: 4
  * VAT info: count of used vat's =2 (19% and 11%)
- * Currency rate: 3.0 
+ * Currency rate: 3.0
  * Discounts: 2
  *  1. itm discount for product (1002)
  *  2. 10% discount for basket
@@ -15,8 +15,8 @@
  * Gift cart: +
  * Costs VAT caclulation rule: proportional
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Short description: Calculate VAT according to the proportional value  .
  * Neto-Neto mode. Additiona products Neto-Neto. Also is testing item discount for basket.
@@ -90,6 +90,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
         1 => array (
                 // item discount for basket
@@ -103,7 +104,7 @@ $aData = array(
 			'oxitmamount' => 1,
 			'oxitmultiple' => 1,
 			'oxarticles' => array ( 1002 ),
-       
+            'oxsort' => 20,
         ),
     ),
     // Additional costs
@@ -212,7 +213,7 @@ $aData = array(
             'blShowVATForDelivery'=> true,
             'blShowVATForPayCharge'=> true,
             'blShowVATForWrapping'=> true,
-            'sAdditionalServVATCalcMethod' => 'proportional', 
+            'sAdditionalServVATCalcMethod' => 'proportional',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,
             'blWrappingVatOnTop' => true,

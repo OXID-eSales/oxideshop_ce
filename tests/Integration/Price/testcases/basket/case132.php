@@ -1,16 +1,16 @@
 <?php
-/* 
+/*
  * Price enter mode: brutto
  * Price view mode:  brutto
  * Product count: 1
  * Discounts: 1
  *  1. 500abs discount for basket
- * Short description: 
+ * Short description:
  * @bug #3727:
  * Discount with such options:
  * FROM-TO range of units: 1-99999
  * Sum: 500 abs (500 EUR)
- * Product price less than discount value. 
+ * Product price less than discount value.
  */
 $aData = array (
     'articles' => array (
@@ -28,6 +28,7 @@ $aData = array (
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
     ),
     'expected' => array (
@@ -49,7 +50,7 @@ $aData = array (
     'options' => array (
             'config' => array (
                 'blEnterNetPrice' => false,
-                'blShowNetPrice' => false     
+                'blShowNetPrice' => false
             ),
     )
 );

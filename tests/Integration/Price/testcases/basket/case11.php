@@ -1,18 +1,18 @@
 <?php
 /*
 /**
- * Price enter mode: bruto 
+ * Price enter mode: bruto
  * Price view mode:  bruto
  * Product count: 1
- * VAT info: 18% Default VAT for all Products 
- * Currency rate: 0.56 
+ * VAT info: 18% Default VAT for all Products
+ * Currency rate: 0.56
  * Discounts: abs_discount_for_product 9205
  * Vouchers: -
- * Wrapping: - 
- * Costs VAT caclulation rule: max 
+ * Wrapping: -
+ * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment - 
- *  2. Delivery - 
+ *  1. Payment -
+ *  2. Delivery -
  *  3. TS -
  * Short description:
  * From articlePrice.csv: article final price calculations. 9205 - 1st
@@ -35,6 +35,7 @@ $aData = array(
                 'oxamountto' => 99999,
                 'oxactive' => 1,
                 'oxarticles' => array( 9205 ),
+                'oxsort' => 10,
         ),
     ),
     'expected' => array (
@@ -50,7 +51,7 @@ $aData = array(
                 'grandTotal'  => '11,53'
         ),
     ),
-    'options' => array (    
+    'options' => array (
         'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => false,

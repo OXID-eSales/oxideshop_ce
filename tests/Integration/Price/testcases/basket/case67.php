@@ -38,6 +38,7 @@ $aData = array(
                 'oxpriceto' => 199,
                 'oxactive' => 1,
                 //'oxarticles' => array( 111 ),
+                'oxsort' => 10,
         ),
         1 => array (
                 'oxid'         => 'basket_1',
@@ -48,6 +49,7 @@ $aData = array(
                 'oxprice' => 200,
                 'oxpriceto' => 299,
                 'oxactive' => 1,
+                'oxsort' => 20,
         ),
         2 => array (
                 'oxid'         => 'basket_2',
@@ -58,6 +60,7 @@ $aData = array(
                 'oxprice' => 300,
                 'oxpriceto' => 99999,
                 'oxactive' => 1,
+                'oxsort' => 30,
         ),
 
     ),

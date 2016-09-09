@@ -1,20 +1,20 @@
 <?php
 /*
 /**
- * Price enter mode: bruto 
+ * Price enter mode: bruto
  * Price view mode:  brutto
  * Product count: 4
  * VAT info: 19%; 10%,l5%
- * Currency rate: 1.0 
+ * Currency rate: 1.0
  * Discounts: 5
- *  1. category discount 5 abs 
+ *  1. category discount 5 abs
  *  2. product discount -10%  for 1002 and1003
  * Vouchers: -;
  * Wrapping: -;
  * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment - 
- *  2. Delivery - 
+ *  1. Payment -
+ *  2. Delivery -
  * from seleniums
  */
 $aData = array(
@@ -44,7 +44,7 @@ $aData = array(
             'amount'                   => 1,
         ),
     ),
-    
+
     'discounts' => array (
         0 => array (
             'oxid'         => 'product',
@@ -54,6 +54,7 @@ $aData = array(
             'oxpriceto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 6565, 1553 ),
+            'oxsort' => 10,
         ),
         1 => array (
             'oxid'         => 'prod2',
@@ -65,9 +66,10 @@ $aData = array(
             'oxpriceto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 1224, 1245 ),
+            'oxsort' => 20,
         ),
     ),
-    
+
 	  // Additional costs
     'costs' => array(
         // VOUCHERS
@@ -91,7 +93,7 @@ $aData = array(
              1224 => array ( '45,00', '45,00' ),
 			 1245 => array ( '93,00', '93,00' ),
         ),
-		
+
         'totals' => array (
             'totalBrutto' => '522,30',
             'totalNetto'  => '427,82',
@@ -103,9 +105,9 @@ $aData = array(
             // Total voucher amounts
             'voucher' => array (
             'brutto' => '26,12',
-        ),    
+        ),
 			'grandTotal'  => '496,18'
-        
+
     ),
     'options' => array (
         'config' => array(

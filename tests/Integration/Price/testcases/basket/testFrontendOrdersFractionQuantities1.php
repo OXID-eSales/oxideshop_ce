@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * Price enter mode: Brutto;
  * Price view mode: Brutto;
  * Product count: 1;
@@ -16,15 +16,15 @@
  *  1. Payment -;
  *  2. Delivery -;
  *  3. TS -
- * Short description: 
+ * Short description:
  * Brutto-Brutto mode.
- * Test checking when active fraction quantity ('blAllowUnevenAmounts' => true,), 
+ * Test checking when active fraction quantity ('blAllowUnevenAmounts' => true,),
  * Test is moved from selenium test "testFrontendOrdersFractionQuantities"
  */
 $aData = array(
 
     'articles' => array (
- 
+
 		0 => array (
                 'oxid'                     => 1000,
                 'oxprice'                  => 50,
@@ -33,13 +33,13 @@ $aData = array(
                 'oxunitquantity'           => 10,
                 'oxweight'                 => 10,
                 'amount'                   => 3.4,
-				
+
         ),
     ),
 	    // Discounts
     'discounts' => array (
         0 => array (
-            // Discount 10% 
+            // Discount 10%
             'oxid'         => 'test',
             'oxshopid' => 1,
             'oxaddsum'     => 10,
@@ -48,7 +48,8 @@ $aData = array(
             'oxamountto' => 99999,
             'oxprice' => 0,
             'oxpriceto'=> 999999,
-            'oxactive' => 1
+            'oxactive' => 1,
+            'oxsort' => 10,
         ),
     ),
     'expected' => array (
@@ -64,8 +65,8 @@ $aData = array(
                 'grandTotal'  => '153,00'
         ),
     ),
-    'options' => array (    
-        'config' => array( 
+    'options' => array (
+        'config' => array(
             'blAllowUnevenAmounts' => true,
             'blEnterNetPrice' => false,
             'blShowNetPrice' => false,

@@ -17,7 +17,7 @@
  *  1. Payment -;
  *  2. Delivery- ;
  *  3. TS -
- * Short description: 
+ * Short description:
  * Testing basket item price calculator also sets items discounts
  */
 $aData = array(
@@ -39,22 +39,24 @@ $aData = array(
                         'oxactive'    => 1,
                         'oxtitle'     => 'Test discount 0',
                         'oxamount'    => 1,
-                        'oxamountto'    => 99999,
+                        'oxamountto'  => 99999,
                         'oxprice'     => 1,
                         'oxpriceto'   => 99999,
                         'oxaddsumtype'=> 'abs',
                         'oxaddsum'    => 5,
+                        'oxsort'      => 10,
                 ),
                 1 => array (
                         'oxid'        => 'testdiscount1',
                         'oxactive'    => 1,
                         'oxtitle'     => 'Test discount 1',
                         'oxamount'    => 1,
-                        'oxamountto'    => 99999,
+                        'oxamountto'  => 99999,
                         'oxprice'     => 1,
                         'oxpriceto'   => 99999,
                         'oxaddsumtype'=> 'abs',
                         'oxaddsum'    => 7,
+                        'oxsort'      => 20,
                 ),
         ),
         'expected' => array (

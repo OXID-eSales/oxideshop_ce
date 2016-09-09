@@ -19,7 +19,7 @@
  *  1. Payment -;
  *  2. Delivery + ;
  *  3. TS -
- * Short description: 
+ * Short description:
  * Brutto-Brutto mode.
  * From basketCalc.csv: Complex order calculation order V.
  */
@@ -65,6 +65,7 @@ $aData = array(
                     'oxamountto' => 99999,
                     'oxactive' => 1,
                     'oxarticles' => array ( 9201 ),
+                    'oxsort' => 10,
             ),
             1 => array (
                     'oxid'         => 'discount4for9211',
@@ -74,6 +75,7 @@ $aData = array(
                     'oxamountto' => 99999,
                     'oxactive' => 1,
                     'oxarticles' => array ( 9211 ),
+                    'oxsort' => 20,
             ),
             2 => array (
                     'oxid'         => 'discount2for9216',
@@ -83,6 +85,7 @@ $aData = array(
                     'oxamountto' => 99999,
                     'oxactive' => 1,
                     'oxarticles' => array ( 9216 ),
+                    'oxsort' => 30,
             ),
     ),
     'costs' => array(

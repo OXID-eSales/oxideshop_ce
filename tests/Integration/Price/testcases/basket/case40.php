@@ -1,10 +1,10 @@
 <?php
 /**
- * Price enter mode: netto 
- * Price view mode: brutto  
+ * Price enter mode: netto
+ * Price view mode: brutto
  * Product count: 3
  * VAT info: count of used vat's =2 (19% and 11%)
- * Currency rate: 3.0 
+ * Currency rate: 3.0
  * Discounts: 2
  *  1. itm discount for product (1002)
  *  2. 10% discount for basket
@@ -15,8 +15,8 @@
  * Gift cart: +
  * Costs VAT caclulation rule: biggest_net
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Short description: Calculate VAT according to the biggest net value  .
  * Neto-brutto mode. Additiona products Neto-Neto. Also is testing item discount for basket.
@@ -47,7 +47,7 @@ $aData = array(
                 'oxvat'                    => 19,
                 // Amount in basket
                 'amount'                   => 1,
-				
+
 
         ),
 	    2 => array (
@@ -82,7 +82,7 @@ $aData = array(
     ),
     // Discounts
     'shop' => array (
-		0 => array ( 
+		0 => array (
 				'oxactive'     => 1,
 				'oxparentid'   => 1,
 				'oxname'       => 'subshop',
@@ -100,6 +100,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
         1 => array (
                 // item discount for basket
@@ -113,7 +114,7 @@ $aData = array(
 			'oxitmamount' => 1,
 			'oxitmultiple' => 1,
 			'oxarticles' => array ( 1002 ),
-       
+            'oxsort' => 20,
         ),
     ),
     // Additional costs
@@ -222,7 +223,7 @@ $aData = array(
             'blShowVATForDelivery'=> true,
             'blShowVATForPayCharge'=> true,
             'blShowVATForWrapping'=> true,
-            'sAdditionalServVATCalcMethod' => 'biggest_net', 
+            'sAdditionalServVATCalcMethod' => 'biggest_net',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,
             'blWrappingVatOnTop' => true,

@@ -1,21 +1,21 @@
 <?php
 /*
 /**
- * Price enter mode: netto 
+ * Price enter mode: netto
  * Price view mode:  netto
  * Product count: 2
  * VAT info: 19% Default VAT for all Products ,
- * Currency rate: 1.0 
- * Discounts: 2 
+ * Currency rate: 1.0
+ * Discounts: 2
  *  1. discount item for product 1002
  *  2. discount for basket 55%
- 
+
  * Vouchers: -
- * Wrapping: + 
+ * Wrapping: +
  * Costs VAT caclulation rule: proportionality
  * Costs:
  *  1. Payment +
- *  2. Delivery + 
+ *  2. Delivery +
  *  3. TS -
  * Short description:
  * Calculate VAT proportionately . Neto-Neto mode. Additiona products Neto-Neto. Also is testing item discount for basket.
@@ -63,6 +63,7 @@ $aData = array(
 			'oxitmamount' => 1,
 			'oxitmultiple' => 1,
 			'oxarticles' => array ( 1002 ),
+            'oxsort' => 10,
         ),
 	    1 => array (
             // 55%s discount for basket
@@ -72,6 +73,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 20,
         ),
     ),
     // Additional costs
@@ -125,7 +127,7 @@ $aData = array(
             // Total BRUTTO
             'totalBrutto' => '267,75',
             // Total NETTO
-            'totalNetto'  => '500,00', 
+            'totalNetto'  => '500,00',
             // Total VAT amount: vat% => total cost
             'vats' => array (
                 19 => '42,75',
@@ -135,7 +137,7 @@ $aData = array(
                 'discountforbasket55%' => '275,00',
 
             ),
-		
+
             // Total delivery amounts
             'delivery' => array(
                 'brutto' => '327,25',
@@ -156,7 +158,7 @@ $aData = array(
                 'vat' => '0,48'
             ),
             // GRAND TOTAL
-            'grandTotal'  => '925,23' 
+            'grandTotal'  => '925,23'
         ),
     ),
     // Test case options
@@ -168,7 +170,7 @@ $aData = array(
             'blShowVATForDelivery'=> true,
             'blShowVATForPayCharge'=> true,
             'blShowVATForWrapping'=> true,
-            'sAdditionalServVATCalcMethod' => 'proportional', 
+            'sAdditionalServVATCalcMethod' => 'proportional',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,
             'blWrappingVatOnTop' => true,

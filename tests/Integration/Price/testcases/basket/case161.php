@@ -45,6 +45,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 9005 ),
+            'oxsort' => 10,
         ),
         1 => array (
             'oxid'         => 'shopdiscount5for9006',
@@ -54,6 +55,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 9006 ),
+            'oxsort' => 20,
         ),
         2 => array (
             'oxid'         => 'basketdiscount5for9005',
@@ -63,6 +65,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 9005 ),
+            'oxsort' => 30,
         ),
         3 => array (
             'oxid'         => 'basketdiscount5for9006',
@@ -72,6 +75,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 9006 ),
+            'oxsort' => 40,
         ),
         4 => array (
             'oxid'         => 'absolutebasketdiscount',
@@ -80,6 +84,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 50,
         ),
     ),
     'costs' => array(

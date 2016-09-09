@@ -1,7 +1,7 @@
 <?php
 /**
  * Price enter mode: brutto
- * Price view mode: brutto  
+ * Price view mode: brutto
  * Product count: 1
  * VAT info: count of used vat's =19%
  * Currency rate: -
@@ -28,6 +28,7 @@ $aData = array (
             'oxamount' => 0,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
     ),
     'expected' => array (
@@ -46,7 +47,7 @@ $aData = array (
     'options' => array (
             'config' => array (
                 'blEnterNetPrice' => false,
-                'blShowNetPrice' => false     
+                'blShowNetPrice' => false
             ),
     )
 );

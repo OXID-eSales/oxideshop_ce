@@ -16,7 +16,7 @@
  *  1. Payment +;
  *  2. Delivery + ;
  *  3. TS -;
- * Short description: 
+ * Short description:
  * Brutto-Brutto mode.
  * Short description: test added from selenium test (testFrontendVatForBillingCountry) ; Checking VAT functionality, when it is calculated for Billing country
  */
@@ -31,7 +31,7 @@ $aData = array(
                     'oxpriceb' 			       => 0,
                     'oxpricec' 			       => 0,
             ),
-       
+
             1 => array (
                     'oxid'                     => 1003,
                     'oxprice'                  => 75.00,
@@ -56,7 +56,7 @@ $aData = array(
             ),
 
     ),
-	
+
 	    // User
     'user' => array(
             'oxactive' => 1,
@@ -74,12 +74,13 @@ $aData = array(
                     'oxamountto'   => 99999,
                     'oxactive'     => 1,
                     'oxarticles'   => array ( 10011, 1000 ),
+                    'oxsort'       => 10,
             ),
     ),
 
-	
-	
-	
+
+
+
     'costs' => array(
 
         'delivery' => array(
@@ -95,14 +96,14 @@ $aData = array(
 		        // Payment
         'payment' => array(
              0 => array(
-                // oxpayments DB fields, 
+                // oxpayments DB fields,
                 'oxaddsum' => 7.50,
                 'oxaddsumtype' => 'abs',
                 'oxfromamount' => 0,
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
 				'oxaddsumrules'=>0,
-				
+
             ),
         ),
     ),
@@ -118,7 +119,7 @@ $aData = array(
                 'totalNetto'  => '192,47',
                 'vats' => array (
                         0 => '0,00',
-                ), 
+                ),
                 'delivery' => array(
                         'brutto' => '0,00',
                 ),

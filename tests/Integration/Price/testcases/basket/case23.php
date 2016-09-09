@@ -1,27 +1,27 @@
 <?php
 /*
 /**
- * Price enter mode: netto 
+ * Price enter mode: netto
  * Price view mode:  brutto
  * Product count: 2
- * VAT info: 19% Default VAT for all Products 
- * Currency rate: 1.0 
+ * VAT info: 19% Default VAT for all Products
+ * Currency rate: 1.0
  * Discounts: 5
- *  1. shop discount 5.5% for product 10005 
+ *  1. shop discount 5.5% for product 10005
  *  2. shop discount 5% for product 1004
  *  3. basket discount 5 abs for product 10005
  *  4. basket discount 6% for product 1004
  *  5. absolute basket discount 5 abs
  *  6. shop discount 5abs for product 10005
- 
+
  * Vouchers: 1
  *  1.  vouchers 6.00 abs
 
- * Wrapping: + 
- * Costs VAT caclulation rule: max 
+ * Wrapping: +
+ * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS -
  * Short description:
  * Uset 7 different discount
@@ -51,6 +51,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 10005 ),
+            'oxsort' => 10,
         ),
         1 => array (
             'oxid'         => 'shopdiscount5for1004',
@@ -60,6 +61,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 1004 ),
+            'oxsort' => 20,
         ),
         2 => array (
             'oxid'         => 'basketdiscount5for10005',
@@ -69,6 +71,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 10005 ),
+            'oxsort' => 30,
         ),
         3 => array (
             'oxid'         => 'basketdiscount5for1004',
@@ -78,6 +81,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 1004 ),
+            'oxsort' => 40,
         ),
         4 => array (
             'oxid'         => 'absolutebasketdiscount',
@@ -86,7 +90,8 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
-		),	
+            'oxsort' => 50,
+		),
 	    5 => array (
             // -10% discount for product 10005
             'oxid'         => 'procdiscountfor10005',
@@ -96,6 +101,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 10005 ),
+            'oxsort' => 60,
         ),
         6 => array (
             // 5.5% discount for product 1004
@@ -106,6 +112,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array (  1004 ),
+            'oxsort' => 70,
         ),
 
     ),

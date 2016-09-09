@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * Price enter mode: brutto;
  * Price view mode: brutto;
  * Product count: 3;
@@ -17,7 +17,7 @@
  *  1. Payment -;
  *  2. Delivery- ;
  *  3. TS -
- * Short description: 
+ * Short description:
  * Brutto-Brutto mode.
  * #1456: Discount validity is wrong if article in basket has Scale Prices
  */
@@ -43,7 +43,8 @@ $aData = array(
             'oxprice'      => 12,
             'oxpriceto'    => 24.99,
             'oxaddsumtype' => 'abs',
-            'oxaddsum'     => 3
+            'oxaddsum'     => 3,
+            'oxsort'       => 10,
         ),
     ),
     'expected' => array (
@@ -65,7 +66,7 @@ $aData = array(
     'options' => array (
         'config' => array(
             'blEnterNetPrice' => false,
-            'blShowNetPrice' => false,        
+            'blShowNetPrice' => false,
         ),
         'activeCurrencyRate' => 1,
     ),

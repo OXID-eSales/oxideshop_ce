@@ -1,22 +1,22 @@
 <?php
 /**
- * Price enter mode: netto 
- * Price view mode: netto 
+ * Price enter mode: netto
+ * Price view mode: netto
  * Product count: 5
  * VAT info: 19% for all products
- * Currency rate: 1.0 
+ * Currency rate: 1.0
  * Discounts: 1
  * 1. 10% discount for basket
  * Vouchers: -
  * Wrapping:  -
  * Gift cart: -
- * Scale price: 
+ * Scale price:
  * 1. for product (1001), if product amount(3-5), then product price for product is 2.00eur.
  * 2. for product (1002), if product amount(3-5), then product price for product is 2.00eur.
  * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Short description:
  * Calculate VAT according to the max value  .
@@ -38,9 +38,9 @@ $aData = array(
                         'oxamountto'   => 5,
                         'oxartid'      => 1001,
 						//'oxaddperc'    => 10,
-					   
+
                     ),
-        ),    
+        ),
         1 => array (
 		 // oxarticles db fields
                 'oxid'                  => 1002,
@@ -53,7 +53,7 @@ $aData = array(
                         'oxamount'     => 3,
                         'oxamountto'   => 5,
                         'oxartid'      => 1002,
-					//	'oxaddperc'    => 10,  
+					//	'oxaddperc'    => 10,
                     ),
         ),
 	    2 => array (
@@ -80,8 +80,8 @@ $aData = array(
                 // Amount in basket
                 'amount'                => 5,
         ),
-     ),   
-        
+     ),
+
     'discounts' => array (
         // oxdiscount DB fields
         0 => array (
@@ -92,9 +92,10 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
       ),
- 
+
     // Additional costs
     'costs' => array(
 
@@ -138,7 +139,7 @@ $aData = array(
             // Total BRUTTO
             'totalBrutto' => '1.038,54',
             // Total NETTO
-			
+
             'totalNetto'  => '969,69',
             // Total VAT amount: vat% => total cost
             'vats' => array (
@@ -149,8 +150,8 @@ $aData = array(
                 // Expectation for special discount with specified ID
                 '%discount' => '96,97',
             ),
-      
-            // Total delivery amounts 
+
+            // Total delivery amounts
             'delivery' => array(
                 'brutto' => '115,39',
                 'netto' => '96,97',
@@ -162,7 +163,7 @@ $aData = array(
                 'netto' => '7,50',
                 'vat' => '1,43'
             ),
-  
+
             // GRAND TOTAL
             'grandTotal'  => '1.162,86'
         ),
@@ -176,7 +177,7 @@ $aData = array(
             'blShowVATForDelivery'=> true,
             'blShowVATForPayCharge'=> true,
             'blShowVATForWrapping'=> true,
-            'sAdditionalServVATCalcMethod' => 'biggest_net', 
+            'sAdditionalServVATCalcMethod' => 'biggest_net',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,
             'blWrappingVatOnTop' => true,

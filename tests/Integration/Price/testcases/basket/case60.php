@@ -4,22 +4,22 @@
  * Price view mode: brutto
  * Product count: 2
  * VAT info: -
- * Currency rate: 1.0 
+ * Currency rate: 1.0
  * Discounts: 1
- * 1. 3 abs if product price (12eur-24.99eur) 
+ * 1. 3 abs if product price (12eur-24.99eur)
  * Vouchers: -
  * Wrapping:  -
  * Gift cart: -
- * Scale price: 
+ * Scale price:
  * 1. for product (1001), if product amount(2-2), then product price for product is 11.95eur.
  * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment - 
- *  2. Delivery - 
+ *  1. Payment -
+ *  2. Delivery -
  *  3. TS  -
  * Short description:
  * Calculate scale price.
- * Brutto-Brutto mode. 
+ * Brutto-Brutto mode.
  */
 $aData = array(
     'articles' => array (
@@ -43,7 +43,8 @@ $aData = array(
             'oxprice'      => 12,
             'oxpriceto'    => 24.99,
             'oxaddsumtype' => 'abs',
-            'oxaddsum'     => 3
+            'oxaddsum'     => 3,
+            'oxsort'       => 10,
         ),
     ),
     'expected' => array (
@@ -65,7 +66,7 @@ $aData = array(
     'options' => array (
         'config' => array(
             'blEnterNetPrice' => false,
-            'blShowNetPrice' => false,        
+            'blShowNetPrice' => false,
         ),
         'activeCurrencyRate' => 1,
     ),

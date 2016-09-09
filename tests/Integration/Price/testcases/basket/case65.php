@@ -38,6 +38,7 @@ $aData = array(
                 'oxpriceto' => 110,
                 'oxactive' => 1,
                 'oxarticles' => array( 111 ),
+                'oxsort' => 10,
         ),
     ),
     'expected' => array (

@@ -1,20 +1,20 @@
 <?php
 /**
  * Price enter mode: brutto
- * Price view mode: netto 
+ * Price view mode: netto
  * Product count: 5
  * VAT info: count of used vat =5(19%, 13%, 3%, 17% and 33%)
  * Currency rate: 1.00
  * Discounts: 1
  *  1.  10% discount for basket
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Vouchers: -
  * Wrapping:  -
  * Gift cart: -
- * Short description: 
+ * Short description:
  * 5 products with different vat. Bruto-Neto mode.
  */
 
@@ -77,6 +77,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
 
         ),
 
@@ -102,7 +103,7 @@ $aData = array(
             'vats' => array (
                 19 => '288,13',
                 13 => '2,39',
-                3  => '208,69', 
+                3  => '208,69',
                 17 => '5,22',
                 33 => '0,89',
             ),
@@ -112,7 +113,7 @@ $aData = array(
                 'tenpercentdiscount' => '947,20',
             ),
             // GRAND TOTAL
-            'grandTotal'  => '9.030,12' 
+            'grandTotal'  => '9.030,12'
         ),
     ),
     // Test case options

@@ -1,16 +1,16 @@
 <?php
 /**
- * Price enter mode: bruto 
+ * Price enter mode: bruto
  * Price view mode:  neto
  * Product count: count of used products
  * VAT info: 15.55
  * Discounts: product 15% discount
  * Wrapping: -;
  * Gift cart:  -;
- * Costs VAT caclulation rule: max 
+ * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment 13% 
- *  2. Delivery 13% 
+ *  1. Payment 13%
+ *  2. Delivery 13%
  *  3. TS -
  * Actions with order:
  *  1. update :changed products amounts
@@ -35,6 +35,7 @@ $aData = array (
                     'oxamountto' => 99999,
                     'oxactive' => 1,
 				    'oxarticles' => array ( 111, ),
+                    'oxsort' => 10,
             ),
     ),
     'costs' => array (
@@ -128,7 +129,7 @@ $aData = array (
                       'oxid'       => '111',
                       'amount'     => 1,
             ),
-            ),   
+            ),
 	),
 
 );

@@ -1,19 +1,19 @@
 <?php
 /*
 /**
- * Price enter mode: netto 
+ * Price enter mode: netto
  * Price view mode:  netto
  * Product count: 2
  * VAT info: 19% Default VAT for all Products , additional VAT=10% for product 1001
- * Currency rate: 1.0 
- * Discounts: 1 
+ * Currency rate: 1.0
+ * Discounts: 1
  *  1. discount item for product 1002
  * Vouchers: +
- * Wrapping: + 
+ * Wrapping: +
  * Costs VAT caclulation rule: biggest_net
  * Costs:
  *  1. Payment +
- *  2. Delivery + 
+ *  2. Delivery +
  *  3. TS -
  * Short description:
  * Netto - Netto start case, after order saving, added two product's,
@@ -54,6 +54,7 @@ $aData = array(
 			'oxitmamount' => 1,
 			'oxitmultiple' => 1,
 			'oxarticles' => array ( 1002 ),
+            'oxsort' => 10,
         ),
     ),
     // Additional costs
@@ -118,7 +119,7 @@ $aData = array(
             // Total BRUTTO
             'totalBrutto' => '297,00',
             // Total NETTO
-            'totalNetto'  => '300,00', 
+            'totalNetto'  => '300,00',
             // Total VAT amount: vat% => total cost
             'vats' => array (
 		   	    10 => '27,00',
@@ -147,7 +148,7 @@ $aData = array(
                 'vat' => '0,25'
             ),
             // GRAND TOTAL
-            'grandTotal'  => '613,25' 
+            'grandTotal'  => '613,25'
             ),
         ),
     2 => array (
@@ -162,7 +163,7 @@ $aData = array(
             // Total BRUTTO
             'totalBrutto' => '412,20',
             // Total NETTO
-            'totalNetto'  => '400,00', 
+            'totalNetto'  => '400,00',
             // Total VAT amount: vat% => total cost
             'vats' => array (
 		   	    19 => '34,20',
@@ -193,7 +194,7 @@ $aData = array(
                 'vat' => '0,48'
             ),
             // GRAND TOTAL
-            'grandTotal'  => '754,33' 
+            'grandTotal'  => '754,33'
             ),
         ),
 	),
@@ -206,7 +207,7 @@ $aData = array(
             'blShowVATForDelivery'=> true,
             'blShowVATForPayCharge'=> true,
             'blShowVATForWrapping'=> true,
-            'sAdditionalServVATCalcMethod' => 'biggest_net', 
+            'sAdditionalServVATCalcMethod' => 'biggest_net',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,
             'blWrappingVatOnTop' => true,
@@ -224,7 +225,7 @@ $aData = array(
                             'amount'     => 10,
                     ),
         ),
-			'_addArticles' => array (  			
+			'_addArticles' => array (
 				    0 => array(
                             'oxid'       => '1002',
                             'oxtitle'    => '1002',

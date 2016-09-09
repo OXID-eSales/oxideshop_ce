@@ -1,19 +1,19 @@
 <?php
 /*
 /**
- * Price enter mode: netto 
+ * Price enter mode: netto
  * Price view mode:  netto
  * Product count: 5
  * VAT info: 19% Default VAT for all Products , additional vat for product (33% and 50%)
- * Currency rate: 1.0 
- * Discounts: 1 
+ * Currency rate: 1.0
+ * Discounts: 1
  *  1. discount for basket 10%
  * Vouchers: -
- * Wrapping: - 
+ * Wrapping: -
  * Costs VAT caclulation rule: biggest_net
  * Costs:
  *  1. Payment +
- *  2. Delivery + 
+ *  2. Delivery +
  *  3. TS -
  * Short description:
  * Netto - Netto start case, after order saving, added one product's,
@@ -72,6 +72,7 @@ $aData = array (
                     'oxamount' => 1,
                     'oxamountto' => 99999,
                     'oxactive' => 1,
+                    'oxsort' => 10,
             ),
     ),
     'costs' => array (
@@ -85,7 +86,7 @@ $aData = array (
 						'oxfinalize' => 1,
 						'oxparamend' => 99999,
 				),
-		),   
+		),
 		'payment' => array (
 				0 => array (
 						'oxid' => 'oxidpayadvance',
@@ -167,7 +168,7 @@ $aData = array (
 				   'blShowNetPrice' => true,
 				   'blShowVATForPayCharge' => true,
 				   'blShowVATForDelivery' => true,
-				   'sAdditionalServVATCalcMethod' => 'biggest_net', 
+				   'sAdditionalServVATCalcMethod' => 'biggest_net',
 				   'blPaymentVatOnTop'=>true,
 				   'blDeliveryVatOnTop'=>true,
 				   'blPaymentVatOnTop'=>true,

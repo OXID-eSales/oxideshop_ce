@@ -585,7 +585,7 @@ CREATE TABLE `oxdiscount` (
   `OXITMARTID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Free article id, that will be added as a discount',
   `OXITMAMOUNT` double NOT NULL default '1' COMMENT 'The quantity of free article that will be added to basket with discounted article',
   `OXITMMULTIPLE` int(1) NOT NULL default '0' COMMENT 'Should free article amount be multiplied by discounted item quantity in basket',
-  `OXSORT` int(5) NOT NULL default '0' COMMENT 'Sorting',
+  `OXSORT` int(5) NOT NULL default '0' COMMENT 'Defines the order discounts are applied to basket or product',
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
   PRIMARY KEY  (`OXID`),
   UNIQUE INDEX `UNIQ_OXSORT` (`OXSHOPID`, `OXSORT`),

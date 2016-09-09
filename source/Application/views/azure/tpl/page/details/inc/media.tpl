@@ -1,6 +1,7 @@
+[{assign var="oConfig" value=$oViewConf->getConfig()}]
 [{oxscript add="$('a.js-external').attr('target', '_blank');"}]
 [{if $oDetailsProduct->oxarticles__oxfile->value}]
-  <a id="productFile" class="js-external" href="[{$oDetailsProduct->getFileUrl()}][{$oDetailsProduct->oxarticles__oxfile->value}]">[{$oDetailsProduct->oxarticles__oxfile->value}]</a>
+  <a id="productFile" class="js-external" href="[{$oConfig->getPictureUrl('media/')}][{$oDetailsProduct->oxarticles__oxfile->value}]">[{$oDetailsProduct->oxarticles__oxfile->value}]</a>
 [{/if}]
 
 [{if $oView->getMediaFiles()}]

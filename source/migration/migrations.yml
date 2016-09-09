@@ -1,0 +1,4 @@
+name: Oxid Migrations CE
+migrations_namespace: OxidEsales\Eshop\Migrations
+table_name: oxmigrations_ce
+migrations_directory: data

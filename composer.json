@@ -12,7 +12,8 @@
         "phpmailer/phpmailer": "^5.2.14",
         "smarty/smarty": "^2.6.30",
         "oxid-esales/oxideshop-composer-plugin": "dev-master",
-        "oxid-esales/flow-theme": "dev-master"
+        "oxid-esales/flow-theme": "dev-master",
+        "oxid-esales/eshop-db-migration-wrapper": "dev-master"
     },
     "require-dev": {
         "oxid-esales/testing-library": "dev-master",
@@ -37,7 +38,9 @@
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
-        ]
+        ],
+        "oe:migration:run": "oe-eshop-facts oe-eshop-db_migrate",
+        "oe:migration:new": "oe-eshop-facts oe-eshop-db_generate_migration"
     },
     "extra": {
         "incenteev-parameters": {

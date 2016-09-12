@@ -2281,21 +2281,24 @@ class oxSetupController extends oxSetupCore
 
         try {
             $oDb->queryFile("$sqlDir/database_schema.sql");
-            $oDb->queryFile("$sqlDir/initial_data.sql");
         } catch (Exception $oExcp) {
             $oView->setMessage($oExcp->getMessage());
-
             return "default.php";
         }
 
-        if ($aDB['dbiDemoData'] == '1') {
-            // install demodata
+        if ($aDB['dbiDemoData'] === '0') {
+            try {
+                $oDb->queryFile("$sqlDir/initial_data.sql");
+            } catch (Exception $oExcp) {
+                $oView->setMessage($oExcp->getMessage());
+                return "default.php";
+            }
+        } else {
             try {
                 $oDb->queryFile("$sqlDir/demodata.sql");
             } catch (Exception $oExcp) {
                 // there where problems with queries
                 $oView->setMessage($oLang->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $oExcp->getMessage());
-
                 return "default.php";
             }
         }
@@ -2618,11 +2621,12 @@ class oxSetupAps extends oxSetupCore
 
         // setupping db
         $oDb->queryFile("database_schema.sql");
-        $oDb->queryFile("initial_data.sql");
 
         // install demo data?
         if ($blInstallDemoData) {
             $oDb->queryFile("demodata.sql");
+        } else {
+            $oDb->queryFile("initial_data.sql");
         }
 
         //swap database to english

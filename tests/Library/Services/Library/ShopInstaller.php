@@ -117,7 +117,7 @@ class ShopInstaller
     public function insertDemoData()
     {
         $sSetupPath = $this->getSetupDirectory();
-        $this->importFileToDatabase($sSetupPath . '/sql' . OXID_VERSION_SUFIX . '/' . 'demodata.sql');
+        $this->importFileToDatabase($sSetupPath . '/sql' . OXID_VERSION_SUFIX . '/' . 'test_demodata.sql');
     }
 
     /**

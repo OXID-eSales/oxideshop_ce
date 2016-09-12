@@ -49,7 +49,7 @@ class Database
     protected static $instance = null;
 
     /**
-     * @var null|DatabaseAdapter|DatabaseInterface Database connection object
+     * @var null|DatabaseInterface Database connection object
      */
     protected static $db = null;
 

@@ -24,6 +24,7 @@ namespace OxidEsales\Eshop\Core\Database\Adapter\Doctrine;
 
 use PDO;
 use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ConnectionException;
 use Doctrine\DBAL\DBALException;
@@ -51,7 +52,7 @@ class Database implements DatabaseInterface
     protected $connectionParameters = array();
 
     /**
-     * @var \Doctrine\DBAL\Connection|\Doctrine\DBAL\Connections\MasterSlaveConnection The database connection.
+     * @var DriverConnection The database connection.
      */
     protected $connection = null;
 
@@ -274,11 +275,6 @@ class Database implements DatabaseInterface
      *
      * When the connection is opened the fetch mode will be set to a default value as defined in
      * OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database::$fetchMode.
-     *
-     * Once the connection has been opened, the fetch mode might be set to any of the valid fetch modes as defined in
-     * DatabaseInterface::FETCH_MODE_*
-     * This implies that piece a of code should make no assumptions about the current fetch mode of the connection,
-     * but rather set it explicitly, before retrieving the results.
      *
      * @param integer $fetchMode See DatabaseInterface::FETCH_MODE_* for valid values
      */

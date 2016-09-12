@@ -85,7 +85,10 @@ interface DatabaseInterface
     public function forceMasterConnection();
 
     /**
-     * Force database slave connection.
+     * Force database slave connection. Do not use this function unless
+     * you know exactly what you are doing. Usage of this function
+     * can lead to write access to a MySQL slave and getting replication out
+     * of sync.
      *
      * @return null
      */

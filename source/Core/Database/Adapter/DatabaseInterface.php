@@ -15,14 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * @link      http://www.oxid-esales.com
+ * @copyright (C)OXID eSales AG 2003-2016
+ * @version   OXID eShop CE
  */
 
 namespace OxidEsales\Eshop\Core\Database\Adapter;
 
-use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
@@ -120,10 +119,10 @@ interface DatabaseInterface
      * NOTE: Although you might pass any SELECT or SHOW statement to this method, try to limit the result of the
      * statement to one single row, as the rest of the rows is simply discarded.
      *
-     * @param string $query          The sql SELECT or SHOW statement.
-     * @param array  $parameters     Array of parameters for the given sql statement.
+     * @param string $query      The sql SELECT or SHOW statement.
+     * @param array  $parameters Array of parameters for the given sql statement.
      *
-     * @return string|false          Returns a string for SELECT or SHOW statements and FALSE for any other statement.
+     * @return string|false      Returns a string for SELECT or SHOW statements and FALSE for any other statement.
      */
     public function getOne($query, $parameters = array());
 
@@ -131,7 +130,7 @@ interface DatabaseInterface
      * Get an array with the values of the first row of a given sql SELECT or SHOW statement .
      * Returns an empty array for any other statement.
      * The returned value depends on the fetch mode.
-     *  @see DatabaseInterface::setFetchMode() for how to set the fetch mode
+     * @see DatabaseInterface::setFetchMode() for how to set the fetch mode
      *
      * The keys of the array may be numeric, strings or both, depending on the FETCH_MODE_* of the connection.
      * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
@@ -148,9 +147,8 @@ interface DatabaseInterface
      * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     *
-     * @param string $sqlSelect      The sql select statement we want to execute.
-     * @param array  $parameters     Array of parameters, for the given sql statement.
+     * @param string $sqlSelect  The sql select statement we want to execute.
+     * @param array  $parameters Array of parameters, for the given sql statement.
      *
      * @return array The row, we selected with the given sql statement.
      */
@@ -169,8 +167,8 @@ interface DatabaseInterface
      * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $sqlSelect      The sql select statement
-     * @param array  $parameters     The parameters array.
+     * @param string $sqlSelect  The sql select statement
+     * @param array  $parameters The parameters array.
      *
      * @throws DatabaseException
      *
@@ -195,14 +193,14 @@ interface DatabaseInterface
      * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query          If parameters are given, the "?" in the string will be replaced by the values in the array
-     * @param array  $parameters     Array of parameters, for the given sql statement.
+     * @param string $query      If parameters are given, the "?" in the string will be replaced by the values in the array
+     * @param array  $parameters Array of parameters, for the given sql statement.
      *
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
      *
-     * @throws     DatabaseException
-     * @throws     \InvalidArgumentException
+     * @throws DatabaseException
+     * @throws \InvalidArgumentException
      *
      * @return array
      */
@@ -225,12 +223,12 @@ interface DatabaseInterface
      * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $sqlSelect      The sql select statement
-     * @param array  $parameters     The parameters array for the given query.
+     * @param string $sqlSelect  The sql select statement
+     * @param array  $parameters The parameters array for the given query.
      *
      * @throws DatabaseException The exception, that can occur while executing the sql statement.
      *
-     * @return ResultSetInterface The result of the given query.
+     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
     public function select($sqlSelect, $parameters = array());
 
@@ -386,6 +384,8 @@ interface DatabaseInterface
      * @param string $level The transaction isolation level
      *
      * @throws \InvalidArgumentException|DatabaseException
+     *
+     * @return
      */
     public function setTransactionIsolationLevel($level);
 

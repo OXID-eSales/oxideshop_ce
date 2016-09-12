@@ -80,6 +80,8 @@ class oxAdminDetails extends oxAdminView
      * @param string $sField      object field which content is passed to editor
      * @param string $sStylesheet stylesheet to use in editor
      *
+     * @deprecated since v5.3.1 (2016-09-12); wysiwygPro functionality will be removed in v6.0.
+     *
      * @return wysiwygPro
      */
     protected function _getTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet = null)
@@ -289,10 +291,12 @@ class oxAdminDetails extends oxAdminView
     protected function _generateTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet = null)
     {
         // setup editor
+        // @deprecated since v5.3.1 (2016-09-12); wysiwygPro functionality will be removed in v6.0.
         if ($oEditor = $this->_getTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet)) {
             // generate and return editor code
             $sEditorHtml = $oEditor->fetch($iWidth, $iHeight);
         } else {
+        // END deprecated
             $sEditorHtml = $this->_getPlainEditor($iWidth, $iHeight, $oObject, $sField);
         }
 

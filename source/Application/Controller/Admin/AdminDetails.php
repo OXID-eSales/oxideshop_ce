@@ -76,19 +76,6 @@ class AdminDetails extends \oxAdminView
     }
 
     /**
-     * Method is used for overriding.
-     *
-     * @param int    $iWidth      editor width
-     * @param int    $iHeight     editor height
-     * @param object $oObject     object passed to editor
-     * @param string $sField      object field which content is passed to editor
-     * @param string $sStylesheet stylesheet to use in editor
-     */
-    protected function _getTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet = null)
-    {
-    }
-
-    /**
      * Returns string which must be edited by editor.
      *
      * @param oxbase $oObject object whifh field will be used for editing
@@ -170,13 +157,7 @@ class AdminDetails extends \oxAdminView
      */
     protected function _generateTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet = null)
     {
-        // setup editor
-        if ($oEditor = $this->_getTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet)) {
-            // generate and return editor code
-            $sEditorHtml = $oEditor->fetch($iWidth, $iHeight);
-        } else {
-            $sEditorHtml = $this->_getPlainEditor($iWidth, $iHeight, $oObject, $sField);
-        }
+        $sEditorHtml = $this->_getPlainEditor($iWidth, $iHeight, $oObject, $sField);
 
         return $sEditorHtml;
     }

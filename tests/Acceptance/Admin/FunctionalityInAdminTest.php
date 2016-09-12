@@ -1959,3 +1959,4 @@ class FunctionalityInAdminTest extends AdminTestCase
         }
     }
 }
+

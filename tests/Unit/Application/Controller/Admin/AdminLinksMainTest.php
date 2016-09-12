@@ -105,19 +105,4 @@ class AdminLinksMainTest extends \OxidTestCase
         $this->assertNotNull($aViewData["updatelist"]);
         $this->assertEquals(1, $aViewData["updatelist"]);
     }
-
-    /**
-     * Adminlinks_Main::testGetTextEditor() test case.
-     */
-    public function testGetTextEditor()
-    {
-        if ($this->getTestConfig()->getShopEdition() != 'CE') {
-            $this->markTestSkipped('This test is for Community edition only.');
-        }
-
-        $oAdminDetails = oxNew('adminlinks_main');
-        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, oxNew('oxarticle'), 'oxarticles__oxtitle');
-
-        $this->assertNull($oEditor);
-    }
 }

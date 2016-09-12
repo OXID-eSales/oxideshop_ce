@@ -184,24 +184,4 @@ class AdminlinksMain extends \oxAdminDetails
         // set oxid if inserted
         $this->setEditObjectId($oLinks->getId());
     }
-
-    /**
-     * Initiates Text editor
-     *
-     * @param int    $iWidth      editor width
-     * @param int    $iHeight     editor height
-     * @param object $oObject     object passed to editor
-     * @param string $sField      object field which content is passed to editor
-     * @param string $sStylesheet stylesheet to use in editor
-     *
-     * @return wysiwygPro
-     */
-    /*protected function _getTextEditor( $iWidth, $iHeight, $oObject, $sField, $sStylesheet = null )
-    {
-        if ( $oEditor = parent::_getTextEditor( $iWidth, $iHeight, $oObject, $sField, $sStylesheet ) ) {
-            // setting empty value
-            $oEditor->emptyValue = ( $oEditor->lineReturns == 'P' ) ? "<p>&nbsp;</p>" : "<div>&nbsp;</div>";
-        }
-        return $oEditor;
-    }*/
 }

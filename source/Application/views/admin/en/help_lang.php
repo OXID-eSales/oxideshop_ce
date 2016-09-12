@@ -438,7 +438,7 @@ $aLang =  array(
 
 
 
-'HELP_DISCOUNT_MAIN_SORT'                     => 'You can use <span class="navipath_or_inputname">Sorting</span> to define the order in which discounts are applied to products or the basket: The discount with the lowest number is applied first, and the discount with the highest number last.',
+'HELP_DISCOUNT_MAIN_SORT'                     => 'Use <span class="navipath_or_inputname">Sorting</span> to define the order of the discounts applied to products or cart. The discount with the lowest number applies first, the one with the highest number last.',
 
 'HELP_DISCOUNT_MAIN_PRICE'                    => 'You can use <span class="navipath_or_inputname">Purchase Price</span> to specify that the discount is only valid for certain purchase prices. If the discount is to be valid for all purchase prices, enter <span class="userinput_or_code">0</span> in <span class="navipath_or_inputname">From</span> and <span class="userinput_or_code">0</span> in <span class="navipath_or_inputname">To</span>.',
 

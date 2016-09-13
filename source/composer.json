@@ -8,6 +8,9 @@
         "GPL-3.0",
         "proprietary"
     ],
+    "require": {
+        "oxid-esales/oxideshop-demodata-ce": "dev-b-5.3"
+    },
     "require-dev": {
         "oxid-esales/testing-library": "^1.0.5",
         "oxid-esales/coding-standards": "^2.0.0",
@@ -38,6 +41,9 @@
                 "shop_tests_path": "SHOP_TESTS_PATH",
                 "partial_module_paths": "PARTIAL_MODULE_PATHS"
             }
+        },
+        "oxideshop": {
+            "source-path": "./"
         }
     }
 }

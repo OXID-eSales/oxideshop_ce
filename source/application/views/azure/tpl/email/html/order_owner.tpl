@@ -648,9 +648,6 @@
                         <b>[{oxmultilang ident="PAYMENT_METHOD" suffix="COLON" }] [{ $payment->oxpayments__oxdesc->value }]
                         [{assign var="oPaymentCostPrice" value=$basket->getPaymentCost()}]
                         [{if $oPaymentCostPrice }]([{oxprice price=$oPaymentCostPrice->getBruttoPrice() currency=$currency}])[{/if}]</b>
-
-                        <br><br>
-                        [{oxmultilang ident="PAYMENT_INFO_OFF" }]
                     </p>
                 [{/if}]
             [{/block}]

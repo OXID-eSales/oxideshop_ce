@@ -785,7 +785,6 @@ $aLang = array(
 'DETAILS_VPE_MESSAGE'                                         => 'Dieser Artikel kann nur in Verpackungseinheiten zu je %s erworben werden.',
 'DETAILS_CHOOSEVARIANT'                                       => 'Bitte wählen Sie eine Variante',
 'INVITE_TO_SHOP'                                              => 'Eine Einladung von %s %s zu besuchen.',
-'PAYMENT_INFO_OFF'                                            => 'BEZAHLINFORMATIONEN AUSGESCHALTET - um diese einzuschalten bitte application/views/[theme]/email/html/order_owner.tpl aendern.',
 'DISTRIBUTORS'                                                => 'Lieferanten',
 'MANUFACTURERS'                                               => 'Marken',
 'SERVICES'                                                    => 'Service',

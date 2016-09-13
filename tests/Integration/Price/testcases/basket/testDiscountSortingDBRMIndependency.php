@@ -78,7 +78,6 @@ $aData = array(
             'oxsort' => 30,
         ),
         3 => array (
-            // -10% discount for product 10005
             'oxid'         => 'procdiscountfor10005',
             'oxaddsum'     => 5,
             'oxaddsumtype' => 'abs',
@@ -89,7 +88,6 @@ $aData = array(
             'oxsort' => 40,
         ),
         4 => array (
-            // 5.5% discount for product 1004
             'oxid'         => 'procdiscountfor1004',
             'oxaddsum'     => -10,
             'oxaddsumtype' => '%',

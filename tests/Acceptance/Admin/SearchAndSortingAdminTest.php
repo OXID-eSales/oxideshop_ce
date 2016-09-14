@@ -556,7 +556,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
     public function testSearchDiscounts()
     {
         $this->loginAdmin("Shop Settings", "Discounts");
-        $iNameCol = 2;
+        $discountTitleColumn = 3;
         //search
         $this->changeAdminListLanguage('Deutsch');
         $this->assertElementPresent("link=1 DE test discount šÄßüл");
@@ -569,7 +569,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("[de] šÄßüл", $this->getValue("where[oxdiscount][oxtitle]"));
         $this->type("where[oxdiscount][oxtitle]", "itm [de");
         $this->clickAndWait("submitit");
-        $this->assertEquals("Itm discount [DE] šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+        $this->assertTextExistsAtTablePosition("Itm discount [DE] šÄßüл", 1, $discountTitleColumn);
         $this->changeAdminListLanguage('English');
         $this->assertElementNotPresent("//tr[@id='row.1']/td[1]");
         $this->type("where[oxdiscount][oxtitle]", "[en");
@@ -581,7 +581,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("[en", $this->getValue("where[oxdiscount][oxtitle]"));
         $this->type("where[oxdiscount][oxtitle]", "itm [en");
         $this->clickAndWait("submitit");
-        $this->assertEquals("Itm discount [EN] šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+        $this->assertTextExistsAtTablePosition("Itm discount [EN] šÄßüл", 1, $discountTitleColumn);
         $this->type("where[oxdiscount][oxtitle]", "noEntry");
         $this->clickAndWait("submitit");
         $this->assertElementNotPresent("//tr[@id='row.1']/td[1]");
@@ -600,48 +600,48 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->loginAdmin("Shop Settings", "Discounts");
         $this->changeAdminListLanguage('Deutsch');
         $this->changeAdminListLanguage('Deutsch');
-        $iNameCol = 2;
+        $discountTitleColumn = 3;
         //sorting
         $this->clickAndWait("link=Name");
-        $this->assertEquals("1 DE test discount šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
-        $this->assertEquals("2 DE test discount šÄßüл", $this->getText("//tr[@id='row.4']/td[".$iNameCol."]"));
-        $this->assertEquals("3 DE test discount šÄßüл", $this->getText("//tr[@id='row.5']/td[".$iNameCol."]"));
-        $this->assertEquals("4 DE test discount šÄßüл", $this->getText("//tr[@id='row.6']/td[".$iNameCol."]"));
+        $this->assertTextExistsAtTablePosition("1 DE test discount šÄßüл", 1, $discountTitleColumn);
+        $this->assertTextExistsAtTablePosition("2 DE test discount šÄßüл", 4, $discountTitleColumn);
+        $this->assertTextExistsAtTablePosition("3 DE test discount šÄßüл", 5, $discountTitleColumn);
+        $this->assertTextExistsAtTablePosition("4 DE test discount šÄßüл", 6, $discountTitleColumn);
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
         $this->clickAndWait("nav.next");
         $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-        $this->assertEquals("[last] DE test discount šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+        $this->assertEquals("[last] DE test discount šÄßüл", $this->getText("//tr[@id='row.1']/td[".$discountTitleColumn."]"));
         $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
         $this->clickAndWait("nav.prev");
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
-        $this->assertEquals("1 DE test discount šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+        $this->assertTextExistsAtTablePosition("1 DE test discount šÄßüл", 1, $discountTitleColumn);
         $this->changeAdminListLanguage('English');
-        $this->assertEquals("1 EN test discount šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
-        $this->assertEquals("2 EN test discount šÄßüл", $this->getText("//tr[@id='row.4']/td[".$iNameCol."]"));
-        $this->assertEquals("3 EN test discount šÄßüл", $this->getText("//tr[@id='row.5']/td[".$iNameCol."]"));
-        $this->assertEquals("4 EN test discount šÄßüл", $this->getText("//tr[@id='row.6']/td[".$iNameCol."]"));
+        $this->assertTextExistsAtTablePosition("1 EN test discount šÄßüл", 1, $discountTitleColumn);
+        $this->assertTextExistsAtTablePosition("2 EN test discount šÄßüл", 4, $discountTitleColumn);
+        $this->assertTextExistsAtTablePosition("3 EN test discount šÄßüл", 5, $discountTitleColumn);
+        $this->assertTextExistsAtTablePosition("4 EN test discount šÄßüл", 6, $discountTitleColumn);
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
         $this->clickAndWait("nav.last");
-        $this->assertEquals("[last] EN test discount šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+        $this->assertTextExistsAtTablePosition("[last] EN test discount šÄßüл", 1, $discountTitleColumn);
         $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
         $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
         $this->clickAndWait("nav.first");
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
-        $this->assertEquals("1 EN test discount šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+        $this->assertTextExistsAtTablePosition("1 EN test discount šÄßüл", 1, $discountTitleColumn);
         $this->changeAdminListLanguage('Deutsch');
         $this->clickAndWait("nav.last");
         $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-        $this->assertEquals("[last] DE test discount šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+        $this->assertTextExistsAtTablePosition("[last] DE test discount šÄßüл", 1, $discountTitleColumn);
         $this->clickDeleteListItem(1);
         $this->assertElementNotPresent("nav.page.1");
-        $this->assertEquals("1 DE test discount šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+        $this->assertTextExistsAtTablePosition("1 DE test discount šÄßüл", 1, $discountTitleColumn);
     }
 
     /**

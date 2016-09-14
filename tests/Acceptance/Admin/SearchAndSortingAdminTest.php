@@ -556,6 +556,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
     public function testSearchDiscounts()
     {
         $this->loginAdmin("Shop Settings", "Discounts");
+        $discountSortColumn = 2;
         $discountTitleColumn = 3;
         //search
         $this->changeAdminListLanguage('Deutsch');
@@ -570,6 +571,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->type("where[oxdiscount][oxtitle]", "itm [de");
         $this->clickAndWait("submitit");
         $this->assertTextExistsAtTablePosition("Itm discount [DE] šÄßüл", 1, $discountTitleColumn);
+        $this->assertTextExistsAtTablePosition("170", 1, $discountSortColumn);
         $this->changeAdminListLanguage('English');
         $this->assertElementNotPresent("//tr[@id='row.1']/td[1]");
         $this->type("where[oxdiscount][oxtitle]", "[en");
@@ -582,6 +584,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->type("where[oxdiscount][oxtitle]", "itm [en");
         $this->clickAndWait("submitit");
         $this->assertTextExistsAtTablePosition("Itm discount [EN] šÄßüл", 1, $discountTitleColumn);
+        $this->assertTextExistsAtTablePosition("170", 1, $discountSortColumn);
         $this->type("where[oxdiscount][oxtitle]", "noEntry");
         $this->clickAndWait("submitit");
         $this->assertElementNotPresent("//tr[@id='row.1']/td[1]");

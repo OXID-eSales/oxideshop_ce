@@ -620,7 +620,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
                 if ($myConfig->getConfigParam('blUseTimeCheck')) {
                     $activeCheck = $this->addSqlActiveRangeSnippet($activeCheck, 'art');
                 }
-                $sQ = " $sQ and IF( $sTable.oxvarcount = 0, 1, oxvarstock) ";
+                $sQ = " $sQ and IF( $sTable.oxvarcount = 0, 1, $sTable.oxvarstock) ";
             }
         }
 

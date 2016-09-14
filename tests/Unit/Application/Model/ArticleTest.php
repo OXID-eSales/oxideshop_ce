@@ -2160,7 +2160,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle->setAdminMode(true);
         $sInsert = "";
         if (!$this->getConfig()->getConfigParam('blVariantParentBuyable')) {
-            $sInsert = " and IF( $sTable.oxvarcount = 0, 1, ( select 1 from $sTable as art where art.oxparentid=$sTable.oxid and  art.oxactive = 1  and ( art.oxstockflag != 2 or art.oxstock > 0 ) limit 1 ) ) ";
+            $sInsert = " and IF( $sTable.oxvarcount = 0, 1, oxvarstock) ";
         }
         $sExpSelect = "(  $sTable.oxactive = 1  and $sTable.oxhidden = 0  and ( $sTable.oxstockflag != 2 or ( $sTable.oxstock + $sTable.oxvarstock ) > 0  ) $sInsert ) ";
         $sSelect = $oArticle->getSqlActiveSnippet();

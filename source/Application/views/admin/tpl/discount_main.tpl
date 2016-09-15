@@ -16,12 +16,6 @@ function ChangeDiscountType(oObj)
         }
     }
 }
-
-window.onload = function ()
-{
-    var oField = top.oxid.admin.getLockTarget();
-    oField.onchange = oField.onkeyup = oField.onmouseout = top.oxid.admin.unlockSave;
-};
 //-->
 </script>
 
@@ -67,7 +61,7 @@ window.onload = function ()
                         [{oxmultilang ident="DISCOUNT_MAIN_SORT"}]
                     </td>
                     <td class="edittext" colspan="2">
-                        <input type="text" class="editinput" size="25" maxlength="[{$edit->oxdiscount__oxsort->fldmax_length}]" id="oLockTarget" name="editval[oxdiscount__oxsort]" value="[{$edit->oxdiscount__oxsort->value}]" [{$readonly}]>
+                        <input type="text" class="editinput" size="25" maxlength="[{$edit->oxdiscount__oxsort->fldmax_length}]" id="oLockTarget" name="editval[oxdiscount__oxsort]" value="[{if $oxid == "-1"}][{$oView->getNextOxsort()}][{else}][{$edit->oxdiscount__oxsort->value}][{/if}]" [{$readonly}]>
                         [{oxinputhelp ident="HELP_DISCOUNT_MAIN_SORT"}]
                     </td>
                 </tr>
@@ -167,7 +161,7 @@ window.onload = function ()
             <td class="edittext">
             </td>
             <td class="edittext"><br>
-            <input type="submit" class="edittext" id="oLockButton" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"" [{$readonly}] [{if !$edit->oxdiscount__oxsort->value && '0' != $edit->oxdiscount__oxsort->value}]disabled[{/if}]><br>
+                <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"" [{$readonly}]><br>
             </td>
         </tr>
         </table>

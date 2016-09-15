@@ -468,7 +468,7 @@ class View extends \oxSuperCfg
     /**
      * Get parent object
      *
-     * @return null
+     * @return View
      */
     public function getParent()
     {

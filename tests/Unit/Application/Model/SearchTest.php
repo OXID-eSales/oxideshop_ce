@@ -818,7 +818,7 @@ class SearchTest extends UnitTestCase
                $sArticleTable.oxvarstock ) > 0  )  ";
         if (!$this->getConfig()->getConfigParam('blVariantParentBuyable')) {
             $sTimeCheckQ = " or ( art.oxactivefrom < '$sSearchDate' and art.oxactiveto > '$sSearchDate' )";
-            $sQ .= "and IF( $sTable.oxvarcount = 0, 1, $sTable.oxvarstock ) ";
+            $sQ .= "and IF( $sTable.oxvarcount = 0, 1, $sTable.oxvarstock) ";
         }
         $sQ .= ")  and $sArticleTable.oxparentid = '' and $sArticleTable.oxissearch = 1  and
                 ( (  $sAETable.oxlongdesc like '%xxx%' )  ) ";

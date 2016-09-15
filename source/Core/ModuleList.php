@@ -34,6 +34,12 @@ use oxRegistry;
  */
 class ModuleList extends \oxSuperCfg
 {
+    const MODULE_KEY_PATHS = 'Paths';
+    const MODULE_KEY_EVENTS = 'Events';
+    const MODULE_KEY_VERSIONS = 'Versions';
+    const MODULE_KEY_FILES = 'Files';
+    const MODULE_KEY_TEMPLATES = 'Templates';
+
     /**
      * Modules info array
      *
@@ -83,7 +89,7 @@ class ModuleList extends \oxSuperCfg
      */
     public function getActiveModuleInfo()
     {
-        $aModulePaths = $this->getModuleConfigParametersByKey('Paths');
+        $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
 
         // Extract module paths from extended classes
         if (!is_array($aModulePaths) || count($aModulePaths) < 1) {
@@ -109,7 +115,7 @@ class ModuleList extends \oxSuperCfg
         $aModulePaths = array();
 
         if (is_array($aDisabledModules) && count($aDisabledModules) > 0) {
-            $aModulePaths = $this->getModuleConfigParametersByKey('Paths');
+            $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
 
             // Extract module paths from extended classes
             if (!is_array($aModulePaths) || count($aModulePaths) < 1) {
@@ -233,7 +239,7 @@ class ModuleList extends \oxSuperCfg
     {
         $aDisabledModules = $this->getDisabledModules();
         $aModules = $this->getModulesWithExtendedClass();
-        $aModulePaths = $this->getModuleConfigParametersByKey('Paths');
+        $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
 
         $aDisabledModuleClasses = array();
         if (isset($aDisabledModules) && is_array($aDisabledModules)) {
@@ -273,19 +279,19 @@ class ModuleList extends \oxSuperCfg
         $this->_removeFromDisabledModulesArray($aDeletedModuleIds);
 
         // removing from aModulePaths array
-        $this->_removeFromModulesArray('Paths', $aDeletedModuleIds);
+        $this->_removeFromModulesArray(static::MODULE_KEY_PATHS, $aDeletedModuleIds);
 
         // removing from aModuleEvents array
-        $this->_removeFromModulesArray('Events', $aDeletedModuleIds);
+        $this->_removeFromModulesArray(static::MODULE_KEY_EVENTS, $aDeletedModuleIds);
 
         // removing from aModuleVersions array
-        $this->_removeFromModulesArray('Versions', $aDeletedModuleIds);
+        $this->_removeFromModulesArray(static::MODULE_KEY_VERSIONS, $aDeletedModuleIds);
 
         // removing from aModuleFiles array
-        $this->_removeFromModulesArray('Files', $aDeletedModuleIds);
+        $this->_removeFromModulesArray(static::MODULE_KEY_FILES, $aDeletedModuleIds);
 
         // removing from aModuleTemplates array
-        $this->_removeFromModulesArray('Templates', $aDeletedModuleIds);
+        $this->_removeFromModulesArray(static::MODULE_KEY_TEMPLATES, $aDeletedModuleIds);
 
         //removing from config tables and templates blocks table
         $this->_removeFromDatabase($aDeletedModuleIds);
@@ -519,7 +525,7 @@ class ModuleList extends \oxSuperCfg
                     $sModuleId = $oModule->getId();
                     $this->_aModules[$sModuleId] = $oModule;
 
-                    $aModulePaths = $this->getModuleConfigParametersByKey('Paths');
+                    $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
 
                     if (!is_array($aModulePaths) || !array_key_exists($sModuleId, $aModulePaths)) {
                         // saving module path info
@@ -566,7 +572,7 @@ class ModuleList extends \oxSuperCfg
     public function getModuleIds()
     {
         $aModuleIdsFromExtensions = $this->_getModuleIdsFromExtensions($this->getModulesWithExtendedClass());
-        $aModuleIdsFromFiles = array_keys($this->getModuleConfigParametersByKey('Files'));
+        $aModuleIdsFromFiles = array_keys($this->getModuleConfigParametersByKey(static::MODULE_KEY_FILES));
 
         return array_unique(array_merge($aModuleIdsFromExtensions, $aModuleIdsFromFiles));
     }
@@ -658,7 +664,7 @@ class ModuleList extends \oxSuperCfg
      */
     protected function _saveModulePath($sModuleId, $sModulePath)
     {
-        $aModulePaths = $this->getModuleConfigParametersByKey('Paths');
+        $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
 
         $aModulePaths[$sModuleId] = $sModulePath;
         $this->getConfig()->saveShopConfVar('aarr', 'aModulePaths', $aModulePaths);

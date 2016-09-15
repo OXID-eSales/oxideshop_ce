@@ -238,32 +238,38 @@ function ThisDate( sID)
 
     <!-- Anfang rechte Seite -->
     <td class="edittext" align="left" valign="bottom">
-      <form name="senddownloadlinks" id="senddownloadlinks" action="[{$oViewConf->getSelfLink()}]" method="post">
-        [{$oViewConf->getHiddenSid()}]
-        <input type="hidden" name="cur" value="[{$oCurr->id}]">
-        <input type="hidden" name="cl" value="order_main">
-        <input type="hidden" name="fnc" value="senddownloadlinks">
-        <input type="hidden" name="oxid" value="[{$oxid}]">
-        <input type="hidden" name="editval[oxorder__oxid]" value="[{$oxid}]">
-        [{oxmultilang ident="ORDER_MAIN_SEND_DOWNLOADS"}] <input type="submit" class="edittext" name="save" value="&nbsp;&nbsp;[{oxmultilang ident="GENERAL_SEND"}]&nbsp;&nbsp;" [{$readonly}]>
-      </form>
-      <form name="resetorder" id="resetorder" action="[{$oViewConf->getSelfLink()}]" method="post">
-        [{$oViewConf->getHiddenSid()}]
-        <input type="hidden" name="cur" value="[{$oCurr->id}]">
-        <input type="hidden" name="cl" value="order_main">
-        <input type="hidden" name="fnc" value="resetorder">
-        <input type="hidden" name="oxid" value="[{$oxid}]">
-        <input type="hidden" name="editval[oxorder__oxid]" value="[{$oxid}]">
-      </form>
-      <form name="sendorder" id="sendorder" action="[{$oViewConf->getSelfLink()}]" method="post">
-        [{$oViewConf->getHiddenSid()}]
-        <input type="hidden" name="cur" value="[{$oCurr->id}]">
-        <input type="hidden" name="cl" value="order_main">
-        <input type="hidden" name="fnc" value="sendorder">
-        <input type="hidden" name="oxid" value="[{$oxid}]">
-        <input type="hidden" name="editval[oxorder__oxid]" value="[{$oxid}]">
-        <input type="hidden" name="sendmail" value='0'>
-      </form>
+        [{block name="admin_order_main_send_download_links"}]
+            <form name="senddownloadlinks" id="senddownloadlinks" action="[{$oViewConf->getSelfLink()}]" method="post">
+                [{$oViewConf->getHiddenSid()}]
+                <input type="hidden" name="cur" value="[{$oCurr->id}]">
+                <input type="hidden" name="cl" value="order_main">
+                <input type="hidden" name="fnc" value="senddownloadlinks">
+                <input type="hidden" name="oxid" value="[{$oxid}]">
+                <input type="hidden" name="editval[oxorder__oxid]" value="[{$oxid}]">
+                [{oxmultilang ident="ORDER_MAIN_SEND_DOWNLOADS"}] <input type="submit" class="edittext" name="save" value="&nbsp;&nbsp;[{oxmultilang ident="GENERAL_SEND"}]&nbsp;&nbsp;" [{$readonly}]>
+            </form>
+        [{/block}]
+        [{block name="admin_order_main_reset_order"}]
+            <form name="resetorder" id="resetorder" action="[{$oViewConf->getSelfLink()}]" method="post">
+                [{$oViewConf->getHiddenSid()}]
+                <input type="hidden" name="cur" value="[{$oCurr->id}]">
+                <input type="hidden" name="cl" value="order_main">
+                <input type="hidden" name="fnc" value="resetorder">
+                <input type="hidden" name="oxid" value="[{$oxid}]">
+                <input type="hidden" name="editval[oxorder__oxid]" value="[{$oxid}]">
+            </form>
+        [{/block}]
+        [{block name="admin_order_main_send_order"}]
+            <form name="sendorder" id="sendorder" action="[{$oViewConf->getSelfLink()}]" method="post">
+                [{$oViewConf->getHiddenSid()}]
+                <input type="hidden" name="cur" value="[{$oCurr->id}]">
+                <input type="hidden" name="cl" value="order_main">
+                <input type="hidden" name="fnc" value="sendorder">
+                <input type="hidden" name="oxid" value="[{$oxid}]">
+                <input type="hidden" name="editval[oxorder__oxid]" value="[{$oxid}]">
+                <input type="hidden" name="sendmail" value='0'>
+            </form>
+        [{/block}]
  <br>
   <br>
    <br>

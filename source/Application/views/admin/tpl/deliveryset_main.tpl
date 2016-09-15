@@ -90,10 +90,12 @@
         </table>
     </td>
     <td valign="top" width="50%">
-    [{if $oxid != "-1"}]
-        <input [{$readonly}] type="button" value="[{oxmultilang ident="DELIVERYSET_MAIN_ASSIGNDELIVERY"}]" class="edittext" onclick="JavaScript:showDialog('&cl=deliveryset_main&aoc=1&oxid=[{$oxid}]');"><br>
-        <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=deliveryset_payment&aoc=2&oxid=[{$oxid}]');">
-    [{/if}]
+        [{block name="admin_deliveryset_main_assign_delivery"}]
+            [{if $oxid != "-1"}]
+                <input [{$readonly}] type="button" value="[{oxmultilang ident="DELIVERYSET_MAIN_ASSIGNDELIVERY"}]" class="edittext" onclick="JavaScript:showDialog('&cl=deliveryset_main&aoc=1&oxid=[{$oxid}]');"><br>
+                <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=deliveryset_payment&aoc=2&oxid=[{$oxid}]');">
+            [{/if}]
+        [{/block}]
     </td>
     </tr>
 </table>

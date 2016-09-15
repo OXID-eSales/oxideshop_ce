@@ -567,6 +567,10 @@ class DbMetaDataHandler extends oxSuperCfg
         $db = oxDb::getDb();
         $config = oxRegistry::getConfig();
 
+        $configFile = oxRegistry::get('oxConfigFile');
+        $originalSkipViewUsageStatus = $configFile->getVar('blSkipViewUsage');
+        $config->setConfigParam('blSkipViewUsage', 1);
+
         $this->safeGuardAdditionalMultiLanguageTables();
 
         $shops = $db->getAll("select * from oxshops");
@@ -587,6 +591,8 @@ class DbMetaDataHandler extends oxSuperCfg
                 $success = false;
             }
         }
+
+        $config->setConfigParam('blSkipViewUsage', $originalSkipViewUsageStatus);
 
         return $success;
     }

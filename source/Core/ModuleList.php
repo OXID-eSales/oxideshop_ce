@@ -134,7 +134,7 @@ class ModuleList extends \oxSuperCfg
      * Get module id's with versions
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey('Versions') instead.
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_VERSIONS) instead.
      */
     public function getModuleVersions()
     {
@@ -165,7 +165,7 @@ class ModuleList extends \oxSuperCfg
      * Get module id's with path
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey('Paths') instead.
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_PATHS) instead.
      */
     public function getModulePaths()
     {
@@ -176,7 +176,7 @@ class ModuleList extends \oxSuperCfg
      * Get module events
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey('Events') instead.
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_EVENTS) instead.
      */
     public function getModuleEvents()
     {
@@ -209,7 +209,7 @@ class ModuleList extends \oxSuperCfg
      * Get all modules files paths
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey('Files') instead.
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_FILES) instead.
      */
     public function getModuleFiles()
     {
@@ -220,7 +220,7 @@ class ModuleList extends \oxSuperCfg
      * Get all modules templates paths
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey('Templates') instead.
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_TEMPLATES) instead.
      */
     public function getModuleTemplates()
     {
@@ -446,7 +446,7 @@ class ModuleList extends \oxSuperCfg
     /**
      * Gets Module config parameters by key
      *
-     * e.g. to get 'aModulePaths' call $obj->getModuleConfigParametersByKey('Paths')
+     * e.g. to get 'aModulePaths' call $obj->getModuleConfigParametersByKey(ModuleList::MODULE_KEY_PATHS)
      *
      * @param string $key Key
      *

@@ -279,19 +279,19 @@ class ModuleList extends \oxSuperCfg
         $this->_removeFromDisabledModulesArray($aDeletedModuleIds);
 
         // removing from aModulePaths array
-        $this->_removeFromModulesArray(static::MODULE_KEY_PATHS, $aDeletedModuleIds);
+        $this->removeFromModulesArray(static::MODULE_KEY_PATHS, $aDeletedModuleIds);
 
         // removing from aModuleEvents array
-        $this->_removeFromModulesArray(static::MODULE_KEY_EVENTS, $aDeletedModuleIds);
+        $this->removeFromModulesArray(static::MODULE_KEY_EVENTS, $aDeletedModuleIds);
 
         // removing from aModuleVersions array
-        $this->_removeFromModulesArray(static::MODULE_KEY_VERSIONS, $aDeletedModuleIds);
+        $this->removeFromModulesArray(static::MODULE_KEY_VERSIONS, $aDeletedModuleIds);
 
         // removing from aModuleFiles array
-        $this->_removeFromModulesArray(static::MODULE_KEY_FILES, $aDeletedModuleIds);
+        $this->removeFromModulesArray(static::MODULE_KEY_FILES, $aDeletedModuleIds);
 
         // removing from aModuleTemplates array
-        $this->_removeFromModulesArray(static::MODULE_KEY_TEMPLATES, $aDeletedModuleIds);
+        $this->removeFromModulesArray(static::MODULE_KEY_TEMPLATES, $aDeletedModuleIds);
 
         //removing from config tables and templates blocks table
         $this->_removeFromDatabase($aDeletedModuleIds);
@@ -425,12 +425,12 @@ class ModuleList extends \oxSuperCfg
     }
 
     /**
-     * Removes extension from given modules array
+     * Removes extension from given modules array.
      *
-     * @param string $key module array key
-     * @param array  $aDeletedModule deleted extensions ID's
+     * @param string $key            Module array key.
+     * @param array  $aDeletedModule Deleted extensions ID's.
      */
-    protected function _removeFromModulesArray($key, $aDeletedModule)
+    protected function removeFromModulesArray($key, $aDeletedModule)
     {
         $array = $this->getModuleConfigParametersByKey($key);
 

@@ -34,7 +34,6 @@ use oxRegistry;
  */
 class ModuleList extends \oxSuperCfg
 {
-
     /**
      * Modules info array
      *
@@ -129,7 +128,7 @@ class ModuleList extends \oxSuperCfg
      * Get module id's with versions
      *
      * @return array
-     * @deprecated Use getModuleConfigParametersByKey('Versions') instead
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey('Versions') instead.
      */
     public function getModuleVersions()
     {
@@ -160,7 +159,7 @@ class ModuleList extends \oxSuperCfg
      * Get module id's with path
      *
      * @return array
-     * @deprecated Use getModuleConfigParametersByKey('Paths') instead
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey('Paths') instead.
      */
     public function getModulePaths()
     {
@@ -171,7 +170,7 @@ class ModuleList extends \oxSuperCfg
      * Get module events
      *
      * @return array
-     * @deprecated Use getModuleConfigParametersByKey('Events') instead
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey('Events') instead.
      */
     public function getModuleEvents()
     {
@@ -204,7 +203,7 @@ class ModuleList extends \oxSuperCfg
      * Get all modules files paths
      *
      * @return array
-     * @deprecated Use getModuleConfigParametersByKey('Files') instead
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey('Files') instead.
      */
     public function getModuleFiles()
     {
@@ -215,7 +214,7 @@ class ModuleList extends \oxSuperCfg
      * Get all modules templates paths
      *
      * @return array
-     * @deprecated Use getModuleConfigParametersByKey('Templates') instead
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey('Templates') instead.
      */
     public function getModuleTemplates()
     {

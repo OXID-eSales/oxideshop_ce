@@ -1,1 +1,1 @@
-[{include 'includes/frameset.tpl'}]
+[{include file='include/frameset.tpl'}]

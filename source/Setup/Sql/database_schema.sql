@@ -593,7 +593,7 @@ CREATE TABLE `oxdiscount` (
   KEY `OXACTIVE` (`OXACTIVE`),
   KEY `OXACTIVEFROM` (`OXACTIVEFROM`),
   KEY `OXACTIVETO` (`OXACTIVETO`)
-) ENGINE=MyISAM COMMENT 'Article discounts';
+) ENGINE=InnoDB COMMENT 'Article discounts';
 
 #
 # Table structure for table `oxfiles`

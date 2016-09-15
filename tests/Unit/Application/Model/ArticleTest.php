@@ -401,7 +401,7 @@ class ArticleTest extends \OxidTestCase
 
         $sTimeCheckQ = " or ( art.oxactivefrom < '$sDate' and art.oxactiveto > '$sDate' )";
         $sQ = " and ( $sTable.oxstockflag != 2 or ( $sTable.oxstock + $sTable.oxvarstock ) > 0  ) ";
-        $sQ = " $sQ and IF( $sTable.oxvarcount = 0, 1, oxvarstock ) ";
+        $sQ = " $sQ and IF( $sTable.oxvarcount = 0, 1, $sTable.oxvarstock ) ";
 
         $this->assertEquals(str_replace(array(" ", "\n", "\t", "\r"), "", $sQ), str_replace(array(" ", "\n", "\t", "\r"), "", $oArticle->getStockCheckQuery()));
     }

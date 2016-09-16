@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -188,7 +188,7 @@ class dyn_trusted extends Shop_Config
     {
         $aPaymentIds = oxRegistry::getConfig()->getRequestParameter("paymentids");
 
-        if ($aPaymentIds) {
+        if (is_array($aPaymentIds)) {
             foreach ($aPaymentIds as $sShopPayId => $sTsPayId) {
                 $aPayment = oxNew("oxpayment");
                 if ($aPayment->load($sShopPayId)) {

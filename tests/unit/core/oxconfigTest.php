@@ -1532,6 +1532,40 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     }
 
     /**
+     * Test different script names, which should be recognized as belonging to the current URL
+     *
+     * @dataProvider dataProviderTestIsCurrentUrlWithPathInScriptName
+     *
+     * @param $scriptName
+     */
+    public function testIsCurrentUrlWithPathInScriptName($scriptName)
+    {
+        $sUrl = 'http://www.example.com';
+        $oConfig = new oxConfig();
+        $oConfig->init();
+        $_SERVER['HTTP_HOST'] = 'http://www.example.com';
+        $_SERVER['SCRIPT_NAME'] = $scriptName;
+
+        $this->assertTrue($oConfig->isCurrentUrl($sUrl));
+    }
+
+    public function dataProviderTestIsCurrentUrlWithPathInScriptName()
+    {
+        return array(
+            array(
+                'scriptName' => '/core/utils/verificationimg.php?e_mac=ox_MEQNDB4fVQEF'
+            ),
+            array(
+                'scriptName' => '/modules/oxps/somemodule/file.php'
+            ),
+            /**
+             * TODO Make this script name pass too
+             * array('/some/random/path/to/file.php'),
+             */
+        );
+    }
+
+    /**
      * Testing getImageDir getter
      */
     public function testGetImageDirNativeImagesIsSsl()

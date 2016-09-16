@@ -9,7 +9,7 @@
         "proprietary"
     ],
     "require-dev": {
-        "oxid-esales/testing-library": "^1.0.3",
+        "oxid-esales/testing-library": "^1.0.5",
         "oxid-esales/coding-standards": "^2.0.0",
         "incenteev/composer-parameter-handler": "~2.0"
     },

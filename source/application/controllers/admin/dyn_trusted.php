@@ -190,7 +190,7 @@ class dyn_trusted extends Shop_Config
     {
         $aPaymentIds = oxRegistry::getConfig()->getRequestParameter("paymentids");
 
-        if ($aPaymentIds) {
+        if (is_array($aPaymentIds)) {
             foreach ($aPaymentIds as $sShopPayId => $sTsPayId) {
                 $aPayment = oxNew("oxpayment");
                 if ($aPayment->load($sShopPayId)) {

@@ -173,6 +173,8 @@ class DiscountList extends \oxList
                         1)
             )";
 
+        $sQ .= " order by $sTable.oxsort ";
+
         return $sQ;
     }
 

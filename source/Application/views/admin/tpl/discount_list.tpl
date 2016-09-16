@@ -27,7 +27,8 @@ window.onload = function ()
     <colgroup>
         [{block name="admin_discount_list_colgroup"}]
         	<col width="3%">
-            <col width="95%">
+        	<col width="10%">
+            <col width="85%">
             <col width="2%">
         [{/block}]
     </colgroup>
@@ -36,6 +37,14 @@ window.onload = function ()
         	<td valign="top" class="listfilter first" align="right">
                 <div class="r1"><div class="b1">&nbsp;</div></div>
         	</td>
+            <td valign="top" class="listfilter" height="20" align="center">
+                <div class="r1">
+                    <div class="b1">
+                        <input class="listedit" type="text" size="5" maxlength="128" name="where[oxdiscount][oxsort]"
+                               value="[{$where.oxdiscount.oxsort}]">
+                    </div>
+                </div>
+            </td>
             <td valign="top" class="listfilter" height="20" colspan="2">
                 <div class="r1"><div class="b1">
                 <div class="find">
@@ -54,6 +63,7 @@ window.onload = function ()
     <tr>
         [{block name="admin_discount_list_sorting"}]
         	<td class="listheader first" height="15" width="30" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxdiscount', 'oxactive', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_ACTIVTITLE"}]</a></td>
+            <td class="listheader " height="15" align="center"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxdiscount', 'oxsort', 'asc');document.search.submit();" class="listheader"> [{oxmultilang ident="GENERAL_SORT"}] </a></div></td>
             <td class="listheader" height="15" colspan="2">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxdiscount', 'oxtitle', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_NAME"}]</a></td>
         [{/block}]
     </tr>
@@ -73,6 +83,7 @@ window.onload = function ()
                 [{assign var="listclass" value=listitem4}]
             [{/if}]
             <td valign="top" class="[{$listclass}][{if $listitem->oxdiscount__oxactive->value == 1}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp;</a></div></td>
+            <td valign="top" class="[{$listclass}]" height="15" align="center"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxdiscount__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxdiscount__oxsort->value}]</a></div></td>
             <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxdiscount__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxdiscount__oxtitle->value}]</a></div></td>
             <td class="[{$listclass}]">
             [{if !$readonly}]
@@ -81,11 +92,11 @@ window.onload = function ()
             </td>
         [{/block}]
     </tr>
-[{if $blWhite == "2"}]
-[{assign var="blWhite" value=""}]
-[{else}]
-[{assign var="blWhite" value="2"}]
-[{/if}]
+    [{if $blWhite == "2"}]
+        [{assign var="blWhite" value=""}]
+    [{else}]
+        [{assign var="blWhite" value="2"}]
+    [{/if}]
 [{/foreach}]
 [{include file="pagenavisnippet.tpl" colspan="3"}]
 </table>
@@ -106,4 +117,3 @@ if (parent.parent)
 </script>
 </body>
 </html>
-

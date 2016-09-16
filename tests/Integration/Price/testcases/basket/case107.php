@@ -8,13 +8,13 @@
  * Discounts: 1
  * 1. 10% discount for basket
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Vouchers: -
  * Wrapping:  -
  * Gift cart: -
- * Short description: 
+ * Short description:
  * Payment methods calculation in Neto-Bruto Mode.One Discount 10%. Payment 10% (is on  Value of all goods in cart,)
  */
 $aData = array(
@@ -40,6 +40,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
     ),
     // Additional costs
@@ -92,7 +93,7 @@ $aData = array(
             ),
        'discounts' => array (
             // Expectation for special discount with specified ID
-            'discountforbasket10%' => '0,12',
+            'discountforbasket10%' => '0,12'
             ),
 
 

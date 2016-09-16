@@ -1,22 +1,22 @@
 <?php
 /**
- * Price enter mode: netto 
- * Price view mode: netto 
+ * Price enter mode: netto
+ * Price view mode: netto
  * Product count: 5
  * VAT info: count of used vat's (33% and 50%)
- * Currency rate: 1.0 
- * Discounts: 
+ * Currency rate: 1.0
+ * Discounts:
  * 1. discount for basket 10%
  * Vouchers: -
  * Wrapping:  -
  * Gift cart: -
  * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Short description:
- * Calculate VAT according to the max value.  
+ * Calculate VAT according to the max value.
  * Netto - Netto start case, after order saving, changed payment method with price from 55 abs to 10 abs
  *
  */
@@ -78,6 +78,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
     ),
     // Additional costs
@@ -191,7 +192,7 @@ $aData = array(
             'grandTotal'  => '6.581,86'
         ),
         ),
-		
+
 	),
     // Test case options
     'options' => array (
@@ -210,7 +211,7 @@ $aData = array(
         'activeCurrencyRate' => 1,
     ),
 	'actions' => array (
-	
+
 	   /* 'payment' => array(
             0 => array(
                 'oxaddsum' => 10,

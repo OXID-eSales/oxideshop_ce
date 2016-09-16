@@ -61,6 +61,7 @@ $aData = array(
             'oxitmamount' => 1,
             'oxitmultiple' => 1,
             'oxarticles' => array ( 1002 ),
+            'oxsort' => 10,
         ),
     ),
     // Additional costs

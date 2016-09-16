@@ -110,15 +110,20 @@ INSERT INTO `oxdeliveryset` (`OXID`,       `OXSHOPID`,  `OXACTIVE`, `OXTITLE`,  
                             ('testshset7', 1, 0,         '1 EN test S&H set šųößлы',      '[last] DE test S&H set šųößлы', 0),
                             ('testshset8', 1, 0,         '7 EN test S&H set šųößлы',      '7 DE test S&H set šųößлы',      0);
 
-INSERT INTO `oxdiscount` (`OXID`,            `OXSHOPID`,  `OXACTIVE`, `OXTITLE`,                           `OXTITLE_1`,                        `OXAMOUNT`, `OXAMOUNTTO`, `OXPRICETO`, `OXPRICE`, `OXADDSUMTYPE`, `OXADDSUM`, `OXITMARTID`, `OXITMAMOUNT`, `OXITMMULTIPLE`) VALUES
-                         ('testcatdiscount', 1, 1,         'discount for category [EN] šųößлы', 'discount for category [DE] šųößлы', 1,          999999,       0,           0,        'abs',           5,          '',           0,             0),
-                         ('testartdiscount', 1, 1,         'discount for product [EN] šųößлы',  'discount for product [DE] šųößлы',  0,          0,            999999,      100,      '%',             10,         '',           0,             0),
-                         ('testitmdiscount', 1, 1,         'Itm discount [EN] šųößлы',          'Itm discount [DE] šųößлы',          5,          999999,       0,           0,        'itm',           0,          '1003',       1,             0),
-                         ('testdiscount4',   1, 0,         '4 EN test discount šųößлы',         '4 DE test discount šųößлы',         0,          0,            0,           0,        'abs',           0,          '',           0,             0),
-                         ('testdiscount3',   1, 0,         '2 EN test discount šųößлы',         '3 DE test discount šųößлы',         0,          0,            0,           0,        'abs',           0,          '',           0,             0),
-                         ('testdiscount1',   1, 1,         '[last] EN test discount šųößлы',    '1 DE test discount šųößлы',         0,          999999,       999999,      0,        'abs',           5,          '',           0,             0),
-                         ('testdiscount2',   1, 0,         '3 EN test discount šųößлы',         '2 DE test discount šųößлы',         0,          0,            0,           0,        'abs',           0,          '',           0,             0),
-                         ('testdiscount5',   1, 0,         '1 EN test discount šųößлы',         '[last] DE test discount šųößлы',    0,          0,            0,           0,        'abs',           0,          '',           0,             0);
+INSERT INTO `oxdiscount` (`OXID`,            `OXSHOPID`,  `OXACTIVE`, `OXTITLE`,                           `OXTITLE_1`,              `OXAMOUNT`, `OXAMOUNTTO`, `OXPRICETO`, `OXPRICE`, `OXADDSUMTYPE`, `OXADDSUM`, `OXITMARTID`, `OXITMAMOUNT`, `OXITMMULTIPLE`, `OXSORT`) VALUES
+                         ('testcatdiscount', 1, 1,         'discount for category [EN] šųößлы', 'discount for category [DE] šųößлы', 1,          999999,       0,           0,        'abs',           5,          '',           0,             0,               100),
+                         ('testartdiscount', 1, 1,         'discount for product [EN] šųößлы',  'discount for product [DE] šųößлы',  0,          0,            999999,      100,      '%',             10,         '',           0,             0,               110),
+                         ('testdiscount1',   1, 1,         '[last] EN test discount šųößлы',    '1 DE test discount šųößлы',         0,          999999,       999999,      0,        'abs',           5,          '',           0,             0,               120),
+                         ('testdiscount2',   1, 0,         '3 EN test discount šųößлы',         '2 DE test discount šųößлы',         0,          0,            0,           0,        'abs',           0,          '',           0,             0,               130),
+                         ('testdiscount3',   1, 0,         '2 EN test discount šųößлы',         '3 DE test discount šųößлы',         0,          0,            0,           0,        'abs',           0,          '',           0,             0,               140),
+                         ('testdiscount4',   1, 0,         '4 EN test discount šųößлы',         '4 DE test discount šųößлы',         0,          0,            0,           0,        'abs',           0,          '',           0,             0,               150),
+                         ('testdiscount5',   1, 0,         '1 EN test discount šųößлы',         '[last] DE test discount šųößлы',    0,          0,            0,           0,        'abs',           0,          '',           0,             0,               160),
+                         ('testitmdiscount', 1, 1,         'Itm discount [EN] šųößлы',          'Itm discount [DE] šųößлы',          5,          999999,       0,           0,        'itm',           0,          '1003',       1,             0,               170);
+
+
+
+
+
 
 INSERT INTO `oxgroups` (`OXID`,      `OXACTIVE`, `OXTITLE`,                  `OXTITLE_1`) VALUES
                        ('testgroup1', 0,         '1 user Group šųößлы',      '1 user Group šųößлы'),

@@ -1,15 +1,15 @@
 <?php
 /**
  * Price enter mode: netto
- * Price view mode: netto 
+ * Price view mode: netto
  * Product count: 3
  * VAT info: vat =19%
  * Currency rate: 1.00
  * Discounts: 1
  *  1. 10% discount for basket
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Vouchers: -
  * Wrapping:  -
@@ -64,6 +64,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
          1 => array (
             // ID needed for expectation later on, specify meaningful name
@@ -75,6 +76,7 @@ $aData = array(
             'oxactive' => 1,
             // If for article, specify here
             'oxarticles' => array ( 111, 1112 ),
+            'oxsort' => 20,
         ),
         2 => array (
             // ID needed for expectation later on, specify meaningful name

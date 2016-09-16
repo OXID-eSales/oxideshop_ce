@@ -512,13 +512,19 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->frame("edit");
         $this->assertEquals("discount for category [EN] šÄßüл", $this->getValue("editval[oxdiscount__oxtitle]"));
         $this->assertEquals("English", $this->getSelectedLabel("test_editlanguage"));
-        $this->clickCreateNewItem();   //button for create new
-        $this->type("editval[oxdiscount__oxtitle]", "create_delete discount [EN]_šÄßüл");
+
+        // Create a new discount:
+        $oxsorting = "9999";
+        $oxtitle = "create_delete discount [EN]_šÄßüл";
+        $this->clickCreateNewItem();
+        $this->type("editval[oxdiscount__oxtitle]", $oxtitle);
+        $this->type("editval[oxdiscount__oxsort]", $oxsorting);
         $this->clickAndWaitFrame("save", "list");
+
         $this->assertElementPresent("//input[@value='Copy to']");
         $this->assertEquals("English", $this->getSelectedLabel("test_editlanguage"));
         $this->assertEquals("Deutsch", $this->getSelectedLabel("new_lang"));
-        $this->assertEquals("create_delete discount [EN]_šÄßüл", $this->getValue("editval[oxdiscount__oxtitle]"));
+        $this->assertEquals($oxtitle, $this->getValue("editval[oxdiscount__oxtitle]"));
         $this->check("editval[oxdiscount__oxactive]");
         $this->type("editval[oxdiscount__oxactivefrom]", "2008-01-01");
         $this->type("editval[oxdiscount__oxactiveto]", "2009-01-01");
@@ -529,7 +535,7 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->type("editval[oxdiscount__oxaddsum]", "3");
         $this->select("editval[oxdiscount__oxaddsumtype]", "label=%");
         $this->clickAndWaitFrame("//input[@value='Save']", "list");
-        $this->assertEquals("create_delete discount [EN]_šÄßüл", $this->getValue("editval[oxdiscount__oxtitle]"));
+        $this->assertEquals($oxtitle, $this->getValue("editval[oxdiscount__oxtitle]"));
         $this->assertEquals("on", $this->getValue("editval[oxdiscount__oxactive]"));
         $this->assertEquals("2008-01-01 00:00:00", $this->getValue("editval[oxdiscount__oxactivefrom]"));
         $this->assertEquals("2009-01-01 00:00:00", $this->getValue("editval[oxdiscount__oxactiveto]"));
@@ -577,7 +583,7 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("itm", $this->getSelectedLabel("editval[oxdiscount__oxaddsumtype]"));
         $this->assertTextPresent("1000 [DE 4] Test product 0 šÄßüл");
         $this->selectAndWait("test_editlanguage", "label=English");
-        $this->assertEquals("create_delete discount [EN]_šÄßüл", $this->getValue("editval[oxdiscount__oxtitle]"));
+        $this->assertEquals($oxtitle, $this->getValue("editval[oxdiscount__oxtitle]"));
         $this->assertEquals("off", $this->getValue("editval[oxdiscount__oxactive]"));
         $this->assertEquals("0000-00-00 00:00:00", $this->getValue("editval[oxdiscount__oxactivefrom]"));
         $this->assertEquals("0000-00-00 00:00:00", $this->getValue("editval[oxdiscount__oxactiveto]"));
@@ -589,13 +595,13 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertTextPresent("1000 Test product 0 [EN] šÄßüл", "bug from mantis #2366");
         $this->selectAndWait("test_editlanguage", "label=Deutsch");
         $this->assertEquals("create_delete discount [DE]", $this->getValue("editval[oxdiscount__oxtitle]"));
-
         $this->checkTabs(array('Products', 'Users', 'Mall'));
         $this->frame("list");
         $this->assertEquals("English", $this->getSelectedLabel("changelang"));
         $this->type("where[oxdiscount][oxtitle]", "create_delete");
         $this->clickAndWait("submitit");
-        $this->assertEquals("create_delete discount [EN]_šÄßüл", $this->getText("//tr[@id='row.1']/td[2]"));
+        $this->assertEquals($oxtitle, $this->getText("//tr[@id='row.1']/td[3]"));
+        $this->assertEquals($oxsorting, $this->getText("//tr[@id='row.1']/td[2]"));
         $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
     }
 

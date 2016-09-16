@@ -1,10 +1,10 @@
 <?php
 /**
- * Price enter mode: netto 
- * Price view mode: netto 
+ * Price enter mode: netto
+ * Price view mode: netto
  * Product count: 5
  * VAT info: 19% for all products
- * Currency rate: 1.0 
+ * Currency rate: 1.0
  * Discounts: 1
  * 1. 10% discount for basket
  * Vouchers: -
@@ -13,12 +13,12 @@
  * Scale price: for product (1001)
  * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Short description:
  * Calculate VAT according to the max value  .
- * Netto-Netto mode. Additiona products Neto-Neto. 
+ * Netto-Netto mode. Additiona products Neto-Neto.
  */
 $aData = array(
     // Articles
@@ -37,7 +37,7 @@ $aData = array(
 					//	'oxaddperc'    => 10,
 					    'oxaddabs'     => 2.00,
                 ),
-        ),    
+        ),
         1 => array (
 		 // oxarticles db fields
                 'oxid'                  => 1002,
@@ -70,8 +70,8 @@ $aData = array(
                 // Amount in basket
                 'amount'                => 5,
         ),
-     ),   
-        
+     ),
+
     'discounts' => array (
         // oxdiscount DB fields
         0 => array (
@@ -82,9 +82,10 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
       ),
- 
+
     // Additional costs
     'costs' => array(
 
@@ -138,8 +139,8 @@ $aData = array(
                 // Expectation for special discount with specified ID
                 '%discount' => '96,18',
             ),
-      
-            // Total delivery amounts 
+
+            // Total delivery amounts
             'delivery' => array(
                 'brutto' => '114,45',
                 'netto' => '96,18',
@@ -151,7 +152,7 @@ $aData = array(
                 'netto' => '7,50',
                 'vat' => '1,43'
             ),
-  
+
             // GRAND TOTAL
             'grandTotal'  => '1.153,42'
         ),
@@ -165,7 +166,7 @@ $aData = array(
             'blShowVATForDelivery'=> true,
             'blShowVATForPayCharge'=> true,
             'blShowVATForWrapping'=> true,
-            'sAdditionalServVATCalcMethod' => 'biggest_net', 
+            'sAdditionalServVATCalcMethod' => 'biggest_net',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,
             'blWrappingVatOnTop' => true,

@@ -1,20 +1,20 @@
 <?php
 /**
  * Price enter mode: netto
- * Price view mode: netto 
+ * Price view mode: netto
  * Product count: 2
  * VAT info: vat = 50%
  * Currency rate: 1.00
  * Discounts: 1
  *  1.  10% discount for basket
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Vouchers: -
  * Wrapping:  -
  * Gift cart: -
- * Short description: 
+ * Short description:
  * Vat and rounding issue. one product. Mode Neto-Neto
  */
 $aData = array(
@@ -42,6 +42,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
     ),
     // Additional costs
@@ -93,8 +94,7 @@ $aData = array(
             // Total discount amounts: discount id => total cost
             'discounts' => array (
                 // Expectation for special discount with specified ID
-                'discountforbasket10%' => '189,19',
-
+                'discountforbasket10%' => '189,19'
             ),
 
             // Total delivery amounts

@@ -35,6 +35,7 @@ $aData = array (
                         'oxamount'         => 0,
                         'oxamountto'       => 99999,
                         'oxactive'         => 1,
+                        'oxsort'           => 10,
                 ),
                 1 => array (
                         'oxid'             => 'groupADiscount',
@@ -45,7 +46,8 @@ $aData = array (
                         'oxamount'         => 0,
                         'oxamountto'       => 99999,
                         'oxactive'         => 1,
-                        'oxgroups'          => array ( 'oxidpricea' )
+                        'oxgroups'         => array ( 'oxidpricea' ),
+                        'oxsort'           => 20,
                 ),
                 2 => array (
                         'oxid'             => 'groupBDiscount',
@@ -56,7 +58,8 @@ $aData = array (
                         'oxamount'         => 0,
                         'oxamountto'       => 99999,
                         'oxactive'         => 1,
-                        'oxgroups'          => array ( 'oxidpriceb' )
+                        'oxgroups'         => array ( 'oxidpriceb' ),
+                        'oxsort'           => 30,
                 ),
         ),
         'group' => array (

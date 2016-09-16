@@ -1,10 +1,10 @@
 <?php
 /**
- * Price enter mode: netto 
- * Price view mode: netto 
+ * Price enter mode: netto
+ * Price view mode: netto
  * Product count: 1
  * VAT info: count of used vat's =2 (19% and 11%)
- * Currency rate: 1.0 
+ * Currency rate: 1.0
  * Discounts: 1
  * 1. 10% discount for basket
  *  ...
@@ -13,13 +13,13 @@
  * Gift cart: +
  * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Short description:
  * Calculate VAT according to the max value  .
- * Neto-Neto mode. Additiona products Neto-Neto. 
- * Scale price:2 
+ * Neto-Neto mode. Additiona products Neto-Neto.
+ * Scale price:2
  * 1. amount (2-3)
  * 2. amount (3-4)
  * For product (1002) is set parameter "free shipping" ;
@@ -48,7 +48,7 @@ $aData = array(
                         'oxaddperc'    => 20,
                     ),
                 ),
-        ),    
+        ),
         1 => array (
 		 // oxarticles db fields
                 'oxid'                  => 1002,
@@ -57,11 +57,11 @@ $aData = array(
                 // Amount in basket
                 'amount'                => 1,
 	        'oxfreeshipping'        => 1,
-				
+
 
         ),
-     ),   
-        
+     ),
+
     'discounts' => array (
         // oxdiscount DB fields
         0 => array (
@@ -72,9 +72,10 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
       ),
- 
+
     // Additional costs
     'costs' => array(
 
@@ -126,8 +127,8 @@ $aData = array(
                 // Expectation for special discount with specified ID
                 '%discount' => '22,00',
             ),
-      
-            // Total delivery amounts 
+
+            // Total delivery amounts
             'delivery' => array(
                 'brutto' => '2,38',
                 'netto' => '2,00',
@@ -139,7 +140,7 @@ $aData = array(
                 'netto' => '22,00',
                 'vat' => '4,18'
             ),
-  
+
             // GRAND TOTAL
             'grandTotal'  => '262,74'
         ),
@@ -153,7 +154,7 @@ $aData = array(
             'blShowVATForDelivery'=> true,
             'blShowVATForPayCharge'=> true,
             'blShowVATForWrapping'=> true,
-            'sAdditionalServVATCalcMethod' => 'biggest_net', 
+            'sAdditionalServVATCalcMethod' => 'biggest_net',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,
             'blWrappingVatOnTop' => true,

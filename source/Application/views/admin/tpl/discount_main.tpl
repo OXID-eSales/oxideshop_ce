@@ -56,6 +56,15 @@ function ChangeDiscountType(oObj)
                     [{oxinputhelp ident="HELP_GENERAL_NAME"}]
                     </td>
                 </tr>
+                <tr>
+                    <td class="edittext">
+                        [{oxmultilang ident="DISCOUNT_MAIN_SORT"}]
+                    </td>
+                    <td class="edittext" colspan="2">
+                        <input type="text" class="editinput" size="25" maxlength="[{$edit->oxdiscount__oxsort->fldmax_length}]" id="oLockTarget" name="editval[oxdiscount__oxsort]" value="[{if $oxid == "-1"}][{$oView->getNextOxsort()}][{else}][{$edit->oxdiscount__oxsort->value}][{/if}]" [{$readonly}]>
+                        [{oxinputhelp ident="HELP_DISCOUNT_MAIN_SORT"}]
+                    </td>
+                </tr>
                 [{if $oxid != "-1"}]
                 <tr>
                     <td class="edittext" width="120">
@@ -152,7 +161,7 @@ function ChangeDiscountType(oObj)
             <td class="edittext">
             </td>
             <td class="edittext"><br>
-            <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"" [{$readonly}]><br>
+                <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"" [{$readonly}]><br>
             </td>
         </tr>
         </table>

@@ -1,7 +1,7 @@
 <?php
-/* 
+/*
  * Price enter mode: netto
- * Price view mode: netto 
+ * Price view mode: netto
  * Product count: 3
  * VAT info: 20, 33.55
  * Discounts: 6
@@ -52,6 +52,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1001_a' ),
+                        'oxsort'           => 10,
                 ),
                 2 => array (
                         'oxid'         => 'percentFor1001',
@@ -63,6 +64,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1001_b' ),
+                        'oxsort'           => 20,
                 ),
                 3 => array (
                         'oxid'         => 'absFor1002',
@@ -74,6 +76,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1002_a' ),
+                        'oxsort'           => 30,
                 ),
                 4 => array (
                         'oxid'         => 'percentFor1002',
@@ -85,6 +88,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1002_b' ),
+                        'oxsort'           => 40,
                 ),
                 5 => array (
                         'oxid'         => 'absFor1003',
@@ -96,6 +100,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1003_a' ),
+                        'oxsort'           => 50,
                 ),
                 6 => array (
                         'oxid'         => 'percentFor1003',
@@ -107,6 +112,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( '1003_b' ),
+                        'oxsort'           => 60,
                 ),
         ),
         'expected' => array (

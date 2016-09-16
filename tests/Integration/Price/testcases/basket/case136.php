@@ -17,11 +17,11 @@
  *  1. Payment -;
  *  2. Delivery ;
  *  3. TS -
- * Short description: 
+ * Short description:
  * Brutto-Brutto mode.
  @bug #3587: single product discount for basket
  */
- 
+
 $aData = array (
     'articles' => array (
          0 => array (
@@ -40,7 +40,8 @@ $aData = array (
                 'oxamountto' => 99999,
                 'oxactive' => 1,
                 // for specific article
-                'oxarticles' => array ( '3587' )
+                'oxarticles' => array ( '3587' ),
+                'oxsort' => 10,
         ),
     ),
     'costs' => array(),

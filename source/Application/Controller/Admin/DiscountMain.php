@@ -154,7 +154,22 @@ class DiscountMain extends \oxAdminDetails
         $oDiscount->assign($aParams);
         $oDiscount->setLanguage($this->_iEditLang);
         $oDiscount = oxRegistry::get("oxUtilsFile")->processFiles($oDiscount);
-        $oDiscount->save();
+        try {
+            $oDiscount->save();
+        } catch (\oxInputException $exception) {
+
+            $newException = oxNew("oxExceptionToDisplay");
+            $newException->setMessage($exception->getMessage());
+
+            if (false !== strpos($exception->getMessage(), 'DISCOUNT_ERROR_OXSORT')) {
+                $messageArgument = oxRegistry::getLang()->translateString('DISCOUNT_MAIN_SORT', oxRegistry::getLang()->getTplLanguage(), true);
+                $newException->setMessageArgs($messageArgument);
+            }
+
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($newException);
+
+            return;
+        }
 
         // set oxid if inserted
         $this->setEditObjectId($oDiscount->getId());
@@ -197,5 +212,12 @@ class DiscountMain extends \oxAdminDetails
 
         // set oxid if inserted
         $this->setEditObjectId($oAttr->getId());
+    }
+
+    public function getNextOxsort() {
+        $shopId = oxRegistry::getConfig()->getShopId();
+        $nextSort = oxNew("oxdiscount")->getNextOxsort($shopId);
+
+        return $nextSort;
     }
 }

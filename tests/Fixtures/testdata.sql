@@ -3257,10 +3257,10 @@ INSERT INTO `oxdelivery` (`OXID`, `OXSHOPID`, `OXACTIVE`, `OXACTIVEFROM`, `OXACT
 #
 # Data for table `oxdiscount`
 #
-INSERT INTO `oxdiscount` (`OXID`, `OXSHOPID`, `OXACTIVE`, `OXACTIVEFROM`, `OXACTIVETO`, `OXTITLE`, `OXTITLE_1`, `OXTITLE_2`, `OXTITLE_3`, `OXAMOUNT`, `OXAMOUNTTO`, `OXPRICETO`, `OXPRICE`, `OXADDSUMTYPE`, `OXADDSUM`, `OXITMARTID`, `OXITMAMOUNT`, `OXITMMULTIPLE`) VALUES
-('9fc3e801d40332ae4.08296552', 1, 0, '2003-03-29 00:00:00', '2003-03-30 00:00:00', '15% auf den gesamten Shop an einem Tag', '15% on everything for one day', '', '', 0, 999999, 999999, 0, '%', 15, '', 0, 0),
-('9fc3e801da9cdd0b2.74513077', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '10% ab 200 Euro Einkaufswert', '10% on orders over $200', '', '', 0, 999999, 999999, 200, '%', 10, '', 0, 0),
-('4e542e4e8dd127836.00288451', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Aktion Schnäppchen', 'Current Bargain', '', '', 1, 99999, 0, 0, '%', 10, '', 0, 0);
+INSERT INTO `oxdiscount` (`OXID`, `OXSHOPID`, `OXACTIVE`, `OXACTIVEFROM`, `OXACTIVETO`, `OXTITLE`, `OXTITLE_1`, `OXTITLE_2`, `OXTITLE_3`, `OXAMOUNT`, `OXAMOUNTTO`, `OXPRICETO`, `OXPRICE`, `OXADDSUMTYPE`, `OXADDSUM`, `OXITMARTID`, `OXITMAMOUNT`, `OXITMMULTIPLE`, `OXSORT`) VALUES
+('9fc3e801d40332ae4.08296552', 1, 0, '2003-03-29 00:00:00', '2003-03-30 00:00:00', '15% auf den gesamten Shop an einem Tag', '15% on everything for one day', '', '', 0, 999999, 999999, 0, '%', 15, '', 0, 0, 100),
+('9fc3e801da9cdd0b2.74513077', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '10% ab 200 Euro Einkaufswert', '10% on orders over $200', '', '', 0, 999999, 999999, 200, '%', 10, '', 0, 0, 200),
+('4e542e4e8dd127836.00288451', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Aktion Schnäppchen', 'Current Bargain', '', '', 1, 99999, 0, 0, '%', 10, '', 0, 0, 300);
 
 #
 # Data for table `oxobject2discount`

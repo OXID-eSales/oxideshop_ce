@@ -12,7 +12,7 @@
  * Costs VAT caclulation rule: proportiona
  * 5 products with different vat. Absolute discount. Bruto-Bruto mode.
  */
- 
+
 $aData = array(
     // Product
     'articles' => array (
@@ -142,8 +142,9 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
-         
+
     ),
     // Additional costs
     'costs' => array(
@@ -171,7 +172,7 @@ $aData = array(
             ),
         ),
     ),
-	
+
     // TEST EXPECTATIONS
     'expected' => array (
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )

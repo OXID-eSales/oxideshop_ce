@@ -10,15 +10,15 @@
  *  2.  50% discount for product 444,
  *  4.  20% discount for basket
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Vouchers: -
  * Wrapping:  -
  * Gift cart: -
- * Short description: 
- * Example test case from Basket calculation - brutto mode doc. 
- * 2 items in basket, 2 differenct vats, 3 different discounts 
+ * Short description:
+ * Example test case from Basket calculation - brutto mode doc.
+ * 2 items in basket, 2 differenct vats, 3 different discounts
  */
 $aData = array (
     'articles' => array (
@@ -45,6 +45,7 @@ $aData = array (
                 'oxamount' => 1,
                 'oxactive' => 1,
                 'oxarticles' => array ( 333 ),
+                'oxsort' => 10,
         ),
         1 => array (
                 'oxid'         => 'discount50',
@@ -53,6 +54,7 @@ $aData = array (
                 'oxamount' => 1,
                 'oxactive' => 1,
                 'oxarticles' => array ( 444 ),
+                'oxsort' => 20,
         ),
         2 => array (
                 'oxid' => 'discount20forBasket',
@@ -60,6 +62,7 @@ $aData = array (
                 'oxaddsumtype' => '%',
                 'oxamount' => 1,
                 'oxactive' => 1,
+                'oxsort' => 30,
         ),
     ),
     'costs' => array(),

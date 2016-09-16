@@ -6,7 +6,7 @@
  * VAT info: 20%
  * Currency rate: 1.0
  * Discounts: -
- * Short description: Brutto-Brutto user group Price C, 
+ * Short description: Brutto-Brutto user group Price C,
  * Test case is moved from selenium test "testFrontendPriceC"
  */
 $aData = array (
@@ -41,6 +41,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxcategories' => array ( 'variantDiscountTestCategory' ),
+                        'oxsort'       => 10,
                 ),
         ),
         'expected' => array (

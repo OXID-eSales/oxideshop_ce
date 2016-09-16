@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
 /**
  * Price enter mode: brutto
  * Price view mode: brutto
@@ -48,8 +48,9 @@ $aData = array(
             'oxitmartid' => 1003,
             'oxitmamount' => 1,
             'oxitmmultiple' => 0,
-			'oxarticles' => array ( 1000 )
-       
+			'oxarticles' => array ( 1000 ),
+            'oxsort' => 10,
+
         ),
         1 => array (
             // Discount 10% on 200 Euro or more
@@ -61,7 +62,8 @@ $aData = array(
             'oxamountto' => 99999,
             'oxprice' => 200,
             'oxpriceto'=> 999999,
-            'oxactive' => 1
+            'oxactive' => 1,
+            'oxsort' => 20,
         ),
     ),
     // TEST EXPECTATIONS
@@ -86,7 +88,7 @@ $aData = array(
                 // Expectation for special discount with specified ID
                 'testdiscountfrom200' => '25,00',
             ),
-           
+
             // GRAND TOTAL
             'grandTotal'  => '225,00'
         ),

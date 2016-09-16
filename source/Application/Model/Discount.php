@@ -23,6 +23,7 @@
 namespace OxidEsales\Eshop\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use stdClass;
 
 /**
@@ -98,6 +99,49 @@ class Discount extends \oxI18n
         return parent::delete($sOXID);
     }
 
+    /**
+     * Save the discount.
+     * Assigns a value to oxsort, if it was null
+     * Does input validation before saving the discount.
+     *
+     * Returns saving status
+     *
+     * @throws \oxInputException
+     * @throws StandardException
+     *
+     * @return bool
+     */
+    public function save()
+    {
+        // Auto assign oxsort, if it is null
+        $oxsort = $this->oxdiscount__oxsort->value;
+        if (is_null($oxsort)) {
+            $shopId = $this->oxdiscount__oxshopid->value;
+            $newSort = $this->getNextOxsort($shopId);
+            $this->oxdiscount__oxsort = new \oxField($newSort, \oxField::T_RAW);
+        }
+
+        // Validate oxsort before saving
+        if (!is_numeric($this->oxdiscount__oxsort->value)) {
+            $exception = oxNew('oxInputException');
+            $exception->setMessage('DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
+
+            throw $exception;
+        }
+
+        try {
+            $saveStatus = parent::save();
+        } catch (StandardException $exception) {
+            if ($exception->getCode() == 1062 && false !== strpos($exception->getMessage(), 'UNIQ_OXSORT')) {
+                $exception = oxNew('oxInputException');
+                $exception->setMessage('DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
+            }
+
+            throw $exception;
+        }
+
+        return $saveStatus;
+    }
     /**
      * Check for global discount (no articles, no categories)
      *
@@ -437,6 +481,21 @@ class Discount extends \oxI18n
     public function getCategoryIds()
     {
         return oxDb::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '" . $this->getId() . "' and oxtype = 'oxcategories'");
+    }
+
+    /*
+     * Increment the maximum value of oxsort found in the database by certain amount and return it.
+     *
+     * @param int $shopId The id of the current shop
+     *
+     * @return int The incremented oxsort
+     */
+    public function getNextOxsort($shopId)
+    {
+        $query = "SELECT MAX(`oxsort`)+10 FROM `oxdiscount` WHERE `oxshopid` = ?";
+        $nextSort = oxDb::getDb()->getOne($query, [$shopId]);
+
+        return (int) $nextSort;
     }
 
     /**

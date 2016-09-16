@@ -1,19 +1,19 @@
 <?php
 /*
 /**
- * Price enter mode: netto 
+ * Price enter mode: netto
  * Price view mode:  netto
  * Product count: 2
  * VAT info: 19% Default VAT for all Products ,
- * Currency rate: 1.0 
+ * Currency rate: 1.0
  * Discounts: 1 item
  *  1. discount item for product 1002
  * Vouchers: -
- * Wrapping: + 
+ * Wrapping: +
  * Costs VAT caclulation rule: proportionality
  * Costs:
  *  1. Payment +
- *  2. Delivery + 
+ *  2. Delivery +
  *  3. TS -
  * Short description:
  * Calculate VAT proportionately . Neto-Neto mode. Additiona products Neto-Neto. Also is testing item discount for basket.
@@ -60,6 +60,7 @@ $aData = array(
             'oxitmartid' => 1003,
 			'oxitmamount' => 1,
 			'oxarticles' => array ( 1002 ),
+            'oxsort' => 10,
         ),
 
     ),
@@ -114,13 +115,13 @@ $aData = array(
             // Total BRUTTO
             'totalBrutto' => '595,00',
             // Total NETTO
-            'totalNetto'  => '500,00', 
+            'totalNetto'  => '500,00',
             // Total VAT amount: vat% => total cost
             'vats' => array (
                 19 => '95,00',
 
             ),
-		
+
             // Total delivery amounts
             'delivery' => array(
                 'brutto' => '327,25',
@@ -141,7 +142,7 @@ $aData = array(
                 'vat' => '0,48'
             ),
             // GRAND TOTAL
-            'grandTotal'  => '1.252,48' 
+            'grandTotal'  => '1.252,48'
         ),
     ),
     // Test case options
@@ -153,7 +154,7 @@ $aData = array(
             'blShowVATForDelivery'=> true,
             'blShowVATForPayCharge'=> true,
             'blShowVATForWrapping'=> true,
-            'sAdditionalServVATCalcMethod' => 'proportional', 
+            'sAdditionalServVATCalcMethod' => 'proportional',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,
             'blWrappingVatOnTop' => true,

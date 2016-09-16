@@ -4,7 +4,7 @@
  * Price view mode: netto / brutto
  * Product count: count of used products
  * VAT info: 19%
- * Currency rate: 1.0 
+ * Currency rate: 1.0
  * Discounts: count
  * 1. discaunt for product 50% is active
  * secound discaunt for product 50% is deactivate
@@ -19,10 +19,10 @@ $aData = array(
                     'oxid'                     => 1126,
                     'oxprice'                  => 34.00,
                     'oxvat'                    => 19,
-                    'amount'                   => 3,  
+                    'amount'                   => 3,
         ),
     ),
-    
+
     // Discounts
     'discounts' => array (
         0 => array (
@@ -33,6 +33,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 0,
             'oxarticles' => array ( 1126 ),
+            'oxsort' => 10,
         ),
 		1 => array (
             'oxid'         => '_testoxdiscount2',
@@ -44,6 +45,7 @@ $aData = array(
 			'oxpriceto' => 999999,
             'oxactive' => 1,
             'oxarticles' => array ( 1126 ),
+            'oxsort' => 20,
         ),
     ),
 

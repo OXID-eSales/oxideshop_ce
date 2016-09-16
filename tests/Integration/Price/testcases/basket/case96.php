@@ -1,7 +1,7 @@
 <?php
 /**
  * Price enter mode: netto
- * Price view mode: netto 
+ * Price view mode: netto
  * Product count: 6
  * VAT info: count of used vat =2(19% and 55%)
  * Currency rate: 1.00
@@ -11,13 +11,13 @@
  *  3.  5.5% discount for product's 1113 and 1114
  *  4. -5.2% discount for product 1115
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Vouchers: -
  * Wrapping:  -
  * Gift cart: -
- * Short description: 
+ * Short description:
  * Vat and rounding issue. 6 articles. two different VAT(for one the product is set spec. VAT=55%, for all other products VAT=19%),  three discount for product, one discount for basket.Mode Neto-Neto
  */
 $aData = array(
@@ -83,6 +83,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
          1 => array (
             // -10% discount for product 111, 1112
@@ -93,6 +94,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 111, 1112 ),
+            'oxsort' => 20,
         ),
         2 => array (
             // 5.5% discount for product 1113, 1114
@@ -103,6 +105,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 1113, 1114 ),
+            'oxsort' => 30,
         ),
 
         3 => array (
@@ -114,6 +117,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 1115),
+            'oxsort' => 40,
         ),
     ),
     // Additional costs

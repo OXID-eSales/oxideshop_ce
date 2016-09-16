@@ -170,6 +170,9 @@ class TimestampTest extends \OxidTestCase
         $oObject->setId($this->formTestIdByTable($tableName));
         $oObject->$attName = new oxField('0000-00-00 00:00:00');
         $oObject->$attNameMod = new oxField('test');
+        if ('oxdiscount' == $tableName) {
+            $oObject->oxdiscount__oxsort = new oxField(9999);
+        }
         $oObject->save();
 
         $oObject = oxNew($objectName);

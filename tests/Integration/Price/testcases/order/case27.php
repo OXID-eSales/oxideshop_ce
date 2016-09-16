@@ -1,25 +1,25 @@
 <?php
 /*
 /**
- * Price enter mode: netto 
+ * Price enter mode: netto
  * Price view mode:  bruto
  * Product count: 1
- * VAT info: 19% Default VAT for all Products , 
- * Currency rate: 1.0 
- * Discounts: 1 
+ * VAT info: 19% Default VAT for all Products ,
+ * Currency rate: 1.0
+ * Discounts: 1
  *  1. discount for basket
  * Vouchers: -
- * Wrapping: - 
+ * Wrapping: -
  * Costs VAT caclulation rule: biggest_net
  * Costs:
  *  1. Payment +
- *  2. Delivery + 
+ *  2. Delivery +
  *  3. TS -
  * Short description:
  * Netto - Netto start case, after order saving, added one product's,
  * updating, Netto - Brutto start case, after order saving, changed delivery price from 10 to 12eur. switching to Netto - Netto, updating
 */
-# need to prepare integration test when after order is changed shipping method price from 10eur to 12 eur. 
+# need to prepare integration test when after order is changed shipping method price from 10eur to 12 eur.
 $aData = array (
 'skipped' => 1,
      'articles' => array (
@@ -40,6 +40,7 @@ $aData = array (
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
     ),
     'costs' => array (
@@ -90,7 +91,7 @@ $aData = array (
                     // brut total
                     '111' => array ( '1,19', '1,19' ),
 					'1111' => array ( '4,17', '4,17' ),
-					
+
             ),
             'totals' => array (
                     'totalBrutto' => '5,36',
@@ -106,7 +107,7 @@ $aData = array (
                             'brutto' => '10,00',
                     ),
                     'grandTotal'  => '26,82',
-            ),    
+            ),
         ),
     ),
     'options' => array (
@@ -116,7 +117,7 @@ $aData = array (
 				'blShowVATForDelivery'=> false,
                 'blShowVATForPayCharge'=> false,
                 'blShowVATForWrapping'=> false,
-                'sAdditionalServVATCalcMethod' => 'biggest_net', 
+                'sAdditionalServVATCalcMethod' => 'biggest_net',
                 'blDeliveryVatOnTop' => false,
                 'blPaymentVatOnTop' => false,
                 'blWrappingVatOnTop' => false,
@@ -137,7 +138,7 @@ $aData = array (
                             'amount' => 1,
                     ),
             ),
-		
-		
+
+
     ),
 );

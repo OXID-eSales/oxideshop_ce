@@ -1,26 +1,26 @@
 <?php
 /**
- * Price enter mode: netto 
- * Price view mode: netto 
+ * Price enter mode: netto
+ * Price view mode: netto
  * Product count: 5
  * VAT info: count of used vat's (33% and 50%)
- * Currency rate: 1.0 
- * Discounts: 
+ * Currency rate: 1.0
+ * Discounts:
  * 1. discount for basket 10%
  * Vouchers: -
  * Wrapping:  -
  * Gift cart: -
  * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Short description:
- * Calculate VAT according to the max value.  
- * Netto - Netto start case, after order saving, 
+ * Calculate VAT according to the max value.
+ * Netto - Netto start case, after order saving,
  * Delete all products from order,
  */
- # bug 
+ # bug
 $aData = array(
   'skipped' => 1,
     // Articles
@@ -79,6 +79,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
     ),
     // Additional costs
@@ -187,7 +188,7 @@ $aData = array(
             // GRAND TOTAL
             'grandTotal'  => '0,00'
         ),
-		
+
 		),
     ),
     // Test case options
@@ -197,7 +198,7 @@ $aData = array(
             'blEnterNetPrice' => true,
             'blShowNetPrice' => true,
             'blShowVATForPayCharge' => true,
-			'sAdditionalServVATCalcMethod' => 'biggest_net', 
+			'sAdditionalServVATCalcMethod' => 'biggest_net',
             'blShowVATForDelivery' => true,
             'blPaymentVatOnTop'=>true,
             'blDeliveryVatOnTop'=>true,

@@ -10,7 +10,7 @@
  * Vouchers: -;
  * Wrapping: -
  * Gift cart:  -;
- * Costs VAT caclulation rule: max 
+ * Costs VAT caclulation rule: max
  * Costs:
  *  1. Payment -
  *  2. Delivery -
@@ -38,6 +38,7 @@ $aData = array(
                 'oxamountto' => 99999,
                 'oxactive' => 1,
                 'oxarticles' => array( 9201 ),
+                'oxsort' => 10,
         ),
     ),
     'expected' => array (
@@ -53,7 +54,7 @@ $aData = array(
                 'grandTotal'  => '49,54'
         ),
     ),
-    'options' => array (    
+    'options' => array (
         'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => false

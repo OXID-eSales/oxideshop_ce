@@ -41,6 +41,7 @@ $aData = array (
                         'oxamountto'       => 99999,
                         'oxactive'         => 1,
                         'oxarticles'       => array ( 1000 ),
+                        'oxsort'       => 10,
                 ),
                 1 => array (
                         'oxid'         => 'percentFor1001',
@@ -52,6 +53,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( 1001 ),
+                        'oxsort'       => 12,
                 ),
                 2 => array (
                         'oxid'             => 'percentFor1002',
@@ -63,6 +65,7 @@ $aData = array (
                         'oxamountto'       => 99999,
                         'oxactive'         => 1,
                         'oxarticles'       => array ( 1002 ),
+                        'oxsort'           => 30,
                 ),
                 3 => array (
                         'oxid'         => 'percentFor1003',
@@ -74,6 +77,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( 1003 ),
+                        'oxsort'       => 40,
                 ),
         ),
         'expected' => array (

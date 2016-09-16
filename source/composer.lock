@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c28d1af4f38d031ef1edbfb6ee2550c3",
-    "content-hash": "44f583162259b1e5b7d55872302f7d70",
+    "hash": "38e20e60e51e7c7f63bcd58371cb0edd",
+    "content-hash": "411365814e53a1fa3c5942a8748cc257",
     "packages": [],
     "packages-dev": [
         {
@@ -699,16 +699,16 @@
         },
         {
             "name": "oxid-esales/testing-library",
-            "version": "v1.0.4",
+            "version": "v1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "4072bb14998223b04a3c6d58b9dbe38629d4c7de"
+                "reference": "1a0a420ef584692d43fb23469f70e67cc3da48c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/4072bb14998223b04a3c6d58b9dbe38629d4c7de",
-                "reference": "4072bb14998223b04a3c6d58b9dbe38629d4c7de",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/1a0a420ef584692d43fb23469f70e67cc3da48c9",
+                "reference": "1a0a420ef584692d43fb23469f70e67cc3da48c9",
                 "shasum": ""
             },
             "require": {
@@ -757,7 +757,7 @@
                 "modules",
                 "testing"
             ],
-            "time": "2016-08-23 06:42:49"
+            "time": "2016-09-16 13:56:06"
         },
         {
             "name": "pdepend/pdepend",

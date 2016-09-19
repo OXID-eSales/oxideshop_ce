@@ -23,9 +23,8 @@ Please note: if you don't know what the following is about, please download the 
 When checking out this repository or downloading the zip file from this place, Flow theme has to be installed.
 
 1. `$ git clone https://github.com/OXID-eSales/oxideshop_ce.git --branch b-5.3-ce`
-1. `cd oxideshop_ce/source`
-1. `composer install`
-1. `$ cd application/views`
+1. `wget "https://raw.githubusercontent.com/OXID-eSales/oxideshop_demodata_ce/b-5.3/src/demodata.sql" -P oxideshop_ce/source/setup/sql/`
+1. `$ cd oxideshop_ce/source/application/views`
 1. `$ git clone https://github.com/OXID-eSales/flow_theme.git flow --branch b-1.0`
 1. `$ cp -R flow/out/flow ../../out/`
 

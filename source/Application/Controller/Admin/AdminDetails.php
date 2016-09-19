@@ -252,7 +252,7 @@ class AdminDetails extends \oxAdminView
         if ($sSelectedCatId) {
             // fixed parent category in select list
             foreach ($oCatTree as $oCategory) {
-                if ($oCategory->getId() == $sSelectedCatId) {
+                if (strcmp($oCategory->getId(), $sSelectedCatId) == 0) {
                     $oCategory->selected = 1;
                     break;
                 }

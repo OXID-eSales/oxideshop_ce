@@ -135,6 +135,8 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
 
     /**
      * Returns fields array
+     *
+     * @return array containing the retrieved fields of the resultSet row
      */
     public function getFields()
     {

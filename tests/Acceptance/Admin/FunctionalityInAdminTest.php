@@ -1958,5 +1958,44 @@ class FunctionalityInAdminTest extends AdminTestCase
             }
         }
     }
-}
 
+    /**
+     * Regression test for bug #6500
+     *
+     * Administer Products -> Categories (categories tree display)
+     * If two parent categories have an OXID that would result in the same integer value on a normal == comparison,
+     * their subcategories should nevertheless display the correct value for "Subcategory of"
+     *
+     * @group adminFunctionality
+     */
+    public function testCategoryTreeDisplay()
+    {
+        /**
+         * Insert fixtures. OXID for parent category is '003' resp. '03'
+         */
+        $query = <<<EOT
+            INSERT IGNORE INTO `oxcategories` (`OXID`, `OXPARENTID`, `OXLEFT`, `OXRIGHT`, `OXROOTID`, `OXSORT`, `OXACTIVE`, `OXHIDDEN`, `OXSHOPID`, `OXTITLE`) VALUES
+              ('003', 'oxrootid', 1, 4, '003', 1, 1, 0, 1, 'test 003'),
+              ('003SUB', '003', 2, 3, '003', 0, 1, 0, 1, 'test sub 003'),
+              ('03', 'oxrootid', 1, 4, '03', 1, 1, 0, 1, 'test 03'),
+              ('03SUB', '03', 2, 3, '03', 0, 1, 0, 1, 'test sub 03');
+EOT;
+        oxDb::getDb()->execute($query);
+
+        $query = <<<EOT
+            INSERT IGNORE INTO `oxcategories2shop`
+            (`OXSHOPID`, `OXMAPOBJECTID`)
+              SELECT 1, `OXMAPID` 
+              FROM `oxcategories` WHERE `oxcategories`.`OXTITLE` LIKE 'test%03';
+EOT;
+        oxDb::getDb()->execute($query);
+
+
+        $this->loginAdmin("Administer Products", "Categories");
+        $this->changeAdminListLanguage('Deutsch');
+        $this->type('where[oxcategories][oxtitle]', 'test sub 03');
+        $this->clickAndWaitFrame("submitit");
+        $this->openListItem("test sub 03");
+        $this->assertSame("03", $this->getValue("editval[oxcategories__oxparentid]"));
+    }
+}

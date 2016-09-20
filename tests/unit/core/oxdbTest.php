@@ -426,4 +426,67 @@ class Unit_Core_oxdbTest extends OxidTestCase
             $this->assertTrue(array_key_exists('oxid', $row));
         }
     }
+
+    /**
+     * Test, that the method 'fetchAll' of the result set leads to an empty array, if we try it with an empty table.
+     */
+    public function testAdoDbLiteResultSetFetchAllWithEmptyTable()
+    {
+        $database = oxDb::getDb();
+
+        $resultSet = $database->select('SELECT oxid FROM oxvouchers;');
+
+        $allRows = $resultSet->fetchAll();
+
+        $this->assertSame(array(), $allRows);
+    }
+
+    /**
+     * Test, that the method 'fetchAll' of the result set leads to the correct array, if we try it with a non empty table.
+     */
+    public function testAdoDbLiteResultSetFetchAllWithNonEmptyTable()
+    {
+        $database = oxDb::getDb();
+
+        $resultSet = $database->select('SELECT `OXID` FROM `oxdiscount`;');
+
+        $allRows = $resultSet->fetchAll();
+
+        $expectedVendorIds = array(
+            array('4e542e4e8dd127836.00288451'),
+            array('9fc3e801d40332ae4.08296552'),
+            array('9fc3e801da9cdd0b2.74513077')
+        );
+
+        $this->assertSame($expectedVendorIds, $allRows);
+    }
+
+    /**
+     * Test, that the method 'fetchRow' of the result set leads to false, if we try it with an empty table.
+     */
+    public function testAdoDbLiteResultSetFetchRowWithEmptyTable()
+    {
+        $database = oxDb::getDb();
+
+        $resultSet = $database->select('SELECT oxid FROM oxvouchers;');
+
+        $allRows = $resultSet->fetchRow();
+
+        $this->assertSame(false, $allRows);
+    }
+
+    /**
+     * Test, that the method 'fetchRow' of the result set leads to false, if we try it with a non empty table.
+     */
+    public function testAdoDbLiteResultSetFetchRowWithNonEmptyTable()
+    {
+        $database = oxDb::getDb();
+
+        $resultSet = $database->select('SELECT `OXID` FROM `oxdiscount`;');
+
+        $this->assertSame(array('4e542e4e8dd127836.00288451'), $resultSet->fetchRow());
+        $this->assertSame(array('9fc3e801d40332ae4.08296552'), $resultSet->fetchRow());
+        $this->assertSame(array('9fc3e801da9cdd0b2.74513077'), $resultSet->fetchRow());
+        $this->assertSame(false, $resultSet->fetchRow());
+    }
 }

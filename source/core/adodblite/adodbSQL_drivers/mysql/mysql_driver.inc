@@ -662,6 +662,9 @@ class mysql_driver_ResultSet implements IteratorAggregate, \OxidEsales\Eshop\Cor
 	 */
 	function fetchAll()
 	{
+        $this->MoveFirst();
+
+        return $this->GetAll();
 	}
 
 	/**
@@ -671,6 +674,11 @@ class mysql_driver_ResultSet implements IteratorAggregate, \OxidEsales\Eshop\Cor
 	 */
 	function fetchRow()
 	{
+        $lastRow = $this->fields;
+
+        $this->MoveNext();
+
+        return $lastRow;
 	}
 
 	/**

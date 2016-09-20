@@ -1982,13 +1982,18 @@ class FunctionalityInAdminTest extends AdminTestCase
 EOT;
         oxDb::getDb()->execute($query);
 
-        $query = <<<EOT
+        /**
+         * Special fixture for OXID eShop Enterprise Edition
+         */
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $query = <<<EOT
             INSERT IGNORE INTO `oxcategories2shop`
             (`OXSHOPID`, `OXMAPOBJECTID`)
               SELECT 1, `OXMAPID` 
               FROM `oxcategories` WHERE `oxcategories`.`OXTITLE` LIKE 'test%03';
 EOT;
-        oxDb::getDb()->execute($query);
+            oxDb::getDb()->execute($query);
+        }
 
 
         $this->loginAdmin("Administer Products", "Categories");

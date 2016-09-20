@@ -490,6 +490,8 @@ class mysql_driver_ResultSet implements IteratorAggregate, \OxidEsales\Eshop\Cor
 	} 
 
 	/**
+     * @deprecated since 5.3.1 (2016-09-19); It will be removed without replacement.
+     *
 	 * Returns next record
 	 * 
 	 * @access public 
@@ -509,6 +511,8 @@ class mysql_driver_ResultSet implements IteratorAggregate, \OxidEsales\Eshop\Cor
 	} 
 
 	/**
+     * @deprecated since 5.3.1 (2016-09-19); It will be removed without replacement.
+     *
 	 * Move to the first row in the recordset. Many databases do NOT support this.
 	 *
 	 * @return true or false
@@ -521,6 +525,8 @@ class mysql_driver_ResultSet implements IteratorAggregate, \OxidEsales\Eshop\Cor
 	}			
 
 	/**
+     * @deprecated since 5.3.1 (2016-09-19); It will be removed without replacement.
+     *
 	 * Returns the Last Record
 	 * 
 	 * @access public 
@@ -533,6 +539,8 @@ class mysql_driver_ResultSet implements IteratorAggregate, \OxidEsales\Eshop\Cor
 	}
 
 	/**
+     * @deprecated since 5.3.1 (2016-09-19); It will be removed without replacement.
+     *
 	 * Random access to a specific row in the recordset. Some databases do not support
 	 * access to previous rows in the databases (no scrolling backwards).
 	 *
@@ -563,6 +571,8 @@ class mysql_driver_ResultSet implements IteratorAggregate, \OxidEsales\Eshop\Cor
 	}
 
 	/**
+     * @deprecated since 5.3.1 (2016-09-19); It will be removed without replacement.
+     *
 	 * Perform Seek to specific row
 	 * 
 	 * @access private 
@@ -575,6 +585,8 @@ class mysql_driver_ResultSet implements IteratorAggregate, \OxidEsales\Eshop\Cor
 	}
 
 	/**
+     * @deprecated since 5.3.1 (2016-09-19); It will be removed without replacement.
+     *
 	 * Fills field array with first database element when query initially executed
 	 * 
 	 * @access private 
@@ -587,6 +599,8 @@ class mysql_driver_ResultSet implements IteratorAggregate, \OxidEsales\Eshop\Cor
 	}
 
 	/**
+     * @deprecated since 5.3.1 (2016-09-19); It will be removed without replacement.
+     *
 	 * Check to see if last record reached
 	 * 
 	 * @access public 
@@ -637,6 +651,8 @@ class mysql_driver_ResultSet implements IteratorAggregate, \OxidEsales\Eshop\Cor
 	}
 
 	/**
+     * @deprecated since 5.3.1 (2016-09-19); It will be removed without replacement.
+     *
 	* Fetch field information for a table. 
 	*
 	* @return object containing the name, type and max_length

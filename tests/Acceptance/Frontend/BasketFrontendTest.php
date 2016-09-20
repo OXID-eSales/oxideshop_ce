@@ -119,6 +119,7 @@ class BasketFrontendTest extends FrontendTestCase
 
         $this->assertTextPresent("%SELECT_SHIPPING_METHOD%");
         $this->assertEquals("Standard", $this->getSelectedLabel("sShipSet"));
+        $this->click("payment_oxidcashondel");
         $this->_continueToNextStep();
         $this->assertElementNotPresent("//div[contains(@class, 'error')]");
 
@@ -849,6 +850,7 @@ class BasketFrontendTest extends FrontendTestCase
 
         $this->_continueToNextStep();
         $this->selectAndWait("sShipSet", "label=Standard");
+        $this->click("payment_oxidcashondel");
 
         $this->_continueToNextStep();
         $this->assertEquals("Test wrapping [EN] šÄßüл", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[3]")),"Wrapping for the product disappears from the basket");

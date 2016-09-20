@@ -156,12 +156,12 @@ class ManufacturerTest extends \OxidTestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         // fetching first Manufacturer from db
-        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $this->getConfig()->getShopID() . '"';
+        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $this->getConfig()->getShopID() . '" order by oxid desc';
 
         $myDB = oxDb::getDB();
         $sManufacturerId = $myDB->getOne($sQ);
 
-        $sQ = 'select oxtitle from oxmanufacturers where oxmanufacturers.oxshopid = "' . $this->getConfig()->getShopID() . '"';
+        $sQ = 'select oxtitle from oxmanufacturers where oxmanufacturers.oxshopid = "' . $this->getConfig()->getShopID() . '" order by oxid desc';
         $sManufacturerTitle = $myDB->getOne($sQ);
 
         $oManufacturer = oxNew('oxManufacturer');
@@ -179,10 +179,10 @@ class ManufacturerTest extends \OxidTestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         // fetching first Manufacturer from db
-        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '" order by oxid desc';
         $sManufacturerId = $myDB->getOne($sQ);
 
-        $sQ = 'select oxtitle_1 from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sQ = 'select oxtitle_1 from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '" order by oxid desc';
         $sManufacturerTitle = $myDB->getOne($sQ);
 
         $oManufacturer = oxNew('oxManufacturer');
@@ -214,12 +214,12 @@ class ManufacturerTest extends \OxidTestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         // fetching first Manufacturer from db
-        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $this->getConfig()->getShopID() . '"';
+        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $this->getConfig()->getShopID() . '" order by oxid desc';
 
         $myDB = oxDb::getDB();
         $sManufacturerId = $myDB->getOne($sQ);
 
-        $sQ = 'select oxtitle from oxmanufacturers where oxmanufacturers.oxshopid = "' . $this->getConfig()->getShopID() . '"';
+        $sQ = 'select oxtitle from oxmanufacturers where oxmanufacturers.oxshopid = "' . $this->getConfig()->getShopID() . '" order by oxid desc';
         $sManufacturerTitle = $myDB->getOne($sQ);
 
         $oManufacturer = oxNew('oxManufacturer');
@@ -237,10 +237,10 @@ class ManufacturerTest extends \OxidTestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         // fetching first Manufacturer from db
-        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '" order by oxid desc';
         $sManufacturerId = $myDB->getOne($sQ);
 
-        $sQ = 'select oxtitle_1 from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sQ = 'select oxtitle_1 from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '" order by oxid desc';
         $sManufacturerTitle = $myDB->getOne($sQ);
 
         $oManufacturer = oxNew('oxManufacturer');

@@ -140,6 +140,9 @@ class FunctionalityInAdminTest extends AdminTestCase
         /// Check if data corectly prepeared.
         // Check if data corectly prepeared in admin.
         $this->loginAdmin("Customer Info", "CMS Pages");
+        $this->type("where[oxcontents][oxtitle]", "");
+        $this->type("where[oxcontents][oxloadid]", $sCMSPageDemoIdent);
+        $this->clickAndWaitFrame("submitit");
         $this->assertElementPresent($sCMSPageLink, "There should be CMS page with title '" . $sCMSPageName . "' prepeared with demo data. Trying to find it with link: '" . $sCMSPageLink . "'.");
         $this->openListItem($sCMSPageLink);
         $this->assertEquals("on", $this->getValue("editval[oxcontents__oxactive]"), "CMS page with title '" . $sCMSPageName . "' should be turned on as active with demo data.");
@@ -156,6 +159,9 @@ class FunctionalityInAdminTest extends AdminTestCase
 
         /// Turning off CMS page by changing ident. Check if not visible in frontend.
         $this->loginAdmin("Customer Info", "CMS Pages");
+        $this->type("where[oxcontents][oxtitle]", "");
+        $this->type("where[oxcontents][oxloadid]", $sCMSPageDemoIdent);
+        $this->clickAndWaitFrame("submitit");
         $this->openListItem($sCMSPageLink);
         $this->assertEquals($sCMSPageDemoIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '" . $sCMSPageName . "' should have such ident so it will be visible in frontend footer.");
         $this->type("editval[oxcontents__oxloadid]", $sCMSPageNewIdent);
@@ -169,6 +175,9 @@ class FunctionalityInAdminTest extends AdminTestCase
 
         /// Turning on CMS page by changing ident. Check if visible in frontend.
         $this->loginAdmin("Customer Info", "CMS Pages");
+        $this->type("where[oxcontents][oxtitle]", $sCMSPageName);
+        $this->type("where[oxcontents][oxloadid]", "");
+        $this->clickAndWaitFrame("submitit");
         $this->openListItem($sCMSPageLink);
         $this->assertEquals($sCMSPageNewIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '" . $sCMSPageName . "' should have new ident as we previously chane it in this selenium test.");
         $this->type("editval[oxcontents__oxloadid]", $sCMSPageDemoIdent);

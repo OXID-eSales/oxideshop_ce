@@ -1970,6 +1970,11 @@ class FunctionalityInAdminTest extends AdminTestCase
      */
     public function testCategoryTreeDisplay()
     {
+        $testConfig = $this->getTestConfig();
+        if ($testConfig->isSubShop()) {
+            $this->markTestSkipped('Test is not for subshops');
+        }
+
         /**
          * Insert fixtures. OXID for parent category is '003' resp. '03'
          */
@@ -1985,7 +1990,7 @@ EOT;
         /**
          * Special fixture for OXID eShop Enterprise Edition
          */
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+        if ($testConfig->getShopEdition() == 'EE') {
             $query = <<<EOT
             INSERT IGNORE INTO `oxcategories2shop`
             (`OXSHOPID`, `OXMAPOBJECTID`)

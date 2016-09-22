@@ -18,6 +18,7 @@
     "require-dev": {
         "oxid-esales/testing-library": "dev-master",
         "oxid-esales/coding-standards": "dev-master",
+        "oxid-esales/coding-standards-wrapper": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0"
     },
     "autoload": {

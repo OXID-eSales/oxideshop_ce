@@ -52,7 +52,7 @@ function ChangeDiscountType(oObj)
                     [{oxmultilang ident="GENERAL_NAME"}]
                     </td>
                     <td class="edittext" width="250">
-                    <input type="text" class="editinput" size="50" maxlength="[{$edit->oxdiscount__oxtitle->fldmax_length}]" name="editval[oxdiscount__oxtitle]" value="[{$edit->oxdiscount__oxtitle->value}]" [{$readonly}]>
+                    <input type="text" class="editinput" size="50" maxlength="[{$edit->oxdiscount__oxtitle->fldmax_length}]" name="editval[oxdiscount__oxtitle]" value="[{if $oxid == "-1"}][{$discount_title}][{else}][{$edit->oxdiscount__oxtitle->value}][{/if}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_GENERAL_NAME"}]
                     </td>
                 </tr>
@@ -111,7 +111,7 @@ function ChangeDiscountType(oObj)
                     </td>
                     <td class="edittext">
                     <input type="text" class="editinput" size="15" maxlength="[{$edit->oxdiscount__oxaddsum->fldmax_length}]" name="editval[oxdiscount__oxaddsum]" id="editval[oxdiscount__oxaddsum]" value="[{$edit->oxdiscount__oxaddsum->value}]" [{if $edit->oxdiscount__oxaddsumtype->value == "itm"}] style="display:none;"[{/if}][{$readonly}]>
-                        <select name="editval[oxdiscount__oxaddsumtype]" class="editinput" onChange="Javascript:ChangeDiscountType(this);" [{$readonly}]>
+                        <select name="editval[oxdiscount__oxaddsumtype]" class="editinput" onChange="ChangeDiscountType(this);" [{$readonly}]>
                         [{foreach from=$sumtype item=sum}]
                         <option value="[{$sum}]" [{if $sum == $edit->oxdiscount__oxaddsumtype->value}]SELECTED[{/if}]>[{$sum}]</option>
                         [{/foreach}]
@@ -123,13 +123,13 @@ function ChangeDiscountType(oObj)
                   <td class="edittext">
                     [{oxmultilang ident="DISCOUNT_MAIN_EXTRA"}]
                   </td>
-                  <td class="edittext"> 
+                  <td class="edittext">
                     <table>
                         [{block name="admin_discount_main_form_itm"}]
                           <tr>
                             <td>[{$oView->getItemDiscountProductTitle()}]</td>
                             <td>
-                              <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_CHANGEPRODUCT"}]" class="edittext" onclick="JavaScript:showDialog('&cl=discount_main&aoc=2&oxid=[{$oxid}]');">
+                              <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_CHANGEPRODUCT"}]" class="edittext" onclick="showDialog('&cl=discount_main&aoc=2&oxid=[{$oxid}]');">
                               [{oxinputhelp ident="HELP_DISCOUNT_MAIN_EXTRA"}]
                             </td>
                           </tr>
@@ -143,7 +143,7 @@ function ChangeDiscountType(oObj)
                               <input type="hidden" name="editval[oxdiscount__oxitmmultiple]" value="0">
                               <input class="edittext" type="checkbox" name="editval[oxdiscount__oxitmmultiple]" value='1' [{if $edit->oxdiscount__oxitmmultiple->value == 1}]checked[{/if}] [{$readonly}]>
                             </td>
-                          </tr>   
+                          </tr>
                         [{/block}]
                     </table>
                   </td>
@@ -161,7 +161,7 @@ function ChangeDiscountType(oObj)
             <td class="edittext">
             </td>
             <td class="edittext"><br>
-                <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"" [{$readonly}]><br>
+                <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="document.myedit.fnc.value='save'"" [{$readonly}]><br>
             </td>
         </tr>
         </table>
@@ -169,7 +169,7 @@ function ChangeDiscountType(oObj)
     <td valign="top" width="50%">
         [{block name="admin_discount_main_assign_countries"}]
             [{if $oxid != "-1"}]
-                <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=discount_main&aoc=1&oxid=[{$oxid}]');">
+                <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]" class="edittext" onclick="showDialog('&cl=discount_main&aoc=1&oxid=[{$oxid}]');">
             [{/if}]
         [{/block}]
     </td>

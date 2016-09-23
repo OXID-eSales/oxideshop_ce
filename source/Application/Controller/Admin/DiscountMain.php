@@ -160,6 +160,7 @@ class DiscountMain extends \oxAdminDetails
 
             $newException = oxNew("oxExceptionToDisplay");
             $newException->setMessage($exception->getMessage());
+            $this->addTplParam('discount_title', $aParams['oxdiscount__oxtitle']);
 
             if (false !== strpos($exception->getMessage(), 'DISCOUNT_ERROR_OXSORT')) {
                 $messageArgument = oxRegistry::getLang()->translateString('DISCOUNT_MAIN_SORT', oxRegistry::getLang()->getTplLanguage(), true);

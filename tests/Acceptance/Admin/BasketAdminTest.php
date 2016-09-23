@@ -60,20 +60,40 @@ class BasketAdminTest extends AdminTestCase
         $this->loginAdmin("Administer Orders", "Orders");
         $this->openListItem("link=12");
         $this->assertTextPresent("Label: test label šÄßüл 1");
-        $this->assertEquals("2 *", $this->getText("//table[2]/tbody/tr/td[1]"));
-        $this->assertEquals("Test product 0 [EN]", $this->getText("//td[3]"));
-        $this->assertEquals("90,00 EUR", $this->getText("//td[5]"));
-        $this->assertTextPresent("Label: test label šÄßüл 1");
+
+        $firstArticle  = ['2 *', '1000', 'Test product 0 [EN]', '', '90,00 EUR'];
+        $secondArticle = ['2 *', '1000', 'Test product 0 [EN]', '', '90,00 EUR'];
+        $thirdArticle  = ['1 *', '1001', 'Test product 1 [EN]', 'test selection list [EN] šÄßüл : selvar3 [EN] šÄßüл -2,00 €', '93,00 EUR'];
+        $fourthArticle = ['1 *', '1001', 'Test product 1 [EN]', 'test selection list [EN] šÄßüл : selvar4 [EN] šÄßüл +2%', '97,00 EUR'];
+
+        $matrix = [];
+        $counter = null;
+        for ($i=1;$i<5; $i++) {
+            for ($j=1;$j<=6; $j++) {
+                $identifier = "//table[2]/tbody/tr[$i]/td[$j]";
+                if ($this->isElementPresent($identifier)) {
+                    $matrix[$i-1][$j-1] = $this->getText($identifier);
+                    if (6 == $j) {
+                        $counter = $i;
+                    }
+                }
+            }
+        }
+        $this->assertTrue(in_array($firstArticle, $matrix));
+        $this->assertTrue(in_array($secondArticle, $matrix));
+        $this->assertTrue(in_array($thirdArticle, $matrix));
+        $this->assertTrue(in_array($fourthArticle, $matrix));
+
         $this->openTab("Products");
-        $this->assertEquals("2", $this->getValue("//tr[@id='art.2']/td[1]/input"));
-        $this->assertEquals("Label: test label šÄßüл 1", $this->getText("//tr[@id='art.2']/td[5]"));
-        $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.2']/td[7]"));
-        $this->assertEquals("90,00 EUR", $this->getText("//tr[@id='art.2']/td[8]"));
-        $this->type("//tr[@id='art.2']/td[1]/input", "1");
+        $this->assertEquals("2", $this->getValue("//tr[@id='art.{$counter}']/td[1]/input"));
+        $this->assertEquals("Label: test label šÄßüл 1", $this->getText("//tr[@id='art.{$counter}']/td[5]"));
+        $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[7]"));
+        $this->assertEquals("90,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[8]"));
+        $this->type("//tr[@id='art.{$counter}']/td[1]/input", "1");
         $this->clickAndWait("//input[@value='Update']");
-        $this->assertEquals("Label: test label šÄßüл 1", $this->getText("//tr[@id='art.2']/td[5]"));
-        $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.2']/td[7]"));
-        $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.2']/td[8]"));
+        $this->assertEquals("Label: test label šÄßüл 1", $this->getText("//tr[@id='art.{$counter}']/td[5]"));
+        $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[7]"));
+        $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[8]"));
 
         //After recalculation fix sum total should be:
         $this->assertEquals("336,42", $this->getText("//table[@id='order.info']/tbody/tr[8]/td[2]"));

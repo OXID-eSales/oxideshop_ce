@@ -1523,12 +1523,13 @@ class CreatingItemsAdminTest extends AdminTestCase
                           'second media file');
         $result = array($this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"),
                         $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[3]/input"));
+
         sort($result);
         $this->assertEquals($expected, $result);
 
         $this->clickAndConfirm("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[2]/a");
-        $this->assertEquals("media file [EN]_šÄßüл", $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"));
         $this->assertElementNotPresent("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[3]/input");
+
         $this->clickAndConfirm("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[2]/a");
         $this->assertElementNotPresent("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input");
     }

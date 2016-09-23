@@ -180,6 +180,24 @@ if (!class_exists("Config")) {
     }
 }
 
+if (!class_exists("VersionConfig")) {
+    /**
+     * Version information loader class
+     */
+    class VersionConfig
+    {
+        /**
+         * Class constructor, loads version.php file data
+
+         * @param null|string $configFile
+         */
+        public function __construct($configFile = null)
+        {
+            include $configFile ? $configFile : getInstallPath() . "version.php";
+        }
+    }
+}
+
 if (!class_exists("Conf")) {
     /**
      * Config key loader class
@@ -2316,6 +2334,12 @@ class oxSetupController extends oxSetupCore
 
         //update dyn pages / shop country config options (from first step)
         $oDb->saveShopSettings(array());
+
+        // update shop version
+        $versionConfig = new VersionConfig();
+        if (isset($versionConfig->version)) {
+            $oDb->execSql("update `oxshops` set `oxversion` = '{$versionConfig->version}'");
+        }
 
         //applying utf-8 specific queries
 

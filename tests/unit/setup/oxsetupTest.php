@@ -41,6 +41,29 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
     }
 
     /**
+     * Testing if ViewConfig class gives us the version information
+     */
+    public function testVersionConfig()
+    {
+        $versionConfig = new VersionConfig();
+        $this->assertNotEmpty($versionConfig->version);
+    }
+
+    /**
+     * Testing if ViewConfig class gives us the version information
+     */
+    public function testVersionConfigParams()
+    {
+        // creating test file
+        $versionFile = oxRegistry::getConfig()->getConfigParam('sCompileDir') . '/' . uniqid("version_");
+        $contents = array('<?php', '$this->version = "specialVersion";');
+        file_put_contents($versionFile, implode("\n", $contents));
+
+        $versionConfig = new VersionConfig($versionFile);
+        $this->assertEquals($versionConfig->version, "specialVersion");
+    }
+
+    /**
      * Testing oxSetup::setMessage() and oxSetup::getMessage()
      *
      * @return null

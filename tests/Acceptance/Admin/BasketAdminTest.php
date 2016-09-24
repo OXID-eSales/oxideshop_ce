@@ -96,7 +96,7 @@ class BasketAdminTest extends AdminTestCase
         $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[8]"));
 
         //After recalculation fix sum total should be:
-        $this->assertEquals("336,42", $this->getText("//table[@id='order.info']/tbody/tr[8]/td[2]"));
+        $this->assertTextPresent('336,42');
     }
 
     /**

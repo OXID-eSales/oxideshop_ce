@@ -23,6 +23,8 @@
 namespace OxidEsales\Eshop\Setup;
 
 use Exception;
+use OxidEsales\Eshop\Core\ConfigFile;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
@@ -347,13 +349,23 @@ class Controller extends Core
         $editionPathSelector = $this->getEditionPathProvider();
         $sqlDir = $editionPathSelector->getDatabaseSqlDirectory();
 
+        $baseEditionPathSelector = $this->getEditionPathProvider(EditionSelector::COMMUNITY);
+        $baseSqlDir = $baseEditionPathSelector->getDatabaseSqlDirectory();
+
         //setting database collation
         $iUtfMode = isset($aDB['iUtfMode']) ? ((int) $aDB['iUtfMode']) : 0;
         $oDb->setMySqlCollation($iUtfMode);
 
         try {
-            $oDb->queryFile("$sqlDir/database_schema.sql");
-            $oDb->queryFile("$sqlDir/initial_data.sql");
+            $oDb->queryFile("$baseSqlDir/database_schema.sql");
+            $oDb->queryFile("$baseSqlDir/initial_data.sql");
+
+            /** @var ConfigFile $shopConfig */
+            $shopConfig = Registry::get("oxConfigFile");
+            $vendorDir = $shopConfig->getVar('vendorDirectory');
+
+            exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_migrate");
+            exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_views_regenerate");
         } catch (Exception $oExcp) {
             $oView->setMessage($oExcp->getMessage());
 
@@ -535,11 +547,12 @@ class Controller extends Core
     }
 
     /**
+     * @param string $edition
      * @return EditionPathProvider
      */
-    protected function getEditionPathProvider()
+    protected function getEditionPathProvider($edition = null)
     {
-        $editionPathSelector = new EditionRootPathProvider(new EditionSelector());
+        $editionPathSelector = new EditionRootPathProvider(new EditionSelector($edition));
         return new EditionPathProvider($editionPathSelector);
     }
 

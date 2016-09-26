@@ -605,6 +605,26 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
     }
 
+    /*
+     * Try to create a discount with invalid entries in the field oxsort.
+     *
+     * @group creatingitems
+     *
+     */
+    public function testCreateInvalidDiscount()
+    {
+        $this->loginAdmin("Shop Settings", "Discounts");
+        $oxtitle = "discount with sorting that already exists [EN]_šÄßüл";
+        $this->clickCreateNewItem();
+        $this->type("editval[oxdiscount__oxtitle]", $oxtitle);
+        $this->type("editval[oxdiscount__oxsort]", "100");
+        $this->clickAndWaitFrame("save", "list");
+        $this->assertTextPresent('Error: The value of the field "Sorting" must be unique.');
+        $this->type("editval[oxdiscount__oxsort]", "oxSortString");
+        $this->clickAndWaitFrame("save", "list");
+        $this->assertTextPresent('Error: The value of the field "Sorting" must be a number.');
+    }
+
     /**
      * creating Shipping Methods
      *

@@ -16,6 +16,15 @@ function ChangeDiscountType(oObj)
         }
     }
 }
+window.onload = function ()
+{
+    [{if $updatelist == 1}]
+    top.oxid.admin.updateList('[{$oxid}]');
+    [{/if}]
+    var oField = top.oxid.admin.getLockTarget();
+    top.oxid.admin.unlockSave();
+    oField.onchange = oField.onkeyup = oField.onmouseout = top.oxid.admin.unlockSave;
+}
 //-->
 </script>
 
@@ -161,7 +170,7 @@ function ChangeDiscountType(oObj)
             <td class="edittext">
             </td>
             <td class="edittext"><br>
-                <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="document.myedit.fnc.value='save'"" [{$readonly}]><br>
+                <input type="submit" class="edittext" id="oLockButton" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="document.myedit.fnc.value='save'"" [{$readonly}] [{if !$edit->oxdiscount__oxsort->value}]disabled[{/if}]><br>
             </td>
         </tr>
         </table>

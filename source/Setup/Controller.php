@@ -327,23 +327,15 @@ class Controller extends Core
         }
 
         // check if DB is already UP and running
-        if (!$blOverwrite) {
-            try {
-                $blDbExists = true;
-                $oDb->execSql("select * from oxconfig");
-            } catch (Exception $oExcp) {
-                $blDbExists = false;
-            }
+        $databaseExists = $this->checkDbExists($oDb);
+        if (!$blOverwrite && $databaseExists) {
+            // DB already UP ?
+            $oView->setMessage(
+                sprintf($oLang->getText('ERROR_DB_ALREADY_EXISTS'), $aDB['dbName']) .
+                "<br><br>" . $oLang->getText('STEP_3_2_CONTINUE_INSTALL_OVER_EXISTING_DB') . " <a href=\"index.php?sid=" . $oSession->getSid() . "&istep=" . $oSetup->getStep('STEP_DB_CREATE') . "&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $oLang->getText('HERE') . "</a>"
+            );
 
-            if ($blDbExists) {
-                // DB already UP ?
-                $oView->setMessage(
-                    sprintf($oLang->getText('ERROR_DB_ALREADY_EXISTS'), $aDB['dbName']) .
-                    "<br><br>" . $oLang->getText('STEP_3_2_CONTINUE_INSTALL_OVER_EXISTING_DB') . " <a href=\"index.php?sid=" . $oSession->getSid() . "&istep=" . $oSetup->getStep('STEP_DB_CREATE') . "&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $oLang->getText('HERE') . "</a>"
-                );
-
-                return "default.php";
-            }
+            return "default.php";
         }
 
         $editionPathSelector = $this->getEditionPathProvider();
@@ -562,5 +554,23 @@ class Controller extends Core
     protected function onDirsWriteSetStep($setup)
     {
         $setup->setNextStep($setup->getStep('STEP_FINISH'));
+    }
+
+    /**
+     * Check if database is up and running
+     *
+     * @param Database $database
+     * @return bool
+     */
+    private function checkDbExists($database)
+    {
+        try {
+            $blDbExists = true;
+            $database->execSql("select * from oxconfig");
+        } catch (Exception $oExcp) {
+            $blDbExists = false;
+        }
+
+        return $blDbExists;
     }
 }

@@ -90,7 +90,6 @@ class Database extends Core
             }
 
             return $oStatement;
-
         } catch (PDOException $e) {
             throw new Exception(
                 $this->getInstance("Language")->getText('ERROR_BAD_SQL') . "( $sQ ): {$e->getMessage()}\n"

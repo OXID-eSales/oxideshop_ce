@@ -81,7 +81,7 @@ window.onload = function ()
             [{if $listitem->getId() == $oxid}]
                 [{assign var="listclass" value=listitem4}]
             [{/if}]
-            <td valign="top" class="[{$listclass}][{if $listitem->oxmanufacturers__oxactive->value == 1}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
+            <td valign="top" class="[{$listclass}][{if $listitem->oxmanufacturers__oxactive->value == 1}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp;</div></td>
             <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxmanufacturers__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxmanufacturers__oxtitle->value}]</a></div></td>
             <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxmanufacturers__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxmanufacturers__oxshortdesc->value}]</a></div></td>
             <td class="[{$listclass}]" align="right">

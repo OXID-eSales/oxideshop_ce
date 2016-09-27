@@ -193,7 +193,10 @@ class TimestampTest extends \OxidTestCase
     public function testAllTablesHasOxTimestamp()
     {
         $oDb = oxDb::getDb();
-        $sQ = "SHOW FULL tables WHERE Table_Type = 'BASE TABLE'";
+        $sQ = "SELECT TABLE_NAME FROM information_schema.tables 
+          WHERE TABLE_TYPE='BASE TABLE' 
+            AND TABLE_NAME NOT LIKE 'oxmigrations%'
+            AND TABLE_SCHEMA = DATABASE()";
         $aTableNames = $oDb->getAll($sQ);
         foreach ($aTableNames as $sKey => $aTable) {
             $sTableName = $aTable[0];

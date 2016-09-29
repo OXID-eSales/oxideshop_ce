@@ -721,18 +721,15 @@ class BasketTest extends \OxidTestCase
         $oBasket->setBasketUser($oUser);
         $oBasket->addToBasket('1126', 2);
         $oBasket->calculateBasket(true);
-
-        $oBasket = oxNew('oxbasket');
-        $oBasket->setBasketUser($oUser);
         $oBasket->addToBasket('1127', 2);
         $oBasket->calculateBasket(true);
 
-        //clean the basket and load again
-        $oBasket->deleteBasket();
+        //create new basket, calling load will restore basket from database
+        $oBasket = oxNew('oxbasket');
+        $oBasket->setBasketUser($oUser);
         $aContents = $oBasket->getContents();
         $this->assertEquals(0, count($aContents));
         $oBasket->load();
-
 
         $aContents = $oBasket->getContents();
         $this->assertEquals(2, count($aContents));
@@ -770,8 +767,6 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser($oUser);
-        $oBasket->calculateBasket(true);
-
         $oBasket->load();
 
         $aContents = $oBasket->getContents();

@@ -150,6 +150,21 @@ class ContentTest extends \OxidTestCase
         $this->assertFalse($oObj->loadByIdent('noSuchLoadId'));
     }
 
+    /*
+     * Test loading active/inactive content
+     */
+    public function testLoadByIdentInactiveContent()
+    {
+        $oObj = oxNew('oxContent');
+        $this->assertTrue($oObj->loadByIdent('_testLoadId'), 'can not load oxcontent by ident');
+        $oObj->oxcontents__oxactive = new oxField('0', oxField::T_RAW);
+        $oObj->save();
+        $this->assertFalse($oObj->loadByIdent('_testLoadId', true));
+        $oObj->oxcontents__oxactive = new oxField('1', oxField::T_RAW);
+        $oObj->save();
+        $this->assertTrue($oObj->loadByIdent('_testLoadId', true));
+    }
+
     public function test_setFieldData()
     {
         $oObj = $this->getProxyClass('oxcontent');

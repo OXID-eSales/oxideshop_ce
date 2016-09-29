@@ -224,7 +224,7 @@ class ViewConfig extends \oxSuperCfg
             $aContentIdents = $this->_getHelpContentIdents();
             $oContent = oxNew("oxContent");
             foreach ($aContentIdents as $sIdent) {
-                if ($oContent->loadByIdent($sIdent)) {
+                if ($oContent->loadByIdent($sIdent, true)) {
                     $this->_sHelpPageLink = $oContent->getLink();
                     break;
                 }

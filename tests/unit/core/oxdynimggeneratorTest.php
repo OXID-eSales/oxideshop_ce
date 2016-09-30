@@ -202,39 +202,47 @@ class Unit_Core_oxDynImgGeneratorTest extends OxidTestCase
     }
 
     /**
-     * Testing image uri getter
+     * @dataProvider dataProviderTestGenerateImagePickGenerationMethodFromFileExtension
      *
-     * @return null
+     * @param $sourceFilePath
+     * @param $targetFilePath
+     * @param $expectedGenerationMethod
+     * @param $message
      */
-    public function testGenerateImage()
+    public function testGenerateImagePickGenerationMethodFromFileExtension($sourceFilePath, $targetFilePath, $expectedGenerationMethod, $message)
     {
-        $oGen = $this->getMock("oxDynImgGenerator", array("_getImageType", "_generatePng", "_generateJpg", "_generateGif", "_getImageUri"));
-        $oGen->expects($this->at(0))->method('_getImageType')->will($this->returnValue("png"));
-        $oGen->expects($this->at(1))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.png"));
-        $oGen->expects($this->at(2))->method('_generatePng')->with($this->equalTo("source"), $this->equalTo("target"), $this->equalTo("12"), $this->equalTo("12"))->will($this->returnValue("test.png"));
+        $oGen = $this->getMock('oxDynImgGenerator', array(
+            'getGdVersion',
+            '_isTargetPathValid',
+            '_getImageType',
+            '_lock',
+            '_unlock',
+            '_generateJpg',
+            '_generatePng',
+            '_generateGif',
+        ));
+        $oGen->expects($this->any())->method('getGdVersion')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('_isTargetPathValid')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('_getImageType')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('_lock')->will($this->returnValue(true));
+        $oGen->expects($this->once())->method($expectedGenerationMethod);
 
-        $oGen->expects($this->at(3))->method('_getImageType')->will($this->returnValue("jpeg"));
-        $oGen->expects($this->at(4))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpg"));
-        $oGen->expects($this->at(5))->method('_generateJpg')->with($this->equalTo("source"), $this->equalTo("target"), $this->equalTo("12"), $this->equalTo("12"))->will($this->returnValue("test.jpg"));
-
-        $oGen->expects($this->at(6))->method('_getImageType')->will($this->returnValue("jpeg"));
-        $oGen->expects($this->at(7))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpeg"));
-        $oGen->expects($this->at(8))->method('_generateJpg')->with($this->equalTo("source"), $this->equalTo("target"), $this->equalTo("12"), $this->equalTo("12"))->will($this->returnValue("test.jpg"));
-
-        $oGen->expects($this->at(9))->method('_getImageType')->will($this->returnValue("gif"));
-        $oGen->expects($this->at(10))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.gif"));
-        $oGen->expects($this->at(11))->method('_generateGif')->with($this->equalTo("source"), $this->equalTo("target"), $this->equalTo("12"), $this->equalTo("12"))->will($this->returnValue("test.gif"));
-
-        $oGen->expects($this->at(12))->method('_getImageType')->will($this->returnValue("unknown"));
-        $oGen->expects($this->at(13))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/unknown"));
-
-        $this->assertEquals("test.png", $oGen->UNITgenerateImage("source", "target"));
-        $this->assertEquals("test.jpg", $oGen->UNITgenerateImage("source", "target"));
-        $this->assertEquals("test.jpg", $oGen->UNITgenerateImage("source", "target"));
-        $this->assertEquals("test.gif", $oGen->UNITgenerateImage("source", "target"));
-        $this->assertFalse($oGen->UNITgenerateImage("source", "target"));
+        $oGen->UNITgenerateImage($sourceFilePath, $targetFilePath);
     }
 
+    public function dataProviderTestGenerateImagePickGenerationMethodFromFileExtension() {
+        return array(
+            array('sourceFile.jpeg', 'targetFile.jpeg', '_generateJpg', 'For files with the extension jpeg the _generateJpg method is called'),
+            array('sourceFile.jpg', 'targetFile.jpg', '_generateJpg', 'For files with the extension jpg _generateJpg method is called'),
+            array('sourceFile.png', 'targetFile.png', '_generatePng', 'For files with the extension png _generatePng method is called'),
+            array('sourceFile.gif', 'targetFile.gif', '_generateGif', 'For files with the extension gif _generateGif method is called'),
+            // Test for case insensitivity
+            array('sourceFile.JPEG', 'targetFile.jpeg', '_generateJpg', 'For files with the extension JPEG the _generateJpg method is called'),
+            array('sourceFile.JPG', 'targetFile.jpg', '_generateJpg', 'For files with the extension JPG _generateJpg method is called'),
+            array('sourceFile.PNG', 'targetFile.png', '_generatePng', 'For files with the extension PNG _generatePng method is called'),
+            array('sourceFile.GIF', 'targetFile.gif', '_generateGif', 'For files with the extension GIF _generateGif method is called'),
+        );
+    }
     /**
      * Testing image uri getter
      *

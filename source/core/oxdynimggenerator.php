@@ -323,10 +323,8 @@ class oxDynImgGenerator
     protected function _getNopicImageTarget()
     {
         $sPath = $this->_getShopBasePath() . $this->_getImageUri();
-        // Correction for Bug:6291 - Changing the required nopic image format to the format of the requested image.
-        $sType = $this->_getImageType();
 
-        return str_replace($this->_getImageName(), "nopic." . $sType, $sPath);
+        return str_replace($this->_getImageName(), "nopic.jpg", $sPath);
     }
 
     /**
@@ -540,6 +538,7 @@ class oxDynImgGenerator
     protected function _generateImage($sImageSource, $sImageTarget)
     {
         $sPath = false;
+        $fileExtensionSource = strtolower(pathinfo($sImageSource, PATHINFO_EXTENSION));
 
         if (getGdVersion() !== false && $this->_isTargetPathValid($sImageTarget) && ($sImageType = $this->_getImageType())) {
 
@@ -551,11 +550,12 @@ class oxDynImgGenerator
 
                 // extracting image info - size/quality
                 list($iWidth, $iHeight, $iQuality) = $this->_getImageInfo();
-                switch ($sImageType) {
+                switch ($fileExtensionSource) {
                     case "png":
                         $sPath = $this->_generatePng($sImageSource, $sImageTarget, $iWidth, $iHeight);
                         break;
                     case "jpeg":
+                    case "jpg":
                         $sPath = $this->_generateJpg($sImageSource, $sImageTarget, $iWidth, $iHeight, $iQuality);
                         break;
                     case "gif":
@@ -605,7 +605,7 @@ class oxDynImgGenerator
         if ($this->_hLockHandle) {
             if (!($blLocked = flock($this->_hLockHandle, LOCK_EX))) {
                 // on failure - closing
-                fclose($rHandle);
+                fclose($this->_hLockHandle);
             }
         }
 

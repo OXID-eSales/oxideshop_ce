@@ -251,11 +251,11 @@ class StrMb
     /**
      * PHP preg_match() function wrapper
      *
-     * @param string $sPattern  pattern to search for, as a string
-     * @param string $sSubject  input string
-     * @param array  &$aMatches is filled with the results of search
-     * @param int    $iFlags    flags
-     * @param int    $iOffset   place from which to start the search
+     * @param string $sPattern pattern to search for, as a string
+     * @param string $sSubject input string
+     * @param array  $aMatches is filled with the results of search
+     * @param int    $iFlags   flags
+     * @param int    $iOffset  place from which to start the search
      *
      * @return string
      */
@@ -267,11 +267,11 @@ class StrMb
     /**
      * PHP preg_match_all() function wrapper
      *
-     * @param string $sPattern  pattern to search for, as a string
-     * @param string $sSubject  input string
-     * @param array  &$aMatches is filled with the results of search
-     * @param int    $iFlags    flags
-     * @param int    $iOffset   place from which to start the search
+     * @param string $sPattern pattern to search for, as a string
+     * @param string $sSubject input string
+     * @param array  $aMatches is filled with the results of search
+     * @param int    $iFlags   flags
+     * @param int    $iOffset  place from which to start the search
      *
      * @return string
      */

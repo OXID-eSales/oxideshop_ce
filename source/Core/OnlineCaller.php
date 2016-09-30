@@ -123,7 +123,7 @@ abstract class OnlineCaller
         return $sOutputXml;
     }
 
-    /*
+    /**
      * Depending on the type of exception, first cast the exception and then write it to log.
      *
      * @param Exception $oEx

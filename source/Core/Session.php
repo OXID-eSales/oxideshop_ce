@@ -458,8 +458,6 @@ class Session extends \oxSuperCfg
      *
      * @param string $name  Name of parameter to store
      * @param mixed  $value Value of parameter
-     *
-     * @return null
      */
     public function setVariable($name, $value)
     {
@@ -670,13 +668,11 @@ class Session extends \oxSuperCfg
                     // no cookie, so must check session
                     if ($blSidNeeded = $this->getVariable('blSidNeeded')) {
                         $this->_blSidNeeded = true;
-                    } elseif ($this->_isSessionRequiredAction()) {
-                        if (!count($_COOKIE)) {
-                            $this->_blSidNeeded = true;
+                    } elseif ($this->_isSessionRequiredAction() && !count($_COOKIE)) {
+                        $this->_blSidNeeded = true;
 
-                            // storing to session, performance..
-                            $this->setVariable('blSidNeeded', $this->_blSidNeeded);
-                        }
+                        // storing to session, performance..
+                        $this->setVariable('blSidNeeded', $this->_blSidNeeded);
                     }
                 }
             }

@@ -660,7 +660,8 @@ class SeoEncoder extends \oxSuperCfg
 
         return $oStr->preg_replace(
             array('|//+|', '/' . $sQuotedSeparator . $sQuotedSeparator . '+/'),
-            array('/', self::$_sSeparator), $sUri
+            array('/', self::$_sSeparator),
+            $sUri
         );
     }
 
@@ -1021,11 +1022,9 @@ class SeoEncoder extends \oxSuperCfg
             }
 
 
-            if ($sOldObjectId) {
-                // move changed records to history
-                if (!$oDb->getOne("select (" . $oDb->quote($sSeoUrl) . " like oxseourl) & (" . $oDb->quote($sStdUrl) . " like oxstdurl) from oxseo where oxobjectid = " . $oDb->quote($sOldObjectId) . " and oxshopid = '{$iShopId}' and oxlang = '{$iLang}' ", false, false)) {
-                    $this->_copyToHistory($sOldObjectId, $iShopId, $iLang, 'static', $sObjectId);
-                }
+            // move changed records to history
+            if ($sOldObjectId && !$oDb->getOne("select (" . $oDb->quote($sSeoUrl) . " like oxseourl) & (" . $oDb->quote($sStdUrl) . " like oxstdurl) from oxseo where oxobjectid = " . $oDb->quote($sOldObjectId) . " and oxshopid = '{$iShopId}' and oxlang = '{$iLang}' ", false, false)) {
+                $this->_copyToHistory($sOldObjectId, $iShopId, $iLang, 'static', $sObjectId);
             }
 
             if (!$sSeoUrl || !$sStdUrl) {

@@ -891,7 +891,6 @@ class SystemRequirements
                 $iModStat = ($iMemLimit >= $this->_getBytes($sDefLimit)) ? 1 : 0;
                 $iModStat = $iModStat ? (($iMemLimit >= $this->_getBytes($sRecLimit)) ? 2 : $iModStat) : $iModStat;
             }
-
         } else {
             $iModStat = -1;
         }

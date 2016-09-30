@@ -118,7 +118,6 @@ class StandardList extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Coun
                 $this->_aArray[] = & $oBase;
             }
         }
-
     }
 
     /**

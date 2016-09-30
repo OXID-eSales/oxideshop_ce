@@ -403,7 +403,7 @@ class Utils extends \oxSuperCfg
      * to string before performing array search.
      *
      * @param string $needle
-     * @param array $haystack
+     * @param array  $haystack
      *
      * @return mixed
      */
@@ -1079,7 +1079,7 @@ class Utils extends \oxSuperCfg
         $offline = file_get_contents($offlineMessageFile);
         $this->showMessageAndExit($offline);
     }
-    
+
     /**
      * redirect user to the specified URL
      *
@@ -1132,8 +1132,6 @@ class Utils extends \oxSuperCfg
      * message might be whole content like 404 page.
      *
      * @param string $sMsg message to show
-     *
-     * @return null dies
      */
     public function showMessageAndExit($sMsg)
     {
@@ -1352,7 +1350,6 @@ class Utils extends \oxSuperCfg
             $sLogMsg = "----------------------------------------------\n{$sText}" . (($blNewline) ? "\n" : "") . "\n";
             $this->writeToLog($sLogMsg, "log.txt");
         }
-
     }
 
     /**

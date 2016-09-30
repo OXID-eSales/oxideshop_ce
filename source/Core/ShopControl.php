@@ -506,8 +506,6 @@ class ShopControl extends \oxSuperCfg
     /**
      * This function is only executed one time here we perform checks if we
      * only need once per session.
-     *
-     * @return null
      */
     protected function _runOnce()
     {

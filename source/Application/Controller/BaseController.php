@@ -2903,8 +2903,9 @@ class BaseController extends \oxView
 
         $country = oxNew('oxCountry');
         $country->load($user->getActiveCountry());
-        $countryBillsNotVat = $country->oxcountry__oxvatstatus->value !== null && $country->oxcountry__oxvatstatus->value == 0;
-
+        $countryBillsNotVat = $country->oxcountry__oxvatstatus->value == 0;
+        $userBillsNoVat = $oUser->oxuser__oxustid->value !== null && $oUser->oxuser__oxustidstatus->value == 1;
+        
         /*
          * Do not show "inclusive VAT" when:
          *
@@ -2913,13 +2914,15 @@ class BaseController extends \oxView
          *   the VAT will only be calculated in the basket
          * OR
          *   the country does not bill VAT
+         * OR B2B User with ustid
          *
          * oxcountry__oxvatstatus: Vat status: 0 - Do not bill VAT, 1 - Do not bill VAT only if provided valid VAT ID
          * if country is not available (no session) oxvatstatus->value will return null
          */
         if ($config->getConfigParam('blShowNetPrice') ||
             $config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder') ||
-            $countryBillsNotVat
+            $countryBillsNotVat ||
+            $userBillsNoVat
         ) {
             return false;
         }

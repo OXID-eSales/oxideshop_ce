@@ -2902,8 +2902,8 @@ class BaseController extends \oxView
         }
 
         $country = oxNew('oxCountry');
-        $country->load($user->getActiveCountry());
-        $countryBillsNotVat = $country->oxcountry__oxvatstatus->value == 0;
+        $hasCountry = $country->load($user->getActiveCountry())
+        $countryBillsNotVat = $hasCountry && $country->oxcountry__oxvatstatus->value == 0;
         $userBillsNoVat = $oUser->oxuser__oxustid->value !== null && $oUser->oxuser__oxustidstatus->value == 1;
         
         /*

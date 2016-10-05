@@ -58,6 +58,14 @@ class oxLegacyDb extends oxSuperCfg implements DatabaseInterface
     /**
      * @inheritdoc
      */
+    public function forceMasterConnection()
+    {
+
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setFetchMode($iFetchMode)
     {
         $this->_oDb->setFetchMode($iFetchMode);

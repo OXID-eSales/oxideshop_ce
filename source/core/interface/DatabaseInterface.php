@@ -48,6 +48,13 @@ interface DatabaseInterface
     const FETCH_MODE_BOTH = 3;
 
     /**
+     * Force database master connection.
+     *
+     * Hint: this method is here to have an easier update path. It will be implemented in the OXID eShop version 6.0.
+     */
+    public function forceMasterConnection();
+
+    /**
      * Set the fetch mode of an open database connection.
      *
      * After the connection has been opened, this method may be used to set the fetch mode to any of the valid fetch

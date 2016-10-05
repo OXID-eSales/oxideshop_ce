@@ -367,4 +367,14 @@ class Unit_Core_oxLegacyDbTest extends OxidTestCase
         $oLegacyDb->UI($iParam);
     }
 
+    /**
+     * Test, that the method forceMasterConnection is implemented.
+     */
+    public function testForceMasterConnectionIsImplemented()
+    {
+        $oLegacyDb = oxNew('oxLegacyDb');
+
+        $oLegacyDb->forceMasterConnection();
+    }
+
 }

@@ -651,7 +651,7 @@ class oxConfig extends oxSuperCfg
                     // TODO: remove this after special chars concept implementation
                     $blIsAdmin = modConfig::getInstance()->isAdmin() || modSession::getInstance()->getVariable("blIsAdmin");
                     if ($sValue !== null && !$blIsAdmin && (!$blRaw || is_array($blRaw))) {
-                        $sValue = $this->checkParamSpecialChars($sValue, $blRaw);
+                        $this->checkParamSpecialChars($sValue, $blRaw);
                     }
 
                     return $sValue;
@@ -672,7 +672,7 @@ class oxConfig extends oxSuperCfg
         // TODO: remove this after special chars concept implementation
         $blIsAdmin = $this->isAdmin() && $this->getSession()->getVariable("blIsAdmin");
         if ($sValue !== null && !$blIsAdmin && (!$blRaw || is_array($blRaw))) {
-            $sValue = $this->checkParamSpecialChars($sValue, $blRaw);
+            $this->checkParamSpecialChars($sValue, $blRaw);
         }
 
         return $sValue;
@@ -726,7 +726,7 @@ class oxConfig extends oxSuperCfg
      *
      * @return mixed
      */
-    public function checkParamSpecialChars($sValue, $aRaw = null)
+    public function checkParamSpecialChars(& $sValue, $aRaw = null)
     {
         if (is_object($sValue)) {
             return $sValue;
@@ -737,8 +737,8 @@ class oxConfig extends oxSuperCfg
             foreach ($sValue as $sKey => $sVal) {
                 $sValidKey = $sKey;
                 if (!$aRaw || !in_array($sKey, $aRaw)) {
-                    $sValidKey = $this->checkParamSpecialChars($sValidKey);
-                    $sVal = $this->checkParamSpecialChars($sVal);
+                    $this->checkParamSpecialChars($sValidKey);
+                    $this->checkParamSpecialChars($sVal);
                     if ($sValidKey != $sKey) {
                         unset ($sValue[$sKey]);
                     }

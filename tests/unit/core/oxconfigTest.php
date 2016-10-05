@@ -2526,20 +2526,17 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     {
         $oVar = new stdClass();
         $oVar->xxx = 'yyy';
-        $aVar = array('&\\o<x>i"\' d' . chr(0));
-        $sVar = '&\\o<x>i"\' d' . chr(0);
+        $aVar = array('&\\o<x>i"\'d' . chr(0));
+        $sVar = '&\\o<x>i"\'d' . chr(0);
         $oConfig = oxRegistry::getConfig();
         // object must came back the same
         $this->assertEquals($oVar, $oConfig->checkParamSpecialChars($oVar));
 
         // array items comes fixed
-        $this->assertEquals(array("&amp;&#092;o&lt;x&gt;i&quot;&#039; d"), $oConfig->checkParamSpecialChars($aVar));
+        $this->assertEquals(array("&amp;&#092;o&lt;x&gt;i&quot;&#039;d"), $oConfig->checkParamSpecialChars($aVar));
 
         // string comes fixed
-        $this->assertEquals('&amp;&#092;o&lt;x&gt;i&quot;&#039; d', $oConfig->checkParamSpecialChars($sVar));
-
-        // original variable is not modified
-        $this->assertEquals('&\\o<x>i"\' d' . chr(0), $sVar);
+        $this->assertEquals('&amp;&#092;o&lt;x&gt;i&quot;&#039;d', $oConfig->checkParamSpecialChars($sVar));
     }
 
     /**

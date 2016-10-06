@@ -211,6 +211,8 @@ class Order_Overview extends oxAdminDetails
     /**
      * Returns pdf export state - can export or not
      *
+     * @deprecated since v5.3 (2016-08-06); logic of this method will be moved to the InvoicePDF module.
+     *
      * @return bool
      */
     public function canExport()

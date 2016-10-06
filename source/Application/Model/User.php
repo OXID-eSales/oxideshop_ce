@@ -1495,6 +1495,8 @@ class User extends \oxBase
      * @param string $sShopID     Shop id
      * @param string $sShopSelect Shop select
      *
+     * @deprecated v5.3 (2016-10-06); LDAP will be moved to own module.
+     *
      * @throws $oEx if user is wrong
      */
     protected function _ldapLogin($sUser, $sPassword, $sShopID, $sShopSelect)

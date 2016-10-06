@@ -602,7 +602,20 @@ class ViewConfigTest extends \OxidTestCase
         //When using subshops it is important that getModuleUrl does not return the subshopurl in admin mode
         //because of browser security restrictions take effect when loading resources from differt domains
         $adminUrlWithoutAdminPath = $baseUrl;
-        $this->assertEquals("{$adminUrlWithoutAdminPath}modules/test1/", $viewConfig->getModuleUrl('test1'));
+        $this->assertEquals(
+                            "{$adminUrlWithoutAdminPath}modules/test1/out/blocks/test2.tpl",
+                            $viewConfig->getModuleUrl('test1', 'out/blocks/test2.tpl'));
+
+        //Test when sShopURL is set and not sSSLShopURL, nor sAdminSSLURL
+        $config->setConfigParam('sSSLShopURL', '');
+        $config->setConfigParam('sAdminSSLURL', '');
+        $config->setConfigParam('sShopURL', 'http://shop.localhost.local/');
+        $this->assertEquals("http://shop.localhost.local/modules/test1/", $viewConfig->getModuleUrl('test1'));
+
+        //Test when sSSLShopURL is set and sAdminSSLURL is not set
+        $config->setIsSsl(true);
+        $config->setConfigParam('sSSLShopURL', 'https://shop.localhost.local/');
+        $this->assertEquals("https://shop.localhost.local/modules/test1/", $viewConfig->getModuleUrl('test1'));
 
         //Test if getModuleUrl returns the right url if adminssl url is set
         $config->setConfigParam('sAdminSSLURL', 'https://admin.localhost.local/admin/');

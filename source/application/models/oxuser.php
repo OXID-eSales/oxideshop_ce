@@ -80,7 +80,7 @@ class oxUser extends oxBase
 
     /**
      * User recommendation list
-     * 
+     *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @var oxList
@@ -119,7 +119,7 @@ class oxUser extends oxBase
      * User recommlist count
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @var integer
      */
     protected $_iCntRecommLists = null;
@@ -1552,6 +1552,8 @@ class oxUser extends oxBase
      * @param string $sShopID     Shop id
      * @param string $sShopSelect Shop select
      *
+     * @deprecated v5.3 (2016-10-06); LDAP will be moved to own module.
+     *
      * @throws $oEx if user is wrong
      */
     protected function _ldapLogin($sUser, $sPassword, $sShopID, $sShopSelect)
@@ -1757,7 +1759,7 @@ class oxUser extends oxBase
      * @param string $sOXID object ID (default is null)
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @return object oxList with oxrecommlist objects
      */
     public function getUserRecommLists($sOXID = null)
@@ -1789,9 +1791,9 @@ class oxUser extends oxBase
      * Returns recommlist count
      *
      * @param string $sOx object ID (default is null)
-     *                    
+     *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @return int
      */
     public function getRecommListsCount($sOx = null)

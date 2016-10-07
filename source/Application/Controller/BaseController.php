@@ -2904,7 +2904,7 @@ class BaseController extends \oxView
         $country = oxNew('oxCountry');
         $hasCountry = $country->load($user->getActiveCountry());
         $countryBillsNotVat = $hasCountry && $country->oxcountry__oxvatstatus->value == 0;
-        $userBillsNoVat = $oUser->oxuser__oxustid->value !== null && $oUser->oxuser__oxustidstatus->value == 1;
+        $userBillsNoVat = $user->oxuser__oxustid->value !== null && $user->oxuser__oxustidstatus->value == 1;
 
         /*
          * Do not show "inclusive VAT" when:

@@ -180,7 +180,7 @@ if (!class_exists("Config")) {
     }
 }
 
-if (!class_exists("VersionConfig")) {
+if (!class_exists("VersionConfig", false)) {
     /**
      * Version information loader class
      */

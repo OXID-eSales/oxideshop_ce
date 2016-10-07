@@ -488,7 +488,6 @@ class ModuleInstaller extends \oxSuperCfg
 
                 $iPosition = $aValue["position"] ? $aValue["position"] : 1;
 
-                $oConfig->setConfigParam($sName, $sValue);
                 $oConfig->saveShopConfVar($sType, $sName, $sValue, $sShopId, $sModule);
 
                 $sDeleteSql = "DELETE FROM `oxconfigdisplay` WHERE OXCFGMODULE=" . $oDb->quote($sModule) . " AND OXCFGVARNAME=" . $oDb->quote($sName);
@@ -654,7 +653,6 @@ class ModuleInstaller extends \oxSuperCfg
     protected function _saveToConfig($sVariableName, $sVariableValue, $sVariableType = 'aarr')
     {
         $oConfig = $this->getConfig();
-        $oConfig->setConfigParam($sVariableName, $sVariableValue);
         $oConfig->saveShopConfVar($sVariableType, $sVariableName, $sVariableValue);
     }
 

@@ -23,14 +23,13 @@
 namespace OxidEsales\Eshop\Application\Model;
 
 use Exception;
-use OxidEsales\Eshop\Application\Model\Contract\ArticleInterface;
 use oxDb;
-use OxidEsales\Eshop\Core\Database;
-use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 use oxField;
-use oxPrice;
+use OxidEsales\Eshop\Application\Model\Contract\ArticleInterface;
+use OxidEsales\Eshop\Core\Registry;
 use oxList;
+use oxPrice;
+use oxRegistry;
 use oxSeoEncoderArticle;
 
 // defining supported link types
@@ -2373,8 +2372,8 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      * Call oxArticle::onChange($sAction, $sOXID) with ID parameter when changes are executed over SQL.
      * (or use module class instead of oxArticle if such exists)
      *
-     * @param string $action   Action constant
-     * @param string $articleId     Article ID
+     * @param string $action          Action constant
+     * @param string $articleId       Article ID
      * @param string $parentArticleId Parent ID
      *
      * @return null
@@ -2447,7 +2446,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     /**
      * Checks if stock configuration allows to buy user chosen amount $dAmount
      *
-     * @param double     $dAmount buyable amount
+     * @param double     $dAmount         buyable amount
      * @param double|int $dArtStockAmount stock amount
      *
      * @return mixed
@@ -3239,11 +3238,11 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     }
 
     /**
-     * Fetch the article corresponding to this object in the price category with the given id.  
-     * 
+     * Fetch the article corresponding to this object in the price category with the given id.
+     *
      * @param string $categoryPriceId The id of the category we want to check, if this article is in.
      *
-     * @return string One, if the given article is in the given price category, else empty string. 
+     * @return string One, if the given article is in the given price category, else empty string.
      */
     protected function fetchFirstInPriceCategory($categoryPriceId)
     {
@@ -3436,9 +3435,9 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     /**
      * Loads and returns variants list.
      *
-     * @param bool $loadSimpleVariants       if parameter $blSimple - list will be filled with oxSimpleVariant objects, else - oxArticle
-     * @param bool $blRemoveNotOrderables    if true, removes from list not orderable articles, which are out of stock [optional]
-     * @param bool|null $forceCoreTableUsage if true forces core table use, default is false [optional]
+     * @param bool      $loadSimpleVariants    if parameter $blSimple - list will be filled with oxSimpleVariant objects, else - oxArticle
+     * @param bool      $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
+     * @param bool|null $forceCoreTableUsage   if true forces core table use, default is false [optional]
      *
      * @return array | oxsimplevariantlist | oxarticlelist
      */
@@ -3521,7 +3520,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     /**
      * Selects category IDs from given SQL statement and ID field name
      *
-     * @param string $query   sql statement
+     * @param string $query sql statement
      * @param string $field category ID field name
      *
      * @return array
@@ -3981,8 +3980,8 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     /**
      * gets attribs string
      *
-     * @param string &$sAttributeSql Attribute selection snippet
-     * @param int    &$iCnt          The number of selected attributes
+     * @param string $sAttributeSql Attribute selection snippet
+     * @param int    $iCnt          The number of selected attributes
      */
     protected function _getAttribsString(&$sAttributeSql, &$iCnt)
     {
@@ -4711,8 +4710,8 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     protected function _setVarMinMaxPrice($sParentId)
     {
         if ($sParentId) {
-          $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-          $sQ = '
+            $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+            $sQ = '
                 SELECT
                     MIN( IF( `oxarticles`.`oxprice` > 0, `oxarticles`.`oxprice`, `p`.`oxprice` ) ) AS `varminprice`,
                     MAX( IF( `oxarticles`.`oxprice` > 0, `oxarticles`.`oxprice`, `p`.`oxprice` ) ) AS `varmaxprice`
@@ -4741,7 +4740,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             $database->execute($sQ);
         }
     }
-
 
     /**
      * Checks if article has uploaded master image for selected picture
@@ -5107,7 +5105,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     /**
      * Set needed parameters to article list object like language.
      *
-     * @param oxBase $baseObject             article list template object.
+     * @param oxBase    $baseObject          article list template object.
      * @param bool|null $forceCoreTableUsage if true forces core table use, default is false [optional]
      */
     protected function updateVariantsBaseObject($baseObject, $forceCoreTableUsage = null)
@@ -5122,5 +5120,4 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     {
         $oManufacturer->setReadOnly(true);
     }
-
 }

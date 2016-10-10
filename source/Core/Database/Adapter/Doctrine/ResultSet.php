@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 
 namespace OxidEsales\Eshop\Core\Database\Adapter\Doctrine;
@@ -79,7 +79,6 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     {
         $this->getStatement()->closeCursor();
         $this->fields = array();
-        // $this->statement = false;
     }
 
     /**
@@ -123,7 +122,9 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     }
 
     /**
-     * @inheritdoc
+     * Returns an external iterator.
+     *
+     * @return Statement The Statment class implements Traversable
      */
     public function getIterator()
     {
@@ -173,11 +174,13 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     }
 
     /**
-     * @inheritdoc
+     * Count elements of an object
+     * This method is executed when using the count() function on an object implementing Countable.
+     *
+     *  @return int The number of rows retrieved by the current statement.
      */
     public function count()
     {
         return $this->getStatement()->rowCount();
     }
-
 }

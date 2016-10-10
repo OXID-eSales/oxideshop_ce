@@ -526,8 +526,6 @@ class ShopControl extends \oxSuperCfg
     /**
      * This function is only executed one time here we perform checks if we
      * only need once per session.
-     *
-     * @return null
      */
     protected function _runOnce()
     {
@@ -713,7 +711,8 @@ class ShopControl extends \oxSuperCfg
     /**
      * If the database connection has not been configured, redirect to the OXID eShop setup wizard
      */
-    protected function handleDbNotConfiguredException () {
+    protected function handleDbNotConfiguredException()
+    {
         /**
          * The shop standard redirect mechanism needs a working database connection.
          * Use a special method here.
@@ -774,7 +773,7 @@ class ShopControl extends \oxSuperCfg
      */
     protected function logException(\Exception $exception)
     {
-        if ( ! $exception instanceof oxException) {
+        if (!$exception instanceof oxException) {
             $exception = new oxException($exception->getMessage(), $exception->getCode(), $exception);
         }
         $exception->debugOut();
@@ -816,6 +815,8 @@ class ShopControl extends \oxSuperCfg
      * This method forms part of the exception handling process. Any further exceptions must be caught.
      *
      * @param DatabaseConnectionException $exception Database connection exception to report
+     *
+     * @return null
      */
     protected function reportDatabaseConnectionException(DatabaseConnectionException $exception)
     {
@@ -865,7 +866,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Send an offline warning to the shop owner.
      * Currently an email is sent to the email address configured as 'sAdminEmail' in the eShop config file.
-     
+     *
      * This method forms part of the exception handling process. Any further exceptions must be caught.
      *
      * @param StandardException $exception

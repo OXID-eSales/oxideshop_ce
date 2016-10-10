@@ -56,5 +56,4 @@ interface ResultSetInterface extends \Traversable, \Countable
      * @return integer Returns the number of columns in the result set represented by the PDOStatement object.
      */
     public function fieldCount();
-
 }

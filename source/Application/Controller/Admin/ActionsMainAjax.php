@@ -26,6 +26,7 @@ use oxRegistry;
 use oxDb;
 use oxField;
 use Exception;
+
 /**
  * Class controls article assignment to action
  */

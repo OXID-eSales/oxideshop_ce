@@ -233,7 +233,7 @@ class Actions extends \oxI18n
 
     /**
      * Fetch the oxobjectid of the article corresponding this action.
-     * 
+     *
      * @return string The id of the oxobjectid belonging to this action.
      */
     protected function fetchBannerArticleId()

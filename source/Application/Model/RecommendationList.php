@@ -225,7 +225,6 @@ class RecommendationList extends \oxBase implements \oxIUrl
     {
         $blAdd = false;
         if ($sOXID) {
-
             // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
             $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 
@@ -315,7 +314,6 @@ class RecommendationList extends \oxBase implements \oxIUrl
         $aPrevIds = array();
         $sArtView = getViewName('oxarticles');
         foreach ($oRecommList as $key => $oRecomm) {
-
             if (count($aPrevIds)) {
                 $sNegateSql = " AND $sArtView.oxid not in ( '" . implode("','", $aPrevIds) . "' ) ";
             } else {
@@ -380,7 +378,6 @@ class RecommendationList extends \oxBase implements \oxIUrl
         $iCnt = 0;
         $sSelect = $this->_getSearchSelect($sSearchStr);
         if ($sSelect) {
-
             $sPartial = substr($sSelect, strpos($sSelect, ' from '));
             $sSelect = "select count( distinct rl.oxid ) $sPartial ";
             $iCnt = oxDb::getDb()->getOne($sSelect);

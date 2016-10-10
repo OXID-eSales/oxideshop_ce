@@ -164,7 +164,7 @@ class ActionList extends \oxList
 
     /**
      * Fetch the information, if there is an active promotion.
-     * 
+     *
      * @return string One, if there is an active promotion.
      */
     protected function fetchExistsActivePromotion()

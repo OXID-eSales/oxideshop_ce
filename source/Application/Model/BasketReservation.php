@@ -288,7 +288,7 @@ class BasketReservation extends \oxSuperCfg
         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 
         $database->startTransaction();
-        try{
+        try {
             $iStartTime = oxRegistry::get("oxUtilsDate")->getTime() - (int) $this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
             $oRs = $database->select("select oxid from oxuserbaskets where oxtitle = 'reservations' and oxupdate <= $iStartTime limit $iLimit", false);

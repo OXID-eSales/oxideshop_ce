@@ -176,7 +176,6 @@ class ArticleExtendAjax extends \ajaxListComponent
         }
 
         if (isset($categoriesToAdd) && is_array($categoriesToAdd)) {
-
             oxDb::getDb()->startTransaction();
             try {
                 $database = oxDb::getDb();

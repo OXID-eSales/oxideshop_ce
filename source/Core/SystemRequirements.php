@@ -892,7 +892,6 @@ class SystemRequirements
                 $iModStat = ($iMemLimit >= $this->_getBytes($sDefLimit)) ? 1 : 0;
                 $iModStat = $iModStat ? (($iMemLimit >= $this->_getBytes($sRecLimit)) ? 2 : $iModStat) : $iModStat;
             }
-
         } else {
             $iModStat = -1;
         }
@@ -1176,7 +1175,7 @@ class SystemRequirements
 
     /**
      * Fetch the active template blocks for the active shop and the active theme.
-     * 
+     *
      * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
      *
      * @return ResultSetInterface The active template blocks for the active shop and the active theme.

@@ -176,6 +176,8 @@ class CategoryList extends \oxList
      * Get activity related fields
      *
      * @param string $tableName
+     *
+     * @return string SQL snippet
      */
     protected function getActivityFieldsSql($tableName)
     {
@@ -317,7 +319,6 @@ class CategoryList extends \oxList
 
         // PostProcessing
         if (!$this->isAdmin()) {
-
             // remove inactive categories
             $this->_ppRemoveInactiveCategories();
 
@@ -443,8 +444,7 @@ class CategoryList extends \oxList
                 is_array($aRemoveList[$oCat->oxcategories__oxrootid->value])
             ) {
                 foreach ($aRemoveList[$oCat->oxcategories__oxrootid->value] as $iLeft => $iRight) {
-                    if (
-                        ($iLeft <= $oCat->oxcategories__oxleft->value)
+                    if (($iLeft <= $oCat->oxcategories__oxleft->value)
                         && ($iRight >= $oCat->oxcategories__oxleft->value)
                     ) {
                         // this is a child in an inactive range (parent already gone)
@@ -492,7 +492,6 @@ class CategoryList extends \oxList
         foreach ($oContentList as $sCatId => $aContent) {
             if (array_key_exists($sCatId, $this->_aArray)) {
                 $this[$sCatId]->setContentCats($aContent);
-
             }
         }
     }
@@ -529,7 +528,6 @@ class CategoryList extends \oxList
 
         $aTree = array();
         foreach ($this->_aArray as $oCat) {
-
             $aTree[$oCat->getId()] = $oCat;
             $aSubCats = $oCat->getSubCats();
             if (count($aSubCats) > 0) {
@@ -598,7 +596,6 @@ class CategoryList extends \oxList
                 }
             }
             $database->commitTransaction();
-
         } catch (Exception $exception) {
             $database->rollbackTransaction();
             throw $exception;
@@ -616,6 +613,10 @@ class CategoryList extends \oxList
 
     /**
      * Get Initial updateCategoryTree sql condition
+     *
+     * @param bool $blVerbose
+     *
+     * @return string
      */
     protected function getInitialUpdateCategoryTreeCondition($blVerbose = false)
     {

@@ -22,10 +22,10 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use oxDb;
+use oxPrice;
 use oxRegistry;
 use stdClass;
-use oxPrice;
-use oxDb;
 
 /**
  * General utils class
@@ -403,7 +403,7 @@ class Utils extends \oxSuperCfg
      * to string before performing array search.
      *
      * @param string $needle
-     * @param array $haystack
+     * @param array  $haystack
      *
      * @return mixed
      */
@@ -1011,8 +1011,8 @@ class Utils extends \oxSuperCfg
     }
 
     /**
-     * Fetch the oxId from the oxshops table. 
-     * 
+     * Fetch the oxId from the oxshops table.
+     *
      * @param string $oxId The oxId of the shop.
      *
      * @return mixed The oxId of the shop with the given oxId.
@@ -1160,8 +1160,6 @@ class Utils extends \oxSuperCfg
      * message might be whole content like 404 page.
      *
      * @param string $sMsg message to show
-     *
-     * @return null dies
      */
     public function showMessageAndExit($sMsg)
     {
@@ -1380,7 +1378,6 @@ class Utils extends \oxSuperCfg
             $sLogMsg = "----------------------------------------------\n{$sText}" . (($blNewline) ? "\n" : "") . "\n";
             $this->writeToLog($sLogMsg, "log.txt");
         }
-
     }
 
     /**

@@ -22,17 +22,17 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use Exception;
+use oxConnectionException;
+use oxCookieException;
 use oxDb;
 use oxException;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
-use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use oxConnectionException;
-use oxCookieException;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
 use stdClass;
-use Exception;
 
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');
@@ -740,8 +740,8 @@ class Config extends SuperConfig
      * Checks if passed parameter has special chars and replaces them.
      * Returns checked value.
      *
-     * @param mixed &$value value to process escaping
-     * @param array $raw    keys of unescaped values
+     * @param mixed $value value to process escaping
+     * @param array $raw   keys of unescaped values
      *
      * @return mixed
      */
@@ -1013,8 +1013,8 @@ class Config extends SuperConfig
     /**
      * Returns widget start non SSL URL including widget.php and sid.
      *
-     * @param int  $languageId language
-     * @param bool $inAdmin    if admin
+     * @param int   $languageId    language
+     * @param bool  $inAdmin       if admin
      * @param array $urlParameters parameters which should be added to URL.
      *
      * @return string
@@ -1878,7 +1878,7 @@ class Config extends SuperConfig
     /**
      * Decodes and returns database value
      *
-     * @param string $type      parameter type
+     * @param string $type       parameter type
      * @param mixed  $mOrigValue parameter db value
      *
      * @return mixed
@@ -2149,7 +2149,7 @@ class Config extends SuperConfig
      * #680 per language another URL
      *
      * @param integer $lang Language id.
-     * @param bool    $ssl Whether to use ssl.
+     * @param bool    $ssl  Whether to use ssl.
      *
      * @return null|string
      */
@@ -2185,7 +2185,6 @@ class Config extends SuperConfig
      *
      * @param oxException $ex message to show on exit
      *
-     * @return bool
      */
     protected function _handleDbConnectionException($ex)
     {

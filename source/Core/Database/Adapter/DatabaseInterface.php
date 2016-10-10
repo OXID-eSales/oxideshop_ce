@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link         http://www.oxid-esales.com
  * @copyright (C)OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version      OXID eShop CE
  */
 
 namespace OxidEsales\Eshop\Core\Database\Adapter;
@@ -130,6 +130,7 @@ interface DatabaseInterface
      * Get an array with the values of the first row of a given sql SELECT or SHOW statement .
      * Returns an empty array for any other statement.
      * The returned value depends on the fetch mode.
+     *
      * @see DatabaseInterface::setFetchMode() for how to set the fetch mode
      *
      * The keys of the array may be numeric, strings or both, depending on the FETCH_MODE_* of the connection.
@@ -147,12 +148,12 @@ interface DatabaseInterface
      * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $sqlSelect  The sql select statement we want to execute.
+     * @param string $query      The sql select statement we want to execute.
      * @param array  $parameters Array of parameters, for the given sql statement.
      *
      * @return array The row, we selected with the given sql statement.
      */
-    public function getRow($sqlSelect, $parameters = array());
+    public function getRow($query, $parameters = array());
 
     /**
      * Return the first column of all rows of the results of a given sql SELECT or SHOW statement as an numeric array.
@@ -167,14 +168,14 @@ interface DatabaseInterface
      * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $sqlSelect  The sql select statement
+     * @param string $query      The sql select statement
      * @param array  $parameters The parameters array.
      *
      * @throws DatabaseException
      *
      * @return array The values of the first column of a corresponding sql query.
      */
-    public function getCol($sqlSelect, $parameters = array());
+    public function getCol($query, $parameters = array());
 
     /**
      * Get an multi-dimensional array of arrays with the values of the all rows of a given sql SELECT or SHOW statement.
@@ -223,14 +224,14 @@ interface DatabaseInterface
      * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $sqlSelect  The sql select statement
+     * @param string $query      The sql select statement
      * @param array  $parameters The parameters array for the given query.
      *
      * @throws DatabaseException The exception, that can occur while executing the sql statement.
      *
      * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
-    public function select($sqlSelect, $parameters = array());
+    public function select($query, $parameters = array());
 
     /**
      * Return the results of a given sql SELECT or SHOW statement limited by a LIMIT clause as a ResultSet.
@@ -251,7 +252,7 @@ interface DatabaseInterface
      * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $sqlSelect  The sql select statement
+     * @param string $query      The sql select statement
      * @param int    $rowCount   Maximum number of rows to return
      * @param int    $offset     Offset of the first row to return
      * @param array  $parameters The parameters array.
@@ -260,7 +261,8 @@ interface DatabaseInterface
      *
      * @return ResultSetInterface The result of the given query.
      */
-    public function selectLimit($sqlSelect, $rowCount = -1, $offset = -1, $parameters = array());
+    public function selectLimit($query, $rowCount = -1, $offset = -1, $parameters = array());
+
     /**
      * Execute read statements like SELECT or SHOW and return the results as a ResultSet.
      * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.

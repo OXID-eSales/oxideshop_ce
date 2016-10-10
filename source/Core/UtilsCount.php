@@ -229,7 +229,7 @@ class UtilsCount extends \oxSuperCfg
      * Returns the query result as a two dimensional associative array.
      * The keys of the first level are the firsts value of each row.
      * The values of the first level arrays with numeric key that hold the all the values of each row but the first one,
-     * which is used a a key in the first level.     
+     * which is used a a key in the first level.
      *
      * @param string $query
      * @param array  $parameters

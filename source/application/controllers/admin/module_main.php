@@ -69,6 +69,12 @@ class Module_Main extends oxAdminDetails
      */
     public function activateModule()
     {
+        if ($this->getConfig()->isDemoShop()) {
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
+
+            return;
+        }
+
         $sModule = $this->getEditObjectId();
         /** @var oxModule $oModule */
         $oModule = oxNew('oxModule');
@@ -99,6 +105,12 @@ class Module_Main extends oxAdminDetails
      */
     public function deactivateModule()
     {
+        if ($this->getConfig()->isDemoShop()) {
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
+
+            return;
+        }
+
         $sModule = $this->getEditObjectId();
         /** @var oxModule $oModule */
         $oModule = oxNew('oxModule');

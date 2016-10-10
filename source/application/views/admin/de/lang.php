@@ -783,6 +783,7 @@ $aLang = array(
 'MODULE_PROBLEMATIC_FILES'                                 => 'Problematische Dateien',
 'MODULE_AUTHOR'                                            => 'Autor',
 'MODULE_VERSION'                                           => 'Version',
+'MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE'               => 'Hinweis: Im Demoshop-Modus können Module nicht aktiviert oder deaktiviert werden.',
 'MODULE_ACTIVATE'                                          => 'Aktivieren',
 'MODULE_DEACTIVATE'                                        => 'Deaktivieren',
 'MODULE_DRAGANDDROP'                                       => 'Einträge ziehen, um Reihenfolge der Module zu ändern. Geänderte Reihenfolge speichern.',

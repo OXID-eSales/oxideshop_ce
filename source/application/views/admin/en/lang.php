@@ -785,6 +785,7 @@ $aLang = array(
 'MODULE_PROBLEMATIC_FILES'                                 => 'Problematic files',
 'MODULE_AUTHOR'                                            => 'Author',
 'MODULE_VERSION'                                           => 'Version',
+'MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE'               => "Please note: modules can't be activated or deactivated in demo shop mode.",
 'MODULE_ACTIVATE'                                          => 'Activate',
 'MODULE_DEACTIVATE'                                        => 'Deactivate',
 'MODULE_DRAGANDDROP'                                       => 'Drag items to change modules order. After changing order press Save button to save current modules order.',

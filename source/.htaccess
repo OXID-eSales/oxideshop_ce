@@ -54,7 +54,7 @@
     deny from all
 </FilesMatch>
 
-# Prevent .ht* files from being sended to outside requests
+# Prevent .ht* files from being sent to outside requests
 <Files ~ "^\.ht">
     Order allow,deny
     Deny from all

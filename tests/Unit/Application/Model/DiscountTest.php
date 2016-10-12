@@ -185,6 +185,79 @@ class DiscountTest extends \OxidTestCase
     }
 
     /**
+     * Saving the Discount record with the field oxsort set to NULL will do an automatic increment of oxsort,
+     */
+    public function testSaveOxSortNull()
+    {
+        $id = '_testSaveOxSortNull';
+        $shopId = 1;
+
+        $discount = oxNew('oxDiscount');
+        $discount->setId($id);
+        $discount->oxdiscount__oxtitle = new oxField($id);
+        $discount->oxdiscount__oxsort = null;
+        $discount->oxdiscount__oxshopid = new oxField($shopId, oxField::T_RAW);
+        $discount->save();
+
+        $oxsort = $discount->oxdiscount__oxsort->value;
+        $this->assertGreaterThan(0, $oxsort, 'The value of oxsort must be greater than the default value 0');
+    }
+
+    /**
+     * Saving the Discount record with the field oxsort set to a non numeric value will trigger an InputException
+     */
+    public function testSaveOxSortNotNumeric()
+    {
+        $this->setExpectedException('OxidEsales\Eshop\Core\Exception\InputException', 'DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
+
+        $id = '_testSaveOxSortNotNumeric';
+        $shopId = 1;
+
+        $discount = oxNew('oxDiscount');
+        $discount->setId($id);
+        $discount->oxdiscount__oxtitle = new oxField($id);
+        $discount->oxdiscount__oxsort = new oxField('NotNumeric');
+        $discount->oxdiscount__oxshopid = new oxField($shopId, oxField::T_RAW);
+
+        $discount->save();
+    }
+
+    /**
+     * Saving the Discount record with the field oxsort set to a duplicate value will trigger an InputException
+     */
+    public function testSaveOxSortNotUnique()
+    {
+        $this->setExpectedException('OxidEsales\Eshop\Core\Exception\InputException', 'DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
+        $oxSort = 1;
+
+       /** Save the first record */
+        $id_1 = '_testSaveOxSortNotUnique_1';
+        $shopId = 1;
+
+        $discount = oxNew('oxDiscount');
+        $discount->setId($id_1);
+        $discount->oxdiscount__oxtitle = new oxField($id_1);
+        $discount->oxdiscount__oxsort = new oxField($oxSort, oxField::T_RAW);
+        $discount->oxdiscount__oxshopid = new oxField($shopId, oxField::T_RAW);
+
+        $discount->save();
+
+        /**
+         * Saving the second record with oxsort set to the same value will trigger an InputException
+         */
+        $id_2 = '_testSaveOxSortNotUnique_2';
+        $shopId = 1;
+
+        $discount = oxNew('oxDiscount');
+        $discount->setId($id_2);
+        $discount->oxdiscount__oxtitle = new oxField($id_2);
+        $discount->oxdiscount__oxsort = new oxField($oxSort, oxField::T_RAW);
+        $discount->oxdiscount__oxshopid = new oxField($shopId, oxField::T_RAW);
+
+        $discount->save();
+    }
+
+    /**
      * When article base price is higher than discount priceTo - discount should not be valid
      */
     public function testIsForArticle_ArticleBasePriceTooLow()
@@ -999,5 +1072,17 @@ class DiscountTest extends \OxidTestCase
         $this->assertTrue($oDiscount->isForBundleItem($oParentProduct));
         $this->assertTrue($oDiscount->isForBundleItem($oProduct));
         $this->assertFalse($oDiscount->isForBundleItem($oUnrelatedProduct));
+    }
+
+    public function testGetNextOxsortReturnsIncrementedValue() {
+        $shopId = 1;
+        $query = 'SELECT MAX(oxsort) FROM oxdiscount';
+        $currentValue = oxDb::getDb()->getOne($query, [$shopId]);
+
+        $oDiscount = oxNew('oxDiscount');
+        $incrementedValue = $oDiscount->getNextOxsort($shopId);
+
+        $this->assertGreaterThan($currentValue, $incrementedValue);
+
     }
 }

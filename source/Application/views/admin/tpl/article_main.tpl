@@ -66,13 +66,7 @@ window.onload = function ()
                     </td>
                   </tr>
                   [{/if}]
-                  [{if $invalid_tags}]
-                  <tr>
-                    <td colspan="2">
-                      <div class="errorbox">[{oxmultilang ident="ARTICLE_MAIN_INVALIDTAGSFOUND"}]: [{$invalid_tags}]</div>
-                    </td>
-                  </tr>
-                  [{/if}]
+                  [{block name="admin_article_main_extended_errorbox"}][{/block}]
                   [{if $oxparentid}]
                   <tr>
                     <td class="edittext" width="120">
@@ -179,15 +173,7 @@ window.onload = function ()
                     </td>
                   </tr>
 
-                  <tr>
-                    <td class="edittext">
-                      [{oxmultilang ident="ARTICLE_MAIN_TAGS"}]&nbsp;
-                    </td>
-                    <td class="edittext">
-                      <input type="text" class="editinput" size="32" maxlength="255" name="editval[tags]" value="[{$edit->tags}]">
-                      [{oxinputhelp ident="HELP_ARTICLE_MAIN_TAGS"}]
-                    </td>
-                  </tr>
+                  [{block name="admin_article_main_extended"}][{/block}]
 
                   <tr>
                     <td class="edittext">

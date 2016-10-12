@@ -23,6 +23,7 @@ namespace Unit\Application\Controller;
 
 use \oxField;
 use \oxException;
+use OxidEsales\Eshop\Core\Registry;
 use \oxTestModules;
 
 /**
@@ -33,22 +34,19 @@ class CmpShopTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_shop::render()
-     *
-     * @return null
      */
     public function testRenderNoActiveShop()
     {
-        $sRedirUrl = $this->getConfig()->getShopMainUrl() . 'offline.html';
-        $this->setExpectedException('oxException', $sRedirUrl);
-
         $oView = $this->getMock("oxView", array("getClassName"));
         $oView->expects($this->once())->method('getClassName')->will($this->returnValue("test"));
 
         $oShop = oxNew('oxShop');
         $oShop->oxshops__oxactive = new oxField(0);
 
-        oxTestModules::addFunction('oxUtils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new oxException($url);}');
-
+        $oUtils = $this->getMock('oxUtils', array('showOfflinePage'));
+        $oUtils->expects($this->once())->method('showOfflinePage');
+        Registry::set('oxUtils', $oUtils);
+        
         $oConfig = $this->getMock("oxConfig", array("getConfigParam", "getActiveView", "getActiveShop"));
         $oConfig->expects($this->once())->method('getActiveView')->will($this->returnValue($oView));
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));
@@ -61,4 +59,3 @@ class CmpShopTest extends \OxidTestCase
         $oCmp->render();
     }
 }
-

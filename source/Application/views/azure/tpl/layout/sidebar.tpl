@@ -36,9 +36,6 @@
     [{/block}]
 
     [{block name="sidebar_tags"}]
-        [{if $oView->showTags() && $oView->getClassName() ne "details" && $oView->getClassName() ne "alist" && $oView->getClassName() ne "suggest" && $oView->getClassName() ne "tags"}]
-            [{oxid_include_widget nocookie=1 cl="oxwTagCloud" blShowBox="1" noscript=1}]
-        [{/if}]
     [{/block}]
 
     [{block name="sidebar_news"}]

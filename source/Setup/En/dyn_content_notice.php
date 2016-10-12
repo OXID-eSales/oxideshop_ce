@@ -34,11 +34,7 @@ require_once "lang.php";
 </head>    
 
 <body>
-     <p>
-     <?php
-        echo $aLang['LOAD_DYN_CONTENT_NOTICE'];
-     ?>
-     </p>
+     <p><?php echo $aLang['LOAD_DYN_CONTENT_NOTICE']; ?></p>
 </body>
     
 </html>

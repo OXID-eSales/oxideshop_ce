@@ -14,11 +14,11 @@
         [{foreach from=$ocat->getContentCats() item=oTopCont name=MoreTopCms}]
             [{assign var="iCatCnt" value=$iCatCnt+1}]
             [{if $iCatCnt <= $oView->getTopNavigationCatCnt()}]
-                <li><a href="[{$oTopCont->getLink()}]">[{$oTopCont->oxcontents__oxtitle->value}]</a></li>
+                <li [{if $homeSelected == 'false' && $oTopCont->expanded}]class="current"[{/if}]><a [{if $homeSelected == 'false' && $oTopCont->expanded}]class="current"[{/if}] href="[{$oTopCont->getLink()}]">[{$oTopCont->oxcontents__oxtitle->value}]</a></li>
             [{else}]
                 [{assign var="blShowMore" value=true}]
                 [{capture append="moreLinks"}]
-                    <li><a href="[{$oTopCont->getLink()}]">[{$oTopCont->oxcontents__oxtitle->value}]</a></li>
+                    <li [{if $homeSelected == 'false' && $oTopCont->expanded}]class="current"[{/if}]><a [{if $homeSelected == 'false' && $oTopCont->expanded}]class="current"[{/if}] href="[{$oTopCont->getLink()}]">[{$oTopCont->oxcontents__oxtitle->value}]</a></li>
                 [{/capture}]
             [{/if}]
         [{/foreach}]

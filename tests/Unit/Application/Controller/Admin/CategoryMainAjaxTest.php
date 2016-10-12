@@ -45,7 +45,6 @@ class CategoryMainAjaxTest extends \OxidTestCase
         if ($this->getConfig()->getEdition() !== 'EE') {
             $this->setArticleViewTable('oxv_oxarticles_de');
             $this->setObject2CategoryViewTable('oxobject2category');
-            $this->setShopIdTest('oxbaseshop');
         }
 
         $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove1', oxtitle='_testArticle1', oxshopid='" . $this->getShopIdTest() . "'", 'oxarticles');

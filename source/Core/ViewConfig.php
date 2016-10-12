@@ -25,7 +25,6 @@ namespace OxidEsales\Eshop\Core;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use oxRegistry;
 
-
 /**
  * View config data access class. Keeps most
  * of getters needed for formatting various urls,
@@ -125,9 +124,7 @@ class ViewConfig extends \oxSuperCfg
         $shopConfig = $this->getConfig();
         $isSeoActive = oxRegistry::getUtils()->seoIsActive();
 
-        $isStartRequired = $isSeoActive && ($baseLanguage != $shopConfig->getConfigParam('sDefaultLang'));
-
-        return $isStartRequired;
+        return $isSeoActive && ($baseLanguage != $shopConfig->getConfigParam('sDefaultLang'));
     }
 
     /**
@@ -180,10 +177,9 @@ class ViewConfig extends \oxSuperCfg
         $sTplName = $this->getActTplName();
         $sContentLoadId = $this->getActContentLoadId();
         $sSearchParam = $this->getActSearchParam();
-        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-        $sSearchTag = $this->getActSearchTag();
-        // END deprecated
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         $sRecommId = $this->getActRecommendationId();
+        // END deprecated
         $sListType = $this->getActListType();
 
         $oConfig = $this->getConfig();
@@ -194,10 +190,9 @@ class ViewConfig extends \oxSuperCfg
                . ($sArtnid ? "&amp;anid={$sArtnid}" : '')
                . ($sMnfid ? "&amp;mnid={$sMnfid}" : '')
                . ($sSearchParam ? "&amp;searchparam={$sSearchParam}" : '')
-                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-               . ($sSearchTag ? "&amp;searchtag={$sSearchTag}" : '')
-                // END deprecated
+               // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
                . ($sRecommId ? "&amp;recommid={$sRecommId}" : '')
+               // END deprecated
                . ($sListType ? "&amp;listtype={$sListType}" : '')
                . "&amp;fnc=logout"
                . ($sTplName ? "&amp;tpl=" . basename($sTplName) : '')
@@ -270,19 +265,9 @@ class ViewConfig extends \oxSuperCfg
     }
 
     /**
-     * Returns active search tag parameter
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @return string
-     */
-    public function getActSearchTag()
-    {
-        return oxRegistry::getConfig()->getRequestParameter('searchtag');
-    }
-
-    /**
      * Returns active recommendation id parameter
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return string
      */
@@ -433,7 +418,7 @@ class ViewConfig extends \oxSuperCfg
     public function getSelfLink()
     {
         if (($sValue = $this->getViewConfigParam('selflink')) === null) {
-            $sValue = $this->getConfig()->getShopHomeURL();
+            $sValue = $this->getConfig()->getShopHomeUrl();
             $this->setViewConfigParam('selflink', $sValue);
         }
 
@@ -468,7 +453,6 @@ class ViewConfig extends \oxSuperCfg
     public function getBaseDir()
     {
         if (($sValue = $this->getViewConfigParam('basedir')) === null) {
-
             if ($this->getConfig()->isSsl()) {
                 $sValue = $this->getConfig()->getSSLShopURL();
             } else {
@@ -534,7 +518,7 @@ class ViewConfig extends \oxSuperCfg
     public function getBasketLink()
     {
         if (($sValue = $this->getViewConfigParam('basketlink')) === null) {
-            $sValue = $this->getConfig()->getShopHomeURL() . 'cl=basket';
+            $sValue = $this->getConfig()->getShopHomeUrl() . 'cl=basket';
             $this->setViewConfigParam('basketlink', $sValue);
         }
 
@@ -686,8 +670,7 @@ class ViewConfig extends \oxSuperCfg
     }
 
     /**
-     * Returns dynamic (language related) image url
-     * Left for compatibility reasons for a while. Will be removed in future
+     * Returns url to pictures directory.
      *
      * @return string
      */
@@ -891,6 +874,8 @@ class ViewConfig extends \oxSuperCfg
 
     /**
      * Returns config param "bl_showListmania" value
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return bool
      */
@@ -1097,9 +1082,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getRemoteAccessToken()
     {
-        $sRaToken = oxRegistry::getSession()->getRemoteAccessToken();
-
-        return $sRaToken;
+        return oxRegistry::getSession()->getRemoteAccessToken();
     }
 
     /**
@@ -1166,9 +1149,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getPasswordLength()
     {
-        $inputValidator = oxRegistry::get('oxInputValidator');
-
-        return $inputValidator->getPasswordLength();
+        return oxRegistry::get('oxInputValidator')->getPasswordLength();
     }
 
     /**
@@ -1278,7 +1259,6 @@ class ViewConfig extends \oxSuperCfg
     public function getViewThemeParam($sName)
     {
         $sValue = false;
-
         if ($this->getConfig()->isThemeOption($sName)) {
             $sValue = $this->getConfig()->getConfigParam($sName);
         }
@@ -1403,13 +1383,7 @@ class ViewConfig extends \oxSuperCfg
      */
     private function _moduleExists($sModuleId, $aModuleVersions)
     {
-        $blModuleExists = false;
-
-        if (in_array($sModuleId, array_keys($aModuleVersions) )) {
-            $blModuleExists = true;
-        }
-
-        return $blModuleExists;
+        return (in_array($sModuleId, array_keys($aModuleVersions)));
     }
 
     /**
@@ -1421,13 +1395,9 @@ class ViewConfig extends \oxSuperCfg
      */
     private function _isModuleEnabled($sModuleId)
     {
-        $blModuleIsActive = false;
-
         $aDisabledModules = $this->getConfig()->getConfigParam('aDisabledModules');
-        if (!(is_array($aDisabledModules) && in_array($sModuleId, $aDisabledModules))) {
-            $blModuleIsActive = true;
-        }
-        return $blModuleIsActive;
+
+        return !in_array($sModuleId, (array) $aDisabledModules);
     }
 
     /**
@@ -1464,5 +1434,53 @@ class ViewConfig extends \oxSuperCfg
     public function getEdition()
     {
         return $this->getConfig()->getEdition();
+    }
+
+    /**
+     * Hook for modules.
+     * Returns array of params => values which are used in hidden forms and as additional url params.
+     * NOTICE: this method SHOULD return raw (non encoded into entities) parameters, because values
+     * are processed by htmlentities() to avoid security and broken templates problems
+     *
+     * @return array
+     */
+    public function getAdditionalNavigationParameters()
+    {
+        return array();
+    }
+
+    /**
+     * Hook for modules.
+     * Template variable getter. Returns additional params for url
+     *
+     * @return string
+     */
+    public function getAdditionalParameters()
+    {
+        return '';
+    }
+
+    /**
+     * Hook for modules.
+     * Collects additional _GET parameters used by eShop
+     *
+     * @return string
+     */
+    public function addRequestParameters()
+    {
+        return '';
+    }
+
+    /**
+     * Hook for modules.
+     * returns additional url params for dynamic url building
+     *
+     * @param string $listType
+     *
+     * @return string
+     */
+    public function getDynUrlParameters($listType)
+    {
+        return '';
     }
 }

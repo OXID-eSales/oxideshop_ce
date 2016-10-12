@@ -1,21 +1,21 @@
 <?php
 /*
 /**
- * Price enter mode: netto 
+ * Price enter mode: netto
  * Price view mode:  netto
  * Product count: 2
  * VAT info: 19% Default VAT for all Products , Vat for product 7% and 8%.
- * Currency rate: 1.0 
+ * Currency rate: 1.0
  * Discounts: 2
  *  1. shop discount -10%for product 111
- *  2. shop discount 5.5% for product 1113, 1114 
- 
+ *  2. shop discount 5.5% for product 1113, 1114
+
  * Vouchers: -
- * Wrapping: + 
- * Costs VAT caclulation rule: max 
+ * Wrapping: +
+ * Costs VAT caclulation rule: max
  * Costs:
  *  1. Payment -
- *  2. Delivery - 
+ *  2. Delivery -
  *  3. TS -
  * Short description:
  * Resting Vat in Mode Neto-Neto
@@ -68,6 +68,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
 		    'oxarticles' => array ( 111 ),
+            'oxsort' => 10,
         ),
 		1 => array (
             // 10% discount for basket
@@ -78,6 +79,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
 			'oxarticles' => array ( 1112, 1113 ),
+            'oxsort' => 20,
         ),
     ),
     // TEST EXPECTATIONS

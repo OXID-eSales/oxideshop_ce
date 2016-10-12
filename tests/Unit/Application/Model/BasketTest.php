@@ -149,6 +149,7 @@ class BasketTest extends \OxidTestCase
         $this->aDiscounts[0]->oxdiscount__oxitmartid = new oxField('xxx', oxField::T_RAW);
         $this->aDiscounts[0]->oxdiscount__oxitmamount = new oxField(2, oxField::T_RAW);
         $this->aDiscounts[0]->oxdiscount__oxitmmultiple = new oxField(1, oxField::T_RAW);
+        $this->aDiscounts[0]->oxdiscount__oxsort = new oxField(9900, oxField::T_RAW);
         $this->aDiscounts[0]->save();
 
         $this->aDiscounts[1] = oxNew("oxBase");
@@ -166,6 +167,7 @@ class BasketTest extends \OxidTestCase
         $this->aDiscounts[1]->oxdiscount__oxitmartid = new oxField('xxx', oxField::T_RAW);
         $this->aDiscounts[1]->oxdiscount__oxitmamount = new oxField(2, oxField::T_RAW);
         $this->aDiscounts[1]->oxdiscount__oxitmmultiple = new oxField(1, oxField::T_RAW);
+        $this->aDiscounts[1]->oxdiscount__oxsort = new oxField(9910, oxField::T_RAW);
         $this->aDiscounts[1]->save();
 
         $this->aDiscounts[2] = oxNew("oxBase");
@@ -183,6 +185,7 @@ class BasketTest extends \OxidTestCase
         $this->aDiscounts[2]->oxdiscount__oxitmartid = new oxField('yyy', oxField::T_RAW);
         $this->aDiscounts[2]->oxdiscount__oxitmamount = new oxField(2, oxField::T_RAW);
         $this->aDiscounts[2]->oxdiscount__oxitmmultiple = new oxField(1, oxField::T_RAW);
+        $this->aDiscounts[2]->oxdiscount__oxsort = new oxField(9920, oxField::T_RAW);
         $this->aDiscounts[2]->save();
 
         // assigning discounts
@@ -718,18 +721,15 @@ class BasketTest extends \OxidTestCase
         $oBasket->setBasketUser($oUser);
         $oBasket->addToBasket('1126', 2);
         $oBasket->calculateBasket(true);
-
-        $oBasket = oxNew('oxbasket');
-        $oBasket->setBasketUser($oUser);
         $oBasket->addToBasket('1127', 2);
         $oBasket->calculateBasket(true);
 
-        //clean the basket and load again
-        $oBasket->deleteBasket();
+        //create new basket, calling load will restore basket from database
+        $oBasket = oxNew('oxbasket');
+        $oBasket->setBasketUser($oUser);
         $aContents = $oBasket->getContents();
         $this->assertEquals(0, count($aContents));
         $oBasket->load();
-
 
         $aContents = $oBasket->getContents();
         $this->assertEquals(2, count($aContents));
@@ -767,8 +767,6 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser($oUser);
-        $oBasket->calculateBasket(true);
-
         $oBasket->load();
 
         $aContents = $oBasket->getContents();

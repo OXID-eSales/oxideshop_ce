@@ -22,6 +22,10 @@
 
 namespace OxidEsales\Eshop\Application\Model;
 
+use Exception;
+use oxArticleInputException;
+use oxNoArticleException;
+use oxOutOfStockException;
 use oxField;
 use oxRegistry;
 use oxDb;
@@ -1625,7 +1629,7 @@ class Order extends \oxBase
      *
      * @param bool $blToday if true calculates only current day orders
      *
-     * @return int
+     * @return double
      */
     public function getOrderSum($blToday = false)
     {

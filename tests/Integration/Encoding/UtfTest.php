@@ -1787,32 +1787,6 @@ class UtfTest extends \OxidTestCase
         $this->assertEquals($sResult, $oView->UNITremoveDuplicatedWords($sValue));
     }
 
-    public function testTagGetTitle()
-    {
-        $sValue = 'литов';
-        $sResult = 'Литов';
-
-        $oView = $this->getProxyClass('tag');
-        $oView->setNonPublicVar("_sTag", $sValue);
-        $this->assertEquals($sResult, $oView->getTitle());
-    }
-
-    public function testTagGetBreadCrumb()
-    {
-        $sValue = 'Литов';
-        $sResult = 'Литов';
-
-        $oView = $this->getProxyClass('tag');
-        $oView->setNonPublicVar("_sTag", $sValue);
-
-        $aPath = array(
-            array('title' => 'Tags', 'link' => oxRegistry::get("oxSeoEncoder")->getStaticUrl($oView->getViewConfig()->getSelfLink() . 'cl=tags')),
-            array('title' => $sResult, 'link' => $oView->getCanonicalUrl())
-        );
-
-        $this->assertEquals($aPath, $oView->getBreadCrumb());
-    }
-
     public function testOxEmailIncludeImages()
     {
         oxTestModules::addFunction('oxUtilsObject', 'generateUID', '{ return "xxx"; }');

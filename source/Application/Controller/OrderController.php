@@ -181,16 +181,16 @@ class OrderController extends \oxUBase
             if ($myConfig->getConfigParam('blPsBasketReservationEnabled')) {
                 $this->getSession()->getBasketReservations()->renewExpiration();
                 if (!$oBasket || ($oBasket && !$oBasket->getProductsCount())) {
-                    oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=basket', true, 302);
+                    oxRegistry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', true, 302);
                 }
             }
 
             // can we proceed with ordering ?
             $oUser = $this->getUser();
             if (!$oUser && ($oBasket && $oBasket->getProductsCount() > 0)) {
-                oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=basket', false, 302);
+                oxRegistry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', false, 302);
             } elseif (!$oBasket || !$oUser || ($oBasket && !$oBasket->getProductsCount())) {
-                oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL(), false, 302);
+                oxRegistry::getUtils()->redirect($myConfig->getShopHomeUrl(), false, 302);
             }
 
             // payment is set ?
@@ -251,7 +251,6 @@ class OrderController extends \oxUBase
         // get basket contents
         $oBasket = $this->getSession()->getBasket();
         if ($oBasket->getProductsCount()) {
-
             try {
                 $oOrder = oxNew('oxorder');
 
@@ -556,10 +555,7 @@ class OrderController extends \oxUBase
      */
     public function getBasketContentMarkGenerator()
     {
-        /** @var oxBasketContentMarkGenerator $oBasketContentMarkGenerator */
-        $oBasketContentMarkGenerator = oxNew('oxBasketContentMarkGenerator', $this->getBasket());
-
-        return $oBasketContentMarkGenerator;
+        return oxNew('oxBasketContentMarkGenerator', $this->getBasket());
     }
 
     /**

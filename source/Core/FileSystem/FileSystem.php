@@ -26,7 +26,7 @@ namespace OxidEsales\Eshop\Core\FileSystem;
  * Wrapper for actions related to file system.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class FileSystem
 {
@@ -55,10 +55,6 @@ class FileSystem
      */
     public function isReadable($filePath)
     {
-        if (is_file($filePath) && is_readable($filePath)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (is_file($filePath) && is_readable($filePath));
     }
 }

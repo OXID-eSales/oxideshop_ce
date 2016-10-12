@@ -19,6 +19,7 @@ $aData = array (
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
     ),
     'costs' => array (
@@ -83,7 +84,7 @@ $aData = array (
                             'brutto' => '59,50',
                     ),
                     'grandTotal'  => '65,21',
-            ),    
+            ),
         )
     ),
     'options' => array (

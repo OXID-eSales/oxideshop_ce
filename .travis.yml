@@ -47,5 +47,6 @@ before_script:
   # composer initiation
   - SHOP_PATH='source' SHOP_TESTS_PATH='tests' MODULES_PATH='' composer install
 
-script: vendor/bin/runtests
-
+script:
+  - vendor/bin/oe-eshop-phpcs_with_thresholds
+  - vendor/bin/runtests

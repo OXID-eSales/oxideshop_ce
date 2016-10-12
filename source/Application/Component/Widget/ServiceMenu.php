@@ -53,9 +53,7 @@ class ServiceMenu extends \oxWidget
     public function getCompareItemsCnt()
     {
         $oCompare = oxNew("compare");
-        $iCompItemsCnt = $oCompare->getCompareItemsCnt();
-
-        return $iCompItemsCnt;
+        return $oCompare->getCompareItemsCnt();
     }
 
     /**

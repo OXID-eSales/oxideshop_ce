@@ -31,7 +31,7 @@ use oxUtilsObject;
  * Modules installer class.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleInstaller extends \oxSuperCfg
 {
@@ -88,10 +88,7 @@ class ModuleInstaller extends \oxSuperCfg
     public function activate(oxModule $oModule)
     {
         $blResult = false;
-
-        $sModuleId = $oModule->getId();
-
-        if ($sModuleId) {
+        if ($sModuleId = $oModule->getId()) {
             $this->_addExtensions($oModule);
             $this->_removeFromDisabledList($sModuleId);
 
@@ -122,10 +119,7 @@ class ModuleInstaller extends \oxSuperCfg
     public function deactivate(oxModule $oModule)
     {
         $blResult = false;
-
-        $sModuleId = $oModule->getId();
-
-        if ($sModuleId) {
+        if ($sModuleId = $oModule->getId()) {
             $this->_callEvent('onDeactivate', $sModuleId);
 
             $this->_addToDisabledList($sModuleId);
@@ -201,7 +195,7 @@ class ModuleInstaller extends \oxSuperCfg
                         }
                     }
                     if (!count($aAllModuleArray[$sClass])) {
-                        unset ($aAllModuleArray[$sClass]);
+                        unset($aAllModuleArray[$sClass]);
                     }
                 } else {
                     $aAllModuleArray[$sClass] = $aModuleChain;

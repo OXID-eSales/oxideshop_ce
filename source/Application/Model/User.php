@@ -91,6 +91,8 @@ class User extends \oxBase
     /**
      * User recommendation list
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @var oxList
      */
     protected $_oRecommList;
@@ -125,6 +127,8 @@ class User extends \oxBase
 
     /**
      * User recommlist count
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @var integer
      */
@@ -232,9 +236,11 @@ class User extends \oxBase
             case 'iCntWishListArticles':
                 return $this->_iCntWishListArticles = $this->getWishListArtCnt();
                 break;
+            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             case 'iCntRecommLists':
                 return $this->_iCntRecommLists = $this->getRecommListsCount();
                 break;
+            // END deprecated
             case 'oAddresses':
                 return $this->getUserAddresses();
                 break;
@@ -434,11 +440,9 @@ class User extends \oxBase
      * Sets in the array oxuser::_aAddresses selected address.
      * Returns user selected address object.
      *
-     * @param bool $sWishId wishlist user id
-     *
      * @return object $oSelectedAddress
      */
-    public function getSelectedAddress($sWishId = false)
+    public function getSelectedAddress()
     {
         if ($this->_oSelAddress !== null) {
             return $this->_oSelAddress;
@@ -592,21 +596,21 @@ class User extends \oxBase
             $sOXIDQuoted = $oDb->quote($sOXID);
 
             // deleting stored payment, address, group dependencies, remarks info
-            $rs = $oDb->execute("delete from oxaddress where oxaddress.oxuserid = {$sOXIDQuoted}");
-            $rs = $oDb->execute("delete from oxobject2group where oxobject2group.oxobjectid = {$sOXIDQuoted}");
+            $oDb->execute("delete from oxaddress where oxaddress.oxuserid = {$sOXIDQuoted}");
+            $oDb->execute("delete from oxobject2group where oxobject2group.oxobjectid = {$sOXIDQuoted}");
 
             // deleting notice/wish lists
-            $rs = $oDb->execute("delete oxuserbasketitems.* from oxuserbasketitems, oxuserbaskets where oxuserbasketitems.oxbasketid = oxuserbaskets.oxid and oxuserid = {$sOXIDQuoted}");
-            $rs = $oDb->execute("delete from oxuserbaskets where oxuserid = {$sOXIDQuoted}");
+            $oDb->execute("delete oxuserbasketitems.* from oxuserbasketitems, oxuserbaskets where oxuserbasketitems.oxbasketid = oxuserbaskets.oxid and oxuserid = {$sOXIDQuoted}");
+            $oDb->execute("delete from oxuserbaskets where oxuserid = {$sOXIDQuoted}");
 
             // deleting newsletter subscription
-            $rs = $oDb->execute("delete from oxnewssubscribed where oxuserid = {$sOXIDQuoted}");
+            $oDb->execute("delete from oxnewssubscribed where oxuserid = {$sOXIDQuoted}");
 
             // delivery and delivery sets
-            $rs = $oDb->execute("delete from oxobject2delivery where oxobjectid = {$sOXIDQuoted}");
+            $oDb->execute("delete from oxobject2delivery where oxobjectid = {$sOXIDQuoted}");
 
             // discounts
-            $rs = $oDb->execute("delete from oxobject2discount where oxobjectid = {$sOXIDQuoted}");
+            $oDb->execute("delete from oxobject2discount where oxobjectid = {$sOXIDQuoted}");
 
             $this->deleteAdditionally($sOXIDQuoted);
 
@@ -972,7 +976,7 @@ class User extends \oxBase
      * User birthday converter. Usually this data comes in array form, so before
      * writing into DB it must be converted into string
      *
-     * @param array $aData dirthday data
+     * @param array $aData birthday data
      *
      * @return string
      */
@@ -999,7 +1003,7 @@ class User extends \oxBase
             $iMonth = 1;
         }
 
-        // maximum nuber of days in month
+        // maximum number of days in month
         $iMaxDays = 31;
         switch ($iMonth) {
             case 2:
@@ -1025,7 +1029,7 @@ class User extends \oxBase
     }
 
     /**
-     * Return standart credit rating, can be set in config option iCreditRating;
+     * Return standard credit rating, can be set in config option iCreditRating;
      *
      * @return integer
      */
@@ -1098,8 +1102,6 @@ class User extends \oxBase
     {
         // assigning to newsletter
         $blSuccess = false;
-        $myConfig = $this->getConfig();
-        $mySession = $this->getSession();
 
         // user wants to get newsletter messages or no ?
         $oNewsSubscription = $this->getNewsSubscription();
@@ -1493,6 +1495,8 @@ class User extends \oxBase
      * @param string $sShopID     Shop id
      * @param string $sShopSelect Shop select
      *
+     * @deprecated v5.3 (2016-10-06); LDAP will be moved to own module.
+     *
      * @throws $oEx if user is wrong
      */
     protected function _ldapLogin($sUser, $sPassword, $sShopID, $sShopSelect)
@@ -1697,6 +1701,8 @@ class User extends \oxBase
      *
      * @param string $sOXID object ID (default is null)
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @return object oxList with oxrecommlist objects
      */
     public function getUserRecommLists($sOXID = null)
@@ -1728,6 +1734,8 @@ class User extends \oxBase
      * Returns recommlist count
      *
      * @param string $sOx object ID (default is null)
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return int
      */
@@ -1891,13 +1899,11 @@ class User extends \oxBase
     /**
      * Returns safe salt value (heximal representation)
      *
-     * @param string $sSalt any unique string value
-     *
      * @deprecated since v5.2 (2014-08-12); Use oxPasswordSaltGenerator
      *
      * @return string
      */
-    public function prepareSalt($sSalt)
+    public function prepareSalt()
     {
         /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
         $oOpenSSLFunctionalityChecker = oxNew('oxOpenSSLFunctionalityChecker');

@@ -122,6 +122,67 @@ class DbMetaDataHandler extends oxSuperCfg
         return false;
     }
 
+    /**
+     * Get the indices of a table
+     *
+     * @param string $tableName The name of the table for which we want the
+     *
+     * @return array The indices of the given table
+     */
+    public function getIndices($tableName)
+    {
+        $result = [];
+
+        if ($this->tableExists($tableName)) {
+            $result = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll("SHOW INDEX FROM $tableName");
+        }
+
+        return $result;
+    }
+
+    /**
+     * Check, if the table has an index with the given name
+     *
+     * @param string $indexName The name of the index we want to check
+     * @param string $tableName The table to check for the index
+     *
+     * @return bool Has the table the given index?
+     */
+    public function hasIndex($indexName, $tableName)
+    {
+        $result = false;
+
+        foreach ($this->getIndices($tableName) as $index) {
+            if ($indexName === $index['Column_name']) {
+                $result = true;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get the index of a given table by its name
+     *
+     * @param string $indexName The name of the index
+     * @param string $tableName The name of the table from which we want the index
+     *
+     * @return null|array The index with the given name
+     */
+    public function getIndexByName($indexName, $tableName)
+    {
+        $indices = $this->getIndices($tableName);
+
+        $result = null;
+
+        foreach ($indices as $index) {
+            if ($indexName === $index['Column_name']) {
+                $result = $index;
+            }
+        }
+
+        return $result;
+    }
 
     /**
      * Get all tables names from db. Views tables are not included in
@@ -178,13 +239,12 @@ class DbMetaDataHandler extends oxSuperCfg
         $tableSet = getLangTableName($table, $lang);
 
         $res = oxDb::getDb()->getAll("show create table {$table}");
+
         $collation = $this->getConfig()->isUtf() ? '' : 'COLLATE latin1_general_ci';
-        $sql = "CREATE TABLE `{$tableSet}` (" .
+        return "CREATE TABLE `{$tableSet}` (" .
                 "`OXID` char(32) $collation NOT NULL, " .
                 "PRIMARY KEY (`OXID`)" .
                 ") " . strstr($res[0][1], 'ENGINE=');
-
-        return $sql;
     }
 
     /**
@@ -240,7 +300,7 @@ class DbMetaDataHandler extends oxSuperCfg
 
         $tableSql = $res[0][1];
 
-        preg_match_all("/([\w]+\s+)?\bKEY\s+(`[^`]+`)?\s*\([^)]+\)/iU", $tableSql, $match);
+        preg_match_all("/([\w]+\s+)?\bKEY\s+(`[^`]+`)?\s*\([^)]+(\(\d++\))*\)/iU", $tableSql, $match);
         $index = $match[0];
 
         $usingTableSet = $tableSet ? true : false;
@@ -252,19 +312,18 @@ class DbMetaDataHandler extends oxSuperCfg
         $indexQueries = array();
         $sql = array();
         if (count($index)) {
-            foreach ($index as $indexQuery) {
+            foreach ($index as $key => $indexQuery) {
                 if (preg_match("/\([^)]*\b" . $field . "\b[^)]*\)/i", $indexQuery)) {
                     //removing index name - new will be added automaticly
                     $indexQuery = preg_replace("/(.*\bKEY\s+)`[^`]+`/", "$1", $indexQuery);
 
                     if ($usingTableSet) {
                         // replacing multiple fields to one (#3269)
-                        $indexQuery = preg_replace("/\([^\)]+\)/", "(`$newField`)", $indexQuery);
+                        $indexQuery = preg_replace("/\([^\)]+\)+/", "(`$newField`{$match[3][$key]})", $indexQuery);
                     } else {
                         //replacing previous field name with new one
                         $indexQuery = preg_replace("/\b" . $field . "\b/", $newField, $indexQuery);
                     }
-
                     $indexQueries[] = "ADD " . $indexQuery;
                 }
             }
@@ -297,9 +356,7 @@ class DbMetaDataHandler extends oxSuperCfg
             $fieldSet = $field . '_' . $lang;
         }
 
-        $this->_iCurrentMaxLangId = --$lang;
-
-        return $this->_iCurrentMaxLangId;
+        return $this->_iCurrentMaxLangId = --$lang;
     }
 
     /**
@@ -376,7 +433,22 @@ class DbMetaDataHandler extends oxSuperCfg
     public function addNewMultilangField($table)
     {
         $newLang = $this->getNextLangId();
+
         $this->ensureMultiLanguageFields($table, $newLang);
+    }
+
+    /**
+     * Ensure, that all multi language fields of the given table are present.
+     *
+     * @param string $table The table we want to assure, that the multi language fields are present.
+     */
+    public function ensureAllMultiLanguageFields($table)
+    {
+        $max = $this->getCurrentMaxLangId();
+
+        for ($index = 1; $index <= $max; $index++) {
+            $this->ensureMultiLanguageFields($table, $index);
+        }
     }
 
     /**
@@ -495,6 +567,10 @@ class DbMetaDataHandler extends oxSuperCfg
         $db = oxDb::getDb();
         $config = oxRegistry::getConfig();
 
+        $configFile = oxRegistry::get('oxConfigFile');
+        $originalSkipViewUsageStatus = $configFile->getVar('blSkipViewUsage');
+        $config->setConfigParam('blSkipViewUsage', 1);
+
         $this->safeGuardAdditionalMultiLanguageTables();
 
         $shops = $db->getAll("select * from oxshops");
@@ -515,6 +591,8 @@ class DbMetaDataHandler extends oxSuperCfg
                 $success = false;
             }
         }
+
+        $config->setConfigParam('blSkipViewUsage', $originalSkipViewUsageStatus);
 
         return $success;
     }

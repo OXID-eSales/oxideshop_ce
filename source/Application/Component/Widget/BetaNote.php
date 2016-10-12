@@ -40,7 +40,7 @@ class BetaNote extends \oxWidget
      *
      * @var string
      */
-    protected $_sBetaNoteLink = 'http://wiki.oxidforge.org/Development/Beta';
+    protected $_sBetaNoteLink = 'http://oxidforge.org/en/beta-releases.html';
 
     /**
      * Gets beta note link

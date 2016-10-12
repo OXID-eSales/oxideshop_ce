@@ -37,7 +37,7 @@
  */
 
 $aLang =  array(
-'charset'                                     => 'ISO-8859-15',
+'charset'                                     => 'UTF-8',
 
 'HELP_SHOP_SYSTEM_OTHERCOUNTRYORDER'          => 'Here you can set if orders can be made in countries for which no shipping costs are defined:' .
                                                  '<ul><li>If the setting is checked, users can order: The users are notified that they are informed about the shipping costs manually.</li>' .
@@ -66,7 +66,7 @@ $aLang =  array(
 
 'HELP_SHOP_SYSTEM_INLINEIMGEMAIL'             => 'If the setting is checked, the pictures in e-mails are sent together with the e-mail. If the setting is unchecked, the pictures are downloaded by the e-mail program when the e-mail is opened.',
 
-'HELP_SHOP_SYSTEM_SHOP_LOCATION'              => 'Please choose the market to which shop is focused. According to it, additional eCommerce Services will be loaded from OXID server. Do not forget to enable option "Load additional Information from OXID server" in Master Settings -> Core Settings -> Settings -> Administration',
+'HELP_SHOP_SYSTEM_SHOP_LOCATION'              => 'Please choose the market to which shop is focused. According to it, additional e-commerce Services will be loaded from OXID server. Do not forget to enable option "Load additional Information from OXID server" in Master Settings -> Core Settings -> Settings -> Administration',
 
 'HELP_SHOP_SYSTEM_UTILMODULE'                 => 'Please enter your custom PHP file here, which will overwrite eShop functions at shop start.',
 
@@ -104,8 +104,7 @@ $aLang =  array(
                                                  '<ul><li>oxtitle = Title</li>' .
                                                  '<li>oxshortdesc = Short description</li>' .
                                                  '<li>oxsearchkeys = Search terms entered for each product</li>' .
-                                                 '<li>oxartnum = Product number</li>' .
-                                                 '<li>oxtags    = Tags entered for each product</li></ul>',
+                                                 '<li>oxartnum = Product number</li></ul>',
 
 'HELP_SHOP_CONFIG_SORTFIELDS'                 => 'Here you can define the database fields which can be used for sorting product lists. Enter one field per row.<br>' .
                                                  'The most common entries are:' .
@@ -184,8 +183,6 @@ $aLang =  array(
 'HELP_SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE' => 'In the 4th step of the checkout process the CMS page "oxtsinternationalfees" is additionally displayed.',
 
 'HELP_SHOP_CONFIG_SHOWTSCODMESSAGE'           => 'In the 4th step of the checkout process the CMS page "oxtscodmessage" is additionally displayed.',
-
-'HELP_SHOP_CONFIG_SHOWTAGS'                   => 'If not checked, no tags will be displayed in eShop. Pages that could be called via tag URL, are not accessible.',
 
 'HELP_SHOP_CONFIG_DOWNLOADS'                  => 'Shop with downloadable products. Activate here, that products can be ordered and downloaded.',
 
@@ -271,7 +268,7 @@ $aLang =  array(
 
 'HELP_SHOP_MAIN_PRODUCTIVE'                   => 'Non-productive eShop mode is intended for eShop installation, configuration, template customization and module debugging phase. As soon as productive mode is turned <span class="warning_or_important_hint">ON</span>, the cache handling and the error reporting behavior is optimized for the live shop.<br>' .
                                                  '<span class="warning_or_important_hint">Activate this setting when the eShop is launched.</span><br>' .
-                                                 'Find other important information for going live with OXID eShop in our <a href="http://wiki.oxidforge.org/Tutorials/Check_before_going_live" target="_blank">OXIDforge</a>.',
+                                                 'Find other important information for going live with OXID eShop in our <a href="http://oxidforge.org/en/check-before-going-live.html" target="_blank">OXIDforge</a>.',
 
 'HELP_SHOP_MAIN_ACTIVE'                       => 'With <span class="navipath_or_inputname">Active</span> you can enable/disable the complete eShop. If the eShop is disabled, a message saying the eShop is temporary offline is displayed to the users. This can be useful for maintenance.',
 
@@ -287,9 +284,7 @@ $aLang =  array(
 
 'HELP_ARTICLE_MAIN_VAT'                       => 'Here you can enter a special VAT for this product. This VAT is used for this product in all later calculations (cart, order, invoice)',
 
-'HELP_ARTICLE_MAIN_TAGS'                      => 'Here you can enter tags for the product. From these tags the tag cloud on the front page is generated. The tags are separated by a comma.',
-
-'HELP_ARTICLE_EXTEND_UNITQUANTITY'            => 'With <span class="navipath_or_inputname">Quantity</span> and <span class="navipath_or_inputname">Unit</span> you can set the price per quantity unit. The price per quantity unit is calculated and displayed with the product (e.g. 1.43 EUR per liter). In <span class="navipath_or_inputname">Quantity</span>, enter the amount of the product (e.g. <span class="userinput_or_code">1.5</span>), in <span class="navipath_or_inputname">Unit</span> define the according quantity unit (e.g. <span class="userinput_or_code">liter</span>). You can choose unit type from given values or, by selecting blank unit type "-", enter unit type manually. If you wish to append existing type list, please follow this <a href="http://wiki.oxidforge.org/Tutorials/Adding_new_unit_types" target="_blank">link</a> for instructions.',
+'HELP_ARTICLE_EXTEND_UNITQUANTITY'            => 'With <span class="navipath_or_inputname">Quantity</span> and <span class="navipath_or_inputname">Unit</span> you can set the price per quantity unit. The price per quantity unit is calculated and displayed with the product (e.g. 1.43 EUR per liter). In <span class="navipath_or_inputname">Quantity</span>, enter the amount of the product (e.g. <span class="userinput_or_code">1.5</span>), in <span class="navipath_or_inputname">Unit</span> define the according quantity unit (e.g. <span class="userinput_or_code">liter</span>). You can choose unit type from given values or, by selecting blank unit type "-", enter unit type manually. If you wish to append existing type list, please follow this <a href="http://oxidforge.org/en/adding-new-unit-types.html" target="_blank">link</a> for instructions.',
 
 'HELP_ARTICLE_EXTEND_EXTURL'                  => 'In <span class="navipath_or_inputname">External URL</span> you can enter a link where further information about the product is available (e. g. on the manufacturer\'s website). In <span class="navipath_or_inputname">Text for external URL</span> you can enter the text which is linked, e .g. <span class="userinput_or_code">Further information on the manufacturer\'s website</span>.',
 
@@ -442,6 +437,8 @@ $aLang =  array(
 'HELP_DELIVERYSET_MAIN_POS'                   => '<span class="navipath_or_inputname">Sorting</span> specifies the order in which the shipping methods are displayed to users: The shipping method with the lowest number is displayed at the top.',
 
 
+
+'HELP_DISCOUNT_MAIN_SORT'                     => 'Use <span class="navipath_or_inputname">Sorting</span> to define the order of the discounts applied to products or cart. The discount with the lowest number applies first, the one with the highest number last.',
 
 'HELP_DISCOUNT_MAIN_PRICE'                    => 'You can use <span class="navipath_or_inputname">Purchase Price</span> to specify that the discount is only valid for certain purchase prices. If the discount is to be valid for all purchase prices, enter <span class="userinput_or_code">0</span> in <span class="navipath_or_inputname">From</span> and <span class="userinput_or_code">0</span> in <span class="navipath_or_inputname">To</span>.',
 

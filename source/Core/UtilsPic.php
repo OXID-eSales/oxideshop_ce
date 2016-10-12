@@ -55,19 +55,17 @@ class UtilsPic extends \oxSuperCfg
      */
     public function resizeImage($sSrc, $sTarget, $iDesiredWidth, $iDesiredHeight)
     {
-        $blResize = false;
-
         // use this GD Version
         if (($iUseGDVersion = getGdVersion()) && function_exists('imagecreate') &&
             file_exists($sSrc) && ($aImageInfo = @getimagesize($sSrc))
         ) {
-
             $myConfig = $this->getConfig();
             list($iWidth, $iHeight) = calcImageSize($iDesiredWidth, $iDesiredHeight, $aImageInfo[0], $aImageInfo[1]);
-            $blResize = $this->_resize($aImageInfo, $sSrc, null, $sTarget, $iWidth, $iHeight, $iUseGDVersion, $myConfig->getConfigParam('blDisableTouch'), $myConfig->getConfigParam('sDefaultImageQuality'));
+
+            return $this->_resize($aImageInfo, $sSrc, null, $sTarget, $iWidth, $iHeight, $iUseGDVersion, $myConfig->getConfigParam('blDisableTouch'), $myConfig->getConfigParam('sDefaultImageQuality'));
         }
 
-        return $blResize;
+        return false;
     }
 
 
@@ -107,7 +105,6 @@ class UtilsPic extends \oxSuperCfg
         if (!$myConfig->isDemoShop() && (strpos($sPicName, 'nopic.jpg') === false ||
                                          strpos($sPicName, 'nopic_ico.jpg') === false)
         ) {
-
             $sFile = "$sAbsDynImageDir/$sPicName";
 
             if (file_exists($sFile) && is_file($sFile)) {
@@ -167,17 +164,15 @@ class UtilsPic extends \oxSuperCfg
      */
     public function overwritePic($oObject, $sPicTable, $sPicField, $sPicType, $sPicDir, $aParams, $sAbsDynImageDir)
     {
-        $blDelete = false;
         $sPic = $sPicTable . '__' . $sPicField;
         if (isset($oObject->{$sPic}) &&
             ($_FILES['myfile']['size'][$sPicType . '@' . $sPic] > 0 || $aParams[$sPic] != $oObject->{$sPic}->value)
         ) {
-
             $sImgDir = $sAbsDynImageDir . oxRegistry::get("oxUtilsFile")->getImageDirByType($sPicType);
-            $blDelete = $this->safePictureDelete($oObject->{$sPic}->value, $sImgDir, $sPicTable, $sPicField);
+            return $this->safePictureDelete($oObject->{$sPic}->value, $sImgDir, $sPicTable, $sPicField);
         }
 
-        return $blDelete;
+        return false;
     }
 
     /**

@@ -1,16 +1,16 @@
 <?php
 /**
- * Price enter mode: bruto 
+ * Price enter mode: bruto
  * Price view mode:  neto
  * Product count: count of used products
  * VAT info: 15.55
  * Discounts: product 15% discount
  * Wrapping: -;
  * Gift cart:  -;
- * Costs VAT caclulation rule: max 
+ * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment 13% 
- *  2. Delivery 13% 
+ *  1. Payment 13%
+ *  2. Delivery 13%
  *  3. TS -
  * Actions with order:
  *  1. update :changed products amounts
@@ -43,6 +43,7 @@ $aData = array (
                     'oxamountto' => 99999,
                     'oxactive' => 1,
 				    'oxarticles' => array ( 111, 222 ),
+                    'oxsort' => 10,
             ),
 			1 => array (
 					'oxid'         => 'discountitm',
@@ -55,6 +56,7 @@ $aData = array (
 					'oxitmamount' => 1,
 					'oxitmultiple' => 2,
 					'oxarticles' => array ( 111 ),
+                    'oxsort' => 20,
 				),
     ),
     'costs' => array (
@@ -128,7 +130,7 @@ $aData = array (
                             'brutto' => '40,00',
 							'neto' => '34,62',
 							'vat' => '5,38',
-							
+
                     ),
                     'payment' => array(
                             'brutto' => '44,58',
@@ -156,7 +158,7 @@ $aData = array (
                             'brutto' => '24,06',
 							'neto' => '20,82',
 							'vat' => '3,24',
-							
+
                     ),
                     'payment' => array(
                             'brutto' => '27,65',
@@ -175,7 +177,7 @@ $aData = array (
 				'blShowVATForPayCharge'=> true,
 				'blShowVATForWrapping'=> true,
 				'sAdditionalServVATCalcMethod' => 'biggest_net'
-				
+
             ),
     ),
     'actions' => array (
@@ -188,7 +190,7 @@ $aData = array (
                       'oxid'       => '111',
                       'amount'     => 3,
             ),
-            ),   
+            ),
 	),
 
 );

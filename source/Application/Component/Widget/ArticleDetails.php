@@ -220,6 +220,8 @@ class ArticleDetails extends \oxWidget
     /**
      * Array of id to form recommendation list.
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @var array
      */
     protected $_aSimilarRecommListIds = null;
@@ -298,11 +300,9 @@ class ArticleDetails extends \oxWidget
     public function canRate()
     {
         if ($this->_blCanRate === null) {
-
             $this->_blCanRate = false;
 
             if ($this->ratingIsActive() && $oUser = $this->getUser()) {
-
                 $oRating = oxNew('oxrating');
                 $this->_blCanRate = $oRating->allowRating($oUser->getId(), 'oxarticle', $this->getProduct()->getId());
             }
@@ -320,12 +320,7 @@ class ArticleDetails extends \oxWidget
      */
     public function canChangeTags()
     {
-        if ($oUser = $this->getUser()) {
-
-            return true;
-        }
-
-        return false;
+        return (bool) $this->getUser();
     }
 
     /**
@@ -352,26 +347,6 @@ class ArticleDetails extends \oxWidget
         }
 
         return $this->_aAttributes;
-    }
-
-    /**
-     * Returns tag cloud manager class
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return oxTagCloud
-     */
-    public function getTagCloudManager()
-    {
-        /** @var oxArticleTagList $oTagList */
-        $oTagList = oxNew("oxArticleTagList");
-        //$oTagList->load($this->getProduct()->getId());
-        $oTagList->setArticleId($this->getProduct()->getId());
-        $oTagCloud = oxNew("oxTagCloud");
-        $oTagCloud->setTagList($oTagList);
-        $oTagCloud->setExtendedMode(true);
-
-        return $oTagCloud;
     }
 
     /**
@@ -407,12 +382,10 @@ class ArticleDetails extends \oxWidget
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_MANUFACTURER;
-                // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-            } elseif ('tag' == $sListType) {
-                $this->_iLinkType = OXARTICLE_LINKTYPE_TAG;
-                // END deprecated
+            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             } elseif ('recommlist' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
+                // END deprecated
             } else {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_CATEGORY;
 
@@ -705,6 +678,8 @@ class ArticleDetails extends \oxWidget
     /**
      * Return array of id to form recommend list.
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @return array
      */
     public function getSimilarRecommListIds()
@@ -940,7 +915,6 @@ class ArticleDetails extends \oxWidget
         $myUtils = oxRegistry::getUtils();
 
         if ($this->_oProduct === null) {
-
             if ($this->getViewParameter('_object')) {
                 $this->_oProduct = $this->getViewParameter('_object');
             } else {
@@ -954,7 +928,7 @@ class ArticleDetails extends \oxWidget
                 $this->_oProduct = oxNew('oxArticle');
 
                 if (!$this->_oProduct->load($sOxid)) {
-                    $myUtils->redirect($myConfig->getShopHomeURL());
+                    $myUtils->redirect($myConfig->getShopHomeUrl());
                     $myUtils->showMessageAndExit('');
                 }
 
@@ -1038,20 +1012,6 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Returns tag separator
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @return string
-     */
-    public function getTagSeparator()
-    {
-        $sSeparator = $this->getConfig()->getConfigParam("sTagSeparator");
-
-        return $sSeparator;
-    }
-
-    /**
      * Runs additional checks for article.
      *
      * @param oxUtils  $myUtils  General utils
@@ -1070,7 +1030,7 @@ class ArticleDetails extends \oxWidget
         }
 
         if (!$blContinue) {
-            $myUtils->redirect($myConfig->getShopHomeURL());
+            $myUtils->redirect($myConfig->getShopHomeUrl());
             $myUtils->showMessageAndExit('');
         }
 

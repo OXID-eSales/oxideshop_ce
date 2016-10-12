@@ -42,7 +42,7 @@ use oxServerProcessor;
  * Contains system event handler methods
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class SystemEventHandler
 {
@@ -183,9 +183,7 @@ class SystemEventHandler
      */
     protected function _isSendingShopDataEnabled()
     {
-        $isSendingShopDataEnabled = (bool) $this->_getConfig()->getConfigParam('blLoadDynContents');
-
-        return $isSendingShopDataEnabled;
+        return (bool) $this->_getConfig()->getConfigParam('blLoadDynContents');
     }
 
     /**
@@ -208,13 +206,7 @@ class SystemEventHandler
      */
     private function _needToSendShopInformation()
     {
-        $blNeedToSend = false;
-
-        if ($this->_getNextCheckTime() < $this->_getCurrentTime()) {
-            $blNeedToSend = true;
-        }
-
-        return $blNeedToSend;
+        return $this->_getNextCheckTime() < $this->_getCurrentTime();
     }
 
     /**
@@ -272,9 +264,8 @@ class SystemEventHandler
     {
         /** @var oxUtilsDate $oUtilsDate */
         $oUtilsDate = oxRegistry::get('oxUtilsDate');
-        $iCurrentTime = $oUtilsDate->getTime();
 
-        return $iCurrentTime;
+        return $oUtilsDate->getTime();
     }
 
     /**

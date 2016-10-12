@@ -13,7 +13,7 @@
                 [{* CMS category *}]
                 [{if $_cat->getContentCats() && $deepLevel > 1}]
                     [{foreach from=$_cat->getContentCats() item=_oCont}]
-                    <li class="[{if $oContentCat && $oContentCat->getId()==$_oCont->getId()}] active [{else}] end [{/if}]" >
+                    <li class="[{if $oContentCat==$_oCont->getId()}] active [{/if}] end" >
                         <a href="[{$_oCont->getLink()}]"><i></i>[{$_oCont->oxcontents__oxtitle->value}]</a>
                     </li>
                     [{/foreach}]
@@ -29,9 +29,8 @@
         [{/foreach}]
     [{/defun}]
     </ul>
-    [{if $oView->showTags()}]
-         [{oxid_include_widget cl="oxwTagCloud" nocookie=1 noscript=1}]
-    [{/if}]
+    [{block name="categorytree_extended"}]
+    [{/block}]
 </nav>
 [{/if}]
 [{/if}]

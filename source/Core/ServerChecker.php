@@ -29,7 +29,7 @@ use oxApplicationServer;
  * Checks if server node is valid, information is not outdated.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
  */
@@ -65,13 +65,7 @@ class ServerChecker
      */
     public function check(oxApplicationServer $oServer)
     {
-        $blResult = false;
-
-        if ($this->_isValid($oServer) && $this->_isServerTimeValid($oServer->getTimestamp())) {
-            $blResult = true;
-        }
-
-        return $blResult;
+        return $this->_isValid($oServer) && $this->_isServerTimeValid($oServer->getTimestamp());
     }
 
     /**

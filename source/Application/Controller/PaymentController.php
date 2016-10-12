@@ -175,20 +175,19 @@ class PaymentController extends \oxUBase
         $blAlreadyRedirected = oxRegistry::getConfig()->getRequestParameter('sslredirect') == 'forced';
 
         if ($this->getIsOrderStep()) {
-
             //additional check if we really really have a user now
             //and the basket is not empty
             $oBasket = $this->getSession()->getBasket();
             $blPsBasketReservationEnabled = $myConfig->getConfigParam('blPsBasketReservationEnabled');
             if ($blPsBasketReservationEnabled && (!$oBasket || ($oBasket && !$oBasket->getProductsCount()))) {
-                oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() .'cl=basket', true, 302);
+                oxRegistry::getUtils()->redirect($myConfig->getShopHomeUrl() .'cl=basket', true, 302);
             }
 
             $oUser = $this->getUser();
             if (!$oUser && ($oBasket && $oBasket->getProductsCount() > 0)) {
-                oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=basket', false, 302);
+                oxRegistry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', false, 302);
             } elseif (!$oBasket || !$oUser || ($oBasket && !$oBasket->getProductsCount())) {
-                oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=start', false, 302);
+                oxRegistry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=start', false, 302);
             }
         }
 

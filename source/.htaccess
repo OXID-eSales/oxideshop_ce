@@ -32,7 +32,7 @@
     RewriteCond %{REQUEST_URI} !(\/admin\/|\/Core\/|\/Application\/|\/export\/|\/modules\/|\/out\/|\/Setup\/|\/tmp\/|\/views\/)
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule !(\.html|\/|\.jpg|\.css|\.pdf|\.doc|\.gif|\.png|\.js|\.htc|\.svg)$ %{REQUEST_URI}/ [R=301,L]
+    RewriteRule !(\.html|\/|\.jpe?g|\.css|\.pdf|\.doc|\.gif|\.png|\.js|\.htc|\.svg)$ %{REQUEST_URI}/ [NC,R=301,L]
 
     RewriteCond %{REQUEST_URI} !(\/admin\/|\/Core\/|\/Application\/|\/export\/|\/modules\/|\/out\/|\/Setup\/|\/tmp\/|\/views\/)
     RewriteCond %{REQUEST_FILENAME} !-f
@@ -43,7 +43,7 @@
     RewriteCond %{REQUEST_URI} (\/out\/pictures\/generated\/)
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule (\.jpe?g|\.gif|\.png|\.svg)$ getimg.php
+    RewriteRule (\.jpe?g|\.gif|\.png|\.svg)$ getimg.php [NC]
 
     RewriteRule ^(vendor/) - [F,L,NC]
 </IfModule>

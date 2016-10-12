@@ -131,14 +131,14 @@ function DeletePic( sField )
     </td>
     <!-- Anfang rechte Seite -->
     <td valign="top" class="edittext" align="left" width="50%">
-    [{if $oxid != "-1"}]
-
-            [{if $edit->oxwrapping__oxpic->value}]
-            [{oxmultilang ident="WRAPPING_MAIN_PICTURE"}] <br>
-            <img src="[{$edit->getPictureUrl()}]" border="0" hspace="0" vspace="0">
+        [{block name="admin_wrapping_main_picture"}]
+            [{if $oxid != "-1"}]
+                [{if $edit->oxwrapping__oxpic->value}]
+                    [{oxmultilang ident="WRAPPING_MAIN_PICTURE"}] <br>
+                    <img src="[{$edit->getPictureUrl()}]" border="0" hspace="0" vspace="0">
+                [{/if}]
             [{/if}]
-
-        [{/if}]
+        [{/block}]
     </td>
     </tr>
 </table>

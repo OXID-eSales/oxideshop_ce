@@ -1,13 +1,13 @@
 <?php
 /**
- * Price enter mode: bruto 
+ * Price enter mode: bruto
  * Price view mode:  brutto
  * Product count: count of used products
  * VAT info: 19%
- * Currency rate: 0.68 
+ * Currency rate: 0.68
  * Discounts: count
  *  1. bascet 5 abs
- *  2. shop 5 abs for 9001 
+ *  2. shop 5 abs for 9001
  *  3. bascet 1 abs for 9001
  *  4. shop 5% for 9002
  *  5. bascet 6% for 9002
@@ -15,10 +15,10 @@
  *  1. 6 abs
  * Wrapping: +;
  * Gift cart:  -;
- * Costs VAT caclulation rule: max 
+ * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS -
  * Actions with basket or order:
  *  1. update / delete / change config
@@ -50,6 +50,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 9001 ),
+            'oxsort' => 10,
         ),
         1 => array (
             'oxid'         => 'shopdiscount5for9002',
@@ -59,6 +60,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 9002 ),
+            'oxsort' => 20,
         ),
         2 => array (
             'oxid'         => 'basketdiscount5for9001',
@@ -68,6 +70,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 9001 ),
+            'oxsort' => 30,
         ),
         3 => array (
             'oxid'         => 'basketdiscount5for9002',
@@ -77,6 +80,7 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxarticles' => array ( 9002 ),
+            'oxsort' => 40,
         ),
         4 => array (
             'oxid'         => 'absolutebasketdiscount',
@@ -85,6 +89,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 50,
         ),
     ),
     'costs' => array(

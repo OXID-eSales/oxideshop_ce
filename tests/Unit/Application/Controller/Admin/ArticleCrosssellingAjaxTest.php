@@ -43,7 +43,6 @@ class ArticleCrosssellingAjaxTest extends \OxidTestCase
         if ($this->getConfig()->getEdition() !== 'EE') {
             $this->setArticleViewTable('oxv_oxarticles_de');
             $this->setObject2CategoryViewTable('oxobject2category');
-            $this->setShopId('oxbaseshop');
         }
         $this->addToDatabase("replace into oxarticles set oxid='_testArticleCrossselling', oxshopid='" . $this->getShopId() . "', oxtitle='_testArticleCrossselling'", 'oxarticles');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticleCrosssellingAdd', oxshopid='" . $this->getShopId() . "', oxtitle='_testArticleCrosssellingAdd'", 'oxarticles');

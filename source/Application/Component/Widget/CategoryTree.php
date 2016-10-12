@@ -74,4 +74,15 @@ class CategoryTree extends \oxWidget
     {
         return $this->getViewParameter("deepLevel");
     }
+
+    /**
+     * Content category getter.
+     *
+     * @return bool|string
+     */
+    public function getContentCategory()
+    {
+        $request = oxNew('OxidEsales\Eshop\Core\Request');
+        return $request->getRequestParameter('oxcid', false);
+    }
 }

@@ -192,11 +192,11 @@ class ShopSetUpTest extends FrontendTestCase
         $this->assertElementNotPresent("link=subshop", "Element should not exist: link=subshop");
 
         if (getenv('OXID_LOCALE') == 'international') {
-            $this->assertTextPresent("Just arrived!");
-            $this->assertTextNotPresent("Frisch eingetroffen!");
+            $this->assertTextPresent("Just arrived");
+            $this->assertTextNotPresent("Frisch eingetroffen");
         } else {
-            $this->assertTextPresent("Frisch eingetroffen!");
-            $this->assertTextNotPresent("Just arrived!");
+            $this->assertTextPresent("Frisch eingetroffen");
+            $this->assertTextNotPresent("Just arrived");
         }
 
         //checking admin

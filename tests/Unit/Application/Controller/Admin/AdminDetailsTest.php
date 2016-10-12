@@ -46,33 +46,6 @@ class AdminDetailsTest extends \OxidTestCase
     }
 
     /**
-     * Test generate text editor if WYSIWYG Pro is installed.
-     */
-    public function testGenerateTextEditorWProIsInstalled()
-    {
-        $oEditor = $this->getMock('modOxAdminView_Editor', array('fetch'));
-        $oEditor->expects($this->once())->method('fetch')->with($this->equalTo(1), $this->equalTo(2))->will($this->returnValue(6));
-
-        $oAdminDetails = $this->getMock('oxadmindetails', array('_getTextEditor', '_getPlainEditor'));
-        $oAdminDetails->expects($this->once())->method('_getTextEditor')->with($this->equalTo(1), $this->equalTo(2), $this->equalTo(3), $this->equalTo(4), $this->equalTo(5))->will($this->returnValue($oEditor));
-        $oAdminDetails->expects($this->never())->method('_getPlainEditor');
-
-        $this->assertEquals(6, $oAdminDetails->UNITgenerateTextEditor(1, 2, 3, 4, 5));
-    }
-
-    /**
-     * Test generate text editor if WYSIWYG Pro is not installed.
-     */
-    public function testGenerateTextEditorNoWPro()
-    {
-        $oAdminDetails = $this->getMock('oxadmindetails', array('_getTextEditor', '_getPlainEditor'));
-        $oAdminDetails->expects($this->once())->method('_getTextEditor')->with($this->equalTo(1), $this->equalTo(2), $this->equalTo(3), $this->equalTo(4), $this->equalTo(5))->will($this->returnValue(null));
-        $oAdminDetails->expects($this->once())->method('_getPlainEditor')->with($this->equalTo(1), $this->equalTo(2), $this->equalTo(3), $this->equalTo(4))->will($this->returnValue(5));
-
-        $this->assertEquals(5, $oAdminDetails->UNITgenerateTextEditor(1, 2, 3, 4, 5));
-    }
-
-    /**
      * Test get plain editor.
      */
     public function testGetPlainEditor()

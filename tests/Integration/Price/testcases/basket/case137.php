@@ -17,7 +17,7 @@
  *  1. Payment -;
  *  2. Delivery ;
  *  3. TS -
- * Short description: 
+ * Short description:
  * Brutto-Brutto mode.
  @bug #3587: general discount for basket */
 $aData = array (
@@ -37,6 +37,7 @@ $aData = array (
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
     ),
     'expected' => array (
@@ -46,7 +47,7 @@ $aData = array (
         'totals' => array (
             'totalBrutto' => '596,00',
             'discounts' => array (
-                    'discount2forBasket' => '11,92',
+                    'discount2forBasket' => '11,92'
             ),
             'totalNetto'  => '490,82',
             'vats' => array (

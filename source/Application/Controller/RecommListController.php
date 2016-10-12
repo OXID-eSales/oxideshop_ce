@@ -32,6 +32,8 @@ use oxField;
  * Article suggestion page.
  * Collects some article base information, sets default recomendation text,
  * sends suggestion mail to user.
+ *
+ * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
 class RecommListController extends \AList
 {
@@ -218,7 +220,6 @@ class RecommListController extends \AList
         if ($this->canAcceptFormData() &&
             ($oRecommList = $this->getActiveRecommList()) && ($oUser = $this->getUser())
         ) {
-
             //save rating
             $dRating = oxRegistry::getConfig()->getRequestParameter('recommlistrating');
             if ($dRating !== null) {
@@ -450,7 +451,7 @@ class RecommListController extends \AList
         $aPath[0]->oxcategories__oxtitle = new oxField($oLang->translateString('RECOMMLIST'));
 
         if ($sSearchParam = $this->getRecommSearch()) {
-            $shopHomeURL = $this->getConfig()->getShopHomeURL();
+            $shopHomeURL = $this->getConfig()->getShopHomeUrl();
             $sUrl = $shopHomeURL . "cl=recommlist&amp;searchrecomm=" . rawurlencode($sSearchParam);
             $sTitle = $oLang->translateString('RECOMMLIST_SEARCH') . ' "' . $sSearchParam . '"';
 
@@ -485,12 +486,10 @@ class RecommListController extends \AList
     public function generatePageNavigationUrl()
     {
         if ((oxRegistry::getUtils()->seoIsActive() && ($oRecomm = $this->getActiveRecommList()))) {
-            $sUrl = $oRecomm->getLink();
-        } else {
-            $sUrl = oxUBase::generatePageNavigationUrl();
+            return $oRecomm->getLink();
         }
 
-        return $sUrl;
+        return oxUBase::generatePageNavigationUrl();
     }
 
     /**
@@ -588,13 +587,12 @@ class RecommListController extends \AList
             $sTranslatedString = $oLang->translateString('LIST_BY', $oLang->getBaseLanguage(), false);
             $sTitleField = 'oxrecommlists__oxtitle';
             $sAuthorField = 'oxrecommlists__oxauthor';
-            $sTitle = $aActiveList->$sTitleField->value . ' (' . $sTranslatedString . ' ' .
-                      $aActiveList->$sAuthorField->value . ')';
-        } else {
-            $sTranslatedString = $oLang->translateString('HITS_FOR', $oLang->getBaseLanguage(), false);
-            $sTitle = $this->getArticleCount() . ' ' . $sTranslatedString . ' "' . $this->getSearchForHtml() . '"';
-        }
 
-        return $sTitle;
+            return $aActiveList->$sTitleField->value . ' (' . $sTranslatedString . ' ' .
+                      $aActiveList->$sAuthorField->value . ')';
+        }
+        $sTranslatedString = $oLang->translateString('HITS_FOR', $oLang->getBaseLanguage(), false);
+
+        return $this->getArticleCount() . ' ' . $sTranslatedString . ' "' . $this->getSearchForHtml() . '"';
     }
 }

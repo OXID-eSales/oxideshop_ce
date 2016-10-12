@@ -28,7 +28,7 @@ use oxRegistry;
  * Cache for storing module variables selected from database.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class FileCache
 {
@@ -100,9 +100,7 @@ class FileCache
      */
     protected function getCacheFilePath($key)
     {
-        $fileName = $this->getCacheDir() . "/" . $this->getCacheFileName($key);
-
-        return $fileName;
+        return $this->getCacheDir() . "/" . $this->getCacheFileName($key);
     }
 
     /**
@@ -112,9 +110,7 @@ class FileCache
      */
     protected function getCacheDir()
     {
-        $dir = oxRegistry::get("oxConfigFile")->getVar("sCompileDir");
-
-        return $dir;
+        return oxRegistry::get("oxConfigFile")->getVar("sCompileDir");
     }
 
     /**

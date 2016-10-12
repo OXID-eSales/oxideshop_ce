@@ -45,7 +45,6 @@ class CategoryOrderAjaxTest extends \OxidTestCase
         if ($this->getConfig()->getEdition() !== 'EE') :
             $this->setArticleViewTable('oxv_oxarticles_de');
             $this->setObject2CategoryViewTable('oxobject2category');
-            $this->setShopIdTest('oxbaseshop');
         endif;
 
         $this->addToDatabase("replace into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='" . $this->getShopIdTest() . "'", 'oxcategories');

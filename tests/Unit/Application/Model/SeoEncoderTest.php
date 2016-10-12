@@ -22,6 +22,7 @@
 namespace Unit\Application\Model;
 
 use modDB;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use \oxSeoEncoder;
 use \Exception;
 use \oxField;
@@ -419,9 +420,6 @@ class SeoEncoderTest extends \OxidTestCase
             $sArticleVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Hersteller-1/Bar-Butler-6-BOTTLES.html";
             $sArticleManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Hersteller-1/Bar-Butler-6-BOTTLES.html";
             $sArticlePriceCatSeoUrl = $sShopUrl . "Test-Price-Category-DE/Bar-Butler-6-BOTTLES.html";
-            // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-            $sArticleTagSeoUrl = $sShopUrl . "tag/cmmaterial/Bar-Butler-6-BOTTLES.html";
-            // END deprecated
             $sCategoryId = "30e44ab82c03c3848.49471214";
             $sCategorySeoUrl = $sShopUrl . "Fuer-Sie/";
             $sManufacturerId = "88a996f859f94176da943f38ee067984";
@@ -434,9 +432,6 @@ class SeoEncoderTest extends \OxidTestCase
             $sArticleVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Bush/Original-BUSH-Beach-Radio.html";
             $sArticleManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Bush/Original-BUSH-Beach-Radio.html";
             $sArticlePriceCatSeoUrl = $sShopUrl . "Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
-            // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-            $sArticleTagSeoUrl = $sShopUrl . "tag/seiner/Original-BUSH-Beach-Radio.html";
-            // END deprecated
             $sCategoryId = "8a142c3e4143562a5.46426637";
             $sCategorySeoUrl = $sShopUrl . "Geschenke/";
             $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
@@ -451,9 +446,7 @@ class SeoEncoderTest extends \OxidTestCase
         $oCategory = oxNew('oxCategory');
         $oCategory->load($sCategoryId);
 
-        $oView = $this->getMock("oxUBase", array("getTag", "getActiveCategory"));
-        $tag = $this->getTestConfig()->getShopEdition() == 'EE' ? "cmmaterial" : "seiner";
-        $oView->expects($this->once())->method('getTag')->will($this->returnValue($tag));
+        $oView = $this->getMock("oxUBase", array("getActiveCategory"));
         $oView->expects($this->at(0))->method('getActiveCategory')->will($this->returnValue($oCategory));
         $oView->expects($this->at(1))->method('getActiveCategory')->will($this->returnValue($oPriceCategory));
 
@@ -474,9 +467,6 @@ class SeoEncoderTest extends \OxidTestCase
         $oArticle->setLinkType(OXARTICLE_LINKTYPE_PRICECATEGORY);
         $this->assertEquals($sArticlePriceCatSeoUrl, $oArticle->getLink(0));
 
-        $oArticle->setLinkType(OXARTICLE_LINKTYPE_TAG);
-        $this->assertEquals($sArticleTagSeoUrl, $oArticle->getLink(0));
-
         $oCategory = oxNew('oxCategory');
         $oCategory->load($sCategoryId);
         $this->assertEquals($sCategorySeoUrl, $oCategory->getLink(0));
@@ -488,15 +478,6 @@ class SeoEncoderTest extends \OxidTestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
         $this->assertEquals($sManufacturerSeoUrl, $oManufacturer->getLink(0));
-
-        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-        $oTagEncoder = oxNew('oxSeoEncoderTag');
-        $sTag = $this->getTestConfig()->getShopEdition() == 'EE' ? "messerblock" : "flaschen";
-        $sTagUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? "tag/messerblock/" : "tag/flaschen/";
-
-        $this->assertEquals($sShopUrl . "tag/bar-equipment/", $oTagEncoder->getTagUrl("bar equipment", 0));
-        $this->assertEquals($sShopUrl . $sTagUrl, $oTagEncoder->getTagUrl($sTag, 0));
-        // END deprecated
 
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
@@ -527,35 +508,27 @@ class SeoEncoderTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $sArticleId = "6b63f459c781fa42edeb889242304014";
             $sArticleSeoUrl = $sShopUrl . "en/Eco-Fashion/Woman/Shirts/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
-            $sArticleVendorSeoUrl = $sShopUrl . "en/By-Distributor/true-fashion-com/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
-            $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Stewart-Brown/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
+            $sArticleVendorSeoUrl = $sShopUrl . "en/By-distributor/true-fashion-com/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
+            $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-manufacturer/Stewart-Brown/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
             $sArticlePriceCatSeoUrl = $sShopUrl . "en/Test-Price-Category-DE/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
-            // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-            $sArticleTagSeoUrl = $sShopUrl . "en/tag/shirt/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
-            // END deprecated
-            $sTag = "shirt";
             $sCategoryId = "30e44ab82c03c3848.49471214";
             $sCategorySeoUrl = $sShopUrl . "en/For-Her/";
             $sManufacturerId = "88a996f859f94176da943f38ee067984";
-            $sManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Manufacturer-1/";
+            $sManufacturerSeoUrl = $sShopUrl . "en/By-manufacturer/Manufacturer-1/";
             $sVendorId = "d2e44d9b31fcce448.08890330";
-            $sVendorSeoUrl = $sShopUrl . "en/By-Distributor/Manufacturer-1/";
+            $sVendorSeoUrl = $sShopUrl . "en/By-distributor/Manufacturer-1/";
         } else {
             $sArticleId = "1964";
             $sArticleSeoUrl = $sShopUrl . "en/Gifts/Original-BUSH-Beach-Radio.html";
-            $sArticleVendorSeoUrl = $sShopUrl . "en/By-Distributor/Bush/Original-BUSH-Beach-Radio.html";
-            $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Bush/Original-BUSH-Beach-Radio.html";
+            $sArticleVendorSeoUrl = $sShopUrl . "en/By-distributor/Bush/Original-BUSH-Beach-Radio.html";
+            $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-manufacturer/Bush/Original-BUSH-Beach-Radio.html";
             $sArticlePriceCatSeoUrl = $sShopUrl . "en/Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
-            // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-            $sArticleTagSeoUrl = $sShopUrl . "en/tag/original/Original-BUSH-Beach-Radio.html";
-            // END deprected
-            $sTag = "original";
             $sCategoryId = "8a142c3e4143562a5.46426637";
             $sCategorySeoUrl = $sShopUrl . "en/Gifts/";
             $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
-            $sManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Haller-Stahlwaren/";
+            $sManufacturerSeoUrl = $sShopUrl . "en/By-manufacturer/Haller-Stahlwaren/";
             $sVendorId = "68342e2955d7401e6.18967838";
-            $sVendorSeoUrl = $sShopUrl . "en/By-Distributor/Haller-Stahlwaren/";
+            $sVendorSeoUrl = $sShopUrl . "en/By-distributor/Haller-Stahlwaren/";
         }
 
         $sContentId = "f41427a099a603773.44301043";
@@ -564,8 +537,7 @@ class SeoEncoderTest extends \OxidTestCase
         $oCategory = oxNew('oxCategory');
         $oCategory->load($sCategoryId);
 
-        $oView = $this->getMock("oxUBase", array("getTag", "getActiveCategory"));
-        $oView->expects($this->once())->method('getTag')->will($this->returnValue($sTag));
+        $oView = $this->getMock("oxUBase", array("getActiveCategory"));
         $oView->expects($this->at(0))->method('getActiveCategory')->will($this->returnValue($oCategory));
         $oView->expects($this->at(1))->method('getActiveCategory')->will($this->returnValue($oPriceCategory));
 
@@ -586,9 +558,6 @@ class SeoEncoderTest extends \OxidTestCase
         $oArticle->setLinkType(OXARTICLE_LINKTYPE_PRICECATEGORY);
         $this->assertEquals($sArticlePriceCatSeoUrl, $oArticle->getLink(1));
 
-        $oArticle->setLinkType(OXARTICLE_LINKTYPE_TAG);
-        $this->assertEquals($sArticleTagSeoUrl, $oArticle->getLink(1));
-
         $oCategory = oxNew('oxCategory');
         $oCategory->load($sCategoryId);
         $this->assertEquals($sCategorySeoUrl, $oCategory->getLink(1));
@@ -601,14 +570,6 @@ class SeoEncoderTest extends \OxidTestCase
         $oManufacturer->load($sManufacturerId);
         $this->assertEquals($sManufacturerSeoUrl, $oManufacturer->getLink(1));
 
-        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-        $sTag = "kuyichi";
-        $sTagSeoUrl = $sShopUrl . "en/tag/kuyichi/";
-
-        $oTagEncoder = oxNew('oxSeoEncoderTag');
-        $this->assertEquals($sTagSeoUrl, $oTagEncoder->getTagUrl($sTag, 1));
-        // END deprecated
-        
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
         $this->assertEquals($sVendorSeoUrl, $oVendor->getLink(1));
@@ -878,7 +839,7 @@ class SeoEncoderTest extends \OxidTestCase
         $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('static'), $this->equalTo(md5('1xxx')), $this->equalTo(1));
         $oEncoder->getStaticUrl('xxx', 1, 1);
         // default params:
-        $shop = $this->getTestConfig()->getShopEdition() == 'EE' ? "1" : "oxbaseshop";
+        $shop = ShopIdCalculator::BASE_SHOP_ID;
         $oEncoder = $this->getMock('oxSeoEncoder', array('_getStaticUri', '_getFullUrl'));
         $oEncoder->expects($this->once())->method('_getStaticUri')->with($this->equalTo('xxx'), $this->equalTo($shop), $this->equalTo(oxRegistry::getLang()->getEditLanguage()))->will($this->returnValue('seourl'));
         $oEncoder->expects($this->once())->method('_getFullUrl')->with($this->equalTo('seourl'))->will($this->returnValue('fullseourl'));
@@ -1845,5 +1806,32 @@ class SeoEncoderTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blSEOLowerCaseUrls', false);
         $this->assertEquals($sSeoUrlBefore, $oEncoder->UNITprepareUri($sSeoUrlBefore));
+    }
+
+    /**
+     * This test was written for the bug
+     * https://bugs.oxid-esales.com/view.php?id=6407
+     */
+    public function testAddLanguageParam()
+    {
+        $baseId = 2;
+        $oLang = $this->getMock('oxlang', array('getLanguageIds'));
+        $oLang
+            ->expects($this->any())
+            ->method('getLanguageIds')
+            ->will($this->returnValue(array($baseId => 'en_US')));
+        oxRegistry::set('oxLang', $oLang);
+
+        $sUrl = "Angebote/Transportcontainer-THE-BARREL.html";
+        $oEncoder = oxNew('oxSeoEncoder');
+
+        // The addLanguageParam() method should add the language code to the uri only once irrespective of the
+        // number of times the method gets called.
+        // Hence calling the same method twice in the below code.
+        $sUri = $oEncoder->UNITprepareUri($oEncoder->addLanguageParam($sUrl, $baseId), $baseId);
+        $this->assertEquals("en-US/Angebote/Transportcontainer-THE-BARREL.html", $sUri);
+
+        $sUri = $oEncoder->UNITprepareUri($oEncoder->addLanguageParam($sUrl, $baseId), $baseId);
+        $this->assertEquals("en-US/Angebote/Transportcontainer-THE-BARREL.html", $sUri);
     }
 }

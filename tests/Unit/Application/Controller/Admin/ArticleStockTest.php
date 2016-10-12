@@ -252,7 +252,7 @@ class ArticleStockTest extends \OxidTestCase
         $sOXID = "_testId";
 
         //expected shop id
-        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2' : 'oxbaseshop';
+        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2' : '1';
 
         $oConfig = $this->getMock("oxConfig", array("getShopId"));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue($sShopId));

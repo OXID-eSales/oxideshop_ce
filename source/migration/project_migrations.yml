@@ -1,0 +1,4 @@
+name: Oxid Migrations (Project)
+migrations_namespace: OxidEsales\Eshop\MigrationsProject
+table_name: oxmigrations_project
+migrations_directory: project_data

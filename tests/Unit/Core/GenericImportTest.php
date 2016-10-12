@@ -23,6 +23,7 @@ namespace Unit\Core;
 
 use oxDb;
 use OxidEsales\Eshop\Core\GenericImport\GenericImport;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidTestCase;
 use oxUser;
 use oxUtilsServer;
@@ -186,7 +187,7 @@ class GenericImportTest extends OxidTestCase
         $csvWithHeaders = $this->createCsvFile(true);
         $oImport->importFile($csvWithHeaders);
 
-        $shopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        $shopId = ShopIdCalculator::BASE_SHOP_ID;
         $aTestData1 = array(array("_testId1", "1", $shopId, "userName1", "FirstName1", "LastName1"));
         $aTestData2 = array(array("_testId2", "1", $shopId, "userName2", "FirstName2", "LastName2"));
 

@@ -21,9 +21,11 @@
 <input type="hidden" name="oxid" value="[{$oxid}]">
 <input type="hidden" name="editval[oxattribute__oxid]" value="[{$oxid}]">
 
-[{if $oxid != "-1"}]
-    <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNCATEGORIES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=attribute_category&aoc=1&oxid=[{$oxid}]');">
-[{/if}]
+[{block name="admin_attribute_category_assign_categories"}]
+    [{if $oxid != "-1"}]
+        <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNCATEGORIES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=attribute_category&aoc=1&oxid=[{$oxid}]');">
+    [{/if}]
+[{/block}]
 
 </form>
 

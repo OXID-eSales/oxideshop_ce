@@ -76,11 +76,7 @@ class ThemeMain extends \oxAdminDetails
         $blThemeSet = isset($this->getConfig()->sTheme);
         $blCustomThemeSet = isset($this->getConfig()->sCustomTheme);
 
-        if ($blThemeSet || $blCustomThemeSet) {
-            return true;
-        }
-
-        return false;
+        return ($blThemeSet || $blCustomThemeSet);
     }
 
 

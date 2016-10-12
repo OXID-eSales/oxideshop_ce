@@ -108,8 +108,6 @@ class AmountPriceList extends \oxList
 
         $sSql = "SELECT * FROM `oxprice2article` WHERE `oxartid` = " . oxDb::getDb()->quote($sArticleId) . " AND $sShopSelect ORDER BY `oxamount` ";
 
-        $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sSql);
-
-        return $aData;
+        return oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sSql);
     }
 }

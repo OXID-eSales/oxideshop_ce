@@ -26,7 +26,7 @@ namespace OxidEsales\Eshop\Core;
  * Selects module variables from database or cache.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleVariablesLocator
 {
@@ -139,9 +139,8 @@ class ModuleVariablesLocator
         $query = "SELECT DECODE( oxvarvalue , ? ) FROM oxconfig WHERE oxvarname = ? AND oxshopid = ?";
 
         $value = $database->getOne($query, array($configKey, $name, $shopId), false);
-        $value = unserialize($value);
 
-        return $value;
+        return unserialize($value);
     }
 
     /**

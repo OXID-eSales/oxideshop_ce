@@ -121,7 +121,6 @@ class ModuleConfiguration extends \Shop_Config
         $aDbVariables = $this->loadConfVars($oConfig->getShopId(), $this->_getModuleForConfigVars());
 
         if (is_array($aModuleSettings)) {
-
             foreach ($aModuleSettings as $aValue) {
                 $sName = $aValue["name"];
                 $sType = $aValue["type"];
@@ -215,11 +214,6 @@ class ModuleConfiguration extends \Shop_Config
      */
     private function _getDbConfigTypeName($sType)
     {
-        $sDbType = $sType;
-        if ($sType === 'password') {
-            $sDbType = 'str';
-        }
-
-        return $sDbType;
+        return $sType === 'password' ? 'str' : $sType;
     }
 }

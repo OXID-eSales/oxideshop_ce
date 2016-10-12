@@ -370,7 +370,7 @@ class InternationalTest extends AcceptanceTestCase
         $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
         //testing info in 5th page
         $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
-        $this->assertTextPresent("We registered your order under the number: 12");
+        $this->assertTextPresent("We registered your order with number 12");
         $this->assertElementPresent("backToShop");
         $this->assertEquals("%BACK_TO_START_PAGE%", $this->getText("backToShop"));
         $this->clickAndWait("orderHistory");
@@ -419,7 +419,7 @@ class InternationalTest extends AcceptanceTestCase
             $this->clearCache();
             $this->loginAdmin("Master Settings", "Core Settings");
             $this->frame("navigation");
-            $this->assertElementNotPresent("link=eCommerce Services");
+            $this->assertElementNotPresent("link=E-Commerce Services");
             $this->assertElementNotPresent("link=Shop connector");
             $this->assertElementPresent("link=History");
             $this->waitForElement("link=Master Settings");

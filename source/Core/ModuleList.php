@@ -30,10 +30,15 @@ use oxRegistry;
  * Modules list class.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleList extends \oxSuperCfg
 {
+    const MODULE_KEY_PATHS = 'Paths';
+    const MODULE_KEY_EVENTS = 'Events';
+    const MODULE_KEY_VERSIONS = 'Versions';
+    const MODULE_KEY_FILES = 'Files';
+    const MODULE_KEY_TEMPLATES = 'Templates';
 
     /**
      * Modules info array
@@ -84,7 +89,7 @@ class ModuleList extends \oxSuperCfg
      */
     public function getActiveModuleInfo()
     {
-        $aModulePaths = $this->getModulePaths();
+        $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
 
         // Extract module paths from extended classes
         if (!is_array($aModulePaths) || count($aModulePaths) < 1) {
@@ -110,7 +115,7 @@ class ModuleList extends \oxSuperCfg
         $aModulePaths = array();
 
         if (is_array($aDisabledModules) && count($aDisabledModules) > 0) {
-            $aModulePaths = $this->getModulePaths();
+            $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
 
             // Extract module paths from extended classes
             if (!is_array($aModulePaths) || count($aModulePaths) < 1) {
@@ -129,6 +134,7 @@ class ModuleList extends \oxSuperCfg
      * Get module id's with versions
      *
      * @return array
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_VERSIONS) instead.
      */
     public function getModuleVersions()
     {
@@ -159,6 +165,7 @@ class ModuleList extends \oxSuperCfg
      * Get module id's with path
      *
      * @return array
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_PATHS) instead.
      */
     public function getModulePaths()
     {
@@ -169,6 +176,7 @@ class ModuleList extends \oxSuperCfg
      * Get module events
      *
      * @return array
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_EVENTS) instead.
      */
     public function getModuleEvents()
     {
@@ -201,6 +209,7 @@ class ModuleList extends \oxSuperCfg
      * Get all modules files paths
      *
      * @return array
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_FILES) instead.
      */
     public function getModuleFiles()
     {
@@ -211,6 +220,7 @@ class ModuleList extends \oxSuperCfg
      * Get all modules templates paths
      *
      * @return array
+     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_TEMPLATES) instead.
      */
     public function getModuleTemplates()
     {
@@ -229,7 +239,7 @@ class ModuleList extends \oxSuperCfg
     {
         $aDisabledModules = $this->getDisabledModules();
         $aModules = $this->getModulesWithExtendedClass();
-        $aModulePaths = $this->getModulePaths();
+        $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
 
         $aDisabledModuleClasses = array();
         if (isset($aDisabledModules) && is_array($aDisabledModules)) {
@@ -269,19 +279,19 @@ class ModuleList extends \oxSuperCfg
         $this->_removeFromDisabledModulesArray($aDeletedModuleIds);
 
         // removing from aModulePaths array
-        $this->_removeFromModulesPathsArray($aDeletedModuleIds);
+        $this->removeFromModulesArray(static::MODULE_KEY_PATHS, $aDeletedModuleIds);
 
         // removing from aModuleEvents array
-        $this->_removeFromModulesEventsArray($aDeletedModuleIds);
+        $this->removeFromModulesArray(static::MODULE_KEY_EVENTS, $aDeletedModuleIds);
 
         // removing from aModuleVersions array
-        $this->_removeFromModulesVersionsArray($aDeletedModuleIds);
+        $this->removeFromModulesArray(static::MODULE_KEY_VERSIONS, $aDeletedModuleIds);
 
         // removing from aModuleFiles array
-        $this->_removeFromModulesFilesArray($aDeletedModuleIds);
+        $this->removeFromModulesArray(static::MODULE_KEY_FILES, $aDeletedModuleIds);
 
         // removing from aModuleTemplates array
-        $this->_removeFromModulesTemplatesArray($aDeletedModuleIds);
+        $this->removeFromModulesArray(static::MODULE_KEY_TEMPLATES, $aDeletedModuleIds);
 
         //removing from config tables and templates blocks table
         $this->_removeFromDatabase($aDeletedModuleIds);
@@ -415,93 +425,36 @@ class ModuleList extends \oxSuperCfg
     }
 
     /**
-     * Removes extension from modules paths array
+     * Removes extension from given modules array.
      *
-     * @param array $aDeletedModule deleted extensions ID's
+     * @param string $key            Module array key.
+     * @param array  $aDeletedModule Deleted extensions ID's.
      */
-    protected function _removeFromModulesPathsArray($aDeletedModule)
+    protected function removeFromModulesArray($key, $aDeletedModule)
     {
-        $aModulePaths = $this->getModulePaths();
+        $array = $this->getModuleConfigParametersByKey($key);
 
         foreach ($aDeletedModule as $sDeletedModuleId) {
-            if (isset($aModulePaths[$sDeletedModuleId])) {
-                unset($aModulePaths[$sDeletedModuleId]);
+            if (isset($array[$sDeletedModuleId])) {
+                unset($array[$sDeletedModuleId]);
             }
         }
 
-        $this->getConfig()->saveShopConfVar('aarr', 'aModulePaths', $aModulePaths);
+        $this->getConfig()->saveShopConfVar('aarr', 'aModule' . $key, $array);
     }
 
     /**
-     * Removes extension from modules versions array
+     * Gets Module config parameters by key
      *
-     * @param array $aDeletedModule deleted extensions ID's
-     */
-    protected function _removeFromModulesVersionsArray($aDeletedModule)
-    {
-        $aModuleVersions = $this->getModuleVersions();
-
-        foreach ($aDeletedModule as $sDeletedModuleId) {
-            if (isset($aModuleVersions[$sDeletedModuleId])) {
-                unset($aModuleVersions[$sDeletedModuleId]);
-            }
-        }
-
-        $this->getConfig()->saveShopConfVar('aarr', 'aModuleVersions', $aModuleVersions);
-    }
-
-    /**
-     * Removes extension from modules events array
+     * e.g. to get 'aModulePaths' call $obj->getModuleConfigParametersByKey(ModuleList::MODULE_KEY_PATHS)
      *
-     * @param array $aDeletedModule deleted extensions ID's
-     */
-    protected function _removeFromModulesEventsArray($aDeletedModule)
-    {
-        $aModuleEvents = $this->getModuleEvents();
-
-        foreach ($aDeletedModule as $sDeletedModuleId) {
-            if (isset($aModuleEvents[$sDeletedModuleId])) {
-                unset($aModuleEvents[$sDeletedModuleId]);
-            }
-        }
-
-        $this->getConfig()->saveShopConfVar('aarr', 'aModuleEvents', $aModuleEvents);
-    }
-
-    /**
-     * Removes extension from modules files array
+     * @param string $key Key
      *
-     * @param array $aDeletedModule deleted extensions ID's
+     * @return array module config parameters for given key
      */
-    protected function _removeFromModulesFilesArray($aDeletedModule)
+    public function getModuleConfigParametersByKey($key)
     {
-        $aModuleFiles = $this->getModuleFiles();
-
-        foreach ($aDeletedModule as $sDeletedModuleId) {
-            if (isset($aModuleFiles[$sDeletedModuleId])) {
-                unset($aModuleFiles[$sDeletedModuleId]);
-            }
-        }
-
-        $this->getConfig()->saveShopConfVar('aarr', 'aModuleFiles', $aModuleFiles);
-    }
-
-    /**
-     * Removes extension from modules templates array
-     *
-     * @param array $aDeletedModule deleted extensions ID's
-     */
-    protected function _removeFromModulesTemplatesArray($aDeletedModule)
-    {
-        $aModuleTemplates = $this->getModuleTemplates();
-
-        foreach ($aDeletedModule as $sDeletedModuleId) {
-            if (isset($aModuleTemplates[$sDeletedModuleId])) {
-                unset($aModuleTemplates[$sDeletedModuleId]);
-            }
-        }
-
-        $this->getConfig()->saveShopConfVar('aarr', 'aModuleTemplates', $aModuleTemplates);
+        return (array) $this->getConfig()->getConfigParam('aModule' . $key);
     }
 
     /**
@@ -553,7 +506,6 @@ class ModuleList extends \oxSuperCfg
         $sModulesDir = oxRegistry::get('oxUtilsFile')->normalizeDir($sModulesDir);
 
         foreach (glob($sModulesDir . '*') as $sModuleDirPath) {
-
             $sModuleDirPath .= (is_dir($sModuleDirPath)) ? '/' : '';
             $sModuleDirName = basename($sModuleDirPath);
 
@@ -573,7 +525,7 @@ class ModuleList extends \oxSuperCfg
                     $sModuleId = $oModule->getId();
                     $this->_aModules[$sModuleId] = $oModule;
 
-                    $aModulePaths = $this->getModulePaths();
+                    $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
 
                     if (!is_array($aModulePaths) || !array_key_exists($sModuleId, $aModulePaths)) {
                         // saving module path info
@@ -620,7 +572,7 @@ class ModuleList extends \oxSuperCfg
     public function getModuleIds()
     {
         $aModuleIdsFromExtensions = $this->_getModuleIdsFromExtensions($this->getModulesWithExtendedClass());
-        $aModuleIdsFromFiles = array_keys($this->getModuleFiles());
+        $aModuleIdsFromFiles = array_keys($this->getModuleConfigParametersByKey(static::MODULE_KEY_FILES));
 
         return array_unique(array_merge($aModuleIdsFromExtensions, $aModuleIdsFromFiles));
     }
@@ -712,7 +664,7 @@ class ModuleList extends \oxSuperCfg
      */
     protected function _saveModulePath($sModuleId, $sModulePath)
     {
-        $aModulePaths = $this->getModulePaths();
+        $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
 
         $aModulePaths[$sModuleId] = $sModulePath;
         $this->getConfig()->saveShopConfVar('aarr', 'aModulePaths', $aModulePaths);

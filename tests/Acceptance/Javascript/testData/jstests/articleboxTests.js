@@ -9,7 +9,7 @@ module('oxArticleBox', {
         	'<div id="trimTitles_1">' +
         		'<div class="box">' +
                 	'<h3>' +
-                		'<a href="http://eshop/en/By-Brand/Manufacturer-EN-Aessue/" id="moreSubCat_8" title="Long manufacturer name very long">1Long manufacturer name very long</a>'+
+                		'<a href="http://eshop/en/By-brand/Manufacturer-EN-Aessue/" id="moreSubCat_8" title="Long manufacturer name very long">1Long manufacturer name very long</a>'+
                 	'</h3>' +
                 	'<div class="content" style="height: 100px;"></div>'+
                 '</div>' +
@@ -17,7 +17,7 @@ module('oxArticleBox', {
             '<div id="trimTitles_2">'+
             	'<div class="box">' +
             		'<h3>' +
-            			'<a href="http://eshop/en/By-Brand/Manufacturer-EN-Aessue/" id="moreSubCat_8" title="Long manufacturer name very long (10)">2Long manufacturer name very long (1)</a>'+
+            			'<a href="http://eshop/en/By-brand/Manufacturer-EN-Aessue/" id="moreSubCat_8" title="Long manufacturer name very long (10)">2Long manufacturer name very long (1)</a>'+
             		'</h3>' +
             		'<div class="content" style="height: 100px;"></div>'+
             	'</div>' +

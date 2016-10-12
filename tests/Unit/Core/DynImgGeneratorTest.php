@@ -22,6 +22,8 @@
 namespace Unit\Core;
 
 use oxDynImgGenerator;
+use OxidEsales\Eshop\Core\DynamicImageGenerator;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 
 /**
  * Tests for Actions_List class
@@ -203,13 +205,103 @@ class DynImgGeneratorTest extends \OxidTestCase
     }
 
     /**
+     * @dataProvider dataProviderTestGenerateImagePickGenerationMethodFromFileExtension
+     *
+     * @param $sourceFilePath
+     * @param $targetFilePath
+     * @param $expectedGenerationMethod
+     * @param $message
+     */
+    public function testGenerateImagePickGenerationMethodFromFileExtension($sourceFilePath, $targetFilePath, $expectedGenerationMethod, $message)
+    {
+        $oGen = $this->getMock(DynamicImageGenerator::class, [
+            '_getImageInfo',
+            'validateGdVersion',
+            'validateFileExist',
+            '_isTargetPathValid',
+            'validateImageFileExtension',
+            '_generateJpg',
+            '_generatePng',
+            '_generateGif',
+        ]);
+        $oGen->expects($this->any())->method('_getImageInfo')->will($this->returnValue(array(100,100,75)));
+        $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateFileExist')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('_isTargetPathValid')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateImageFileExtension')->will($this->returnValue(true));
+        $oGen->expects($this->once())->method($expectedGenerationMethod)->will($this->returnValue($targetFilePath));
+
+        $oGen->UNITgenerateImage($sourceFilePath, $targetFilePath);
+    }
+
+    public function testGenerateImageThrowsException()
+    {
+        $sourceFilePath = 'source.jpg';
+        $targetFilePath = 'target.jpg';
+        $expectedException = StandardException::class;
+        $expectedExceptionMessage = 'imageTarget path and generatedImage path differ';
+
+        $this->setExpectedException($expectedException, $expectedExceptionMessage);
+
+        $oGen = $this->getMock(
+            DynamicImageGenerator::class,
+            [
+             '_getImageInfo',
+            'validateGdVersion',
+            'validateFileExist',
+            '_isTargetPathValid',
+            'validateImageFileExtension',
+            '_generateJpg',
+            '_generatePng',
+            '_generateGif',
+        ]);
+        $oGen->expects($this->any())->method('_getImageInfo')->will($this->returnValue(array(100,100,75)));
+        $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateFileExist')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('_isTargetPathValid')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateImageFileExtension')->will($this->returnValue(true));
+        $oGen->expects($this->once())->method('_generateJpg')->will($this->returnValue('NOT_' . $targetFilePath));
+
+        $oGen->UNITgenerateImage($sourceFilePath, $targetFilePath);
+    }
+
+    public function dataProviderTestGenerateImagePickGenerationMethodFromFileExtension() {
+        return [
+            ['sourceFile.jpeg', 'targetFile.jpeg', '_generateJpg', 'For files with the extension jpeg the _generateJpg method is called'],
+            ['sourceFile.jpg', 'targetFile.jpg', '_generateJpg', 'For files with the extension jpg _generateJpg method is called'],
+            ['sourceFile.png', 'targetFile.png', '_generatePng', 'For files with the extension png _generatePng method is called'],
+            ['sourceFile.gif', 'targetFile.gif', '_generateGif', 'For files with the extension gif _generateGif method is called'],
+            // Test for case insensitivity
+            ['sourceFile.JPEG', 'targetFile.jpeg', '_generateJpg', 'For files with the extension JPEG the _generateJpg method is called'],
+            ['sourceFile.JPG', 'targetFile.jpg', '_generateJpg', 'For files with the extension JPG _generateJpg method is called'],
+            ['sourceFile.PNG', 'targetFile.png', '_generatePng', 'For files with the extension PNG _generatePng method is called'],
+            ['sourceFile.GIF', 'targetFile.gif', '_generateGif', 'For files with the extension GIF _generateGif method is called'],
+        ];
+    }
+
+    /**
      * Testing image uri getter
      *
      * @return null
      */
-    public function testGenerateImage()
+    public function __testGenerateImageFromSource()
     {
-        $oGen = $this->getMock("oxDynImgGenerator", array("_getImageType", "_generatePng", "_generateJpg", "_generateGif", "_getImageUri"));
+        $oGen = $this->getMock("oxDynImgGenerator", [
+            '_getImageType', 
+            '_generatePng', 
+            '_generateJpg', 
+            '_generateGif', 
+            '_getImageUri', 
+            'validateGdVersion', 
+            'validateFileExist', 
+            '_isTargetPathValid', 
+            'validateImageFileExtension'
+        ]);
+        $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateFileExist')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('_isTargetPathValid')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateImageFileExtension')->with('jpg')->will($this->returnValue(true));
+
         $oGen->expects($this->at(0))->method('_getImageType')->will($this->returnValue("png"));
         $oGen->expects($this->at(1))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.png"));
         $oGen->expects($this->at(2))->method('_generatePng')->with($this->equalTo("source"), $this->equalTo("target"), $this->equalTo("12"), $this->equalTo("12"))->will($this->returnValue("test.png"));
@@ -229,11 +321,83 @@ class DynImgGeneratorTest extends \OxidTestCase
         $oGen->expects($this->at(12))->method('_getImageType')->will($this->returnValue("unknown"));
         $oGen->expects($this->at(13))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/unknown"));
 
-        $this->assertEquals("test.png", $oGen->UNITgenerateImage("source", "target"));
-        $this->assertEquals("test.jpg", $oGen->UNITgenerateImage("source", "target"));
-        $this->assertEquals("test.jpg", $oGen->UNITgenerateImage("source", "target"));
-        $this->assertEquals("test.gif", $oGen->UNITgenerateImage("source", "target"));
-        $this->assertFalse($oGen->UNITgenerateImage("source", "target"));
+        $this->assertEquals("test.png", $oGen->UNITgenerateImage("source.jpg", "target.jpg"));
+        $this->assertEquals("test.jpg", $oGen->UNITgenerateImage("source.jpg", "target.jpg"));
+        $this->assertEquals("test.jpg", $oGen->UNITgenerateImage("source.jpg", "target.jpg"));
+        $this->assertEquals("test.gif", $oGen->UNITgenerateImage("source.jpg", "target.jpg"));
+        $this->assertFalse($oGen->UNITgenerateImage("source.jpg", "target.jpg"));
+    }
+
+    public function testGenerateImageGdVersionValidation() {
+        $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion']);
+        $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(false));
+
+        $this->assertFalse($oGen->UNITgenerateImage('source.jpg', 'target.jpg'));
+    }
+
+    public function testGenerateImageSourceFileExistValidation() {
+        $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion', 'validateFileExist']);
+        $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateFileExist')->will($this->returnValue(false));
+
+        $this->assertFalse($oGen->UNITgenerateImage('source.jpg', 'target.jpg'));
+    }
+
+    public function testGenerateImageTargetPathValidation() {
+        $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion', 'validateFileExist', '_isTargetPathValid']);
+        $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateFileExist')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('_isTargetPathValid')->will($this->returnValue(false));
+
+        $this->assertFalse($oGen->UNITgenerateImage('source.jpg', 'target.jpg'));
+    }
+
+    public function testGenerateImageFileExtensionValidationSource() {
+        $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion', 'validateFileExist', '_isTargetPathValid', 'validateImageFileExtension']);
+        $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateFileExist')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('_isTargetPathValid')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateImageFileExtension')->with('sourcejpg')->will($this->returnValue(false));
+
+        $this->assertFalse($oGen->UNITgenerateImage('source.sourcejpg', 'target.jpg'));
+    }
+
+    public function testGenerateImageFileExtensionValidationTarget() {
+        $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion', 'validateFileExist', '_isTargetPathValid', 'validateImageFileExtension']);
+        $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateFileExist')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('_isTargetPathValid')->will($this->returnValue(true));
+        // Validate the source image
+        $oGen->expects($this->at(0))->method('validateImageFileExtension')->will($this->returnValue(true));
+        // Validate the target image
+        $oGen->expects($this->at(1))->method('validateImageFileExtension')->will($this->returnValue(false));
+
+        $this->assertFalse($oGen->UNITgenerateImage('source.sourcejpg', 'target.targetjpg'));
+    }
+
+    public function testGenerateImageFileSourceAndTargetExtensionEqualityValidation() {
+        $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion', 'validateFileExist', '_isTargetPathValid', 'validateImageFileExtension']);
+        $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateFileExist')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('_isTargetPathValid')->will($this->returnValue(true));
+        $oGen->expects($this->at(0))->method('validateImageFileExtension')->will($this->returnValue(true));
+        $oGen->expects($this->at(1))->method('validateImageFileExtension')->will($this->returnValue(true));
+
+        $this->assertFalse($oGen->UNITgenerateImage('source.jpg', 'target.png'));
+    }
+
+    public function testGenerateImageTargetFileExistsValidation() {
+        $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion', 'validateFileExist', '_isTargetPathValid', 'validateImageFileExtension', 'getImageDimensions', '_getImageInfo', '_generateJpg']);
+        $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateFileExist')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('_isTargetPathValid')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('validateImageFileExtension')->will($this->returnValue(true));
+        $oGen->expects($this->any())->method('getImageDimensions')->will($this->returnValue(array(100,100)));
+        $oGen->expects($this->any())->method('_getImageInfo')->will($this->returnValue(array(100,100,75)));
+
+        /** If an image file with the same dimensions already exist do regenerate it. I.e. never call _generateJpg' */
+        $oGen->expects($this->never())->method('_generateJpg');
+        $this->assertSame("target.jpg", $oGen->UNITgenerateImage('source.jpg', 'target.jpg'));
     }
 
     /**
@@ -251,23 +415,21 @@ class DynImgGeneratorTest extends \OxidTestCase
         $oGen->expects($this->at($i++))->method('_getImageMasterPath')->will($this->returnValue("/test/"));
         $oGen->expects($this->at($i++))->method('_getImageName')->will($this->returnValue("test.jpg"));
         $oGen->expects($this->at($i++))->method('_getNopicImageTarget')->will($this->returnValue("nopicimagetarget"));
-        $oGen->expects($this->at($i++))->method('_setHeader')->with($this->equalTo("HTTP/1.0 404 Not Found"));
-        $oGen->expects($this->at($i++))->method('_setHeader')->with($this->equalTo("HTTP/1.0 404 Not Found"));
+        $oGen->expects($this->at($i++))->method('_setHeader')->with($this->equalTo("HTTP/1.1 404 Not Found"));
+        $oGen->expects($this->at($i++))->method('_setHeader')->with($this->equalTo("HTTP/1.1 404 Not Found"));
 
         $oGen->expects($this->at($i++))->method('_getImageMasterPath')->will($this->returnValue("out/" . $sDir . "/master/"));
         $oGen->expects($this->at($i++))->method('_getImageName')->will($this->returnValue("nopic.jpg"));
         $oGen->expects($this->at($i++))->method('_getImageTarget')->will($this->returnValue("best.jpg"));
         $oGen->expects($this->at($i++))->method('_generateImage')->will($this->returnValue("best.jpg"));
         $oGen->expects($this->at($i++))->method('_getImageType')->will($this->returnValue("jpg"));
-        $oGen->expects($this->at($i++))->method('_setHeader')->with($this->equalTo("Content-Type: image/jpg"));
 
         $oGen->expects($this->at($i++))->method('_getImageMasterPath')->will($this->returnValue("out/" . $sDir . "/master/product/1/"));
         $oGen->expects($this->at($i++))->method('_getImageName')->will($this->returnValue("best.jpg"));
         $oGen->expects($this->at($i++))->method('_getNopicImageTarget')->will($this->returnValue("nopic.jpg"));
-        $oGen->expects($this->at($i++))->method('_setHeader')->with($this->equalTo("HTTP/1.0 404 Not Found"));
+        $oGen->expects($this->at($i++))->method('_setHeader')->with($this->equalTo("HTTP/1.1 404 Not Found"));
         $oGen->expects($this->at($i++))->method('_generateImage')->will($this->returnValue("best.jpg"));
         $oGen->expects($this->at($i++))->method('_getImageType')->will($this->returnValue("jpg"));
-        $oGen->expects($this->at($i++))->method('_setHeader')->with($this->equalTo("Content-Type: image/jpg"));
 
         $this->assertFalse($oGen->getImagePath());
         $this->assertEquals("best.jpg", $oGen->getImagePath());

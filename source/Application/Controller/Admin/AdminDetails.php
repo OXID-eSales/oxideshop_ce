@@ -70,26 +70,9 @@ class AdminDetails extends \oxAdminView
     protected function getDocumentationLanguageId()
     {
         $language = oxRegistry::getLang();
-        $languageId = 1;
         $languageAbbr = $language->getLanguageAbbr($language->getTplLanguage());
-        if ($languageAbbr === "de") {
-            $languageId = 0;
-        }
 
-        return $languageId;
-    }
-
-    /**
-     * Method is used for overriding.
-     *
-     * @param int    $iWidth      editor width
-     * @param int    $iHeight     editor height
-     * @param object $oObject     object passed to editor
-     * @param string $sField      object field which content is passed to editor
-     * @param string $sStylesheet stylesheet to use in editor
-     */
-    protected function _getTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet = null)
-    {
+        return $languageAbbr === "de" ? 0 : 1;
     }
 
     /**
@@ -104,7 +87,6 @@ class AdminDetails extends \oxAdminView
     {
         $sEditObjectValue = '';
         if ($oObject && $sField && isset($oObject->$sField)) {
-
             if ($oObject->$sField instanceof oxField) {
                 $sEditObjectValue = $oObject->$sField->getRawValue();
             } else {
@@ -175,13 +157,7 @@ class AdminDetails extends \oxAdminView
      */
     protected function _generateTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet = null)
     {
-        // setup editor
-        if ($oEditor = $this->_getTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet)) {
-            // generate and return editor code
-            $sEditorHtml = $oEditor->fetch($iWidth, $iHeight);
-        } else {
-            $sEditorHtml = $this->_getPlainEditor($iWidth, $iHeight, $oObject, $sField);
-        }
+        $sEditorHtml = $this->_getPlainEditor($iWidth, $iHeight, $oObject, $sField);
 
         return $sEditorHtml;
     }
@@ -276,7 +252,7 @@ class AdminDetails extends \oxAdminView
         if ($sSelectedCatId) {
             // fixed parent category in select list
             foreach ($oCatTree as $oCategory) {
-                if ($oCategory->getId() == $sSelectedCatId) {
+                if (strcmp($oCategory->getId(), $sSelectedCatId) == 0) {
                     $oCategory->selected = 1;
                     break;
                 }
@@ -324,7 +300,6 @@ class AdminDetails extends \oxAdminView
     {
         // navigation according to class
         if ($sNode) {
-
             $myAdminNavig = $this->getNavigation();
 
             // default tab

@@ -23,6 +23,7 @@ namespace Unit\Application\Controller\Admin;
 
 use \Exception;
 use \oxDb;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use \oxTestModules;
 
 /**
@@ -49,7 +50,7 @@ class ShopSeoTest extends \OxidTestCase
      */
     public function testRender()
     {
-        $shopId = 'oxbaseshop';
+        $shopId = ShopIdCalculator::BASE_SHOP_ID;
         if ($this->getConfig()->getEdition() === 'EE') {
             $shopId = 1;
         }

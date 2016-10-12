@@ -32,8 +32,6 @@ class ServersManagerTest extends \OxidTestCase
     public function tearDown()
     {
         parent::tearDown();
-        $oUtilsDate = oxNew('oxUtilsDate');
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
     }
 
     public function testGettingExistingServerByServerId()
@@ -184,7 +182,7 @@ class ServersManagerTest extends \OxidTestCase
     public function testGetServerNodes()
     {
         $iCurrentTime = 1400000000;
-        $this->_prepareCurrentTime($iCurrentTime);
+        $this->setTime($iCurrentTime);
 
         $aStoredData = array(
             'serverNameHash1' => array(
@@ -255,7 +253,7 @@ class ServersManagerTest extends \OxidTestCase
     public function testMarkInactive()
     {
         $iCurrentTime = 1400000000;
-        $this->_prepareCurrentTime($iCurrentTime);
+        $this->setTime($iCurrentTime);
 
         $aStoredData = array(
             'serverNameHash1' => array(
@@ -287,7 +285,7 @@ class ServersManagerTest extends \OxidTestCase
     public function testMarkInactiveNothingToMark()
     {
         $iCurrentTime = 1400000000;
-        $this->_prepareCurrentTime($iCurrentTime);
+        $this->setTime($iCurrentTime);
 
         $aStoredData = array(
             'serverNameHash1' => array(
@@ -319,7 +317,7 @@ class ServersManagerTest extends \OxidTestCase
     public function testDeleteInactiveNoWhatToDelete()
     {
         $iCurrentTime = 1400000000;
-        $this->_prepareCurrentTime($iCurrentTime);
+        $this->setTime($iCurrentTime);
 
         $aStoredData = array(
             'serverNameHash1' => array(
@@ -351,7 +349,7 @@ class ServersManagerTest extends \OxidTestCase
     public function testDeleteInactive()
     {
         $iCurrentTime = 1400000000;
-        $this->_prepareCurrentTime($iCurrentTime);
+        $this->setTime($iCurrentTime);
 
         $aStoredData = array(
             'serverNameHash1' => array(
@@ -379,17 +377,4 @@ class ServersManagerTest extends \OxidTestCase
 
         $this->assertSame(1, count($this->getConfig()->getConfigParam('aServersData')));
     }
-
-
-    /**
-     * @param int $iCurrentTime
-     */
-    private function _prepareCurrentTime($iCurrentTime)
-    {
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getTime'));
-        $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($iCurrentTime));
-        /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
-    }
-
 }

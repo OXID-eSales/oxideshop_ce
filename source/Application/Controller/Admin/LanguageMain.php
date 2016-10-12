@@ -257,9 +257,7 @@ class LanguageMain extends \oxAdminDetails
     protected function _updateAbbervation($sOldId, $sNewId)
     {
         foreach (array_keys($this->_aLangData) as $sTypeKey) {
-
             if (is_array($this->_aLangData[$sTypeKey]) && count($this->_aLangData[$sTypeKey]) > 0) {
-
                 if ($sTypeKey == 'urls' || $sTypeKey == 'sslUrls') {
                     continue;
                 }
@@ -440,11 +438,7 @@ class LanguageMain extends \oxAdminDetails
         $myConfig = $this->getConfig();
         $aAbbrs = array_keys($this->_aLangData['lang']);
 
-        if (in_array($sAbbr, $aAbbrs)) {
-            return true;
-        }
-
-        return false;
+        return in_array($sAbbr, $aAbbrs);
     }
 
     /**
@@ -475,7 +469,7 @@ class LanguageMain extends \oxAdminDetails
 
         // if creating new language, checking if language already exists with
         // entered language abbreviation
-        if ( ($oxid == -1) && $this->_checkLangExists($parameters['abbr']) ) {
+        if (($oxid == -1) && $this->_checkLangExists($parameters['abbr'])) {
             $this->addDisplayException('LANGUAGE_ALREADYEXISTS_ERROR');
             $result = false;
         }
@@ -503,15 +497,19 @@ class LanguageMain extends \oxAdminDetails
      *
      * @param string $abbreviation language abbreviation
      *
+     * @throws RegExException if pattern does not match
+     *
      * @return bool
      */
     protected function checkAbbreviationAllowedCharacters($abbreviation)
     {
-        $return = false;
-        if (preg_match('/^[a-zA-Z0-9_]*$/', $abbreviation)) {
-            $return = true;
+        $pattern = '/^[a-zA-Z0-9_]*$/';
+        $result = preg_match($pattern, $abbreviation);
+        if ($result === false) {
+            throw new RegExException(preg_last_error(), $pattern, $abbreviation);
         }
-        return $return;
+
+        return (bool) $result;
     }
 
     /**

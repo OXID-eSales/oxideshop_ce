@@ -154,6 +154,8 @@ if (!function_exists('getSerial') && class_exists(Serial::class)) {
 if (!function_exists('getVendorDirectory')) {
     /**
      * Returns vendors directory
+     *
+     * @return string
      */
     function getVendorDirectory()
     {
@@ -168,6 +170,9 @@ if (!class_exists("Conf", false)) {
      */
     class Conf
     {
+        /**
+         * Conf constructor.
+         */
         public function __construct()
         {
             $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . "/config.inc.php");

@@ -28,10 +28,13 @@ use oxDb;
  * Calculates Shop id from request data or shop url.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ShopIdCalculator
 {
+    /** Shop id which is used for CE/PE eShops. */
+    const BASE_SHOP_ID = 1;
+
     /** @var array */
     private static $urlMap;
 
@@ -53,7 +56,7 @@ class ShopIdCalculator
      */
     public function getShopId()
     {
-        return 'oxbaseshop';
+        return static::BASE_SHOP_ID;
     }
 
     /**

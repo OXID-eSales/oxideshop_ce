@@ -57,5 +57,5 @@ class DiscountList extends \oxAdminList
      *
      * @var string
      */
-    protected $_sDefSortField = 'oxtitle';
+    protected $_sDefSortField = 'oxsort';
 }

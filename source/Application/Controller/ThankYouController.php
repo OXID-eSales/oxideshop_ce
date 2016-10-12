@@ -136,7 +136,7 @@ class ThankYouController extends oxUBase
     public function render()
     {
         if (!$this->_oBasket || !$this->_oBasket->getProductsCount()) {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeURL() . '&cl=start', true, 302);
+            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . '&cl=start', true, 302);
         }
 
         parent::render();

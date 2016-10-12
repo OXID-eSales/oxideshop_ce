@@ -126,6 +126,9 @@ class LangIntegrityTest extends \OxidTestCase
     {
         $aDetectOrder = mb_detect_order();
         array_unshift($aDetectOrder, 'ISO-8859-15');
+        //make mb_detect_encoding telling us 'UTF-8' even if the string could be represented with an other compatible
+        //charset. Because for our unittest it is important to know if a string is valid utf-8.
+        array_unshift($aDetectOrder, 'UTF-8');
 
         $sThemeName = $this->getThemeName();
 
@@ -147,22 +150,44 @@ class LangIntegrityTest extends \OxidTestCase
     public function testLanguageFileEncoding($sLanguage, $sTheme, $aDetectOrder)
     {
         $aLang = $this->_getLanguage($sTheme, $sLanguage);
+
+        //oxid lang encoding should stay on utf-8 because all language files are utf-8 encoded,
+        //or at least converted to utf8
+        $this->assertEquals('UTF-8', $aLang['charset'], "non utf8 for language $sLanguage in theme $sTheme");
+
         $aFileContent = $this->_getLangFileContents($sTheme, $sLanguage, '*.php');
 
         list($sFileName) = array_keys($aFileContent);
         list($sFileContent) = array_values($aFileContent);
 
+        //check for unicode replacement character because it appears when some re-encodings went wrong
+        //https://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character
+        $posOfIlligalChar = strpos($sFileContent, "�");
+        $this->assertTrue(
+            $posOfIlligalChar === false, "there is an unicode replacement character in file $sFileName in Line at $posOfIlligalChar"
+        );
+
+        //converting from utf-8 into utf-8 will fail if there is anything wrong with that string
+        $this->assertEquals(
+            iconv('UTF-8', 'UTF-8', $sFileContent), $sFileContent,
+            "there is an invalid unicode character in file $sFileName "
+        );
+
         $this->assertEquals(
             $aLang['charset'],
             mb_detect_encoding($sFileContent, $aDetectOrder, true),
-            "File encoding is equals to charset specified inside the file $sFileName."
+            "File encoding does not equal charset specified inside the file $sFileName."
         );
+
+        //converting utf8 to ISO-8859-1 to check if there are double encodings in the next step
+        $sISO88591 = utf8_decode($sFileContent);
+        $this->assertFalse(
+            mb_detect_encoding($sISO88591) === 'UTF-8', "There are double UTF-8 encoding in file $sFileName."
+        );
+
         $this->assertEquals(
-            utf8_decode($sFileContent),
-            utf8_decode(utf8_decode($sFileContent)),
-            "There are no double UTF-8 encoding in file $sFileName."
+            mb_ereg_replace("\t", "", $sFileContent), $sFileContent, "There are tab characters in file $sFileName."
         );
-        $this->assertEquals(str_replace("\t", "", $sFileContent), $sFileContent, "There are no tab characters in file $sFileName.");
     }
 
     /**
@@ -315,7 +340,7 @@ class LangIntegrityTest extends \OxidTestCase
         $aThemeTranslations = $this->_getLanguage($this->getThemeName(), $sLang);
         $aIntersectionsDE = array_intersect_key($aThemeTranslations, $aGenericTranslations);
 
-        $this->assertEquals(array('charset' => 'ISO-8859-15'), $aIntersectionsDE, "some $sLang translations in theme overrides generic translations");
+        $this->assertEquals(array('charset' => 'UTF-8'), $aIntersectionsDE, "some $sLang translations in theme overrides generic translations");
     }
 
     /**
@@ -856,10 +881,18 @@ class LangIntegrityTest extends \OxidTestCase
             $declaredEncoding = $languageTranslation['charset'];
             $isDeclaredAsUTF8 = strtolower($declaredEncoding) === 'utf-8';
 
-            $isInvalidEncoding = !$isDeclaredAsUTF8 && static::isUTF8CharacterPresentInContent($fileContent);
-            $isValidEncoding = !$isInvalidEncoding;
+            if ($isDeclaredAsUTF8) {
+                //find illegal unicode sequences
+                //http://stackoverflow.com/questions/6723562/how-to-detect-malformed-utf-8-string-in-php
+                //http://unicode.org/faq/utf_bom.html
+                $isValidEncoding = mb_check_encoding($fileContent, 'UTF-8' );
+                $errorMessage = "invalid utf8 encoding detected in $filePath";
+            } else {
+                $isInvalidEncoding = static::isUTF8CharacterPresentInContent($fileContent);
+                $isValidEncoding = !$isInvalidEncoding;
+                $errorMessage = $this->getErrorMessageForTestLanguageFilesForInvalidEncoding($filePath, $declaredEncoding);
+            }
 
-            $errorMessage = $this->getErrorMessageForTestLanguageFilesForInvalidEncoding($filePath, $declaredEncoding);
             $this->assertTrue($isValidEncoding, $errorMessage);
         }
     }

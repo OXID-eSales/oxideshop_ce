@@ -39,6 +39,7 @@ class StandardException extends \Exception
 
     /**
      * Log file path/name
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
      *
      * @var string
      */
@@ -73,6 +74,8 @@ class StandardException extends \Exception
     /**
      * Set log file path/name
      *
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     *
      * @param string $sFile File name
      */
     public function setLogFileName($sFile)
@@ -82,6 +85,8 @@ class StandardException extends \Exception
 
     /**
      * Get log file path/name
+     *
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
      *
      * @return string
      */
@@ -144,7 +149,9 @@ class StandardException extends \Exception
         //We are most likely are already dealing with an exception so making sure no other exceptions interfere
         try {
             $sLogMsg = $this->getString() . "\n---------------------------------------------\n";
+            //deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
             oxRegistry::getUtils()->writeToLog($sLogMsg, $this->getLogFileName());
+            //end deprecated
         } catch (\Exception $e) {
         }
     }
@@ -166,7 +173,9 @@ class StandardException extends \Exception
             $sWarning .= "--!--RENDERER--!--";
         }
 
-        return $sWarning . __CLASS__ . " (time: " . date('Y-m-d H:i:s') . "): [{$this->code}]: {$this->message} \n Stack Trace: {$this->getTraceAsString()}\n\n";
+        $currentTime = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
+
+        return $sWarning . __CLASS__ . " (time: " . $currentTime . "): [{$this->code}]: {$this->message} \n Stack Trace: {$this->getTraceAsString()}\n\n";
     }
 
     /**

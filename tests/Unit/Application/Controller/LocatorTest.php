@@ -258,9 +258,7 @@ class LocatorTest extends \OxidTestCase
 
     public function testSetVendorLocatorData()
     {
-        // seo off
-        $this->getConfig()->setConfigParam('blSeoMode', false);
-        oxRegistry::getUtils()->seoIsActive(true);
+        $this->switchOffSeo();
 
         $myConfig = $this->getConfig();
 
@@ -352,9 +350,7 @@ class LocatorTest extends \OxidTestCase
 
     public function testSetManufacturerLocatorData()
     {
-        // seo off
-        $this->getConfig()->setConfigParam('blSeoMode', false);
-        oxRegistry::getUtils()->seoIsActive(true);
+        $this->switchOffSeo();
 
         $myConfig = $this->getConfig();
 
@@ -449,8 +445,7 @@ class LocatorTest extends \OxidTestCase
 
     public function testSetSearchLocatorData()
     {
-        $this->getConfig()->setConfigParam('blSeoMode', false);
-        oxRegistry::getUtils()->seoIsActive(true);
+        $this->switchOffSeo();
 
         $config = $this->getConfig();
 
@@ -494,9 +489,7 @@ class LocatorTest extends \OxidTestCase
 
     public function testSetSearchLocatorDataFromVendor()
     {
-        // seo off
-        $this->getConfig()->setConfigParam('blSeoMode', false);
-        oxRegistry::getUtils()->seoIsActive(true);
+        $this->switchOffSeo();
 
         $config = $this->getConfig();
 
@@ -531,7 +524,7 @@ class LocatorTest extends \OxidTestCase
         $oSearch = $oLocatorTarget->getActSearch();
 
         $expectedPosition = 2;
-        $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 14 : 5;
+        $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 12 : 5;
         $this->assertEquals($expectedPosition, $oSearch->iProductPos);
         $this->assertEquals($expectedCount, $oSearch->iCntOfProd);
 
@@ -543,8 +536,7 @@ class LocatorTest extends \OxidTestCase
 
     public function testSetSearchLocatorDataFromCat()
     {
-        $this->getConfig()->setConfigParam('blSeoMode', false);
-        oxRegistry::getUtils()->seoIsActive(true);
+        $this->switchOffSeo();
 
         $myConfig = $this->getConfig();
 
@@ -586,52 +578,13 @@ class LocatorTest extends \OxidTestCase
         $this->assertNull($oSearch->prevProductLink);
     }
 
-    public function testSetTagLocatorData()
-    {
-        // seo off
-        $this->getConfig()->setConfigParam('blSeoMode', false);
-        oxRegistry::getUtils()->seoIsActive(true);
-
-        $config = $this->getConfig();
-
-        $oCurrArticle = $this->getMock('oxarticle', array('getId'));
-        $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('2000'));
-
-        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'showSorting'));
-        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
-        $oLocatorTarget->expects($this->any())->method('addTplParam');
-        $oLocatorTarget->expects($this->any())->method('setSearchTitle');
-        $oLocatorTarget->expects($this->any())->method('getSearchTitle');
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_TAG));
-
-        $this->setRequestParameter("searchtag", 'wanduhr');
-        $oLocator = new testOxLocator();
-        $oLocator->UNITsetTagLocatorData($oLocatorTarget, $oCurrArticle);
-
-        $oTag = $oLocatorTarget->getActTag();
-
-        $expectedPosition = $this->getTestConfig()->getShopEdition() == 'EE' ? 4 : 3;
-        $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 4 : 3;
-        $this->assertEquals($expectedPosition, $oTag->iProductPos);
-        $this->assertEquals($expectedCount, $oTag->iCntOfProd);
-
-        $iPgNr = $this->getTestConfig()->getShopEdition() == 'EE' ? 3 : 2;
-        $sPrevLink = $config->getShopHomeUrl() . "cl=details&amp;anid=1771&amp;searchtag=wanduhr&amp;listtype=tag";
-        $this->assertEquals($config->getShopHomeUrl() . "cl=tag&amp;searchtag=wanduhr&amp;pgNr={$iPgNr}", $oTag->toListLink);
-        $this->assertEquals($sPrevLink, $oTag->prevProductLink);
-        $this->assertNull($oTag->nextProductLink);
-    }
-
     // set locator data after recommlist search
     public function testSetRecommListLocatorData()
     {
         oxTestModules::addFunction('oxarticlelist', 'loadRecommArticleIds', '{parent::loadRecommArticleIds($aA[0], " order by oxobject2list.oxobjectid asc" );}');
         $myConfig = $this->getConfig();
 
-        // seo off
-        $this->setConfigParam('blSeoMode', false);
-        oxRegistry::getUtils()->seoIsActive(true);
+        $this->switchOffSeo();
 
         $myDB = oxDb::getDB();
         $sShopId = $myConfig->getShopId();
@@ -653,7 +606,7 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('setSearchTitle');
         $oLocatorTarget->expects($this->any())->method('getSearchTitle');
         $oLocatorTarget->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecomm));
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_TAG));
+        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_RECOMM));
 
         $this->setRequestParameter("searchrecomm", 'test');
         $oLocator = new testOxLocator();
@@ -675,9 +628,7 @@ class LocatorTest extends \OxidTestCase
         oxTestModules::addFunction('oxarticlelist', 'loadRecommArticleIds', '{parent::loadRecommArticleIds($aA[0], " order by oxobject2list.oxobjectid asc" );}');
         $myConfig = $this->getConfig();
 
-        // seo off
-        $this->setConfigParam('blSeoMode', false);
-        oxRegistry::getUtils()->seoIsActive(true);
+        $this->switchOffSeo();
 
         $myDB = oxDb::getDB();
         $sShopId = $myConfig->getShopId();
@@ -919,6 +870,15 @@ class LocatorTest extends \OxidTestCase
         $this->assertSame('1234567', $locator->_oBackProduct->getId());
         $this->assertSame('6b6e718666bc8867719ab25a8020a978', $locator->_oNextProduct->getId());
 
+    }
+
+    /**
+     * Switch the SEO functionality off and reset the seo use cache.
+     */
+    protected function switchOffSeo()
+    {
+        $this->setConfigParam('blSeoMode', false);
+        oxRegistry::getUtils()->seoIsActive(true);
     }
 
     /**

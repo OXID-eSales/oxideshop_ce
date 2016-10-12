@@ -237,7 +237,7 @@ if (!function_exists('stopProfile')) {
  * error message.
  *
  * @param string $className Name of class
- *
+ * @param mixed ...$args constructor arguments
  * @throws oxSystemComponentException in case that class does not exists
  *
  * @return object

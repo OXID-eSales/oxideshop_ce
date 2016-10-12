@@ -210,9 +210,7 @@ class Utils extends \oxSuperCfg
         // remove thousands
         $fRet = str_replace(array(" ", "."), "", $fRet);
 
-        $fRet = str_replace(",", ".", $fRet);
-
-        return (float) $fRet;
+        return (float) str_replace(",", ".", $fRet);
     }
 
     /**
@@ -239,10 +237,9 @@ class Utils extends \oxSuperCfg
                 $fRet = str_replace(",", ".", $fRet);
             }
         }
-        // remove thousands
-        $fRet = str_replace(array(" ", ","), "", $fRet);
 
-        return (float) $fRet;
+        // remove thousands
+        return (float) str_replace(array(" ", ","), "", $fRet);
     }
 
     /**
@@ -417,13 +414,14 @@ class Utils extends \oxSuperCfg
 
         //got a different result when using strict and not strict?
         //do a detail check
-        if( $result != $second) {
+        if ($result != $second) {
             $stringstack = array();
             foreach ($haystack as $value) {
                 $stringstack[] = (string) $value;
             }
             $result = array_search((string) $needle, $stringstack, true);
         }
+
         return $result;
     }
 
@@ -456,8 +454,6 @@ class Utils extends \oxSuperCfg
         if (isset($this->_aStaticCache[$sName])) {
             return $this->_aStaticCache[$sName];
         }
-
-        return null;
     }
 
     /**
@@ -485,7 +481,6 @@ class Utils extends \oxSuperCfg
     {
         //only simple arrays are supported
         if (is_array($mContents) && ($sCachePath = $this->getCacheFilePath($sKey, false, 'php'))) {
-
             // setting meta
             $this->setCacheMeta($sKey, array("serialize" => false, "cachepath" => $sCachePath));
 
@@ -664,7 +659,6 @@ class Utils extends \oxSuperCfg
             startProfile("!__SAVING CACHE__! (warning)");
             foreach ($this->_aLockedFileHandles[LOCK_EX] as $sKey => $rHandle) {
                 if ($rHandle !== false && isset($this->_aFileCacheContents[$sKey])) {
-
                     // #0002931A truncate file once more before writing
                     ftruncate($rHandle, 0);
 
@@ -696,12 +690,10 @@ class Utils extends \oxSuperCfg
     {
         $rHandle = isset($this->_aLockedFileHandles[$iLockMode][$sIdent]) ? $this->_aLockedFileHandles[$iLockMode][$sIdent] : null;
         if ($rHandle === null) {
-
             $blLocked = false;
             $rHandle = @fopen($sFilePath, "a+");
 
             if ($rHandle !== false) {
-
                 if (flock($rHandle, $iLockMode | LOCK_NB)) {
                     if ($iLockMode === LOCK_EX) {
                         // truncate file
@@ -721,7 +713,6 @@ class Utils extends \oxSuperCfg
 
             // in case system does not support file locking
             if (!$blLocked && $iLockMode === LOCK_EX) {
-
                 // clearing on first call
                 if (count($this->_aLockedFileHandles) == 0) {
                     clearstatcache();
@@ -753,7 +744,6 @@ class Utils extends \oxSuperCfg
         if (isset($this->_aLockedFileHandles[$iLockMode][$sIdent]) &&
             $this->_aLockedFileHandles[$iLockMode][$sIdent] !== false
         ) {
-
             // release the lock and close file
             $blSuccess = flock($this->_aLockedFileHandles[$iLockMode][$sIdent], LOCK_UN) &&
                          fclose($this->_aLockedFileHandles[$iLockMode][$sIdent]);
@@ -906,7 +896,6 @@ class Utils extends \oxSuperCfg
         if (($sPrevId = oxRegistry::getConfig()->getRequestParameter('preview')) &&
             ($sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie('admin_sid'))
         ) {
-
             $sTable = getViewName('oxuser');
             $oDb = oxDb::getDb();
             $sQ = "select 1 from $sTable where MD5( CONCAT( " . $oDb->quote($sAdminSid) . ", {$sTable}.oxid, {$sTable}.oxpassword, {$sTable}.oxrights ) ) = " . oxDb::getDb()->quote($sPrevId);
@@ -1069,16 +1058,28 @@ class Utils extends \oxSuperCfg
     }
 
     /**
-     * Redirects to shop offline page
-     *
+     * Shows offline page.
+     * @deprecated since v6.0.0 (2016-06-28); Use Utils::showOfflinePage().
      * @param int $iHeaderCode header code, default 302
      */
     public function redirectOffline($iHeaderCode = 302)
     {
-        $sUrl = $this->getConfig()->getShopUrl() . 'offline.html';
-        $this->redirect($sUrl, false, $iHeaderCode);
+        $this->showOfflinePage();
     }
 
+    /**
+     * Shows offline page.
+     * Directly displays the offline page to the client (browser)
+     * with a 500 status code header.
+     */
+    public function showOfflinePage()
+    {
+        $this->setHeader("HTTP/1.1 500 Internal Server Error");
+        $offlineMessageFile = $this->getConfig()->getConfigParam('sShopDir') . 'offline.html';
+        $offline = file_get_contents($offlineMessageFile);
+        $this->showMessageAndExit($offline);
+    }
+    
     /**
      * redirect user to the specified URL
      *
@@ -1196,7 +1197,6 @@ class Utils extends \oxSuperCfg
         $aPrice = explode('!P!', $aName[0]);
 
         if (($myConfig->getConfigParam('bl_perfLoadSelectLists') && $myConfig->getConfigParam('bl_perfUseSelectlistPrice') && isset($aPrice[0]) && isset($aPrice[1])) || $this->isAdmin()) {
-
             // yes, price is there
             $oObject->price = isset($aPrice[1]) ? $aPrice[1] : 0;
             $aName[0] = isset($aPrice[0]) ? $aPrice[0] : '';
@@ -1336,6 +1336,8 @@ class Utils extends \oxSuperCfg
     /**
      * Processes logging.
      *
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     *
      * @param string $sText     Log message text
      * @param bool   $blNewline If true, writes message to new line (default false)
      */
@@ -1430,9 +1432,8 @@ class Utils extends \oxSuperCfg
     public function setLangCache($sCacheName, $aLangCache)
     {
         $sCache = "<?php\n\$aLangCache = " . var_export($aLangCache, true) . ";\n?>";
-        $blRes = file_put_contents($this->getCacheFilePath($sCacheName), $sCache, LOCK_EX);
 
-        return $blRes;
+        return file_put_contents($this->getCacheFilePath($sCacheName), $sCache, LOCK_EX);
     }
 
     /**
@@ -1453,6 +1454,8 @@ class Utils extends \oxSuperCfg
 
     /**
      * Writes given log message. Returns write state
+     *
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
      *
      * @param string $sLogMessage  log message
      * @param string $sLogFileName log file name

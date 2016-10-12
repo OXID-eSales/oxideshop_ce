@@ -5,6 +5,7 @@
 namespace Integration\Checkout;
 
 use oxField;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use oxRegistry;
 use oxUtilsObject;
 
@@ -137,7 +138,7 @@ class ChangeDeliveryAddressTest extends \OxidTestCase
 
         $user->oxuser__oxactive = new oxField('1', oxField::T_RAW);
         $user->oxuser__oxrights = new oxField('user', oxField::T_RAW);
-        $user->oxuser__oxshopid = new oxField('oxbaseshop', oxField::T_RAW);
+        $user->oxuser__oxshopid = new oxField(ShopIdCalculator::BASE_SHOP_ID, oxField::T_RAW);
         $user->oxuser__oxusername = new oxField('testuser@oxideshop.dev', oxField::T_RAW);
         $user->oxuser__oxpassword = new oxField('c630e7f6dd47f9ad60ece4492468149bfed3da3429940181464baae99941d0ffa5562' .
                                                 'aaecd01eab71c4d886e5467c5fc4dd24a45819e125501f030f61b624d7d',

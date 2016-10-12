@@ -48,7 +48,7 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
         oxDb::getDb()->execute("insert into oxobject2delivery set oxid='_testDeliveryDeleteAll1', oxdeliveryid='_testDelieveryRemoveAll', oxobjectid='_testObjectId', oxtype='oxarticles'");
         oxDb::getDb()->execute("insert into oxobject2delivery set oxid='_testDeliveryDeleteAll2', oxdeliveryid='_testDelieveryRemoveAll', oxobjectid='_testObjectId', oxtype='oxarticles'");
 
-        $shopId = $this->getConfig()->getEdition() === 'EE' ? '1' : 'oxbaseshop';
+        $shopId = '1';
 
         oxDb::getDb()->execute("insert into oxarticles set oxid='_testArticle1', oxshopid='" . $shopId . "', oxtitle='_testArticle1'");
         oxDb::getDb()->execute("insert into oxarticles set oxid='_testArticle2', oxshopid='" . $shopId . "', oxtitle='_testArticle2'");

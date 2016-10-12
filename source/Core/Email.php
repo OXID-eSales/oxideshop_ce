@@ -573,9 +573,7 @@ class Email extends \PHPMailer
         $this->setRecipient($user->oxuser__oxusername->value, $fullName);
         $this->setReplyTo($shop->oxshops__oxorderemail->value, $shop->oxshops__oxname->getRawValue());
 
-        $success = $this->send();
-
-        return $success;
+        return $this->send();
     }
 
     /**
@@ -884,7 +882,7 @@ class Email extends \PHPMailer
         $myConfig = $this->getConfig();
         $actShopLang = $myConfig->getActiveShop()->getLanguage();
 
-        $url = $myConfig->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=' . $id;
+        $url = $myConfig->getShopHomeUrl() . 'cl=newsletter&amp;fnc=addme&amp;uid=' . $id;
         $url .= '&amp;lang=' . $actShopLang;
         $url .= ($confirmCode) ? '&amp;confirm=' . $confirmCode : "";
 
@@ -1909,9 +1907,7 @@ class Email extends \PHPMailer
         // shop info
         $shop = $this->_getShop();
 
-        $ret = @mail($shop->oxshops__oxorderemail->value, "eMail problem in shop!", $ownerMessage);
-
-        return $ret;
+        return @mail($shop->oxshops__oxorderemail->value, "eMail problem in shop!", $ownerMessage);
     }
 
     /**

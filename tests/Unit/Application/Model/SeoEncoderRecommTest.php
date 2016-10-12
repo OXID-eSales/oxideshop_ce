@@ -23,6 +23,7 @@ namespace Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -102,7 +103,7 @@ class SeoEncoderRecommTest extends \OxidTestCase
         $oRecomm->expects($this->any())->method('getBaseStdLink')->with($this->equalTo($iLang))->will($this->returnValue("testStdLink"));
         $oRecomm->oxrecommlists__oxtitle = new oxField("testTitle");
 
-        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? 1 : 'oxbaseshop';
+        $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         $oEncoder = $this->getMock('oxSeoEncoderRecomm', array('_getStaticUri'));
         $oEncoder->expects($this->once())->method('_getStaticUri')
@@ -139,7 +140,7 @@ class SeoEncoderRecommTest extends \OxidTestCase
         $oRecomm->expects($this->any())->method('getBaseStdLink')->with($this->equalTo($iLang))->will($this->returnValue("testStdLink"));
         $oRecomm->oxrecommlists__oxtitle = new oxField("testTitle");
 
-        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? 1 : 'oxbaseshop';
+        $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         $oEncoder = $this->getMock('oxSeoEncoderRecomm', array('_getStaticUri'));
         $oEncoder->expects($this->once())->method('_getStaticUri')

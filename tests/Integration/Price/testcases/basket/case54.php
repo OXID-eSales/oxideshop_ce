@@ -140,6 +140,7 @@ $aData = array(
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
 
         ),
 
@@ -166,7 +167,7 @@ $aData = array(
                 19 => '288,13',
                 13 => '2,39',
                 3  => '208,70',
-                17 => '5,23', 
+                17 => '5,23',
                 33 => '0,88',
             ),
         // Total discount amounts: discount id => total cost

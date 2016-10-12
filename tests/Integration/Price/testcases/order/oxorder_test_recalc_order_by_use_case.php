@@ -25,7 +25,7 @@ $aData = array (
                     'oxactive' => 1,
                     'oxtitle'  => 'Bar-Equipment',
                     'oxarticles' => array( 1126 )
-            ),   
+            ),
     ),
     'discounts' => array (
             0 => array (
@@ -35,7 +35,8 @@ $aData = array (
                     'oxamount'     => 1,
                     'oxamountto'   => 9999,
                     'oxactive'     => 1,
-                    'oxarticles'   => array ( 1126, 1127 )
+                    'oxarticles'   => array ( 1126, 1127 ),
+                    'oxsort'       => 10,
             ),
             1 => array (
                     'oxid'         => '_testDiscountForCategory',
@@ -44,7 +45,8 @@ $aData = array (
                     'oxamount'     => 1,
                     'oxamountto'   => 9999,
                     'oxactive'     => 1,
-                    'oxcategories'   => array ( '30e44ab8593023055.23928895' )
+                    'oxcategories' => array ( '30e44ab8593023055.23928895' ),
+                    'oxsort'       => 20,
             ),
     ),
     'costs' => array (

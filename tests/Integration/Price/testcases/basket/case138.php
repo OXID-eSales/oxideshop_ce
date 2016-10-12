@@ -17,11 +17,11 @@
  *  1. Payment -;
  *  2. Delivery- ;
  *  3. TS -
- * Short description: 
+ * Short description:
  * Brutto-Brutto mode.
  * Testing basket item price calculation, if only two from three articles have discounts
  */
- 
+
 $aData = array(
         'articles' => array (
                 0 => array (
@@ -62,6 +62,7 @@ $aData = array(
                         'oxaddsumtype'=> 'abs',
                         'oxaddsum'    => 5,
                         'oxarticles'  => array( 2000, '_tArticle' ),
+                        'oxsort' => 10,
                 ),
         ),
         'expected' => array (

@@ -284,16 +284,13 @@ class ViewConfigTest extends \OxidTestCase
             ->method('getActSearchParam')
             ->will($this->returnValue('searchparam'));
         $oVC->expects($this->once())
-            ->method('getActSearchTag')
-            ->will($this->returnValue('searchtag'));
-        $oVC->expects($this->once())
             ->method('getActRecommendationId')
             ->will($this->returnValue('testrecomm'));
         $oVC->expects($this->once())
             ->method('getActListType')
             ->will($this->returnValue('listtype'));
 
-        $this->assertEquals('shopHomeUrl/cl=actionclass&amp;cnid=catid&amp;anid=anid&amp;searchparam=searchparam&amp;searchtag=searchtag&amp;recommid=testrecomm&amp;listtype=listtype&amp;fnc=logout&amp;tpl=tpl&amp;oxloadid=oxloadid&amp;redirect=1', $oVC->getLogoutLink());
+        $this->assertEquals('shopHomeUrl/cl=actionclass&amp;cnid=catid&amp;anid=anid&amp;searchparam=searchparam&amp;recommid=testrecomm&amp;listtype=listtype&amp;fnc=logout&amp;tpl=tpl&amp;oxloadid=oxloadid&amp;redirect=1', $oVC->getLogoutLink());
     }
 
     /**
@@ -339,16 +336,13 @@ class ViewConfigTest extends \OxidTestCase
             ->method('getActSearchParam')
             ->will($this->returnValue('searchparam'));
         $oVC->expects($this->once())
-            ->method('getActSearchTag')
-            ->will($this->returnValue('searchtag'));
-        $oVC->expects($this->once())
             ->method('getActRecommendationId')
             ->will($this->returnValue('testrecomm'));
         $oVC->expects($this->once())
             ->method('getActListType')
             ->will($this->returnValue('listtype'));
 
-        $this->assertEquals('sslShopHomeUrl/cl=actionclass&amp;cnid=catid&amp;anid=anid&amp;searchparam=searchparam&amp;searchtag=searchtag&amp;recommid=testrecomm&amp;listtype=listtype&amp;fnc=logout&amp;tpl=tpl&amp;oxloadid=oxloadid&amp;redirect=1', $oVC->getLogoutLink());
+        $this->assertEquals('sslShopHomeUrl/cl=actionclass&amp;cnid=catid&amp;anid=anid&amp;searchparam=searchparam&amp;recommid=testrecomm&amp;listtype=listtype&amp;fnc=logout&amp;tpl=tpl&amp;oxloadid=oxloadid&amp;redirect=1', $oVC->getLogoutLink());
     }
 
     /**
@@ -950,21 +944,6 @@ class ViewConfigTest extends \OxidTestCase
 
         $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($sParam, $oViewConf->getActSearchParam());
-    }
-
-    /**
-     * oxViewconfig::getActSearchTag() test case
-     *
-     * @return null
-     */
-
-    public function testGetActSearchTag()
-    {
-        $sTag = "test=john";
-        $this->setRequestParameter("searchtag", $sTag);
-
-        $oViewConf = oxNew('oxViewConfig');
-        $this->assertEquals($sTag, $oViewConf->getActSearchTag());
     }
 
     /**

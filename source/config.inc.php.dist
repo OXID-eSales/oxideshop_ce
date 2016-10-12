@@ -54,7 +54,7 @@
     $this->sOXIDPHP = "oxid.php";
 
     //  enable debug mode for template development or bugfixing
-    // -1 = Logger Messages internal use only
+    // -1 = Log more messages and throw exceptions on errors (not recommended for production)
     //  0 = off
     //  1 = smarty
     //  2 = SQL

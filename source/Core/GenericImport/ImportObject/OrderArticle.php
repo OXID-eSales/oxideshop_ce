@@ -71,6 +71,6 @@ class OrderArticle extends ImportObject
      */
     protected function getOrderShopId($currentShopId)
     {
-        return 'oxbaseshop';
+        return 1;
     }
 }

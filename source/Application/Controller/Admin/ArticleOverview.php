@@ -128,12 +128,10 @@ class ArticleOverview extends \oxAdminDetails
      */
     protected function formSoldOutAmountQuery($oxId)
     {
-        $query = "select sum(oxorderarticles.oxamount) from  oxorderarticles, oxorder " .
+        return "select sum(oxorderarticles.oxamount) from  oxorderarticles, oxorder " .
             "where (oxorder.oxpaid>0 or oxorder.oxsenddate > 0) and oxorderarticles.oxstorno != '1' " .
             "and oxorderarticles.oxartid=" . $this->getDatabase()->quote($oxId) .
             "and oxorder.oxid =oxorderarticles.oxorderid";
-
-        return $query;
     }
 
     /**
@@ -145,10 +143,8 @@ class ArticleOverview extends \oxAdminDetails
      */
     protected function formCanceledAmountQuery($soxId)
     {
-        $query = "select sum(oxamount) from oxorderarticles where oxstorno = '1' " .
+        return "select sum(oxamount) from oxorderarticles where oxstorno = '1' " .
             "and oxartid=" . $this->getDatabase()->quote($soxId);
-
-        return $query;
     }
 
     /**

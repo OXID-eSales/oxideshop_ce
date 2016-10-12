@@ -33,7 +33,7 @@ use ReflectionException;
  * Object Factory implementation (oxNew() method is implemented in this class).
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class UtilsObject
 {
@@ -128,11 +128,12 @@ class UtilsObject
         }
 
         if (!self::$_instance instanceof UtilsObject) {
-            // allow modules
+            
             $oUtilsObject = new UtilsObject();
-
-            $classMapProvider = new ClassMapProvider(new EditionSelector());
-            $classNameProvider = new ClassNameProvider($classMapProvider->getOverridableClassMap());
+            // set the not overloaded(by modules) version early so oxnew can be used internally 
+            self::$_instance = $oUtilsObject;
+            // null for classNameProvider because it is generated in the constructor
+            $classNameProvider = null;
 
             $moduleVariablesCache = $oUtilsObject->oxNew('oxFileCache');
             $shopIdCalculator = $oUtilsObject->oxNew('oxShopIdCalculator', $moduleVariablesCache);
@@ -140,7 +141,8 @@ class UtilsObject
             $subShopSpecific = $oUtilsObject->oxNew('oxSubShopSpecificFileCache', $shopIdCalculator);
             $moduleVariablesLocator = $oUtilsObject->oxNew('oxModuleVariablesLocator', $subShopSpecific, $shopIdCalculator);
             $moduleChainsGenerator = $oUtilsObject->oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
-
+            
+            //generate UtilsObject again by oxnew to allow overloading by modules
             self::$_instance = $oUtilsObject->oxNew('oxUtilsObject', $classNameProvider, $moduleChainsGenerator, $shopIdCalculator);
         }
 
@@ -331,7 +333,7 @@ class UtilsObject
      */
     public function generateUId()
     {
-        return substr(md5(uniqid('', true) . '|' . microtime()), 0, 32);
+        return md5(uniqid('', true) . '|' . microtime());
     }
 
     /**
@@ -347,9 +349,7 @@ class UtilsObject
 
         $class = $classNameProvider->getClassName($classAlias);
 
-        $class = $this->getModuleChainsGenerator()->createClassChain($class, $classAlias);
-
-        return $class;
+        return $this->getModuleChainsGenerator()->createClassChain($class, $classAlias);
     }
 
     /**

@@ -501,7 +501,7 @@ class RssfeedTest extends \OxidTestCase
         oxTestModules::addFunction('oxrssfeed', '_saveToDb', '{ $this->_aChannel["saved"] =$aA[0]; }');
         oxTestModules::publicize('oxrssfeed', '_loadData');
         $iCurrTime = time();
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
+        $this->setTime($iCurrTime);
 
         $oRss = oxNew('oxRssFeed');
         $oRss->p_loadData(null, 'topshoptitle', 'DESCRIPTION', 'loadtop5', 'topshopurl', 'targetlink');

@@ -71,9 +71,7 @@ class Article extends ImportObject
             }
         }
 
-        $data = parent::preAssignObject($shopObject, $data, $allowCustomShopId);
-
-        return $data;
+        return parent::preAssignObject($shopObject, $data, $allowCustomShopId);
     }
 
     /**

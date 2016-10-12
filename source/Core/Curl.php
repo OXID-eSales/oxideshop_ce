@@ -454,10 +454,7 @@ class Curl
      */
     protected function _prepareQueryParameters($params)
     {
-        $params = array_filter($params);
-        $params = array_map(array($this, '_htmlDecode'), $params);
-
-        return $params;
+        return array_map([$this, '_htmlDecode'], array_filter($params));
     }
 
     /**

@@ -25,7 +25,7 @@ namespace OxidEsales\Eshop\Core\Autoload;
  * Autoloader for shop classes.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ShopAutoload
 {
@@ -102,7 +102,7 @@ class ShopAutoload
     protected function generateDirectories()
     {
         $shopBasePath = __DIR__ . "/../../";
-        $aClassDirs = array(
+        return [
             $shopBasePath . 'Core/',
             $shopBasePath . 'Application/Component/Widget/',
             $shopBasePath . 'Application/Component/',
@@ -111,8 +111,6 @@ class ShopAutoload
             $shopBasePath . 'Application/Controller/Admin/',
             $shopBasePath . 'Core/exception/',
             $shopBasePath . 'Core/interface/'
-        );
-
-        return $aClassDirs;
+        ];
     }
 }

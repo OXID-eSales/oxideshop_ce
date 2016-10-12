@@ -25,6 +25,8 @@ namespace OxidEsales\Eshop\Application\Component\Widget;
 /**
  * Recomendation list.
  * Forms recomendation list.
+ *
+ * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
 class Recommendation extends \oxWidget
 {
@@ -55,9 +57,8 @@ class Recommendation extends \oxWidget
         $aArticleIds = $this->getViewParameter("aArticleIds");
 
         $oRecommList = oxNew('oxrecommlist');
-        $aRecommList = $oRecommList->getRecommListsByIds($aArticleIds);
 
-        return $aRecommList;
+        return $oRecommList->getRecommListsByIds($aArticleIds);
     }
 
     /**
@@ -67,8 +68,6 @@ class Recommendation extends \oxWidget
      */
     public function getRecommList()
     {
-        $oRecommList = oxNew('recommlist');
-
-        return $oRecommList;
+        return oxNew('recommlist');
     }
 }

@@ -32,7 +32,7 @@ $aData = array (
                 'oxactive' => 1,
                 'oxusername' => 'groupBUser',
         ),
- 
+
         'group' => array (
                 0 => array (
                         'oxid' => 'oxidpricea',
@@ -60,10 +60,11 @@ $aData = array (
                     'oxaddsumtype' => '%',
                     'oxamount'     => 0,
                     'oxamountto'   => 99999,
-					'oxprice'      =>100,
-					'oxpriceto'    =>99999,
+					'oxprice'      => 100,
+					'oxpriceto'    => 99999,
                     'oxactive'     => 1,
                     'oxarticles'   => array ( 1002, 1003 ),
+                    'oxsort'       => 10,
             ),
             1 => array (
                     'oxid'         => 'discount2',
@@ -73,20 +74,21 @@ $aData = array (
                     'oxamountto'   => 99999,
                     'oxactive'     => 1,
                     'oxarticles'   => array ( 10013, 1000 ),
+                    'oxsort'       => 20,
             ),
     ),
-		
+
         'expected' => array (
 		  'articles' => array (
 				1003 => array ( '61,20', '428,40' ),
             ),
-		
+
 		'totals' => array (
                 'totalBrutto' => '428,40',
                 'totalNetto'  => '360,00',
                 'vats' => array (
                       19 => '68,40',
-                ), 
+                ),
                 'grandTotal'  => '428,40'
         ),
 		),

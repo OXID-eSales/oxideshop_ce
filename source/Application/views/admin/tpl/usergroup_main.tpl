@@ -67,11 +67,11 @@
     </td>
     <!-- Anfang rechte Seite -->
     <td valign="top" class="edittext" align="left" width="50%">
-    [{if $oxid != "-1"}]
-
-        <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNUSERS"}]" class="edittext" onclick="JavaScript:showDialog('&cl=usergroup_main&aoc=1&oxid=[{$oxid}]');">
-
-    [{/if}]
+        [{block name="admin_usergroup_main_assign_users"}]
+            [{if $oxid != "-1"}]
+                <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNUSERS"}]" class="edittext" onclick="JavaScript:showDialog('&cl=usergroup_main&aoc=1&oxid=[{$oxid}]');">
+            [{/if}]
+        [{/block}]
     </td>
 
     </tr>

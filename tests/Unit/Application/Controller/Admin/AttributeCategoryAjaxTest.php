@@ -37,9 +37,9 @@ class AttributeCategoryAjaxTest extends \OxidTestCase
     {
         parent::setUp();
 
-        $this->addToDatabase("replace into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='" . $this->getgetShopIdTest() . "', oxactive=1", 'oxcategories');
-        $this->addToDatabase("replace into oxattribute set oxid='_testAttribute', oxtitle='_testAttribute', oxshopid='" . $this->getgetShopIdTest() . "'", 'oxattribute');
-        $this->addToDatabase("replace into oxattribute set oxid='_testAttributeAll', oxtitle='_testAttributeAll', oxshopid='" . $this->getgetShopIdTest() . "'", 'oxattribute');
+        $this->addToDatabase("replace into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='" . $this->getShopIdTest() . "', oxactive=1", 'oxcategories');
+        $this->addToDatabase("replace into oxattribute set oxid='_testAttribute', oxtitle='_testAttribute', oxshopid='" . $this->getShopIdTest() . "'", 'oxattribute');
+        $this->addToDatabase("replace into oxattribute set oxid='_testAttributeAll', oxtitle='_testAttributeAll', oxshopid='" . $this->getShopIdTest() . "'", 'oxattribute');
         $this->addTeardownSql("delete from oxcategories where oxid='_testCategory'");
         $this->addTeardownSql("delete from oxattribute where oxid like '%_testAttribute%'");
         $this->addToDatabase("replace into oxcategory2attribute set oxid='_testOxid1', oxobjectid='_testRemove'", 'oxcategory2attribute');
@@ -55,9 +55,9 @@ class AttributeCategoryAjaxTest extends \OxidTestCase
         return $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxcategories_1_de' : 'oxv_oxcategories_de';
     }
 
-    public function getgetShopIdTest()
+    public function getShopIdTest()
     {
-        return $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        return '1';
     }
 
     /**
@@ -68,7 +68,7 @@ class AttributeCategoryAjaxTest extends \OxidTestCase
     public function testGetQuery()
     {
         $oView = oxNew('attribute_category_ajax');
-        $this->assertEquals("from " . $this->getCategoryViewTable() . " where " . $this->getCategoryViewTable() . ".oxshopid = '" . $this->getgetShopIdTest() . "'  and " . $this->getCategoryViewTable() . ".oxactive = '1'", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from " . $this->getCategoryViewTable() . " where " . $this->getCategoryViewTable() . ".oxshopid = '" . $this->getShopIdTest() . "'  and " . $this->getCategoryViewTable() . ".oxactive = '1'", trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -82,7 +82,7 @@ class AttributeCategoryAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('attribute_category_ajax');
-        $this->assertEquals("from " . $this->getCategoryViewTable() . " where " . $this->getCategoryViewTable() . ".oxshopid = '" . $this->getgetShopIdTest() . "'  and " . $this->getCategoryViewTable() . ".oxactive = '1'  and " . $this->getCategoryViewTable() . ".oxid not in ( select " . $this->getCategoryViewTable() . ".oxid from " . $this->getCategoryViewTable() . " left join oxcategory2attribute on " . $this->getCategoryViewTable() . ".oxid=oxcategory2attribute.oxobjectid  where oxcategory2attribute.oxattrid = '$sSynchoxid' and " . $this->getCategoryViewTable() . ".oxshopid = '" . $this->getgetShopIdTest() . "'  and " . $this->getCategoryViewTable() . ".oxactive = '1' )", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from " . $this->getCategoryViewTable() . " where " . $this->getCategoryViewTable() . ".oxshopid = '" . $this->getShopIdTest() . "'  and " . $this->getCategoryViewTable() . ".oxactive = '1'  and " . $this->getCategoryViewTable() . ".oxid not in ( select " . $this->getCategoryViewTable() . ".oxid from " . $this->getCategoryViewTable() . " left join oxcategory2attribute on " . $this->getCategoryViewTable() . ".oxid=oxcategory2attribute.oxobjectid  where oxcategory2attribute.oxattrid = '$sSynchoxid' and " . $this->getCategoryViewTable() . ".oxshopid = '" . $this->getShopIdTest() . "'  and " . $this->getCategoryViewTable() . ".oxactive = '1' )", trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -96,7 +96,7 @@ class AttributeCategoryAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('attribute_category_ajax');
-        $this->assertEquals("from " . $this->getCategoryViewTable() . " left join oxcategory2attribute on " . $this->getCategoryViewTable() . ".oxid=oxcategory2attribute.oxobjectid  where oxcategory2attribute.oxattrid = '$sOxid' and " . $this->getCategoryViewTable() . ".oxshopid = '" . $this->getgetShopIdTest() . "'  and " . $this->getCategoryViewTable() . ".oxactive = '1'", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from " . $this->getCategoryViewTable() . " left join oxcategory2attribute on " . $this->getCategoryViewTable() . ".oxid=oxcategory2attribute.oxobjectid  where oxcategory2attribute.oxattrid = '$sOxid' and " . $this->getCategoryViewTable() . ".oxshopid = '" . $this->getShopIdTest() . "'  and " . $this->getCategoryViewTable() . ".oxactive = '1'", trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -164,7 +164,7 @@ class AttributeCategoryAjaxTest extends \OxidTestCase
         $this->setRequestParameter("all", true);
 
         //count how much articles gets filtered
-        $iCount = oxDb::getDb()->getOne("select count(" . $this->getCategoryViewTable() . ".oxid)  from " . $this->getCategoryViewTable() . " where " . $this->getCategoryViewTable() . ".oxshopid = '" . $this->getgetShopIdTest() . "'  and " . $this->getCategoryViewTable() . ".oxactive = '1'  and " . $this->getCategoryViewTable() . ".oxid not in ( select " . $this->getCategoryViewTable() . ".oxid from " . $this->getCategoryViewTable() . " left join oxcategory2attribute on " . $this->getCategoryViewTable() . ".oxid=oxcategory2attribute.oxobjectid  where oxcategory2attribute.oxattrid = '$sSynchoxid' and " . $this->getCategoryViewTable() . ".oxshopid = '" . $this->getgetShopIdTest() . "'  and " . $this->getCategoryViewTable() . ".oxactive = '1' )");
+        $iCount = oxDb::getDb()->getOne("select count(" . $this->getCategoryViewTable() . ".oxid)  from " . $this->getCategoryViewTable() . " where " . $this->getCategoryViewTable() . ".oxshopid = '" . $this->getShopIdTest() . "'  and " . $this->getCategoryViewTable() . ".oxactive = '1'  and " . $this->getCategoryViewTable() . ".oxid not in ( select " . $this->getCategoryViewTable() . ".oxid from " . $this->getCategoryViewTable() . " left join oxcategory2attribute on " . $this->getCategoryViewTable() . ".oxid=oxcategory2attribute.oxobjectid  where oxcategory2attribute.oxattrid = '$sSynchoxid' and " . $this->getCategoryViewTable() . ".oxshopid = '" . $this->getShopIdTest() . "'  and " . $this->getCategoryViewTable() . ".oxactive = '1' )");
 
         $this->assertGreaterThan(0, $iCount);
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxcategory2attribute where oxattrid='$sSynchoxid'"));

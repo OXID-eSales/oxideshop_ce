@@ -24,6 +24,7 @@ namespace OxidEsales\Eshop\Application\Model;
 
 use oxRegistry;
 use oxDb;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Article list manager.
@@ -449,6 +450,8 @@ class ArticleList extends \oxList
     /**
      * Loads articles for the recommlist
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
      */
@@ -460,6 +463,8 @@ class ArticleList extends \oxList
 
     /**
      * Loads only ID's and create Fake objects.
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
@@ -477,6 +482,8 @@ class ArticleList extends \oxList
 
     /**
      * Returns the appropriate SQL select
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
@@ -519,16 +526,7 @@ class ArticleList extends \oxList
         $sArticleTable = getViewName('oxarticles');
 
         // longdesc field now is kept on different table
-        $sDescTable = '';
-        $sDescJoin = '';
-        if (is_array($aSearchCols = $this->getConfig()->getConfigParam('aSearchCols'))) {
-            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-            if (in_array('oxlongdesc', $aSearchCols) || in_array('oxtags', $aSearchCols)) {
-                $sDescView = getViewName('oxartextends');
-                $sDescJoin = " LEFT JOIN $sDescView ON {$sDescView}.oxid={$sArticleTable}.oxid ";
-            }
-            // END deprecated
-        }
+        $sDescJoin = $this->getDescriptionJoin();
 
         // load the articles
         $sSelect = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable $sDescJoin where ";
@@ -650,91 +648,6 @@ class ArticleList extends \oxList
         $this->selectString($sSelect);
 
         return oxRegistry::get("oxUtilsCount")->getManufacturerArticleCount($sManufacturerId);
-    }
-
-    /**
-     * Loads a list of articles having
-     *
-     * @param string $sTag  Searched tag
-     * @param int    $iLang Active language
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return int
-     */
-    public function loadTagArticles($sTag, $iLang)
-    {
-        $oListObject = $this->getBaseObject();
-        $sArticleTable = $oListObject->getViewName();
-        $sArticleFields = $oListObject->getSelectFields();
-        $sViewName = getViewName('oxartextends', $iLang);
-
-        $oTag = oxNew('oxtag', $sTag);
-        $oTag->addUnderscores();
-        $sTag = $oTag->get();
-
-        $sQ = "select {$sArticleFields} from {$sViewName} inner join {$sArticleTable} on " .
-              "{$sArticleTable}.oxid = {$sViewName}.oxid where {$sArticleTable}.oxparentid = '' AND match ( {$sViewName}.oxtags ) " .
-              "against( " . oxDb::getDb()->quote("\"" . $sTag . "\"") . " IN BOOLEAN MODE )";
-
-        // checking stock etc
-        if (($sActiveSnippet = $oListObject->getSqlActiveSnippet())) {
-            $sQ .= " and {$sActiveSnippet}";
-        }
-
-        if ($this->_sCustomSorting) {
-            $sSort = $this->_sCustomSorting;
-            if (strpos($sSort, '.') === false) {
-                $sSort = $sArticleTable . '.' . $sSort;
-            }
-            $sQ .= " order by $sSort ";
-        }
-
-        $this->selectString($sQ);
-
-        // calc count - we can not use count($this) here as we might have paging enabled
-        return oxRegistry::get("oxUtilsCount")->getTagArticleCount($sTag, $iLang);
-    }
-
-    /**
-     * Returns array of article ids belonging to current tags
-     *
-     * @param string $sTag  current tag
-     * @param int    $iLang active language
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @return array
-     */
-    public function getTagArticleIds($sTag, $iLang)
-    {
-        $oListObject = $this->getBaseObject();
-        $sArticleTable = $oListObject->getViewName();
-        $sViewName = getViewName('oxartextends', $iLang);
-
-        $oTag = oxNew('oxtag', $sTag);
-        $oTag->addUnderscores();
-        $sTag = $oTag->get();
-
-        $sQ = "select {$sViewName}.oxid from {$sViewName} inner join {$sArticleTable} on " .
-              "{$sArticleTable}.oxid = {$sViewName}.oxid where {$sArticleTable}.oxparentid = '' and {$sArticleTable}.oxissearch = 1 and " .
-              "match ( {$sViewName}.oxtags ) " .
-              "against( " . oxDb::getDb()->quote("\"" . $sTag . "\"") . " IN BOOLEAN MODE )";
-
-        // checking stock etc
-        if (($sActiveSnippet = $oListObject->getSqlActiveSnippet())) {
-            $sQ .= " and {$sActiveSnippet}";
-        }
-
-        if ($this->_sCustomSorting) {
-            $sSort = $this->_sCustomSorting;
-            if (strpos($sSort, '.') === false) {
-                $sSort = $sArticleTable . '.' . $sSort;
-            }
-            $sQ .= " order by $sSort ";
-        }
-
-        return $this->_createIdListFromSql($sQ);
     }
 
     /**
@@ -1130,15 +1043,9 @@ class ArticleList extends \oxList
                     $sSearch .= ' or ';
                 }
 
-                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
                 // as long description now is on different table table must differ
-                if ($sField == 'oxlongdesc' || $sField == 'oxtags') {
-                    $sSearchTable = getViewName('oxartextends');
-                } else {
-                    $sSearchTable = $sArticleTable;
-                }
-                // END deprecated
-                
+                $sSearchTable = $this->getSearchTableName($sArticleTable, $sField);
+
                 $sSearch .= $sSearchTable . '.' . $sField . ' like ' . $oDb->quote('%' . $sSearchString . '%') . ' ';
                 if ($sUml) {
                     $sSearch .= ' or ' . $sSearchTable . '.' . $sField . ' like ' . $oDb->quote('%' . $sUml . '%');
@@ -1324,5 +1231,43 @@ class ArticleList extends \oxList
      */
     protected function updateArticles($aUpdatedArticleIds)
     {
+    }
+
+    /**
+     * Get description join. Needed in case of searching for data in table oxartextends or its views.
+     *
+     * @return string
+     */
+    protected function getDescriptionJoin()
+    {
+        $table = Registry::get('oxTableViewNameGenerator')->getViewName('oxarticles');
+        $descriptionJoin = '';
+        $searchColumns = $this->getConfig()->getConfigParam('aSearchCols');
+
+        if (is_array($searchColumns) && in_array('oxlongdesc', $searchColumns)) {
+            $viewName = getViewName('oxartextends');
+            $descriptionJoin = " LEFT JOIN $viewName ON {$viewName}.oxid={$table}.oxid ";
+        }
+        return $descriptionJoin;
+    }
+
+    /**
+     * Get search table name.
+     * Needed in case of searching for data in table oxartextends or its views.
+     *
+     * @param string $table
+     * @param string $field Chose table depending on field.
+     *
+     * @return string
+     */
+    protected function getSearchTableName($table, $field)
+    {
+        $searchTable = $table;
+
+        if ($field == 'oxlongdesc') {
+            $searchTable = Registry::get('oxTableViewNameGenerator')->getViewName('oxartextends');
+        }
+
+        return $searchTable;
     }
 }

@@ -24,6 +24,7 @@ namespace OxidEsales\Eshop\Core;
 
 use oxRegistry;
 use oxDb;
+use oxStr;
 
 /**
  * Seo encoder base
@@ -117,7 +118,11 @@ class SeoEncoder extends \oxSuperCfg
         $iDefLang = (int) $this->getConfig()->getConfigParam('iDefSeoLang');
         $aLangIds = oxRegistry::getLang()->getLanguageIds();
 
-        if ($iLang != $iDefLang && isset($aLangIds[$iLang]) && getStr()->strpos($sSeoUrl, $aLangIds[$iLang] . '/') !== 0) {
+        if ($iLang != $iDefLang &&
+            isset($aLangIds[$iLang]) &&
+            // #0006407 bugfix, we should not search for the string saved in the db but for the escaped string
+            getStr()->strpos($sSeoUrl, $this->replaceSpecialChars($aLangIds[$iLang]) . '/') !== 0
+        ) {
             $sSeoUrl = $aLangIds[$iLang] . '/' . $sSeoUrl;
         }
 
@@ -219,7 +224,6 @@ class SeoEncoder extends \oxSuperCfg
         if ($sOldSeoUrl === $sSeoUrl) {
             $sSeoUrl = $sOldSeoUrl;
         } else {
-
             if ($sOldSeoUrl) {
                 // old must be transferred to history
                 $this->_copyToHistory($sObjectId, $iShopId, $iLang, 'dynamic');
@@ -618,14 +622,7 @@ class SeoEncoder extends \oxSuperCfg
             $sUri = $oStr->substr($sUri, 0, $oStr->strlen($sUri) - $oStr->strlen($sExt));
         }
 
-        // removing any special characters
-        // #0004282 bugfix, php <5.3 does not escape - char, so we do it manually
-        $sQuotedPrefix = preg_quote(self::$_sSeparator . self::$_sPrefix, '/');
-        if (phpversion() < '5.3') {
-            $sQuotedPrefix = str_replace('-', '\-', $sQuotedPrefix);
-        }
-        $sRegExp = '/[^A-Za-z0-9' . $sQuotedPrefix . '\/]+/';
-        $sUri = $oStr->preg_replace(array("/\W*\/\W*/", $sRegExp), array("/", self::$_sSeparator), $sUri);
+        $sUri = $this->replaceSpecialChars($sUri);
 
         // SEO id is empty ?
         if (!$sUri && self::$_sPrefix) {
@@ -859,11 +856,7 @@ class SeoEncoder extends \oxSuperCfg
             }
         }
 
-
-        // special chars
-        $aReplaceWhat = array('&amp;', '&quot;', '&#039;', '&lt;', '&gt;');
-
-        return str_replace($aReplaceWhat, '', $sString);
+        return str_replace(['&amp;', '&quot;', '&#039;', '&lt;', '&gt;'], '', $sString);
     }
 
     /**
@@ -1017,7 +1010,6 @@ class SeoEncoder extends \oxSuperCfg
         }
 
         foreach ($aStaticUrl['oxseo__oxseourl'] as $iLang => $sSeoUrl) {
-
             $iLang = (int) $iLang;
 
             // generating seo url
@@ -1054,7 +1046,6 @@ class SeoEncoder extends \oxSuperCfg
 
         // (re)inserting
         if ($sValues) {
-
             $sQ = "insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype ) values {$sValues} ";
             $oDb->execute($sQ);
         }
@@ -1134,7 +1125,6 @@ class SeoEncoder extends \oxSuperCfg
     {
         $sSeoUrl = $this->_processSeoUrl($this->_trimUrl($sSeoUrl ? $sSeoUrl : $this->_getAltUri($sAltObjectId ? $sAltObjectId : $sObjectId, $iLang)), $sObjectId, $iLang, $blExclude);
         if ($this->_saveToDb($sType, $sObjectId, $sStdUrl, $sSeoUrl, $iLang, $iShopId, $blFixed, $sParams)) {
-
             $oDb = oxDb::getDb();
 
             //
@@ -1247,4 +1237,31 @@ class SeoEncoder extends \oxSuperCfg
         return $database->getOne($query, array($standardUrl, $languageId, $shopId));
     }
 
+    /**
+     * Searches for special characters in a string and replaces them with the configured strings.
+     *
+     * @param string $stringWithSpecialChars
+     *
+     * @return string
+     */
+    protected function replaceSpecialChars($stringWithSpecialChars)
+    {
+        if (!is_string($stringWithSpecialChars)) {
+            return "";
+        }
+        $oStr = oxStr::getStr();
+        // #0004282 bugfix, php <5.3 does not escape - char, so we do it manually
+        $sQuotedPrefix = preg_quote(self::$_sSeparator . self::$_sPrefix, '/');
+        if (phpversion() < '5.3') {
+            $sQuotedPrefix = str_replace('-', '\-', $sQuotedPrefix);
+        }
+        $sRegExp = '/[^A-Za-z0-9' . $sQuotedPrefix . '\/]+/';
+        $sanitized = $oStr->preg_replace(
+            array("/\W*\/\W*/", $sRegExp),
+            array("/", self::$_sSeparator),
+            $stringWithSpecialChars
+        );
+
+        return $sanitized;
+    }
 }

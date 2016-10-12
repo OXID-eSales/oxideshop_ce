@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
 
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
 
 /** Creating and deleting items. */
@@ -511,13 +512,19 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->frame("edit");
         $this->assertEquals("discount for category [EN] šÄßüл", $this->getValue("editval[oxdiscount__oxtitle]"));
         $this->assertEquals("English", $this->getSelectedLabel("test_editlanguage"));
-        $this->clickCreateNewItem();   //button for create new
-        $this->type("editval[oxdiscount__oxtitle]", "create_delete discount [EN]_šÄßüл");
+
+        // Create a new discount:
+        $oxsorting = "9999";
+        $oxtitle = "create_delete discount [EN]_šÄßüл";
+        $this->clickCreateNewItem();
+        $this->type("editval[oxdiscount__oxtitle]", $oxtitle);
+        $this->type("editval[oxdiscount__oxsort]", $oxsorting);
         $this->clickAndWaitFrame("save", "list");
+
         $this->assertElementPresent("//input[@value='Copy to']");
         $this->assertEquals("English", $this->getSelectedLabel("test_editlanguage"));
         $this->assertEquals("Deutsch", $this->getSelectedLabel("new_lang"));
-        $this->assertEquals("create_delete discount [EN]_šÄßüл", $this->getValue("editval[oxdiscount__oxtitle]"));
+        $this->assertEquals($oxtitle, $this->getValue("editval[oxdiscount__oxtitle]"));
         $this->check("editval[oxdiscount__oxactive]");
         $this->type("editval[oxdiscount__oxactivefrom]", "2008-01-01");
         $this->type("editval[oxdiscount__oxactiveto]", "2009-01-01");
@@ -528,7 +535,7 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->type("editval[oxdiscount__oxaddsum]", "3");
         $this->select("editval[oxdiscount__oxaddsumtype]", "label=%");
         $this->clickAndWaitFrame("//input[@value='Save']", "list");
-        $this->assertEquals("create_delete discount [EN]_šÄßüл", $this->getValue("editval[oxdiscount__oxtitle]"));
+        $this->assertEquals($oxtitle, $this->getValue("editval[oxdiscount__oxtitle]"));
         $this->assertEquals("on", $this->getValue("editval[oxdiscount__oxactive]"));
         $this->assertEquals("2008-01-01 00:00:00", $this->getValue("editval[oxdiscount__oxactivefrom]"));
         $this->assertEquals("2009-01-01 00:00:00", $this->getValue("editval[oxdiscount__oxactiveto]"));
@@ -576,7 +583,7 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("itm", $this->getSelectedLabel("editval[oxdiscount__oxaddsumtype]"));
         $this->assertTextPresent("1000 [DE 4] Test product 0 šÄßüл");
         $this->selectAndWait("test_editlanguage", "label=English");
-        $this->assertEquals("create_delete discount [EN]_šÄßüл", $this->getValue("editval[oxdiscount__oxtitle]"));
+        $this->assertEquals($oxtitle, $this->getValue("editval[oxdiscount__oxtitle]"));
         $this->assertEquals("off", $this->getValue("editval[oxdiscount__oxactive]"));
         $this->assertEquals("0000-00-00 00:00:00", $this->getValue("editval[oxdiscount__oxactivefrom]"));
         $this->assertEquals("0000-00-00 00:00:00", $this->getValue("editval[oxdiscount__oxactiveto]"));
@@ -588,14 +595,34 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertTextPresent("1000 Test product 0 [EN] šÄßüл", "bug from mantis #2366");
         $this->selectAndWait("test_editlanguage", "label=Deutsch");
         $this->assertEquals("create_delete discount [DE]", $this->getValue("editval[oxdiscount__oxtitle]"));
-
         $this->checkTabs(array('Products', 'Users', 'Mall'));
         $this->frame("list");
         $this->assertEquals("English", $this->getSelectedLabel("changelang"));
         $this->type("where[oxdiscount][oxtitle]", "create_delete");
         $this->clickAndWait("submitit");
-        $this->assertEquals("create_delete discount [EN]_šÄßüл", $this->getText("//tr[@id='row.1']/td[2]"));
+        $this->assertEquals($oxtitle, $this->getText("//tr[@id='row.1']/td[3]"));
+        $this->assertEquals($oxsorting, $this->getText("//tr[@id='row.1']/td[2]"));
         $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
+    }
+
+    /*
+     * Try to create a discount with invalid entries in the field oxsort.
+     *
+     * @group creatingitems
+     *
+     */
+    public function testCreateInvalidDiscount()
+    {
+        $this->loginAdmin("Shop Settings", "Discounts");
+        $oxtitle = "discount with sorting that already exists [EN]_šÄßüл";
+        $this->clickCreateNewItem();
+        $this->type("editval[oxdiscount__oxtitle]", $oxtitle);
+        $this->type("editval[oxdiscount__oxsort]", "100");
+        $this->clickAndWaitFrame("save", "list");
+        $this->assertTextPresent('Error: The value of the field "Sorting" must be unique.');
+        $this->type("editval[oxdiscount__oxsort]", "oxSortString");
+        $this->clickAndWaitFrame("save", "list");
+        $this->assertTextPresent('Error: The value of the field "Sorting" must be a number.');
     }
 
     /**
@@ -940,10 +967,8 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->type("editval[oxarticles__oxpricec]", "1.3");
         $this->type("editval[oxarticles__oxvat]", "4");
         $this->select("art_category", "label=Test category 0 [EN] šÄßüл");
-        $this->assertEquals("", $this->getValue("editval[tags]"));
         $this->assertEquals("", $this->getValue("editval[oxarticles__oxean]"));
         $this->assertEquals("", $this->getValue("editval[oxarticles__oxdistean]"));
-        $this->type("editval[tags]", "create_delete_tag_[EN]_šäßüл+-><()~*\\',[]{};:./|!@#$%^&?=`");
         $this->type("editval[oxarticles__oxean]", "EAN_šÄßüл");
         $this->type("editval[oxarticles__oxdistean]", "vendor EAN_ßÄ");
         $this->assertEquals("", $this->getEditorValue("oxarticles__oxlongdesc"));
@@ -963,7 +988,6 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("1.2", $this->getValue("editval[oxarticles__oxpriceb]"));
         $this->assertEquals("1.3", $this->getValue("editval[oxarticles__oxpricec]"));
         $this->assertEquals("4", $this->getValue("editval[oxarticles__oxvat]"));
-        $this->assertEquals("create_delete_tag_ en _šäßüл", $this->getValue("editval[tags]"));
         $this->assertEquals("EAN_šÄßüл", $this->getValue("editval[oxarticles__oxean]"));
         $this->assertEquals("vendor EAN_ßÄ", $this->getValue("editval[oxarticles__oxdistean]"));
         $this->assertEquals("long desc [EN]_šÄßüл", $this->getEditorValue("oxarticles__oxlongdesc"));
@@ -986,7 +1010,6 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->type("editval[oxarticles__oxpriceb]", "1.21");
         $this->type("editval[oxarticles__oxpricec]", "1.31");
         $this->type("editval[oxarticles__oxvat]", "4.5");
-        $this->type("editval[tags]", "create_delete_tag_[DE]");
         $this->typeToEditor("oxarticles__oxlongdesc", "long desc [DE]");
         $this->clickAndWaitFrame("//input[@value='Save']", "list");
 
@@ -1003,7 +1026,6 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("1.21", $this->getValue("editval[oxarticles__oxpriceb]"));
         $this->assertEquals("1.31", $this->getValue("editval[oxarticles__oxpricec]"));
         $this->assertEquals("4.5", $this->getValue("editval[oxarticles__oxvat]"));
-        $this->assertEquals("create_delete_tag_ en _šäßüл", $this->getValue("editval[tags]"));
         $this->assertEquals("EAN_šÄßüл", $this->getValue("editval[oxarticles__oxean]"));
         $this->assertEquals("vendor EAN_ßÄ", $this->getValue("editval[oxarticles__oxdistean]"));
         $this->assertEquals("long desc [EN]_šÄßüл", $this->getEditorValue("oxarticles__oxlongdesc"));
@@ -1022,7 +1044,6 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("1.21", $this->getValue("editval[oxarticles__oxpriceb]"));
         $this->assertEquals("1.31", $this->getValue("editval[oxarticles__oxpricec]"));
         $this->assertEquals("4.5", $this->getValue("editval[oxarticles__oxvat]"));
-        $this->assertEquals("create_delete_tag_ de", $this->getValue("editval[tags]"));
         $this->assertEquals("EAN_šÄßüл", $this->getValue("editval[oxarticles__oxean]"));
         $this->assertEquals("vendor EAN_ßÄ", $this->getValue("editval[oxarticles__oxdistean]"));
         $this->assertEquals("long desc [DE]", $this->getEditorValue("oxarticles__oxlongdesc"));
@@ -1183,7 +1204,6 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->type("editval[oxarticles__oxpricec]", "1.31");
         $this->type("editval[oxarticles__oxvat]", "4.5");
         $this->select("art_category", "label=Test category 0 [EN] šÄßüл");
-        $this->type("editval[tags]", "create_delete_tag_[EN]_šäßüл");
         $this->type("editval[oxarticles__oxean]", "EAN_Äß");
         $this->type("editval[oxarticles__oxdistean]", "vendor EAN_Äß");
         $this->clickAndWaitFrame("saveArticle", "list");
@@ -1192,9 +1212,8 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->type("editval[oxarticles__oxtitle]", "create_delete product [DE]");
         $this->type("editval[oxarticles__oxshortdesc]", "create_delete short desc [DE]");
         $this->type("editval[oxarticles__oxsearchkeys]", "search [DE]");
-        $this->type("editval[tags]", "create_delete_tag_[DE]");
         $this->clickAndWaitFrame("saveArticle", "list");
-        $this->selectAndWait("test_editlanguage", "label=English", "editval[tags]");
+        $this->selectAndWait("test_editlanguage", "label=English");
         //Extended tab
         $this->frame("list");
         $this->openListItem("link=Extended", "editval[oxarticles__oxweight]");
@@ -1480,11 +1499,11 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->selectAndWait("test_editlanguage", "label=English");
         //Extended tab
         $this->openTab("Extended");
-        $this->type("mediaUrl", "http://www.youtube.com/watch?v=OPqV4ipyMsg");
+        $this->type("mediaUrl", "https://www.youtube.com/watch?v=iQ69Hv8WP_g");
         $this->clickAndWait("save");
         $this->assertTextPresent("Please enter description");
         $this->type("mediaDesc", "media file [EN]_šÄßüл");
-        $this->type("mediaUrl", "http://www.youtube.com/watch?v=OPqV4ipyMsg");
+        $this->type("mediaUrl", "https://www.youtube.com/watch?v=iQ69Hv8WP_g");
         $this->clickAndWait("save");
         $this->assertEquals("media file [EN]_šÄßüл", $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"));
         $this->selectAndWait("test_editlanguage", "label=Deutsch");
@@ -1495,15 +1514,22 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->selectAndWait("test_editlanguage", "label=English");
         $this->assertEquals("media file [EN]_šÄßüл", $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"));
         $this->type("mediaDesc", "second media file");
-        $this->type("mediaUrl", "http://www.youtube.com/watch?v=OPqV4ipyMsg");
+        $this->type("mediaUrl", "https://www.youtube.com/watch?v=iQ69Hv8WP_g");
         $this->clickAndWait("save");
         $this->assertElementPresent("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input");
         $this->assertElementPresent("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[3]/input");
-        $this->assertEquals("media file [EN]_šÄßüл", $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"));
-        $this->assertEquals("second media file", $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[3]/input"));
+
+        $expected = array('media file [EN]_šÄßüл',
+                          'second media file');
+        $result = array($this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"),
+                        $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[3]/input"));
+
+        sort($result);
+        $this->assertEquals($expected, $result);
+
         $this->clickAndConfirm("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[2]/a");
-        $this->assertEquals("media file [EN]_šÄßüл", $this->getValue("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input"));
         $this->assertElementNotPresent("//fieldset[@title='Media URLs']/table/tbody/tr[2]/td[3]/input");
+
         $this->clickAndConfirm("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[2]/a");
         $this->assertElementNotPresent("//fieldset[@title='Media URLs']/table/tbody/tr[1]/td[3]/input");
     }
@@ -1517,7 +1543,7 @@ class CreatingItemsAdminTest extends AdminTestCase
     {
         $this->executeSql("DELETE FROM `oxconfig` WHERE `OXVARNAME`='blUseMultidimensionVariants'");
 
-        $shopId = $this->getTestConfig()->getShopEdition() == 'EE' ? 1 : 'oxbaseshop';
+        $shopId = ShopIdCalculator::BASE_SHOP_ID;
         $shopId = $this->getTestConfig()->isSubShop() ? 2 : $shopId;
         $id = $this->getTestConfig()->isSubShop() ? 'ee3uioiop3795dea7855be2d1e' : '9d1ef0f8237werea96756e2d1e';
         $this->executeSql("INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`) VALUES ('$id', '$shopId', 'blUseMultidimensionVariants', 'bool', 0x07);");
@@ -1995,7 +2021,7 @@ class CreatingItemsAdminTest extends AdminTestCase
                                       `OXCUSTNR`, `OXUSTID`, `OXCOMPANY`, `OXFNAME`, `OXLNAME`, `OXSTREET`, `OXSTREETNR`, `OXADDINFO`, `OXCITY`,
                                       `OXCOUNTRYID`, `OXSTATEID`, `OXZIP`, `OXFON`, `OXFAX`, `OXSAL`, `OXBONI`, `OXCREATE`, `OXREGISTER`,
                                       `OXPRIVFON`, `OXMOBFON`, `OXBIRTHDATE`, `OXURL`, `OXUPDATEKEY`, `OXUPDATEEXP`)
-                              VALUES ('kdiruuc', 0, 'malladmin', 'oxbaseshop', 'example00@oxid-esales.dev', '89bb88b81f9b3669fc4c44e082dd9927', '3032396331663033316535343361356231363666653666316533376235353830',
+                              VALUES ('kdiruuc', 0, 'malladmin', ".ShopIdCalculator::BASE_SHOP_ID.", 'example00@oxid-esales.dev', '89bb88b81f9b3669fc4c44e082dd9927', '3032396331663033316535343361356231363666653666316533376235353830',
                                       121, '111222', 'company1', 'Name1', 'Surname1', 'street1', '11', 'additional info1', 'City11',
                                       'a7c40f632e04633c9.47194042', 'BE', '30001', '1112223331', '2223334441', 'MR', 1000, '2010-02-05 10:22:37', '2010-02-05 10:22:48',
                                       '', '', '1979-01-03', '', '', 0);";
@@ -2059,7 +2085,7 @@ class CreatingItemsAdminTest extends AdminTestCase
                                       `OXCUSTNR`, `OXUSTID`, `OXCOMPANY`, `OXFNAME`, `OXLNAME`, `OXSTREET`, `OXSTREETNR`, `OXADDINFO`, `OXCITY`,
                                       `OXCOUNTRYID`, `OXSTATEID`, `OXZIP`, `OXFON`, `OXFAX`, `OXSAL`, `OXBONI`, `OXCREATE`, `OXREGISTER`,
                                       `OXPRIVFON`, `OXMOBFON`, `OXBIRTHDATE`, `OXURL`, `OXUPDATEKEY`, `OXUPDATEEXP`)
-                              VALUES ('kdiruuc', 0, 'malladmin', 'oxbaseshop', 'example00@oxid-esales.dev', '89bb88b81f9b3669fc4c44e082dd9927', '3032396331663033316535343361356231363666653666316533376235353830',
+                              VALUES ('kdiruuc', 0, 'malladmin', 1, 'example00@oxid-esales.dev', '89bb88b81f9b3669fc4c44e082dd9927', '3032396331663033316535343361356231363666653666316533376235353830',
                                       121, '111222', 'company1', 'Name1', 'Surname1', 'street1', '11', 'additional info1', 'City11',
                                        'a7c40f632e04633c9.47194042', 'BE', '30001', '1112223331', '2223334441', 'MR', 1000, '2010-02-05 10:22:37', '2010-02-05 10:22:48',
                                       '5554445551', '6665556661', '1979-01-03', 'http://www.url1.com', '', 0);";

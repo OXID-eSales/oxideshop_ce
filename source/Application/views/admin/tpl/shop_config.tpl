@@ -663,17 +663,6 @@ function editThis(sID)
                 <div class="spacer"></div>
             </dl>
 
-            <dl>
-                <dt>
-                    <input type=hidden name=confbools[blShowTags] value=false>
-                    <input type=checkbox name=confbools[blShowTags] value=true  [{if ($confbools.blShowTags)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_SHOWTAGS"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_SHOWTAGS"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
          </div>
     </div>
 

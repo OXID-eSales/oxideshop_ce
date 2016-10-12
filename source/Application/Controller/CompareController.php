@@ -83,6 +83,8 @@ class CompareController extends \oxUBase
     /**
      * Recomendation list
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @var object
      */
     protected $_oRecommList = null;
@@ -102,16 +104,6 @@ class CompareController extends \oxUBase
     protected $_blBargainAction = true;
 
     /**
-     * Show tags cloud
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @var bool
-     */
-    protected $_blShowTagCloud = false;
-
-
-    /**
      * Current class template name.
      *
      * @var string
@@ -120,6 +112,8 @@ class CompareController extends \oxUBase
 
     /**
      * Array of id to form recommendation list.
+     *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @var array
      */
@@ -336,6 +330,8 @@ class CompareController extends \oxUBase
 
     /**
      * Return array of id to form recommend list.
+     * 
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return array
      */

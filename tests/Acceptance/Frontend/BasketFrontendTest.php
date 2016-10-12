@@ -119,6 +119,7 @@ class BasketFrontendTest extends FrontendTestCase
 
         $this->assertTextPresent("%SELECT_SHIPPING_METHOD%");
         $this->assertEquals("Standard", $this->getSelectedLabel("sShipSet"));
+        $this->click("payment_oxidcashondel");
         $this->_continueToNextStep();
         $this->assertElementNotPresent("//div[contains(@class, 'error')]");
 
@@ -149,7 +150,7 @@ class BasketFrontendTest extends FrontendTestCase
         // bad product was removed in last confirm and order, so now order can be created
         $this->_confirmAndOrder();
 
-        $this->assertEquals("%YOU_ARE_HERE%: / %ORDER%", $this->getText("breadCrumb"));
+        $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
     }
 
     /**
@@ -849,6 +850,7 @@ class BasketFrontendTest extends FrontendTestCase
 
         $this->_continueToNextStep();
         $this->selectAndWait("sShipSet", "label=Standard");
+        $this->click("payment_oxidcashondel");
 
         $this->_continueToNextStep();
         $this->assertEquals("Test wrapping [EN] šÄßüл", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[3]")),"Wrapping for the product disappears from the basket");
@@ -947,7 +949,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_confirmAndOrder();
         $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
         //testing info in 5th page
-        $this->assertTextPresent("We registered your order under the number: 12");
+        $this->assertTextPresent("We registered your order with number 12");
         $this->assertElementPresent("backToShop");
         $this->assertEquals("%BACK_TO_START_PAGE%", $this->getText("backToShop"));
 

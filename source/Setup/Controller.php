@@ -23,6 +23,8 @@
 namespace OxidEsales\Eshop\Setup;
 
 use Exception;
+use OxidEsales\Eshop\Core\ConfigFile;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
@@ -325,34 +327,37 @@ class Controller extends Core
         }
 
         // check if DB is already UP and running
-        if (!$blOverwrite) {
-            try {
-                $blDbExists = true;
-                $oDb->execSql("select * from oxconfig");
-            } catch (Exception $oExcp) {
-                $blDbExists = false;
-            }
+        $databaseExists = $this->checkDbExists($oDb);
+        if (!$blOverwrite && $databaseExists) {
+            // DB already UP ?
+            $oView->setMessage(
+                sprintf($oLang->getText('ERROR_DB_ALREADY_EXISTS'), $aDB['dbName']) .
+                "<br><br>" . $oLang->getText('STEP_3_2_CONTINUE_INSTALL_OVER_EXISTING_DB') . " <a href=\"index.php?sid=" . $oSession->getSid() . "&istep=" . $oSetup->getStep('STEP_DB_CREATE') . "&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $oLang->getText('HERE') . "</a>"
+            );
 
-            if ($blDbExists) {
-                // DB already UP ?
-                $oView->setMessage(
-                    sprintf($oLang->getText('ERROR_DB_ALREADY_EXISTS'), $aDB['dbName']) .
-                    "<br><br>" . $oLang->getText('STEP_3_2_CONTINUE_INSTALL_OVER_EXISTING_DB') . " <a href=\"index.php?sid=" . $oSession->getSid() . "&istep=" . $oSetup->getStep('STEP_DB_CREATE') . "&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $oLang->getText('HERE') . "</a>"
-                );
-
-                return "default.php";
-            }
+            return "default.php";
         }
 
         $editionPathSelector = $this->getEditionPathProvider();
         $sqlDir = $editionPathSelector->getDatabaseSqlDirectory();
+
+        $baseEditionPathSelector = $this->getEditionPathProvider(EditionSelector::COMMUNITY);
+        $baseSqlDir = $baseEditionPathSelector->getDatabaseSqlDirectory();
 
         //setting database collation
         $iUtfMode = isset($aDB['iUtfMode']) ? ((int) $aDB['iUtfMode']) : 0;
         $oDb->setMySqlCollation($iUtfMode);
 
         try {
-            $oDb->queryFile("$sqlDir/database.sql");
+            $oDb->queryFile("$baseSqlDir/database_schema.sql");
+            $oDb->queryFile("$baseSqlDir/initial_data.sql");
+
+            /** @var ConfigFile $shopConfig */
+            $shopConfig = Registry::get("oxConfigFile");
+            $vendorDir = $shopConfig->getVar('vendorDirectory');
+
+            exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_migrate");
+            exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_views_regenerate");
         } catch (Exception $oExcp) {
             $oView->setMessage($oExcp->getMessage());
 
@@ -534,11 +539,12 @@ class Controller extends Core
     }
 
     /**
+     * @param string $edition
      * @return EditionPathProvider
      */
-    protected function getEditionPathProvider()
+    protected function getEditionPathProvider($edition = null)
     {
-        $editionPathSelector = new EditionRootPathProvider(new EditionSelector());
+        $editionPathSelector = new EditionRootPathProvider(new EditionSelector($edition));
         return new EditionPathProvider($editionPathSelector);
     }
 
@@ -548,5 +554,23 @@ class Controller extends Core
     protected function onDirsWriteSetStep($setup)
     {
         $setup->setNextStep($setup->getStep('STEP_FINISH'));
+    }
+
+    /**
+     * Check if database is up and running
+     *
+     * @param Database $database
+     * @return bool
+     */
+    private function checkDbExists($database)
+    {
+        try {
+            $blDbExists = true;
+            $database->execSql("select * from oxconfig");
+        } catch (Exception $oExcp) {
+            $blDbExists = false;
+        }
+
+        return $blDbExists;
     }
 }

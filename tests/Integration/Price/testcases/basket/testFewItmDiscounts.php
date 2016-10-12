@@ -10,7 +10,7 @@
  * Wrapping: -;
  * Gift cart: -;
  * Discounts: 2 item discount
- * Short description: test added from selenium test (testFewItmDiscounts);Is testing few Itm discount for products 
+ * Short description: test added from selenium test (testFewItmDiscounts);Is testing few Itm discount for products
  */
 $aData = array(
     // Articles
@@ -56,7 +56,8 @@ $aData = array(
             'oxitmartid' => 1003,
             'oxitmamount' => 1,
             'oxitmmultiple' => 0,
-			'oxarticles' => array ( 1000 )
+			'oxarticles' => array ( 1000 ),
+            'oxsort' => 10,
         ),
 		        // oxdiscount DB fields
         1 => array (
@@ -72,7 +73,8 @@ $aData = array(
             'oxitmartid' => 1002,
             'oxitmamount' => 1,
             'oxitmmultiple' => 0,
-			'oxarticles' => array ( 1000 )
+			'oxarticles' => array ( 1000 ),
+            'oxsort' => 20,
         ),
     ),
     // TEST EXPECTATIONS
@@ -98,7 +100,7 @@ $aData = array(
                 // Expectation for special discount with specified ID
          //       'testdiscountfrom200' => '25,00',
        //     ),
-           
+
             // GRAND TOTAL
             'grandTotal'  => '50,00'
         ),

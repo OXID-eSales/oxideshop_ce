@@ -77,6 +77,7 @@ namespace {
 namespace OxidEsales\Eshop\Core {
 
     use oxDb;
+    use OxidEsales\Eshop\Core\Exception\StandardException;
     use oxSystemComponentException;
 
     /**
@@ -253,7 +254,7 @@ namespace OxidEsales\Eshop\Core {
          */
         protected function _getImageInfo()
         {
-            $info = array();
+            $info = [];
             if (($uri = $this->_getImageUri())) {
                 $info = explode($this->_sImageInfoSep, basename(dirname($uri)));
             }
@@ -290,10 +291,18 @@ namespace OxidEsales\Eshop\Core {
          */
         protected function _getImageType()
         {
-            $type = preg_replace("/.*\.(png|jp(e)?g|gif)$/", "\\1", $this->_getImageName());
-            $type = (strcmp($type, "jpg") == 0) ? "jpeg" : $type;
+            $fileExtension = strtolower(pathinfo($this->_getImageName(), PATHINFO_EXTENSION));
+            if (!$this->validateImageFileExtension($fileExtension)) {
+                return false;
+            }
 
-            return in_array($type, $this->_aAllowedImgTypes) ? $type : false;
+            if ('jpg' == $fileExtension) {
+                $type = 'jpeg';
+            } else {
+                $type = $fileExtension;
+            }
+
+            return $type;
         }
 
         /**
@@ -341,7 +350,7 @@ namespace OxidEsales\Eshop\Core {
         {
             $imageInfo = @getimagesize($source);
 
-            return resizeGif($source, $target, $width, $height, $imageInfo[0], $imageInfo[1], getGdVersion());
+            return resizeGif($source, $target, $width, $height, $imageInfo[0], $imageInfo[1], $this->validateGdVersion());
         }
 
         /**
@@ -476,48 +485,80 @@ namespace OxidEsales\Eshop\Core {
         }
 
         /**
-         * Generates requested image
+         * Converts a given source image into a target image
          *
-         * @param string $imageSource image source
-         * @param string $imageTarget image target
+         * @param string $imageSource File path of the source image
+         * @param string $imageTarget File path of the image to be generated
          *
-         * @return string
+         * @throws StandardException If the path of imageTarget and generated image are not the same
+         *
+         * @return bool|string Return false on failure or file path of the generated image on success
          */
         protected function _generateImage($imageSource, $imageTarget)
         {
-            $path = false;
+            $generatedImagePath = false;
+            list($targetWidth, $targetHeight, $targetQuality) = $this->_getImageInfo();
 
-            if (getGdVersion() !== false && $this->_isTargetPathValid($imageTarget) && ($imageType = $this->_getImageType())) {
-                // including generator files
-                includeImageUtils();
+            $fileExtensionSource = strtolower(pathinfo($imageSource, PATHINFO_EXTENSION));
+            $fileExtensionTarget = strtolower(pathinfo($imageTarget, PATHINFO_EXTENSION));
 
-                // in case lock file creation failed should check if another process did not created image yet
-                if ($this->_lock($imageTarget)) {
-                    // extracting image info - size/quality
-                    list($width, $height, $quality) = $this->_getImageInfo();
-                    switch ($imageType) {
-                        case "png":
-                            $path = $this->_generatePng($imageSource, $imageTarget, $width, $height);
-                            break;
-                        case "jpeg":
-                            $path = $this->_generateJpg($imageSource, $imageTarget, $width, $height, $quality);
-                            break;
-                        case "gif":
-                            $path = $this->_generateGif($imageSource, $imageTarget, $width, $height);
-                            break;
-                    }
-
-                    // releasing..
-                    if ($path) {
-                        $this->_unlock($imageTarget);
-                    }
-                } else {
-                    // assuming that image was created by another process
-                    $path = file_exists($imageTarget) ? $imageTarget : false;
-                }
+            // Do some validation and return false on failure
+            if (!$this->validateGdVersion()) {
+                return false;
+            }
+            if (!$this->validateFileExist($imageSource)) {
+                return false;
+            }
+            if (!$this->_isTargetPathValid($imageTarget)) {
+                return false;
+            }
+            if (!$this->validateImageFileExtension($fileExtensionSource)) {
+                return false;
+            }
+            if (!$this->validateImageFileExtension($fileExtensionTarget)) {
+                return false;
+            }
+            if ($fileExtensionSource !== $fileExtensionTarget) {
+                return false;
             }
 
-            return $path;
+            if ($this->validateFileExist($imageTarget)) {
+                list($currentWidth, $currentHeight) = $this->getImageDimensions($imageTarget);
+                if (($currentWidth == $targetWidth) && ($currentHeight == $targetHeight)) {
+                    return $imageTarget;
+                }
+
+            }
+
+            // including generator files
+            includeImageUtils();
+
+            /**
+             * There may be a different process trying to generate this image at the same moment.
+             * Get a lock in order not to write at the same file at the same time.
+             */
+            if ($this->_lock($imageTarget)) {
+                // extracting image info - size/quality
+                switch ($fileExtensionSource) {
+                    case "png":
+                        $generatedImagePath = $this->_generatePng($imageSource, $imageTarget, $targetWidth, $targetHeight);
+                        break;
+                    case "jpeg":
+                    case "jpg":
+                        $generatedImagePath = $this->_generateJpg($imageSource, $imageTarget, $targetWidth, $targetHeight, $targetQuality);
+                        break;
+                    case "gif":
+                        $generatedImagePath = $this->_generateGif($imageSource, $imageTarget, $targetWidth, $targetHeight);
+                        break;
+                }
+                // target must always be unlocked, no matter what the result of the former image generation was.
+                $this->_unlock($imageTarget);
+            }
+            if ($generatedImagePath && $generatedImagePath != $imageTarget) {
+                throw new StandardException('imageTarget path and generatedImage path differ');
+            }
+
+            return $generatedImagePath;
         }
 
         /**
@@ -583,12 +624,16 @@ namespace OxidEsales\Eshop\Core {
         }
 
         /**
-         * Returns path to image file which needs should be rendered. If file cannot
-         * be found - return false
+         * Returns the file path of an image as requested by self::_getImageUri().
+         * If the requested image does not exist, if will be rendered from the master image.
+         * If the master image does not exist, a nopic image in the same directory as the requested image is shown.
+         * If the nopic image does not exist, it will be generated in with the same dimensions and quality as the requested
+         * image.
+         * If the nopic image does not exist, the method returns false.
          *
-         * @param string $absPath absolute requested image path (not url, but real path on file system)
+         * @param bool $absPath absolute requested image path (not url, but real path on file system)
          *
-         * @return string | false
+         * @return string|false
          */
         public function getImagePath($absPath = false)
         {
@@ -610,7 +655,7 @@ namespace OxidEsales\Eshop\Core {
                 $genImagePath = $this->_getNopicImageTarget();
 
                 // 404 header for nopic
-                $this->_setHeader("HTTP/1.0 404 Not Found");
+                $this->_setHeader("HTTP/1.1 404 Not Found");
             }
 
             // checking if master image is accessible
@@ -621,12 +666,13 @@ namespace OxidEsales\Eshop\Core {
                 $imagePath = $this->_generateImage($masterImagePath, $genImagePath);
             }
 
-            if ($imagePath) {
-                // image type header
-                $this->_setHeader("Content-Type: image/" . $this->_getImageType());
+            if ($this->validateFileExist($imagePath)) {
+                // image Content-Type
+                $contentType = mime_content_type($imagePath);
+                $this->_setHeader("Content-Type: $contentType;");
             } else {
                 // unable to output any file
-                $this->_setHeader("HTTP/1.0 404 Not Found");
+                $this->_setHeader("HTTP/1.1 404 Not Found");
             }
 
             return $imagePath;
@@ -673,6 +719,16 @@ namespace OxidEsales\Eshop\Core {
         }
 
         /**
+         * @param string $fileExtension Extension to be validated. Validation is case insensitive.
+         *
+         * @return bool
+         */
+        protected function validateImageFileExtension($fileExtension)
+        {
+            return in_array(strtolower($fileExtension), $this->_aAllowedImgTypes);
+        }
+
+        /**
          * Custom header setter
          *
          * @param string $header header
@@ -683,13 +739,53 @@ namespace OxidEsales\Eshop\Core {
         }
 
         /**
-         * Returs headers array
+         * Return headers array
          *
          * @return array
          */
         protected function _getHeaders()
         {
             return $this->_aHeaders;
+        }
+
+        /**
+         * Return true, if the version of the gd library is correct
+         *
+         * @return bool
+         */
+        protected function validateGdVersion()
+        {
+            return getGdVersion() !== false;
+        }
+
+        /**
+         * Return true, if a given file path exists.
+         *
+         * @param $filePath
+         *
+         * @return bool
+         */
+        protected function validateFileExist($filePath)
+        {
+            return file_exists($filePath);
+        }
+
+        /**
+         * Return an array with the dimensions (width x height) of an image file.
+         * returns array (0,0), if the dimensions could not be retrieved.
+         *
+         * @param $imageFilePath
+         */
+        protected function getImageDimensions($imageFilePath)
+        {
+            try {
+                list($width, $height) = getimagesize($imageFilePath);
+                $imageDimensions = array ($width, $height);
+            } catch (\Exception $exception) {
+                $imageDimensions = array (0,0);
+            }
+
+            return $imageDimensions;
         }
     }
 }

@@ -34,7 +34,7 @@ use Exception;
  * Class oxOnlineCaller makes call to given URL which is taken from child classes and sends request parameter.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
  */
@@ -130,7 +130,7 @@ abstract class OnlineCaller
      */
     protected function _castExceptionAndWriteToLog(Exception $oEx)
     {
-        if(!($oEx instanceof oxException)){
+        if (!($oEx instanceof oxException)) {
             $oOxException = oxNew("oxException");
             $oOxException->setMessage($oEx->getMessage());
             $oOxException->debugOut();
@@ -211,9 +211,8 @@ abstract class OnlineCaller
             oxCurl::EXECUTION_TIMEOUT_OPTION,
             static::CURL_EXECUTION_TIMEOUT
         );
-        $sOutput = $oCurl->execute();
 
-        return $sOutput;
+        return $oCurl->execute();
     }
 
     /**

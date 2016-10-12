@@ -79,8 +79,7 @@ class oxMailValidator
     public function isValidEmail($sEmail)
     {
         $sEmailRule = $this->getMailValidationRule();
-        $blValid = (getStr()->preg_match($sEmailRule, $sEmail) != 0);
 
-        return $blValid;
+        return (getStr()->preg_match($sEmailRule, $sEmail) != 0);
     }
 }

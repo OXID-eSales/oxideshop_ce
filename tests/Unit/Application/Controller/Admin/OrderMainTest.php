@@ -21,9 +21,8 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxorder;
-
-use \oxField;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
+use \oxOrder;
 use \Exception;
 use \oxTestModules;
 
@@ -87,7 +86,7 @@ class OrderMainTest extends \OxidTestCase
         if ($this->getConfig()->getEdition() === 'EE') {
             oxTestModules::addFunction('oxorder', 'load', '{}');
         } else {
-            oxTestModules::addFunction('oxorder', 'load', '{$this->oxorder__oxshopid = new oxField("oxbaseshop");}');
+            oxTestModules::addFunction('oxorder', 'load', '{$this->oxorder__oxshopid = new oxField('.ShopIdCalculator::BASE_SHOP_ID.');}');
         }
         oxTestModules::addFunction('oxorder', 'save', '{}');
         oxTestModules::addFunction('oxorder', 'assign', '{}');
@@ -118,7 +117,7 @@ class OrderMainTest extends \OxidTestCase
         if ($this->getConfig()->getEdition() === 'EE') {
             oxTestModules::addFunction('oxorder', 'load', '{}');
         } else {
-            oxTestModules::addFunction('oxorder', 'load', '{$this->oxorder__oxshopid = new oxField("oxbaseshop");}');
+            oxTestModules::addFunction('oxorder', 'load', '{$this->oxorder__oxshopid = new oxField('.ShopIdCalculator::BASE_SHOP_ID.');}');
         }
         oxTestModules::addFunction('oxorder', 'save', '{ throw new Exception( "saveOrder" ); }');
         oxTestModules::addFunction('oxorder', 'assign', '{}');

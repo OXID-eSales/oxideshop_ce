@@ -610,7 +610,6 @@ class DynamicExportBaseController extends \oxAdminDetails
     protected function _createHeapTable($sHeapTable, $sTableCharset)
     {
         $blDone = false;
-
         $oDB = oxDb::getDb();
         $sQ = "CREATE TABLE IF NOT EXISTS {$sHeapTable} ( `oxid` CHAR(32) NOT NULL default '' ) ENGINE=InnoDB {$sTableCharset}";
         if (($oDB->execute($sQ)) !== false) {
@@ -710,7 +709,6 @@ class DynamicExportBaseController extends \oxAdminDetails
     protected function _removeParentArticles($sHeapTable)
     {
         if (!(oxRegistry::getConfig()->getRequestParameter("blExportMainVars"))) {
-
             $oDB = oxDb::getDb();
             $sArticleTable = getViewName('oxarticles');
 
@@ -892,7 +890,6 @@ class DynamicExportBaseController extends \oxAdminDetails
                 // check price
                 $dMinPrice = oxRegistry::getConfig()->getRequestParameter("sExportMinPrice");
                 if (!isset($dMinPrice) || (isset($dMinPrice) && ($oArticle->getPrice()->getBruttoPrice() >= $dMinPrice))) {
-
                     //Saulius: variant title added
                     $sTitle = $oArticle->oxarticles__oxvarselect->value ? " " . $oArticle->oxarticles__oxvarselect->value : "";
                     $oArticle->oxarticles__oxtitle->setValue($oArticle->oxarticles__oxtitle->value . $sTitle);

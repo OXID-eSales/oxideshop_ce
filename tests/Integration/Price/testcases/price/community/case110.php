@@ -51,6 +51,7 @@ $aData = array (
                         'oxamountto'       => 99999,
                         'oxactive'         => 1,
                         'oxarticles'       => array ( 1000 ),
+                        'oxsort'           => 10,
                 ),
                 1 => array (
                         'oxid'         => 'percentFor1001',
@@ -62,6 +63,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( 1001 ),
+                        'oxsort'       => 20,
                 ),
                 2 => array (
                         'oxid'             => 'percentFor1002',
@@ -73,6 +75,7 @@ $aData = array (
                         'oxamountto'       => 99999,
                         'oxactive'         => 1,
                         'oxarticles'       => array ( 1002 ),
+                        'oxsort'           => 30,
                 ),
                 3 => array (
                         'oxid'         => 'percentFor1003',
@@ -84,6 +87,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( 1003 ),
+                        'oxsort'       => 40,
                 ),
                 4 => array (
                         'oxid'             => 'percentFor1004',
@@ -95,6 +99,7 @@ $aData = array (
                         'oxamountto'       => 99999,
                         'oxactive'         => 1,
                         'oxarticles'       => array ( 1004 ),
+                        'oxsort'           => 50,
                 ),
                 5 => array (
                         'oxid'         => 'percentFor1005',
@@ -106,6 +111,7 @@ $aData = array (
                         'oxamountto' => 99999,
                         'oxactive' => 1,
                         'oxarticles' => array ( 1005 ),
+                        'oxsort'       => 60,
                 ),
         ),
         'expected' => array (
@@ -145,7 +151,7 @@ $aData = array (
                         'rrp_price'         => '',
                         'show_rrp'          => false
                 ),
-                
+
         ),
         'options' => array (
                 'config' => array(

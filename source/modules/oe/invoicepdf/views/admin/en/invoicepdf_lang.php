@@ -31,7 +31,7 @@ $sLangName  = "English";
 // RESOURCE IDENTIFIER = STRING
 // -------------------------------
 $aLang = array(
-    'charset'                                   => 'ISO-8859-15',
+    'charset'                                   => 'UTF-8',
     'ORDER_OVERVIEW_PDF_ALLPRICENETTO'          => 'Total Products (net)',
     'ORDER_OVERVIEW_PDF_ZZGLVAT'                => 'plus sales tax ',
     'ORDER_OVERVIEW_PDF_PERCENTSUM'             => '% Amount',

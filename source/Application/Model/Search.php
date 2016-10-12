@@ -70,7 +70,7 @@ class Search extends \oxSuperCfg
      * @param string $sInitialSearchManufacturer initial Manufacturer to seearch for
      * @param string $sSortBy                    sort by
      *
-     * @return oxarticlelist
+     * @return ArticleList
      */
     public function getSearchArticles($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false)
     {
@@ -190,13 +190,7 @@ class Search extends \oxSuperCfg
         $sSelectFields = $oArticle->getSelectFields();
 
         // longdesc field now is kept on different table
-        $sDescJoin = '';
-        if (is_array($aSearchCols = $this->getConfig()->getConfigParam('aSearchCols'))) {
-            if (in_array('oxlongdesc', $aSearchCols) || in_array('oxtags', $aSearchCols)) {
-                $sDescView = getViewName('oxartextends', $this->_iLanguage);
-                $sDescJoin = " LEFT JOIN {$sDescView} ON {$sArticleTable}.oxid={$sDescView}.oxid ";
-            }
-        }
+        $sDescJoin = $this->getDescriptionJoin($sArticleTable);
 
         //select articles
         $sSelect = "select {$sSelectFields}, {$sArticleTable}.oxtimestamp from {$sArticleTable} {$sDescJoin} where ";
@@ -284,11 +278,7 @@ class Search extends \oxSuperCfg
                 }
 
                 // as long description now is on different table table must differ
-                if ($sField == 'oxlongdesc' || $sField == 'oxtags') {
-                    $sSearchField = getViewName('oxartextends', $this->_iLanguage) . ".{$sField}";
-                } else {
-                    $sSearchField = "{$sArticleTable}.{$sField}";
-                }
+                $sSearchField = $this->getSearchField($sArticleTable, $sField);
 
                 $sSearch .= " {$sSearchField} like " . $oDb->quote("%$sSearchString%");
 
@@ -307,5 +297,43 @@ class Search extends \oxSuperCfg
         $sSearch .= ' ) ';
 
         return $sSearch;
+    }
+
+    /**
+     * Get description join. Needed in case of searching for data in table oxartextends or its views.
+     *
+     * @param string $table
+     *
+     * @return string
+     */
+    protected function getDescriptionJoin($table)
+    {
+        $descriptionJoin = '';
+        $searchColumns = $this->getConfig()->getConfigParam('aSearchCols');
+
+        if (is_array($searchColumns) && in_array('oxlongdesc', $searchColumns)) {
+            $viewName = getViewName('oxartextends', $this->_iLanguage);
+            $descriptionJoin = " LEFT JOIN {$viewName } ON {$table}.oxid={$viewName }.oxid ";
+        }
+        return $descriptionJoin;
+    }
+
+    /**
+     * Get search field name.
+     * Needed in case of searching for data in table oxartextends or its views.
+     *
+     * @param string $table
+     * @param string $field Chose table depending on field.
+     *
+     * @return string
+     */
+    protected function getSearchField($table, $field)
+    {
+        if ($field == 'oxlongdesc') {
+            $searchField = getViewName('oxartextends', $this->_iLanguage) . ".{$field}";
+        } else {
+            $searchField = "{$table}.{$field}";
+        }
+        return $searchField;
     }
 }

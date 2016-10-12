@@ -90,7 +90,7 @@ class SeoEncoderManufacturerTest extends \OxidTestCase
         oxTestModules::addFunction('oxManufacturer', 'resetRootManufacturer', '{ self::$_aRootManufacturer = array() ; }');
 
         $vendorId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2536d76675ebe5cb777411914a2fc8fb' : 'ee4948794e28d488cf1c8101e716a3f4';
-        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-Manufacturer/Manufacturer-2/' : 'en/By-Manufacturer/Bush/';
+        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-manufacturer/Manufacturer-2/' : 'en/By-manufacturer/Bush/';
 
         $manufacturer = oxNew('oxManufacturer');
         $manufacturer->resetRootManufacturer();
@@ -122,7 +122,7 @@ class SeoEncoderManufacturerTest extends \OxidTestCase
         oxTestModules::addFunction('oxManufacturer', 'resetRootManufacturer', '{ self::$_aRootManufacturer = array() ; }');
 
         $vendorId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2536d76675ebe5cb777411914a2fc8fb' : 'ee4948794e28d488cf1c8101e716a3f4';
-        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-Manufacturer/Manufacturer-2/' : 'en/By-Manufacturer/Bush/';
+        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-manufacturer/Manufacturer-2/' : 'en/By-manufacturer/Bush/';
 
         $manufacturer = oxNew('oxManufacturer');
         $manufacturer->resetRootManufacturer();
@@ -200,7 +200,7 @@ class SeoEncoderManufacturerTest extends \OxidTestCase
         $encoder = $this->getMock('oxSeoEncoderManufacturer', array('_loadFromDb', '_saveToDb'));
         $encoder->expects($this->exactly(2))->method('_loadFromDb')->will($this->returnValue(false));
 
-        $link = 'en/By-Manufacturer/xxx/';
+        $link = 'en/By-manufacturer/xxx/';
         $seoUrl = $encoder->getManufacturerUri($manufacturer);
 
         $this->assertEquals($link, $seoUrl);
@@ -214,7 +214,7 @@ class SeoEncoderManufacturerTest extends \OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $vendorId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2536d76675ebe5cb777411914a2fc8fb' : 'ee4948794e28d488cf1c8101e716a3f4';
-        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-Manufacturer/Manufacturer-2/101/' : 'en/By-Manufacturer/Bush/101/';
+        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-manufacturer/Manufacturer-2/101/' : 'en/By-manufacturer/Bush/101/';
 
         $manufacturer = oxNew('oxManufacturer');
         $manufacturer->loadInLang(1, $vendorId);
@@ -228,7 +228,7 @@ class SeoEncoderManufacturerTest extends \OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $vendorId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2536d76675ebe5cb777411914a2fc8fb' : 'ee4948794e28d488cf1c8101e716a3f4';
-        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-Manufacturer/Manufacturer-2/101/' : 'en/By-Manufacturer/Bush/101/';
+        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-manufacturer/Manufacturer-2/101/' : 'en/By-manufacturer/Bush/101/';
 
         $manufacturer = oxNew('oxManufacturer');
         $manufacturer->loadInLang(0, $vendorId);
@@ -279,11 +279,11 @@ class SeoEncoderManufacturerTest extends \OxidTestCase
                 $this->equalTo('oxmanufacturer'),
                 $this->equalTo('root'),
                 $this->equalTo($oManufacturer->getBaseStdLink(1)),
-                $this->equalTo('en/By-Manufacturer/'),
+                $this->equalTo('en/By-manufacturer/'),
                 $this->equalTo(1)
             );
 
-        $sUrl = 'en/By-Manufacturer/';
+        $sUrl = 'en/By-manufacturer/';
         $sSeoUrl = $oEncoder->getManufacturerUri($oManufacturer, 1);
         $this->assertEquals($sUrl, $sSeoUrl);
     }

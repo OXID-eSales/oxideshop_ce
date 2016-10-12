@@ -76,6 +76,8 @@ class SeoEncoderArticle extends \oxSeoEncoder
     /**
      * Returns SEO uri for passed article and active tag
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @param oxArticle $oArticle article object
      * @param int       $iLang    language id
      *
@@ -123,6 +125,8 @@ class SeoEncoderArticle extends \oxSeoEncoder
      * @param oxArticle $oArticle product
      * @param int       $iLang    language id
      *
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *
      * @return oxRecommList | null
      */
     protected function _getRecomm($oArticle, $iLang)
@@ -144,62 +148,6 @@ class SeoEncoderArticle extends \oxSeoEncoder
     protected function _getListType()
     {
         return $this->getConfig()->getActiveView()->getListType();
-    }
-
-    /**
-     * Returns SEO uri for passed article and active tag
-     *
-     * @param oxArticle $oArticle     article object
-     * @param int       $iLang        language id
-     * @param bool      $blRegenerate if TRUE forces seo url regeneration
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @return string
-     */
-    public function getArticleTagUri($oArticle, $iLang, $blRegenerate = false)
-    {
-        $sSeoUri = null;
-        if ($sTag = $this->_getTag($oArticle, $iLang)) {
-            $iShopId = $this->getConfig()->getShopId();
-
-            $oArticleTags = oxNew('oxArticleTagList');
-            $oArticleTags->setArticleId($oArticle->getId());
-            $oArticleTags->getStdTagLink($sTag);
-
-            $sStdUrl = $oArticleTags->getStdTagLink($sTag);
-            if ($blRegenerate || !($sSeoUri = $this->_loadFromDb('dynamic', $this->getDynamicObjectId($iShopId, $sStdUrl), $iLang))) {
-                // generating new if not found
-                if ($sSeoUri = oxRegistry::get("oxSeoEncoderTag")->getTagUri($sTag, $iLang, $oArticle->getId())) {
-                    $sSeoUri .= $this->_prepareArticleTitle($oArticle);
-                    $sSeoUri = $this->_processSeoUrl($sSeoUri, $this->_getStaticObjectId($iShopId, $sStdUrl), $iLang);
-                    $sSeoUri = $this->_getDynamicUri($sStdUrl, $sSeoUri, $iLang);
-                }
-            }
-        }
-
-        return $sSeoUri;
-    }
-
-    /**
-     * Returns active tag if available
-     *
-     * @param oxArticle $oArticle product
-     * @param int       $iLang    language id
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @return string | null
-     */
-    protected function _getTag($oArticle, $iLang)
-    {
-        $sTag = null;
-        $oView = $this->getConfig()->getTopActiveView();
-        if ($oView instanceof oxView) {
-            $sTag = $oView->getTag();
-        }
-
-        return $sTag;
     }
 
     /**
@@ -626,14 +574,11 @@ class SeoEncoderArticle extends \oxSeoEncoder
             case OXARTICLE_LINKTYPE_MANUFACTURER:
                 $sUri = $this->getArticleManufacturerUri($oArticle, $iLang);
                 break;
-            // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-            case OXARTICLE_LINKTYPE_TAG:
-                $sUri = $this->getArticleTagUri($oArticle, $iLang);
-                break;
-            // END deprecated 
+            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             case OXARTICLE_LINKTYPE_RECOMM:
                 $sUri = $this->getArticleRecommUri($oArticle, $iLang);
                 break;
+            // END deprecated
             case OXARTICLE_LINKTYPE_PRICECATEGORY: // goes price category urls to default (category urls)
             default:
                 $sUri = $this->getArticleUri($oArticle, $iLang);
@@ -684,11 +629,6 @@ class SeoEncoderArticle extends \oxSeoEncoder
                 case 'manufacturer':
                     $sSeoUrl = $this->getArticleManufacturerUri($oArticle, $iLang, true);
                     break;
-                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-                case 'tag':
-                    $sSeoUrl = $this->getArticleTagUri($oArticle, $iLang, true);
-                    break;
-                // END deprecated 
                 default:
                     $sSeoUrl = $this->getArticleUri($oArticle, $iLang, true);
                     break;

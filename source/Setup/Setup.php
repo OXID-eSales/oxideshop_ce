@@ -168,7 +168,7 @@ class Setup extends Core
      */
     public function getShopId()
     {
-        return 'oxbaseshop';
+        return 1;
     }
 
     /**

@@ -1,16 +1,16 @@
 <?php
 /**
  * Price enter mode: brutto
- * Price view mode: brutto  
+ * Price view mode: brutto
  * Product count: 1
- * VAT info: count of used vat's =19% 
+ * VAT info: count of used vat's =19%
  * Currency rate: -
  * Discounts: 1
  *  1. 2,55% discount for basket
  * Vouchers: -
  * Wrapping:  -
  * Gift cart: -
- * Short description: Vat and rounding issue test case: basket discount without articles ( Discount (from 1 unit to 99999) ) 
+ * Short description: Vat and rounding issue test case: basket discount without articles ( Discount (from 1 unit to 99999) )
  */
 $aData = array (
      'articles' => array (
@@ -29,6 +29,7 @@ $aData = array (
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
+            'oxsort' => 10,
         ),
     ),
     'expected' => array (

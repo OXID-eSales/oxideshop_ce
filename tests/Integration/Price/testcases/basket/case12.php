@@ -4,16 +4,16 @@
  * Price enter mode: neto
  * Price view mode:  neto
  * Product count: 1
- * VAT info: 19% Default VAT for all Products 
- * Currency rate: 1.0 
- * Discounts: 
+ * VAT info: 19% Default VAT for all Products
+ * Currency rate: 1.0
+ * Discounts:
  *  1. shop abs discount for product 9203
  * Vouchers: -
- * Wrapping: - 
- * Costs VAT caclulation rule: max 
+ * Wrapping: -
+ * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment - 
- *  2. Delivery - 
+ *  1. Payment -
+ *  2. Delivery -
  *  3. TS -
  * Short description:
  * From articlePrice.csv: article final price calculations. 9203 - 1st
@@ -36,6 +36,7 @@ $aData = array(
                 'oxamountto' => 99999,
                 'oxactive' => 1,
                 'oxarticles' => array( 9203 ),
+                'oxsort' => 10,
         ),
     ),
     'expected' => array (
@@ -51,7 +52,7 @@ $aData = array(
                 'grandTotal'  => '33,30'
         ),
     ),
-    'options' => array (    
+    'options' => array (
         'config' => array(
                 'blEnterNetPrice' => true,
                 'blShowNetPrice' => true,

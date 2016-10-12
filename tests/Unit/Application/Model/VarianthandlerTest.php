@@ -21,6 +21,7 @@
  */
 namespace Unit\Application\Model;
 
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use \oxVariantHandler;
 use \stdClass;
 use \oxField;
@@ -133,7 +134,7 @@ class VarianthandlerTest extends \OxidTestCase
         $myDB = oxDb::getDB();
         $sVal = 'red!P!10__@@blue!P!10__@@black!P!10__@@';
 
-        $sShopId = $this->getConfig()->getEdition() === 'EE' ? 1 : 'oxbaseshop';
+        $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         $sSql = "insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', '$sShopId', 'oxsellisttest', 'oxsellisttest', '$sVal')";
         $this->addToDatabase($sSql, 'oxselectlist');
@@ -159,7 +160,7 @@ class VarianthandlerTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('blUseMultidimensionVariants', 1);
         $sVal = 'red!P!10__@@blue!P!10__@@black!P!10__@@';
 
-        $sShopId = $this->getConfig()->getEdition() === 'EE' ? 1 : 'oxbaseshop';
+        $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         $sSql = "insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', '$sShopId', 'oxsellisttest', 'oxsellisttest', '$sVal')";
         $this->addToDatabase($sSql, 'oxselectlist');

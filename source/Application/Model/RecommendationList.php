@@ -31,6 +31,8 @@ use oxField;
 /**
  * Recommendation list manager class.
  *
+ * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+ *
  */
 class RecommendationList extends \oxBase implements \oxIUrl
 {

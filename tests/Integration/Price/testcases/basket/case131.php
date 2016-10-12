@@ -16,7 +16,7 @@
  *  2. Delivery -
  *  3. TS -
  * Actions with basket or order:-
- * Short description: 
+ * Short description:
  * https://bugs.oxid-esales.com/view.php?id=4425
  * @bug #4425
  */
@@ -39,6 +39,7 @@ $aData = array(
                 'oxpriceto' => 0,
                 'oxactive' => 1,
                 'oxarticles' => array ( 4425 ),
+                'oxsort' => 10,
         ),
     ),
     'expected' => array (
@@ -57,7 +58,7 @@ $aData = array(
     'options' => array (
             'config' => array(
                 'blEnterNetPrice' => false,
-                'blShowNetPrice' => false     
+                'blShowNetPrice' => false
             ),
     )
 );

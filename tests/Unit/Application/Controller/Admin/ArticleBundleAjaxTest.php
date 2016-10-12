@@ -35,7 +35,7 @@ class ArticleBundleAjaxTest extends \OxidTestCase
     {
         parent::setUp();
 
-        $setupArticleSql = "insert into oxarticles set oxid='_testArticleBundle', oxshopid='" . $this->getShopId() . "', oxtitle='_testArticleBundle', oxbundleid='_testBundleId'";
+        $setupArticleSql = "insert into oxarticles set oxid='_testArticleBundle', oxshopid=1, oxtitle='_testArticleBundle', oxbundleid='_testBundleId'";
 
         oxDb::getDb()->execute($setupArticleSql);
     }
@@ -58,11 +58,6 @@ class ArticleBundleAjaxTest extends \OxidTestCase
     public function getObject2CategoryViewTable()
     {
         return $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxobject2category_1' : 'oxobject2category';
-    }
-
-    public function getShopId()
-    {
-        return $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
     }
 
     /**

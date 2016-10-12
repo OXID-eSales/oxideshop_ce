@@ -148,16 +148,18 @@ function _groupExp(el) {
                           <input type="hidden" name="voxid" value="[{$oxid}]">
                           <input type="hidden" name="oxparentid" value="[{$oxparentid}]">
                           <table cellspacing="0" cellpadding="0" border="0" width="98%">
-                              <tr>
-                                  <td class="edittext" width="120">
-                                      [{oxmultilang ident="ARTICLE_FILES_ISDOWNLOADABLE"}]
-                                  </td>
-                                  <td class="edittext">
-                                      <input class="edittext" type="hidden" name="editval[oxarticles__oxisdownloadable]" value='0'>
-                                      <input class="edittext" type="checkbox" name="editval[oxarticles__oxisdownloadable]" value='1' [{if $edit->oxarticles__oxisdownloadable->value == 1}]checked[{/if}] [{if $oxparentid}]readonly disabled[{/if}]>
-                                      [{oxinputhelp ident="HELP_ARTICLE_IS_DOWNLOADABLE"}]
-                                  </td>
-                              </tr>
+                              [{block name="admin_article_downloads_is_downloadable"}]
+                                  <tr>
+                                      <td class="edittext" width="120">
+                                          [{oxmultilang ident="ARTICLE_FILES_ISDOWNLOADABLE"}]
+                                      </td>
+                                      <td class="edittext">
+                                          <input class="edittext" type="hidden" name="editval[oxarticles__oxisdownloadable]" value='0'>
+                                          <input class="edittext" type="checkbox" name="editval[oxarticles__oxisdownloadable]" value='1' [{if $edit->oxarticles__oxisdownloadable->value == 1}]checked[{/if}] [{if $oxparentid}]readonly disabled[{/if}]>
+                                          [{oxinputhelp ident="HELP_ARTICLE_IS_DOWNLOADABLE"}]
+                                      </td>
+                                  </tr>
+                              [{/block}]
                           </table>
                           [{if count( $oFiles ) > 0}]
                                 <p><b>[{oxmultilang ident="ARTICLE_FILES_TABLE_UPLOADEDFILES"}]</b></p>

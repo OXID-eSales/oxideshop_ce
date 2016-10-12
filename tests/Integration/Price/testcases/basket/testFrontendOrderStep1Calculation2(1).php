@@ -17,7 +17,7 @@
  *  1. Payment -;
  *  2. Delivery + ;
  *  3. TS -
- * Short description: 
+ * Short description:
  * Brutto-Brutto mode.
  * Short description: test added from selenium test (testFrontendOrderStep1Calculation2) ;Is testing basked Step1 Calculation
  */
@@ -74,10 +74,11 @@ $aData = array(
                     'oxaddsumtype' => '%',
                     'oxamount'     => 0,
                     'oxamountto'   => 99999,
-					'oxprice'      =>100,
-					'oxpriceto'    =>99999,
+					'oxprice'      => 100,
+					'oxpriceto'    => 99999,
                     'oxactive'     => 1,
                     'oxarticles'   => array ( 1002, 1003 ),
+                    'oxsort'       => 10,
             ),
             1 => array (
                     'oxid'         => 'discount2',
@@ -87,9 +88,10 @@ $aData = array(
                     'oxamountto'   => 99999,
                     'oxactive'     => 1,
                     'oxarticles'   => array ( 10012, 1000 ),
+                    'oxsort'       => 20,
             ),
     ),
-	
+
     'costs' => array(
         'delivery' => array(
 			0 => array(
@@ -131,7 +133,7 @@ $aData = array(
                         10 => '8,29',
                         19 => '60,18',
 						5 => '2,10'
-                ), 
+                ),
                 'delivery' => array(
                         'brutto' => '1,50',
                 ),

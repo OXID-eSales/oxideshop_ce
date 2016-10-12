@@ -694,27 +694,43 @@ class ArticlelistTest extends \OxidTestCase
      */
     public function testGetSearchSelectUseOr()
     {
-        $oTest = $this->getProxyClass('oxArticleList');
+        $articleList = $this->getProxyClass('oxArticleList');
 
-        $sArticleTable = $this->_getArticleTable();
-        $sAEV = getViewName('oxartextends');
+        $articleTable = $this->_getArticleTable();
 
-        $sExpt = "and ( ( $sArticleTable.oxtitle like '%test%' or $sArticleTable.oxshortdesc like '%test%' ";
-        $sExpt .= "or $sArticleTable.oxsearchkeys like '%test%' or $sArticleTable.oxartnum like '%test%' ";
-        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-        $sExpt .= "or $sAEV.oxtags like '%test%' ) or ";
-        // END deprecated
-        $sExpt .= " ( $sArticleTable.oxtitle like '%Search%' or $sArticleTable.oxshortdesc like '%Search%' ";
-        $sExpt .= "or $sArticleTable.oxsearchkeys like '%Search%' or $sArticleTable.oxartnum like '%Search%' ";
-        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-        $sExpt .= "or $sAEV.oxtags like '%Search%' )  ) ";
-        // END deprecated
-        $sRes = $oTest->UNITgetSearchSelect('test Search');
+        $expectedSql = <<<EOT
+            AND 
+            ( 
+              ( 
+                $articleTable.oxtitle LIKE '%test%' 
+                OR 
+                $articleTable.oxshortdesc LIKE '%test%' 
+                OR 
+                $articleTable.oxsearchkeys LIKE '%test%' 
+                OR 
+                $articleTable.oxartnum LIKE '%test%' 
+              ) 
+              OR 
+              ( 
+                $articleTable.oxtitle LIKE '%Search%' 
+                OR 
+                $articleTable.oxshortdesc LIKE '%Search%' 
+                OR 
+                $articleTable.oxsearchkeys LIKE '%Search%' 
+                OR 
+                $articleTable.oxartnum LIKE '%Search%' 
+              ) 
+            )
+EOT;
+        $actualSql = $articleList->UNITgetSearchSelect('test Search');
 
-        $sExpt = str_replace(array("\n", "\r", " "), "", $sExpt);
-        $sRes = str_replace(array("\n", "\r", " "), "", $sRes);
+        /**
+         * Lowercase SQL and strip whitespaces from SQL to make comparison easier
+         */
+        $expectedSql = strtolower(str_replace(array("\n", "\r", " "), "", $expectedSql));
+        $actualSql = strtolower(str_replace(array("\n", "\r", " "), "", $actualSql));
 
-        $this->assertEquals($sExpt, $sRes);
+        $this->assertEquals($expectedSql, $actualSql);
     }
 
     /**
@@ -735,31 +751,46 @@ class ArticlelistTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testGetSearchSelectUseAND()
+    public function testGetSearchSelectUseAnd()
     {
         $this->setConfigParam('blSearchUseAND', 1);
-        $oTest = $this->getProxyClass('oxArticleList');
+        $articleList = $this->getProxyClass('oxArticleList');
 
-        $sArticleTable = $this->_getArticleTable();
-        $sAEV = getViewName('oxartextends');
+        $articleTable = $this->_getArticleTable();
 
-        $sExpt = "and ( ( $sArticleTable.oxtitle like '%test%' or $sArticleTable.oxshortdesc like '%test%' ";
-        $sExpt .= "or $sArticleTable.oxsearchkeys like '%test%' or $sArticleTable.oxartnum like '%test%' ";
-        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-        $sExpt .= "or $sAEV.oxtags like '%test%' ) and ";
-        // END deprecated
-        $sExpt .= " ( $sArticleTable.oxtitle like '%Search%' or $sArticleTable.oxshortdesc like '%Search%' ";
-        $sExpt .= "or $sArticleTable.oxsearchkeys like '%Search%' or $sArticleTable.oxartnum like '%Search%' ";
-        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-        $sExpt .= "or $sAEV.oxtags like '%Search%' )  ) ";
-        // END deprecated
-        
-        $sRes = $oTest->UNITgetSearchSelect('test Search');
+        $expectedSql = <<<EOT
+            AND 
+            ( 
+              ( 
+                $articleTable.oxtitle LIKE '%test%' 
+                OR 
+                $articleTable.oxshortdesc LIKE '%test%' 
+                OR 
+                $articleTable.oxsearchkeys LIKE '%test%' 
+                OR 
+                $articleTable.oxartnum LIKE '%test%' 
+              ) 
+              AND 
+              ( 
+                $articleTable.oxtitle LIKE '%Search%' 
+                OR 
+                $articleTable.oxshortdesc LIKE '%Search%' 
+                OR 
+                $articleTable.oxsearchkeys LIKE '%Search%' 
+                OR 
+                $articleTable.oxartnum LIKE '%Search%' 
+              ) 
+            ) 
+EOT;
+        $actualSql = $articleList->UNITgetSearchSelect('test Search');
 
-        $sExpt = str_replace(array("\n", "\r", " "), "", $sExpt);
-        $sRes = str_replace(array("\n", "\r", " "), "", $sRes);
+        /**
+         * Lowercase SQL and strip whitespaces from SQL to make comparison easier
+         */
+        $expectedSql = strtolower(str_replace(array("\n", "\r", " "), "", $expectedSql));
+        $actualSql = strtolower(str_replace(array("\n", "\r", " "), "", $actualSql));
 
-        $this->assertEquals($sExpt, $sRes);
+        $this->assertEquals($expectedSql, $actualSql);
     }
 
     /**
@@ -770,25 +801,41 @@ class ArticlelistTest extends \OxidTestCase
     public function testGetSearchSelectWithGermanChars()
     {
         $this->setConfigParam('blSearchUseAND', 1);
-        $oTest = $this->getProxyClass('oxArticleList');
+        $articleList = $this->getProxyClass('oxArticleList');
 
-        $sArticleTable = $this->_getArticleTable();
-        $sAEV = getViewName('oxartextends');
+        $articleTable = $this->_getArticleTable();
 
-        $sExpt = "and ( ( $sArticleTable.oxtitle like '%würfel%' or $sArticleTable.oxtitle like '%w&uuml;rfel%' ";
-        $sExpt .= "or $sArticleTable.oxshortdesc like '%würfel%' or $sArticleTable.oxshortdesc like '%w&uuml;rfel%' ";
-        $sExpt .= "or $sArticleTable.oxsearchkeys like '%würfel%' or $sArticleTable.oxsearchkeys like '%w&uuml;rfel%' ";
-        $sExpt .= "or $sArticleTable.oxartnum like '%würfel%' or $sArticleTable.oxartnum like '%w&uuml;rfel%' ";
-        // @deprecated v5.3 (2016-05-04); Will be moved to own module.
-        $sExpt .= "or $sAEV.oxtags like '%würfel%' or $sAEV.oxtags like '%w&uuml;rfel%' ) )";
-        // END deprecated
-        
-        $sRes = $oTest->UNITgetSearchSelect('würfel ');
+        $expectedSql = <<<EOT
+            AND 
+            ( 
+              ( 
+                $articleTable.oxtitle LIKE '%würfel%' 
+                OR 
+                $articleTable.oxtitle LIKE '%w&uuml;rfel%' 
+                OR 
+                $articleTable.oxshortdesc LIKE '%würfel%' 
+                OR 
+                $articleTable.oxshortdesc LIKE '%w&uuml;rfel%' 
+                OR 
+                $articleTable.oxsearchkeys LIKE '%würfel%' 
+                OR 
+                $articleTable.oxsearchkeys LIKE '%w&uuml;rfel%' 
+                OR 
+                $articleTable.oxartnum LIKE '%würfel%' 
+                OR 
+                $articleTable.oxartnum LIKE '%w&uuml;rfel%' 
+              ) 
+            )
+EOT;
+        $actualSql = $articleList->UNITgetSearchSelect('würfel');
 
-        $sExpt = str_replace(array("\n", "\r", " "), "", $sExpt);
-        $sRes = str_replace(array("\n", "\r", " "), "", $sRes);
+        /**
+         * Lowercase SQL and strip whitespaces from SQL to make comparison easier
+         */
+        $expectedSql = strtolower(str_replace(array("\n", "\r", " "), "", $expectedSql));
+        $actualSql = strtolower(str_replace(array("\n", "\r", " "), "", $actualSql));
 
-        $this->assertEquals($sExpt, $sRes);
+        $this->assertEquals($expectedSql, $actualSql);
     }
 
     /**
@@ -959,36 +1006,6 @@ class ArticlelistTest extends \OxidTestCase
             ->with($sExpt)
             ->will($this->returnValue(true));
         $oTest->loadSearchIds('testSearch', 'cat1', 'vendor1', 'manufacturer1');
-    }
-
-    /**
-     * Test load search ids with search in tags.
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @return null
-     */
-    public function testLoadSearchIdsWithSearchInTags()
-    {
-
-        $this->setTime(100);
-        $this->setConfigParam('aSearchCols', array('oxtags'));
-
-        $sArticleTable = $this->_getArticleTable();
-        $oArticle = oxNew('oxArticle');
-
-        $sAEV = getViewName('oxartextends');
-
-        $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  LEFT JOIN $sAEV ON $sAEV.oxid=$sArticleTable.oxid  where";
-        $sExpt .= " " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''";
-        $sExpt .= " and $sArticleTable.oxissearch = 1  and ( ( $sAEV.oxtags like";
-        $sExpt .= " '%testSearch%'  )  ) ";
-
-        $oTest = $this->getMock('oxArticleList', array("_createIdListFromSql"));
-        $oTest->expects($this->once())->method("_createIdListFromSql")
-            ->with($this->equalTo($sExpt))
-            ->will($this->returnValue(true));
-        $oTest->loadSearchIds('testSearch');
     }
 
     /**
@@ -1997,182 +2014,6 @@ class ArticlelistTest extends \OxidTestCase
         $oTest = oxNew('oxArticleList');
         $oTest->loadOrderArticles(null);
         $this->assertEquals(0, $oTest->count());
-    }
-
-    /**
-     * Test article loading for chosen tags and how methods are called
-     *
-     * @return null
-     */
-    public function testLoadTagArticlesMock()
-    {
-        oxTestModules::addFunction('oxUtilsCount', 'getTagArticleCount', '{ return 999; }');
-
-        $sView = getViewName('oxartextends', 5);
-        $sQ = "select yyy from $sView inner join xxx on " .
-              "xxx.oxid = $sView.oxid where xxx.oxparentid = '' AND match ( $sView.oxtags ) " .
-              "against( " . $this->getDb()->quote('"zzz_"') . " IN BOOLEAN MODE ) and 1";
-
-        $oBaseObject = $this->getMock('oxArticle', array('getViewName', 'getSelectFields', 'getSqlActiveSnippet'));
-        $oBaseObject->expects($this->once())->method('getViewName')->will($this->returnValue('xxx'));
-        $oBaseObject->expects($this->once())->method('getSelectFields')->will($this->returnValue('yyy'));
-        $oBaseObject->expects($this->once())->method('getSqlActiveSnippet')->will($this->returnValue('1'));
-
-        $oArtList = $this->getMock('oxArticleList', array('getBaseObject', 'selectString'));
-        $oArtList->expects($this->once())->method('getBaseObject')->will($this->returnValue($oBaseObject));
-        $oArtList->expects($this->once())->method('selectString')->with($sQ);
-
-        $this->assertEquals(999, $oArtList->loadTagArticles('zzz', 5));
-    }
-
-    /**
-     * Test article loading for chosen tags
-     *
-     * @return null
-     */
-    public function testLoadTagArticles()
-    {
-        $sTag = "wanduhr";
-        $oTest = oxNew('oxArticleList');
-        $oTest->loadTagArticles($sTag, 0);
-
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $iCount = 4;
-            $this->assertTrue(isset($oTest[1672]));
-        } else {
-            $iCount = 3;
-        }
-
-        $this->assertEquals($iCount, count($oTest));
-        $this->assertTrue(isset($oTest[2000]));
-        $this->assertTrue(isset($oTest[1771]));
-        $this->assertTrue(isset($oTest[1354]));
-    }
-
-    /**
-     * Test load tag articles lang 0.
-     *
-     * @return null
-     */
-    public function testLoadTagArticlesLang0()
-    {
-        $sTag = "wanduhr";
-        $oTest = oxNew('oxArticleList');
-        $oTest->loadTagArticles($sTag, 0);
-        $this->assertEquals($oTest[2000]->oxarticles__oxtitle->value, 'Wanduhr ROBOT');
-    }
-
-    /**
-     * Test load tag articles lang 1.
-     *
-     * @return null
-     */
-    public function testLoadTagArticlesLang1()
-    {
-        $sTag = "wanduhr";
-        $oTest = oxNew('oxArticleList');
-        $oTest->loadTagArticles($sTag, 1);
-        $this->assertEquals(0, count($oTest));
-    }
-
-    /**
-     * Test load tag articles with sorting.
-     *
-     * @return null
-     */
-    public function testLoadTagArticlesWithSorting()
-    {
-        $sTag = "wanduhr";
-        $oTest = oxNew('oxArticleList');
-        $oTest->setCustomSorting('oxtitle desc');
-        $oTest->loadTagArticles($sTag, 0);
-
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $aExpArrayKeys = array(1354, 2000, 1672, 1771);
-            $iCount = 4;
-        } else {
-            $aExpArrayKeys = array(1354, 2000, 1771);
-            $iCount = 3;
-        }
-
-        $this->assertEquals($iCount, count($oTest));
-        $this->assertEquals($aExpArrayKeys, $oTest->ArrayKeys());
-    }
-
-    /**
-     * Test load tag articles with sorting with table.
-     *
-     * @return null
-     */
-    public function testLoadTagArticlesWithSortingWithTable()
-    {
-        $sTag = "wanduhr";
-        $oTest = oxNew('oxArticleList');
-
-        // echo "mano: ". $oTest->getBaseObject()->getViewName().'.oxtitle desc';
-
-        $oTest->setCustomSorting($oTest->getBaseObject()->getViewName() . '.oxtitle desc');
-
-
-        $oTest->loadTagArticles($sTag, 0);
-
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $aExpArrayKeys = array(1354, 2000, 1672, 1771);
-            $iCount = 4;
-        } else {
-            $aExpArrayKeys = array(1354, 2000, 1771);
-            $iCount = 3;
-        }
-
-        $this->assertEquals($iCount, count($oTest));
-        $this->assertEquals($aExpArrayKeys, $oTest->ArrayKeys());
-    }
-
-    /**
-     * Test get tag article ids with mock how code is executed.
-     *
-     * @return null
-     */
-    public function testGetTagArticleIdsMocking()
-    {
-        $aReturn = array('aaa' => 'bbb');
-        $sView = getViewName('oxartextends', 5);
-        $sQ = "select $sView.oxid from $sView inner join xxx on " .
-              "xxx.oxid = $sView.oxid where xxx.oxparentid = '' and xxx.oxissearch = 1 and " .
-              "match ( $sView.oxtags ) " .
-              "against( '\\\"zzz_\\\"' IN BOOLEAN MODE ) and 1 order by xxx.yyy ";
-
-        $oBaseObject = $this->getMock('oxArticle', array('getViewName', 'getSqlActiveSnippet'));
-        $oBaseObject->expects($this->once())->method('getViewName')->will($this->returnValue('xxx'));
-        $oBaseObject->expects($this->once())->method('getSqlActiveSnippet')->will($this->returnValue('1'));
-
-        $oArtList = $this->getMock('oxArticleList', array('getBaseObject', '_createIdListFromSql'));
-        $oArtList->expects($this->exactly(1))->method('getBaseObject')->will($this->returnValue($oBaseObject));
-        $oArtList->expects($this->once())->method('_createIdListFromSql')->with($sQ)->will($this->returnValue($aReturn));
-
-        $oArtList->setCustomSorting('yyy');
-        $this->assertEquals($aReturn, $oArtList->getTagArticleIds('zzz', 5));
-    }
-
-    /**
-     * Test get tag article ids.
-     *
-     * @return null
-     */
-    public function testGetTagArticleIds()
-    {
-        $sTag = "wanduhr";
-
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $aExpIds = array(1354, 2000, 1672, 1771);
-        } else {
-            $aExpIds = array(1354, 2000, 1771);
-        }
-
-        $oArtList = oxNew('oxArticleList');
-        $oArtList->setCustomSorting('oxtitle desc');
-        $oArtList->getTagArticleIds($sTag, 0);
-        $this->assertEquals($aExpIds, $oArtList->ArrayKeys());
     }
 
     /**

@@ -148,7 +148,7 @@ class ContentController extends \oxUBase
 
         $oContent = $this->getContent();
         if ($oContent && !$this->_canShowContent($oContent->oxcontents__oxloadid->value)) {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeURL() . 'cl=account');
+            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=account');
         }
 
         $sTpl = false;
@@ -183,14 +183,9 @@ class ContentController extends \oxUBase
      */
     protected function _canShowContent($sContentIdent)
     {
-        $blCan = true;
-        if ($this->isEnabledPrivateSales() &&
+        return !($this->isEnabledPrivateSales() &&
             !$this->getUser() && !in_array($sContentIdent, $this->_aPsAllowedContents)
-        ) {
-            $blCan = false;
-        }
-
-        return $blCan;
+        );
     }
 
     /**
@@ -288,7 +283,6 @@ class ContentController extends \oxUBase
     public function getContentId()
     {
         if ($this->_sContentId === null) {
-
             $sContentId = oxRegistry::getConfig()->getRequestParameter('oxcid');
             $sLoadId = oxRegistry::getConfig()->getRequestParameter('oxloadid');
 

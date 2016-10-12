@@ -22,6 +22,9 @@
 namespace Unit\Setup;
 
 use OxidEsales\Eshop\Setup\Utilities;
+use \Exception;
+
+require_once getShopBasePath() . '/Setup/functions.php';
 
 /**
  * Utilities tests
@@ -33,6 +36,11 @@ class UtilitiesTest extends \OxidTestCase
     protected $_sHttpReferer = null;
     protected $_sHttpHost = null;
     protected $_sScriptName = null;
+
+    /**
+     * @var path to test config directory
+     */
+    protected $configTestPath = null;
 
     /**
      * Test setup
@@ -47,6 +55,9 @@ class UtilitiesTest extends \OxidTestCase
         $this->_sScriptName = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : null;
 
         parent::setUp();
+
+        $this->configTestPath = __DIR__ .'/../testData/Setup';
+        $this->removeTestFile();
     }
 
     /**
@@ -70,6 +81,9 @@ class UtilitiesTest extends \OxidTestCase
         $_SERVER['HTTP_REFERER'] = $this->_sHttpReferer;
         $_SERVER['HTTP_HOST'] = $this->_sHttpHost;
         $_SERVER['SCRIPT_NAME'] = $this->_sScriptName;
+
+        //clean up
+        $this->removeTestFile();
 
         parent::tearDown();
     }
@@ -207,5 +221,53 @@ class UtilitiesTest extends \OxidTestCase
         $oUtils = new Utilities();
         $this->assertFalse($oUtils->isValidEmail("admin"));
         $this->assertTrue($oUtils->isValidEmail("shop@admin.com"));
+    }
+
+    /**
+     * Verify that Utilities::updateConfigFile stores the given variables correctly.
+     *
+     * @throws \Exception
+     */
+    public function testUpdateConfigFileForPassword()
+    {
+        //preparation
+        $this->assertTrue(function_exists('getDefaultFileMode'), 'missing function getDefaultFileMode');
+        $this->assertTrue(function_exists('getDefaultConfigFileMode'), 'missing function getDefaultConfigFileMode');
+
+        $utilities = new Utilities();
+        $password = 'l3$z4f#buzhdcv5745XC$lic';
+        $url = 'http://test.myoxidshop.com';
+
+        $originalFile = $this->configTestPath . '/config.inc.php.dist';
+        $destination = $this->configTestPath . '/config.inc.php';
+
+        file_put_contents($destination, file_get_contents($originalFile));
+        $this->assertNotContains($password, $destination);
+
+        $parameters = ['sShopDir' => $this->configTestPath,
+                       'testPassword' => $password,
+                       'testUrl' => $url];
+
+        //check
+        try {
+            $utilities->updateConfigFile($parameters);
+        } catch (Exception $exception) {
+            $this->fail($exception->getMessage());
+        }
+
+        $content = file_get_contents($this->configTestPath . '/config.inc.php');
+        $this->assertContains($url, $content);
+        $this->assertContains($password, $content);
+    }
+
+    /**
+     * Test helper for cleaning up files.
+     */
+    private function removeTestFile()
+    {
+        $file = $this->configTestPath . '/config.inc.php';
+        if (file_exists($file)) {
+            unlink($file);
+        }
     }
 }

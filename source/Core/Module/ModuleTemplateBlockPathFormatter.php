@@ -29,7 +29,7 @@ use \OxidEsales\Eshop\Core\FileSystem\FileSystem;
  * Forms path to module block template.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleTemplateBlockPathFormatter
 {
@@ -109,8 +109,7 @@ class ModuleTemplateBlockPathFormatter
         $modulePath = $activeModuleInfo[$this->moduleId];
 
         $fileSystem = oxNew(FileSystem::class);
-        $connectedPath = $fileSystem->combinePaths($this->modulesPath, $modulePath, $fileName);
 
-        return $connectedPath;
+        return $fileSystem->combinePaths($this->modulesPath, $modulePath, $fileName);
     }
 }

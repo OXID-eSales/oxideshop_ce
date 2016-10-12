@@ -266,7 +266,7 @@ class UtilsServerTest extends \OxidTestCase
      */
     public function testGetSetAndDeleteUserCookie()
     {
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
+        $this->setTime(0);
         $sCryptedVal = 'admin@@@' . crypt('admin', 'test_salt');
         $oUtils = oxNew('oxutilsserver');
 

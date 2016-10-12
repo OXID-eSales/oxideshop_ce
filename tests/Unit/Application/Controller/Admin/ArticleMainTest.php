@@ -480,7 +480,7 @@ class ArticleMainTest extends \OxidTestCase
     }
 
     /**
-     * Testing if before saving spaces are trimed from article title
+     * Testing error case when calling OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::save
      *
      * @return null
      */
@@ -488,18 +488,18 @@ class ArticleMainTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxarticle', 'save', '{ return true; }');
         oxTestModules::addFunction('oxarticle', 'assignRecord', '{ return true; }');
-        oxTestModules::addFunction('oxarticletaglist', 'save', '{ throw new Exception( "saveTags" ); }');
+        oxTestModules::addFunction('article_main', 'saveAdditionalArticleData', '{ throw new Exception( "saveAdditionalArticleData" ); }');
 
         $this->setRequestParameter("oxid", -1);
         $this->setRequestParameter("oxparentid", "-1");
-        $this->setRequestParameter("editval", array('tags' => 'test tags', "oxarticles__oxparentid" => "-1", "oxarticles__oxartnum" => "123", "oxarticles__oxprice" => "123", "oxarticles__oxactive" => 1));
+        $this->setRequestParameter("editval", array("oxarticles__oxparentid" => "-1", "oxarticles__oxartnum" => "123", "oxarticles__oxprice" => "123", "oxarticles__oxactive" => 1));
 
         $oArtView = oxNew('article_main');
 
         try {
             $oArtView->save();
         } catch (Exception $oExcp) {
-            $this->assertEquals("saveTags", $oExcp->getMessage(), "error in Article_Main::save()");
+            $this->assertEquals("saveAdditionalArticleData", $oExcp->getMessage(), "error in Article_Main::save()");
 
             return;
         }
@@ -507,7 +507,7 @@ class ArticleMainTest extends \OxidTestCase
     }
 
     /**
-     * Testing if before saving spaces are trimed from article title
+     * Testing error case when calling OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::save
      *
      * @return null
      */
@@ -515,11 +515,11 @@ class ArticleMainTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxarticle', 'save', '{ return true; }');
         oxTestModules::addFunction('oxarticle', 'assignRecord', '{ return true; }');
-        oxTestModules::addFunction('oxarticletaglist', 'save', '{ throw new Exception( "saveTags" ); }');
+        oxTestModules::addFunction('article_main', 'saveAdditionalArticleData', '{ throw new Exception( "saveAdditionalArticleData" ); }');
 
         $this->setRequestParameter("oxid", -1);
         $this->setRequestParameter("oxparentid", "132");
-        $this->setRequestParameter("editval", array('tags' => 'test tags', "oxarticles__oxparentid" => "-1", "oxarticles__oxartnum" => "123", "oxarticles__oxprice" => "123", "oxarticles__oxactive" => 1));
+        $this->setRequestParameter("editval", array("oxarticles__oxparentid" => "-1", "oxarticles__oxartnum" => "123", "oxarticles__oxprice" => "123", "oxarticles__oxactive" => 1));
         $this->setRequestParameter("art_category", -1);
 
         $oArtView = oxNew('article_main');
@@ -528,7 +528,7 @@ class ArticleMainTest extends \OxidTestCase
         try {
             $oArtView->save();
         } catch (Exception $oExcp) {
-            $this->assertEquals("saveTags", $oExcp->getMessage(), "error in Article_Main::save()");
+            $this->assertEquals("saveAdditionalArticleData", $oExcp->getMessage(), "error in Article_Main::save()");
 
             return;
         }

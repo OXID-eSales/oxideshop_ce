@@ -103,15 +103,6 @@ class StartController extends oxUBase
     protected $_oCatOfferArtList = null;
 
     /**
-     * Tag cloud
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
-     * @var array
-     */
-    protected $_sTagCloud = null;
-
-    /**
      * Sign if to load and show top5articles action
      *
      * @var bool

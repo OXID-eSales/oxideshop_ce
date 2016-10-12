@@ -357,8 +357,7 @@ class Base extends \oxSuperCfg
      */
     protected function getGetterViewName()
     {
-        $viewName = $this->getViewName();
-        return $viewName;
+        return $this->getViewName();
     }
 
     /**
@@ -728,16 +727,14 @@ class Base extends \oxSuperCfg
      */
     public function assignRecord($select)
     {
-        $result = false;
-
         $record = $this->getRecordByQuery($select);
 
         if ($record != false && $record->recordCount() > 0) {
-            $result = true;
             $this->assign($record->fields);
+            return true;
         }
 
-        return $result;
+        return false;
     }
 
     /**
@@ -788,9 +785,7 @@ class Base extends \oxSuperCfg
 
         }
 
-        $joinedSelectFields = implode(', ', $selectFields);
-
-        return $joinedSelectFields;
+        return implode(', ', $selectFields);
     }
 
     /**
@@ -1405,9 +1400,7 @@ class Base extends \oxSuperCfg
 
         $this->beforeUpdate();
 
-        $result = (bool) $database->execute($updateQuery);
-
-        return $result;
+        return (bool) $database->execute($updateQuery);
     }
 
     /**
@@ -1440,9 +1433,7 @@ class Base extends \oxSuperCfg
 
         $insertSql .= $this->_getUpdateFields($this->getUseSkipSaveFields());
 
-        $result = (bool) $database->execute($insertSql);
-
-        return $result;
+        return (bool) $database->execute($insertSql);
     }
 
     /**
@@ -1555,9 +1546,8 @@ class Base extends \oxSuperCfg
         $secondsToRoundForQueryCache = $this->getSecondsToRoundForQueryCache();
         $databaseFormattedDate = $dateObj->getRoundedRequestDateDBFormatted($secondsToRoundForQueryCache);
         $query = $query ? " $query or " : '';
-        $query = " ( $query ( $tableName.oxactivefrom < '$databaseFormattedDate' and $tableName.oxactiveto > '$databaseFormattedDate' ) ) ";
 
-        return $query;
+        return " ( $query ( $tableName.oxactivefrom < '$databaseFormattedDate' and $tableName.oxactiveto > '$databaseFormattedDate' ) ) ";
     }
 
     /**

@@ -174,8 +174,7 @@ class VendorMainAjax extends \ajaxListComponent
      */
     protected function onVendorActionArticleUpdateConditions($articleIds)
     {
-        $database = oxDb::getDb();;
-        return 'oxid in (' . implode(", ", $database->quoteArray($articleIds)) . ')';
+        return 'oxid in (' . implode(", ", oxDb::getDb()->quoteArray($articleIds)) . ')';
     }
 
     /**

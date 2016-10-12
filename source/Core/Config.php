@@ -166,7 +166,10 @@ class Config extends SuperConfig
      */
     protected $aMultiShopTables = array('oxarticles', 'oxdiscount', 'oxcategories', 'oxattribute',
                                         'oxlinks', 'oxvoucherseries', 'oxmanufacturers',
-                                        'oxnews', 'oxselectlist', 'oxwrapping',
+                                        // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+                                        'oxnews',
+                                        // END deprecated
+                                        'oxselectlist', 'oxwrapping',
                                         'oxdeliveryset', 'oxdelivery', 'oxvendor', 'oxobject2category');
 
     /**
@@ -1056,7 +1059,6 @@ class Config extends SuperConfig
      */
     public function getShopCurrency()
     {
-        $curr = null;
         if ((null === ($curr = $this->getRequestParameter('cur')))) {
             if (null === ($curr = $this->getRequestParameter('currency'))) {
                 $curr = $this->getSession()->getVariable('currency');
@@ -1342,13 +1344,11 @@ class Config extends SuperConfig
      */
     public function getUrl($file, $dir, $admin = null, $ssl = null, $nativeImg = false, $lang = null, $shop = null, $theme = null)
     {
-        $url = str_replace(
+        return str_replace(
             $this->getOutDir(),
             $this->getOutUrl($ssl, $admin, $nativeImg),
             $this->getDir($file, $dir, $admin, $lang, $shop, $theme)
         );
-
-        return $url;
     }
 
     /**
@@ -1718,15 +1718,13 @@ class Config extends SuperConfig
      */
     public function getVersion()
     {
-        $version = $this->getActiveShop()->oxshops__oxversion->value;
-
-        return $version;
+        return $this->getActiveShop()->oxshops__oxversion->value;
     }
 
     /**
      * Returns build revision number or false on read error.
      *
-     * @return int
+     * @return bool|string
      */
     public function getRevision()
     {
@@ -1877,12 +1875,9 @@ class Config extends SuperConfig
         $query = "select oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue from oxconfig where oxshopid = '{$shopId}' and oxmodule = '{$module}' and oxvarname = " . $db->quote($varName);
         $rs = $db->select($query);
 
-        $value = null;
         if ($rs != false && $rs->recordCount() > 0) {
-            $value = $this->decodeValue($rs->fields['oxvartype'], $rs->fields['oxvarvalue']);
+            return $this->decodeValue($rs->fields['oxvartype'], $rs->fields['oxvarvalue']);
         }
-
-        return $value;
     }
 
     /**
@@ -1945,7 +1940,7 @@ class Config extends SuperConfig
      */
     public function getBaseShopId()
     {
-        return 'oxbaseshop';
+        return ShopIdCalculator::BASE_SHOP_ID;
     }
 
     /**
@@ -2165,16 +2160,13 @@ class Config extends SuperConfig
      */
     public function getShopUrlByLanguage($lang, $ssl = false)
     {
-        $languageUrl = null;
         $configParameter = $ssl ? 'aLanguageSSLURLs' : 'aLanguageURLs';
         $lang = isset($lang) ? $lang : Registry::getLang()->getBaseLanguage();
         $languageURLs = $this->getConfigParam($configParameter);
         if (isset($lang) && isset($languageURLs[$lang]) && !empty($languageURLs[$lang])) {
             $languageURLs[$lang] = Registry::getUtils()->checkUrlEndingSlash($languageURLs[$lang]);
-            $languageUrl = $languageURLs[$lang];
+            return $languageURLs[$lang];
         }
-
-        return $languageUrl;
     }
 
     /**
@@ -2186,15 +2178,11 @@ class Config extends SuperConfig
      */
     public function getMallShopUrl($ssl = false)
     {
-        $url = null;
         $configParameter = $ssl ? 'sMallSSLShopURL' : 'sMallShopURL';
         $mallShopUrl = $this->getConfigParam($configParameter);
         if ($mallShopUrl) {
-            $mallShopUrl = Registry::getUtils()->checkUrlEndingSlash($mallShopUrl);
-            $url = $mallShopUrl;
+            return Registry::getUtils()->checkUrlEndingSlash($mallShopUrl);
         }
-
-        return $url;
     }
 
     /**
@@ -2231,7 +2219,7 @@ class Config extends SuperConfig
 
         // redirect to start page and display the error
         Registry::get("oxUtilsView")->addErrorToDisplay($ex);
-        Registry::getUtils()->redirect($this->getShopHomeURL() . 'cl=start', true, 302);
+        Registry::getUtils()->redirect($this->getShopHomeUrl() . 'cl=start', true, 302);
     }
 
     /**

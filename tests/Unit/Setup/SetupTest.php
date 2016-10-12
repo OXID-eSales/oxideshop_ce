@@ -22,9 +22,11 @@
 namespace Unit\Setup;
 
 require_once getShopBasePath() . '/Setup/functions.php';
+
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\Eshop\Setup\Core;
 use OxidEsales\Eshop\Setup\Setup;
 
@@ -113,7 +115,7 @@ class SetupTest extends \OxidTestCase
      */
     public function testGetShopId()
     {
-        $sBaseShopId = 'oxbaseshop';
+        $sBaseShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         if ($this->getTestConfig()->getShopEdition() === 'EE') {
             $sBaseShopId = '1';

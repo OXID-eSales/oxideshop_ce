@@ -43,7 +43,8 @@ $aData = array(
             'oxitmartid' => 1003,
             'oxitmamount' => 1,
             'oxitmmultiple' => 1,
-            'oxarticles' => array(1000)
+            'oxarticles' => array(1000),
+            'oxsort' => 10,
         ),
     ),
     'expected' => array (

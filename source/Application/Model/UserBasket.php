@@ -306,7 +306,7 @@ class UserBasket extends \oxBase
             }
 
             if (!$dAmount) {
-                // if amount = 0 the means remove it
+                // amount = 0 removes the item
                 $oUserBasketItem->delete();
                 if (isset($this->_aBasketItems[$this->_getItemKey($sProductId, $aSel, $aPersParam)])) {
                     unset($this->_aBasketItems[$this->_getItemKey($sProductId, $aSel, $aPersParam)]);
@@ -345,6 +345,7 @@ class UserBasket extends \oxBase
             $oDb = oxDb::getDb();
             $sQ = "delete from oxuserbasketitems where oxbasketid = " . $oDb->quote($sOXID);
             $oDb->execute($sQ);
+            $this->_aBasketItems = null;
         }
 
         return $blDelete;

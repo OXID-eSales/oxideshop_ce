@@ -376,13 +376,10 @@ class UtilsDate extends \oxSuperCfg
      */
     protected function _defaultDatePattern()
     {
-        // default date patterns
-        $aDefDatePatterns = array("/^0000-00-00/"   => "ISO",
-                                  "/^00\.00\.0000/" => "EUR",
-                                  "/^00\/00\/0000/" => "USA"
+        return array("/^0000-00-00/"   => "ISO",
+                     "/^00\.00\.0000/" => "EUR",
+                     "/^00\/00\/0000/" => "USA"
         );
-
-        return $aDefDatePatterns;
     }
 
     /**
@@ -392,13 +389,10 @@ class UtilsDate extends \oxSuperCfg
      */
     protected function _defaultTimePattern()
     {
-        // default time patterns
-        $aDefTimePatterns = array("/00:00:00$/"    => "ISO",
-                                  "/00\.00\.00$/"  => "EUR",
-                                  "/00:00:00 AM$/" => "USA"
+        return array("/00:00:00$/"    => "ISO",
+                     "/00\.00\.00$/"  => "EUR",
+                     "/00:00:00 AM$/" => "USA"
         );
-
-        return $aDefTimePatterns;
     }
 
     /**
@@ -408,13 +402,10 @@ class UtilsDate extends \oxSuperCfg
      */
     protected function _regexp2ValidateDateInput()
     {
-        // regexps to validate input
-        $aDatePatterns = array("/^([0-9]{4})-([0-9]{2})-([0-9]{2})/"   => "ISO",
-                               "/^([0-9]{2})\.([0-9]{2})\.([0-9]{4})/" => "EUR",
-                               "/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})/" => "USA"
+        return array("/^([0-9]{4})-([0-9]{2})-([0-9]{2})/"   => "ISO",
+                     "/^([0-9]{2})\.([0-9]{2})\.([0-9]{4})/" => "EUR",
+                     "/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})/" => "USA"
         );
-
-        return $aDatePatterns;
     }
 
     /**
@@ -424,13 +415,10 @@ class UtilsDate extends \oxSuperCfg
      */
     protected function _regexp2ValidateTimeInput()
     {
-        // regexps to validate input
-        $aTimePatterns = array("/([0-9]{2}):([0-9]{2}):([0-9]{2})$/"                 => "ISO",
-                               "/([0-9]{2})\.([0-9]{2})\.([0-9]{2})$/"               => "EUR",
-                               "/([0-9]{2}):([0-9]{2}):([0-9]{2}) ([AP]{1}[M]{1})$/" => "USA"
+        return array("/([0-9]{2}):([0-9]{2}):([0-9]{2})$/"                 => "ISO",
+                     "/([0-9]{2})\.([0-9]{2})\.([0-9]{2})$/"               => "EUR",
+                     "/([0-9]{2}):([0-9]{2}):([0-9]{2}) ([AP]{1}[M]{1})$/" => "USA"
         );
-
-        return $aTimePatterns;
     }
 
     /**
@@ -440,13 +428,10 @@ class UtilsDate extends \oxSuperCfg
      */
     protected function _defineDateFormattingRules()
     {
-        // date formatting rules
-        $aDFormats = array("ISO" => array("Y-m-d", array(2, 3, 1), "0000-00-00"),
-                           "EUR" => array("d.m.Y", array(2, 1, 3), "00.00.0000"),
-                           "USA" => array("m/d/Y", array(1, 2, 3), "00/00/0000")
+        return array("ISO" => array("Y-m-d", array(2, 3, 1), "0000-00-00"),
+                     "EUR" => array("d.m.Y", array(2, 1, 3), "00.00.0000"),
+                     "USA" => array("m/d/Y", array(1, 2, 3), "00/00/0000")
         );
-
-        return $aDFormats;
     }
 
     /**
@@ -456,13 +441,10 @@ class UtilsDate extends \oxSuperCfg
      */
     protected function _defineTimeFormattingRules()
     {
-        // time formatting rules
-        $aTFormats = array("ISO" => array("H:i:s", array(1, 2, 3), "00:00:00"),
-                           "EUR" => array("H.i.s", array(1, 2, 3), "00.00.00"),
-                           "USA" => array("h:i:s A", array(1, 2, 3), "00:00:00 AM")
+        return array("ISO" => array("H:i:s", array(1, 2, 3), "00:00:00"),
+                     "EUR" => array("H.i.s", array(1, 2, 3), "00.00.00"),
+                     "USA" => array("h:i:s A", array(1, 2, 3), "00:00:00 AM")
         );
-
-        return $aTFormats;
     }
 
     /**
@@ -504,7 +486,10 @@ class UtilsDate extends \oxSuperCfg
     {
         // formatting correct time value
         $iTimestamp = mktime(
-            0, 0, 0, $aDateMatches[$aDFields[0]],
+            0,
+            0,
+            0,
+            $aDateMatches[$aDFields[0]],
             $aDateMatches[$aDFields[1]],
             $aDateMatches[$aDFields[2]]
         );
@@ -595,13 +580,10 @@ class UtilsDate extends \oxSuperCfg
         $timestamp = $this->getRequestTime();
         //round up x minutes so query cache can work
         $timestamp = ceil($timestamp / $roundTo) * $roundTo;
+
         //format date for sql query
-        $date = $this->formatDBTimestamp($timestamp);
-        return $date;
+        return $this->formatDBTimestamp($timestamp);
     }
-
-
-
 
     /**
      * Returns the the request time formatted as date string for the database
@@ -612,7 +594,6 @@ class UtilsDate extends \oxSuperCfg
     {
         return $this->formatDBTimestamp($this->getRequestTime());
     }
-
 
     /**
      * Form time
@@ -711,18 +692,14 @@ class UtilsDate extends \oxSuperCfg
      */
     public function isEmptyDate($sDate)
     {
-        $blIsEmpty = true;
-
         if (!empty($sDate)) {
             $sDate = preg_replace("/[^0-9a-z]/i", "", $sDate);
-            if (is_numeric($sDate) && $sDate == 0) {
-                $blIsEmpty = true;
-            } else {
-                $blIsEmpty = false;
+            if (!is_numeric($sDate) || $sDate != 0) {
+                return false;
             }
         }
 
-        return $blIsEmpty;
+        return true;
     }
 
     /**
@@ -739,8 +716,8 @@ class UtilsDate extends \oxSuperCfg
     {
         if ($blGerman) {
             return date($sFormat, mktime($aTime[0], $aTime[1], $aTime[2], $aDate[1], $aDate[0], $aDate[2]));
-        } else {
-            return date($sFormat, mktime($aTime[0], $aTime[1], $aTime[2], $aDate[1], $aDate[2], $aDate[0]));
         }
+
+        return date($sFormat, mktime($aTime[0], $aTime[1], $aTime[2], $aDate[1], $aDate[2], $aDate[0]));
     }
 }

@@ -23,6 +23,7 @@ namespace Unit\Core;
 
 use \oxarticle;
 
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\Eshop\Core\UtilsObject;
 use \oxNewDummyUserModule_parent;
 use \oxNewDummyUserModule2_parent;
@@ -296,7 +297,7 @@ class UtilsobjectTest extends \OxidTestCase
             $this->markTestSkipped('This test is for Community/Professional edition only.');
         }
 
-        $expectedShopId = 'oxbaseshop';
+        $expectedShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         $utilsObject = new UtilsObject();
         $realShopId = $utilsObject->getShopId();

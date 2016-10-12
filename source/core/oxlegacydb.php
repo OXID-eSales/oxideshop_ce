@@ -341,7 +341,7 @@ class oxLegacyDb extends oxSuperCfg implements DatabaseInterface
 
     /**
      * Returns last insert ID.
-     * This method is an alias of lastInsertId().
+     * This method is an alias of getLastInsertId().
      *
      * @deprecated since v5.3.0 (2016-04-14); This method will be removed in v6.0. Use lastInsertId instead.
      *
@@ -349,7 +349,20 @@ class oxLegacyDb extends oxSuperCfg implements DatabaseInterface
      */
     public function Insert_ID()
     {
-        return $this->lastInsertId();
+        return $this->getLastInsertId();
+    }
+
+    /**
+     * Returns last insert ID
+     * This method is an alias of getLastInsertId().
+     *
+     * @deprecated since v5.3.2 (2016-10-12); This method will be removed in v6.0. Use getLastInsertId instead.
+     *
+     * @return int
+     */
+    public function lastInsertId()
+    {
+        return $this->getLastInsertId();
     }
 
     /**
@@ -357,7 +370,7 @@ class oxLegacyDb extends oxSuperCfg implements DatabaseInterface
      *
      * @return int
      */
-    public function lastInsertId()
+    public function getLastInsertId()
     {
         return $this->getDb(false)->Insert_ID();
     }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -158,7 +158,7 @@ class oxDeliveryList extends oxList
         $oDb = oxDb::getDb();
 
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid ";
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid ";
         $sQ .= "where " . $this->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = " . $oDb->quote($sDelSet) . " ";
 
         // defining initial filter parameters

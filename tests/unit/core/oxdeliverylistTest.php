@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -511,7 +511,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         $oDList = new oxDeliveryListTestClass();
 
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '' ) as $sTable where (
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '' ) as $sTable where (
             select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     0,
@@ -547,7 +547,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         $oDList = new oxDeliveryListTestClass();
 
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '' ) as $sTable where (
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '' ) as $sTable where (
             select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
@@ -586,7 +586,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         $oDList = new oxDeliveryListTestClass();
         // default oxConfig country check.
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId' ) as $sTable where (
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId' ) as $sTable where (
             select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
@@ -627,7 +627,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         $oDList = new oxDeliveryListTestClass();
         // default oxConfig country check.
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId' ) as $sTable where (
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId' ) as $sTable where (
             select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),

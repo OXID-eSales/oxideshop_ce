@@ -1822,6 +1822,112 @@ class FunctionalityInAdminTest extends AdminTestCase
     }
 
     /**
+     * Test, that the module deactivation works in the non demo mode.
+     *
+     * @group adminFunctionality
+     * @group adminModules
+     */
+    public function testModuleActivationWorksInNormalMode()
+    {
+        $this->loginAdmin("Extensions", "Modules");
+        $this->openListItem("Test module #6 (in vendor dir)");
+        $this->assertActivationButtonIsPresent();
+        $this->assertDeactivationButtonIsNotPresent();
+        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
+        $this->assertDeactivationButtonIsPresent();
+        $this->assertActivationButtonIsNotPresent();
+    }
+
+    /**
+     * Test, that the module deactivation works in the non demo mode.
+     *
+     * @group adminFunctionality
+     * @group adminModules
+     */
+    public function testModuleDeactivationWorksInNormalMode()
+    {
+        $this->testModuleActivationWorksInNormalMode();
+
+        $this->clickAndWait("//form[@id='myedit']//input[@value='Deactivate']");
+        $this->assertActivationButtonIsPresent();
+        $this->assertDeactivationButtonIsNotPresent();
+    }
+
+    /**
+     * Test, that the module activation won't work in the demo mode.
+     *
+     * @group adminFunctionality
+     * @group adminModules
+     */
+    public function testModuleActivationIsSwitchedOffInDemoMode()
+    {
+        $this->loginAdmin("Extensions", "Modules");
+        $this->switchToDemoMode();
+
+        $this->openListItem("Test module #6 (in vendor dir)");
+        $this->assertActivationButtonIsNotPresent();
+        $this->assertDeactivationButtonIsNotPresent();
+        $this->assertTextPresent('Please note: modules can\'t be activated or deactivated in demo shop mode.', "N");
+    }
+
+    /**
+     * Test, that the module deactivation won't work in the demo mode.
+     *
+     * @group adminFunctionality
+     * @group adminModules
+     */
+    public function testModuleDeactivationIsSwitchedOffInDemoMode()
+    {
+        $this->testModuleActivationWorksInNormalMode();
+        $this->switchToDemoMode();
+
+        $this->openListItem("Test module #6 (in vendor dir)");
+        $this->assertActivationButtonIsNotPresent();
+        $this->assertDeactivationButtonIsNotPresent();
+        $this->assertTextPresent('Please note: modules can\'t be activated or deactivated in demo shop mode.', "N");
+    }
+
+    protected function assertActivationButtonIsPresent()
+    {
+        $this->assertButtonIsPresent('Activate');
+    }
+
+    protected function assertDeactivationButtonIsPresent()
+    {
+        $this->assertButtonIsPresent('Deactivate');
+    }
+
+    protected function assertButtonIsPresent($buttonValue)
+    {
+        $this->assertElementPresent("//form[@id='myedit']//input[@value='{$buttonValue}']");
+    }
+
+    protected function assertActivationButtonIsNotPresent()
+    {
+        $this->assertButtonIsNotPresent('Activate');
+    }
+
+    protected function assertDeactivationButtonIsNotPresent()
+    {
+        $this->assertButtonIsNotPresent('Deactivate');
+    }
+
+    protected function assertButtonIsNotPresent($buttonValue)
+    {
+        $this->assertElementNotPresent("//form[@id='myedit']//input[@value='{$buttonValue}']");
+    }
+
+    protected function switchToDemoMode()
+    {
+        $this->callShopSC("oxConfig", null, null, array("blDemoShop" => array("type" => "bool", "value" => "true")));
+    }
+
+    protected function switchDemoModeOff()
+    {
+        $this->callShopSC("oxConfig", null, null, array("blDemoShop" => array("type" => "bool", "value" => "false")));
+    }
+
+    /**
      * checking if switching themes works
      *
      * @group adminFunctionality

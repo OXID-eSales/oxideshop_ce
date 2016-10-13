@@ -1626,7 +1626,7 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->assertElementText("10016", "//div[@id='container2_c']/table/tbody[2]/tr[8]/td[1]");
     }
 
-   /**
+    /**
      * ajax: Selection Lists -> Assign Products
      *
      * @group ajax

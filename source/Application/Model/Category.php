@@ -241,7 +241,7 @@ class Category extends \oxI18n implements \oxIUrl
      *
      * @param string $sOXID id
      *
-     * @return null
+     * @return bool
      */
     public function load($sOXID)
     {

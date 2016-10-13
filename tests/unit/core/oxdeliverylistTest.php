@@ -511,7 +511,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         $oDList = new oxDeliveryListTestClass();
 
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '' ) as $sTable where (
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = ''  order by $sTable.oxsort asc ) as $sTable where (
             select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     0,
@@ -522,7 +522,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
                 if(EXISTS(select 1 from oxobject2delivery, $sGroupTable where $sGroupTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
                     0,
                     1)
-            ) order by $sTable.oxsort ";
+            ) order by $sTable.oxsort asc ";
 
         $sTestSQ = $oDList->_getFilterSelect(null, null, null);
 
@@ -547,7 +547,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         $oDList = new oxDeliveryListTestClass();
 
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '' ) as $sTable where (
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = ''  order by $sTable.oxsort asc ) as $sTable where (
             select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
@@ -558,7 +558,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
                 if(EXISTS(select 1 from oxobject2delivery, $sGroupTable where $sGroupTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
                     0,
                     1)
-            ) order by $sTable.oxsort ";
+            ) order by $sTable.oxsort asc ";
 
 
         $sTestSQ = $oDList->_getFilterSelect(null, '_testCountryId', null);
@@ -586,7 +586,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         $oDList = new oxDeliveryListTestClass();
         // default oxConfig country check.
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId' ) as $sTable where (
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId'  order by $sTable.oxsort asc ) as $sTable where (
             select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
@@ -597,7 +597,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
                 if(EXISTS(select 1 from oxobject2delivery, $sGroupTable where $sGroupTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' and oxobject2delivery.OXOBJECTID in ('oxidadmin') ),
                     1)
-            ) order by $sTable.oxsort ";
+            ) order by $sTable.oxsort asc ";
 
 
         $sTestSQ = $oDList->_getFilterSelect($this->_oUser, '_testCountryId', '_testDeliverySetId');
@@ -627,7 +627,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         $oDList = new oxDeliveryListTestClass();
         // default oxConfig country check.
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId' ) as $sTable where (
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId'  order by $sTable.oxsort asc ) as $sTable where (
             select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
@@ -638,7 +638,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
                 if(EXISTS(select 1 from oxobject2delivery, $sGroupTable where $sGroupTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
                     0,
                     1)
-            ) order by $sTable.oxsort ";
+            ) order by $sTable.oxsort asc ";
 
 
         $sTestSQ = $oDList->_getFilterSelect($this->_oUser, '_testCountryId', '_testDeliverySetId');

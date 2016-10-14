@@ -341,7 +341,7 @@ class AjaxListComponentTest extends \OxidTestCase
             array('oxid', 'oxarticles', 0, 0, 1)
         );
         $sTableName = getViewName("oxarticles");
-        $sQ = "$sTableName.oxartnum like 'a%'  and $sTableName.oxtitle like 'b%'  and $sTableName.oxmpn like '0%' ";
+        $sQ = "$sTableName.oxartnum like '%a%'  and $sTableName.oxtitle like '%b%'  and $sTableName.oxmpn like '%0%' ";
 
         $oConfig = $this->getMock("oxConfig", array("isUtf"));
         $oConfig->expects($this->any())->method('isUtf')->will($this->returnValue(false));

@@ -471,7 +471,7 @@ class BaseController extends \oxView
         if (!isSearchEngineUrl() && $utils->seoIsActive() && ($requestUrl = getRequestUrl())) {
             // fetching standard url and looking for it in seo table
             if ($this->_canRedirect() && ($redirectUrl = oxRegistry::get("oxSeoEncoder")->fetchSeoUrl($requestUrl))) {
-                $utils->redirect($this->getConfig()->getCurrentShopUrl() . $redirectUrl, false);
+                $utils->redirect($this->getConfig()->getCurrentShopUrl() . $redirectUrl, false, 301);
             } elseif (VIEW_INDEXSTATE_INDEX == $this->noIndex()) {
                 // forcing to set no index/follow meta
                 $this->_forceNoIndex();

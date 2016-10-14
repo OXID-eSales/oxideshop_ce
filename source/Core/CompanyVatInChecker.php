@@ -22,14 +22,17 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use oxCompanyVatIn;
 
 /**
  * Company VAT identification number (VATIN) checker
  *
  */
-abstract class CompanyVatInChecker
+abstract class CompanyVatInChecker implements LoggerAwareInterface
 {
+     use LoggerAwareTrait;
 
     /**
      * Error message

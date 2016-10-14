@@ -23,6 +23,28 @@
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 
+if (!function_exists('createLoggerFactory')) {
+    /**
+     * Creates the loggerFactory
+     * this method is used to make it possible to customize behavior by providing a custom
+     * createRootLogger function in modules/functions.php
+     * @return LoggerFactoryInterface 
+     */
+    function createLoggerFactory() {
+        $config = Registry::get("oxConfigFile");
+        $path = $config->getVar('sShopDir');
+        $rootDir = dirname($path);
+        if(defined('OXID_PHP_UNIT')){
+             $rootDir .= '/tests';
+        }
+        $vars['monolog_config_dir'] = $rootDir;
+        $vars['kernel.root_dir'] = $path;
+        $vars['kernel.logs_dir'] = $path . '/log';
+        
+        return new \Monolog\Configuration\MonologFactory($vars);
+    }
+}
+
 if (!function_exists('registerComposerAutoload')) {
     /**
      * Registers auto-loader for shop namespaced classes.

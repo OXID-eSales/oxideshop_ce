@@ -26,14 +26,18 @@ window.onload = function ()
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
     <colgroup>
         [{block name="admin_manufacturer_list_colgroup"}]
+            <col width="3%">
             <col width="40%">
-            <col width="59%">
+            <col width="56%">
             <col width="1%">
         [{/block}]
     </colgroup>
     <tr class="listitem">
         [{block name="admin_manufacturer_list_filter"}]
-            <td valign="top" class="listfilter first">
+            <td valign="top" class="listfilter first" align="right">
+                <div class="r1"><div class="b1">&nbsp;</div></div>
+            </td>
+            <td valign="top" class="listfilter">
                 <div class="r1"><div class="b1">
                 <input class="listedit" type="text" size="50" maxlength="128" name="where[oxmanufacturers][oxtitle]" value="[{$where.oxmanufacturers.oxtitle}]">
                 </div></div>
@@ -57,7 +61,8 @@ window.onload = function ()
     </tr>
     <tr>
         [{block name="admin_manufacturer_list_sorting"}]
-            <td class="listheader first" height="15">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxmanufacturers', 'oxtitle', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_TITLE"}]</a></td>
+            <td class="listheader first" height="15" width="30" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxmanufacturers', 'oxactive', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_ACTIVTITLE"}]</a></td>
+            <td class="listheader" height="15">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxmanufacturers', 'oxtitle', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_TITLE"}]</a></td>
             <td class="listheader" height="15" colspan="2"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxmanufacturers', 'oxshortdesc', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_SHORTDESC"}]</a></td>
         [{/block}]
     </tr>
@@ -76,6 +81,7 @@ window.onload = function ()
             [{if $listitem->getId() == $oxid}]
                 [{assign var="listclass" value=listitem4}]
             [{/if}]
+            <td valign="top" class="[{$listclass}][{if $listitem->oxmanufacturers__oxactive->value == 1}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp;</div></td>
             <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxmanufacturers__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxmanufacturers__oxtitle->value}]</a></div></td>
             <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxmanufacturers__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxmanufacturers__oxshortdesc->value}]</a></div></td>
             <td class="[{$listclass}]" align="right">

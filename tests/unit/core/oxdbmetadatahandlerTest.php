@@ -51,7 +51,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
     /**
      * Create a test table
      */
-    protected function createTestTable()
+    protected function _createTestTable()
     {
         $sSql = " CREATE TABLE `testDbMetaDataHandler` (
                     `OXID` char(32) NOT NULL,
@@ -165,7 +165,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
      */
     public function testGetIndicesWithTableWithIndices()
     {
-        $this->createTestTable();
+        $this->_createTestTable();
         $dbMetaDataHandler = oxNew("oxDbMetaDataHandler");
 
         $indices = $dbMetaDataHandler->getIndices('testDbMetaDataHandler');

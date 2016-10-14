@@ -239,7 +239,7 @@ class RssFeed extends \oxSuperCfg
             $oActCur = $this->getConfig()->getActShopCurrencyObject();
             $sPrice = '';
             if ($oPrice = $oArticle->getPrice()) {
-                $sFrom = ($oArticle->isRangePrice()) ? Registry::getLang()->translateString('PRICE_FROM') : '';
+                $sFrom = ($oArticle->isRangePrice()) ? Registry::getLang()->translateString('PRICE_FROM')." " : '';
                 $sPrice .= ' ' . $sFrom . $oLang->formatCurrency($oPrice->getBruttoPrice(), $oActCur) . " " . $oActCur->sign;
             }
             $oItem->title = strip_tags($oArticle->oxarticles__oxtitle->value . $sPrice);

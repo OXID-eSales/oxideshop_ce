@@ -48,10 +48,10 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         parent::tearDown();
     }
 
-    /*
-     * Test table
+    /**
+     * Create a test table
      */
-    protected function _createTestTable()
+    protected function createTestTable()
     {
         $sSql = " CREATE TABLE `testDbMetaDataHandler` (
                     `OXID` char(32) NOT NULL,
@@ -65,6 +65,26 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
                      FULLTEXT KEY `OXLONGDESC` (`OXLONGDESC`),
                      FULLTEXT KEY `OXLONGDESC_1` (`OXLONGDESC_1`)
                   ) ENGINE = MyISAM";
+
+        oxDb::getDb()->execute($sSql);
+    }
+
+    /**
+     * Create a test table without indices
+     */
+    protected function createTestTableWithoutIndices()
+    {
+        $sSql = "CREATE TABLE `testDbMetaDataHandlerWithoutIndices` (`OXID` char(32) NOT NULL) ENGINE = InnoDB";
+
+        oxDb::getDb()->execute($sSql);
+    }
+
+    /**
+     * Drop the test table without indices
+     */
+    protected function dropTestTableWithoutIndices()
+    {
+        $sSql = "DROP TABLE `testDbMetaDataHandlerWithoutIndices`";
 
         oxDb::getDb()->execute($sSql);
     }
@@ -111,6 +131,71 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $oDbMeta->expects($this->once())->method('getFields')->with('oxreviews')->will($this->returnValue(array("oxreviews.field1", 'oxreviews.field2Name', 'oxreviews.FIELD')));
 
         $this->assertTrue($oDbMeta->fieldExists("field2Name", "oxreviews"));
+    }
+
+    /**
+     * Test, that the method getIndices gives back an empty array in case of a not existing table
+     */
+    public function testGetIndicesWithNotExistingTable()
+    {
+        $dbMetaDataHandler = oxNew("oxDbMetaDataHandler");
+
+        $indices = $dbMetaDataHandler->getIndices('NOT_EXISTING_TABLE_NAME');
+
+        $this->assertEmpty($indices);
+    }
+
+    /**
+     * Test, that the method getIndices gives back an empty array in case of a table with no indices
+     */
+    public function testGetIndicesWithTableWithoutIndices()
+    {
+        $this->createTestTableWithoutIndices();
+
+        $dbMetaDataHandler = oxNew("oxDbMetaDataHandler");
+
+        $indices = $dbMetaDataHandler->getIndices('testDbMetaDataHandlerWithoutIndices');
+
+        $this->dropTestTableWithoutIndices();
+        $this->assertSame(0, count($indices));
+    }
+
+    /**
+     * Test, that the method getIndices gives back all indices in case of a table with indices
+     */
+    public function testGetIndicesWithTableWithIndices()
+    {
+        $this->createTestTable();
+        $dbMetaDataHandler = oxNew("oxDbMetaDataHandler");
+
+        $indices = $dbMetaDataHandler->getIndices('testDbMetaDataHandler');
+
+        $this->assertSame(5, count($indices));
+        $this->assertSame('OXID', $indices[0]['Column_name']);
+        $this->assertSame('OXTITLE', $indices[1]['Column_name']);
+        $this->assertSame('OXTITLE_1', $indices[2]['Column_name']);
+        $this->assertSame('OXLONGDESC', $indices[3]['Column_name']);
+        $this->assertSame('OXLONGDESC_1', $indices[4]['Column_name']);
+    }
+
+    /**
+     * Test, that the method hasIndex gives back false, if we check for a non existing index name
+     */
+    public function testHasIndexWithNotExistingIndex()
+    {
+        $dbMetaDataHandler = oxNew("oxDbMetaDataHandler");
+
+        $this->assertFalse($dbMetaDataHandler->hasIndex('NON_EXISTANT_INDEX_NAME', 'oxarticles'));
+    }
+
+    /**
+     * Test, that the method hasIndex gives back false, if we check for a non existing index name
+     */
+    public function testHasIndexWithExistingIndex()
+    {
+        $dbMetaDataHandler = oxNew("oxDbMetaDataHandler");
+
+        $this->assertTrue($dbMetaDataHandler->hasIndex('OXID', 'oxarticles'));
     }
 
     /*

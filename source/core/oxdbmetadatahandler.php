@@ -119,6 +119,46 @@ class oxDbMetaDataHandler extends oxSuperCfg
 
 
     /**
+     * Get the indices of a table
+     *
+     * @param string $tableName The name of the table for which we want the
+     *
+     * @return array The indices of the given table
+     */
+    public function getIndices($tableName)
+    {
+        $result = [];
+
+        if ($this->tableExists($tableName)) {
+            $result = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll("SHOW INDEX FROM $tableName");
+        }
+
+        return $result;
+    }
+
+    /**
+     * Check, if the table has an index with the given name
+     *
+     * @param string $indexName The name of the index we want to check
+     * @param string $tableName The table to check for the index
+     *
+     * @return bool Has the table the given index?
+     */
+    public function hasIndex($indexName, $tableName)
+    {
+        $result = false;
+
+        foreach ($this->getIndices($tableName) as $index) {
+            if ($indexName === $index['Column_name']) {
+                $result = true;
+            }
+        }
+
+        return $result;
+    }
+
+
+    /**
      * Get all tables names from db. Views tables are not included in
      * this list.
      *

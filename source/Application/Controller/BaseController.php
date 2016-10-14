@@ -468,7 +468,7 @@ class BaseController extends \oxView
         $utils = oxRegistry::getUtils();
 
         // non admin, request is not empty and was not processed by seo engine
-        if (!isSearchEngineUrl() && $utils->seoIsActive() && ($requestUrl = getRequestUrl('', true))) {
+        if (!isSearchEngineUrl() && $utils->seoIsActive() && ($requestUrl = getRequestUrl())) {
             // fetching standard url and looking for it in seo table
             if ($this->_canRedirect() && ($redirectUrl = oxRegistry::get("oxSeoEncoder")->fetchSeoUrl($requestUrl))) {
                 $utils->redirect($this->getConfig()->getCurrentShopUrl() . $redirectUrl, false);

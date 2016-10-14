@@ -187,8 +187,8 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->frame("list");
         $this->type("where[oxvendor][oxtitle]", "create_delete");
         $this->clickAndWait("submitit");
-        $this->assertEquals("create_delete distributor1 [EN]", $this->getText("//tr[@id='row.1']/td[1]"));
-        $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
+        $this->assertEquals("create_delete distributor1 [EN]", $this->getText("//tr[@id='row.1']/td[2]"));
+        $this->assertElementNotPresent("//tr[@id='row.2']/td[2]");
     }
 
     /**
@@ -255,8 +255,8 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->frame("list");
         $this->type("where[oxmanufacturers][oxtitle]", "create_delete");
         $this->clickAndWait("submitit");
-        $this->assertEquals("create_delete manufacturer1 [EN]", $this->getText("//tr[@id='row.1']/td[1]"));
-        $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
+        $this->assertEquals("create_delete manufacturer1 [EN]", $this->getText("//tr[@id='row.1']/td[2]"));
+        $this->assertElementNotPresent("//tr[@id='row.2']/td[2]");
     }
 
     /**

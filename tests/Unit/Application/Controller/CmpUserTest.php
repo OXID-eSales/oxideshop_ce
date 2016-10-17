@@ -324,11 +324,11 @@ class CmpUserTest extends \OxidTestCase
         try {
             $oUserView->createUser();
         } catch (Exception $oExcp) {
-            $this->assertEquals('setCreditPointsForRegistrant', $oExcp->getMessage(), "Error while runing testCreateUserForInvitationFeature");
+            $this->assertEquals('setCreditPointsForRegistrant', $oExcp->getMessage(), "Error while running testCreateUserForInvitationFeature");
 
             return;
         }
-        $this->fail("Error while runing testCreateUserForInvitationFeature");
+        $this->fail("Error while running testCreateUserForInvitationFeature");
     }
 
     /**
@@ -349,7 +349,7 @@ class CmpUserTest extends \OxidTestCase
 
         $oUserView = $this->getMock($this->getProxyClassName("oxcmp_user"), array('getParent'));
         $oUserView->expects($this->any())->method('getParent')->will($this->returnValue($oParent));
-        $this->assertNull($oUserView->createUser());
+        $this->assertFalse($oUserView->createUser());
     }
 
     public function testSetAndGetLoginStatus()
@@ -980,7 +980,7 @@ class CmpUserTest extends \OxidTestCase
 
     /**
      * Test _changeUser_noRedirect().
-     *
+     * 
      * @return null
      */
     public function testChangeUserNoRedirectUserException()

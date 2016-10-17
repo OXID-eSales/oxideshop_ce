@@ -45,7 +45,7 @@ class FileTest extends \OxidTestCase
      */
     protected function tearDown()
     {
-        oxDb::getDb()->getOne("TRUNCATE TABLE `oxfiles`");
+        oxDb::getDb()->execute("TRUNCATE TABLE `oxfiles`");
         $this->cleanUpTable('oxorder');
         $this->cleanUpTable('oxorderarticles');
         $this->cleanUpTable('oxorderfiles');

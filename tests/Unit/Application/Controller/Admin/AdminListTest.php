@@ -245,7 +245,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by $sTable.oxtitle", trim($oAdminList->UNITprepareOrderByQuery('')));
+        $this->assertEquals("order by `$sTable`.`oxtitle`", trim($oAdminList->UNITprepareOrderByQuery('')));
     }
 
     /**
@@ -266,7 +266,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by $sTable.oxtitle, $sTable.oxactive desc , $sTable.sort", trim($oAdminList->UNITprepareOrderByQuery('')));
+        $this->assertEquals("order by `$sTable`.`oxtitle`, `$sTable`.`oxactive` desc , `$sTable`.`sort`", trim($oAdminList->UNITprepareOrderByQuery('')));
     }
 
     /**
@@ -292,7 +292,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->setNonPublicVar('_sDefSortField', 'oxactive');
         $sResultSql = $oAdminList->UNITprepareOrderByQuery('');
 
-        $this->assertEquals("order by $sTable.oxactive desc", trim($sResultSql));
+        $this->assertEquals("order by `$sTable`.`oxactive` desc", trim($sResultSql));
     }
 
     /**
@@ -330,7 +330,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by $sTable.oxtitle desc", trim($oAdminList->UNITprepareOrderByQuery('')));
+        $this->assertEquals("order by `$sTable`.`oxtitle` desc", trim($oAdminList->UNITprepareOrderByQuery('')));
     }
 
     /**
@@ -351,7 +351,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by $sTable.oxurldesc", trim($oAdminList->UNITprepareOrderByQuery('')));
+        $this->assertEquals("order by `$sTable`.`oxurldesc`", trim($oAdminList->UNITprepareOrderByQuery('')));
     }
 
     /**
@@ -372,7 +372,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by $sTable.oxtitle", trim($oAdminList->UNITprepareOrderByQuery('')));
+        $this->assertEquals("order by `$sTable`.`oxtitle`", trim($oAdminList->UNITprepareOrderByQuery('')));
     }
 
     /**
@@ -419,7 +419,7 @@ class AdminListTest extends \OxidTestCase
         $sResultSql = strtolower(trim($sResultSql));
         $sResultSql = preg_replace("/\s+/", " ", $sResultSql);
 
-        $sSql = "and ( oxtitle like '%testvalue%' ) and ( oxid = 'testid' )";
+        $sSql = "and ( `oxtitle` like '%testvalue%' ) and ( `oxid` = 'testid' )";
 
         $this->assertEquals($sSql, $sResultSql);
     }
@@ -441,7 +441,7 @@ class AdminListTest extends \OxidTestCase
         $sResultSql = strtolower(trim($sResultSql));
         $sResultSql = preg_replace("/\s+/", " ", $sResultSql);
 
-        $sSql = "and ( oxtitle like '%testvalue1%' and oxtitle like '%testvalue2%' and oxtitle like '%testvalue3%' ) and ( oxid = 'testid' )";
+        $sSql = "and ( `oxtitle` like '%testvalue1%' and `oxtitle` like '%testvalue2%' and `oxtitle` like '%testvalue3%' ) and ( `oxid` = 'testid' )";
 
         $this->assertEquals($sSql, $sResultSql);
     }
@@ -465,7 +465,7 @@ class AdminListTest extends \OxidTestCase
         $sResultSql = strtolower(trim($sResultSql));
         $sResultSql = preg_replace("/\s+/", " ", $sResultSql);
 
-        $sSql = "and ( oxtitle = 'das' and ( oxtitle = '%testvalueäö%' or oxtitle = '%testvalue&auml;&ouml;%' ) and oxtitle = 'asd' ) and ( oxid = 'testid' )";
+        $sSql = "and ( `oxtitle` = 'das' and ( `oxtitle` = '%testvalueäö%' or `oxtitle` = '%testvalue&auml;&ouml;%' ) and `oxtitle` = 'asd' ) and ( `oxid` = 'testid' )";
 
         $this->assertEquals($sSql, $sResultSql);
     }
@@ -507,7 +507,7 @@ class AdminListTest extends \OxidTestCase
         $sResultSql = strtolower(trim($sResultSql));
         $sResultSql = preg_replace("/\s+/", " ", $sResultSql);
 
-        $sSql = "and ( oxtitle like '%0%' )";
+        $sSql = "and ( `oxtitle` like '%0%' )";
 
         $this->assertEquals($sSql, $sResultSql);
     }

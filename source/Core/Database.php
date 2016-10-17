@@ -15,270 +15,140 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 namespace OxidEsales\Eshop\Core;
 
-use ADOConnection;
-use ADODB_Exception;
-use mysql_driver_ADOConnection;
-use mysqli;
-use mysqli_driver_ADOConnection;
-use oxAdoDbException;
-use oxConnectionException;
 use oxDb;
-use OxidEsales\Eshop\Core\exception\DatabaseException;
-use oxLegacyDb;
-use oxRegistry;
-use PHPMailer;
-
-// Including main ADODB include
-require_once __DIR__ . '/adodblite/adodb.inc.php';
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database as DatabaseAdapter;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
 
 /**
  * Database connection class
  */
 class Database
 {
-    /**
-     * Fetch mode - numeric
-     *
-     * @var int
-     */
-    const FETCH_MODE_NUM = ADODB_FETCH_NUM;
 
     /**
-     * Fetch mode - associative
-     *
-     * @var int
+     * @var int Fetch mode - numeric
      */
-    const FETCH_MODE_ASSOC = ADODB_FETCH_ASSOC;
+    const FETCH_MODE_NUM = DatabaseInterface::FETCH_MODE_NUM;
 
     /**
-     * Configuration value
-     *
-     * @var mixed
+     * @var int Fetch mode - associative
      */
-    public static $configSet = false;
+    const FETCH_MODE_ASSOC = DatabaseInterface::FETCH_MODE_ASSOC;
 
     /**
-     * oxDb instance.
-     *
-     * @var Database
+     * @var null|Database A singleton instance of this class or a sub class of this class
      */
-    protected static $_instance = null;
+    protected static $instance = null;
 
     /**
-     * Database connection object
-     *
-     * @var Database
+     * @var null|DatabaseInterface Database connection object
      */
-    protected static $_oDB = null;
+    protected static $db = null;
 
     /**
-     * Database tables descriptions cache array
-     *
-     * @var array
+     * @var array Database tables descriptions cache array
      */
-    protected static $_aTblDescCache = array();
+    protected static $tblDescCache = array();
 
     /**
-     * Database type
-     *
-     * @var string
+     * @var null|ConfigFile Database type
      */
-    private static $_dbType = '';
+    protected $configFile;
 
     /**
-     * Database user name
+     * This class is a singleton and should be instantiated with getInstance().
      *
-     * @var string
+     * @deprecated in v5.3.0 (2016-06-08) The constructor will be protected in the future. Use getInstance() instead.
+     *
+     * Database constructor.
      */
-    private static $_dbUser = '';
+    public function __construct()
+    {
+    }
 
     /**
-     * Database password
+     * As this class is a singleton, an instance of this class must not be cloned.
      *
-     * @var string
+     * @throws \Exception
      */
-    private static $_dbPwd = '';
+    public function __clone()
+    {
+        throw new \Exception("This object is a singleton, thou shalt not clone.");
+    }
 
     /**
-     * Database table name
+     * Returns the singleton instance of this class or of a sub class of this class.
      *
-     * @var string
-     */
-    private static $_dbName = '';
-
-    /**
-     * Database hostname
-     *
-     * @var string
-     */
-    private static $_dbHost = '';
-
-    /**
-     * Debug option value
-     *
-     * @var int
-     */
-    private static $_iDebug = 0;
-
-    /**
-     * Should changes be logged in admin
-     *
-     * @var bool
-     */
-    private static $_blLogChangesInAdmin = false;
-
-    /**
-     * UTF mode
-     *
-     * @var int
-     */
-    private static $_iUtfMode = 0;
-
-    /**
-     * Default database connection value
-     *
-     * @var string
-     */
-    private static $_sDefaultDatabaseConnection = null;
-
-    /**
-     * Array of slave hosts
-     *
-     * @var array
-     */
-    private static $_aSlaveHosts;
-
-    /**
-     * Admin email value
-     *
-     * @var string
-     */
-    private static $_sAdminEmail;
-
-    /**
-     * Value for master slave balance
-     *
-     * @var int
-     */
-    private static $_iMasterSlaveBalance;
-
-    /**
-     * Local time format  value
-     *
-     * @var string
-     */
-    private static $_sLocalTimeFormat;
-
-    /**
-     * Local date format value
-     *
-     * @var string
-     */
-    private static $_sLocalDateFormat;
-
-    /**
-     * Returns Singleton instance
-     *
-     * @return Database
+     * @return Database The singleton instance.
      */
     public static function getInstance()
     {
-        if (!self::$_instance instanceof Database) {
-            //do not use simple oxNew here as it goes to eternal cycle
-            self::$_instance = new oxDb();
+        if (null === static::$instance) {
+            static::$instance = new static();
         }
 
-        return self::$_instance;
+        return static::$instance;
     }
 
     /**
-     * Returns database object
+     * Return the database connection instance as a singleton.
      *
-     * @param int $fetchMode - fetch mode default numeric - 0
+     * @param int $fetchMode The fetch mode. Default is numeric (0).
      *
-     * @throws oxConnectionException error while initiating connection to DB
+     * @throws DatabaseConnectionException Error while initiating connection to DB.
      *
-     * @return oxLegacyDb
+     * @return DatabaseInterface
      */
     public static function getDb($fetchMode = oxDb::FETCH_MODE_NUM)
     {
-        if (self::$_oDB === null) {
-            self::$_oDB = static::createDatabase();
+        if (null === static::$db) {
+            $databaseFactory = static::getInstance();
+            static::$db = $databaseFactory->createDatabase();
+
+            /** Post connect actions will be taken only once per connection */
+            $databaseFactory->onPostConnect();
         }
-        self::$_oDB->setFetchMode($fetchMode);
 
-        return self::$_oDB;
+        /** The following actions be taken on each call to getDb */
+        static::$db->setFetchMode($fetchMode);
+
+        return static::$db;
     }
 
     /**
-     * Sets configs object with method getVar() and properties needed for successful connection.
+     * Return the database master connection instance as a singleton.
+     * In case the shop is not allowed a master/slave setup, this function
+     * is simply a wrapper for Database::getDb.
      *
-     * @param object $config configs.
+     * @param int $fetchMode The fetch mode. Default is numeric (0).
+     *
+     * @throws DatabaseConnectionException Error while initiating connection to DB
+     *
+     * @return DatabaseInterface
      */
-    public static function setConfig($config)
+    public static function getMaster($fetchMode = oxDb::FETCH_MODE_NUM)
     {
-        self::$_dbType = $config->getVar('dbType');
-        self::$_dbUser = $config->getVar('dbUser');
-        self::$_dbPwd = $config->getVar('dbPwd');
-        self::$_dbName = $config->getVar('dbName');
-        self::$_dbHost = $config->getVar('dbHost');
-        self::$_iDebug = $config->getVar('iDebug');
-        self::$_blLogChangesInAdmin = $config->getVar('blLogChangesInAdmin');
-        self::$_iUtfMode = $config->getVar('iUtfMode');
-        self::$_sDefaultDatabaseConnection = $config->getVar('sDefaultDatabaseConnection');
-        self::$_aSlaveHosts = $config->getVar('aSlaveHosts');
-        self::$_iMasterSlaveBalance = $config->getVar('iMasterSlaveBalance');
-        self::$_sAdminEmail = $config->getVar('sAdminEmail');
-        self::$_sLocalTimeFormat = $config->getVar('sLocalTimeFormat');
-        self::$_sLocalDateFormat = $config->getVar('sLocalDateFormat');
+        static::getDb($fetchMode)->forceMasterConnection();
+
+        return static::getDb($fetchMode);
     }
 
     /**
-     * Setter for database connection object
+     * Sets class properties needed for a successful database connection
      *
-     * @param Database $newDbObject
+     * @param ConfigFile $configFile The file config.inc.php wrapped in an object
      */
-    public static function setDbObject($newDbObject)
+    public function setConfigFile(ConfigFile $configFile)
     {
-        self::$_oDB = $newDbObject;
-    }
-
-    /**
-     * Database connection object getter
-     *
-     * @return Database
-     */
-    public static function getDbObject()
-    {
-        return self::$_oDB;
-    }
-
-    /**
-     * Quotes an array.
-     *
-     * @param array $arrayOfStrings array of strings to quote
-     *
-     * @deprecated since v5.2.0 (2014-03-12); use oxLegacyDb::quoteArray()
-     *
-     * @return array
-     */
-    public function quoteArray($arrayOfStrings)
-    {
-        return self::getDb()->quoteArray($arrayOfStrings);
-    }
-
-    /**
-     * Call to reset table description cache
-     */
-    public function resetTblDescCache()
-    {
-        self::$_aTblDescCache = array();
+        $this->configFile = $configFile;
     }
 
     /**
@@ -291,338 +161,209 @@ class Database
     public function getTableDescription($tableName)
     {
         // simple cache
-        if (!isset(self::$_aTblDescCache[$tableName])) {
-            self::$_aTblDescCache[$tableName] = $this->formTableDescription($tableName);
+        if (!isset(self::$tblDescCache[$tableName])) {
+            self::$tblDescCache[$tableName] = $this->fetchTableDescription($tableName);
         }
 
-        return self::$_aTblDescCache[$tableName];
+        return self::$tblDescCache[$tableName];
     }
 
     /**
-     * Checks if given string is valid database field name.
-     * It must contain from alphanumeric plus dot and underscore symbols
+     * Flush the table description cache of this class.
+     */
+    public function flushTableDescriptionCache()
+    {
+        self::$tblDescCache = [];
+    }
+
+    /**
+     * Extracts and returns table metadata from DB.
+     * This method is extended in the Enterprise Edition.
      *
-     * @param string $field field name
+     * @param string $tableName
+     *
+     * @return array
+     */
+    protected function fetchTableDescription($tableName)
+    {
+        return static::getDb()->metaColumns($tableName);
+    }
+
+    /**
+     * Creates database connection and returns it.
+     *
+     * @throws DatabaseConnectionException
+     * @throws DatabaseNotConfiguredException
+     *
+     * @return DatabaseInterface
+     */
+    protected function createDatabase()
+    {
+        /** Call to fetchConfigFile redirects to setup wizard, if shop has not been configured. */
+        $configFile = $this->fetchConfigFile();
+
+        /** Validate the configuration file */
+        $this->validateConfigFile($configFile);
+
+        /** Set config file to be able to read shop configuration within the class */
+        $this->setConfigFile($configFile);
+
+        /** @var array $connectionParameters Parameters needed for the database connection */
+        $connectionParameters = $this->getConnectionParameters();
+
+        $databaseAdapter = new DatabaseAdapter();
+        $databaseAdapter->setConnectionParameters($connectionParameters);
+        $databaseAdapter->connect();
+
+        return $databaseAdapter;
+    }
+
+    /**
+     * Post connect hook. This method is called only once per connection right after the connection to the database has
+     * been established.
+     */
+    protected function onPostConnect()
+    {
+        // @todo Set database logging from iDebug
+        // @todo Set user auditing from blLogChangesInAdmin
+    }
+
+    /**
+     * Get an instance of the config file.
+     *
+     * @throws DatabaseNotConfiguredException
+     *
+     * @return ConfigFile
+     */
+    protected function fetchConfigFile()
+    {
+        /**
+         * Do the configuration of the database connection parameters
+         */
+        /** @var ConfigFile $configFile */
+        $configFile = Registry::get('oxConfigFile');
+
+        return $configFile;
+    }
+
+    /**
+     * Validate configuration file.
+     * The parameters are validated and on failure the method behaves like this:
+     * - if the shop is has not been configured yet, throws a DatabaseNotConfiguredException
+     *
+     * @param ConfigFile $configFile
+     *
+     * @throws DatabaseNotConfiguredException
+     */
+    protected function validateConfigFile(ConfigFile $configFile)
+    {
+        $isDatabaseConfigured = $this->isDatabaseConfigured($configFile);
+
+        if (!$isDatabaseConfigured) {
+            throw new DatabaseNotConfiguredException('The database connection has not been configured in config.inc.php', 0);
+        }
+    }
+
+    /**
+     * Get all parameters needed to connect to the database.
+     *
+     * @return array
+     */
+    protected function getConnectionParameters()
+    {
+        /** Collect the parameters, that are necessary to initialize the database connection: */
+
+        /**
+         * @var string $databaseDriver At the moment the database adapter uses always 'pdo_mysql'.
+         */
+        $databaseDriver = $this->getConfigParam('dbType');
+        /**
+         * @var string $databaseHost The database host to connect to.
+         * Be aware, that the connection between the MySQL client and the server is unencrypted.
+         */
+        $databaseHost = $this->getConfigParam('dbHost');
+        /**
+         * @var integer $databasePort TCP port to connect to.
+         */
+        $databasePort = (int) $this->getConfigParam('dbPort');
+        if (!$databasePort) {
+            $databasePort = 3306;
+        }
+        /**
+         * @var string $databaseName The name of the database or scheme to connect to.
+         */
+        $databaseName = $this->getConfigParam('dbName');
+        /**
+         * @var string $databaseUser The user id of the database user.
+         */
+        $databaseUser = $this->getConfigParam('dbUser');
+        /**
+         * @var string $databasePassword The password of the database user.
+         */
+        $databasePassword = $this->getConfigParam('dbPwd');
+
+        $connectionParameters = array(
+            'default' => array(
+                'databaseDriver'    => $databaseDriver,
+                'databaseHost'      => $databaseHost,
+                'databasePort'      => $databasePort,
+                'databaseName'      => $databaseName,
+                'databaseUser'      => $databaseUser,
+                'databasePassword'  => $databasePassword,
+            )
+        );
+
+        /** The charset has to be set during the connection to the database */
+        if ($this->getConfigParam('iUtfMode')) {
+            $charset = 'utf8';
+        } else {
+            $charset = $this->getConfigParam('sDefaultDatabaseConnection');
+        }
+        if ($charset) {
+            $connectionParameters['default'] = array_merge($connectionParameters['default'], array('connectionCharset' => $charset));
+        }
+
+        return $connectionParameters;
+    }
+
+    /**
+     * Return local config value by given name.
+     *
+     * @param string $configVar returning config name.
+     *
+     * @return mixed
+     */
+    protected function getConfigParam($configVar)
+    {
+        return $this->configFile->getVar($configVar);
+    }
+
+    /**
+     * Return false if the database connection has not been configured in the eShop configuration file.
+     *
+     * @param ConfigFile $config
      *
      * @return bool
      */
-    public function isValidFieldName($field)
+    protected function isDatabaseConfigured(ConfigFile $config)
     {
-        return (boolean) getStr()->preg_match("#^[\w\d\._]*$#", $field);
+        $isValid = true;
+
+        // If the shop has not been configured yet the hostname has the format '<dbHost>'
+        if (false  !== strpos($config->getVar('dbHost'), '<')) {
+            $isValid = false;
+        }
+
+        return $isValid;
     }
 
     /**
-     * Escape string for using in mysql statements
-     *
-     * @param string $string string which will be escaped
-     *
-     * @return string
-     */
-    public function escapeString($string)
-    {
-        return trim(self::getDb()->quote($string), "'");
-    }
-
-    /**
-     * Cal function is admin from oxFunction. Need to mock in tests.
+     * Call function is admin from oxFunction. Need to mock in tests.
      *
      * @return bool
      */
     protected function isAdmin()
     {
         return isAdmin();
-    }
-
-    /**
-     * Return local config value by given name.
-     *
-     * @param string $configName returning config name.
-     *
-     * @return mixed
-     */
-    protected static function _getConfigParam($configName)
-    {
-        if (isset(self::$$configName)) {
-            return self::$$configName;
-        }
-    }
-
-    /**
-     * Creates database instance and returns it.
-     *
-     * @return oxLegacyDb
-     */
-    protected static function createDatabase()
-    {
-        $databaseFactory = self::getInstance();
-
-        // Setting configuration on the first call
-        $databaseFactory->setConfig(oxRegistry::get("oxConfigFile"));
-
-        // Session related parameters. Don't change.
-        global $ADODB_SESSION_TBL,
-               $ADODB_SESSION_CONNECT,
-               $ADODB_SESSION_DRIVER,
-               $ADODB_SESSION_USER,
-               $ADODB_SESSION_PWD,
-               $ADODB_SESSION_DB,
-               $ADODB_SESS_LIFE,
-               $ADODB_SESS_DEBUG;
-
-        // The default setting is 3000 * 60, but actually changing this will give no effect as now redefinition of this constant
-        // appears after OXID custom settings are loaded and $ADODB_SESS_LIFE depends on user settings.
-        // You can find the redefinition of ADODB_SESS_LIFE @ oxconfig.php:: line ~ 390.
-        $ADODB_SESS_LIFE = 3000 * 60;
-        $ADODB_SESSION_TBL = "oxsessions";
-        $ADODB_SESSION_DRIVER = self::_getConfigParam('_dbType');
-        $ADODB_SESSION_USER = self::_getConfigParam('_dbUser');
-        $ADODB_SESSION_PWD = self::_getConfigParam('_dbPwd');
-        $ADODB_SESSION_DB = self::_getConfigParam('_dbName');
-        $ADODB_SESSION_CONNECT = self::_getConfigParam('_dbHost');
-        $ADODB_SESS_DEBUG = false;
-
-        $database = new oxLegacyDb();
-        $databaseConnection = $databaseFactory->_getDbInstance();
-        $database->setConnection($databaseConnection);
-
-        return $database;
-    }
-
-    /**
-     * Returns database instance object for given type
-     *
-     * @deprecated on b-dev (2015-10-23); Use self::createDatabaseConnection() instead.
-     *
-     * @param bool $instanceType instance type
-     *
-     * @return mysql_driver_ADOConnection|mysqli_driver_ADOConnection
-     */
-    protected function _getDbInstance($instanceType = false)
-    {
-        return $this->createDatabaseConnection($instanceType);
-    }
-
-    /**
-     * Returns database instance object for given type
-     *
-     * @param bool $instanceType instance type
-     *
-     * @return mysql_driver_ADOConnection|mysqli_driver_ADOConnection
-     */
-    protected function createDatabaseConnection($instanceType)
-    {
-        $databaseType = self::_getConfigParam("_dbType");
-
-        /** @var mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection */
-        $connection = ADONewConnection($databaseType, $this->_getModules());
-
-        try {
-            $this->connectToDatabase($connection, $instanceType);
-        } catch (oxAdoDbException $e) {
-            $this->_onConnectionError($e);
-        }
-        self::_setUp($connection);
-
-        return $connection;
-    }
-
-    /**
-     * Returns which AdoDbLite modules should be loaded when creating database connection.
-     *
-     * @return string
-     */
-    protected function _getModules()
-    {
-        $debugLevel = self::_getConfigParam('_iDebug');
-
-        $this->_registerAdoDbExceptionHandler();
-
-        $modules = '';
-        if ($debugLevel == 2 || $debugLevel == 3 || $debugLevel == 4 || $debugLevel == 7) {
-            $modules = 'perfmon';
-        }
-
-        if ($this->isAdmin() && self::_getConfigParam('_blLogChangesInAdmin')) {
-            $modules .= ($modules ? ':' : '') . 'oxadminlog';
-        }
-
-        return $modules;
-    }
-
-    /**
-     * Initiates actual database connection.
-     *
-     * @param mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection
-     * @param bool                                                   $instanceType
-     */
-    protected function connectToDatabase($connection, $instanceType)
-    {
-        $host = self::_getConfigParam("_dbHost");
-        $user = self::_getConfigParam("_dbUser");
-        $password = self::_getConfigParam("_dbPwd");
-        $databaseName = self::_getConfigParam("_dbName");
-
-        $connection->connect($host, $user, $password, $databaseName);
-    }
-
-    /**
-     * Registers AdoDb exceptions handler for SQL errors
-     */
-    protected function _registerAdoDbExceptionHandler()
-    {
-        global $ADODB_EXCEPTION;
-        $ADODB_EXCEPTION = 'oxAdoDbException';
-
-        include_once __DIR__ . '/adodblite/adodb-exceptions.inc.php';
-    }
-
-    /**
-     * Setting up connection parameters - sql mode, encoding, logging etc
-     *
-     * @deprecated on b-dev (2015-10-23); Use self::prepareDatabaseConnection() instead.
-     *
-     * @param ADOConnection $connection database connection instance
-     */
-    protected function _setUp($connection)
-    {
-        $this->prepareDatabaseConnection($connection);
-    }
-
-    /**
-     * Setting up connection parameters - sql mode, encoding, logging etc.
-     *
-     * @param ADOConnection $connection database connection instance
-     */
-    protected function prepareDatabaseConnection($connection)
-    {
-        $debugLevel = self::_getConfigParam('_iDebug');
-        if ($debugLevel == 2 || $debugLevel == 3 || $debugLevel == 4 || $debugLevel == 7) {
-            try {
-                $connection->execute('truncate table adodb_logsql');
-            } catch (ADODB_Exception $e) {
-                // nothing
-            }
-            if (method_exists($connection, "logSQL")) {
-                $connection->logSQL(true);
-            }
-        }
-
-        $connection->cacheSecs = 60 * 10; // 10 minute caching
-        $connection->execute('SET @@session.sql_mode = ""');
-
-        if (self::_getConfigParam('_iUtfMode')) {
-            $connection->execute('SET NAMES "utf8"');
-            $connection->execute('SET CHARACTER SET utf8');
-            $connection->execute('SET CHARACTER_SET_CONNECTION = utf8');
-            $connection->execute('SET CHARACTER_SET_DATABASE = utf8');
-            $connection->execute('SET character_set_results = utf8');
-            $connection->execute('SET character_set_server = utf8');
-        } elseif (($encoding = self::_getConfigParam('_sDefaultDatabaseConnection')) != '') {
-            $connection->execute('SET NAMES "' . $encoding . '"');
-        }
-    }
-
-    /**
-     * Returns $mailer instance
-     *
-     * @param string $email   email address
-     * @param string $subject subject
-     * @param string $body    email body
-     *
-     * @return PHPMailer
-     */
-    protected function _sendMail($email, $subject, $body)
-    {
-        $mailer = new PHPMailer();
-        $mailer->isMail();
-
-        $mailer->From = $email;
-        $mailer->AddAddress($email);
-        $mailer->Subject = $subject;
-        $mailer->Body = $body;
-
-        return $mailer->send();
-    }
-
-    /**
-     * Notifying shop owner about connection problems
-     *
-     * @param \Exception $exception Database exception
-     *
-     * @throws DatabaseException
-     */
-    protected function _notifyConnectionErrors(\Exception $exception)
-    {
-        // notifying shop owner about connection problems
-        if (($adminEmail = self::_getConfigParam('_sAdminEmail'))) {
-            $failedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
-
-            $date = date('l dS of F Y h:i:s A');
-            $script = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
-            $referer = $_SERVER['HTTP_REFERER'];
-
-            //sending a message to admin
-            $warningSubject = 'Offline warning!';
-            $warningBody = "
-                Database error in OXID eShop:
-                Date: {$date}
-                Shop: {$failedShop}
-
-                mysql error: " . $exception->getMessage() . "
-                mysql error no: " . $exception->getCode() . "
-
-                Script: {$script}
-                Referer: {$referer}";
-
-            $this->_sendMail($adminEmail, $warningSubject, $warningBody);
-        }
-
-        // Re throw the exception
-        $message = 'EXCEPTION_CONNECTION_NODB';
-        $code = $exception->getCode();
-        // @todo Add DatabaseConnectionException, which implements oxConnectionException methods and is used instead
-        //$exception = oxNew('\OxidEsales\Eshop\Core\exception\DatabaseException', $message, $code, $exception);
-        $exception = oxNew('oxConnectionException', $message, $code, $exception);
-
-        // $exception->setConnectionError(self::_getConfigParam('_dbUser') . 's' . getShopBasePath() . $exception->getMessage());
-        throw $exception;
-    }
-
-    /**
-     * In case of connection error - redirects to setup
-     * or send notification message for shop owner
-     *
-     * @param \Exception $exception Database exception
-     */
-    protected function _onConnectionError(\Exception $exception)
-    {
-        $config = join('', file(getShopBasePath() . 'config.inc.php'));
-
-        if (strpos($config, '<dbHost>') !== false &&
-            strpos($config, '<dbName>') !== false
-        ) {
-            // pop to setup as there is something wrong
-            //oxRegistry::getUtils()->redirect( "setup/index.php", true, 302 );
-            $headerCode = "HTTP/1.1 302 Found";
-            header($headerCode);
-            header("Location: Setup/index.php");
-            header("Connection: close");
-            exit();
-        } else {
-            // notifying about connection problems
-            $this->_notifyConnectionErrors($exception);
-        }
-    }
-
-    /**
-     * Extracts and returns table metadata from DB.
-     *
-     * @param string $tableName
-     *
-     * @return array
-     */
-    protected function formTableDescription($tableName)
-    {
-        return self::getDb()->MetaColumns($tableName);
     }
 }

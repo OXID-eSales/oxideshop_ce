@@ -298,7 +298,7 @@ class Voucher extends \oxBase
     {
         if (is_array($aVouchers) && count($aVouchers)) {
             $oSeries = $this->getSerie();
-            $sIds = implode(',', oxDb::getInstance()->quoteArray(array_keys($aVouchers)));
+            $sIds = implode(',', oxDb::getDb()->quoteArray(array_keys($aVouchers)));
             $blAvailable = true;
             $oDb = oxDb::getDb();
             if (!$oSeries->oxvoucherseries__oxallowotherseries->value) {

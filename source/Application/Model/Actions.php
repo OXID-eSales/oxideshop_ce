@@ -84,8 +84,7 @@ class Actions extends \oxI18n
         // remove actions from articles also
         $oDb = oxDb::getDb();
         $sDelete = "delete from oxactions2article where oxactionid = " . $oDb->quote($this->getId()) . " and oxartid = " . $oDb->quote($articleId) . " and oxshopid = '" . $this->getShopId() . "'";
-        $oDb->execute($sDelete);
-        $iRemovedArticles = $oDb->affectedRows();
+        $iRemovedArticles = $oDb->execute($sDelete);
 
         return (bool) $iRemovedArticles;
     }
@@ -214,12 +213,7 @@ class Actions extends \oxI18n
      */
     public function getBannerArticle()
     {
-        $oDb = oxDb::getDb();
-        $sArtId = $oDb->getOne(
-            'select oxobjectid from oxobject2action '
-            . 'where oxactionid=' . $oDb->quote($this->getId())
-            . ' and oxclass="oxarticle"'
-        );
+        $sArtId = $this->fetchBannerArticleId();
 
         if ($sArtId) {
             $oArticle = oxNew('oxArticle');
@@ -236,6 +230,24 @@ class Actions extends \oxI18n
         return null;
     }
 
+
+    /**
+     * Fetch the oxobjectid of the article corresponding this action.
+     *
+     * @return string The id of the oxobjectid belonging to this action.
+     */
+    protected function fetchBannerArticleId()
+    {
+        $database = oxDb::getDb();
+
+        $articleId = $database->getOne(
+            'select oxobjectid from oxobject2action ' .
+            'where oxactionid=' . $database->quote($this->getId()) .
+            ' and oxclass="oxarticle"'
+        );
+
+        return $articleId;
+    }
 
     /**
      * Returns assigned banner article picture url

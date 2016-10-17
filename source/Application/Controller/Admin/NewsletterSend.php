@@ -95,7 +95,7 @@ class NewsletterSend extends \Newsletter_Selection
            group by oxnewssubscribed.oxemail";
 
         $oRs = $oDB->selectLimit($sQ, 100, $iStart);
-        $blContinue = ($oRs != false && $oRs->recordCount() > 0);
+        $blContinue = ($oRs != false && $oRs->count() > 0);
 
         if ($blContinue) {
             $blLoadAction = $myConfig->getConfigParam('bl_perfLoadAktion');
@@ -106,7 +106,8 @@ class NewsletterSend extends \Newsletter_Selection
                     $iSendCnt++;
 
                     // must check if such user is in DB
-                    if (!$oDB->getOne("select oxid from oxuser where oxid = " . $oDB->quote($sUserId), false, false)) {
+                    // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+                    if (!oxDb::getMaster()->getOne("select oxid from oxuser where oxid = " . $oDB->quote($sUserId))) {
                         $sUserId = null;
                     }
 
@@ -136,7 +137,7 @@ class NewsletterSend extends \Newsletter_Selection
                     }
                 }
 
-                $oRs->moveNext();
+                $oRs->fetchRow();
                 $iStart++;
             }
         }

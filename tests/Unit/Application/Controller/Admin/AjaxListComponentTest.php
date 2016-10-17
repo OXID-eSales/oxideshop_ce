@@ -373,11 +373,11 @@ class AjaxListComponentTest extends \OxidTestCase
     {
         $sQ = "select oxid from oxcategories";
         $aReturn = array();
-        $rs = oxDb::getDb()->execute($sQ);
-        if ($rs != false && $rs->recordCount() > 0) {
+        $rs = oxDb::getDb()->select($sQ);
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $aReturn[] = $rs->fields[0];
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
 

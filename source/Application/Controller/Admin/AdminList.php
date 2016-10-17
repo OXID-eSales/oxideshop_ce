@@ -276,8 +276,9 @@ class AdminList extends \oxAdminView
         // removing order by
         $sql = $stringModifier->preg_replace('/order by .*$/i', '', $sql);
 
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         // con of list items which fits current search conditions
-        $this->_iListSize = oxDb::getDb()->getOne($sql, false, false);
+        $this->_iListSize = oxDb::getMaster()->getOne($sql);
 
         // set it into session that other frames know about size of DB
         oxRegistry::getSession()->setVariable('iArtCnt', $this->_iListSize);
@@ -334,7 +335,7 @@ class AdminList extends \oxAdminView
                     $field = $table . $column;
 
                     //add table name to column name if no table name found attached to column name
-                    $query .= ((($addSeparator) ? ', ' : '')) . oxDb::getInstance()->escapeString($field);
+                    $query .= ((($addSeparator) ? ', ' : '')) . oxDb::getDb()->quoteIdentifier($field);
 
                     //V oxActive field search always DESC
                     if ($descending || $column == "oxactive" || strcasecmp($sortDirectory, 'desc') == 0) {
@@ -428,7 +429,7 @@ class AdminList extends \oxAdminView
     {
         if (count($whereQuery)) {
             $myUtilsString = oxRegistry::get("oxUtilsString");
-            while (list($fieldName, $fieldValue) = each($whereQuery)) {
+            while (list($identifierName, $fieldValue) = each($whereQuery)) {
                 $fieldValue = trim($fieldValue);
 
                 //check if this is search string (contains % sign at beginning and end of string)
@@ -451,8 +452,8 @@ class AdminList extends \oxAdminView
                             $queryBoolAction .= '(';
                         }
 
-                        $fieldName = oxDb::getInstance()->escapeString($fieldName);
-                        $fullQuery .= " {$queryBoolAction} {$fieldName} ";
+                        $quotedIdentifierName = oxDb::getDb()->quoteIdentifier($identifierName);
+                        $fullQuery .= " {$queryBoolAction} {$quotedIdentifierName} ";
 
                         //for search in same field for different values using AND
                         $queryBoolAction = ' and ';
@@ -460,7 +461,7 @@ class AdminList extends \oxAdminView
                         $fullQuery .= $this->_buildFilter($value, $isSearchValue);
 
                         if ($uml) {
-                            $fullQuery .= " or {$fieldName} ";
+                            $fullQuery .= " or {$quotedIdentifierName} ";
 
                             $fullQuery .= $this->_buildFilter($uml, $isSearchValue);
                             $fullQuery .= ')'; // end of OR section

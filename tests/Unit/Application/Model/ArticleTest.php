@@ -22,6 +22,7 @@
 namespace Unit\Application\Model;
 
 use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\Eshop\Core\Database;
 use \oxList;
 use \oxSimpleVariant;
 use \oxArticle;
@@ -106,8 +107,6 @@ class ArticleTest extends \OxidTestCase
 
         $oDB->Execute('delete from oxselectlist where oxid = "_testoxsellist" ');
         $oDB->Execute('delete from oxobject2selectlist where oxselnid = "_testoxsellist" ');
-
-        oxDb::getInstance()->resetTblDescCache();
 
         parent::tearDown();
     }
@@ -1652,7 +1651,7 @@ class ArticleTest extends \OxidTestCase
 
         $this->assertEquals(4, $oArticle->oxarticles__oxrating->value);
         $this->assertEquals(3, $oArticle->oxarticles__oxratingcnt->value);
-        $dRating = oxDb::getDB()->getOne("select oxrating from oxarticles where oxid='" . $oArticle->getId() . "'");
+        $dRating = oxDb::getDb()->getOne("select oxrating from oxarticles where oxid='" . $oArticle->getId() . "'");
         $this->assertEquals(4, $dRating);
     }
 
@@ -3062,7 +3061,6 @@ class ArticleTest extends \OxidTestCase
     {
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->oxarticles__oxvat = new oxField(7, oxField::T_RAW);
-        //$this->getConfig()->setConfigParam('aCurrencies', array(0 => 'EUR@ 1.00@ ,@ .@ EUR@ 2'));
         $oArticle->oxarticles__oxtprice = new oxField(25, oxField::T_RAW);
         $oTPrice = $oArticle->getTPrice();
         $this->assertEquals(25, $oTPrice->getBruttoPrice());
@@ -3535,6 +3533,8 @@ class ArticleTest extends \OxidTestCase
      */
     public function testDeleteWithId()
     {
+        $this->_createArticle('_testArt');
+
         $oArticle = oxNew('oxArticle');
         $this->assertTrue($oArticle->delete('_testArt'));
     }
@@ -3838,10 +3838,12 @@ class ArticleTest extends \OxidTestCase
         $oArticle = $this->_createArticle('_testArt');
 
         $oDb = oxDb::getDB();
-        $oDb->getOne("update oxarticles set oxtimestamp = '2005-03-24 14:33:53' where oxid = '_testArt'");
+        $oDb->execute("update oxarticles set oxtimestamp = '2005-03-24 14:33:53' where oxid = '_testArt'");
         $sTimeStamp = $oDb->getOne("select oxtimestamp from oxarticles where oxid = '_testArt'");
+
         $rs = $oArticle->updateSoldAmount(1);
-        $this->assertTrue($rs->EOF);
+
+        $this->assertTrue($rs);
         $this->assertEquals(1, $oDb->getOne("select oxsoldamount from oxarticles where oxid = '_testArt'"));
         $this->assertNotEquals($sTimeStamp, $oDb->getOne("select oxtimestamp from oxarticles where oxid = '_testArt'"));
     }
@@ -3868,7 +3870,7 @@ class ArticleTest extends \OxidTestCase
     {
         $oArticle = $this->_createArticle('_testArt');
         $rs = $oArticle->disableReminder(1);
-        $this->assertTrue($rs->EOF);
+        $this->assertTrue($rs);
         $this->assertEquals(2, oxDb::getDB()->getOne("select oxremindactive from oxarticles where oxid = '_testArt'"));
     }
 
@@ -4502,9 +4504,9 @@ class ArticleTest extends \OxidTestCase
     public function testGetAttributesDisplayableInBasket()
     {
         $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = '8a142c3f0b9527634.96987022' ";
-        $rs = oxDb::getDB()->execute($sSelect);
+        oxDb::getDB()->execute($sSelect);
         $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = 'd8842e3b7c5e108c1.63072778' "; // texture
-        $rs = oxDb::getDB()->execute($sSelect);
+        oxDb::getDB()->execute($sSelect);
 
         $oArticle = oxNew('oxArticle');
         $oArticle->load('1672');
@@ -6060,12 +6062,14 @@ class ArticleTest extends \OxidTestCase
     {
         $oArticle = oxNew("oxArticle");
         $oArticle->load("2000");
+
         $oList = $oArticle->getSimilarProducts();
-        $iCount = 5;
-        if ($this->getConfig()->getEdition() === 'EE') {
-            $iCount = 4;
+
+        if ('EE' === $this->getConfig()->getEdition()) {
+            $this->assertEquals(4, count($oList));
+        } else {
+            $this->assertEquals(5, count($oList));
         }
-        $this->assertEquals($iCount, count($oList));
     }
 
     /**
@@ -6427,15 +6431,12 @@ class ArticleTest extends \OxidTestCase
      */
     public function testInPriceCategoryNoException($return, $expected)
     {
-        $oA = oxNew('oxArticle');
+        $articleMock = $this->getMock('oxArticle', array('fetchFirstInPriceCategory'));
+        $articleMock->expects($this->any())
+            ->method('fetchFirstInPriceCategory')
+            ->willReturn($return);
 
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())
-            ->method('getOne')
-            ->will($this->returnValue($return));
-        oxDb::setDbObject($dbMock);
-
-        $this->assertEquals($expected, $oA->inPriceCategory('sCatNid'));
+        $this->assertEquals($expected, $articleMock->inPriceCategory('sCatNid'));
     }
 
     /**
@@ -6445,31 +6446,26 @@ class ArticleTest extends \OxidTestCase
      */
     public function testInPriceCategoryException()
     {
-        $oA = oxNew('oxArticle');
-        $oA->setId('_testx');
-        $oA->oxarticles__oxprice = new oxField(95);
-
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())
-            ->method('getOne')
-            ->will($this->returnCallback(function ($s) {
-                    throw new Exception($s);
-            }));
-
-        oxDb::setDbObject($dbMock);
-
-        try {
-            $oA->inPriceCategory('sCatNid');
-        } catch (Exception $e) {
-            if ($this->getConfig()->getEdition() === 'EE') {
-                $this->assertEquals("select 1 from oxv_oxcategories_1_de where oxid='sCatNid' and(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= '95' and oxpriceto >= '95') or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= '95') or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= '95'))", $e->getMessage());
-            } else {
-                $this->assertEquals("select 1 from oxv_oxcategories_de where oxid='sCatNid' and(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= '95' and oxpriceto >= '95') or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= '95') or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= '95'))", $e->getMessage());
-            }
-
-            return;
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $expected = "select 1 from oxv_oxcategories_1_de where oxid='sCatNid' and(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= '95' and oxpriceto >= '95') or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= '95') or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= '95'))";
+        } else {
+            $expected = "select 1 from oxv_oxcategories_de where oxid='sCatNid' and(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= '95' and oxpriceto >= '95') or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= '95') or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= '95'))";
         }
-        $this->fail('exception from oxdb not thrown');
+
+        $dbMock = $this->getMock('OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database', array('getOne', 'quote'));
+        $dbMock->expects($this->once())->method('getOne')->with($this->equalTo($expected));
+
+        $dbMock->expects($this->any())->method('quote')->will($this->returnValueMap(array(
+            array('sCatNid', "'sCatNid'"),
+            array('95', "'95'"),
+        )));
+
+        $articleMock = $this->getMock('oxArticle', array('getDatabase'));
+        $articleMock->expects($this->any())->method('getDatabase')->willReturn($dbMock);
+        $articleMock->setId('_testx');
+        $articleMock->oxarticles__oxprice = new oxField('95');
+
+        $articleMock->inPriceCategory('sCatNid');
     }
 
     /**

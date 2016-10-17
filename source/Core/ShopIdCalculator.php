@@ -103,9 +103,11 @@ class ShopIdCalculator
         $sSelect = "SELECT oxshopid, oxvarname, DECODE( oxvarvalue , " . $oDb->quote($sConfKey) . " ) as oxvarvalue " .
             "FROM oxconfig WHERE oxvarname in ('aLanguageURLs','sMallShopURL','sMallSSLShopURL')";
 
-        $oRs = $oDb->select($sSelect, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        $oRs = $masterDb->select($sSelect, false);
 
-        if ($oRs && $oRs->recordCount() > 0) {
+        if ($oRs && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $iShp = (int) $oRs->fields[0];
                 $sVar = $oRs->fields[1];
@@ -122,7 +124,7 @@ class ShopIdCalculator
                     $aMap[$sURL] = $iShp;
                 }
 
-                $oRs->moveNext();
+                $oRs->fetchRow();
             }
         }
 

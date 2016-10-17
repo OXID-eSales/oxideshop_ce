@@ -131,14 +131,15 @@ class ModuleVariablesLocator
      */
     protected function getModuleVarFromDB($name)
     {
-        $database = Database::getDb();
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = Database::getMaster();
 
         $shopId = $this->getShopIdCalculator()->getShopId();
         $configKey = $this->getConfigurationKey();
 
         $query = "SELECT DECODE( oxvarvalue , ? ) FROM oxconfig WHERE oxvarname = ? AND oxshopid = ?";
 
-        $value = $database->getOne($query, array($configKey, $name, $shopId), false);
+        $value = $masterDb->getOne($query, array($configKey, $name, $shopId));
 
         return unserialize($value);
     }

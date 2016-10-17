@@ -141,12 +141,6 @@ class NavigationController extends \oxAdminView
         // kill session
         $mySession->destroy();
 
-        // delete also, this is usually not needed but for security reasons we execute still
-        if ($myConfig->getConfigParam('blAdodbSessionHandler')) {
-            $oDb = oxDb::getDb();
-            $oDb->execute("delete from oxsessions where SessionID = " . $oDb->quote($mySession->getId()));
-        }
-
         //resetting content cache if needed
         if ($myConfig->getConfigParam('blClearCacheOnLogout')) {
             $this->resetContentCache(true);

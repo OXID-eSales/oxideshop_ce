@@ -99,7 +99,7 @@ class DiscountGroupsAjax extends \ajaxListComponent
             oxDb::getDb()->Execute($query);
 
         } elseif ($groupIds && is_array($groupIds)) {
-            $groupIdsQuoted = implode(", ", oxDb::getInstance()->quoteArray($groupIds));
+            $groupIdsQuoted = implode(", ", oxDb::getDb()->quoteArray($groupIds));
             $query = "delete from oxobject2discount where oxobject2discount.oxid in (" . $groupIdsQuoted . ") ";
             oxDb::getDb()->Execute($query);
         }

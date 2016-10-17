@@ -25,6 +25,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
+use Exception;
 
 /**
  * Class manages article select lists configuration
@@ -127,13 +128,15 @@ class SelectListMainAjax extends \ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenArt)) . ") ";
+            $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aChosenArt)) . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }
 
     /**
      * Adds article to Selection list
+     *
+     * @throws Exception
      */
     public function addArtToSel()
     {
@@ -146,17 +149,25 @@ class SelectListMainAjax extends \ajaxListComponent
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {
-            $oDb = oxDb::getDb();
-            foreach ($aAddArticle as $sAdd) {
-                $oNewGroup = oxNew("oxBase");
-                $oNewGroup->init("oxobject2selectlist");
-                $oNewGroup->oxobject2selectlist__oxobjectid = new oxField($sAdd);
-                $oNewGroup->oxobject2selectlist__oxselnid = new oxField($soxId);
-                $oNewGroup->oxobject2selectlist__oxsort = new oxField(( int ) $oDb->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $oDb->quote($sAdd) . " ", false, false));
-                $oNewGroup->save();
 
-                $this->onArticleAddToSelectionList($sAdd);
+            oxDb::getDb()->startTransaction();
+            try {
+                $database = oxDb::getDb();
+                foreach ($aAddArticle as $sAdd) {
+                    $oNewGroup = oxNew("oxBase");
+                    $oNewGroup->init("oxobject2selectlist");
+                    $oNewGroup->oxobject2selectlist__oxobjectid = new oxField($sAdd);
+                    $oNewGroup->oxobject2selectlist__oxselnid = new oxField($soxId);
+                    $oNewGroup->oxobject2selectlist__oxsort = new oxField(( int ) $database->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $database->quote($sAdd) . " "));
+                    $oNewGroup->save();
+
+                    $this->onArticleAddToSelectionList($sAdd);
+                }
+            } catch (Exception $exception) {
+                oxDb::getDb()->rollbackTransaction();
+                throw $exception;
             }
+            oxDb::getDb()->commitTransaction();
         }
     }
 

@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Model;
 
+use Exception;
 use oxDb;
 use oxRegistry;
 use oxList;
@@ -216,17 +217,30 @@ class RecommendationList extends \oxBase implements \oxIUrl
      * @param string $sOXID Object ID
      * @param string $sDesc recommended article description
      *
+     * @throws Exception
+     *
      * @return bool
      */
     public function addArticle($sOXID, $sDesc)
     {
         $blAdd = false;
         if ($sOXID) {
-            $oDb = oxDb::getDb();
-            if (!$oDb->getOne("select oxid from oxobject2list where oxobjectid=" . $oDb->quote($sOXID) . " and oxlistid=" . $oDb->quote($this->getId()), false, false)) {
-                $sUid = oxUtilsObject::getInstance()->generateUID();
-                $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $oDb->quote($sOXID) . ", " . $oDb->quote($this->getId()) . ", " . $oDb->quote($sDesc) . " )";
-                $blAdd = $oDb->execute($sQ);
+            // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
+            $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+
+            $database->startTransaction();
+            try {
+                if (!$database->getOne("select oxid from oxobject2list where oxobjectid=" . $database->quote($sOXID) . " and oxlistid=" . $database->quote($this->getId()))) {
+                    $sUid = oxUtilsObject::getInstance()->generateUID();
+                    $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $database->quote($sOXID) . ", " . $database->quote($this->getId()) . ", " . $database->quote($sDesc) . " )";
+                    $blAdd = $database->execute($sQ);
+                }
+
+                $database->commitTransaction();
+            } catch (Exception $exception) {
+                $database->rollbackTransaction();
+
+                throw $exception;
             }
         }
 
@@ -248,7 +262,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
         if (count($aArticleIds)) {
             startProfile(__FUNCTION__);
 
-            $sIds = implode(",", oxDb::getInstance()->quoteArray($aArticleIds));
+            $sIds = implode(",", oxDb::getDb()->quoteArray($aArticleIds));
 
             $oRecommList = oxNew('oxlist');
             $oRecommList->init('oxrecommlist');
@@ -294,13 +308,12 @@ class RecommendationList extends \oxBase implements \oxIUrl
      */
     protected function _loadFirstArticles(oxList $oRecommList, $aIds)
     {
-        $aIds = oxDb::getInstance()->quoteArray($aIds);
+        $aIds = oxDb::getDb()->quoteArray($aIds);
         $sIds = implode(", ", $aIds);
 
         $aPrevIds = array();
         $sArtView = getViewName('oxarticles');
         foreach ($oRecommList as $key => $oRecomm) {
-
             if (count($aPrevIds)) {
                 $sNegateSql = " AND $sArtView.oxid not in ( '" . implode("','", $aPrevIds) . "' ) ";
             } else {
@@ -365,7 +378,6 @@ class RecommendationList extends \oxBase implements \oxIUrl
         $iCnt = 0;
         $sSelect = $this->_getSearchSelect($sSearchStr);
         if ($sSelect) {
-
             $sPartial = substr($sSelect, strpos($sSelect, ' from '));
             $sSelect = "select count( distinct rl.oxid ) $sPartial ";
             $iCnt = oxDb::getDb()->getOne($sSelect);

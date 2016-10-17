@@ -28,8 +28,6 @@ use oxUtilsObject;
 use oxBasket;
 use OxidEsales\Eshop\Application\Model\Basket;
 
-DEFINE('_DB_SESSION_HANDLER', __DIR__ . '/adodblite/session/adodb-session.php');
-
 /**
  * Session manager.
  * Performs session managing function, such as variables deletion,
@@ -289,7 +287,7 @@ class Session extends \oxSuperCfg
     }
 
     /**
-     * check for CSRF, returns true, if request (get/post) token maches session saved var
+     * check for CSRF, returns true, if request (get/post) token matches session saved var
      * false, if CSRF is possible
      *
      * @return bool
@@ -330,12 +328,6 @@ class Session extends \oxSuperCfg
             }
         } else {
             session_cache_limiter(false);
-        }
-
-        // Including database session managing class if needed.
-        if (oxRegistry::getConfig()->getConfigParam('blAdodbSessionHandler')) {
-            $oDB = oxDb::getDb();
-            include_once _DB_SESSION_HANDLER;
         }
 
         $this->_blStarted = @session_start();
@@ -405,16 +397,11 @@ class Session extends \oxSuperCfg
     protected function _getNewSessionId($blUnset = true)
     {
         $sOldId = session_id();
-        @session_regenerate_id(!oxRegistry::getConfig()->getConfigParam('blAdodbSessionHandler'));
+        @session_regenerate_id(true);
         $sNewId = session_id();
 
         if ($blUnset) {
             session_unset();
-        }
-
-        if (oxRegistry::getConfig()->getConfigParam('blAdodbSessionHandler')) {
-            $oDB = oxDb::getDb();
-            $oDB->execute("UPDATE oxsessions SET SessionID = " . $oDB->quote($sNewId) . " WHERE SessionID = " . $oDB->quote($sOldId));
         }
 
         return session_id();
@@ -813,16 +800,10 @@ class Session extends \oxSuperCfg
             // checking if session user agent matches actual
             $blSwapped = $this->_checkUserAgent($myUtilsServer->getServerVar('HTTP_USER_AGENT'), $this->getVariable('sessionagent'));
             if (!$blSwapped) {
-                if ($myConfig->getConfigParam('blAdodbSessionHandler')) {
-                    $blSwapped = $this->_checkSid();
-                }
-
-                if (!$blSwapped) {
-                    $blDisableCookieCheck = $myConfig->getConfigParam('blDisableCookieCheck');
-                    $blUseCookies = $this->_getSessionUseCookies();
-                    if (!$blDisableCookieCheck && $blUseCookies) {
-                        $blSwapped = $this->_checkCookies($myUtilsServer->getOxCookie('sid_key'), $this->getVariable("sessioncookieisset"));
-                    }
+                $blDisableCookieCheck = $myConfig->getConfigParam('blDisableCookieCheck');
+                $blUseCookies = $this->_getSessionUseCookies();
+                if (!$blDisableCookieCheck && $blUseCookies) {
+                    $blSwapped = $this->_checkCookies($myUtilsServer->getOxCookie('sid_key'), $this->getVariable("sessioncookieisset"));
                 }
             }
         }
@@ -854,29 +835,6 @@ class Session extends \oxSuperCfg
         }
 
         return $blCheck;
-    }
-
-    /**
-     * Checking if this sid is old
-     *
-     * @return bool
-     */
-    protected function _checkSid()
-    {
-        $oDb = oxDb::getDb();
-        //matze changed sesskey to SessionID because structure of oxsession changed!!
-        $sSID = $oDb->getOne("select SessionID from oxsessions where SessionID = " . $oDb->quote($this->getId()));
-
-        //2007-05-14
-        //we check _blNewSession as well as this may be actually new session not written to db yet
-        if (!$this->_blNewSession && (!isset($sSID) || !$sSID)) {
-            // this means, that this session has expired in the past and someone uses this sid to reactivate it
-            $this->_sErrorMsg = "Session has expired in the past and someone uses this sid to reactivate it, creating new SID...<br>";
-
-            return true;
-        }
-
-        return false;
     }
 
     /**

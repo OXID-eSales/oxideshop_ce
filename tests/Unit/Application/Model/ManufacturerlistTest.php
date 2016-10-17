@@ -76,13 +76,13 @@ class ManufacturerlistTest extends \OxidTestCase
 
         // checking if vendros are the same
         $sQ = 'select oxid, oxtitle_1, oxshortdesc_1 from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
-        $rs = $myDB->Execute($sQ);
+        $rs = $myDB->select($sQ);
 
-        if ($rs != false && $rs->RecordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $this->assertEquals($rs->fields[1], $oManufacturerlist[$rs->fields[0]]->oxmanufacturers__oxtitle->value);
                 $this->assertEquals(str_replace("'", "&#039;", $rs->fields[2]), $oManufacturerlist[$rs->fields[0]]->oxmanufacturers__oxshortdesc->value);
-                $rs->MoveNext();
+                $rs->fetchRow();
             }
         } else {
             $this->fail('No records found in Manufacturers table with lang id = 1');

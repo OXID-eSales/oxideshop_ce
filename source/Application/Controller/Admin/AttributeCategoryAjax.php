@@ -25,6 +25,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
+use Exception;
 
 /**
  * Class manages category attributes
@@ -106,7 +107,7 @@ class AttributeCategoryAjax extends \ajaxListComponent
             $sQ = $this->_addFilter("delete oxcategory2attribute.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
-            $sChosenCategories = implode(", ", oxDb::getInstance()->quoteArray($aChosenCat));
+            $sChosenCategories = implode(", ", oxDb::getDb()->quoteArray($aChosenCat));
             $sQ = "delete from oxcategory2attribute where oxcategory2attribute.oxid in (" . $sChosenCategories . ") ";
             oxDb::getDb()->Execute($sQ);
         }
@@ -116,6 +117,8 @@ class AttributeCategoryAjax extends \ajaxListComponent
 
     /**
      * Adds category to Attributes list
+     *
+     * @throws Exception
      */
     public function addCatToAttr()
     {
@@ -130,21 +133,29 @@ class AttributeCategoryAjax extends \ajaxListComponent
         }
 
         if ($oAttribute->load($soxId) && is_array($aAddCategory)) {
-            $oDb = oxDb::getDb();
-            foreach ($aAddCategory as $sAdd) {
-                $oNewGroup = oxNew("oxBase");
-                $oNewGroup->init("oxcategory2attribute");
-                $sOxSortField = 'oxcategory2attribute__oxsort';
-                $sObjectIdField = 'oxcategory2attribute__oxobjectid';
-                $sAttributeIdField = 'oxcategory2attribute__oxattrid';
-                $sOxIdField = 'oxattribute__oxid';
-                $oNewGroup->$sObjectIdField = new oxField($sAdd);
-                $oNewGroup->$sAttributeIdField = new oxField($oAttribute->$sOxIdField->value);
-                $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ";
-                $oNewGroup->$sOxSortField = new oxField(( int ) $oDb->getOne($sSql, false, false));
-                $oNewGroup->save();
+            oxDb::getDb()->startTransaction();
+            try {
+                $database = oxDb::getDb();
+                foreach ($aAddCategory as $sAdd) {
+                    $oNewGroup = oxNew("oxBase");
+                    $oNewGroup->init("oxcategory2attribute");
+                    $sOxSortField = 'oxcategory2attribute__oxsort';
+                    $sObjectIdField = 'oxcategory2attribute__oxobjectid';
+                    $sAttributeIdField = 'oxcategory2attribute__oxattrid';
+                    $sOxIdField = 'oxattribute__oxid';
+                    $oNewGroup->$sObjectIdField = new oxField($sAdd);
+                    $oNewGroup->$sAttributeIdField = new oxField($oAttribute->$sOxIdField->value);
+                    $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ";
+
+                    $oNewGroup->$sOxSortField = new oxField(( int ) $database->getOne($sSql));
+                    $oNewGroup->save();
+                }
+            } catch (Exception $exception) {
+                oxDb::getDb()->rollbackTransaction();
+                throw $exception;
             }
         }
+        oxDb::getDb()->commitTransaction();
 
         $this->resetContentCache();
     }

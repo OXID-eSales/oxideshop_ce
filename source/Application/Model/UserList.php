@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 
 namespace OxidEsales\Eshop\Application\Model;
@@ -49,16 +49,19 @@ class UserList extends \oxList
      */
     public function loadWishlistUsers($sSearchStr)
     {
-        $sSearchStr = oxDb::getInstance()->escapeString($sSearchStr);
+        $sSearchStr = trim($sSearchStr);
+
         if (!$sSearchStr) {
             return;
         }
+
+        $quotedSearchStr = oxDb::getDb()->quote("%$sSearchStr%");
 
         $sSelect = "select oxuser.oxid, oxuser.oxfname, oxuser.oxlname from oxuser ";
         $sSelect .= "left join oxuserbaskets on oxuserbaskets.oxuserid = oxuser.oxid ";
         $sSelect .= "where oxuserbaskets.oxid is not null and oxuserbaskets.oxtitle = 'wishlist' ";
         $sSelect .= "and oxuserbaskets.oxpublic = 1 ";
-        $sSelect .= "and ( oxuser.oxusername like '%$sSearchStr%' or oxuser.oxlname like '%$sSearchStr%')";
+        $sSelect .= "and ( oxuser.oxusername like $quotedSearchStr or oxuser.oxlname like $quotedSearchStr)";
         $sSelect .= "and ( select 1 from oxuserbasketitems where oxuserbasketitems.oxbasketid = oxuserbaskets.oxid limit 1)";
 
         $this->selectString($sSelect);

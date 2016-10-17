@@ -22,15 +22,17 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use Exception;
+use oxConnectionException;
+use oxCookieException;
+use oxDb;
 use oxException;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
-use OxidEsales\Eshop\Core\exception\DatabaseException;
-use oxConnectionException;
-use oxCookieException;
 use stdClass;
-use Exception;
 
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');
@@ -390,10 +392,6 @@ class Config extends SuperConfig
 
         $this->_loadVarsFromFile();
 
-        // setting ADODB timeout
-        global $ADODB_SESS_LIFE;
-        $ADODB_SESS_LIFE = 1;
-
         $this->_setDefaults();
 
         try {
@@ -402,9 +400,12 @@ class Config extends SuperConfig
             // loading shop config
             if (empty($shopID) || !$configLoaded) {
                 // if no config values where loaded (some problems with DB), throwing an exception
-                $ex = new oxConnectionException();
-                $ex->setMessage("Unable to load shop config values from database");
-                throw $ex;
+                $oEx = new DatabaseConnectionException(
+                    "Unable to load shop config values from database",
+                    0,
+                    new \Exception()
+                    );
+                throw $oEx;
             }
 
             // loading theme config options
@@ -434,13 +435,12 @@ class Config extends SuperConfig
             //application initialization
             $this->_oStart = oxNew('oxStart');
             $this->_oStart->appInit();
-        } catch (oxConnectionException $ex) {
-            //@TODO: use DatabaseException instead of oxConnectionException
-            $this->_handleDbConnectionException($ex);
-        } catch (DatabaseException $ex) {
-            $this->_handleDbConnectionException($ex);
-        } catch (oxCookieException $ex) {
-            $this->_handleCookieException($ex);
+        } catch (DatabaseConnectionException $oEx) {
+            $this->_handleDbConnectionException($oEx);
+        } catch (DatabaseException $oEx) {
+            $this->_handleDbConnectionException($oEx);
+        } catch (oxCookieException $oEx) {
+            $this->_handleCookieException($oEx);
         }
     }
 
@@ -524,11 +524,6 @@ class Config extends SuperConfig
             $this->setConfigParam('iZoomPicCount', 4);
         }
 
-        // ADODB cache life time
-        if (is_null($this->getConfigParam('iDBCacheLifeTime'))) {
-            $this->setConfigParam('iDBCacheLifeTime', 3600); // 1 hour
-        }
-
         if (is_null($this->getConfigParam('iDebug'))) {
             $this->setConfigParam('iDebug', $this->isProductiveMode() ? 0 : -1);
         }
@@ -558,7 +553,7 @@ class Config extends SuperConfig
      */
     protected function _loadVarsFromDb($shopID, $onlyVars = null, $module = '')
     {
-        $db = Database::getDb();
+        $db = oxDb::getDb();
 
         $moduleSql = $module ? " oxmodule LIKE " . $db->quote($module . "%") : " oxmodule='' ";
         $onlyVarsSql = $this->_getConfigParamsSelectSnippet($onlyVars);
@@ -745,8 +740,8 @@ class Config extends SuperConfig
      * Checks if passed parameter has special chars and replaces them.
      * Returns checked value.
      *
-     * @param mixed &$value value to process escaping
-     * @param array $raw    keys of unescaped values
+     * @param mixed $value value to process escaping
+     * @param array $raw   keys of unescaped values
      *
      * @return mixed
      */
@@ -1018,8 +1013,8 @@ class Config extends SuperConfig
     /**
      * Returns widget start non SSL URL including widget.php and sid.
      *
-     * @param int  $languageId language
-     * @param bool $inAdmin    if admin
+     * @param int   $languageId    language
+     * @param bool  $inAdmin       if admin
      * @param array $urlParameters parameters which should be added to URL.
      *
      * @return string
@@ -1831,7 +1826,7 @@ class Config extends SuperConfig
             $this->setConfigParam($varName, $varVal);
         }
 
-        $db = Database::getDb();
+        $db = oxDb::getDb();
         $shopIdQuoted = $db->quote($shopId);
         $moduleQuoted = $db->quote($module);
         $varNameQuoted = $db->quote($varName);
@@ -1870,12 +1865,12 @@ class Config extends SuperConfig
             }
         }
 
-        $db = Database::getDb(Database::FETCH_MODE_ASSOC);
+        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 
         $query = "select oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue from oxconfig where oxshopid = '{$shopId}' and oxmodule = '{$module}' and oxvarname = " . $db->quote($varName);
         $rs = $db->select($query);
 
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             return $this->decodeValue($rs->fields['oxvartype'], $rs->fields['oxvarvalue']);
         }
     }
@@ -1883,7 +1878,7 @@ class Config extends SuperConfig
     /**
      * Decodes and returns database value
      *
-     * @param string $type      parameter type
+     * @param string $type       parameter type
      * @param mixed  $mOrigValue parameter db value
      *
      * @return mixed
@@ -1926,7 +1921,7 @@ class Config extends SuperConfig
         $productive = $this->getConfigParam('blProductive');
         if (!isset($productive)) {
             $query = 'select oxproductive from oxshops where oxid = "' . $this->getShopId() . '"';
-            $productive = ( bool ) Database::getDb()->getOne($query);
+            $productive = ( bool ) oxDb::getDb()->getOne($query);
             $this->setConfigParam('blProductive', $productive);
         }
 
@@ -2146,7 +2141,7 @@ class Config extends SuperConfig
      */
     public function getShopIds()
     {
-        return Database::getDb()->getCol("SELECT `oxid` FROM `oxshops`");
+        return oxDb::getDb()->getCol("SELECT `oxid` FROM `oxshops`");
     }
 
     /**
@@ -2154,7 +2149,7 @@ class Config extends SuperConfig
      * #680 per language another URL
      *
      * @param integer $lang Language id.
-     * @param bool    $ssl Whether to use ssl.
+     * @param bool    $ssl  Whether to use ssl.
      *
      * @return null|string
      */
@@ -2190,7 +2185,6 @@ class Config extends SuperConfig
      *
      * @param oxException $ex message to show on exit
      *
-     * @return bool
      */
     protected function _handleDbConnectionException($ex)
     {

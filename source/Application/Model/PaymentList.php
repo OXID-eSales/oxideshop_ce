@@ -180,13 +180,13 @@ class PaymentList extends \oxList
             $sQ .= "and $sTable.oxfromamount <= " . $oDb->quote($dPrice) . " and $sTable.oxtoamount >= " . $oDb->quote($dPrice);
         }
         $rs = $oDb->select($sQ);
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             $oSaved = clone $this->getBaseObject();
             while (!$rs->EOF) {
                 $oListObject = clone $oSaved;
                 $this->_assignElement($oListObject, $rs->fields);
                 $this->_aArray[] = $oListObject;
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
     }

@@ -303,7 +303,7 @@ class Base extends \oxSuperCfg
                         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
                         $query = 'SELECT * FROM ' . $viewName . ' WHERE `oxid` = ' . $database->quote($id);
                         $queryResult = $database->select($query);
-                        if ($queryResult && $queryResult->RecordCount()) {
+                        if ($queryResult && $queryResult->count()) {
                             $this->_aInnerLazyCache = array_change_key_case($queryResult->fields, CASE_UPPER);
                             if (array_key_exists($cacheFieldName, $this->_aInnerLazyCache)) {
                                 $fieldValue = $this->_aInnerLazyCache[$cacheFieldName];
@@ -729,7 +729,7 @@ class Base extends \oxSuperCfg
     {
         $record = $this->getRecordByQuery($select);
 
-        if ($record != false && $record->recordCount() > 0) {
+        if ($record != false && $record->count() > 0) {
             $this->assign($record->fields);
             return true;
         }
@@ -789,7 +789,7 @@ class Base extends \oxSuperCfg
     }
 
     /**
-     * Delete this object from the database, returns true on success.
+     * Delete this object from the database, returns true if entry was deleted.
      *
      * @param string $oxid Object ID(default null)
      *
@@ -807,8 +807,8 @@ class Base extends \oxSuperCfg
         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $coreTable = $this->getCoreTableName();
         $deleteQuery = "delete from {$coreTable} where oxid = " . $database->quote($oxid);
-        $database->execute($deleteQuery);
-        if ($blDelete = (bool) $database->affectedRows()) {
+        $affectedRows = $database->execute($deleteQuery);
+        if ($blDelete = (bool) $affectedRows) {
             $this->onChange(ACTION_DELETE, $oxid);
         }
 
@@ -826,6 +826,8 @@ class Base extends \oxSuperCfg
 
     /**
      * Save this Object to database, insert or update as needed.
+     *
+     * @throws Exception
      *
      * @return string|bool
      */
@@ -849,14 +851,18 @@ class Base extends \oxSuperCfg
             }
         }
 
-        if ($this->exists()) {
-            //do not allow derived update
-            if (!$this->allowDerivedUpdate()) {
-                return false;
-            }
+        $return = false;
 
-            $response = $this->_update();
-            $action = ACTION_UPDATE;
+        $action = null;
+        $response = null;
+        /** We must check on the master database, if an entry exists, so we switch to master connection.*/
+        oxDb::getMaster();
+        if ($this->exists()) {
+            //only update if derived update is allowed
+            if ($this->allowDerivedUpdate()) {
+                $response = $this->_update();
+                $action = ACTION_UPDATE;
+            }
         } else {
             $response = $this->_insert();
             $action = ACTION_INSERT;
@@ -865,10 +871,10 @@ class Base extends \oxSuperCfg
         $this->onChange($action);
 
         if ($response) {
-            return $this->getId();
-        } else {
-            return false;
+            $return = $this->getId();
         }
+
+        return $return;
     }
 
     /**
@@ -911,7 +917,7 @@ class Base extends \oxSuperCfg
         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $query = "select {$this->_sExistKey} from {$viewName} where {$this->_sExistKey} = " . $database->quote($oxid);
 
-        return ( bool ) $database->getOne($query, false, false);
+        return ( bool ) $database->getOne($query);
     }
 
     /**
@@ -1395,12 +1401,26 @@ class Base extends \oxSuperCfg
         $this->$idKey = new oxField($this->getId(), oxField::T_RAW);
         $database = oxDb::getDb();
 
-        $updateQuery = "update {$coreTableName} set " . $this->_getUpdateFields()
-                   . " where {$coreTableName}.oxid = " . $database->quote($this->getId());
+        $updateQuery = "update {$coreTableName} set " . $this->_getUpdateFields() .
+                     " where {$coreTableName}.oxid = " . $database->quote($this->getId());
 
         $this->beforeUpdate();
 
-        return (bool) $database->execute($updateQuery);
+        return (bool) $this->executeDatabaseQuery($updateQuery);
+    }
+
+    /**
+     * Execute a query on the database.
+     *
+     * @param string $query The command to execute on the database.
+     *
+     * @return int The number of affected rows.
+     */
+    protected function executeDatabaseQuery($query)
+    {
+        $database = oxDb::getDb();
+
+        return $database->execute($query);
     }
 
     /**
@@ -1412,7 +1432,6 @@ class Base extends \oxSuperCfg
      */
     protected function _insert()
     {
-        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $myConfig = $this->getConfig();
         $myUtils = oxRegistry::getUtils();
 
@@ -1433,7 +1452,7 @@ class Base extends \oxSuperCfg
 
         $insertSql .= $this->_getUpdateFields($this->getUseSkipSaveFields());
 
-        return (bool) $database->execute($insertSql);
+        return $result = (bool) $this->executeDatabaseQuery($insertSql);
     }
 
     /**

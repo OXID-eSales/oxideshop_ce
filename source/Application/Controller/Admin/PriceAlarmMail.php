@@ -52,8 +52,8 @@ class PriceAlarmMail extends \oxAdminDetails
             SELECT oxprice, oxartid
             FROM oxpricealarm
             WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = '$shopId' ";
-        $result = oxDb::getDb()->execute($query);
-        if ($result != false && $result->recordCount() > 0) {
+        $result = oxDb::getDb()->select($query);
+        if ($result != false && $result->count() > 0) {
             $simpleCache = array();
             while (!$result->EOF) {
                 $price = $result->fields[0];
@@ -71,7 +71,7 @@ class PriceAlarmMail extends \oxAdminDetails
                         }
                     }
                 }
-                $result->moveNext();
+                $result->fetchRow();
             }
         }
 

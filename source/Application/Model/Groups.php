@@ -70,13 +70,13 @@ class Groups extends \oxI18n
 
         // deleting related data records
         $sDelete = 'delete from oxobject2group where oxobject2group.oxgroupsid = ' . $oDb->quote($sOXID);
-        $rs = $oDb->execute($sDelete);
+        $oDb->execute($sDelete);
 
         $sDelete = 'delete from oxobject2delivery where oxobject2delivery.oxobjectid = ' . $oDb->quote($sOXID);
-        $rs = $oDb->execute($sDelete);
+        $oDb->execute($sDelete);
 
         $sDelete = 'delete from oxobject2discount where oxobject2discount.oxobjectid = ' . $oDb->quote($sOXID);
-        $rs = $oDb->execute($sDelete);
+        $oDb->execute($sDelete);
 
         $sDelete = 'delete from oxobject2payment where oxobject2payment.oxobjectid = ' . $oDb->quote($sOXID);
         $rs = $oDb->execute($sDelete);

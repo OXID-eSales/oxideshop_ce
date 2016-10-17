@@ -480,98 +480,109 @@ class Order extends \oxBase
      * @param object   $oUser                Current user object
      * @param bool     $blRecalculatingOrder Order recalculation
      *
+     * @throws Exception
+     *
      * @return integer
      */
     public function finalizeOrder(Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
-        // check if this order is already stored
-        $sGetChallenge = oxRegistry::getSession()->getVariable('sess_challenge');
-        if ($this->_checkOrderExist($sGetChallenge)) {
-            oxRegistry::getUtils()->logger('BLOCKER');
+        oxDb::getDb()->startTransaction();
+        try {
+            // check if this order is already stored
+            $sGetChallenge = oxRegistry::getSession()->getVariable('sess_challenge');
+            if ($this->_checkOrderExist($sGetChallenge)) {
+                oxRegistry::getUtils()->logger('BLOCKER');
 
-            // we might use this later, this means that somebody klicked like mad on order button
-            return self::ORDER_STATE_ORDEREXISTS;
-        }
-
-        // if not recalculating order, use sess_challenge id, else leave old order id
-        if (!$blRecalculatingOrder) {
-            // use this ID
-            $this->setId($sGetChallenge);
-
-            // validating various order/basket parameters before finalizing
-            if ($iOrderState = $this->validateOrder($oBasket, $oUser)) {
-                return $iOrderState;
+                // we might use this later, this means that somebody clicked like mad on order button
+                return self::ORDER_STATE_ORDEREXISTS;
             }
-        }
 
-        // copies user info
-        $this->_setUser($oUser);
+            // if not recalculating order, use sess_challenge id, else leave old order id
+            if (!$blRecalculatingOrder) {
+                // use this ID
+                $this->setId($sGetChallenge);
 
-        // copies basket info
-        $this->_loadFromBasket($oBasket);
-
-        // payment information
-        $oUserPayment = $this->_setPayment($oBasket->getPaymentId());
-
-        // set folder information, if order is new
-        // #M575 in recalculating order case folder must be the same as it was
-        if (!$blRecalculatingOrder) {
-            $this->_setFolder();
-        }
-
-        // marking as not finished
-        $this->_setOrderStatus('NOT_FINISHED');
-
-        //saving all order data to DB
-        $this->save();
-
-        // executing payment (on failure deletes order and returns error code)
-        // in case when recalculating order, payment execution is skipped
-        if (!$blRecalculatingOrder) {
-            $blRet = $this->_executePayment($oBasket, $oUserPayment);
-            if ($blRet !== true) {
-                return $blRet;
+                // validating various order/basket parameters before finalizing
+                if ($iOrderState = $this->validateOrder($oBasket, $oUser)) {
+                    return $iOrderState;
+                }
             }
-        }
 
-        if (!$this->oxorder__oxordernr->value) {
-            $this->_setNumber();
-        } else {
-            oxNew('oxCounter')->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
-        }
+            // copies user info
+            $this->_setUser($oUser);
 
-        // deleting remark info only when order is finished
-        oxRegistry::getSession()->deleteVariable('ordrem');
+            // copies basket info
+            $this->_loadFromBasket($oBasket);
 
-        //#4005: Order creation time is not updated when order processing is complete
-        if (!$blRecalculatingOrder) {
-            $this->_updateOrderDate();
-        }
+            // payment information
+            $oUserPayment = $this->_setPayment($oBasket->getPaymentId());
 
-        // updating order trans status (success status)
-        $this->_setOrderStatus('OK');
+            // set folder information, if order is new
+            // #M575 in recalculating order case folder must be the same as it was
+            if (!$blRecalculatingOrder) {
+                $this->_setFolder();
+            }
 
-        // store orderid
-        $oBasket->setOrderId($this->getId());
+            // marking as not finished
+            $this->_setOrderStatus('NOT_FINISHED');
 
-        // updating wish lists
-        $this->_updateWishlist($oBasket->getContents(), $oUser);
+            //saving all order data to DB
+            $this->save();
 
-        // updating users notice list
-        $this->_updateNoticeList($oBasket->getContents(), $oUser);
+            // executing payment (on failure deletes order and returns error code)
+            // in case when recalculating order, payment execution is skipped
+            if (!$blRecalculatingOrder) {
+                $blRet = $this->_executePayment($oBasket, $oUserPayment);
+                if ($blRet !== true) {
+                    return $blRet;
+                }
+            }
 
-        // marking vouchers as used and sets them to $this->_aVoucherList (will be used in order email)
-        // skipping this action in case of order recalculation
-        if (!$blRecalculatingOrder) {
-            $this->_markVouchers($oBasket, $oUser);
-        }
+            if (!$this->oxorder__oxordernr->value) {
+                $this->_setNumber();
+            } else {
+                oxNew('oxCounter')->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
+            }
 
-        // send order by email to shop owner and current user
-        // skipping this action in case of order recalculation
-        if (!$blRecalculatingOrder) {
-            $iRet = $this->_sendOrderByEmail($oUser, $oBasket, $oUserPayment);
-        } else {
-            $iRet = self::ORDER_STATE_OK;
+            // deleting remark info only when order is finished
+            oxRegistry::getSession()->deleteVariable('ordrem');
+
+            //#4005: Order creation time is not updated when order processing is complete
+            if (!$blRecalculatingOrder) {
+                $this->_updateOrderDate();
+            }
+
+            // updating order trans status (success status)
+            $this->_setOrderStatus('OK');
+
+            // store orderid
+            $oBasket->setOrderId($this->getId());
+
+            // updating wish lists
+            $this->_updateWishlist($oBasket->getContents(), $oUser);
+
+            // updating users notice list
+            $this->_updateNoticeList($oBasket->getContents(), $oUser);
+
+            // marking vouchers as used and sets them to $this->_aVoucherList (will be used in order email)
+            // skipping this action in case of order recalculation
+            if (!$blRecalculatingOrder) {
+                $this->_markVouchers($oBasket, $oUser);
+            }
+
+            // send order by email to shop owner and current user
+            // skipping this action in case of order recalculation
+            if (!$blRecalculatingOrder) {
+                $iRet = $this->_sendOrderByEmail($oUser, $oBasket, $oUserPayment);
+            } else {
+                $iRet = self::ORDER_STATE_OK;
+            }
+
+            oxDb::getDb()->commitTransaction();
+        } catch (Exception $exception) {
+            oxDb::getDb()->rollbackTransaction();
+
+            throw $exception;
         }
 
         return $iRet;
@@ -1190,7 +1201,9 @@ class Order extends \oxBase
      *
      * @param object $oBasket basket object
      *
-     * @throws oxOutOfStockException exception
+     * @throws oxNoArticleException
+     * @throws oxArticleInputException
+     * @throws oxOutOfStockException
      */
     public function validateStock($oBasket)
     {
@@ -1346,7 +1359,6 @@ class Order extends \oxBase
     public function recalculateOrder($aNewArticles = array())
     {
         oxDb::getDb()->startTransaction();
-
         try {
             $oBasket = $this->_getOrderBasket();
 
@@ -1368,10 +1380,10 @@ class Order extends \oxBase
             } else {
                 oxDb::getDb()->commitTransaction();
             }
-
-        } catch (Exception $oE) {
-            // if exception, rollBack everything
+        } catch (Exception $exception) {
             oxDb::getDb()->rollbackTransaction();
+
+            throw $exception;
         }
     }
 
@@ -1602,10 +1614,10 @@ class Order extends \oxBase
         $aVouchers = array();
         $sSelect = "select oxvouchernr from oxvouchers where oxorderid = " . $oDb->quote($this->oxorder__oxid->value);
         $rs = $oDb->select($sSelect);
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $aVouchers[] = $rs->fields['oxvouchernr'];
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
 
@@ -1628,7 +1640,8 @@ class Order extends \oxBase
             $sSelect .= 'and oxorderdate like "' . date('Y-m-d') . '%" ';
         }
 
-        return ( double ) oxDb::getDb()->getOne($sSelect, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        return ( double ) oxDb::getMaster()->getOne($sSelect);
     }
 
     /**
@@ -1647,7 +1660,8 @@ class Order extends \oxBase
             $sSelect .= 'and oxorderdate like "' . date('Y-m-d') . '%" ';
         }
 
-        return ( int ) oxDb::getDb()->getOne($sSelect, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        return ( int ) oxDb::getMaster()->getOne($sSelect);
     }
 
 
@@ -1664,8 +1678,9 @@ class Order extends \oxBase
             return false;
         }
 
-        $oDb = oxDb::getDb();
-        if ($oDb->getOne('select oxid from oxorder where oxid = ' . $oDb->quote($sOxId), false, false)) {
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        if ($masterDb->getOne('select oxid from oxorder where oxid = ' . $masterDb->quote($sOxId))) {
             return true;
         }
 
@@ -1802,9 +1817,10 @@ class Order extends \oxBase
      */
     public function getLastUserPaymentType($sUserId)
     {
-        $oDb = oxDb::getDb();
-        $sQ = 'select oxorder.oxpaymenttype from oxorder where oxorder.oxshopid="' . $this->getConfig()->getShopId() . '" and oxorder.oxuserid=' . $oDb->quote($sUserId) . ' order by oxorder.oxorderdate desc ';
-        $sLastPaymentId = $oDb->getOne($sQ, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        $sQ = 'select oxorder.oxpaymenttype from oxorder where oxorder.oxshopid="' . $this->getConfig()->getShopId() . '" and oxorder.oxuserid=' . $masterDb->quote($sUserId) . ' order by oxorder.oxorderdate desc ';
+        $sLastPaymentId = $masterDb->getOne($sQ);
 
         return $sLastPaymentId;
     }
@@ -2086,15 +2102,17 @@ class Order extends \oxBase
         if ($oBasket->getPaymentId() == 'oxempty') {
             return;
         }
-        $oDb = oxDb::getDb();
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
 
         $oDelSet = oxNew("oxdeliveryset");
         $sTable = $oDelSet->getViewName();
 
         $sQ = "select 1 from {$sTable} where {$sTable}.oxid=" .
-              $oDb->quote($oBasket->getShippingId()) . " and " . $oDelSet->getSqlActiveSnippet();
+              $masterDb->quote($oBasket->getShippingId()) . " and " . $oDelSet->getSqlActiveSnippet();
 
-        if (!$oDb->getOne($sQ, false, false)) {
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        if (!$masterDb->getOne($sQ)) {
             // throwing exception
             return self::ORDER_STATE_INVALIDDELIVERY;
         }
@@ -2110,15 +2128,16 @@ class Order extends \oxBase
      */
     public function validatePayment($oBasket)
     {
-        $oDb = oxDb::getDb();
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
 
         $oPayment = oxNew("oxpayment");
         $sTable = $oPayment->getViewName();
 
         $sQ = "select 1 from {$sTable} where {$sTable}.oxid=" .
-              $oDb->quote($oBasket->getPaymentId()) . " and " . $oPayment->getSqlActiveSnippet();
+              $masterDb->quote($oBasket->getPaymentId()) . " and " . $oPayment->getSqlActiveSnippet();
 
-        if (!$oDb->getOne($sQ, false, false)) {
+        if (!$masterDb->getOne($sQ)) {
             return self::ORDER_STATE_INVALIDPAYMENT;
         }
     }

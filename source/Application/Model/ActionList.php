@@ -142,7 +142,7 @@ class ActionList extends \oxList
             }
         }
 
-        $sGroupSql = count($aIds) ? "EXISTS(select oxobject2action.oxid from oxobject2action where oxobject2action.oxactionid=$sTable.OXID and oxobject2action.oxclass='oxgroups' and oxobject2action.OXOBJECTID in (" . implode(', ', oxDb::getInstance()->quoteArray($aIds)) . ") )" : '0';
+        $sGroupSql = count($aIds) ? "EXISTS(select oxobject2action.oxid from oxobject2action where oxobject2action.oxactionid=$sTable.OXID and oxobject2action.oxclass='oxgroups' and oxobject2action.OXOBJECTID in (" . implode(', ', oxDb::getDb()->quoteArray($aIds)) . ") )" : '0';
         return " and (
             select
                 if(EXISTS(select 1 from oxobject2action, $sGroupTable where $sGroupTable.oxid=oxobject2action.oxobjectid and oxobject2action.oxactionid=$sTable.OXID and oxobject2action.oxclass='oxgroups' LIMIT 1),
@@ -158,9 +158,21 @@ class ActionList extends \oxList
      */
     public function areAnyActivePromotions()
     {
-        return (bool) oxDb::getDb()->getOne("select 1 from " . getViewName('oxactions') . " where oxtype=2 and oxactive=1 and oxshopid='" . $this->getConfig()->getShopId() . "' limit 1");
+        return (bool) $this->fetchExistsActivePromotion();
     }
 
+
+    /**
+     * Fetch the information, if there is an active promotion.
+     *
+     * @return string One, if there is an active promotion.
+     */
+    protected function fetchExistsActivePromotion()
+    {
+        $query = "select 1 from " . getViewName('oxactions') . " where oxtype=2 and oxactive=1 and oxshopid='" . $this->getConfig()->getShopId() . "' limit 1";
+
+        return oxDb::getDb()->getOne($query);
+    }
 
     /**
      * load active shop banner list

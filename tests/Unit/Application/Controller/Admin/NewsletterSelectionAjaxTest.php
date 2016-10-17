@@ -40,8 +40,8 @@ class NewsletterSelectionAjaxTest extends \OxidTestCase
     {
         parent::setUp();
 
-        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemove1', oxobjectid='_testGroupRemove'");
-        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemove2', oxobjectid='_testGroupRemove'");
+        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemove1', oxobjectid='_testGroupRemove', oxgroupsid='_testGroup1'");
+        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemove2', oxobjectid='_testGroupRemove', oxgroupsid='_testGroup2'");
 
         oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemoveAll1', oxobjectid='_testGroupRemoveAll', oxgroupsid='_testGroup1'");
         oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemoveAll2', oxobjectid='_testGroupRemoveAll', oxgroupsid='_testGroup2'");
@@ -59,10 +59,7 @@ class NewsletterSelectionAjaxTest extends \OxidTestCase
      */
     protected function tearDown()
     {
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testGroupRemove'");
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testGroupRemoveAll'");
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testGroupAdd'");
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testGroupAddAll'");
+        oxDb::getDb()->execute("delete from oxobject2group where oxid LIKE '\_testGroupRemove%'");
 
         oxDb::getDb()->execute("delete from oxgroups where oxid='_testGroup1'");
         oxDb::getDb()->execute("delete from oxgroups where oxid='_testGroup2'");

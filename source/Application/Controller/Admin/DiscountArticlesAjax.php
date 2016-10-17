@@ -131,7 +131,7 @@ class DiscountArticlesAjax extends \ajaxListComponent
             oxDb::getDb()->execute($sQ);
 
         } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenArt)) . ") ";
+            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aChosenArt)) . ") ";
             oxDb::getDb()->execute($sQ);
         }
     }

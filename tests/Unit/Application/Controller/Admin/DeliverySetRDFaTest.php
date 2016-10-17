@@ -64,8 +64,8 @@ class DeliverySetRDFaTest extends \OxidTestCase
         $oDB = oxDb::getDb();
 
         $iExists = $oDB->GetOne(
-            'SELECT 1 FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?'
-            , array($sTestID, 'rdfadeliveryset')
+            'SELECT 1 FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?', 
+            array($sTestID, 'rdfadeliveryset')
         );
         $this->assertFalse(empty($iExists));
 
@@ -73,8 +73,8 @@ class DeliverySetRDFaTest extends \OxidTestCase
         $oView->save();
 
         $iExists = $oDB->GetOne(
-            'SELECT 1 FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?'
-            , array($sTestID, 'rdfadeliveryset')
+            'SELECT 1 FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?', 
+            array($sTestID, 'rdfadeliveryset')
         );
         $this->assertTrue(empty($iExists));
     }
@@ -104,8 +104,8 @@ class DeliverySetRDFaTest extends \OxidTestCase
         $oView->save();
 
         $aCurrObjIDs = $oDB->GetCol(
-            'SELECT oxobjectid FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?'
-            , array($sTestID, 'rdfadeliveryset')
+            'SELECT oxobjectid FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?', 
+            array($sTestID, 'rdfadeliveryset')
         );
         sort($aObjIDs);
         sort($aCurrObjIDs);

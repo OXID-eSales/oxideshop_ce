@@ -908,7 +908,6 @@ class BaseController extends \oxView
         $sortOrder = $request->getRequestParameter($this->getSortOrderParameterName());
 
         if ($sortBy &&
-            oxDb::getInstance()->isValidFieldName($sortBy) &&
             $sortOrder &&
             Registry::getUtils()->isValidAlpha($sortOrder) &&
             in_array(Str::getStr()->strtolower($sortOrder), $sortDirections) &&
@@ -1425,7 +1424,11 @@ class BaseController extends \oxView
     {
         $sorting = $this->getSorting($ident);
         if (is_array($sorting)) {
-            return implode(" ", $sorting);
+            $sortBy = oxDb::getDb()->quoteIdentifier($sorting['sortby']);
+            $sortDir = isset($sorting['sortdir']) ? $sorting['sortdir'] : '';
+            $sortString = trim($sortBy . ' ' . $sortDir);
+
+            return $sortString;
         }
     }
 

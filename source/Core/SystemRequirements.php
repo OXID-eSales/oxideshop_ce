@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use oxRegistry;
 use oxDb;
@@ -891,7 +892,6 @@ class SystemRequirements
                 $iModStat = ($iMemLimit >= $this->_getBytes($sDefLimit)) ? 1 : 0;
                 $iModStat = $iModStat ? (($iMemLimit >= $this->_getBytes($sRecLimit)) ? 2 : $iModStat) : $iModStat;
             }
-
         } else {
             $iModStat = -1;
         }
@@ -1137,23 +1137,16 @@ class SystemRequirements
      * returned array components are of form array(module name, block name, template file)
      * only active (oxactive==1) blocks are checked
      *
-     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
-     *
      * @return array
      */
     public function getMissingTemplateBlocks()
     {
-        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $activeThemeId = oxNew('oxTheme')->getActiveThemeId();
-        $config = $this->getConfig();
-
         $result = array();
         $analized = array();
 
-        $sql = "select * from oxtplblocks where oxactive=1 and oxshopid=? and oxtheme in ('', ?)";
-        $blockRecords = $db->execute($sql, array($config->getShopId(), $activeThemeId));
+        $blockRecords = $this->fetchBlockRecords();
 
-        if ($blockRecords != false && $blockRecords->recordCount() > 0) {
+        if ($blockRecords != false && $blockRecords->count() > 0) {
             while (!$blockRecords->EOF) {
                 $template = $blockRecords->fields['OXTEMPLATE'];
                 $blockName = $blockRecords->fields['OXBLOCKNAME'];
@@ -1173,11 +1166,29 @@ class SystemRequirements
                     );
                 }
 
-                $blockRecords->moveNext();
+                $blockRecords->fetchRow();
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Fetch the active template blocks for the active shop and the active theme.
+     *
+     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
+     *
+     * @return ResultSetInterface The active template blocks for the active shop and the active theme.
+     */
+    protected function fetchBlockRecords()
+    {
+        $activeThemeId = oxNew('oxTheme')->getActiveThemeId();
+        $config = $this->getConfig();
+        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+
+        $query = "select * from oxtplblocks where oxactive=1 and oxshopid=? and oxtheme in ('', ?)";
+
+        return $database->select($query, array($config->getShopId(), $activeThemeId));
     }
 
     /**

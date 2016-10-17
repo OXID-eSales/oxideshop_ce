@@ -25,7 +25,6 @@
             <directory suffix=".php">Core/Smarty</directory>
             <directory suffix=".php">Core/wysiwigpro/</directory>
             <directory suffix=".php">Core/jpgraph/</directory>
-            <directory suffix=".php">Core/adodblite/</directory>
             <directory suffix=".php">Core/tcpdf/</directory>
             <directory suffix=".php">Core/phpmailer/</directory>
             <directory suffix=".php">Core/Smarty/</directory>

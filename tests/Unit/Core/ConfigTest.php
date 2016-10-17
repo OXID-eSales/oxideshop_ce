@@ -31,6 +31,7 @@ use \oxRegistry;
 use \oxTestModules;
 
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Registry;
 
 class modForTestGetBaseTplDirExpectsDefault extends oxConfig
@@ -293,8 +294,9 @@ class ConfigTest extends \OxidTestCase
     {
         $this->setTime(time());
 
-        /** @var oxConnectionException $oEx */
-        $oEx = oxNew("oxConnectionException");
+        /** @var DatabaseConnectionException $oEx */
+        $previousException = new \Exception();
+        $oEx = new DatabaseConnectionException('', 0, $previousException);
 
         /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utilsMock */
         $utilsMock = $this->getMock('oxUtils', array('showMessageAndExit'));

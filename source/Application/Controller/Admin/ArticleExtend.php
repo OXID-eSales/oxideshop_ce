@@ -297,12 +297,12 @@ class ArticleExtend extends \oxAdminDetails
         $query .= $isVariantSelectionEnabled ? '' : " and {$articleTable}.oxparentid = '' ";
         $query .= " and {$articleTable}.oxid = " . $database->quote($article->$bundleIdField->value);
 
-        $resultFromDatabase = $database->Execute($query);
-        if ($resultFromDatabase != false && $resultFromDatabase->RecordCount() > 0) {
+        $resultFromDatabase = $database->select($query);
+        if ($resultFromDatabase != false && $resultFromDatabase->count() > 0) {
             while (!$resultFromDatabase->EOF) {
                 $articleNumber = new oxField($resultFromDatabase->fields[1]);
                 $articleTitle = new oxField($resultFromDatabase->fields[0] . " " . $resultFromDatabase->fields[2]);
-                $resultFromDatabase->MoveNext();
+                $resultFromDatabase->fetchRow();
             }
         }
         $this->_aViewData['bundle_artnum'] = $articleNumber;

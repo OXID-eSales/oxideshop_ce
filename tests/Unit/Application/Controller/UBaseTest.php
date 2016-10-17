@@ -958,10 +958,10 @@ class UBaseTest extends \OxidTestCase
      */
     public function testSetItemSortingGetSortingGetSortingSql()
     {
-        $aSorting = array('sortby' => 'oxid', 'sortdir' => 'asc');
+        $aSorting = array('sortby' => '`oxid`', 'sortdir' => 'asc');
 
         $oView = oxNew('oxubase');
-        $oView->setItemSorting('xxx', 'oxid', 'asc');
+        $oView->setItemSorting('xxx', '`oxid`', 'asc');
 
         $this->assertEquals($oView->getDefaultSorting(), $oView->getSorting('yyy'));
 
@@ -2482,10 +2482,6 @@ class UBaseTest extends \OxidTestCase
 
         //empty field name
         $_GET[$baseController->getSortOrderByParameterName()] = '';
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //invalid field name
-        $_GET[$baseController->getSortOrderByParameterName()] = '42';
         $this->assertNull($baseController->getUserSelectedSorting());
 
         //not existing order direction

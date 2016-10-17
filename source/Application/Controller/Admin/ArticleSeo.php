@@ -172,8 +172,8 @@ class ArticleSeo extends \Object_Seo
         $sQ = "select oxobject2category.oxcatnid as oxid from {$sView} as oxobject2category " .
               "where oxobject2category.oxobjectid=" . $sQuotesArticleId . " union " . $sSqlForPriceCategories;
 
-        $oRs = $oDb->execute($sQ);
-        if ($oRs != false && $oRs->recordCount() > 0) {
+        $oRs = $oDb->select($sQ);
+        if ($oRs != false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $oCat = oxNew('oxCategory');
                 if ($oCat->loadInLang($iLang, current($oRs->fields))) {
@@ -185,7 +185,7 @@ class ArticleSeo extends \Object_Seo
                     }
                     $aCatList[] = $oCat;
                 }
-                $oRs->moveNext();
+                $oRs->fetchRow();
             }
         }
 
@@ -395,6 +395,7 @@ class ArticleSeo extends \Object_Seo
                    oxseo.oxobjectid = " . $oDb->quote($sId) . " and
                    oxseo.oxshopid = '{$iShopId}' and oxseo.oxlang = {$iLang} and oxparams = " . $oDb->quote($sParam);
 
-        return (bool) oxDb::getDb()->getOne($sQ, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        return (bool) oxDb::getMaster()->getOne($sQ);
     }
 }

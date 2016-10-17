@@ -25,6 +25,7 @@ use oxArticle;
 use oxBase;
 use oxBasket;
 use oxField;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 use oxRegistry;
 use oxUser;
 
@@ -86,7 +87,14 @@ class BasketConstruct
         $basket->setBasketUser($user);
 
         // group setup
-        $this->createGroup($testCase['group']);
+        try {
+            $this->createGroup($testCase['group']);
+        } catch (DatabaseException $exception) {
+            /** We will ignore exceptions that occur because of duplicate keys (MySQL Error 1062)  */
+            if ($exception->getCode() != 1062) {
+                throw $exception;
+            }
+        }
 
         // adding articles to basket
         foreach ($articlesForBasket as $article) {

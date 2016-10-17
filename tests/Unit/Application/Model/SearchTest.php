@@ -21,6 +21,7 @@
  */
 namespace Unit\Application\Model;
 
+use oxDb;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\Search;
 use OxidEsales\Eshop\Core\Database;
@@ -61,7 +62,7 @@ class SearchTest extends UnitTestCase
      */
     protected function tearDown()
     {
-        $myDB = Database::getDb();
+        $myDB = oxDb::getDb();
         $myDB->execute('delete from oxselectlist where oxid = "oxsellisttest" ');
         $myDB->execute('delete from oxobject2selectlist where oxselnid = "oxsellisttest" ');
         $this->cleanUpTable('oxcategories');
@@ -95,7 +96,7 @@ class SearchTest extends UnitTestCase
         $oSearchList = $oSearch->getSearchArticles('', $sID);
         $iAllArtCnt = $oSearch->getSearchArticleCount('', $sID);
 
-        $aAll = Database::getDb()->getAll("select oxobjectid from oxobject2category where oxcatnid='$sID'");
+        $aAll = oxDb::getDb()->getAll("select oxobjectid from oxobject2category where oxcatnid='$sID'");
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $this->assertEquals(10, $oSearchList->count());
@@ -136,7 +137,7 @@ class SearchTest extends UnitTestCase
         $oSearchList = $this->_oSearchHandler->getSearchArticles('', false, $sID);
         $iAllArtCnt = $this->_oSearchHandler->getSearchArticleCount('', false, $sID);
 
-        $aAll = Database::getDb()->getAll("select oxid from oxarticles where oxvendorid='$sID'");
+        $aAll = oxDb::getDb()->getAll("select oxid from oxarticles where oxvendorid='$sID'");
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
@@ -169,7 +170,7 @@ class SearchTest extends UnitTestCase
         $oSearchList = $this->_oSearchHandler->getSearchArticles('', false, false, $sID);
         $iAllArtCnt = $this->_oSearchHandler->getSearchArticleCount('', false, false, $sID);
 
-        $aAll = Database::getDb()->getAll("select oxid from oxarticles where oxmanufacturerid='$sID'");
+        $aAll = oxDb::getDb()->getAll("select oxid from oxarticles where oxmanufacturerid='$sID'");
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
@@ -226,7 +227,7 @@ class SearchTest extends UnitTestCase
         $oSearchList = $oSearch->getSearchArticles("", false, $sID, false, $sSortBy);
         $iAllArtCnt = $oSearch->getSearchArticleCount("", false, $sID, false);
 
-        $aAll = Database::getDb()->getAll("select oxid from oxarticles where oxvendorid='$sID' order by $sSortBy ");
+        $aAll = oxDb::getDb()->getAll("select oxid from oxarticles where oxvendorid='$sID' order by $sSortBy ");
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
@@ -262,7 +263,7 @@ class SearchTest extends UnitTestCase
         $oSearchList = $oSearch->getSearchArticles("", false, false, $sID, $sSortBy);
         $iAllArtCnt = $oSearch->getSearchArticleCount("", false, false, $sID);
 
-        $aAll = Database::getDb()->getAll("select oxid from oxarticles where oxmanufacturerid='$sID' order by $sSortBy ");
+        $aAll = oxDb::getDb()->getAll("select oxid from oxarticles where oxmanufacturerid='$sID' order by $sSortBy ");
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
@@ -303,7 +304,7 @@ class SearchTest extends UnitTestCase
         AND ( ( $articleTable.oxtitle like '%bar%' or  $articleTable.oxshortdesc LIKE '%bar%' or $articleTable.oxsearchkeys LIKE '%bar%' OR
         $articleTable.oxartnum LIKE '%bar%') )";
 
-        $all = Database::getDb()->getAll($query);
+        $all = oxDb::getDb()->getAll($query);
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 8;
@@ -358,12 +359,12 @@ class SearchTest extends UnitTestCase
         and ( ( $sArticleTable.oxtitle like '%a%' or  $sArticleTable.oxshortdesc like '%a%' or $sArticleTable.oxsearchkeys like '%a%' or
         $sArticleTable.oxartnum like '%a%' ) )";
 
-        $aAll = Database::getDb()->getAll($sQ . " limit 10, 10 ");
+        $aAll = oxDb::getDb()->getAll($sQ . " limit 10, 10 ");
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $this->assertEquals(10, $oSearchList->count());
 
-        $this->assertEquals(count(Database::getDb()->getAll($sQ)), $iAllArtCnt);
+        $this->assertEquals(count(oxDb::getDb()->getAll($sQ)), $iAllArtCnt);
 
         // now looking if all found articles are correct
         $aFoundIds = $oSearchList->arrayKeys();
@@ -399,7 +400,7 @@ class SearchTest extends UnitTestCase
         and ( ( $sArticleTable.oxtitle like '%a%' or  $sArticleTable.oxshortdesc like '%a%' or $sArticleTable.oxsearchkeys like '%a%' or
         $sArticleTable.oxartnum like '%a%' ) )";
 
-        $aAll = Database::getDb()->getAll($sQ);
+        $aAll = oxDb::getDb()->getAll($sQ);
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
@@ -444,7 +445,7 @@ class SearchTest extends UnitTestCase
         and ( ( $sArticleTable.oxtitle like '%a%' or  $sArticleTable.oxshortdesc like '%a%' or $sArticleTable.oxsearchkeys like '%a%' or
         $sArticleTable.oxartnum like '%a%' ) )";
 
-        $aAll = Database::getDb()->getAll($sQ);
+        $aAll = oxDb::getDb()->getAll($sQ);
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
@@ -493,7 +494,7 @@ class SearchTest extends UnitTestCase
         and ( (  $sArticleTable.oxtitle like '%a%' or $sArticleTable.oxshortdesc like '%a%' or  $sArticleTable.oxsearchkeys like '%a%' or
         $sArticleTable.oxartnum like '%a%' )  )";
 
-        $aAll = Database::getDb()->getAll($sQ);
+        $aAll = oxDb::getDb()->getAll($sQ);
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
@@ -605,7 +606,7 @@ class SearchTest extends UnitTestCase
         and ( (  $sArticleTable.oxtitle like '%%' or $sArticleTable.oxshortdesc like '%%' or  $sArticleTable.oxsearchkeys like '%%' or
         $sArticleTable.oxartnum like '%%' )  )";
 
-        $aAll = Database::getDb()->getAll($sQ);
+        $aAll = oxDb::getDb()->getAll($sQ);
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;

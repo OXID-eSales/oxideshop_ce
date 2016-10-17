@@ -383,15 +383,14 @@ class NewsletterTest extends \OxidTestCase
         $oTestNews->UNITassignProducts($oView, true);
 
         $oArtList = $oView->getViewDataElement('articlelist');
+        $oSimilarArticlesList = $oView->getViewDataElement('simlist');
 
-        // testing passed data
+        // test the view data
         $this->assertNotNull($oArtList);
         $this->assertEquals(2, $oArtList->count());
 
-        $oArtList = $oView->getViewDataElement('simlist');
-
-        $this->assertNotNull($oArtList);
-        $this->assertEquals(2, $oArtList->count());
+        $this->assertNotNull($oSimilarArticlesList);
+        $this->assertEquals(2, $oSimilarArticlesList->count());
 
         $this->assertNotNull($oView->getViewDataElement('simarticle0'));
         $this->assertNotNull($oView->getViewDataElement('simarticle1'));

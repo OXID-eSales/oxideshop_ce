@@ -21,7 +21,8 @@
  */
 namespace Unit\Core;
 
-use \oxDb;
+use oxDb;
+use OxidEsales\Eshop\Core\Database;
 
 class SysRequirementsTest extends \OxidTestCase
 {
@@ -354,35 +355,33 @@ class SysRequirementsTest extends \OxidTestCase
      */
     public function testGetMissingTemplateBlocksIfNotFound()
     {
-        $oRs = $this->getMock('stdclass', array('moveNext', 'recordCount'));
-        $oRs->expects($this->exactly(1))->method('moveNext')
+        $resultSetMock = $this->getMock('stdclass', array('fetchRow', 'count'));
+        $resultSetMock->expects($this->exactly(1))->method('fetchRow')
             ->will($this->evalFunction('{$_this->EOF = true;}'));
-        $oRs->expects($this->exactly(1))->method('recordCount')
+        $resultSetMock->expects($this->exactly(1))->method('count')
             ->will($this->returnValue(1));
-        $oRs->fields = array(
+        $resultSetMock->fields = array(
             'OXTEMPLATE'  => '_OXTEMPLATE_',
             'OXBLOCKNAME' => '_OXBLOCKNAME_',
             'OXMODULE'    => '_OXMODULE_',
         );
 
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())
-            ->method('execute')
-            ->will($this->returnValue($oRs));
-        oxDb::setDbObject($dbMock);
-
-        $oSR = $this->getMock('oxSysRequirements', array('_checkTemplateBlock'));
-        $oSR->expects($this->exactly(1))->method('_checkTemplateBlock')
+        $systemRequirementsMock = $this->getMock('oxSysRequirements', array('_checkTemplateBlock', 'fetchBlockRecords'));
+        $systemRequirementsMock->expects($this->exactly(1))->method('_checkTemplateBlock')
             ->with($this->equalTo("_OXTEMPLATE_"), $this->equalTo("_OXBLOCKNAME_"))
             ->will($this->returnValue(false));
+        $systemRequirementsMock->expects($this->exactly(1))->method('fetchBlockRecords')
+            ->willReturn($resultSetMock);
 
         $this->assertEquals(
-            array(array(
+            array(
+                array(
                       'module'   => '_OXMODULE_',
                       'block'    => '_OXBLOCKNAME_',
                       'template' => '_OXTEMPLATE_',
-                  )),
-            $oSR->getMissingTemplateBlocks()
+                  )
+            ),
+            $systemRequirementsMock->getMissingTemplateBlocks()
         );
     }
 
@@ -391,31 +390,27 @@ class SysRequirementsTest extends \OxidTestCase
      */
     public function testGetMissingTemplateBlocksIfFound()
     {
-        $oRs = $this->getMock('stdclass', array('moveNext', 'recordCount'));
-        $oRs->expects($this->exactly(1))->method('moveNext')
+        $resultSetMock = $this->getMock('stdclass', array('fetchRow', 'count'));
+        $resultSetMock->expects($this->exactly(1))->method('fetchRow')
             ->will($this->evalFunction('{$_this->EOF = true;}'));
-        $oRs->expects($this->exactly(1))->method('recordCount')
+        $resultSetMock->expects($this->exactly(1))->method('count')
             ->will($this->returnValue(1));
-        $oRs->fields = array(
+        $resultSetMock->fields = array(
             'OXTEMPLATE'  => '_OXTEMPLATE_',
             'OXBLOCKNAME' => '_OXBLOCKNAME_',
             'OXMODULE'    => '_OXMODULE_',
         );
 
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())
-            ->method('execute')
-            ->will($this->returnValue($oRs));
-        oxDb::setDbObject($dbMock);
-
-        $oSR = $this->getMock('oxSysRequirements', array('_checkTemplateBlock'));
-        $oSR->expects($this->exactly(1))->method('_checkTemplateBlock')
+        $systemRequirementsMock = $this->getMock('oxSysRequirements', array('_checkTemplateBlock', 'fetchBlockRecords'));
+        $systemRequirementsMock->expects($this->exactly(1))->method('_checkTemplateBlock')
             ->with($this->equalTo("_OXTEMPLATE_"), $this->equalTo("_OXBLOCKNAME_"))
             ->will($this->returnValue(true));
+        $systemRequirementsMock->expects($this->exactly(1))->method('fetchBlockRecords')
+            ->willReturn($resultSetMock);
 
         $this->assertEquals(
             array(),
-            $oSR->getMissingTemplateBlocks()
+            $systemRequirementsMock->getMissingTemplateBlocks()
         );
     }
 

@@ -25,6 +25,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
+use Exception;
 
 /**
  * Class controls article assignment to category.
@@ -142,7 +143,7 @@ class ArticleExtendAjax extends \ajaxListComponent
             $query = "delete from oxobject2category where oxobject2category.oxobjectid= "
                   . oxDb::getDb()->quote($oxId) . " and ";
             $query = $this->updateQueryForRemovingArticleFromCategory($query);
-            $query .= " oxcatnid in (" . implode(', ', oxDb::getInstance()->quoteArray($categoriesToRemove)) . ')';
+            $query .= " oxcatnid in (" . implode(', ', oxDb::getDb()->quoteArray($categoriesToRemove)) . ')';
             $dataBase->Execute($query);
 
             // updating oxtime values
@@ -157,6 +158,8 @@ class ArticleExtendAjax extends \ajaxListComponent
 
     /**
      * Adds article to chosen category
+     *
+     * @throws Exception
      */
     public function addCat()
     {
@@ -173,25 +176,32 @@ class ArticleExtendAjax extends \ajaxListComponent
         }
 
         if (isset($categoriesToAdd) && is_array($categoriesToAdd)) {
-            $database = oxDb::getDb();
+            oxDb::getDb()->startTransaction();
+            try {
+                $database = oxDb::getDb();
 
-            $objectToCategory = oxNew('oxobject2category');
+                $objectToCategory = oxNew('oxobject2category');
 
-            foreach ($categoriesToAdd as $sAdd) {
-                // check, if it's already in, then don't add it again
-                $sSelect = "select 1 from " . $objectToCategoryView . " as oxobject2category where oxobject2category.oxcatnid= "
-                           . $database->quote($sAdd) . " and oxobject2category.oxobjectid = " . $database->quote($oxId) . " ";
-                if ($database->getOne($sSelect, false, false)) {
-                    continue;
+                foreach ($categoriesToAdd as $sAdd) {
+                    // check, if it's already in, then don't add it again
+                    $sSelect = "select 1 from " . $objectToCategoryView . " as oxobject2category where oxobject2category.oxcatnid= "
+                               . $database->quote($sAdd) . " and oxobject2category.oxobjectid = " . $database->quote($oxId) . " ";
+                    if ($database->getOne($sSelect)) {
+                        continue;
+                    }
+
+                    $objectToCategory->setId(md5($oxId . $sAdd . $shopId));
+                    $objectToCategory->oxobject2category__oxobjectid = new oxField($oxId);
+                    $objectToCategory->oxobject2category__oxcatnid = new oxField($sAdd);
+                    $objectToCategory->oxobject2category__oxtime = new oxField(time());
+
+                    $objectToCategory->save();
                 }
-
-                $objectToCategory->setId(md5($oxId . $sAdd . $shopId));
-                $objectToCategory->oxobject2category__oxobjectid = new oxField($oxId);
-                $objectToCategory->oxobject2category__oxcatnid = new oxField($sAdd);
-                $objectToCategory->oxobject2category__oxtime = new oxField(time());
-
-                $objectToCategory->save();
+            } catch (Exception $exception) {
+                oxDb::getDb()->rollbackTransaction();
+                throw $exception;
             }
+            oxDb::getDb()->commitTransaction();
 
             $this->_updateOxTime($oxId);
 

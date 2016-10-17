@@ -25,6 +25,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxAdminDetails;
+use Exception;
 
 /**
  * Admin shop config manager.
@@ -210,7 +211,7 @@ class ShopConfiguration extends oxAdminDetails
         $aVarConstraints = array();
         $aGrouping = array();
         $oDb = oxDb::getDb();
-        $rs = $oDb->Execute(
+        $rs = $oDb->select(
             "select cfg.oxvarname,
                     cfg.oxvartype,
                     DECODE( cfg.oxvarvalue, " . $oDb->quote($myConfig->getConfigParam('sConfigKey')) . ") as oxvarvalue,
@@ -224,7 +225,7 @@ class ShopConfiguration extends oxAdminDetails
                 order by disp.oxpos, cfg.oxvarname"
         );
 
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 list($sName, $sType, $sValue, $sConstraint, $sGrouping) = $rs->fields;
                 $aConfVars[$sType][$sName] = $this->_unserializeConfVar($sType, $sName, $sValue);
@@ -236,7 +237,7 @@ class ShopConfiguration extends oxAdminDetails
                         $aGrouping[$sGrouping][$sName] = $sType;
                     }
                 }
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
 

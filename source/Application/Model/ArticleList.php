@@ -22,9 +22,13 @@
 
 namespace OxidEsales\Eshop\Application\Model;
 
+use OxidEsales\Eshop\Core\Database;
 use oxRegistry;
+use Exception;
 use oxDb;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * Article list manager.
@@ -72,20 +76,17 @@ class ArticleList extends \oxList
     }
 
     /**
-     * Loads selectlists for each artile in list if they exists
-     * Returns true on success.
+     * @inheritdoc
+     * In addition to the parent method, this method includes profiling.
      *
-     * @param string $sSelect SQL select string
-     *
-     * @return bool
+     * @param string $sql        SQL select statement or prepared statement
+     * @param array  $parameters Parameters to be used in a prepared statement
      */
-    public function selectString($sSelect)
+    public function selectString($sql, array $parameters = array())
     {
         startProfile("loadinglists");
-        $oRes = parent::selectString($sSelect);
+        parent::selectString($sql, $parameters);
         stopProfile("loadinglists");
-
-        return $oRes;
     }
 
     /**
@@ -665,16 +666,14 @@ class ArticleList extends \oxList
             return;
         }
 
-        foreach ($aIds as $iKey => $sVal) {
-            $aIds[$iKey] = oxDb::getInstance()->escapeString($sVal);
-        }
-
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
         $sArticleFields = $oBaseObject->getSelectFields();
 
+        $oxIdsSql = implode (',', Database::getDb()->quoteArray($aIds));
+
         $sSelect = "select $sArticleFields from $sArticleTable ";
-        $sSelect .= "where $sArticleTable.oxid in ( '" . implode("','", $aIds) . "' ) and ";
+        $sSelect .= "where $sArticleTable.oxid in ( " . $oxIdsSql . " ) and ";
         $sSelect .= $oBaseObject->getSqlActiveSnippet();
 
         $this->selectString($sSelect);
@@ -785,6 +784,8 @@ class ArticleList extends \oxList
      *
      * @param bool $blForceUpdate if true, forces price update without timeout check, default value is FALSE
      *
+     * @throws Exception
+     *
      * @return mixed
      */
     public function updateUpcomingPrices($blForceUpdate = false)
@@ -792,27 +793,32 @@ class ArticleList extends \oxList
         $blUpdated = false;
 
         if ($blForceUpdate || $this->_canUpdatePrices()) {
+            // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
+            $database = oxDb::getDb();
 
-            $oDb = oxDb::getDb();
+            $database->startTransaction();
+            try {
+                $sCurrUpdateTime = date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime());
 
-            $oDb->startTransaction();
-
-            $sCurrUpdateTime = date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime());
-
-            // Collect article id's for later recalculation.
-            $sQ = "SELECT `oxid` FROM `oxarticles`
+                // Collect article id's for later recalculation.
+                $sQ = "SELECT `oxid` FROM `oxarticles`
                    WHERE `oxupdatepricetime` > 0 AND `oxupdatepricetime` <= '{$sCurrUpdateTime}'";
-            $aUpdatedArticleIds = $oDb->getCol($sQ, false, false);
 
-            // updating oxarticles
-            $blUpdated = $this->updateOxArticles($sCurrUpdateTime, $oDb);
+                $aUpdatedArticleIds = $database->getCol($sQ);
 
-            // renew update time in case update is not forced
-            if (!$blForceUpdate) {
-                $this->renewPriceUpdateTime();
+                // updating oxarticles
+                $blUpdated = $this->updateOxArticles($sCurrUpdateTime, $database);
+
+                // renew update time in case update is not forced
+                if (!$blForceUpdate) {
+                    $this->renewPriceUpdateTime();
+                }
+
+                $database->commitTransaction();
+            } catch (Exception $exception) {
+                $database->rollbackTransaction();
+                throw $exception;
             }
-
-            $oDb->commitTransaction();
 
             // recalculate oxvarminprice and oxvarmaxprice for parent
             if (is_array($aUpdatedArticleIds)) {
@@ -837,11 +843,11 @@ class ArticleList extends \oxList
     protected function _createIdListFromSql($sSql)
     {
         $rs = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->select($sSql);
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $rs->fields = array_change_key_case($rs->fields, CASE_LOWER);
                 $this[$rs->fields['oxid']] = $rs->fields['oxid']; //only the oxid
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
     }
@@ -1165,10 +1171,14 @@ class ArticleList extends \oxList
      */
     protected function fetchNextUpdateTime()
     {
-        $oDb = oxDb::getDb();
+        // Function is called inside a transaction or from admin backend which uses master connection only.
+        // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
+        $database = oxDb::getDb();
+
         // fetching next update time
         $sQ = $this->getQueryToFetchNextUpdateTime();
-        $iTimeToUpdate = $oDb->getOne(sprintf($sQ, "`oxarticles`"), false, false);
+
+        $iTimeToUpdate = $database->getOne(sprintf($sQ, "`oxarticles`"));
 
         return $iTimeToUpdate;
     }
@@ -1187,7 +1197,7 @@ class ArticleList extends \oxList
      * Updates article.
      *
      * @param string     $sCurrUpdateTime
-     * @param oxLegacyDb $oDb
+     * @param DatabaseInterface $oDb
      *
      * @return mixed
      */

@@ -109,7 +109,7 @@ class DiscountCategoriesAjax extends \ajaxListComponent
             oxDb::getDb()->Execute($query);
 
         } elseif (is_array($categoryIds)) {
-            $chosenCategories = implode(", ", oxDb::getInstance()->quoteArray($categoryIds));
+            $chosenCategories = implode(", ", oxDb::getDb()->quoteArray($categoryIds));
             $query = "delete from oxobject2discount where oxobject2discount.oxid in (" . $chosenCategories . ") ";
             oxDb::getDb()->Execute($query);
         }

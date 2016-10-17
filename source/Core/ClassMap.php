@@ -41,7 +41,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'theme' => '\OxidEsales\Eshop\Application\Controller\Admin\ThemeController',
             'oxcompanyvatinchecker' => '\OxidEsales\Eshop\Core\CompanyVatInChecker',
             'oxcounter' => '\OxidEsales\Eshop\Core\Counter',
-            'oxdebugdb' => '\OxidEsales\Eshop\Core\DebugDatabase',
             'oxdebuginfo' => '\OxidEsales\Eshop\Core\DebugInfo',
             'oxdecryptor' => '\OxidEsales\Eshop\Core\Decryptor',
 
@@ -379,7 +378,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxsupercfg' => '\OxidEsales\Eshop\Core\SuperConfig',
             'oxutilsobject' => '\OxidEsales\Eshop\Core\UtilsObject',
             'oxdb' => '\OxidEsales\Eshop\Core\Database',
-            'oxlegacydb' => '\OxidEsales\Eshop\Core\LegacyDatabase',
             'oxconnectionexception' => '\OxidEsales\Eshop\Core\Exception\ConnectionException',
             'oxdynimggenerator' => '\OxidEsales\Eshop\Core\DynamicImageGenerator',
             'oxexceptiontodisplay' => '\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay',
@@ -411,7 +409,6 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxcookieexception' => '\OxidEsales\Eshop\Core\Exception\CookieException',
             'oxarticleinputexception' => '\OxidEsales\Eshop\Core\Exception\ArticleInputException',
             'oxarticleexception' => '\OxidEsales\Eshop\Core\Exception\ArticleException',
-            'oxadodbexception' => '\OxidEsales\Eshop\Core\Exception\AdodbException',
             'oxlanguageexception' => '\OxidEsales\Eshop\Core\Exception\LanguageException',
 
             'oxmodule' => '\OxidEsales\Eshop\Core\Module',

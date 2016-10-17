@@ -231,21 +231,18 @@ class UtilsCount extends \oxSuperCfg
      * The values of the first level arrays with numeric key that hold the all the values of each row but the first one,
      * which is used a a key in the first level.
      *
-     * This function was added to mimic the functionality of a the removed core method oxLegacy::getAssoc
-     *
      * @param string $query
      * @param array  $parameters
-     * @param bool   $executeOnSlave
      *
      * @return array
      */
-    protected function getAssoc($query, $parameters = array(), $executeOnSlave = true)
+    protected function getAssoc($query, $parameters = array())
     {
         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 
-        $resultSet = $database->select($query, $parameters, $executeOnSlave);
+        $resultSet = $database->select($query, $parameters);
 
-        $rows = $resultSet->getAll();
+        $rows = $resultSet->fetchAll();
 
         if (!$rows) {
             return array();
@@ -332,13 +329,14 @@ class UtilsCount extends \oxSuperCfg
             $sTable = getViewName('oxcategories');
             $sSelect = "select $sTable.oxid from $sTable where " . (double) $iPrice . " >= $sTable.oxpricefrom and " . (double) $iPrice . " <= $sTable.oxpriceto ";
 
-            $rs = oxDb::getDb()->select($sSelect, false, false);
-            if ($rs != false && $rs->recordCount() > 0) {
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $rs = oxDb::getMaster()->select($sSelect, false);
+            if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     if (isset($aCatData[$rs->fields[0]])) {
                         unset($aCatData[$rs->fields[0]]);
                     }
-                    $rs->moveNext();
+                    $rs->fetchRow();
                 }
 
                 // writing back to cache

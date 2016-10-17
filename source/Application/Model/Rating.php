@@ -113,7 +113,8 @@ class Rating extends \oxBase
             LIMIT 1";
 
         $fRating = 0;
-        if ($fRating = $oDb->getOne($sSelect, false, false)) {
+        $database = oxDb::getMaster();
+        if ($fRating = $database->getOne($sSelect)) {
             $fRating = round($fRating, 1);
         }
 
@@ -150,7 +151,9 @@ class Rating extends \oxBase
             LIMIT 1";
 
         $iCount = 0;
-        $iCount = $oDb->getOne($sSelect, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        $iCount = $masterDb->getOne($sSelect);
 
         return $iCount;
     }

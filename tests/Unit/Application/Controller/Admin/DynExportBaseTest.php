@@ -21,14 +21,14 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxarticle;
-
-use \DynExportBase;
-use \Exception;
-use \stdClass;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
+use DynExportBase;
+use Exception;
+use oxarticle;
+use oxDb;
+use OxidEsales\Eshop\Core\Database;
+use oxRegistry;
+use oxTestModules;
+use stdClass;
 
 /**
  * Tests module for DynExportBase class
@@ -36,12 +36,12 @@ use \oxTestModules;
 class _DynExportBase extends DynExportBase
 {
 
-    public function initArticle($sHeapTable, $iCnt, & $blContinue)
+    public function initArticle($heapTable, $count, & $continue)
     {
         try {
-            return $this->_initArticle($sHeapTable, $iCnt, $blContinue);
-        } catch (Exception $oExcp) {
-            throw $oExcp;
+            return $this->_initArticle($heapTable, $count, $continue);
+        } catch (Exception $exception) {
+            throw $exception;
         }
     }
 
@@ -704,26 +704,21 @@ class DynExportBaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testInitArticleProductIsNotAwailable()
+    public function testInitArticleProductIsNotAvailable()
     {
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())
+        $heapTableName = "testdynexportbasetable";
+
+        $databaseMock = $this->getMock('OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database', array('selectLimit'));
+        $databaseMock->expects($this->any())
             ->method('selectLimit')
-            ->will($this->returnCallback(function ($s, $i, $c) {
-                throw new Exception($s . $i . $c);
-            }));
-        oxDb::setDbObject($dbMock);
+            ->with($this->equalTo("select oxid from $heapTableName"));
 
-        $oView = new _DynExportBase();
-        $blClose = true;
-        try {
-            $oView->initArticle("testdynexportbasetable", 0, $blClose);
-        } catch (Exception $oExcp) {
-            $this->assertEquals("select oxid from testdynexportbasetable10", $oExcp->getMessage(), "Error in DynExportBase::InitArticle()");
+        $dynamicExportControllerMock = $this->getMock('OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController', array('getDb', '_getHeapTableName'));
+        $dynamicExportControllerMock->expects($this->any())->method('getDb')->willReturn($databaseMock);
+        $dynamicExportControllerMock->expects($this->any())->method('_getHeapTableName')->willReturn($heapTableName);
 
-            return;
-        }
-        $this->fail("Error in DynExportBase::InitArticle()");
+        $close = true;
+        $dynamicExportControllerMock->getOneArticle($heapTableName, $close);
     }
 
     /**

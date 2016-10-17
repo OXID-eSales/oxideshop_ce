@@ -478,10 +478,10 @@ class I18n extends \oxBase
                 $updateTables = $this->_getLanguageSetTables();
             }
             foreach ($updateTables as $langTable) {
-                $update = "insert into $langTable set " . $this->_getUpdateFieldsForTable($langTable, $this->getUseSkipSaveFields()) .
-                           " on duplicate key update " . $this->_getUpdateFieldsForTable($langTable);
+                $insertSql = "insert into $langTable set " . $this->_getUpdateFieldsForTable($langTable, $this->getUseSkipSaveFields()) .
+                             " on duplicate key update " . $this->_getUpdateFieldsForTable($langTable);
 
-                $ret = (bool) oxDb::getDb()->execute($update);
+                $ret = (bool) $this->executeDatabaseQuery($insertSql);
             }
         }
 
@@ -518,17 +518,18 @@ class I18n extends \oxBase
      */
     protected function _insert()
     {
-        $ret = parent::_insert();
+        $result = parent::_insert();
 
-        if ($ret) {
+        if ($result) {
             //also insert to multilang tables if it is separate
             foreach ($this->_getLanguageSetTables() as $table) {
                 $sql = "insert into $table set " . $this->_getUpdateFieldsForTable($table, $this->getUseSkipSaveFields());
-                $ret = $ret && (bool) oxDb::getDb()->execute($sql);
+
+                $result = $result && (bool) $this->executeDatabaseQuery($sql);
             }
         }
 
-        return $ret;
+        return $result;
     }
 
     /**

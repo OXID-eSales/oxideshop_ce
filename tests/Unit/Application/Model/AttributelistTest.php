@@ -59,7 +59,7 @@ class AttributelistTest extends \OxidTestCase
         $aAttributes = $oAttrList->loadAttributesByIds(array('1672'));
 
         $sSelect = "select oxattrid, oxvalue from oxobject2attribute where oxobjectid = '1672'";
-        $rs = oxDb::getDB()->execute($sSelect);
+        $rs = oxDb::getDB()->select($sSelect);
         $sSelect = "select oxtitle from oxattribute where oxid = '" . $rs->fields[0] . "'";
         $sTitle = oxDb::getDB()->getOne($sSelect);
         $this->assertEquals($rs->fields[1], $aAttributes[$rs->fields[0]]->aProd['1672']->value);
@@ -78,7 +78,7 @@ class AttributelistTest extends \OxidTestCase
         $aAttributes = $oAttrList->loadAttributesByIds(array('1672'));
 
         $sSelect = "select oxattrid, oxvalue_1 from oxobject2attribute where oxobjectid = '1672'";
-        $rs = oxDb::getDB()->execute($sSelect);
+        $rs = oxDb::getDB()->select($sSelect);
         $sSelect = "select oxtitle_1 from oxattribute where oxid = '" . $rs->fields[0] . "'";
         $sTitle = oxDb::getDB()->getOne($sSelect);
         $this->assertEquals($rs->fields[1], $aAttributes[$rs->fields[0]]->aProd['1672']->value);
@@ -136,9 +136,9 @@ class AttributelistTest extends \OxidTestCase
     public function testLoadAttributesDisplayableInBasket()
     {
         $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = '8a142c3f0b9527634.96987022' ";
-        $rs = oxDb::getDB()->execute($sSelect);
+        oxDb::getDB()->execute($sSelect);
         $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = 'd8842e3b7c5e108c1.63072778' ";
-        $rs = oxDb::getDB()->execute($sSelect);
+        oxDb::getDB()->execute($sSelect);
 
         $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributesDisplayableInBasket('1672', '1351');

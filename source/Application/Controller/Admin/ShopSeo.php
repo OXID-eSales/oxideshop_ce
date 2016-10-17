@@ -89,11 +89,11 @@ class ShopSeo extends \Shop_Config
 
             $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
             $sQ = "select oxseourl, oxlang from oxseo where oxobjectid = " . $oDb->quote($sActObject) . " and oxshopid = " . $oDb->quote($iShopId);
-            $oRs = $oDb->execute($sQ);
-            if ($oRs != false && $oRs->recordCount() > 0) {
+            $oRs = $oDb->select($sQ);
+            if ($oRs != false && $oRs->count() > 0) {
                 while (!$oRs->EOF) {
                     $aSeoUrls[$oRs->fields['oxlang']] = array($sActObject, $oRs->fields['oxseourl']);
-                    $oRs->moveNext();
+                    $oRs->fetchRow();
                 }
                 $this->_aViewData['aSeoUrls'] = $aSeoUrls;
             }

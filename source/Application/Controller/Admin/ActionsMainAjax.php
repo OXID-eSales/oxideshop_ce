@@ -25,6 +25,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
+use Exception;
 
 /**
  * Class controls article assignment to action
@@ -166,7 +167,7 @@ class ActionsMainAjax extends \ajaxListComponent
             $sQ = parent::_addFilter("delete oxactions2article.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", oxDb::getInstance()->quoteArray($aChosenArt));
+            $sChosenArticles = implode(", ", oxDb::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxactions2article where oxactions2article.oxid in (" . $sChosenArticles . ") ";
             oxDb::getDb()->Execute($sQ);
         }
@@ -176,6 +177,8 @@ class ActionsMainAjax extends \ajaxListComponent
      * Adds article to Promotions list
      *
      * @return bool Whether any article was added to action.
+     *
+     * @throws Exception
      */
     public function addArtToAct()
     {
@@ -190,29 +193,37 @@ class ActionsMainAjax extends \ajaxListComponent
             $aArticles = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        $oDb = oxDb::getDb();
-        $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = "select max(oxactions2article.oxsort) from oxactions2article join {$sArtTable} " .
-              "on {$sArtTable}.oxid=oxactions2article.oxartid " .
-              "where oxactions2article.oxactionid = " . $oDb->quote($soxId) .
-              " and oxactions2article.oxshopid = '" . $myConfig->getShopId() .
-              "'and $sArtTable.oxid is not null";
-        $iSort = ((int) $oDb->getOne($sQ, false, false)) + 1;
+        oxDb::getDb()->startTransaction();
+        try {
+            $database = oxDb::getDb();
+            $sArtTable = $this->_getViewName('oxarticles');
+            $sQ = "select max(oxactions2article.oxsort) from oxactions2article join {$sArtTable} " .
+                  "on {$sArtTable}.oxid=oxactions2article.oxartid " .
+                  "where oxactions2article.oxactionid = " . $database->quote($soxId) .
+                  " and oxactions2article.oxshopid = '" . $myConfig->getShopId() .
+                  "'and $sArtTable.oxid is not null";
 
-        $articleAdded = false;
-        if ($soxId && $soxId != "-1" && is_array($aArticles)) {
-            $sShopId = $myConfig->getShopId();
-            foreach ($aArticles as $sAdd) {
-                $oNewGroup = oxNew('oxBase');
-                $oNewGroup->init('oxactions2article');
-                $oNewGroup->oxactions2article__oxshopid = new oxField($sShopId);
-                $oNewGroup->oxactions2article__oxactionid = new oxField($soxId);
-                $oNewGroup->oxactions2article__oxartid = new oxField($sAdd);
-                $oNewGroup->oxactions2article__oxsort = new oxField($iSort++);
-                $oNewGroup->save();
+            $iSort = ((int) $database->getOne($sQ)) + 1;
+
+            $articleAdded = false;
+            if ($soxId && $soxId != "-1" && is_array($aArticles)) {
+                $sShopId = $myConfig->getShopId();
+                foreach ($aArticles as $sAdd) {
+                    $oNewGroup = oxNew('oxBase');
+                    $oNewGroup->init('oxactions2article');
+                    $oNewGroup->oxactions2article__oxshopid = new oxField($sShopId);
+                    $oNewGroup->oxactions2article__oxactionid = new oxField($soxId);
+                    $oNewGroup->oxactions2article__oxartid = new oxField($sAdd);
+                    $oNewGroup->oxactions2article__oxsort = new oxField($iSort++);
+                    $oNewGroup->save();
+                }
+                $articleAdded = true;
             }
-            $articleAdded = true;
+        } catch (Exception $exception) {
+            oxDb::getDb()->rollbackTransaction();
+            throw $exception;
         }
+        oxDb::getDb()->commitTransaction();
 
         return $articleAdded;
     }

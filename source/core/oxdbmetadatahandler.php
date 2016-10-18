@@ -127,7 +127,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
      */
     public function getIndices($tableName)
     {
-        $result = [];
+        $result = array();
 
         if ($this->tableExists($tableName)) {
             $result = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll("SHOW INDEX FROM $tableName");

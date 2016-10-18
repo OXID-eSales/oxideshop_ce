@@ -95,11 +95,11 @@
                            <span class="item">[{oxmultilang ident="TOTAL"}]</span>
                            <strong class="price">
                            [{if $oxcmp_basket->isPriceViewModeNetto()}]
-                           [{$oxcmp_basket->getProductsNetPrice()}]
+                           [{oxprice price=$oxcmp_basket->getProductsNetPrice() currency=$currency}]
                            [{else}]
-                           [{$oxcmp_basket->getFProductsPrice()}]
+                           [{oxprice price=$oxcmp_basket->getFProductsPrice() currency=$currency}]
                            [{/if}]
-                           [{$currency->sign}]</strong>
+                           </strong>
                         </p>
                     [{/block}]
                     <hr>

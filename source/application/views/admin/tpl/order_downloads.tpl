@@ -12,13 +12,13 @@
     <input type="hidden" name="cl" value="order_downloads">
 </form>
 
-<table cellspacing="0" cellpadding="0" border="0" width="98%">
 <form name="search" id="search" action="[{ $oViewConf->getSelfLink() }]" method="post">
     [{ $oViewConf->getHiddenSid() }]
     <input type="hidden" name="cl" value="order_downloads">
     <input type="hidden" name="oxid" value="[{ $oxid }]">
     <input type="hidden" name="fnc" value="resetDownloadLink">
     <input type="hidden" name="oxorderfileid" value="[{ $oxid }]">
+<table cellspacing="0" cellpadding="0" border="0" width="98%">
 <tr>
     [{block name="admin_order_downloads_header"}]
         <td class="listheader" height="15">&nbsp;&nbsp;&nbsp;[{ oxmultilang ident="GENERAL_ITEMNR" }]</td>
@@ -58,9 +58,8 @@
 [{assign var="blWhite" value="2"}]
 [{/if}]
 [{/foreach}]
-</form>
 </table>
-
+</form>
 [{include file="bottomnaviitem.tpl"}]
 
 [{include file="bottomitem.tpl"}]

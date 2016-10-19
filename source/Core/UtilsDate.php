@@ -229,7 +229,6 @@ class UtilsDate extends \oxSuperCfg
      *
      * @return string
      */
-
     public function convertDBTimestamp($oObject, $blToTimeStamp = false)
     {
         // on this case usually means that we gonna save value, and value is formatted, not plain
@@ -560,7 +559,8 @@ class UtilsDate extends \oxSuperCfg
 
     /**
      * Returns the the timestamp formatted as date string for the database
-     * @param $iTimestamp the timestamp to be formatted
+     *
+     * @param int $iTimestamp the timestamp to be formatted
      *
      * @return bool|string timestamp formatted as date string for the database, false on error
      */

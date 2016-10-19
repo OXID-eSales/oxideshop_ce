@@ -93,7 +93,6 @@ class PictureHandler extends \oxSuperCfg
                 $this->deleteZoomPicture($oObject, $iIndex);
             }
         }
-
     }
 
     /**

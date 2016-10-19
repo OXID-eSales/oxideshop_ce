@@ -455,7 +455,6 @@ class Price
 
         if ($aDiscounts) {
             foreach ($aDiscounts as $aDiscount) {
-
                 if ($aDiscount['type'] == 'abs') {
                     $dPrice = $dPrice - $aDiscount['value'];
                 } else {

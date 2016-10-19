@@ -51,7 +51,7 @@ class ModuleTemplatePathCalculator
      * Sets required dependencies
      *
      * @param oxModuleList $moduleList
-     * @param oxTheme     $theme
+     * @param oxTheme      $theme
      * @param FileSystem   $fileSystem
      */
     public function __construct($moduleList = null, $theme = null, $fileSystem = null)
@@ -107,18 +107,15 @@ class ModuleTemplatePathCalculator
 
         if (is_array($moduleTemplates) && is_array($activeModules)) {
             foreach ($moduleTemplates as $sModuleId => $aTemplates) {
-
                 // check if module is active
                 if (isset($activeModules[$sModuleId])) {
                     $foundTemplate = null;
                     $fileSystem = $this->getFileSystem();
 
                     // check if template for our active themes exists
-                    if ($activeThemes = $theme->getActiveThemesList()) {
-                        foreach ($activeThemes as $oneActiveThemeId) {
-                            if (isset($aTemplates[$oneActiveThemeId], $aTemplates[$oneActiveThemeId][$templateName])) {
-                                $foundTemplate = $fileSystem->combinePaths($this->getModulesPath(), $aTemplates[$oneActiveThemeId][$templateName]);
-                            }
+                    foreach ((array) $theme->getActiveThemesList() as $oneActiveThemeId) {
+                        if (isset($aTemplates[$oneActiveThemeId], $aTemplates[$oneActiveThemeId][$templateName])) {
+                            $foundTemplate = $fileSystem->combinePaths($this->getModulesPath(), $aTemplates[$oneActiveThemeId][$templateName]);
                         }
                     }
 

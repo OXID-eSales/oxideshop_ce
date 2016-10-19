@@ -43,7 +43,7 @@ class EditionRootPathProvider
     private $editionSelector;
 
     /**
-     * @param $editionSelector
+     * @param EditionSelector $editionSelector
      */
     public function __construct($editionSelector)
     {
@@ -67,7 +67,7 @@ class EditionRootPathProvider
         $path = getShopBasePath();
         if ($this->getEditionSelector()->isEnterprise()) {
             $path = $editionsPath  .'/'. static::ENTERPRISE_DIRECTORY;
-        } else if ($this->getEditionSelector()->isProfessional()) {
+        } elseif ($this->getEditionSelector()->isProfessional()) {
             $path = $editionsPath .'/'.  static::PROFESSIONAL_DIRECTORY;
         }
 

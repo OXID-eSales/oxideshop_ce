@@ -120,7 +120,7 @@ class UtilsView extends \oxSuperCfg
     /**
      * adds the given errors to the view array
      *
-     * @param array &$aView view data array
+     * @param array $aView  view data array
      * @param array $errors array of errors to pass to view
      */
     public function passAllErrorsToView(&$aView, $errors)
@@ -426,11 +426,11 @@ class UtilsView extends \oxSuperCfg
     /**
      * is called when a template cannot be obtained from its resource.
      *
-     * @param string $resourceType       template type
-     * @param string $resourceName       template file name
-     * @param string &$resourceContent   template file content
-     * @param int    &$resourceTimestamp template file timestamp
-     * @param object $smarty             template processor object (smarty)
+     * @param string $resourceType      template type
+     * @param string $resourceName      template file name
+     * @param string $resourceContent   template file content
+     * @param int    $resourceTimestamp template file timestamp
+     * @param object $smarty            template processor object (smarty)
      *
      * @return bool
      */

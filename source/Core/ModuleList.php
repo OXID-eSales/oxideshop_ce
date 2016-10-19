@@ -352,7 +352,7 @@ class ModuleList extends \oxSuperCfg
                         }
                     }
                     if (!count($aAllModuleArray[$sClass])) {
-                        unset ($aAllModuleArray[$sClass]);
+                        unset($aAllModuleArray[$sClass]);
                     }
                 } else {
                     $aAllModuleArray[$sClass] = $aModuleChain;

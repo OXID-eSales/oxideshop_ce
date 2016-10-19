@@ -82,9 +82,9 @@ class UtilsObject
     private $shopIdCalculator;
 
     /**
-     * @param ClassNameProvider       $classNameProvider
+     * @param ClassNameProvider     $classNameProvider
      * @param ModuleChainsGenerator $moduleChainsGenerator
-     * @param ShopIdCalculator        $shopIdCalculator
+     * @param ShopIdCalculator      $shopIdCalculator
      */
     public function __construct($classNameProvider = null, $moduleChainsGenerator = null, $shopIdCalculator = null)
     {
@@ -128,9 +128,8 @@ class UtilsObject
         }
 
         if (!self::$_instance instanceof UtilsObject) {
-            
             $oUtilsObject = new UtilsObject();
-            // set the not overloaded(by modules) version early so oxnew can be used internally 
+            // set the not overloaded(by modules) version early so oxnew can be used internally
             self::$_instance = $oUtilsObject;
             // null for classNameProvider because it is generated in the constructor
             $classNameProvider = null;
@@ -141,7 +140,7 @@ class UtilsObject
             $subShopSpecific = $oUtilsObject->oxNew('oxSubShopSpecificFileCache', $shopIdCalculator);
             $moduleVariablesLocator = $oUtilsObject->oxNew('oxModuleVariablesLocator', $subShopSpecific, $shopIdCalculator);
             $moduleChainsGenerator = $oUtilsObject->oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
-            
+
             //generate UtilsObject again by oxnew to allow overloading by modules
             self::$_instance = $oUtilsObject->oxNew('oxUtilsObject', $classNameProvider, $moduleChainsGenerator, $shopIdCalculator);
         }
@@ -427,7 +426,7 @@ class UtilsObject
      * Cache only when object has none or one scalar argument.
      *
      * @param string $className
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return bool
      */
@@ -437,7 +436,7 @@ class UtilsObject
     }
 
     /**
-     * @param $className
+     * @param string $className
      *
      * @return bool
      */

@@ -80,7 +80,6 @@ class Request
     {
         $requestUrl = '';
         if ($_SERVER["REQUEST_METHOD"] != "POST") {
-
             if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI']) {
                 $rawRequestUrl = $_SERVER['REQUEST_URI'];
             } else {
@@ -89,7 +88,6 @@ class Request
 
             // trying to resolve controller file name
             if ($rawRequestUrl && ($iPos = stripos($rawRequestUrl, '?')) !== false) {
-
                 $string = getStr();
                 // formatting request url
                 $requestUrl = 'index.php' . $string->substr($rawRequestUrl, $iPos);
@@ -109,8 +107,8 @@ class Request
      * Checks if passed parameter has special chars and replaces them.
      * Returns checked value.
      *
-     * @param mixed &$sValue value to process escaping
-     * @param array $aRaw    keys of unescaped values
+     * @param mixed $sValue value to process escaping
+     * @param array $aRaw   keys of unescaped values
      *
      * @return mixed
      */
@@ -128,7 +126,7 @@ class Request
                     $this->checkParamSpecialChars($sValidKey);
                     $this->checkParamSpecialChars($sVal);
                     if ($sValidKey != $sKey) {
-                        unset ($sValue[$sKey]);
+                        unset($sValue[$sKey]);
                     }
                 }
                 $newValue[$sValidKey] = $sVal;

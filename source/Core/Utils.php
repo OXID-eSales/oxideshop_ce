@@ -1107,7 +1107,7 @@ class Utils extends \oxSuperCfg
         $offline = file_get_contents($offlineMessageFile);
         $this->showMessageAndExit($offline);
     }
-    
+
     /**
      * redirect user to the specified URL
      *

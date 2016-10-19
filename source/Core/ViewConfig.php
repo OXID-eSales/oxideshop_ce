@@ -1376,8 +1376,8 @@ class ViewConfig extends \oxSuperCfg
     /**
      * Checks if module exists.
      *
-     * @param string $sModuleId Module id
-     * @param array  $aModuleVersions  Modules from oxconfig 'aModuleVersions'
+     * @param string $sModuleId       Module id
+     * @param array  $aModuleVersions Modules from oxconfig 'aModuleVersions'
      *
      * @return bool
      */

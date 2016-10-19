@@ -201,7 +201,6 @@ class ModuleInstaller extends \oxSuperCfg
                     $aAllModuleArray[$sClass] = $aModuleChain;
                 }
             }
-
         }
 
         return $aAllModuleArray;

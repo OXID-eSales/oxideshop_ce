@@ -73,8 +73,8 @@ class SuperConfig
      * Only used for convenience in UNIT tests by doing so we avoid
      * writing extended classes for testing protected or private methods
      *
-     * @param string $method Methods name
-     * @param array  $arguments   Argument array
+     * @param string $method    Methods name
+     * @param array  $arguments Argument array
      *
      * @throws oxSystemComponentException Throws an exception if the called method does not exist or is not accessable in current class
      *
@@ -121,8 +121,6 @@ class SuperConfig
      * oxConfig instance setter
      *
      * @param oxConfig $config config object
-     *
-     * @return null
      */
     public function setConfig($config)
     {
@@ -147,8 +145,6 @@ class SuperConfig
      * oxSession instance setter
      *
      * @param oxsession $session session object
-     *
-     * @return null
      */
     public function setSession($session)
     {
@@ -177,8 +173,6 @@ class SuperConfig
      * Active oxuser object setter
      *
      * @param oxuser $user user object
-     *
-     * @return null
      */
     public function setUser($user)
     {

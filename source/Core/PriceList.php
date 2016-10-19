@@ -20,16 +20,15 @@
  * @version   OXID eShop CE
  */
 
+
+namespace OxidEsales\Eshop\Core;
+
 /**
  * Price list class. Deals with a list of oxPrice object.
  * The main reason why we can't just sum oxPrice objects is that they have different VAT percents.
  */
-
-namespace OxidEsales\Eshop\Core;
-
 class PriceList
 {
-
     /**
      * Array containing oxPrice objects
      *

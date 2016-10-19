@@ -256,7 +256,6 @@ class SepaIBANValidator
                 $blValid = false;
                 break;
             }
-
         }
 
         return $blValid;

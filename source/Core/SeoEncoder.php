@@ -660,7 +660,8 @@ class SeoEncoder extends \oxSuperCfg
 
         return $oStr->preg_replace(
             array('|//+|', '/' . $sQuotedSeparator . $sQuotedSeparator . '+/'),
-            array('/', self::$_sSeparator), $sUri
+            array('/', self::$_sSeparator),
+            $sUri
         );
     }
 

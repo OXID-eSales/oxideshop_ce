@@ -656,9 +656,9 @@ class Language extends \oxSuperCfg
      /**
      * Goes through language array and recodes its values.
      *
-     * @param array  $aLangArray   language data
-     * @param string $sCharset     charset which was used while making file
-     * @param string $newEncoding  charset which was used while making file
+     * @param array  $aLangArray  language data
+     * @param string $sCharset    charset which was used while making file
+     * @param string $newEncoding charset which was used while making file
      *
      */
     protected function _recodeLangArrayValues(&$aLangArray, $sCharset, $newEncoding)
@@ -671,9 +671,9 @@ class Language extends \oxSuperCfg
     /**
      * Goes through language array and recodes its values and keys. Returns recoded data
      *
-     * @param array  $aLangArray   language data
-     * @param string $sCharset     charset which was used while making file
-     * @param string $newEncoding  charset which was used while making file
+     * @param array  $aLangArray  language data
+     * @param string $sCharset    charset which was used while making file
+     * @param string $newEncoding charset which was used while making file
      *
      * @return array
      */
@@ -1008,7 +1008,6 @@ class Language extends \oxSuperCfg
                 include $sMapFile;
                 $this->_aLangMap[$sKey] = $aMap;
             }
-
         }
 
         return $this->_aLangMap[$sKey];

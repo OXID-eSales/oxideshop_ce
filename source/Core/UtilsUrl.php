@@ -159,10 +159,10 @@ class UtilsUrl extends \oxSuperCfg
     /**
      * Appends url with given parameters.
      *
-     * @param string $sUrl       url to append
-     * @param array  $parametersToAdd parameters to append
-     * @param bool   $blFinalUrl final url
-     * @param bool $allowParameterOverwrite Decides if same parameters should overwrite query parameters.
+     * @param string $sUrl                    url to append
+     * @param array  $parametersToAdd         parameters to append
+     * @param bool   $blFinalUrl              final url
+     * @param bool   $allowParameterOverwrite Decides if same parameters should overwrite query parameters.
      *
      * @return string
      */
@@ -514,8 +514,8 @@ class UtilsUrl extends \oxSuperCfg
     /**
      * Extracts host from given url and appends $aHosts with it
      *
-     * @param string $sUrl    url to extract
-     * @param array  &$aHosts hosts array
+     * @param string $sUrl   url to extract
+     * @param array  $aHosts hosts array
      */
     protected function _addHost($sUrl, &$aHosts)
     {
@@ -530,9 +530,9 @@ class UtilsUrl extends \oxSuperCfg
      * Appends language urls to $aHosts.
      *
      * @param array $aLanguageUrls array of language urls to extract
-     * @param array &$aHosts       hosts array
+     * @param array $aHosts        hosts array
      */
-    protected function _addLanguageHost($aLanguageUrls, & $aHosts)
+    protected function _addLanguageHost($aLanguageUrls, &$aHosts)
     {
         $iLanguageId = oxRegistry::getLang()->getBaseLanguage();
 
@@ -573,11 +573,9 @@ class UtilsUrl extends \oxSuperCfg
     /**
      * Appends shop mall urls to $aHosts if needed
      *
-     * @param array &$aHosts hosts array
-     *
-     * @return void
+     * @param array $aHosts hosts array
      */
-    protected function _addMallHosts(& $aHosts)
+    protected function _addMallHosts(&$aHosts)
     {
     }
 
@@ -606,7 +604,9 @@ class UtilsUrl extends \oxSuperCfg
     /**
      * Removes parameters which are not set.
      *
-     * @param $parametersToAdd
+     * @param string $parametersToAdd
+     *
+     * @return string
      */
     private function removeNotSetParameters($parametersToAdd)
     {
@@ -622,9 +622,9 @@ class UtilsUrl extends \oxSuperCfg
     }
 
     /**
-     * @param array $aAddParams parameters to add to URL.
-     * @param string $query URL query part.
-     * @param bool $allowParameterOverwrite Decides if same parameters should overwrite query parameters.
+     * @param array  $aAddParams              parameters to add to URL
+     * @param string $query                   URL query part
+     * @param bool   $allowParameterOverwrite Decides if same parameters should overwrite query parameters
      *
      * @return array
      */

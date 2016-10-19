@@ -447,7 +447,7 @@ class InputValidator extends \oxSuperCfg
      * Validates payment input data for credit card and debit note
      *
      * @param string $sPaymentId the payment id of current payment
-     * @param array  &$aDynValue values of payment
+     * @param array  $aDynValue  values of payment
      *
      * @return bool
      */

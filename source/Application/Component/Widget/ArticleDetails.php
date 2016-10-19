@@ -68,15 +68,6 @@ class ArticleDetails extends \oxWidget
     protected $_blCanRate = null;
 
     /**
-     * If tags can be changed
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @var bool
-     */
-    protected $_blCanEditTags = null;
-
-    /**
      * Media files
      *
      * @var array
@@ -312,18 +303,6 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Checks if rating functionality is on and allowed to user
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @return bool
-     */
-    public function canChangeTags()
-    {
-        return (bool) $this->getUser();
-    }
-
-    /**
      * loading full list of attributes
      *
      * @return array $_aAttributes
@@ -347,26 +326,6 @@ class ArticleDetails extends \oxWidget
         }
 
         return $this->_aAttributes;
-    }
-
-    /**
-     * Returns if tags can be changed, if user is logged in and
-     * product exists.
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @return bool
-     */
-    public function isEditableTags()
-    {
-        if ($this->_blCanEditTags === null) {
-            $this->_blCanEditTags = false;
-            if ($this->getProduct() && $this->getUser()) {
-                $this->_blCanEditTags = true;
-            }
-        }
-
-        return $this->_blCanEditTags;
     }
 
     /**

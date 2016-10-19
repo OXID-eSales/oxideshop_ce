@@ -65,9 +65,6 @@ class BasketComponent extends \oxView
                                     'searchcnid', // search category
                                     'searchvendor', // search vendor
                                     'searchmanufacturer', // search manufacturer
-                                    // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-                                    'searchtag', // search tag
-                                    // END deprecated
                                     // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
                                     'searchrecomm', // search recomendation
                                     'recommid' // recomm. list id

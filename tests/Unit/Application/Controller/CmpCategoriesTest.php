@@ -249,7 +249,6 @@ class CmpCategoriesTest extends \OxidTestCase
         $o->expects($this->never())->method('_addAdditionalParams');
 
         $this->setRequestParameter('mnid', null);
-        $this->setRequestParameter('searchtag', null);
         $this->setRequestParameter('cnid', null);
 
         $this->assertEquals('default category', $o->UNITgetActCat());
@@ -269,7 +268,6 @@ class CmpCategoriesTest extends \OxidTestCase
         $o->expects($this->never())->method('_addAdditionalParams');
 
         $this->setRequestParameter('mnid', null);
-        $this->setRequestParameter('searchtag', null);
         $this->setRequestParameter('cnid', null);
 
         $this->assertSame(null, $o->UNITgetActCat());
@@ -282,12 +280,10 @@ class CmpCategoriesTest extends \OxidTestCase
         $o->expects($this->once())->method('_addAdditionalParams')->with(
             $this->equalTo("product"),
             $this->equalTo(null),
-            $this->equalTo('mnid'),
-            $this->equalTo('searchtag')
+            $this->equalTo('mnid')
         );
 
         $this->setRequestParameter('mnid', 'mnid');
-        $this->setRequestParameter('searchtag', 'searchtag');
         $this->setRequestParameter('cnid', 'cnid');
 
         $this->assertSame(null, $o->UNITgetActCat());
@@ -300,12 +296,10 @@ class CmpCategoriesTest extends \OxidTestCase
         $o->expects($this->once())->method('_addAdditionalParams')->with(
             $this->equalTo("product"),
             $this->equalTo("cnid"),
-            $this->equalTo(''),
-            $this->equalTo('searchtag')
+            $this->equalTo('')
         );
 
         $this->setRequestParameter('mnid', '');
-        $this->setRequestParameter('searchtag', 'searchtag');
         $this->setRequestParameter('cnid', 'cnid');
 
         $this->assertSame(null, $o->UNITgetActCat());
@@ -525,32 +519,6 @@ class CmpCategoriesTest extends \OxidTestCase
         $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
         $this->assertEquals("v_testVendorId", $oCmp->UNITaddAdditionalParams($oProduct, "v_testVendorId", "testManId", "testTag", "v_testVendorId"));
-    }
-
-    /**
-     * Testing oxcmp_categories::_addAdditionalParams()
-     *
-     * @return null
-     */
-    public function testAddAdditionalParamsTag()
-    {
-        $this->setRequestParameter("searchparam", null);
-        $this->setRequestParameter("searchcnid", null);
-        $this->setRequestParameter("searchvendor", null);
-        $this->setRequestParameter("searchmanufacturer", null);
-        $this->setRequestParameter("listtype", null);
-
-        $oParent = $this->getMock("oxView", array("setListType", "setCategoryId"));
-        $oParent->expects($this->once())->method("setListType")->with($this->equalTo('tag'));
-        $oParent->expects($this->once())->method("setCategoryId")->with($this->equalTo("testCatId"));
-
-        $oProduct = $this->getMock("oxArticle", array("getVendorId", "getManufacturerId"));
-        $oProduct->expects($this->any())->method("getVendorId")->will($this->returnValue("_testVendorId"));
-        $oProduct->expects($this->any())->method("getManufacturerId")->will($this->returnValue("_testManId"));
-
-        $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
-        $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("testCatId", $oCmp->UNITaddAdditionalParams($oProduct, "testCatId", "testManId", "testTag", "testVendorId"));
     }
 
     /**

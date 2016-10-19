@@ -124,9 +124,7 @@ class CategoriesComponent extends \oxView
     protected function _getActCat()
     {
         $sActManufacturer = oxRegistry::getConfig()->getRequestParameter('mnid');
-        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-        $sActTag = oxRegistry::getConfig()->getRequestParameter('searchtag');
-        // END deprecated
+
         $sActCat = $sActManufacturer ? null : oxRegistry::getConfig()->getRequestParameter('cnid');
 
         // loaded article - then checking additional parameters
@@ -138,12 +136,11 @@ class CategoriesComponent extends \oxView
 
             $sActVendor = (getStr()->preg_match('/^v_.?/i', $sActCat)) ? $sActCat : null;
 
-            $sActCat = $this->_addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActTag, $sActVendor);
+            $sActCat = $this->_addAdditionalParams($oProduct, $sActCat, $sActManufacturer, null, $sActVendor);
         }
 
-        // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
         // Checking for the default category
-        if ($sActCat === null && !$oProduct && !$sActManufacturer && !$sActTag) {
+        if ($sActCat === null && !$oProduct && !$sActManufacturer) {
             // set remote cat
             $sActCat = $this->getConfig()->getActiveShop()->oxshops__oxdefcat->value;
             if ($sActCat == 'oxrootid') {
@@ -263,11 +260,6 @@ class CategoriesComponent extends \oxView
                 // such vendor is available ?
                 $sListType = 'vendor';
                 $sActCat = $sActVendor;
-                // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-            } elseif ($sActTag) {
-                // tag ?
-                $sListType = 'tag';
-                // END deprecated
             } elseif ($sActCat && $oProduct->isAssignedToCategory($sActCat)) {
                 // category ?
             } else {

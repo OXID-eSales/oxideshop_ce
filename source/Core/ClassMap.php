@@ -345,7 +345,7 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
     public function getNotOverridableMap()
     {
         return [
-            'oxbase' => '\OxidEsales\Eshop\Core\Base',
+            'oxbase' => '\OxidEsales\Eshop\Core\Model\BaseModel',
             'oxsysrequirements' => '\OxidEsales\Eshop\Core\SystemRequirements',
             'oxadminview' => '\OxidEsales\Eshop\Application\Controller\Admin\AdminView',
             'oxadminlist' => '\OxidEsales\Eshop\Application\Controller\Admin\AdminList',

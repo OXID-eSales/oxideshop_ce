@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\Eshop\Core\Model;
 
 /**
  * Defining triggered action type.
@@ -39,7 +39,7 @@ use oxField;
 use oxDb;
 use oxUtilsObject;
 
-class Base extends \oxSuperCfg
+class BaseModel extends \oxSuperCfg
 {
 
     /**

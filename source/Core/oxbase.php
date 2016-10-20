@@ -25,6 +25,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Core\Base
  */
-class oxBase extends \OxidEsales\Eshop\Core\Base
+class oxBase extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 }

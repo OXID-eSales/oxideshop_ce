@@ -25,8 +25,8 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\EshopEnterprise\Core\SuperConfig
+ * @mixin \OxidEsales\EshopEnterprise\Core\Base
  */
-class oxSuperCfg extends \OxidEsales\Eshop\Core\SuperConfig
+class oxSuperCfg extends \OxidEsales\Eshop\Core\Base
 {
 }

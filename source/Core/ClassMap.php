@@ -375,7 +375,7 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxshopcontrol' => '\OxidEsales\Eshop\Core\ShopControl',
             'oxview' => '\OxidEsales\Eshop\Core\View',
             'oxi18n' => '\OxidEsales\Eshop\Core\I18n',
-            'oxsupercfg' => '\OxidEsales\Eshop\Core\SuperConfig',
+            'oxsupercfg' => '\OxidEsales\Eshop\Core\Base',
             'oxutilsobject' => '\OxidEsales\Eshop\Core\UtilsObject',
             'oxdb' => '\OxidEsales\Eshop\Core\Database',
             'oxconnectionexception' => '\OxidEsales\Eshop\Core\Exception\ConnectionException',

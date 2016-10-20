@@ -31,7 +31,7 @@ use oxUser;
 /**
  * Super config class
  */
-class SuperConfig
+class Base
 {
 
     /**

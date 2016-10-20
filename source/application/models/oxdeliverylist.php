@@ -190,7 +190,7 @@ class oxDeliveryList extends oxList
         $sUserSql = $sUserId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxuser' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sUserId) . ")" : '0';
         $sGroupSql = count($aIds) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' and oxobject2delivery.OXOBJECTID in (" . implode(', ', oxDb::getInstance()->quoteArray($aIds)) . ") )" : '0';
 
-        $sQ .= ") as $sTable where (
+        $sQ .= " order by $sTable.oxsort asc ) as $sTable where (
             select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     $sCountrySql,
@@ -203,7 +203,7 @@ class oxDeliveryList extends oxList
                     1)
             )";
 
-        $sQ .= " order by $sTable.oxsort ";
+        $sQ .= " order by $sTable.oxsort asc ";
 
         return $sQ;
     }

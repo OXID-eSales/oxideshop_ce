@@ -29,8 +29,8 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
- * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\AdminList
+ * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\AdminListController
  */
-class oxAdminList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
+class oxAdminList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 }

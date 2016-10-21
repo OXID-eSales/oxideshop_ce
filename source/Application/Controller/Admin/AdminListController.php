@@ -33,7 +33,7 @@ use oxI18n;
 /**
  * Admin selectlist list manager.
  */
-class AdminList extends \oxAdminView
+class AdminListController extends \oxAdminView
 {
     /**
      * Name of chosen object class (default null).

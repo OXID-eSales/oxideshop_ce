@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxWidget extends \OxidEsales\Eshop\Application\Component\Widget\Widget
+class oxWidget extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
 }

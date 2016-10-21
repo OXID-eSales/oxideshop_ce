@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use OxidEsales\Eshop\Application\Component\Widget\WidgetController;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Controller\BaseController;
 
@@ -102,7 +103,7 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxwinformation' => '\OxidEsales\Eshop\Application\Component\Widget\Information',
             'oxwrating' => '\OxidEsales\Eshop\Application\Component\Widget\Rating',
             'oxwservicemenu' => '\OxidEsales\Eshop\Application\Component\Widget\ServiceMenu',
-            'oxwarticlebox' => '\OxidEsales\Eshop\Application\Component\Widget\ArticleBox', #
+            'oxwarticlebox' => '\OxidEsales\Eshop\Application\Component\Widget\ArticleBox',
             'oxwcookienote' => '\OxidEsales\Eshop\Application\Component\Widget\CookieNote',
             'oxwlanguagelist' => '\OxidEsales\Eshop\Application\Component\Widget\LanguageList',
             'oxwrecommendation' => '\OxidEsales\Eshop\Application\Component\Widget\Recommendation',
@@ -111,7 +112,7 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxwmanufacturerlist' => '\OxidEsales\Eshop\Application\Component\Widget\ManufacturerList',
             'oxwreview' => '\OxidEsales\Eshop\Application\Component\Widget\Review',
             'oxwvendorlist' => '\OxidEsales\Eshop\Application\Component\Widget\VendorList',
-            'oxwidget' => '\OxidEsales\Eshop\Application\Component\Widget\Widget',
+            'oxwidget' => WidgetController::class,
             'oxwminibasket' => '\OxidEsales\Eshop\Application\Component\Widget\MiniBasket',
             'oxwservicelist' => '\OxidEsales\Eshop\Application\Component\Widget\ServiceList',
 

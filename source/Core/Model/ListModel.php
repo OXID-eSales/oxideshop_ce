@@ -23,7 +23,6 @@
 namespace OxidEsales\Eshop\Core\Model;
 
 use oxDb;
-use OxidEsales\Eshop\Core\oxBase;
 
 /**
  * List manager.
@@ -50,7 +49,7 @@ class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countab
     /**
      * Template object used for some methods before the list is built.
      *
-     * @var oxBase
+     * @var BaseModel
      */
     private $_oBaseObject = null;
 
@@ -89,7 +88,7 @@ class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countab
      *
      * @param mixed $offset SPL array offset
      *
-     * @return oxBase
+     * @return BaseModel
      */
     public function offsetGet($offset)
     {
@@ -104,7 +103,7 @@ class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countab
      * offsetSet for SPL
      *
      * @param mixed  $offset SPL array offset
-     * @param oxBase $oBase  Array element
+     * @param BaseModel $oBase  Array element
      */
     public function offsetSet($offset, $oBase)
     {
@@ -347,7 +346,7 @@ class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countab
     /**
      * Initializes or returns existing list template object.
      *
-     * @return oxBase
+     * @return BaseModel
      */
     public function getBaseObject()
     {
@@ -499,8 +498,8 @@ class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countab
      * Executes assign() method on list object. This method is called in loop in oxList::selectString().
      * It is if you want to execute any functionality on every list ELEMENT after it is fully loaded (assigned).
      *
-     * @param oxBase $oListObject List object (the one derived from oxBase)
-     * @param array  $aDbFields   An array holding db field values (normally the result of oxDb::Execute())
+     * @param BaseModel $oListObject List object (the one derived from BaseModel)
+     * @param array     $aDbFields   An array holding db field values (normally the result of oxDb::Execute())
      */
     protected function _assignElement($oListObject, $aDbFields)
     {

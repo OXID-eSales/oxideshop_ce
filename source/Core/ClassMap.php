@@ -28,6 +28,7 @@ use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
 use OxidEsales\Eshop\Application\Controller\Admin\AdminListController;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Controller\BaseController;
+use OxidEsales\Eshop\Core\Model\StandardList;
 
 /**
  * @inheritdoc
@@ -389,7 +390,7 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxdynimggenerator' => '\OxidEsales\Eshop\Core\DynamicImageGenerator',
             'oxexceptiontodisplay' => '\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay',
             'oxfield' => '\OxidEsales\Eshop\Core\Field',
-            'oxlist' => '\OxidEsales\Eshop\Core\StandardList',
+            'oxlist' => StandardList::class,
             'oxseoencoder' => '\OxidEsales\Eshop\Core\SeoEncoder',
             'oxstdclass' => '\OxidEsales\Eshop\Core\StandardClass',
             'oxsystemcomponentexception' => '\OxidEsales\Eshop\Core\Exception\SystemComponentException',

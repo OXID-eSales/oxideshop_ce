@@ -20,9 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\Eshop\Core\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\oxBase;
 
 /**
  * List manager.

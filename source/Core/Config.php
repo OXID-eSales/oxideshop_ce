@@ -381,6 +381,7 @@ class Config extends Base
      * Starts session manager
      *
      * @throws oxConnectionException
+     * @return null
      */
     public function init()
     {
@@ -404,7 +405,7 @@ class Config extends Base
                     "Unable to load shop config values from database",
                     0,
                     new \Exception()
-                    );
+                );
                 throw $oEx;
             }
 
@@ -754,8 +755,6 @@ class Config extends Base
      * Active Shop id setter
      *
      * @param string $shopId shop id
-     *
-     * @return null
      */
     public function setShopId($shopId)
     {
@@ -1777,8 +1776,6 @@ class Config extends Base
      *  1 - Demo or unlicensed
      *  2 - Pro
      *  3 - Enterprise
-     *
-     * @return int
      */
     public function detectVersion()
     {

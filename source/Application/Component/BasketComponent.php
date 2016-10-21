@@ -146,7 +146,6 @@ class BasketComponent extends \oxView
 
         // adding articles
         if ($aProducts = $this->_getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
-
             $this->_setLastCallFnc('tobasket');
             $oBasketItem = $this->_addItems($aProducts);
 
@@ -213,7 +212,6 @@ class BasketComponent extends \oxView
 
         // adding articles
         if ($aProducts = $this->_getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
-
             // information that last call was changebasket
             $oBasket = $this->getSession()->getBasket();
             $oBasket->onUpdate();
@@ -221,7 +219,6 @@ class BasketComponent extends \oxView
             $this->_setLastCallFnc('changebasket');
             $oBasketItem = $this->_addItems($aProducts);
         }
-
     }
 
     /**
@@ -255,7 +252,6 @@ class BasketComponent extends \oxView
 
         // reload and backbutton blocker
         if ($this->getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
-
             // saving return to shop link to session
             oxRegistry::getSession()->setVariable('_backtoshop', $sClass . $sPosition);
 
@@ -307,7 +303,6 @@ class BasketComponent extends \oxView
         // collecting specified item
         $sProductId = $sProductId ? $sProductId : oxRegistry::getConfig()->getRequestParameter('aid');
         if ($sProductId) {
-
             // additionally fetching current product info
             $dAmount = isset($dAmount) ? $dAmount : oxRegistry::getConfig()->getRequestParameter('am');
 
@@ -330,14 +325,13 @@ class BasketComponent extends \oxView
         }
 
         if (is_array($aProducts) && count($aProducts)) {
-
             if (oxRegistry::getConfig()->getRequestParameter('removeBtn') !== null) {
                 //setting amount to 0 if removing article from basket
                 foreach ($aProducts as $sProductId => $aProduct) {
                     if (isset($aProduct['remove']) && $aProduct['remove']) {
                         $aProducts[$sProductId]['am'] = 0;
                     } else {
-                        unset ($aProducts[$sProductId]);
+                        unset($aProducts[$sProductId]);
                     }
                 }
             }
@@ -367,7 +361,6 @@ class BasketComponent extends \oxView
         $basketItemAmounts = array();
 
         foreach ($products as $addProductId => $productInfo) {
-
             $data = $this->prepareProductInformation($addProductId, $productInfo);
             $productAmount = $basketInfo->aArticles[$data['id']];
             $products[$addProductId]['oldam'] = isset($productAmount) ? $productAmount : 0;

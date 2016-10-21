@@ -47,8 +47,7 @@ class SeoDecoderTest extends \OxidTestCase
             if ($sCustomColumn == 'OXSEOID') {
                 $oDb->execute("ALTER TABLE `oxarticles` DROP `OXSEOID`");
                 $oDb->execute("ALTER TABLE `oxarticles` DROP `OXSEOID_1`");
-                $dataHandler = oxNew('oxDbMetaDataHandler');
-                $dataHandler->updateViews();
+                $this->regenerateViews();
             }
 
         } catch (Exception $oEx) {
@@ -98,15 +97,10 @@ class SeoDecoderTest extends \OxidTestCase
         $this->assertEquals(md5(strtolower($sDeAltUrl)), $oDecoder->UNITgetIdent($sDeAltUrl, true));
     }
 
-
-    protected function _regenerateViews($iShop)
+    private function regenerateViews()
     {
-        $oShop = oxNew('oxShop');
-        $oShop->load($iShop);
-
-        $aMultiShopTables = $this->getConfig()->getConfigParam('aMultiShopTables');
-        $oShop->setMultiShopTables($aMultiShopTables);
-        $oShop->generateViews();
+        $dataHandler = oxNew('oxDbMetaDataHandler');
+        $dataHandler->updateViews();
     }
 
     /**
@@ -250,8 +244,7 @@ class SeoDecoderTest extends \OxidTestCase
         $oDb->execute("UPDATE `oxarticles` SET `OXSEOID` = 'someid1' WHERE `OXID` = '1126' ");
         $oDb->execute("UPDATE `oxarticles` SET `OXSEOID_1` = 'someid2' WHERE `OXID` = '1127' ");
 
-        $dataHandler = oxNew('oxDbMetaDataHandler');
-        $dataHandler->updateViews();
+        $this->regenerateViews();
 
         $sColumnAdded = $oDb->getOne("show columns from oxarticles where field = 'oxseoid'");
         $this->assertEquals('OXSEOID', $sColumnAdded);

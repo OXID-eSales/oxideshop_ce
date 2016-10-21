@@ -65,6 +65,6 @@ $sDisabled = ( $blMbStringOn > 1 && $blUnicodeSupport > 1 ) ? '' : 'disabled';
   </tr>
 </table>
 <input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
-<input type="submit" id="step3Submit" class="edittext" value="<?php $this->getText('BUTTON_DB_INSTALL'); ?>">
+<input type="submit" id="step3Submit" class="edittext" value="<?php $this->getText('BUTTON_DB_CREATE'); ?>">
 </form>
 <?php require "_footer.php";

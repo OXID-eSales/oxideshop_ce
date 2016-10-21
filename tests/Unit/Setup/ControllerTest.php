@@ -224,8 +224,12 @@ class ControllerTest extends \OxidTestCase
         $oSession->expects($this->at(0))->method("getSessionParam")->with($this->equalTo("aSetupConfig"));
         $oSession->expects($this->at(1))->method("getSessionParam")->with($this->equalTo("aAdminData"));
 
-        $oUtils = $this->getMock("Utilities", array("getDefaultPathParams"));
+        $oSessionToCheckIfUserDecideToOverwriteDB = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
+        $oSessionToCheckIfUserDecideToOverwriteDB->expects($this->at(0))->method("getSessionParam")->with($this->equalTo("blOverwrite"));
+
+        $oUtils = $this->getMock("Utilities", array("getDefaultPathParams", "getRequestVar"));
         $oUtils->expects($this->once())->method("getDefaultPathParams");
+        $oUtils->expects($this->once())->method("getRequestVar");
 
         $oSetup = $this->getMock("Setup", array("leaveSetupDirectory", "deleteSetupDirectory"));
         $oSession->expects($this->any())->method("leaveSetupDirectory");
@@ -233,9 +237,11 @@ class ControllerTest extends \OxidTestCase
 
         $oController = $this->getMock(get_class($this->getController()), array("getView", "getInstance"));
         $oController->expects($this->at(0))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSession));
-        $oController->expects($this->at(1))->method("getView")->will($this->returnValue($oView));
-        $oController->expects($this->at(2))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
-        $oController->expects($this->at(3))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oSetup));
+        $oController->expects($this->at(1))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
+        $oController->expects($this->at(2))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSessionToCheckIfUserDecideToOverwriteDB));
+        $oController->expects($this->at(3))->method("getView")->will($this->returnValue($oView));
+        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
+        $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oSetup));
         $this->assertEquals("dirsinfo.php", $oController->dirsInfo());
     }
 
@@ -354,17 +360,18 @@ class ControllerTest extends \OxidTestCase
      */
     public function testDbConnect()
     {
-        $oView = $this->getMock("viewStub", array("setTitle", "setViewParam"));
+        $oLanguage = $this->getMock("Language", array("getText"));
+
+        $oView = $this->getMock("viewStub", array("setTitle", "setViewParam", "setMessage"));
         $oView->expects($this->at(0))->method("setTitle")->with($this->equalTo("STEP_3_1_TITLE"));
         $oView->expects($this->at(1))->method("setViewParam")->with($this->equalTo("blCreated"));
-        $oView->expects($this->at(2))->method("setViewParam")->with($this->equalTo("aDB"));
 
         $oSession = $this->getMock('SetupSession', array("setSessionParam"), array(), '', null);
         $oSession->expects($this->once())->method("setSessionParam")->with($this->equalTo("aDB"));
 
-        $oSetup = $this->getMock("Setup", array("setNextStep", "getStep"));
+        $oSetup = $this->getMock("Setup", array("setNextStep", "getStep", "setMessage"));
         $oSetup->expects($this->once())->method("setNextStep");
-        $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_DB_CREATE"));
+        $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_DIRS_INFO"));
 
         $oUtils = $this->getMock("Utilities", array("getRequestVar"));
         $oUtils->expects($this->any())->method("getRequestVar")->will($this->returnValue(array("dbHost" => "testHost", "dbName" => "testName")));
@@ -373,14 +380,14 @@ class ControllerTest extends \OxidTestCase
         $oDb->expects($this->once())->method("openDatabase")->will($this->throwException(new Exception("")));
         $oDb->expects($this->once())->method("createDb");
 
-
         $oController = $this->getMock(get_class($this->getController()), array("getView", "getInstance"));
         $oController->expects($this->at(0))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oSetup));
         $oController->expects($this->at(1))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSession));
-        $oController->expects($this->at(2))->method("getInstance")->with($this->equalTo("Language"));
+        $oController->expects($this->at(2))->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($oLanguage));
         $oController->expects($this->at(3))->method("getView")->will($this->returnValue($oView));
         $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
         $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
+        $oController->expects($this->at(6))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
         $this->assertEquals("dbconnect.php", $oController->dbConnect());
     }
 
@@ -398,11 +405,14 @@ class ControllerTest extends \OxidTestCase
         $oSession->expects($this->once())->method("getSessionParam")->with($this->equalTo("aDB"));
         $oSession->expects($this->once())->method("getSid");
 
+        $oSessionToCheckIfUserDecideToOverwriteDB = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
+        $oSessionToCheckIfUserDecideToOverwriteDB->expects($this->once())->method("getSessionParam")->with($this->equalTo("blOverwrite"));
+
         $oLang = $this->getMock("Language", array("getText"));
         $oLang->expects($this->atLeastOnce())->method("getText");
 
         $oView = $this->getMock("viewStub", array("setTitle", "setMessage"));
-        $oView->expects($this->once())->method("setTitle")->with($this->equalTo("STEP_3_2_TITLE"));
+        $oView->expects($this->once())->method("setTitle")->with($this->equalTo("STEP_4_2_TITLE"));
         $oView->expects($this->once())->method("setMessage");
 
         $oUtils = $this->getMock("Utilities", array("getRequestVar"));
@@ -419,10 +429,67 @@ class ControllerTest extends \OxidTestCase
         $oController->expects($this->at(1))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSession));
         $oController->expects($this->at(2))->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($oLang));
         $oController->expects($this->at(3))->method("getView")->will($this->returnValue($oView));
-        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
-        $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
+        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
+        $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
+        $oController->expects($this->at(6))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSessionToCheckIfUserDecideToOverwriteDB));
         $this->assertEquals("default.php", $oController->dbCreate());
     }
+
+    /**
+     * Testing controller::dbCreate()
+     *
+     * @return null
+     */
+    public function testDbCreateDbExistsUserDecidedOverwrite()
+    {
+        $oSetup = $this->getMock("Setup", array("setNextStep", "getStep"));
+
+        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
+            $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_SERIAL"));
+        }
+
+        if ($this->getTestConfig()->getShopEdition() === 'CE') {
+            $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_FINISH"));
+        }
+
+        $oSession = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
+        $oSession->expects($this->atLeastOnce())->method("getSessionParam");
+
+        $oSessionToCheckIfUserDecideToOverwriteDB = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
+        $oSessionToCheckIfUserDecideToOverwriteDB->expects($this->once())->method("getSessionParam")->with($this->equalTo("blOverwrite"))->will($this->returnValue(true));
+
+        $oLang = $this->getMock("Language", array("getText"));
+        $oLang->expects($this->atLeastOnce())->method("getText");
+
+        $oView = $this->getMock("viewStub", array("setTitle", "setMessage"));
+        $oView->expects($this->once())->method("setTitle");
+        $oView->expects($this->once())->method("setMessage");
+
+        $oUtils = $this->getMock("Utilities", array("getRequestVar"));
+        $oUtils->expects($this->once())->method("getRequestVar");
+
+        $oDb = $this->getMock("databaseStub", array("openDatabase", "execSql", "testCreateView", "setMySqlCollation", "queryFile", "saveShopSettings", "convertConfigTableToUtf", "writeAdminLoginData"));
+        $oDb->expects($this->once())->method("openDatabase");
+        $oDb->expects($this->never())->method("execSql");
+        $oDb->expects($this->once())->method("testCreateView");
+        $oDb->expects($this->atLeastOnce())->method("setMySqlCollation");
+        $oDb->expects($this->atLeastOnce())->method("queryFile");
+        $oDb->expects($this->atLeastOnce())->method("saveShopSettings");
+        $oDb->expects($this->atLeastOnce())->method("convertConfigTableToUtf");
+        $oDb->expects($this->atLeastOnce())->method("writeAdminLoginData");
+
+
+        $oController = $this->getMock(get_class($this->getController()), array("getView", "getInstance"));
+        $oController->expects($this->at(0))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oSetup));
+        $oController->expects($this->at(1))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSession));
+        $oController->expects($this->at(2))->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($oLang));
+        $oController->expects($this->at(3))->method("getView")->will($this->returnValue($oView));
+        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
+        $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
+        $oController->expects($this->at(6))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSessionToCheckIfUserDecideToOverwriteDB));
+        $this->assertEquals("default.php", $oController->dbCreate());
+    }
+
 
     /**
      * Testing controller::dbCreate()
@@ -434,10 +501,13 @@ class ControllerTest extends \OxidTestCase
         $oSetup = $this->getMock("Setup");
 
         $oSession = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
-        $oSession->expects($this->once())->method("getSessionParam")->with($this->equalTo("aDB"));
+        $oSession->expects($this->at(0))->method("getSessionParam")->with($this->equalTo("aDB"));
+
+        $oSessionToCheckIfUserDecideToOverwriteDB = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
+        $oSessionToCheckIfUserDecideToOverwriteDB->expects($this->once())->method("getSessionParam")->with($this->equalTo("blOverwrite"));
 
         $oView = $this->getMock("viewStub", array("setTitle", "setMessage"));
-        $oView->expects($this->once())->method("setTitle")->with($this->equalTo("STEP_3_2_TITLE"));
+        $oView->expects($this->once())->method("setTitle")->with($this->equalTo("STEP_4_2_TITLE"));
         $oView->expects($this->once())->method("setMessage");
 
         $oUtils = $this->getMock("Utilities", array("getRequestVar"));
@@ -456,8 +526,9 @@ class ControllerTest extends \OxidTestCase
         $oController->expects($this->at(1))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSession));
         $oController->expects($this->at(2))->method("getInstance")->with($this->equalTo("Language"));
         $oController->expects($this->at(3))->method("getView")->will($this->returnValue($oView));
-        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
-        $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
+        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
+        $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
+        $oController->expects($this->at(6))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSessionToCheckIfUserDecideToOverwriteDB));
         $this->assertEquals("default.php", $oController->dbCreate());
     }
 
@@ -473,8 +544,11 @@ class ControllerTest extends \OxidTestCase
         $oSession = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
         $oSession->expects($this->once())->method("getSessionParam")->with($this->equalTo("aDB"))->will($this->returnValue(array("dbiDemoData" => 1)));
 
+        $oSessionToCheckIfUserDecideToOverwriteDB = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
+        $oSessionToCheckIfUserDecideToOverwriteDB->expects($this->once())->method("getSessionParam")->with($this->equalTo("blOverwrite"));
+
         $oView = $this->getMock("viewStub", array("setTitle", "setMessage"));
-        $oView->expects($this->once())->method("setTitle")->with($this->equalTo("STEP_3_2_TITLE"));
+        $oView->expects($this->once())->method("setTitle")->with($this->equalTo("STEP_4_2_TITLE"));
         $oView->expects($this->once())->method("setMessage");
 
         $oUtils = $this->getMock("Utilities", array("getRequestVar"));
@@ -498,8 +572,9 @@ class ControllerTest extends \OxidTestCase
         $oController->expects($this->at(1))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSession));
         $oController->expects($this->at(2))->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($oLang));
         $oController->expects($this->at(3))->method("getView")->will($this->returnValue($oView));
-        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
-        $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
+        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
+        $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
+        $oController->expects($this->at(6))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSessionToCheckIfUserDecideToOverwriteDB));
         $this->assertEquals("default.php", $oController->dbCreate());
     }
 
@@ -516,8 +591,11 @@ class ControllerTest extends \OxidTestCase
         $oSession->expects($this->at(0))->method("getSessionParam")->with($this->equalTo("aDB"))->will($this->returnValue(array("dbiDemoData" => 1)));
         $oSession->expects($this->at(1))->method("getSessionParam")->with($this->equalTo("location_lang"))->will($this->returnValue("en"));
 
+        $oSessionToCheckIfUserDecideToOverwriteDB = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
+        $oSessionToCheckIfUserDecideToOverwriteDB->expects($this->once())->method("getSessionParam")->with($this->equalTo("blOverwrite"));
+
         $oView = $this->getMock("viewStub", array("setTitle", "setMessage"));
-        $oView->expects($this->once())->method("setTitle")->with($this->equalTo("STEP_3_2_TITLE"));
+        $oView->expects($this->once())->method("setTitle")->with($this->equalTo("STEP_4_2_TITLE"));
         $oView->expects($this->once())->method("setMessage");
 
         $oUtils = $this->getMock("Utilities", array("getRequestVar"));
@@ -542,8 +620,9 @@ class ControllerTest extends \OxidTestCase
         $oController->expects($this->at(1))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSession));
         $oController->expects($this->at(2))->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($oLang));
         $oController->expects($this->at(3))->method("getView")->will($this->returnValue($oView));
-        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
-        $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
+        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
+        $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
+        $oController->expects($this->at(6))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSessionToCheckIfUserDecideToOverwriteDB));
         $this->assertEquals("default.php", $oController->dbCreate());
     }
 
@@ -562,11 +641,11 @@ class ControllerTest extends \OxidTestCase
         $oSession->expects($this->at(0))->method("getSessionParam")->with($this->equalTo("aDB"))->will($this->returnValue(array("dbiDemoData" => 1)));
 
         $oView = $this->getMock("viewStub", array("setTitle", "setMessage"));
-        $oView->expects($this->once())->method("setTitle")->with($this->equalTo("STEP_3_2_TITLE"));
+        $oView->expects($this->once())->method("setTitle")->with($this->equalTo("STEP_4_2_TITLE"));
         $oView->expects($this->once())->method("setMessage");
 
         $oUtils = $this->getMock("Utilities", array("getRequestVar"));
-        $oUtils->expects($this->once())->method("getRequestVar");
+        $oUtils->expects($this->never())->method("getRequestVar");
 
         $oDb = $this->getMock("databaseStub", array("openDatabase", "testCreateView"));
         $oDb->expects($this->at(0))->method("openDatabase");
@@ -578,8 +657,7 @@ class ControllerTest extends \OxidTestCase
         $oController->expects($this->at(1))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSession));
         $oController->expects($this->at(2))->method("getInstance")->with($this->equalTo("Language"));
         $oController->expects($this->at(3))->method("getView")->will($this->returnValue($oView));
-        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
-        $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
+        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
         $this->assertEquals("default.php", $oController->dbCreate());
     }
 
@@ -592,14 +670,24 @@ class ControllerTest extends \OxidTestCase
     {
         $oSetup = $this->getMock("Setup", array("setNextStep", "getStep"));
         $oSetup->expects($this->once())->method("setNextStep");
-        $oSetup->expects($this->once())->method("getStep")->with($this->equalTo('STEP_DIRS_INFO'));
+
+        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
+            $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_SERIAL"));
+        }
+
+        if ($this->getTestConfig()->getShopEdition() === 'CE') {
+            $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_FINISH"));
+        }
 
         $oSession = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
         $oSession->expects($this->at(0))->method("getSessionParam")->with($this->equalTo("aDB"))->will($this->returnValue(array("dbiDemoData" => 1, "iUtfMode" => 1)));
         $oSession->expects($this->at(1))->method("getSessionParam")->with($this->equalTo("location_lang"))->will($this->returnValue("en"));
 
+        $oSessionToCheckIfUserDecideToOverwriteDB = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
+        $oSessionToCheckIfUserDecideToOverwriteDB->expects($this->atLeastOnce())->method("getSessionParam")->with($this->equalTo("blOverwrite"));
+
         $oView = $this->getMock("viewStub", array("setTitle", "setMessage"));
-        $oView->expects($this->once())->method("setTitle")->with($this->equalTo("STEP_3_2_TITLE"));
+        $oView->expects($this->once())->method("setTitle")->with($this->equalTo("STEP_4_2_TITLE"));
         $oView->expects($this->once())->method("setMessage");
 
         $oUtils = $this->getMock("Utilities", array("getRequestVar"));
@@ -608,7 +696,7 @@ class ControllerTest extends \OxidTestCase
         $oLang = $this->getMock("Language", array("getText"));
         $oLang->expects($this->atLeastOnce())->method("getText");
 
-        $oDb = $this->getMock("databaseStub", array("openDatabase", "execSql", "setMySqlCollation", "queryFile", "saveShopSettings", "convertConfigTableToUtf", "testCreateView"));
+        $oDb = $this->getMock("databaseStub", array("openDatabase", "execSql", "setMySqlCollation", "queryFile", "saveShopSettings", "convertConfigTableToUtf", "testCreateView", "writeAdminLoginData"));
         $oDb->expects($this->at(0))->method("openDatabase");
         $oDb->expects($this->at(1))->method("testCreateView");
         $oDb->expects($this->at(2))->method("execSql")->will($this->throwException(new Exception));
@@ -619,15 +707,16 @@ class ControllerTest extends \OxidTestCase
         $oDb->expects($this->at(7))->method("queryFile");
         $oDb->expects($this->at(8))->method("setMySqlCollation");
         $oDb->expects($this->at(9))->method("convertConfigTableToUtf");
-
+        $oDb->expects($this->at(10))->method("writeAdminLoginData");
 
         $oController = $this->getMock(get_class($this->getController()), array("getView", "getInstance"));
         $oController->expects($this->at(0))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oSetup));
         $oController->expects($this->at(1))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSession));
         $oController->expects($this->at(2))->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($oLang));
         $oController->expects($this->at(3))->method("getView")->will($this->returnValue($oView));
-        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
-        $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
+        $oController->expects($this->at(4))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
+        $oController->expects($this->at(5))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
+        $oController->expects($this->at(6))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSessionToCheckIfUserDecideToOverwriteDB));
         $this->assertEquals("default.php", $oController->dbCreate());
     }
 
@@ -867,9 +956,6 @@ class ControllerTest extends \OxidTestCase
         $oUtils->expects($this->at($iAt++))->method("isValidEmail")->will($this->returnValue(true));
         $oUtils->expects($this->at($iAt++))->method("updateConfigFile")->will($this->throwException(new Exception));
 
-        $oDb = $this->getMock("databaseStub", array("writeAdminLoginData"));
-        $oDb->expects($this->once())->method("writeAdminLoginData");
-
         $iAt = 0;
 
         $oController = $this->getMock(get_class($this->getController()), array("getView", "getInstance"));
@@ -878,7 +964,6 @@ class ControllerTest extends \OxidTestCase
         $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSession));
         $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("Language")); //->will( $this->returnValue( $oLang ) );
         $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
-        $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
         $this->assertEquals("default.php", $oController->dirsWrite());
     }
 
@@ -899,13 +984,7 @@ class ControllerTest extends \OxidTestCase
         $oSetup = $this->getMock("Setup", array("setNextStep", "getStep"));
         $oSetup->expects($this->once())->method("setNextStep");
 
-        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
-            $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_SERIAL"));
-        }
-
-        if ($this->getTestConfig()->getShopEdition() === 'CE') {
-            $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_FINISH"));
-        }
+        $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_DB_CREATE"));
 
         $iAt = 0;
         $oSession = $this->getMock('SetupSession', array("setSessionParam", "getSessionParam"), array(), '', null);
@@ -930,9 +1009,6 @@ class ControllerTest extends \OxidTestCase
         $oUtils->expects($this->at($iAt++))->method("updateConfigFile");
         $oUtils->expects($this->at($iAt++))->method("updateHtaccessFile");
 
-        $oDb = $this->getMock("databaseStub", array("writeAdminLoginData"));
-        $oDb->expects($this->once())->method("writeAdminLoginData");
-
         $iAt = 0;
 
         $oController = $this->getMock(get_class($this->getController()), array("getView", "getInstance"));
@@ -941,7 +1017,6 @@ class ControllerTest extends \OxidTestCase
         $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSession));
         $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($oLang));
         $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
-        $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("Database"))->will($this->returnValue($oDb));
         $this->assertEquals("default.php", $oController->dirsWrite());
     }
 

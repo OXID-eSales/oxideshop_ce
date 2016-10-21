@@ -27,5 +27,4 @@ if ( $this->getViewParam( "blCreated" ) === 1 ) {
     ?><b><?php printf( $this->getText('STEP_3_1_DB_CREATE_IS_OK', false ), $aDB['dbName'] ); ?></b><br><?php
 }
 ?>
-<br><?php $this->getText('STEP_3_1_CREATING_TABLES'); ?><br>
 <?php require "_footer.php";

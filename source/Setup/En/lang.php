@@ -38,8 +38,8 @@ $aLang = array(
 'TAB_0_DESC'                                    => 'Checking if your system fits the requirements',
 'TAB_1_DESC'                                    => 'Welcome to OXID eShop installation wizard',
 'TAB_2_DESC'                                    => 'Confirm license conditions',
-'TAB_3_DESC'                                    => 'Test database connection, building tables',
-'TAB_4_DESC'                                    => 'Configuring directories and selecting admin login',
+'TAB_3_DESC'                                    => 'Enter database connection details, test database connection',
+'TAB_4_DESC'                                    => 'Configure directories and admin login, update database, run migrations',
 'TAB_5_DESC'                                    => 'Apply license key',
 'TAB_6_DESC'                                    => 'Installation succeeded',
 
@@ -141,16 +141,11 @@ $aLang = array(
 'STEP_3_CREATE_DB_WHEN_NO_DB_FOUND'             => 'If database does not exist, it\'s going to be created',
 'BUTTON_RADIO_INSTALL_DB_DEMO'                  => 'Install demodata',
 'BUTTON_RADIO_NOT_INSTALL_DB_DEMO'              => 'Do <strong>not</strong> install demodata',
-'BUTTON_DB_INSTALL'                             => 'Create database now',
+'BUTTON_DB_CREATE'                              => 'Create database now',
 
 'STEP_3_1_TITLE'                                => 'Database - being created ...',
 'STEP_3_1_DB_CONNECT_IS_OK'                     => 'Database connection successfully tested ...',
 'STEP_3_1_DB_CREATE_IS_OK'                      => 'Database %s successfully created ...',
-'STEP_3_1_CREATING_TABLES'                      => 'Creating tables, applying data ...',
-
-'STEP_3_2_TITLE'                                => 'Database - tables are being created ...',
-'STEP_3_2_CONTINUE_INSTALL_OVER_EXISTING_DB'    => 'If you want to overwrite all existing data and install anyway click ',
-'STEP_3_2_CREATING_DATA'                        => 'Database successfully created. Please wait ...',
 
 'STEP_4_TITLE'                                  => 'Setting up OXID eShop directories and URL',
 'STEP_4_DESC'                                   => 'Please provide necessary data for running OXID eShop:',
@@ -165,6 +160,10 @@ $aLang = array(
 'STEP_4_1_TITLE'                                => 'Directories - being created ...',
 'STEP_4_1_DATA_WAS_WRITTEN'                     => 'Check and writing data successful. Please wait ...',
 'BUTTON_WRITE_DATA'                             => 'Save and continue',
+
+'STEP_4_2_TITLE'                                => 'Creating database tables ...',
+'STEP_4_2_OVERWRITE_DB'                         => 'If you want to overwrite all existing data and install anyway click ',
+'STEP_4_2_UPDATING_DATABASE'                    => 'Database successfully updated. Please wait ...',
 
 'STEP_5_TITLE'                                  => 'OXID eShop license',
 'STEP_5_DESC'                                   => 'Please confirm license key:',

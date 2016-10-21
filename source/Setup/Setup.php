@@ -62,9 +62,9 @@ class Setup extends Core
         'STEP_LICENSE'     => 300, // 2
         'STEP_DB_INFO'     => 400, // 3
         'STEP_DB_CONNECT'  => 410, // 31
-        'STEP_DB_CREATE'   => 420, // 32
         'STEP_DIRS_INFO'   => 500, // 4
         'STEP_DIRS_WRITE'  => 510, // 41
+        'STEP_DB_CREATE'   => 520, // 42
         'STEP_FINISH'      => 700, // 6
     );
 

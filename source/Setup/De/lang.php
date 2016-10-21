@@ -38,8 +38,8 @@ $aLang = array(
 'TAB_0_DESC'                                    => 'Überprüfen, ob Ihr System die Voraussetzungen erfüllt',
 'TAB_1_DESC'                                    => 'Herzlich willkommen<br>zur Installation von OXID eShop',
 'TAB_2_DESC'                                    => 'Bestätigen Sie die Lizenzbedingungen',
-'TAB_3_DESC'                                    => 'Verbindung testen,<br>Tabellen anlegen',
-'TAB_4_DESC'                                    => 'Verzeichnisse einrichten und Admin-Zugangsdaten wählen',
+'TAB_3_DESC'                                    => 'Zugangsdaten für Datenbank eingeben, Datenbankverbindung testen',
+'TAB_4_DESC'                                    => 'Verzeichnisse und Admin-Zugangsdaten einrichten, Datenbank aktualisieren, Migration starten',
 'TAB_5_DESC'                                    => 'Lizenzschlüssel eintragen',
 'TAB_6_DESC'                                    => 'Installation erfolgreich',
 
@@ -140,16 +140,11 @@ $aLang = array(
 'STEP_3_CREATE_DB_WHEN_NO_DB_FOUND'             => 'Falls die Datenbank nicht vorhanden ist, wird versucht diese anzulegen',
 'BUTTON_RADIO_INSTALL_DB_DEMO'                  => 'Demodaten installieren',
 'BUTTON_RADIO_NOT_INSTALL_DB_DEMO'              => 'Demodaten <strong>nicht</strong> installieren',
-'BUTTON_DB_INSTALL'                             => 'Datenbank jetzt erstellen',
+'BUTTON_DB_CREATE'                              => 'Datenbank jetzt erstellen',
 
-'STEP_3_1_TITLE'                                => 'Datenbank - in Arbeit...',
-'STEP_3_1_DB_CONNECT_IS_OK'                     => 'Datenbank Verbindung erfolgreich geprüft...',
-'STEP_3_1_DB_CREATE_IS_OK'                      => 'Datenbank %s erfolgreich erstellt...',
-'STEP_3_1_CREATING_TABLES'                      => 'Erstelle Tabellen, kopiere Daten...',
-
-'STEP_3_2_TITLE'                                => 'Datenbank - Tabellen erstellen...',
-'STEP_3_2_CONTINUE_INSTALL_OVER_EXISTING_DB'    => 'Falls Sie dennoch installieren wollen und die alten Daten überschreiben, klicken Sie',
-'STEP_3_2_CREATING_DATA'                        => 'Datenbank erfolgreich erstellt!<br>Bitte warten...',
+'STEP_3_1_TITLE'                                => 'Datenbank - in Arbeit ...',
+'STEP_3_1_DB_CONNECT_IS_OK'                     => 'Datenbank Verbindung erfolgreich geprüft ...',
+'STEP_3_1_DB_CREATE_IS_OK'                      => 'Datenbank %s erfolgreich erstellt ...',
 
 'STEP_4_TITLE'                                  => 'Einrichten des OXID eShops',
 'STEP_4_DESC'                                   => 'Bitte geben Sie hier die für den Betrieb notwendigen Daten ein:',
@@ -161,9 +156,13 @@ $aLang = array(
 'STEP_4_ADMIN_PASS_CONFIRM'                     => 'Administrator Passwort bestätigen',
 'STEP_4_ADMIN_PASS_MINCHARS'                    => 'frei wählbar, mindestens 6 Zeichen',
 
-'STEP_4_1_TITLE'                                => 'Verzeichnisse - in Arbeit...',
-'STEP_4_1_DATA_WAS_WRITTEN'                     => 'Kontrolle und Schreiben der Dateien erfolgreich!<br>Bitte warten...',
+'STEP_4_1_TITLE'                                => 'Verzeichnisse - in Arbeit ...',
+'STEP_4_1_DATA_WAS_WRITTEN'                     => 'Kontrolle und Schreiben der Dateien erfolgreich!<br>Bitte warten ...',
 'BUTTON_WRITE_DATA'                             => 'Daten jetzt speichern',
+
+'STEP_4_2_TITLE'                                => 'Datenbank - Tabellen erstellen ...',
+'STEP_4_2_OVERWRITE_DB'                         => 'Falls Sie dennoch installieren wollen und die alten Daten überschreiben, klicken Sie',
+'STEP_4_2_UPDATING_DATABASE'                    => 'Datenbank erfolgreich aktualisiert. Bitte warten ...',
 
 'STEP_5_TITLE'                                  => 'OXID eShop Lizenz',
 'STEP_5_DESC'                                   => 'Bitte geben Sie nun Ihren OXID eShop Lizenzschlüssel ein:',
@@ -172,8 +171,8 @@ $aLang = array(
                                                     Nach Ablauf der 30 Tage können alle Ihre Änderungen nach Eingabe eines gültigen Lizenzschlüssels weiterhin benutzt werden.',
 'BUTTON_WRITE_LICENCE'                          => 'Lizenzschlüssel speichern',
 
-'STEP_5_1_TITLE'                                => 'Lizenzschlüssel - in Arbeit...',
-'STEP_5_1_SERIAL_ADDED'                         => 'Lizenzschlüssel erfolgreich gespeichert!<br>Bitte warten...',
+'STEP_5_1_TITLE'                                => 'Lizenzschlüssel - in Arbeit ...',
+'STEP_5_1_SERIAL_ADDED'                         => 'Lizenzschlüssel erfolgreich gespeichert!<br>Bitte warten ...',
 
 'STEP_6_TITLE'                                  => 'OXID eShop Einrichtung erfolgreich',
 'STEP_6_DESC'                                   => 'Die Einrichtung Ihres OXID eShop wurde erfolgreich abgeschlossen.',

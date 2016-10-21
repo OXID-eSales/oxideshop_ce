@@ -152,11 +152,14 @@ class Controller extends Core
 
         $oView = $this->getView();
         $oView->setTitle('STEP_2_TITLE');
-        $oView->setViewParam("aLicenseText", $this->getInstance("Utilities")->getFileContents(
-            $editionPathSelector->getSetupDirectory()
-            . '/'. ucfirst($this->getInstance("Language")->getLanguage())
-            . '/' . $sLicenseFile
-        ));
+        $oView->setViewParam(
+            "aLicenseText",
+            $this->getInstance("Utilities")->getFileContents(
+                $editionPathSelector->getSetupDirectory()
+                . '/'. ucfirst($this->getInstance("Language")->getLanguage())
+                . '/' . $sLicenseFile
+            )
+        );
 
         return "license.php";
     }
@@ -212,6 +215,11 @@ class Controller extends Core
     {
         /** @var Session $oSession */
         $oSession = $this->getInstance("Session");
+
+        if ($this->userDecidedOverwriteDB()) {
+            $oSession->setSessionParam('blOverwrite', true);
+        }
+
         $oView = $this->getView();
         $oView->setTitle('STEP_4_TITLE');
         $oView->setViewParam("aSetupConfig", $oSession->getSessionParam('aSetupConfig'));
@@ -221,7 +229,6 @@ class Controller extends Core
         /** @var Setup $oSetup */
         $oSetup = $this->getInstance("Setup");
         $oView->setViewParam("aSetupConfig", array("blDelSetupDir" => $oSetup->deleteSetupDirectory()));
-
         return "dirsinfo.php";
     }
 
@@ -287,7 +294,14 @@ class Controller extends Core
         }
 
         $oView->setViewParam("aDB", $aDB);
-        $oSetup->setNextStep($oSetup->getStep('STEP_DB_CREATE'));
+
+        // check if DB is already UP and running
+        if (!$this->databaseCanBeOverwritten($oDb)) {
+            $this->formMessageIfDBCanBeOverwritten($aDB['dbName'], $oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DIRS_INFO'));
+            return "default.php";
+        }
+
+        $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
 
         return "dbconnect.php";
     }
@@ -307,13 +321,9 @@ class Controller extends Core
         $oLang = $this->getInstance("Language");
 
         $oView = $this->getView();
-        $oView->setTitle('STEP_3_2_TITLE');
+        $oView->setTitle('STEP_4_2_TITLE');
 
         $aDB = $oSession->getSessionParam('aDB');
-        $blOverwrite = $this->getInstance("Utilities")->getRequestVar("ow", "get");
-        if (!isset($blOverwrite)) {
-            $blOverwrite = false;
-        }
 
         /** @var Database $oDb */
         $oDb = $this->getInstance("Database");
@@ -331,14 +341,8 @@ class Controller extends Core
         }
 
         // check if DB is already UP and running
-        $databaseExists = $this->checkDbExists($oDb);
-        if (!$blOverwrite && $databaseExists) {
-            // DB already UP ?
-            $oView->setMessage(
-                sprintf($oLang->getText('ERROR_DB_ALREADY_EXISTS'), $aDB['dbName']) .
-                "<br><br>" . $oLang->getText('STEP_3_2_CONTINUE_INSTALL_OVER_EXISTING_DB') . " <a href=\"index.php?sid=" . $oSession->getSid() . "&istep=" . $oSetup->getStep('STEP_DB_CREATE') . "&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $oLang->getText('HERE') . "</a>"
-            );
-
+        if (!$this->databaseCanBeOverwritten($oDb)) {
+            $this->formMessageIfDBCanBeOverwritten($aDB['dbName'], $oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DB_CREATE'));
             return "default.php";
         }
 
@@ -404,8 +408,18 @@ class Controller extends Core
             $oDb->convertConfigTableToUtf();
         }
 
-        $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
-        $oView->setMessage($oLang->getText('STEP_3_2_CREATING_DATA'));
+        try {
+            $aAdminData = $oSession->getSessionParam('aAdminData');
+            // creating admin user
+            $oDb->writeAdminLoginData($aAdminData['sLoginName'], $aAdminData['sPassword']);
+        } catch (Exception $oExcp) {
+            $oView->setMessage($oExcp->getMessage());
+
+            return "default.php";
+        }
+
+        $oView->setMessage($oLang->getText('STEP_4_2_UPDATING_DATABASE'));
+        $this->onDirsWriteSetStep($oSetup);
 
         return "default.php";
     }
@@ -452,8 +466,8 @@ class Controller extends Core
         $oSession->setSessionParam('aAdminData', $aAdminData);
 
         // check if important parameters are set
-        if (!$aPath['sShopURL'] || !$aPath['sShopDir'] || !$aPath['sCompileDir'] ||
-            !$aAdminData['sLoginName'] || !$aAdminData['sPassword'] || !$aAdminData['sPasswordConfirm']
+        if (!$aPath['sShopURL'] || !$aPath['sShopDir'] || !$aPath['sCompileDir']
+            || !$aAdminData['sLoginName'] || !$aAdminData['sPassword'] || !$aAdminData['sPasswordConfirm']
         ) {
             $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
             $oView->setMessage($oLang->getText('ERROR_FILL_ALL_FIELDS'));
@@ -485,15 +499,6 @@ class Controller extends Core
             return "default.php";
         }
 
-        try {
-            // creating admin user
-            $this->getInstance("Database")->writeAdminLoginData($aAdminData['sLoginName'], $aAdminData['sPassword']);
-        } catch (Exception $oExcp) {
-            $oView->setMessage($oExcp->getMessage());
-
-            return "default.php";
-        }
-
         // write it now
         try {
             $aParams = array_merge(( array ) $oSession->getSessionParam('aDB'), $aPath);
@@ -513,11 +518,13 @@ class Controller extends Core
             return "default.php";
         }
 
-        $this->onDirsWriteSetStep($oSetup);
-
         $oView->setMessage($oLang->getText('STEP_4_1_DATA_WAS_WRITTEN'));
         $oView->setViewParam("aPath", $aPath);
         $oView->setViewParam("aSetupConfig", $aSetupConfig);
+
+        $aDB = $oSession->getSessionParam('aDB');
+        $oView->setViewParam("aDB", $aDB);
+        $oSetup->setNextStep($oSetup->getStep('STEP_DB_CREATE'));
 
         return "default.php";
     }
@@ -561,9 +568,63 @@ class Controller extends Core
     }
 
     /**
+     * Check if database can be safely overwritten.
+     *
+     * @param Database $oDb database instance used to connect to DB
+     *
+     * @return bool
+     */
+    private function databaseCanBeOverwritten($oDb)
+    {
+        $blCanBeOverwritten = true;
+
+        if (!$this->userDecidedOverwriteDB()) {
+            $blCanBeOverwritten = !$this->checkDbExists($oDb);
+        }
+
+        return $blCanBeOverwritten;
+    }
+
+    /**
+     * Return if user already decided to overwrite database.
+     *
+     * @return bool
+     */
+    private function userDecidedOverwriteDB()
+    {
+        $userDecidedOverwriteDB = false;
+
+        $blOverwriteCheck = $this->getInstance("Utilities")->getRequestVar("ow", "get");
+        $oSession = $this->getInstance("Session");
+
+        if (isset($blOverwriteCheck) || $oSession->getSessionParam('blOverwrite')) {
+            $userDecidedOverwriteDB = true;
+        }
+
+        return $userDecidedOverwriteDB;
+    }
+
+    /**
+     * Show warning-question if database with same name already exists.
+     *
+     * @param string   $sDBName    name of database to check if exist
+     * @param View     $oView      to set parameters for template
+     * @param Language $oLang      to translate text
+     * @param string   $sSessionId
+     * @param string   $sStep      where to redirect if chose to rewrite database
+     */
+    private function formMessageIfDBCanBeOverwritten($sDBName, $oView, $oLang, $sSessionId, $sStep)
+    {
+        $oView->setMessage(
+            sprintf($oLang->getText('ERROR_DB_ALREADY_EXISTS'), $sDBName) .
+            "<br><br>" . $oLang->getText('STEP_4_2_OVERWRITE_DB') . " <a href=\"index.php?sid=" . $sSessionId . "&istep=" . $sStep . "&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $oLang->getText('HERE') . "</a>"
+        );
+    }
+
+    /**
      * Check if database is up and running
      *
-     * @param Database $database
+     * @param  Database $database
      * @return bool
      */
     private function checkDbExists($database)

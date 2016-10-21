@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\Eshop\Core\Controller;
 
 use oxCategory;
 use oxRegistry;
@@ -34,7 +34,7 @@ use oxViewConfig;
  * Base view class. Collects and passes data to template engine, sets some global
  * configuration parameters.
  */
-class View extends \oxSuperCfg
+class BaseController extends \oxSuperCfg
 {
     /**
      * Array of data that is passed to template engine - array( "varName" => "varValue").
@@ -468,7 +468,7 @@ class View extends \oxSuperCfg
     /**
      * Get parent object
      *
-     * @return View
+     * @return BaseController
      */
     public function getParent()
     {

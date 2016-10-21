@@ -22,6 +22,7 @@
 namespace Unit\Core;
 
 use modDB;
+use OxidEsales\Eshop\Core\Controller\BaseController;
 use \oxRegistry;
 
 class WidgetControlTest extends \OxidTestCase
@@ -113,7 +114,7 @@ class WidgetControlTest extends \OxidTestCase
 
         $this->assertEquals(3, count($aActiveViews));
         $this->assertEquals("account", $aActiveViews[0]->getClassName());
-        $this->assertInstanceOf('OxidEsales\Eshop\Application\Controller\BaseController', $aActiveViews[1]);
+        $this->assertInstanceOf(BaseController::class, $aActiveViews[1]);
         $this->assertEquals("oxwCookieNote", $aActiveViews[2]->getClassName());
 
         $this->assertEquals("oxwCookieNote", $oControl->getConfig()->getActiveView()->getClassName());

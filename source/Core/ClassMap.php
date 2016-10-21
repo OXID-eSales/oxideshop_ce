@@ -22,6 +22,8 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use OxidEsales\Eshop\Core\Controller\BaseController;
+
 /**
  * @inheritdoc
  */
@@ -373,7 +375,7 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'wishlist' => '\OxidEsales\Eshop\Application\Controller\WishListController',
             'wrapping' => '\OxidEsales\Eshop\Application\Controller\WrappingController',
             'oxshopcontrol' => '\OxidEsales\Eshop\Core\ShopControl',
-            'oxview' => '\OxidEsales\Eshop\Core\View',
+            'oxview' => BaseController::class,
             'oxi18n' => '\OxidEsales\Eshop\Core\I18n',
             'oxsupercfg' => '\OxidEsales\Eshop\Core\Base',
             'oxutilsobject' => '\OxidEsales\Eshop\Core\UtilsObject',

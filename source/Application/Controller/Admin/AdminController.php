@@ -31,7 +31,7 @@ use oxShop;
 /**
  * @internal This class should not be directly extended, instead of it oxAdminView class should be used.
  */
-class AdminView extends \oxView
+class AdminController extends \oxView
 {
     /**
      * Fixed types - enums in database.

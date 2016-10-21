@@ -23,6 +23,7 @@
 namespace OxidEsales\Eshop\Core;
 
 use OxidEsales\Eshop\Application\Component\Widget\WidgetController;
+use OxidEsales\Eshop\Application\Controller\Admin\AdminController;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Controller\BaseController;
 
@@ -351,7 +352,7 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
         return [
             'oxbase' => '\OxidEsales\Eshop\Core\Model\BaseModel',
             'oxsysrequirements' => '\OxidEsales\Eshop\Core\SystemRequirements',
-            'oxadminview' => '\OxidEsales\Eshop\Application\Controller\Admin\AdminView',
+            'oxadminview' => AdminController::class,
             'oxadminlist' => '\OxidEsales\Eshop\Application\Controller\Admin\AdminList',
             'order_list' => '\OxidEsales\Eshop\Application\Controller\Admin\OrderList',
             'user_list' => '\OxidEsales\Eshop\Application\Controller\Admin\UserList',

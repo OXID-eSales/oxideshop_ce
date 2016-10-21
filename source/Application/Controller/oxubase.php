@@ -27,8 +27,8 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
- * @mixin \OxidEsales\EshopEnterprise\Application\Controller\BaseController
+ * @mixin \OxidEsales\EshopEnterprise\Application\Controller\FrontendController
  */
-class oxUBase extends \OxidEsales\Eshop\Application\Controller\BaseController
+class oxUBase extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 }

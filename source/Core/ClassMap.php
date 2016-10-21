@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Controller\BaseController;
 
 /**
@@ -358,7 +359,7 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'article_list' => '\OxidEsales\Eshop\Application\Controller\Admin\ArticleList',
             'oxshopidcalculator' => '\OxidEsales\Eshop\Core\ShopIdCalculator',
             'details' => '\OxidEsales\Eshop\Application\Controller\ArticleDetailsController',
-            'oxubase' => '\OxidEsales\Eshop\Application\Controller\BaseController',
+            'oxubase' => FrontendController::class,
             'alist' => '\OxidEsales\Eshop\Application\Controller\ArticleListController',
             'user' => '\OxidEsales\Eshop\Application\Controller\UserController',
             'guestbook' => '\OxidEsales\Eshop\Application\Controller\GuestbookController',

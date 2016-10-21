@@ -23,7 +23,7 @@ namespace OxidEsales\Eshop\Core;
 
 use oxCookieException;
 use oxException;
-use OxidEsales\Eshop\Application\Controller\BaseController;
+use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
@@ -303,7 +303,7 @@ class ShopControl extends \oxSuperCfg
      * Executes provided function on view object.
      * If this function can not be executed (is protected or so), oxSystemComponentException exception is thrown.
      *
-     * @param BaseController $view
+     * @param FrontendController $view
      * @param string         $functionName
      *
      * @throws oxSystemComponentException
@@ -320,7 +320,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Forms output from view object.
      *
-     * @param BaseController $view
+     * @param FrontendController $view
      *
      * @return string
      */
@@ -332,7 +332,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Method for sending any additional headers on every page requests.
      *
-     * @param BaseController $view
+     * @param FrontendController $view
      */
     protected function sendAdditionalHeaders($view)
     {
@@ -346,11 +346,11 @@ class ShopControl extends \oxSuperCfg
      * @param array  $parameters Parameters array
      * @param array  $viewsChain Array of views names that should be initialized also
      *
-     * @return BaseController
+     * @return FrontendController
      */
     protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
     {
-        /** @var BaseController $view */
+        /** @var FrontendController $view */
         $view = oxNew($class);
 
         $view->setClassName($class);
@@ -369,7 +369,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Event for any actions during view creation.
      *
-     * @param BaseController $view
+     * @param FrontendController $view
      */
     protected function onViewCreation($view)
     {
@@ -378,7 +378,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Check if method can be executed.
      *
-     * @param BaseController $view     View object to check if its method can be executed.
+     * @param FrontendController $view     View object to check if its method can be executed.
      * @param string         $function Method to check if it can be executed.
      *
      * @return bool
@@ -422,7 +422,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Render BaseController object.
      *
-     * @param BaseController $view view object to render
+     * @param FrontendController $view view object to render
      *
      * @return string
      */
@@ -601,7 +601,7 @@ class ShopControl extends \oxSuperCfg
      * @param bool           $isCached       Is content cached
      * @param string         $viewId         View ID
      * @param array          $viewData       View data
-     * @param BaseController $view           View object
+     * @param FrontendController $view           View object
      */
     protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = array(), $view = null)
     {
@@ -614,7 +614,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Stops resource monitor, summarizes and outputs values.
      *
-     * @param BaseController $view View object
+     * @param FrontendController $view View object
      */
     protected function stopMonitoring($view)
     {
@@ -650,7 +650,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Forms message for displaying monitoring information on the bottom of the page.
      *
-     * @param BaseController $view
+     * @param FrontendController $view
      *
      * @return string
      */

@@ -52,7 +52,7 @@ define('VIEW_INDEXSTATE_NOINDEXFOLLOW', 2); //  no index / follow
  * Class is responsible for managing of components that must be
  * loaded and executed before any regular operation.
  */
-class BaseController extends \oxView
+class FrontendController extends \oxView
 {
     /**
      * Characters which should be removed while preparing meta keywords

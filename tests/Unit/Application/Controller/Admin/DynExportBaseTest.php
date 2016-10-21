@@ -25,7 +25,7 @@ use DynExportBase;
 use Exception;
 use oxarticle;
 use oxDb;
-use OxidEsales\Eshop\Core\Database;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use oxRegistry;
 use oxTestModules;
 use stdClass;

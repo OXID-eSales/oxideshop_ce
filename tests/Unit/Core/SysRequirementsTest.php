@@ -22,7 +22,7 @@
 namespace Unit\Core;
 
 use oxDb;
-use OxidEsales\Eshop\Core\Database;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 
 class SysRequirementsTest extends \OxidTestCase
 {

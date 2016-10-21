@@ -132,7 +132,7 @@ class ModuleVariablesLocator
     protected function getModuleVarFromDB($name)
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = Database::getMaster();
+        $masterDb = DatabaseProvider::getMaster();
 
         $shopId = $this->getShopIdCalculator()->getShopId();
         $configKey = $this->getConfigurationKey();

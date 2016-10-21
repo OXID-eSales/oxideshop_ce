@@ -24,7 +24,7 @@ namespace OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter;
 
 use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Database;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Registry;
 use ReflectionClass;
@@ -1498,7 +1498,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
     public static function resetDbProperty($class)
     {
-        $reflectionClass = new ReflectionClass('OxidEsales\Eshop\Core\Database');
+        $reflectionClass = new ReflectionClass(\OxidEsales\Eshop\Core\DatabaseProvider::class);
 
         $reflectionProperty = $reflectionClass->getProperty('db');
         $reflectionProperty->setAccessible(true);

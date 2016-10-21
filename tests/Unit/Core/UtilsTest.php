@@ -24,7 +24,7 @@ namespace Unit\Core;
 use Exception;
 use modDB;
 use oxField;
-use OxidEsales\Eshop\Core\Database;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxSystemComponentException;

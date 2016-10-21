@@ -24,7 +24,7 @@ namespace Unit\Application\Model;
 use oxDb;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\Search;
-use OxidEsales\Eshop\Core\Database;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxRegistry;

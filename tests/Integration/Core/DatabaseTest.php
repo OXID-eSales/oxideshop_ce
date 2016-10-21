@@ -24,7 +24,7 @@ namespace Integration\Core;
 
 use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Database;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;

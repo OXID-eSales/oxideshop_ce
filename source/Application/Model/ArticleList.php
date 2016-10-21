@@ -22,7 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Model;
 
-use OxidEsales\Eshop\Core\Database;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use oxRegistry;
 use Exception;
 use oxDb;
@@ -670,7 +670,7 @@ class ArticleList extends \oxList
         $sArticleTable = $oBaseObject->getViewName();
         $sArticleFields = $oBaseObject->getSelectFields();
 
-        $oxIdsSql = implode (',', Database::getDb()->quoteArray($aIds));
+        $oxIdsSql = implode (',', DatabaseProvider::getDb()->quoteArray($aIds));
 
         $sSelect = "select $sArticleFields from $sArticleTable ";
         $sSelect .= "where $sArticleTable.oxid in ( " . $oxIdsSql . " ) and ";

@@ -23,18 +23,18 @@ namespace Unit\Core;
 
 use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Database;
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use ReflectionClass;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
 
 /**
  * Class DbTest
  *
  * @group   database-adapter
- * @covers  OxidEsales\Eshop\Core\Database
+ * @covers  DatabaseProvider
  * @package Unit\Core
  */
 class DatabaseTest extends UnitTestCase
@@ -126,21 +126,21 @@ class DatabaseTest extends UnitTestCase
     {
         $database = oxDb::getInstance();
 
-        $this->assertInstanceOf('OxidEsales\Eshop\Core\Database', $database);
+        $this->assertInstanceOf(DatabaseProvider::class, $database);
     }
 
     public function testGetDbReturnsAnInstanceOfDatabaseInterface()
     {
         $database = oxDb::getDb();
 
-        $this->assertInstanceOf('OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface', $database);
+        $this->assertInstanceOf(DatabaseInterface::class, $database);
     }
 
     public function testGetDbReturnsAnInstanceOfDoctrine()
     {
         $database = oxDb::getDb();
 
-        $this->assertInstanceOf('OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database', $database);
+        $this->assertInstanceOf(Database::class, $database);
     }
 
     /**

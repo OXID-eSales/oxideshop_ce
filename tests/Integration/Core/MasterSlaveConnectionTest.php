@@ -23,7 +23,7 @@
 namespace OxidEsales\Eshop\Tests\Integration\Core;
 
 use oxDb;
-use OxidEsales\Eshop\Core\Database;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**

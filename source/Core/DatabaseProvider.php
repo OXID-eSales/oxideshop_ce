@@ -30,7 +30,7 @@ use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
 /**
  * Database connection class
  */
-class Database
+class DatabaseProvider
 {
 
     /**
@@ -44,7 +44,7 @@ class Database
     const FETCH_MODE_ASSOC = DatabaseInterface::FETCH_MODE_ASSOC;
 
     /**
-     * @var null|Database A singleton instance of this class or a sub class of this class
+     * @var null|DatabaseProvider A singleton instance of this class or a sub class of this class
      */
     protected static $instance = null;
 
@@ -87,7 +87,7 @@ class Database
     /**
      * Returns the singleton instance of this class or of a sub class of this class.
      *
-     * @return Database The singleton instance.
+     * @return DatabaseProvider The singleton instance.
      */
     public static function getInstance()
     {

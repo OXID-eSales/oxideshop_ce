@@ -23,7 +23,7 @@ namespace Unit\Application\Model;
 
 use modDB;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\Eshop\Core\Database;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use \oxSeoEncoder;
 use \Exception;
 use \oxField;

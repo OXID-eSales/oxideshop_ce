@@ -386,7 +386,7 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'oxi18n' => MultiLanguageModel::class,
             'oxsupercfg' => '\OxidEsales\Eshop\Core\Base',
             'oxutilsobject' => '\OxidEsales\Eshop\Core\UtilsObject',
-            'oxdb' => '\OxidEsales\Eshop\Core\Database',
+            'oxdb' => DatabaseProvider::class,
             'oxconnectionexception' => '\OxidEsales\Eshop\Core\Exception\ConnectionException',
             'oxdynimggenerator' => '\OxidEsales\Eshop\Core\DynamicImageGenerator',
             'oxexceptiontodisplay' => '\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay',

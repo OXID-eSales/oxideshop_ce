@@ -37,6 +37,7 @@ if (!defined('OX_BASE_PATH')) {
 require_once '../oxfunctions.php';
 
 registerComposerAutoload();
+registerVirtualNamespaceAutoLoad();
 registerShopAutoLoad();
 
 require_once 'functions.php';

@@ -99,6 +99,20 @@ if (!function_exists('registerComposerAutoload')) {
     }
 }
 
+if (!function_exists('registerVirtualNamespaceAutoLoad')) {
+    /**
+     * Registers auto-loader for classes of the virtual namespace
+     */
+    function registerVirtualNamespaceAutoLoad()
+    {
+        $classMapProvider = new \OxidEsales\Eshop\Core\ClassMapProvider(new \OxidEsales\Eshop\Core\Edition\EditionSelector());
+        $classMap = $classMapProvider->getVirtualNamespaceClassMap();
+        $virtualNamespaceAutoLoader = new \OxidEsales\EshopCommunity\Core\Autoload\VirtualNamespaceClassAutoload($classMap->getOverridableMap());
+
+        spl_autoload_register(array($virtualNamespaceAutoLoader, 'autoload'));
+    }
+}
+
 if (!function_exists('registerShopAutoLoad')) {
     /**
      * Registers auto-loader for shop legacy (non-namespaced) classes.

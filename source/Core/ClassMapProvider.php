@@ -113,6 +113,33 @@ class ClassMapProvider
     }
 
     /**
+     * Return a map of concrete classes to virtual namespaced classes depending on the shop edition.
+     *
+     * @return \OxidEsales\EshopCommunity\VirtualNameSpaceClassMap|
+     *         \OxidEsales\EshopEnterprise\VirtualNameSpaceClassMap|
+     *         \OxidEsales\EshopProfessional\VirtualNameSpaceClassMap Edition specific class map
+     */
+    public function getVirtualNamespaceClassMap()
+    {
+
+        $editionSelector = $this->getEditionSelector();
+        switch ($editionSelector->getEdition()) {
+            case EditionSelector::ENTERPRISE:
+                $virtualNameSpaceClassMap = new \OxidEsales\EshopEnterprise\VirtualNameSpaceClassMap();
+                break;
+            case EditionSelector::PROFESSIONAL:
+                $virtualNameSpaceClassMap = new \OxidEsales\EshopProfessional\VirtualNameSpaceClassMap();
+                break;
+            default:
+            case EditionSelector::COMMUNITY:
+                $virtualNameSpaceClassMap = new \OxidEsales\EshopCommunity\Core\VirtualNameSpaceClassMap();
+                break;
+        }
+
+        return $virtualNameSpaceClassMap;
+    }
+
+    /**
      * Method forms overridable and not overridable class maps and sets them.
      */
     protected function formClassMaps()

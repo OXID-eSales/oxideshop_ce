@@ -20,7 +20,7 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunity;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * @inheritdoc
@@ -29,7 +29,9 @@ class VirtualNameSpaceClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
 {
 
     /**
-     * @inheritdoc
+     * Returns leaf classes class map.
+     *
+     * @return array The classmap maps orignal calls to virtual class
      */
     public function getOverridableMap()
     {
@@ -39,7 +41,11 @@ class VirtualNameSpaceClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
     }
 
     /**
-     * @inheritdoc
+     * Returns class map, of classes which can't be extended by modules.
+     * There are no usecases for virtual namspaces in not overidable classes at the moment.
+     * This function will return always an empty array.
+     *
+     * @return array The classmap maps orignal calls to virtual class
      */
     public function getNotOverridableMap()
     {

@@ -161,7 +161,7 @@ class DeliveryList extends \oxList
         $oDb = oxDb::getDb();
 
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid ";
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid ";
         $sQ .= "where " . $this->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = " . $oDb->quote($sDelSet) . " ";
 
         // defining initial filter parameters

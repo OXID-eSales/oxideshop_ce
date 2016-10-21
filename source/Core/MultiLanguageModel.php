@@ -28,7 +28,7 @@ use oxDb;
 /**
  * Class handling multilanguage data fields
  */
-class I18n extends \oxBase
+class MultiLanguageModel extends \oxBase
 {
 
     /**

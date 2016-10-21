@@ -28,6 +28,7 @@ use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
 use OxidEsales\Eshop\Application\Controller\Admin\AdminListController;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Controller\BaseController;
+use OxidEsales\Eshop\Core\MultiLanguageModel;
 use OxidEsales\Eshop\Core\Model\ListModel;
 
 /**
@@ -382,7 +383,7 @@ class ClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
             'wrapping' => '\OxidEsales\Eshop\Application\Controller\WrappingController',
             'oxshopcontrol' => '\OxidEsales\Eshop\Core\ShopControl',
             'oxview' => BaseController::class,
-            'oxi18n' => '\OxidEsales\Eshop\Core\I18n',
+            'oxi18n' => MultiLanguageModel::class,
             'oxsupercfg' => '\OxidEsales\Eshop\Core\Base',
             'oxutilsobject' => '\OxidEsales\Eshop\Core\UtilsObject',
             'oxdb' => '\OxidEsales\Eshop\Core\Database',

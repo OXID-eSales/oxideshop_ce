@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * List of additional shop information links widget.

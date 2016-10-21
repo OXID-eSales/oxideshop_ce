@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Sets view template, that arranges two other templates ("actions_list.tpl"

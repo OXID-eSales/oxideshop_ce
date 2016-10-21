@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class sysreq_main extends \OxidEsales\Eshop\Application\Controller\Admin\SystemRequirementsMain
+class sysreq_main extends \OxidEsales\EshopCommunity\Application\Controller\Admin\SystemRequirementsMain
 {
 }

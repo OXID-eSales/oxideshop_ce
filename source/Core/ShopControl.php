@@ -19,14 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxCookieException;
 use oxException;
-use OxidEsales\Eshop\Application\Controller\FrontendController;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
-use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\EshopCommunity\Application\Controller\FrontendController;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException;
+use OxidEsales\EshopCommunity\Core\Exception\StandardException;
 use OxidEsales\EshopEnterprise\Core\Cache\DynamicContent\ContentCache;
 use oxOutput;
 use oxRegistry;
@@ -894,10 +894,10 @@ class ShopControl extends \oxSuperCfg
                 Database connection error in OXID eShop:
                 Date: {$date}
                 Shop: {$failedShop}
-    
+
                 mysql error: " . $exception->getMessage() . "
                 mysql error no: " . $exception->getCode() . "
-    
+
                 Script: {$script}
                 Referrer: {$referrer}";
 

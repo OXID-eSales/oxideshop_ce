@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Account_Password extends \OxidEsales\Eshop\Application\Controller\AccountPasswordController
+class Account_Password extends \OxidEsales\EshopCommunity\Application\Controller\AccountPasswordController
 {
 }

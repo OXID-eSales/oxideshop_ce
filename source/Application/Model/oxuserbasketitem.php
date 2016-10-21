@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxUserBasketItem extends \OxidEsales\Eshop\Application\Model\UserBasketItem
+class oxUserBasketItem extends \OxidEsales\EshopCommunity\Application\Model\UserBasketItem
 {
 }

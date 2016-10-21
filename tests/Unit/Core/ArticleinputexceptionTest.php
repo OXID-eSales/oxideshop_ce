@@ -38,7 +38,7 @@ class ArticleinputexceptionTest extends \OxidTestCase
     {
         $sMsg = 'Erik was here..';
         $oTestObject = oxNew('oxArticleInputException', $sMsg);
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\ArticleInputException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\ArticleInputException', get_class($oTestObject));
         $sArticle = 'sArticleNumber';
         $oTestObject->setArticleNr($sArticle);
         $sStringOut = $oTestObject->getString();

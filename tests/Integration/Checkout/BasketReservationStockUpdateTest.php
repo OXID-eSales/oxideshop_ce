@@ -24,7 +24,7 @@ namespace Integration\Checkout;
 use oxBasket;
 use oxDb;
 use oxField;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use oxOrder;
 use oxRegistry;
 use oxUtilsObject;

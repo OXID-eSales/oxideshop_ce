@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
+namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
 /**
  * Import object for Articles assignment to actions.

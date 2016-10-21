@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxwCurrencyList extends \OxidEsales\Eshop\Application\Component\Widget\CurrencyList
+class oxwCurrencyList extends \OxidEsales\EshopCommunity\Application\Component\Widget\CurrencyList
 {
 }

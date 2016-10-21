@@ -23,12 +23,12 @@ namespace Unit\Setup;
 
 require_once getShopBasePath() . '/Setup/functions.php';
 
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\Eshop\Setup\Core;
-use OxidEsales\Eshop\Setup\Setup;
+use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Setup\Core;
+use OxidEsales\EshopCommunity\Setup\Setup;
 
 /**
  * Setup tests

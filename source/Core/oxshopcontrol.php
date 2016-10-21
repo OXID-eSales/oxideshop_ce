@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Core\ShopControl
  */
-class oxShopControl extends \OxidEsales\Eshop\Core\ShopControl
+class oxShopControl extends \OxidEsales\EshopCommunity\Core\ShopControl
 {
 }

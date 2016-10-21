@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxStr;
 use oxRegistry;
@@ -98,7 +98,7 @@ class GenericImportMain extends oxAdminDetails
     {
         $config = $this->getConfig();
 
-        $genericImport = oxNew('OxidEsales\Eshop\Core\GenericImport\GenericImport');
+        $genericImport = oxNew('OxidEsales\EshopCommunity\Core\GenericImport\GenericImport');
         $this->_sCsvFilePath = null;
 
         $navigationStep = $config->getRequestParameter('sNavStep');
@@ -147,7 +147,7 @@ class GenericImportMain extends oxAdminDetails
             $csvFields = $config->getRequestParameter('aCsvFields');
             $type = $config->getRequestParameter('sType');
 
-            $genericImport = oxNew('OxidEsales\Eshop\Core\GenericImport\GenericImport');
+            $genericImport = oxNew('OxidEsales\EshopCommunity\Core\GenericImport\GenericImport');
             $genericImport->setImportType($type);
             $genericImport->setCsvFileFieldsOrder($csvFields);
             $genericImport->setCsvContainsHeader(oxRegistry::getSession()->getVariable('blCsvContainsHeader'));

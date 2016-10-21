@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\AttributeCategoryAjax
  */
-class Attribute_Category_Ajax extends \OxidEsales\Eshop\Application\Controller\Admin\AttributeCategoryAjax
+class Attribute_Category_Ajax extends \OxidEsales\EshopCommunity\Application\Controller\Admin\AttributeCategoryAjax
 {
 }

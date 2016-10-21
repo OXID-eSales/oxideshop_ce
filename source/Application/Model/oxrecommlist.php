@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\RecommendationList
  */
-class oxRecommList extends \OxidEsales\Eshop\Application\Model\RecommendationList
+class oxRecommList extends \OxidEsales\EshopCommunity\Application\Model\RecommendationList
 {
 }

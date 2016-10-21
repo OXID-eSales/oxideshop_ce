@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Contract;
+namespace OxidEsales\EshopCommunity\Core\Contract;
 
 /**
  * Interface for selection list based objects

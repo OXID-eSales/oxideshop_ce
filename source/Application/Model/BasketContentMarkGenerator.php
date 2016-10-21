@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\Eshop\Application\Model\Basket;
+use OxidEsales\EshopCommunity\Application\Model\Basket;
 
 /**
  * Class oxBasketContentMarkGenerator which forms explanation marks.

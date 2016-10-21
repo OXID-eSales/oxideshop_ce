@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Discount_List extends \OxidEsales\Eshop\Application\Controller\Admin\DiscountList
+class Discount_List extends \OxidEsales\EshopCommunity\Application\Controller\Admin\DiscountList
 {
 }

@@ -20,10 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
 use oxDb;
-use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
 /** Search and sorting in admin. */
 class SearchAndSortingAdminTest extends AdminTestCase

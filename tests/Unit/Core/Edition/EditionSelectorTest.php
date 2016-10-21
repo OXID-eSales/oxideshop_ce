@@ -21,7 +21,7 @@
  */
 namespace Unit\Core\Edition;
 
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxRegistry;
 

@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxcmp_categories extends \OxidEsales\Eshop\Application\Component\CategoriesComponent
+class oxcmp_categories extends \OxidEsales\EshopCommunity\Application\Component\CategoriesComponent
 {
 }

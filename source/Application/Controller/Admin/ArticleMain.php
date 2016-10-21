@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
 use oxField;
 use oxUtilsObject;
 use stdClass;
-use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\EshopCommunity\Application\Model\Article;
 
 /**
  * Admin article main manager.

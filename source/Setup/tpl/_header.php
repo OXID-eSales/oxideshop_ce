@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-$editionSelector = new \OxidEsales\Eshop\Core\Edition\EditionSelector();
+$editionSelector = new \OxidEsales\EshopCommunity\Core\Edition\EditionSelector();
 ?>
 <!DOCTYPE html>
 <html>

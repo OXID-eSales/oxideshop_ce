@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class DeliverySet_Payment extends \OxidEsales\Eshop\Application\Controller\Admin\DeliverySetPayment
+class DeliverySet_Payment extends \OxidEsales\EshopCommunity\Application\Controller\Admin\DeliverySetPayment
 {
 }

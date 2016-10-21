@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Component\Widget\Rating
  */
-class oxwRating extends \OxidEsales\Eshop\Application\Component\Widget\Rating
+class oxwRating extends \OxidEsales\EshopCommunity\Application\Component\Widget\Rating
 {
 }

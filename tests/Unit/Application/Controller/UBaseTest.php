@@ -384,7 +384,7 @@ class UBaseTest extends \OxidTestCase
 
         $aComponents = $oView->getComponents();
         $this->assertEquals(1, count($aComponents));
-        $this->assertEquals('oxidesales\eshop\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
+        $this->assertEquals('oxidesales\eshopcommunity\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
         $this->assertEquals("oxubaseproxy", $aComponents["oxcmp_lang"]->getParent()->getThisAction());
     }
 
@@ -399,8 +399,8 @@ class UBaseTest extends \OxidTestCase
 
         $aComponents = $oView->getComponents();
         $this->assertEquals(2, count($aComponents));
-        $this->assertEquals('oxidesales\eshop\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
-        $this->assertEquals('oxidesales\eshop\application\component\currencycomponent', $aComponents["oxcmp_cur"]->getThisAction());
+        $this->assertEquals('oxidesales\eshopcommunity\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
+        $this->assertEquals('oxidesales\eshopcommunity\application\component\currencycomponent', $aComponents["oxcmp_cur"]->getThisAction());
         $this->assertEquals(strtolower(get_class($oView)), $aComponents["oxcmp_lang"]->getParent()->getThisAction());
     }
 

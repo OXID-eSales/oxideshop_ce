@@ -27,6 +27,6 @@
  *
  */
 
-class oxSession extends \OxidEsales\Eshop\Core\Session
+class oxSession extends \OxidEsales\EshopCommunity\Core\Session
 {
 }

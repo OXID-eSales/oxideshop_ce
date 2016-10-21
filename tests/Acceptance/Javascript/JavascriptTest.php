@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Javascript;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Javascript;
 
-use OxidEsales\Eshop\Tests\Acceptance\JavascriptTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\JavascriptTestCase;
 
 class JavascriptTest extends JavascriptTestCase
 {

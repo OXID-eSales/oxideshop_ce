@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxNewsletter extends \OxidEsales\Eshop\Application\Model\Newsletter
+class oxNewsletter extends \OxidEsales\EshopCommunity\Application\Model\Newsletter
 {
 }

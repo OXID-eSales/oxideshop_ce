@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class shop_rdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopRdfa
+class shop_rdfa extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ShopRdfa
 {
 }

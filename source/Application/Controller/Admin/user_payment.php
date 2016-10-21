@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class User_Payment extends \OxidEsales\Eshop\Application\Controller\Admin\UserPayment
+class User_Payment extends \OxidEsales\EshopCommunity\Application\Controller\Admin\UserPayment
 {
 }

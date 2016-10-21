@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Admin_Content extends \OxidEsales\Eshop\Application\Controller\Admin\AdminContent
+class Admin_Content extends \OxidEsales\EshopCommunity\Application\Controller\Admin\AdminContent
 {
 }

@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxHeader extends \OxidEsales\Eshop\Core\Header
+class oxHeader extends \OxidEsales\EshopCommunity\Core\Header
 {
 }

@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Admin_Wrapping extends \OxidEsales\Eshop\Application\Controller\Admin\AdminWrapping
+class Admin_Wrapping extends \OxidEsales\EshopCommunity\Application\Controller\Admin\AdminWrapping
 {
 }

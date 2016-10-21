@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class MoreDetails extends \OxidEsales\Eshop\Application\Controller\MoreDetailsController
+class MoreDetails extends \OxidEsales\EshopCommunity\Application\Controller\MoreDetailsController
 {
 }

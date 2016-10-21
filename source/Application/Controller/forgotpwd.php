@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class ForgotPwd extends \OxidEsales\Eshop\Application\Controller\ForgotPasswordController
+class ForgotPwd extends \OxidEsales\EshopCommunity\Application\Controller\ForgotPasswordController
 {
 }

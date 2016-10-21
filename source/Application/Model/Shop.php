@@ -20,11 +20,11 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxDb;
-use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\EshopCommunity\Core\Exception\StandardException;
 
 /**
  * Shop manager.

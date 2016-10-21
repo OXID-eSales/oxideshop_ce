@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\ModuleSortList
  */
-class Module_SortList extends \OxidEsales\Eshop\Application\Controller\Admin\ModuleSortList
+class Module_SortList extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleSortList
 {
 }

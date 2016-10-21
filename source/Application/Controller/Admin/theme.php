@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class Theme extends \OxidEsales\Eshop\Application\Controller\Admin\ThemeController
+class Theme extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ThemeController
 {
 }

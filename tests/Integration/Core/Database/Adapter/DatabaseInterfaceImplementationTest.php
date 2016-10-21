@@ -20,13 +20,13 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter;
 
 use oxDb;
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\ConfigFile;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\EshopCommunity\Core\Registry;
 use ReflectionClass;
 
 /**
@@ -36,7 +36,7 @@ use ReflectionClass;
  * Tests, which do not test mere interface implementation should go to the concrete tests.
  * If the implementation is changed update or add the tests in the concrete class e.g. DoctrineTest.
  *
- * @package OxidEsales\Eshop\Tests\Integration\Core\Database
+ * @package OxidEsales\EshopCommunity\Tests\Integration\Core\Database
  *
  * @group   database-adapter
  */
@@ -1444,7 +1444,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     protected function fetchAllTestTableRows()
     {
         $masterDb = oxDb::getMaster();
-        
+
         return $masterDb
             ->select('SELECT * FROM ' . self::TABLE_NAME, array())
             ->fetchAll();
@@ -1458,7 +1458,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     protected function fetchFirstTestTableOxId()
     {
         $masterDb = oxDb::getMaster();
-        
+
         $rows = $masterDb->select('SELECT OXID FROM ' . self::TABLE_NAME, array());
         $row = $rows->fetchRow();
 
@@ -1498,7 +1498,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
     public static function resetDbProperty($class)
     {
-        $reflectionClass = new ReflectionClass(\OxidEsales\Eshop\Core\DatabaseProvider::class);
+        $reflectionClass = new ReflectionClass(\OxidEsales\EshopCommunity\Core\DatabaseProvider::class);
 
         $reflectionProperty = $reflectionClass->getProperty('db');
         $reflectionProperty->setAccessible(true);

@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-interface oxIUrl extends \OxidEsales\Eshop\Core\Contract\IUrl
+interface oxIUrl extends \OxidEsales\EshopCommunity\Core\Contract\IUrl
 {
 }

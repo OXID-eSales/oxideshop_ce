@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxUserPayment extends \OxidEsales\Eshop\Application\Model\UserPayment
+class oxUserPayment extends \OxidEsales\EshopCommunity\Application\Model\UserPayment
 {
 }

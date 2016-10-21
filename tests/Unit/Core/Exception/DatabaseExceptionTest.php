@@ -20,14 +20,14 @@
  * @version       OXID eShop CE
  */
 
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 
 /**
  *
  * Test class for DatabaseException
- * 
+ *
  * @group database-adapter
  */
 class DatabaseExceptionTest extends UnitTestCase

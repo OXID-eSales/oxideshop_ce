@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxDisplayError extends \OxidEsales\Eshop\Core\DisplayError
+class oxDisplayError extends \OxidEsales\EshopCommunity\Core\DisplayError
 {
 }

@@ -21,7 +21,7 @@
  * @version   OXID eShop CE
  */
 
-namespace  OxidEsales\Eshop\Application\Component\Widget;
+namespace  OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * Category tree widget.
@@ -82,7 +82,7 @@ class CategoryTree extends \oxWidget
      */
     public function getContentCategory()
     {
-        $request = oxNew('OxidEsales\Eshop\Core\Request');
+        $request = oxNew('OxidEsales\EshopCommunity\Core\Request');
         return $request->getRequestParameter('oxcid', false);
     }
 }

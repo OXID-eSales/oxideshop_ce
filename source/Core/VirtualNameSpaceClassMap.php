@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Core;
 /**
  * @inheritdoc
  */
-class VirtualNameSpaceClassMap extends \OxidEsales\Eshop\Core\Edition\ClassMap
+class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap
 {
 
     /**

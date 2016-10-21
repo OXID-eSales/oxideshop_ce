@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Article_Seo extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo
+class Article_Seo extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleSeo
 {
 }

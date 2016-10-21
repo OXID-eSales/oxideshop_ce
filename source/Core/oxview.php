@@ -28,6 +28,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Core\Controller\BaseController
  */
-class oxView extends \OxidEsales\Eshop\Core\Controller\BaseController
+class oxView extends \OxidEsales\EshopCommunity\Core\Controller\BaseController
 {
 }

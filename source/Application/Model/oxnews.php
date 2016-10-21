@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\News
  */
-class oxNews extends \OxidEsales\Eshop\Application\Model\News
+class oxNews extends \OxidEsales\EshopCommunity\Application\Model\News
 {
 }

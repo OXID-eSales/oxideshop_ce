@@ -23,11 +23,11 @@ namespace Unit\Setup;
 
 require_once getShopBasePath() . '/Setup/functions.php';
 use Exception;
-use OxidEsales\Eshop\Setup\Controller;
-use OxidEsales\Eshop\Setup\Core;
-use OxidEsales\Eshop\Setup\Database;
-use OxidEsales\Eshop\Setup\View;
-use OxidEsales\Eshop\Setup\Session as SetupSession;
+use OxidEsales\EshopCommunity\Setup\Controller;
+use OxidEsales\EshopCommunity\Setup\Core;
+use OxidEsales\EshopCommunity\Setup\Database;
+use OxidEsales\EshopCommunity\Setup\View;
+use OxidEsales\EshopCommunity\Setup\Session as SetupSession;
 
 /**
  * controller tests
@@ -95,10 +95,10 @@ class ControllerTest extends \OxidTestCase
         $oSession->expects($this->at(1))->method("getSessionParam")->will($this->returnValue("de"));
         $oSession->expects($this->any())->method("_startSession");
 
-        $oUtils = $this->getMock('OxidEsales\Eshop\Setup\Utilities', array("setCookie"));
+        $oUtils = $this->getMock('OxidEsales\EshopCommunity\Setup\Utilities', array("setCookie"));
         $oUtils->expects($this->once())->method("setCookie")->with($this->equalTo("oxidadminlanguage"));
 
-        $oView = $this->getMock('OxidEsales\Eshop\Setup\View', array("setTitle", "setViewParam"));
+        $oView = $this->getMock('OxidEsales\EshopCommunity\Setup\View', array("setTitle", "setViewParam"));
         $oView->expects($this->at(0))->method("setTitle")->with($this->equalTo('STEP_1_TITLE'));
         $oView->expects($this->at(1))->method("setViewParam")->with($this->equalTo('aCountries'));
         $oView->expects($this->at(2))->method("setViewParam")->with($this->equalTo('aLocations'));
@@ -108,7 +108,7 @@ class ControllerTest extends \OxidTestCase
         $oView->expects($this->at(6))->method("setViewParam")->with($this->equalTo('sLocationLang'));
         $oView->expects($this->at(7))->method("setViewParam")->with($this->equalTo('sCountryLang'));
 
-        $oLang = $this->getMock('OxidEsales\Eshop\Setup\Language', array("getLanguage"));
+        $oLang = $this->getMock('OxidEsales\EshopCommunity\Setup\Language', array("getLanguage"));
         $oLang->expects($this->once())->method("getLanguage")->will($this->returnValue("oxidadminlanguage"));
 
 
@@ -303,7 +303,7 @@ class ControllerTest extends \OxidTestCase
         $oUtils = $this->getMock("Utilities", array("getRequestVar"));
         $oUtils->expects($this->any())->method("getRequestVar")->will($this->returnValue(array("dbHost" => "testHost", "dbName" => "testName")));
 
-        $oDb = $this->getMock('OxidEsales\Eshop\Setup\Database', array("openDatabase"));
+        $oDb = $this->getMock('OxidEsales\EshopCommunity\Setup\Database', array("openDatabase"));
         $oDb->expects($this->once())->method("openDatabase")->will($this->throwException(new Exception("", Database::ERROR_DB_CONNECT)));
 
 

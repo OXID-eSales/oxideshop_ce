@@ -20,10 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Edition;
+namespace OxidEsales\EshopCommunity\Core\Edition;
 
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\ConfigFile;
+use OxidEsales\EshopCommunity\Core\Registry;
 
 /**
  * Class is responsible for returning edition.
@@ -94,7 +94,7 @@ class EditionSelector
      */
     protected function findEdition()
     {
-        if (!class_exists('OxidEsales\Eshop\Core\Registry') || !Registry::instanceExists('oxConfigFile')) {
+        if (!class_exists('OxidEsales\EshopCommunity\Core\Registry') || !Registry::instanceExists('oxConfigFile')) {
             $configFile = new ConfigFile(getShopBasePath() . "config.inc.php");
         }
         $configFile = isset($configFile) ? $configFile : Registry::get('oxConfigFile');

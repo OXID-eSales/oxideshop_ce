@@ -27,6 +27,6 @@
  *
  */
 
-class oxServerProcessor extends \OxidEsales\Eshop\Core\ServerProcessor
+class oxServerProcessor extends \OxidEsales\EshopCommunity\Core\ServerProcessor
 {
 }

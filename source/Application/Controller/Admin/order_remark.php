@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Order_Remark extends \OxidEsales\Eshop\Application\Controller\Admin\OrderRemark
+class Order_Remark extends \OxidEsales\EshopCommunity\Application\Controller\Admin\OrderRemark
 {
 }

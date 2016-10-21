@@ -23,8 +23,8 @@ namespace Unit\Core\Module;
 
 use oxException;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
+use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockContentReader;
+use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 class ModuleTemplateBlockContentReaderTest extends UnitTestCase

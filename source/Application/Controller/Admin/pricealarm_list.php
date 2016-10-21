@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\PriceAlarmList
  */
-class PriceAlarm_List extends \OxidEsales\Eshop\Application\Controller\Admin\PriceAlarmList
+class PriceAlarm_List extends \OxidEsales\EshopCommunity\Application\Controller\Admin\PriceAlarmList
 {
 }

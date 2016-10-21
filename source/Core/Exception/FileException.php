@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Exception;
+namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
  * exception for invalid or non existin external files, e.g.:

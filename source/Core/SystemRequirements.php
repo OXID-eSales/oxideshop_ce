@@ -20,10 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\ResultSetInterface;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use oxRegistry;
 use oxDb;
 

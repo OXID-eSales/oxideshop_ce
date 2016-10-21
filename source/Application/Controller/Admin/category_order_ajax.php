@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\CategoryOrderAjax
  */
-class category_order_ajax extends \OxidEsales\Eshop\Application\Controller\Admin\CategoryOrderAjax
+class category_order_ajax extends \OxidEsales\EshopCommunity\Application\Controller\Admin\CategoryOrderAjax
 {
 }

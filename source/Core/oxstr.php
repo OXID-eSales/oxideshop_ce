@@ -27,6 +27,6 @@
  *
  */
 
-class oxStr extends \OxidEsales\Eshop\Core\Str
+class oxStr extends \OxidEsales\EshopCommunity\Core\Str
 {
 }

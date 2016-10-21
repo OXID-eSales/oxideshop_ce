@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\ShopLicense
  */
-class Shop_License extends \OxidEsales\Eshop\Application\Controller\Admin\ShopLicense
+class Shop_License extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ShopLicense
 {
 }

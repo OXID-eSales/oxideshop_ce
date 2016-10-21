@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class delivery_users_ajax extends \OxidEsales\Eshop\Application\Controller\Admin\DeliveryUsersAjax
+class delivery_users_ajax extends \OxidEsales\EshopCommunity\Application\Controller\Admin\DeliveryUsersAjax
 {
 }

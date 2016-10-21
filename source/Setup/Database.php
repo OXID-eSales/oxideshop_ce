@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
 use Conf;
 use Exception;

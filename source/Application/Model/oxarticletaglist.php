@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\ArticleTagList
  */
-class oxArticleTagList extends \OxidEsales\Eshop\Application\Model\ArticleTagList
+class oxArticleTagList extends \OxidEsales\EshopCommunity\Application\Model\ArticleTagList
 {
 }

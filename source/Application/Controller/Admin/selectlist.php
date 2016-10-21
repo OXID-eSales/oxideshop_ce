@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class SelectList extends \OxidEsales\Eshop\Application\Controller\Admin\SelectListController
+class SelectList extends \OxidEsales\EshopCommunity\Application\Controller\Admin\SelectListController
 {
 }

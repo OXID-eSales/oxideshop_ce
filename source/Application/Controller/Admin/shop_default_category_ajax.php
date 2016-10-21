@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class shop_default_category_ajax extends \OxidEsales\Eshop\Application\Controller\Admin\ShopDefaultCategoryAjax
+class shop_default_category_ajax extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ShopDefaultCategoryAjax
 {
 }

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use OxidEsales\EshopProfessional\Core\Serial;
 
 if (!function_exists('getInstallPath')) {
@@ -49,7 +49,7 @@ if (!function_exists('getSystemReqCheck')) {
         } elseif ($editionSelector->isProfessional()) {
             $systemRequirements = new OxidEsales\EshopProfessional\Core\SystemRequirements;
         } else {
-            $systemRequirements = new OxidEsales\Eshop\Core\SystemRequirements;
+            $systemRequirements = new OxidEsales\EshopCommunity\Core\SystemRequirements;
         }
 
         return $systemRequirements;
@@ -159,7 +159,7 @@ if (!function_exists('getVendorDirectory')) {
      */
     function getVendorDirectory()
     {
-        $oConfigFile = new OxidEsales\Eshop\Core\ConfigFile(OX_BASE_PATH . "config.inc.php");
+        $oConfigFile = new OxidEsales\EshopCommunity\Core\ConfigFile(OX_BASE_PATH . "config.inc.php");
         return $oConfigFile->vendorDirectory;
     }
 }
@@ -175,8 +175,8 @@ if (!class_exists("Conf", false)) {
          */
         public function __construct()
         {
-            $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
-            $this->sConfigKey = $config->getVar('sConfigKey') ?: \OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY;
+            $config = new \OxidEsales\EshopCommunity\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
+            $this->sConfigKey = $config->getVar('sConfigKey') ?: \OxidEsales\EshopCommunity\Core\Config::DEFAULT_CONFIG_KEY;
         }
     }
 }

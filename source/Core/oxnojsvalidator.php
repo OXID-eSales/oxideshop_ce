@@ -27,6 +27,6 @@
  *
  */
 
-class oxNoJsValidator extends \OxidEsales\Eshop\Core\NoJsValidator
+class oxNoJsValidator extends \OxidEsales\EshopCommunity\Core\NoJsValidator
 {
 }

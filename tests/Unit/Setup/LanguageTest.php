@@ -23,7 +23,7 @@ namespace Unit\Setup;
 
 require_once getShopBasePath() . '/Setup/functions.php';
 
-use OxidEsales\Eshop\Setup\Session as SetupSession;
+use OxidEsales\EshopCommunity\Setup\Session as SetupSession;
 
 /**
  * Language tests
@@ -61,7 +61,7 @@ class LanguageTest extends \OxidTestCase
         $oSetup = $this->getMock("Setup", array("getStep"));
         $oSetup->expects($this->at(0))->method("getStep")->with($this->equalTo('STEP_WELCOME'));
 
-        $oLang = $this->getMock('OxidEsales\\Eshop\\Setup\\Language', array("getInstance", "setViewParam"));
+        $oLang = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Language', array("getInstance", "setViewParam"));
         $oLang->expects($this->at(0))->method("getInstance")->with($this->equalTo('Session'))->will($this->returnValue($oSession));
         $oLang->expects($this->at(1))->method("getInstance")->with($this->equalTo('Utilities'))->will($this->returnValue($oUtils));
         $oLang->expects($this->at(2))->method("getInstance")->with($this->equalTo('Setup'))->will($this->returnValue($oSetup));
@@ -86,7 +86,7 @@ class LanguageTest extends \OxidTestCase
         $oUtils = $this->getMock("Utilities", array("getRequestVar"));
         $oUtils->expects($this->at(0))->method("getRequestVar")->with($this->equalTo('setup_lang'), $this->equalTo('post'))->will($this->returnValue(null));
 
-        $oLang = $this->getMock('OxidEsales\\Eshop\\Setup\\Language', array("getInstance", "setViewParam"));
+        $oLang = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Language', array("getInstance", "setViewParam"));
         $oLang->expects($this->at(0))->method("getInstance")->with($this->equalTo('Session'))->will($this->returnValue($oSession));
         $oLang->expects($this->at(1))->method("getInstance")->with($this->equalTo('Utilities'))->will($this->returnValue($oUtils));
         $oLang->getLanguage();
@@ -99,7 +99,7 @@ class LanguageTest extends \OxidTestCase
      */
     public function testGetText()
     {
-        $oLang = $this->getMock('OxidEsales\\Eshop\\Setup\\Language', array("getLanguage"));
+        $oLang = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Language', array("getLanguage"));
         $oLang->expects($this->any())->method("getLanguage")->will($this->returnValue('en'));
         $this->assertEquals("System Requirements", $oLang->getText("TAB_0_TITLE"));
         $this->assertNull($oLang->getText("TEST_IDENT"));
@@ -112,7 +112,7 @@ class LanguageTest extends \OxidTestCase
      */
     public function testGetModuleName()
     {
-        $oLang = $this->getMock('OxidEsales\\Eshop\\Setup\\Language', array("getText"));
+        $oLang = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Language', array("getText"));
         $oLang->expects($this->at(0))->method("getText")->with($this->equalTo('MOD_MODULE1'))->will($this->returnValue('module1'));
         $oLang->expects($this->at(1))->method("getText")->with($this->equalTo('MOD_MODULE2'))->will($this->returnValue('module2'));
         $oLang->expects($this->at(2))->method("getText")->with($this->equalTo('MOD_MODULE3'))->will($this->returnValue('module3'));

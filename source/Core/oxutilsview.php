@@ -27,6 +27,6 @@
  *
  */
 
-class oxUtilsView extends \OxidEsales\Eshop\Core\UtilsView
+class oxUtilsView extends \OxidEsales\EshopCommunity\Core\UtilsView
 {
 }

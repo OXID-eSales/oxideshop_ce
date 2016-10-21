@@ -25,6 +25,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class shop_config extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
+class shop_config extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ShopConfiguration
 {
 }

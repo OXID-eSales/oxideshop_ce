@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Model\Module;
 
-use OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner;
+use OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 class ModuleExtensionsCleanerTest extends UnitTestCase
@@ -45,7 +45,7 @@ class ModuleExtensionsCleanerTest extends UnitTestCase
             'eShopClass' => ['vendorName/testModuleDirectory/moduleClass'],
         ];
         $modulePaths = ['testModuleId' => 'vendorName/testModuleDirectory'];
-        
+
         \oxRegistry::getConfig()->setConfigParam('aModulePaths', $modulePaths);
         /** @var ModuleExtensionsCleaner $extensionsCleaner */
         $extensionsCleaner = oxNew(ModuleExtensionsCleaner::class);

@@ -27,6 +27,6 @@
  *
  */
 
-class oxUtilsPic  extends \OxidEsales\Eshop\Core\UtilsPic
+class oxUtilsPic  extends \OxidEsales\EshopCommunity\Core\UtilsPic
 {
 }

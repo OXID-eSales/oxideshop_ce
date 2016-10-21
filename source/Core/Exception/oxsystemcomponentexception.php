@@ -23,6 +23,6 @@
 /**
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  */
-class oxSystemComponentException extends \OxidEsales\Eshop\Core\Exception\SystemComponentException
+class oxSystemComponentException extends \OxidEsales\EshopCommunity\Core\Exception\SystemComponentException
 {
 }

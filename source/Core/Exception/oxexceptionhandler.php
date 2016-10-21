@@ -25,6 +25,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxExceptionHandler extends \OxidEsales\Eshop\Core\Exception\ExceptionHandler
+class oxExceptionHandler extends \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler
 {
 }

@@ -27,6 +27,6 @@
  *
  */
 
-class oxOnlineServerEmailBuilder extends \OxidEsales\Eshop\Core\OnlineServerEmailBuilder
+class oxOnlineServerEmailBuilder extends \OxidEsales\EshopCommunity\Core\OnlineServerEmailBuilder
 {
 }

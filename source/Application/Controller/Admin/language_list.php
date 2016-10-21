@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\LanguageList
  */
-class Language_List extends \OxidEsales\Eshop\Application\Controller\Admin\LanguageList
+class Language_List extends \OxidEsales\EshopCommunity\Application\Controller\Admin\LanguageList
 {
 }

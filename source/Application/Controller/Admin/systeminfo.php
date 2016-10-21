@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class SystemInfo extends \OxidEsales\Eshop\Application\Controller\Admin\SystemInfoController
+class SystemInfo extends \OxidEsales\EshopCommunity\Application\Controller\Admin\SystemInfoController
 {
 }

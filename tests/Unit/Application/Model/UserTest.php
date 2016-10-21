@@ -22,7 +22,7 @@
 namespace Unit\Application\Model;
 
 use oxEmailHelper;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
 use \oxnewssubscribed;
 use oxUser;
 use oxUtilsObject;

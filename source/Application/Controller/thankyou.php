@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\ThankYouController
  */
-class Thankyou extends \OxidEsales\Eshop\Application\Controller\ThankYouController
+class Thankyou extends \OxidEsales\EshopCommunity\Application\Controller\ThankYouController
 {
 }

@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-interface oxIModuleValidator extends \OxidEsales\Eshop\Core\Contract\IModuleValidator
+interface oxIModuleValidator extends \OxidEsales\EshopCommunity\Core\Contract\IModuleValidator
 {
 }

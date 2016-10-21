@@ -20,10 +20,10 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
 use oxDb;
-use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
 /** Admin interface functionality. */
 class FunctionalityInAdminTest extends AdminTestCase
@@ -2112,7 +2112,7 @@ EOT;
             $query = <<<EOT
             INSERT IGNORE INTO `oxcategories2shop`
             (`OXSHOPID`, `OXMAPOBJECTID`)
-              SELECT 1, `OXMAPID` 
+              SELECT 1, `OXMAPID`
               FROM `oxcategories` WHERE `oxcategories`.`OXTITLE` LIKE 'test%03';
 EOT;
             oxDb::getDb()->execute($query);

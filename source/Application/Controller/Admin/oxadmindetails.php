@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopProfessional\Application\Controller\Admin\AdminDetailsController
  */
-class oxAdminDetails extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
+class oxAdminDetails extends \OxidEsales\EshopCommunity\Application\Controller\Admin\AdminDetailsController
 {
 }

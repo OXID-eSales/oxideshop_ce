@@ -20,10 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
-use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
 /** Creating and deleting items. */
 class CreatingItemsAdminTest extends AdminTestCase

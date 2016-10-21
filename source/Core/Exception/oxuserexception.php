@@ -25,6 +25,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxUserException extends \OxidEsales\Eshop\Core\Exception\UserException
+class oxUserException extends \OxidEsales\EshopCommunity\Core\Exception\UserException
 {
 }

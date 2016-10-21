@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxwCookieNote extends \OxidEsales\Eshop\Application\Component\Widget\CookieNote
+class oxwCookieNote extends \OxidEsales\EshopCommunity\Application\Component\Widget\CookieNote
 {
 }

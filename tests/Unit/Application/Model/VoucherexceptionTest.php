@@ -28,7 +28,7 @@ class VoucherexceptionTest extends \OxidTestCase
     {
         $sVoucher = "a voucher nr.";
         $oTestObject = oxNew('oxVoucherException');
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\VoucherException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\VoucherException', get_class($oTestObject));
         $oTestObject->setVoucherNr($sVoucher);
         $this->assertEquals($sVoucher, $oTestObject->getVoucherNr());
     }
@@ -39,7 +39,7 @@ class VoucherexceptionTest extends \OxidTestCase
         $sMsg = 'Erik was here..';
         $sVoucher = "a voucher nr.";
         $oTestObject = oxNew('oxVoucherException', $sMsg);
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\VoucherException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\VoucherException', get_class($oTestObject));
         $oTestObject->setVoucherNr($sVoucher);
         $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
         $this->assertContains($sMsg, $sStringOut);

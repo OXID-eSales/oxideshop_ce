@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\AmountPriceList
  */
-class oxAmountPriceList extends \OxidEsales\Eshop\Application\Model\AmountPriceList
+class oxAmountPriceList extends \OxidEsales\EshopCommunity\Application\Model\AmountPriceList
 {
 }

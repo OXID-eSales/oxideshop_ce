@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
 
 /**
  * Setup View class

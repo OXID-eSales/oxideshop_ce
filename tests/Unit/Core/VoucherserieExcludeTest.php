@@ -22,7 +22,7 @@
 namespace Unit\Core;
 
 use \oxDb;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 
 /**
  * Testing myvoucherserie class

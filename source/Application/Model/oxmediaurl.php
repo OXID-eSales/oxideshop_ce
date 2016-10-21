@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\MediaUrl
  */
-class oxMediaUrl extends \OxidEsales\Eshop\Application\Model\MediaUrl
+class oxMediaUrl extends \OxidEsales\EshopCommunity\Application\Model\MediaUrl
 {
 }

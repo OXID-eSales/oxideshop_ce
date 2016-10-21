@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-interface oxIDisplayError extends \OxidEsales\Eshop\Core\Contract\IDisplayError
+interface oxIDisplayError extends \OxidEsales\EshopCommunity\Core\Contract\IDisplayError
 {
 }

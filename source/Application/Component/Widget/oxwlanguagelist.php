@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxwLanguageList extends \OxidEsales\Eshop\Application\Component\Widget\LanguageList
+class oxwLanguageList extends \OxidEsales\EshopCommunity\Application\Component\Widget\LanguageList
 {
 }

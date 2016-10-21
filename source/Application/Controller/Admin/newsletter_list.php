@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Newsletter_List extends \OxidEsales\Eshop\Application\Controller\Admin\NewsletterList
+class Newsletter_List extends \OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterList
 {
 }

@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxFileCache extends \OxidEsales\Eshop\Core\FileCache
+class oxFileCache extends \OxidEsales\EshopCommunity\Core\FileCache
 {
 }

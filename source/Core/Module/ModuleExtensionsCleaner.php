@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Module;
+namespace OxidEsales\EshopCommunity\Core\Module;
 
 use oxModule;
 
 /**
  * Class responsible for cleaning not used extensions for module which is going to be activated.
  *
- * @package  OxidEsales\Eshop\Core\Module
+ * @package  OxidEsales\EshopCommunity\Core\Module
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */

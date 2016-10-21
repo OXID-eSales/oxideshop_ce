@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxwRecommendation extends \OxidEsales\Eshop\Application\Component\Widget\Recommendation
+class oxwRecommendation extends \OxidEsales\EshopCommunity\Application\Component\Widget\Recommendation
 {
 }

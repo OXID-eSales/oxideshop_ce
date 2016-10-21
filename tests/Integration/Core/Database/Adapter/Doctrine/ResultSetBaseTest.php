@@ -20,13 +20,13 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter\Doctrine;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter\Doctrine;
 
 use oxDb;
-use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet;
-use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
-use OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter\DatabaseInterfaceImplementationBaseTest;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\ResultSet;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database;
+use OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter\DatabaseInterfaceImplementationBaseTest;
 
 /**
  * Tests for our database object.
@@ -39,17 +39,17 @@ abstract class ResultSetBaseTest extends DatabaseInterfaceImplementationBaseTest
     /**
      * @var string The name of the class, including the complete namespace.
      */
-    const CLASS_NAME_WITH_PATH = 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet';
+    const CLASS_NAME_WITH_PATH = 'OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\ResultSet';
 
     /**
      * @var string The database exception class to be thrown
      */
-    const DATABASE_EXCEPTION_CLASS = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
+    const DATABASE_EXCEPTION_CLASS = 'OxidEsales\EshopCommunity\Core\Exception\DatabaseException';
 
     /**
      * @var string The result set class class
      */
-    const RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet';
+    const RESULT_SET_CLASS = 'OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\ResultSet';
 
     /**
      * @return string The name of the database exception class

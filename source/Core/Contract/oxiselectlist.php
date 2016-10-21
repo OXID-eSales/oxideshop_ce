@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-interface oxISelectList extends \OxidEsales\Eshop\Core\Contract\ISelectList
+interface oxISelectList extends \OxidEsales\EshopCommunity\Core\Contract\ISelectList
 {
 }

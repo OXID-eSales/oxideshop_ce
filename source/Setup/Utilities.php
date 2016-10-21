@@ -20,10 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
 
 /**
  * Setup utilities class

@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\DynExportBase
  */
-class dynexportbase extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController
+class dynexportbase extends \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicExportBaseController
 {
 }

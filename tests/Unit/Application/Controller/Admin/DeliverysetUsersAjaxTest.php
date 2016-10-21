@@ -22,7 +22,7 @@
 namespace Unit\Application\Controller\Admin;
 
 use \oxDb;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 
 /**
  * Tests for Delivery_Groups_Ajax class

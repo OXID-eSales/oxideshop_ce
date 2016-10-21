@@ -24,7 +24,7 @@ namespace Unit\Application\Model;
 use \oxField;
 use \oxDb;
 use \oxTestModules;
-use OxidEsales\Eshop\Application\Model\BasketReservation;
+use OxidEsales\EshopCommunity\Application\Model\BasketReservation;
 
 class BasketreservationTest extends \OxidTestCase
 {

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
  * Maintenance task handler. Maintenance tasks are called periodically, by cronTab (configure on your needs)

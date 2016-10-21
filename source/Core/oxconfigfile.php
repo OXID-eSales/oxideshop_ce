@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-use OxidEsales\Eshop\Core\ConfigFile;
+use OxidEsales\EshopCommunity\Core\ConfigFile;
 
 /**
  * Wraps and provides getters for configuration constants stored in configuration file (usually config.inc.php).

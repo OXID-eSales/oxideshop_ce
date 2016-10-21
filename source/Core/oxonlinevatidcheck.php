@@ -27,6 +27,6 @@
  *
  */
 
-class oxOnlineVatIdCheck extends \OxidEsales\Eshop\Core\OnlineVatIdCheck
+class oxOnlineVatIdCheck extends \OxidEsales\EshopCommunity\Core\OnlineVatIdCheck
 {
 }

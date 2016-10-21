@@ -21,7 +21,7 @@
  */
 namespace Unit\Core\Database;
 
-use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**

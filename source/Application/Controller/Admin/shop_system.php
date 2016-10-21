@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Shop_System extends \OxidEsales\Eshop\Application\Controller\Admin\ShopSystem
+class Shop_System extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ShopSystem
 {
 }

@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class VoucherSerie_Export extends \OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieExport
+class VoucherSerie_Export extends \OxidEsales\EshopCommunity\Application\Controller\Admin\VoucherSerieExport
 {
 }

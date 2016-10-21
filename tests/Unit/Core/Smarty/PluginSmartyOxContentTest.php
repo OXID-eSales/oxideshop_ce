@@ -22,7 +22,7 @@
 namespace Unit\Core\Smarty;
 
 use \oxField;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \Smarty;
 use \stdClass;
 use \oxRegistry;

@@ -28,7 +28,7 @@ class ExceptionTest extends \OxidTestCase
     public function testConstruct()
     {
         $oTestObject = oxNew('oxException');
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\StandardException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
     }
 
     // 2. testing constructor with message.
@@ -36,7 +36,7 @@ class ExceptionTest extends \OxidTestCase
     {
         $sMsg = 'Erik was here..';
         $oTestObject = oxNew('oxException', $sMsg);
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\StandardException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
         $this->assertTrue($oTestObject->getMessage() === $sMsg);
     }
 
@@ -54,7 +54,7 @@ class ExceptionTest extends \OxidTestCase
         $sFileName = 'oxexceptionsTest_test_debugOut.txt';
         $oTestObject = oxNew('oxException', $sMsg);
         $oTestObject->setLogFileName($sFileName);
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\StandardException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
 
         try {
             $oTestObject->debugOut(1); // actuall test
@@ -82,7 +82,7 @@ class ExceptionTest extends \OxidTestCase
         $sFileName = 'oxexceptionsTest_test_debugOut.txt';
         $oTestObject = oxNew('oxException', $sMsg);
         $oTestObject->setLogFileName($sFileName);
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\StandardException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
 
         try {
             $oTestObject->debugOut(0); // actuall test
@@ -105,7 +105,7 @@ class ExceptionTest extends \OxidTestCase
     {
         $sMsg = 'Erik was here..';
         $oTestObject = oxNew('oxException');
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\StandardException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
         $oTestObject->setMessage($sMsg);
         $this->assertTrue($oTestObject->getMessage() === $sMsg);
     }
@@ -113,7 +113,7 @@ class ExceptionTest extends \OxidTestCase
     public function testSetIsRenderer()
     {
         $oTestObject = oxNew('oxException');
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\StandardException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
         $oTestObject->setRenderer();
         $this->assertTrue($oTestObject->isRenderer());
     }
@@ -121,7 +121,7 @@ class ExceptionTest extends \OxidTestCase
     public function testSetIsNotCaught()
     {
         $oTestObject = oxNew('oxException');
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\StandardException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
         $oTestObject->setNotCaught();
         $this->assertTrue($oTestObject->isNotCaught());
     }
@@ -131,7 +131,7 @@ class ExceptionTest extends \OxidTestCase
     {
         $sMsg = 'Erik was here..';
         $oTestObject = oxNew('oxException', $sMsg);
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\StandardException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
         $oTestObject->setRenderer();
         $oTestObject->setNotCaught();
         $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2

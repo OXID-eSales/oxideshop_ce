@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
 /**
  * Chooses and executes controller action which must be executec to render expected view

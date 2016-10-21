@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxcmp_utils extends \OxidEsales\Eshop\Application\Component\UtilsComponent
+class oxcmp_utils extends \OxidEsales\EshopCommunity\Application\Component\UtilsComponent
 {
 }

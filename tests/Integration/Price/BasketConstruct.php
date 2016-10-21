@@ -25,7 +25,7 @@ use oxArticle;
 use oxBase;
 use oxBasket;
 use oxField;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
 use oxRegistry;
 use oxUser;
 

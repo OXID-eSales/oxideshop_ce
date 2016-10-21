@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\Action
  */
-class oxActions extends \OxidEsales\Eshop\Application\Model\Actions
+class oxActions extends \OxidEsales\EshopCommunity\Application\Model\Actions
 {
 }

@@ -27,6 +27,6 @@
  *
  */
 
-class oxSubShopSpecificFileCache extends \OxidEsales\Eshop\Core\SubShopSpecificFileCache
+class oxSubShopSpecificFileCache extends \OxidEsales\EshopCommunity\Core\SubShopSpecificFileCache
 {
 }

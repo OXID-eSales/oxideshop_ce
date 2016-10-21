@@ -27,6 +27,6 @@
  *
  */
 
-class oxSimpleXml extends \OxidEsales\Eshop\Core\SimpleXml
+class oxSimpleXml extends \OxidEsales\EshopCommunity\Core\SimpleXml
 {
 }

@@ -22,8 +22,8 @@
 namespace Unit\Core\Module;
 
 use Exception;
-use OxidEsales\Eshop\Core\FileSystem\FileSystem;
-use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\EshopCommunity\Core\FileSystem\FileSystem;
+use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxModuleList;
 use PHPUnit_Framework_MockObject_MockObject;

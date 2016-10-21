@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\PaymentController
  */
-class Payment extends \OxidEsales\Eshop\Application\Controller\PaymentController
+class Payment extends \OxidEsales\EshopCommunity\Application\Controller\PaymentController
 {
 }

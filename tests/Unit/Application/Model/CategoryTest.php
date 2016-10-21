@@ -23,7 +23,7 @@ namespace Unit\Application\Model;
 
 use oxCategory;
 use oxCategoryHelper;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use oxUtilsObject;
 use \oxUtilsView;
 use \oxField;

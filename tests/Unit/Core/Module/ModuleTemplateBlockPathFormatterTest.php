@@ -22,7 +22,7 @@
 namespace Unit\Core\Module;
 
 use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
+use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter;
 use oxTestModules;
 
 class ModuleTemplateBlockPathFormatterTest extends UnitTestCase

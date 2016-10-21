@@ -20,7 +20,7 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Database\Adapter;
+namespace OxidEsales\EshopCommunity\Core\Database\Adapter;
 
 /**
  * Interface ResultSetInterface

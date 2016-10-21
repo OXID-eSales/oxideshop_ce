@@ -25,6 +25,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxExceptionToDisplay extends \OxidEsales\Eshop\Core\Exception\ExceptionToDisplay
+class oxExceptionToDisplay extends \OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay
 {
 }

@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Component\Widget\Review
  */
-class oxwReview extends \OxidEsales\Eshop\Application\Component\Widget\Review
+class oxwReview extends \OxidEsales\EshopCommunity\Application\Component\Widget\Review
 {
 }

@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class adminlinks_list extends \OxidEsales\Eshop\Application\Controller\Admin\AdminlinksList
+class adminlinks_list extends \OxidEsales\EshopCommunity\Application\Controller\Admin\AdminlinksList
 {
 }

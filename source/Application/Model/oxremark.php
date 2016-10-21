@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxRemark extends \OxidEsales\Eshop\Application\Model\Remark
+class oxRemark extends \OxidEsales\EshopCommunity\Application\Model\Remark
 {
 }

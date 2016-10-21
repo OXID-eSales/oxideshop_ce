@@ -20,15 +20,15 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Database\Adapter\Doctrine;
+namespace OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine;
 
 use Doctrine\DBAL\Driver\Statement;
-use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\ResultSetInterface;
 
 /**
  * The doctrine statement wrapper, to support the old adodblite interface.
  *
- * @package OxidEsales\Eshop\Core\Database\Adapter
+ * @package OxidEsales\EshopCommunity\Core\Database\Adapter
  */
 class ResultSet implements \IteratorAggregate, ResultSetInterface
 {

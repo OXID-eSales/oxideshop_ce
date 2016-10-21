@@ -21,7 +21,7 @@
  */
 namespace Unit\Core\Smarty;
 
-use OxidEsales\Eshop\Core\Smarty\Plugin\Emos;
+use OxidEsales\EshopCommunity\Core\Smarty\Plugin\Emos;
 use \stdClass;
 
 /**

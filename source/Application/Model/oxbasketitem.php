@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\BasketItem
  */
-class oxBasketItem extends \OxidEsales\Eshop\Application\Model\BasketItem
+class oxBasketItem extends \OxidEsales\EshopCommunity\Application\Model\BasketItem
 {
 }

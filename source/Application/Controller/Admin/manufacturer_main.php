@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Manufacturer_Main extends \OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMain
+class Manufacturer_Main extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ManufacturerMain
 {
 }

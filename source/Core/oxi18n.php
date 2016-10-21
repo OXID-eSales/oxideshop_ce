@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Core\Model\MultiLanguageModel
  */
-class oxI18n extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
+class oxI18n extends \OxidEsales\EshopCommunity\Core\Model\MultiLanguageModel
 {
 }

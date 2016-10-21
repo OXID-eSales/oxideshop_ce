@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Wrapping_List extends \OxidEsales\Eshop\Application\Controller\Admin\WrappingList
+class Wrapping_List extends \OxidEsales\EshopCommunity\Application\Controller\Admin\WrappingList
 {
 }

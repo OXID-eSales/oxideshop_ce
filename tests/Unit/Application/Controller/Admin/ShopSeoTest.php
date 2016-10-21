@@ -23,7 +23,7 @@ namespace Unit\Application\Controller\Admin;
 
 use \Exception;
 use \oxDb;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxTestModules;
 
 /**

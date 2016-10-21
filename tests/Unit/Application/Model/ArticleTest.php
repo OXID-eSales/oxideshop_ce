@@ -21,8 +21,8 @@
  */
 namespace Unit\Application\Model;
 
-use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use \oxList;
 use \oxSimpleVariant;
 use \oxArticle;
@@ -6452,7 +6452,7 @@ class ArticleTest extends \OxidTestCase
             $expected = "select 1 from oxv_oxcategories_de where oxid='sCatNid' and(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= '95' and oxpriceto >= '95') or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= '95') or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= '95'))";
         }
 
-        $dbMock = $this->getMock('OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database', array('getOne', 'quote'));
+        $dbMock = $this->getMock('OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database', array('getOne', 'quote'));
         $dbMock->expects($this->once())->method('getOne')->with($this->equalTo($expected));
 
         $dbMock->expects($this->any())->method('quote')->will($this->returnValueMap(array(

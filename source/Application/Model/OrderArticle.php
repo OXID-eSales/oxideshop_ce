@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\Eshop\Application\Model\Contract\ArticleInterface;
+use OxidEsales\EshopCommunity\Application\Model\Contract\ArticleInterface;
 use oxRegistry;
 use oxField;
 use oxDb;

@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Order_Overview extends \OxidEsales\Eshop\Application\Controller\Admin\OrderOverview
+class Order_Overview extends \OxidEsales\EshopCommunity\Application\Controller\Admin\OrderOverview
 {
 }

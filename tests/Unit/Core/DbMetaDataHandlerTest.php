@@ -140,7 +140,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testGetIndicesWithNotExistingTable()
     {
-        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+        $dbMetaDataHandler = oxNew("OxidEsales\EshopCommunity\Core\DbMetaDataHandler");
 
         $indices = $dbMetaDataHandler->getIndices('NOT_EXISTING_TABLE_NAME');
 
@@ -154,7 +154,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     {
         $this->createTestTableWithoutIndices();
 
-        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+        $dbMetaDataHandler = oxNew("OxidEsales\EshopCommunity\Core\DbMetaDataHandler");
 
         $indices = $dbMetaDataHandler->getIndices('testDbMetaDataHandlerWithoutIndices');
 
@@ -168,7 +168,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     public function testGetIndicesWithTableWithIndices()
     {
         $this->createTestTable();
-        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+        $dbMetaDataHandler = oxNew("OxidEsales\EshopCommunity\Core\DbMetaDataHandler");
 
         $indices = $dbMetaDataHandler->getIndices('testDbMetaDataHandler');
 
@@ -185,7 +185,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testHasIndexWithNotExistingIndex()
     {
-        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+        $dbMetaDataHandler = oxNew("OxidEsales\EshopCommunity\Core\DbMetaDataHandler");
 
         $this->assertFalse($dbMetaDataHandler->hasIndex('NON_EXISTENT_INDEX_NAME', 'oxarticles'));
     }
@@ -195,7 +195,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testHasIndexWithExistingIndex()
     {
-        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+        $dbMetaDataHandler = oxNew("OxidEsales\EshopCommunity\Core\DbMetaDataHandler");
 
         $this->assertTrue($dbMetaDataHandler->hasIndex('OXID', 'oxarticles'));
     }
@@ -205,7 +205,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testGetIndexByNameWithNotExistingTable()
     {
-        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+        $dbMetaDataHandler = oxNew("OxidEsales\EshopCommunity\Core\DbMetaDataHandler");
 
         $this->assertNull($dbMetaDataHandler->getIndexByName('OXID', 'NOT_EXISTANT_TABLE_NAME'));
     }
@@ -215,7 +215,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testGetIndexByNameWithNotExistingName()
     {
-        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+        $dbMetaDataHandler = oxNew("OxidEsales\EshopCommunity\Core\DbMetaDataHandler");
 
         $this->assertNull($dbMetaDataHandler->getIndexByName('NON_EXISTANT_INDEX_NAME', 'oxarticles'));
     }
@@ -225,7 +225,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testGetIndexByNameWithExistingName()
     {
-        $dbMetaDataHandler = oxNew("OxidEsales\Eshop\Core\DbMetaDataHandler");
+        $dbMetaDataHandler = oxNew("OxidEsales\EshopCommunity\Core\DbMetaDataHandler");
 
         $index = $dbMetaDataHandler->getIndexByName('OXID', 'oxarticles');
 
@@ -298,7 +298,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     public function testGetAddFieldIndexSql()
     {
         $this->createTestTable();
-        $dbMetaDataHandler = oxNew('OxidEsales\Eshop\Core\DbMetaDataHandler');
+        $dbMetaDataHandler = oxNew('OxidEsales\EshopCommunity\Core\DbMetaDataHandler');
 
         $expectedSqls = [
             "ALTER TABLE `testDbMetaDataHandler` ADD KEY  (`OXTITLE_4`)",

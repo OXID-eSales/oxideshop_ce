@@ -23,7 +23,7 @@ namespace Unit\Application\Model;
 
 use Exception;
 use oxException;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxNewsLetter;
 use \oxEmail;
 use \oxDb;

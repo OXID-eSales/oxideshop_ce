@@ -27,6 +27,6 @@
  *
  */
 
-class oxServersManager extends \OxidEsales\Eshop\Core\ServersManager
+class oxServersManager extends \OxidEsales\EshopCommunity\Core\ServersManager
 {
 }

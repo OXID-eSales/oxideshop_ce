@@ -21,7 +21,7 @@
  */
 namespace Unit\Core;
 
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxubase;
 
 use \oxConfig;
@@ -30,9 +30,9 @@ use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
 
-use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
+use OxidEsales\EshopCommunity\Core\Registry;
 
 class modForTestGetBaseTplDirExpectsDefault extends oxConfig
 {

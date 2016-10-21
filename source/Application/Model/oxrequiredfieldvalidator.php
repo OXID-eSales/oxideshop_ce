@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxRequiredFieldValidator extends \OxidEsales\Eshop\Application\Model\RequiredFieldValidator
+class oxRequiredFieldValidator extends \OxidEsales\EshopCommunity\Application\Model\RequiredFieldValidator
 {
 }

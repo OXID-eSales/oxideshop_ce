@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-interface oxIConfigurable extends \OxidEsales\Eshop\Core\Contract\IConfigurable
+interface oxIConfigurable extends \OxidEsales\EshopCommunity\Core\Contract\IConfigurable
 {
 }

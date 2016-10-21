@@ -21,7 +21,7 @@
  */
 namespace Unit\Core\Smarty;
 
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Registry;
 use oxRegistry;
 use \stdClass;
 use \oxPrice;

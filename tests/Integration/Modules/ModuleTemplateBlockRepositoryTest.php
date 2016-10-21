@@ -23,7 +23,7 @@ namespace Integration\Modules;
 
 use oxDb;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
+use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository;
 
 class ModuleTemplateBlockRepositoryTest extends UnitTestCase
 {

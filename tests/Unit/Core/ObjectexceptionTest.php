@@ -29,7 +29,7 @@ class ObjectexceptionTest extends \OxidTestCase
     public function testSetGetObject()
     {
         $oTestObject = oxNew('oxObjectException');
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\ObjectException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\ObjectException', get_class($oTestObject));
         $oObject = new stdClass();
         $oObject->sAtrib = "Atribute";
         $oTestObject->setObject($oObject);
@@ -41,7 +41,7 @@ class ObjectexceptionTest extends \OxidTestCase
     {
         $sMsg = 'Erik was here..';
         $oTestObject = oxNew('oxObjectException', $sMsg);
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\ObjectException', get_class($oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\ObjectException', get_class($oTestObject));
         $oObject = new stdClass();
         $oTestObject->setObject($oObject);
         $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2

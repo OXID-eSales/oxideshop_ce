@@ -39,7 +39,7 @@
  * $Id$
  */
 
-namespace OxidEsales\Eshop\Core\Smarty\Plugin;
+namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
 
 /**
  * PHP Helper Class to construct a ECONDA Monitor statement for the later

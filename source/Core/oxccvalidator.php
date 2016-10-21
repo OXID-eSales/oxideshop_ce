@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxCcValidator extends \OxidEsales\Eshop\Core\CreditCardValidator
+class oxCcValidator extends \OxidEsales\EshopCommunity\Core\CreditCardValidator
 {
 }

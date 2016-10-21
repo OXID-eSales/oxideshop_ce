@@ -56,7 +56,7 @@ function smarty_function_oxscript($params, &$smarty)
             return '';
         }
 
-        $register = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator');
+        $register = oxNew('OxidEsales\EshopCommunity\Core\ViewHelper\JavaScriptRegistrator');
         $register->addSnippet($params['add'], $isDynamic);
     } elseif (isset($params['include'])) {
         if (empty($params['include'])) {
@@ -64,10 +64,10 @@ function smarty_function_oxscript($params, &$smarty)
             return '';
         }
 
-        $register = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator');
+        $register = oxNew('OxidEsales\EshopCommunity\Core\ViewHelper\JavaScriptRegistrator');
         $register->addFile($params['include'], $priority, $isDynamic);
     } else {
-        $renderer = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptRenderer');
+        $renderer = oxNew('OxidEsales\EshopCommunity\Core\ViewHelper\JavaScriptRenderer');
         $output = $renderer->render($widget, $isInWidget, $isDynamic);
     }
 

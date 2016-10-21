@@ -25,6 +25,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxArticleException extends \OxidEsales\Eshop\Core\Exception\ArticleException
+class oxArticleException extends \OxidEsales\EshopCommunity\Core\Exception\ArticleException
 {
 }

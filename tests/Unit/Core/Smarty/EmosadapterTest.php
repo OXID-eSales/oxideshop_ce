@@ -22,7 +22,7 @@
 namespace Unit\Core\Smarty;
 
 use \oxField;
-use OxidEsales\Eshop\Core\Smarty\Plugin\Emos;
+use OxidEsales\EshopCommunity\Core\Smarty\Plugin\Emos;
 use \stdClass;
 use \oxDb;
 use \oxRegistry;

@@ -23,6 +23,6 @@
 /**
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  */
-class oxList extends \OxidEsales\Eshop\Core\Model\ListModel
+class oxList extends \OxidEsales\EshopCommunity\Core\Model\ListModel
 {
 }

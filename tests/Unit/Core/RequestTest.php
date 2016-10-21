@@ -21,7 +21,7 @@
  */
 namespace Unit\Core;
 
-use OxidEsales\Eshop\Core\Request;
+use OxidEsales\EshopCommunity\Core\Request;
 use stdClass;
 
 class RequestTest extends \OxidTestCase

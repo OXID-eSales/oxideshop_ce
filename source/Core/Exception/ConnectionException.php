@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Exception;
+namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
  * exception class for all kind of connection problems to external servers, e.g.:

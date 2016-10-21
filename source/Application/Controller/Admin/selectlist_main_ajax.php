@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\SelectListMainAjax
  */
-class selectlist_main_ajax extends \OxidEsales\Eshop\Application\Controller\Admin\SelectListMainAjax
+class selectlist_main_ajax extends \OxidEsales\EshopCommunity\Application\Controller\Admin\SelectListMainAjax
 {
 }

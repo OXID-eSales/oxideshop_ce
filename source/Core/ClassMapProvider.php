@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use OxidEsales\EshopEnterprise\ClassMap as EnterpriseClassMap;
 use OxidEsales\EshopProfessional\ClassMap as ProfessionalClassMap;
-use OxidEsales\Eshop\Core\ClassMap as CommunityClassMap;
+use OxidEsales\EshopCommunity\Core\ClassMap as CommunityClassMap;
 
 /**
  * Class responsible for returning class map by edition.

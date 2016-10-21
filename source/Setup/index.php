@@ -28,7 +28,7 @@ ini_set('session.use_cookies', 0);
 ini_set('session.use_trans_sid', 0);
 ini_set('url_rewriter.tags', '');
 
-use OxidEsales\Eshop\Setup\Dispatcher;
+use OxidEsales\EshopCommunity\Setup\Dispatcher;
 
 if (!defined('OX_BASE_PATH')) {
     define('OX_BASE_PATH', __DIR__ . DIRECTORY_SEPARATOR . '/../');

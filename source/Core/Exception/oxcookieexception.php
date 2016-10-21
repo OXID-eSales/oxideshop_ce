@@ -25,6 +25,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxCookieException extends \OxidEsales\Eshop\Core\Exception\CookieException
+class oxCookieException extends \OxidEsales\EshopCommunity\Core\Exception\CookieException
 {
 }

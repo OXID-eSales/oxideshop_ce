@@ -49,10 +49,10 @@ function smarty_function_oxstyle($params, &$smarty)
 
     $output = '';
     if (!empty($params['include'])) {
-        $registrator = oxNew('OxidEsales\Eshop\Core\ViewHelper\StyleRegistrator');
+        $registrator = oxNew('OxidEsales\EshopCommunity\Core\ViewHelper\StyleRegistrator');
         $registrator->addFile($params['include'], $params['if'], $isDynamic);
     } else {
-        $renderer = oxNew('OxidEsales\Eshop\Core\ViewHelper\StyleRenderer');
+        $renderer = oxNew('OxidEsales\EshopCommunity\Core\ViewHelper\StyleRenderer');
         $output = $renderer->render($widget, $forceRender, $isDynamic);
     }
 

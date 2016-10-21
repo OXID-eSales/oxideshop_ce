@@ -39,7 +39,7 @@ class WidgetTest extends \OxidTestCase
 
         $aComponents = $oWidget->getComponents();
         $this->assertEquals(1, count($aComponents));
-        $this->assertEquals('oxidesales\eshop\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
+        $this->assertEquals('oxidesales\eshopcommunity\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
     }
 
     /**

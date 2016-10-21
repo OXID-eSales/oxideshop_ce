@@ -25,6 +25,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxOutOfStockException extends \OxidEsales\Eshop\Core\Exception\OutOfStockException
+class oxOutOfStockException extends \OxidEsales\EshopCommunity\Core\Exception\OutOfStockException
 {
 }

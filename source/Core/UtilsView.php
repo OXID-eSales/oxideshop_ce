@@ -19,15 +19,15 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxException;
 use oxField;
-use OxidEsales\Eshop\Core\Contract\IDisplayError;
-use OxidEsales\Eshop\Core\Exception\StandardException;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
+use OxidEsales\EshopCommunity\Core\Contract\IDisplayError;
+use OxidEsales\EshopCommunity\Core\Exception\StandardException;
+use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockContentReader;
+use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter;
+use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository;
 use oxIDisplayError;
 use oxRegistry;
 use oxSystemComponentException;

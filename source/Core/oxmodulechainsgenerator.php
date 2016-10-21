@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxModuleChainsGenerator extends \OxidEsales\Eshop\Core\ModuleChainsGenerator
+class oxModuleChainsGenerator extends \OxidEsales\EshopCommunity\Core\ModuleChainsGenerator
 {
 }

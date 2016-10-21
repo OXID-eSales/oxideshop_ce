@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Category_List extends \OxidEsales\Eshop\Application\Controller\Admin\CategoryList
+class Category_List extends \OxidEsales\EshopCommunity\Application\Controller\Admin\CategoryList
 {
 }

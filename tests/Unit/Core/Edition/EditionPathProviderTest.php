@@ -21,8 +21,8 @@
  */
 namespace Unit\Core\Edition;
 
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 

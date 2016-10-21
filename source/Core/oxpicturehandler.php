@@ -27,6 +27,6 @@
  *
  */
 
-class oxPictureHandler extends \OxidEsales\Eshop\Core\PictureHandler
+class oxPictureHandler extends \OxidEsales\EshopCommunity\Core\PictureHandler
 {
 }

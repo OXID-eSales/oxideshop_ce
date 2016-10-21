@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Model;
 
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxVariantHandler;
 use \stdClass;
 use \oxField;

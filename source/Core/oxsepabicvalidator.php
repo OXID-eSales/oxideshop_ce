@@ -27,6 +27,6 @@
  *
  */
 
-class oxSepaBICValidator extends \OxidEsales\Eshop\Core\SepaBICValidator
+class oxSepaBICValidator extends \OxidEsales\EshopCommunity\Core\SepaBICValidator
 {
 }

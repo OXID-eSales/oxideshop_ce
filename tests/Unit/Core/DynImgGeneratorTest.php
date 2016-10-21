@@ -22,8 +22,8 @@
 namespace Unit\Core;
 
 use oxDynImgGenerator;
-use OxidEsales\Eshop\Core\DynamicImageGenerator;
-use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\EshopCommunity\Core\DynamicImageGenerator;
+use OxidEsales\EshopCommunity\Core\Exception\StandardException;
 
 /**
  * Tests for Actions_List class
@@ -287,14 +287,14 @@ class DynImgGeneratorTest extends \OxidTestCase
     public function __testGenerateImageFromSource()
     {
         $oGen = $this->getMock("oxDynImgGenerator", [
-            '_getImageType', 
-            '_generatePng', 
-            '_generateJpg', 
-            '_generateGif', 
-            '_getImageUri', 
-            'validateGdVersion', 
-            'validateFileExist', 
-            '_isTargetPathValid', 
+            '_getImageType',
+            '_generatePng',
+            '_generateJpg',
+            '_generateGif',
+            '_getImageUri',
+            'validateGdVersion',
+            'validateFileExist',
+            '_isTargetPathValid',
             'validateImageFileExtension'
         ]);
         $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));

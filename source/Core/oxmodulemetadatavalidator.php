@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxModuleMetadataValidator extends \OxidEsales\Eshop\Core\ModuleMetadataValidator
+class oxModuleMetadataValidator extends \OxidEsales\EshopCommunity\Core\ModuleMetadataValidator
 {
 }

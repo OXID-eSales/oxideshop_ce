@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version       OXID eShop CE
  */
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxActionList;
 use oxAddress;
@@ -28,9 +28,9 @@ use oxCategory;
 use oxCategoryList;
 use oxContent;
 use oxDb;
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Request;
-use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Request;
+use OxidEsales\EshopCommunity\Core\Str;
 use oxManufacturer;
 use oxManufacturerList;
 use oxPrice;

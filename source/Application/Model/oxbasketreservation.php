@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxBasketReservation extends \OxidEsales\Eshop\Application\Model\BasketReservation
+class oxBasketReservation extends \OxidEsales\EshopCommunity\Application\Model\BasketReservation
 {
 }

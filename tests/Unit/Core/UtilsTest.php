@@ -24,8 +24,8 @@ namespace Unit\Core;
 use Exception;
 use modDB;
 use oxField;
-use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\Registry;
 use oxRegistry;
 use oxSystemComponentException;
 use oxTestModules;
@@ -894,9 +894,9 @@ class UtilsTest extends \OxidTestCase
         $backUpAuth = $session->getVariable("auth");
 
         $exception = null;
-        
+
         try {
-            $utils = $this->getMock('OxidEsales\Eshop\Core\Utils', array('fetchRightsForUser', 'fetchShopAdminById'));
+            $utils = $this->getMock('OxidEsales\EshopCommunity\Core\Utils', array('fetchRightsForUser', 'fetchShopAdminById'));
             $utils->expects($this->any())->method('fetchRightsForUser')->will($this->returnValue(1));
             $utils->expects($this->any())->method('fetchShopAdminById')->will($this->returnValue(1));
 
@@ -1017,7 +1017,7 @@ class UtilsTest extends \OxidTestCase
         $utils = $this->getMock('oxutils', array('setHeader','showMessageAndExit'));
         $utils->expects($this->once())->method('setHeader')->with($this->stringContains('HTTP/1.1 5'));
         $utils->expects($this->once())->method('showMessageAndExit')->with($this->stringContains('<meta name="robots" content="noindex, nofollow">'));
-        
+
         $utils->showOfflinePage();
     }
 

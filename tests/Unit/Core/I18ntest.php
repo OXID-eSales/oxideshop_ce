@@ -24,7 +24,7 @@ namespace Unit\Core;
 use modDB;
 use oxDb;
 use oxField;
-use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use oxRegistry;
 use oxTestModules;
 
@@ -660,7 +660,7 @@ class I18ntest extends \OxidTestCase
 
         $expectedUpdateSql = "update $tableName set oxid = '$oxId',oxcountryid = '',oxtitle = '$oxTitle',oxisoalpha2 = '' where oxstates.oxid = '$oxId'";
 
-        $i18nMock = $this->getMock('OxidEsales\Eshop\Core\I18n', array('executeDatabaseQuery'));
+        $i18nMock = $this->getMock('OxidEsales\EshopCommunity\Core\I18n', array('executeDatabaseQuery'));
         $i18nMock->expects($this->any())->method('executeDatabaseQuery')->with($this->equalTo($expectedUpdateSql));
 
         $i18nMock->init($tableName);
@@ -685,7 +685,7 @@ class I18ntest extends \OxidTestCase
         $expectedUpdateSql = "update $tableName set oxid = '$oxId',oxcountryid = '',oxisoalpha2 = '' where oxstates.oxid = '$oxId'";
         $expectedInsertSql = "insert into oxstates_set11 set oxid = '$oxId',oxtitle_90 = '$oxTitle' on duplicate key update oxid = '$oxId',oxtitle_90 = '$oxTitle'";
 
-        $I18n = $this->getMock('OxidEsales\Eshop\Core\I18n', array('executeDatabaseQuery'));
+        $I18n = $this->getMock('OxidEsales\EshopCommunity\Core\I18n', array('executeDatabaseQuery'));
         $I18n->expects($this->at(0))
             ->method('executeDatabaseQuery')
             ->with($this->equalTo($expectedUpdateSql))
@@ -713,7 +713,7 @@ class I18ntest extends \OxidTestCase
             [
                 'testedLanguageId' => 90,
                 'testDescription' => 'another language'
-            ] 
+            ]
         ];
     }
 
@@ -838,7 +838,7 @@ class I18ntest extends \OxidTestCase
             $expectedInsertSqlChild = "insert into $tableNameExtended set oxid = '$oxId',oxtitle_90 = '$oxTitle'";
         }
 
-        $i18nMock = $this->getMock('OxidEsales\Eshop\Core\I18n', array('executeDatabaseQuery','_getLanguageSetTables'));
+        $i18nMock = $this->getMock('OxidEsales\EshopCommunity\Core\I18n', array('executeDatabaseQuery','_getLanguageSetTables'));
         $i18nMock->expects($this->at(0))->method('executeDatabaseQuery')->with($this->equalTo($expectedInsertSqlParent))->willReturn(true);
         $i18nMock->expects($this->at(1))->method('_getLanguageSetTables')->will($this->returnValue(array($tableNameExtended)));
         $i18nMock->expects($this->at(2))->method('executeDatabaseQuery')->with($this->equalTo($expectedInsertSqlChild));

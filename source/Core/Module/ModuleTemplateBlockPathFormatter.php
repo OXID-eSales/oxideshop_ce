@@ -20,10 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Module;
+namespace OxidEsales\EshopCommunity\Core\Module;
 
 use \oxException;
-use \OxidEsales\Eshop\Core\FileSystem\FileSystem;
+use \OxidEsales\EshopCommunity\Core\FileSystem\FileSystem;
 
 /**
  * Forms path to module block template.

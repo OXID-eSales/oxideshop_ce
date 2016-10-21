@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\Navigation
  */
-class Navigation extends \OxidEsales\Eshop\Application\Controller\Admin\NavigationController
+class Navigation extends \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationController
 {
 }

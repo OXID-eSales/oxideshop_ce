@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\CountryMain
  */
-class Country_Main extends \OxidEsales\Eshop\Application\Controller\Admin\CountryMain
+class Country_Main extends \OxidEsales\EshopCommunity\Application\Controller\Admin\CountryMain
 {
 }

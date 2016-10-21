@@ -20,13 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
 use oxDb;
 use oxField;
-use OxidEsales\Eshop\Application\Model\Contract\ArticleInterface;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Application\Model\Contract\ArticleInterface;
+use OxidEsales\EshopCommunity\Core\Registry;
 use oxList;
 use oxPrice;
 use oxRegistry;
@@ -3281,7 +3281,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     /**
      * Get the database object.
      *
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface
+     * @return \OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface
      */
     protected function getDatabase()
     {

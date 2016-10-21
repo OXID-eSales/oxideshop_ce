@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\ActionsGroupsAjax
  */
-class actions_groups_ajax extends \OxidEsales\Eshop\Application\Controller\Admin\ActionsGroupsAjax
+class actions_groups_ajax extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ActionsGroupsAjax
 {
 }

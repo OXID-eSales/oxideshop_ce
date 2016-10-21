@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -128,7 +128,7 @@ class ArticleSeo extends \Object_Seo
         if ($this->_aSelectionList === null) {
             $this->_aSelectionList = array();
 
-            $oProduct = oxNew('OxidEsales\Eshop\Application\Model\Article');
+            $oProduct = oxNew('OxidEsales\EshopCommunity\Application\Model\Article');
             $oProduct->load($this->getEditObjectId());
 
             if ($oCatList = $this->_getCategoryList($oProduct)) {

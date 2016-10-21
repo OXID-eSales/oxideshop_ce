@@ -22,7 +22,7 @@
 namespace Unit\Core;
 
 use oxField;
-use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use oxRegistry;
 use oxTestModules;
 use stdClass;

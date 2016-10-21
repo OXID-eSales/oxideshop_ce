@@ -26,7 +26,7 @@ use modDB;
 use oxArticle;
 use oxDb;
 use oxField;
-use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\CoreCommunity\DatabaseProvider;
 use oxRegistry;
 use oxTestModules;
 
@@ -684,27 +684,27 @@ class ArticlelistTest extends \OxidTestCase
         $articleTable = $this->_getArticleTable();
 
         $expectedSql = <<<EOT
-            AND 
-            ( 
-              ( 
-                $articleTable.oxtitle LIKE '%test%' 
-                OR 
-                $articleTable.oxshortdesc LIKE '%test%' 
-                OR 
-                $articleTable.oxsearchkeys LIKE '%test%' 
-                OR 
-                $articleTable.oxartnum LIKE '%test%' 
-              ) 
-              OR 
-              ( 
-                $articleTable.oxtitle LIKE '%Search%' 
-                OR 
-                $articleTable.oxshortdesc LIKE '%Search%' 
-                OR 
-                $articleTable.oxsearchkeys LIKE '%Search%' 
-                OR 
-                $articleTable.oxartnum LIKE '%Search%' 
-              ) 
+            AND
+            (
+              (
+                $articleTable.oxtitle LIKE '%test%'
+                OR
+                $articleTable.oxshortdesc LIKE '%test%'
+                OR
+                $articleTable.oxsearchkeys LIKE '%test%'
+                OR
+                $articleTable.oxartnum LIKE '%test%'
+              )
+              OR
+              (
+                $articleTable.oxtitle LIKE '%Search%'
+                OR
+                $articleTable.oxshortdesc LIKE '%Search%'
+                OR
+                $articleTable.oxsearchkeys LIKE '%Search%'
+                OR
+                $articleTable.oxartnum LIKE '%Search%'
+              )
             )
 EOT;
         $actualSql = $articleList->UNITgetSearchSelect('test Search');
@@ -744,28 +744,28 @@ EOT;
         $articleTable = $this->_getArticleTable();
 
         $expectedSql = <<<EOT
-            AND 
-            ( 
-              ( 
-                $articleTable.oxtitle LIKE '%test%' 
-                OR 
-                $articleTable.oxshortdesc LIKE '%test%' 
-                OR 
-                $articleTable.oxsearchkeys LIKE '%test%' 
-                OR 
-                $articleTable.oxartnum LIKE '%test%' 
-              ) 
-              AND 
-              ( 
-                $articleTable.oxtitle LIKE '%Search%' 
-                OR 
-                $articleTable.oxshortdesc LIKE '%Search%' 
-                OR 
-                $articleTable.oxsearchkeys LIKE '%Search%' 
-                OR 
-                $articleTable.oxartnum LIKE '%Search%' 
-              ) 
-            ) 
+            AND
+            (
+              (
+                $articleTable.oxtitle LIKE '%test%'
+                OR
+                $articleTable.oxshortdesc LIKE '%test%'
+                OR
+                $articleTable.oxsearchkeys LIKE '%test%'
+                OR
+                $articleTable.oxartnum LIKE '%test%'
+              )
+              AND
+              (
+                $articleTable.oxtitle LIKE '%Search%'
+                OR
+                $articleTable.oxshortdesc LIKE '%Search%'
+                OR
+                $articleTable.oxsearchkeys LIKE '%Search%'
+                OR
+                $articleTable.oxartnum LIKE '%Search%'
+              )
+            )
 EOT;
         $actualSql = $articleList->UNITgetSearchSelect('test Search');
 
@@ -791,25 +791,25 @@ EOT;
         $articleTable = $this->_getArticleTable();
 
         $expectedSql = <<<EOT
-            AND 
-            ( 
-              ( 
-                $articleTable.oxtitle LIKE '%würfel%' 
-                OR 
-                $articleTable.oxtitle LIKE '%w&uuml;rfel%' 
-                OR 
-                $articleTable.oxshortdesc LIKE '%würfel%' 
-                OR 
-                $articleTable.oxshortdesc LIKE '%w&uuml;rfel%' 
-                OR 
-                $articleTable.oxsearchkeys LIKE '%würfel%' 
-                OR 
-                $articleTable.oxsearchkeys LIKE '%w&uuml;rfel%' 
-                OR 
-                $articleTable.oxartnum LIKE '%würfel%' 
-                OR 
-                $articleTable.oxartnum LIKE '%w&uuml;rfel%' 
-              ) 
+            AND
+            (
+              (
+                $articleTable.oxtitle LIKE '%würfel%'
+                OR
+                $articleTable.oxtitle LIKE '%w&uuml;rfel%'
+                OR
+                $articleTable.oxshortdesc LIKE '%würfel%'
+                OR
+                $articleTable.oxshortdesc LIKE '%w&uuml;rfel%'
+                OR
+                $articleTable.oxsearchkeys LIKE '%würfel%'
+                OR
+                $articleTable.oxsearchkeys LIKE '%w&uuml;rfel%'
+                OR
+                $articleTable.oxartnum LIKE '%würfel%'
+                OR
+                $articleTable.oxartnum LIKE '%w&uuml;rfel%'
+              )
             )
 EOT;
         $actualSql = $articleList->UNITgetSearchSelect('würfel');

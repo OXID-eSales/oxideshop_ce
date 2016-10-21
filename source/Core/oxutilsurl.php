@@ -27,6 +27,6 @@
  *
  */
 
-class oxUtilsUrl extends \OxidEsales\Eshop\Core\UtilsUrl
+class oxUtilsUrl extends \OxidEsales\EshopCommunity\Core\UtilsUrl
 {
 }

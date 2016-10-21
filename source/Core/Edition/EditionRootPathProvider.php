@@ -20,10 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Edition;
+namespace OxidEsales\EshopCommunity\Core\Edition;
 
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\ConfigFile;
+use OxidEsales\EshopCommunity\Core\Registry;
 
 /**
  * Class is responsible for returning edition directory path.

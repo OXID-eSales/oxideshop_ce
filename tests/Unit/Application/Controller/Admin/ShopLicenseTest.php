@@ -26,7 +26,7 @@ use \oxshop;
 use \oxDb;
 use oxSystemComponentException;
 
-use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
 
 /**
  * Tests for Shop_License class

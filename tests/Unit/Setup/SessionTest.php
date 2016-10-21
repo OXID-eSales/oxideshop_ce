@@ -21,7 +21,7 @@
  */
 namespace Unit\Setup;
 
-use OxidEsales\Eshop\Setup\Session;
+use OxidEsales\EshopCommunity\Setup\Session;
 
 /**
  * Session tests
@@ -44,7 +44,7 @@ class SessionTest extends \OxidTestCase
     protected function _getSessionMock($aMockFunctions = array())
     {
         $aMockFunctions = array_merge($aMockFunctions, array('_startSession', '_initSessionData'));
-        $oSession = $this->getMock('OxidEsales\\Eshop\\Setup\\Session', $aMockFunctions);
+        $oSession = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Session', $aMockFunctions);
 
         return $oSession;
     }

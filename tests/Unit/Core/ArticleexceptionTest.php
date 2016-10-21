@@ -82,7 +82,7 @@ class ArticleexceptionTest extends \OxidTestCase
      */
     public function testType()
     {
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\ArticleException', get_class($this->_oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\ArticleException', get_class($this->_oTestObject));
     }
 
     /**

@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Component\Widget\MiniBasket
  */
-class oxwMiniBasket extends \OxidEsales\Eshop\Application\Component\Widget\MiniBasket
+class oxwMiniBasket extends \OxidEsales\EshopCommunity\Application\Component\Widget\MiniBasket
 {
 }

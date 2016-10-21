@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Pricealarm extends \OxidEsales\Eshop\Application\Controller\PriceAlarmController
+class Pricealarm extends \OxidEsales\EshopCommunity\Application\Controller\PriceAlarmController
 {
 }

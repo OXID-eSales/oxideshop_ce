@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
 use oxRegistry;
 use oxUtilsObject;
 use oxField;
 use oxDb;
-use OxidEsales\Eshop\Application\Model\Basket;
+use OxidEsales\EshopCommunity\Application\Model\Basket;
 use oxuserbasket;
 
 /**

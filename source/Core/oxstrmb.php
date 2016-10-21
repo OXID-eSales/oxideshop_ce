@@ -27,6 +27,6 @@
  *
  */
 
-class oxStrMb extends \OxidEsales\Eshop\Core\StrMb
+class oxStrMb extends \OxidEsales\EshopCommunity\Core\StrMb
 {
 }

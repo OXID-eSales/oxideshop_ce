@@ -27,6 +27,6 @@
  *
  */
 
-class oxOpenSSLFunctionalityChecker extends \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
+class oxOpenSSLFunctionalityChecker extends \OxidEsales\EshopCommunity\Core\OpenSSLFunctionalityChecker
 {
 }

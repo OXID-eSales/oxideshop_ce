@@ -24,7 +24,7 @@ namespace Unit\Application\Controller\Admin;
 use \oxField;
 use \Exception;
 use \oxDb;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxTestModules;
 
 /**

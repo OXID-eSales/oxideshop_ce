@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\ConfigFile;
+use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 
 /**
  * Class holds scripts (controllers) needed to perform shop setup steps

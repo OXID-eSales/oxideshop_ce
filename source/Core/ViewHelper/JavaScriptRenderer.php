@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\ViewHelper;
+namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
 use oxRegistry;
 

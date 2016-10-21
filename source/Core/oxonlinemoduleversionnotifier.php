@@ -27,6 +27,6 @@
  *
  */
 
-class oxOnlineModuleVersionNotifier extends \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier
+class oxOnlineModuleVersionNotifier extends \OxidEsales\EshopCommunity\Core\OnlineModuleVersionNotifier
 {
 }

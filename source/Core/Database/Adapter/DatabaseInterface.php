@@ -20,10 +20,10 @@
  * @version      OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Database\Adapter;
+namespace OxidEsales\EshopCommunity\Core\Database\Adapter;
 
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
 
 /**
  * The database connection interface specifies how a database connection should look and act.
@@ -229,7 +229,7 @@ interface DatabaseInterface
      *
      * @throws DatabaseException The exception, that can occur while executing the sql statement.
      *
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
+     * @return \OxidEsales\EshopCommunity\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
     public function select($query, $parameters = array());
 

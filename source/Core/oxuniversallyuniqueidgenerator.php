@@ -27,6 +27,6 @@
  *
  */
 
-class oxUniversallyUniqueIdGenerator extends \OxidEsales\Eshop\Core\UniversallyUniqueIdGenerator
+class oxUniversallyUniqueIdGenerator extends \OxidEsales\EshopCommunity\Core\UniversallyUniqueIdGenerator
 {
 }

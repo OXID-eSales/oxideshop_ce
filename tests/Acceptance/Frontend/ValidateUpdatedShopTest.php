@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Frontend;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
-use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 
 class ValidateUpdatedShopTest extends FrontendTestCase
 {

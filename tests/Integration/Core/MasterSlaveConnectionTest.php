@@ -20,16 +20,16 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Integration\Core;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use oxDb;
-use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
  * Class MasterSlaveConnectionTest
  *
- * @covers OxidEsales\Eshop\Core\Database
+ * @covers OxidEsales\EshopCommunity\Core\Database
  */
 class MasterSlaveConnectionTest extends UnitTestCase
 {
@@ -73,7 +73,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
         }
 
         $connection = oxDb::getDb();
-        $this->assertTrue(is_a($connection, 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database'));
+        $this->assertTrue(is_a($connection, 'OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database'));
 
         $dbConnection = $this->getProtectedClassProperty($connection, 'connection');
         $this->assertTrue(is_a($dbConnection, 'Doctrine\DBAL\Connection'));
@@ -91,7 +91,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
         }
 
         $connection = oxDb::getMaster();
-        $this->assertTrue(is_a($connection, 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database'));
+        $this->assertTrue(is_a($connection, 'OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database'));
 
         $dbConnection = $this->getProtectedClassProperty($connection, 'connection');
         $this->assertTrue(is_a($dbConnection, 'Doctrine\DBAL\Connection'));
@@ -110,7 +110,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
 
         $connection = oxDb::getDb();
         $connection->forceMasterConnection();
-        $this->assertTrue(is_a($connection, 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database'));
+        $this->assertTrue(is_a($connection, 'OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database'));
 
         $dbConnection = $this->getProtectedClassProperty($connection, 'connection');
         $this->assertTrue(is_a($dbConnection, 'Doctrine\DBAL\Connection'));
@@ -129,7 +129,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
 
         $connection = oxDb::getDb();
         $connection->forceSlaveConnection();
-        $this->assertTrue(is_a($connection, 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database'));
+        $this->assertTrue(is_a($connection, 'OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database'));
 
         $dbConnection = $this->getProtectedClassProperty($connection, 'connection');
         $this->assertTrue(is_a($dbConnection, 'Doctrine\DBAL\Connection'));

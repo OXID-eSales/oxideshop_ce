@@ -23,8 +23,8 @@
 /**
  * Deprecated article interface, must be empty. Original interface moved to Application/Model/Contract/ArticleInterface
  *
- * @deprecated on b-dev (2015-10-05); Use \OxidEsales\Eshop\Application\Model\Contract\ArticleInterface instead
+ * @deprecated on b-dev (2015-10-05); Use \OxidEsales\EshopCommunity\Application\Model\Contract\ArticleInterface instead
  */
-interface oxIArticle extends \OxidEsales\Eshop\Application\Model\Contract\ArticleInterface
+interface oxIArticle extends \OxidEsales\EshopCommunity\Application\Model\Contract\ArticleInterface
 {
 }

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxUBase;
 
@@ -28,7 +28,7 @@ use oxUBase;
  * Handles adding article to recommendation list process.
  * Due to possibility of external modules we recommned to extend the vews from oxUBase view.
  * However expreimentally we extend RecommAdd from Details view here.
- * 
+ *
  * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
 class RecommendationAddController extends \Details

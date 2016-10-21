@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Delivery_Main extends \OxidEsales\Eshop\Application\Controller\Admin\DeliveryMain
+class Delivery_Main extends \OxidEsales\EshopCommunity\Application\Controller\Admin\DeliveryMain
 {
 }

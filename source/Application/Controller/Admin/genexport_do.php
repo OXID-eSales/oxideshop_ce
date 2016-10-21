@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class GenExport_Do extends \OxidEsales\Eshop\Application\Controller\Admin\GenericExportDo
+class GenExport_Do extends \OxidEsales\EshopCommunity\Application\Controller\Admin\GenericExportDo
 {
 }

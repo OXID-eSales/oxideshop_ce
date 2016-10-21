@@ -21,8 +21,8 @@
  */
 namespace Unit\Application\Model;
 
-use OxidEsales\Eshop\Application\Model\Article;
-use OxidEsales\Eshop\Application\Model\Vendor;
+use OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Application\Model\Vendor;
 use \oxVendor;
 
 use \oxField;

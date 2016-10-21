@@ -27,6 +27,6 @@
  *
  * @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
  */
-class Admin_News extends \OxidEsales\Eshop\Application\Controller\Admin\AdminNews
+class Admin_News extends \OxidEsales\EshopCommunity\Application\Controller\Admin\AdminNews
 {
 }

@@ -19,13 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version       OXID eShop CE
  */
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxDb;
-use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database as DatabaseAdapter;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database as DatabaseAdapter;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException;
 
 /**
  * Database connection class

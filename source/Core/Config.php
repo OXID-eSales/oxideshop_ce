@@ -20,18 +20,18 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
 use oxConnectionException;
 use oxCookieException;
 use oxDb;
 use oxException;
-use OxidEsales\Eshop\Application\Controller\OxidStartController;
-use OxidEsales\Eshop\Application\Model\Shop;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
-use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\EshopCommunity\Application\Controller\OxidStartController;
+use OxidEsales\EshopCommunity\Application\Model\Shop;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
 use stdClass;
 
 //max integer
@@ -674,7 +674,7 @@ class Config extends Base
      * @param string $name         Name of parameter.
      * @param string $defaultValue Default value if no value provided.
      *
-     * @deprecated on 6.0.0 (2016-05-16); Use OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()
+     * @deprecated on 6.0.0 (2016-05-16); Use OxidEsales\EshopCommunity\Core\Request::getRequestEscapedParameter()
      *
      * @return mixed
      */
@@ -689,7 +689,7 @@ class Config extends Base
      * @param string $name         Name of parameter.
      * @param string $defaultValue Default value if no value provided.
      *
-     * @deprecated on 6.0.0 (2016-05-16); Use OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()
+     * @deprecated on 6.0.0 (2016-05-16); Use OxidEsales\EshopCommunity\Core\Request::getRequestEscapedParameter()
      *
      * @return mixed
      */

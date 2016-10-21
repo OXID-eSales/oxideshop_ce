@@ -26,7 +26,7 @@ use \oxArticleHelper;
 use \oxdeliverylist;
 use \oxDb;
 use \oxField;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxRegistry;
 use \oxTestModules;
 use \oxUser;

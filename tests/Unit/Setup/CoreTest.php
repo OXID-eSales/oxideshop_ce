@@ -21,7 +21,7 @@
  */
 namespace Unit\Setup;
 
-use OxidEsales\Eshop\Setup\Core;
+use OxidEsales\EshopCommunity\Setup\Core;
 
 /**
  * SetupCoreTest tests

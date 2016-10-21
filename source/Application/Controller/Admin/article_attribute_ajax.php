@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\ArticleAttributeAjax
  */
-class article_attribute_ajax extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleAttributeAjax
+class article_attribute_ajax extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleAttributeAjax
 {
 }

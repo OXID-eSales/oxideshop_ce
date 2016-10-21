@@ -27,6 +27,6 @@
  *
  */
 
-class oxOnlineRequest extends \OxidEsales\Eshop\Core\OnlineRequest
+class oxOnlineRequest extends \OxidEsales\EshopCommunity\Core\OnlineRequest
 {
 }

@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\WishListController
  */
-class Wishlist extends \OxidEsales\Eshop\Application\Controller\WishListController
+class Wishlist extends \OxidEsales\EshopCommunity\Application\Controller\WishListController
 {
 }

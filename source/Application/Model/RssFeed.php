@@ -20,10 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\Registry;
 use stdClass;
 
 /**

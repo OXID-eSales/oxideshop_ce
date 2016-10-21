@@ -22,7 +22,7 @@
 namespace Unit\Application\Model;
 
 use \oxDb;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxRegistry;
 
 /**

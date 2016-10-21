@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxDebugInfo extends \OxidEsales\Eshop\Core\DebugInfo
+class oxDebugInfo extends \OxidEsales\EshopCommunity\Core\DebugInfo
 {
 }

@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\SearchController
  */
-class Search extends \OxidEsales\Eshop\Application\Controller\SearchController
+class Search extends \OxidEsales\EshopCommunity\Application\Controller\SearchController
 {
 }

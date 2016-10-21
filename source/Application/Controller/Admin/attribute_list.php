@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Attribute_List extends \OxidEsales\Eshop\Application\Controller\Admin\AttributeList
+class Attribute_List extends \OxidEsales\EshopCommunity\Application\Controller\Admin\AttributeList
 {
 }

@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\Country
  */
-class oxCountry extends \OxidEsales\Eshop\Application\Model\Country
+class oxCountry extends \OxidEsales\EshopCommunity\Application\Model\Country
 {
 }

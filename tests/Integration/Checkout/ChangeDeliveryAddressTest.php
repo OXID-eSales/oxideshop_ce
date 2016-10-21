@@ -5,7 +5,7 @@
 namespace Integration\Checkout;
 
 use oxField;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use oxRegistry;
 use oxUtilsObject;
 

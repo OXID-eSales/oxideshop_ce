@@ -21,8 +21,8 @@
  */
 namespace Unit\Core\Edition;
 
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
@@ -66,7 +66,7 @@ class EditionRootPathProviderTest extends UnitTestCase
             $mockedMethodName = 'isProfessional';
         }
 
-        $editionSelector = $this->getMockBuilder('OxidEsales\Eshop\Core\Edition\EditionSelector')->getMock();
+        $editionSelector = $this->getMockBuilder('OxidEsales\EshopCommunity\Core\Edition\EditionSelector')->getMock();
         $editionSelector->method($mockedMethodName)->willReturn(true);
 
         return $editionSelector;

@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class Language extends \OxidEsales\Eshop\Application\Controller\Admin\LanguageController
+class Language extends \OxidEsales\EshopCommunity\Application\Controller\Admin\LanguageController
 {
 }

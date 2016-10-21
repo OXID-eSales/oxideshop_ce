@@ -22,7 +22,7 @@
 namespace Unit\Core;
 
 use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\Eshop\Core\FileSystem\FileSystem;
+use OxidEsales\EshopCommunity\Core\FileSystem\FileSystem;
 
 class FileSystemTest extends UnitTestCase
 {

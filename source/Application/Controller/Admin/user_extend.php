@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class User_Extend extends \OxidEsales\Eshop\Application\Controller\Admin\UserExtend
+class User_Extend extends \OxidEsales\EshopCommunity\Application\Controller\Admin\UserExtend
 {
 }

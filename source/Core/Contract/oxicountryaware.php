@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-interface oxICountryAware extends \OxidEsales\Eshop\Core\Contract\ICountryAware
+interface oxICountryAware extends \OxidEsales\EshopCommunity\Core\Contract\ICountryAware
 {
 }

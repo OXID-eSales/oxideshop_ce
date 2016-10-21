@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Review extends \OxidEsales\Eshop\Application\Controller\ReviewController
+class Review extends \OxidEsales\EshopCommunity\Application\Controller\ReviewController
 {
 }

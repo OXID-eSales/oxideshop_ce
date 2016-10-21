@@ -22,13 +22,15 @@
 namespace Unit\Core;
 
 use oxDb;
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
-use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\ConfigFile;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use ReflectionClass;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 
 /**
  * Class DbTest

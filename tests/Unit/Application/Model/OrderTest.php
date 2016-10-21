@@ -31,7 +31,7 @@ use \stdClass;
 use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
-use OxidEsales\Eshop\Application\Model\PaymentGateway;
+use OxidEsales\EshopCommunity\Application\Model\PaymentGateway;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
 

@@ -64,14 +64,14 @@ class CategoryTreeTest extends \OxidTestCase
 
     public function testChecksIfContentCategoryNotReturned()
     {
-        $categoryTree = oxNew('OxidEsales\Eshop\Application\Component\Widget\CategoryTree');
+        $categoryTree = oxNew('OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree');
 
         $this->assertSame(false, $categoryTree->getContentCategory());
     }
 
     public function testChecksIfContentCategoryReturned()
     {
-        $categoryTree = oxNew('OxidEsales\Eshop\Application\Component\Widget\CategoryTree');
+        $categoryTree = oxNew('OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree');
         $_GET['oxcid'] = 'test';
 
         $this->assertSame('test', $categoryTree->getContentCategory());

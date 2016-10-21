@@ -480,7 +480,7 @@ class ArticleMainTest extends \OxidTestCase
     }
 
     /**
-     * Testing error case when calling OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::save
+     * Testing error case when calling OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleMain::save
      *
      * @return null
      */
@@ -507,7 +507,7 @@ class ArticleMainTest extends \OxidTestCase
     }
 
     /**
-     * Testing error case when calling OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::save
+     * Testing error case when calling OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleMain::save
      *
      * @return null
      */

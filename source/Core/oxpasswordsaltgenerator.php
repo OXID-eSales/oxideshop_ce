@@ -27,6 +27,6 @@
  *
  */
 
-class oxPasswordSaltGenerator extends \OxidEsales\Eshop\Core\PasswordSaltGenerator
+class oxPasswordSaltGenerator extends \OxidEsales\EshopCommunity\Core\PasswordSaltGenerator
 {
 }

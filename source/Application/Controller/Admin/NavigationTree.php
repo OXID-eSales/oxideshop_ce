@@ -20,16 +20,16 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use DOMXPath;
 use DOMDocument;
 use DOMElement;
 use stdClass;
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 
 /**
  * Navigation tree control class

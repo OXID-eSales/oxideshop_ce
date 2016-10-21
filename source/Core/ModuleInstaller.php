@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner;
+use OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner;
 use oxModuleCache;
 use oxModule;
 use oxDb;

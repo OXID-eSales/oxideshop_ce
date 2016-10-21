@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\CompareController
  */
-class Compare extends \OxidEsales\Eshop\Application\Controller\CompareController
+class Compare extends \OxidEsales\EshopCommunity\Application\Controller\CompareController
 {
 }

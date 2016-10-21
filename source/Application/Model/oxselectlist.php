@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\SelectList
  */
-class oxSelectlist extends \OxidEsales\Eshop\Application\Model\SelectList
+class oxSelectlist extends \OxidEsales\EshopCommunity\Application\Model\SelectList
 {
 }

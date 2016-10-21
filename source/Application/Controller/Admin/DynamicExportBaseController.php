@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -951,8 +951,8 @@ class DynamicExportBaseController extends \oxAdminDetails
 
     /**
      * Get the actual database.
-     * 
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface The database.
+     *
+     * @return \OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface The database.
      */
     protected function getDb()
     {

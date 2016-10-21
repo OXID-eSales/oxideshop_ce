@@ -22,8 +22,8 @@
 namespace Unit\Application\Model;
 
 use modDB;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use \oxSeoEncoder;
 use \Exception;
 use \oxField;

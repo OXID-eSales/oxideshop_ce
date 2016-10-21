@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Registry;
 
 /**
  * Smarty function

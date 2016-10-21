@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxArticle;
 use oxRegistry;

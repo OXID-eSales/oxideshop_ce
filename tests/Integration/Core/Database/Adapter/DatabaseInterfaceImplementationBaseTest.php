@@ -20,11 +20,11 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter;
 
-use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database;
+use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**

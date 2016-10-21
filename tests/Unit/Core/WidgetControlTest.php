@@ -22,7 +22,7 @@
 namespace Unit\Core;
 
 use modDB;
-use OxidEsales\Eshop\Core\Controller\BaseController;
+use OxidEsales\EshopCommunity\Core\Controller\BaseController;
 use \oxRegistry;
 
 class WidgetControlTest extends \OxidTestCase

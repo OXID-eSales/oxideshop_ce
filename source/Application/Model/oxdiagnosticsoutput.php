@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxDiagnosticsOutput extends \OxidEsales\Eshop\Application\Model\DiagnosticsOutput
+class oxDiagnosticsOutput extends \OxidEsales\EshopCommunity\Application\Model\DiagnosticsOutput
 {
 }

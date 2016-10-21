@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxDecryptor extends \OxidEsales\Eshop\Core\Decryptor
+class oxDecryptor extends \OxidEsales\EshopCommunity\Core\Decryptor
 {
 }

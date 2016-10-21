@@ -22,7 +22,7 @@
 namespace Unit\Core;
 
 use \oxDb;
-use OxidEsales\Eshop\Core\ModuleList;
+use OxidEsales\EshopCommunity\Core\ModuleList;
 
 class ModulelistTest extends \OxidTestCase
 {

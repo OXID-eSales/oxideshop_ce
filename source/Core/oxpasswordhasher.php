@@ -27,6 +27,6 @@
  *
  */
 
-class oxPasswordHasher extends \OxidEsales\Eshop\Core\PasswordHasher
+class oxPasswordHasher extends \OxidEsales\EshopCommunity\Core\PasswordHasher
 {
 }

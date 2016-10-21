@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\WrappingController
  */
-class Wrapping extends \OxidEsales\Eshop\Application\Controller\WrappingController
+class Wrapping extends \OxidEsales\EshopCommunity\Application\Controller\WrappingController
 {
 }

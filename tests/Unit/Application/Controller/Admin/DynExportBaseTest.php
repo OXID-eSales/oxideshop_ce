@@ -25,7 +25,7 @@ use DynExportBase;
 use Exception;
 use oxarticle;
 use oxDb;
-use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use oxRegistry;
 use oxTestModules;
 use stdClass;
@@ -708,12 +708,12 @@ class DynExportBaseTest extends \OxidTestCase
     {
         $heapTableName = "testdynexportbasetable";
 
-        $databaseMock = $this->getMock('OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database', array('selectLimit'));
+        $databaseMock = $this->getMock('OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database', array('selectLimit'));
         $databaseMock->expects($this->any())
             ->method('selectLimit')
             ->with($this->equalTo("select oxid from $heapTableName"));
 
-        $dynamicExportControllerMock = $this->getMock('OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController', array('getDb', '_getHeapTableName'));
+        $dynamicExportControllerMock = $this->getMock('OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicExportBaseController', array('getDb', '_getHeapTableName'));
         $dynamicExportControllerMock->expects($this->any())->method('getDb')->willReturn($databaseMock);
         $dynamicExportControllerMock->expects($this->any())->method('_getHeapTableName')->willReturn($heapTableName);
 

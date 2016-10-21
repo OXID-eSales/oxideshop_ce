@@ -20,10 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use oxSystemComponentException;
 
 /**
@@ -92,7 +92,7 @@ class Core
     protected function getClass($sInstanceName)
     {
         $editionSelector = new EditionSelector();
-        $class =  'OxidEsales\\Eshop\\Setup\\' . $sInstanceName;
+        $class =  'OxidEsales\\EshopCommunity\\Setup\\' . $sInstanceName;
 
         $classEnterprise = '\\OxidEsales\\EshopEnterprise\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
         $classProfessional = '\\OxidEsales\\EshopProfessional\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;

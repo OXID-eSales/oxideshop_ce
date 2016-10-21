@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxOrder;
 use \Exception;
 use \oxTestModules;

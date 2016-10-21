@@ -20,10 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\GenericImport;
+namespace OxidEsales\EshopCommunity\Core\GenericImport;
 
 use Exception;
-use OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject;
+use OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\ImportObject;
 use oxRegistry;
 
 /**

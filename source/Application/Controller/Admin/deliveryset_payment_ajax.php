@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class deliveryset_payment_ajax extends \OxidEsales\Eshop\Application\Controller\Admin\DeliverySetPaymentAjax
+class deliveryset_payment_ajax extends \OxidEsales\EshopCommunity\Application\Controller\Admin\DeliverySetPaymentAjax
 {
 }

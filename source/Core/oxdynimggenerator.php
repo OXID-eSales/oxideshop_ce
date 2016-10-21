@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxDynImgGenerator extends \OxidEsales\Eshop\Core\DynamicImageGenerator
+class oxDynImgGenerator extends \OxidEsales\EshopCommunity\Core\DynamicImageGenerator
 {
 }

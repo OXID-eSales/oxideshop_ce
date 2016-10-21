@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Order_Address extends \OxidEsales\Eshop\Application\Controller\Admin\OrderAddress
+class Order_Address extends \OxidEsales\EshopCommunity\Application\Controller\Admin\OrderAddress
 {
 }

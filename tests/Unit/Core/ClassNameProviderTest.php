@@ -21,7 +21,7 @@
  */
 namespace Unit\Core;
 
-use OxidEsales\Eshop\Core\ClassNameProvider;
+use OxidEsales\EshopCommunity\Core\ClassNameProvider;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 class ClassNameProviderTest extends UnitTestCase

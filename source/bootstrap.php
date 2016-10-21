@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\ConfigFile;
+use OxidEsales\EshopCommunity\Core\Registry;
 
 if (defined('E_DEPRECATED')) {
     //E_DEPRECATED is disabled particularly for PHP 5.3 as some 3rd party modules still uses deprecated functionality
@@ -56,6 +56,7 @@ Registry::set("oxConfigFile", $oConfigFile);
 registerVirtualNamespaceAutoLoad();
 registerShopAutoLoad();
 registerModuleAutoload();
+
 
 //sets default PHP ini params
 ini_set('session.name', 'sid');

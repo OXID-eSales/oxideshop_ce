@@ -23,18 +23,18 @@
 namespace Integration\Core;
 
 use oxDb;
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\ConfigFile;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException;
 
 /**
  * Class DatabaseTest
- * 
+ *
  * @group database-adapter
- * @covers OxidEsales\Eshop\Core\Database
+ * @covers OxidEsales\EshopCommunity\Core\Database
  */
 class DatabaseTest extends UnitTestCase
 {
@@ -103,7 +103,7 @@ class DatabaseTest extends UnitTestCase
         Registry::set('oxConfigFile', $configFile);
         $this->setProtectedClassProperty(oxDb::getInstance(), 'db', null);
 
-        $this->setExpectedException('OxidEsales\Eshop\Core\Exception\DatabaseConnectionException');
+        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException');
 
         try {
             oxDb::getDb();
@@ -124,7 +124,7 @@ class DatabaseTest extends UnitTestCase
         Registry::set('oxConfigFile', $configFile);
         $this->setProtectedClassProperty(oxDb::getInstance(), 'db', null);
 
-        $this->setExpectedException('OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException');
+        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException');
 
         try {
             oxDb::getDb();
@@ -221,7 +221,7 @@ class DatabaseTest extends UnitTestCase
         $connectionMock = $this->createConnectionMock();
 
         $dbMock = $this->getMock(
-            'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database',
+            'OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database',
             array('isConnectionEstablished', 'getConnectionFromDriverManager', 'createConnectionErrorMessage', 'setFetchMode', 'closeConnection')
         );
         $dbMock->expects($this->once())

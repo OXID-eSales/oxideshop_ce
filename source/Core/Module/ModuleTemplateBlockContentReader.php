@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Module;
+namespace OxidEsales\EshopCommunity\Core\Module;
 
 use \oxException;
 

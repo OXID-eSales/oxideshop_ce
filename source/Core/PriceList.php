@@ -21,7 +21,7 @@
  */
 
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Price list class. Deals with a list of oxPrice object.

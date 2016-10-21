@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\RssController
  */
-class Rss extends \OxidEsales\Eshop\Application\Controller\RssController
+class Rss extends \OxidEsales\EshopCommunity\Application\Controller\RssController
 {
 }

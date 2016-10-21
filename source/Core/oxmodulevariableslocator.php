@@ -27,6 +27,6 @@
  *
  */
 
-class oxModuleVariablesLocator extends \OxidEsales\Eshop\Core\ModuleVariablesLocator
+class oxModuleVariablesLocator extends \OxidEsales\EshopCommunity\Core\ModuleVariablesLocator
 {
 }

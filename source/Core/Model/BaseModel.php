@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Model;
+namespace OxidEsales\EshopCommunity\Core\Model;
 
 /**
  * Defining triggered action type.

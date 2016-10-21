@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Edition;
+namespace OxidEsales\EshopCommunity\Core\Edition;
 
 /**
  * Class responsible for returning class maps.

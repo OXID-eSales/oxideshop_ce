@@ -21,7 +21,7 @@
  */
 namespace Unit\Core;
 
-use OxidEsales\Eshop\Core\Autoload\NotOverridableClassAutoload;
+use OxidEsales\EshopCommunity\Core\Autoload\NotOverridableClassAutoload;
 
 class ClassToCheckAliasCreation
 {

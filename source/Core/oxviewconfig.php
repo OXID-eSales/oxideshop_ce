@@ -27,6 +27,6 @@
  *
  */
 
-class oxViewConfig extends \OxidEsales\Eshop\Core\ViewConfig
+class oxViewConfig extends \OxidEsales\EshopCommunity\Core\ViewConfig
 {
 }

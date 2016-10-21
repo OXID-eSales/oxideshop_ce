@@ -20,8 +20,8 @@
  * @version       OXID eShop CE
  */
 
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Request;
+use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Request;
 
 if (!defined('ESHOP_CONFIG_FILE')) {
     define('ESHOP_CONFIG_FILE', 'config.inc.php');
@@ -105,7 +105,7 @@ if (!function_exists('registerVirtualNamespaceAutoLoad')) {
      */
     function registerVirtualNamespaceAutoLoad()
     {
-        $classMapProvider = new \OxidEsales\Eshop\Core\ClassMapProvider(new \OxidEsales\Eshop\Core\Edition\EditionSelector());
+        $classMapProvider = new \OxidEsales\EshopCommunity\Core\ClassMapProvider(new \OxidEsales\EshopCommunity\Core\Edition\EditionSelector());
         $classMap = $classMapProvider->getVirtualNamespaceClassMap();
         $virtualNamespaceAutoLoader = new \OxidEsales\EshopCommunity\Core\Autoload\VirtualNamespaceClassAutoload($classMap->getOverridableMap());
 
@@ -119,11 +119,11 @@ if (!function_exists('registerShopAutoLoad')) {
      */
     function registerShopAutoLoad()
     {
-        $classMapProvider = new \OxidEsales\Eshop\Core\ClassMapProvider(new \OxidEsales\Eshop\Core\Edition\EditionSelector());
-        $notOverridableClassAutoloader = new \OxidEsales\Eshop\Core\Autoload\NotOverridableClassAutoload($classMapProvider->getNotOverridableClassMap());
+        $classMapProvider = new \OxidEsales\EshopCommunity\Core\ClassMapProvider(new \OxidEsales\EshopCommunity\Core\Edition\EditionSelector());
+        $notOverridableClassAutoloader = new \OxidEsales\EshopCommunity\Core\Autoload\NotOverridableClassAutoload($classMapProvider->getNotOverridableClassMap());
         spl_autoload_register(array($notOverridableClassAutoloader, 'autoload'));
 
-        $shopAutoloader = new \OxidEsales\Eshop\Core\Autoload\ShopAutoload();
+        $shopAutoloader = new \OxidEsales\EshopCommunity\Core\Autoload\ShopAutoload();
         spl_autoload_register(array($shopAutoloader, 'autoload'));
     }
 }
@@ -134,7 +134,7 @@ if (!function_exists('registerModuleAutoload')) {
      */
     function registerModuleAutoload()
     {
-        $moduleAutoloader = new \OxidEsales\Eshop\Core\Autoload\ModuleAutoload();
+        $moduleAutoloader = new \OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload();
         spl_autoload_register(array($moduleAutoloader, 'autoload'));
     }
 }
@@ -466,7 +466,7 @@ if (!function_exists('getViewName')) {
     function getViewName($table, $languageId = null, $shopId = null)
     {
         $viewNameGenerator = Registry::get('oxTableViewNameGenerator');
-        
+
         return $viewNameGenerator->getViewName($table, $languageId, $shopId);
     }
 }
@@ -478,7 +478,7 @@ if (!function_exists('getRequestUrl')) {
      * @param string $sParams     Parameters to object
      * @param bool   $blReturnUrl If return url
      *
-     * @deprecated since v6.0.0 (2016-05-16); Use OxidEsales\Eshop\Core\Request::getRequestUrl().
+     * @deprecated since v6.0.0 (2016-05-16); Use OxidEsales\EshopCommunity\Core\Request::getRequestUrl().
      *
      * @return string
      */

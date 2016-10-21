@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Vendor extends \OxidEsales\Eshop\Application\Controller\Admin\VendorController
+class Vendor extends \OxidEsales\EshopCommunity\Application\Controller\Admin\VendorController
 {
 }

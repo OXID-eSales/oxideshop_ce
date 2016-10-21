@@ -37,10 +37,10 @@
  *  $Id$
  */
 
-namespace OxidEsales\Eshop\Core\Smarty\Plugin;
+namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
 
 use oxDb;
-use OxidEsales\Eshop\Application\Controller\ContentController;
+use OxidEsales\EshopCommunity\Application\Controller\ContentController;
 use oxRegistry;
 use oxSuperCfg;
 

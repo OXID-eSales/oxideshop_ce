@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\Login
  */
-class Login extends \OxidEsales\Eshop\Application\Controller\Admin\LoginController
+class Login extends \OxidEsales\EshopCommunity\Application\Controller\Admin\LoginController
 {
 }

@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Article_Crossselling extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleCrossselling
+class Article_Crossselling extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleCrossselling
 {
 }

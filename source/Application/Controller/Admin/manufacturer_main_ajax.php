@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\ManufacturerMainAjax
  */
-class manufacturer_main_ajax extends \OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMainAjax
+class manufacturer_main_ajax extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ManufacturerMainAjax
 {
 }

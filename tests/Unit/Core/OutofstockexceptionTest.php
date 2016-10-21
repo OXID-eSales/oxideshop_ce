@@ -38,7 +38,7 @@ class OutofstockexceptionTest extends \OxidTestCase
     {
         parent::setUp();
         $this->_oTestObject = oxNew('oxOutOfStockException', $this->_sMsg);
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\OutOfStockException', get_class($this->_oTestObject));
+        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\OutOfStockException', get_class($this->_oTestObject));
         $this->_oTestObject->setRemainingAmount($this->_iAmount);
         $this->_oTestObject->setBasketIndex($this->_sBasketIndex);
     }

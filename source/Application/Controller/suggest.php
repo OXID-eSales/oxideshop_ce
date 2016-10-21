@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Suggest extends \OxidEsales\Eshop\Application\Controller\SuggestController
+class Suggest extends \OxidEsales\EshopCommunity\Application\Controller\SuggestController
 {
 }

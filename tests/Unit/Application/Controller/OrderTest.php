@@ -32,7 +32,7 @@ use \oxException;
 use \oxField;
 use \oxRegistry;
 use \oxTestModules;
-use \OxidEsales\Eshop\Application\Model\Basket;
+use \OxidEsales\EshopCommunity\Application\Model\Basket;
 
 /**
  * Test oxUtils module.

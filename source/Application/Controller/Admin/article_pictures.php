@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\ArticlePictures
  */
-class Article_Pictures extends \OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures
+class Article_Pictures extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ArticlePictures
 {
 }

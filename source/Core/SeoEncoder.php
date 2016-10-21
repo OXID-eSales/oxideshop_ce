@@ -20,13 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
 use oxRegistry;
 use oxDb;
 use oxStr;
-use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\EshopCommunity\Core\Exception\StandardException;
 
 /**
  * Seo encoder base

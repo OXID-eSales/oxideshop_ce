@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance;
 
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use OxidEsales\TestingLibrary\TestSqlPathProvider;
 
 abstract class AcceptanceTestCase extends \OxidEsales\TestingLibrary\AcceptanceTestCase

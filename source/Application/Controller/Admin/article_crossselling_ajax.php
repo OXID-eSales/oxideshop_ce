@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\ArticleCrosssellingAjax
  */
-class article_crossselling_ajax extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleCrosssellingAjax
+class article_crossselling_ajax extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleCrosssellingAjax
 {
 }

@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxDeliveryList extends \OxidEsales\Eshop\Application\Model\DeliveryList
+class oxDeliveryList extends \OxidEsales\EshopCommunity\Application\Model\DeliveryList
 {
 }

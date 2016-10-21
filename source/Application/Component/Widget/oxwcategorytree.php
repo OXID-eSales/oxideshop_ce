@@ -27,6 +27,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxwCategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\CategoryTree
+class oxwCategoryTree extends \OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree
 {
 }

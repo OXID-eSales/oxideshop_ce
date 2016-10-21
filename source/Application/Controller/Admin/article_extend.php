@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\ArticleExtend
  */
-class Article_Extend extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleExtend
+class Article_Extend extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleExtend
 {
 }

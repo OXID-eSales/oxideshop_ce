@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Registry;
 
 /**
  * Object registry design pattern implementation. Stores the instances of objects

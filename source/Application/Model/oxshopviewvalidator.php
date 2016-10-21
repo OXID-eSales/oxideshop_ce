@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\ShopViewValidator
  */
-class oxShopViewValidator extends \OxidEsales\Eshop\Application\Model\ShopViewValidator
+class oxShopViewValidator extends \OxidEsales\EshopCommunity\Application\Model\ShopViewValidator
 {
 }

@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\Groups
  */
-class oxGroups extends \OxidEsales\Eshop\Application\Model\Groups
+class oxGroups extends \OxidEsales\EshopCommunity\Application\Model\Groups
 {
 }

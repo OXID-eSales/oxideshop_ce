@@ -27,6 +27,6 @@
  *
  */
 
-class oxUtilsDate extends \OxidEsales\Eshop\Core\UtilsDate
+class oxUtilsDate extends \OxidEsales\EshopCommunity\Core\UtilsDate
 {
 }

@@ -23,7 +23,7 @@ namespace Unit\Application\Controller;
 
 use \oxField;
 use \oxException;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Registry;
 use \oxTestModules;
 
 /**
@@ -46,7 +46,7 @@ class CmpShopTest extends \OxidTestCase
         $oUtils = $this->getMock('oxUtils', array('showOfflinePage'));
         $oUtils->expects($this->once())->method('showOfflinePage');
         Registry::set('oxUtils', $oUtils);
-        
+
         $oConfig = $this->getMock("oxConfig", array("getConfigParam", "getActiveView", "getActiveShop"));
         $oConfig->expects($this->once())->method('getActiveView')->will($this->returnValue($oView));
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));

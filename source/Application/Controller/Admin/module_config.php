@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\ModuleConfig
  */
-class Module_Config extends \OxidEsales\Eshop\Application\Controller\Admin\ModuleConfiguration
+class Module_Config extends \OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration
 {
 }

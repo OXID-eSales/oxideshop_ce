@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxManufacturer;
 use oxRegistry;
@@ -58,7 +58,7 @@ class ManufacturerListController extends \AList
 
     /**
      * Recommlist
-     * 
+     *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @var object

@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Component\Widget\ArticleBox
  */
-class oxwArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\ArticleBox
+class oxwArticleBox extends \OxidEsales\EshopCommunity\Application\Component\Widget\ArticleBox
 {
 }

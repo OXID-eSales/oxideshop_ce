@@ -22,7 +22,7 @@
 namespace Unit\Core;
 
 use oxConfig;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Registry;
 use oxLang;
 use oxRegistry;
 use oxSession;

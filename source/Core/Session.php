@@ -20,13 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
 use oxDb;
 use oxUtilsObject;
 use oxBasket;
-use OxidEsales\Eshop\Application\Model\Basket;
+use OxidEsales\EshopCommunity\Application\Model\Basket;
 
 /**
  * Session manager.

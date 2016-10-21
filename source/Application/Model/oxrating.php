@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\Rating
  */
-class oxRating extends \OxidEsales\Eshop\Application\Model\Rating
+class oxRating extends \OxidEsales\EshopCommunity\Application\Model\Rating
 {
 }

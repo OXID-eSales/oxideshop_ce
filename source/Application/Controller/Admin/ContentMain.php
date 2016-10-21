@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -237,9 +237,9 @@ class ContentMain extends \oxAdminDetails
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = oxDb::getMaster();
-        
+
         $blAllow = false;
-        
+
         // null not allowed
         if (!strlen($sIdent)) {
             $blAllow = true;

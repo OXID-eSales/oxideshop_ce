@@ -27,13 +27,12 @@
     },
     "autoload": {
         "psr-4": {
-            "OxidEsales\\Eshop\\": "./source",
             "OxidEsales\\EshopCommunity\\": "./source"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "OxidEsales\\Eshop\\Tests\\": "./tests"
+            "OxidEsales\\EshopCommunity\\Tests\\": "./tests"
         }
     },
     "minimum-stability": "dev",

@@ -20,10 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxField;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
 
 /**
  * Manages object (users, discounts, deliveries...) assignment to groups.

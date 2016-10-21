@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * Product reviews widget

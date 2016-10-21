@@ -23,7 +23,7 @@ namespace Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxRegistry;
 use \oxTestModules;
 

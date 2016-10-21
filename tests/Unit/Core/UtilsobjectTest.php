@@ -23,8 +23,8 @@ namespace Unit\Core;
 
 use \oxarticle;
 
-use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\Eshop\Core\UtilsObject;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\UtilsObject;
 use \oxNewDummyUserModule_parent;
 use \oxNewDummyUserModule2_parent;
 use \oemodulenameoxorder_parent;

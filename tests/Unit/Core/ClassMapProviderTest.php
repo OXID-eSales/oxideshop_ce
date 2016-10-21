@@ -21,9 +21,9 @@
  */
 namespace Unit\Core;
 
-use OxidEsales\Eshop\Core\ClassMap;
-use OxidEsales\Eshop\Core\ClassMapProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\ClassMap;
+use OxidEsales\EshopCommunity\Core\ClassMapProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 
 class ClassMapProviderTest extends \OxidTestCase
 {

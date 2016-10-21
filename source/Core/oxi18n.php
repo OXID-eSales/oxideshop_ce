@@ -25,8 +25,8 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\EshopEnterprise\Core\MultiLanguageModel
+ * @mixin \OxidEsales\EshopEnterprise\Core\Model\MultiLanguageModel
  */
-class oxI18n extends \OxidEsales\Eshop\Core\MultiLanguageModel
+class oxI18n extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 }

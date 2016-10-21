@@ -20,8 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\Eshop\Core\Model;
 
+use OxidEsales\Eshop\Core\oxObjectException;
 use oxRegistry;
 use oxDb;
 

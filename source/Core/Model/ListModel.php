@@ -29,7 +29,7 @@ use OxidEsales\Eshop\Core\oxBase;
  * List manager.
  * Collects list data (eg. from DB), performs list changes updating (to DB), etc.
  */
-class StandardList extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countable
+class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countable
 {
 
     /**

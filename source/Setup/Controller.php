@@ -358,30 +358,34 @@ class Controller extends Core
 
         try {
             $oDb->queryFile("$baseSqlDir/database_schema.sql");
-            $oDb->queryFile("$baseSqlDir/initial_data.sql");
 
             /** @var ConfigFile $shopConfig */
             $shopConfig = Registry::get("oxConfigFile");
             $vendorDir = $shopConfig->getVar('vendorDirectory');
 
-            exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_migrate");
+            if ($aDB['dbiDemoData'] == '1') {
+                exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_migrate");
+
+                // install demo data
+                try {
+                    $oDb->queryFile("$baseSqlDir/demodata.sql");
+                } catch (Exception $oExcp) {
+                    // there where problems with queries
+                    $oView->setMessage($oLang->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $oExcp->getMessage());
+
+                    return "default.php";
+                }
+            } else {
+                $oDb->queryFile("$baseSqlDir/initial_data.sql");
+
+                exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_migrate");
+            }
+
             exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_views_regenerate");
         } catch (Exception $oExcp) {
             $oView->setMessage($oExcp->getMessage());
 
             return "default.php";
-        }
-
-        if ($aDB['dbiDemoData'] == '1') {
-            // install demo data
-            try {
-                $oDb->queryFile("$sqlDir/demodata.sql");
-            } catch (Exception $oExcp) {
-                // there where problems with queries
-                $oView->setMessage($oLang->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $oExcp->getMessage());
-
-                return "default.php";
-            }
         }
 
         //swap database to english

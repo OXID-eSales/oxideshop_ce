@@ -1400,7 +1400,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      */
     protected function fetchTransactionIsolationLevel()
     {
-        $sql = "SELECT VARIABLE_VALUE FROM information_schema.session_variables WHERE variable_name = 'tx_isolation';";
+        $sql = "SELECT @@tx_isolation;";
 
         $masterDb = oxDb::getMaster();
         $resultSet = $masterDb->select($sql, array());

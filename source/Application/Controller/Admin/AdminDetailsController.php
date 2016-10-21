@@ -30,7 +30,7 @@ use oxField;
  *
  * @internal This class should not be directly extended, instead of it oxAdminDetails class should be used.
  */
-class AdminDetails extends \oxAdminView
+class AdminDetailsController extends \oxAdminView
 {
     /**
      * Global editor object.

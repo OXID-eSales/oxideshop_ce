@@ -103,7 +103,7 @@ class ViewTest extends \OxidTestCase
     {
         $oView = oxNew('oxView');
         $oView->init();
-        $this->assertEquals(1, preg_match("@\\View$@si", $oView->getThisAction()));
+        $this->assertEquals(1, preg_match("@\\BaseController@si", $oView->getThisAction()));
 
         $oUtilsServer = $this->getMock('oxUtilsServer', array('setOxCookie'));
         $oUtilsServer->expects($this->never())->method('setOxCookie');

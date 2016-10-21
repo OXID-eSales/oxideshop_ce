@@ -22,8 +22,50 @@
 
 namespace OxidEsales\EshopCommunity\Core\Autoload;
 
-
+/**
+ * Auto loader for virtual namespace classes
+ *
+ * @internal Do not make a module extension for this class.
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ */
 class VirtualNamespaceClassAutoload
 {
+    /**
+     * Classes map which is used to create aliases.
+     *
+     * @var array
+     */
+    private $map;
 
+    /**
+     * Sets class map.
+     *
+     * @param array $map
+     */
+    public function __construct($map)
+    {
+        $this->map = $map;
+    }
+
+    /**
+     * Creates class alias from class which is defined in class map.
+     *
+     * @param string $class Class name.
+     */
+    public function autoload($class)
+    {
+        if (array_key_exists($class, $this->getClassMap())) {
+            class_alias($this->map[$class], $class);
+        }
+    }
+
+    /**
+     * Returns class map.
+     *
+     * @return array
+     */
+    protected function getClassMap()
+    {
+        return $this->map;
+    }
 }

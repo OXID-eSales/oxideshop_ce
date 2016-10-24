@@ -24,7 +24,6 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
 use oxRegistry;
-use oxOnlineLicenseCheck;
 use oxCurl;
 use oxOnlineServerEmailBuilder;
 use oxSimpleXml;
@@ -53,7 +52,7 @@ class SystemEventHandler
     private $_oOnlineModuleVersionNotifier = null;
 
     /**
-     * @Var oxOnlineLicenseCheck
+     * @Var OnlineLicenseCheck
      */
     private $_oOnlineLicenseCheck = null;
 
@@ -62,7 +61,7 @@ class SystemEventHandler
      *
      * @param oxOnlineLicenseCheck $oOnlineLicenseCheck
      */
-    public function setOnlineLicenseCheck(oxOnlineLicenseCheck $oOnlineLicenseCheck)
+    public function setOnlineLicenseCheck(OnlineLicenseCheck $oOnlineLicenseCheck)
     {
         $this->_oOnlineLicenseCheck = $oOnlineLicenseCheck;
     }

@@ -208,7 +208,7 @@ class UserTest extends \OxidTestCase
 
         // loading user groups
         $sGroupId = $oDb->getOne('select oxid from oxgroups order by rand() ');
-        $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . $sUserId . '", "' . $sShopId . '", "' . $sUserId . '", "' . $sGroupId . '" )';
+        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . $sUserId . '", "' . $sShopId . '", "' . $sUserId . '", "' . $sGroupId . '" )';
         $oDb->Execute($sQ);
 
         $sQ = 'insert into oxorder ( oxid, oxshopid, oxuserid, oxorderdate ) values ( "' . $sId . '", "' . $sShopId . '", "' . $sUserId . '", "' . date('Y-m-d  H:i:s', time() + 3600) . '" ) ';
@@ -1684,8 +1684,8 @@ class UserTest extends \OxidTestCase
         $sGroupId = $oDb->getOne($sQ);
 
         // checking
-        $sQ = 'insert into oxobject2group ( oxid, oxshopid, oxobjectid, oxgroupsid ) ';
-        $sQ .= 'values ( "_testO2G_id", "' . $myConfig->getShopId() . '", "' . $sUserId . '", "' . $sGroupId . '" ) ';
+        $sQ = 'REPLACE INTO oxobject2group ( oxid, oxshopid, oxobjectid, oxgroupsid ) ';
+        $sQ .= 'VALUES ( "_testO2G_id", "' . $myConfig->getShopId() . '", "' . $sUserId . '", "' . $sGroupId . '" ) ';
         $oDb->Execute($sQ);
 
         // loading to initialize group list
@@ -1722,7 +1722,7 @@ class UserTest extends \OxidTestCase
         $sUserId = $oUser->getId();
         $sShopId = $this->getConfig()->getShopId();
 
-        $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
+        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
         $oDb->Execute($sQ);
 
         $oBasket = $this->getProxyClass("oxBasket");
@@ -1755,17 +1755,8 @@ class UserTest extends \OxidTestCase
         $sUserId = $oUser->getId();
         $sShopId = $this->getConfig()->getShopId();
 
-        try {
-            $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
-            $oDb->Execute($sQ);
-        } catch (DatabaseException $exception) {
-            /**
-             * Rethrow the exception only, if it is not a "Duplicate entry '...' for key 'UNIQ_OBJECTGROUP'"
-             */
-            if ($exception->getCode() != 1062) {
-                throw $exception;
-            }
-        }
+        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
+        $oDb->Execute($sQ);
 
         $oBasket = $this->getProxyClass("oxBasket");
         $oPrice = oxNew('oxPrice');
@@ -1796,17 +1787,8 @@ class UserTest extends \OxidTestCase
         $sUserId = $oUser->getId();
         $sShopId = $this->getConfig()->getShopId();
 
-        try {
-            $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
-            $oDb->Execute($sQ);
-        } catch (DatabaseException $exception) {
-            /**
-             * Rethrow the exception only, if it is not a "Duplicate entry '...' for key 'UNIQ_OBJECTGROUP'"
-             */
-            if ($exception->getCode() != 1062) {
-                throw $exception;
-            }
-        }
+        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
+        $oDb->Execute($sQ);
 
         $oBasket = $this->getProxyClass("oxBasket");
         $oPrice = oxNew('oxPrice');

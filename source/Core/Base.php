@@ -29,11 +29,11 @@ use oxSystemComponentException;
 use oxUser;
 
 /**
- * Super config class
+ * Basic class which is used as parent class by other OXID eShop classes.
+ * It provides access to some basic objects and some basic functionality.
  */
 class Base
 {
-
     /**
      * oxconfig instance
      *

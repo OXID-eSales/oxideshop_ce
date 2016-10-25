@@ -63,30 +63,6 @@ $sDisabled = ( $blMbStringOn > 1 && $blUnicodeSupport > 1 ) ? '' : 'disabled';
         &nbsp;&nbsp;<input type="radio" name="aDB[dbiDemoData]" value="0" <?php if( $aDB['dbiDemoData'] == 0) echo( "checked"); ?>><?php $this->getText('BUTTON_RADIO_NOT_INSTALL_DB_DEMO'); ?><br>
     </td>
   </tr>
-  <tr>
-    <td><?php $this->getText('STEP_3_UTFMODE'); ?>:</td>
-    <td>
-        &nbsp;&nbsp;<input type="checkbox" name="aDB[iUtfMode]" value="1" <?php echo $sChecked; echo $sDisabled; ?>>
-        <?php
-            if ( $blMbStringOn > 1 && $blUnicodeSupport > 1 ) {
-                $this->getText('STEP_3_UTFINFO');
-            } else {
-                $this->getText('STEP_3_UTFNOTSUPPORTED');
-                if ( $blMbStringOn < 2 ) {
-                    $this->getText('STEP_3_UTFNOTSUPPORTED1');
-                }
-                if ( ($blMbStringOn + $blUnicodeSupport) == 2) {
-                    echo ",";
-                }
-                if ( $blUnicodeSupport < 2 ) {
-                    $this->getText('STEP_3_UTFNOTSUPPORTED2');
-                }
-                echo ".";
-            }
-        ?>
-        <br>
-    </td>
-  </tr>
 </table>
 <input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
 <input type="submit" id="step3Submit" class="edittext" value="<?php $this->getText('BUTTON_DB_INSTALL'); ?>">

@@ -345,7 +345,7 @@ class Controller extends Core
         $baseSqlDir = $baseEditionPathSelector->getDatabaseSqlDirectory();
 
         //setting database collation
-        $iUtfMode = isset($aDB['iUtfMode']) ? ((int) $aDB['iUtfMode']) : 0;
+        $iUtfMode = 1;
         $oDb->setMySqlCollation($iUtfMode);
 
         try {

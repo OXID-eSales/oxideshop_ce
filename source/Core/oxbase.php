@@ -23,7 +23,7 @@
 /**
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\EshopEnterprise\Core\Base
+ * @mixin \OxidEsales\EshopEnterprise\Core\Model\BaseModel
  */
 class oxBase extends \OxidEsales\Eshop\Core\Model\BaseModel
 {

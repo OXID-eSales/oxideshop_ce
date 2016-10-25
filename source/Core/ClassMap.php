@@ -345,6 +345,8 @@ class ClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap
             'newsletter' => 'OxidEsales\EshopCommunity\Application\Controller\NewsletterController',
             'pricealarm' => 'OxidEsales\EshopCommunity\Application\Controller\PriceAlarmController',
 
+            'account_noticelist' => '\OxidEsales\EshopCommunity\Application\Controller\AccountNoticeListController',
+            'oxuser' => 'OxidEsales\EshopCommunity\Application\Model\User',
         ];
     }
 
@@ -542,7 +544,7 @@ class ClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap
             'oxsimplevariantlist' => 'OxidEsales\EshopCommunity\Application\Model\SimpleVariantList',
             'oxsmartyrenderer' => 'OxidEsales\EshopCommunity\Application\Model\SmartyRenderer',
             'oxstate' => 'OxidEsales\EshopCommunity\Application\Model\State',
-            'oxuser' => 'OxidEsales\EshopCommunity\Application\Model\User',
+            #'oxuser' => 'OxidEsales\EshopCommunity\Application\Model\User',
             'oxuseraddresslist' => 'OxidEsales\EshopCommunity\Application\Model\UserAddressList',
             'oxuserbasket' => 'OxidEsales\EshopCommunity\Application\Model\UserBasket',
             'oxuserbasketitem' => 'OxidEsales\EshopCommunity\Application\Model\UserBasketItem',
@@ -557,6 +559,10 @@ class ClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap
             'oxvoucherlist' => 'OxidEsales\EshopCommunity\Application\Model\VoucherList',
             'oxvoucherserie' => 'OxidEsales\EshopCommunity\Application\Model\VoucherSerie',
             'oxwrapping' => 'OxidEsales\EshopCommunity\Application\Model\Wrapping',
+
+            'oxarticle' => '\OxidEsales\EshopCommunity\Application\Model\Article',
+            'clearcookies' => '\OxidEsales\EshopCommunity\Application\Controller\ClearCookiesController',
+
         ];
     }
 }

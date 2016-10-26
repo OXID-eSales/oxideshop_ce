@@ -759,23 +759,6 @@ class ModulelistTest extends \OxidTestCase
     }
 
     /**
-     * oxmodulelist::getModulesFromDir() test case
-     */
-    public function testGetModulesFromDir()
-    {
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $this->markTestSkipped('This test is for Community and Professional editions only.');
-        }
-        $sModulesDir = $this->getConfig()->getModulesDir();
-
-        $oModuleList = oxNew('oxModuleList');
-        $aModules = $oModuleList->getModulesFromDir($sModulesDir);
-
-        $oModule = $aModules["invoicepdf"];
-        $this->assertEquals("invoicepdf", $oModule->getId());
-    }
-
-    /**
      * @return array
      */
     public function providerIsVendorDir()

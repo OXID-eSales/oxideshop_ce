@@ -47,44 +47,6 @@ class ModuleTest extends \OxidTestCase
     }
 
     /**
-     * oxModule::load() test case
-     */
-    public function testLoad()
-    {
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $this->markTestSkipped('This test is for Community and Professional editions only.');
-        }
-        $aModule = array(
-            'id'          => 'invoicepdf',
-            'title'       => 'Invoice PDF',
-            'description' => 'Module to export invoice PDF files.',
-            'thumbnail'   => 'picture.png',
-            'version'     => '1.0',
-            'author'      => 'OXID eSales AG',
-            'extend'      => array(
-                'oxorder'        => 'oe/invoicepdf/models/invoicepdfoxorder',
-                'order_overview' => 'oe/invoicepdf/controllers/admin/invoicepdforder_overview'
-            ),
-            'files'       => array(
-                'InvoicepdfBlock'          => 'oe/invoicepdf/models/invoicepdfblock.php',
-                'InvoicepdfArticleSummary' => 'oe/invoicepdf/models/invoicepdfarticlesummary.php'
-            ),
-            'blocks'      => array(
-                array(
-                    'template' => 'order_overview.tpl',
-                    'block'    => 'admin_order_overview_export',
-                    'file'     => 'views/admin/blocks/order_overview.tpl'
-                ),
-            ),
-            'active'      => true
-        );
-
-        $oModule = $this->getProxyClass('oxmodule');
-        $this->assertTrue($oModule->load('oe/invoicepdf'));
-        $this->assertEquals($aModule, $oModule->getNonPublicVar("_aModule"));
-    }
-
-    /**
      * oxModule::load() test case, no extend
      *
      * @return null

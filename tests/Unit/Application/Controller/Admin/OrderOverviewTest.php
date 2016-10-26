@@ -132,33 +132,6 @@ class OrderOverviewTest extends \OxidTestCase
     }
 
     /**
-     * Order_Overview::CanExport() test case
-     *
-     * @return null
-     */
-    public function testCanExport()
-    {
-        oxTestModules::addFunction('oxModule', 'isActive', '{ return true; }');
-
-        $oBase = oxNew('oxbase');
-        $oBase->init("oxorderarticles");
-        $oBase->setId("_testOrderArticleId");
-        $oBase->oxorderarticles__oxorderid = new oxField("testOrderId");
-        $oBase->oxorderarticles__oxamount = new oxField(1);
-        $oBase->oxorderarticles__oxartid = new oxField("1126");
-        $oBase->oxorderarticles__oxordershopid = new oxField($this->getConfig()->getShopId());
-        $oBase->save();
-
-        // testing..
-        $oView = oxNew('Order_Overview');
-
-        $oView = $this->getMock("Order_Overview", array("getEditObjectId"));
-        $oView->expects($this->any())->method('getEditObjectId')->will($this->returnValue('testOrderId'));
-
-        $this->assertTrue($oView->canExport());
-    }
-
-    /**
      * Order shipping date reset test case
      *
      * @return null

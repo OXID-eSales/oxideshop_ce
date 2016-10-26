@@ -57,13 +57,24 @@ class ModuleChainsGenerator
         if (!$classAlias) {
             $classAlias = $class;
         }
+        $classAlias = strtolower($classAlias);
 
         $variablesLocator = $this->getModuleVariablesLocator();
         $modules = (array) $variablesLocator->getModuleVariable('aModules');
         $modules = array_change_key_case($modules);
 
-        if (array_key_exists($classAlias, $modules)) {
-            $fullChain = explode("&", $modules[$classAlias]);
+        if (array_key_exists($classAlias, $modules) ||
+            array_key_exists(strtolower($class), $modules)
+        ) {
+            /** @var  $fullChainAlias Look up the alias of a class compatiblity with metadata v1.1 */
+            $fullChainAlias = explode("&", $modules[$classAlias]);
+            /** @var  $fullChainClass Look up the real class as given back by the classMap as of metadata v2.0 */
+            $fullChainClass = explode("&", $modules[strtolower($class)]);
+
+            $fullChain = array_merge($fullChainAlias, $fullChainClass);
+            /** filter empty values from $fullChain */
+            $fullChain = array_filter($fullChain);
+
             $activeChain = $this->filterInactiveExtensions($fullChain);
 
             if (!empty($activeChain)) {

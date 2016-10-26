@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Model;
 
-use \oxlist;
+use \OxidEsales\EshopCommunity\Core\StandardList;
 
 use \oxField;
 
@@ -69,7 +69,7 @@ class SimplevariantlistTest extends \OxidTestCase
         $oParent->load($sArtId);
         $oVariantList = $oParent->getVariants();
 
-        $this->assertTrue($oVariantList instanceof oxlist);
+        $this->assertTrue($oVariantList instanceof StandardList);
         $this->assertTrue($oVariantList->offsetExists($sVariantId));
 
         $oVariant = $oVariantList->offsetGet($sVariantId);

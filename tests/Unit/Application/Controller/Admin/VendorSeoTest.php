@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxSeoEncoderVendor;
+use \OxidEsales\EshopCommunity\Application\Model\SeoEncoderVendor;
 
 use \Exception;
 use \oxField;
@@ -103,7 +103,7 @@ class VendorSeoTest extends \OxidTestCase
     public function testGetEncoder()
     {
         $oView = oxNew('Vendor_Seo');
-        $this->assertTrue($oView->UNITgetEncoder() instanceof oxSeoEncoderVendor);
+        $this->assertTrue($oView->UNITgetEncoder() instanceof SeoEncoderVendor);
     }
 
     /**

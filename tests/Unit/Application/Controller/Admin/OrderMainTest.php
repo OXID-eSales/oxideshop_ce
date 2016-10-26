@@ -22,7 +22,7 @@
 namespace Unit\Application\Controller\Admin;
 
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
-use \oxOrder;
+use \OxidEsales\EshopCommunity\Application\Model\Order;
 use \Exception;
 use \oxTestModules;
 
@@ -55,7 +55,7 @@ class OrderMainTest extends \OxidTestCase
         $this->assertEquals('order_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxorder);
+        $this->assertTrue($aViewData['edit'] instanceof order);
     }
 
     /**

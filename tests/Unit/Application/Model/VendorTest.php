@@ -23,10 +23,8 @@ namespace Unit\Application\Model;
 
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\Vendor;
-use \oxVendor;
 
 use \oxField;
-use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -317,7 +315,7 @@ class VendorTest extends \OxidTestCase
         /** @var Vendor $vendor */
         $vendor = oxNew('oxVendor');
         $vendor->load('root');
-        $this->assertTrue($vendor instanceof oxVendor);
+        $this->assertTrue($vendor instanceof Vendor);
         $this->assertEquals('root', $vendor->getId());
 
         $vendor = oxNew('oxVendor');

@@ -21,14 +21,14 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use oxCategory;
+use \OxidEsales\EshopCommunity\Application\Model\Category;
 use \oxField;
 use \oxDb;
-use oxManufacturer;
+use \OxidEsales\EshopCommunity\Application\Model\Manufacturer;
 use \oxRegistry;
-use oxSeoEncoderArticle;
+use \OxidEsales\EshopCommunity\Application\Model\SeoEncoderArticle;
 use \oxTestModules;
-use oxVendor;
+use \OxidEsales\EshopCommunity\Application\Model\Vendor;
 
 /**
  * Tests for Article_Seo class
@@ -71,9 +71,9 @@ class ArticleSeoTest extends \OxidTestCase
 
         $this->assertEquals("ArticleVendorUri", $oView->getEntryUri());
     }
-    
+
     /**
-     * Article_Seo::getEntryUri() test case, with the oxmanufacturer as active category type given. 
+     * Article_Seo::getEntryUri() test case, with the oxmanufacturer as active category type given.
      */
     public function testGetEntryUriOxManufacturerCase()
     {
@@ -149,7 +149,7 @@ class ArticleSeoTest extends \OxidTestCase
     public function testGetEncoder()
     {
         $oView = oxNew('Article_Seo');
-        $this->assertTrue($oView->UNITgetEncoder() instanceof oxSeoEncoderArticle);
+        $this->assertTrue($oView->UNITgetEncoder() instanceof SeoEncoderArticle);
     }
 
 
@@ -180,7 +180,7 @@ class ArticleSeoTest extends \OxidTestCase
         $this->assertTrue(is_array($aList));
 
         $oArtVendor = reset($aList);
-        $this->assertTrue($oArtVendor instanceof oxVendor);
+        $this->assertTrue($oArtVendor instanceof Vendor);
         $this->assertEquals($oVendor->getId(), $oArtVendor->getId());
     }
 
@@ -202,7 +202,7 @@ class ArticleSeoTest extends \OxidTestCase
         $this->assertTrue(is_array($aList));
 
         $oArtManufacturer = reset($aList);
-        $this->assertTrue($oArtManufacturer instanceof oxManufacturer);
+        $this->assertTrue($oArtManufacturer instanceof Manufacturer);
         $this->assertEquals($oManufacturer->getId(), $oArtManufacturer->getId());
     }
 
@@ -215,9 +215,9 @@ class ArticleSeoTest extends \OxidTestCase
         oxTestModules::addFunction('oxcategory', 'load', '{ return true; }');
 
         $oView = oxNew('Article_Seo');
-        $this->assertTrue($oView->getActCategory() instanceof oxCategory);
+        $this->assertTrue($oView->getActCategory() instanceof Category);
     }
-    
+
     /**
      * Article_Seo::getActVendor() test case (manufacturer)
      */
@@ -227,7 +227,7 @@ class ArticleSeoTest extends \OxidTestCase
 
         $oView = $this->getMock("Article_Seo", array("getActCatType"));
         $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxvendor"));
-        $this->assertTrue($oView->getActVendor() instanceof oxVendor);
+        $this->assertTrue($oView->getActVendor() instanceof Vendor);
     }
 
     /**
@@ -239,7 +239,7 @@ class ArticleSeoTest extends \OxidTestCase
 
         $oView = $this->getMock("Article_Seo", array("getActCatType"));
         $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxmanufacturer"));
-        $this->assertTrue($oView->getActManufacturer() instanceof oxManufacturer);
+        $this->assertTrue($oView->getActManufacturer() instanceof Manufacturer);
     }
 
     /**
@@ -299,7 +299,7 @@ class ArticleSeoTest extends \OxidTestCase
     public function testGetSeoEntryType()
     {
         $view = oxNew("Article_Seo");
-        
+
         $this->assertEquals('oxarticle', $view->UNITgetSeoEntryType());
     }
 
@@ -311,7 +311,7 @@ class ArticleSeoTest extends \OxidTestCase
         $oView = oxNew('Article_Seo');
         $this->assertEquals('oxarticle', $oView->UNITgetType());
     }
-    
+
     /**
      * Article_Seo::getActCatType() test case
      */

@@ -21,11 +21,11 @@
  */
 namespace Unit\Application\Controller;
 
-use \oxarticle;
-use \oxarticlelist;
-use \oxpaymentlist;
-use \oxdeliverysetlist;
-use \oxDeliveryList;
+use \OxidEsales\EshopCommunity\Application\Model\Article;
+use \OxidEsales\EshopCommunity\Application\Model\ArticleList;
+use \OxidEsales\EshopCommunity\Application\Model\PaymentList;
+use \OxidEsales\EshopCommunity\Application\Model\DeliverySetList;
+use \OxidEsales\EshopCommunity\Application\Model\DeliveryList;
 
 use \oxField;
 use \Exception;
@@ -239,7 +239,7 @@ class DetailsTest extends \OxidTestCase
         $oDetailsView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
         $oProduct = $oDetailsView->UNITgetParentProduct('1126');
-        $this->assertTrue($oProduct instanceof oxarticle);
+        $this->assertTrue($oProduct instanceof article);
         $this->assertEquals('1126', $oProduct->getId());
     }
 
@@ -573,7 +573,7 @@ class DetailsTest extends \OxidTestCase
         $oArticle->load("2000");
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oDetails->getSimilarProducts();
-        $this->assertTrue($oList instanceof oxarticlelist);
+        $this->assertTrue($oList instanceof articlelist);
         // Demo data is different in EE and CE
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 4 : 5;
         $this->assertEquals($expectedCount, count($oList));
@@ -591,7 +591,7 @@ class DetailsTest extends \OxidTestCase
         $oArticle->load("1849");
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oDetails->getCrossSelling();
-        $this->assertTrue($oList instanceof oxarticlelist);
+        $this->assertTrue($oList instanceof articlelist);
 
         // Demo data is different in EE and CE
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 3 : 2;
@@ -1455,13 +1455,13 @@ class DetailsTest extends \OxidTestCase
         $oDetails = $this->getMock('details', array('getProduct'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oArt));
 
-        $this->assertTrue($oDetails->getRDFaPaymentMethods() instanceof oxpaymentlist);
+        $this->assertTrue($oDetails->getRDFaPaymentMethods() instanceof paymentlist);
     }
 
     public function testGetRDFaDeliverySetMethods()
     {
         $oDetails = oxNew('Details');
-        $this->assertTrue($oDetails->getRDFaDeliverySetMethods() instanceof oxdeliverysetlist);
+        $this->assertTrue($oDetails->getRDFaDeliverySetMethods() instanceof deliverysetlist);
     }
 
     public function testGetProductsDeliveryList()
@@ -1472,7 +1472,7 @@ class DetailsTest extends \OxidTestCase
         $oDetails = $this->getMock('details', array('getProduct'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oArt));
 
-        $this->assertTrue($oDetails->getProductsDeliveryList() instanceof oxDeliveryList);
+        $this->assertTrue($oDetails->getProductsDeliveryList() instanceof DeliveryList);
     }
 
     public function testGetRDFaDeliveryChargeSpecLoc()

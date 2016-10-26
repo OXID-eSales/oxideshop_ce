@@ -21,12 +21,12 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use oxCategoryList;
+use \OxidEsales\EshopCommunity\Application\Model\CategoryList;
 use \oxField;
 use \oxDb;
-use oxManufacturerList;
+use \OxidEsales\EshopCommunity\Application\Model\ManufacturerList;
 use \oxTestModules;
-use oxVendorList;
+use \OxidEsales\EshopCommunity\Application\Model\VendorList;
 
 /**
  * Tests for Article_List class
@@ -69,11 +69,11 @@ class ArticleListTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["cattree"] instanceof oxCategoryList);
+        $this->assertTrue($aViewData["cattree"] instanceof CategoryList);
         $this->assertTrue($aViewData["cattree"]->offsetExists($sCatId));
         $this->assertEquals(1, $aViewData["cattree"]->offsetGet($sCatId)->selected);
-        $this->assertTrue($aViewData["mnftree"] instanceof oxManufacturerList);
-        $this->assertTrue($aViewData["vndtree"] instanceof oxVendorList);
+        $this->assertTrue($aViewData["mnftree"] instanceof ManufacturerList);
+        $this->assertTrue($aViewData["vndtree"] instanceof VendorList);
         $this->assertTrue(isset($aViewData["pwrsearchinput"]));
         $this->assertEquals("testValue", $aViewData["pwrsearchinput"]);
     }
@@ -95,11 +95,11 @@ class ArticleListTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["cattree"] instanceof oxCategoryList);
-        $this->assertTrue($aViewData["mnftree"] instanceof oxManufacturerList);
+        $this->assertTrue($aViewData["cattree"] instanceof CategoryList);
+        $this->assertTrue($aViewData["mnftree"] instanceof ManufacturerList);
         $this->assertTrue($aViewData["mnftree"]->offsetExists($sManId));
         $this->assertEquals(1, $aViewData["mnftree"]->offsetGet($sManId)->selected);
-        $this->assertTrue($aViewData["vndtree"] instanceof oxVendorList);
+        $this->assertTrue($aViewData["vndtree"] instanceof VendorList);
     }
 
     /**
@@ -137,9 +137,9 @@ class ArticleListTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["cattree"] instanceof oxCategoryList);
-        $this->assertTrue($aViewData["mnftree"] instanceof oxManufacturerList);
-        $this->assertTrue($aViewData["vndtree"] instanceof oxVendorList);
+        $this->assertTrue($aViewData["cattree"] instanceof CategoryList);
+        $this->assertTrue($aViewData["mnftree"] instanceof ManufacturerList);
+        $this->assertTrue($aViewData["vndtree"] instanceof VendorList);
         $this->assertTrue($aViewData["vndtree"]->offsetExists($sVndId));
         $this->assertEquals(1, $aViewData["vndtree"]->offsetGet($sVndId)->selected);
     }

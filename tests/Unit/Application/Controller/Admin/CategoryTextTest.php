@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxCategory;
+use \OxidEsales\EshopCommunity\Application\Model\Category;
 
 use \Exception;
 use \oxTestModules;
@@ -48,7 +48,7 @@ class CategoryTextTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof oxCategory);
+        $this->assertTrue($aViewData["edit"] instanceof Category);
         $this->assertEquals('category_text.tpl', $sTplName);
     }
 

@@ -25,7 +25,8 @@ use modDB;
 use \Exception;
 use \oxException;
 use \oxConnectionException;
-use oxExceptionToDisplay;
+use \OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay;
+use \OxidEsales\EshopCommunity\Core\Output;
 use oxOutput;
 use \oxSystemComponentException;
 use \oxRegistry;
@@ -324,7 +325,7 @@ class ShopControlTest extends \OxidTestCase
 
         $oControl->UNITrender($oView);
         oxRegistry::get("oxUtilsView")->passAllErrorsToView($aViewData, $oControl->UNITgetErrors('oxubase'));
-        $this->assertTrue($aViewData["Errors"]["default"][0] instanceof oxExceptionToDisplay);
+        $this->assertTrue($aViewData["Errors"]["default"][0] instanceof ExceptionToDisplay);
     }
 
     /**
@@ -563,7 +564,7 @@ class ShopControlTest extends \OxidTestCase
     {
         $oControl = oxNew('oxShopControl');
         $oOut = $oControl->UNITgetOutputManager();
-        $this->assertTrue($oOut instanceof oxOutput);
+        $this->assertTrue($oOut instanceof Output);
         $oOut1 = $oControl->UNITgetOutputManager();
         $this->assertSame($oOut, $oOut1);
     }

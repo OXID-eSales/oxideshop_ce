@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Model;
 
-use \oxManufacturer;
+use \OxidEsales\EshopCommunity\Application\Model\Manufacturer;
 
 use \oxField;
 use \oxDb;
@@ -263,7 +263,7 @@ class ManufacturerTest extends \OxidTestCase
     {
         $oV = oxNew('oxManufacturer');
         $oV->load('root');
-        $this->assertTrue($oV instanceof oxManufacturer);
+        $this->assertTrue($oV instanceof Manufacturer);
         $this->assertEquals('root', $oV->getId());
 
         $oV = oxNew('oxManufacturer');

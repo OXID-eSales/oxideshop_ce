@@ -25,7 +25,7 @@ use oxCategoryList;
 use \oxField;
 use \oxDb;
 use \oxRegistry;
-use \oxCategory;
+use \OxidEsales\EshopCommunity\Application\Model\Category;
 
 if (!class_exists('\OxidEsales\EshopEnterprise\Application\Model\CategoryList')) {
     class_alias('oxCategoryList', '\OxidEsales\EshopEnterprise\Application\Model\CategoryList');
@@ -569,10 +569,10 @@ class CategoryListTest extends \OxidTestCase
 
         $this->_oList->selectString($this->_oList->UNITgetSelectString());
         $this->_oList[$this->_sActCat] = array();
-        $this->assertFalse($this->_oList[$this->_sActCat] instanceof oxcategory);
+        $this->assertFalse($this->_oList[$this->_sActCat] instanceof category);
 
         $this->_oList->UNITppLoadFullCategory($this->_sActCat);
-        $this->assertTrue($this->_oList[$this->_sActCat] instanceof oxcategory);
+        $this->assertTrue($this->_oList[$this->_sActCat] instanceof category);
     }
 
     /**
@@ -596,7 +596,7 @@ class CategoryListTest extends \OxidTestCase
         $this->_oList->UNITppLoadFullCategory($this->_sActCat);
 
         $this->assertTrue(isset($this->_sActCat));
-        $this->assertFalse($this->_oList[$this->_sActCat] instanceof oxcategory);
+        $this->assertFalse($this->_oList[$this->_sActCat] instanceof category);
     }
 
     /**

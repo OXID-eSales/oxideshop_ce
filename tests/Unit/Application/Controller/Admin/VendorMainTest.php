@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxvendor;
+use \OxidEsales\EshopCommunity\Application\Model\Vendor;
 
 use \Exception;
 use \oxTestModules;
@@ -47,7 +47,7 @@ class VendorMainTest extends \OxidTestCase
         $this->assertEquals('vendor_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxvendor);
+        $this->assertTrue($aViewData['edit'] instanceof vendor);
     }
 
     /**

@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxshop;
+use \OxidEsales\EshopCommunity\Application\Model\Shop;
 
 use \oxDb;
 use oxSystemComponentException;
@@ -90,7 +90,7 @@ class ShopLicenseTest extends \OxidTestCase
         $this->assertEquals('shop_license.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxshop);
+        $this->assertTrue($aViewData['edit'] instanceof shop);
         $this->assertTrue(isset($aViewData['version']));
     }
 

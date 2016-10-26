@@ -21,8 +21,8 @@
  */
 namespace Unit\Application\Controller;
 
-use \oxUser;
-use \oxList;
+use \OxidEsales\EshopCommunity\Application\Model\User;
+use \OxidEsales\EshopCommunity\Core\StandardList;
 use \Exception;
 use \oxDb;
 use \oxRegistry;
@@ -102,7 +102,7 @@ class ReviewTest extends \OxidTestCase
         $oUser = $oReview->getReviewUser();
 
         $this->assertNotNull($oUser);
-        $this->assertTrue($oUser instanceof oxuser);
+        $this->assertTrue($oUser instanceof user);
         $this->assertEquals("oxdefaultadmin", $oUser->getId());
     }
 
@@ -510,7 +510,7 @@ class ReviewTest extends \OxidTestCase
         $oArticle->load("1849");
         $oReview->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oReview->getCrossSelling();
-        $this->assertTrue($oList instanceof oxList);
+        $this->assertTrue($oList instanceof StandardList);
         $iCount = $this->getTestConfig()->getShopEdition() == 'EE'? 3 : 2;
         $this->assertEquals($iCount, $oList->count());
     }

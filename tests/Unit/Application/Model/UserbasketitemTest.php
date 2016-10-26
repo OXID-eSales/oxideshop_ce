@@ -21,6 +21,7 @@
  */
 namespace Unit\Application\Model;
 
+use \OxidEsales\EshopCommunity\Application\Model\Article;
 use \oxArticle;
 use oxArticleException;
 use \oxField;
@@ -218,7 +219,7 @@ class UserbasketitemTest extends \OxidTestCase
         $oBasketItem->oxuserbasketitems__oxartid = new oxField($sProductId, oxField::T_RAW);
 
         $oArticle = $oBasketItem->getArticle("123");
-        $this->assertTrue($oArticle instanceof oxarticle);
+        $this->assertTrue($oArticle instanceof article);
         $this->assertEquals($oArticle->getItemKey(), "123");
 
         // if thi line one day will faile, probebly becaus these parameters are not public any more :)

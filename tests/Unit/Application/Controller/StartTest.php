@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller;
 
-use \oxarticlelist;
+use \OxidEsales\EshopCommunity\Application\Model\ArticleList;
 
 use \oxField;
 use \oxTestModules;
@@ -72,7 +72,7 @@ class StartTest extends \OxidTestCase
         $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getArticleList();
-        $this->assertTrue($aList instanceof oxarticlelist);
+        $this->assertTrue($aList instanceof articlelist);
         $this->assertEquals(2, $aList->count());
     }
 
@@ -81,7 +81,7 @@ class StartTest extends \OxidTestCase
         $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getTopArticleList();
-        $this->assertTrue($aList instanceof oxarticlelist);
+        $this->assertTrue($aList instanceof articlelist);
         $this->assertEquals(1, $aList->count());
 
         $expectedId = $this->getTestConfig()->getShopEdition() == 'EE'? "2275" : "1849";
@@ -93,7 +93,7 @@ class StartTest extends \OxidTestCase
         $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getNewestArticles();
-        $this->assertTrue($aList instanceof oxarticlelist);
+        $this->assertTrue($aList instanceof articlelist);
         $this->assertEquals(4, $aList->count());
     }
 
@@ -112,7 +112,7 @@ class StartTest extends \OxidTestCase
         $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getCatOfferArticleList();
-        $this->assertTrue($aList instanceof oxarticlelist);
+        $this->assertTrue($aList instanceof articlelist);
         $this->assertEquals(2, $aList->count());
     }
 

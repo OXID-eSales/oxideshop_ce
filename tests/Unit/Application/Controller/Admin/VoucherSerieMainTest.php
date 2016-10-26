@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxvoucherserie;
+use \OxidEsales\EshopCommunity\Application\Model\VoucherSerie;
 
 use \Exception;
 use \oxTestModules;
@@ -61,7 +61,7 @@ class VoucherSerieMainTest extends \OxidTestCase
 
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxvoucherserie);
+        $this->assertTrue($aViewData['edit'] instanceof voucherserie);
     }
 
     /**

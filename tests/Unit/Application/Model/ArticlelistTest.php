@@ -23,12 +23,13 @@ namespace Unit\Application\Model;
 
 use Exception;
 use modDB;
-use oxArticle;
+use \OxidEsales\EshopCommunity\Application\Model\Article;
 use oxDb;
 use oxField;
 use OxidEsales\Eshop\CoreCommunity\DatabaseProvider;
 use oxRegistry;
 use oxTestModules;
+
 
 /**
  * Testing oxArticleList class
@@ -289,8 +290,8 @@ class ArticlelistTest extends \OxidTestCase
         $oTest = $this->getProxyClass('oxArticleList');
         $oTest->loadActionArticles('oxstart');
         $this->assertEquals(2, count($oTest));
-        $this->assertTrue($oTest['2077'] instanceof oxArticle);
-        $this->assertTrue($oTest['943ed656e21971fb2f1827facbba9bec'] instanceof oxArticle);
+        $this->assertTrue($oTest['2077'] instanceof Article);
+        $this->assertTrue($oTest['943ed656e21971fb2f1827facbba9bec'] instanceof Article);
         $this->assertEquals(19, $oTest['2077']->getPrice()->getBruttoPrice());
         $this->assertEquals("Kuyichi Jeans Mick", $oTest['943ed656e21971fb2f1827facbba9bec']->oxarticles__oxtitle->value);
     }

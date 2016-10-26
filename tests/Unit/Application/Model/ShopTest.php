@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Model;
 
-use \oxi18n;
+use \OxidEsales\EshopCommunity\Core\I18n;
 
 use \oxField;
 
@@ -31,7 +31,7 @@ class ShopTest extends \OxidTestCase
     public function testStructure()
     {
         $oShop = oxNew('oxShop');
-        $this->assertTrue($oShop instanceof oxi18n);
+        $this->assertTrue($oShop instanceof I18n);
         $this->assertEquals('oxshops', $oShop->getCoreTableName());
     }
 

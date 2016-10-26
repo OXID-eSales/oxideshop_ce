@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxgroups;
+use \OxidEsales\EshopCommunity\Application\Model\Groups;
 
 use \Exception;
 use \oxTestModules;
@@ -46,7 +46,7 @@ class UserGroupMainTest extends \OxidTestCase
         $this->assertEquals('usergroup_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxgroups);
+        $this->assertTrue($aViewData['edit'] instanceof groups);
     }
 
     /**

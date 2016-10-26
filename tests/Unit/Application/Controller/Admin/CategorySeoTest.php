@@ -23,7 +23,7 @@ namespace Unit\Application\Controller\Admin;
 
 use \Exception;
 use \oxDb;
-use oxSeoEncoderCategory;
+use \OxidEsales\EshopCommunity\Application\Model\SeoEncoderCategory;
 use \oxTestModules;
 
 /**
@@ -101,7 +101,7 @@ class CategorySeoTest extends \OxidTestCase
     public function testGetEncoder()
     {
         $oView = oxNew('Category_Seo');
-        $this->assertTrue($oView->UNITgetEncoder() instanceof oxSeoEncoderCategory);
+        $this->assertTrue($oView->UNITgetEncoder() instanceof SeoEncoderCategory);
     }
 
     /**

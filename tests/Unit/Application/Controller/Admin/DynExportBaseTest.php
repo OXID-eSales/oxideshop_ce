@@ -23,7 +23,7 @@ namespace Unit\Application\Controller\Admin;
 
 use DynExportBase;
 use Exception;
-use oxarticle;
+use \OxidEsales\EshopCommunity\Application\Model\Article;
 use oxDb;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use oxRegistry;
@@ -425,7 +425,7 @@ class DynExportBaseTest extends \OxidTestCase
         $oView->expects($this->once())->method('_getHeapTableName')->will($this->returnValue("oxarticles"));
         $oView->expects($this->once())->method('_setCampaignDetailLink')->with($this->isInstanceOf('oxArticle'))->will($this->returnValue(oxNew('oxarticle')));
 
-        $this->assertTrue($oView->getOneArticle(0, $blContinue) instanceof oxarticle);
+        $this->assertTrue($oView->getOneArticle(0, $blContinue) instanceof article);
         $this->assertTrue($blContinue);
     }
 
@@ -751,7 +751,7 @@ class DynExportBaseTest extends \OxidTestCase
         $oView = new _DynExportBase();
         $oArticle = $oView->initArticle("testdynexportbasetable", 0, $blContinue);
         $this->assertNotNull($oArticle);
-        $this->assertTrue($oArticle instanceof oxarticle);
+        $this->assertTrue($oArticle instanceof article);
         $this->assertEquals($oParent->oxarticles__oxtitle->value . " " . $sTitle, $oArticle->oxarticles__oxtitle->value);
     }
 

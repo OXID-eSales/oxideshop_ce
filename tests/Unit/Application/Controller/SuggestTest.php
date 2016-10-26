@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller;
 
-use \oxList;
+use \OxidEsales\EshopCommunity\Core\StandardList;
 
 use \oxDb;
 use \oxRegistry;
@@ -62,7 +62,7 @@ class SuggestTest extends \OxidTestCase
         $oArticle->load("1849");
         $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oSuggest->getCrossSelling();
-        $this->assertTrue($oList instanceof oxList);
+        $this->assertTrue($oList instanceof StandardList);
         $iCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 3 : 2;
         $this->assertEquals($iCount, $oList->count());
     }
@@ -74,7 +74,7 @@ class SuggestTest extends \OxidTestCase
         $oArticle->load("2000");
         $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oSuggest->getSimilarProducts();
-        $this->assertTrue($oList instanceof oxList);
+        $this->assertTrue($oList instanceof StandardList);
         $iCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 4 : 5;
         $this->assertEquals($iCount, count($oList));
     }
@@ -94,8 +94,8 @@ class SuggestTest extends \OxidTestCase
         $oArticle->load('2000');
         $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $aLists = $oSuggest->getRecommList();
-        $this->assertTrue($aLists instanceof oxList);
-        $this->assertTrue($aLists instanceof oxList);
+        $this->assertTrue($aLists instanceof StandardList);
+        $this->assertTrue($aLists instanceof StandardList);
         $this->assertEquals(1, $aLists->count());
         $this->assertEquals('testlist', $aLists['testlist']->getId());
         $this->assertTrue(in_array($aLists['testlist']->getFirstArticle()->getId(), array('2000')));

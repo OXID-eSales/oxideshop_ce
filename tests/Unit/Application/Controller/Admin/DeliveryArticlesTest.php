@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxdelivery;
+use \OxidEsales\EshopCommunity\Application\Model\Delivery;
 
 use \oxTestModules;
 
@@ -46,7 +46,7 @@ class DeliveryArticlesTest extends \OxidTestCase
         $this->assertEquals('delivery_articles.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxdelivery);
+        $this->assertTrue($aViewData['edit'] instanceof Delivery);
         $this->assertTrue(isset($aViewData['readonly']));
     }
 

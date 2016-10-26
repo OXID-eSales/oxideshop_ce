@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxnews;
+use \OxidEsales\EshopCommunity\Application\Model\News;
 
 use \Exception;
 use \oxTestModules;
@@ -47,7 +47,7 @@ class NewsTextTest extends \OxidTestCase
         $this->assertEquals('news_text.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxnews);
+        $this->assertTrue($aViewData['edit'] instanceof news);
     }
 
     /**

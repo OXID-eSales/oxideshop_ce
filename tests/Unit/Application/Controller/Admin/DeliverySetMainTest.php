@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxdeliveryset;
+use \OxidEsales\EshopCommunity\Application\Model\DeliverySet;
 
 use \Exception;
 use \oxTestModules;
@@ -47,7 +47,7 @@ class DeliverySetMainTest extends \OxidTestCase
         $this->assertEquals('deliveryset_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxdeliveryset);
+        $this->assertTrue($aViewData['edit'] instanceof DeliverySet);
     }
 
     /**

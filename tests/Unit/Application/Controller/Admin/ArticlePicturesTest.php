@@ -21,8 +21,8 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use oxArticle;
-use oxExceptionToDisplay;
+use \OxidEsales\EshopCommunity\Application\Model\Article;
+use \OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay;
 use \oxField;
 use \oxDb;
 use \oxRegistry;
@@ -86,8 +86,8 @@ class ArticlePicturesTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
-        $this->assertTrue($aViewData["parentarticle"] instanceof oxArticle);
+        $this->assertTrue($aViewData["edit"] instanceof Article);
+        $this->assertTrue($aViewData["parentarticle"] instanceof Article);
 
         $this->assertEquals('article_pictures.tpl', $sTplName);
     }
@@ -325,7 +325,7 @@ class ArticlePicturesTest extends \OxidTestCase
         $aEx = oxRegistry::getSession()->getVariable("Errors");
         $oEx = unserialize($aEx["default"][0]);
 
-        $this->assertTrue($oEx instanceof oxExceptionToDisplay);
+        $this->assertTrue($oEx instanceof ExceptionToDisplay);
     }
 
     /**
@@ -347,7 +347,7 @@ class ArticlePicturesTest extends \OxidTestCase
         $aEx = oxRegistry::getSession()->getVariable("Errors");
         $oEx = unserialize($aEx["default"][0]);
 
-        $this->assertTrue($oEx instanceof oxExceptionToDisplay);
+        $this->assertTrue($oEx instanceof ExceptionToDisplay);
     }
 
     /**

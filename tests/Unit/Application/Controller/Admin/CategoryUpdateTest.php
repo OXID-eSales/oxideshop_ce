@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxCategoryList;
+use \OxidEsales\EshopCommunity\Application\Model\CategoryList;
 
 use \oxTestModules;
 
@@ -57,7 +57,7 @@ class CategoryUpdateTest extends \OxidTestCase
         oxTestModules::addFunction('oxCategoryList', 'updateCategoryTree', '{}');
 
         $oView = oxNew('Category_Update');
-        $this->assertTrue($oView->UNITgetCategoryList() instanceof oxCategoryList);
+        $this->assertTrue($oView->UNITgetCategoryList() instanceof CategoryList);
     }
 
     /**

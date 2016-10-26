@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use oxArticle;
+use \OxidEsales\EshopCommunity\Application\Model\Article;
 use \oxField;
 use \oxDb;
 use \oxTestModules;
@@ -78,7 +78,7 @@ class ArticleReviewTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
+        $this->assertTrue($aViewData["edit"] instanceof Article);
 
         $this->assertEquals('article_review.tpl', $sTplName);
     }

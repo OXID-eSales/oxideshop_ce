@@ -21,10 +21,9 @@
  */
 namespace Unit\Application\Controller;
 
-use oxActionList;
-use \oxUbase;
+use \OxidEsales\EshopCommunity\Application\Model\ActionList;
 use oxUBaseHelper;
-use oxUser;
+use \OxidEsales\EshopCommunity\Application\Model\User;
 use \stdClass;
 use \oxField;
 use \exception;
@@ -1641,7 +1640,7 @@ class UBaseTest extends \OxidTestCase
 
         $oView = oxNew('oxUBase');
 
-        $this->assertTrue($oView->getPromoFinishedList() instanceof oxActionList);
+        $this->assertTrue($oView->getPromoFinishedList() instanceof ActionList);
     }
 
     /**
@@ -1657,7 +1656,7 @@ class UBaseTest extends \OxidTestCase
 
         $oView = oxNew('oxUBase');
 
-        $this->assertTrue($oView->getPromoCurrentList() instanceof oxActionList);
+        $this->assertTrue($oView->getPromoCurrentList() instanceof ActionList);
     }
 
     /**
@@ -1673,7 +1672,7 @@ class UBaseTest extends \OxidTestCase
 
         $oView = oxNew('oxUBase');
 
-        $this->assertTrue($oView->getPromoFutureList() instanceof oxActionList);
+        $this->assertTrue($oView->getPromoFutureList() instanceof ActionList);
     }
 
     /**
@@ -2164,7 +2163,7 @@ class UBaseTest extends \OxidTestCase
         $oView = $this->getMock("oxubase", array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue(true));
 
-        $this->assertTrue($oView->getWishlistName() instanceof oxUser);
+        $this->assertTrue($oView->getWishlistName() instanceof User);
     }
 
     public function testGetWishlistNameIfNotLoggedIn()

@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use oxAttribute;
+use \OxidEsales\EshopCommunity\Application\Model\Attribute;
 
 /**
  * Tests for Attribute_Category class
@@ -43,6 +43,6 @@ class AttributeCategoryTest extends \OxidTestCase
         $this->assertEquals('attribute_category.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxAttribute);
+        $this->assertTrue($aViewData['edit'] instanceof Attribute);
     }
 }

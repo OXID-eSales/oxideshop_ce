@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxpayment;
+use \OxidEsales\EshopCommunity\Application\Model\Payment;
 
 use \Exception;
 use \oxTestModules;
@@ -46,7 +46,7 @@ class PaymentMainTest extends \OxidTestCase
         $this->assertEquals('payment_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxpayment);
+        $this->assertTrue($aViewData['edit'] instanceof payment);
     }
 
     /**

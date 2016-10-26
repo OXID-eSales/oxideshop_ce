@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller;
 
-use \oxcontent;
+use \OxidEsales\EshopCommunity\Application\Model\Content;
 
 /**
  * Tests for content class
@@ -50,7 +50,7 @@ class CreditsTest extends \OxidTestCase
         // default "oxcredits"
         $oView = oxNew('Credits');
         $oContent = $oView->getContent();
-        $this->assertTrue($oContent instanceof oxcontent);
+        $this->assertTrue($oContent instanceof Content);
         $this->assertEquals("oxcredits", $oContent->oxcontents__oxloadid->value);
         $this->assertNotEquals("", $oContent->oxcontents__oxcontent->value);
 

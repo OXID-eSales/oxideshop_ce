@@ -22,8 +22,7 @@
 namespace Unit\Application\Controller\Admin;
 
 use \Exception;
-use oxAttribute;
-use \oxField;
+use \OxidEsales\EshopCommunity\Application\Model\Attribute;
 use \oxTestModules;
 
 /**
@@ -47,7 +46,7 @@ class AttributeMainTest extends \OxidTestCase
         $this->assertEquals('attribute_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxAttribute);
+        $this->assertTrue($aViewData['edit'] instanceof Attribute);
     }
 
     /**

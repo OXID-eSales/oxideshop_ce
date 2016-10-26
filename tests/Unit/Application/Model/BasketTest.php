@@ -24,12 +24,13 @@ namespace Unit\Application\Model;
 use oxArticleInputException;
 use oxNoArticleException;
 use oxOutOfStockException;
-use \oxPriceList;
-use \oxWrapping;
+use \OxidEsales\EshopCommunity\Core\PriceList;
+use \OxidEsales\EshopCommunity\Application\Model\Wrapping;
 use oxArticleHelper;
 use \oxbasket;
 use \oxField;
 use \oxPrice;
+use \OxidEsales\EshopCommunity\Core\Price;
 use oxUtilsObject;
 use oxVoucherHelper;
 use \stdClass;
@@ -2596,7 +2597,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->calculateBasket();
 
         $oProdPrice = $oBasket->getProductsPrice();
-        $this->assertTrue($oProdPrice instanceof oxpricelist);
+        $this->assertTrue($oProdPrice instanceof pricelist);
 
         $this->assertEquals(20 * 19, $oProdPrice->getBruttoSum(), 'brutto sum');
         $this->assertEquals(20 * 19 / 1.19, $oProdPrice->getNettoSum(), 'netto sum', 0.01);
@@ -2614,7 +2615,7 @@ class BasketTest extends \OxidTestCase
     {
         $oBasket = oxNew('oxbasket');
         $oProdPrice = $oBasket->getProductsPrice();
-        $this->assertTrue($oProdPrice instanceof oxpricelist);
+        $this->assertTrue($oProdPrice instanceof pricelist);
     }
 
     /**
@@ -2635,7 +2636,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->calculateBasket(false);
 
         $oPrice = $oBasket->getPrice();
-        $this->assertTrue($oPrice instanceof oxprice);
+        $this->assertTrue($oPrice instanceof price);
         $this->assertEquals(0, $oPrice->getVat());
         $this->assertEquals(19 * 20, $oPrice->getBruttoPrice());
         $this->assertEquals(19 * 20, $oPrice->getNettoPrice());
@@ -2651,7 +2652,7 @@ class BasketTest extends \OxidTestCase
     {
         $oBasket = oxNew('oxbasket');
         $oPrice = $oBasket->getPrice();
-        $this->assertTrue($oPrice instanceof oxprice);
+        $this->assertTrue($oPrice instanceof price);
     }
 
     /**
@@ -2857,7 +2858,7 @@ class BasketTest extends \OxidTestCase
         // testing card getter
         $oCard = $oBasket->getCard();
         $this->assertEquals($this->oCard->getId(), $oCard->getId());
-        $this->assertTrue($oCard instanceof oxwrapping);
+        $this->assertTrue($oCard instanceof wrapping);
     }
 
     /**

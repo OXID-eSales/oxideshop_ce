@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxSeoEncoderManufacturer;
+use \OxidEsales\EshopCommunity\Application\Model\SeoEncoderManufacturer;
 
 use \oxField;
 use \oxDb;
@@ -96,7 +96,7 @@ class ManufacturerSeoTest extends \OxidTestCase
     public function testGetEncoder()
     {
         $oView = oxNew('Manufacturer_Seo');
-        $this->assertTrue($oView->UNITgetEncoder() instanceof oxSeoEncoderManufacturer);
+        $this->assertTrue($oView->UNITgetEncoder() instanceof SeoEncoderManufacturer);
     }
 
     /**

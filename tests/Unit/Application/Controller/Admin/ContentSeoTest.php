@@ -21,8 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxSeoEncoderContent;
-
+use \OxidEsales\EshopCommunity\Application\Model\SeoEncoderContent;
 use \oxDb;
 
 /**
@@ -64,7 +63,7 @@ class ContentSeoTest extends \OxidTestCase
     public function testGetEncoder()
     {
         $oView = oxNew('Content_Seo');
-        $this->assertTrue($oView->UNITgetEncoder() instanceof oxSeoEncoderContent);
+        $this->assertTrue($oView->UNITgetEncoder() instanceof SeoEncoderContent);
     }
 
     /**

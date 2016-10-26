@@ -21,8 +21,8 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxuser;
-use \oxCountryList;
+use \OxidEsales\EshopCommunity\Application\Model\User;
+use \OxidEsales\EshopCommunity\Application\Model\CountryList;
 
 use \Exception;
 use \oxTestModules;
@@ -51,9 +51,9 @@ class UserAddressTest extends \OxidTestCase
         $this->assertTrue(isset($aViewData['oxaddressid']));
         $this->assertTrue(isset($aViewData['edituser']));
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edituser'] instanceof oxuser);
+        $this->assertTrue($aViewData['edituser'] instanceof user);
         $this->assertTrue(isset($aViewData['countrylist']));
-        $this->assertTrue($aViewData['countrylist'] instanceof oxCountryList);
+        $this->assertTrue($aViewData['countrylist'] instanceof CountryList);
         $this->assertTrue(isset($aViewData['readonly']));
         $this->assertTrue($aViewData['readonly']);
     }

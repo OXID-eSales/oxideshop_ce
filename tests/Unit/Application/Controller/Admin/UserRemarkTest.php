@@ -21,8 +21,8 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxuser;
-use \oxlist;
+use \OxidEsales\EshopCommunity\Application\Model\User;
+use \OxidEsales\EshopCommunity\Core\StandardList;
 
 use \oxField;
 use \Exception;
@@ -49,8 +49,8 @@ class UserRemarkTest extends \OxidTestCase
         $this->assertEquals("user_remark.tpl", $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxuser);
-        $this->assertTrue($aViewData['allremark'] instanceof oxlist);
+        $this->assertTrue($aViewData['edit'] instanceof user);
+        $this->assertTrue($aViewData['allremark'] instanceof StandardList);
         $this->assertEquals('text-testId', $aViewData['remarktext']);
         $this->assertEquals('header-testId', $aViewData['remarkheader']);
     }

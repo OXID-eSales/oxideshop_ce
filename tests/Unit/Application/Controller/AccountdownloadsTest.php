@@ -24,6 +24,7 @@ namespace Unit\Application\Controller;
 use \oxField;
 use oxOrderFile;
 use \oxTestModules;
+use \OxidEsales\EshopCommunity\Application\Model\OrderFile;
 
 /**
  * Tests for Account_downloads class
@@ -85,7 +86,7 @@ class AccountdownloadsTest extends \OxidTestCase
         $this->assertEquals("testOrder", $aOrderFilesList["testArtNr"]["oxordernr"]);
         $this->assertEquals("2011-11-11 11:11", $aOrderFilesList["testArtNr"]["oxorderdate"]);
         $this->assertEquals("testArtTitle", $aOrderFilesList["testArtNr"]["oxarticletitle"]);
-        $this->assertTrue($aOrderFilesList["testArtNr"]["oxorderfiles"][0] instanceof oxOrderFile);
+        $this->assertTrue($aOrderFilesList["testArtNr"]["oxorderfiles"][0] instanceof OrderFile);
     }
 
     /**

@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxselectlist;
+use \OxidEsales\EshopCommunity\Application\Model\SelectList;
 
 use \Exception;
 use \stdClass;
@@ -48,7 +48,7 @@ class SelectListMainTest extends \OxidTestCase
         $this->assertEquals('selectlist_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxselectlist);
+        $this->assertTrue($aViewData['edit'] instanceof selectlist);
     }
 
     /**

@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxcountry;
+use \OxidEsales\EshopCommunity\Application\Model\Country;
 
 use \Exception;
 use \oxTestModules;
@@ -47,7 +47,7 @@ class CountryMainTest extends \OxidTestCase
         $this->assertEquals('country_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxcountry);
+        $this->assertTrue($aViewData['edit'] instanceof Country);
     }
 
     /**

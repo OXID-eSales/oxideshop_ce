@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use oxCategory;
+use \OxidEsales\EshopCommunity\Application\Model\Category;
 use \oxField;
 use \oxDb;
 use \oxRegistry;
@@ -83,7 +83,7 @@ class CategoryMainTest extends \OxidTestCase
         $this->assertEquals('category_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxCategory);
+        $this->assertTrue($aViewData['edit'] instanceof Category);
     }
 
     /**

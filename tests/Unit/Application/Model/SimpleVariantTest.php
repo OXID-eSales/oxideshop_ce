@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Model;
 
-use \oxPrice;
+use \OxidEsales\EshopCommunity\Core\Price;
 
 use \oxField;
 use \StdClass;
@@ -228,7 +228,7 @@ class SimpleVariantTest extends \OxidTestCase
         $oSubj->expects($this->once())->method('_applyParentVat')->will($this->returnValue(null));
         $oSubj->expects($this->once())->method('_applyCurrency')->will($this->returnValue(null));
         $oPrice = $oSubj->getPrice();
-        $this->assertTrue($oPrice instanceof oxPrice);
+        $this->assertTrue($oPrice instanceof Price);
     }
 
     public function testApplyParentVatNoParent()
@@ -273,7 +273,7 @@ class SimpleVariantTest extends \OxidTestCase
         $oSubj = $this->getProxyClass("oxSimpleVariant");
         $oSubj->setNonPublicVar("_oPrice", 10);
         $this->assertEquals(10, $oSubj->getPrice());
-        $this->assertFalse($oPrice instanceof oxPrice);
+        $this->assertFalse($oSubj->getPrice() instanceof Price);
     }
 
     public function testGetFPrice()

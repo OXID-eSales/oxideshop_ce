@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller;
 
-use \oxcountrylist;
+use \OxidEsales\EshopCommunity\Application\Model\CountryList;
 
 use \stdClass;
 use \oxRegistry;
@@ -500,7 +500,7 @@ class ViewConfigTest extends \OxidTestCase
     public function testGetCountryList()
     {
         $oView = oxNew('oxViewConfig');
-        $this->assertTrue($oView->getCountryList() instanceof oxcountrylist);
+        $this->assertTrue($oView->getCountryList() instanceof countrylist);
     }
 
     public function testGetModulePath()

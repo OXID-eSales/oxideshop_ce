@@ -21,7 +21,8 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxArticle;
+use \OxidEsales\EshopCommunity\Application\Model\Article;
+use \OxidEsales\EshopCommunity\Application\Model\Order;
 use \oxOrder;
 use \oxField;
 use \oxTestModules;
@@ -274,7 +275,7 @@ class OrderArticleTest extends \OxidTestCase
 
         $oView = oxNew('Order_Article');
         $oOrder = $oView->getEditObject();
-        $this->assertTrue($oOrder instanceof oxorder);
+        $this->assertTrue($oOrder instanceof order);
     }
 
     /**
@@ -335,7 +336,7 @@ class OrderArticleTest extends \OxidTestCase
 
         $oView = oxNew('Order_Article');
         $oProduct = $oView->getMainProduct();
-        $this->assertTrue($oProduct instanceof oxarticle);
+        $this->assertTrue($oProduct instanceof article);
     }
 
     /**

@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxuser;
+use \OxidEsales\EshopCommunity\Application\Model\User;
 
 use \oxField;
 use \Exception;
@@ -51,7 +51,7 @@ class UserMainTest extends \OxidTestCase
         $this->assertTrue(isset($aViewData['countrylist']));
         $this->assertTrue(isset($aViewData['rights']));
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxuser);
+        $this->assertTrue($aViewData['edit'] instanceof user);
     }
 
     /**

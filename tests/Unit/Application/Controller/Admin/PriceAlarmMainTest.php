@@ -23,7 +23,7 @@ namespace Unit\Application\Controller\Admin;
 
 use \oxField;
 use \oxDb;
-use oxPricealarm;
+use \OxidEsales\EshopCommunity\Application\Model\Pricealarm;
 use \oxTestModules;
 
 /**
@@ -98,7 +98,7 @@ class PriceAlarmMainTest extends \OxidTestCase
         $this->assertEquals('pricealarm_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxpricealarm);
+        $this->assertTrue($aViewData['edit'] instanceof pricealarm);
     }
 
     /**

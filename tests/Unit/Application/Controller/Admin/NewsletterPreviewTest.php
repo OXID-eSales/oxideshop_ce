@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxnewsletter;
+use \OxidEsales\EshopCommunity\Application\Model\Newsletter;
 
 use \oxTestModules;
 
@@ -46,7 +46,7 @@ class NewsletterPreviewTest extends \OxidTestCase
         $this->assertEquals('newsletter_preview.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxnewsletter);
+        $this->assertTrue($aViewData['edit'] instanceof newsletter);
     }
 
 }

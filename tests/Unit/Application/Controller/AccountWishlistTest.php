@@ -24,7 +24,7 @@ namespace Unit\Application\Controller;
 use \oxField;
 use \oxRegistry;
 use \oxTestModules;
-use oxUserList;
+use \OxidEsales\EshopCommunity\Application\Model\UserList;
 
 /**
  * Tests for Account class
@@ -278,7 +278,7 @@ class AccountWishlistTest extends \OxidTestCase
         $oView = oxNew('Account_Wishlist');
         $oView->searchForWishList();
 
-        $this->assertTrue($oView->getWishListUsers() instanceof oxUserList);
+        $this->assertTrue($oView->getWishListUsers() instanceof UserList);
         $this->assertEquals("searchParam", $oView->getWishListSearchParam());
     }
 

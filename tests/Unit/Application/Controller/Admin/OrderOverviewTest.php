@@ -21,8 +21,8 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxorder;
-use \oxuserpayment;
+use \OxidEsales\EshopCommunity\Application\Model\Order;
+use \OxidEsales\EshopCommunity\Application\Model\UserPayment;
 
 use \oxField;
 use \Exception;
@@ -61,7 +61,7 @@ class OrderOverviewTest extends \OxidTestCase
         $this->assertEquals('order_overview.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxorder);
+        $this->assertTrue($aViewData['edit'] instanceof order);
     }
 
     /**
@@ -80,7 +80,7 @@ class OrderOverviewTest extends \OxidTestCase
         $oView = oxNew('Order_Overview');
         $oUserPayment = $oView->UNITgetPaymentType($oOrder);
 
-        $this->assertTrue($oUserPayment instanceof oxuserpayment);
+        $this->assertTrue($oUserPayment instanceof userpayment);
         $this->assertEquals("testValue", $oUserPayment->oxpayments__oxdesc->value);
     }
 

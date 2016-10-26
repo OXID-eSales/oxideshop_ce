@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxorderfilelist;
+use \OxidEsales\EshopCommunity\Application\Model\OrderFileList;
 
 use \oxField;
 use \oxDb;
@@ -104,7 +104,7 @@ class OrderDownloadsTest extends \OxidTestCase
 
         $oView = oxNew('Order_Downloads');
         $oOrderFiles = $oView->getEditObject();
-        $this->assertTrue($oOrderFiles instanceof oxorderfilelist);
+        $this->assertTrue($oOrderFiles instanceof orderfilelist);
     }
 
     /**

@@ -22,8 +22,8 @@
 namespace Unit\Application\Controller\Admin;
 
 use \Exception;
-use oxArticle;
-use oxArticleList;
+use \OxidEsales\EshopCommunity\Application\Model\Article;
+use \OxidEsales\EshopCommunity\Application\Model\ArticleList;
 use \oxDb;
 use \oxTestModules;
 
@@ -47,8 +47,8 @@ class ArticleVariantTest extends \OxidTestCase
         $this->assertEquals('article_variant.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
-        $this->assertTrue($aViewData["mylist"] instanceof oxArticleList);
+        $this->assertTrue($aViewData["edit"] instanceof Article);
+        $this->assertTrue($aViewData["mylist"] instanceof ArticleList);
     }
 
     /**
@@ -66,11 +66,11 @@ class ArticleVariantTest extends \OxidTestCase
         $this->assertEquals('article_variant.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
-        $this->assertTrue($aViewData["parentarticle"] instanceof oxArticle);
+        $this->assertTrue($aViewData["edit"] instanceof Article);
+        $this->assertTrue($aViewData["parentarticle"] instanceof Article);
         $this->assertEquals(1, $aViewData["issubvariant"]);
         $this->assertEquals(1, $aViewData["readonly"]);
-        $this->assertTrue($aViewData["mylist"] instanceof oxArticleList);
+        $this->assertTrue($aViewData["mylist"] instanceof ArticleList);
     }
 
     /**

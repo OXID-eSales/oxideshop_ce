@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller;
 
-use oxArticleList;
+use \OxidEsales\EshopCommunity\Application\Model\ArticleList;
 use \oxField;
 use \oxTestModules;
 
@@ -69,7 +69,7 @@ class AccountOrderTest extends \OxidTestCase
 
         $oView = $this->getMock("Account_Order", array("getOrderList"));
         $oView->expects($this->any())->method('getOrderList')->will($this->returnValue($oOrderList));
-        $this->assertTrue($oView->getOrderArticleList() instanceof oxArticleList);
+        $this->assertTrue($oView->getOrderArticleList() instanceof ArticleList);
     }
 
     /**

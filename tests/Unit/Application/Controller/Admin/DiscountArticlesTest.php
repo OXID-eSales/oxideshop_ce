@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxdiscount;
+use OxidEsales\EshopCommunity\Application\Model\Discount;
 
 use \oxTestModules;
 
@@ -47,6 +47,6 @@ class DiscountArticlesTest extends \OxidTestCase
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue(isset($aViewData['readonly']));
-        $this->assertTrue($aViewData['edit'] instanceof oxdiscount);
+        $this->assertTrue($aViewData['edit'] instanceof Discount);
     }
 }

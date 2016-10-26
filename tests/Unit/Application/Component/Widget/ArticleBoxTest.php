@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Component\Widget;
 
-use oxCategory;
+use \OxidEsales\EshopCommunity\Application\Model\Category;
 
 /**
  * Tests for oxwArticleBox class
@@ -251,7 +251,7 @@ class ArticleBoxTest extends \OxidTestCase
         $oArticleBox = $this->getMock('oxwArticleBox', array('getConfig'));
         $oArticleBox->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertTrue($oArticleBox->getActiveCategory() instanceof oxCategory);
+        $this->assertTrue($oArticleBox->getActiveCategory() instanceof Category);
         $this->assertEquals('943a9ba3050e78b443c16e043ae60ef3', $oArticleBox->getActiveCategory()->getId());
         $this->assertEquals('Eco-Fashion', $oArticleBox->getActiveCategory()->getTitle());
     }
@@ -273,7 +273,7 @@ class ArticleBoxTest extends \OxidTestCase
         $oArticleBox = $this->getMock('oxwArticleBox', array('getConfig'));
         $oArticleBox->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertTrue($oArticleBox->getActiveCategory() instanceof oxCategory);
+        $this->assertTrue($oArticleBox->getActiveCategory() instanceof Category);
         $this->assertEquals(null, $oArticleBox->getActiveCategory()->getId());
         $this->assertEquals(null, $oArticleBox->getActiveCategory()->getTitle());
     }

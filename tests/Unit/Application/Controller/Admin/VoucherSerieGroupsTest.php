@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxvoucherserie;
+use \OxidEsales\EshopCommunity\Application\Model\VoucherSerie;
 
 use \oxTestModules;
 
@@ -46,6 +46,6 @@ class VoucherSerieGroupsTest extends \OxidTestCase
         $this->assertEquals('voucherserie_groups.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxvoucherserie);
+        $this->assertTrue($aViewData['edit'] instanceof voucherserie);
     }
 }

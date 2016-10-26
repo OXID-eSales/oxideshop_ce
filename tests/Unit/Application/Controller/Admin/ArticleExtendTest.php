@@ -22,10 +22,10 @@
 namespace Unit\Application\Controller\Admin;
 
 use \Exception;
-use oxArticle;
-use oxCategoryList;
+use \OxidEsales\EshopCommunity\Application\Model\Article;
+use \OxidEsales\EshopCommunity\Application\Model\CategoryList;
 use \oxDb;
-use oxList;
+use \OxidEsales\EshopCommunity\Core\StandardList;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -62,9 +62,9 @@ class ArticleExtendTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
-        $this->assertTrue($aViewData["artcattree"] instanceof oxCategoryList);
-        $this->assertTrue($aViewData["aMediaUrls"] instanceof oxList);
+        $this->assertTrue($aViewData["edit"] instanceof Article);
+        $this->assertTrue($aViewData["artcattree"] instanceof CategoryList);
+        $this->assertTrue($aViewData["aMediaUrls"] instanceof StandardList);
 
         $this->assertEquals('article_extend.tpl', $sTplName);
     }

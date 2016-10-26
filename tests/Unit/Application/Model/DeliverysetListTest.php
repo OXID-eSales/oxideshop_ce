@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Model;
 
-use \oxdeliveryset;
+use \OxidEsales\EshopCommunity\Application\Model\DeliverySet;
 
 use \oxDeliverySetList;
 use \oxDb;
@@ -429,7 +429,7 @@ class DeliverysetListTest extends \OxidTestCase
         $oList->__construct();
 
         // checking object type
-        $this->assertTrue($oList->getBaseObject() instanceof oxdeliveryset);
+        $this->assertTrue($oList->getBaseObject() instanceof deliveryset);
     }
 
     /**

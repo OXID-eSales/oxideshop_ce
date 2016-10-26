@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use oxCategoryList;
+use \OxidEsales\EshopCommunity\Application\Model\CategoryList;
 use \oxTestModules;
 
 /**
@@ -63,7 +63,7 @@ class CategoryListTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["cattree"] instanceof oxCategoryList);
+        $this->assertTrue($aViewData["cattree"] instanceof CategoryList);
 
         $this->assertEquals('category_list.tpl', $sTplName);
     }

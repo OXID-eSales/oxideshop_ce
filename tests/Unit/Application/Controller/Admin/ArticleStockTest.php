@@ -22,7 +22,7 @@
 namespace Unit\Application\Controller\Admin;
 
 use \Exception;
-use oxArticle;
+use \OxidEsales\EshopCommunity\Application\Model\Article;
 use \oxDb;
 use \oxTestModules;
 
@@ -59,7 +59,7 @@ class ArticleStockTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
+        $this->assertTrue($aViewData["edit"] instanceof Article);
         $this->assertEquals('article_stock.tpl', $sTplName);
     }
 

@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \oxTheme;
+use \OxidEsales\EshopCommunity\Core\Theme;
 
 use \Exception;
 use \oxTestModules;
@@ -45,7 +45,7 @@ class ThemeMainTest extends \OxidTestCase
 
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oTheme']));
-        $this->assertTrue($aViewData['oTheme'] instanceof oxTheme);
+        $this->assertTrue($aViewData['oTheme'] instanceof Theme);
         $this->assertEquals('azure', $aViewData['oTheme']->getInfo('id'));
     }
 

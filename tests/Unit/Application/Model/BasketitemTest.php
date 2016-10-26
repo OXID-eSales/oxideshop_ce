@@ -23,7 +23,8 @@ namespace Unit\Application\Model;
 
 use oxArticleException;
 use oxArticleInputException;
-use \oxExceptionToDisplay;
+use \OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay;
+use \OxidEsales\EshopCommunity\Application\Model\Article;
 use \oxArticle;
 use \oxBasketItem;
 use \oxField;
@@ -454,10 +455,10 @@ class BasketitemTest extends \OxidTestCase
         $oBasketItem = oxNew('oxbasketitem');
         $oBasketItem->init($article->getId(), 1);
         $oArticle = $oBasketItem->getArticle();
-        $this->assertTrue($oArticle instanceof oxarticle);
+        $this->assertTrue($oArticle instanceof article);
         //checking getter
         $oArticle2 = $oBasketItem->oProduct;
-        $this->assertTrue($oArticle2 instanceof oxarticle);
+        $this->assertTrue($oArticle2 instanceof article);
     }
 
     /**
@@ -476,7 +477,7 @@ class BasketitemTest extends \OxidTestCase
         $oArticle = $oBasketItem->getArticle();
         $this->assertFalse(isset($oArticle->oxarticles__oxpic12));
         $oArticle = $oBasketItem->getArticle(true, null, true);
-        $this->assertTrue($oArticle instanceof oxarticle);
+        $this->assertTrue($oArticle instanceof article);
 
         $this->assertTrue(isset($oArticle->oxarticles__oxpic12));
     }
@@ -1137,7 +1138,7 @@ class BasketitemTest extends \OxidTestCase
 
         $oExcp = unserialize( current( $aErrors['default'] ));
         $this->assertNotNull( $oExcp );
-        $this->assertTrue( $oExcp instanceof oxExceptionToDisplay );
+        $this->assertTrue( $oExcp instanceof ExceptionToDisplay );
     }
 
     /**
@@ -1160,7 +1161,7 @@ class BasketitemTest extends \OxidTestCase
 
         $oExcp = unserialize( current( $aErrors['default'] ));
         $this->assertNotNull( $oExcp );
-        $this->assertTrue( $oExcp instanceof oxExceptionToDisplay );
+        $this->assertTrue( $oExcp instanceof ExceptionToDisplay );
     }
 
     /**

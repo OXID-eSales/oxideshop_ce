@@ -21,10 +21,10 @@
  */
 namespace Unit\Application\Controller;
 
-use \oxpaymentlist;
-use \oxdeliverysetlist;
-use \oxdelivery;
-use \oxdeliverylist;
+use \OxidEsales\EshopCommunity\Application\Model\PaymentList;
+use \OxidEsales\EshopCommunity\Application\Model\DeliverySetList;
+use \OxidEsales\EshopCommunity\Application\Model\Delivery;
+use \OxidEsales\EshopCommunity\Application\Model\DeliveryList;
 
 use \oxUtilsView;
 use \oxField;
@@ -588,7 +588,7 @@ class ContentTest extends \OxidTestCase
 
         $oView = oxNew('Content');
         $oResp = $oView->getNotMappedToRDFaPayments();
-        $this->assertTrue($oResp instanceof oxpaymentlist);
+        $this->assertTrue($oResp instanceof PaymentList);
     }
 
     /**
@@ -602,7 +602,7 @@ class ContentTest extends \OxidTestCase
 
         $oView = oxNew('Content');
         $oResp = $oView->getNotMappedToRDFaDeliverySets();
-        $this->assertTrue($oResp instanceof oxdeliverysetlist);
+        $this->assertTrue($oResp instanceof DeliverySetList);
     }
 
     /**
@@ -636,8 +636,8 @@ class ContentTest extends \OxidTestCase
 
         $this->assertEquals(5, count($oResp));
         foreach ($oResp as $oDelivery) {
-            $this->assertTrue($oDelivery instanceof oxdelivery);
-            $this->assertTrue($oDelivery->deliverysetmethods instanceof oxdeliverysetlist);
+            $this->assertTrue($oDelivery instanceof Delivery);
+            $this->assertTrue($oDelivery->deliverysetmethods instanceof DeliverySetList);
         }
     }
 
@@ -652,7 +652,7 @@ class ContentTest extends \OxidTestCase
 
         $oView = oxNew('Content');
         $oResp = $oView->getDeliveryList();
-        $this->assertTrue($oResp instanceof oxdeliverylist);
+        $this->assertTrue($oResp instanceof DeliveryList);
     }
 
     /**

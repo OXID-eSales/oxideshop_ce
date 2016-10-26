@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller;
 
-use \oxnewslist;
+use \OxidEsales\EshopCommunity\Application\Model\NewsList;
 
 /**
  * oxcmp_news tests
@@ -76,7 +76,7 @@ class CmpNewsTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("bl_perfLoadNewsOnlyStart", false);
 
         $oCmp = oxNew('oxcmp_news');
-        $this->assertTrue($oCmp->render() instanceof oxnewslist);
+        $this->assertTrue($oCmp->render() instanceof newslist);
     }
 }
 

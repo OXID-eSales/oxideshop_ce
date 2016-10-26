@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\VoucherSerie
  */
-class VoucherSerie extends \OxidEsales\EshopCommunity\Application\Model\VoucherSerie
+class oxVoucherSerie extends \OxidEsales\EshopCommunity\Application\Model\VoucherSerie
 {
 }

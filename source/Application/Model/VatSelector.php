@@ -155,7 +155,7 @@ class VatSelector extends \oxSuperCfg
      *
      * @return double
      */
-    public function getArticleVat(oxArticle $oArticle)
+    public function getArticleVat(Article $oArticle)
     {
         startProfile("_assignPriceInternal");
         // article has its own VAT ?

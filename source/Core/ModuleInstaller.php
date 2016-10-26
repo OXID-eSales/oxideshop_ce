@@ -49,7 +49,7 @@ class ModuleInstaller extends \oxSuperCfg
      * @param oxModuleCache           $oxModuleCache
      * @param ModuleExtensionsCleaner $moduleCleaner
      */
-    public function __construct(oxModuleCache $oxModuleCache = null, $moduleCleaner = null)
+    public function __construct(ModuleCache $oxModuleCache = null, $moduleCleaner = null)
     {
         $this->setModuleCache($oxModuleCache);
         if (is_null($moduleCleaner)) {

@@ -33,31 +33,31 @@ abstract class BaseRegistrator
     /** @var oxConfig */
     protected $config;
 
-    /**
-     * Regex to check if resource is from same base-url as shop
-     *
-     * @see isSameBaseUrl()
-     *
-     * @var string
-     */
-    private $isSameBaseUrlRegex;
+    /** @var UtilsUrl|null */
+    protected $utilsUrl;
 
     /**
      * BaseRegistrator constructor.
      *
-     * provide config as class-property and set isSameBaseUrlRegex for current shop url
+     * provide config as class-property
      */
     public function __construct()
     {
         $this->config = Registry::getConfig();
+    }
 
-        $url = $this->config->getCurrentShopUrl(false);
-        $url = preg_quote($url);
-        // support protocol relative urls starting with '//', too
-        // e.g. '//shopurl.com/modules/vendor/module/out/js/script.js'
-        $regex = preg_replace('#^https?\\\:\/\/#', '(https?:)?//', $url);
+    /**
+     * Returns UtilsUrl instance.
+     *
+     * @return UtilsUrl
+     */
+    public function getUtilsUrl()
+    {
+        if (!$this->utilsUrl) {
+            $this->utilsUrl = Registry::get('oxUtilsUrl');
+        }
 
-        $this->isSameBaseUrlRegex = '#^' . $regex . '#';
+        return $this->utilsUrl;
     }
 
     /**
@@ -73,8 +73,8 @@ abstract class BaseRegistrator
         $url = $parts[0];
         $parameters = $parts[1];
         if (empty($parameters)) {
-            if ($this->isSameBaseUrl($url)) {
-                $path = $this->getPathByUrl($url);
+            if ($this->getUtilsUrl()->isSameBaseUrl($url)) {
+                $path = $this->getUtilsUrl()->getPathByUrl($url);
             } else {
                 $path = $this->config->getResourcePath($url, $this->config->isAdmin());
                 $url = $this->config->getResourceUrl($url, $this->config->isAdmin());
@@ -97,40 +97,8 @@ abstract class BaseRegistrator
      *
      * @return int|bool UNIX-timestamp or false
      */
-    protected function getFileModificationTime($file) {
+    protected function getFileModificationTime($file)
+    {
         return filemtime($file);
-    }
-
-    /**
-     * Checks if resource is from same base-url as shop
-     *
-     * e.g.
-     *     shop-url = 'http://shopurl.com'
-     *     resource-url = 'http://shopurl.com/modules/vendor/module/out/js/script.js'
-     * would return true
-     *
-     * @param string $file resource-url to check
-     *
-     * @return bool
-     */
-    protected function isSameBaseUrl($file)
-    {
-        return (bool) preg_match($this->isSameBaseUrlRegex, $file);
-    }
-
-    /**
-     * get absolute path to file from url
-     *
-     * @param string $url url to file
-     *
-     * @return string path to file
-     */
-    protected function getPathByUrl($url)
-    {
-        return str_replace(
-            rtrim($this->config->getCurrentShopUrl(false), '/'),
-            rtrim($this->config->getConfigParam('sShopDir'), '/'),
-            $url
-        );
     }
 }

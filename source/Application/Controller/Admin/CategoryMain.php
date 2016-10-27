@@ -32,6 +32,7 @@ use oxExceptionToDisplay;
 use oxDbMetaDataHandler;
 use oxUtilsView;
 use category_main_ajax;
+use \OxidEsales\EshopCommunity\Application\Model\Category;
 
 /**
  * Admin article main categories manager.
@@ -246,7 +247,7 @@ class CategoryMain extends \oxAdminDetails
      *
      * @return null
      */
-    protected function _deleteCatPicture(oxCategory $item, $field)
+    protected function _deleteCatPicture(Category $item, $field)
     {
         if ($item->isDerived()) {
             return;

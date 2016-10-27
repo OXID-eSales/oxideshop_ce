@@ -1314,7 +1314,7 @@ class ArticleDetailsController extends \oxUBase
         $paths[] = $vendorPath;
 
         $vendor = $this->getActVendor();
-        if (is_a($vendor, 'oxVendor')) {
+        if ($vendor instanceof \OxidEsales\EshopCommunity\Application\Model\Vendor) {
             $vendorPath['link'] = $vendor->getLink();
             $vendorPath['title'] = $vendor->oxvendor__oxtitle->value;
             $paths[] = $vendorPath;

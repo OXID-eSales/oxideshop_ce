@@ -95,10 +95,10 @@ class ServerProcessor extends \oxSuperCfg
      * @param oxUtilsDate      $oUtilsDate
      */
     public function __construct(
-        oxServersManager $oServerNodesManager,
-        oxServerChecker $oServerNodeChecker,
-        oxUtilsServer $oUtilsServer,
-        oxUtilsDate $oUtilsDate
+        \OxidEsales\EshopCommunity\Core\ServersManager $oServerNodesManager,
+        \OxidEsales\EshopCommunity\Core\ServerChecker $oServerNodeChecker,
+        \OxidEsales\EshopCommunity\Core\UtilsServer $oUtilsServer,
+        \OxidEsales\EshopCommunity\Core\UtilsDate $oUtilsDate
     ) {
         $this->_oServerNodesManager = $oServerNodesManager;
         $this->_oServerNodeChecker = $oServerNodeChecker;

@@ -521,7 +521,7 @@ class Basket extends \oxSuperCfg
         }
 
         // returning basket item object
-        if (is_a($this->_aBasketContents[$sItemId], 'oxBasketItem')) {
+        if ($this->_aBasketContents[$sItemId] instanceof \OxidEsales\EshopCommunity\Application\Model\BasketItem) {
             $this->_aBasketContents[$sItemId]->setBasketItemKey($sItemId);
         }
         return $this->_aBasketContents[$sItemId];

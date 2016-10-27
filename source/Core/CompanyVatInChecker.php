@@ -65,5 +65,5 @@ abstract class CompanyVatInChecker
      *
      * @return mixed
      */
-    abstract public function validate(oxCompanyVatIn $vatIn);
+    abstract public function validate(\OxidEsales\EshopCommunity\Application\Model\CompanyVatIn $vatIn);
 }

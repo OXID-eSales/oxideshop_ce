@@ -22,7 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxArticle;
 use oxDb;
 use oxObjectException;
 
@@ -50,7 +49,7 @@ class VatSelector extends \oxSuperCfg
     /**
      * get VAT for user, can NOT be null
      *
-     * @param User $oUser given  user object
+     * @param User $oUser        given  user object
      * @param bool $blCacheReset reset cache
      *
      * @throws oxObjectException if wrong country
@@ -151,7 +150,7 @@ class VatSelector extends \oxSuperCfg
     /**
      * get VAT for given article, can NOT be null
      *
-     * @param oxArticle $oArticle given article
+     * @param Article $oArticle given article
      *
      * @return double
      */
@@ -194,11 +193,11 @@ class VatSelector extends \oxSuperCfg
     /**
      * get article user vat
      *
-     * @param oxArticle $oArticle article object
+     * @param Article $oArticle article object
      *
      * @return double | false
      */
-    public function getArticleUserVat(oxArticle $oArticle)
+    public function getArticleUserVat(Article $oArticle)
     {
         if (($oUser = $oArticle->getArticleUser())) {
             return $this->getUserVat($oUser);

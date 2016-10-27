@@ -373,7 +373,7 @@ class BasketComponent extends \oxView
 
             $basketItem = $this->addItemToBasket($basket, $data, $errorDestination);
 
-            if (is_a($basketItem, 'oxBasketItem') && $basketItem->getBasketItemKey()) {
+            if (($basketItem instanceof \OxidEsales\EshopCommunity\Application\Model\BasketItem) && $basketItem->getBasketItemKey()) {
                 $basketItemAmounts[$basketItem->getBasketItemKey()] += $data['amount'];
             }
 

@@ -57,7 +57,7 @@ class CompanyVatInValidator
      *
      * @param oxCountry $country
      */
-    public function setCountry(oxCountry $country)
+    public function setCountry(\OxidEsales\EshopCommunity\Application\Model\Country $country)
     {
         $this->_oCountry = $country;
     }
@@ -97,7 +97,7 @@ class CompanyVatInValidator
      *
      * @param oxCountry $country
      */
-    public function __construct(oxCountry $country)
+    public function __construct(\OxidEsales\EshopCommunity\Application\Model\Country $country)
     {
         $this->setCountry($country);
     }

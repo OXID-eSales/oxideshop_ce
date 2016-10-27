@@ -48,6 +48,7 @@ use oxUserPayment;
 use oxUtils;
 use oxUtilsString;
 use stdClass;
+use \OxidEsales\EshopCommunity\Application\Model\Attribute;
 
 /**
  * Class Unit_utf8Test
@@ -540,7 +541,7 @@ class UtfTest extends \OxidTestCase
         $attributeList = $category->getAttributes();
         /** @var oxAttribute $attribute */
         $attribute = $attributeList->offsetGet('_testAttribute1');
-        $this->assertTrue($attribute instanceof oxAttribute);
+        $this->assertTrue($attribute instanceof Attribute);
         $this->assertEquals('für', $attribute->getTitle());
     }
 

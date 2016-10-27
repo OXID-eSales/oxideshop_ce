@@ -22,8 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
 use oxConfig;
+use oxRegistry;
 
 /**
  * Generates class chains for extended classes by modules.
@@ -47,42 +47,61 @@ class ModuleChainsGenerator
     /**
      * Creates given class chains.
      *
-     * @param string $class      Class name.
+     * @param string $className  Class name.
      * @param string $classAlias Class alias, used for searching module extensions. Class is used if no alias given.
      *
      * @return string
      */
-    public function createClassChain($class, $classAlias = null)
+    public function createClassChain($className, $classAlias = null)
     {
         if (!$classAlias) {
-            $classAlias = $class;
+            $classAlias = $className;
         }
-        $classAlias = strtolower($classAlias);
+        $lowerCaseClassAlias = strtolower($classAlias);
+        $lowerCaseClassName = strtolower($className);
 
         $variablesLocator = $this->getModuleVariablesLocator();
         $modules = (array) $variablesLocator->getModuleVariable('aModules');
         $modules = array_change_key_case($modules);
+        $allExtendedClasses = array_keys($modules);
+        $currentExtendedClasses = array_intersect($allExtendedClasses, [$lowerCaseClassName, $lowerCaseClassAlias]);
+        if (!empty($currentExtendedClasses)) {
+            /**
+             * there may be 2 class chains, matching the same class:
+             * - one for the class alias like 'oxUser' - metadata v1.1
+             * - another for the real class name like 'OxidEsales\Eshop\Application\Model\User' - metadata v1.2
+             * These chains must be merged in the same order as they appear in the modules array
+             */
+            $classChains = [];
+            /** Get the position of the class name */
+            if (false !== $position = array_search($lowerCaseClassName, $allExtendedClasses)) {
+                $classChains[$position] = explode("&", $modules[$lowerCaseClassName]);
+            }
+            /** Get the position of the alias class name */
+            if (false !== $position = array_search($lowerCaseClassAlias, $allExtendedClasses)) {
+                $classChains[$position] = explode("&", $modules[$lowerCaseClassAlias]);
+            }
 
-        if (array_key_exists($classAlias, $modules) ||
-            array_key_exists(strtolower($class), $modules)
-        ) {
-            /** @var  $fullChainAlias Look up the alias of a class compatiblity with metadata v1.1 */
-            $fullChainAlias = explode("&", $modules[$classAlias]);
-            /** @var  $fullChainClass Look up the real class as given back by the classMap as of metadata v2.0 */
-            $fullChainClass = explode("&", $modules[strtolower($class)]);
-
-            $fullChain = array_merge($fullChainAlias, $fullChainClass);
-            /** filter empty values from $fullChain */
-            $fullChain = array_filter($fullChain);
+            /** Notice that the array keys will be ordered, but do not necessarily start at 0 */
+            ksort($classChains);
+            $fullChain = [];
+            if (1 === count($classChains)) {
+                /** @var array $fullChain uses the one and only element of the array */
+                $fullChain = reset($classChains);
+            }
+            if (2 === count($classChains)) {
+                /** @var array $fullChain merges the first and then the second array from the $classChains */
+                $fullChain = array_merge(reset($classChains), next($classChains));
+            }
 
             $activeChain = $this->filterInactiveExtensions($fullChain);
 
             if (!empty($activeChain)) {
-                $class = $this->createClassExtensions($activeChain, $class);
+                $className = $this->createClassExtensions($activeChain, $className);
             }
         }
 
-        return $class;
+        return $className;
     }
 
     /**
@@ -128,7 +147,7 @@ class ModuleChainsGenerator
      * @param array  $classChain Module names
      * @param string $baseClass  Oxid base class
      *
-     * @throws oxSystemComponentException missing system component exception
+     * @throws \oxSystemComponentException missing system component exception
      *
      * @return string
      */
@@ -159,7 +178,7 @@ class ModuleChainsGenerator
      * @param string $class
      * @param string $extensionPath
      *
-     * @throws oxSystemComponentException
+     * @throws \oxSystemComponentException
      *
      * @return bool
      */
@@ -212,7 +231,7 @@ class ModuleChainsGenerator
      * @param string $classExtension
      * @param string $moduleClass
      *
-     * @throws oxSystemComponentException
+     * @throws \oxSystemComponentException
      */
     protected function onModuleExtensionCreationError($classExtension, $moduleClass)
     {

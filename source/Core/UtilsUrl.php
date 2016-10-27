@@ -31,6 +31,15 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     protected $_aHosts = null;
 
     /**
+     * Regex to check if resource is from same base-url as shop
+     *
+     * @see isSameBaseUrl()
+     *
+     * @var string
+     */
+    private $isSameBaseUrlRegex;
+
+    /**
      * Returns core parameters which must be added to each url.
      *
      * @return array
@@ -298,6 +307,49 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         $shopUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
 
         return $this->extractUrlPath($shopUrl);
+    }
+
+    /**
+     * get absolute path to file from url
+     *
+     * @param string $url url to file
+     *
+     * @return string path to file
+     */
+    public function getPathByUrl($url)
+    {
+        return str_replace(
+            rtrim($this->getConfig()->getCurrentShopUrl(false), '/'),
+            rtrim($this->getConfig()->getConfigParam('sShopDir'), '/'),
+            $url
+        );
+    }
+
+    /**
+     * Checks if url is from same base-url as shop
+     *
+     * e.g.
+     *     shop-url = 'http://shopurl.com'
+     *     url = 'http://shopurl.com/modules/vendor/module/out/js/script.js'
+     * would return true
+     *
+     * @param string $url url to check
+     *
+     * @return bool
+     */
+    public function isSameBaseUrl($url)
+    {
+        if (!$this->isSameBaseUrlRegex) {
+            $shopUrl = $this->getConfig()->getCurrentShopUrl(false);
+            $shopUrl = preg_quote($shopUrl);
+            // support protocol relative urls starting with '//', too
+            // e.g. '//shopurl.com/modules/vendor/module/out/js/script.js'
+            $regex = preg_replace('#^https?\\\:\/\/#', '(https?:)?//', $shopUrl);
+
+            $this->isSameBaseUrlRegex = '#^' . $regex . '#';
+        }
+
+        return (bool) preg_match($this->isSameBaseUrlRegex, $url);
     }
 
     /**

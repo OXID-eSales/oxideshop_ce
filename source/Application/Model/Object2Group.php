@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxField;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * Manages object (users, discounts, deliveries...) assignment to groups.
@@ -66,7 +66,7 @@ class Object2Group extends \oxBase
     {
         try {
             return parent::save();
-        } catch (DatabaseException $exception) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\DatabaseException $exception) {
             /**
              * The table oxobject2group has an UNIQUE index on (OXGROUPSID, OXOBJECTID, OXSHOPID)
              * If there is a DatabaseException and the exception code is 1062 i.e. "Duplicate entry",

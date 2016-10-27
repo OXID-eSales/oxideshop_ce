@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\Model;
 
-use OxidEsales\EshopCommunity\Core\oxObjectException;
+use oxObjectException;
 use oxRegistry;
 use oxDb;
 

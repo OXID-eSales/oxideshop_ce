@@ -27,7 +27,7 @@ use oxDb;
 use oxField;
 use oxUtilsObject;
 use stdClass;
-use OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\Article;
 
 /**
  * Admin article main manager.

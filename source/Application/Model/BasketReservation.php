@@ -27,7 +27,6 @@ use oxRegistry;
 use oxUtilsObject;
 use oxField;
 use oxDb;
-use OxidEsales\EshopCommunity\Application\Model\Basket;
 use oxuserbasket;
 
 /**
@@ -161,7 +160,7 @@ class BasketReservation extends \oxSuperCfg
      *
      * @return array
      */
-    protected function _basketDifference(Basket $oBasket)
+    protected function _basketDifference(\OxidEsales\EshopCommunity\Application\Model\Basket $oBasket)
     {
         $aDiff = $this->_getReservedItems();
         // refreshing history

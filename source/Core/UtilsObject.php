@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxBase;
-use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use oxSystemComponentException;
 use oxUtilsObject;
 use ReflectionClass;

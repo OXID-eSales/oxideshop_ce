@@ -21,7 +21,7 @@
  */
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner;
+use OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner;
 use oxModuleCache;
 use oxModule;
 use oxDb;

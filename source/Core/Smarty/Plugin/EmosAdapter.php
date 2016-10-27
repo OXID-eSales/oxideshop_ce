@@ -40,7 +40,7 @@
 namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
 
 use oxDb;
-use OxidEsales\EshopCommunity\Application\Controller\ContentController;
+use OxidEsales\Eshop\Application\Controller\ContentController;
 use oxRegistry;
 use oxSuperCfg;
 
@@ -493,7 +493,7 @@ class EmosAdapter extends oxSuperCfg
                 break;
             case 'content':
                 // backwards compatibility
-                $oContent = ($oCurrentView instanceof ContentController) ? $oCurrentView->getContent() : null;
+                $oContent = ($oCurrentView instanceof \OxidEsales\EshopCommunity\Application\Controller\ContentController) ? $oCurrentView->getContent() : null;
                 $sContentId = $oContent ? $oContent->oxcontents__oxloadid->value : null;
 
                 if (array_key_exists('content_' . $sContentId, $aContent)) {

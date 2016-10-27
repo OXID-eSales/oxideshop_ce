@@ -19,11 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-use OxidEsales\EshopCommunity\Core\Registry;
 
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxException;
+use oxRegistry;
 
 /**
  * Themes handler class.
@@ -152,7 +152,7 @@ class Theme extends \oxSuperCfg
      */
     public function getActiveThemesList()
     {
-        $config = Registry::getConfig();
+        $config = oxRegistry::getConfig();
 
         $activeThemeList = array();
         if (!$this->isAdmin()) {

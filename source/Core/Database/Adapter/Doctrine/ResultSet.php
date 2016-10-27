@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine;
 
 use Doctrine\DBAL\Driver\Statement;
-use OxidEsales\EshopCommunity\Core\Database\Adapter\ResultSetInterface;
+use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
 
 /**
  * The doctrine statement wrapper, to support the old adodblite interface.

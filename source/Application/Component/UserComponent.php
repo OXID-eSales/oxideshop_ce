@@ -23,11 +23,11 @@
 namespace OxidEsales\EshopCommunity\Application\Component;
 
 use oxDb;
-use OxidEsales\EshopCommunity\Core\Exception\ConnectionException;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
-use OxidEsales\EshopCommunity\Core\Exception\InputException;
-use OxidEsales\EshopCommunity\Core\Exception\UserException;
-use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\Eshop\Core\Exception\ConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\InputException;
+use OxidEsales\Eshop\Core\Exception\UserException;
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxUser;
 use oxUserException;
@@ -494,22 +494,22 @@ class UserComponent extends \oxView
             $oUser->addToGroup('oxidnotyetordered');
             $oUser->logout();
             $database->commitTransaction();
-        } catch (UserException $exception) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\UserException $exception) {
             Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
             return false;
-        } catch (InputException $exception) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\InputException $exception) {
             Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
             return false;
-        } catch (DatabaseConnectionException $exception) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException $exception) {
             Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
             return false;
-        } catch (ConnectionException $exception) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ConnectionException $exception) {
             Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 

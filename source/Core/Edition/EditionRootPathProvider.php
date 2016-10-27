@@ -22,8 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Core\Edition;
 
-use OxidEsales\EshopCommunity\Core\ConfigFile;
-use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\Eshop\Core\ConfigFile;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class is responsible for returning edition directory path.

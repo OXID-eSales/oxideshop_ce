@@ -22,13 +22,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\EshopCommunity\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use oxRegistry;
 use Exception;
 use oxDb;
-use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * Article list manager.

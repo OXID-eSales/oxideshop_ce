@@ -31,16 +31,16 @@ use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use OxidEsales\Eshop;
-use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
-use OxidEsales\EshopCommunity\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use PDO;
 
 /**
  * The doctrine implementation of our database.
  *
- * @package OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine;
+ * @package OxidEsales\Eshop\Core\Database\Adapter\Doctrine;
  */
 class Database implements DatabaseInterface
 {
@@ -275,7 +275,7 @@ class Database implements DatabaseInterface
      * The given fetch mode as used be the DatabaseInterface Class will be mapped to the Doctrine specific fetch mode.
      *
      * When the connection is opened the fetch mode will be set to a default value as defined in
-     * OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database::$fetchMode.
+     * OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database::$fetchMode.
      *
      * @param integer $fetchMode See DatabaseInterface::FETCH_MODE_* for valid values
      */
@@ -573,7 +573,7 @@ class Database implements DatabaseInterface
      *
      * @throws DatabaseException The exception, that can occur while executing the sql statement.
      *
-     * @return \OxidEsales\EshopCommunity\Core\Database\Adapter\ResultSetInterface The result of the given query.
+     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
     public function select($query, $parameters = array())
     {
@@ -633,7 +633,7 @@ class Database implements DatabaseInterface
      *
      * @throws DatabaseException The exception, that can occur while executing the sql statement.
      *
-     * @return \OxidEsales\EshopCommunity\Core\Database\Adapter\ResultSetInterface The result of the given query.
+     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
     public function selectLimit($query, $rowCount = -1, $offset = -1, $parameters = array())
     {
@@ -881,11 +881,11 @@ class Database implements DatabaseInterface
                 $code = $exception->errorInfo[1];
                 $message = $exception->errorInfo[2];
 
-                $exceptionClass = 'OxidEsales\EshopCommunity\Core\Exception\DatabaseException';
+                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
 
                 break;
             default:
-                $exceptionClass = 'OxidEsales\EshopCommunity\Core\Exception\DatabaseException';
+                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
         }
 
         /** @var \oxException $convertedException */
@@ -904,7 +904,7 @@ class Database implements DatabaseInterface
      * @throws DatabaseConnectionException
      * @throws DatabaseException
      */
-    protected function handleException(StandardException $exception)
+    protected function handleException(\OxidEsales\EshopCommunity\Core\Exception\StandardException $exception)
     {
         throw $exception;
     }

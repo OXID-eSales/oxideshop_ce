@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
-use OxidEsales\EshopCommunity\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use stdClass;
 
 /**
@@ -131,7 +131,7 @@ class Discount extends \oxI18n
 
         try {
             $saveStatus = parent::save();
-        } catch (StandardException $exception) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $exception) {
             if ($exception->getCode() == 1062 && false !== strpos($exception->getMessage(), 'UNIQ_OXSORT')) {
                 $exception = oxNew('oxInputException');
                 $exception->setMessage('DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');

@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
-use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 
 /**
  * Setup utilities class

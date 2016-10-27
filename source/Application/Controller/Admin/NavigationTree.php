@@ -27,9 +27,9 @@ use DOMXPath;
 use DOMDocument;
 use DOMElement;
 use stdClass;
-use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
-use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
-use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
 
 /**
  * Navigation tree control class

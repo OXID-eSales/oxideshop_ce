@@ -22,8 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
-use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
-use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use oxSystemComponentException;
 
 /**

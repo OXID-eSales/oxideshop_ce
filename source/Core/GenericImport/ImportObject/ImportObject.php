@@ -26,7 +26,7 @@ use Exception;
 use oxBase;
 use oxDb;
 use oxI18n;
-use OxidEsales\EshopCommunity\Core\GenericImport\GenericImport;
+use OxidEsales\Eshop\Core\GenericImport\GenericImport;
 use oxRegistry;
 
 /**

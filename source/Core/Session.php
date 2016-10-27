@@ -23,10 +23,8 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
-use oxDb;
 use oxUtilsObject;
 use oxBasket;
-use OxidEsales\EshopCommunity\Application\Model\Basket;
 
 /**
  * Session manager.
@@ -564,7 +562,7 @@ class Session extends \oxSuperCfg
      *
      * @return null
      */
-    protected function _validateBasket(Basket $oBasket)
+    protected function _validateBasket(\OxidEsales\EshopCommunity\Application\Model\Basket $oBasket)
     {
         $aCurrContent = $oBasket->getContents();
         if (empty($aCurrContent)) {

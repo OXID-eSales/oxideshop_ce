@@ -23,10 +23,10 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use oxCookieException;
 use oxException;
-use OxidEsales\EshopCommunity\Application\Controller\FrontendController;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException;
-use OxidEsales\EshopCommunity\Core\Exception\StandardException;
+use OxidEsales\Eshop\Application\Controller\FrontendController;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\EshopEnterprise\Core\Cache\DynamicContent\ContentCache;
 use oxOutput;
 use oxRegistry;

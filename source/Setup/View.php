@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
-use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 
 /**
  * Setup View class

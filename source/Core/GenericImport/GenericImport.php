@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core\GenericImport;
 
 use Exception;
-use OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\ImportObject;
+use OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject;
 use oxRegistry;
 
 /**

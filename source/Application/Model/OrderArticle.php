@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\EshopCommunity\Application\Model\Contract\ArticleInterface;
+use OxidEsales\Eshop\Application\Model\Contract\ArticleInterface;
 use oxRegistry;
 use oxField;
 use oxDb;

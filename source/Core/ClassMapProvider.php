@@ -125,10 +125,10 @@ class ClassMapProvider
         $editionSelector = $this->getEditionSelector();
         switch ($editionSelector->getEdition()) {
             case EditionSelector::ENTERPRISE:
-                $virtualNameSpaceClassMap = new \OxidEsales\EshopEnterprise\VirtualNameSpaceClassMap();
+                $virtualNameSpaceClassMap = new \OxidEsales\EshopEnterprise\Core\VirtualNameSpaceClassMap();
                 break;
             case EditionSelector::PROFESSIONAL:
-                $virtualNameSpaceClassMap = new \OxidEsales\EshopProfessional\VirtualNameSpaceClassMap();
+                $virtualNameSpaceClassMap = new \OxidEsales\EshopProfessional\Core\VirtualNameSpaceClassMap();
                 break;
             default:
             case EditionSelector::COMMUNITY:

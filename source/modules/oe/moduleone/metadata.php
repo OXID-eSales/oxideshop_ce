@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Application\Model\User;
 /**
  * Metadata version
  */
-$sMetadataVersion = '1.1';
+$sMetadataVersion = '1.2';
 
 /**
  * Module information

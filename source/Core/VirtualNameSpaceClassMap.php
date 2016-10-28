@@ -581,7 +581,17 @@ class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\C
             'OxidEsales\Eshop\Setup\Session' => 'OxidEsales\EshopCommunity\Setup\Session',
             'OxidEsales\Eshop\Setup\Setup' => 'OxidEsales\EshopCommunity\Setup\Setup',
             'OxidEsales\Eshop\Setup\Utilities' => 'OxidEsales\EshopCommunity\Setup\Utilities',
-            'OxidEsales\Eshop\Setup\View' => 'OxidEsales\EshopCommunity\Setup\View'
+            'OxidEsales\Eshop\Setup\View' => 'OxidEsales\EshopCommunity\Setup\View',
+
+            'OxidEsales\Eshop\Application\Model\Contract\ArticleInterface' => 'OxidEsales\EshopCommunity\Application\Model\Contract\ArticleInterface',
+            'OxidEsales\Eshop\Core\Contract\IConfigurable' => 'OxidEsales\EshopCommunity\Core\Contract\IConfigurable',
+            'OxidEsales\Eshop\Core\Contract\ICountryAware' => 'OxidEsales\EshopCommunity\Core\Contract\ICountryAware',
+            'OxidEsales\Eshop\Core\Contract\IDisplayError' => 'OxidEsales\EshopCommunity\Core\Contract\IDisplayError',
+            'OxidEsales\Eshop\Core\Contract\IModuleValidator' => 'OxidEsales\EshopCommunity\Core\Contract\IModuleValidator',
+            'OxidEsales\Eshop\Core\Contract\ISelectList' => 'OxidEsales\EshopCommunity\Core\Contract\ISelectList',
+            'OxidEsales\Eshop\Core\Contract\IUrl' => 'OxidEsales\EshopCommunity\Core\Contract\IUrl',
+            'OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface' => 'OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface',
+            'OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface' => 'OxidEsales\EshopCommunity\Core\Database\Adapter\ResultSetInterface'
         ];
     }
 

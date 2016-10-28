@@ -866,7 +866,7 @@ class ModulelistTest extends \OxidTestCase
         $oModuleList = oxNew('oxModuleList');
         $aModuleExtensions = array(
             'oxarticle' => 'mod/testModule&mod2/testModule2/',
-            'oxorder'   => 'oe/invoicepdf/models/invoicepdfoxorder'
+            'oxorder'   => 'oe/ModuleName/models/ModuleNameoxorder'
         );
         $aModuleFiles = array(
             'module' => array(
@@ -874,10 +874,10 @@ class ModulelistTest extends \OxidTestCase
                 'moduleClass2' => 'module/moduleclass2.php'
             ),
         );
-        $aModuleIds = array('mod', 'mod2', 'invoicepdf', 'module');
+        $aModuleIds = array('mod', 'mod2', 'ModuleName', 'module');
         $this->setConfigParam('aModules', $aModuleExtensions);
         $this->setConfigParam('aModuleFiles', $aModuleFiles);
-        $this->setConfigParam('aModulePaths', array('invoicepdf' => 'oe/invoicepdf'));
+        $this->setConfigParam('aModulePaths', array('ModuleName' => 'oe/ModuleName'));
 
         $this->assertSame($aModuleIds, $oModuleList->getModuleIds());
     }

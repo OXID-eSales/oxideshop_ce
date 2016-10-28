@@ -57,7 +57,7 @@ class ModuleTest extends \OxidTestCase
             $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
         $aModule = array(
-            'id'          => 'invoicepdf',
+            'id'          => 'ModuleName',
             'title'       => 'Invoice PDF',
             'description' => 'Module for making invoice PDF files.',
             'thumbnail'   => 'picture.png',
@@ -662,33 +662,33 @@ class ModuleTest extends \OxidTestCase
     public function testGetIdByPath()
     {
         $aDisabledModules = array('test1');
-        $aModulePaths = array("invoicepdf2" => "oe/invoicepdf2", "invoicepdf" => "oe/invoicepdf");
+        $aModulePaths = array("ModuleName2" => "oe/ModuleName2", "ModuleName" => "oe/ModuleName");
         $this->getConfig()->setConfigParam("aDisabledModules", $aDisabledModules);
         $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
-        $sModule = "oe/invoicepdf2/myorder";
+        $sModule = "oe/ModuleName2/myorder";
 
         $oModule = $this->getProxyClass('oxmodule');
         $oModule->getIdByPath($sModule);
-        $this->assertEquals('invoicepdf2', $oModule->getIdByPath($sModule));
+        $this->assertEquals('ModuleName2', $oModule->getIdByPath($sModule));
     }
 
     public function testGetIdByPathUnknownPath()
     {
         $aDisabledModules = array('test1');
-        $aModulePaths = array("invoicepdf2" => "oe/invoicepdf2");
+        $aModulePaths = array("ModuleName2" => "oe/ModuleName2");
         $this->getConfig()->setConfigParam("aDisabledModules", $aDisabledModules);
         $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
-        $sModule = "invoicepdf/myorder";
+        $sModule = "ModuleName/myorder";
 
         $oModule = oxNew('oxModule');
         $oModule->getIdByPath($sModule);
-        $this->assertEquals('invoicepdf', $oModule->getIdByPath($sModule));
+        $this->assertEquals('ModuleName', $oModule->getIdByPath($sModule));
     }
 
     public function testGetIdByPathUnknownPathNotDir()
     {
         $aDisabledModules = array('test1');
-        $aModulePaths = array("invoicepdf2" => "oe/invoicepdf2");
+        $aModulePaths = array("ModuleName2" => "oe/ModuleName2");
         $this->getConfig()->setConfigParam("aDisabledModules", $aDisabledModules);
         $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
         $sModule = "myorder";

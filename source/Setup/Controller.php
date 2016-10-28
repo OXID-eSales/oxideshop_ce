@@ -88,7 +88,7 @@ class Controller extends Core
             $sGroupName = $oLanguage->getModuleName($sGroup);
             foreach ($aModules as $sModule => $iModuleState) {
                 // translating
-                $blContinue = $blContinue && ( bool ) abs($iModuleState);
+                $blContinue = $blContinue && ( bool )abs($iModuleState);
 
                 // was unable to update htaccess file for mod_rewrite check
                 if ($blHtaccessUpdateError && $sModule == 'server_permissions') {
@@ -97,8 +97,8 @@ class Controller extends Core
                 } else {
                     $sClass = $oSetup->getModuleClass($iModuleState);
                 }
-                $aGroupModuleInfo[$sGroupName][] = array('module'     => $sModule,
-                    'class'      => $sClass,
+                $aGroupModuleInfo[$sGroupName][] = array('module' => $sModule,
+                    'class' => $sClass,
                     'modulename' => $oLanguage->getModuleName($sModule));
             }
         }
@@ -176,7 +176,7 @@ class Controller extends Core
         $oSession = $this->getInstance("Session");
 
         $iEula = $this->getInstance("Utilities")->getRequestVar("iEula", "post");
-        $iEula = (int) ($iEula ? $iEula : $oSession->getSessionParam("eula"));
+        $iEula = (int)($iEula ? $iEula : $oSession->getSessionParam("eula"));
         if (!$iEula) {
             /** @var Setup $oSetup */
             $oSetup = $this->getInstance("Setup");
@@ -346,52 +346,37 @@ class Controller extends Core
             return "default.php";
         }
 
-        $editionPathSelector = $this->getEditionPathProvider();
-        $sqlDir = $editionPathSelector->getDatabaseSqlDirectory();
-
-        $baseEditionPathSelector = $this->getEditionPathProvider(EditionSelector::COMMUNITY);
-        $baseSqlDir = $baseEditionPathSelector->getDatabaseSqlDirectory();
-
         //setting database collation
         $iUtfMode = 1;
         $oDb->setMySqlCollation($iUtfMode);
 
         try {
+            $baseSqlDir = $this->getSqlDirectory(EditionSelector::COMMUNITY);
             $oDb->queryFile("$baseSqlDir/database_schema.sql");
 
-            /** @var ConfigFile $shopConfig */
-            $shopConfig = Registry::get("oxConfigFile");
-            $vendorDir = $shopConfig->getVar('vendorDirectory');
+            // install demo/initial data
+            try {
+                $this->installShopData($oDb, $aDB['dbiDemoData']);
+            } catch (Exception $oExcp) {
+                // there where problems with queries
+                $oView->setMessage($oLang->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $oExcp->getMessage());
 
-            if ($aDB['dbiDemoData'] == '1') {
-                exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_migrate");
-
-                // install demo data
-                try {
-                    $oDb->queryFile("$baseSqlDir/demodata.sql");
-                } catch (Exception $oExcp) {
-                    // there where problems with queries
-                    $oView->setMessage($oLang->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $oExcp->getMessage());
-
-                    return "default.php";
-                }
-            } else {
-                $oDb->queryFile("$baseSqlDir/initial_data.sql");
-
-                exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_migrate");
+                return "default.php";
             }
 
-            exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_views_regenerate");
+            $this->regenerateViews();
         } catch (Exception $oExcp) {
             $oView->setMessage($oExcp->getMessage());
 
             return "default.php";
         }
 
+        $editionSqlDir = $this->getSqlDirectory();
+
         //swap database to english
         if ($oSession->getSessionParam('location_lang') != "de") {
             try {
-                $oDb->queryFile("$sqlDir/en.sql");
+                $oDb->queryFile("$editionSqlDir/en.sql");
             } catch (Exception $oExcp) {
                 $oView->setMessage($oLang->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $oExcp->getMessage());
 
@@ -405,7 +390,7 @@ class Controller extends Core
         //applying utf-8 specific queries
 
         if ($iUtfMode) {
-            $oDb->queryFile("$sqlDir/latin1_to_utf8.sql");
+            $oDb->queryFile("$editionSqlDir/latin1_to_utf8.sql");
 
             //converting oxconfig table field 'oxvarvalue' values to utf
             $oDb->setMySqlCollation(0);
@@ -505,7 +490,7 @@ class Controller extends Core
 
         // write it now
         try {
-            $aParams = array_merge(( array ) $oSession->getSessionParam('aDB'), $aPath);
+            $aParams = array_merge(( array )$oSession->getSessionParam('aDB'), $aPath);
 
             // updating config file
             $oUtils->updateConfigFile($aParams);
@@ -641,5 +626,67 @@ class Controller extends Core
         }
 
         return $blDbExists;
+    }
+
+    /**
+     * Installs demodata or initial, dependent on parameter
+     *
+     * @param Database $database
+     * @param int      $demodata
+     */
+    private function installShopData($database, $demodata = 0)
+    {
+        $editionSqlDir = $this->getSqlDirectory();
+        $baseSqlDir = $this->getSqlDirectory(EditionSelector::COMMUNITY);
+
+        $vendorDir = $this->getVendorDir();
+        if ($demodata && file_exists("$baseSqlDir/demodata.sql")) {
+            exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_migrate");
+
+            // install demo data
+            $database->queryFile("$baseSqlDir/demodata.sql");
+
+        } else {
+            $database->queryFile("$baseSqlDir/initial_data.sql");
+
+            exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_migrate");
+
+            if ($demodata) {
+                $database->queryFile("$editionSqlDir/demodata.sql");
+            }
+        }
+    }
+
+    /**
+     * @return string
+     */
+    private function getVendorDir()
+    {
+        /** @var ConfigFile $shopConfig */
+        $shopConfig = Registry::get("oxConfigFile");
+        $vendorDir = $shopConfig->getVar('vendorDirectory');
+
+        return $vendorDir;
+    }
+
+    /**
+     * Calls views regeneration command
+     */
+    private function regenerateViews()
+    {
+        $vendorDir = $this->getVendorDir();
+        exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_views_regenerate");
+    }
+
+    /**
+     * Get specific edition sql directory
+     *
+     * @param null|string $edition
+     * @return string
+     */
+    private function getSqlDirectory($edition = null)
+    {
+        $editionPathSelector = $this->getEditionPathProvider($edition);
+        return $editionPathSelector->getDatabaseSqlDirectory();
     }
 }

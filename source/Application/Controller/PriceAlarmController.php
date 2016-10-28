@@ -26,7 +26,7 @@ use oxField;
 use oxRegistry;
 
 /**
- * Pricealarm window.
+ * PriceAlarm window.
  * Arranges "pricealarm" window, by sending eMail and storing into Database (etc.)
  * submission. Result - "pricealarm.tpl"  template. After user correctly
  * fulfils all required fields all information is sent to shop owner by

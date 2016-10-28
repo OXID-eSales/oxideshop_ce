@@ -54,7 +54,7 @@ class ThemeTest extends \OxidTestCase
 
         $this->assertEquals($iCount, count($aThemeList));
         foreach ($aThemeList as $oTheme) {
-            $this->assertTrue($oTheme instanceof oxTheme);
+            $this->assertTrue($oTheme instanceof \OxidEsales\EshopCommunity\Core\Theme);
         }
     }
 
@@ -166,7 +166,7 @@ class ThemeTest extends \OxidTestCase
         $oTheme = $this->getMock('oxTheme', array('getInfo'));
         $oTheme->expects($this->any())->method('getInfo')->with($this->equalTo('parentTheme'))->will($this->returnValue('azure'));
         $oParent = $oTheme->getParent();
-        $this->assertTrue($oParent instanceof oxTheme);
+        $this->assertTrue($oParent instanceof \OxidEsales\EshopCommunity\Core\Theme);
         $this->assertEquals('azure', $oParent->getInfo('id'));
     }
 

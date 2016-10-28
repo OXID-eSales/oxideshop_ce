@@ -1498,7 +1498,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
     public static function resetDbProperty($class)
     {
-        $reflectionClass = new ReflectionClass(\OxidEsales\EshopCommunity\Core\DatabaseProvider::class);
+        $reflectionClass = new ReflectionClass(DatabaseProvider::class);
 
         $reflectionProperty = $reflectionClass->getProperty('db');
         $reflectionProperty->setAccessible(true);

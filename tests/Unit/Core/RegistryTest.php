@@ -88,25 +88,25 @@ class RegistryTest extends \OxidTestCase
     public function testGetConfig()
     {
         $oSubj = $this->getConfig();
-        $this->assertTrue($oSubj instanceof oxConfig);
+        $this->assertTrue($oSubj instanceof \OxidEsales\EshopCommunity\Core\Config);
     }
 
     public function testGetSession()
     {
         $oSubj = Registry::getSession();
-        $this->assertTrue($oSubj instanceof oxSession);
+        $this->assertTrue($oSubj instanceof \OxidEsales\EshopCommunity\Core\Session);
     }
 
     public function testGetLang()
     {
         $oSubj = Registry::getLang();
-        $this->assertTrue($oSubj instanceof oxLang);
+        $this->assertTrue($oSubj instanceof \OxidEsales\EshopCommunity\Core\Language);
     }
 
     public function testGetLUtils()
     {
         $oSubj = Registry::getUtils();
-        $this->assertTrue($oSubj instanceof oxUtils);
+        $this->assertTrue($oSubj instanceof \OxidEsales\EshopCommunity\Core\Utils);
     }
 
     public function testGetKeys()

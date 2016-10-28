@@ -773,7 +773,7 @@ class ShopControl extends \oxSuperCfg
      */
     protected function logException(\Exception $exception)
     {
-        if (!$exception instanceof oxException) {
+        if (!$exception instanceof \OxidEsales\EshopCommunity\Core\Exception\StandardException) {
             $exception = new oxException($exception->getMessage(), $exception->getCode(), $exception);
         }
         $exception->debugOut();

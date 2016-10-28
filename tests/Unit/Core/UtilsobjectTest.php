@@ -100,10 +100,10 @@ class UtilsobjectTest extends \OxidTestCase
         $orderClassName = 'oxorder';
 
         if ($this->getConfig()->getEdition() === 'EE') {
-            $orderClassName = '\OxidEsales\EshopEnterprise\Application\Model\Order';
+            $orderClassName = 'OxidEsales\EshopEnterprise\Application\Model\Order';
         }
         if ($this->getConfig()->getEdition() === 'PE') {
-            $orderClassName = '\OxidEsales\EshopProfessional\Application\Model\Order';
+            $orderClassName = 'OxidEsales\EshopProfessional\Application\Model\Order';
         }
 
         return $orderClassName;
@@ -127,7 +127,7 @@ class UtilsobjectTest extends \OxidTestCase
     {
         $oArticle = oxNew('oxarticle', array('aaa' => 'bbb'));
 
-        $this->assertTrue($oArticle instanceof oxarticle);
+        $this->assertTrue($oArticle instanceof \OxidEsales\EshopCommunity\Application\Model\Article);
         $this->assertTrue(isset($oArticle->aaa));
         $this->assertEquals('bbb', $oArticle->aaa);
     }
@@ -229,7 +229,7 @@ class UtilsobjectTest extends \OxidTestCase
         $aGotInstanceCache = $oTestInstance->getClassNameCache();
 
         $this->assertEquals(1, count($aGotInstanceCache));
-        $this->assertTrue($aGotInstanceCache["oxattribute"] instanceof oxAttribute);
+        $this->assertTrue($aGotInstanceCache["oxattribute"] instanceof \OxidEsales\EshopCommunity\Application\Model\Attribute);
     }
 
     public function testResetInstanceCacheAll()
@@ -259,10 +259,10 @@ class UtilsobjectTest extends \OxidTestCase
         $sClassName = $sClassNameExpect = 'oxorder';
 
         if ($this->getConfig()->getEdition() === 'EE') {
-            $sClassNameExpect = '\OxidEsales\EshopEnterprise\Application\Model\Order';
+            $sClassNameExpect = 'OxidEsales\EshopEnterprise\Application\Model\Order';
         }
         if ($this->getConfig()->getEdition() === 'PE') {
-            $sClassNameExpect = '\OxidEsales\EshopProfessional\Application\Model\Order';
+            $sClassNameExpect = 'OxidEsales\EshopProfessional\Application\Model\Order';
         }
 
         $sClassNameWhichExtends = 'oemodulenameoxorder_different2';

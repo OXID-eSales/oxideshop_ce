@@ -22,7 +22,7 @@
 namespace Unit\Application\Controller;
 
 use \OxidEsales\EshopCommunity\Application\Model\User;
-use \OxidEsales\EshopCommunity\Core\StandardList;
+use \OxidEsales\EshopCommunity\Core\Model\ListModel;
 use \Exception;
 use \oxDb;
 use \oxRegistry;
@@ -510,7 +510,7 @@ class ReviewTest extends \OxidTestCase
         $oArticle->load("1849");
         $oReview->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oReview->getCrossSelling();
-        $this->assertTrue($oList instanceof StandardList);
+        $this->assertTrue($oList instanceof ListModel);
         $iCount = $this->getTestConfig()->getShopEdition() == 'EE'? 3 : 2;
         $this->assertEquals($iCount, $oList->count());
     }

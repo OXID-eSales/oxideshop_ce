@@ -426,7 +426,7 @@ class InputValidatorTest extends \OxidTestCase
         $oValidator = oxNew("oxinputvalidator");
         $oValidator->checkCountries($oUser, array("oxuser__oxcountryid" => "xxx"), array("oxaddress__oxcountryid" => "yyy"));
 
-        $this->assertTrue($oValidator->getFirstValidationError() instanceof oxUserException, "error in oxinputvalidator::checkCountries()");
+        $this->assertTrue($oValidator->getFirstValidationError() instanceof \OxidEsales\EshopCommunity\Core\Exception\UserException, "error in oxinputvalidator::checkCountries()");
     }
 
     /**
@@ -1261,13 +1261,13 @@ class InputValidatorTest extends \OxidTestCase
 
         $oVatInValidator = $oInputValidator->getCompanyVatInValidator(oxNew('oxCountry'));
 
-        $this->assertTrue($oVatInValidator instanceof oxCompanyVatInValidator);
+        $this->assertTrue($oVatInValidator instanceof \OxidEsales\EshopCommunity\Core\CompanyVatInValidator);
         $aCheckers = $oVatInValidator->getCheckers();
 
         $this->assertSame(2, count($aCheckers));
 
-        $this->assertTrue($aCheckers[0] instanceof oxCompanyVatInCountryChecker);
-        $this->assertTrue($aCheckers[1] instanceof oxOnlineVatIdCheck);
+        $this->assertTrue($aCheckers[0] instanceof \OxidEsales\EshopCommunity\Core\CompanyVatInCountryChecker);
+        $this->assertTrue($aCheckers[1] instanceof \OxidEsales\EshopCommunity\Core\OnlineVatIdCheck);
     }
 
     public function testGetCompanyVatInValidator_DefaultTurnedOffOnline()
@@ -1277,11 +1277,11 @@ class InputValidatorTest extends \OxidTestCase
         $oInputValidator = oxNew('oxInputValidator');
         $oVatInValidator = $oInputValidator->getCompanyVatInValidator(oxNew('oxCountry'));
 
-        $this->assertTrue($oVatInValidator instanceof oxCompanyVatInValidator);
+        $this->assertTrue($oVatInValidator instanceof \OxidEsales\EshopCommunity\Core\CompanyVatInValidator);
 
         $aCheckers = $oVatInValidator->getCheckers();
         $this->assertSame(1, count($aCheckers));
-        $this->assertFalse($aCheckers[0] instanceof oxOnlineVatIdCheck);
+        $this->assertFalse($aCheckers[0] instanceof \OxidEsales\EshopCommunity\Core\OnlineVatIdCheck);
     }
 
 }

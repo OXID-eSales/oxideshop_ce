@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxDb;
+use \oxDb;
 
 /**
  * Calculates Shop id from request data or shop url.

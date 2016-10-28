@@ -38,7 +38,7 @@ class DynImgGeneratorTest extends \OxidTestCase
      */
     public function testGetInstance()
     {
-        $this->assertTrue(oxDynImgGenerator::getInstance() instanceof oxDynImgGenerator);
+        $this->assertTrue(oxDynImgGenerator::getInstance() instanceof \OxidEsales\EshopCommunity\Core\DynamicImageGenerator);
     }
 
     /**

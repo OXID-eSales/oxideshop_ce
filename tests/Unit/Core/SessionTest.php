@@ -306,7 +306,7 @@ class SessionTest extends \OxidTestCase
 
         $oExcp = unserialize(current($aErrors['default']));
         $this->assertNotNull($oExcp);
-        $this->assertTrue($oExcp instanceof oxExceptionToDisplay);
+        $this->assertTrue($oExcp instanceof \OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay);
         $this->assertEquals("Different browser (oldone, none), creating new SID...<br>", $oExcp->getOxMessage());
     }
 
@@ -1208,7 +1208,7 @@ class SessionTest extends \OxidTestCase
         $oSession->expects($this->once())->method('_getBasketName')->will($this->returnValue(serialize($oClass)));
 
         $oSessionBasket = $oSession->getBasket();
-        $this->assertTrue($oSessionBasket instanceof oxbasket, "oSessionBasket is instance of oxbasket (found " . get_class($oSessionBasket) . ")");
+        $this->assertTrue($oSessionBasket instanceof \OxidEsales\EshopCommunity\Application\Model\Basket, "oSessionBasket is instance of oxbasket (found " . get_class($oSessionBasket) . ")");
     }
 
     /**
@@ -1221,7 +1221,7 @@ class SessionTest extends \OxidTestCase
         $oSession->expects($this->once())->method('_getBasketName')->will($this->returnValue(serialize($oFakeBasket)));
 
         $oSessionBasket = $oSession->getBasket();
-        $this->assertTrue($oSessionBasket instanceof oxBasket, "oSessionBasket is instance of oxBasket");
+        $this->assertTrue($oSessionBasket instanceof \OxidEsales\EshopCommunity\Application\Model\Basket, "oSessionBasket is instance of oxBasket");
         $this->assertFalse($oSessionBasket instanceof oxBasketHelper, "oSessionBasket is not instance of oxBasketHelper");
     }
 
@@ -1517,7 +1517,7 @@ class SessionTest extends \OxidTestCase
 
     public function testGetBasketReservations()
     {
-        $this->assertTrue(oxRegistry::getSession()->getBasketReservations() instanceof oxBasketReservation);
+        $this->assertTrue(oxRegistry::getSession()->getBasketReservations() instanceof \OxidEsales\EshopCommunity\Application\Model\BasketReservation);
         // test cache
         $this->assertSame(oxRegistry::getSession()->getBasketReservations(), oxRegistry::getSession()->getBasketReservations());
     }

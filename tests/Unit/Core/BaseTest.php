@@ -1647,7 +1647,7 @@ class BaseTest extends \OxidTestCase
         } catch (Exception $e) {
         }
 
-        $this->assertTrue($e instanceof oxObjectException);
+        $this->assertTrue($e instanceof \OxidEsales\EshopCommunity\Core\Exception\ObjectException);
     }
 
     /**

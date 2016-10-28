@@ -22,7 +22,7 @@
 namespace Unit\Application\Controller\Admin;
 
 use \OxidEsales\EshopCommunity\Application\Model\User;
-use \OxidEsales\EshopCommunity\Core\StandardList;
+use \OxidEsales\EshopCommunity\Core\Model\ListModel;
 
 use \oxField;
 use \Exception;
@@ -50,7 +50,7 @@ class UserRemarkTest extends \OxidTestCase
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof user);
-        $this->assertTrue($aViewData['allremark'] instanceof StandardList);
+        $this->assertTrue($aViewData['allremark'] instanceof ListModel);
         $this->assertEquals('text-testId', $aViewData['remarktext']);
         $this->assertEquals('header-testId', $aViewData['remarkheader']);
     }

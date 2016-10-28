@@ -26,11 +26,11 @@ use oxRegistry;
 use oxField;
 
 /**
- * Pricealarm manager.
- * Performs Pricealarm data/objects loading, deleting.
+ * PriceAlarm manager.
+ * Performs PriceAlarm data/objects loading, deleting.
  *
  */
-class Pricealarm extends \oxBase
+class PriceAlarm extends \oxBase
 {
 
     /**
@@ -83,7 +83,7 @@ class Pricealarm extends \oxBase
     protected $_fProposedPrice = null;
 
     /**
-     * Pricealarm status
+     * PriceAlarm status
      *
      * @var int
      */

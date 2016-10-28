@@ -1008,7 +1008,7 @@ class ArticleDetails extends \oxWidget
 
         $oCategory = $this->getActiveCategory();
 
-        if ($this->getListType() != 'search' && $oCategory && $oCategory instanceof oxCategory) {
+        if ($this->getListType() != 'search' && $oCategory && $oCategory instanceof \OxidEsales\EshopCommunity\Application\Model\Category) {
             if ($sSortBy = $oCategory->getDefaultSorting()) {
                 $sSortDir = ($oCategory->getDefaultSortingMode()) ? "desc" : "asc";
                 $aSorting = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);

@@ -31,7 +31,7 @@ class ShopTest extends \OxidTestCase
     public function testStructure()
     {
         $oShop = oxNew('oxShop');
-        $this->assertTrue($oShop instanceof I18n);
+        $this->assertTrue($oShop instanceof \OxidEsales\EshopCommunity\Core\Model\MultiLanguageModel);
         $this->assertEquals('oxshops', $oShop->getCoreTableName());
     }
 

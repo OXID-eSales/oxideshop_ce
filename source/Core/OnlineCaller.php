@@ -130,7 +130,7 @@ abstract class OnlineCaller
      */
     protected function _castExceptionAndWriteToLog(Exception $oEx)
     {
-        if (!($oEx instanceof oxException)) {
+        if (!($oEx instanceof \OxidEsales\EshopCommunity\Core\Exception\StandardException)) {
             $oOxException = oxNew("oxException");
             $oOxException->setMessage($oEx->getMessage());
             $oOxException->debugOut();

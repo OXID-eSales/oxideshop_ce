@@ -383,7 +383,7 @@ class ConfigTest extends \OxidTestCase
     {
         $oConfig = oxNew('oxConfig');
 
-        $this->assertTrue($oConfig->getActiveView() instanceof oxubase);
+        $this->assertTrue($oConfig->getActiveView() instanceof \OxidEsales\EshopCommunity\Application\Controller\FrontendController);
     }
 
     public function testSetGetActiveView()

@@ -103,7 +103,7 @@ class FunctionsTest extends \OxidTestCase
     public function testOxNew()
     {
         $oNew = oxNew('oxArticle');
-        $this->assertTrue($oNew instanceof oxArticle);
+        $this->assertTrue($oNew instanceof \OxidEsales\EshopCommunity\Application\Model\Article);
 
         $this->setExpectedException('oxSystemComponentException');
         oxNew('oxxxx');

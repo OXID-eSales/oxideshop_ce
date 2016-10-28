@@ -133,7 +133,7 @@ class SeoEncoderArticle extends \oxSeoEncoder
     {
         $oList = null;
         $oView = $this->getConfig()->getActiveView();
-        if ($oView instanceof oxView) {
+        if ($oView instanceof \OxidEsales\EshopCommunity\Application\Controller\FrontendController) {
             $oList = $oView->getActiveRecommList();
         }
 
@@ -209,7 +209,7 @@ class SeoEncoderArticle extends \oxSeoEncoder
 
         $oActCat = $this->_getCategory($oArticle, $iLang);
 
-        if ($oActCat instanceof oxCategory) {
+        if ($oActCat instanceof \OxidEsales\EshopCommunity\Application\Model\Category) {
             $sActCatId = $oActCat->getId();
         } elseif ($oActCat = $this->_getMainCategory($oArticle)) {
             $sActCatId = $oActCat->getId();
@@ -247,9 +247,9 @@ class SeoEncoderArticle extends \oxSeoEncoder
     {
         $oCat = null;
         $oView = $this->getConfig()->getActiveView();
-        if ($oView instanceof oxUBase) {
+        if ($oView instanceof \OxidEsales\EshopCommunity\Application\Controller\FrontendController) {
             $oCat = $oView->getActiveCategory();
-        } elseif ($oView instanceof oxView) {
+        } elseif ($oView instanceof \OxidEsales\EshopCommunity\Application\Controller\FrontendController) {
             $oCat = $oView->getActCategory();
         }
 
@@ -439,7 +439,7 @@ class SeoEncoderArticle extends \oxSeoEncoder
 
         $oVendor = null;
         if ($sActVendorId = $oArticle->oxarticles__oxvendorid->value) {
-            if ($oView instanceof oxView && ($oActVendor = $oView->getActVendor())) {
+            if ($oView instanceof \OxidEsales\EshopCommunity\Application\Controller\FrontendController && ($oActVendor = $oView->getActVendor())) {
                 $oVendor = $oActVendor;
             } else {
                 $oVendor = oxNew("oxVendor");
@@ -517,7 +517,7 @@ class SeoEncoderArticle extends \oxSeoEncoder
         if ($sActManufacturerId = $oArticle->oxarticles__oxmanufacturerid->value) {
             $oView = $this->getConfig()->getActiveView();
 
-            if ($oView instanceof oxView && ($oActManufacturer = $oView->getActManufacturer())) {
+            if ($oView instanceof \OxidEsales\EshopCommunity\Application\Controller\FrontendController && ($oActManufacturer = $oView->getActManufacturer())) {
                 $oManufacturer = $oActManufacturer;
             } else {
                 $oManufacturer = oxNew("oxManufacturer");

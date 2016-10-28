@@ -219,8 +219,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * Testing if recomm list is taken from view
-     *
-     * @return
      */
     public function testGetRecomm()
     {

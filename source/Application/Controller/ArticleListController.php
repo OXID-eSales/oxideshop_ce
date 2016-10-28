@@ -542,7 +542,7 @@ class ArticleListController extends \oxUBase
         //formatting description tag
         $category = $this->getActiveCategory();
 
-        $additionalText = (($category instanceof oxCategory)) ? trim($category->getLongDesc()) : '';
+        $additionalText = (($category instanceof \OxidEsales\EshopCommunity\Application\Model\Category)) ? trim($category->getLongDesc()) : '';
 
         $articleList = $this->getArticleList();
         if (!$additionalText && count($articleList)) {
@@ -728,7 +728,7 @@ class ArticleListController extends \oxUBase
         $sorting = parent::getDefaultSorting();
 
         $category = $this->getActiveCategory();
-        if ($category && $category instanceof oxCategory) {
+        if ($category && $category instanceof \OxidEsales\EshopCommunity\Application\Model\Category) {
             if ($defaultSorting = $category->getDefaultSorting()) {
                 $articleViewName = getViewName('oxarticles');
                 $sortBy = $articleViewName . '.' . $defaultSorting;

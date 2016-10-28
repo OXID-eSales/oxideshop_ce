@@ -283,12 +283,16 @@ class ArticleDetailsTest extends \OxidTestCase
         $this->setConfigParam('blVariantParentBuyable', true);
 
         // Get proxy creates class which is used in mock.
-        $this->getProxyClass('oxarticle');
-        // Get proxy use oxUtilsObject to creates class name so get namespace class.
-        $articleProxyName = 'oxarticleProxy';
+        $edition = 'Community';
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $articleProxyName = '_OxidEsales_EshopEnterprise_Application_Model_ArticleProxy';
+            $edition = 'Enterprise';
         }
+        if ($this->getTestConfig()->getShopEdition() == 'PE') {
+            $edition = 'Professional';
+        }
+
+        $proxy = $this->getProxyClass('\OxidEsales\Eshop' . $edition . '\Application\Model\Article');
+        $articleProxyName = get_class($proxy);
 
         $oProductParent = $this->getMock($articleProxyName, array('getSelectLists', 'getId'));
         $oProductParent->expects($this->once())->method('getSelectLists');

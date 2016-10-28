@@ -171,12 +171,12 @@ class UtilsView extends \oxSuperCfg
         }
 
         $aEx = oxRegistry::getSession()->getVariable('Errors');
-        if ($oEr instanceof oxException) {
+        if ($oEr instanceof \OxidEsales\EshopCommunity\Core\Exception\StandardException) {
             $oEx = oxNew('oxExceptionToDisplay');
             $oEx->setMessage($oEr->getMessage());
             $oEx->setExceptionType($oEr->getType());
 
-            if ($oEr instanceof oxSystemComponentException) {
+            if ($oEr instanceof \OxidEsales\EshopCommunity\Core\Exception\SystemComponentException) {
                 $oEx->setMessageArgs($oEr->getComponent());
             }
 
@@ -184,12 +184,12 @@ class UtilsView extends \oxSuperCfg
             $oEx->setStackTrace($oEr->getTraceAsString());
             $oEx->setDebug($blFull);
             $oEr = $oEx;
-        } elseif ($oEr && !($oEr instanceof oxIDisplayError)) {
+        } elseif ($oEr && !($oEr instanceof \OxidEsales\EshopCommunity\Core\Contract\IDisplayError)) {
             // assuming that a string was given
             $sTmp = $oEr;
             $oEr = oxNew('oxDisplayError');
             $oEr->setMessage($sTmp);
-        } elseif ($oEr instanceof oxIDisplayError) {
+        } elseif ($oEr instanceof \OxidEsales\EshopCommunity\Core\Contract\IDisplayError) {
             // take the object
         } else {
             $oEr = null;

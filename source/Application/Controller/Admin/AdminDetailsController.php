@@ -87,7 +87,7 @@ class AdminDetailsController extends \oxAdminView
     {
         $sEditObjectValue = '';
         if ($oObject && $sField && isset($oObject->$sField)) {
-            if ($oObject->$sField instanceof oxField) {
+            if ($oObject->$sField instanceof \OxidEsales\EshopCommunity\Core\Field) {
                 $sEditObjectValue = $oObject->$sField->getRawValue();
             } else {
                 $sEditObjectValue = $oObject->$sField->value;

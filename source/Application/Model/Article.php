@@ -3715,7 +3715,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
 
                     if (isset($this->$sField)) {
                         $sLongDesc = null;
-                        if ($this->$sField instanceof oxField) {
+                        if ($this->$sField instanceof \OxidEsales\EshopCommunity\Core\Field) {
                             $sLongDesc = $this->$sField->getRawValue();
                         } elseif (is_object($this->$sField)) {
                             $sLongDesc = $this->$sField->value;

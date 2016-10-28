@@ -715,7 +715,7 @@ class Category extends \oxI18n implements \oxIUrl
     {
         if ($blHasVisibleSubcats && !$this->_blHasVisibleSubCats) {
             unset($this->_blIsVisible);
-            if ($this->_oParent instanceof oxCategory) {
+            if ($this->_oParent instanceof \OxidEsales\EshopCommunity\Application\Model\Category) {
                 $this->_oParent->setHasVisibleSubCats(true);
             }
         }
@@ -1110,7 +1110,7 @@ class Category extends \oxI18n implements \oxIUrl
      */
     public function getLongDesc()
     {
-        if (isset($this->oxcategories__oxlongdesc) && $this->oxcategories__oxlongdesc instanceof oxField) {
+        if (isset($this->oxcategories__oxlongdesc) && $this->oxcategories__oxlongdesc instanceof \OxidEsales\EshopCommunity\Core\Field) {
             /** @var oxUtilsView $oUtilsView */
             $oUtilsView = oxRegistry::get("oxUtilsView");
             return $oUtilsView->parseThroughSmarty($this->oxcategories__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage(), null, true);

@@ -1711,7 +1711,7 @@ class ArticleTest extends \OxidTestCase
         oxDb::getDB()->execute("insert into oxreviews (oxid, oxcreate, oxtype, oxobjectid, oxtext) values ('_test1', '2008/04/04', 'oxarticle', '$sArtID', '$sExpectedText' )");
 
         $aReviews = $oArticle->getReviews();
-        $this->assertTrue($aReviews instanceof \OxidEsales\EshopCommunity\Core\StandardList);
+        $this->assertTrue($aReviews instanceof \OxidEsales\EshopCommunity\Core\Model\ListModel);
         $oReview = $aReviews->getArray();
         $this->assertEquals(1, $aReviews->count());
         $this->assertEquals("Review <br />\n Text", $oReview['_test1']->oxreviews__oxtext->value);
@@ -1741,7 +1741,7 @@ class ArticleTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blShowVariantReviews', true);
         $aReviews = $oArticle->getReviews();
-        $this->assertTrue($aReviews instanceof \OxidEsales\EshopCommunity\Core\StandardList);
+        $this->assertTrue($aReviews instanceof \OxidEsales\EshopCommunity\Core\Model\ListModel);
         $oReview = $aReviews->getArray();
         $this->assertEquals(2, $aReviews->count());
         $this->assertEquals($sExpectedText, $oReview['_test1']->oxreviews__oxtext->value);
@@ -1767,7 +1767,7 @@ class ArticleTest extends \OxidTestCase
         $this->assertNull($oArticle->getReviews());
         oxDb::getDB()->execute("update oxreviews set oxactive =1 where oxobjectid='_testArt'");
         $aReviews = $oOriginalArticle->getReviews();
-        $this->assertTrue($aReviews instanceof \OxidEsales\EshopCommunity\Core\StandardList);
+        $this->assertTrue($aReviews instanceof \OxidEsales\EshopCommunity\Core\Model\ListModel);
         $this->assertEquals(1, $aReviews->count());
     }
 
@@ -1871,7 +1871,7 @@ class ArticleTest extends \OxidTestCase
         } else {
             $iCount = 2;
         }
-        $this->assertTrue($oList instanceof \OxidEsales\EshopCommunity\Core\StandardList);
+        $this->assertTrue($oList instanceof \OxidEsales\EshopCommunity\Core\Model\ListModel);
         $this->assertEquals($iCount, $oList->count());
     }
 
@@ -2388,11 +2388,11 @@ class ArticleTest extends \OxidTestCase
         $oParent->load($oVariant->oxarticles__oxparentid->value);
 
         $oVL = $oParent->getVariants(true);
-        $this->assertTrue($oVL instanceof \OxidEsales\EshopCommunity\Core\StandardList);
+        $this->assertTrue($oVL instanceof \OxidEsales\EshopCommunity\Core\Model\ListModel);
         $this->assertEquals(1, $oVL->count());
 
         $oVL = $oParent->getVariants(false);
-        $this->assertTrue($oVL instanceof \OxidEsales\EshopCommunity\Core\StandardList);
+        $this->assertTrue($oVL instanceof \OxidEsales\EshopCommunity\Core\Model\ListModel);
         $this->assertEquals(1, $oVL->count());
 
         // article stockflag is marked as offline
@@ -2461,11 +2461,11 @@ class ArticleTest extends \OxidTestCase
         $oParent = oxNew('oxArticle');
         $oParent->load($oVariant->oxarticles__oxparentid->value);
         $oVL = $oParent->getVariants(true);
-        $this->assertTrue($oVL instanceof \OxidEsales\EshopCommunity\Core\StandardList);
+        $this->assertTrue($oVL instanceof \OxidEsales\EshopCommunity\Core\Model\ListModel);
         $this->assertEquals(1, $oVL->count());
 
         $oVL = $oParent->getVariants(false);
-        $this->assertTrue($oVL instanceof \OxidEsales\EshopCommunity\Core\StandardList);
+        $this->assertTrue($oVL instanceof \OxidEsales\EshopCommunity\Core\Model\ListModel);
         $this->assertEquals(1, $oVL->count());
 
         $this->getConfig()->setConfigParam('blVariantParentBuyable', false);

@@ -271,7 +271,7 @@ class UtilsObject
         }
 
         $object = $this->_getObject($realClassName, $argumentsCount, $arguments);
-        if ($shouldUseCache && $object instanceof oxBase) {
+        if ($shouldUseCache && $object instanceof \OxidEsales\EshopCommunity\Core\Model\BaseModel) {
             self::$_aInstanceCache[$cacheKey] = clone $object;
         }
 

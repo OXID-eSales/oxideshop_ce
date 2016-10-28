@@ -1271,7 +1271,7 @@ class ArticleDetailsController extends \oxUBase
         $sorting = parent::getDefaultSorting();
         $activeCategory = $this->getActiveCategory();
 
-        if ($this->getListType() != 'search' && $activeCategory && $activeCategory instanceof oxCategory) {
+        if ($this->getListType() != 'search' && $activeCategory && $activeCategory instanceof \OxidEsales\EshopCommunity\Application\Model\Category) {
             if ($categorySorting = $activeCategory->getDefaultSorting()) {
                 $sortingDirection = ($activeCategory->getDefaultSortingMode()) ? "desc" : "asc";
                 $sorting = array('sortby' => $categorySorting, 'sortdir' => $sortingDirection);

@@ -107,7 +107,7 @@ class DatabaseProvider
      *
      * @return DatabaseInterface
      */
-    public static function getDb($fetchMode = oxDb::FETCH_MODE_NUM)
+    public static function getDb($fetchMode = DatabaseProvider::FETCH_MODE_NUM)
     {
         if (null === static::$db) {
             $databaseFactory = static::getInstance();
@@ -134,7 +134,7 @@ class DatabaseProvider
      *
      * @return DatabaseInterface
      */
-    public static function getMaster($fetchMode = oxDb::FETCH_MODE_NUM)
+    public static function getMaster($fetchMode = DatabaseProvider::FETCH_MODE_NUM)
     {
         static::getDb($fetchMode)->forceMasterConnection();
 

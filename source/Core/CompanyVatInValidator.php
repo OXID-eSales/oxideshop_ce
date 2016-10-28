@@ -136,7 +136,7 @@ class CompanyVatInValidator
 
         foreach ($validators as $validator) {
             $result = true;
-            if ($validator instanceof oxICountryAware) {
+            if ($validator instanceof \OxidEsales\EshopCommunity\Core\Contract\ICountryAware) {
                 $validator->setCountry($this->getCountry());
             }
 

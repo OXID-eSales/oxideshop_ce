@@ -1312,7 +1312,7 @@ class BaseModel extends \oxSuperCfg
     protected function _getUpdateFieldValue($fieldName, $field)
     {
         $fieldValue = null;
-        if ($field instanceof oxField) {
+        if ($field instanceof \OxidEsales\EshopCommunity\Core\Field) {
             $fieldValue = $field->getRawValue();
         } elseif (isset($field->value)) {
             $fieldValue = $field->value;

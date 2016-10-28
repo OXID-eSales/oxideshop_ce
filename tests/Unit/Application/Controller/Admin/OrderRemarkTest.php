@@ -21,8 +21,6 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Core\StandardList;
-
 use \oxField;
 use \Exception;
 use \oxDb;
@@ -60,7 +58,7 @@ class OrderRemarkTest extends \OxidTestCase
         $this->assertEquals("order_remark.tpl", $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['allremark']));
-        $this->assertTrue($aViewData['allremark'] instanceof StandardList);
+        $this->assertTrue($aViewData['allremark'] instanceof \OxidEsales\EshopCommunity\Core\Model\ListModel);
     }
 
     /**

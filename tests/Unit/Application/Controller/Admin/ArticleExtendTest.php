@@ -25,7 +25,7 @@ use \Exception;
 use \OxidEsales\EshopCommunity\Application\Model\Article;
 use \OxidEsales\EshopCommunity\Application\Model\CategoryList;
 use \oxDb;
-use \OxidEsales\EshopCommunity\Core\StandardList;
+use OxidEsales\EshopCommunity\Core\Model\ListModel;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -64,7 +64,7 @@ class ArticleExtendTest extends \OxidTestCase
         $aViewData = $oView->getViewData();
         $this->assertTrue($aViewData["edit"] instanceof Article);
         $this->assertTrue($aViewData["artcattree"] instanceof CategoryList);
-        $this->assertTrue($aViewData["aMediaUrls"] instanceof StandardList);
+        $this->assertTrue($aViewData["aMediaUrls"] instanceof ListModel);
 
         $this->assertEquals('article_extend.tpl', $sTplName);
     }

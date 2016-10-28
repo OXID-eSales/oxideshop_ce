@@ -147,8 +147,6 @@ class ClassMapProvider
         $editionSelector = $this->getEditionSelector();
         $classMapCommunity = $this->getClassMapCommunity();
         $overridableMap = $classMapCommunity->getOverridableMap();
-        /** @TODO REMOVE NEXT LINE BEFORE MERGE */
-        ksort($overridableMap);
         $notOverridableMap = $classMapCommunity->getNotOverridableMap();
 
         if ($editionSelector->getEdition() === EditionSelector::ENTERPRISE
@@ -164,8 +162,6 @@ class ClassMapProvider
             $overridableMap = array_merge($overridableMap, $classMapEnterprise->getOverridableMap());
             $notOverridableMap = array_merge($notOverridableMap, $classMapEnterprise->getNotOverridableMap());
         }
-        /** @TODO REMOVE NEXT LINE BEFORE MERGE */
-        ksort($overridableMap);
 
         $this->overridableClassMap = $overridableMap;
         $this->notOverridableClassMap = $notOverridableMap;

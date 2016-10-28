@@ -72,7 +72,7 @@
                 <ul class="sortable" id="aModulesList">
                 [{foreach from=$aExtClasses item=aModuleNames key=sClassName}]
                     <li id="[{$sClassName}]">
-                        <span>[{$sClassName}]</span>
+                        <span>[{$sClassName|replace:'---':'&#92;'}]</span>
                         <ul class="sortable2" id="[{$sClassName}]_modules">
                             [{foreach from=$aModuleNames item=sModule}]
                                 [{if is_array($aDisabledModules) && in_array($sModule, $aDisabledModules)}]

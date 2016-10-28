@@ -32,6 +32,12 @@ class ModuleSortList extends \oxAdminDetails
 {
 
     /**
+     * It is unsave to use a backslash as HTML id in conjunction with UI.sortable, so it will be replaced in the
+     * view and restored in the controller
+     */
+    const BACKSLASH_REPLACEMENT = '---';
+
+    /**
      * Executes parent method parent::render(), loads active and disabled extensions,
      * checks if there are some deleted and registered modules and returns name of template file "module_sortlist.tpl".
      *
@@ -43,7 +49,13 @@ class ModuleSortList extends \oxAdminDetails
 
         $oModuleList = oxNew("oxModuleList");
 
-        $this->_aViewData["aExtClasses"] = $this->getConfig()->getModulesWithExtendedClass();
+        $extendClass = $this->getConfig()->getModulesWithExtendedClass();
+        $sanitizedExtendClass = [];
+        foreach ($extendClass as $key => $value) {
+            $sanitizedKey = str_replace("\\", self::BACKSLASH_REPLACEMENT, $key);
+            $sanitizedExtendClass[$sanitizedKey] = $value;
+        }
+        $this->_aViewData["aExtClasses"] = $sanitizedExtendClass;
         $this->_aViewData["aDisabledModules"] = $oModuleList->getDisabledModuleClasses();
 
         // checking if there are any deleted extensions
@@ -65,10 +77,15 @@ class ModuleSortList extends \oxAdminDetails
     {
         $aModule = oxRegistry::getConfig()->getRequestParameter("aModules");
 
-        $aModules = json_decode($aModule, true);
-
-        $oModuleInstaller = oxNew('oxModuleInstaller');
-        $aModules = $oModuleInstaller->buildModuleChains($aModules);
+        $aModules = [];
+        if($tmp = json_decode($aModule, true)){
+            foreach ($tmp as $key => $value) {
+                $sanitizedKey = str_replace(self::BACKSLASH_REPLACEMENT, "\\", $key);
+                $aModules[$sanitizedKey] = $value;
+            }
+            $oModuleInstaller = oxNew('oxModuleInstaller');
+            $aModules = $oModuleInstaller->buildModuleChains($aModules);
+        }
 
         $this->getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
     }

@@ -1548,7 +1548,7 @@ $aLang = array(
 'mxtools'                                                  => 'Tools',
 'mxtheme'                                                  => 'Themes',
 'mxmodule'                                                 => 'Modules',
-'mxextensions'                                             => '<span class="new">Extensions</span>',
+'mxextensions'                                             => '<span class=\"new\">Extensions</span>',
 'mxuadmin'                                                 => 'Administer Users',
 'mxurls'                                                   => 'Links',
 'mxugroups'                                                => 'User Groups',

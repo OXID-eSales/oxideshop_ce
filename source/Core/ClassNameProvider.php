@@ -52,8 +52,6 @@ class ClassNameProvider
     public function getClassName($classAlias)
     {
         $classMap = $this->getExtendedClassMap();
-        /** @TODO REMOVE NEXT LINE BEFORE MERGE */
-        ksort($classMap);
 
         $className = $classAlias;
         if (array_key_exists($classAlias, $classMap)) {

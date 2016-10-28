@@ -105,9 +105,6 @@ class UtilsobjectTest extends \OxidTestCase
         if ($this->getConfig()->getEdition() === 'PE') {
             $orderClassName = 'OxidEsales\EshopProfessional\Application\Model\Order';
         }
-        if ($this->getConfig()->getEdition() === 'PE') {
-            $orderClassName = '\OxidEsales\EshopProfessional\Application\Model\Order';
-        }
 
         return $orderClassName;
     }
@@ -266,9 +263,6 @@ class UtilsobjectTest extends \OxidTestCase
         }
         if ($this->getConfig()->getEdition() === 'PE') {
             $sClassNameExpect = 'OxidEsales\EshopProfessional\Application\Model\Order';
-        }
-        if ($this->getConfig()->getEdition() === 'PE') {
-            $sClassNameExpect = '\OxidEsales\EshopProfessional\Application\Model\Order';
         }
 
         $sClassNameWhichExtends = 'oemodulenameoxorder_different2';

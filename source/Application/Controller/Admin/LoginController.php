@@ -121,7 +121,7 @@ class LoginController extends \oxAdminView
 
         try { // trying to login
             /** @var oxUser $oUser */
-            $oUser = oxNew(User::class);
+            $oUser = oxNew("oxuser");
             $oUser->login($sUser, $sPass);
             $iSubshop = (int) $oUser->oxuser__oxrights->value;
             if ($iSubshop) {

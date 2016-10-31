@@ -638,14 +638,17 @@ class Controller extends Core
     {
         $editionSqlDir = $this->getSqlDirectory();
         $baseSqlDir = $this->getSqlDirectory(EditionSelector::COMMUNITY);
-
         $vendorDir = $this->getVendorDir();
-        if ($demodata && file_exists("$baseSqlDir/demodata.sql")) {
+        $demodataSqlFile = $this->getDemodataSqlFile();
+
+        // If demodata files are provided.
+        if ($demodata && file_exists($demodataSqlFile)) {
             exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_migrate");
 
-            // install demo data
-            $database->queryFile("$baseSqlDir/demodata.sql");
-
+            // Install demo data.
+            $database->queryFile($demodataSqlFile);
+            // Copy demodata files.
+            exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-demodata_install");
         } else {
             $database->queryFile("$baseSqlDir/initial_data.sql");
 
@@ -655,6 +658,18 @@ class Controller extends Core
                 $database->queryFile("$editionSqlDir/demodata.sql");
             }
         }
+    }
+
+    /**
+     * Method forms path to demodata.sql file according edition.
+     *
+     * @return string
+     */
+    private function getDemodataSqlFile()
+    {
+        $editionSelector = new EditionSelector();
+        return $this->getVendorDir().'/'.EditionRootPathProvider::EDITIONS_DIRECTORY.'/'
+            .'oxideshop-demodata-'.strtolower($editionSelector->getEdition()).'/src/demodata.sql';
     }
 
     /**

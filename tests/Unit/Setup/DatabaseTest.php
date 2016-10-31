@@ -386,14 +386,13 @@ class DatabaseTest extends \OxidTestCase
     protected function createConnection()
     {
         $config = $this->getConfig();
-        $dsn = sprintf('mysql:host=%s', $config->getConfigParam('dbHost'));
+        $dsn = sprintf('mysql:dbname=%s;host=%s', $config->getConfigParam('dbName'), $config->getConfigParam('dbHost'));
         $pdo = new PDO(
             $dsn,
             $config->getConfigParam('dbUser'),
             $config->getConfigParam('dbPwd'),
             array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
         );
-        $pdo->exec("USE " . $config->getConfigParam('dbName'));
 
         return $pdo;
     }

@@ -31,8 +31,7 @@ $this->getText('STEP_6_DESC');
 $aPath = $this->getViewParam( "aPath" );
 $aSetupConfig = $this->getViewParam( "aSetupConfig" );
 $blWritableConfig  = $this->getViewParam( "blWritableConfig" );
-//$blRemoved = ( isset( $aSetupConfig['blDelSetupDir'] ) && $aSetupConfig['blDelSetupDir'] ) ? $this->isDeletedSetup() : true;
-$blRemoved = $this->isDeletedSetup();
+$blRemoved = ( isset( $aSetupConfig['blDelSetupDir'] ) && $aSetupConfig['blDelSetupDir'] ) ? $this->isDeletedSetup() : true;
 ?>
 <br><br>
 <table cellspacing="5" cellpadding="5">

@@ -205,3 +205,6 @@
      * aSlaveHosts - array of slave hosts: array('localhost', '10.2.3.12')
      */
     $this->aSlaveHosts = null;
+
+    // Control the removal of Setup directory
+    $this->blDelSetupDir = true;

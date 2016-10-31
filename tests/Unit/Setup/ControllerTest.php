@@ -220,18 +220,22 @@ class ControllerTest extends \OxidTestCase
         $oView->expects($this->at(2))->method("setViewParam")->with($this->equalTo('aAdminData'));
         $oView->expects($this->at(3))->method("setViewParam")->with($this->equalTo('aPath'));
 
-        $oSession = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
+        $oSession = $this->getMock('SetupSession', array("getSessionParam", "leaveSetupDirectory"), array(), '', null);
         $oSession->expects($this->at(0))->method("getSessionParam")->with($this->equalTo("aSetupConfig"));
         $oSession->expects($this->at(1))->method("getSessionParam")->with($this->equalTo("aAdminData"));
 
         $oUtils = $this->getMock("Utilities", array("getDefaultPathParams"));
         $oUtils->expects($this->once())->method("getDefaultPathParams");
 
+        $oSetup = $this->getMock("Setup", array("leaveSetupDirectory", "deleteSetupDirectory"));
+        $oSession->expects($this->any())->method("leaveSetupDirectory");
+        $oSession->expects($this->any())->method("deleteSetupDirectory");
 
         $oController = $this->getMock(get_class($this->getController()), array("getView", "getInstance"));
         $oController->expects($this->at(0))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oSession));
         $oController->expects($this->at(1))->method("getView")->will($this->returnValue($oView));
         $oController->expects($this->at(2))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
+        $oController->expects($this->at(3))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oSetup));
         $this->assertEquals("dirsinfo.php", $oController->dirsInfo());
     }
 

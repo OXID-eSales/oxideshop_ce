@@ -218,6 +218,10 @@ class Controller extends Core
         $oView->setViewParam("aAdminData", $oSession->getSessionParam('aAdminData'));
         $oView->setViewParam("aPath", $this->getInstance("Utilities")->getDefaultPathParams());
 
+        /** @var Setup $oSetup */
+        $oSetup = $this->getInstance("Setup");
+        $oView->setViewParam("aSetupConfig", array("blDelSetupDir" => $oSetup->deleteSetupDirectory()));
+
         return "dirsinfo.php";
     }
 

@@ -162,6 +162,23 @@ class Setup extends Core
     }
 
     /**
+     * Decides if leave or delete Setup directory dependent from configuration.
+     *
+     * @return bool
+     */
+    public function deleteSetupDirectory()
+    {
+        $blDeleteSetupDirectory = true;
+
+        $sConfig = join("", file(getShopBasePath() . "config.inc.php"));
+        if (strpos($sConfig, "this->blDelSetupDir = false;") !== false) {
+            $blDeleteSetupDirectory = false;
+        }
+
+        return $blDeleteSetupDirectory;
+    }
+
+    /**
      * Returns default shop id
      *
      * @return mixed

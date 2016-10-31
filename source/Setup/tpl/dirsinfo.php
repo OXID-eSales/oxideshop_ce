@@ -27,18 +27,16 @@ $aPath = $this->getViewParam( "aPath" );
 $aSetupConfig = $this->getViewParam( "aSetupConfig" );
 $aAdminData   = $this->getViewParam( "aAdminData" );
 $sChecked = "";
-if ( isset( $aSetupConfig['blDelSetupDir'] ) ) {
-    if ( $aSetupConfig['blDelSetupDir']) {
-        $sChecked = "checked";
-    }
+if (!isset($aSetupConfig['blDelSetupDir']) || $aSetupConfig['blDelSetupDir']) {
+    $sChecked = "1";
 } else {
-    $sChecked = "checked";
+    $sChecked = "0";
 }
 ?><br>
 <br>
 <form action="index.php" method="post">
 <input type="hidden" name="istep" value="<?php $this->getSetupStep('STEP_DIRS_WRITE'); ?>">
-<input type="hidden" name="aSetupConfig[blDelSetupDir]" type="checkbox" value="1">
+<input type="hidden" name="aSetupConfig[blDelSetupDir]" type="checkbox" value="<?php echo($sChecked) ?>">
 
 <table cellpadding="0" cellspacing="5" border="0">
   <tr>

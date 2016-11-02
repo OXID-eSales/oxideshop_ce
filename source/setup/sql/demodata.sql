@@ -1,5 +1,4 @@
-# Uncomment this line if you execute SQL manually for MySQL 5
-# SET @@session.sql_mode = '';
+SET @@session.sql_mode = '';
 
 UPDATE `oxshops`
 SET

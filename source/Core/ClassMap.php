@@ -330,7 +330,7 @@ class ClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap
             'newsletter'                           => \OxidEsales\EshopCommunity\Application\Controller\NewsletterController::class,
             'pricealarm'                           => \OxidEsales\EshopCommunity\Application\Controller\PriceAlarmController::class,
             'account_noticelist'                   => \OxidEsales\EshopCommunity\Application\Controller\AccountNoticeListController::class,
-            'oxuser'                               => \OxidEsales\EshopCommunity\Application\Model\User::class,
+            'oxuser'                               => \OxidEsales\Eshop\Application\Model\User::class,
         ];
     }
 
@@ -340,6 +340,7 @@ class ClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap
     public function getNotOverridableMap()
     {
         return [
+            // 'oxuser'                               => \OxidEsales\EshopCommunity\Application\Model\User::class,
             'oxbase'                              => \OxidEsales\EshopCommunity\Core\Model\BaseModel::class,
             'oxsysrequirements'                   => \OxidEsales\EshopCommunity\Core\SystemRequirements::class,
             'oxadminview'                         => AdminController::class,
@@ -491,7 +492,6 @@ class ClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap
             'oxorderarticlelist'                  => \OxidEsales\EshopCommunity\Application\Model\OrderArticleList::class,
             'oxorderfile'                         => \OxidEsales\EshopCommunity\Application\Model\OrderFile::class,
             'oxorderfilelist'                     => \OxidEsales\EshopCommunity\Application\Model\OrderFileList::class,
-            'oxpayment'                           => \OxidEsales\EshopCommunity\Application\Model\Payment::class,
             'oxpaymentgateway'                    => \OxidEsales\EshopCommunity\Application\Model\PaymentGateway::class,
             'oxpaymentlist'                       => \OxidEsales\EshopCommunity\Application\Model\PaymentList::class,
             'oxpricealarm'                        => \OxidEsales\EshopCommunity\Application\Model\PriceAlarm::class,
@@ -535,7 +535,6 @@ class ClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap
             'oxwrapping'                          => \OxidEsales\EshopCommunity\Application\Model\Wrapping::class,
             'oxarticle'                           => \OxidEsales\EshopCommunity\Application\Model\Article::class,
             'clearcookies'                        => \OxidEsales\EshopCommunity\Application\Controller\ClearCookiesController::class,
-
         ];
     }
 }

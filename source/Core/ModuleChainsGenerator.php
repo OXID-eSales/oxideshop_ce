@@ -61,7 +61,7 @@ class ModuleChainsGenerator
         $lowerCaseClassName = strtolower($className);
 
         $variablesLocator = $this->getModuleVariablesLocator();
-        $modules = (array) $variablesLocator->getModuleVariable('aModules');
+        $modules = $this->getModulesArray($variablesLocator);
         $modules = array_change_key_case($modules);
         $allExtendedClasses = array_keys($modules);
         $currentExtendedClasses = array_intersect($allExtendedClasses, [$lowerCaseClassName, $lowerCaseClassAlias]);
@@ -269,5 +269,17 @@ class ModuleChainsGenerator
     public function getModuleVariablesLocator()
     {
         return $this->moduleVariablesLocator;
+    }
+
+    /**
+     * @param $variablesLocator
+     *
+     * @return array
+     */
+    protected function getModulesArray(ModuleVariablesLocator $variablesLocator)
+    {
+        $modules = (array) $variablesLocator->getModuleVariable('aModules');
+
+        return $modules;
     }
 }

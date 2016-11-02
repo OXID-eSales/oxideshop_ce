@@ -21,8 +21,8 @@
  */
 namespace Unit\Core;
 
-use \oxTestModules;
-
+use \OxidEsales\EshopCommunity\Core\ModuleVariablesLocator;
+use oxTestModules;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 class ModuleChainsGeneratorTest extends \OxidTestCase
@@ -32,7 +32,7 @@ class ModuleChainsGeneratorTest extends \OxidTestCase
     {
         $aModuleChain = array("oe/moduleName2/myorder");
 
-        /** @var oxModuleVariablesLocator|MockObject $oUtilsObject */
+        /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
         $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array('getModuleVariable'), array(), '', false);
         $valueMap = array(
             array('aDisabledModules', array('moduleName')),
@@ -50,7 +50,7 @@ class ModuleChainsGeneratorTest extends \OxidTestCase
         $aModuleChain = array("oe/moduleName/myorder");
         $aModuleChainResult = array();
 
-        /** @var oxModuleVariablesLocator|MockObject $oUtilsObject */
+        /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
         $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array('getModuleVariable'), array(), '', false);
         $valueMap = array(
             array('aDisabledModules', array('moduleName')),
@@ -68,7 +68,7 @@ class ModuleChainsGeneratorTest extends \OxidTestCase
         $aModuleChain = array("moduleName/myorder");
         $aModuleChainResult = array();
 
-        /** @var oxModuleVariablesLocator|MockObject $oUtilsObject */
+        /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
         $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array('getModuleVariable'), array(), '', false);
         $valueMap = array(
             array('aDisabledModules', array('moduleName')),
@@ -88,7 +88,7 @@ class ModuleChainsGeneratorTest extends \OxidTestCase
         $oModule = oxNew('oxModule');
         $oModule->load($sModuleId);
 
-        /** @var oxModuleVariablesLocator|MockObject $oUtilsObject */
+        /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
         $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array(), array(), '', false);
 
         $moduleChainsGenerator = oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);

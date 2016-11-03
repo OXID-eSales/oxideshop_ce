@@ -49,7 +49,6 @@ registerComposerAutoload();
 $oConfigFile = new ConfigFile(OX_BASE_PATH . "config.inc.php");
 Registry::set("oxConfigFile", $oConfigFile);
 
-registerModuleDependenciesAutoload();
 registerShopAutoLoad();
 registerModuleAutoload();
 

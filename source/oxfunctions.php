@@ -55,19 +55,6 @@ if (!function_exists('registerShopAutoLoad')) {
     }
 }
 
-if (!function_exists('registerModuleDependenciesAutoload')) {
-    /**
-     * Registers auto-loader for module dependencies.
-     */
-    function registerModuleDependenciesAutoload()
-    {
-        $autoloaderPath = __DIR__ . '/../modules/vendor/autoload.php';
-        if (file_exists($autoloaderPath)) {
-            include_once $autoloaderPath;
-        }
-    }
-}
-
 if (!function_exists('registerModuleAutoload')) {
     /**
      * Registers auto-loader for module files and extensions.

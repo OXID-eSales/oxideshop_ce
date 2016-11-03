@@ -109,8 +109,8 @@ class ShopAutoload
             $shopBasePath . 'Application/Model/',
             $shopBasePath . 'Application/Controller/',
             $shopBasePath . 'Application/Controller/Admin/',
-            $shopBasePath . 'Core/exception/',
-            $shopBasePath . 'Core/interface/'
+            $shopBasePath . 'Core/Exception/',
+            $shopBasePath . 'Core/Contract/'
         ];
     }
 }

@@ -11,7 +11,6 @@
     "require": {
         "phpmailer/phpmailer": "^5.2.14",
         "smarty/smarty": "^2.6.30",
-        "oxid-esales/oxideshop-composer-plugin": "dev-master",
         "oxid-esales/flow-theme": "dev-master",
         "oxid-esales/eshop-db-migration-wrapper": "dev-master",
         "oxid-esales/eshop-db-views-regenerator": "dev-master",
@@ -22,6 +21,7 @@
         "oxid-esales/testing-library": "dev-master",
         "oxid-esales/coding-standards": "dev-master",
         "oxid-esales/coding-standards-wrapper": "dev-master",
+        "oxid-esales/oxideshop-composer-plugin": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0"
     },
     "autoload": {

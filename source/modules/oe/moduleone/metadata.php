@@ -9,6 +9,7 @@
  */
 
 use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Application\Model\Article;
 
 /**
  * Metadata version
@@ -35,6 +36,7 @@ $aModule = array(
     'email'       => 'john@doe.com',
     'extend'      => array(
         User::class => 'oe/moduleone/application/model/oemoduleoneuser',
+        Article::class => 'oe/moduleone/application/model/oemoduleonearticle',
     ),
     'files'       => array(),
     'templates'   => array(),

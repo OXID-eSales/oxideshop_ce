@@ -35,6 +35,7 @@ $aModule = array(
     'email'       => 'john@doe.com',
     'extend'      => array(
         'oxuser' => 'oe/modulethree/application/model/oemodulethreeuser',
+        'oxarticle' => 'oe/modulethree/application/model/oemodulethreearticle',
     ),
     'files'       => array(),
     'templates'   => array(),

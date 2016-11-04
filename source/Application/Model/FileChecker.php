@@ -280,7 +280,7 @@ class FileChecker
         }
 
         try {
-            $oXML = new SimpleXMLElement($sXML);
+            $oXML = new \SimpleXMLElement($sXML);
         } catch (Exception $ex) {
             $this->_blError = true;
             $this->_sErrorMessage .= oxRegistry::getLang()->translateString('OXDIAG_ERRORMESSAGEWEBSERVICERETURNEDNOXML');

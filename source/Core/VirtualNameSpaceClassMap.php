@@ -522,7 +522,7 @@ class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\C
             'OxidEsales\Eshop\Core\Oxid' => 'OxidEsales\EshopCommunity\Core\Oxid',
             'OxidEsales\Eshop\Core\PasswordHasher' => 'OxidEsales\EshopCommunity\Core\PasswordHasher',
             'OxidEsales\Eshop\Core\PasswordSaltGenerator' => 'OxidEsales\EshopCommunity\Core\PasswordSaltGenerator',
-            'OxidEsales\Eshop\Core\PDF' => 'OxidEsales\EshopCommunity\Core\PDF',
+            'OxidEsales\Eshop\Core\Pdf' => 'OxidEsales\EshopCommunity\Core\Pdf',
             'OxidEsales\Eshop\Core\PictureHandler' => 'OxidEsales\EshopCommunity\Core\PictureHandler',
             'OxidEsales\Eshop\Core\Price' => 'OxidEsales\EshopCommunity\Core\Price',
             'OxidEsales\Eshop\Core\PriceList' => 'OxidEsales\EshopCommunity\Core\PriceList',

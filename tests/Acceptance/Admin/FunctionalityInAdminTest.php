@@ -1971,9 +1971,12 @@ class FunctionalityInAdminTest extends AdminTestCase
      * checking if econda is loaded in frontend
      *
      * @group adminFunctionality
+     *
+     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
      */
     public function testEconda()
     {
+        $this->markTestSkipped('deprecated sinve v5.3 (2016-11-04) Dynpages will be removed.');
         //activating econda
         $aConfigs = array("sShopCountry"      => array("type" => "str", "value" => 'de'),
                           "blLoadDynContents" => array("type" => "bool", "value" => 'true'));

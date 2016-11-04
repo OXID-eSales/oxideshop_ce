@@ -347,6 +347,13 @@ class UtilsObject
         $classNameProvider = $this->getClassNameProvider();
 
         $class = $classNameProvider->getClassName($classAlias);
+        /**
+         * Backwards compatibility for ox... classes,
+         * when a class is instance build upon the virtual namespace
+         */
+        if($class == $classAlias) {
+            $classAlias = $classNameProvider->getClassAliasName($class);
+        }
 
         return $this->getModuleChainsGenerator()->createClassChain($class, $classAlias);
     }

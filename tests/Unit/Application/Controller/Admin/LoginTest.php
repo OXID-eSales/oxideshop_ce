@@ -30,7 +30,6 @@ use \oxCookieException;
 use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
-use \OxidEsales\Eshop\Application\Model\User;
 
 /**
  * Testing login class.
@@ -67,7 +66,7 @@ class LoginTest extends \OxidTestCase
      *
      * @return null
      */
-    public function _testLogin()
+    public function testLogin()
     {
         $oUser = oxNew("oxUser");
         $oUser->setId("_testUserId");
@@ -98,7 +97,7 @@ class LoginTest extends \OxidTestCase
      *
      * @return null
      */
-    public function _testLoginNotAdmin()
+    public function testLoginNotAdmin()
     {
         $this->setExpectedException('oxException', 'LOGIN_ERROR');
 
@@ -127,7 +126,7 @@ class LoginTest extends \OxidTestCase
      *
      * @return null
      */
-    public function _testGetBrowserLanguage()
+    public function testGetBrowserLanguage()
     {
         $oLogin = $this->getProxyClass('login');
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = "en-US,en;q=0.8,fr-ca;q=0.5,fr;q=0.3;";
@@ -141,7 +140,7 @@ class LoginTest extends \OxidTestCase
      *
      * @return null
      */
-    public function _testGetAvailableLanguages_withoutCookies_DE()
+    public function testGetAvailableLanguages_withoutCookies_DE()
     {
         oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{ return null; }');
 
@@ -180,7 +179,7 @@ class LoginTest extends \OxidTestCase
      *
      * @return null
      */
-    public function _testGetAvailableLanguages_withoutCookies_EN()
+    public function testGetAvailableLanguages_withoutCookies_EN()
     {
         $oLang = new stdClass();
         $oLang->id = 0;
@@ -217,7 +216,7 @@ class LoginTest extends \OxidTestCase
      *
      * @return null
      */
-    public function _testGetAvailableLanguages_withCookies_DE()
+    public function testGetAvailableLanguages_withCookies_DE()
     {
         $oLang = new stdClass();
         $oLang->id = 0;
@@ -256,7 +255,7 @@ class LoginTest extends \OxidTestCase
      *
      * @return null
      */
-    public function _testGetViewId()
+    public function testGetViewId()
     {
         $oView = oxNew('Login');
         $this->assertEquals('login', $oView->getViewId());
@@ -267,7 +266,7 @@ class LoginTest extends \OxidTestCase
      *
      * @return null
      */
-    public function _testAuthorize()
+    public function testAuthorize()
     {
         $oView = oxNew('Login');
         $this->assertTrue($oView->UNITauthorize());
@@ -280,9 +279,7 @@ class LoginTest extends \OxidTestCase
      */
     public function testCheckloginSettingProfile()
     {
-        $this->markTestSKipped('Test does not work with virtual namespaces as we have User instead of oxUser now.');
-
-        oxTestModules::addFunction('oxUser', 'login', '{ throw new oxConnectionException(); }');
+        oxTestModules::addFunction('oxuser', 'login', '{ throw new oxConnectionException(); }');
         oxTestModules::addFunction('oxUtils', 'logger', '{ return true; }');
 
         $this->setRequestParameter('profile', "testProfile");
@@ -298,7 +295,7 @@ class LoginTest extends \OxidTestCase
      *
      * @return null
      */
-    public function _testCheckloginUserException()
+    public function testCheckloginUserException()
     {
         oxTestModules::addFunction('oxuser', 'login', '{ throw new oxUserException(); }');
 
@@ -319,7 +316,7 @@ class LoginTest extends \OxidTestCase
      *
      * @return null
      */
-    public function _testCheckloginCookieException()
+    public function testCheckloginCookieException()
     {
         oxTestModules::addFunction('oxuser', 'login', '{ throw new oxCookieException(); }');
 
@@ -340,7 +337,7 @@ class LoginTest extends \OxidTestCase
      *
      * @return null
      */
-    public function _testRender()
+    public function testRender()
     {
         $oLang = new stdClass();
         $oLang->blSelected = true;

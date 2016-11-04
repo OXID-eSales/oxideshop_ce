@@ -540,7 +540,8 @@ class NavigationTree extends \oxSuperCfg
 
         // loading dynpages
         if ($dynPath) {
-            $filesToLoad[] = $dynPath;
+            // for not loading/showing the dynpages, we set don't add the dyn path to the files to load:
+            // $filesToLoad[] = $dynPath;
         }
 
         return $filesToLoad;

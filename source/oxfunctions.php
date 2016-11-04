@@ -23,6 +23,61 @@
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 
+if (!defined('ESHOP_CONFIG_FILE')) {
+    define('ESHOP_CONFIG_FILE', 'config.inc.php');
+}
+
+if (!function_exists('showErrorIfConfigIsMissing')) {
+    function showErrorIfConfigIsMissing()
+    {
+        $configFileName = __DIR__ . DIRECTORY_SEPARATOR . ESHOP_CONFIG_FILE;
+
+        if (file_exists($configFileName)) {
+            return;
+        }
+
+        $message = printf(
+            "Config file '%s' could not be found! Please use '%s.dist' to make a copy.",
+            ESHOP_CONFIG_FILE,
+            ESHOP_CONFIG_FILE
+        );
+
+        die($message);
+    }
+}
+
+if (!function_exists('redirectIfShopNotConfigured')) {
+    function redirectIfShopNotConfigured()
+    {
+        $configFileName = __DIR__ . DIRECTORY_SEPARATOR . ESHOP_CONFIG_FILE;
+
+        if (file_exists($configFileName) && strpos(file_get_contents($configFileName), '<dbHost') === false) {
+            return;
+        }
+
+        header("HTTP/1.1 302 Found");
+        header("Location: setup/index.php");
+        header("Connection: close");
+        exit(0);
+    }
+}
+
+if (!function_exists('showErrorIfAutoloaderIsMissing')) {
+    function showErrorIfAutoloaderIsMissing($fileName)
+    {
+        if (file_exists($fileName)) {
+            return;
+        }
+
+        $message = printf(
+            "Autoloader file '%s' was not found! Please run 'composer install' to generate it.",
+            $fileName
+        );
+
+        die($message);
+    }
+}
+
 if (!function_exists('registerComposerAutoload')) {
     /**
      * Registers auto-loader for shop namespaced classes.
@@ -32,11 +87,15 @@ if (!function_exists('registerComposerAutoload')) {
         class AutoloadConfigFile {
             public function __construct()
             {
-                include 'config.inc.php';
+                showErrorIfConfigIsMissing();
+                include ESHOP_CONFIG_FILE;
             }
         }
         $configFile = new AutoloadConfigFile();
-        require_once $configFile->vendorDirectory . '/autoload.php';
+        $autoloaderFileName = $configFile->vendorDirectory . '/autoload.php';
+
+        showErrorIfAutoloaderIsMissing($autoloaderFileName);
+        require_once $autoloaderFileName;
     }
 }
 

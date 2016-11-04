@@ -42,6 +42,10 @@ if (file_exists(OX_BASE_PATH . 'modules/functions.php')) {
 // Generic utility method file including autoloading definition
 require_once OX_BASE_PATH . 'oxfunctions.php';
 
+// Make actions if there are eShop configuration problems
+showErrorIfConfigIsMissing();
+redirectIfShopNotConfigured();
+
 // Composer autoloader.
 registerComposerAutoload();
 

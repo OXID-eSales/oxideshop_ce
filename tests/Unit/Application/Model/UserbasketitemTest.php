@@ -191,7 +191,7 @@ class UserbasketitemTest extends \OxidTestCase
         $oBasketItem = oxNew('oxuserbasketitem');
         try {
             $oBasketItem->getArticle("");
-        } catch (oxArticleException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleException $oEx) {
             $this->assertEquals('EXCEPTION_ARTICLE_NOPRODUCTID', $oEx->getMessage());
 
             return;

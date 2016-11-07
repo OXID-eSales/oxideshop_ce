@@ -198,7 +198,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $this->assertTrue($oNewVoucher->checkBasketVoucherAvailability($aVouchers, 100));
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $oEx->getMessage());
 
             return;
@@ -228,7 +228,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $this->assertTrue($oNewVoucher->checkBasketVoucherAvailability($aVouchers, 100));
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES', $oEx->getMessage());
 
             return;
@@ -246,7 +246,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->getVoucherByNr($sNr);
-        } catch (oxVoucherException $oException) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oException) {
             return; //OK
         }
         $this->fail();
@@ -280,7 +280,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->getVoucherByNr($ii, array(), true);
-        } catch (oxVoucherException $oException) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oException) {
             return; //OK
         }
         $this->fail();
@@ -315,7 +315,7 @@ class VoucherTest extends \OxidTestCase
         $oNewVoucher = oxNew('oxvoucher');
         try {
             $oNewVoucher->getVoucherByNr($sVoucherNr);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             return; // OK
         }
         $this->fail();
@@ -344,7 +344,7 @@ class VoucherTest extends \OxidTestCase
         $oNewVoucher = oxNew('oxvoucher');
         try {
             $oNewVoucher->getVoucherByNr($sVoucherNr);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             return; // OK
         }
         $this->fail();
@@ -517,7 +517,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $aErrors = $oNewVoucher->checkVoucherAvailability($aVouchers, $dInitPrice);
-        } catch (oxVoucherException $e) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $e) {
             $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOVOUCHER', $e->getMessage());
 
             return;
@@ -541,7 +541,7 @@ class VoucherTest extends \OxidTestCase
         $dInitPrice = 100;
         try {
             $oNewVoucher->checkVoucherAvailability($aVouchers, $dInitPrice);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $oEx->getMessage());
 
             return;
@@ -565,7 +565,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->checkVoucherAvailability($aVouchers, $dInitPrice);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES', $oEx->getMessage());
 
             return;
@@ -587,7 +587,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $this->assertTrue($oNewVoucher->checkBasketVoucherAvailability($oNewVoucher, $dInitPrice), 'Basket level voucher availability check failed');
-        } catch (oxVoucherException $oException) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oException) {
             $this->fail('Basket level voucher availability check failed');
         }
     }
@@ -617,7 +617,7 @@ class VoucherTest extends \OxidTestCase
         //  discount is greater than price
         try {
             $aErrors = $oNewVoucher->UNITisAvailablePrice($dPrice);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             $this->fail();
 
             return;
@@ -648,7 +648,7 @@ class VoucherTest extends \OxidTestCase
         try {
             $oNewVoucher->setConfig($oConfig);
             $aErrors = $oNewVoucher->UNITisAvailablePrice($dPrice);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             $sErrorMsg = $oEx->getMessage();
         }
 
@@ -692,7 +692,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->UNITisAvailableWithSameSeries($aVouchers);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             return; //OK
         }
         $this->fail();
@@ -734,7 +734,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->UNITisAvailableWithOtherSeries($aVouchers);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             return; //OK
         }
         $this->fail();
@@ -876,7 +876,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->UNITisValidDate();
-        } catch (oxVoucherException $oException) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oException) {
             $this->assertEquals('MESSAGE_COUPON_EXPIRED', $oException->getMessage());
 
             return;
@@ -902,7 +902,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->UNITisValidDate();
-        } catch (oxVoucherException $oException) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oException) {
             $this->assertEquals('MESSAGE_COUPON_EXPIRED', $oException->getMessage());
 
             return;
@@ -987,7 +987,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->UNITisNotReserved();
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             $this->assertEquals('EXCEPTION_VOUCHER_ISRESERVED', $oEx->getMessage());
 
             return;
@@ -1063,7 +1063,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->checkUserAvailability($oUser);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTVALIDUSERGROUP', $oEx->getMessage());
 
             return;
@@ -1095,7 +1095,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->checkUserAvailability($oUser);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $oEx->getMessage());
 
             return;
@@ -1165,7 +1165,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->UNITisAvailableInOtherOrder($oUser);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             return; //OK
         }
         $this->fail();
@@ -1198,7 +1198,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->UNITisAvailableInOtherOrder($oUser);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             return; //OK
         }
         $this->fail();
@@ -1230,7 +1230,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $this->assertEquals(false, $oNewVoucher->UNITisValidUserGroup($oUser));
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             return; //OK
         }
         $this->fail();
@@ -1267,7 +1267,7 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->UNITisValidUserGroup(null);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             return;
         }
         $this->fail("failed testIsValidUserGroupNoUser test");

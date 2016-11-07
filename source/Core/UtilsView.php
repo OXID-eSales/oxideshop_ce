@@ -746,7 +746,7 @@ class UtilsView extends \oxSuperCfg
                     $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']] = array();
                 }
                 $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']][] = $this->_getTemplateBlock($activeBlockTemplate['OXMODULE'], $activeBlockTemplate['OXFILE']);
-            } catch (oxException $exception) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $exception) {
                 $exception->debugOut();
             }
         }

@@ -60,7 +60,7 @@ function smarty_function_oxmultilang( $params, &$smarty )
         if ( 'NO_SUFFIX' != $sSuffix ) {
             $sSuffixTranslation = $oLang->translateString( $sSuffix, $iLang, $blAdmin );
         }
-    } catch ( oxLanguageException $oEx ) {
+    } catch (\OxidEsales\EshopCommunity\Core\Exception\LanguageException $oEx ) {
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }
 

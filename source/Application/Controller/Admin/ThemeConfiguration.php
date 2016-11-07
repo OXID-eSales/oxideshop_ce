@@ -66,7 +66,7 @@ class ThemeConfiguration extends \Shop_Config
                 foreach ($this->_aConfParams as $sType => $sParam) {
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
                 }
-            } catch (oxException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $oEx) {
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
                 $oEx->debugOut();
             }

@@ -42,7 +42,7 @@ class RegistryTest extends \OxidTestCase
     public function testGet()
     {
         $oStr = Registry::get("oxstr");
-        $this->assertTrue($oStr instanceof OxStr);
+        $this->assertTrue($oStr instanceof \OxidEsales\EshopCommunity\Core\Str);
     }
 
     /**

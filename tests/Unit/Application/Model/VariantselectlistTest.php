@@ -75,9 +75,9 @@ class VariantselectlistTest extends \OxidTestCase
 
         $aSelections = $oSelectionList->getSelections();
 
-        $this->assertInstanceOf('oxSelection', $aSelections["test1"]);
-        $this->assertInstanceOf('oxSelection', $aSelections["test2"]);
-        $this->assertInstanceOf('oxSelection', $aSelections["test3"]);
+        $this->assertInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Selection', $aSelections["test1"]);
+        $this->assertInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Selection', $aSelections["test2"]);
+        $this->assertInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Selection', $aSelections["test3"]);
 
         $this->assertEquals("0", $aSelections["test1"]->getName());
         $this->assertEquals("0", $aSelections["test2"]->getName());

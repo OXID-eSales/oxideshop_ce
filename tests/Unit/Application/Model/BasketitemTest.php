@@ -143,7 +143,7 @@ class BasketitemTest extends \OxidTestCase
         $oBasketItem = oxNew('oxBasketItem');
         try {
             $oBasketItem->init($sProdId, 1);
-        } catch (oxArticleInputException $oException) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oException) {
             return;
         }
         $this->fail("product should not be orderable");
@@ -164,7 +164,7 @@ class BasketitemTest extends \OxidTestCase
         try {
             $oBasketItem->init($article->getId(), 1);
             $oBasketItem->setAmount(10);
-        } catch (oxOutOfStockException $oException) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\OutOfStockException $oException) {
             $this->assertEquals($article->oxarticles__oxstock->value, $oBasketItem->getAmount());
             $this->assertEquals($article->oxarticles__oxstock->value * $article->oxarticles__oxweight->value, $oBasketItem->getWeight());
 
@@ -313,7 +313,7 @@ class BasketitemTest extends \OxidTestCase
         // checking if amounts are overwritten
         try {
             $oBasketItem->setAmount(101);
-        } catch (oxOutOfStockException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\OutOfStockException $oEx) {
             $this->assertEquals(100, $oBasketItem->getAmount());
             $this->assertEquals(1000, $oBasketItem->getWeight());
             $oBasketItem->setAmount(10);
@@ -348,7 +348,7 @@ class BasketitemTest extends \OxidTestCase
         // checking if amounts are overwritten
         try {
             $oBasketItem->setAmount(101, true, 'testItemKey');
-        } catch (oxOutOfStockException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\OutOfStockException $oEx) {
             $this->assertEquals(99, $oBasketItem->getAmount());
 
             return;
@@ -369,7 +369,7 @@ class BasketitemTest extends \OxidTestCase
         $oBasketItem->init($article->getId(), 1);
         try {
             $oBasketItem->setAmount('jhvjh');
-        } catch (oxArticleInputException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oEx) {
             if ($oEx->getArticleNr() == $article->getId()) {
                 return;
             }
@@ -391,7 +391,7 @@ class BasketitemTest extends \OxidTestCase
         $oBasketItem->init($article->getId(), 1);
         try {
             $oBasketItem->setAmount(9999999999999);
-        } catch (oxOutOfStockException $oException) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\OutOfStockException $oException) {
             $this->assertEquals($article->oxarticles__oxstock->value, $oBasketItem->getAmount());
             $this->assertEquals($article->oxarticles__oxstock->value * $article->oxarticles__oxweight->value, $oBasketItem->getWeight());
 
@@ -435,7 +435,7 @@ class BasketitemTest extends \OxidTestCase
         $oBasketItem = oxNew('oxbasketitem');
         try {
             $oBasketItem->getArticle();
-        } catch (oxArticleException $oExcp) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleException $oExcp) {
             return;
         }
         $this->fail('failed testing getArticle');
@@ -493,7 +493,7 @@ class BasketitemTest extends \OxidTestCase
 
         try {
             $oBasketItem->getArticle(true, 'noSuchId');
-        } catch (oxArticleException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleException $oEx) {
             return;
         }
 
@@ -514,7 +514,7 @@ class BasketitemTest extends \OxidTestCase
         $oBasketItem = oxNew('oxBasketItem');
         try {
             $oBasketItem->getArticle(true, $article->getId());
-        } catch (oxArticleInputException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oEx) {
             oxRemClassModule('Unit\Application\Model\BasketItemTest_ArticleHelper');
             return;
         }
@@ -552,7 +552,7 @@ class BasketitemTest extends \OxidTestCase
         $oBasketItem = oxNew('oxBasketItem');
         try {
             $oBasketItem->getArticle(true, $article->getId());
-        } catch (oxNoArticleException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\NoArticleException $oEx) {
             oxRemClassModule('Unit\Application\Model\modOxArticle_notVisible_oxbasketItem');
             return;
         }
@@ -859,7 +859,7 @@ class BasketitemTest extends \OxidTestCase
         $oBasketItem = oxNew('oxbasketitem');
         try {
             $oBasketItem->init('xxx', 6, null, null, true);
-        } catch (oxNoArticleException $oExcp) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\NoArticleException $oExcp) {
             return;
         }
 

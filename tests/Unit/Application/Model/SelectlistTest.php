@@ -206,9 +206,9 @@ class SelectlistTest extends \OxidTestCase
         $this->assertNull($oSelectList->getSelections());
 
         $this->setRequestParameter('cur', 2);
-        $aSelections = array(new oxSelection("test1, 10", 0, false, true),
-                             new oxSelection("test2, 10", 1, false, false),
-                             new oxSelection("test3', 10", 2, false, false),
+        $aSelections = array(oxNew('oxSelection', "test1, 10", 0, false, true),
+                             oxNew('oxSelection', "test2, 10", 1, false, false),
+                             oxNew('oxSelection', "test3', 10", 2, false, false),
         );
 
         // valdesc is set

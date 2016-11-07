@@ -262,12 +262,12 @@ class OrderController extends \oxUBase
 
                 // proceeding to next view
                 return $this->_getNextStep($iSuccess);
-            } catch (oxOutOfStockException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\OutOfStockException $oEx) {
                 $oEx->setDestination('basket');
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'basket');
-            } catch (oxNoArticleException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\NoArticleException $oEx) {
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
-            } catch (oxArticleInputException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oEx) {
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
             }
         }

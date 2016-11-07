@@ -1082,7 +1082,7 @@ class User extends \oxBase
         // 6. vat id check.
         try {
             $oInputValidator->checkVatId($this, $aInvAddress);
-        } catch (oxConnectionException $e) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ConnectionException $e) {
             // R080730 just oxInputException is passed here
             // if it oxConnectionException, it means it could not check vat id
             // and will set 'not checked' status to it later

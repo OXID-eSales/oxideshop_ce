@@ -105,6 +105,9 @@ class UtilsobjectTest extends \OxidTestCase
         if ($this->getConfig()->getEdition() === 'PE') {
             $orderClassName = 'OxidEsales\EshopProfessional\Application\Model\Order';
         }
+        if ($this->getConfig()->getEdition() === 'CE') {
+            $orderClassName = 'OxidEsales\EshopCommunity\Application\Model\Order';
+        }
 
         return $orderClassName;
     }
@@ -256,7 +259,7 @@ class UtilsobjectTest extends \OxidTestCase
 
     public function testGetClassName_classNotExist_originalClassReturn()
     {
-        $sClassName = $sClassNameExpect = 'oxorder';
+        $sClassName = $sClassNameExpect = 'OxidEsales\EshopCommunity\Application\Model\Order';
 
         if ($this->getConfig()->getEdition() === 'EE') {
             $sClassNameExpect = 'OxidEsales\EshopEnterprise\Application\Model\Order';
@@ -273,7 +276,7 @@ class UtilsobjectTest extends \OxidTestCase
 
     public function testGetClassName_classNotExistDoDisableModuleOnError_originalClassReturn()
     {
-        $sClassName = 'oxorder';
+        $sClassName = 'OxidEsales\EshopCommunity\Application\Model\Order';
         $sClassNameExpect = $this->getOrderClassName();
 
         oxRegistry::get("oxConfigFile")->setVar('blDoNotDisableModuleOnError', false);

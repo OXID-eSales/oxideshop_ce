@@ -191,7 +191,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
      * @param oxPrice $oPrice Price object
      * @param object  $oCur   Currency object
      */
-    protected function _applyCurrency(oxPrice $oPrice, $oCur = null)
+    protected function _applyCurrency(\OxidEsales\EshopCommunity\Core\Price $oPrice, $oCur = null)
     {
         if (!$oCur) {
             $oCur = $this->getConfig()->getActShopCurrencyObject();

@@ -438,7 +438,7 @@ class Config extends Base
             $this->_handleDbConnectionException($oEx);
         } catch (\OxidEsales\EshopCommunity\Core\Exception\DatabaseException $oEx) {
             $this->_handleDbConnectionException($oEx);
-        } catch (oxCookieException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\CookieException $oEx) {
             $this->_handleCookieException($oEx);
         }
     }

@@ -330,13 +330,13 @@ class UtilsFileTest extends \OxidTestCase
         $aFiles['name'] = 'testfile';
         $aFiles['tmp_name'] = 'testfile';
 
-        $this->setExpectedException('oxException');
+        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\StandardException');
         oxRegistry::get("oxUtilsFile")->handleUploadedFile($aFiles, '/out/media/');
     }
 
     public function testProcessFileEmpty()
     {
-        $this->setExpectedException('oxException', 'EXCEPTION_NOFILE');
+        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\StandardException', 'EXCEPTION_NOFILE');
         oxRegistry::get("oxUtilsFile")->processFile(null, '/out/media/');
     }
 
@@ -346,7 +346,7 @@ class UtilsFileTest extends \OxidTestCase
         $_FILES['fileItem']['name'] = 'testfile_\xc4\xaf\xc5\xa1.jpg';
         $_FILES['fileItem']['tmp_name'] = 'testfile';
 
-        $this->setExpectedException('oxException', 'EXCEPTION_FILENAMEINVALIDCHARS');
+        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\StandardException', 'EXCEPTION_FILENAMEINVALIDCHARS');
         oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
     }
 
@@ -362,7 +362,7 @@ class UtilsFileTest extends \OxidTestCase
         $_FILES['fileItem']['name'] = 'testfile';
         $_FILES['fileItem']['tmp_name'] = 'testfile';
 
-        $this->setExpectedException('oxException');
+        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\StandardException');
         oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
     }
 
@@ -372,7 +372,7 @@ class UtilsFileTest extends \OxidTestCase
         $_FILES['fileItem']['tmp_name'] = 'testfile.jpg';
         $_FILES['fileItem']['error'] = 1;
 
-        $this->setExpectedException('oxException');
+        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\StandardException');
         oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
     }
 

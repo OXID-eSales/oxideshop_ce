@@ -29,7 +29,7 @@ use oxRegistry;
  * User registration window.
  * Collects and arranges user object data (information, like shipping address, etc.).
  */
-class RegisterController extends \User
+class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserController
 {
 
     /**

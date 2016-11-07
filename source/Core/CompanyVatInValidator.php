@@ -107,7 +107,7 @@ class CompanyVatInValidator
      *
      * @param oxCompanyVatInChecker $validator
      */
-    public function addChecker(oxCompanyVatInChecker $validator)
+    public function addChecker(\OxidEsales\EshopCommunity\Core\CompanyVatInChecker $validator)
     {
         $this->_aCheckers[] = $validator;
     }
@@ -129,7 +129,7 @@ class CompanyVatInValidator
      *
      * @return bool
      */
-    public function validate(oxCompanyVatIn $companyVatNumber)
+    public function validate(\OxidEsales\EshopCommunity\Application\Model\CompanyVatIn $companyVatNumber)
     {
         $result = false;
         $validators = $this->getCheckers();

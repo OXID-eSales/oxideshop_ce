@@ -475,7 +475,7 @@ class Basket extends \oxSuperCfg
                 //validate amount
                 //possibly throws exception
                 $this->_aBasketContents[$sItemId]->setAmount($dAmount, $blOverride, $sItemId);
-            } catch (oxOutOfStockException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\OutOfStockException $oEx) {
                 // rethrow later
             }
 
@@ -485,14 +485,14 @@ class Basket extends \oxSuperCfg
             try {
                 $oBasketItem->setStockCheckStatus($this->getStockCheckMode());
                 $oBasketItem->init($sProductID, $dAmount, $aSel, $aPersParam, $blBundle);
-            } catch (oxNoArticleException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\NoArticleException $oEx) {
                 // in this case that the article does not exist remove the item from the basket by setting its amount to 0
                 //$oBasketItem->dAmount = 0;
                 $blRemoveItem = true;
 
-            } catch (oxOutOfStockException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\OutOfStockException $oEx) {
                 // rethrow later
-            } catch (oxArticleInputException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oEx) {
                 // rethrow later
                 $blRemoveItem = true;
             }
@@ -754,10 +754,10 @@ class Basket extends \oxSuperCfg
                 // adding bundles to basket
                 $this->_addBundlesToBasket($aArtBundles);
 
-            } catch (oxNoArticleException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\NoArticleException $oEx) {
                 $this->removeItem($key);
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
-            } catch (oxArticleInputException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oEx) {
                 $this->removeItem($key);
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
             }
@@ -785,7 +785,7 @@ class Basket extends \oxSuperCfg
                     if ($oBundleItem = $this->addToBasket($sBundleId, $dAmount, null, null, false, true)) {
                         $oBundleItem->setAsDiscountArticle(true);
                     }
-                } catch (oxArticleException $oEx) {
+                } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleException $oEx) {
                     // caught and ignored
                     if ($oEx instanceof \OxidEsales\EshopCommunity\Core\Exception\OutOfStockException && $oEx->getRemainingAmount() > 0) {
                         $sItemId = $this->getItemKey($sBundleId, null, null, true);
@@ -1135,7 +1135,7 @@ class Basket extends \oxSuperCfg
                         $dPrice = $dPrice - $dVoucherdiscount;
 
 
-                    } catch (oxVoucherException $oEx) {
+                    } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
 
                         // removing voucher on error
                         $oVoucher->unMarkAsReserved();
@@ -1605,7 +1605,7 @@ class Basket extends \oxSuperCfg
 
             // saving voucher info
             $this->_aVouchers[$oVoucher->oxvouchers__oxid->value] = $oVoucher->getSimpleVoucher();
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
 
             // problems adding voucher
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
@@ -1694,7 +1694,7 @@ class Basket extends \oxSuperCfg
                 $oSelList = $oItem->getSelList();
 
                 $this->addToBasket($oItem->oxuserbasketitems__oxartid->value, $oItem->oxuserbasketitems__oxamount->value, $oSelList, $oItem->getPersParams(), true);
-            } catch (oxArticleException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleException $oEx) {
                 // caught and ignored
             }
         }
@@ -1897,12 +1897,12 @@ class Basket extends \oxSuperCfg
                         $oProduct->setSelectlist($aSelectlist);
                     }
                 }
-            } catch (oxNoArticleException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\NoArticleException $oEx) {
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
                 $this->removeItem($sItemKey);
                 $this->calculateBasket(true);
                 continue;
-            } catch (oxArticleInputException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oEx) {
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
                 $this->removeItem($sItemKey);
                 $this->calculateBasket(true);

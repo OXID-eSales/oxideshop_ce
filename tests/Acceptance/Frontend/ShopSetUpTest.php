@@ -240,7 +240,7 @@ class ShopSetUpTest extends FrontendTestCase
         try {
             $this->openNewWindow($this->getTestConfig()->getShopUrl(), false);
             file_put_contents($sPath, $sOldConfigFile);
-        } catch (oxConnectionException $e) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ConnectionException $e) {
             // restoring config file no matter what
             file_put_contents($sPath, $sOldConfigFile);
             $this->fail("shop threw exception: " . $e->getTraceAsString());

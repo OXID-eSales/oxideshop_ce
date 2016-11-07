@@ -1210,10 +1210,10 @@ class Order extends \oxBase
         foreach ($oBasket->getContents() as $key => $oContent) {
             try {
                 $oProd = $oContent->getArticle(true, null, true);
-            } catch (oxNoArticleException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\NoArticleException $oEx) {
                 $oBasket->removeItem($key);
                 throw $oEx;
-            } catch (oxArticleInputException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oEx) {
                 $oBasket->removeItem($key);
                 throw $oEx;
             }

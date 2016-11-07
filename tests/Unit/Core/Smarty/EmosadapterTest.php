@@ -150,7 +150,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue(false));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getBasketProductCatPath')->will($this->returnValue('DeepestCategoryPath'));
-        $oEmos->expects($this->once())->method('_convProd2EmosItem')->with($this->isInstanceOf(oxarticle), $this->equalTo('DeepestCategoryPath'), $this->equalTo(10))->will($this->returnValue($oEmosItem));
+        $oEmos->expects($this->once())->method('_convProd2EmosItem')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'), $this->equalTo('DeepestCategoryPath'), $this->equalTo(10))->will($this->returnValue($oEmosItem));
         $oEmos->getCode($aParams, $oSmarty);
     }
 
@@ -1164,7 +1164,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock('oxEmosAdapter', array('getEmos', '_getBasketProductCatPath', '_convProd2EmosItem'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getBasketProductCatPath')->will($this->returnValue('DeepestCategoryPath'));
-        $oEmos->expects($this->once())->method('_convProd2EmosItem')->with($this->isInstanceOf(oxarticle), $this->equalTo('DeepestCategoryPath'), $this->equalTo(10))->will($this->returnValue($oEmosItem));
+        $oEmos->expects($this->once())->method('_convProd2EmosItem')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'), $this->equalTo('DeepestCategoryPath'), $this->equalTo(10))->will($this->returnValue($oEmosItem));
         $oEmos->getCode($aParams, $oSmarty);
     }
 

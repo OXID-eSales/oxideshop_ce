@@ -1147,7 +1147,7 @@ class Utils extends \oxSuperCfg
 
         try { //may occur in case db is lost
             $this->getSession()->freeze();
-        } catch (oxException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $oEx) {
             $oEx->debugOut();
             //do nothing else to make sure the redirect takes place
         }

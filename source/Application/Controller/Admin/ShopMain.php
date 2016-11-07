@@ -147,7 +147,7 @@ class ShopMain extends \oxAdminDetails
 
         try {
             $shop->save();
-        } catch (oxException $e) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $e) {
             $this->checkExceptionType($e);
             return;
         }

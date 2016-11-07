@@ -777,7 +777,7 @@ class DiscountTest extends \OxidTestCase
         $oArticle->setId($testAid);
 
         $oDiscount = $this->getMock('oxdiscount', array('_checkForArticleCategories'));
-        $oDiscount->expects($this->once())->method('_checkForArticleCategories')->with($this->isInstanceOf('oxarticle'));
+        $oDiscount->expects($this->once())->method('_checkForArticleCategories')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'));
         $oDiscount->oxdiscount__oxaddsumtype = new oxField('itm');
         $oDiscount->setId('testdid');
 

@@ -72,7 +72,7 @@ class InputValidatorTest extends \OxidTestCase
             $this->assertEquals($this->_oValidator->validateBasketAmount('1,6'), 2);
             $this->assertEquals($this->_oValidator->validateBasketAmount('1.6'), 2);
             $this->assertEquals($this->_oValidator->validateBasketAmount('1.1'), 1);
-        } catch (oxArticleInputException $e) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $e) {
             $this->fail('Error while executing test: testValidateBasketAmountnoUneven');
         }
     }

@@ -208,7 +208,7 @@ class PictureHandlerTest extends \OxidTestCase
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = $this->getMock('oxPictureHandler', array('deleteZoomPicture'));
-        $oPicHandler->expects($this->once())->method('deleteZoomPicture')->with($this->isInstanceOf("oxArticle"), $this->equalTo(1));
+        $oPicHandler->expects($this->once())->method('deleteZoomPicture')->with($this->isInstanceOf('OxidEsales\EshopCommunity\Application\Model\Article'), $this->equalTo(1));
 
         $oPicHandler->deleteArticleMasterPicture($oArticle, 1, false);
     }

@@ -58,7 +58,7 @@ if ($blAjaxCall) {
 
         try {
             $oAjaxComponent = oxNew($sContainer . '_ajax');
-        } catch (oxSystemComponentException $oCe) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\SystemComponentException $oCe) {
             $sFile = 'inc/' . $sContainer . '.inc.php';
             if (file_exists($sFile)) {
                 $aColumns = array();

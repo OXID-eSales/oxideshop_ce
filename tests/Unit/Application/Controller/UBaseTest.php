@@ -21,9 +21,7 @@
  */
 namespace Unit\Application\Controller;
 
-use OxidEsales\EshopCommunity\Application\Model\ActionList;
 use oxUBaseHelper;
-use OxidEsales\EshopCommunity\Application\Model\User;
 use \stdClass;
 use \oxField;
 use \exception;
@@ -384,7 +382,7 @@ class UBaseTest extends \OxidTestCase
         $aComponents = $oView->getComponents();
         $this->assertEquals(1, count($aComponents));
         $this->assertEquals('oxidesales\eshopcommunity\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
-        $this->assertEquals("oxubaseproxy", $aComponents["oxcmp_lang"]->getParent()->getThisAction());
+        $this->assertEquals(strtolower(get_class($oView)), $aComponents["oxcmp_lang"]->getParent()->getThisAction());
     }
 
     /*
@@ -1640,7 +1638,7 @@ class UBaseTest extends \OxidTestCase
 
         $oView = oxNew('oxUBase');
 
-        $this->assertTrue($oView->getPromoFinishedList() instanceof ActionList);
+        $this->assertTrue($oView->getPromoFinishedList() instanceof \OxidEsales\EshopCommunity\Application\Model\ActionList);
     }
 
     /**
@@ -1656,7 +1654,7 @@ class UBaseTest extends \OxidTestCase
 
         $oView = oxNew('oxUBase');
 
-        $this->assertTrue($oView->getPromoCurrentList() instanceof ActionList);
+        $this->assertTrue($oView->getPromoCurrentList() instanceof \OxidEsales\EshopCommunity\Application\Model\ActionList);
     }
 
     /**
@@ -1672,7 +1670,7 @@ class UBaseTest extends \OxidTestCase
 
         $oView = oxNew('oxUBase');
 
-        $this->assertTrue($oView->getPromoFutureList() instanceof ActionList);
+        $this->assertTrue($oView->getPromoFutureList() instanceof \OxidEsales\EshopCommunity\Application\Model\ActionList);
     }
 
     /**
@@ -2163,7 +2161,7 @@ class UBaseTest extends \OxidTestCase
         $oView = $this->getMock("oxubase", array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue(true));
 
-        $this->assertTrue($oView->getWishlistName() instanceof User);
+        $this->assertTrue($oView->getWishlistName() instanceof \OxidEsales\EshopCommunity\Application\Model\User);
     }
 
     public function testGetWishlistNameIfNotLoggedIn()

@@ -263,7 +263,7 @@ class NewsletterTest extends \OxidTestCase
         $oUser->load('oxdefaultadmin');
 
         $oTestNews = $this->getMock('Unit\Application\Model\oxnewsletterForUnit_oxnewsletterTest', array('_assignProducts'));
-        $oTestNews->expects($this->once())->method('_assignProducts')->with($this->isInstanceOf('oxUBase'), $this->equalTo(true));
+        $oTestNews->expects($this->once())->method('_assignProducts')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Controller\FrontendController'), $this->equalTo(true));
         $oTestNews->load('newstest');
         $oTestNews->setNonPublicVar('_oUser', $oUser);
 

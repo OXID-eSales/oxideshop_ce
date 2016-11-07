@@ -211,12 +211,12 @@ class UserComponent extends \oxView
             $oUser = oxNew('oxuser');
             $oUser->login($sUser, $sPassword, $sCookie);
             $this->setLoginStatus(USER_LOGIN_SUCCESS);
-        } catch (oxUserException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\UserException $oEx) {
             // for login component send excpetion text to a custom component (if defined)
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, '', false);
 
             return 'user';
-        } catch (oxCookieException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\CookieException $oEx) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
 
             return 'user';
@@ -650,18 +650,18 @@ class UserComponent extends \oxView
             $blEmailParam = $this->getConfig()->getConfigParam('blOrderOptInEmail');
             $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $blEmailParam, $blForceCheckOptIn);
 
-        } catch (oxUserException $oEx) { // errors in input
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\UserException $oEx) { // errors in input
             // marking error code
             //TODO
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
 
             return;
-        } catch (oxInputException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\InputException $oEx) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'input_not_all_fields');
 
             return;
-        } catch (oxConnectionException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ConnectionException $oEx) {
             //connection to external resource broken, change message and pass to the view
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
 

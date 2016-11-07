@@ -1287,7 +1287,7 @@ class ArticleTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testEnablePriceLoad(oxArticle $oArticle)
+    public function testEnablePriceLoad(\OxidEsales\EshopCommunity\Application\Model\Article $oArticle)
     {
         $oArticle->enablePriceLoad();
         $this->assertNotNull($oArticle->getBasePrice());

@@ -82,7 +82,7 @@ abstract class OnlineCaller
      * @param oxOnlineServerEmailBuilder $oEmailBuilder Forms email when OXID servers are unreachable.
      * @param oxSimpleXml                $oSimpleXml    Forms XML from Request for sending to OXID servers.
      */
-    public function __construct(oxCurl $oCurl, oxOnlineServerEmailBuilder $oEmailBuilder, oxSimpleXml $oSimpleXml)
+    public function __construct(\OxidEsales\EshopCommunity\Core\Curl $oCurl, \OxidEsales\EshopCommunity\Core\OnlineServerEmailBuilder $oEmailBuilder, \OxidEsales\EshopCommunity\Core\SimpleXml $oSimpleXml)
     {
         $this->_oCurl = $oCurl;
         $this->_oEmailBuilder = $oEmailBuilder;
@@ -96,7 +96,7 @@ abstract class OnlineCaller
      *
      * @return null|string In XML format.
      */
-    public function call(oxOnlineRequest $oRequest)
+    public function call(\OxidEsales\EshopCommunity\Core\OnlineRequest $oRequest)
     {
         $sOutputXml = null;
         $iFailedCallsCount = oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount');

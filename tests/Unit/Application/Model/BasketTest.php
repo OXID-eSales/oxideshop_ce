@@ -934,7 +934,7 @@ class BasketTest extends \OxidTestCase
         $oBasket = oxNew('oxbasket');
         try {
             $oBasket->addToBasket($this->oArticle->getId(), 'xxx');
-        } catch (oxArticleInputException $oExcp) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oExcp) {
             return;
         }
         $this->fail('failed testing addToBasket');
@@ -951,7 +951,7 @@ class BasketTest extends \OxidTestCase
         $oBasket = oxNew('oxbasket');
         try {
             $oBasket->addToBasket($this->oArticle->getId(), 666);
-        } catch (oxOutOfStockException $oExcp) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\OutOfStockException $oExcp) {
             return;
         }
         $this->fail('failed testing addToBasket');
@@ -3252,7 +3252,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->addToBasket($this->oArticle->getId(), 1, null, null, true, false, $this->oArticle->getId());
         try {
             $oBasket->addToBasket('ra', 1, null, null, true, false, $this->oArticle->getId());
-        } catch (oxNoArticleException $e) { //whatever.. we interested only before this func.
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\NoArticleException $e) { //whatever.. we interested only before this func.
         }
     }
 

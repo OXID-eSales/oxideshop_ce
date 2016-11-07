@@ -476,7 +476,7 @@ class OrderRecalculationTest extends \OxidTestCase
     /**
      * @param oxBasket $basket
      */
-    private function checkContents(oxBasket $basket, $expectedAmount)
+    private function checkContents(\OxidEsales\EshopCommunity\Application\Model\Basket $basket, $expectedAmount)
     {
         $basketArticles = $basket->getBasketArticles();
         $keys = array_keys($basketArticles);

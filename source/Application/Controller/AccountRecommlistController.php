@@ -258,7 +258,7 @@ class AccountRecommlistController extends \Account
                 // marking entry as saved
                 $this->_blSavedEntry = (bool) $oRecommList->save();
                 $this->setActiveRecommList($this->_blSavedEntry ? $oRecommList : false);
-            } catch (oxObjectException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\ObjectException $oEx) {
                 //add to display at specific position
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'user');
             }

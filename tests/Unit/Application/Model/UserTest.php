@@ -1931,7 +1931,7 @@ class UserTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         try {
             $oUser->checkValues("X", "X", "X", array(), array());
-        } catch (oxInputException $oException) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\InputException $oException) {
             return;
         }
 

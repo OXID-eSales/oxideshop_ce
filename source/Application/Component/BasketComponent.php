@@ -533,18 +533,18 @@ class BasketComponent extends \oxView
                 $itemData['oldBasketItemId']
             );
 
-        } catch (oxOutOfStockException $exception) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\OutOfStockException $exception) {
             $exception->setDestination($errorDestination);
             // #950 Change error destination to basket popup
             if (!$errorDestination && $this->getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
                 $errorDestination = 'popup';
             }
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
-        } catch (oxArticleInputException $exception) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $exception) {
             //add to display at specific position
             $exception->setDestination($errorDestination);
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
-        } catch (oxNoArticleException $exception) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\NoArticleException $exception) {
             //ignored, best solution F ?
         }
 

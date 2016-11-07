@@ -267,7 +267,7 @@ class Price
      *
      * @param oxPrice $oPrice object
      */
-    public function addPrice(oxPrice $oPrice)
+    public function addPrice(\OxidEsales\EshopCommunity\Core\Price $oPrice)
     {
         if ($this->isNettoMode()) {
             $this->add($oPrice->getNettoPrice());
@@ -334,7 +334,7 @@ class Price
      *
      * @return null
      */
-    public function compare(oxPrice $oPrice)
+    public function compare(\OxidEsales\EshopCommunity\Core\Price $oPrice)
     {
         $dBruttoPrice1 = $this->getBruttoPrice();
         $dBruttoPrice2 = $oPrice->getBruttoPrice();

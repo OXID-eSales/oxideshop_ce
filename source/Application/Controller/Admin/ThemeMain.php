@@ -98,7 +98,7 @@ class ThemeMain extends \oxAdminDetails
         try {
             $oTheme->activate();
             $this->resetContentCache();
-        } catch (oxException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $oEx) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
             $oEx->debugOut();
         }

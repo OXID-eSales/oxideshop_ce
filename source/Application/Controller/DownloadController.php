@@ -65,7 +65,7 @@ class DownloadController extends \oxUBase
                         $sError = "ERROR_MESSAGE_FILE_DOESNOT_EXIST";
                     }
                 }
-            } catch (oxException $oEx) {
+            } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $oEx) {
                 $sError = "ERROR_MESSAGE_FILE_DOWNLOAD_FAILED";
             }
         } else {

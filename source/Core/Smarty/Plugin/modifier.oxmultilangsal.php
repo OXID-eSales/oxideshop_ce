@@ -45,7 +45,7 @@ function smarty_modifier_oxmultilangsal( $sIdent )
 
     try {
         $sTranslation = $oLang->translateString( $sIdent, $iLang, $oLang->isAdmin() );
-    } catch ( oxLanguageException $oEx ) {
+    } catch (\OxidEsales\EshopCommunity\Core\Exception\LanguageException $oEx ) {
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }
 

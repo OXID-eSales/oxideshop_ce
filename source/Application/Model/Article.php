@@ -1996,7 +1996,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      *
      * @param oxPrice $oPrice the new price object
      */
-    public function setPrice(oxPrice $oPrice)
+    public function setPrice(\OxidEsales\EshopCommunity\Core\Price $oPrice)
     {
         $this->_oPrice = $oPrice;
     }
@@ -3082,7 +3082,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      *
      * @param oxPrice $oPrice target price
      */
-    public function applyVats(oxPrice $oPrice)
+    public function applyVats(\OxidEsales\EshopCommunity\Core\Price $oPrice)
     {
         $this->_applyVAT($oPrice, $this->getArticleVat());
     }
@@ -3950,7 +3950,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      * @param oxPrice $oPrice Price object
      * @param double  $dVat   VAT percent
      */
-    protected function _applyVAT(oxPrice $oPrice, $dVat)
+    protected function _applyVAT(\OxidEsales\EshopCommunity\Core\Price $oPrice, $dVat)
     {
         startProfile(__FUNCTION__);
         $oPrice->setVAT($dVat);
@@ -3968,7 +3968,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      * @param oxPrice $oPrice Price object
      * @param object  $oCur   Currency object
      */
-    protected function _applyCurrency(oxPrice $oPrice, $oCur = null)
+    protected function _applyCurrency(\OxidEsales\EshopCommunity\Core\Price $oPrice, $oCur = null)
     {
         if (!$oCur) {
             $oCur = $this->getConfig()->getActShopCurrencyObject();

@@ -126,7 +126,7 @@ class VatSelectorTest extends \OxidTestCase
         try {
             $this->assertFalse($oVatSelector->getUserVat($oUser, true));
             $this->fail("This country shouldn't be loaded");
-        } catch (oxObjectException $e) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ObjectException $e) {
             // expected here
         }
 

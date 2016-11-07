@@ -111,7 +111,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
                 '[{block name="test1"}]<b1/>[{/block}]',
                 $oSmartyCompiler
             );
-        } catch (oxException $e) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $e) {
             $this->assertEquals('ok', $e->getMessage());
         }
     }
@@ -286,7 +286,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
                 '[{block name="test1"}]<b1/>[{/block}]',
                 $oSmartyCompiler
             );
-        } catch (oxException $e) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $e) {
             $this->assertEquals('ok', $e->getMessage());
         }
     }

@@ -406,7 +406,7 @@ class RecommlistTest extends \OxidTestCase
         $oRecomm->setId('_testX');
         try {
             $oRecomm->save();
-        } catch (oxObjectException $e) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ObjectException $e) {
             $this->assertEquals('EXCEPTION_RECOMMLIST_NOTITLE', $e->getMessage());
 
             return;

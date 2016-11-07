@@ -21,7 +21,6 @@
  */
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxCookieException;
 use oxException;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
@@ -152,15 +151,15 @@ class ShopControl extends \oxSuperCfg
             $class = !is_null($class) ? $class : $this->_getStartController();
 
             $this->_process($class, $function, $parameters, $viewsChain);
-        } catch (oxSystemComponentException $ex) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\SystemComponentException $ex) {
             $this->_handleSystemException($ex);
-        } catch (oxCookieException $ex) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\CookieException $ex) {
             $this->_handleCookieException($ex);
-        } catch (DatabaseNotConfiguredException $exception) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException $exception) {
             $this->handleDbNotConfiguredException();
-        } catch (DatabaseConnectionException $exception) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException $exception) {
             $this->handleDbConnectionException($exception);
-        } catch (oxException $ex) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $ex) {
             $this->_handleBaseException($ex);
         }
     }

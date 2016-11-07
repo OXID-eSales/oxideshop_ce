@@ -71,7 +71,7 @@ class RecommendationTest extends \OxidTestCase
     public function testGetRecommList()
     {
         $oRecommList = oxNew('oxwRecommendation');
-        $this->assertTrue($oRecommList->getRecommList() instanceof RecommList);
+        $this->assertTrue($oRecommList->getRecommList() instanceof \OxidEsales\EshopCommunity\Application\Controller\RecommListController);
     }
 
 }

@@ -381,7 +381,7 @@ class DynExportBaseTest extends \OxidTestCase
     public function testGetDeepestCategoryPath()
     {
         $oView = $this->getMock("DynExportBase", array("_findDeepestCatPath"));
-        $oView->expects($this->once())->method('_findDeepestCatPath')->with($this->isInstanceOf(oxarticle));
+        $oView->expects($this->once())->method('_findDeepestCatPath')->with($this->isInstanceOf('OxidEsales\EshopCommunity\Application\Model\Article'));
         $oView->getDeepestCategoryPath(oxNew('oxarticle'));
     }
 
@@ -423,7 +423,7 @@ class DynExportBaseTest extends \OxidTestCase
         $oView = $this->getMock("DynExportBase", array("_initArticle", "_getHeapTableName", "_setCampaignDetailLink"));
         $oView->expects($this->once())->method('_initArticle')->with($this->equalTo("oxarticles"), $this->equalTo(0))->will($this->returnValue(oxNew('oxarticle')));
         $oView->expects($this->once())->method('_getHeapTableName')->will($this->returnValue("oxarticles"));
-        $oView->expects($this->once())->method('_setCampaignDetailLink')->with($this->isInstanceOf('oxArticle'))->will($this->returnValue(oxNew('oxarticle')));
+        $oView->expects($this->once())->method('_setCampaignDetailLink')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'))->will($this->returnValue(oxNew('oxarticle')));
 
         $this->assertTrue($oView->getOneArticle(0, $blContinue) instanceof article);
         $this->assertTrue($blContinue);
@@ -751,7 +751,7 @@ class DynExportBaseTest extends \OxidTestCase
         $oView = new _DynExportBase();
         $oArticle = $oView->initArticle("testdynexportbasetable", 0, $blContinue);
         $this->assertNotNull($oArticle);
-        $this->assertTrue($oArticle instanceof article);
+        $this->assertTrue($oArticle instanceof \OxidEsales\EshopCommunity\Application\Model\Article);
         $this->assertEquals($oParent->oxarticles__oxtitle->value . " " . $sTitle, $oArticle->oxarticles__oxtitle->value);
     }
 
@@ -771,7 +771,7 @@ class DynExportBaseTest extends \OxidTestCase
         $oArticle->expects($this->at(1))->method('appendLink')->with($this->equalTo("/testCat"));
 
         $oView = $this->getMock("DynExportBase", array("getCategoryString"));
-        $oView->expects($this->once())->method('getCategoryString')->with($this->isInstanceOf(oxarticle))->will($this->returnValue("testCat"));
+        $oView->expects($this->once())->method('getCategoryString')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'))->will($this->returnValue("testCat"));
         $oView->UNITsetCampaignDetailLink($oArticle);
     }
 

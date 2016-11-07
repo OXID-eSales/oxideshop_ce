@@ -86,7 +86,7 @@ class PriceAlarmSendTest extends \OxidTestCase
 
         $oEmail = $this->getMock('oxemail', array('sendPricealarmToCustomer'));
         $oEmail->expects($this->once())->method('sendPricealarmToCustomer')
-            ->with($this->equalTo("info@example.com"), $this->isInstanceOf('oxpricealarm'))
+            ->with($this->equalTo("info@example.com"), $this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\PriceAlarm'))
             ->will($this->returnValue(true));
 
         oxTestModules::addModuleObject('oxemail', $oEmail);

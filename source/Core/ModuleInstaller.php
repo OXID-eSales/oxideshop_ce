@@ -485,14 +485,12 @@ class ModuleInstaller extends \oxSuperCfg
                     $sConstraints = $aValue["constrains"];
                 }
 
-                $iPosition = $aValue["position"] ? $aValue["position"] : 1;
-
                 $oConfig->setConfigParam($sName, $sValue);
                 $oConfig->saveShopConfVar($sType, $sName, $sValue, $sShopId, $sModule);
 
                 $sDeleteSql = "DELETE FROM `oxconfigdisplay` WHERE OXCFGMODULE=" . $oDb->quote($sModule) . " AND OXCFGVARNAME=" . $oDb->quote($sName);
-                $sInsertSql = "INSERT INTO `oxconfigdisplay` (`OXID`, `OXCFGMODULE`, `OXCFGVARNAME`, `OXGROUPING`, `OXVARCONSTRAINT`, `OXPOS`) " .
-                              "VALUES ('{$sOxId}', " . $oDb->quote($sModule) . ", " . $oDb->quote($sName) . ", " . $oDb->quote($sGroup) . ", " . $oDb->quote($sConstraints) . ", " . $oDb->quote($iPosition) . ")";
+                $sInsertSql = "INSERT INTO `oxconfigdisplay` (`OXID`, `OXCFGMODULE`, `OXCFGVARNAME`, `OXGROUPING`, `OXVARCONSTRAINT`) " .
+                              "VALUES ('{$sOxId}', " . $oDb->quote($sModule) . ", " . $oDb->quote($sName) . ", " . $oDb->quote($sGroup) . ", " . $oDb->quote($sConstraints) . ")";
 
                 $oDb->execute($sDeleteSql);
                 $oDb->execute($sInsertSql);

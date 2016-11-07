@@ -267,6 +267,7 @@ class UtilitiesTest extends \OxidTestCase
     {
         $file = $this->configTestPath . '/config.inc.php';
         if (file_exists($file)) {
+            chmod($file, 0777);
             unlink($file);
         }
     }

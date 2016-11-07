@@ -46,6 +46,10 @@
     // Always leave .php extension here unless you know what you are doing
     $this->sOXIDPHP = "oxid.php";
 
+    // uncomment the following line if you can not access admin panel because of missing views
+    // after generating new views you should comment it out again
+    // $this->blSkipViewUsage = true;
+
     //  enable debug mode for template development or bugfixing
     // -1 = Logger Messages internal use only
     //  0 = off

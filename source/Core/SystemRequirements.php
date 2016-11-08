@@ -121,8 +121,10 @@ class SystemRequirements
      */
     protected $_aInfoMap = array(
         "php_version"        => "PHP_version_at_least_5.3.25",
+        // @deprecated since v6.0 (2016-11-08); See checkLibXml2() and checkPhpXml()
         "lib_xml2"           => "LIB_XML2",
         "php_xml"            => "DOM",
+        // END deprecated
         "open_ssl"           => "OpenSSL",
         "soap"               => "SOAP",
         "j_son"              => "JSON",
@@ -143,7 +145,9 @@ class SystemRequirements
         "mod_rewrite"        => "apache_mod_rewrite_module",
         "server_permissions" => "Files_.26_Folder_Permission_Setup",
         "zend_optimizer"     => "Zend_Optimizer",
+        // @deprecated since v6.0 (2016-11-08); Function checkBug53632() is not used any more.
         "bug53632"           => "Not_recommended_PHP_versions",
+        // END deprecated
         "session_autostart"  => "session.auto_start_must_be_off",
         "magic_quotes_gpc"   => "magic_quotes_must_be_off",
         "mysql_version"      => "Not_recommended_MySQL_versions",
@@ -152,6 +156,8 @@ class SystemRequirements
 
     /**
      * Returns PHP consntant PHP_INT_SIZE
+     *
+     * @deprecated since v6.0 (2016-11-08); Function checkBug53632() is not used any more.
      *
      * @return integer
      */
@@ -227,8 +233,10 @@ class SystemRequirements
         if ($this->_aRequiredModules == null) {
             $aRequiredPHPExtensions = array(
                 'php_version',
+                // @deprecated since v6.0 (2016-11-08); See checkLibXml2() and checkPhpXml()
                 'lib_xml2',
                 'php_xml',
+                // END deprecated
                 'j_son',
                 'i_conv',
                 'tokenizer',
@@ -256,8 +264,7 @@ class SystemRequirements
 
             $aRequiredServerConfigs = array(
                 'mod_rewrite',
-                'server_permissions',
-                'bug53632'
+                'server_permissions'
             );
 
             if ($this->isAdmin()) {
@@ -276,6 +283,8 @@ class SystemRequirements
      * Assumme that PHP versions < 5.3.5 may have this issue, so
      * informing users about possible issues
      * PHP version 5.3.7 has security bug too.
+     *
+     * @deprecated since v6.0 (2016-11-08); Minimum PHP version does not include this bug any more.
      *
      * @return int
      */
@@ -610,16 +619,10 @@ class SystemRequirements
     public function checkPhpVersion()
     {
         $sPhpVersion = $this->getPhpVersion();
-        if (version_compare($sPhpVersion, '5.3', '<')) {
-            $iModStat = 0;
-        } elseif (version_compare($sPhpVersion, '5.3.0', '>=') && version_compare($sPhpVersion, '5.3.25', '<')) {
-            $iModStat = 1;
-        } elseif (version_compare($sPhpVersion, '5.3.25', '>=')) {
+        $iModStat = 0;
+        if (version_compare($sPhpVersion, '5.6', '>=')) {
             $iModStat = 2;
-        } else {
-            $iModStat = 1;
         }
-
         return $iModStat;
     }
 
@@ -646,6 +649,8 @@ class SystemRequirements
     /**
      * Checks if libxml2 is activated
      *
+     * @deprecated since v6.0 (2016-11-08); DomDocument is available in any case.
+     *
      * @return integer
      */
     public function checkLibXml2()
@@ -655,6 +660,8 @@ class SystemRequirements
 
     /**
      * Checks if php-xml is activated ???
+     *
+     * @deprecated since v6.0 (2016-11-08); DomDocument is available in any case.
      *
      * @return integer
      */
@@ -730,38 +737,13 @@ class SystemRequirements
      */
     public function checkMysqlConnect()
     {
-        // MySQL module for MySQL5
-        $iModStat = (extension_loaded('mysql') || extension_loaded('mysqli') || extension_loaded('pdo_mysql')) ? 2 : 0;
-
-        // client version must be >=5
-        if ($iModStat) {
-            $sClientVersion = $this->getMySQLClientVersion();
-            if (version_compare($sClientVersion, '5', '<')) {
-                $iModStat = 1;
-                if (version_compare($sClientVersion, '4', '<')) {
-                    $iModStat = 0;
-                }
-            } elseif (version_compare($sClientVersion, '5.0.36', '>=') &&
-                      version_compare($sClientVersion, '5.0.38', '<')
-            ) {
-                // mantis#0001003: Problems with MySQL version 5.0.37
-                $iModStat = 0;
-            } elseif (version_compare($sClientVersion, '5.0.40', '>') &&
-                      version_compare($sClientVersion, '5.0.42', '<')
-            ) {
-                // mantis#0001877: Exclude MySQL 5.0.41 from system requirements as not fitting
-                $iModStat = 0;
-            }
-            if (strpos($sClientVersion, 'mysqlnd') !== false) {
-                // PHP 5.3 includes new mysqlnd extension
-                $iModStat = 2;
-            }
-        }
-
+        $iModStat = extension_loaded('pdo_mysql') ? 2 : 0;
         return $iModStat;
     }
 
     /**
+     * @deprecated since v6.0 (2016-11-08); MySQL server version will be checked instead.
+     *
      * @return string
      * @throws Exception
      */
@@ -796,21 +778,8 @@ class SystemRequirements
         }
 
         $iModStat = 0;
-        if (version_compare($sVersion, '5.0.3', '>=')) {
+        if (version_compare($sVersion, '5.5', '>=')) {
             $iModStat = 2;
-        }
-
-        /**
-         * The following version of MySQL server are reported to not be compatible with OXID eShop
-         */
-        if (// https://bugs.oxid-esales.com/view.php?id=1877
-            version_compare($sVersion, '5.0.41', '=') ||
-            // https://bugs.oxid-esales.com/view.php?id=1003
-            version_compare($sVersion, '5.0.37', '=') ||
-            // Only a note in http://oxidforge.org/en/installation.html
-            version_compare($sVersion, '5.0.36', '=')
-         ) {
-            $iModStat = 0;
         }
 
         return $iModStat;

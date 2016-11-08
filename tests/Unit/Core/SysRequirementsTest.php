@@ -72,7 +72,7 @@ class SysRequirementsTest extends \OxidTestCase
         if (isAdmin()) {
             $sCnt++;
         }
-        $sCnt++;
+
         $this->assertEquals($sCnt, count($aSysInfo['server_config']));
     }
 
@@ -120,7 +120,7 @@ class SysRequirementsTest extends \OxidTestCase
         $this->assertEquals(0, $oSysReq->checkMysqlVersion('5'));
         $this->assertEquals(0, $oSysReq->checkMysqlVersion('5.0.1'));
         $this->assertEquals(0, $oSysReq->checkMysqlVersion('5.0.2'));
-        $this->assertEquals(2, $oSysReq->checkMysqlVersion('5.0.3'));
+        $this->assertEquals(0, $oSysReq->checkMysqlVersion('5.0.3'));
         // Just test a few real versions
         $this->assertEquals(2, $oSysReq->checkMysqlVersion('5.5.49-0ubuntu0.14.04.1'));
         $this->assertEquals(2, $oSysReq->checkMysqlVersion('5.7.12-1~exp1+deb.sury.org~trusty+1'));
@@ -450,11 +450,14 @@ class SysRequirementsTest extends \OxidTestCase
         return array(
             array('5.2', 0),
             array('5.2.3', 0),
-            array('5.3.0', 1),
-            array('5.3', 1),
-            array('5.3.25', 2),
-            array('5.4', 2),
-            array('5.4.2', 2),
+            array('5.3.0', 0),
+            array('5.3', 0),
+            array('5.3.25', 0),
+            array('5.4', 0),
+            array('5.4.2', 0),
+            array('5.5.50', 0),
+            array('5.6.27', 2),
+            array('7.0.12', 2),
         );
     }
 

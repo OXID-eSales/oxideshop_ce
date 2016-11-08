@@ -250,9 +250,7 @@ class Controller extends Core
         $oView->setTitle('STEP_3_1_TITLE');
 
         $aDB = $this->getInstance("Utilities")->getRequestVar("aDB", "post");
-        if (!isset($aDB['iUtfMode'])) {
-            $aDB['iUtfMode'] = 0;
-        }
+        $aDB['iUtfMode'] = 1;
         $oSession->setSessionParam('aDB', $aDB);
 
         // check if iportant parameters are set

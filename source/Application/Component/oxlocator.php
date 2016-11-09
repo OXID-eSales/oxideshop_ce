@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxLocator extends \OxidEsales\EshopCommunity\Application\Component\Locator
+class oxLocator extends \OxidEsales\Eshop\Application\Component\Locator
 {
 }

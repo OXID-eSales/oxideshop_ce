@@ -27,6 +27,6 @@
  *
  */
 
-class oxPriceList extends \OxidEsales\EshopCommunity\Core\PriceList
+class oxPriceList extends \OxidEsales\Eshop\Core\PriceList
 {
 }

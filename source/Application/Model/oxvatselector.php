@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxVatSelector extends \OxidEsales\EshopCommunity\Application\Model\VatSelector
+class oxVatSelector extends \OxidEsales\Eshop\Application\Model\VatSelector
 {
 }

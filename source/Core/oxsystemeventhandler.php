@@ -27,6 +27,6 @@
  *
  */
 
-class oxSystemEventHandler extends \OxidEsales\EshopCommunity\Core\SystemEventHandler
+class oxSystemEventHandler extends \OxidEsales\Eshop\Core\SystemEventHandler
 {
 }

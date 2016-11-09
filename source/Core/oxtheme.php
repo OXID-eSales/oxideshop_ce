@@ -27,6 +27,6 @@
  *
  */
 
-class oxTheme extends \OxidEsales\EshopCommunity\Core\Theme
+class oxTheme extends \OxidEsales\Eshop\Core\Theme
 {
 }

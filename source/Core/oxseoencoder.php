@@ -23,6 +23,6 @@
 /**
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  */
-class oxSeoEncoder extends \OxidEsales\EshopCommunity\Core\SeoEncoder
+class oxSeoEncoder extends \OxidEsales\Eshop\Core\SeoEncoder
 {
 }

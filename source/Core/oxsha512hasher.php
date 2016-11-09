@@ -27,6 +27,6 @@
  *
  */
 
-class oxSha512Hasher extends \OxidEsales\EshopCommunity\Core\Sha512Hasher
+class oxSha512Hasher extends \OxidEsales\Eshop\Core\Sha512Hasher
 {
 }

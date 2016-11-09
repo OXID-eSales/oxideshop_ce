@@ -27,6 +27,6 @@
  *
  */
 
-class oxUtilsXml extends \OxidEsales\EshopCommunity\Core\UtilsXml
+class oxUtilsXml extends \OxidEsales\Eshop\Core\UtilsXml
 {
 }

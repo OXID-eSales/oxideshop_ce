@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\Links
  */
-class oxLinks extends \OxidEsales\EshopCommunity\Application\Model\Links
+class oxLinks extends \OxidEsales\Eshop\Application\Model\Links
 {
 }

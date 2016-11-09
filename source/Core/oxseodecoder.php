@@ -27,6 +27,6 @@
  *
  */
 
-class oxSeoDecoder extends \OxidEsales\EshopCommunity\Core\SeoDecoder
+class oxSeoDecoder extends \OxidEsales\Eshop\Core\SeoDecoder
 {
 }

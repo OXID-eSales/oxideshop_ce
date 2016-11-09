@@ -27,6 +27,6 @@
  *
  */
 
-class oxOutput extends \OxidEsales\EshopCommunity\Core\Output
+class oxOutput extends \OxidEsales\Eshop\Core\Output
 {
 }

@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-abstract class oxHasher extends \OxidEsales\EshopCommunity\Core\Hasher
+abstract class oxHasher extends \OxidEsales\Eshop\Core\Hasher
 {
 }

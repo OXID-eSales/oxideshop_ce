@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Component\Widget\ServiceMenu
  */
-class oxwServiceMenu extends \OxidEsales\EshopCommunity\Application\Component\Widget\ServiceMenu
+class oxwServiceMenu extends \OxidEsales\Eshop\Application\Component\Widget\ServiceMenu
 {
 }

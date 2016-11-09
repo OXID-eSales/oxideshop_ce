@@ -27,6 +27,6 @@
  *
  */
 
-class oxStrRegular extends \OxidEsales\EshopCommunity\Core\StrRegular
+class oxStrRegular extends \OxidEsales\Eshop\Core\StrRegular
 {
 }

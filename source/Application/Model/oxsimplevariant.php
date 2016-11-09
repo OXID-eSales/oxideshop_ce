@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\SimpleVariant
  */
-class oxSimpleVariant extends \OxidEsales\EshopCommunity\Application\Model\SimpleVariant
+class oxSimpleVariant extends \OxidEsales\Eshop\Application\Model\SimpleVariant
 {
 }

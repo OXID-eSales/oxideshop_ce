@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxRequiredAddressFields extends \OxidEsales\EshopCommunity\Application\Model\RequiredAddressFields
+class oxRequiredAddressFields extends \OxidEsales\Eshop\Application\Model\RequiredAddressFields
 {
 }

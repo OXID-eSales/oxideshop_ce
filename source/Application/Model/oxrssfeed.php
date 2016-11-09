@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxRssFeed extends \OxidEsales\EshopCommunity\Application\Model\RssFeed
+class oxRssFeed extends \OxidEsales\Eshop\Application\Model\RssFeed
 {
 }

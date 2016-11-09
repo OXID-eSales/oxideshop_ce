@@ -27,6 +27,6 @@
  *
  */
 
-class oxTableViewNameGenerator extends \OxidEsales\EshopCommunity\Core\TableViewNameGenerator
+class oxTableViewNameGenerator extends \OxidEsales\Eshop\Core\TableViewNameGenerator
 {
 }

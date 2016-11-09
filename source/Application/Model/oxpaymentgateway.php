@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxPaymentGateway extends \OxidEsales\EshopCommunity\Application\Model\PaymentGateway
+class oxPaymentGateway extends \OxidEsales\Eshop\Application\Model\PaymentGateway
 {
 }

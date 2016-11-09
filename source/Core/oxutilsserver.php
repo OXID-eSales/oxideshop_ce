@@ -27,6 +27,6 @@
  *
  */
 
-class oxUtilsServer extends \OxidEsales\EshopCommunity\Core\UtilsServer
+class oxUtilsServer extends \OxidEsales\Eshop\Core\UtilsServer
 {
 }

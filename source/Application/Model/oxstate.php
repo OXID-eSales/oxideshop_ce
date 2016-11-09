@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxState extends \OxidEsales\EshopCommunity\Application\Model\State
+class oxState extends \OxidEsales\Eshop\Application\Model\State
 {
 }

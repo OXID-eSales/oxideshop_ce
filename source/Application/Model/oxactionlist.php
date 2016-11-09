@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxActionList extends \OxidEsales\EshopCommunity\Application\Model\ActionList
+class oxActionList extends \OxidEsales\Eshop\Application\Model\ActionList
 {
 }

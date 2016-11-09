@@ -27,6 +27,6 @@
  *
  */
 
-class oxSepaValidator extends \OxidEsales\EshopCommunity\Core\SepaValidator
+class oxSepaValidator extends \OxidEsales\Eshop\Core\SepaValidator
 {
 }

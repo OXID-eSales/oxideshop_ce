@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Component\Widget\ArticleDetails
  */
-class oxwArticleDetails extends \OxidEsales\EshopCommunity\Application\Component\Widget\ArticleDetails
+class oxwArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\ArticleDetails
 {
 }

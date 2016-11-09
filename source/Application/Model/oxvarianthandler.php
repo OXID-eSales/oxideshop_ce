@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxVariantHandler extends \OxidEsales\EshopCommunity\Application\Model\VariantHandler
+class oxVariantHandler extends \OxidEsales\Eshop\Application\Model\VariantHandler
 {
 }

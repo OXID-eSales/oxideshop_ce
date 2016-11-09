@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxModuleCache extends \OxidEsales\EshopCommunity\Core\ModuleCache
+class oxModuleCache extends \OxidEsales\Eshop\Core\ModuleCache
 {
 }

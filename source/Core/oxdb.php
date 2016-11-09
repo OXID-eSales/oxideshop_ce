@@ -25,6 +25,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Core\DatabaseProvider
  */
-class oxDb extends \OxidEsales\EshopCommunity\Core\DatabaseProvider
+class oxDb extends \OxidEsales\Eshop\Core\DatabaseProvider
 {
 }

@@ -31,6 +31,6 @@
  * @mixin \OxidEsales\EshopProfessional\Core\SystemRequirements
  * @mixin \OxidEsales\EshopEnterprise\Core\SystemRequirements
  */
-class oxSysRequirements extends \OxidEsales\EshopCommunity\Core\SystemRequirements
+class oxSysRequirements extends \OxidEsales\Eshop\Core\SystemRequirements
 {
 }

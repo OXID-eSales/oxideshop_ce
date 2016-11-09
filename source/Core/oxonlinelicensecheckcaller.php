@@ -27,6 +27,6 @@
  *
  */
 
-class oxOnlineLicenseCheckCaller extends \OxidEsales\EshopCommunity\Core\OnlineLicenseCheckCaller
+class oxOnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller
 {
 }

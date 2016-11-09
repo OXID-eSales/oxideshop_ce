@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxSeoEncoderContent extends \OxidEsales\EshopCommunity\Application\Model\SeoEncoderContent
+class oxSeoEncoderContent extends \OxidEsales\Eshop\Application\Model\SeoEncoderContent
 {
 }

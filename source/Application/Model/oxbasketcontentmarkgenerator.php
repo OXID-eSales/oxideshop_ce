@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxBasketContentMarkGenerator extends \OxidEsales\EshopCommunity\Application\Model\BasketContentMarkGenerator
+class oxBasketContentMarkGenerator extends \OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator
 {
 }

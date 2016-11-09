@@ -27,6 +27,6 @@
  *
  */
 
-class oxUserCounter extends \OxidEsales\EshopCommunity\Core\UserCounter
+class oxUserCounter extends \OxidEsales\Eshop\Core\UserCounter
 {
 }

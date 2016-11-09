@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Component\UserComponent
  */
-class oxcmp_user extends \OxidEsales\EshopCommunity\Application\Component\UserComponent
+class oxcmp_user extends \OxidEsales\Eshop\Application\Component\UserComponent
 {
 }

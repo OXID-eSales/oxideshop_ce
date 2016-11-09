@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxVoucherList extends \OxidEsales\EshopCommunity\Application\Model\VoucherList
+class oxVoucherList extends \OxidEsales\Eshop\Application\Model\VoucherList
 {
 }

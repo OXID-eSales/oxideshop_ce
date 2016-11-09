@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Core\ShopIdCalculator
  */
-class oxshopidcalculator extends \OxidEsales\EshopCommunity\Core\ShopIdCalculator
+class oxshopidcalculator extends \OxidEsales\Eshop\Core\ShopIdCalculator
 {
 }

@@ -27,6 +27,6 @@
  *
  */
 
-class oxServerChecker extends \OxidEsales\EshopCommunity\Core\ServerChecker
+class oxServerChecker extends \OxidEsales\Eshop\Core\ServerChecker
 {
 }

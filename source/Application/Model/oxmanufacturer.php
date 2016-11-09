@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\Manufacturer
  */
-class oxManufacturer extends \OxidEsales\EshopCommunity\Application\Model\Manufacturer
+class oxManufacturer extends \OxidEsales\Eshop\Application\Model\Manufacturer
 {
 }

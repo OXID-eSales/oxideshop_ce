@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-abstract class oxCompanyVatInChecker extends \OxidEsales\EshopCommunity\Core\CompanyVatInChecker
+abstract class oxCompanyVatInChecker extends \OxidEsales\Eshop\Core\CompanyVatInChecker
 {
 }

@@ -27,6 +27,6 @@
  *
  */
 
-abstract class oxOnlineCaller extends \OxidEsales\EshopCommunity\Core\OnlineCaller
+abstract class oxOnlineCaller extends \OxidEsales\Eshop\Core\OnlineCaller
 {
 }

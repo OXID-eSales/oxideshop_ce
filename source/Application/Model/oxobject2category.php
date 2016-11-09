@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\Object2Category
  */
-class oxObject2Category extends \OxidEsales\EshopCommunity\Application\Model\Object2Category
+class oxObject2Category extends \OxidEsales\Eshop\Application\Model\Object2Category
 {
 }

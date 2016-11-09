@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\Review
  */
-class oxReview extends \OxidEsales\EshopCommunity\Application\Model\Review
+class oxReview extends \OxidEsales\Eshop\Application\Model\Review
 {
 }

@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\Delivery
  */
-class oxDelivery extends \OxidEsales\EshopCommunity\Application\Model\Delivery
+class oxDelivery extends \OxidEsales\Eshop\Application\Model\Delivery
 {
 }

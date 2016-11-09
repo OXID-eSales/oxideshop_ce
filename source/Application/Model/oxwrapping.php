@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxWrapping extends \OxidEsales\EshopCommunity\Application\Model\Wrapping
+class oxWrapping extends \OxidEsales\Eshop\Application\Model\Wrapping
 {
 }

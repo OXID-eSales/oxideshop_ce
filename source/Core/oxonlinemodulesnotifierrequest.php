@@ -27,6 +27,6 @@
  *
  */
 
-class oxOnlineModulesNotifierRequest extends \OxidEsales\EshopCommunity\Core\OnlineModulesNotifierRequest
+class oxOnlineModulesNotifierRequest extends \OxidEsales\Eshop\Core\OnlineModulesNotifierRequest
 {
 }

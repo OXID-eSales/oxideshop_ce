@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxCurl extends \OxidEsales\EshopCommunity\Core\Curl
+class oxCurl extends \OxidEsales\Eshop\Core\Curl
 {
 }

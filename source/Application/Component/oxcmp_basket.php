@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Component\BasketComponent
  */
-class oxcmp_basket extends \OxidEsales\EshopCommunity\Application\Component\BasketComponent
+class oxcmp_basket extends \OxidEsales\Eshop\Application\Component\BasketComponent
 {
 }

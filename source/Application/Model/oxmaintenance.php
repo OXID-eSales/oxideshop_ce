@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxMaintenance extends \OxidEsales\EshopCommunity\Application\Model\Maintenance
+class oxMaintenance extends \OxidEsales\Eshop\Application\Model\Maintenance
 {
 }

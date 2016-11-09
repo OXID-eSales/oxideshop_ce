@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxDiagnostics extends \OxidEsales\EshopCommunity\Application\Model\Diagnostics
+class oxDiagnostics extends \OxidEsales\Eshop\Application\Model\Diagnostics
 {
 }

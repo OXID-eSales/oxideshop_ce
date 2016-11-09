@@ -27,6 +27,6 @@
  *
  */
 
-class oxWidgetControl extends \OxidEsales\EshopCommunity\Core\WidgetControl
+class oxWidgetControl extends \OxidEsales\Eshop\Core\WidgetControl
 {
 }

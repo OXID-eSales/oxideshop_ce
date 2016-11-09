@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Core\Base
  */
-class oxSuperCfg extends \OxidEsales\EshopCommunity\Core\Base
+class oxSuperCfg extends \OxidEsales\Eshop\Core\Base
 {
 }

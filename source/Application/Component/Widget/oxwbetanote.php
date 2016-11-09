@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxwBetaNote extends \OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote
+class oxwBetaNote extends \OxidEsales\Eshop\Application\Component\Widget\BetaNote
 {
 }

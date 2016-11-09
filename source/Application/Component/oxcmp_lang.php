@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxcmp_lang extends \OxidEsales\EshopCommunity\Application\Component\LanguageComponent
+class oxcmp_lang extends \OxidEsales\Eshop\Application\Component\LanguageComponent
 {
 }

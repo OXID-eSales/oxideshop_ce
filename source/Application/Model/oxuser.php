@@ -30,6 +30,6 @@
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\User
  * @mixin \OxidEsales\EshopProfessional\Application\Model\User
  */
-class oxUser extends \OxidEsales\EshopCommunity\Application\Model\User
+class oxUser extends \OxidEsales\Eshop\Application\Model\User
 {
 }

@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxInputValidator extends \OxidEsales\EshopCommunity\Core\InputValidator
+class oxInputValidator extends \OxidEsales\Eshop\Core\InputValidator
 {
 }

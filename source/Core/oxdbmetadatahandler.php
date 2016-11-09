@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Core\DbMetaDataHandler
  */
-class oxDbMetaDataHandler extends \OxidEsales\EshopCommunity\Core\DbMetaDataHandler
+class oxDbMetaDataHandler extends \OxidEsales\Eshop\Core\DbMetaDataHandler
 {
 }

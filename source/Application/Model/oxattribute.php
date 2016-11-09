@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\Attribute
  */
-class oxAttribute extends \OxidEsales\EshopCommunity\Application\Model\Attribute
+class oxAttribute extends \OxidEsales\Eshop\Application\Model\Attribute
 {
 }

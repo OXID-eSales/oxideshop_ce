@@ -26,6 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class oxConfig extends \OxidEsales\EshopCommunity\Core\Config
+class oxConfig extends \OxidEsales\Eshop\Core\Config
 {
 }

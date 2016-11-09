@@ -27,6 +27,6 @@
  *
  */
 
-class oxSepaIBANValidator extends \OxidEsales\EshopCommunity\Core\SepaIBANValidator
+class oxSepaIBANValidator extends \OxidEsales\Eshop\Core\SepaIBANValidator
 {
 }

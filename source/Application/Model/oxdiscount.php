@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Model\Discount
  */
-class oxDiscount extends \OxidEsales\EshopCommunity\Application\Model\Discount
+class oxDiscount extends \OxidEsales\Eshop\Application\Model\Discount
 {
 }

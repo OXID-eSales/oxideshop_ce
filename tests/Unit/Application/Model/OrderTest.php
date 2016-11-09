@@ -2185,6 +2185,55 @@ class OrderTest extends \OxidTestCase
         $this->assertEquals('Bar-Set ABSINTH', $oOrderArticles[1]->oxorderarticles__oxtitle->value);
     }
 
+    public function testSetOrderArticlesWithTwoChoosenSelectListAndAVariant()
+    {
+        $aChosenSelectlist[0] = new stdClass();
+        $aChosenSelectlist[0]->name = 'selectName';
+        $aChosenSelectlist[0]->value = 'selectValue';
+
+        $aChosenSelectlist2[0] = new stdClass();
+        $aChosenSelectlist2[0]->name = 'selectName2';
+        $aChosenSelectlist2[0]->value = 'selectValue2';
+
+        $sVarSelect = 'red | S';
+
+        // simulating basket
+        $oPrice = oxNew('oxPrice');
+        $oPrice->setPrice(119, 19);
+
+        $oBasketItem = $this->getProxyClass("oxBasketItem");
+        $oBasketItem->setNonPublicVar('_sProductId', '1126');
+        $oBasketItem->setNonPublicVar('_oPrice', $oPrice);
+        $oBasketItem->setNonPublicVar('_oUnitPrice', $oPrice);
+        $oBasketItem->setNonPublicVar('_aChosenSelectlist', $aChosenSelectlist);
+        $aBasketItems[] = $oBasketItem;
+
+        $oBasketItem2 = $this->getProxyClass("oxBasketItem");
+        $oBasketItem2->setNonPublicVar('_sProductId', '1126');
+        $oBasketItem2->setNonPublicVar('_oPrice', $oPrice);
+        $oBasketItem2->setNonPublicVar('_oUnitPrice', $oPrice);
+        $oBasketItem2->setNonPublicVar('_aChosenSelectlist', $aChosenSelectlist2);
+        $oBasketItem2->setNonPublicVar('_sVarSelect', $sVarSelect);
+        $aBasketItems[] = $oBasketItem2;
+
+
+        $oOrder = $this->getProxyClass("oxOrder");
+        $oOrder->setId('_testOrderId');
+        $oOrder->UNITsetOrderArticles($aBasketItems);
+
+        $oArticles = $oOrder->getNonPublicVar('_oArticles');
+
+        $i = 0;
+        foreach ($oArticles as $oArticle) {
+            $oOrderArticles[$i++] = $oArticle;
+        }
+
+        $this->assertEquals('selectName : selectValue', $oOrderArticles[0]->oxorderarticles__oxselvariant->value);
+        $this->assertEquals('selectName2 : selectValue2 || red | S', $oOrderArticles[1]->oxorderarticles__oxselvariant->value);
+        $this->assertEquals('Bar-Set ABSINTH', $oOrderArticles[0]->oxorderarticles__oxtitle->value);
+        $this->assertEquals('Bar-Set ABSINTH', $oOrderArticles[1]->oxorderarticles__oxtitle->value);
+    }
+
     public function testExecutePayment()
     {
         $oGateway = $this->getMock(\OxidEsales\Eshop\Application\Model\PaymentGateway::class, array('executePayment'));

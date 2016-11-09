@@ -1071,7 +1071,7 @@ class SessionTest extends \OxidTestCase
      */
     function testSidInAdmin()
     {
-        $oSession = $this->getMock('\Unit\Core\testSession', array('_getCookieSid', 'isAdmin', 'getSessionChallengeToken'));
+        $oSession = $this->getMock('\Unit\Core\testSession', array('_getCookieSid', 'isAdmin', 'getSessionChallengeToken', 'getShopUrlId'));
         $oSession->expects($this->any())->method('getSessionChallengeToken')->will($this->returnValue('stok'));
         $oSession->expects($this->any())->method('_getCookieSid')->will($this->returnValue('admin_sid'));
         $oSession->expects($this->any())->method('isAdmin')->will($this->returnValue(true));

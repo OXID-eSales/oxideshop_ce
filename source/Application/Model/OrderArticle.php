@@ -420,6 +420,8 @@ class OrderArticle extends \oxBase implements ArticleInterface
 
             $sOrderArtSelList = $sOrderArtSelList ? $sOrderArtSelList : $this->oxorderarticles__oxselvariant->value;
 
+            $sOrderArtSelList = explode(' || ', $sOrderArtSelList)[0];
+
             $aRet = array();
 
             if ($oArticle = $this->_getOrderArticle($sArtId)) {
@@ -449,6 +451,7 @@ class OrderArticle extends \oxBase implements ArticleInterface
                                             if ($oStr->strtolower($oSel->name) == $sOrderArtSelValue) {
                                                 // found, adding to return array
                                                 $aRet[$iSelListNum] = $iSelValueNum;
+                                                break;
                                             }
                                             //next article list item
                                             $iSelValueNum++;

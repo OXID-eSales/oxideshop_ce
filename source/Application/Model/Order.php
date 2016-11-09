@@ -865,6 +865,9 @@ class Order extends \oxBase
                         }
                         $sSelList .= "{$oItem->name} : {$oItem->value}";
                     }
+                    if ($sSelList !== '' && $oContent->getVarSelect() !== '') {
+                        $sSelList .= ' ||';
+                    }
                 }
 
                 $oOrderArticle = oxNew('oxorderarticle');
@@ -873,7 +876,7 @@ class Order extends \oxBase
                 $oOrderArticle->setId();
 
                 $oOrderArticle->oxorderarticles__oxartnum = clone $oProduct->oxarticles__oxartnum;
-                $oOrderArticle->oxorderarticles__oxselvariant = new oxField(trim($sSelList . ' ' . $oProduct->oxarticles__oxvarselect->getRawValue()), oxField::T_RAW);
+                $oOrderArticle->oxorderarticles__oxselvariant = new oxField(trim($sSelList . ' ' . $oContent->getVarSelect()), oxField::T_RAW);
                 $oOrderArticle->oxorderarticles__oxshortdesc = new oxField($oProduct->oxarticles__oxshortdesc->getRawValue(), oxField::T_RAW);
                 // #M974: duplicated entries for the name of variants in orders
                 $oOrderArticle->oxorderarticles__oxtitle = new oxField(trim($oProduct->oxarticles__oxtitle->getRawValue()), oxField::T_RAW);

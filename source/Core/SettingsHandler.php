@@ -73,6 +73,7 @@ class SettingsHandler extends \oxSuperCfg
         $this->removeNotUsedSettings($moduleSettings, $moduleId);
         $config = $this->getConfig();
         $shopId = $config->getShopId();
+        $moduleConfigs = $this->getModuleConfigs($moduleId);
         $db = oxDb::getDb();
 
         if (is_array($moduleSettings)) {
@@ -82,7 +83,14 @@ class SettingsHandler extends \oxSuperCfg
                 $module = $this->moduleType . ':' . $moduleId;
                 $name = $setting["name"];
                 $type = $setting["type"];
-                $value = is_null($config->getConfigParam($name)) ? $setting["value"] : $config->getConfigParam($name);
+
+                $themeTypeCondition = "@^" . Config::OXMODULE_THEME_PREFIX . "@i";
+                if (preg_match($themeTypeCondition, $module)) {
+                    $value = array_key_exists($name, $moduleConfigs) ? $moduleConfigs[$name] : $setting["value"];
+                } else {
+                    $value = is_null($config->getConfigParam($name)) ? $setting["value"] : $config->getConfigParam($name);
+                }
+
                 $group = $setting["group"];
 
                 $constraints = "";
@@ -115,7 +123,7 @@ class SettingsHandler extends \oxSuperCfg
      */
     protected function removeNotUsedSettings($moduleSettings, $moduleId)
     {
-        $moduleConfigs = $this->getModuleConfigs($moduleId);
+        $moduleConfigs = array_keys($this->getModuleConfigs($moduleId));
         $moduleSettings = $this->parseModuleSettings($moduleSettings);
 
         $configsToRemove = array_diff($moduleConfigs, $moduleSettings);
@@ -129,17 +137,25 @@ class SettingsHandler extends \oxSuperCfg
      *
      * @param string $moduleId Module id
      *
-     * @return array
+     * @return array key=>value
      */
     protected function getModuleConfigs($moduleId)
     {
-        $db = oxDb::getDb();
-        $quotedShopId = $db->quote($this->getConfig()->getShopId());
-        $quotedModuleId = $db->quote($this->moduleType . ':' . $moduleId);
+        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $config = $this->getConfig();
+        $shopId = $config->getShopId();
+        $module = $this->moduleType . ':' . $moduleId;
 
-        $moduleConfigsQuery = "SELECT oxvarname FROM oxconfig WHERE oxmodule = $quotedModuleId AND oxshopid = $quotedShopId";
+        $decodeValueQuery = $config->getDecodeValueQuery();
+        $moduleConfigsQuery = "SELECT oxvarname, oxvartype, {$decodeValueQuery} as oxvardecodedvalue FROM oxconfig WHERE oxmodule = ? AND oxshopid = ?";
+        $dbConfigs = $db->getAll($moduleConfigsQuery, [$module, $shopId]);
 
-        return $db->getCol($moduleConfigsQuery);
+        $result = [];
+        foreach ($dbConfigs as $oneModuleConfig) {
+            $result[$oneModuleConfig['oxvarname']] = $config->decodeValue($oneModuleConfig['oxvartype'], $oneModuleConfig['oxvardecodedvalue']);
+        }
+
+        return $result;
     }
 
     /**

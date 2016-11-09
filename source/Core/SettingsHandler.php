@@ -80,7 +80,7 @@ class SettingsHandler extends \oxSuperCfg
             foreach ($moduleSettings as $setting) {
                 $oxid = oxUtilsObject::getInstance()->generateUId();
 
-                $module = $this->moduleType . ':' . $moduleId;
+                $module = $this->getModuleConfigId($moduleId);
                 $name = $setting["name"];
                 $type = $setting["type"];
 
@@ -144,7 +144,7 @@ class SettingsHandler extends \oxSuperCfg
         $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $config = $this->getConfig();
         $shopId = $config->getShopId();
-        $module = $this->moduleType . ':' . $moduleId;
+        $module = $this->getModuleConfigId($moduleId);
 
         $decodeValueQuery = $config->getDecodeValueQuery();
         $moduleConfigsQuery = "SELECT oxvarname, oxvartype, {$decodeValueQuery} as oxvardecodedvalue FROM oxconfig WHERE oxmodule = ? AND oxshopid = ?";
@@ -188,7 +188,7 @@ class SettingsHandler extends \oxSuperCfg
     {
         $db = oxDb::getDb();
         $quotedShopId = $db->quote($this->getConfig()->getShopId());
-        $quotedModuleId = $db->quote($this->moduleType . ':' . $moduleId);
+        $quotedModuleId = $db->quote($this->getModuleConfigId($moduleId));
 
         $quotedConfigsToRemove = array_map(array($db, 'quote'), $configsToRemove);
         $deleteSql = "DELETE
@@ -198,5 +198,16 @@ class SettingsHandler extends \oxSuperCfg
                              oxvarname IN (" . implode(", ", $quotedConfigsToRemove) . ")";
 
         $db->execute($deleteSql);
+    }
+
+    /**
+     * Get config tables specific module id
+     *
+     * @param string $moduleId
+     * @return string
+     */
+    protected function getModuleConfigId($moduleId)
+    {
+        return $this->moduleType . ':' . $moduleId;
     }
 }

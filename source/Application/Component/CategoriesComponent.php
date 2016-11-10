@@ -148,7 +148,6 @@ class CategoriesComponent extends \oxView
                 $sActCat = null;
             }
         }
-        // END deprecated
 
         return $sActCat;
     }
@@ -230,14 +229,11 @@ class CategoriesComponent extends \oxView
      * @param oxArticle $oProduct         loaded product
      * @param string    $sActCat          active category id
      * @param string    $sActManufacturer active manufacturer id
-     * @param string    $sActTag          active tag
      * @param string    $sActVendor       active vendor
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module. So the parameter sActTag will be removed.
      *
      * @return string $sActCat
      */
-    protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActTag, $sActVendor)
+    protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor)
     {
         $sSearchPar = oxRegistry::getConfig()->getRequestParameter('searchparam');
         $sSearchCat = oxRegistry::getConfig()->getRequestParameter('searchcnid');

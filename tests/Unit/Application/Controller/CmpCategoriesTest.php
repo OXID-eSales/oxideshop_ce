@@ -464,7 +464,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("testCatId", $oCmp->UNITaddAdditionalParams(oxNew('oxarticle'), "testCatId", "testManId", "testTag", "testVendorId"));
+        $this->assertEquals("testCatId", $oCmp->UNITaddAdditionalParams(oxNew('oxarticle'), "testCatId", "testManId", "testVendorId"));
     }
 
     /**
@@ -491,7 +491,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("testManId", $oCmp->UNITaddAdditionalParams($oProduct, "testCatId", "testManId", "testTag", "testVendorId"));
+        $this->assertEquals("testManId", $oCmp->UNITaddAdditionalParams($oProduct, "testCatId", "testManId", "testVendorId"));
     }
 
     /**
@@ -518,7 +518,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("v_testVendorId", $oCmp->UNITaddAdditionalParams($oProduct, "v_testVendorId", "testManId", "testTag", "v_testVendorId"));
+        $this->assertEquals("v_testVendorId", $oCmp->UNITaddAdditionalParams($oProduct, "v_testVendorId", "testManId", "v_testVendorId"));
     }
 
     /**
@@ -543,7 +543,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("testCatId", $oCmp->UNITaddAdditionalParams($oProduct, null, null, null, null));
+        $this->assertEquals("testCatId", $oCmp->UNITaddAdditionalParams($oProduct, null, null, null));
     }
 
     /**
@@ -569,7 +569,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("testManId", $oCmp->UNITaddAdditionalParams($oProduct, null, null, null, null));
+        $this->assertEquals("testManId", $oCmp->UNITaddAdditionalParams($oProduct, null, null, null));
     }
 
     /**
@@ -596,6 +596,6 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("testVendorId", $oCmp->UNITaddAdditionalParams($oProduct, null, null, null, null));
+        $this->assertEquals("testVendorId", $oCmp->UNITaddAdditionalParams($oProduct, null, null, null));
     }
 }

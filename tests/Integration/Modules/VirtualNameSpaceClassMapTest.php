@@ -125,6 +125,9 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
      */
     public function testVirtualNamespaceModules($modulesToActivate, $expectedInheritanceChain, $expectedTitle)
     {
+
+        $this->markTestSkipped('Wrong assumption');
+
         $this->environment->prepare($modulesToActivate);
 
         $createdContentController = oxNew('Content');

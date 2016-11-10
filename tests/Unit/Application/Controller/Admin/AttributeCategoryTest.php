@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\Attribute;
+use OxidEsales\EshopCommunity\Application\Model\Attribute;
 
 /**
  * Tests for Attribute_Category class

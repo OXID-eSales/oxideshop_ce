@@ -21,8 +21,8 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\Order;
-use \OxidEsales\EshopCommunity\Application\Model\UserPayment;
+use OxidEsales\EshopCommunity\Application\Model\Order;
+use OxidEsales\EshopCommunity\Application\Model\UserPayment;
 
 use \oxField;
 use \Exception;

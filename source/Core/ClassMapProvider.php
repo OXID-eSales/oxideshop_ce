@@ -115,9 +115,9 @@ class ClassMapProvider
     /**
      * Return a map of concrete classes to virtual namespaced classes depending on the shop edition.
      *
-     * @return \OxidEsales\EshopCommunity\VirtualNameSpaceClassMap|
-     *         \OxidEsales\EshopEnterprise\VirtualNameSpaceClassMap|
-     *         \OxidEsales\EshopProfessional\VirtualNameSpaceClassMap Edition specific class map
+     * @return \OxidEsales\EshopCommunity\Core\VirtualNameSpaceClassMap|
+     *         \OxidEsales\EshopProfessional\Core\VirtualNameSpaceClassMap|
+     *         \OxidEsales\EshopEnterprise\Core\VirtualNameSpaceClassMap Edition specific class map
      */
     public function getVirtualNamespaceClassMap()
     {

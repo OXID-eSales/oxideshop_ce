@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller;
 
-use \OxidEsales\EshopCommunity\Application\Controller\AccountNoticeListController;
+use OxidEsales\EshopCommunity\Application\Controller\AccountNoticeListController;
 use \oxField;
 
 use PHPUnit_Framework_MockObject_MockObject as MockObject;

@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Model;
 
-use \OxidEsales\EshopCommunity\Application\Model\Manufacturer;
+use OxidEsales\EshopCommunity\Application\Model\Manufacturer;
 
 use \oxField;
 use \oxDb;

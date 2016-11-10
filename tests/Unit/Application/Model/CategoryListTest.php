@@ -25,7 +25,7 @@ use oxCategoryList;
 use \oxField;
 use \oxDb;
 use \oxRegistry;
-use \OxidEsales\EshopCommunity\Application\Model\Category;
+use OxidEsales\EshopCommunity\Application\Model\Category;
 
 if (!class_exists('\OxidEsales\EshopEnterprise\Application\Model\CategoryList')) {
     class_alias('oxCategoryList', '\OxidEsales\EshopEnterprise\Application\Model\CategoryList');

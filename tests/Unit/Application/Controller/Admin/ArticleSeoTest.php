@@ -21,14 +21,14 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\Category;
+use OxidEsales\EshopCommunity\Application\Model\Category;
 use \oxField;
 use \oxDb;
-use \OxidEsales\EshopCommunity\Application\Model\Manufacturer;
+use OxidEsales\EshopCommunity\Application\Model\Manufacturer;
 use \oxRegistry;
-use \OxidEsales\EshopCommunity\Application\Model\SeoEncoderArticle;
+use OxidEsales\EshopCommunity\Application\Model\SeoEncoderArticle;
 use \oxTestModules;
-use \OxidEsales\EshopCommunity\Application\Model\Vendor;
+use OxidEsales\EshopCommunity\Application\Model\Vendor;
 
 /**
  * Tests for Article_Seo class

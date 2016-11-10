@@ -22,8 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Core\Database\Adapter;
 
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
 
 /**
  * The database connection interface specifies how a database connection should look and act.

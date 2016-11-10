@@ -23,8 +23,8 @@ namespace Unit\Application\Model;
 
 use oxArticleException;
 use oxArticleInputException;
-use \OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay;
-use \OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay;
+use OxidEsales\EshopCommunity\Application\Model\Article;
 use \oxArticle;
 use \oxBasketItem;
 use \oxField;

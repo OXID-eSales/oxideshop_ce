@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Model;
 
-use \OxidEsales\EshopCommunity\Application\Model\Delivery;
+use OxidEsales\EshopCommunity\Application\Model\Delivery;
 use \oxArticleHelper;
 use \oxdeliverylist;
 use \oxDb;

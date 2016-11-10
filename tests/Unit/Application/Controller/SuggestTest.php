@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller;
 
-use \OxidEsales\EshopCommunity\Core\Model\ListModel;
+use OxidEsales\EshopCommunity\Core\Model\ListModel;
 
 use \oxDb;
 use \oxRegistry;

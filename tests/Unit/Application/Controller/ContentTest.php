@@ -21,10 +21,10 @@
  */
 namespace Unit\Application\Controller;
 
-use \OxidEsales\EshopCommunity\Application\Model\PaymentList;
-use \OxidEsales\EshopCommunity\Application\Model\DeliverySetList;
-use \OxidEsales\EshopCommunity\Application\Model\Delivery;
-use \OxidEsales\EshopCommunity\Application\Model\DeliveryList;
+use OxidEsales\EshopCommunity\Application\Model\PaymentList;
+use OxidEsales\EshopCommunity\Application\Model\DeliverySetList;
+use OxidEsales\EshopCommunity\Application\Model\Delivery;
+use OxidEsales\EshopCommunity\Application\Model\DeliveryList;
 
 use \oxUtilsView;
 use \oxField;

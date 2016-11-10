@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Model;
 
-use \OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Application\Model\Article;
 use \oxArticle;
 use oxArticleException;
 use \oxField;

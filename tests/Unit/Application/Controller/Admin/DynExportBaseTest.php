@@ -23,7 +23,7 @@ namespace Unit\Application\Controller\Admin;
 
 use DynExportBase;
 use Exception;
-use \OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Application\Model\Article;
 use oxDb;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use oxRegistry;

@@ -32,9 +32,9 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use OxidEsales\Eshop;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
-use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Core\Exception\StandardException;
 use PDO;
 
 /**
@@ -881,11 +881,11 @@ class Database implements DatabaseInterface
                 $code = $exception->errorInfo[1];
                 $message = $exception->errorInfo[2];
 
-                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
+                $exceptionClass = 'OxidEsales\EshopCommunity\Core\Exception\DatabaseException';
 
                 break;
             default:
-                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
+                $exceptionClass = 'OxidEsales\EshopCommunity\Core\Exception\DatabaseException';
         }
 
         /** @var \oxException $convertedException */

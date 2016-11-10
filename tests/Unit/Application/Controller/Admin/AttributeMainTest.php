@@ -22,7 +22,7 @@
 namespace Unit\Application\Controller\Admin;
 
 use \Exception;
-use \OxidEsales\EshopCommunity\Application\Model\Attribute;
+use OxidEsales\EshopCommunity\Application\Model\Attribute;
 use \oxTestModules;
 
 /**

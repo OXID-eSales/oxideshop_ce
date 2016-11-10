@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\CategoryList;
+use OxidEsales\EshopCommunity\Application\Model\CategoryList;
 use \oxTestModules;
 
 /**

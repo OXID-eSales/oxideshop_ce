@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller;
 
-use \OxidEsales\EshopCommunity\Application\Model\Content;
+use OxidEsales\EshopCommunity\Application\Model\Content;
 
 /**
  * Tests for content class

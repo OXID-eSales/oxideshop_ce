@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\Payment;
+use OxidEsales\EshopCommunity\Application\Model\Payment;
 
 use \Exception;
 use \oxTestModules;

@@ -21,8 +21,8 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\Article;
-use \OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay;
+use OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay;
 use \oxField;
 use \oxDb;
 use \oxRegistry;

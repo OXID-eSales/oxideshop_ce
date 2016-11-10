@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller;
 
-use \OxidEsales\EshopCommunity\Application\Model\CountryList;
+use OxidEsales\EshopCommunity\Application\Model\CountryList;
 
 use \stdClass;
 use \oxRegistry;

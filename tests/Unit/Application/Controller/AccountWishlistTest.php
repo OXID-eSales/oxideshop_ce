@@ -24,7 +24,7 @@ namespace Unit\Application\Controller;
 use \oxField;
 use \oxRegistry;
 use \oxTestModules;
-use \OxidEsales\EshopCommunity\Application\Model\UserList;
+use OxidEsales\EshopCommunity\Application\Model\UserList;
 
 /**
  * Tests for Account class

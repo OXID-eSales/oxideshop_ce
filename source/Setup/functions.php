@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\EshopProfessional\Core\Serial;
 
 if (!function_exists('getInstallPath')) {

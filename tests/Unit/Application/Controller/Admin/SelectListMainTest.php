@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\SelectList;
+use OxidEsales\EshopCommunity\Application\Model\SelectList;
 
 use \Exception;
 use \stdClass;

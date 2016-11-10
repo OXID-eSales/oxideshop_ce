@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Component\Widget;
 
-use \OxidEsales\EshopCommunity\Application\Model\VendorList;
+use OxidEsales\EshopCommunity\Application\Model\VendorList;
 
 /**
  * Tests for oxwVendorList class

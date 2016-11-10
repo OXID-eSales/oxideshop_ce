@@ -48,7 +48,7 @@ use oxUserPayment;
 use oxUtils;
 use oxUtilsString;
 use stdClass;
-use \OxidEsales\EshopCommunity\Application\Model\Attribute;
+use OxidEsales\EshopCommunity\Application\Model\Attribute;
 
 /**
  * Class Unit_utf8Test

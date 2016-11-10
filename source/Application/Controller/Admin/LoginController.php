@@ -25,9 +25,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Application\Model\User;
 use oxRegistry;
 use oxView;
-use oxCookieException;
-use oxUserException;
-use oxConnectionException;
 
 /**
  * Administrator login form.

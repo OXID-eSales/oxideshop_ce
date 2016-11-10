@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\OrderFileList;
+use OxidEsales\EshopCommunity\Application\Model\OrderFileList;
 
 use \oxField;
 use \oxDb;

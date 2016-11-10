@@ -306,7 +306,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
      * @param oxList $oRecommList recommendation list
      * @param array  $aIds        article ids
      */
-    protected function _loadFirstArticles(oxList $oRecommList, $aIds)
+    protected function _loadFirstArticles(\OxidEsales\EshopCommunity\Core\Model\ListModel $oRecommList, $aIds)
     {
         $aIds = oxDb::getDb()->quoteArray($aIds);
         $sIds = implode(", ", $aIds);

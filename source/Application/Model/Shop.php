@@ -24,7 +24,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxDb;
-use OxidEsales\Eshop\Core\Exception\StandardException;
 
 /**
  * Shop manager.

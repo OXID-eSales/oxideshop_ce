@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\SeoEncoderManufacturer;
+use OxidEsales\EshopCommunity\Application\Model\SeoEncoderManufacturer;
 
 use \oxField;
 use \oxDb;

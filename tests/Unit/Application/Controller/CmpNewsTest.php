@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller;
 
-use \OxidEsales\EshopCommunity\Application\Model\NewsList;
+use OxidEsales\EshopCommunity\Application\Model\NewsList;
 
 /**
  * oxcmp_news tests

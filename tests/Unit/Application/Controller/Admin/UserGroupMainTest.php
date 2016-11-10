@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\Groups;
+use OxidEsales\EshopCommunity\Application\Model\Groups;
 
 use \Exception;
 use \oxTestModules;

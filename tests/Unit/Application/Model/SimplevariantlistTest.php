@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Model;
 
-use \OxidEsales\EshopCommunity\Core\Model\ListModel;
+use OxidEsales\EshopCommunity\Core\Model\ListModel;
 
 use \oxField;
 

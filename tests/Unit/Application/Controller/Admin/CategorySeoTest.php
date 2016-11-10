@@ -23,7 +23,7 @@ namespace Unit\Application\Controller\Admin;
 
 use \Exception;
 use \oxDb;
-use \OxidEsales\EshopCommunity\Application\Model\SeoEncoderCategory;
+use OxidEsales\EshopCommunity\Application\Model\SeoEncoderCategory;
 use \oxTestModules;
 
 /**

@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\Category;
+use OxidEsales\EshopCommunity\Application\Model\Category;
 use \oxField;
 use \oxDb;
 use \oxRegistry;

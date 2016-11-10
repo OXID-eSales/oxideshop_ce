@@ -23,17 +23,9 @@
 namespace OxidEsales\EshopCommunity\Application\Component;
 
 use oxDb;
-use OxidEsales\Eshop\Core\Exception\ConnectionException;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Exception\InputException;
-use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxUser;
-use oxUserException;
-use oxCookieException;
-use oxInputException;
-use oxConnectionException;
 use Exception;
 use oxField;
 

@@ -23,7 +23,7 @@ namespace Unit\Application\Model;
 
 use Exception;
 use modDB;
-use \OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Application\Model\Article;
 use oxDb;
 use oxField;
 use OxidEsales\Eshop\CoreCommunity\DatabaseProvider;

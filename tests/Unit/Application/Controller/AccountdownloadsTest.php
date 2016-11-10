@@ -24,7 +24,7 @@ namespace Unit\Application\Controller;
 use \oxField;
 use oxOrderFile;
 use \oxTestModules;
-use \OxidEsales\EshopCommunity\Application\Model\OrderFile;
+use OxidEsales\EshopCommunity\Application\Model\OrderFile;
 
 /**
  * Tests for Account_downloads class

@@ -22,8 +22,8 @@
 namespace Unit\Application\Controller\Admin;
 
 use \Exception;
-use \OxidEsales\EshopCommunity\Application\Model\Article;
-use \OxidEsales\EshopCommunity\Application\Model\ArticleList;
+use OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Application\Model\ArticleList;
 use \oxDb;
 use \oxTestModules;
 

@@ -21,9 +21,9 @@
  */
 namespace Unit\Application\Controller;
 
-use \OxidEsales\EshopCommunity\Application\Model\ActionList;
+use OxidEsales\EshopCommunity\Application\Model\ActionList;
 use oxUBaseHelper;
-use \OxidEsales\EshopCommunity\Application\Model\User;
+use OxidEsales\EshopCommunity\Application\Model\User;
 use \stdClass;
 use \oxField;
 use \exception;

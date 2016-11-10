@@ -21,12 +21,12 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\CategoryList;
+use OxidEsales\EshopCommunity\Application\Model\CategoryList;
 use \oxField;
 use \oxDb;
-use \OxidEsales\EshopCommunity\Application\Model\ManufacturerList;
+use OxidEsales\EshopCommunity\Application\Model\ManufacturerList;
 use \oxTestModules;
-use \OxidEsales\EshopCommunity\Application\Model\VendorList;
+use OxidEsales\EshopCommunity\Application\Model\VendorList;
 
 /**
  * Tests for Article_List class

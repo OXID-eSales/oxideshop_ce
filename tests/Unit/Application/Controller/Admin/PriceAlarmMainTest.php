@@ -23,7 +23,7 @@ namespace Unit\Application\Controller\Admin;
 
 use \oxField;
 use \oxDb;
-use \OxidEsales\EshopCommunity\Application\Model\PriceAlarm;
+use OxidEsales\EshopCommunity\Application\Model\PriceAlarm;
 use \oxTestModules;
 
 /**

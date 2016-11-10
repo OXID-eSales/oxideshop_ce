@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\User;
+use OxidEsales\EshopCommunity\Application\Model\User;
 
 /**
  * Tests for User_Overview class

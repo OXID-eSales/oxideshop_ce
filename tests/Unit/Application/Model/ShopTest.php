@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Model;
 
-use \OxidEsales\EshopCommunity\Core\I18n;
+use OxidEsales\EshopCommunity\Core\I18n;
 
 use \oxField;
 

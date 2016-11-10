@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Component\Widget;
 
-use \OxidEsales\EshopCommunity\Application\Model\Category;
+use OxidEsales\EshopCommunity\Application\Model\Category;
 
 /**
  * Tests for oxwArticleBox class

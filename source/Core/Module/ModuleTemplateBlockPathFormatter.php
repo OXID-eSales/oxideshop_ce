@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use \oxException;
-use \OxidEsales\Eshop\Core\FileSystem\FileSystem;
+use OxidEsales\Eshop\Core\FileSystem\FileSystem;
 
 /**
  * Forms path to module block template.

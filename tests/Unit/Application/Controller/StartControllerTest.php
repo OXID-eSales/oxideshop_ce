@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller;
 
-use \OxidEsales\EshopCommunity\Application\Model\ArticleList;
+use OxidEsales\EshopCommunity\Application\Model\ArticleList;
 use oxField;
 use oxTestModules;
 

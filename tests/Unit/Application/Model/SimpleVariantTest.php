@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Model;
 
-use \OxidEsales\EshopCommunity\Core\Price;
+use OxidEsales\EshopCommunity\Core\Price;
 
 use \oxField;
 use \StdClass;

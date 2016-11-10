@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Component\Widget;
 
-use \OxidEsales\EshopCommunity\Application\Model\ArticleList;
+use OxidEsales\EshopCommunity\Application\Model\ArticleList;
 
 
 /**

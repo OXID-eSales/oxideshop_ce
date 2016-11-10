@@ -77,7 +77,7 @@ namespace {
 namespace OxidEsales\EshopCommunity\Core {
 
     use oxDb;
-    use OxidEsales\Eshop\Core\Exception\StandardException;
+    use OxidEsales\EshopCommunity\Core\Exception\StandardException;
     use oxSystemComponentException;
 
     /**

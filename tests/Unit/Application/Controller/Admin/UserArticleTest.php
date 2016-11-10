@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\OrderArticleList;
+use OxidEsales\EshopCommunity\Application\Model\OrderArticleList;
 
 /**
  * Tests for User_Article class

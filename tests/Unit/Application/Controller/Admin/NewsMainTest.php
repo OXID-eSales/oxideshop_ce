@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\News;
+use OxidEsales\EshopCommunity\Application\Model\News;
 
 use \Exception;
 use \oxTestModules;

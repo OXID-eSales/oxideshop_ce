@@ -21,8 +21,8 @@
  */
 namespace Unit\Application\Model;
 
-use \OxidEsales\EshopCommunity\Application\Model\Article;
-use \OxidEsales\EshopCommunity\Application\Model\Wrapping;
+use OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Application\Model\Wrapping;
 
 use \oxField;
 use \oxDb;

@@ -21,8 +21,8 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\User;
-use \OxidEsales\EshopCommunity\Core\Model\ListModel;
+use OxidEsales\EshopCommunity\Application\Model\User;
+use OxidEsales\EshopCommunity\Core\Model\ListModel;
 
 use \oxField;
 use \Exception;

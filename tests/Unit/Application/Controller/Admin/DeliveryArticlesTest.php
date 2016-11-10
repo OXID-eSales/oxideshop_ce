@@ -21,7 +21,7 @@
  */
 namespace Unit\Application\Controller\Admin;
 
-use \OxidEsales\EshopCommunity\Application\Model\Delivery;
+use OxidEsales\EshopCommunity\Application\Model\Delivery;
 
 use \oxTestModules;
 

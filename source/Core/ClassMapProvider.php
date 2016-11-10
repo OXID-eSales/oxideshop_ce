@@ -114,25 +114,37 @@ class ClassMapProvider
 
     /**
      * Return a map of concrete classes to virtual namespaced classes depending on the shop edition.
+     * All available class maps will be merged together like this: CE <- PE <- EE
      *
-     * @return \OxidEsales\EshopCommunity\Core\VirtualNameSpaceClassMap|
-     *         \OxidEsales\EshopProfessional\Core\VirtualNameSpaceClassMap|
-     *         \OxidEsales\EshopEnterprise\Core\VirtualNameSpaceClassMap Edition specific class map
+     * @return array Edition specific class map
      */
-    public function getVirtualNamespaceClassMap()
+    public function getOverridableVirtualNamespaceClassMap()
     {
 
         $editionSelector = $this->getEditionSelector();
         switch ($editionSelector->getEdition()) {
             case EditionSelector::ENTERPRISE:
-                $virtualNameSpaceClassMap = new \OxidEsales\EshopEnterprise\Core\VirtualNameSpaceClassMap();
+                $classMapCommunity = new \OxidEsales\EshopCommunity\Core\VirtualNameSpaceClassMap();
+                $classMapProfessional = new \OxidEsales\EshopProfessional\Core\VirtualNameSpaceClassMap();
+                $classMapEnterprise = new \OxidEsales\EshopEnterprise\Core\VirtualNameSpaceClassMap();
+                $virtualNameSpaceClassMap = array_merge(
+                    $classMapCommunity->getOverridableMap(),
+                    $classMapProfessional->getOverridableMap(),
+                    $classMapEnterprise->getOverridableMap()
+                );
                 break;
             case EditionSelector::PROFESSIONAL:
-                $virtualNameSpaceClassMap = new \OxidEsales\EshopProfessional\Core\VirtualNameSpaceClassMap();
+                $classMapCommunity = new \OxidEsales\EshopCommunity\Core\VirtualNameSpaceClassMap();
+                $classMapProfessional = new \OxidEsales\EshopProfessional\Core\VirtualNameSpaceClassMap();
+                $virtualNameSpaceClassMap = array_merge(
+                    $classMapCommunity->getOverridableMap(),
+                    $classMapProfessional->getOverridableMap()
+                );
                 break;
             default:
             case EditionSelector::COMMUNITY:
-                $virtualNameSpaceClassMap = new \OxidEsales\EshopCommunity\Core\VirtualNameSpaceClassMap();
+                $classMapCommunity = new \OxidEsales\EshopCommunity\Core\VirtualNameSpaceClassMap();
+                $virtualNameSpaceClassMap = $classMapCommunity->getOverridableMap();
                 break;
         }
 

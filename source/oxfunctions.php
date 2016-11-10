@@ -84,7 +84,8 @@ if (!function_exists('registerComposerAutoload')) {
      */
     function registerComposerAutoload()
     {
-        class AutoloadConfigFile {
+        class AutoloadConfigFile
+        {
             public function __construct()
             {
                 showErrorIfConfigIsMissing();
@@ -106,8 +107,8 @@ if (!function_exists('registerVirtualNamespaceAutoLoad')) {
     function registerVirtualNamespaceAutoLoad()
     {
         $classMapProvider = new \OxidEsales\EshopCommunity\Core\ClassMapProvider(new \OxidEsales\EshopCommunity\Core\Edition\EditionSelector());
-        $classMap = $classMapProvider->getVirtualNamespaceClassMap();
-        $virtualNamespaceAutoLoader = new \OxidEsales\EshopCommunity\Core\Autoload\VirtualNamespaceClassAutoload($classMap->getOverridableMap());
+        $classMap = $classMapProvider->getOverridableVirtualNamespaceClassMap();
+        $virtualNamespaceAutoLoader = new \OxidEsales\EshopCommunity\Core\Autoload\VirtualNamespaceClassAutoload($classMap);
 
         spl_autoload_register(array($virtualNamespaceAutoLoader, 'autoload'));
     }

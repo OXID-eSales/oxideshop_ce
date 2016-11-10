@@ -98,6 +98,7 @@ class ModuleInstaller extends \oxSuperCfg
             $settingsHandler = oxNew(SettingsHandler::class);
             $settingsHandler->setModuleType('module')->run($oModule);
             $this->_addModuleVersion($oModule->getInfo("version"), $sModuleId);
+            $this->_addModuleExtensions($oModule->getExtensions(), $sModuleId);
             $this->_addModuleEvents($oModule->getInfo("events"), $sModuleId);
 
             $this->resetCache();
@@ -486,6 +487,22 @@ class ModuleInstaller extends \oxSuperCfg
         }
 
         $this->_saveToConfig('aModuleVersions', $aVersions);
+    }
+
+    /**
+     * Add module id with extensions to config.
+     *
+     * @param array  $moduleExtensions Module version
+     * @param string $moduleId         Module id
+     */
+    protected function _addModuleExtensions($moduleExtensions, $moduleId)
+    {
+        $extensions = (array) $this->getConfig()->getConfigParam('aModuleExtensions');
+        if (is_array($extensions)) {
+            $extensions[$moduleId] = array_values($moduleExtensions);
+        }
+
+        $this->_saveToConfig('aModuleExtensions', $extensions);
     }
 
     /**

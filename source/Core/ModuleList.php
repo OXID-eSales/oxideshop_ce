@@ -39,6 +39,7 @@ class ModuleList extends \oxSuperCfg
     const MODULE_KEY_VERSIONS = 'Versions';
     const MODULE_KEY_FILES = 'Files';
     const MODULE_KEY_TEMPLATES = 'Templates';
+    const MODULE_KEY_EXTENSIONS = 'Extensions';
 
     /**
      * Modules info array
@@ -237,29 +238,34 @@ class ModuleList extends \oxSuperCfg
      */
     public function getDisabledModuleClasses()
     {
-        $aDisabledModules = $this->getDisabledModules();
-        $aModules = $this->getModulesWithExtendedClass();
-        $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
-
-        $aDisabledModuleClasses = array();
-        if (isset($aDisabledModules) && is_array($aDisabledModules)) {
+        $disabledModules = $this->getDisabledModules();
+        $disabledModuleClasses = array();
+        if (isset($disabledModules) && is_array($disabledModules)) {
             //get all disabled module paths
-            foreach ($aDisabledModules as $sId) {
-                $sPath = $aModulePaths[$sId];
-                if (!isset($sPath)) {
-                    $sPath = $sId;
-                }
-                foreach ($aModules as $aModuleClasses) {
-                    foreach ($aModuleClasses as $sModuleClass) {
-                        if (strpos($sModuleClass, $sPath . "/") === 0) {
-                            $aDisabledModuleClasses[] = $sModuleClass;
+            $extensions = $this->getModuleConfigParametersByKey(static::MODULE_KEY_EXTENSIONS);
+            $modules = $this->getModulesWithExtendedClass();
+            $modulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
+
+            foreach ($disabledModules as $moduleId) {
+                if (!array_key_exists($moduleId, $extensions)) {
+                    $path = $modulePaths[$moduleId];
+                    if (!isset($path)) {
+                        $path = $moduleId;
+                    }
+                    foreach ($modules as $moduleClasses) {
+                        foreach ($moduleClasses as $moduleClass) {
+                            if (strpos($moduleClass, $path . "/") === 0) {
+                                $disabledModuleClasses[] = $moduleClass;
+                            }
                         }
                     }
+                } else {
+                    $disabledModuleClasses = array_merge($disabledModuleClasses, $extensions[$moduleId]);
                 }
             }
         }
 
-        return $aDisabledModuleClasses;
+        return $disabledModuleClasses;
     }
 
     /**
@@ -286,6 +292,9 @@ class ModuleList extends \oxSuperCfg
 
         // removing from aModuleVersions array
         $this->removeFromModulesArray(static::MODULE_KEY_VERSIONS, $aDeletedModuleIds);
+
+        // removing from aModuleExtensions array
+        $this->removeFromModulesArray(static::MODULE_KEY_EXTENSIONS, $aDeletedModuleIds);
 
         // removing from aModuleFiles array
         $this->removeFromModulesArray(static::MODULE_KEY_FILES, $aDeletedModuleIds);
@@ -705,13 +714,26 @@ class ModuleList extends \oxSuperCfg
 
         foreach ($aModules as $sOxClass => $aModulesList) {
             foreach ($aModulesList as $sModulePath) {
-                $sExtPath = $this->getConfig()->getModulesDir() . $sModulePath . '.php';
-                if (!file_exists($sExtPath)) {
-                    $aDeletedExt[$sOxClass][] = $sModulePath;
+                if (!$this->isNamespacedClass($sModulePath)) {
+                    $sExtPath = $this->getConfig()->getModulesDir() . $sModulePath . '.php';
+                    if (!file_exists($sExtPath)) {
+                        $aDeletedExt[$sOxClass][] = $sModulePath;
+                    }
                 }
             }
         }
 
         return $aDeletedExt;
     }
+
+    /**
+     * @param string $className
+     *
+     * @return bool
+     */
+    private function isNamespacedClass($className)
+    {
+        return strpos($className, '\\') !== false;
+    }
+
 }

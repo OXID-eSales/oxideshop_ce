@@ -192,21 +192,34 @@ class ModuleChainsGenerator
             if (!class_exists($extensionParentClass, false)) {
                 class_alias($class, $extensionParentClass);
             }
-            $modulesDirectory = oxRegistry::get("oxConfigFile")->getVar("sShopDir");
-            $extensionParentPath = "$modulesDirectory/modules/$extensionPath.php";
 
-            //including original file
-            if (file_exists($extensionParentPath)) {
-                include_once $extensionParentPath;
-            } elseif (!class_exists($extensionClass)) {
-                $this->handleSpecialCases($class, $extensionClass);
-                $this->onModuleExtensionCreationError($extensionPath, $extensionClass);
+            if (!$this->isNamespacedClass($extensionPath)) {
+                $modulesDirectory = oxRegistry::get("oxConfigFile")->getVar("sShopDir");
+                $extensionParentPath = "$modulesDirectory/modules/$extensionPath.php";
 
-                return false;
+                //including original file
+                if (file_exists($extensionParentPath)) {
+                    include_once $extensionParentPath;
+                } elseif (!class_exists($extensionClass)) {
+                    $this->handleSpecialCases($class, $extensionClass);
+                    $this->onModuleExtensionCreationError($extensionPath, $extensionClass);
+
+                    return false;
+                }
             }
         }
 
         return true;
+    }
+
+    /**
+     * @param string $className
+     *
+     * @return bool
+     */
+    private function isNamespacedClass($className)
+    {
+        return strpos($className, '\\') !== false;
     }
 
     /**

@@ -668,10 +668,11 @@ class ModulelistTest extends \OxidTestCase
         $oModuleList->expects($this->once())->method('getDeletedExtensions')->will($this->returnValue($aModuleInformation));
         $oModuleList->expects($this->once())->method('_removeExtensions')->with($aModuleIds);
         $oModuleList->expects($this->once())->method('_removeFromDisabledModulesArray')->with($aModuleIds);
-        $oModuleList->expects($this->exactly(5))->method('removeFromModulesArray')->withConsecutive(
+        $oModuleList->expects($this->exactly(6))->method('removeFromModulesArray')->withConsecutive(
             ['Paths', $aModuleIds],
             ['Events', $aModuleIds],
             ['Versions', $aModuleIds],
+            ['Extensions', $aModuleIds],
             ['Files', $aModuleIds],
             ['Templates', $aModuleIds]
         );
@@ -699,10 +700,11 @@ class ModulelistTest extends \OxidTestCase
         $oModuleList->expects($this->once())->method('getDeletedExtensions')->will($this->returnValue($aModuleInformation));
         $oModuleList->expects($this->once())->method('_removeExtensions')->with($aModuleIds);
         $oModuleList->expects($this->once())->method('_removeFromDisabledModulesArray')->with($aModuleIds);
-        $oModuleList->expects($this->exactly(5))->method('removeFromModulesArray')->withConsecutive(
+        $oModuleList->expects($this->exactly(6))->method('removeFromModulesArray')->withConsecutive(
             ['Paths', $aModuleIds],
             ['Events', $aModuleIds],
             ['Versions', $aModuleIds],
+            ['Extensions', $aModuleIds],
             ['Files', $aModuleIds],
             ['Templates', $aModuleIds]
         );

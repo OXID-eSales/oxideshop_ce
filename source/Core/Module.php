@@ -172,30 +172,54 @@ class Module extends \oxSuperCfg
     /**
      * Get module ID
      *
-     * @param string $sModule extension full path
+     * @param string $module extension full path
      *
      * @return string
      */
-    public function getIdByPath($sModule)
+    public function getIdByPath($module)
     {
-        $myConfig = $this->getConfig();
-        $aModulePaths = $myConfig->getConfigParam('aModulePaths');
-        $sModuleId = null;
-        if (is_array($aModulePaths)) {
-            foreach ($aModulePaths as $sId => $sPath) {
-                if (strpos($sModule, $sPath . "/") === 0) {
-                    $sModuleId = $sId;
+        $moduleId = null;
+        $moduleFile = $module;
+        $moduleId = $this->getIdFromExtension($module);
+        if (!$moduleId) {
+            $modulePaths = $this->getConfig()->getConfigParam('aModulePaths');
+
+            if (is_array($modulePaths)) {
+                foreach ($modulePaths as $id => $path) {
+                    if (strpos($moduleFile, $path . "/") === 0) {
+                        $moduleId = $id;
+                    }
                 }
             }
         }
-        if (!$sModuleId) {
-            $sModuleId = substr($sModule, 0, strpos($sModule, "/"));
+        if (!$moduleId) {
+            $moduleId = substr($moduleFile, 0, strpos($moduleFile, "/"));
         }
-        if (!$sModuleId) {
-            $sModuleId = $sModule;
+        if (!$moduleId) {
+            $moduleId = $moduleFile;
         }
 
-        return $sModuleId;
+        return $moduleId;
+    }
+
+    /**
+     * Get the module id of given extended class name or namespace.
+     *
+     * @param string $className
+     *
+     * @return string
+     */
+    public function getIdFromExtension($className)
+    {
+        $moduleId = '';
+        $extensions = (array) $this->getConfig()->getConfigParam('aModuleExtensions');
+        foreach ($extensions as $id => $moduleClasses) {
+            if (in_array($className, $moduleClasses)) {
+                $moduleId = $id;
+            }
+        }
+
+        return $moduleId;
     }
 
     /**

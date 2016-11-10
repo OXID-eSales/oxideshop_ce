@@ -470,6 +470,23 @@ class ClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap
             'oximodulevalidator'                   => \OxidEsales\Eshop\Core\Contract\IModuleValidator::class,
             'oxiselectlist'                        => \OxidEsales\Eshop\Core\Contract\ISelectList::class,
             'oxiurl'                               => \OxidEsales\Eshop\Core\Contract\IUrl::class,
+
+            'account_order'                        => \OxidEsales\Eshop\Application\Controller\AccountOrderController::class,
+            'account_downloads'                    => \OxidEsales\Eshop\Application\Controller\AccountDownloadsController::class,
+            'account_newsletter'                   => \OxidEsales\Eshop\Application\Controller\AccountNewsletterController::class,
+            'account_password'                     => \OxidEsales\Eshop\Application\Controller\AccountPasswordController::class,
+            'account_recommlist'                   => \OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class,
+            'contact'                              => \OxidEsales\Eshop\Application\Controller\ContactController::class,
+            'credits'                              => \OxidEsales\Eshop\Application\Controller\CreditsController::class,
+            'download'                             => \OxidEsales\Eshop\Application\Controller\DownloadController::class,
+            'exceptionerror'                       => \OxidEsales\Eshop\Application\Controller\ExceptionErrorController::class,
+            'forgotpwd'                            => \OxidEsales\Eshop\Application\Controller\ForgotPasswordController::class,
+            'invite'                               => \OxidEsales\Eshop\Application\Controller\InviteController::class,
+            'moredetails'                          => \OxidEsales\Eshop\Application\Controller\MoreDetailsController::class,
+            'recommadd'                            => \OxidEsales\Eshop\Application\Controller\RecommendationAddController::class,
+            'register'                             => \OxidEsales\Eshop\Application\Controller\RegisterController::class,
+            'suggest'                              => \OxidEsales\Eshop\Application\Controller\SuggestController::class,
+            'tpl'                                  => \OxidEsales\Eshop\Application\Controller\TemplateController::class,
         ];
     }
 

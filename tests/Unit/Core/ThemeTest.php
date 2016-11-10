@@ -192,6 +192,28 @@ class ThemeTest extends \OxidTestCase
         $this->assertEquals('foobar', $this->getConfigParam('configParamFromThemeSettings'));
     }
 
+    public function testOverrideShopSettings()
+    {
+        $this->setConfigParam('shopSetting', 'startValue');
+        $this->assertEquals('startValue', $this->getConfigParam('shopSetting'));
+
+        $themeA = $this->getProxyClass('oxTheme');
+        $themeA->setNonPublicVar("_aTheme", [
+            'id'          => 'themeA',
+            'settings'    => [
+                [
+                    'group' => 'someGroup',
+                    'name'  => 'shopSetting',
+                    'type'  => 'str',
+                    'value' => 'finalValue',
+                ],
+            ],
+        ]);
+        $themeA->activate();
+
+        $this->assertEquals('finalValue', $this->getConfigParam('shopSetting'));
+    }
+
     public function testDontOverrideAlreadyChangedSettings()
     {
         $this->assertEquals(null, $this->getConfigParam('configParamFromThemeSettings'));
@@ -212,15 +234,21 @@ class ThemeTest extends \OxidTestCase
 
         $this->assertEquals('themeA', $this->getConfigParam('sTheme'));
         $this->assertEquals('foobar', $this->getConfigParam('configParamFromThemeSettings'));
-        $this->setConfigParam('configParamFromThemeSettings', 'anotherValue');
 
-        $themeB = $this->getProxyClass('oxTheme');
-        $themeB->setNonPublicVar("_aTheme", ['id' => 'themeB']);
-        $themeB->activate();
-        $this->assertEquals('themeB', $this->getConfigParam('sTheme'));
-
+        $themeA->setNonPublicVar("_aTheme", [
+            'id'          => 'themeA',
+            'settings'    => [
+                [
+                    'group' => 'someGroup',
+                    'name'  => 'configParamFromThemeSettings',
+                    'type'  => 'str',
+                    'value' => 'otherValue',
+                ],
+            ],
+        ]);
         $themeA->activate();
-        $this->assertEquals('anotherValue', $this->getConfigParam('configParamFromThemeSettings'));
+
+        $this->assertEquals('foobar', $this->getConfigParam('configParamFromThemeSettings'));
     }
 
     public function testCheckForActivationErrorsNoParent()

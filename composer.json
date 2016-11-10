@@ -1,6 +1,6 @@
 {
     "name": "oxid-esales/oxideshop-ce",
-    "description": "Use this file to get OXID eShop dependencies. Use modules/composer.json for project dependencies.",
+    "description": "This package contains OXID eShop CE source code.",
     "type": "oxideshop",
     "keywords": ["oxid", "modules", "eShop"],
     "homepage": "https://www.oxid-esales.com/en/home.html",

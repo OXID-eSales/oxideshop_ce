@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Account_Noticelist extends \OxidEsales\EshopCommunity\Application\Controller\AccountNoticeListController
+class Account_Noticelist extends \OxidEsales\Eshop\Application\Controller\AccountNoticeListController
 {
 }

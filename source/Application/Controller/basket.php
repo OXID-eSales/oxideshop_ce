@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\BasketController
  */
-class Basket extends \OxidEsales\EshopCommunity\Application\Controller\BasketController
+class Basket extends \OxidEsales\Eshop\Application\Controller\BasketController
 {
 }

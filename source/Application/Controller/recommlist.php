@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\RecommListController
  */
-class RecommList extends \OxidEsales\EshopCommunity\Application\Controller\RecommListController
+class RecommList extends \OxidEsales\Eshop\Application\Controller\RecommListController
 {
 }

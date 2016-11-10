@@ -28,6 +28,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class account_wishlist extends \OxidEsales\EshopCommunity\Application\Controller\AccountWishlistController
+class account_wishlist extends \OxidEsales\Eshop\Application\Controller\AccountWishlistController
 {
 }

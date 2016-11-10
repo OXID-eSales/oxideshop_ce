@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Tpl extends \OxidEsales\EshopCommunity\Application\Controller\TemplateController
+class Tpl extends \OxidEsales\Eshop\Application\Controller\TemplateController
 {
 }

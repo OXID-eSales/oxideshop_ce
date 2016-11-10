@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class ClearCookies extends \OxidEsales\EshopCommunity\Application\Controller\ClearCookiesController
+class ClearCookies extends \OxidEsales\Eshop\Application\Controller\ClearCookiesController
 {
 }

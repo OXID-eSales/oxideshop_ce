@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Account_Order extends \OxidEsales\EshopCommunity\Application\Controller\AccountOrderController
+class Account_Order extends \OxidEsales\Eshop\Application\Controller\AccountOrderController
 {
 }

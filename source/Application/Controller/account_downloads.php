@@ -23,6 +23,6 @@
 /**
  * @inheritdoc
  */
-class Account_Downloads extends \OxidEsales\EshopCommunity\Application\Controller\AccountDownloadsController
+class Account_Downloads extends \OxidEsales\Eshop\Application\Controller\AccountDownloadsController
 {
 }

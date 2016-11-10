@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\AccountController
  */
-class Account extends \OxidEsales\EshopCommunity\Application\Controller\AccountController
+class Account extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
 }

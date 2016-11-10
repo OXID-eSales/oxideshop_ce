@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\StartController
  */
-class Start extends \OxidEsales\EshopCommunity\Application\Controller\StartController
+class Start extends \OxidEsales\Eshop\Application\Controller\StartController
 {
 }

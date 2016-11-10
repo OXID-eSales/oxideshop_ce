@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Credits extends \OxidEsales\EshopCommunity\Application\Controller\CreditsController
+class Credits extends \OxidEsales\Eshop\Application\Controller\CreditsController
 {
 }

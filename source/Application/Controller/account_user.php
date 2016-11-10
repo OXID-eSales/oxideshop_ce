@@ -28,6 +28,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-class account_user extends \OxidEsales\EshopCommunity\Application\Controller\AccountUserController
+class account_user extends \OxidEsales\Eshop\Application\Controller\AccountUserController
 {
 }

@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Content extends \OxidEsales\EshopCommunity\Application\Controller\ContentController
+class Content extends \OxidEsales\Eshop\Application\Controller\ContentController
 {
 }

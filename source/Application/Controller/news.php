@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class News extends \OxidEsales\EshopCommunity\Application\Controller\NewsController
+class News extends \OxidEsales\Eshop\Application\Controller\NewsController
 {
 }

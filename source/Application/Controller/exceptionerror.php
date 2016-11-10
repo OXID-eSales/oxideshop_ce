@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class ExceptionError extends \OxidEsales\EshopCommunity\Application\Controller\ExceptionErrorController
+class ExceptionError extends \OxidEsales\Eshop\Application\Controller\ExceptionErrorController
 {
 }

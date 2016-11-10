@@ -27,6 +27,6 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class Invite extends \OxidEsales\EshopCommunity\Application\Controller\InviteController
+class Invite extends \OxidEsales\Eshop\Application\Controller\InviteController
 {
 }

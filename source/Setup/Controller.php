@@ -371,17 +371,6 @@ class Controller extends Core
 
         $editionSqlDir = $this->getSqlDirectory();
 
-        //swap database to english
-        if ($oSession->getSessionParam('location_lang') != "de") {
-            try {
-                $oDb->queryFile("$editionSqlDir/en.sql");
-            } catch (Exception $oExcp) {
-                $oView->setMessage($oLang->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $oExcp->getMessage());
-
-                return "default.php";
-            }
-        }
-
         //update dyn pages / shop country config options (from first step)
         $oDb->saveShopSettings(array());
 
@@ -637,14 +626,13 @@ class Controller extends Core
         $editionSqlDir = $this->getSqlDirectory();
         $baseSqlDir = $this->getSqlDirectory(EditionSelector::COMMUNITY);
         $vendorDir = $this->getVendorDir();
-        $demodataSqlFile = $this->getDemodataSqlFile();
 
         // If demodata files are provided.
-        if ($demodata && file_exists($demodataSqlFile)) {
+        if ($this->checkIfDemodataPrepared($demodata)) {
             exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_migrate");
 
             // Install demo data.
-            $database->queryFile($demodataSqlFile);
+            $database->queryFile($this->getDemodataSqlFilePath());
             // Copy demodata files.
             exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-demodata_install");
         } else {
@@ -659,11 +647,23 @@ class Controller extends Core
     }
 
     /**
+     * Check if setup should import the demodata file created from demodata servers.
+     *
+     * @param int $useDemodata
+     * @return bool
+     */
+    private function checkIfDemodataPrepared($useDemodata)
+    {
+        $demodataSqlFile = $this->getDemodataSqlFilePath();
+        return $useDemodata && file_exists($demodataSqlFile) ? true : false;
+    }
+
+    /**
      * Method forms path to demodata.sql file according edition.
      *
      * @return string
      */
-    private function getDemodataSqlFile()
+    private function getDemodataSqlFilePath()
     {
         $editionSelector = new EditionSelector();
         return $this->getVendorDir().'/'.EditionRootPathProvider::EDITIONS_DIRECTORY.'/'

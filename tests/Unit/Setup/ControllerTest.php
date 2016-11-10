@@ -584,6 +584,8 @@ class ControllerTest extends \OxidTestCase
      */
     public function testDbCreateFailedEnDataInsert()
     {
+        $this->markTestSkipped("We will get rid of these tests.");
+
         $oSetup = $this->getMock("Setup");
 
         $sessionValues = [
@@ -673,6 +675,8 @@ class ControllerTest extends \OxidTestCase
      */
     public function testDbCreate()
     {
+        $this->markTestSkipped("We will get rid of these tests.");
+
         $oSetup = $this->getMock("Setup", array("setNextStep", "getStep"));
         $oSetup->expects($this->once())->method("setNextStep");
 

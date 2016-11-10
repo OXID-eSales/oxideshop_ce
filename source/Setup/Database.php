@@ -292,6 +292,7 @@ class Database extends Core
         $oPdo->exec("delete from oxconfig where oxvarname = 'blLoadDynContents'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'sShopCountry'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'blCheckForUpdates'");
+        $oPdo->exec("delete from oxconfig where oxvarname = 'sDefaultLang'");
         // $this->execSql( "delete from oxconfig where oxvarname = 'aLanguageParams'" );
 
         $oInsert = $oPdo->prepare("insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
@@ -326,6 +327,16 @@ class Database extends Core
             )
         );
 
+        $oInsert->execute(
+            array(
+                'oxid' => $oUtils->generateUid(),
+                'shopId' => $sBaseShopId,
+                'name' => 'sDefaultLang',
+                'type' => 'str',
+                'value' => $sShopLang
+            )
+        );
+
         $this->addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession);
 
         //set only one active language
@@ -342,6 +353,7 @@ class Database extends Core
 
             $sValue = serialize($aLanguageParams);
 
+            $oPdo->exec("delete from oxconfig where oxvarname = 'aLanguageParams'");
             $oInsert->execute(
                 array(
                     'oxid' => $oUtils->generateUid(),
@@ -508,6 +520,7 @@ class Database extends Core
         $blSendShopDataToOxid = isset($parameters["blSendShopDataToOxid"]) ? $parameters["blSendShopDataToOxid"] : $session->getSessionParam('blSendShopDataToOxid');
 
         $sID = $utilities->generateUid();
+        $this->execSql("delete from oxconfig where oxvarname = 'blSendShopDataToOxid'");
         $this->execSql(
             "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
                              values('$sID', '$baseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $configKey->sConfigKey . "'))"

@@ -12,14 +12,14 @@
         "phpmailer/phpmailer": "^5.2.14",
         "smarty/smarty": "^2.6.30",
         "oxid-esales/flow-theme": "dev-master",
-        "oxid-esales/eshop-db-migration-wrapper": "dev-rename_occurrences_of_existing_namespaces-ESDEV-4081",
-        "oxid-esales/eshop-db-views-regenerator": "dev-rename_occurrences_of_existing_namespaces-ESDEV-4081",
+        "oxid-esales/eshop-db-migration-wrapper": "dev-master",
+        "oxid-esales/eshop-db-views-regenerator": "dev-master",
         "doctrine/dbal": "v2.5.4",
         "psr/log": "1.0.0",
         "oxid-esales/eshop-demodata-installer": "dev-master"
     },
     "require-dev": {
-        "oxid-esales/testing-library": "dev-rename_occurrences_of_existing_namespaces-ESDEV-4081",
+        "oxid-esales/testing-library": "dev-master",
         "oxid-esales/coding-standards": "dev-master",
         "oxid-esales/coding-standards-wrapper": "dev-master",
         "oxid-esales/oxideshop-composer-plugin": "dev-master",

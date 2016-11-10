@@ -61,13 +61,7 @@ class SysRequirementsTest extends \OxidTestCase
         $sCnt = 13;
         $this->assertEquals($sCnt, count($aSysInfo['php_extennsions']));
         $this->assertEquals(10, count($aSysInfo['php_config']));
-
         $sCnt = 2;
-        if ($this->getTestConfig()->getShopEdition() === 'EE') {
-            $sCnt = 4;
-        } elseif ($this->getTestConfig()->getShopEdition() === 'PE') {
-            $sCnt = 3;
-        }
 
         if (isAdmin()) {
             $sCnt++;

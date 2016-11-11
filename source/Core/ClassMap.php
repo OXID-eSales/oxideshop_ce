@@ -440,7 +440,6 @@ class ClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap
             'oxfield'                              => \OxidEsales\Eshop\Core\Field::class,
             'oxlist'                               => \OxidEsales\Eshop\Core\Model\ListModel::class,
             'oxseoencoder'                         => \OxidEsales\Eshop\Core\SeoEncoder::class,
-            'oxstdclass'                           => \OxidEsales\Eshop\Core\StandardClass::class,
             'oxconfigfile'                         => \OxidEsales\Eshop\Core\ConfigFile::class,
             'oxregistry'                           => \OxidEsales\Eshop\Core\Registry::class,
 

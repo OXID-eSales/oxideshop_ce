@@ -759,34 +759,6 @@ class BaseController extends \oxSuperCfg
     }
 
     /**
-     * Template variable getter. Returns shop logo from config option
-     *
-     * @deprecated since v5.1.0 (2013-09-23); Use oxViewConfig::getShopLogo().
-     *
-     * @return string
-     */
-    public function getShopLogo()
-    {
-        if ($this->_sShopLogo === null) {
-            $this->setShopLogo($this->getConfig()->getConfigParam('sShopLogo'));
-        }
-
-        return $this->_sShopLogo;
-    }
-
-    /**
-     * Sets shop logo
-     *
-     * @param string $sLogo shop logo url
-     *
-     * @deprecated since v5.1.0 (2013-09-23); Use oxViewConfig::setShopLogo().
-     */
-    public function setShopLogo($sLogo)
-    {
-        $this->_sShopLogo = $sLogo;
-    }
-
-    /**
      * Returns active category set by categories component; if category is
      * not set by component - will create category object and will try to
      * load by id passed by request

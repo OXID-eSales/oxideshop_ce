@@ -30,19 +30,6 @@ use \oxTestModules;
  */
 class AjaxListComponentTest extends \OxidTestCase
 {
-
-    /**
-     * ajaxListComponent::init() test case
-     *
-     * @return null
-     */
-    public function testInit()
-    {
-        $oComponent = oxNew('ajaxListComponent');
-        $oComponent->init("aColNames");
-        $this->assertEquals("aColNames", $oComponent->UNITgetColNames());
-    }
-
     /**
      * ajaxListComponent::_getActionIds() test case
      *
@@ -174,7 +161,7 @@ class AjaxListComponentTest extends \OxidTestCase
         $this->setRequestParameter('cmpid', null);
 
         $oComponent = oxNew('ajaxListComponent');
-        $oComponent->init("testNames");
+        $oComponent->setColumns("testNames");
         $this->assertEquals("testNames", $oComponent->UNITgetColNames());
     }
 
@@ -188,7 +175,7 @@ class AjaxListComponentTest extends \OxidTestCase
         $this->setRequestParameter('cmpid', "testCmpId");
 
         $oComponent = oxNew('ajaxListComponent');
-        $oComponent->init(array("testCmpId" => "testNames"));
+        $oComponent->setColumns(array("testCmpId" => "testNames"));
         $this->assertEquals("testNames", $oComponent->UNITgetColNames());
     }
 

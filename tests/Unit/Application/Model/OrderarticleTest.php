@@ -154,15 +154,14 @@ class OrderarticleTest extends \OxidTestCase
         $this->assertTrue($oOrderArticle->isOrderArticle());
     }
 
-
-    public function testGetProductParentId()
+    public function testGetParentId()
     {
         $oOrderArticle = oxNew('oxOrderArticle');
-        $this->assertFalse($oOrderArticle->getProductParentId());
+        $this->assertFalse($oOrderArticle->getParentId());
 
         $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->oxorderarticles__oxartparentid = new oxField("sParentId");
-        $this->assertEquals("sParentId", $oOrderArticle->getProductParentId());
+        $this->assertEquals("sParentId", $oOrderArticle->getParentId());
     }
 
     public function testGetCategoryIds()

@@ -452,7 +452,7 @@ class OrderTest extends \OxidTestCase
     }
 
     /**
-     * Testing execute() - without order rules confirmation "ord_custinfo"
+     * Testing execute() - without needed information to create proper user.
      *
      * @return null
      */
@@ -480,8 +480,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getMock('order', array('getSession'));
         $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oS));
 
-        $this->assertNull($oOrder->execute());
-        $this->assertEquals(1, $oOrder->isConfirmCustInfoError());
+        $this->assertSame('user', $oOrder->execute());
     }
 
     /**
@@ -853,19 +852,6 @@ class OrderTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blConfirmAGB', true);
         $this->assertTrue($oOrder->isConfirmAGBActive());
-
-    }
-
-    /**
-     * Test is confirm CustInfo active (for former tpl).
-     *
-     * @return null
-     */
-    public function testIsConfirmCustInfoActive()
-    {
-        $oOrder = $this->getProxyClass("order");
-        $this->getConfig()->setConfigParam('blConfirmCustInfo', true);
-        $this->assertTrue($oOrder->isConfirmCustInfoActive());
     }
 
     /**

@@ -70,20 +70,6 @@ class ListComponentAjax extends \oxSuperCfg
     protected $_blAllowExtColumns = false;
 
     /**
-     * Initializes AJAX columns.
-     *
-     * @param array $aColumns Array of DB table columns which are loaded from DB.
-     *
-     * @deprecated since v5.1.1 (2013.10.24); must be replaced with setColumns if needed
-     */
-    public function init($aColumns = null)
-    {
-        if (!is_null($aColumns)) {
-            $this->setColumns($aColumns);
-        }
-    }
-
-    /**
      * Gets columns array.
      *
      * @return array

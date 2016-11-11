@@ -1420,14 +1420,6 @@ class UtfTest extends \OxidTestCase
         $this->assertTrue(strcmp($oUPayment->oxuserpayments__oxvalue->value, $sValue) === 0);
     }
 
-    public function testOxUtilsIsValidEmail()
-    {
-        $sEmail = 'info@�vyturys.lt';
-
-        $oUtils = new oxUtils();
-        $this->assertFalse($oUtils->isValidEmail($sEmail));
-    }
-
     public function testOxUtilsOxFileCache()
     {
         $sValue = 'agentūЛитовfür';

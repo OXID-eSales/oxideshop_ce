@@ -2288,11 +2288,11 @@ class ConfigTest extends \OxidTestCase
     }
 
     /**
-     * oxmodule::getAllModules() test case
+     * oxmodule::getModulesWithExtendedClass() test case
      *
      * @return null
      */
-    public function testGetAllModules()
+    public function testGetModulesWithExtendedClass()
     {
         $aModules = array(
             'oxorder' => 'testExt1/module1&testExt2/module1',
@@ -2307,7 +2307,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig = $this->getMock('oxconfig', array("getConfigParam"));
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo("aModules"))->will($this->returnValue($aModules));
 
-        $this->assertEquals($aResult, $oConfig->getAllModules());
+        $this->assertEquals($aResult, $oConfig->getModulesWithExtendedClass());
     }
 
     /**

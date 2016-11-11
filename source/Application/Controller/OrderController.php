@@ -110,22 +110,6 @@ class OrderController extends \oxUBase
     protected $_blConfirmAGBError = null;
 
     /**
-     * Config option "blConfirmCustInfo". Will be removed later
-     *
-     * @deprecated since v5.1.6 (2014-05-28); Not used anymore
-     * @var bool
-     */
-    protected $_blConfirmCustInfo = null;
-
-    /**
-     * Boolean of option "blConfirmCustInfo" error
-     *
-     * @deprecated since v5.1.6 (2014-05-28); Not used anymore
-     * @var bool
-     */
-    protected $_blConfirmCustInfoError = null;
-
-    /**
      * Current class template name.
      *
      * @var string
@@ -229,15 +213,6 @@ class OrderController extends \oxUBase
 
         if (!$this->_validateTermsAndConditions()) {
             $this->_blConfirmAGBError = 1;
-
-            return;
-        }
-
-        /* @deprecated since v5.1.6 (2014-05-28); Not used anymore */
-        $oConfig = $this->getConfig();
-        $sOrderCustomerInfo = $oConfig->getRequestParameter('ord_custinfo');
-        if ($sOrderCustomerInfo !== null && !$sOrderCustomerInfo && $this->isConfirmCustInfoActive()) {
-            $this->_blConfirmCustInfoError = 1;
 
             return;
         }
@@ -419,26 +394,6 @@ class OrderController extends \oxUBase
     }
 
     /**
-     * Template variable getter. Returns if option "blConfirmCustInfo" is on.
-     *
-     * @deprecated since v5.1.6 (2014-05-28); Not used anymore
-     *
-     * @return bool
-     */
-    public function isConfirmCustInfoActive()
-    {
-        if ($this->_blConfirmCustInfo === null) {
-            $this->_blConfirmCustInfo = false;
-            $sConf = $this->getConfig()->getConfigParam('blConfirmCustInfo');
-            if ($sConf != null) {
-                $this->_blConfirmCustInfo = $this->getConfig()->getConfigParam('blConfirmCustInfo');
-            }
-        }
-
-        return $this->_blConfirmCustInfo;
-    }
-
-    /**
      * Template variable getter. Returns if option "blConfirmAGB" was not set
      *
      * @return bool
@@ -446,18 +401,6 @@ class OrderController extends \oxUBase
     public function isConfirmAGBError()
     {
         return $this->_blConfirmAGBError;
-    }
-
-    /**
-     * Template variable getter. Returns if option "blConfirmCustInfo" was not set.
-     *
-     * @deprecated since v5.1.6 (2014-05-28); Not used anymore
-     *
-     * @return bool
-     */
-    public function isConfirmCustInfoError()
-    {
-        return $this->_blConfirmCustInfoError;
     }
 
     /**

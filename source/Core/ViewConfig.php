@@ -810,18 +810,6 @@ class ViewConfig extends \oxSuperCfg
     }
 
     /**
-     * Returns config param "blShowFinalStep" value
-     *
-     * @deprecated since 2012-11-19. Option blShowFinalStep is removed
-     *
-     * @return bool
-     */
-    public function showFinalStep()
-    {
-        return true;
-    }
-
-    /**
      * Returns config param "aNrofCatArticles" value
      *
      * @return array

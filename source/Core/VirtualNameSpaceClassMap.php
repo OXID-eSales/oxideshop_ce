@@ -539,7 +539,6 @@ class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\C
             'OxidEsales\Eshop\Core\Smarty\Plugin\Emos' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\Emos::class,
             'OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosAdapter::class,
             'OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosItem::class,
-            'OxidEsales\Eshop\Core\StandardClass' => \OxidEsales\EshopCommunity\Core\StandardClass::class,
             'OxidEsales\Eshop\Core\Str' => \OxidEsales\EshopCommunity\Core\Str::class,
             'OxidEsales\Eshop\Core\StrMb' => \OxidEsales\EshopCommunity\Core\StrMb::class,
             'OxidEsales\Eshop\Core\StrRegular' => \OxidEsales\EshopCommunity\Core\StrRegular::class,

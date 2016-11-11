@@ -101,42 +101,6 @@ class Utils extends \oxSuperCfg
     protected $_blSeoIsActive = null;
 
     /**
-     * OXID specific string manipulation method
-     *
-     * @param string $sVal string
-     * @param string $sKey key
-     *
-     * @deprecated since v5.2 (2014-08-11); use oxEncryptor::encrypt() instead.
-     *
-     * @return string
-     */
-    public function strMan($sVal, $sKey = null)
-    {
-        $oEncryptor = oxNew('oxEncryptor');
-        $sKey = $sKey ? $sKey : $this->getConfig()->getConfigParam('sConfigKey');
-
-        return $oEncryptor->encrypt($sVal, $sKey);
-    }
-
-    /**
-     * OXID specific string manipulation method
-     *
-     * @param string $sVal string
-     * @param string $sKey key
-     *
-     * @deprecated since v5.2 (2014-08-11); use oxDecryptor::decrypt() instead.
-     *
-     * @return string
-     */
-    public function strRem($sVal, $sKey = null)
-    {
-        $oDecryptor = oxNew('oxDecryptor');
-        $sKey = $sKey ? $sKey : $this->getConfig()->getConfigParam('sConfigKey');
-
-        return $oDecryptor->decrypt($sVal, $sKey);
-    }
-
-    /**
      * Returns string witch "." symbols were replaced with "__".
      *
      * @param string $sName String to search replaceable char
@@ -300,23 +264,6 @@ class Utils extends \oxSuperCfg
         $this->_blIsSe = $blIsSe;
 
         stopProfile("isSearchEngine");
-    }
-
-    /**
-     * User email validation function. Returns true if email is OK otherwise - false;
-     * Syntax validation is performed only.
-     *
-     * @param string $sEmail user email
-     *
-     * @deprecated since v4.9.0/v5.2.0 (2014-06-17); Use MailValidator::isValidEmail().
-     *
-     * @return bool
-     */
-    public function isValidEmail($sEmail)
-    {
-        $oMailValidator = oxNew('oxMailValidator');
-
-        return $oMailValidator->isValidEmail($sEmail);
     }
 
     /**

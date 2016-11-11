@@ -1645,7 +1645,7 @@ class Email extends \PHPMailer
      */
     public function setReplyTo($email = null, $name = null)
     {
-        if (!oxRegistry::getUtils()->isValidEmail($email)) {
+        if (!oxNew('oxMailValidator')->isValidEmail($email)) {
             $email = $this->_getShop()->oxshops__oxorderemail->value;
         }
 

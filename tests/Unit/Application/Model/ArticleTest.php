@@ -1627,12 +1627,12 @@ class ArticleTest extends \OxidTestCase
         $oVariant = $this->_createVariant('_testVar', '_testArt');
         $oVariant->oxarticles__oxactive = new oxField(0);
         $oVariant->save();
-        $aIds = $oArticle->UNITgetVariantsIds();
+        $aIds = $oArticle->getVariantIds();
         $this->assertEquals(0, count($aIds));
 
         $oVariant->oxarticles__oxactive = new oxField(1);
         $oVariant->save();
-        $aIds = $oArticle->UNITgetVariantsIds();
+        $aIds = $oArticle->getVariantIds();
         $this->assertEquals('_testVar', $aIds[0]);
     }
 
@@ -6251,26 +6251,6 @@ class ArticleTest extends \OxidTestCase
         $oArticle2->load($sVarId);
         $oArticle2->UNITassignParentFieldValues();
         $this->assertEquals($sTitle, $oArticle2->oxarticles__oxtitle->value);
-    }
-
-    /**
-     * Test get category id's select.
-     *
-     * @return null
-     */
-    public function testGetSelectCatIds()
-    {
-        $oArticle = oxNew("oxArticle");
-        $sO2CView = $oArticle->UNITgetObjectViewName('oxobject2category');
-        $sCatView = $oArticle->UNITgetObjectViewName('oxcategories');
-
-        $sSelect1 = "select oxobject2category.oxcatnid as oxcatnid from $sO2CView as oxobject2category left join $sCatView as oxcategories on oxcategories.oxid = oxobject2category.oxcatnid ";
-        $sSelect1 .= "where oxobject2category.oxobjectid='test' and oxcategories.oxid is not null and oxcategories.oxactive" . (($oArticle->getLanguage()) ? '_' . $oArticle->getLanguage() : '') . " = 1 ";
-        $sSubSelect = "and oxcategories.oxhidden = 0 and (select count(cats.oxid) from $sCatView as cats where cats.oxrootid = oxcategories.oxrootid and cats.oxleft < oxcategories.oxleft and cats.oxright > oxcategories.oxright and ( cats.oxhidden = 1 or cats.oxactive" . (($oArticle->getLanguage()) ? "_" . $oArticle->getLanguage() : "") . " = 0 ) ) = 0 ";
-        $sSelect2 = "order by oxobject2category.oxtime ";
-        $this->assertEquals($sSelect1 . $sSelect2, $oArticle->UNITgetSelectCatIds('test', false));
-        // #1306: selecting active categories will not be checked if parent categories are active
-        $this->assertEquals($sSelect1 . $sSubSelect . $sSelect2, $oArticle->UNITgetSelectCatIds('test', true));
     }
 
     /**

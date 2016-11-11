@@ -580,44 +580,6 @@ class ArticleDetailsController extends \oxUBase
     }
 
     /**
-     * Template variable getter. Returns parent article name
-     *
-     * @deprecated since v5.1.0 (2013-08-06); not used code anymore
-     *
-     * @return string
-     */
-    public function getParentName()
-    {
-        if ($this->_sParentName === null) {
-            $this->_sParentName = false;
-            if (($parentArticle = $this->_getParentProduct($this->getProduct()->oxarticles__oxparentid->value))) {
-                $this->_sParentName = $parentArticle->oxarticles__oxtitle->value;
-            }
-        }
-
-        return $this->_sParentName;
-    }
-
-    /**
-     * Template variable getter. Returns parent article name
-     *
-     * @deprecated since v5.1.0 (2013-08-06); not used code anymore
-     *
-     * @return string
-     */
-    public function getParentUrl()
-    {
-        if ($this->_sParentUrl === null) {
-            $this->_sParentUrl = false;
-            if (($parentArticle = $this->_getParentProduct($this->getProduct()->oxarticles__oxparentid->value))) {
-                $this->_sParentUrl = $parentArticle->getLink();
-            }
-        }
-
-        return $this->_sParentUrl;
-    }
-
-    /**
      * Template variable getter. Returns picture gallery of current article
      *
      * @return array
@@ -941,7 +903,8 @@ class ArticleDetailsController extends \oxUBase
         $utils = oxRegistry::getUtils();
 
         $parameters = $this->getConfig()->getRequestParameter('pa');
-        if (!isset($parameters['email']) || !$utils->isValidEmail($parameters['email'])) {
+
+        if (!isset($parameters['email']) || !oxNew('oxMailValidator')->isValidEmail($parameters['email'])) {
             $this->_iPriceAlarmStatus = 0;
             return;
         }

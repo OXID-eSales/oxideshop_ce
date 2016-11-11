@@ -34,9 +34,9 @@ class SimpleXmlTest extends \OxidTestCase
     {
         $oXml = oxNew('oxSimpleXml');
 
-        $oTestObject = oxNew('oxStdClass');
+        $oTestObject = oxNew('StdClass');
         $oTestObject->title = "TestTitle";
-        $oTestObject->keys = oxNew('oxStdClass');
+        $oTestObject->keys = oxNew('StdClass');
         $oTestObject->keys->key = array("testKey1", "testKey2");
 
         $sTestResult = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
@@ -60,9 +60,9 @@ class SimpleXmlTest extends \OxidTestCase
         $oModule2->id = "id2";
         $oModule2->active = false;
 
-        $oTestObject = oxNew('oxStdClass');
+        $oTestObject = oxNew('StdClass');
         $oTestObject->title = "TestTitle";
-        $oTestObject->modules = oxNew('oxStdClass');
+        $oTestObject->modules = oxNew('StdClass');
         $oTestObject->modules->module = array($oModule1, $oModule2);
 
         $oExpectedXml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"utf-8\"?><testXml/>");
@@ -147,7 +147,7 @@ class SimpleXmlTest extends \OxidTestCase
     {
         $oXml = oxNew('oxSimpleXml');
 
-        $oTestObject = oxNew('oxStdClass');
+        $oTestObject = oxNew('StdClass');
         $oTestObject->elements = array('element' => array(
             array('key1' => 'value1', 'key2' => 'value2'),
             array('key1' => 'value1', 'key2' => 'value2')

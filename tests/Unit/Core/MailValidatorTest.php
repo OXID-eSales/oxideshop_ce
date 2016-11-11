@@ -53,6 +53,7 @@ class MailValidatorTest extends \OxidTestCase
             array('@com.org'),
             array('mytestcom.org'),
             array('mytest@com'),
+            array('info@�vyturys.lt'),
         );
     }
 

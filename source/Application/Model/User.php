@@ -1892,37 +1892,6 @@ class User extends \oxBase
     }
 
     /**
-     * Returns safe salt value (heximal representation)
-     *
-     * @deprecated since v5.2 (2014-08-12); Use oxPasswordSaltGenerator
-     *
-     * @return string
-     */
-    public function prepareSalt()
-    {
-        /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
-        $oOpenSSLFunctionalityChecker = oxNew('oxOpenSSLFunctionalityChecker');
-        /** @var var oxPasswordSaltGenerator $oGenerator */
-        $oGenerator = oxNew('oxPasswordSaltGenerator', $oOpenSSLFunctionalityChecker);
-
-        return $oGenerator->generate();
-    }
-
-    /**
-     * Returns plains password salt representation
-     *
-     * @param string $sSaltHex heximal representation of password salt value
-     *
-     * @deprecated since v5.2 (2014-08-12); No need after introducing oxPasswordSaltGenerator
-     *
-     * @return string
-     */
-    public function decodeSalt($sSaltHex)
-    {
-        return ($sSaltHex ? oxDb::getDb()->getOne("select UNHEX( '{$sSaltHex}' )") : '');
-    }
-
-    /**
      * Sets new password for user ( save is not called)
      *
      * @param string $sPassword password
@@ -1994,18 +1963,6 @@ class User extends \oxBase
         $sUserId = $oDb->getOne('select oxid from oxuser where md5(concat("oxid", oxpassword, oxusername )) = ' . $oDb->quote($sReviewUserHash) . '');
 
         return $sUserId;
-    }
-
-    /**
-     * Return user state id
-     *
-     * @deprecated since v5.2.0 (2014-01-10); Naming changed use function getStateId()
-     *
-     * @return string
-     */
-    public function getState()
-    {
-        return $this->getStateId();
     }
 
     /**

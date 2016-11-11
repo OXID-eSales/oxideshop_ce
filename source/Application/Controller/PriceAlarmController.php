@@ -78,7 +78,7 @@ class PriceAlarmController extends \oxUBase
         $myUtils = oxRegistry::getUtils();
 
         $aParams = oxRegistry::getConfig()->getRequestParameter('pa');
-        if (!isset($aParams['email']) || !$myUtils->isValidEmail($aParams['email'])) {
+        if (!isset($aParams['email']) || !oxNew('oxMailValidator')->isValidEmail($aParams['email'])) {
             $this->_iPriceAlarmStatus = 0;
 
             return;

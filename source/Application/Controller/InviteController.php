@@ -168,14 +168,14 @@ class InviteController extends \oxUBase
 
         //validating entered emails
         foreach ($aParams["rec_email"] as $sRecipientEmail) {
-            if (!$oUtils->isValidEmail($sRecipientEmail)) {
+            if (!oxNew('oxMailValidator')->isValidEmail($sRecipientEmail)) {
                 $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS');
 
                 return;
             }
         }
 
-        if (!$oUtils->isValidEmail($aParams["send_email"])) {
+        if (!oxNew('oxMailValidator')->isValidEmail($aParams["send_email"])) {
             $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS');
 
             return;

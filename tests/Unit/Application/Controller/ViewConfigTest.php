@@ -1849,17 +1849,6 @@ class ViewConfigTest extends \OxidTestCase
     }
 
     /**
-     * oxViewconfig::showFinalStep() test case
-     *
-     * @return null
-     */
-    public function testShowFinalStep()
-    {
-        $oViewConf = oxNew('oxViewConfig');
-        $this->assertTrue($oViewConf->showFinalStep());
-    }
-
-    /**
      * oxViewconfig::getActLanguageAbbr() test case
      *
      * @return null

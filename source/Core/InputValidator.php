@@ -202,7 +202,7 @@ class InputValidator extends \oxSuperCfg
         }
 
         // invalid email address ?
-        if (!oxRegistry::getUtils()->isValidEmail($sEmail)) {
+        if (!oxNew('oxMailValidator')->isValidEmail($sEmail)) {
             $oEx = oxNew('oxInputException');
             $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOVALIDEMAIL'));
 
@@ -312,27 +312,6 @@ class InputValidator extends \oxSuperCfg
         }
 
         return $oObject;
-    }
-
-    /**
-     * Checks if all values are filled up
-     *
-     * @param oxUser $oUser        active user
-     * @param string $sFieldName   checking field name
-     * @param array  $aFieldValues field values
-     *
-     * @deprecated since v5.2 (2014-06-19); This logic was moved to oxRequiredFieldValidator and checkRequiredFields() method.
-     */
-    public function checkRequiredArrayFields($oUser, $sFieldName, $aFieldValues)
-    {
-        foreach ($aFieldValues as $sValue) {
-            if (!trim($sValue)) {
-                $oEx = oxNew('oxInputException');
-                $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
-
-                $this->_addValidationError($sFieldName, $oEx);
-            }
-        }
     }
 
     /**
@@ -624,19 +603,6 @@ class InputValidator extends \oxSuperCfg
     protected function _hasRequiredParametersForVatInCheck($aInvAddress)
     {
         return $aInvAddress['oxuser__oxustid'] && $aInvAddress['oxuser__oxcountryid'] && $aInvAddress['oxuser__oxcompany'];
-    }
-
-    /**
-     * Gets VAT in validator.
-     *
-     * @return oxOnlineVatIdCheck
-     *
-     * @deprecated since v5.2 (2014-07-28); This logic was moved to oxCompanyVatInValidator
-     *
-     */
-    protected function _getVatIdValidator()
-    {
-        return oxNew('oxOnlineVatIdCheck');
     }
 
     /**

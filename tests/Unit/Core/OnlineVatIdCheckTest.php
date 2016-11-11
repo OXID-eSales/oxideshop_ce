@@ -27,7 +27,6 @@ use \oxTestModules;
 
 class OnlineVatIdCheckTest extends \OxidTestCase
 {
-
     /**
      * Initialize the fixture.
      */
@@ -49,103 +48,6 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $aResult = $oOnlineVatIdCheck->catchWarning(1, 1, 1, 1);
 
         $this->assertEquals(array("Warning: 1 in 1 on line 1", "EXCEPTION_LOG.txt"), $aResult);
-    }
-
-    /**
-     * Test for #0001483: Wrong message when entering an invalid VAT-ID during registration
-     */
-    public function testForBugEntry1483()
-    {
-        $oOnlineVatIdCheck = $this->getMock("oxOnlineVatIdCheck", array("_checkOnline", "_getError"));
-        $oOnlineVatIdCheck->expects($this->once())->method('_checkOnline')->will($this->returnValue(false));
-        $oOnlineVatIdCheck->expects($this->once())->method('_getError')->will($this->returnValue(false));
-
-        $this->setExpectedException('Exception', 'VAT_MESSAGE_ID_NOT_VALID');
-        $oOnlineVatIdCheck->checkUid("testVatId");
-    }
-
-    public function testCheckUidTakesFromCacheTrue()
-    {
-        oxTestModules::addFunction('oxOnlineVatIdCheck', 'setCache', '{ oxOnlineVatIdCheck::$_aVatCheckCache = $aA[0]; }');
-        oxNew('oxOnlineVatIdCheck')->setCache(array('DE123456789' => true));
-
-        $oCheckVat = new stdClass();
-        $oCheckVat->countryCode = 'DE';
-        $oCheckVat->vatNumber = '123456789';
-
-        $oOnlineVatCheck = $this->getMock('oxOnlineVatIdCheck', array('_checkOnline'));
-        $oOnlineVatCheck->expects($this->never())->method('_checkOnline');
-
-        $this->assertTrue($oOnlineVatCheck->checkUid('DE123456789'));
-    }
-
-    public function testCheckUidTakesFromCacheError()
-    {
-        oxTestModules::addFunction('oxOnlineVatIdCheck', 'setCache', '{ oxOnlineVatIdCheck::$_aVatCheckCache = $aA[0]; }');
-        oxNew('oxOnlineVatIdCheck')->setCache(array('DE123456789' => 'SERVER_BUSY'));
-
-        $oCheckVat = new stdClass();
-        $oCheckVat->countryCode = 'DE';
-        $oCheckVat->vatNumber = '123456789';
-
-        $oOnlineVatCheck = $this->getMock('oxOnlineVatIdCheck', array('_checkOnline'));
-        $oOnlineVatCheck->expects($this->never())->method('_checkOnline');
-
-        $this->setExpectedException('oxConnectionException', 'VAT_MESSAGE_SERVER_BUSY');
-        $oOnlineVatCheck->checkUid('DE123456789');
-    }
-
-    /**
-     * Testing vat id checker - good vat id
-     */
-    public function testCheckUidWithGoodVatId()
-    {
-
-        oxTestModules::addFunction('oxOnlineVatIdCheck', 'clearCache', '{ oxOnlineVatIdCheck::$_aVatCheckCache = array(); }');
-        oxNew('oxOnlineVatIdCheck')->clearCache();
-
-        $oCheckVat = new stdClass();
-        $oCheckVat->countryCode = 'DE';
-        $oCheckVat->vatNumber = '123456789';
-
-        $oOnlineVatCheck = $this->getMock('oxOnlineVatIdCheck', array('_checkOnline'));
-        $oOnlineVatCheck->expects($this->once())->method('_checkOnline')->with($this->equalTo($oCheckVat))->will($this->returnValue(true));
-
-        $this->assertTrue($oOnlineVatCheck->checkUid('DE123456789'));
-    }
-
-    /**
-     * Testing vat id checker - not existing (but correct format) vat id
-     */
-    public function testCheckUidWithNotExistingVatId()
-    {
-
-        oxTestModules::addFunction('oxOnlineVatIdCheck', 'clearCache', '{ oxOnlineVatIdCheck::$_aVatCheckCache = array(); }');
-        oxNew('oxOnlineVatIdCheck')->clearCache();
-
-        $oOnlineVatCheck = $this->getMock('oxOnlineVatIdCheck', array('_checkOnline', '_getError'));
-        $oOnlineVatCheck->expects($this->once())->method('_checkOnline')->will($this->returnValue(false));
-        $oOnlineVatCheck->expects($this->once())->method('_getError')->will($this->returnValue('INVALID_INPUT'));
-
-        $this->setExpectedException('oxInputException', 'VAT_MESSAGE_INVALID_INPUT');
-        $this->assertTrue($oOnlineVatCheck->checkUid('DE123456789'));
-    }
-
-    /**
-     * Testing vat id checker - when soap returns error msg
-     */
-    public function testCheckUidWhenSoapReturnsErrorMsg()
-    {
-
-        oxTestModules::addFunction('oxOnlineVatIdCheck', 'clearCache', '{ oxOnlineVatIdCheck::$_aVatCheckCache = array(); }');
-        oxNew('oxOnlineVatIdCheck')->clearCache();
-
-        $oOnlineVatCheck = $this->getMock('oxOnlineVatIdCheck', array('_checkOnline', '_getError'));
-        $oOnlineVatCheck->expects($this->once())->method('_checkOnline')->will($this->returnValue(false));
-        $oOnlineVatCheck->expects($this->once())->method('_getError')->will($this->returnValue('MY_ERROR_MSG'));
-
-        $this->setExpectedException('oxConnectionException', 'VAT_MESSAGE_MY_ERROR_MSG');
-        $this->assertTrue($oOnlineVatCheck->checkUid('DE123456789'));
     }
 
     /**
@@ -245,41 +147,6 @@ class OnlineVatIdCheckTest extends \OxidTestCase
     }
 
     /**
-     * Testing getting error msg - no error
-     */
-    public function testGetErrorWithNoError()
-    {
-        $oOnlineVatCheck = $this->getProxyClass('oxOnlineVatIdCheck');
-        $oOnlineVatCheck->setNonPublicVar('_sError', null);
-
-        $this->assertSame('', $oOnlineVatCheck->UNITgetError());
-    }
-
-    /**
-     * Testing getting error msg - with setted error msg
-     */
-    public function testGetErrorWithError()
-    {
-        $oOnlineVatCheck = $this->getProxyClass('oxOnlineVatIdCheck');
-        $sErrMsg = "soapenv:Server.userException: javax.xml.rpc.soap.SOAPFaultException: { 'INVALID_INPUT' }";
-        $oOnlineVatCheck->setNonPublicVar('_sError', $sErrMsg);
-
-        $this->assertEquals('INVALID_INPUT', $oOnlineVatCheck->UNITgetError());
-    }
-
-    /**
-     * Testing getting error msg - when unknown error msg occurs
-     */
-    public function testGetErrorWithUnknownErrorMsg()
-    {
-        $oOnlineVatCheck = $this->getProxyClass('oxOnlineVatIdCheck');
-        $sErrMsg = "soapenv:Server.userException: bla bla bla bla ";
-        $oOnlineVatCheck->setNonPublicVar('_sError', $sErrMsg);
-
-        $this->assertEquals('SERVICE_UNAVAILABLE', $oOnlineVatCheck->UNITgetError());
-    }
-
-    /**
      * Testing oxOnlineVatIdCheck::getWsdlUrl()
      */
     public function testGetWsdlUrl_default()
@@ -296,19 +163,6 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oOnline = oxNew('oxOnlineVatIdCheck');
         $this->getConfig()->setConfigParam("sVatIdCheckInterfaceWsdl", "sVatIdCheckInterfaceWsdl");
         $this->assertEquals("sVatIdCheckInterfaceWsdl", $oOnline->getWsdlUrl());
-    }
-
-    /**
-     * Testing oxOnlineVatIdCheck::isDisabled()
-     */
-    public function testIsDisabled()
-    {
-        $oOnline = oxNew('oxOnlineVatIdCheck');
-        $this->assertEquals(false, $oOnline->isDisabled());
-
-        $this->getConfig()->setConfigParam("blVatIdCheckDisabled", "blVatIdCheckDisabled");
-        $this->assertEquals(true, $oOnline->isDisabled());
-
     }
 
     public function testValidate()

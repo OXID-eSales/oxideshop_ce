@@ -546,17 +546,6 @@ class UtilsTest extends \OxidTestCase
         $this->assertFalse($oUtils->isSearchEngine('xxx'));
     }
 
-    public function testIsValidEmail()
-    {
-        $this->assertTrue(oxRegistry::getUtils()->isValidEmail('mathias.krieck@oxid-esales.com'));
-        $this->assertTrue(oxRegistry::getUtils()->isValidEmail('mytest@com.org'));
-        $this->assertFalse(oxRegistry::getUtils()->isValidEmail('�mathias.krieck@oxid-esales.com'));
-        $this->assertFalse(oxRegistry::getUtils()->isValidEmail('my/test@com.org'));
-        $this->assertFalse(oxRegistry::getUtils()->isValidEmail('@com.org'));
-        $this->assertFalse(oxRegistry::getUtils()->isValidEmail('mytestcom.org'));
-        $this->assertFalse(oxRegistry::getUtils()->isValidEmail('mytest@com'));
-    }
-
     public function testLoadAdminProfile()
     {
         $aProfiles = oxRegistry::getUtils()->loadAdminProfile(array('640x480', '14'));
@@ -984,25 +973,6 @@ class UtilsTest extends \OxidTestCase
         $sFile = 'asdnasd/asdasd.asd.ad.ad.asdjpeg';
         $this->assertEquals(false, $oUtils->oxMimeContentType($sFile));
         $this->assertEquals(false, $oUtils->oxMimeContentType(''));
-    }
-
-    public function testStrManStrRem()
-    {
-        $sTests = "myblaaFooString!";
-        $sKey = "oxid987654321";
-        $oUtils = oxNew('oxUtils');
-
-        $sCode = $oUtils->strMan($sTests, $sKey);
-        $this->assertNotEquals($sTests, $sCode);
-
-        $sCode = $oUtils->strRem($sCode, $sKey);
-        $this->assertEquals($sCode, $sTests);
-
-        $sCode = $oUtils->strMan($sTests);
-        $this->assertNotEquals($sTests, $sCode);
-
-        $sCode = $oUtils->strRem($sCode);
-        $this->assertEquals($sTests, $sCode);
     }
 
     public function testStrRot13()

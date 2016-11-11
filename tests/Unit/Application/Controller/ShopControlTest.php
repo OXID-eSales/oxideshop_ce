@@ -222,7 +222,7 @@ class ShopControlTest extends \OxidTestCase
         $this->getSession()->setVariable('actshop', null);
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ throw new Exception("oxCookieException"); }');
 
-        $oConfig = $this->getMock("oxStdClass", array("isMall", "getConfigParam", "getShopId", "getShopHomeUrl"));
+        $oConfig = $this->getMock("StdClass", array("isMall", "getConfigParam", "getShopId", "getShopHomeUrl"));
         $oConfig->expects($this->any())->method('isMall')->will($this->returnValue(true));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue(999));
         $oConfig->expects($this->any())->method('getShopHomeUrl');

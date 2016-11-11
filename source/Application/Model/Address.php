@@ -114,18 +114,6 @@ class Address extends \oxBase
     }
 
     /**
-     * Return address state id
-     *
-     * @deprecated since v5.2 (2014-01-10); Naming changed use function getStateId()
-     *
-     * @return string
-     */
-    public function getState()
-    {
-        return $this->getStateId();
-    }
-
-    /**
      * Get state id for current address
      *
      * @return mixed

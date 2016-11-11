@@ -420,42 +420,6 @@ class DetailsTest extends \OxidTestCase
     }
 
     /**
-     * Test get parent name.
-     *
-     * @return null
-     */
-    public function testGetParentName()
-    {
-        $oProduct = oxNew('oxArticle');
-        $oProduct->load('2000');
-        $oProduct->oxarticles__oxparentid = new oxField('parent');
-
-        $oDetails = $this->getMock('details', array('_getParentProduct', 'getProduct'));
-        $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
-        $oDetails->expects($this->any())->method('_getParentProduct')->will($this->returnValue($oProduct));
-
-        $this->assertEquals($oProduct->oxarticles__oxtitle->value, $oDetails->getParentName());
-    }
-
-    /**
-     * Test get parent url.
-     *
-     * @return null
-     */
-    public function testGetParentUrl()
-    {
-        $oProduct = oxNew('oxArticle');
-        $oProduct->load('2000');
-        $oProduct->oxarticles__oxparentid = new oxField('parent');
-
-        $oDetails = $this->getMock('details', array('_getParentProduct', 'getProduct'));
-        $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
-        $oDetails->expects($this->any())->method('_getParentProduct')->will($this->returnValue($oProduct));
-
-        $this->assertEquals($oProduct->getLink(), $oDetails->getParentUrl());
-    }
-
-    /**
      * Test get picture gallery.
      *
      * @return null

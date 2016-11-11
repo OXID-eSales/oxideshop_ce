@@ -1252,7 +1252,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         } else {
             $oRating = oxNew('oxRating');
 
-            return $oRating->getRatingAverage($this->getId(), 'oxarticle', $this->_getVariantsIds());
+            return $oRating->getRatingAverage($this->getId(), 'oxarticle', $this->getVariantIds());
         }
     }
 
@@ -1270,7 +1270,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         } else {
             $oRating = oxNew('oxRating');
 
-            return $oRating->getRatingCount($this->getId(), 'oxarticle', $this->_getVariantsIds());
+            return $oRating->getRatingCount($this->getId(), 'oxarticle', $this->getVariantIds());
         }
     }
 
@@ -1290,7 +1290,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
 
         // showing variant reviews ..
         if ($this->getConfig()->getConfigParam('blShowVariantReviews')) {
-            $aAdd = $this->_getVariantsIds();
+            $aAdd = $this->getVariantIds();
             if (is_array($aAdd)) {
                 $aIds = array_merge($aIds, $aAdd);
             }
@@ -3581,30 +3581,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     }
 
     /**
-     * Returns query for article categories select
-     *
-     * @param string $sOXID     article id
-     * @param bool   $blActCats select categories if all parents are active
-     *
-     * @deprecated since v5.2 (2013-11-18); use oxArticle::_getCategoryIdsSelect instead
-     *
-     * @return string
-     */
-    protected function _getSelectCatIds($sOXID, $blActCats = false)
-    {
-        $sO2CView = $this->_getObjectViewName('oxobject2category');
-        $sCatView = $this->_getObjectViewName('oxcategories');
-        $sSelect = "select oxobject2category.oxcatnid as oxcatnid from $sO2CView as oxobject2category left join $sCatView as oxcategories on oxcategories.oxid = oxobject2category.oxcatnid ";
-        $sSelect .= 'where oxobject2category.oxobjectid=' . oxDb::getDb()->quote($sOXID) . ' and oxcategories.oxid is not null and oxcategories.oxactive = 1 ';
-        if ($blActCats) {
-            $sSelect .= "and oxcategories.oxhidden = 0 and (select count(cats.oxid) from $sCatView as cats where cats.oxrootid = oxcategories.oxrootid and cats.oxleft < oxcategories.oxleft and cats.oxright > oxcategories.oxright and ( cats.oxhidden = 1 or cats.oxactive = 0 ) ) = 0 ";
-        }
-        $sSelect .= 'order by oxobject2category.oxtime ';
-
-        return $sSelect;
-    }
-
-    /**
      * Calculates price of article (adds taxes, currency and discounts).
      *
      * @param oxPrice $oPrice price object
@@ -3914,20 +3890,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
         }
 
         return $aSelect;
-    }
-
-    /**
-     * Collects and returns active/all variant ids of article.
-     *
-     * @param bool $blActiveVariants Parameter to load only active variants.
-     *
-     * @deprecated since v5.2.0 (2014-04-30); Naming was changed and the method was made to public. Now use function getVariantIds().
-     *
-     * @return array
-     */
-    protected function _getVariantsIds($blActiveVariants = true)
-    {
-        return $this->getVariantIds($blActiveVariants);
     }
 
     /**

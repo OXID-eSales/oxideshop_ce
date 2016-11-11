@@ -115,7 +115,7 @@ class NewsletterController extends \oxUBase
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
 
             return;
-        } elseif (!oxRegistry::getUtils()->isValidEmail($aParams['oxuser__oxusername'])) {
+        } elseif (!oxNew('oxMailValidator')->isValidEmail($aParams['oxuser__oxusername'])) {
             // #1052C - eMail validation added
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('MESSAGE_INVALID_EMAIL');
 

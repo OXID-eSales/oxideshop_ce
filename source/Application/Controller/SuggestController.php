@@ -109,7 +109,7 @@ class SuggestController extends \oxUBase
         }
 
         $oUtils = oxRegistry::getUtils();
-        if (!$oUtils->isValidEmail($aParams["rec_email"]) || !$oUtils->isValidEmail($aParams["send_email"])) {
+        if (!oxNew('oxMailValidator')->isValidEmail($aParams["rec_email"]) || !oxNew('oxMailValidator')->isValidEmail($aParams["send_email"])) {
             $oUtilsView->addErrorToDisplay('SUGGEST_INVALIDMAIL');
 
             return;

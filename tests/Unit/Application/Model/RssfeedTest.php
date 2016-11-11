@@ -80,11 +80,11 @@ class RssfeedTest extends \OxidTestCase
         $this->assertEquals($expect, $oRss->getChannel());
 
         $oShop->oxshops__oxinfoemail = new oxField('emaiail.com');
-        oxTestModules::addFunction('oxutils', 'isValidEmail', '{return 0;}');
+        oxTestModules::addFunction('oxMailValidator', 'isValidEmail', '{return 0;}');
         $oRss->p_loadBaseChannel();
         $this->assertEquals($expect, $oRss->getChannel());
 
-        oxTestModules::addFunction('oxutils', 'isValidEmail', '{return 1;}');
+        oxTestModules::addFunction('oxMailValidator', 'isValidEmail', '{return 1;}');
         $oRss->p_loadBaseChannel();
         $expect['managingEditor'] = 'emaiail.com (John Doe)';
         $this->assertEquals($expect, $oRss->getChannel());

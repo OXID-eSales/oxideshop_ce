@@ -58,15 +58,6 @@ class ThankyouTest extends \OxidTestCase
         $this->assertEquals($oBasket, $oThankyou->getBasket());
     }
 
-    /* removing as this function is deprecated as of #0003283
-    public function testShowFinalStep()
-    {
-        $this->getConfig()->setConfigParam( 'blShowFinalStep', true );
-        $oThankyou = $this->getProxyClass( 'thankyou' );
-        $this->assertTrue( $oThankyou->showFinalStep());
-    }
-    */
-
     public function testGetCurrencyCovIndex()
     {
         $oThankyou = $this->getProxyClass('thankyou');
@@ -143,16 +134,6 @@ class ThankyouTest extends \OxidTestCase
         $oThankyou->setNonPublicVar('_oBasket', $oBasket);
         $this->assertNull($oThankyou->getAlsoBoughtTheseProducts());
     }
-
-    /* removed as shopFinalStep function is deprecated as of #0003283
-    public function testGetAlsoBoughtTheseProductsIfDontShowFinalStep()
-    {
-        $oThankyou = $this->getMock( 'thankyou', array( 'showFinalStep' ) );
-        $oThankyou->expects( $this->any() )->method( 'showFinalStep')->will( $this->returnValue( false ) );
-
-        $this->assertFalse( $oThankyou->getAlsoBoughtTheseProducts());
-    }
-    */
 
     // #1276: If product is "If out out stock, offline" and remaining stock is ordered, "Shp offline" error is shown in Order step 5
     public function testRender()

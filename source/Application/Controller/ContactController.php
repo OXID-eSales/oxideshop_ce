@@ -87,7 +87,7 @@ class ContactController extends \oxUBase
         $aParams = oxRegistry::getConfig()->getRequestParameter('editval');
 
         // checking email address
-        if (!oxRegistry::getUtils()->isValidEmail($aParams['oxuser__oxusername'])) {
+        if (!oxNew('oxMailValidator')->isValidEmail($aParams['oxuser__oxusername'])) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOVALIDEMAIL');
 
             return false;

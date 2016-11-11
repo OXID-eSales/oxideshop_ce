@@ -282,18 +282,6 @@ class OrderArticle extends \oxBase implements ArticleInterface
     /**
      * Returns product parent id
      *
-     * @deprecated since v5.2.0/4.9.0 (2014-06-30); use getParentId
-     *
-     * @return string
-     */
-    public function getProductParentId()
-    {
-        return $this->getParentId();
-    }
-
-    /**
-     * Returns product parent id
-     *
      * @return string
      */
     public function getParentId()

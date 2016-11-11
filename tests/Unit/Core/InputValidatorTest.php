@@ -467,43 +467,6 @@ class InputValidatorTest extends \OxidTestCase
     }
 
     /**
-     * Test case for oxInputValidator::checkRequiredArrayFields()
-     *
-     * @return null
-     */
-    public function testCheckRequiredArrayFieldsEmptyField()
-    {
-        $oUser = oxNew('oxuser');
-        $oUser->setId("testlalaa_");
-
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
-        $oValidator->expects($this->once())->method('_addValidationError')
-            ->with(
-                $this->equalTo('xxx'),
-                $this->logicalAnd(
-                    $this->isInstanceOf('oxInputException'),
-                    $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'))
-                )
-            );
-
-        $oValidator->checkRequiredArrayFields($oUser, 'xxx', array('aaa' => ' '));
-    }
-
-    /**
-     * Test case for oxInputValidator::checkRequiredArrayFields()
-     *
-     * @return null
-     */
-    public function testCheckRequiredArrayFieldsFilledField()
-    {
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
-        $oValidator->expects($this->never())->method('_addValidationError');
-
-        $oValidator->checkRequiredArrayFields(new oxuser(), 'xxx', array('aaa' => 'xxx'));
-    }
-
-
-    /**
      * Test case for oxInputValidator::checkPassword()
      * 1. defining required fields in aMustFillFields. While testing original
      * function must throw an exception that not all required fields are filled

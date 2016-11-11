@@ -9,6 +9,7 @@
         "proprietary"
     ],
     "require": {
+        "php": ">=5.6",
         "phpmailer/phpmailer": "^v5.2.14",
         "smarty/smarty": "^v2.6.30",
         "oxid-esales/flow-theme": "dev-master",

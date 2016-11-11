@@ -9,11 +9,11 @@
         "proprietary"
     ],
     "require": {
-        "phpmailer/phpmailer": "^5.2.14",
-        "smarty/smarty": "^2.6.30",
+        "phpmailer/phpmailer": "^v5.2.14",
+        "smarty/smarty": "^v2.6.30",
         "oxid-esales/flow-theme": "dev-master",
-        "oxid-esales/eshop-db-migration-wrapper": "dev-master",
-        "oxid-esales/eshop-db-views-regenerator": "dev-master",
+        "oxid-esales/eshop-db-migration-wrapper": "^v1.0.0",
+        "oxid-esales/eshop-db-views-regenerator": "^v1.0.0",
         "doctrine/dbal": "v2.5.4",
         "oxid-esales/eshop-demodata-installer": "dev-master"
     },
@@ -22,7 +22,7 @@
         "oxid-esales/coding-standards": "dev-master",
         "oxid-esales/coding-standards-wrapper": "dev-master",
         "oxid-esales/oxideshop-composer-plugin": "dev-master",
-        "incenteev/composer-parameter-handler": "~2.0"
+        "incenteev/composer-parameter-handler": "~v2.0"
     },
     "autoload": {
         "psr-4": {

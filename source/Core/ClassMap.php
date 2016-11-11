@@ -487,6 +487,8 @@ class ClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap
             'register'                             => \OxidEsales\Eshop\Application\Controller\RegisterController::class,
             'suggest'                              => \OxidEsales\Eshop\Application\Controller\SuggestController::class,
             'tpl'                                  => \OxidEsales\Eshop\Application\Controller\TemplateController::class,
+
+            'oxmailvalidator'                      => \OxidEsales\EshopCommunity\Core\MailValidator::class,
         ];
     }
 

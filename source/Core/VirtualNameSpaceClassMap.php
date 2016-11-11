@@ -482,6 +482,7 @@ class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\C
             'OxidEsales\Eshop\Core\Header' => \OxidEsales\EshopCommunity\Core\Header::class,
             'OxidEsales\Eshop\Core\InputValidator' => \OxidEsales\EshopCommunity\Core\InputValidator::class,
             'OxidEsales\Eshop\Core\Language' => \OxidEsales\EshopCommunity\Core\Language::class,
+            'OxidEsales\Eshop\Core\MailValidator' => \OxidEsales\EshopCommunity\Core\MailValidator::class,
             'OxidEsales\Eshop\Core\Model\BaseModel' => \OxidEsales\EshopCommunity\Core\Model\BaseModel::class,
             'OxidEsales\Eshop\Core\Model\ListModel' => \OxidEsales\EshopCommunity\Core\Model\ListModel::class,
             'OxidEsales\Eshop\Core\Model\MultiLanguageModel' => \OxidEsales\EshopCommunity\Core\Model\MultiLanguageModel::class,

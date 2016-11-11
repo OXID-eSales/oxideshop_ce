@@ -21,65 +21,10 @@
  */
 
 /**
- * Class oxMailValidator
+ * This class must be empty because of others eShop editions classes which can be used instead of it.
+ *
+ * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxMailValidator
+class oxMailValidator extends \OxidEsales\Eshop\Core\MailValidator
 {
-
-    /**
-     * @var string
-     */
-    private $_sMailValidationRule = null;
-
-    /**
-     * Get mail validation rule.
-     *
-     * @return string
-     */
-    public function getMailValidationRule()
-    {
-        if (is_null($this->_sMailValidationRule)) {
-            $this->_sMailValidationRule = "/^([\w+\-.])+\@([\w\-.])+\.([A-Za-z]{2,64})$/i";
-        }
-
-        return $this->_sMailValidationRule;
-    }
-
-    /**
-     * Override mail validation rule.
-     *
-     * @param string $sMailValidationRule mail validation rule
-     */
-    public function setMailValidationRule($sMailValidationRule)
-    {
-        $this->_sMailValidationRule = $sMailValidationRule;
-    }
-
-    /**
-     * Set mail validation rule from config.
-     * Would use default rule if not defined in config.
-     */
-    public function __construct()
-    {
-        $oConfig = oxRegistry::getConfig();
-        $sEmailValidationRule = $oConfig->getConfigParam('sEmailValidationRule');
-        if (!empty($sEmailValidationRule)) {
-            $this->_sMailValidationRule = $sEmailValidationRule;
-        }
-    }
-
-    /**
-     * User email validation function. Returns true if email is OK otherwise - false;
-     * Syntax validation is performed only.
-     *
-     * @param string $sEmail user email
-     *
-     * @return bool
-     */
-    public function isValidEmail($sEmail)
-    {
-        $sEmailRule = $this->getMailValidationRule();
-
-        return (getStr()->preg_match($sEmailRule, $sEmail) != 0);
-    }
 }

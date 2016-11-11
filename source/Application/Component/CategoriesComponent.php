@@ -136,7 +136,7 @@ class CategoriesComponent extends \oxView
 
             $sActVendor = (getStr()->preg_match('/^v_.?/i', $sActCat)) ? $sActCat : null;
 
-            $sActCat = $this->_addAdditionalParams($oProduct, $sActCat, $sActManufacturer, null, $sActVendor);
+            $sActCat = $this->_addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor);
         }
 
         // Checking for the default category

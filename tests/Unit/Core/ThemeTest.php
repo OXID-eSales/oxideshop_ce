@@ -33,12 +33,12 @@ class ThemeTest extends \OxidTestCase
         parent::setUp();
     }
 
-    public function testLoadAndgetInfo()
+    public function testLoadAndGetInfo()
     {
         $oTheme = $this->getProxyClass('oxTheme');
         $this->assertTrue($oTheme->load('azure'));
 
-        foreach (array('id', 'title', 'description', 'thumbnail', 'version', 'author', 'active') as $key) {
+        foreach (array('id', 'title', 'description', 'thumbnail', 'version', 'author', 'active', 'settings') as $key) {
             $this->assertNotNull($oTheme->getInfo($key));
         }
         $this->assertNull($oTheme->getInfo('asdasdasd'));
@@ -170,6 +170,86 @@ class ThemeTest extends \OxidTestCase
         $this->assertEquals('azure', $oParent->getInfo('id'));
     }
 
+    public function testGetSettingsFromActivatedTheme()
+    {
+        $this->assertEquals(null, $this->getConfigParam('configParamFromThemeSettings'));
+
+        $theme = $this->getProxyClass('oxTheme');
+        $theme->setNonPublicVar("_aTheme", [
+            'id'          => 'testTheme',
+            'settings'    => [
+                [
+                    'group' => 'someGroup',
+                    'name'  => 'configParamFromThemeSettings',
+                    'type'  => 'str',
+                    'value' => 'foobar',
+                ],
+            ],
+        ]);
+
+        $theme->activate();
+
+        $this->assertEquals('foobar', $this->getConfigParam('configParamFromThemeSettings'));
+    }
+
+    public function testOverrideShopSettings()
+    {
+        $this->setConfigParam('shopSetting', 'startValue');
+        $this->assertEquals('startValue', $this->getConfigParam('shopSetting'));
+
+        $themeA = $this->getProxyClass('oxTheme');
+        $themeA->setNonPublicVar("_aTheme", [
+            'id'          => 'themeA',
+            'settings'    => [
+                [
+                    'group' => 'someGroup',
+                    'name'  => 'shopSetting',
+                    'type'  => 'str',
+                    'value' => 'finalValue',
+                ],
+            ],
+        ]);
+        $themeA->activate();
+
+        $this->assertEquals('finalValue', $this->getConfigParam('shopSetting'));
+    }
+
+    public function testDontOverrideAlreadyChangedSettings()
+    {
+        $this->assertEquals(null, $this->getConfigParam('configParamFromThemeSettings'));
+
+        $themeA = $this->getProxyClass('oxTheme');
+        $themeA->setNonPublicVar("_aTheme", [
+            'id'          => 'themeA',
+            'settings'    => [
+                [
+                    'group' => 'someGroup',
+                    'name'  => 'configParamFromThemeSettings',
+                    'type'  => 'str',
+                    'value' => 'foobar',
+                ],
+            ],
+        ]);
+        $themeA->activate();
+
+        $this->assertEquals('themeA', $this->getConfigParam('sTheme'));
+        $this->assertEquals('foobar', $this->getConfigParam('configParamFromThemeSettings'));
+
+        $themeA->setNonPublicVar("_aTheme", [
+            'id'          => 'themeA',
+            'settings'    => [
+                [
+                    'group' => 'someGroup',
+                    'name'  => 'configParamFromThemeSettings',
+                    'type'  => 'str',
+                    'value' => 'otherValue',
+                ],
+            ],
+        ]);
+        $themeA->activate();
+
+        $this->assertEquals('foobar', $this->getConfigParam('configParamFromThemeSettings'));
+    }
 
     public function testCheckForActivationErrorsNoParent()
     {

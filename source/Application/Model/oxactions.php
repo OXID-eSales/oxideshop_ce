@@ -27,7 +27,7 @@
  *
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
- * @mixin \OxidEsales\EshopEnterprise\Application\Model\Action
+ * @mixin \OxidEsales\EshopEnterprise\Application\Model\Actions
  */
 class oxActions extends \OxidEsales\Eshop\Application\Model\Actions
 {

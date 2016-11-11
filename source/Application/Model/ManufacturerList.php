@@ -36,7 +36,7 @@ class ManufacturerList extends \oxList
     /**
      * Manufacturer root.
      *
-     * @var stdClass
+     * @var \stdClass
      */
     protected $_oRoot = null;
 

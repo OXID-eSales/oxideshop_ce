@@ -26,6 +26,7 @@ use oxDb;
 use oxPrice;
 use oxRegistry;
 use stdClass;
+use Exception;
 
 /**
  * General utils class

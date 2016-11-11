@@ -36,7 +36,7 @@ class VendorList extends \oxList
     /**
      * Vendor root.
      *
-     * @var stdClass
+     * @var \stdClass
      */
     protected $_oRoot = null;
 

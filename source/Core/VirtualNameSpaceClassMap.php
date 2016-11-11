@@ -242,7 +242,6 @@ class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\C
             'OxidEsales\Eshop\Application\Controller\Admin\SelectListOrderAjax' => \OxidEsales\EshopCommunity\Application\Controller\Admin\SelectListOrderAjax::class,
             'OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration' => \OxidEsales\EshopCommunity\Application\Controller\Admin\ShopConfiguration::class,
             'OxidEsales\Eshop\Application\Controller\Admin\ShopController' => \OxidEsales\EshopCommunity\Application\Controller\Admin\ShopController::class,
-            'OxidEsales\Eshop\Application\Controller\Admin\ShopCountries' => \OxidEsales\EshopCommunity\Application\Controller\Admin\ShopCountries::class,
             'OxidEsales\Eshop\Application\Controller\Admin\ShopDefaultCategoryAjax' => \OxidEsales\EshopCommunity\Application\Controller\Admin\ShopDefaultCategoryAjax::class,
             'OxidEsales\Eshop\Application\Controller\Admin\ShopLicense' => \OxidEsales\EshopCommunity\Application\Controller\Admin\ShopLicense::class,
             'OxidEsales\Eshop\Application\Controller\Admin\ShopList' => \OxidEsales\EshopCommunity\Application\Controller\Admin\ShopList::class,

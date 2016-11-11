@@ -31,6 +31,7 @@ use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
 use stdClass;
+use OxidEsales\Eshop\Application\Controller\FrontendController;
 
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');
@@ -1955,7 +1956,7 @@ class Config extends Base
     /**
      * Returns active view object. If this object was not defined - returns oxubase object
      *
-     * @return View
+     * @return FrontendController
      */
     public function getActiveView()
     {
@@ -1973,7 +1974,7 @@ class Config extends Base
     /**
      * Returns top active view object from views chain.
      *
-     * @return View
+     * @return FrontendController
      */
     public function getTopActiveView()
     {

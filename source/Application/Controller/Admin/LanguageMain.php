@@ -503,7 +503,7 @@ class LanguageMain extends \oxAdminDetails
         $pattern = '/^[a-zA-Z0-9_]*$/';
         $result = preg_match($pattern, $abbreviation);
         if ($result === false) {
-            throw new RegExException(preg_last_error(), $pattern, $abbreviation);
+            throw new \Exception(preg_last_error(), $pattern, $abbreviation);
         }
 
         return (bool) $result;

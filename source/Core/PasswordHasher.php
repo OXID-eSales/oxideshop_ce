@@ -29,7 +29,7 @@ class PasswordHasher
 {
 
     /**
-     * @var oxHasher
+     * @var \oxHasher
      */
     private $_ohasher = null;
 

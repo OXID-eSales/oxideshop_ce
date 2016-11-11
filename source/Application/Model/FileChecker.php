@@ -56,7 +56,7 @@ class FileChecker
     /**
      * CURL handler
      *
-     * @var oxCurl
+     * @var \oxCurl
      */
     protected $_oCurlHandler = null;
 
@@ -281,7 +281,7 @@ class FileChecker
 
         try {
             $oXML = new \SimpleXMLElement($sXML);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             $this->_blError = true;
             $this->_sErrorMessage .= oxRegistry::getLang()->translateString('OXDIAG_ERRORMESSAGEWEBSERVICERETURNEDNOXML');
         }
@@ -312,7 +312,7 @@ class FileChecker
         $sURL = $this->_sWebServiceUrl . "?" . http_build_query($aParams);
 
         if ($sXML = @file_get_contents($sURL)) {
-            $oXML = new SimpleXMLElement($sXML);
+            $oXML = new \SimpleXMLElement($sXML);
             if (is_object($oXML)) {
                 if ($oXML->exists == 1) {
                     return true;
@@ -411,7 +411,7 @@ class FileChecker
      * @param string $sMD5  MD5 to check
      * @param string $sFile File to check
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     protected function _getFileVersion($sMD5, $sFile)
     {
@@ -431,8 +431,8 @@ class FileChecker
         $sXML = $this->_oCurlHandler->execute();
         $oXML = null;
         try {
-            $oXML = new SimpleXMLElement($sXML);
-        } catch (Exception $ex) {
+            $oXML = new \SimpleXMLElement($sXML);
+        } catch (\Exception $ex) {
             $oXML = null;
         }
 

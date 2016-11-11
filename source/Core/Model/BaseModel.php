@@ -32,7 +32,6 @@ DEFINE('ACTION_UPDATE', 3);
 DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
-use object_ResultSet;
 use oxObjectException;
 use oxRegistry;
 use oxField;
@@ -742,7 +741,7 @@ class BaseModel extends \oxSuperCfg
      *
      * @param string $query
      *
-     * @return mixed|Object_ResultSet
+     * @return mixed
      */
     protected function getRecordByQuery($query)
     {

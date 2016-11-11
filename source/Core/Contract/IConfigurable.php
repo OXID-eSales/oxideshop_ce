@@ -40,7 +40,7 @@ interface IConfigurable
      *
      * @return mixed
      */
-    public function setConfig(OxConfig $oConfig);
+    public function setConfig(\OxidEsales\EshopCommunity\Core\Config $oConfig);
 
     /**
      * Returns active configuration object

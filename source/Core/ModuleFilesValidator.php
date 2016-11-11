@@ -81,7 +81,7 @@ class ModuleFilesValidator implements \oxIModuleValidator
      *
      * @return bool
      */
-    public function validate(oxModule $oModule)
+    public function validate(\OxidEsales\EshopCommunity\Core\Module $oModule)
     {
         $this->_resetMissingFiles();
         $blModuleValid = $this->_allModuleExtensionsExists($oModule);

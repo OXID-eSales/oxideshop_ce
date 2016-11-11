@@ -60,7 +60,7 @@ class OnlineLicenseCheckCaller extends \oxOnlineCaller
      * @throws oxException
      * @return oxOnlineLicenseCheckResponse
      */
-    public function doRequest(oxOnlineLicenseCheckRequest $oRequest)
+    public function doRequest(\OxidEsales\EshopCommunity\Core\OnlineLicenseCheckRequest $oRequest)
     {
         return $this->_formResponse($this->call($oRequest));
     }

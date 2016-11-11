@@ -42,7 +42,7 @@ class ModuleCache extends \oxSuperCfg
      *
      * @param oxModule $_oModule
      */
-    public function __construct(oxModule $_oModule)
+    public function __construct(\OxidEsales\EshopCommunity\Core\Module $_oModule)
     {
         $this->_oModule = $_oModule;
     }

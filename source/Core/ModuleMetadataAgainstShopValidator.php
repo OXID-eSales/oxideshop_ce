@@ -45,7 +45,7 @@ class ModuleMetadataAgainstShopValidator implements \oxIModuleValidator
      *
      * @return bool
      */
-    public function validate(oxModule $oModule)
+    public function validate(\OxidEsales\EshopCommunity\Core\Module $oModule)
     {
 
         $blModuleExtensionsMatchShopInformation = $this->_moduleExtensionsInformationExistsInShop($oModule);
@@ -66,7 +66,7 @@ class ModuleMetadataAgainstShopValidator implements \oxIModuleValidator
      *
      * @return bool
      */
-    private function _moduleExtensionsInformationExistsInShop(oxModule $oModule)
+    private function _moduleExtensionsInformationExistsInShop(\OxidEsales\EshopCommunity\Core\Module $oModule)
     {
         $aModuleExtensions = $oModule->getExtensions();
 
@@ -94,7 +94,7 @@ class ModuleMetadataAgainstShopValidator implements \oxIModuleValidator
      *
      * @return bool
      */
-    private function _moduleFilesInformationExistInShop(oxModule $oModule)
+    private function _moduleFilesInformationExistInShop(\OxidEsales\EshopCommunity\Core\Module $oModule)
     {
         $aModuleFiles = $oModule->getFiles();
 
@@ -114,7 +114,7 @@ class ModuleMetadataAgainstShopValidator implements \oxIModuleValidator
      *
      * @return bool
      */
-    private function _moduleHasAllExtensions(oxModule $oModule)
+    private function _moduleHasAllExtensions(\OxidEsales\EshopCommunity\Core\Module $oModule)
     {
         return true;
     }
@@ -126,7 +126,7 @@ class ModuleMetadataAgainstShopValidator implements \oxIModuleValidator
      *
      * @return bool
      */
-    private function _moduleHasAllFiles(oxModule $oModule)
+    private function _moduleHasAllFiles(\OxidEsales\EshopCommunity\Core\Module $oModule)
     {
         return true;
     }

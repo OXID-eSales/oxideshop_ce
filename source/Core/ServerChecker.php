@@ -63,7 +63,7 @@ class ServerChecker
      *
      * @return bool
      */
-    public function check(oxApplicationServer $oServer)
+    public function check(\OxidEsales\EshopCommunity\Core\ApplicationServer $oServer)
     {
         return $this->_isValid($oServer) && $this->_isServerTimeValid($oServer->getTimestamp());
     }

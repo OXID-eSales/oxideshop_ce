@@ -50,7 +50,7 @@ class OnlineModuleVersionNotifierCaller extends \oxOnlineCaller
      *
      * @param oxOnlineModulesNotifierRequest $oRequest Object with request parameters
      */
-    public function doRequest(oxOnlineModulesNotifierRequest $oRequest)
+    public function doRequest(\OxidEsales\EshopCommunity\Core\OnlineModulesNotifierRequest $oRequest)
     {
         $this->call($oRequest);
     }

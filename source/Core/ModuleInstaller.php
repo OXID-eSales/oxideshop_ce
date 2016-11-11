@@ -85,7 +85,7 @@ class ModuleInstaller extends \oxSuperCfg
      *
      * @return bool
      */
-    public function activate(oxModule $oModule)
+    public function activate(\OxidEsales\EshopCommunity\Core\Module $oModule)
     {
         $blResult = false;
         if ($sModuleId = $oModule->getId()) {
@@ -118,7 +118,7 @@ class ModuleInstaller extends \oxSuperCfg
      *
      * @return bool
      */
-    public function deactivate(oxModule $oModule)
+    public function deactivate(\OxidEsales\EshopCommunity\Core\Module $oModule)
     {
         $blResult = false;
         if ($sModuleId = $oModule->getId()) {
@@ -321,7 +321,7 @@ class ModuleInstaller extends \oxSuperCfg
      *
      * @param oxModule $oModule
      */
-    protected function _addExtensions(oxModule $oModule)
+    protected function _addExtensions(\OxidEsales\EshopCommunity\Core\Module $oModule)
     {
         $aModules = $this->_removeNotUsedExtensions($this->getModulesWithExtendedClass(), $oModule);
 

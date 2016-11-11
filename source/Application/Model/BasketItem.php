@@ -426,7 +426,7 @@ class BasketItem extends \oxSuperCfg
      * Apply checks for package on amount
      *
      * @param oxArticle $article
-     * @param double $amount
+     * @param double    $amount
      *
      * @return double
      */
@@ -595,7 +595,6 @@ class BasketItem extends \oxSuperCfg
     public function getTitle()
     {
         if ($this->_sTitle === null || $this->getLanguageId() != oxRegistry::getLang()->getBaseLanguage()) {
-
             $oArticle = $this->getArticle();
             $this->_sTitle = $oArticle->oxarticles__oxtitle->value;
 

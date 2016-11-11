@@ -141,7 +141,6 @@ class RecommListController extends \AList
                     'recommlistarts'
                 );
             }
-
         } else {
             if (($oList = $this->getRecommLists()) && $oList->count()) {
                 $oRecommList = oxNew('oxrecommlist');

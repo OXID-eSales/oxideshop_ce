@@ -137,7 +137,6 @@ class DeliveryList extends \oxList
         }
 
         if (($sUserId . $sCountryId . $sDelSet) !== $this->_sUserId) {
-
             $this->selectString($this->_getFilterSelect($oUser, $sCountryId, $sDelSet));
             $this->_sUserId = $sUserId . $sCountryId . $sDelSet;
         }
@@ -170,7 +169,6 @@ class DeliveryList extends \oxList
 
         // checking for current session user which gives additional restrictions for user itself, users group and country
         if ($oUser) {
-
             // user ID
             $sUserId = $oUser->getId();
 
@@ -250,13 +248,11 @@ class DeliveryList extends \oxList
 
         // must choose right delivery set to use its delivery list
         foreach ($aDelSetList as $sDeliverySetId => $oDeliverySet) {
-
             // loading delivery list to check if some of them fits
             $aDeliveries = $this->_getList($oUser, $sDelCountry, $sDeliverySetId);
             $blDelFound = false;
 
             foreach ($aDeliveries as $sDeliveryId => $oDelivery) {
-
                 // skipping that was checked and didn't fit before
                 if (in_array($sDeliveryId, $aSkipDeliveries)) {
                     continue;
@@ -265,7 +261,6 @@ class DeliveryList extends \oxList
                 $aSkipDeliveries[] = $sDeliveryId;
 
                 if ($oDelivery->isForBasket($oBasket)) {
-
                     // delivery fits conditions
                     $this->_aDeliveries[$sDeliveryId] = $aDeliveries[$sDeliveryId];
                     $blDelFound = true;
@@ -296,7 +291,6 @@ class DeliveryList extends \oxList
 
         //return deliveries sets if found
         if ($this->_blCollectFittingDeliveriesSets && count($aFittingDelSets)) {
-
             //resetting getting delivery sets list instead of deliveries before return
             $this->_blCollectFittingDeliveriesSets = false;
 

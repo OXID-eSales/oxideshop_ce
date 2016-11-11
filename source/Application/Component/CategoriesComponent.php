@@ -246,7 +246,6 @@ class CategoriesComponent extends \oxView
             // setting list type directly
             $sListType = 'search';
         } else {
-
             // such Manufacturer is available ?
             if ($sActManufacturer && ($sActManufacturer == $oProduct->getManufacturerId())) {
                 // setting list type directly

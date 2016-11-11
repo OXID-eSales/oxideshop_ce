@@ -252,7 +252,6 @@ class MdVariant extends \oxSuperCfg
         }
 
         return $dMinPrice;
-
     }
 
     /**

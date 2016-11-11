@@ -78,7 +78,7 @@ class ModuleSortList extends \oxAdminDetails
         $aModule = oxRegistry::getConfig()->getRequestParameter("aModules");
 
         $aModules = [];
-        if($tmp = json_decode($aModule, true)){
+        if ($tmp = json_decode($aModule, true)) {
             foreach ($tmp as $key => $value) {
                 $sanitizedKey = str_replace(self::BACKSLASH_REPLACEMENT, "\\", $key);
                 $aModules[$sanitizedKey] = $value;

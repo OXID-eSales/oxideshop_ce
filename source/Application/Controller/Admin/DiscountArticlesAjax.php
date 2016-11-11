@@ -126,10 +126,8 @@ class DiscountArticlesAjax extends \ajaxListComponent
         $aChosenArt = $this->_getActionIds('oxobject2discount.oxid');
 
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = parent::_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             oxDb::getDb()->execute($sQ);
-
         } elseif (is_array($aChosenArt)) {
             $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aChosenArt)) . ") ";
             oxDb::getDb()->execute($sQ);

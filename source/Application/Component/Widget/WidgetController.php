@@ -70,7 +70,6 @@ class WidgetController extends \oxUBase
         }
 
         parent::init();
-
     }
 
     /**

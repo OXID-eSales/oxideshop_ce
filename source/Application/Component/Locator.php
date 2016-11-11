@@ -96,7 +96,6 @@ class Locator extends \oxSuperCfg
     {
         // if no active category is loaded - lets check for category passed by post/get
         if (($oCategory = $oLocatorTarget->getActiveCategory())) {
-
             $sOrderBy = null;
             if ($oLocatorTarget->showSorting()) {
                 $sOrderBy = $oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent());
@@ -245,7 +244,6 @@ class Locator extends \oxSuperCfg
     protected function _setSearchLocatorData($oLocatorTarget, $oCurrArticle)
     {
         if (($oSearchCat = $oLocatorTarget->getActSearch())) {
-
             // #1834/1184M - specialchar search
             $sSearchParam = oxRegistry::getConfig()->getRequestParameter('searchparam', true);
             $sSearchFormParam = oxRegistry::getConfig()->getRequestParameter('searchparam');
@@ -317,7 +315,6 @@ class Locator extends \oxSuperCfg
     protected function _setRecommlistLocatorData($oLocatorTarget, $oCurrArticle)
     {
         if (($oRecommList = $oLocatorTarget->getActiveRecommList())) {
-
             // loading data for article navigation
             $oIdList = oxNew('oxArticleList');
             $oIdList->loadRecommArticleIds($oRecommList->getId(), null);
@@ -473,7 +470,6 @@ class Locator extends \oxSuperCfg
         // variant handling
         $sOxid = $oArticle->oxarticles__oxparentid->value ? $oArticle->oxarticles__oxparentid->value : $oArticle->getId();
         if ($oIdList->count() && isset($oIdList[$sOxid])) {
-
             $aIds = $oIdList->arrayKeys();
             $iPos = oxRegistry::getUtils()->arrayStringSearch($sOxid, $aIds);
 

@@ -53,7 +53,6 @@ if ($blAjaxCall) {
     }
 
     if ($sContainer = oxRegistry::getConfig()->getRequestParameter('container')) {
-
         $sContainer = trim(strtolower(basename($sContainer)));
 
         try {
@@ -76,9 +75,7 @@ if ($blAjaxCall) {
 
         $oAjaxComponent->setName($sContainer);
         $oAjaxComponent->processRequest(oxRegistry::getConfig()->getRequestParameter('fnc'));
-
     } else {
-
     }
 
     $myConfig->pageClose();

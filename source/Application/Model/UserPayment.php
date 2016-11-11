@@ -256,7 +256,6 @@ class UserPayment extends \oxBase
         }
 
         if (!$this->_aDynValues) {
-
             $sRawDynValue = null;
             if (is_object($this->oxuserpayments__oxvalue)) {
                 $sRawDynValue = $this->oxuserpayments__oxvalue->getRawValue();

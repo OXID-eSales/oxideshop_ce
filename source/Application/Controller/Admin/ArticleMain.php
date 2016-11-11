@@ -384,7 +384,7 @@ class ArticleMain extends \oxAdminDetails
     /**
      * Copying category assignments
      *
-     * @param string $sOldId Id from old article
+     * @param string $sOldId       Id from old article
      * @param string $newArticleId Id from new article
      */
     protected function _copyCategories($sOldId, $newArticleId)

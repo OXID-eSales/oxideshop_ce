@@ -85,7 +85,6 @@ class ActionsList extends \oxAdminList
 
         // searching for empty oxfolder fields
         if ($sDisplayType) {
-
             $sNow = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
 
             switch ($sDisplayType) {

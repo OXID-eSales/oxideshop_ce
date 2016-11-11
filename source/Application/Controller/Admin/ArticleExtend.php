@@ -170,7 +170,6 @@ class ArticleExtend extends \oxAdminDetails
         $sMediaDesc = $this->getConfig()->getRequestParameter("mediaDesc");
 
         if (($sMediaUrl && $sMediaUrl != 'http://') || $aMediaFile['name'] || $sMediaDesc) {
-
             if (!$sMediaDesc) {
                 return oxRegistry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_NODESCRIPTIONADDED');
             }

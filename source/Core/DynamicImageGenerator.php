@@ -55,7 +55,6 @@ namespace {
                         $version = version_compare(preg_replace("/[^0-9\.]/", "", $info["GD Version"]), 1, '>') ? 2 : 1;
                     }
                 }
-
             }
 
             return $version;
@@ -527,7 +526,6 @@ namespace OxidEsales\EshopCommunity\Core {
                 if (($currentWidth == $targetWidth) && ($currentHeight == $targetHeight)) {
                     return $imageTarget;
                 }
-
             }
 
             // including generator files

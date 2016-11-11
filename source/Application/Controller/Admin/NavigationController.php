@@ -156,14 +156,11 @@ class NavigationController extends \oxAdminView
     {
         $myUtils = oxRegistry::getUtils();
         if ($sUrl = oxRegistry::getConfig()->getRequestParameter("url")) {
-
             // Limit external url's only allowed host
             $myConfig = $this->getConfig();
             if ($myConfig->getConfigParam('blLoadDynContents') && strpos($sUrl, $this->_sAllowedHost) === 0) {
-
                 $sPath = $myConfig->getConfigParam('sCompileDir') . "/" . md5($sUrl) . '.html';
                 if ($myUtils->getRemoteCachePath($sUrl, $sPath)) {
-
                     $oStr = getStr();
                     $sVersion = $myConfig->getVersion();
                     $sEdition = $myConfig->getFullEdition();

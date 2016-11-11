@@ -106,7 +106,6 @@ class UserBasketItem extends \oxBase
         }
 
         if ($this->_oArticle === null) {
-
             $this->_oArticle = oxNew('oxArticle');
 
             // performance
@@ -123,7 +122,6 @@ class UserBasketItem extends \oxBase
             $aSelList = $this->getSelList();
             if (($aSelectlist = $this->_oArticle->getSelectLists()) && is_array($aSelList)) {
                 foreach ($aSelList as $iKey => $iSel) {
-
                     if (isset($aSelectlist[$iKey][$iSel])) {
                         // cloning select list information
                         $aSelectlist[$iKey][$iSel] = clone $aSelectlist[$iKey][$iSel];
@@ -138,7 +136,6 @@ class UserBasketItem extends \oxBase
         }
 
         return $this->_oArticle;
-
     }
 
     /**

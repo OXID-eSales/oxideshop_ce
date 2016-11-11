@@ -243,8 +243,8 @@ class BaseModel extends \oxSuperCfg
     /**
      * Magic setter. If using lazy loading, adds setted field to fields array
      *
-     * @param string $fieldName name value
-     * @param mixed $fieldValue value
+     * @param string $fieldName  name value
+     * @param mixed  $fieldValue value
      */
     public function __set($fieldName, $fieldValue)
     {
@@ -782,7 +782,6 @@ class BaseModel extends \oxSuperCfg
             } else {
                 $selectFields[] = ".`$key`";
             }
-
         }
 
         return implode(', ', $selectFields);
@@ -940,7 +939,6 @@ class BaseModel extends \oxSuperCfg
         // has 'activefrom'/'activeto' fields ?
         if (isset($this->_aFieldNames['oxactivefrom']) && isset($this->_aFieldNames['oxactiveto'])) {
             $query = $this->addSqlActiveRangeSnippet($query, $tableName);
-
         }
 
         return $query;

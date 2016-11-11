@@ -95,5 +95,4 @@ class CountryList extends \oxAdminList
     {
         return $this->sSecondDefSortField;
     }
-
 }

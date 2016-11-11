@@ -163,7 +163,6 @@ class ArticleVariant extends \oxAdminDetails
 
         if ($sOXID == "-1") {
             if ($oParent = $this->_getProductParent($oArticle->oxarticles__oxparentid->value)) {
-
                 // assign field from parent for new variant
                 // #4406
                 $oArticle->oxarticles__oxisconfigurable = new oxField($oParent->oxarticles__oxisconfigurable->value);
@@ -285,7 +284,6 @@ class ArticleVariant extends \oxAdminDetails
     {
         $oArticle = oxNew("oxArticle");
         if ($oArticle->load($this->getEditObjectId())) {
-
             //Disable editing for derived articles
             if ($oArticle->isDerived()) {
                 return;

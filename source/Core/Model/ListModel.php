@@ -102,7 +102,7 @@ class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countab
     /**
      * offsetSet for SPL
      *
-     * @param mixed  $offset SPL array offset
+     * @param mixed     $offset SPL array offset
      * @param BaseModel $oBase  Array element
      */
     public function offsetSet($offset, $oBase)

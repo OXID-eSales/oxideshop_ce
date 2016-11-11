@@ -1541,7 +1541,7 @@ class Email extends \PHPMailer
      * Set mail body. If second parameter (default value is true) is set to true,
      * performs search for "sid", removes it and adds shop id to string.
      *
-     * @param string $body      mail body
+     * @param string $body     mail body
      * @param bool   $clearSid clear sid in mail body
      */
     public function setBody($body = null, $clearSid = true)
@@ -1567,7 +1567,7 @@ class Email extends \PHPMailer
      * Sets text-only body of the message. If second parameter is set to true,
      * performs search for "sid", removes it and adds shop id to string.
      *
-     * @param string $altBody   mail subject
+     * @param string $altBody  mail subject
      * @param bool   $clearSid clear sid in mail body (default value is true)
      */
     public function setAltBody($altBody = null, $clearSid = true)

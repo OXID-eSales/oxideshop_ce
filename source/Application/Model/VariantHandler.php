@@ -326,7 +326,6 @@ class VariantHandler extends \oxSuperCfg
 
         // filling selections
         foreach ($oVariantList as $oVariant) {
-
             $aNames = $this->_getSelections($oVariant->oxarticles__oxvarselect->getRawValue());
             $blActive = ($sActVariantId === $oVariant->getId()) ? true : false;
             for ($i = 0; $i < $iVarSelCnt; $i++) {
@@ -487,7 +486,6 @@ class VariantHandler extends \oxSuperCfg
             $aVarSelects = array_slice($aVarSelects, 0, $iLimit);
         }
         if (($iVarSelCnt = count($aVarSelects))) {
-
             // filling selections
             $aRawVariantSelections = $this->_fillVariantSelections($oVariantList, $iVarSelCnt, $aFilter, $sActVariantId);
 

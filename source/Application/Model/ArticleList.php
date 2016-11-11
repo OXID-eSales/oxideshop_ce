@@ -236,7 +236,6 @@ class ArticleList extends \oxList
                 $this->selectString($sSelect);
                 break;
         }
-
     }
 
     /**
@@ -670,7 +669,7 @@ class ArticleList extends \oxList
         $sArticleTable = $oBaseObject->getViewName();
         $sArticleFields = $oBaseObject->getSelectFields();
 
-        $oxIdsSql = implode (',', DatabaseProvider::getDb()->quoteArray($aIds));
+        $oxIdsSql = implode(',', DatabaseProvider::getDb()->quoteArray($aIds));
 
         $sSelect = "select $sArticleFields from $sArticleTable ";
         $sSelect .= "where $sArticleTable.oxid in ( " . $oxIdsSql . " ) and ";
@@ -1031,7 +1030,6 @@ class ArticleList extends \oxList
         $oBaseObject = $this->getBaseObject();
         $myUtilsString = oxRegistry::get("oxUtilsString");
         foreach ($aSearch as $sSearchString) {
-
             if (!strlen($sSearchString)) {
                 continue;
             }
@@ -1044,7 +1042,6 @@ class ArticleList extends \oxList
 
             $sUml = $myUtilsString->prepareStrForSearch($sSearchString);
             foreach ($aSearchCols as $sField) {
-
                 if ($blSep2) {
                     $sSearch .= ' or ';
                 }
@@ -1196,7 +1193,7 @@ class ArticleList extends \oxList
     /**
      * Updates article.
      *
-     * @param string     $sCurrUpdateTime
+     * @param string            $sCurrUpdateTime
      * @param DatabaseInterface $oDb
      *
      * @return mixed

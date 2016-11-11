@@ -89,7 +89,6 @@ class DiscountUsersAjax extends \ajaxListComponent
                 if (!$oConfig->getConfigParam('blMallUsers')) {
                     $sQAdd .= " and $sUserTable.oxshopid = '" . $oConfig->getShopId() . "' ";
                 }
-
             } else {
                 $sQAdd = " from oxobject2discount, $sUserTable where $sUserTable.oxid=oxobject2discount.oxobjectid ";
                 $sQAdd .= " and oxobject2discount.oxdiscountid = " . $oDb->quote($sId) . " and oxobject2discount.oxtype = 'oxuser' ";
@@ -112,10 +111,8 @@ class DiscountUsersAjax extends \ajaxListComponent
         $oConfig = $this->getConfig();
         $aRemoveGroups = $this->_getActionIds('oxobject2discount.oxid');
         if ($oConfig->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
-
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
             $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aRemoveGroups)) . ") ";
             oxDb::getDb()->Execute($sQ);

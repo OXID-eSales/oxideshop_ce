@@ -55,7 +55,6 @@ class ObjectSeo extends \oxAdminDetails
             if ($oObject->isDerived()) {
                 $this->_aViewData['readonly'] = true;
             }
-
         }
 
         $iLang = $this->getEditLang();
@@ -94,9 +93,18 @@ class ObjectSeo extends \oxAdminDetails
 
             // saving
             $oEncoder->addSeoEntry(
-                $sOxid, $iShopId, $iLang, $this->_getStdUrl($sOxid),
-                $aSeoData['oxseourl'], $this->_getSeoEntryType(), $aSeoData['oxfixed'],
-                trim($aSeoData['oxkeywords']), trim($aSeoData['oxdescription']), $this->processParam($aSeoData['oxparams']), true, $this->_getAltSeoEntryId()
+                $sOxid,
+                $iShopId,
+                $iLang,
+                $this->_getStdUrl($sOxid),
+                $aSeoData['oxseourl'],
+                $this->_getSeoEntryType(),
+                $aSeoData['oxfixed'],
+                trim($aSeoData['oxkeywords']),
+                trim($aSeoData['oxdescription']),
+                $this->processParam($aSeoData['oxparams']),
+                true,
+                $this->_getAltSeoEntryId()
             );
         }
     }

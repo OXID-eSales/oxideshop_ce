@@ -380,7 +380,6 @@ class PaymentController extends \oxUBase
             $this->_setValues($aPaymentList, $oBasket);
             $this->_oPaymentList = $aPaymentList;
             $this->_aAllSets = $aAllSets;
-
         }
 
         return $this->_oPaymentList;
@@ -708,7 +707,6 @@ class PaymentController extends \oxUBase
         unset($_GET["dynvalue"]["kkmonth"]);
         unset($_GET["dynvalue"]["kkyear"]);
         unset($_GET["dynvalue"]["kkpruef"]);
-
     }
 
     /**

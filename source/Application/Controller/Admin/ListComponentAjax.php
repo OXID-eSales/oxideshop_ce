@@ -422,7 +422,6 @@ class ListComponentAjax extends \oxSuperCfg
                     $sQ .= $this->_getViewName($aCols[$iCol][1]) . '.' . $aCols[$iCol][0];
                     $sQ .= ' like ' . $oDb->Quote('%' . $sValue . '%') . ' ';
                 }
-
             }
         }
 

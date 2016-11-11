@@ -153,7 +153,6 @@ class Content extends \oxI18n implements \oxIUrl
 
         //Loads "credits" content object and its text (first available)
         if ($sLoadId == 'oxcredits') {
-
             // fetching column names
             $sColQ = "SHOW COLUMNS FROM oxcontents WHERE field LIKE  'oxcontent%'";
             $aCols = oxDb::getDb()->getAll($sColQ);
@@ -297,7 +296,6 @@ class Content extends \oxI18n implements \oxIUrl
             $sUrl .= "&amp;oxcid=" . $this->getId();
             // adding parent category if if available
             if ($this->_sParentCatId !== false && $this->oxcontents__oxcatid->value && $this->oxcontents__oxcatid->value != 'oxrootid') {
-
                 if ($this->_sParentCatId === null) {
                     $this->_sParentCatId = false;
                     $oDb = oxDb::getDb();

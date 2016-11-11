@@ -23,6 +23,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxAdminList;
+
 /**
  * user list "view" class.
  */

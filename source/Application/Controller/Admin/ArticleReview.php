@@ -51,7 +51,6 @@ class ArticleReview extends \oxAdminDetails
         $articleId = $this->getEditObjectId();
         $reviewId = oxRegistry::getConfig()->getRequestParameter('rev_oxid');
         if (isset($articleId) && $articleId != "-1") {
-
             // load object
             $article->load($articleId);
 
@@ -103,12 +102,10 @@ class ArticleReview extends \oxAdminDetails
         $variantList = $article->getVariants();
 
         if ($this->getConfig()->getConfigParam('blShowVariantReviews') && count($variantList)) {
-
             // verifying rights
             foreach ($variantList as $variant) {
                 $query .= "or oxreviews.oxobjectid = " . $database->quote($variant->oxarticles__oxid->value) . " ";
             }
-
         }
 
         //$sSelect .= "and oxreviews.oxtext".oxRegistry::getLang()->getLanguageTag($this->_iEditLang)." != ''";

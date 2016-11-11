@@ -110,7 +110,6 @@ class SelectListMain extends \oxAdminDetails
 
             $this->_aViewData["iErrorCode"] = $iErr;
             oxRegistry::getSession()->setVariable("iErrorCode", ERR_SUCCESS);
-
         }
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
             $oSelectlistMainAjax = oxNew('selectlist_main_ajax');
@@ -253,7 +252,6 @@ class SelectListMain extends \oxAdminDetails
     {
         $oSelectlist = oxNew("oxselectlist");
         if ($oSelectlist->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
-
             //Disable editing for derived items.
             if ($oSelectlist->isDerived()) {
                 return;

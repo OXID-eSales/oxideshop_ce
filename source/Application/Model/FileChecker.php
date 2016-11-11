@@ -323,7 +323,9 @@ class FileChecker
         $this->_blError = true;
         $sError = sprintf(
             oxRegistry::getLang()->translateString('OXDIAG_ERRORMESSAGEVERSIONDOESNOTEXIST'),
-            $this->getEdition(), $this->getVersion(), $this->getRevision()
+            $this->getEdition(),
+            $this->getVersion(),
+            $this->getRevision()
         );
 
         $this->_sErrorMessage .= $sError;
@@ -360,7 +362,6 @@ class FileChecker
         $sMessage = oxRegistry::getLang()->translateString('OXDIAG_ERRORVERSIONCOMPARE');
 
         if (is_object($oXML)) {
-
             if ($oXML->res == 'OK') {
                 // If recognized, still can be source or snapshot
                 $aMatch = array();

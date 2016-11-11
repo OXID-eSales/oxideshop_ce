@@ -146,7 +146,6 @@ class Payment extends \oxI18n
     public function getGroups()
     {
         if ($this->_oGroups == null && ($sOxid = $this->getId())) {
-
             // user groups
             $this->_oGroups = oxNew('oxlist', 'oxgroups');
             $sViewName = getViewName("oxgroups", $this->getLanguage());
@@ -265,7 +264,6 @@ class Payment extends \oxI18n
             } else {
                 $dBasketPrice += $oCosts->getBruttoPrice();
             }
-
         }
 
         // wrapping
@@ -283,7 +281,6 @@ class Payment extends \oxI18n
         if (($iRules & self::PAYMENT_ADDSUMRULE_GIFTS) &&
             ($oCosts = $oBasket->getCosts('oxgiftcard'))
         ) {
-
             if ($oBasket->isCalculationModeNetto()) {
                 $dBasketPrice += $oCosts->getNettoPrice();
             } else {
@@ -399,7 +396,6 @@ class Payment extends \oxI18n
     public function delete($sOxId = null)
     {
         if (parent::delete($sOxId)) {
-
             $sOxId = $sOxId ? $sOxId : $this->getId();
             $oDb = oxDb::getDb();
 

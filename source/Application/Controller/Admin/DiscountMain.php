@@ -158,7 +158,6 @@ class DiscountMain extends \oxAdminDetails
         try {
             $oDiscount->save();
         } catch (\oxInputException $exception) {
-
             $newException = oxNew("oxExceptionToDisplay");
             $newException->setMessage($exception->getMessage());
             $this->addTplParam('discount_title', $aParams['oxdiscount__oxtitle']);
@@ -216,7 +215,8 @@ class DiscountMain extends \oxAdminDetails
         $this->setEditObjectId($oAttr->getId());
     }
 
-    public function getNextOxsort() {
+    public function getNextOxsort()
+    {
         $shopId = oxRegistry::getConfig()->getShopId();
         $nextSort = oxNew("oxdiscount")->getNextOxsort($shopId);
 

@@ -89,7 +89,6 @@ class SeoEncoderArticle extends \oxSeoEncoder
         if ($oRecomm = $this->_getRecomm($oArticle, $iLang)) {
             //load details link from DB
             if (!($sSeoUri = $this->_loadFromDb('oxarticle', $oArticle->getId(), $iLang, null, $oRecomm->getId(), true))) {
-
                 $oArticle = $this->_getProductForLang($oArticle, $iLang);
 
                 // create title part for uri
@@ -170,7 +169,8 @@ class SeoEncoderArticle extends \oxSeoEncoder
         // writing category path
         $sSeoUri = $this->_processSeoUrl(
             oxRegistry::get("oxSeoEncoderCategory")->getCategoryUri($oCategory, $iLang) . $sTitle,
-            $oArticle->getId(), $iLang
+            $oArticle->getId(),
+            $iLang
         );
         $sCatId = $oCategory->getId();
         $this->_saveToDb(
@@ -354,7 +354,6 @@ class SeoEncoderArticle extends \oxSeoEncoder
         if (!($sTitle = $oArticle->oxarticles__oxtitle->value)) {
             // taking parent article title
             if (($sParentId = $oArticle->oxarticles__oxparentid->value)) {
-
                 // looking in cache ..
                 if (!isset(self::$_aTitleCache[$sParentId])) {
                     $oDb = oxDb::getDb();
@@ -393,7 +392,6 @@ class SeoEncoderArticle extends \oxSeoEncoder
         if ($oVendor = $this->_getVendor($oArticle, $iLang)) {
             //load details link from DB
             if ($blRegenerate || !($sSeoUri = $this->_loadFromDb('oxarticle', $oArticle->getId(), $iLang, null, $oVendor->getId(), true))) {
-
                 $oArticle = $this->_getProductForLang($oArticle, $iLang);
 
                 // create title part for uri
@@ -471,7 +469,6 @@ class SeoEncoderArticle extends \oxSeoEncoder
         if ($oManufacturer = $this->_getManufacturer($oArticle, $iLang)) {
             //load details link from DB
             if ($blRegenerate || !($sSeoUri = $this->_loadFromDb('oxarticle', $oArticle->getId(), $iLang, null, $oManufacturer->getId(), true))) {
-
                 $oArticle = $this->_getProductForLang($oArticle, $iLang);
 
                 // create title part for uri

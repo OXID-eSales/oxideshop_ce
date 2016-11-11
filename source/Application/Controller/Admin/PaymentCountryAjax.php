@@ -70,7 +70,6 @@ class PaymentCountryAjax extends \ajaxListComponent
             // which fields to load ?
             $sQAdd = " from $sCountryTable where $sCountryTable.oxactive = '1' ";
         } else {
-
             $sQAdd = " from oxobject2payment left join $sCountryTable on $sCountryTable.oxid=oxobject2payment.oxobjectid ";
             $sQAdd .= "where $sCountryTable.oxactive = '1' and oxobject2payment.oxpaymentid = " . $oDb->quote($sCountryId) . " and oxobject2payment.oxtype = 'oxcountry' ";
         }
@@ -115,10 +114,8 @@ class PaymentCountryAjax extends \ajaxListComponent
     {
         $aChosenCntr = $this->_getActionIds('oxobject2payment.oxid');
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2payment.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
-
         } elseif (is_array($aChosenCntr)) {
             $sQ = "delete from oxobject2payment where oxobject2payment.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aChosenCntr)) . ") ";
             oxDb::getDb()->Execute($sQ);

@@ -126,7 +126,6 @@ class SelectListMainAjax extends \ajaxListComponent
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sQ = parent::_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
-
         } elseif (is_array($aChosenArt)) {
             $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aChosenArt)) . ") ";
             oxDb::getDb()->Execute($sQ);
@@ -149,7 +148,6 @@ class SelectListMainAjax extends \ajaxListComponent
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {
-
             oxDb::getDb()->startTransaction();
             try {
                 $database = oxDb::getDb();

@@ -593,7 +593,6 @@ class DynamicExportBaseController extends \oxAdminDetails
                     $sTableCharset = "DEFAULT CHARACTER SET {$sMysqlCharacterSet} COLLATE {$sMysqlCollation}";
                 }
             }
-
         }
 
         return $sTableCharset;

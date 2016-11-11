@@ -139,7 +139,6 @@ class CompareController extends \oxUBase
             }
 
             if ($sPrevArticleId) {
-
                 $aNewItems = array();
                 foreach ($aItems as $sOxid => $sVal) {
                     if ($sOxid == $sPrevArticleId) {
@@ -177,7 +176,6 @@ class CompareController extends \oxUBase
             }
 
             if ($sNextArticleId) {
-
                 $aNewItems = array();
                 foreach ($aItems as $sOxid => $sVal) {
                     if ($sOxid == $sArticleId) {
@@ -313,7 +311,6 @@ class CompareController extends \oxUBase
         if ($this->_oAttributeList === null) {
             $this->_oAttributeList = false;
             if ($oArtList = $this->getCompArtList()) {
-
                 $aProductIds = array_keys($oArtList);
                 foreach ($oArtList as $oArticle) {
                     if ($oArticle->getParentId()) {
@@ -405,9 +402,8 @@ class CompareController extends \oxUBase
         $iCnt = 0;
         $iActPage = $this->getActPage();
         foreach ($aItems as $sOxid => $sVal) {
-
             //#4391T, skipping non loaded products
-            if (!isset ($oList[$sOxid])) {
+            if (!isset($oList[$sOxid])) {
                 continue;
             }
 

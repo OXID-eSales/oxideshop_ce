@@ -96,7 +96,6 @@ class ArticleSelectionAjax extends \ajaxListComponent
     {
         $aChosenArt = $this->_getActionIds('oxobject2selectlist.oxid');
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
@@ -127,7 +126,6 @@ class ArticleSelectionAjax extends \ajaxListComponent
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddSel)) {
-
             oxDb::getDb()->startTransaction();
             try {
                 $database = oxDb::getDb();

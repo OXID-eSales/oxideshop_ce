@@ -303,7 +303,7 @@ class ShopControl extends \oxSuperCfg
      * If this function can not be executed (is protected or so), oxSystemComponentException exception is thrown.
      *
      * @param FrontendController $view
-     * @param string         $functionName
+     * @param string             $functionName
      *
      * @throws oxSystemComponentException
      */
@@ -378,7 +378,7 @@ class ShopControl extends \oxSuperCfg
      * Check if method can be executed.
      *
      * @param FrontendController $view     View object to check if its method can be executed.
-     * @param string         $function Method to check if it can be executed.
+     * @param string             $function Method to check if it can be executed.
      *
      * @return bool
      */
@@ -596,10 +596,10 @@ class ShopControl extends \oxSuperCfg
      *
      * @deprecated on b-dev (2015-10-01); Use self::stopMonitoring() instead.
      *
-     * @param bool           $isCallForCache Is content cache
-     * @param bool           $isCached       Is content cached
-     * @param string         $viewId         View ID
-     * @param array          $viewData       View data
+     * @param bool               $isCallForCache Is content cache
+     * @param bool               $isCached       Is content cached
+     * @param string             $viewId         View ID
+     * @param array              $viewData       View data
      * @param FrontendController $view           View object
      */
     protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = array(), $view = null)

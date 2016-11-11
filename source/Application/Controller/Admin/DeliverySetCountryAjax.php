@@ -94,10 +94,8 @@ class DeliverySetCountryAjax extends \ajaxListComponent
         $aChosenCntr = $this->_getActionIds('oxobject2delivery.oxid');
         // removing all
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
-
         } elseif (is_array($aChosenCntr)) {
             $sChosenCountries = implode(", ", oxDb::getDb()->quoteArray($aChosenCntr));
             $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . $sChosenCountries . ") ";

@@ -291,8 +291,6 @@ class UserComponent extends \oxView
                     //just ignore it
                 }
             }
-
-
         }
     }
 
@@ -649,7 +647,6 @@ class UserComponent extends \oxView
             $blForceCheckOptIn = ($sBillingUsername !== null && $sBillingUsername !== $sUserName);
             $blEmailParam = $this->getConfig()->getConfigParam('blOrderOptInEmail');
             $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $blEmailParam, $blForceCheckOptIn);
-
         } catch (\OxidEsales\EshopCommunity\Core\Exception\UserException $oEx) { // errors in input
             // marking error code
             //TODO

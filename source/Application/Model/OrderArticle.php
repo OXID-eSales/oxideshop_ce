@@ -129,7 +129,6 @@ class OrderArticle extends \oxBase implements ArticleInterface
                 }
             }
         }
-
     }
 
     /**
@@ -417,7 +416,6 @@ class OrderArticle extends \oxBase implements ArticleInterface
     public function getOrderArticleSelectList($sArtId = null, $sOrderArtSelList = null)
     {
         if ($this->_aOrderArticleSelList === null) {
-
             $sOrderArtSelList = $sOrderArtSelList ? $sOrderArtSelList : $this->oxorderarticles__oxselvariant->value;
 
             $aRet = array();
@@ -589,7 +587,6 @@ class OrderArticle extends \oxBase implements ArticleInterface
             // to update stock we must first check if it is possible - article exists?
             $oArticle = oxNew("oxArticle");
             if ($oArticle->load($this->oxorderarticles__oxartid->value)) {
-
                 // updating stock info
                 $iStockChange = $iNewAmount - $this->oxorderarticles__oxamount->value;
                 if ($iStockChange > 0 && ($iOnStock = $oArticle->checkForStock($iStockChange)) !== false) {
@@ -832,7 +829,6 @@ class OrderArticle extends \oxBase implements ArticleInterface
         $oArticle = $this->getArticle();
 
         if ($oArticle->oxarticles__oxisdownloadable->value) {
-
             $oConfig = $this->getConfig();
             $sOrderId = $this->oxorderarticles__oxorderid->value;
             $sOrderArticleId = $this->getId();

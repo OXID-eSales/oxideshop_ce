@@ -87,10 +87,8 @@ class DeliverySetPaymentAjax extends \ajaxListComponent
     {
         $aChosenCntr = $this->_getActionIds('oxobject2payment.oxid');
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2payment.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
-
         } elseif (is_array($aChosenCntr)) {
             $sQ = "delete from oxobject2payment where oxobject2payment.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aChosenCntr)) . ") ";
             oxDb::getDb()->Execute($sQ);
@@ -113,7 +111,6 @@ class DeliverySetPaymentAjax extends \ajaxListComponent
             $aChosenSets = $this->_getAll($this->_addFilter("select $sPayTable.oxid " . $this->_getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenSets)) {
-
             oxDb::getDb()->startTransaction();
             try {
                 $database = oxDb::getDb();
@@ -135,7 +132,6 @@ class DeliverySetPaymentAjax extends \ajaxListComponent
                 throw $exception;
             }
             oxDb::getDb()->commitTransaction();
-
         }
     }
 }

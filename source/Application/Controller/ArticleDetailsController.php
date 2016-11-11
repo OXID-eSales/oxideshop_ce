@@ -873,7 +873,6 @@ class ArticleDetailsController extends \oxUBase
     public function getTitle()
     {
         if ($article = $this->getProduct()) {
-
             $articleTitle = $article->oxarticles__oxtitle->value;
             $variantSelectionId = $article->oxarticles__oxvarselect->value;
 

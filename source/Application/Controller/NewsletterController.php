@@ -131,14 +131,11 @@ class NewsletterController extends \oxUBase
 
         // if such user does not exist
         if (!$oUser->exists()) {
-
             // and subscribe is off - error, on - create
             if (!$blSubscribe) {
-
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay('NEWSLETTER_EMAIL_NOT_EXIST');
 
                 return;
-
             } else {
                 $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
                 $oUser->oxuser__oxrights = new oxField('user', oxField::T_RAW);
@@ -149,7 +146,6 @@ class NewsletterController extends \oxUBase
                 $oUser->oxuser__oxcountryid = new oxField($aParams['oxuser__oxcountryid'], oxField::T_RAW);
                 $blUserLoaded = $oUser->save();
             }
-
         } else {
             $blUserLoaded = $oUser->load($oUser->getId());
         }

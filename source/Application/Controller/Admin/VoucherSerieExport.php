@@ -185,7 +185,6 @@ class VoucherSerieExport extends \VoucherSerie_Main
         $iExported = false;
 
         if ($oSerie = $this->_getVoucherSerie()) {
-
             $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
             $sSelect = "select oxvouchernr from oxvouchers where oxvoucherserieid = " . $oDb->quote($oSerie->getId());

@@ -100,7 +100,6 @@ class NewsletterSend extends \Newsletter_Selection
         if ($blContinue) {
             $blLoadAction = $myConfig->getConfigParam('bl_perfLoadAktion');
             while (!$oRs->EOF && $iSendCnt < $iMaxCnt) {
-
                 if ($oRs->fields['oxemailfailed'] != "1") {
                     $sUserId = $oRs->fields['oxuserid'];
                     $iSendCnt++;

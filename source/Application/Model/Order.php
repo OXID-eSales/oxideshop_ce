@@ -257,7 +257,6 @@ class Order extends \oxBase
 
         // set usage of separate orders numbering for different shops
         $this->setSeparateNumbering($this->getConfig()->getConfigParam('blSeparateNumbering'));
-
     }
 
     /**
@@ -352,9 +351,7 @@ class Order extends \oxBase
     {
         // checking set value
         if ($blExcludeCanceled) {
-
             return $this->_getArticles(true);
-
         } elseif ($this->_oArticles === null) {
             $this->_oArticles = $this->_getArticles();
         }
@@ -476,9 +473,9 @@ class Order extends \oxBase
      * and sending order by email to shop owner and user
      * Mailing status (1 if OK, 0 on error) is returned.
      *
-     * @param Basket   $oBasket              Shopping basket object
-     * @param object   $oUser                Current user object
-     * @param bool     $blRecalculatingOrder Order recalculation
+     * @param Basket $oBasket              Shopping basket object
+     * @param object $oUser                Current user object
+     * @param bool   $blRecalculatingOrder Order recalculation
      *
      * @throws Exception
      *
@@ -730,7 +727,6 @@ class Order extends \oxBase
 
         // copies wrapping info
         $this->_setWrapping($oBasket);
-
     }
 
     /**
@@ -841,7 +837,6 @@ class Order extends \oxBase
 
         // add all the products we have on basket to the order
         foreach ($aArticleList as $oContent) {
-
             //$oContent->oProduct = $oContent->getArticle();
             // #M773 Do not use article lazy loading on order save
             $oProduct = $oContent->getArticle(true, null, true);
@@ -850,7 +845,6 @@ class Order extends \oxBase
             if ($oProduct->isOrderArticle()) {
                 $oOrderArticle = $oProduct;
             } else {
-
                 // if order language doe not match product language - article must be reloaded in order language
                 if ($iCurrLang != $oProduct->getLanguage()) {
                     $oProduct->loadInLang($iCurrLang, $oProduct->getProductId());
@@ -1061,7 +1055,6 @@ class Order extends \oxBase
 
         foreach ($aArticleList as $oContent) {
             if (($sWishId = $oContent->getWishId())) {
-
                 // checking which wishlist user uses ..
                 if ($sWishId == $oUser->getId()) {
                     $oUserBasket = $oUser->getBasket('wishlist');
@@ -1155,7 +1148,6 @@ class Order extends \oxBase
     public function save()
     {
         if (($blSave = parent::save())) {
-
             // saving order articles
             $oOrderArticles = $this->getOrderArticles();
             if ($oOrderArticles && count($oOrderArticles) > 0) {
@@ -1835,7 +1827,6 @@ class Order extends \oxBase
     {
         // if no order articles, return empty basket
         if (count($aOrderArticles) > 0) {
-
             //adding order articles to basket
             foreach ($aOrderArticles as $oOrderArticle) {
                 $oBasket->addOrderArticleToBasket($oOrderArticle);
@@ -1853,7 +1844,6 @@ class Order extends \oxBase
     {
         // if no order articles
         if (count($aArticles) > 0) {
-
             //adding order articles to basket
             foreach ($aArticles as $oArticle) {
                 $aSel = isset($oArticle->oxorderarticles__oxselvariant) ? $oArticle->oxorderarticles__oxselvariant->value : null;
@@ -1861,7 +1851,8 @@ class Order extends \oxBase
                 $oBasket->addToBasket(
                     $oArticle->oxorderarticles__oxartid->value,
                     $oArticle->oxorderarticles__oxamount->value,
-                    $aSel, $aPersParam
+                    $aSel,
+                    $aPersParam
                 );
             }
         }
@@ -1962,12 +1953,8 @@ class Order extends \oxBase
     {
         $this->oxorder__oxstorno = new oxField(1);
         if ($this->save()) {
-
-
             // canceling ordered products
             foreach ($this->getOrderArticles() as $oOrderArticle) {
-
-
                 $oOrderArticle->cancelOrderArticle();
             }
         }
@@ -1982,7 +1969,6 @@ class Order extends \oxBase
     public function getOrderCurrency()
     {
         if ($this->_oOrderCurrency === null) {
-
             // setting default in case unrecognized currency was set during order
             $aCurrencies = $this->getConfig()->getCurrencyArray();
             $this->_oOrderCurrency = current($aCurrencies);

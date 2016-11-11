@@ -370,7 +370,6 @@ class Category extends \oxI18n implements \oxIUrl
         $this->_aSubCats = $aCats;
 
         foreach ($aCats as $oCat) {
-
             // keeping ref. to parent
             $oCat->setParentCategory($this);
 
@@ -453,7 +452,6 @@ class Category extends \oxI18n implements \oxIUrl
                 || $myConfig->getConfigParam('blDontShowEmptyCategories')
             )
         ) {
-
             if ($this->isPriceCategory()) {
                 $this->_iNrOfArticles = oxRegistry::get("oxUtilsCount")->getPriceCatArticleCount($this->getId(), $this->oxcategories__oxpricefrom->value, $this->oxcategories__oxpriceto->value);
             } else {
@@ -482,7 +480,6 @@ class Category extends \oxI18n implements \oxIUrl
     public function getIsVisible()
     {
         if (!isset($this->_blIsVisible)) {
-
             if ($this->getConfig()->getConfigParam('blDontShowEmptyCategories')) {
                 $blEmpty = ($this->getNrOfArticles() < 1) && !$this->getHasVisibleSubCats();
             } else {
@@ -784,7 +781,6 @@ class Category extends \oxI18n implements \oxIUrl
 
         // loading only if parent id is not rootid
         if ($this->oxcategories__oxparentid->value && $this->oxcategories__oxparentid->value != 'oxrootid') {
-
             // checking if object itself has ref to parent
             if ($this->_oParent) {
                 $oCat = $this->_oParent;

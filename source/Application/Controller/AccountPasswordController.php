@@ -68,7 +68,6 @@ class AccountPasswordController extends \Account
         }
 
         return $this->_sThisTemplate;
-
     }
 
     /**

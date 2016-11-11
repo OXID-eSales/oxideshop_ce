@@ -88,7 +88,6 @@ class ArticleAttributeAjax extends \ajaxListComponent
             $sO2AViewName = $this->_getViewName('oxobject2attribute');
             $sQ = $this->_addFilter("delete $sO2AViewName.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
-
         } elseif (is_array($aChosenArt)) {
             $sChosenArticles = implode(", ", oxDb::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxobject2attribute where oxobject2attribute.oxid in ({$sChosenArticles}) ";
@@ -143,7 +142,6 @@ class ArticleAttributeAjax extends \ajaxListComponent
 
         $article = oxNew("oxArticle");
         if ($article->load($articleId)) {
-
             if ($article->isDerived()) {
                 return;
             }

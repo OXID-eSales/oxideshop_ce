@@ -212,7 +212,6 @@ class AccountController extends \oxUBase
         if (($sourceClass = oxRegistry::getConfig()->getRequestParameter("sourcecl")) &&
             $this->_oaComponents['oxcmp_user']->getLoginStatus() === USER_LOGIN_SUCCESS
         ) {
-
             $redirectUrl = $this->getConfig()->getShopUrl() . 'index.php?cl=' . rawurlencode($sourceClass);
 
             // building redirect link

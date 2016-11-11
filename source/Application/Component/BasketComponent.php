@@ -532,7 +532,6 @@ class BasketComponent extends \oxView
                 $itemData['bundle'],
                 $itemData['oldBasketItemId']
             );
-
         } catch (\OxidEsales\EshopCommunity\Core\Exception\OutOfStockException $exception) {
             $exception->setDestination($errorDestination);
             // #950 Change error destination to basket popup

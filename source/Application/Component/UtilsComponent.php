@@ -74,7 +74,6 @@ class UtilsComponent extends \oxView
         }
 
         if ($oProduct) {
-
             $aExport = array();
 
             $aClassVars = get_object_vars($oProduct);
@@ -129,14 +128,11 @@ class UtilsComponent extends \oxView
     ) {
         // only if enabled and not search engine..
         if ($this->getViewConfig()->getShowCompareList() && !oxRegistry::getUtils()->isSearchEngine()) {
-
-
             // #657 special treatment if we want to put on comparelist
             $blAddCompare = oxRegistry::getConfig()->getRequestParameter('addcompare');
             $blRemoveCompare = oxRegistry::getConfig()->getRequestParameter('removecompare');
             $sProductId = $sProductId ? $sProductId : oxRegistry::getConfig()->getRequestParameter('aid');
             if (($blAddCompare || $blRemoveCompare) && $sProductId) {
-
                 // toggle state in session array
                 $aItems = oxRegistry::getSession()->getVariable('aFiltcompproducts');
                 if ($blAddCompare && !isset($aItems[$sProductId])) {
@@ -226,7 +222,6 @@ class UtilsComponent extends \oxView
     {
         // only if user is logged in
         if ($oUser = $this->getUser()) {
-
             $sProductId = ($sProductId) ? $sProductId : oxRegistry::getConfig()->getRequestParameter('itmid');
             $sProductId = ($sProductId) ? $sProductId : oxRegistry::getConfig()->getRequestParameter('aid');
             $dAmount = isset($dAmount) ? $dAmount : oxRegistry::getConfig()->getRequestParameter('am');

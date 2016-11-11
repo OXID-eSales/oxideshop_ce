@@ -94,10 +94,8 @@ class DiscountGroupsAjax extends \ajaxListComponent
 
         $groupIds = $this->_getActionIds('oxobject2discount.oxid');
         if ($config->getRequestParameter('all')) {
-
             $query = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             oxDb::getDb()->Execute($query);
-
         } elseif ($groupIds && is_array($groupIds)) {
             $groupIdsQuoted = implode(", ", oxDb::getDb()->quoteArray($groupIds));
             $query = "delete from oxobject2discount where oxobject2discount.oxid in (" . $groupIdsQuoted . ") ";

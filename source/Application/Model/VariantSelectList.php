@@ -98,7 +98,6 @@ class VariantSelectList implements \oxISelectList
             if (!isset($this->_aList[$sKey])) {
                 $this->_aList[$sKey] = oxNew("oxSelection", $sName, $sValue, $blDisabled, $blActive);
             } else {
-
                 // overriding states
                 if ($this->_aList[$sKey]->isDisabled() && !$blDisabled) {
                     $this->_aList[$sKey]->setDisabled($blDisabled);

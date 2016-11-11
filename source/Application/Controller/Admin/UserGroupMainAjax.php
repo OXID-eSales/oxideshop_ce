@@ -110,10 +110,8 @@ class UserGroupMainAjax extends \ajaxListComponent
         $aRemoveGroups = $this->_getActionIds('oxobject2group.oxid');
 
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2group.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
-
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
             $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aRemoveGroups)) . ") ";
             oxDb::getDb()->Execute($sQ);

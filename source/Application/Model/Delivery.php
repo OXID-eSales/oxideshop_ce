@@ -232,7 +232,6 @@ class Delivery extends \oxI18n
                 $this->_blFreeShipping = true;
             }
         } else {
-
             $this->_blFreeShipping = false;
 
             switch ($this->getConditionType()) {
@@ -289,7 +288,6 @@ class Delivery extends \oxI18n
     public function getDeliveryPrice($dVat = null)
     {
         if ($this->_oPrice === null) {
-
             // loading oxPrice object for final price calculation
             $oPrice = oxNew('oxPrice');
             $oPrice->setNettoMode($this->_blDelVatOnTop);
@@ -352,7 +350,6 @@ class Delivery extends \oxI18n
             $aDeliveryCategories = $this->getCategories();
 
             foreach ($oBasket->getContents() as $oContent) {
-
                 //V FS#1954 - load delivery for variants from parent article
                 $oArticle = $oContent->getArticle(false);
                 $sProductId = $oArticle->getProductId();
@@ -369,9 +366,7 @@ class Delivery extends \oxI18n
                     if (!$blForBasket) {
                         $aggregatedDeliveryAmount += $artAmount;
                     }
-
                 } elseif ($blHasCategories) {
-
                     if (isset(self::$_aProductList[$sProductId])) {
                         $oProduct = self::$_aProductList[$sProductId];
                     } else {
@@ -387,7 +382,6 @@ class Delivery extends \oxI18n
                     }
 
                     foreach ($aDeliveryCategories as $sCatId) {
-
                         if ($oProduct->inCategory($sCatId)) {
                             $artAmount = $this->getDeliveryAmount($oContent);
 
@@ -405,7 +399,6 @@ class Delivery extends \oxI18n
                             break;
                         }
                     }
-
                 }
             }
         } else {
@@ -510,7 +503,6 @@ class Delivery extends \oxI18n
     public function getCountriesISO()
     {
         if ($this->_aCountriesISO === null) {
-
             $oDb = oxDb::getDb();
             $this->_aCountriesISO = array();
 
@@ -524,7 +516,6 @@ class Delivery extends \oxI18n
 
             $rs = $oDb->getCol($sSelect);
             $this->_aCountriesISO = $rs;
-
         }
 
         return $this->_aCountriesISO;

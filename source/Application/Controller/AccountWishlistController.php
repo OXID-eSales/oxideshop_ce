@@ -234,7 +234,6 @@ class AccountWishlistController extends \Account
             ) {
                 return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY', false, true);
             } else {
-
                 if ($oUser = $this->getUser()) {
                     $sFirstName = 'oxuser__oxfname';
                     $sLastName = 'oxuser__oxlname';
@@ -300,7 +299,6 @@ class AccountWishlistController extends \Account
         }
 
         if ($oUser = $this->getUser()) {
-
             $blPublic = (int) oxRegistry::getConfig()->getRequestParameter('blpublic');
             $oBasket = $oUser->getBasket('wishlist');
             $oBasket->oxuserbaskets__oxpublic = new oxField(($blPublic == 1) ? $blPublic : 0);
@@ -315,7 +313,6 @@ class AccountWishlistController extends \Account
     public function searchForWishList()
     {
         if ($sSearch = oxRegistry::getConfig()->getRequestParameter('search')) {
-
             // search for baskets
             $oUserList = oxNew('oxuserlist');
             $oUserList->loadWishlistUsers($sSearch);

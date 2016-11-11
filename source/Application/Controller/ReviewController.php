@@ -272,7 +272,6 @@ class ReviewController extends \Details
                 // session user?
                 $this->_oRevUser = $oUser;
             }
-
         }
 
         return $this->_oRevUser;

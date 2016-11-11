@@ -33,7 +33,7 @@ use oxView;
 class LoginController extends \oxAdminView
 {
     /** Login page view id. */
-    CONST VIEW_ID = 'login';
+    const VIEW_ID = 'login';
 
     /**
      * Sets value for _sThisAction to "login".

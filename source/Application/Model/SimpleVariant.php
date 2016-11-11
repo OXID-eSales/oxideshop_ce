@@ -399,6 +399,5 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
         }
 
         return $this->_aSeoUrls[$iLang][$iLinkType];
-
     }
 }

@@ -331,7 +331,6 @@ class GenericImportMain extends oxAdminDetails
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'genimport');
             }
         }
-
     }
 
     /**

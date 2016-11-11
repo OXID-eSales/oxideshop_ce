@@ -123,7 +123,6 @@ class AccountOrderController extends \Account
     public function getOrderArticleList()
     {
         if ($this->_aArticlesList === null) {
-
             // marking as set
             $this->_aArticlesList = false;
             $oOrdersList = $this->getOrderList();

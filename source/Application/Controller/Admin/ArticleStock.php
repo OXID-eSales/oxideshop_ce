@@ -213,7 +213,6 @@ class ArticleStock extends \oxAdminDetails
             }
             $this->_aViewData["errorscaleprice"][] = $sOXID;
         }
-
     }
 
     /**

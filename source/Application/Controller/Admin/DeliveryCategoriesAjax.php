@@ -100,10 +100,8 @@ class DeliveryCategoriesAjax extends \ajaxListComponent
 
         // removing all
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
-
         } elseif (is_array($aChosenCat)) {
             $sChosenCategoriess = implode(", ", oxDb::getDb()->quoteArray($aChosenCat));
             $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . $sChosenCategoriess . ") ";

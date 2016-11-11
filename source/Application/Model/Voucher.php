@@ -75,7 +75,6 @@ class Voucher extends \oxBase
     {
         $oRet = null;
         if (!empty($sVoucherNr)) {
-
             $sViewName = $this->getViewName();
             $sSeriesViewName = getViewName('oxvoucherseries');
             $oDb = oxDb::getDb();
@@ -414,7 +413,6 @@ class Voucher extends \oxBase
     {
         $oSeries = $this->getSerie();
         if (!$oSeries->oxvoucherseries__oxallowuseanother->value) {
-
             $oDb = oxDb::getDb();
             $sSelect = 'select count(*) from ' . $this->getViewName() . ' where oxuserid = ' . $oDb->quote($oUser->oxuser__oxid->value) . ' and ';
             $sSelect .= 'oxvoucherserieid = ' . $oDb->quote($this->oxvouchers__oxvoucherserieid->value) . ' and ';
@@ -630,7 +628,6 @@ class Voucher extends \oxBase
 
         foreach ($oBasket->getContents() as $oBasketItem) {
             if (!$oBasketItem->isDiscountArticle() && ($oArticle = $oBasketItem->getArticle()) && !$oArticle->skipDiscounts() && $oDiscount->isForBasketItem($oArticle)) {
-
                 $aItems[$iCount] = array(
                     'oxid'     => $oArticle->getId(),
                     'price'    => $oArticle->getBasketPrice($oBasketItem->getAmount(), $oBasketItem->getSelList(), $oBasket)->getPrice(),
@@ -761,7 +758,6 @@ class Voucher extends \oxBase
         $blDiscountApplied = false;
 
         foreach ($aBasketItems as $aBasketItem) {
-
             // If discount was already applied for the voucher to at least one basket items, then break
             if ($blDiscountApplied and !empty($oSeries->oxvoucherseries__oxcalculateonce->value)) {
                 break;
@@ -857,7 +853,6 @@ class Voucher extends \oxBase
     public function __get($sName)
     {
         switch ($sName) {
-
             // simple voucher mapping
             case 'sVoucherId':
                 return $this->getId();

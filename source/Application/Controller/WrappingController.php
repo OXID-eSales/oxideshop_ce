@@ -147,7 +147,6 @@ class WrappingController extends oxUBase
             $oBasket->setCardMessage(oxRegistry::getConfig()->getRequestParameter('giftmessage'));
             $oBasket->setCardId(oxRegistry::getConfig()->getRequestParameter('chosencard'));
             $oBasket->onUpdate();
-
         }
 
         return 'order';

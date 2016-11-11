@@ -125,7 +125,6 @@ class VendorList extends \oxList
         $this->_aPath[] = $this->_oRoot;
 
         foreach ($this as $sVndId => $oVendor) {
-
             // storing active vendor object
             if ($sVndId == $sActCat) {
                 $this->setClickVendor($oVendor);
@@ -203,7 +202,6 @@ class VendorList extends \oxList
     {
         // only when SEO id on and in front end
         if (oxRegistry::getUtils()->seoIsActive() && !$this->isAdmin()) {
-
             $oEncoder = oxRegistry::get("oxSeoEncoderVendor");
 
             // preparing root vendor category

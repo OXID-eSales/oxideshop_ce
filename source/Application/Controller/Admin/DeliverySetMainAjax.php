@@ -88,10 +88,8 @@ class DeliverySetMainAjax extends \ajaxListComponent
     {
         $aRemoveGroups = $this->_getActionIds('oxdel2delset.oxid');
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxdel2delset.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
-
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
             $sQ = "delete from oxdel2delset where oxdel2delset.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aRemoveGroups)) . ") ";
             oxDb::getDb()->Execute($sQ);
@@ -114,7 +112,6 @@ class DeliverySetMainAjax extends \ajaxListComponent
             $aChosenSets = $this->_getAll($this->_addFilter("select $sDeliveryViewName.oxid " . $this->_getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenSets)) {
-
             oxDb::getDb()->startTransaction();
             try {
                 $database = oxDb::getDb();

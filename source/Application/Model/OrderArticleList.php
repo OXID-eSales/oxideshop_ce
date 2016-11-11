@@ -60,6 +60,5 @@ class OrderArticleList extends \oxList
         $sSelect .= "WHERE oxorder.oxuserid = " . oxDb::getDb()->quote($sOxId);
 
         $this->selectString($sSelect);
-
     }
 }

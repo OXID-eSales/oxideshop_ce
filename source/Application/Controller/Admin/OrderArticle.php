@@ -196,7 +196,6 @@ class OrderArticle extends \oxAdminDetails
         $oProduct = oxNew("oxArticle");
 
         if ($sOxid && $dAmount && $oProduct->load($sOxid)) {
-
             $sOrderId = $this->getEditObjectId();
             $oOrder = oxNew('oxorder');
             if ($sOrderId && $oOrder->load($sOrderId)) {
@@ -282,7 +281,6 @@ class OrderArticle extends \oxAdminDetails
 
         $oOrder = oxNew('oxorder');
         if (is_array($aOrderArticles) && $oOrder->load($this->getEditObjectId())) {
-
             $myConfig = $this->getConfig();
             $oOrderArticles = $oOrder->getOrderArticles(true);
 
@@ -290,7 +288,6 @@ class OrderArticle extends \oxAdminDetails
             foreach ($oOrderArticles as $oOrderArticle) {
                 $sItemId = $oOrderArticle->getId();
                 if (isset($aOrderArticles[$sItemId])) {
-
                     // update stock
                     if ($blUseStock) {
                         $oOrderArticle->setNewAmount($aOrderArticles[$sItemId]['oxamount']);

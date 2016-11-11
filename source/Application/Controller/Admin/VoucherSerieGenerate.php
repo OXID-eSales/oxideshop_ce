@@ -96,7 +96,6 @@ class VoucherSerieGenerate extends \VoucherSerie_Main
 
         // creating new vouchers
         if ($iCnt < $iAmount && ($oVoucherSerie = $this->_getVoucherSerie())) {
-
             if (!$this->_iGenerated) {
                 $this->_iGenerated = $iCnt;
             }

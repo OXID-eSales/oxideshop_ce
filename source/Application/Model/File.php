@@ -120,7 +120,6 @@ class File extends \oxBase
         if (!$this->_uploadFile($aFileInfo['tmp_name'], $sUploadTo)) {
             throw new oxException('EXCEPTION_COULDNOTWRITETOFILE');
         }
-
     }
 
     /**
@@ -141,7 +140,6 @@ class File extends \oxBase
         if (isset($aFileInfo['error']) && $aFileInfo['error']) {
             throw new oxException('EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
         }
-
     }
 
     /**

@@ -191,7 +191,6 @@ class CategoryOrderAjax extends \ajaxListComponent
         $oCategory = oxNew("oxCategory");
         $sId = oxRegistry::getConfig()->getRequestParameter("oxid");
         if ($oCategory->load($sId)) {
-
             //Disable editing for derived items
             if ($oCategory->isDerived()) {
                 return;
@@ -232,7 +231,6 @@ class CategoryOrderAjax extends \ajaxListComponent
         $oCategory = oxNew("oxCategory");
         $sId = oxRegistry::getConfig()->getRequestParameter("oxid");
         if ($oCategory->load($sId)) {
-
             //Disable editing for derived items
             if ($oCategory->isDerived()) {
                 return;

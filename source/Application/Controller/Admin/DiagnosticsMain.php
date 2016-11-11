@@ -261,7 +261,6 @@ class DiagnosticsMain extends \oxAdminDetails
          * Modules
          */
         if ($this->getParam('oxdiag_frm_modules')) {
-
             $sModulesDir = $this->getConfig()->getModulesDir();
             $oModuleList = oxNew('oxModuleList');
             $aModules = $oModuleList->getModulesFromDir($sModulesDir);

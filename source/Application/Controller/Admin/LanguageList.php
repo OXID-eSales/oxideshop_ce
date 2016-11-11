@@ -180,7 +180,6 @@ class LanguageList extends \oxAdminList
 
         //skipping reseting language with id = 0
         if ($iLangId) {
-
             oxDb::getDb()->startTransaction();
 
             try {
@@ -189,7 +188,6 @@ class LanguageList extends \oxAdminList
 
                 oxDb::getDb()->commitTransaction();
             } catch (Exception $oEx) {
-
                 // if exception, rollBack everything
                 oxDb::getDb()->rollbackTransaction();
 

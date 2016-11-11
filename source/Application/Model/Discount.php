@@ -192,7 +192,6 @@ class Discount extends \oxI18n
         $sArticleId = $oArticle->getProductId();
 
         if (!isset($this->_aHasArticleDiscounts[$sArticleId])) {
-
             $blResult = $this->_isArticleAssigned($oArticle) || $this->_isCategoriesAssigned($oArticle->getCategoryIds());
 
             $this->_aHasArticleDiscounts[$sArticleId] = $blResult;
@@ -225,7 +224,6 @@ class Discount extends \oxI18n
         $sQ = "select 1 from oxobject2discount where oxdiscountid = " . $oDb->quote($this->oxdiscount__oxid->value) . " and oxtype = 'oxarticles' ";
         $sQ .= $this->_getProductCheckQuery($oArticle);
         if (!($blOk = ( bool ) $oDb->getOne($sQ))) {
-
             // checking article category
             $blOk = $this->_checkForArticleCategories($oArticle);
         }
@@ -245,7 +243,6 @@ class Discount extends \oxI18n
         $dAmount = 0;
         $aBasketItems = $oBasket->getContents();
         foreach ($aBasketItems as $oBasketItem) {
-
             $oBasketArticle = $oBasketItem->getArticle(false);
 
             $blForBasketItem = false;

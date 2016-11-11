@@ -120,8 +120,6 @@ class WishListController extends oxUBase
                 if (!$oWishlistBasket->isVisible()) {
                     $this->_oWishList = false;
                 }
-
-
             }
         }
 

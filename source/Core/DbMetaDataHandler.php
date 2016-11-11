@@ -67,7 +67,7 @@ class DbMetaDataHandler extends oxSuperCfg
     /**
      *  Get table fields
      *
-     * @param string $tableName  table name
+     * @param string $tableName table name
      *
      * @return array
      */

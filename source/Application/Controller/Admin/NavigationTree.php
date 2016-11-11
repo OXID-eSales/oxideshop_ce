@@ -716,7 +716,6 @@ class NavigationTree extends \oxSuperCfg
                 $node->parentNode->setAttribute('active', 1);
             }
         }
-
     }
 
     /**
@@ -834,7 +833,7 @@ class NavigationTree extends \oxSuperCfg
      *
      * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
      *
-     * @param int    $lang             language id
+     * @param int    $lang            language id
      * @param string $loadDynContents get local or remote content path
      *
      * @return string

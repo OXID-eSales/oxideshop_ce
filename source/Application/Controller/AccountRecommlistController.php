@@ -200,7 +200,6 @@ class AccountRecommlistController extends \Account
             if (($oUser = $this->getUser()) &&
                 ($sRecommId = oxRegistry::getConfig()->getRequestParameter('recommid'))
             ) {
-
                 $oRecommList = oxNew('oxrecommlist');
                 $sUserIdField = 'oxrecommlists__oxuserid';
                 if (($oRecommList->load($sRecommId)) && $oUser->getId() === $oRecommList->$sUserIdField->value) {

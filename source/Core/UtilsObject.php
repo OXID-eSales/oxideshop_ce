@@ -351,7 +351,7 @@ class UtilsObject
          * Backwards compatibility for ox... classes,
          * when a class is instance build upon the virtual namespace
          */
-        if($class == $classAlias) {
+        if ($class == $classAlias) {
             $classAlias = $classNameProvider->getClassAliasName($class);
         }
 

@@ -109,10 +109,8 @@ class DeliverySetList extends \oxList
         $sUserId = $oUser ? $oUser->getId() : '';
 
         if ($sUserId !== $this->_sUserId || $sCountryId !== $this->_sCountryId) {
-
             // choosing delivery country if it is not set yet
             if (!$sCountryId) {
-
                 if ($oUser) {
                     $sCountryId = $oUser->getActiveCountry();
                 } else {
@@ -151,7 +149,6 @@ class DeliverySetList extends \oxList
 
         // checking for current session user which gives additional restrictions for user itself, users group and country
         if ($oUser) {
-
             // user ID
             $sUserId = $oUser->getId();
 
@@ -211,7 +208,6 @@ class DeliverySetList extends \oxList
         // if there is already chosen delivery set we must start checking from it
         $aList = $this->_aArray;
         if ($sDelSet && isset($aList[$sDelSet])) {
-
             //set it as first element
             $oDelSet = $aList[$sDelSet];
             unset($aList[$sDelSet]);
@@ -250,7 +246,6 @@ class DeliverySetList extends \oxList
 
         // if there are no shipping sets we don't need to load payments
         if ($this->count()) {
-
             // one selected ?
             if ($sShipSet && !isset($this->_aArray[$sShipSet])) {
                 $sShipSet = null;
@@ -264,10 +259,8 @@ class DeliverySetList extends \oxList
 
             // checking if these ship sets available (number of possible payment methods > 0)
             foreach ($this as $sShipSetId => $oShipSet) {
-
                 $aPaymentList = $oPayList->getPaymentList($sShipSetId, $dBasketPrice, $oUser);
                 if (count($aPaymentList)) {
-
                     // now checking for deliveries
                     if ($oDelList->hasDeliveries($oBasket, $oUser, $oUser->getActiveCountry(), $sShipSetId)) {
                         $aActSets[$sShipSetId] = $oShipSet;

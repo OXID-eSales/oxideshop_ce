@@ -157,7 +157,7 @@ class NewsSubscribed extends \oxBase
             // release if _aSkipSaveFields are set for field oxunsubscribed.
             $aSkipSaveFieldsKeys = array_keys($this->_aSkipSaveFields, 'oxunsubscribed');
             foreach ($aSkipSaveFieldsKeys as $iSkipSaveFieldKey) {
-                unset ($this->_aSkipSaveFields[$iSkipSaveFieldKey]);
+                unset($this->_aSkipSaveFields[$iSkipSaveFieldKey]);
             }
         } else {
             // don't update date

@@ -109,7 +109,6 @@ class Search extends \oxSuperCfg
         $iCnt = 0;
         $sSelect = $this->_getSearchSelect($sSearchParamForQuery, $sInitialSearchCat, $sInitialSearchVendor, $sInitialSearchManufacturer, false);
         if ($sSelect) {
-
             $sPartial = substr($sSelect, strpos($sSelect, ' from '));
             $sSelect = "select count( " . getViewName('oxarticles', $this->_iLanguage) . ".oxid ) $sPartial ";
 
@@ -259,7 +258,6 @@ class Search extends \oxSuperCfg
         $oLang = oxRegistry::getLang();
 
         foreach ($aSearch as $sSearchString) {
-
             if (!strlen($sSearchString)) {
                 continue;
             }
@@ -272,7 +270,6 @@ class Search extends \oxSuperCfg
             $sSearch .= '( ';
 
             foreach ($aSearchCols as $sField) {
-
                 if ($blSep2) {
                     $sSearch .= ' or ';
                 }

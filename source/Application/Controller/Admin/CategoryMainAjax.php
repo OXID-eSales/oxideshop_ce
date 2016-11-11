@@ -86,17 +86,14 @@ class CategoryMainAjax extends \ajaxListComponent
 
         // category selected or not ?
         if (!$sOxid && $sSynchOxid) {
-
             // dodger performance
             $sQAdd = ' from ' . $sArticleTable . ' where 1 ';
         } else {
-
             // copied from oxadminview
             $sJoin = " {$sArticleTable}.oxid={$sO2CView}.oxobjectid ";
 
             $sSubSelect = '';
             if ($sSynchOxid && $sOxid != $sSynchOxid) {
-
                 $sSubSelect = ' and ' . $sArticleTable . '.oxid not in ( ';
                 $sSubSelect .= "select $sArticleTable.oxid from $sO2CView left join $sArticleTable ";
                 $sSubSelect .= "on $sJoin where $sO2CView.oxcatnid =  " . $oDb->quote($sSynchOxid) . " ";
@@ -156,7 +153,6 @@ class CategoryMainAjax extends \ajaxListComponent
             }
 
             if (is_array($aArticles)) {
-
                 $sO2CView = $this->_getViewName('oxobject2category');
 
                 $oNew = oxNew('oxobject2category');
@@ -165,7 +161,6 @@ class CategoryMainAjax extends \ajaxListComponent
 
                 $sProdIds = "";
                 foreach ($aArticles as $sAdd) {
-
                     // check, if it's already in, then don't add it again
                     $sSelect = "select 1 from $sO2CView as oxobject2category where oxobject2category.oxcatnid= "
                                . $database->quote($sCategoryID) . " and oxobject2category.oxobjectid = " . $database->quote($sAdd) . "";

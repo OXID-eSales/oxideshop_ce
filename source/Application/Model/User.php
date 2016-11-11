@@ -275,7 +275,6 @@ class User extends \oxBase
         // if subscription object is not set yet - we should create one
         if (!$this->_oNewsSubscription->loadFromUserId($this->getId())) {
             if (!$this->_oNewsSubscription->loadFromEmail($this->oxuser__oxusername->value)) {
-
                 // no subscription defined yet - creating one
                 $this->_oNewsSubscription->oxnewssubscribed__oxuserid = new oxField($this->getId(), oxField::T_RAW);
                 $this->_oNewsSubscription->oxnewssubscribed__oxemail = new oxField($this->oxuser__oxusername->value, oxField::T_RAW);
@@ -491,7 +490,6 @@ class User extends \oxBase
     public function getUserPayments($sOXID = null)
     {
         if ($this->_oPayments === null) {
-
             if (!$sOXID) {
                 $sOXID = $this->getId();
             }
@@ -1113,14 +1111,12 @@ class User extends \oxBase
         if ($oNewsSubscription) {
             if ($blSubscribe && ($blForceCheckOptIn || ($iOptInStatus = $oNewsSubscription->getOptInStatus()) != 1)) {
                 if (!$blSendOptIn) {
-
                     // double-opt-in check is disabled - assigning automatically
                     $this->addToGroup('oxidnewsletter');
                     // and setting subscribed status
                     $oNewsSubscription->setOptInStatus(1);
                     $blSuccess = true;
                 } else {
-
                     // double-opt-in check enabled - sending confirmation email and setting waiting status
                     if ($iOptInStatus != 2) {
                         // sending double-opt-in mail
@@ -1343,7 +1339,6 @@ class User extends \oxBase
 
         //login successful?
         if ($this->oxuser__oxid->value) {
-
             // yes, successful login
 
             //resetting active user
@@ -1669,26 +1664,20 @@ class User extends \oxBase
         }
         $oRs = $masterDb->select($sQ, false);
         if ($oRs != false && $oRs->count() > 0) {
-
             if ($this->_blMallUsers) {
-
                 $blExists = true;
                 if ($oRs->fields[1] == 'user' && !$oRs->fields[2]) {
-
                     // password is not set - allow to override
                     $blExists = false;
                 }
             } else {
-
                 $blExists = false;
                 while (!$oRs->EOF) {
                     if ($oRs->fields[1] != 'user') {
-
                         // exists admin with same login - must not allow
                         $blExists = true;
                         break;
                     } elseif ($oRs->fields[0] == $iShopId && $oRs->fields[2]) {
-
                         // exists same login (with password) in same shop
                         $blExists = true;
                         break;

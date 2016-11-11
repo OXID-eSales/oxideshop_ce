@@ -127,7 +127,6 @@ class UserMain extends \oxAdminDetails
         //allow admin information edit only for MALL admins
         $soxId = $this->getEditObjectId();
         if ($this->_allowAdminEdit($soxId)) {
-
             $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
             // checkbox handling

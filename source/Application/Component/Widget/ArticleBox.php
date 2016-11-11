@@ -110,7 +110,6 @@ class ArticleBox extends \oxWidget
     public function getProduct()
     {
         if (is_null($this->_oArticle)) {
-
             if ($this->getViewParameter('_object')) {
                 $oArticle = $this->getViewParameter('_object');
             } else {

@@ -121,7 +121,7 @@ class OrderMain extends \oxAdminDetails
             foreach ($aParams as $parameter => $value) {
                 //parameter changes for not whitelisted parameters trigger order recalculation
                 $orderField = $oOrder->$parameter;
-                if ( ($value != $orderField->value) && !in_array($parameter, $this->fieldsTriggerNoOrderRecalculation) ) {
+                if (($value != $orderField->value) && !in_array($parameter, $this->fieldsTriggerNoOrderRecalculation)) {
                     $needOrderRecalculate = true;
                     continue;
                 }
@@ -177,7 +177,6 @@ class OrderMain extends \oxAdminDetails
         $soxId = $this->getEditObjectId();
         $oOrder = oxNew("oxorder");
         if ($oOrder->load($soxId)) {
-
             // #632A
             $oOrder->oxorder__oxsenddate = new oxField(date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime()));
             $oOrder->save();
@@ -213,7 +212,6 @@ class OrderMain extends \oxAdminDetails
     {
         $oOrder = oxNew("oxorder");
         if ($oOrder->load($this->getEditObjectId())) {
-
             $oOrder->oxorder__oxsenddate = new oxField("0000-00-00 00:00:00");
             $oOrder->save();
 

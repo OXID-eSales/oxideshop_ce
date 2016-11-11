@@ -124,7 +124,6 @@ class ManufacturerList extends \oxList
         $this->_aPath[] = $this->_oRoot;
 
         foreach ($this as $sVndId => $oManufacturer) {
-
             // storing active manufacturer object
             if ((string)$sVndId === $sActCat) {
                 $this->setClickManufacturer($oManufacturer);
@@ -202,7 +201,6 @@ class ManufacturerList extends \oxList
     {
         // only when SEO id on and in front end
         if (oxRegistry::getUtils()->seoIsActive() && !$this->isAdmin()) {
-
             $oEncoder = oxRegistry::get("oxSeoEncoderManufacturer");
 
             // preparing root manufacturer category

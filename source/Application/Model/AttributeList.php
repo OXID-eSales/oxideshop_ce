@@ -26,7 +26,6 @@ use oxDb;
 use oxRegistry;
 use stdClass;
 
-
 /**
  * Attribute list manager.
  *
@@ -58,7 +57,7 @@ class AttributeList extends \oxList
         $sAttrViewName = getViewName('oxattribute');
         $sViewName = getViewName('oxobject2attribute');
 
-        $oxObjectIdsSql = implode (',', oxDb::getDb()->quoteArray($aIds));
+        $oxObjectIdsSql = implode(',', oxDb::getDb()->quoteArray($aIds));
 
         $sSelect = "select $sAttrViewName.oxid, $sAttrViewName.oxtitle, {$sViewName}.oxvalue, {$sViewName}.oxobjectid ";
         $sSelect .= "from {$sViewName} left join $sAttrViewName on $sAttrViewName.oxid = {$sViewName}.oxattrid ";
@@ -106,7 +105,6 @@ class AttributeList extends \oxList
     public function loadAttributes($sArticleId, $sParentId = null)
     {
         if ($sArticleId) {
-
             $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 
             $sAttrViewName = getViewName('oxattribute');
@@ -126,7 +124,6 @@ class AttributeList extends \oxList
 
             $this->assignArray($aAttributes);
         }
-
     }
 
     /**
@@ -138,7 +135,6 @@ class AttributeList extends \oxList
     public function loadAttributesDisplayableInBasket($sArtId, $sParentId = null)
     {
         if ($sArtId) {
-
             $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 
             $sAttrViewName = getViewName('oxattribute');
@@ -202,9 +198,7 @@ class AttributeList extends \oxList
 
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF && list($sAttId, $sAttTitle, $sAttValue) = $rs->fields) {
-
                     if (!$this->offsetExists($sAttId)) {
-
                         $oAttribute = oxNew("oxattribute");
                         $oAttribute->setTitle($sAttTitle);
 
@@ -213,7 +207,6 @@ class AttributeList extends \oxList
                         if (isset($aSessionFilter[$sCategoryId][$iLang][$sAttId])) {
                             $oAttribute->setActiveValue($aSessionFilter[$sCategoryId][$iLang][$sAttId]);
                         }
-
                     } else {
                         $oAttribute = $this->offsetGet($sAttId);
                     }

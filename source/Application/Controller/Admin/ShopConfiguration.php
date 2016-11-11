@@ -87,7 +87,6 @@ class ShopConfiguration extends oxAdminDetails
 
                 return "popups/shop_default_category.tpl";
             }
-
         }
 
         $aDbVariables = $this->loadConfVars($soxId, $this->_getModuleForConfigVars());

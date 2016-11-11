@@ -55,11 +55,17 @@ class SettingsHandler extends \oxSuperCfg
     /**
      * Get settings and module id and starts import process.
      *
+     * Run module settings import logic only if it has settings array
+     * On empty settings array, it will remove the settings.
+     *
      * @param object $module Module or Theme Object
      */
     public function run($module)
     {
-        $this->addModuleSettings($module->getInfo('settings'), $module->getId());
+        $moduleSettings = $module->getInfo('settings');
+        if (is_array($moduleSettings)) {
+            $this->addModuleSettings($moduleSettings, $module->getId());
+        }
     }
 
     /**

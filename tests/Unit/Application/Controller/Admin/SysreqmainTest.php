@@ -67,7 +67,7 @@ class SysreqmainTest extends \OxidTestCase
         $sUrl = "http://oxidforge.org/en/installation.html";
 
         $oSubj = oxNew('sysreq_main');
-        $this->assertEquals($sUrl . "#PHP_version_at_least_5.3.25", $oSubj->getReqInfoUrl("php_version", false));
+        $this->assertEquals($sUrl . "#PHP_version_at_least_5.6", $oSubj->getReqInfoUrl("php_version", false));
         $this->assertEquals($sUrl, $oSubj->getReqInfoUrl("none", false));
         $this->assertEquals($sUrl . "#Zend_Optimizer", $oSubj->getReqInfoUrl("zend_optimizer", false));
     }

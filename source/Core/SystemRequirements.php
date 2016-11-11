@@ -120,7 +120,7 @@ class SystemRequirements
      * @var array
      */
     protected $_aInfoMap = array(
-        "php_version"        => "PHP_version_at_least_5.3.25",
+        "php_version"        => "PHP_version_at_least_5.6",
         // @deprecated since v6.0 (2016-11-08); See checkLibXml2() and checkPhpXml()
         "lib_xml2"           => "LIB_XML2",
         "php_xml"            => "DOM",

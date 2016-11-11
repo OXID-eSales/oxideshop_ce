@@ -83,6 +83,35 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
                     'oxSuperCfg',
                     'OxidEsales\EshopCommunity\Core\Base'
                 ),
+                'expectedInheritanceChainPE' => array(
+                    'Test1ContentController',
+                    'OxidEsales\EshopCommunity\Application\Controller\ContentController',
+                    'oxUBase',
+                    'OxidEsales\EshopProfessional\Application\Controller\FrontendController',
+                    'OxidEsales\EshopCommunity\Application\Controller\FrontendController',
+                    'oxView',
+                    'OxidEsales\EshopProfessional\Core\Controller\BaseController',
+                    'OxidEsales\EshopCommunity\Core\Controller\BaseController',
+                    'oxSuperCfg',
+                    'OxidEsales\EshopProfessional\Core\Base',
+                    'OxidEsales\EshopCommunity\Core\Base'
+                ),
+                'expectedInheritanceChainEE' => array(
+                    'Test1ContentController',
+                    'OxidEsales\EshopCommunity\Application\Controller\ContentController',
+                    'oxUBase',
+                    'OxidEsales\EshopEnterprise\Application\Controller\FrontendController',
+                    'OxidEsales\EshopProfessional\Application\Controller\FrontendController',
+                    'OxidEsales\EshopCommunity\Application\Controller\FrontendController',
+                    'oxView',
+                    'OxidEsales\EshopEnterprise\Core\Controller\BaseController',
+                    'OxidEsales\EshopProfessional\Core\Controller\BaseController',
+                    'OxidEsales\EshopCommunity\Core\Controller\BaseController',
+                    'oxSuperCfg',
+                    'OxidEsales\EshopEnterprise\Core\Base',
+                    'OxidEsales\EshopProfessional\Core\Base',
+                    'OxidEsales\EshopCommunity\Core\Base'
+                ),
                 'expectedTitle'            => 'Impressum - Module_1_Controller - Module_1_Model'
             ),
             array(
@@ -96,6 +125,37 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
                     'oxView',
                     'OxidEsales\EshopCommunity\Core\Controller\BaseController',
                     'oxSuperCfg',
+                    'OxidEsales\EshopCommunity\Core\Base'
+                ),
+                'expectedInheritanceChainPE' => array(
+                    'Test2ContentController',
+                    'Test1ContentController',
+                    'OxidEsales\EshopCommunity\Application\Controller\ContentController',
+                    'oxUBase',
+                    'OxidEsales\EshopProfessional\Application\Controller\FrontendController',
+                    'OxidEsales\EshopCommunity\Application\Controller\FrontendController',
+                    'oxView',
+                    'OxidEsales\EshopProfessional\Core\Controller\BaseController',
+                    'OxidEsales\EshopCommunity\Core\Controller\BaseController',
+                    'oxSuperCfg',
+                    'OxidEsales\EshopProfessional\Core\Base',
+                    'OxidEsales\EshopCommunity\Core\Base',
+                ),
+                'expectedInheritanceChainEE' => array(
+                    'Test2ContentController',
+                    'Test1ContentController',
+                    'OxidEsales\EshopCommunity\Application\Controller\ContentController',
+                    'oxUBase',
+                    'OxidEsales\EshopEnterprise\Application\Controller\FrontendController',
+                    'OxidEsales\EshopProfessional\Application\Controller\FrontendController',
+                    'OxidEsales\EshopCommunity\Application\Controller\FrontendController',
+                    'oxView',
+                    'OxidEsales\EshopEnterprise\Core\Controller\BaseController',
+                    'OxidEsales\EshopProfessional\Core\Controller\BaseController',
+                    'OxidEsales\EshopCommunity\Core\Controller\BaseController',
+                    'oxSuperCfg',
+                    'OxidEsales\EshopEnterprise\Core\Base',
+                    'OxidEsales\EshopProfessional\Core\Base',
                     'OxidEsales\EshopCommunity\Core\Base'
                 ),
                 'expectedTitle'            => 'Impressum - Module_1_Controller - Module_1_Model - Module_2_Controller'
@@ -113,6 +173,37 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
                     'oxSuperCfg',
                     'OxidEsales\EshopCommunity\Core\Base'
                 ),
+                'expectedInheritanceChainPE' => array(
+                    'Test2ContentController',
+                    'Test1ContentController',
+                    'OxidEsales\EshopCommunity\Application\Controller\ContentController',
+                    'oxUBase',
+                    'OxidEsales\EshopProfessional\Application\Controller\FrontendController',
+                    'OxidEsales\EshopCommunity\Application\Controller\FrontendController',
+                    'oxView',
+                    'OxidEsales\EshopProfessional\Core\Controller\BaseController',
+                    'OxidEsales\EshopCommunity\Core\Controller\BaseController',
+                    'oxSuperCfg',
+                    'OxidEsales\EshopProfessional\Core\Base',
+                    'OxidEsales\EshopCommunity\Core\Base',
+                ),
+                'expectedInheritanceChainEE' => array(
+                    'Test2ContentController',
+                    'Test1ContentController',
+                    'OxidEsales\EshopCommunity\Application\Controller\ContentController',
+                    'oxUBase',
+                    'OxidEsales\EshopEnterprise\Application\Controller\FrontendController',
+                    'OxidEsales\EshopProfessional\Application\Controller\FrontendController',
+                    'OxidEsales\EshopCommunity\Application\Controller\FrontendController',
+                    'oxView',
+                    'OxidEsales\EshopEnterprise\Core\Controller\BaseController',
+                    'OxidEsales\EshopProfessional\Core\Controller\BaseController',
+                    'OxidEsales\EshopCommunity\Core\Controller\BaseController',
+                    'oxSuperCfg',
+                    'OxidEsales\EshopEnterprise\Core\Base',
+                    'OxidEsales\EshopProfessional\Core\Base',
+                    'OxidEsales\EshopCommunity\Core\Base'
+                ),
                 'expectedTitle'            => 'Impressum - Module_1_Controller - Module_3_Model - Module_2_Controller'
             )
         );
@@ -123,19 +214,22 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
      *
      * @dataProvider dataProviderForTestVirtualNamespaceModules
      */
-    public function testVirtualNamespaceModules($modulesToActivate, $expectedInheritanceChain, $expectedTitle)
+    public function testVirtualNamespaceModules($modulesToActivate, $expectedInheritanceChain, $expectedInheritanceChainPE, $expectedInheritanceChainEE, $expectedTitle)
     {
-
-        $this->markTestSkipped('Wrong assumption');
-
         $this->environment->prepare($modulesToActivate);
 
         $createdContentController = oxNew('Content');
 
-        $this->assertObjectHasInheritances(
-            $createdContentController,
-            $expectedInheritanceChain
-        );
+        $expectedInheritanceChainEdition = $expectedInheritanceChain;
+
+        if ($this->getTestConfig()->getShopEdition() == 'PE') {
+            $expectedInheritanceChainEdition = $expectedInheritanceChainPE;
+        }
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $expectedInheritanceChainEdition = $expectedInheritanceChainEE;
+        }
+
+        $this->assertObjectHasInheritances($createdContentController, $expectedInheritanceChainEdition);
 
         $resultTitle = $createdContentController->getTitle();
         $this->assertSame($expectedTitle,$resultTitle);

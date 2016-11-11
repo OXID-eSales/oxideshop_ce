@@ -63,7 +63,8 @@ class SettingsHandler extends \oxSuperCfg
     public function run($module)
     {
         $moduleSettings = $module->getInfo('settings');
-        if (is_array($moduleSettings)) {
+        $isTheme = $this->isTheme($module->getId());
+        if (!$isTheme || ($isTheme && is_array($moduleSettings))) {
             $this->addModuleSettings($moduleSettings, $module->getId());
         }
     }
@@ -90,8 +91,7 @@ class SettingsHandler extends \oxSuperCfg
                 $name = $setting["name"];
                 $type = $setting["type"];
 
-                $themeTypeCondition = "@^" . Config::OXMODULE_THEME_PREFIX . "@i";
-                if (preg_match($themeTypeCondition, $module)) {
+                if ($this->isTheme($moduleId)) {
                     $value = array_key_exists($name, $moduleConfigs) ? $moduleConfigs[$name] : $setting["value"];
                 } else {
                     $value = is_null($config->getConfigParam($name)) ? $setting["value"] : $config->getConfigParam($name);
@@ -119,6 +119,19 @@ class SettingsHandler extends \oxSuperCfg
                 $db->execute($insertSql);
             }
         }
+    }
+
+    /**
+     * Check if module is theme.
+     *
+     * @param string $moduleId
+     * @return bool
+     */
+    protected function isTheme($moduleId)
+    {
+        $moduleConfigId = $this->getModuleConfigId($moduleId);
+        $themeTypeCondition = "@^" . Config::OXMODULE_THEME_PREFIX . "@i";
+        return (bool)preg_match($themeTypeCondition, $moduleConfigId);
     }
 
     /**

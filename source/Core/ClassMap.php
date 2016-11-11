@@ -29,7 +29,7 @@ class ClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap
 {
 
     /**
-     * @inheritdoc
+     * @return array
      */
     public function getOverridableMap()
     {
@@ -493,7 +493,7 @@ class ClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
     public function getNotOverridableMap()
     {

@@ -17,7 +17,7 @@
         "oxid-esales/eshop-db-views-regenerator": "^v1.0.0",
         "doctrine/dbal": "v2.5.4",
         "oxid-esales/eshop-demodata-installer": "dev-master",
-        "oxid-esales/oxideshop-composer-plugin": "dev-master"
+        "oxid-esales/oxideshop-composer-plugin": "^v1.0.0"
     },
     "require-dev": {
         "oxid-esales/testing-library": "dev-master",

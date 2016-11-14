@@ -16,7 +16,7 @@
         "oxid-esales/eshop-db-migration-wrapper": "^v1.0.0",
         "oxid-esales/eshop-db-views-regenerator": "^v1.0.0",
         "doctrine/dbal": "v2.5.4",
-        "oxid-esales/eshop-demodata-installer": "dev-master",
+        "oxid-esales/eshop-demodata-installer": "^v1.0.0",
         "oxid-esales/oxideshop-composer-plugin": "^v1.0.0"
     },
     "require-dev": {

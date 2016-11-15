@@ -56,7 +56,7 @@ if (!function_exists('redirectIfShopNotConfigured')) {
         }
 
         header("HTTP/1.1 302 Found");
-        header("Location: setup/index.php");
+        header("Location: Setup/index.php");
         header("Connection: close");
         exit(0);
     }

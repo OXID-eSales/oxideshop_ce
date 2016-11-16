@@ -929,25 +929,30 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
         parent::render();
 
-        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
-
-        // if category parameter is not found, use category from product
-        $sCatId = $this->getViewParameter("cnid");
-
-        if (!$sCatId && $oProduct->getCategory()) {
-            $oCategory = $oProduct->getCategory();
-        } else {
-            $oCategory->load($sCatId);
-        }
         $this->_setSortingParameters();
+        $p = $this->getConfig()->getTopActiveView();
+        $c = $p->getActiveCategory();
+        if ($c) {
+            $this->setActiveCategory($c);
+            $this->setCategoryTree($p->getCategoryTree());
+        } else {
+            $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
-        $this->setActiveCategory($oCategory);
+            // if category parameter is not found, use category from product
+            $sCatId = $this->getViewParameter("cnid");
 
-        /**
-         * @var $oLocator oxLocator
-         */
-        $oLocator = oxNew('oxLocator', $this->getListType());
-        $oLocator->setLocatorData($oProduct, $this);
+            if (!$sCatId && $oProduct->getCategory()) {
+                $oCategory = $oProduct->getCategory();
+            } else {
+                $oCategory->load($sCatId);
+            }
+            $this->setActiveCategory($oCategory);
+            /**
+             * @var $oLocator oxLocator
+             */
+            $oLocator = oxNew('oxLocator', $this->getListType());
+            $oLocator->setLocatorData($oProduct, $this);
+        }
 
         return $this->_sThisTemplate;
     }

@@ -379,11 +379,9 @@ class OrderArticle extends \oxBase implements ArticleInterface
     /**
      * Returns article select lists, implements iBaseArticle interface method
      *
-     * @param string $sKeyPrefix prefix (not used)
-     *
      * @return array
      */
-    public function getSelectLists($sKeyPrefix = null)
+    public function getSelectLists()
     {
         $aSelLists = array();
         if ($oArticle = $this->_getOrderArticle()) {

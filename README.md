@@ -29,7 +29,7 @@ When checking out this repository or downloading the zip file from this place, c
 
 ### IDE code completion
 
-You can easily enable code completion in your IDE by installing `this script <https://github.com/OXID-eSales/eshop-ide-helper>`__ and generating it as described.
+You can easily enable code completion in your IDE by installing [this script](https://github.com/OXID-eSales/eshop-ide-helper>) and generating it as described.
 
 ### Useful links
 

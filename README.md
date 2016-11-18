@@ -27,6 +27,9 @@ When checking out this repository or downloading the zip file from this place, c
 4. `$ composer install --no-dev`
 5. `$ cp source/config.inc.php.dist source/config.inc.php`
 
+### IDE code completion
+
+You can easily enable code completion in your IDE by installing `this script <https://github.com/OXID-eSales/eshop-ide-helper>`__ and generating it as described.
 
 ### Useful links
 

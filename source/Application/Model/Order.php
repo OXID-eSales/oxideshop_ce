@@ -845,7 +845,7 @@ class Order extends \oxBase
             if ($oProduct->isOrderArticle()) {
                 $oOrderArticle = $oProduct;
             } else {
-                // if order language doe not match product language - article must be reloaded in order language
+                // if order language does not match product language article must be reloaded in order language
                 if ($iCurrLang != $oProduct->getLanguage()) {
                     $oProduct->loadInLang($iCurrLang, $oProduct->getProductId());
                 }

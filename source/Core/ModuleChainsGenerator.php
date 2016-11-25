@@ -97,7 +97,7 @@ class ModuleChainsGenerator
             $activeChain = $this->filterInactiveExtensions($fullChain);
 
             if (!empty($activeChain)) {
-                $className = $this->createClassExtensions($activeChain, $className);
+                $className = $this->createClassExtensions($activeChain, $classAlias);
             }
         }
 

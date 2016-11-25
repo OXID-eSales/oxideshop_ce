@@ -75,6 +75,7 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
                 'modulesToActivate'        => array('virtualnamespace_module1'),
                 'expectedInheritanceChain' => array(
                     'Test1ContentController',
+                    'Content',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'oxUBase',
                     'OxidEsales\EshopCommunity\Application\Controller\FrontendController',
@@ -85,6 +86,7 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
                 ),
                 'expectedInheritanceChainPE' => array(
                     'Test1ContentController',
+                    'Content',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'oxUBase',
                     'OxidEsales\EshopProfessional\Application\Controller\FrontendController',
@@ -98,6 +100,7 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
                 ),
                 'expectedInheritanceChainEE' => array(
                     'Test1ContentController',
+                    'Content',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'oxUBase',
                     'OxidEsales\EshopEnterprise\Application\Controller\FrontendController',
@@ -119,6 +122,7 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
                 'expectedInheritanceChain' => array(
                     'Test2ContentController',
                     'Test1ContentController',
+                    'Content',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'oxUBase',
                     'OxidEsales\EshopCommunity\Application\Controller\FrontendController',
@@ -130,6 +134,7 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
                 'expectedInheritanceChainPE' => array(
                     'Test2ContentController',
                     'Test1ContentController',
+                    'Content',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'oxUBase',
                     'OxidEsales\EshopProfessional\Application\Controller\FrontendController',
@@ -144,6 +149,7 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
                 'expectedInheritanceChainEE' => array(
                     'Test2ContentController',
                     'Test1ContentController',
+                    'Content',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'oxUBase',
                     'OxidEsales\EshopEnterprise\Application\Controller\FrontendController',
@@ -165,6 +171,7 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
                 'expectedInheritanceChain' => array(
                     'Test2ContentController',
                     'Test1ContentController',
+                    'Content',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'oxUBase',
                     'OxidEsales\EshopCommunity\Application\Controller\FrontendController',
@@ -176,6 +183,7 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
                 'expectedInheritanceChainPE' => array(
                     'Test2ContentController',
                     'Test1ContentController',
+                    'Content',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'oxUBase',
                     'OxidEsales\EshopProfessional\Application\Controller\FrontendController',
@@ -190,6 +198,7 @@ class VirtualNameSpaceClassMapTest extends BaseModuleTestCase
                 'expectedInheritanceChainEE' => array(
                     'Test2ContentController',
                     'Test1ContentController',
+                    'Content',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'oxUBase',
                     'OxidEsales\EshopEnterprise\Application\Controller\FrontendController',

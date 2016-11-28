@@ -517,7 +517,7 @@ class Config extends Base
 
         // #1173M  for EE - not all pic are deleted
         if (is_null($this->getConfigParam('iPicCount'))) {
-            $this->setConfigParam('iPicCount', 7);
+            $this->setConfigParam('iPicCount', 12);
         }
 
         if (is_null($this->getConfigParam('iZoomPicCount'))) {

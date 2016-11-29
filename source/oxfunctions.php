@@ -55,10 +55,17 @@ if (!function_exists('redirectIfShopNotConfigured')) {
             return;
         }
 
+        $message = printf(
+            "Config file '%s' is not updated! Please navigate to '/Setup' or update '%s' manually.",
+            ESHOP_CONFIG_FILE,
+            ESHOP_CONFIG_FILE
+        );
+
         header("HTTP/1.1 302 Found");
         header("Location: Setup/index.php");
         header("Connection: close");
-        exit(0);
+
+        die($message);
     }
 }
 

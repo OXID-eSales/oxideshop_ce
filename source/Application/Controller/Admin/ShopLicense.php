@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxSystemComponentException;
+use OxidEsales\Eshop\Core\Exception\ConnectionException;
 
 /**
  * Admin shop license setting manager.
@@ -101,8 +102,11 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
         $oCurl->setMethod("POST");
         $oCurl->setUrl($sUrl . "/" . $sLang);
         $oCurl->setParameters($aParams);
-        $sOutput = $oCurl->execute();
-
+        try {
+            $sOutput = $oCurl->execute();
+        } catch (ConnectionException $ex) {
+            $sOutput = "Connecting to $sUrl failed, please check network and firewalls";
+        }
         $sOutput = strip_tags($sOutput, "<br>, <b>");
         $aResult = explode("<br>", $sOutput);
         if (strstr($aResult[5], "update")) {

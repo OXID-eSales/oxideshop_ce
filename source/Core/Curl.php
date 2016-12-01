@@ -5,6 +5,7 @@
  */
 
 namespace OxidEsales\EshopCommunity\Core;
+use OxidEsales\Eshop\Core\Exception\ConnectionException;
 
 /**
  * CURL request handler.
@@ -294,7 +295,9 @@ class Curl
             /**
              * @var \OxidEsales\Eshop\Core\Exception\StandardException $exception
              */
-            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
+            $exception = oxNew(ConnectionException::class);
+            $exception->setConnectionError($curlErrorNumber);
+            $exception->setAdress($this->_sUrl);
             $lang = \OxidEsales\Eshop\Core\Registry::getLang();
             $exception->setMessage(sprintf($lang->translateString('EXCEPTION_CURL_ERROR', $lang->getTplLanguage()), $curlErrorNumber));
             throw $exception;

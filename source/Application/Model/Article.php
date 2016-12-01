@@ -1129,7 +1129,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     }
 
     /**
-     * @param $article
+     * @param \OxidEsales\Eshop\Application\Model\Article $article
      */
     protected function _setShopValues($article)
     {
@@ -2543,8 +2543,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      * Save article long description to oxartext table
      *
      * @param string $longDescription description to set
-     *
-     * @return null
      */
     public function setArticleLongDesc($longDescription)
     {
@@ -4981,8 +4979,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      * for example VPE.
      *
      * @param double $amount Amount
-     *
-     * @return double|null
      */
     public function checkForVpe($amount)
     {
@@ -5049,10 +5045,10 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     /**
      * Forms query to load variants.
      *
-     * @param $blRemoveNotOrderables
-     * @param $forceCoreTableUsage
-     * @param $baseObject
-     * @param $sArticleTable
+     * @param bool                      $blRemoveNotOrderables
+     * @param bool                      $forceCoreTableUsage
+     * @param oxSimpleVariant|oxarticle $baseObject
+     * @param string                    $sArticleTable
      *
      * @return string
      */

@@ -1296,16 +1296,16 @@ class Config extends Base
     }
 
     /**
-     * @param $base
-     * @param $absBase
-     * @param $file
-     * @param $dir
-     * @param $admin
-     * @param $lang
-     * @param $shop
-     * @param $theme
-     * @param $absolute
-     * @param $ignoreCust
+     * @param string $base
+     * @param string $absBase
+     * @param string $file
+     * @param string $dir
+     * @param bool   $admin
+     * @param int    $lang
+     * @param int    $shop
+     * @param string $theme
+     * @param bool   $absolute
+     * @param bool   $ignoreCust
      *
      * @return bool|string
      */

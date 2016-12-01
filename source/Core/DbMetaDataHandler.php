@@ -601,7 +601,7 @@ class DbMetaDataHandler extends oxSuperCfg
      * Make sure that e.g. OXID is always used from core table when creating views.
      * Otherwise we might have unwanted side effects from rows with OXIDs null in view tables.
      *
-     * @param $fields Language fields array we need to filter for core fields.
+     * @param array $fields Language fields array we need to filter for core fields.
      *
      * @return array
      */
@@ -645,10 +645,8 @@ class DbMetaDataHandler extends oxSuperCfg
     /**
      * Make sure that all *_set* tables with all required multilanguage fields are created.
      *
-     * @param $table
-     * @param $languagaId
-     *
-     * @return null
+     * @param string $table
+     * @param int    $languageId
      */
     protected function ensureMultiLanguageFields($table, $languageId)
     {

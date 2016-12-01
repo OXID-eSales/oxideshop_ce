@@ -759,7 +759,7 @@ namespace OxidEsales\EshopCommunity\Core {
         /**
          * Return true, if a given file path exists.
          *
-         * @param $filePath
+         * @param string $filePath
          *
          * @return bool
          */
@@ -772,7 +772,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * Return an array with the dimensions (width x height) of an image file.
          * returns array (0,0), if the dimensions could not be retrieved.
          *
-         * @param $imageFilePath
+         * @param string $imageFilePath
+         *
+         * @return array
          */
         protected function getImageDimensions($imageFilePath)
         {

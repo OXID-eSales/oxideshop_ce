@@ -3460,15 +3460,13 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             if ($blRemoveNotOrderables) {
                 if (isset($this->_aVariants[$cacheKey])) {
                     return $this->_aVariants[$cacheKey];
-                } else {
-                    $this->_aVariants[$cacheKey] = &$variants;
                 }
+                $this->_aVariants[$cacheKey] = &$variants;
             } elseif (!$blRemoveNotOrderables) {
                 if (isset($this->_aVariantsWithNotOrderables[$cacheKey])) {
                     return $this->_aVariantsWithNotOrderables[$cacheKey];
-                } else {
-                    $this->_aVariantsWithNotOrderables[$cacheKey] = &$variants;
                 }
+                $this->_aVariantsWithNotOrderables[$cacheKey] = &$variants;
             }
 
             if (($this->_blHasVariants = $this->_hasAnyVariant($forceCoreTableUsage))) {
@@ -4336,7 +4334,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             if ($this->_blNotBuyableParent) {
                 $iStock = $this->oxarticles__oxvarstock->value;
             }
-
 
             if ($iStock <= $myConfig->getConfigParam('sStockWarningLimit') && $iStock > 0) {
                 $this->_iStockStatus = 1;

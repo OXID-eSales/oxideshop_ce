@@ -420,19 +420,16 @@ namespace OxidEsales\EshopCommunity\Core {
                 $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 
                 // parameter names
-                $names = '';
+                $names = [];
                 foreach ($this->_aConfParamToPath as $paramName => $pathReg) {
                     if (preg_match($pathReg, $path)) {
-                        if ($names) {
-                            $names .= ", ";
-                        }
-                        $names .= $db->quote($paramName);
-
+                        $names[] = $db->quote($paramName);
                         if ($paramName == "sManufacturerIconsize" || $paramName == "sCatIconsize") {
-                            $names .= ", " . $db->quote("sIconsize");
+                            $names[] = $db->quote("sIconsize");
                         }
                     }
                 }
+                $names = implode(', ', $names);
 
                 // any name matching path?
                 if ($names) {
@@ -446,16 +443,10 @@ namespace OxidEsales\EshopCommunity\Core {
 
                     // building query:
                     // shop id
-                    $shopIds = '';
-                    foreach ($shopIdsArray as $shopId) {
+                    $shopIds = implode(', ', array_map(function ($shopId) use ($db) {
                         // probably here we can resolve and check shop id to shorten check?
-
-
-                        if ($shopIds) {
-                            $shopIds .= ", ";
-                        }
-                        $shopIds .= $db->quote($shopId["oxshopid"]);
-                    }
+                        return $db->quote($shopId['oxshopid']);
+                    }, $shopIdsArray));
 
                     // any shop matching quality
                     if ($shopIds) {
@@ -502,22 +493,12 @@ namespace OxidEsales\EshopCommunity\Core {
             $fileExtensionTarget = strtolower(pathinfo($imageTarget, PATHINFO_EXTENSION));
 
             // Do some validation and return false on failure
-            if (!$this->validateGdVersion()) {
-                return false;
-            }
-            if (!$this->validateFileExist($imageSource)) {
-                return false;
-            }
-            if (!$this->_isTargetPathValid($imageTarget)) {
-                return false;
-            }
-            if (!$this->validateImageFileExtension($fileExtensionSource)) {
-                return false;
-            }
-            if (!$this->validateImageFileExtension($fileExtensionTarget)) {
-                return false;
-            }
-            if ($fileExtensionSource !== $fileExtensionTarget) {
+            if (!$this->validateGdVersion()
+                || !$this->validateFileExist($imageSource)
+                || !$this->_isTargetPathValid($imageTarget)
+                || !$this->validateImageFileExtension($fileExtensionSource)
+                || !$this->validateImageFileExtension($fileExtensionTarget)
+                || $fileExtensionSource !== $fileExtensionTarget) {
                 return false;
             }
 

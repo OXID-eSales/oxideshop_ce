@@ -21,7 +21,6 @@
  */
 namespace Unit\Setup;
 
-use Conf;
 use Exception;
 use oxDb;
 use OxidEsales\EshopCommunity\Setup\Database;
@@ -281,66 +280,6 @@ class DatabaseTest extends \OxidTestCase
     }
 
     /**
-     * Testing SetupDb::setMySqlCollation()
-     */
-    public function testSetMySqlCollationUtfMode()
-    {
-        $connection = $this->createConnectionMock();
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
-        $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array('getConnection'));
-        $database->expects($this->any())->method('getConnection')->will($this->returnValue($connection));
-        $database->setMySqlCollation(1);
-
-        $expectedQueries = array(
-            "ALTER SCHEMA CHARACTER SET utf8 COLLATE utf8_general_ci",
-            "set names 'utf8'",
-            "set character_set_database=utf8",
-            "SET CHARACTER SET latin1",
-            "SET CHARACTER_SET_CONNECTION = utf8",
-            "SET character_set_results = utf8",
-            "SET character_set_server = utf8"
-        );
-        $this->assertEquals($expectedQueries, $this->getLoggedQueries());
-    }
-
-    /**
-     * Testing SetupDb::setMySqlCollation()
-     */
-    public function testSetMySqlCollation()
-    {
-        $connection = $this->createConnectionMock();
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
-        $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getConnection"));
-        $database->expects($this->any())->method("getConnection")->will($this->returnValue($connection));
-        $database->setMySqlCollation(0);
-
-        $expectedQueries = array(
-            "ALTER SCHEMA CHARACTER SET latin1 COLLATE latin1_general_ci",
-            "SET CHARACTER SET latin1",
-        );
-        $this->assertEquals($expectedQueries, $this->getLoggedQueries());
-    }
-
-    /**
-     * Testing SetupDb::writeUtfMode()
-     */
-    public function testWriteUtfMode()
-    {
-        $setup = $this->getMock("Setup", array("getShopId"));
-        $setup->expects($this->once())->method("getShopId")->will($this->returnValue('testShopId'));
-
-        $configKey = new Conf();
-        $query = "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue) values('iSetUtfMode', 'testShopId', 'iSetUtfMode', 'str', ENCODE( '1', '" . $configKey->sConfigKey . "') )";
-
-        $at = 0;
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
-        $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getInstance", "execSql"));
-        $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($setup));
-        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo($query));
-        $database->writeUtfMode(1);
-    }
-
-    /**
      * Testing SetupDb::writeAdminLoginData()
      */
     public function testWriteAdminLoginData()
@@ -359,25 +298,6 @@ class DatabaseTest extends \OxidTestCase
         $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("update oxuser set oxusername='{$loginName}', oxpassword='" . hash('sha512', $password . $passwordSalt) . "', oxpasssalt='{$passwordSalt}' where OXUSERNAME='admin'"));
         $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("update oxnewssubscribed set oxemail='{$loginName}' where OXEMAIL='admin'"));
         $database->writeAdminLoginData($loginName, $password);
-    }
-
-    /**
-     * Testing SetupDb::convertConfigTableToUtf()
-     */
-    public function testConvertConfigTableToUtf()
-    {
-        $connection = $this->createConnection();
-        $configRecordsCount = oxDb::getDb()->getOne("SELECT count(*) FROM oxconfig WHERE oxvartype IN ('str', 'arr', 'aarr')");
-
-        $utils = $this->getMock("Utilities", array("convertToUtf8"));
-        $utils->expects($this->exactly((int) $configRecordsCount))->method("convertToUtf8")->will($this->returnValue('testValue'));
-
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
-        $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getInstance", "execSql", "getConnection"));
-        $database->expects($this->once())->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($utils));
-        $database->expects($this->exactly(1))->method("getConnection")->will($this->returnValue($connection));
-
-        $database->convertConfigTableToUtf();
     }
 
     /**

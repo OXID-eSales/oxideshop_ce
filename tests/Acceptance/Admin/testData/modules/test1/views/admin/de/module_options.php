@@ -21,7 +21,7 @@
  */
 
 $aLang = array(
-    'charset'                                        => 'ISO-8859-15',
+    'charset'                                        => 'UTF-8',
 
     'SHOP_MODULE_GROUP_settingsEmpty'                => 'Empty Settings Group',
     'SHOP_MODULE_testEmptyBoolConfig'                => 'Empty Bool Config',

@@ -90,9 +90,9 @@ class CurlTest extends \OxidTestCase
     public function testGetQuery_setParameterNotUtf_getQueryFromParameters()
     {
         $oCurl = oxNew('oxCurl');
-        $oCurl->setParameters(array('param1' => 'Jäger', 'param2' => 'values2'));
+        $oCurl->setParameters(array('param1' => 'JÃ¤ger', 'param2' => 'values2'));
 
-        $aPramsUtf = array('param1' => 'Jäger', 'param2' => 'values2');
+        $aPramsUtf = array('param1' => 'JÃ¤ger', 'param2' => 'values2');
 
         $this->assertEquals(http_build_query($aPramsUtf), $oCurl->getQuery());
     }

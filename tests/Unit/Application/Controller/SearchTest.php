@@ -137,18 +137,18 @@ class SearchTest extends \OxidTestCase
     {
         $oSearch = $this->getProxyClass('search');
         $oSearch->setNonPublicVar("_blSearchClass", true);
-        $this->setRequestParameter('searchparam', 'ü  a');
+        $this->setRequestParameter('searchparam', 'Ã¼  a');
 
-        $this->assertEquals('ü  a', $oSearch->getSearchParamForHtml());
+        $this->assertEquals('Ã¼  a', $oSearch->getSearchParamForHtml());
     }
 
     public function testGetSearchParam()
     {
         $oSearch = $this->getProxyClass('search');
         $oSearch->setNonPublicVar("_blSearchClass", true);
-        $this->setRequestParameter('searchparam', 'ü  a');
+        $this->setRequestParameter('searchparam', 'Ã¼  a');
 
-        $this->assertEquals('%FC%20%20a', $oSearch->getSearchParam());
+        $this->assertEquals('%C3%BC%20%20a', $oSearch->getSearchParam());
     }
 
     public function testGetSearchCatId()

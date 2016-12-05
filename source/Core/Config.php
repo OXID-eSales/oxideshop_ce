@@ -2044,6 +2044,8 @@ class Config extends Base
     /**
      * Returns true if current installation works in UTF8 mode, or false if not
      *
+     * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this function will be removed.
+     *
      * @return bool
      */
     public function isUtf()

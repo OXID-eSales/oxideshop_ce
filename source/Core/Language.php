@@ -697,14 +697,7 @@ class Language extends \oxSuperCfg
      */
     protected function getTranslationsExpectedEncoding()
     {
-        $shopConfig = $this->getConfig();
-
-        $newEncoding = 'ISO-8859-15';
-        if ($shopConfig->isUtf()) {
-            $newEncoding = 'UTF-8';
-        }
-
-        return $newEncoding;
+        return 'UTF-8';
     }
 
     /**

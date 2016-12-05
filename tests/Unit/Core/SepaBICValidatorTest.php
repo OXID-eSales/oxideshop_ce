@@ -100,9 +100,9 @@ class SepaBICValidatorTest extends \OxidTestCase
             array("ASP_AT2L"),
             array("ASPK*T2L"),
             array("ASPKA-2L"),
-            array("AAAßCCXX"),
-            array("AAAACßXX"),
-            array("AAAACCXö"),
+            array("AAAÃŸCCXX"),
+            array("AAAACÃŸXX"),
+            array("AAAACCXÃ¶"),
             // Fix for bug entry 0005564: oxSepaValidator::isValidBIC($sBIC) only verifies substring of BIC
             array("123COBADEHD055ABC"),
         );

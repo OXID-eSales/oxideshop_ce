@@ -1001,7 +1001,6 @@ class UtfTest extends \OxidTestCase
     public function testOxOutputProcessWithEuroSign()
     {
         $oOutput = oxNew('oxOutput');
-        $this->getConfig()->setConfigParam('blSkipEuroReplace', false);
         $this->assertEquals('€someting', $oOutput->process('€someting', 'something'));
     }
 

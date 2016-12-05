@@ -367,37 +367,6 @@ class Database extends Core
     }
 
     /**
-     * Converts config table values to utf8
-     */
-    public function convertConfigTableToUtf()
-    {
-        $oConfk = new Conf();
-        /** @var Utilities $oUtils */
-        $oUtils = $this->getInstance("Utilities");
-
-        $pdo = $this->getConnection();
-
-        $sSql = "SELECT oxid, oxvarname, oxvartype, DECODE( oxvarvalue, '{$oConfk->sConfigKey}') AS oxvarvalue FROM oxconfig WHERE oxvartype IN ('str', 'arr', 'aarr') ";
-        $oSelect = $pdo->query($sSql);
-        $oUpdate = $pdo->prepare("UPDATE oxconfig SET oxvarvalue = ENCODE( :varValue, '{$oConfk->sConfigKey}') WHERE oxid = :oxid; ");
-
-        while (false !== ($aRow = $oSelect->fetch())) {
-            if ($aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr') {
-                $aRow['oxvarvalue'] = unserialize($aRow['oxvarvalue']);
-            }
-
-            $aRow['oxvarvalue'] = $oUtils->convertToUtf8($aRow['oxvarvalue']);
-
-            $sVarValue = $aRow['oxvarvalue'];
-            if (is_array($aRow['oxvarvalue'])) {
-                $sVarValue = serialize($aRow['oxvarvalue']);
-            }
-
-            $oUpdate->execute(array('varValue' => $sVarValue, 'oxid' => $aRow['oxid']));
-        }
-    }
-
-    /**
      * Parses query string into sql sentences
      *
      * @param string $sSQL query string (usually reqd from *.sql file)
@@ -449,42 +418,6 @@ class Database extends Core
         }
 
         return $aRet;
-    }
-
-    /**
-     * Sets various connection collation parameters
-     *
-     * @param int $iUtfMode utf8 mode
-     */
-    public function setMySqlCollation($iUtfMode)
-    {
-        $pdo = $this->getConnection();
-        if ($iUtfMode) {
-            $pdo->exec("ALTER SCHEMA CHARACTER SET utf8 COLLATE utf8_general_ci");
-            $pdo->exec("set names 'utf8'");
-            $pdo->exec("set character_set_database=utf8");
-            $pdo->exec("SET CHARACTER SET latin1");
-            $pdo->exec("SET CHARACTER_SET_CONNECTION = utf8");
-            $pdo->exec("SET character_set_results = utf8");
-            $pdo->exec("SET character_set_server = utf8");
-        } else {
-            $pdo->exec("ALTER SCHEMA CHARACTER SET latin1 COLLATE latin1_general_ci");
-            $pdo->exec("SET CHARACTER SET latin1");
-        }
-    }
-
-    /**
-     * Writes utf mode config parameter to db
-     *
-     * @param int $iUtfMode utf mode
-     */
-    public function writeUtfMode($iUtfMode)
-    {
-        $sBaseShopId = $this->getInstance("Setup")->getShopId();
-        $oConfk = new Conf();
-        $sQ = "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue) values('iSetUtfMode', '$sBaseShopId', 'iSetUtfMode', 'str', ENCODE( '{$iUtfMode}', '" . $oConfk->sConfigKey . "') )";
-
-        $this->execSql($sQ);
     }
 
     /**

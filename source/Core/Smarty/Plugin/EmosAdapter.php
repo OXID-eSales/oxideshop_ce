@@ -200,6 +200,8 @@ class EmosAdapter extends oxSuperCfg
     /**
      * Checks whether shop is in utf, if not - iconv string for using with econda json_encode
      *
+     * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this function will be removed.
+     *
      * @param string $sContent
      *
      * @return string
@@ -229,7 +231,7 @@ class EmosAdapter extends oxSuperCfg
             $sTitle .= " " . $oProduct->oxarticles__oxvarselect->value;
         }
 
-        return $this->_convertToUtf($sTitle);
+        return $sTitle;
     }
 
     /**
@@ -246,17 +248,17 @@ class EmosAdapter extends oxSuperCfg
         $oItem = $this->_getNewEmosItem();
 
         $sProductId = (isset($oProduct->oxarticles__oxartnum->value) && $oProduct->oxarticles__oxartnum->value) ? $oProduct->oxarticles__oxartnum->value : $oProduct->getId();
-        $oItem->productId = $this->_convertToUtf($sProductId);
+        $oItem->productId = $sProductId;
         $oItem->productName = $this->_prepareProductTitle($oProduct);
 
         // #810A
         $oCur = $this->getConfig()->getActShopCurrencyObject();
         $oItem->price = $oProduct->getPrice()->getBruttoPrice() * (1 / $oCur->rate);
-        $oItem->productGroup = "{$sCatPath}/{$this->_convertToUtf($oProduct->oxarticles__oxtitle->value)}";
+        $oItem->productGroup = "{$sCatPath}/{$oProduct->oxarticles__oxtitle->value}";
         $oItem->quantity = $iQty;
         // #3452: Add brands to econda tracking
-        $oItem->variant1 = $oProduct->getVendor() ? $this->_convertToUtf($oProduct->getVendor()->getTitle()) : "NULL";
-        $oItem->variant2 = $oProduct->getManufacturer() ? $this->_convertToUtf($oProduct->getManufacturer()->getTitle()) : "NULL";
+        $oItem->variant1 = $oProduct->getVendor() ? $oProduct->getVendor()->getTitle() : "NULL";
+        $oItem->variant2 = $oProduct->getManufacturer() ? $oProduct->getManufacturer()->getTitle() : "NULL";
         $oItem->variant3 = $oProduct->getId();
 
         return $oItem;
@@ -271,7 +273,7 @@ class EmosAdapter extends oxSuperCfg
      */
     protected function _getEmosPageTitle($aParams)
     {
-        return isset($aParams['title']) ? $this->_convertToUtf($aParams['title']) : null;
+        return isset($aParams['title']) ? $aParams['title'] : null;
     }
 
     /**
@@ -308,7 +310,7 @@ class EmosAdapter extends oxSuperCfg
                 }
             }
             $this->_sEmosCatPath = (count($aCatTitle) ? strip_tags(implode('/', $aCatTitle)) : 'NULL');
-            $this->_sEmosCatPath = $this->_convertToUtf($this->_sEmosCatPath);
+            $this->_sEmosCatPath = $this->_sEmosCatPath;
         }
 
         return $this->_sEmosCatPath;
@@ -345,7 +347,7 @@ class EmosAdapter extends oxSuperCfg
             }
         }
 
-        return $this->_convertToUtf($sCatPath);
+        return $sCatPath;
     }
 
     /**
@@ -559,12 +561,12 @@ class EmosAdapter extends oxSuperCfg
         $oCur = $oConfig->getActShopCurrencyObject();
 
         $oEmos->addEmosBillingPageArray(
-            $this->_convertToUtf($oOrder->oxorder__oxordernr->value),
-            $this->_convertToUtf($oUser->oxuser__oxusername->value),
+            $oOrder->oxorder__oxordernr->value,
+            $oUser->oxuser__oxusername->value,
             $oBasket->getPrice()->getBruttoPrice() * (1 / $oCur->rate),
-            $this->_convertToUtf($oOrder->oxorder__oxbillcountry->value),
-            $this->_convertToUtf($oOrder->oxorder__oxbillzip->value),
-            $this->_convertToUtf($oOrder->oxorder__oxbillcity->value)
+            $oOrder->oxorder__oxbillcountry->value,
+            $oOrder->oxorder__oxbillzip->value,
+            $oOrder->oxorder__oxbillcity->value
         );
 
         // get Basket Page Array

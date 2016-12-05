@@ -341,8 +341,8 @@ class StrMb
 
     /**
      * Recodes and returns passed input:
-     * if $blToHtmlEntities == true  ä -> &auml;
-     * if $blToHtmlEntities == false &auml; -> ä
+     * if $blToHtmlEntities == true  Ã¤ -> &auml;
+     * if $blToHtmlEntities == false &auml; -> Ã¤
      *
      * @param string $sInput           text to recode
      * @param bool   $blToHtmlEntities recode direction

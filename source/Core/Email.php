@@ -1601,7 +1601,7 @@ class Email extends \PHPMailer
     public function setRecipient($address = null, $name = null)
     {
         try {
-            if ($this->getConfig()->isUtf() && function_exists('idn_to_ascii')) {
+            if (function_exists('idn_to_ascii')) {
                 $address = idn_to_ascii($address);
             }
 

@@ -1117,88 +1117,24 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertEquals(array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1), $result);
     }
 
-    public function testCharsetIsNotUtf8WhenUtfModeIsZero()
+    public function testCharsetIsUtf8()
     {
         $character_set = 'utf8';
 
         $configFile = Registry::get('oxConfigFile');
-        // Store original values
-        $savedIUtfMode = $configFile->getVar('iUtfMode');
-
-        $configFile->setVar('iUtfMode', 0);
         $this->resetDbProperty(oxDb::getInstance());
         $database = oxDb::getInstance();
         $database->setConfigFile($configFile);
         $databaseConnection = $database::getDb(oxDb::FETCH_MODE_ASSOC);
 
-        $configFile->setVar('iUtfMode', $savedIUtfMode);
-
         $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_client\'');
-        $this->assertNotEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 0, character_set_client is not ' . $character_set);
+        $this->assertEquals($character_set, $actualResult['Value'], 'As shop is in utf-8 mode, character_set_client is ' . $character_set);
 
         $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_results\'');
-        $this->assertNotEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 0, character_set_results is not ' . $character_set);
+        $this->assertEquals($character_set, $actualResult['Value'], 'As shop is in utf-8 mode, character_set_results is ' . $character_set);
 
         $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_connection\'');
-        $this->assertNotEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 0, character_set_client is not ' . $character_set);
-    }
-
-    public function testCharsetIsUtf8WhenUtfModeIsOne()
-    {
-        $character_set = 'utf8';
-
-        $configFile = Registry::get('oxConfigFile');
-        // Store original values
-        $savedIUtfMode = $configFile->getVar('iUtfMode');
-        // Set new values
-        $configFile->setVar('iUtfMode', 1);
-        $this->resetDbProperty(oxDb::getInstance());
-        $database = oxDb::getInstance();
-        $database->setConfigFile($configFile);
-        $databaseConnection = $database::getDb(oxDb::FETCH_MODE_ASSOC);
-
-        // restore original values
-        $configFile->setVar('iUtfMode', $savedIUtfMode);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_client\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 1, character_set_client is ' . $character_set);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_results\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 1, character_set_results is ' . $character_set);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_connection\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 1, character_set_client is ' . $character_set);
-    }
-
-    public function testCharsetMatchesDefaultDatabaseConnectionWhenUtfModeIsZero()
-    {
-        $character_set = 'cp1251';
-
-        $configFile = Registry::get('oxConfigFile');
-        // Store original values
-        $savedIUtfMode = $configFile->getVar('iUtfMode');
-        $savedCharacterSet = $configFile->getVar('sDefaultDatabaseConnection');
-        // Set new values
-        $configFile->setVar('iUtfMode', 0);
-        $configFile->setVar('sDefaultDatabaseConnection', $character_set);
-
-        $this->resetDbProperty(oxDb::getInstance());
-        $database = oxDb::getInstance();
-        $database->setConfigFile($configFile);
-        $databaseConnection = $database::getDb(oxDb::FETCH_MODE_ASSOC);
-
-        // restore original values
-        $configFile->setVar('iUtfMode', $savedIUtfMode);
-        $configFile->setVar('sDefaultDatabaseConnection', $savedCharacterSet);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_client\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 0, character_set_client is sDefaultDatabaseConnection: ' . $character_set);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_results\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 0, character_set_results is sDefaultDatabaseConnection: ' . $character_set);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_connection\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 0, character_set_client is sDefaultDatabaseConnection: ' . $character_set);
+        $this->assertEquals($character_set, $actualResult['Value'], 'As shop is in utf-8 mode, character_set_client is ' . $character_set);
     }
 
     /**

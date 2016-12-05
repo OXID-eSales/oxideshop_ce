@@ -175,21 +175,4 @@ class SetupTest extends \OxidTestCase
         $this->assertEquals('null', $oSetup->getModuleClass(-1));
         $this->assertEquals('fail', $oSetup->getModuleClass(0));
     }
-
-    /**
-     * Test if sql files don't have invalid encoding.
-     */
-    public function testSqlFilesForInvalidEncoding()
-    {
-        $pathProvider = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector()));
-        $filePathPattern = $pathProvider->getSetupDirectory() . '/Sql/*.sql';
-        foreach (glob($filePathPattern) as $sFilePath) {
-            if (is_readable($sFilePath)) {
-                $sFileContent = file_get_contents($sFilePath);
-                foreach (array(0xEF, 0xBB, 0xBF, 0x9C) as $sCharacter) {
-                    $this->assertFalse(strpos($sFileContent, $sCharacter), "Character with invalid encoding found in {$sFilePath} file.");
-                }
-            }
-        }
-    }
 }

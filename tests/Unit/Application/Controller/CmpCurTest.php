@@ -38,7 +38,7 @@ class CmpCurTest extends \OxidTestCase
         $this->assertEquals(2, $oCur->decimal);
 
         // changing decimal percision from 2 => 1
-        $this->getConfig()->setConfigParam("aCurrencies", array("EUR@ 1.00@ ,@ .@ ¤@ 1"));
+        $this->getConfig()->setConfigParam("aCurrencies", array("EUR@ 1.00@ ,@ .@ Â¤@ 1"));
         $oCurView->init();
 
         $oCur = $oCurView->getSession()->getBasket()->getBasketCurrency();

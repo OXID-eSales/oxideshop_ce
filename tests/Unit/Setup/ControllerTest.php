@@ -468,14 +468,12 @@ class ControllerTest extends \OxidTestCase
         $oUtils = $this->getMock("Utilities", array("getRequestVar"));
         $oUtils->expects($this->once())->method("getRequestVar");
 
-        $oDb = $this->getMock("databaseStub", array("openDatabase", "execSql", "testCreateView", "setMySqlCollation", "queryFile", "saveShopSettings", "convertConfigTableToUtf", "writeAdminLoginData"));
+        $oDb = $this->getMock("databaseStub", array("openDatabase", "execSql", "testCreateView", "queryFile", "saveShopSettings", "writeAdminLoginData"));
         $oDb->expects($this->once())->method("openDatabase");
         $oDb->expects($this->never())->method("execSql");
         $oDb->expects($this->once())->method("testCreateView");
-        $oDb->expects($this->atLeastOnce())->method("setMySqlCollation");
         $oDb->expects($this->atLeastOnce())->method("queryFile");
         $oDb->expects($this->atLeastOnce())->method("saveShopSettings");
-        $oDb->expects($this->atLeastOnce())->method("convertConfigTableToUtf");
         $oDb->expects($this->atLeastOnce())->method("writeAdminLoginData");
 
 
@@ -513,9 +511,8 @@ class ControllerTest extends \OxidTestCase
         $oUtils = $this->getMock("Utilities", array("getRequestVar"));
         $oUtils->expects($this->once())->method("getRequestVar");
 
-        $oDb = $this->getMock("databaseStub", array("openDatabase", "execSql", "setMySqlCollation", "queryFile", "testCreateView"));
+        $oDb = $this->getMock("databaseStub", array("openDatabase", "execSql", "queryFile", "testCreateView"));
         $oDb->expects($this->once())->method("openDatabase");
-        $oDb->expects($this->once())->method("setMySqlCollation");
         $oDb->expects($this->once())->method("execSql")->will($this->throwException(new Exception));
         $oDb->expects($this->once())->method("queryFile")->will($this->throwException(new Exception));
         $oDb->expects($this->once())->method("testCreateView");
@@ -559,7 +556,7 @@ class ControllerTest extends \OxidTestCase
 
         $oLang = $this->getMock("Language", array("getText"));
 
-        $oDb = $this->getMock("databaseStub", array("openDatabase", "execSql", "setMySqlCollation", "queryFile", "testCreateView"));
+        $oDb = $this->getMock("databaseStub", array("openDatabase", "execSql", "queryFile", "testCreateView"));
         $oDb->method("queryFile")->will($this->throwException(new Exception));
         $oDb->method("execSql")->will($this->throwException(new Exception));
 
@@ -615,7 +612,7 @@ class ControllerTest extends \OxidTestCase
             }
         };
 
-        $oDb = $this->getMock("databaseStub", array("openDatabase", "execSql", "setMySqlCollation", "queryFile", "testCreateView"));
+        $oDb = $this->getMock("databaseStub", array("openDatabase", "execSql", "queryFile", "testCreateView"));
         $oDb->method("queryFile")->will($this->returnCallback($callback));
 
         $map = [
@@ -689,7 +686,7 @@ class ControllerTest extends \OxidTestCase
         }
 
         $oSession = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
-        $oSession->expects($this->at(0))->method("getSessionParam")->with($this->equalTo("aDB"))->will($this->returnValue(array("dbiDemoData" => 1, "iUtfMode" => 1)));
+        $oSession->expects($this->at(0))->method("getSessionParam")->with($this->equalTo("aDB"))->will($this->returnValue(array("dbiDemoData" => 1)));
         $oSession->expects($this->at(1))->method("getSessionParam")->with($this->equalTo("location_lang"))->will($this->returnValue("en"));
 
         $oSessionToCheckIfUserDecideToOverwriteDB = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
@@ -705,17 +702,14 @@ class ControllerTest extends \OxidTestCase
         $oLang = $this->getMock("Language", array("getText"));
         $oLang->expects($this->atLeastOnce())->method("getText");
 
-        $oDb = $this->getMock("databaseStub", array("openDatabase", "execSql", "setMySqlCollation", "queryFile", "saveShopSettings", "convertConfigTableToUtf", "testCreateView", "writeAdminLoginData"));
+        $oDb = $this->getMock("databaseStub", array("openDatabase", "execSql", "queryFile", "saveShopSettings", "testCreateView", "writeAdminLoginData"));
         $oDb->expects($this->at(0))->method("openDatabase");
         $oDb->expects($this->at(1))->method("testCreateView");
         $oDb->expects($this->at(2))->method("execSql")->will($this->throwException(new Exception));
-        $oDb->expects($this->at(3))->method("setMySqlCollation");
         $oDb->expects($this->at(4))->method("queryFile");
         $oDb->expects($this->at(5))->method("queryFile");
         $oDb->expects($this->at(6))->method("saveShopSettings");
         $oDb->expects($this->at(7))->method("queryFile");
-        $oDb->expects($this->at(8))->method("setMySqlCollation");
-        $oDb->expects($this->at(9))->method("convertConfigTableToUtf");
         $oDb->expects($this->at(10))->method("writeAdminLoginData");
 
         $oController = $this->getMock(get_class($this->getController()), array("getView", "getInstance"));

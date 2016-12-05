@@ -32,7 +32,7 @@ $aData = array(
             // Wrapping
             0 => array(
                 'oxtype' => 'WRAP',
-                'oxname' => 'Test wrapping [EN] ðÄßü?',
+                'oxname' => 'Test wrapping [EN] Ã°Ã„ÃŸÃ¼?',
                 'oxprice' => 0.9,
                 'oxactive' => 1,
                 // If for article, specify here
@@ -41,7 +41,7 @@ $aData = array(
             // Giftcard
             1 => array(
                 'oxtype' => 'CARD',
-                'oxname' => 'Test card [EN] ðÄßü',
+                'oxname' => 'Test card [EN] Ã°Ã„ÃŸÃ¼',
                 'oxprice' => 0.20,
                 'oxactive' => 1,
             ),

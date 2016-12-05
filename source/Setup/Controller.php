@@ -250,7 +250,6 @@ class Controller extends Core
         $oView->setTitle('STEP_3_1_TITLE');
 
         $aDB = $this->getInstance("Utilities")->getRequestVar("aDB", "post");
-        $aDB['iUtfMode'] = 1;
         $oSession->setSessionParam('aDB', $aDB);
 
         // check if iportant parameters are set
@@ -344,10 +343,6 @@ class Controller extends Core
             return "default.php";
         }
 
-        //setting database collation
-        $iUtfMode = 1;
-        $oDb->setMySqlCollation($iUtfMode);
-
         try {
             $baseSqlDir = $this->getSqlDirectory(EditionSelector::COMMUNITY);
             $oDb->queryFile("$baseSqlDir/database_schema.sql");
@@ -373,16 +368,6 @@ class Controller extends Core
 
         //update dyn pages / shop country config options (from first step)
         $oDb->saveShopSettings(array());
-
-        //applying utf-8 specific queries
-
-        if ($iUtfMode) {
-            $oDb->queryFile("$editionSqlDir/latin1_to_utf8.sql");
-
-            //converting oxconfig table field 'oxvarvalue' values to utf
-            $oDb->setMySqlCollation(0);
-            $oDb->convertConfigTableToUtf();
-        }
 
         try {
             $aAdminData = $oSession->getSessionParam('aAdminData');

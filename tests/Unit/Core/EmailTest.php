@@ -1019,7 +1019,6 @@ class EmailTest extends \OxidTestCase
      */
     public function testMakeOutputProcessingInUtf8Mode()
     {
-        $this->setConfigParam('iUtfMode', 1);
         $this->_oEmail->setBody('testbody 55 €'); //with euro sign
         $this->_oEmail->setAltBody('testaltbody 55 €'); //with euro sign
         $this->_oEmail->UNITmakeOutputProcessing();

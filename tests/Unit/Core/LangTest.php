@@ -273,7 +273,6 @@ class LangTest extends \OxidTestCase
 
     public function testGetLanguageFileData()
     {
-        $this->setConfigParam('iUtfMode', 0);
         oxTestModules::addFunction("oxUtils", "getLangCache", "{}");
         oxTestModules::addFunction("oxUtils", "setLangCache", "{}");
 
@@ -287,7 +286,7 @@ class LangTest extends \OxidTestCase
         $aLangFilesPath = array($sFilePath . "/baselang$sFilePrefix.txt", $sFilePath . "/testlang$sFilePrefix.txt");
 
         $aResult = array(
-            "charset" => "ISO-8859-15",
+            "charset" => "UTF-8",
             "TESTKEY" => "testVal",
             '_aSeoReplaceChars' => array(
                 "t1" => "overide1",
@@ -306,7 +305,6 @@ class LangTest extends \OxidTestCase
 
     public function testSetCharsetToUtf8IfMissing()
     {
-        $this->setConfigParam('iUtfMode', 1);
         $sFilePrefix = md5(uniqid(rand(), true));
 
         //writing a test lang file
@@ -328,33 +326,8 @@ class LangTest extends \OxidTestCase
         $this->assertEquals($aResult, $oLangFilesData);
     }
 
-    public function testSetCharsetToIsoIfMissing()
-    {
-        $this->setConfigParam('iUtfMode', 0);
-        $sFilePrefix = md5(uniqid(rand(), true));
-
-        //writing a test lang file
-        $sFilePath = $this->getConfig()->getConfigParam('sCompileDir');
-        file_put_contents($sFilePath . "/baselang$sFilePrefix.txt", '<?php $aLang = array( "TESTKEY" => "value");');
-
-        $aLangFilesPath = array($sFilePath . "/baselang$sFilePrefix.txt");
-
-        $aResult = array(
-            "charset" => "ISO-8859-15",
-            "TESTKEY" => "value",
-            "_aSeoReplaceChars" => [],
-        );
-
-        $oLang = $this->getMock("oxlang", array("_getLangFilesPathArray"));
-        $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
-        $oLangFilesData = $oLang->UNITgetLanguageFileData(false, 0);
-
-        $this->assertEquals($aResult, $oLangFilesData);
-    }
-
     public function testGetLanguageFileDataInUtfMode()
     {
-        $this->setConfigParam('iUtfMode', 1);
         oxTestModules::addFunction("oxUtils", "getLangCache", "{}");
         oxTestModules::addFunction("oxUtils", "setLangCache", "{}");
 
@@ -398,14 +371,10 @@ class LangTest extends \OxidTestCase
 
         $aLangFilesPath = array($sFilePath . "/baselang$sFilePrefix.txt", $sFilePath . "/testlang$sFilePrefix.txt");
 
-        $oConfig = $this->getMock("oxConfig", array("isUtf"));
-        $oConfig->expects($this->any())->method('isUtf')->will($this->returnValue(true));
-
-        $oLang = $this->getMock("oxlang", array('_getLangFileCacheName', "_getLangFilesPathArray", "getConfig"));
-        $oLang->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        $oLang = $this->getMock("oxlang", array('_getLangFileCacheName', "_getLangFilesPathArray"));
         $oLang->expects($this->any())->method('_getLangFileCacheName')->will($this->returnValue(false));
         $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
-        
+
         $oLangFilesData = $oLang->UNITgetLanguageFileData(false, 0);
 
         $aResult = array("charset" => "UTF-8", "TESTKEY" => "testVal", '_aSeoReplaceChars' => array("t1" => "overide1"));
@@ -458,14 +427,8 @@ class LangTest extends \OxidTestCase
             "TESTKEY" => iconv('ISO-8859-15', 'UTF-8', "testVäl")
         );
 
-        $oConfig = $this->getMock("oxConfig", array("isUtf"));
-        $oConfig->expects($this->any())->method('isUtf')->will($this->returnValue(true));
 
-        $oLang = $this->getMock(
-            "oxlang", array('_getLangFileCacheName', "_getLangFilesPathArray", /*"_recodeLangArray",*/
-                            "getConfig")
-        );
-        $oLang->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        $oLang = $this->getMock("oxlang", array('_getLangFileCacheName', "_getLangFilesPathArray"));
         $oLang->expects($this->any())->method('_getLangFileCacheName')->will($this->returnValue(false));
         $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
         $oLangFilesData = $oLang->UNITgetLanguageFileData(false, 0);

@@ -77,8 +77,8 @@ class NavigationAdminTest extends AdminTestCase
         $aParameters = array(
             'OXSAL' => 'MRS',
             'OXUSERID' => $sUserId,
-            'OXFNAME' => 'name_¨Äßü?',
-            'OXLNAME' => 'surname_¨Äßü?',
+            'OXFNAME' => 'name_Â¨Ã„ÃŸÃ¼?',
+            'OXLNAME' => 'surname_Â¨Ã„ÃŸÃ¼?',
             'OXEMAIL' => 'example01@oxid-esales.dev',
             'OXDBOPTIN' => 2
         );

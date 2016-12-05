@@ -1458,9 +1458,7 @@ class Utils extends \oxSuperCfg
     public function handlePageNotFoundError($sUrl = '')
     {
         $this->setHeader("HTTP/1.0 404 Not Found");
-        if (oxRegistry::getConfig()->isUtf()) {
-            $this->setHeader("Content-Type: text/html; charset=UTF-8");
-        }
+        $this->setHeader("Content-Type: text/html; charset=UTF-8");
 
         $sReturn = "Page not found.";
         try {

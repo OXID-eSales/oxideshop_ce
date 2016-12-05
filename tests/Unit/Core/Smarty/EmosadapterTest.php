@@ -68,8 +68,7 @@ class EmosadapterTest extends \OxidTestCase
         $sCharset = oxRegistry::getLang()->translateString('charset');
         $sResult = iconv($sCharset, 'UTF-8', $sContent);
 
-        $oConfig = $this->getMock('oxConfig', array('isUtf', 'getActShopCurrencyObject'));
-        $oConfig->expects($this->any())->method('isUtf')->will($this->returnValue(false));
+        $oConfig = $this->getMock('oxConfig', array('getActShopCurrencyObject'));
         $oConfig->expects($this->once())->method('getActShopCurrencyObject')->will($this->returnValue($oCurr));
 
         $oEmosAdapter = $this->getMock('oxEmosAdapter', array('getConfig'));
@@ -90,11 +89,7 @@ class EmosadapterTest extends \OxidTestCase
         $sCharset = oxRegistry::getLang()->translateString('charset');
         $sConverted = iconv($sCharset, 'UTF-8', $sContent);
 
-        $oConfig = $this->getMock('oxConfig', array('isUtf'));
-        $oConfig->expects($this->once())->method('isUtf')->will($this->returnValue(false));
-
-        $oEmosAdapter = $this->getMock('oxEmosAdapter', array('getConfig'));
-        $oEmosAdapter->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        $oEmosAdapter = oxNew('oxEmosAdapter');
 
         $this->assertEquals($sConverted, $oEmosAdapter->UNITprepareProductTitle($oProduct));
     }
@@ -105,11 +100,7 @@ class EmosadapterTest extends \OxidTestCase
      */
     public function testConvertToUtf()
     {
-        $oConfig = $this->getMock('oxConfig', array('isUtf'));
-        $oConfig->expects($this->once())->method('isUtf')->will($this->returnValue(false));
-
-        $oEmosAdapter = $this->getMock('oxEmosAdapter', array('getConfig'));
-        $oEmosAdapter->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        $oEmosAdapter = oxNew('oxEmosAdapter');
 
         $sContent = "Zurück zum Shop";
         $sCharset = oxRegistry::getLang()->translateString('charset');
@@ -178,9 +169,8 @@ class EmosadapterTest extends \OxidTestCase
         $oActiveView = $this->getMock('oxview', array('getBreadCrumb'));
         $oActiveView->expects($this->once())->method('getBreadCrumb')->will($this->returnValue(array($aCat1, $aCat2, $aCat3)));
 
-        $oConfig = $this->getMock('oxConfig', array('getActiveView', 'isUtf'));
+        $oConfig = $this->getMock('oxConfig', array('getActiveView'));
         $oConfig->expects($this->once())->method('getActiveView')->will($this->returnValue($oActiveView));
-        $oConfig->expects($this->once())->method('isUtf')->will($this->returnValue(false));
 
         $oEmosCode = $this->getMock('oxEmosAdapter', array('getConfig'));
         $oEmosCode->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));

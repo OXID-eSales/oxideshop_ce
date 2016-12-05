@@ -1878,7 +1878,7 @@ class BaseTest extends \OxidTestCase
         $oField4 = new stdClass();
         $oField4->name = 'OXTITLE';
         $oField4->max_length = '128';
-        $oField4->type = 'char';
+        $oField4->type = 'varchar';
         $oField4->scale = null;
         $oField4->not_null = true;
         $oField4->primary_key = false;

@@ -31,19 +31,11 @@ class StrTest extends \OxidTestCase
     {
         $oStr = $this->getProxyClass('oxStr');
 
-        $this->getConfig()->setConfigParam('iUtfMode', 0);
-        $this->assertFalse($oStr->UNITgetStrHandler() instanceof \OxidEsales\EshopCommunity\Core\StrMb);
-
-        $this->getConfig()->setConfigParam('iUtfMode', 1);
         $this->assertTrue($oStr->UNITgetStrHandler() instanceof \OxidEsales\EshopCommunity\Core\StrMb);
     }
 
     public function testGetStr()
     {
-        if ($this->getConfig()->getConfigParam('iUtfMode')) {
-            $this->assertTrue(oxStr::getStr() instanceof \OxidEsales\EshopCommunity\Core\StrMb);
-        } else {
-            $this->assertFalse(oxStr::getStr() instanceof \OxidEsales\EshopCommunity\Core\StrMb);
-        }
+        $this->assertTrue(oxStr::getStr() instanceof \OxidEsales\EshopCommunity\Core\StrMb);
     }
 }

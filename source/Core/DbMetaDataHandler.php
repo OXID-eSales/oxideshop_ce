@@ -240,9 +240,8 @@ class DbMetaDataHandler extends oxSuperCfg
 
         $res = oxDb::getDb()->getAll("show create table {$table}");
 
-        $collation = $this->getConfig()->isUtf() ? '' : 'COLLATE latin1_general_ci';
         return "CREATE TABLE `{$tableSet}` (" .
-                "`OXID` char(32) $collation NOT NULL, " .
+                "`OXID` char(32) NOT NULL, " .
                 "PRIMARY KEY (`OXID`)" .
                 ") " . strstr($res[0][1], 'ENGINE=');
     }

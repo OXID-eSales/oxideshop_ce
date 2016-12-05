@@ -377,11 +377,7 @@ class ListComponentAjax extends \oxSuperCfg
         if (is_array($aFilter) && count($aFilter)) {
             $aCols = $this->_getVisibleColNames();
             $oDb = oxDb::getDb();
-            $oLang = oxRegistry::getLang();
             $oStr = getStr();
-
-            $blIsUtf = $oConfig->isUtf();
-            $sCharset = $oLang->translateString("charset");
 
             foreach ($aFilter as $sCol => $sValue) {
                 // skipping empty filters
@@ -393,10 +389,6 @@ class ListComponentAjax extends \oxSuperCfg
                 if (isset($aCols[$iCol])) {
                     if ($sQ) {
                         $sQ .= ' and ';
-                    }
-
-                    if (!$blIsUtf) {
-                        $sValue = iconv('UTF-8', $sCharset, $sValue);
                     }
 
                     // escaping special characters
@@ -515,21 +507,6 @@ class ListComponentAjax extends \oxSuperCfg
      */
     protected function _outputResponse($aData)
     {
-        if (!$this->getConfig()->isUtf()) {
-            // TODO: improve this
-            if (is_array($aData['records']) && ($iRecSize = count($aData['records']))) {
-                $aKeys = array_keys(current($aData['records']));
-                $iKeySize = count($aKeys);
-                $sCharset = oxRegistry::getLang()->translateString("charset");
-                for ($i = 0; $i < $iRecSize; $i++) {
-                    for ($c = 0; $c < $iKeySize; $c++) {
-                        $aData['records'][$i][$aKeys[$c]] =
-                                                        iconv($sCharset, "UTF-8", $aData['records'][$i][$aKeys[$c]]);
-                    }
-                }
-            }
-        }
-
         $this->_output(json_encode($aData));
     }
 

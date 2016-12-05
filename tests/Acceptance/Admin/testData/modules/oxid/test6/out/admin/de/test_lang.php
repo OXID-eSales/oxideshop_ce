@@ -27,6 +27,6 @@ $iLangNr    = 0;
 // -------------------------------
 $aLang = array(
 
-'charset'                                         => 'ISO-8859-15',
+'charset'                                         => 'UTF-8',
 'tbclmodule_testtab'                               => 'Test tab DE',
 );

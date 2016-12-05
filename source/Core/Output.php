@@ -93,13 +93,6 @@ class Output extends \oxSuperCfg
      */
     public function process($sValue, $sClassName)
     {
-        $myConfig = $this->getConfig();
-
-        //fix for euro currency problem (it's invisible in some older browsers)
-        if (!$myConfig->getConfigParam('blSkipEuroReplace') && !$myConfig->isUtf()) {
-            $sValue = str_replace('¤', '&euro;', $sValue);
-        }
-
         return $sValue;
     }
 

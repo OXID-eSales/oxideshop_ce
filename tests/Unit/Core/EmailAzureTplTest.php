@@ -156,7 +156,6 @@ class EmailAzureTplTest extends \OxidTestCase
      */
     public function testSendOrderEmailToUser()
     {
-        $this->getConfig()->setConfigParam('blSkipEuroReplace', true);
         $this->getConfig()->setConfigParam('blShowVATForDelivery', false);
 
         $oPrice = oxNew('oxPrice');
@@ -273,7 +272,6 @@ class EmailAzureTplTest extends \OxidTestCase
      */
     public function testSendOrderEmailToOwner()
     {
-        $this->getConfig()->setConfigParam('blSkipEuroReplace', true);
         $this->getConfig()->setConfigParam('blShowVATForDelivery', false);
 
         $oPrice = oxNew('oxPrice');

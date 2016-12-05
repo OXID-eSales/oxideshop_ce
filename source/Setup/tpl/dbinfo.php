@@ -23,14 +23,7 @@ require "_header.php"; ?>
 <?php
 $this->getText('STEP_3_DESC');
 $aDB = $this->getViewParam( "aDB" );
-$blMbStringOn = $this->getViewParam( "blMbStringOn" );
-$blUnicodeSupport = $this->getViewParam( "blUnicodeSupport" );
 
-$sChecked = '';
-if ( ( !isset( $aDB['iUtfMode'] ) || $aDB['iUtfMode'] == 1 ) && $blMbStringOn > 1 && $blUnicodeSupport > 1 ) {
-    $sChecked = 'checked';
-}
-$sDisabled = ( $blMbStringOn > 1 && $blUnicodeSupport > 1 ) ? '' : 'disabled';
 ?><br>
 <br>
 <form action="index.php" method="post">

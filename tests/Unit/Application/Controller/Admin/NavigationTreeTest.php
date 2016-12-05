@@ -55,7 +55,7 @@ class NavigationTreeTest extends \OxidTestCase
             case 'testCheckDynFileFileIsValidXml' :
                 // creating valid file
                 if ($rHandle = @fopen($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}", 'w')) {
-                    fwrite($rHandle, '<?xml version="1.0" encoding="ISO-8859-15"?><OX>');
+                    fwrite($rHandle, '<?xml version="1.0" encoding="UTF-8"?><OX>');
                     fclose($rHandle);
                 }
                 break;
@@ -92,7 +92,7 @@ class NavigationTreeTest extends \OxidTestCase
         oxTestModules::addFunction("oxUtilsFile", "checkFile", "{ return true; }");
         $this->getConfig()->setConfigParam('sAdminDir', "admin");
 
-        $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $sXml = '<?xml version="1.0" encoding="UTF-8"?>
                  <OXMENU type="dyn">
                    <MAINMENU>
                      <SUBMENU cl="login" clparam="loginParam"></SUBMENU>
@@ -108,7 +108,7 @@ class NavigationTreeTest extends \OxidTestCase
                    </MAINMENU>
                  </OXMENU>';
 
-        $sRezXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $sRezXml = '<?xml version="1.0" encoding="UTF-8"?>
                  <OXMENU type="dyn">
                    <MAINMENU id="dyn_menu">
                      <SUBMENU cl="login" clparam="loginParam" list="dynscreen_list" listparam="menu=login" link="index.php?cl=dynscreen&amp;menu=login&amp;loginParam">
@@ -230,7 +230,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     public function testGetEditUrl()
     {
-        $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $sXml = '<?xml version="1.0" encoding="UTF-8"?>
                  <SUBMENU cl="testClass">
                    <TAB cl="testTabClass1" clparam="testTabParam1"></TAB>
                    <TAB cl="testTabClass2" clparam="testTabParam2"></TAB>
@@ -251,7 +251,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     public function testGetEditUrlExternal()
     {
-        $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $sXml = '<?xml version="1.0" encoding="UTF-8"?>
                  <SUBMENU cl="testClass">
                    <TAB cl="testTabClass1" clparam="testTabParam1"></TAB>
                    <TAB cl="testTabClass2" external="1" location="testExternalUrl"></TAB>
@@ -272,7 +272,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     public function testGetListUrl()
     {
-        $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $sXml = '<?xml version="1.0" encoding="UTF-8"?>
                  <SUBMENU cl="testClass" list="testClass" listparam="testClassParam">
                  </SUBMENU>';
 
@@ -291,7 +291,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     public function testGetListNodes()
     {
-        $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $sXml = '<?xml version="1.0" encoding="UTF-8"?>
                  <MAINMENU>
                    <SUBMENU cl="testClass1"><TAB></TAB></SUBMENU>
                    <SUBMENU cl="testClass2"><TAB></TAB></SUBMENU>
@@ -321,7 +321,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     public function testMarkNodeActive()
     {
-        $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $sXml = '<?xml version="1.0" encoding="UTF-8"?>
                  <MAINMENU>
                    <SUBMENU cl="testClass1"><TAB></TAB></SUBMENU>
                    <SUBMENU cl="testClass2" list="testClass1"><TAB></TAB></SUBMENU>
@@ -367,7 +367,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     public function testGetBtn()
     {
-        $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $sXml = '<?xml version="1.0" encoding="UTF-8"?>
                    <SUBMENU>
                      <TAB cl="testClass" />
                      <BTN id="testBtn1" />
@@ -417,7 +417,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     public function testGetTabs()
     {
-        $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $sXml = '<?xml version="1.0" encoding="UTF-8"?>
                  <SUBMENU cl="testClass">
                    <TAB cl="testTabClass1" clparam="testTabParam1"></TAB>
                    <TAB cl="testTabClass2" external="1" location="testExternalUrl"></TAB>
@@ -476,7 +476,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     public function testCheckGroups()
     {
-        $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $sXml = '<?xml version="1.0" encoding="UTF-8"?>
                    <MAINMENU>
                      <SUBMENU cl="testClass1" group="testGroup1">
                        <TAB cl="testTabClass1" />
@@ -486,7 +486,7 @@ class NavigationTreeTest extends \OxidTestCase
                      </SUBMENU>
                    </MAINMENU>';
 
-        $sResXml = "<?xml version=\"1.0\" encoding=\"ISO-8859-15\"?><MAINMENU>   </MAINMENU>";
+        $sResXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><MAINMENU>   </MAINMENU>";
 
         $oDom = new DOMDocument();
         $oDom->formatOutput = true;
@@ -507,7 +507,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     public function testRemoveInvisibleMenuNodes()
     {
-        $xml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>
                    <MAINMENU>
                      <SUBMENU cl="MenuEntry-Visible" visible="1">
                        <TAB cl="MenuTab-AVisible" />
@@ -543,7 +543,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     public function testRemoveInvisibleMainMenuNodes()
     {
-        $xml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>
                     <OXMENU id="NAVIGATION_ESHOPADMIN">
                        <MAINMENU id="MainMenu-Visible">
                            <SUBMENU cl="MenuEntry-Visible" visible="1">
@@ -583,7 +583,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     public function testRemoveInvisibleTabs()
     {
-        $xml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>
                    <MAINMENU>
                      <SUBMENU cl="MenuEntry-Visible">
                        <TAB cl="MenuTab-Visible" visible="1" />
@@ -619,7 +619,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     public function testCheckRights()
     {
-        $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
+        $sXml = '<?xml version="1.0" encoding="UTF-8"?>
                    <MAINMENU>
                      <SUBMENU cl="testClass1" rights="testGroup1">
                        <TAB cl="testTabClass1" />
@@ -629,7 +629,7 @@ class NavigationTreeTest extends \OxidTestCase
                      </SUBMENU>
                    </MAINMENU>';
 
-        $sResXml = "<?xml version=\"1.0\" encoding=\"ISO-8859-15\"?><MAINMENU>   </MAINMENU>";
+        $sResXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><MAINMENU>   </MAINMENU>";
 
         $oDom = new DOMDocument();
         $oDom->formatOutput = true;

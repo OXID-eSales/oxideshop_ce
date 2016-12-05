@@ -58,46 +58,6 @@ class Utilities extends Core
      */
     protected $_sEmailTpl = "/^([-!#\$%&'*+.\/0-9=?A-Z^_`a-z{|}~\177])+@([-!#\$%&'*+\/0-9=?A-Z^_`a-z{|}~\177]+\\.)+[a-zA-Z]{2,6}\$/i";
 
-    /**
-     * Converts given data array from iso-8859-15 to utf-8
-     *
-     * @param array $aData data to convert
-     *
-     * @return array
-     */
-    public function convertToUtf8($aData)
-    {
-        if (is_array($aData)) {
-            $aKeys = array_keys($aData);
-            $aValues = array_values($aData);
-
-            //converting keys
-            if (count($aData) > 1) {
-                foreach ($aKeys as $sKeyIndex => $sKeyValue) {
-                    if (is_string($sKeyValue)) {
-                        $aKeys[$sKeyIndex] = iconv('iso-8859-15', 'utf-8', $sKeyValue);
-                    }
-                }
-
-                $aData = array_combine($aKeys, $aValues);
-
-                //converting values
-                foreach ($aData as $sKey => $sValue) {
-                    if (is_array($sValue)) {
-                        $this->convertToUtf8($sValue);
-                    }
-
-                    if (is_string($sValue)) {
-                        $aData[$sKey] = iconv('iso-8859-15', 'utf-8', $sValue);
-                    }
-                }
-            }
-        } else {
-            $aData = iconv('iso-8859-15', 'utf-8', $aData);
-        }
-
-        return $aData;
-    }
 
     /**
      * Generates unique id

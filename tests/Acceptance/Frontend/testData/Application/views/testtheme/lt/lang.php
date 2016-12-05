@@ -26,7 +26,7 @@ $iLangNr    = 2;
 // RESOURCE IDENTIFIER = STRING
 // -------------------------------
 $aLang = array(
-'charset'                                         => 'ISO-8859-15',
+'charset'                                         => 'UTF-8',
 'fullDateFormat'                                  => 'Y-m-d H:i:s',
 
 'ACCOUNT_LOGIN_LOGIN'                             => "Login",

@@ -441,7 +441,7 @@ class Delivery extends \oxI18n
     /**
      * Update total count of product items are covered by current delivery.
      *
-     * @param $content
+     * @param oxBasketItem $content
      */
     protected function updateItemCount($content)
     {

@@ -1129,7 +1129,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     }
 
     /**
-     * @param $article
+     * @param \OxidEsales\Eshop\Application\Model\Article $article
      */
     protected function _setShopValues($article)
     {
@@ -2543,8 +2543,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      * Save article long description to oxartext table
      *
      * @param string $longDescription description to set
-     *
-     * @return null
      */
     public function setArticleLongDesc($longDescription)
     {
@@ -3462,15 +3460,13 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
             if ($blRemoveNotOrderables) {
                 if (isset($this->_aVariants[$cacheKey])) {
                     return $this->_aVariants[$cacheKey];
-                } else {
-                    $this->_aVariants[$cacheKey] = &$variants;
                 }
+                $this->_aVariants[$cacheKey] = &$variants;
             } elseif (!$blRemoveNotOrderables) {
                 if (isset($this->_aVariantsWithNotOrderables[$cacheKey])) {
                     return $this->_aVariantsWithNotOrderables[$cacheKey];
-                } else {
-                    $this->_aVariantsWithNotOrderables[$cacheKey] = &$variants;
                 }
+                $this->_aVariantsWithNotOrderables[$cacheKey] = &$variants;
             }
 
             if (($this->_blHasVariants = $this->_hasAnyVariant($forceCoreTableUsage))) {
@@ -4339,7 +4335,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
                 $iStock = $this->oxarticles__oxvarstock->value;
             }
 
-
             if ($iStock <= $myConfig->getConfigParam('sStockWarningLimit') && $iStock > 0) {
                 $this->_iStockStatus = 1;
             }
@@ -4981,8 +4976,6 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      * for example VPE.
      *
      * @param double $amount Amount
-     *
-     * @return double|null
      */
     public function checkForVpe($amount)
     {
@@ -5049,10 +5042,10 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
     /**
      * Forms query to load variants.
      *
-     * @param $blRemoveNotOrderables
-     * @param $forceCoreTableUsage
-     * @param $baseObject
-     * @param $sArticleTable
+     * @param bool                      $blRemoveNotOrderables
+     * @param bool                      $forceCoreTableUsage
+     * @param oxSimpleVariant|oxarticle $baseObject
+     * @param string                    $sArticleTable
      *
      * @return string
      */

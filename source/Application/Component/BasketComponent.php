@@ -489,7 +489,8 @@ class BasketComponent extends \oxView
     /**
      * Prepare information for adding product to basket.
      *
-     * @param $productInfo
+     * @param string $addProductId
+     * @param array  $productInfo
      *
      * @return array
      */
@@ -512,11 +513,11 @@ class BasketComponent extends \oxView
     /**
      * Add one item to basket. Handle eventual errors.
      *
-     * @param $basket
-     * @param $data
-     * @param $errorDestination
+     * @param oxBasket $basket
+     * @param array   $itemData
+     * @param string  $errorDestination
      *
-     * @return null
+     * @return null|oxBasketItem
      */
     protected function addItemToBasket($basket, $itemData, $errorDestination)
     {

@@ -2042,7 +2042,7 @@ class Basket extends \oxSuperCfg
         $aVats = $this->_oNotDiscountedProductsPriceList->getVatInfo($this->isCalculationModeNetto());
 
         $oUtils = oxRegistry::getUtils();
-        foreach ($this->_aDiscountedVats as $sKey => $dVat) {
+        foreach ((array)$this->_aDiscountedVats as $sKey => $dVat) {
             if (!isset($aVats[$sKey])) {
                 $aVats[$sKey] = 0;
             }

@@ -735,5 +735,4 @@ class ModuleList extends \oxSuperCfg
     {
         return strpos($className, '\\') !== false;
     }
-
 }

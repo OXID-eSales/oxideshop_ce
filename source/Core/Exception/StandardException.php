@@ -63,8 +63,8 @@ class StandardException extends \Exception
     /**
      * Default constructor
      *
-     * @param string         $sMessage exception message
-     * @param integer        $iCode    exception code
+     * @param string          $sMessage exception message
+     * @param integer         $iCode    exception code
      * @param \Exception|null $previous previous exception
      */
     public function __construct($sMessage = "not set", $iCode = 0, \Exception $previous = null)

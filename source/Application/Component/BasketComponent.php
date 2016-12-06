@@ -514,8 +514,8 @@ class BasketComponent extends \oxView
      * Add one item to basket. Handle eventual errors.
      *
      * @param oxBasket $basket
-     * @param array   $itemData
-     * @param string  $errorDestination
+     * @param array    $itemData
+     * @param string   $errorDestination
      *
      * @return null|oxBasketItem
      */

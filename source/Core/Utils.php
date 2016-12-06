@@ -338,6 +338,8 @@ class Utils extends \oxSuperCfg
         }
         stopProfile('fround');
 
+        $sVal = (float) $sVal;
+
         return round($sVal + $dprez * ($sVal >= 0 ? 1 : -1), $iCurPrecision);
     }
 

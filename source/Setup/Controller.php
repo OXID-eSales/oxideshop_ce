@@ -38,21 +38,6 @@ class Controller extends Core
     private $_oView = null;
 
     /**
-     * Returns View object
-     *
-     * @return View
-     */
-    public function getView()
-    {
-        if ($this->_oView == null) {
-            $this->_oView = new View();
-        }
-
-        return $this->_oView;
-    }
-
-    // ---- controllers ----
-    /**
      * First page with system requirements check
      *
      * @return string
@@ -540,6 +525,20 @@ class Controller extends Core
         $oView->setViewParam("blWritableConfig", is_writable($aPath['sShopDir'] . "/config.inc.php"));
 
         return "finish.php";
+    }
+
+    /**
+     * Returns View object
+     *
+     * @return View
+     */
+    public function getView()
+    {
+        if ($this->_oView == null) {
+            $this->_oView = new View();
+        }
+
+        return $this->_oView;
     }
 
     /**

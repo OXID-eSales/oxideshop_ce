@@ -66,7 +66,8 @@ class ShopAutoload
         $filePath = '';
 
         if (in_array($class, $this->coreClasses)) {
-            $filePath = __DIR__. "/../" . $class . ".php";
+            $corePath = getShopBasePath() . 'BackwardCompatibility/Core/';
+            $filePath = $corePath . $class . ".php";
         } else {
             $directories = $this->getClassDirectories();
             foreach ($directories as $directory) {
@@ -101,16 +102,16 @@ class ShopAutoload
      */
     protected function generateDirectories()
     {
-        $shopBasePath = __DIR__ . "/../../";
+        $shopBasePath = getShopBasePath();
         return [
-            $shopBasePath . 'Core/',
-            $shopBasePath . 'Application/Component/Widget/',
-            $shopBasePath . 'Application/Component/',
-            $shopBasePath . 'Application/Model/',
-            $shopBasePath . 'Application/Controller/',
-            $shopBasePath . 'Application/Controller/Admin/',
-            $shopBasePath . 'Core/Exception/',
-            $shopBasePath . 'Core/Contract/'
+            $shopBasePath . 'BackwardCompatibility/Core/',
+            $shopBasePath . 'BackwardCompatibility/Application/Component/Widget/',
+            $shopBasePath . 'BackwardCompatibility/Application/Component/',
+            $shopBasePath . 'BackwardCompatibility/Application/Model/',
+            $shopBasePath . 'BackwardCompatibility/Application/Controller/',
+            $shopBasePath . 'BackwardCompatibility/Application/Controller/Admin/',
+            $shopBasePath . 'BackwardCompatibility/Core/Exception/',
+            $shopBasePath . 'BackwardCompatibility/Core/Contract/'
         ];
     }
 }

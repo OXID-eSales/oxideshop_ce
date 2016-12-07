@@ -44,12 +44,9 @@ class Controller extends Core
      */
     public function systemReq()
     {
-        /** @var Setup $oSetup */
-        $oSetup = $this->getInstance("Setup");
-        /** @var Language $oLanguage */
-        $oLanguage = $this->getInstance("Language");
-        /** @var Utilities $oUtils */
-        $oUtils = $this->getInstance("Utilities");
+        $oSetup = $this->getSetupInstance();
+        $oLanguage = $this->getLanguageInstance();
+        $oUtils = $this->getUtilitiesInstance();
         $oView = $this->getView();
 
         $blContinue = true;
@@ -91,7 +88,7 @@ class Controller extends Core
         $oView->setViewParam("blContinue", $blContinue);
         $oView->setViewParam("aGroupModuleInfo", $aGroupModuleInfo);
         $oView->setViewParam("aLanguages", getLanguages());
-        $oView->setViewParam("sLanguage", $this->getInstance("Session")->getSessionParam('setup_lang'));
+        $oView->setViewParam("sLanguage", $this->getSessionInstance()->getSessionParam('setup_lang'));
 
         return "systemreq.php";
     }
@@ -103,12 +100,11 @@ class Controller extends Core
      */
     public function welcome()
     {
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
+        $oSession = $this->getSessionInstance();
 
         //setting admin area default language
         $sAdminLang = $oSession->getSessionParam('setup_lang');
-        $this->getInstance("Utilities")->setCookie("oxidadminlanguage", $sAdminLang, time() + 31536000, "/");
+        $this->getUtilitiesInstance()->setCookie("oxidadminlanguage", $sAdminLang, time() + 31536000, "/");
 
         $oView = $this->getView();
         $oView->setTitle('STEP_1_TITLE');
@@ -116,7 +112,7 @@ class Controller extends Core
         $oView->setViewParam("aLocations", getLocation());
         $oView->setViewParam("aLanguages", getLanguages());
         $oView->setViewParam("sShopLang", $oSession->getSessionParam('sShopLang'));
-        $oView->setViewParam("sLanguage", $this->getInstance("Language")->getLanguage());
+        $oView->setViewParam("sLanguage", $this->getLanguageInstance()->getLanguage());
         $oView->setViewParam("sLocationLang", $oSession->getSessionParam('location_lang'));
         $oView->setViewParam("sCountryLang", $oSession->getSessionParam('country_lang'));
 
@@ -138,9 +134,9 @@ class Controller extends Core
         $oView->setTitle('STEP_2_TITLE');
         $oView->setViewParam(
             "aLicenseText",
-            $this->getInstance("Utilities")->getFileContents(
+            $this->getUtilitiesInstance()->getFileContents(
                 $editionPathSelector->getSetupDirectory()
-                . '/'. ucfirst($this->getInstance("Language")->getLanguage())
+                . '/'. ucfirst($this->getLanguageInstance()->getLanguage())
                 . '/' . $sLicenseFile
             )
         );
@@ -156,16 +152,14 @@ class Controller extends Core
     public function dbInfo()
     {
         $oView = $this->getView();
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
+        $oSession = $this->getSessionInstance();
 
-        $iEula = $this->getInstance("Utilities")->getRequestVar("iEula", "post");
+        $iEula = $this->getUtilitiesInstance()->getRequestVar("iEula", "post");
         $iEula = (int)($iEula ? $iEula : $oSession->getSessionParam("eula"));
         if (!$iEula) {
-            /** @var Setup $oSetup */
-            $oSetup = $this->getInstance("Setup");
+            $oSetup = $this->getSetupInstance();
             $oSetup->setNextStep($oSetup->getStep("STEP_WELCOME"));
-            $oView->setMessage($this->getInstance("Language")->getText("ERROR_SETUP_CANCELLED"));
+            $oView->setMessage($this->getLanguageInstance()->getText("ERROR_SETUP_CANCELLED"));
 
             return "licenseerror.php";
         }
@@ -197,8 +191,7 @@ class Controller extends Core
      */
     public function dirsInfo()
     {
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
+        $oSession = $this->getSessionInstance();
 
         if ($this->userDecidedOverwriteDB()) {
             $oSession->setSessionParam('blOverwrite', true);
@@ -208,10 +201,9 @@ class Controller extends Core
         $oView->setTitle('STEP_4_TITLE');
         $oView->setViewParam("aSetupConfig", $oSession->getSessionParam('aSetupConfig'));
         $oView->setViewParam("aAdminData", $oSession->getSessionParam('aAdminData'));
-        $oView->setViewParam("aPath", $this->getInstance("Utilities")->getDefaultPathParams());
+        $oView->setViewParam("aPath", $this->getUtilitiesInstance()->getDefaultPathParams());
 
-        /** @var Setup $oSetup */
-        $oSetup = $this->getInstance("Setup");
+        $oSetup = $this->getSetupInstance();
         $oView->setViewParam("aSetupConfig", array("blDelSetupDir" => $oSetup->deleteSetupDirectory()));
         return "dirsinfo.php";
     }
@@ -223,17 +215,14 @@ class Controller extends Core
      */
     public function dbConnect()
     {
-        /** @var Setup $oSetup */
-        $oSetup = $this->getInstance("Setup");
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
-        /** @var Language $oLang */
-        $oLang = $this->getInstance("Language");
+        $oSetup = $this->getSetupInstance();
+        $oSession = $this->getSessionInstance();
+        $oLang = $this->getLanguageInstance();
 
         $oView = $this->getView();
         $oView->setTitle('STEP_3_1_TITLE');
 
-        $aDB = $this->getInstance("Utilities")->getRequestVar("aDB", "post");
+        $aDB = $this->getUtilitiesInstance()->getRequestVar("aDB", "post");
         $oSession->setSessionParam('aDB', $aDB);
 
         // check if iportant parameters are set
@@ -246,8 +235,7 @@ class Controller extends Core
 
         try {
             // ok check DB Connection
-            /** @var Database $oDb */
-            $oDb = $this->getInstance("Database");
+            $oDb = $this->getDatabaseInstance();
             $oDb->openDatabase($aDB);
         } catch (Exception $oExcp) {
             if ($oExcp->getCode() === Database::ERROR_DB_CONNECT) {
@@ -306,12 +294,9 @@ class Controller extends Core
      */
     public function dbCreate()
     {
-        /** @var Setup $oSetup */
-        $oSetup = $this->getInstance("Setup");
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
-        /** @var Language $oLang */
-        $oLang = $this->getInstance("Language");
+        $oSetup = $this->getSetupInstance();
+        $oSession = $this->getSessionInstance();
+        $oLang = $this->getLanguageInstance();
 
         $oView = $this->getView();
         $oView->setTitle('STEP_4_2_TITLE');
@@ -320,7 +305,7 @@ class Controller extends Core
 
         try {
             /** @var Database $oDb */
-            $oDb = $this->getInstance("Database");
+            $oDb = $this->getDatabaseInstance();
             $oDb->openDatabase($aDB);
         } catch (Exception $exception) {
             if ($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS) {
@@ -410,15 +395,10 @@ class Controller extends Core
     public function dirsWrite()
     {
         $oView = $this->getView();
-
-        /** @var Setup $oSetup */
-        $oSetup = $this->getInstance("Setup");
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
-        /** @var Language $oLang */
-        $oLang = $this->getInstance("Language");
-        /** @var Utilities $oUtils */
-        $oUtils = $this->getInstance("Utilities");
+        $oSetup = $this->getSetupInstance();
+        $oSession = $this->getSessionInstance();
+        $oLang = $this->getLanguageInstance();
+        $oUtils = $this->getUtilitiesInstance();
 
         $oView->setTitle('STEP_4_1_TITLE');
 
@@ -514,8 +494,7 @@ class Controller extends Core
      */
     public function finish()
     {
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
+        $oSession = $this->getSessionInstance();
         $aPath = $oSession->getSessionParam("aPath");
 
         $oView = $this->getView();
@@ -586,8 +565,8 @@ class Controller extends Core
     {
         $userDecidedOverwriteDB = false;
 
-        $blOverwriteCheck = $this->getInstance("Utilities")->getRequestVar("ow", "get");
-        $oSession = $this->getInstance("Session");
+        $blOverwriteCheck = $this->getUtilitiesInstance()->getRequestVar("ow", "get");
+        $oSession = $this->getSessionInstance();
 
         if (isset($blOverwriteCheck) || $oSession->getSessionParam('blOverwrite')) {
             $userDecidedOverwriteDB = true;

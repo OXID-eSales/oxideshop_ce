@@ -51,7 +51,6 @@ class Controller extends Core
         $setup = $this->getSetupInstance();
         $language = $this->getLanguageInstance();
         $utils = $this->getUtilitiesInstance();
-        $view = $this->getView();
 
         $continue = true;
         $groupModuleInfo = array();
@@ -88,11 +87,15 @@ class Controller extends Core
             }
         }
 
-        $view->setTitle('STEP_0_TITLE');
-        $view->setViewParam("blContinue", $continue);
-        $view->setViewParam("aGroupModuleInfo", $groupModuleInfo);
-        $view->setViewParam("aLanguages", getLanguages());
-        $view->setViewParam("sLanguage", $this->getSessionInstance()->getSessionParam('setup_lang'));
+        $this->setViewOptions(
+            'STEP_0_TITLE',
+            [
+                "blContinue" => $continue,
+                "aGroupModuleInfo" => $groupModuleInfo,
+                "aLanguages" => getLanguages(),
+                "sLanguage" => $this->getSessionInstance()->getSessionParam('setup_lang'),
+            ]
+        );
 
         return "systemreq.php";
     }
@@ -110,15 +113,18 @@ class Controller extends Core
         $adminLanguage = $session->getSessionParam('setup_lang');
         $this->getUtilitiesInstance()->setCookie("oxidadminlanguage", $adminLanguage, time() + 31536000, "/");
 
-        $view = $this->getView();
-        $view->setTitle('STEP_1_TITLE');
-        $view->setViewParam("aCountries", getCountryList());
-        $view->setViewParam("aLocations", getLocation());
-        $view->setViewParam("aLanguages", getLanguages());
-        $view->setViewParam("sShopLang", $session->getSessionParam('sShopLang'));
-        $view->setViewParam("sLanguage", $this->getLanguageInstance()->getLanguage());
-        $view->setViewParam("sLocationLang", $session->getSessionParam('location_lang'));
-        $view->setViewParam("sCountryLang", $session->getSessionParam('country_lang'));
+        $this->setViewOptions(
+            'STEP_1_TITLE',
+            [
+                "aCountries" => getCountryList(),
+                "aLocations" => getLocation(),
+                "aLanguages" => getLanguages(),
+                "sShopLang" => $session->getSessionParam('sShopLang'),
+                "sLanguage" => $this->getLanguageInstance()->getLanguage(),
+                "sLocationLang" => $session->getSessionParam('location_lang'),
+                "sCountryLang" => $session->getSessionParam('country_lang')
+            ]
+        );
 
         return "welcome.php";
     }
@@ -131,16 +137,17 @@ class Controller extends Core
     public function license()
     {
         $licenseFile = "lizenz.txt";
+        $licenseContent = $this->getUtilitiesInstance()->getFileContents(
+            $this->getUtilitiesInstance()->getSetupDirectory()
+            . '/'. ucfirst($this->getLanguageInstance()->getLanguage())
+            . '/' . $licenseFile
+        );
 
-        $view = $this->getView();
-        $view->setTitle('STEP_2_TITLE');
-        $view->setViewParam(
-            "aLicenseText",
-            $this->getUtilitiesInstance()->getFileContents(
-                $this->getUtilitiesInstance()->getSetupDirectory()
-                . '/'. ucfirst($this->getLanguageInstance()->getLanguage())
-                . '/' . $licenseFile
-            )
+        $this->setViewOptions(
+            'STEP_2_TITLE',
+            [
+                "aLicenseText" => $licenseContent,
+            ]
         );
 
         return "license.php";
@@ -155,6 +162,7 @@ class Controller extends Core
     {
         $view = $this->getView();
         $session = $this->getSessionInstance();
+        $systemRequirements = getSystemReqCheck();
 
         $eulaOptionValue = $this->getUtilitiesInstance()->getRequestVar("iEula", "post");
         $eulaOptionValue = (int)($eulaOptionValue ? $eulaOptionValue : $session->getSessionParam("eula"));
@@ -166,7 +174,6 @@ class Controller extends Core
             return "licenseerror.php";
         }
 
-        $view->setTitle('STEP_3_TITLE');
         $databaseConfigValues = $session->getSessionParam('aDB');
         if (!isset($databaseConfigValues)) {
             // default values
@@ -176,12 +183,15 @@ class Controller extends Core
             $databaseConfigValues['dbName'] = "";
             $databaseConfigValues['dbiDemoData'] = 1;
         }
-        $view->setViewParam("aDB", $databaseConfigValues);
 
-        // mb string library info
-        $systemRequirements = getSystemReqCheck();
-        $view->setViewParam("blMbStringOn", $systemRequirements->getModuleInfo('mb_string'));
-        $view->setViewParam("blUnicodeSupport", $systemRequirements->getModuleInfo('unicode_support'));
+        $this->setViewOptions(
+            'STEP_3_TITLE',
+            [
+                "aDB" => $databaseConfigValues,
+                "blMbStringOn" => $systemRequirements->getModuleInfo('mb_string'),
+                "blUnicodeSupport" => $systemRequirements->getModuleInfo('unicode_support')
+            ]
+        );
 
         return "dbinfo.php";
     }
@@ -194,19 +204,21 @@ class Controller extends Core
     public function dirsInfo()
     {
         $session = $this->getSessionInstance();
+        $setup = $this->getSetupInstance();
 
         if ($this->userDecidedOverwriteDB()) {
             $session->setSessionParam('blOverwrite', true);
         }
 
-        $view = $this->getView();
-        $view->setTitle('STEP_4_TITLE');
-        $view->setViewParam("aSetupConfig", $session->getSessionParam('aSetupConfig'));
-        $view->setViewParam("aAdminData", $session->getSessionParam('aAdminData'));
-        $view->setViewParam("aPath", $this->getUtilitiesInstance()->getDefaultPathParams());
+        $this->setViewOptions(
+            'STEP_4_TITLE',
+            [
+                "aAdminData" => $session->getSessionParam('aAdminData'),
+                "aPath" => $this->getUtilitiesInstance()->getDefaultPathParams(),
+                "aSetupConfig" => ["blDelSetupDir" => $setup->deleteSetupDirectory()],
+            ]
+        );
 
-        $setup = $this->getSetupInstance();
-        $view->setViewParam("aSetupConfig", array("blDelSetupDir" => $setup->deleteSetupDirectory()));
         return "dirsinfo.php";
     }
 
@@ -496,11 +508,14 @@ class Controller extends Core
         $session = $this->getSessionInstance();
         $pathCollection = $session->getSessionParam("aPath");
 
-        $view = $this->getView();
-        $view->setTitle("STEP_6_TITLE");
-        $view->setViewParam("aPath", $pathCollection);
-        $view->setViewParam("aSetupConfig", $session->getSessionParam("aSetupConfig"));
-        $view->setViewParam("blWritableConfig", is_writable($pathCollection['sShopDir'] . "/config.inc.php"));
+        $this->setViewOptions(
+            'STEP_6_TITLE',
+            [
+                "aPath" => $pathCollection,
+                "aSetupConfig" => $session->getSessionParam("aSetupConfig"),
+                "blWritableConfig" => is_writable($pathCollection['sShopDir'] . "/config.inc.php")
+            ]
+        );
 
         return "finish.php";
     }
@@ -623,6 +638,22 @@ class Controller extends Core
             if ($demodata) {
                 $database->queryFile("$editionSqlDir/demodata.sql");
             }
+        }
+    }
+
+    /**
+     * Allows to set all necessary view information with single method call.
+     *
+     * @param string $titleId     Title Id which will be used in the template.
+     * @param array  $viewOptions An array containing all view elements to be used inside a template.
+     */
+    protected function setViewOptions($titleId, $viewOptions)
+    {
+        $view = $this->getView();
+        $view->setTitle($titleId);
+
+        foreach ($viewOptions as $optionKey => $optionValue) {
+            $view->setViewParam($optionKey, $optionValue);
         }
     }
 

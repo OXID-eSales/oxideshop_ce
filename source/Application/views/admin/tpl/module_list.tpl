@@ -33,6 +33,7 @@ window.onload = function ()
     <input type="hidden" name="language" value="[{$actlang}]">
     <input type="hidden" name="editlanguage" value="[{$actlang}]">
 
+[{block name="admin_modules_list_table" }]
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <colgroup>
     <col width="3%">
@@ -74,6 +75,7 @@ window.onload = function ()
 [{/foreach}]
 [{include file="pagenavisnippet.tpl" colspan="5"}]
 </table>
+[{/block}]
 </form>
 </div>
 

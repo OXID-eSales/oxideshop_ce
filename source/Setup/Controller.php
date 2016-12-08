@@ -136,17 +136,13 @@ class Controller extends Core
      */
     public function license()
     {
-        $licenseFile = "lizenz.txt";
-        $licenseContent = $this->getUtilitiesInstance()->getFileContents(
-            $this->getUtilitiesInstance()->getSetupDirectory()
-            . '/'. ucfirst($this->getLanguageInstance()->getLanguage())
-            . '/' . $licenseFile
-        );
+        $languageId = $this->getLanguageInstance()->getLanguage();
+        $utils = $this->getUtilitiesInstance();
 
         $this->setViewOptions(
             'STEP_2_TITLE',
             [
-                "aLicenseText" => $licenseContent,
+                "aLicenseText" => $utils->getLicenseContent($languageId)
             ]
         );
 

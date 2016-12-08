@@ -36,8 +36,11 @@ use OxidEsales\Eshop\Core\Edition\EditionSelector;
 class Utilities extends Core
 {
     const DEMODATA_PACKAGE_NAME = 'oxideshop-demodata-%s';
+
     const DEMODATA_PACKAGE_SOURCE_DIRECTORY = 'src';
+
     const DEMODATA_SQL_FILENAME = 'demodata.sql';
+    const LICENSE_TEXT_FILENAME = "lizenz.txt";
 
     /**
      * Unable to find file
@@ -523,5 +526,25 @@ class Utilities extends Core
                 self::DEMODATA_SQL_FILENAME,
             ]
         );
+    }
+
+    /**
+     * Returns the contents of license agreement in requested language.
+     *
+     * @param string $languageId
+     * @return string
+     */
+    public function getLicenseContent($languageId)
+    {
+        $licensePathElements = [
+            $this->getSetupDirectory(),
+            ucfirst($languageId),
+            self::LICENSE_TEXT_FILENAME
+        ];
+        $licensePath = implode(DIRECTORY_SEPARATOR, $licensePathElements);
+
+        $licenseContent = $this->getFileContents($licensePath);
+
+        return $licenseContent;
     }
 }

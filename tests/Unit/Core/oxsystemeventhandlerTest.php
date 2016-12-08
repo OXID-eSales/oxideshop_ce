@@ -215,11 +215,14 @@ class oxSystemEventHandlerTest extends \oxUnitTestCase
 
     public function testOnShopStartSaveServerInformation()
     {
+        $onlineLicenseCheck = $this->getMock('oxOnlineLicenseCheck', [], [], '', false);
+
         $oProcessor = $this->getMock('oxServerProcessor', array(), array(), '', false);
         $oProcessor->expects($this->once())->method('process');
 
         $oSystemEventHandler = $this->getMock('oxSystemEventHandler', array('_getServerProcessor', 'pageStart'));
         $oSystemEventHandler->expects($this->any())->method('_getServerProcessor')->will($this->returnValue($oProcessor));
+        $oSystemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
         $oSystemEventHandler->onShopStart();
     }

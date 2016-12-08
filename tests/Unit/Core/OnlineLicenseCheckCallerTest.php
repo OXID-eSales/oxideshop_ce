@@ -24,6 +24,7 @@ namespace Unit\Core;
 use \oxOnlineLicenseCheckCaller;
 use \Exception;
 use \oxSimpleXml;
+use \oxTestModules;
 
 /**
  * Class Unit_Core_oxOnlineLicenseCheckCallerTest
@@ -38,6 +39,8 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
     public function testIfCorrectRequestPassedToXmlFormatter()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         /** @var oxOnlineLicenseCheckRequest $oRequest */
         $oRequest = $this->getMock('oxOnlineLicenseCheckRequest', array(), array(), '', false);
 
@@ -58,6 +61,8 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
     public function testServiceCallWithCorrectRequest()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         $oSimpleXml = $this->getMock('oxSimpleXml');
         $oSimpleXml->expects($this->any())->method('objectToXml')->will($this->returnValue('formed_xml'));
         /** @var oxSimpleXml $oSimpleXml */
@@ -116,6 +121,8 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
     public function testCorrectResponseReturned()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         $oExpectedResponse = oxNew('oxOnlineLicenseCheckResponse');
         $oExpectedResponse->code = 0;
         $oExpectedResponse->message = 'ACK';
@@ -139,6 +146,8 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
     public function testCheckIfKeyWasRemovedWhenSendEmail()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         $oCurl = $this->getMock('oxCurl', array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->throwException(new Exception()));
         /** @var oxCurl $oCurl */

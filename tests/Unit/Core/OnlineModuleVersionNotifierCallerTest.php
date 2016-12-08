@@ -24,6 +24,7 @@ namespace Unit\Core;
 use \oxOnlineModuleVersionNotifierCaller;
 use \oxSimpleXml;
 use \stdClass;
+use \oxTestModules;
 
 /**
  * Class Unit_Core_oxOnlineModuleVersionNotifierCallerTest
@@ -33,9 +34,10 @@ use \stdClass;
  */
 class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
 {
-
     public function testGetWebServiceUrl()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         /** @var oxCurl $oCurl */
         $oCurl = $this->getMock('oxCurl', array('execute'));
         /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
@@ -48,6 +50,8 @@ class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
 
     public function testDoRequestAndCheckDocumentName()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         $this->getConfig()->setConfigParam('sClusterId', 'generated_unique_cluster_id');
 
         $oCurl = $this->getMock('oxCurl', array('execute', 'setParameters'));

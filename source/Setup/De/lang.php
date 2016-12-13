@@ -64,6 +64,8 @@ $aLang = array(
 'ERROR_PASSWORDS_DO_NOT_MATCH'                  => 'Passwörter stimmen nicht überein',
 'ERROR_USER_NAME_DOES_NOT_MATCH_PATTERN'        => 'Bitte geben Sie eine gültige E-Mail-Adresse ein!',
 'ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS' => 'Die MySQL Version erfüllt nicht die Systemvoraussetzungen',
+'ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS' => 'WARNUNG: Die installierte MySQL Version entspricht zwar den <i>minimalen</i> Anforderungen, wird aber weder empfohlen noch unterstützt.',
+
 
 'ERROR_VIEWS_CANT_CREATE'                       => 'FEHLER: Kann Views nicht erstellen. Bitte prüfen Sie Ihre Benutzerrechte für die Datenbank.',
 'ERROR_VIEWS_CANT_SELECT'                       => 'FEHLER: Kann nicht auf Views zugreifen. Bitte prüfen Sie Ihre Benutzerrechte für die Datenbank.',
@@ -77,7 +79,7 @@ $aLang = array(
 'MOD_SERVER_PERMISSIONS'                        => 'Dateizugriffsrechte',
 'MOD_ALLOW_URL_FOPEN'                           => 'allow_url_fopen und fsockopen auf Port 80',
 'MOD_PHP4_COMPAT'                               => 'Zend Kompatibilitätsmodus muss ausgeschaltet sein',
-'MOD_PHP_VERSION'                               => 'PHP mindestens Version 5.6',
+'MOD_PHP_VERSION'                               => 'PHP Version 5.6 oder 7.0',
 'MOD_REQUEST_URI'                               => 'REQUEST_URI vorhanden',
 'MOD_LIB_XML2'                                  => 'LIB XML2',
 'MOD_PHP_XML'                                   => 'DOM',
@@ -86,7 +88,8 @@ $aLang = array(
 'MOD_TOKENIZER'                                 => 'Tokenizer',
 'MOD_BC_MATH'                                   => 'BCMath',
 'MOD_MYSQL_CONNECT'                             => 'PDO_MySQL',
-'MOD_GD_INFO'                                   => 'GDlib v2 [v1] incl. JPEG Unterstützung',
+'MOD_MYSQL_VERSION'                             => 'MySQL Version 5.5 oder 5.7',
+'MOD_GD_INFO'                                   => 'GDlib v2 incl. JPEG Unterstützung',
 'MOD_INI_SET'                                   => 'ini_set erlaubt',
 'MOD_REGISTER_GLOBALS'                          => 'register_globals muss ausgeschaltet sein',
 'MOD_MAGIC_QUOTES_GPC'                          => 'magic_quotes_gpc muss ausgeschaltet sein',
@@ -100,7 +103,7 @@ $aLang = array(
 'MOD_FILE_UPLOADS'                              => 'Hochladen von Dateien erlaubt (file_uploads)',
 'MOD_BUG53632'                                  => 'Mögliche Probleme mit Server durch PHP Bugs',
 'MOD_SESSION_AUTOSTART'                         => 'session.auto_start muss ausgeschaltet sein',
-'MOD_MEMORY_LIMIT'                              => 'PHP Memory limit (min. 14MB, 30MB empfohlen)',
+'MOD_MEMORY_LIMIT'                              => 'PHP Memory limit (min. 32MB, 60MB empfohlen)',
 
 'STEP_0_ERROR_TEXT'                             => 'Ihr System erfüllt nicht alle nötigen Systemvoraussetzungen',
 'STEP_0_ERROR_URL'                              => 'http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-neu-installieren/server-und-systemvoraussetzungen/systemvoraussetzungen-ce.html',
@@ -161,7 +164,8 @@ $aLang = array(
 'BUTTON_WRITE_DATA'                             => 'Daten jetzt speichern',
 
 'STEP_4_2_TITLE'                                => 'Datenbank - Tabellen erstellen ...',
-'STEP_4_2_OVERWRITE_DB'                         => 'Falls Sie dennoch installieren wollen und die alten Daten überschreiben, klicken Sie',
+'STEP_4_2_OVERWRITE_DB'                         => 'Falls Sie dennoch installieren wollen und die alten Daten überschreiben, klicken Sie ',
+'STEP_4_2_NOT_RECOMMENDED_MYSQL_VERSION'        => 'Falls Sie dennoch installieren wollen, klicken Sie ',
 'STEP_4_2_UPDATING_DATABASE'                    => 'Datenbank erfolgreich aktualisiert. Bitte warten ...',
 
 'STEP_5_TITLE'                                  => 'OXID eShop Lizenz',

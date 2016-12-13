@@ -63,7 +63,8 @@ $aLang = array(
 'ERROR_PASSWORD_TOO_SHORT'                      => 'Password is too short!',
 'ERROR_PASSWORDS_DO_NOT_MATCH'                  => 'Passwords do not match!',
 'ERROR_USER_NAME_DOES_NOT_MATCH_PATTERN'        => 'Please enter a valid e-mail address!',
-'ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS' => 'MySQL version does not fit system requirements',
+'ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS' => 'The installed MySQL version does not fit system requirements',
+'ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS' => 'WARNING: The installed MySQL version meets the <i>minimal</i> requirements, but is neither recommended nor supported',
 
 'ERROR_VIEWS_CANT_CREATE'                       => 'ERROR: Can\'t create views. Please check your database user privileges.',
 'ERROR_VIEWS_CANT_SELECT'                       => 'ERROR: Can\'t select from views. Please check your database user privileges.',
@@ -77,7 +78,7 @@ $aLang = array(
 'MOD_SERVER_PERMISSIONS'                        => 'Files/folders access rights',
 'MOD_ALLOW_URL_FOPEN'                           => 'allow_url_fopen and fsockopen to port 80',
 'MOD_PHP4_COMPAT'                               => 'Zend compatibility mode must be off',
-'MOD_PHP_VERSION'                               => 'PHP version at least 5.6',
+'MOD_PHP_VERSION'                               => 'PHP version 5.6 or 7.0',
 'MOD_REQUEST_URI'                               => 'REQUEST_URI set',
 'MOD_LIB_XML2'                                  => 'LIB XML2',
 'MOD_PHP_XML'                                   => 'DOM',
@@ -86,7 +87,8 @@ $aLang = array(
 'MOD_TOKENIZER'                                 => 'Tokenizer',
 'MOD_BC_MATH'                                   => 'BCMath',
 'MOD_MYSQL_CONNECT'                             => 'PDO_MySQL',
-'MOD_GD_INFO'                                   => 'GDlib v2 [v1] incl. JPEG support',
+'MOD_MYSQL_VERSION'                             => 'MySQL version 5.5 or 5.7',
+'MOD_GD_INFO'                                   => 'GDlib v2 incl. JPEG support',
 'MOD_INI_SET'                                   => 'ini_set allowed',
 'MOD_REGISTER_GLOBALS'                          => 'register_globals must be off',
 'MOD_MAGIC_QUOTES_GPC'                          => 'magic_quotes_gpc must be off',
@@ -100,7 +102,7 @@ $aLang = array(
 'MOD_FILE_UPLOADS'                              => 'File uploads are enabled (file_uploads)',
 'MOD_BUG53632'                                  => 'Possible issues on server due to PHP Bugs',
 'MOD_SESSION_AUTOSTART'                         => 'session.auto_start must be off',
-'MOD_MEMORY_LIMIT'                              => 'PHP Memory limit (min. 14MB, 30MB recommended)',
+'MOD_MEMORY_LIMIT'                              => 'PHP Memory limit (min. 32MB, 60MB recommended)',
 
 'STEP_0_ERROR_TEXT'                             => 'Your system does not fit system requirements',
 'STEP_0_ERROR_URL'                              => 'http://www.oxid-esales.com/en/products/community-edition/system-requirements',
@@ -163,6 +165,7 @@ $aLang = array(
 
 'STEP_4_2_TITLE'                                => 'Creating database tables ...',
 'STEP_4_2_OVERWRITE_DB'                         => 'If you want to overwrite all existing data and install anyway click ',
+'STEP_4_2_NOT_RECOMMENDED_MYSQL_VERSION'        => 'If you want to install anyway click ',
 'STEP_4_2_UPDATING_DATABASE'                    => 'Database successfully updated. Please wait ...',
 
 'STEP_5_TITLE'                                  => 'OXID eShop license',

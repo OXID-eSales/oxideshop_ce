@@ -70,6 +70,13 @@ class Database extends Core
     const ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS = 3;
 
     /**
+     * MySQL version does not fir recommendations
+     *
+     * @var int
+     */
+    const ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS = 4;
+
+    /**
      * Executes sql query. Returns query execution resource object
      *
      * @param string $sQ query to execute
@@ -225,13 +232,18 @@ class Database extends Core
 
             // testing version
             $oSysReq = getSystemReqCheck();
-            if (!$oSysReq->checkMysqlVersion($this->getDatabaseVersion())) {
+            if (0 === $oSysReq->checkMysqlVersion($this->getDatabaseVersion())) {
                 throw new Exception($this->getInstance("Language")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS'), Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS);
             }
+
             try {
                 $this->_oConn->exec("USE `{$aParams['dbName']}`");
             } catch (Exception $e) {
                 throw new Exception($this->getInstance("Language")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . $e->getMessage(), Database::ERROR_COULD_NOT_CREATE_DB, $e);
+            }
+
+            if (1 === $oSysReq->checkMysqlVersion($this->getDatabaseVersion())) {
+                throw new Exception($this->getInstance("Language")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS'), Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS);
             }
         }
 

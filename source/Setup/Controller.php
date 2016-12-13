@@ -83,6 +83,7 @@ class Controller extends Core
 
         $oSysReq = getSystemReqCheck();
         $aInfo = $oSysReq->getSystemInfo();
+        $aInfo['server_config']['mysql_version'] = -1;
         foreach ($aInfo as $sGroup => $aModules) {
             // translating
             $sGroupName = $oLanguage->getModuleName($sGroup);
@@ -276,6 +277,16 @@ class Controller extends Core
                 $oView->setMessage($oExcp->getMessage());
 
                 return "default.php";
+            } elseif ($oExcp->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS) {
+                $oSetup->setNextStep(null);
+                $this->formMessageIfMySqyVersionIsNotRecommended($oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DIRS_INFO'));
+                // check if DB is already UP and running
+                if (!$this->databaseCanBeOverwritten($oDb)) {
+                    $this->formMessageIfDBCanBeOverwritten($aDB['dbName'], $oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DIRS_INFO'));
+                }
+                $this->formMessageInstallAnyway($oView, $oLang, $sSessionId, $sStep);
+
+                return "default.php";
             } else {
                 try {
                     // if database is not there, try to create it
@@ -295,6 +306,8 @@ class Controller extends Core
         // check if DB is already UP and running
         if (!$this->databaseCanBeOverwritten($oDb)) {
             $this->formMessageIfDBCanBeOverwritten($aDB['dbName'], $oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DIRS_INFO'));
+            $this->formMessageInstallAnyway($oView, $oLang, $sSessionId, $sStep);
+
             return "default.php";
         }
 
@@ -340,6 +353,8 @@ class Controller extends Core
         // check if DB is already UP and running
         if (!$this->databaseCanBeOverwritten($oDb)) {
             $this->formMessageIfDBCanBeOverwritten($aDB['dbName'], $oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DB_CREATE'));
+            $this->formMessageInstallAnyway($oView, $oLang, $sSessionId, $sStep);
+
             return "default.php";
         }
 
@@ -576,10 +591,33 @@ class Controller extends Core
      */
     private function formMessageIfDBCanBeOverwritten($sDBName, $oView, $oLang, $sSessionId, $sStep)
     {
-        $oView->setMessage(
-            sprintf($oLang->getText('ERROR_DB_ALREADY_EXISTS'), $sDBName) .
-            "<br><br>" . $oLang->getText('STEP_4_2_OVERWRITE_DB') . " <a href=\"index.php?sid=" . $sSessionId . "&istep=" . $sStep . "&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $oLang->getText('HERE') . "</a>"
-        );
+        $oView->setMessage(sprintf($oLang->getText('ERROR_DB_ALREADY_EXISTS'), $sDBName));
+    }
+
+    /**
+     * Show warning-question if MySQL version does meet minimal requirements, but is neither recommended nor supported.
+     *
+     * @param View     $oView      to set parameters for template
+     * @param Language $oLang      to translate text
+     * @param string   $sSessionId
+     * @param string   $sStep      where to redirect if chose to rewrite database
+     */
+    private function formMessageIfMySqyVersionIsNotRecommended($oView, $oLang, $sSessionId, $sStep)
+    {
+        $oView->setMessage(sprintf($oLang->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS'), $sDBName));
+    }
+
+    /**
+     * Show a message and a link to continue installation process, not regarding errors and warnings
+     *
+     * @param View     $oView      to set parameters for template
+     * @param Language $oLang      to translate text
+     * @param string   $sSessionId
+     * @param string   $sStep      where to redirect if chose to rewrite database
+     */
+    private function formMessageInstallAnyway($oView, $oLang, $sSessionId, $sStep)
+    {
+        $oView->setMessage("<br><br>" . $oLang->getText('STEP_4_2_NOT_RECOMMENDED_MYSQL_VERSION') . " <a href=\"index.php?sid=" . $sSessionId . "&istep=" . $sStep . "&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $oLang->getText('HERE') . "</a>");
     }
 
     /**

@@ -22,17 +22,26 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use oxRegistry;
-use oxDb;
 use Exception;
+use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
+use oxDb;
+use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
+use oxRegistry;
 
 /**
  * System requirements class.
  */
 class SystemRequirements
 {
+    /** Your system does not fit the requirement */
+    const REQUIREMENT_FITS_NOT = 0;
+
+    /** The requirement is not or only partly fit */
+    const REQUIREMENT_PARTLY_FITS = 1;
+
+    /** Your system fits the requirement */
+    const REQUIREMENT_FITS = 2;
+
     /**
      * System required modules
      *
@@ -122,10 +131,7 @@ class SystemRequirements
      */
     protected $_aInfoMap = array(
         "php_version"        => "PHP_version_at_least_5.6",
-        // @deprecated since v6.0 (2016-11-08); See checkLibXml2() and checkPhpXml()
-        "lib_xml2"           => "LIB_XML2",
         "php_xml"            => "DOM",
-        // END deprecated
         "open_ssl"           => "OpenSSL",
         "soap"               => "SOAP",
         "j_son"              => "JSON",
@@ -136,36 +142,17 @@ class SystemRequirements
         "mb_string"          => "mbstring",
         "bc_math"            => "BCMath",
         "allow_url_fopen"    => "allow_url_fopen_or_fsockopen_to_port_80",
-        "php4_compat"        => "Zend_compatibility_mode_must_be_off",
         "request_uri"        => "REQUEST_URI_set",
         "ini_set"            => "ini_set_allowed",
-        "register_globals"   => "register_globals_must_be_off",
-        "memory_limit"       => "PHP_Memory_limit_.28min._14MB.2C_30MB_recommended.29",
+        "memory_limit"       => "PHP_Memory_limit_.28min._32MB.2C_60MB_recommended.29",
         "unicode_support"    => "UTF-8_support",
         "file_uploads"       => "file_uploads_on",
         "mod_rewrite"        => "apache_mod_rewrite_module",
         "server_permissions" => "Files_.26_Folder_Permission_Setup",
         "zend_optimizer"     => "Zend_Optimizer",
-        // @deprecated since v6.0 (2016-11-08); Function checkBug53632() is not used any more.
-        "bug53632"           => "Not_recommended_PHP_versions",
-        // END deprecated
         "session_autostart"  => "session.auto_start_must_be_off",
-        "magic_quotes_gpc"   => "magic_quotes_must_be_off",
         "mysql_version"      => "Not_recommended_MySQL_versions",
-        // "zend_platform_or_server"
     );
-
-    /**
-     * Returns PHP consntant PHP_INT_SIZE
-     *
-     * @deprecated since v6.0 (2016-11-08); Function checkBug53632() is not used any more.
-     *
-     * @return integer
-     */
-    protected function _getPhpIntSize()
-    {
-        return PHP_INT_SIZE;
-    }
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
@@ -183,7 +170,7 @@ class SystemRequirements
      * @param string $sMethod Methods name
      * @param array  $aArgs   Argument array
      *
-     * @throws oxSystemComponentException Throws an exception if the called method does not exist or is not accessible
+     * @throws SystemComponentException Throws an exception if the called method does not exist or is not accessible
      * in current class
      *
      * @return string
@@ -199,7 +186,7 @@ class SystemRequirements
             }
         }
 
-        throw new \oxSystemComponentException(
+        throw new SystemComponentException(
             "Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL
         );
     }
@@ -207,7 +194,7 @@ class SystemRequirements
     /**
      * Returns config instance
      *
-     * @return oxConfig
+     * @return \oxConfig
      */
     public function getConfig()
     {
@@ -233,11 +220,7 @@ class SystemRequirements
     {
         if ($this->_aRequiredModules == null) {
             $aRequiredPHPExtensions = array(
-                'php_version',
-                // @deprecated since v6.0 (2016-11-08); See checkLibXml2() and checkPhpXml()
-                'lib_xml2',
                 'php_xml',
-                // END deprecated
                 'j_son',
                 'i_conv',
                 'tokenizer',
@@ -252,18 +235,16 @@ class SystemRequirements
 
             $aRequiredPHPConfigs = array(
                 'allow_url_fopen',
-                'php4_compat',
                 'request_uri',
                 'ini_set',
-                'register_globals',
                 'memory_limit',
                 'unicode_support',
                 'file_uploads',
                 'session_autostart',
-                'magic_quotes_gpc',
             );
 
             $aRequiredServerConfigs = array(
+                'php_version',
                 'mod_rewrite',
                 'server_permissions'
             );
@@ -271,37 +252,13 @@ class SystemRequirements
             if ($this->isAdmin()) {
                 $aRequiredServerConfigs[] = 'mysql_version';
             }
-            $this->_aRequiredModules = array_fill_keys($aRequiredPHPExtensions, 'php_extennsions') +
+            $this->_aRequiredModules = array_fill_keys($aRequiredServerConfigs, 'server_config') +
                                        array_fill_keys($aRequiredPHPConfigs, 'php_config') +
-                                       array_fill_keys($aRequiredServerConfigs, 'server_config');
+                                       array_fill_keys($aRequiredPHPExtensions, 'php_extennsions')
+                                       ;
         }
 
         return $this->_aRequiredModules;
-    }
-
-    /**
-     * Version check for http://bugs.php.net/53632
-     * Assumme that PHP versions < 5.3.5 may have this issue, so
-     * informing users about possible issues
-     * PHP version 5.3.7 has security bug too.
-     *
-     * @deprecated since v6.0 (2016-11-08); Minimum PHP version does not include this bug any more.
-     *
-     * @return int
-     */
-    public function checkBug53632()
-    {
-        if ($this->_getPhpIntSize() > 4) {
-            return 2;
-        }
-
-        if (version_compare($this->getPhpVersion(), "5.3", ">=")) {
-            if (version_compare($this->getPhpVersion(), "5.3.5", ">=") && version_compare($this->getPhpVersion(), "5.3.7", "!=")) {
-                return 2;
-            }
-        }
-
-        return 1;
     }
 
     /**
@@ -576,55 +533,68 @@ class SystemRequirements
     }
 
     /**
-     * Checks if activated allow_url_fopen or fsockopen on port 80 possible
+     * Checks if activated allow_url_fopen and fsockopen on port 80 possible
      *
      * @return integer
      */
     public function checkAllowUrlFopen()
     {
-        $iModStat = @ini_get('allow_url_fopen');
-        $iModStat = ($iModStat && strcasecmp('1', $iModStat)) ? 2 : 1;
-        if ($iModStat == 1) {
-            $iErrNo = 0;
-            $sErrStr = '';
-            if ($oRes = @fsockopen('www.example.com', 80, $iErrNo, $sErrStr, 10)) {
-                $iModStat = 2;
-                fclose($oRes);
-            }
-        }
+        $resultAllowUrlFopen = @ini_get('allow_url_fopen');
+        $resultAllowUrlFopen = strcasecmp('1', $resultAllowUrlFopen);
 
-        return $iModStat ?: 1;
+        if (0 === $resultAllowUrlFopen && 2 === $this->checkFsockopen()) {
+            return 2;
+        }
+        return 1;
     }
 
     /**
-     * PHP4 compatibility mode must be set off:
-     * zend.ze1_compatibility_mode = Off
+     * Check if fsockopen on port 80 possible
      *
      * @return integer
      */
-    public function checkPhp4Compat()
+    public function checkFsockopen()
     {
-        $sZendStatus = (strtolower((string) @ini_get('zend.ze1_compatibility_mode')));
-
-        return in_array($sZendStatus, array('on', '1')) ? 0 : 2;
+        $result = 1;
+        $iErrNo = 0;
+        $sErrStr = '';
+        if ($oRes = @fsockopen('www.example.com', 80, $iErrNo, $sErrStr, 10)) {
+            $result = 2;
+            fclose($oRes);
+        }
+        return $result;
     }
 
     /**
-     * Checks PHP version.
-     * < PHP 5.3.0 - red.
-     * PHP 5.3.0-5.3.24 - yellow.
-     * PHP 5.3.25 or higher - green.
+     * Checks supported PHP versions.
      *
      * @return integer
      */
     public function checkPhpVersion()
     {
-        $sPhpVersion = $this->getPhpVersion();
-        $iModStat = 0;
-        if (version_compare($sPhpVersion, '5.6', '>=')) {
-            $iModStat = 2;
+        $requirementFits = null;
+
+        $minimalRequiredVersion = '5.5.0';
+        $minimalRecommendedVersion = '5.6.0';
+        $maximalRecommendedVersion = '7.0.9999';
+
+        $installedPhpVersion = $this->getPhpVersion();
+
+        if (version_compare($installedPhpVersion, $minimalRequiredVersion, '<')) {
+            $requirementFits = static::REQUIREMENT_FITS_NOT;
         }
-        return $iModStat;
+
+        if (is_null($requirementFits) &&
+            version_compare($installedPhpVersion, $minimalRecommendedVersion, '>=')
+            && version_compare($installedPhpVersion, $maximalRecommendedVersion, '<=')) {
+            $requirementFits = static::REQUIREMENT_FITS;
+        }
+
+        if (is_null($requirementFits)) {
+            $requirementFits = static::REQUIREMENT_PARTLY_FITS;
+        }
+
+        return $requirementFits;
     }
 
     /**
@@ -648,27 +618,13 @@ class SystemRequirements
     }
 
     /**
-     * Checks if libxml2 is activated
-     *
-     * @deprecated since v6.0 (2016-11-08); DomDocument is available in any case.
-     *
-     * @return integer
-     */
-    public function checkLibXml2()
-    {
-        return class_exists('DOMDocument') ? 2 : 0;
-    }
-
-    /**
-     * Checks if php-xml is activated ???
-     *
-     * @deprecated since v6.0 (2016-11-08); DomDocument is available in any case.
+     * Check if DOM extension is loaded
      *
      * @return integer
      */
     public function checkPhpXml()
     {
-        return class_exists('DOMDocument') ? 2 : 0;
+        return extension_loaded('dom') ? 2 : 0;
     }
 
     /**
@@ -743,47 +699,52 @@ class SystemRequirements
     }
 
     /**
-     * @deprecated since v6.0 (2016-11-08); MySQL server version will be checked instead.
+     * Checks if current mysql version matches requirements
      *
-     * @return string
-     * @throws Exception
-     */
-    protected function getMySQLClientVersion()
-    {
-        if (extension_loaded("mysql")) {
-            return mysql_get_client_info();
-        }
-
-        if (extension_loaded("mysqli")) {
-            return mysqli_get_client_info();
-        }
-
-        throw new Exception('PHP extension "mysqli" is required!');
-    }
-
-    /**
-     * Checks if current mysql version matches requirements ( >=5 )
-     *
-     * @param string $sVersion MySQL version
+     * @param string $installedVersion MySQL version
      *
      * @return int
      */
-    public function checkMysqlVersion($sVersion = null)
+    public function checkMysqlVersion($installedVersion = null)
     {
-        if ($sVersion === null) {
-            $aRez = oxDb::getDb()->getAll("SHOW VARIABLES LIKE 'version'");
-            foreach ($aRez as $aRecord) {
-                $sVersion = $aRecord[1];
-                break;
-            }
+        $requirementFits = null;
+
+        $minimalRequiredVersion = '5.5.0';
+        $maximalRequiredVersion = '5.7.9999';
+
+        if ($installedVersion === null) {
+            $resultContainingDatabaseVersion = DatabaseProvider::getDb()->getRow("SHOW VARIABLES LIKE 'version'");
+            $installedVersion = $resultContainingDatabaseVersion[1];
         }
 
-        $iModStat = 0;
-        if (version_compare($sVersion, '5.5', '>=')) {
-            $iModStat = 2;
+        if (version_compare($installedVersion, $minimalRequiredVersion, '<')) {
+            $requirementFits = static::REQUIREMENT_FITS_NOT;
         }
 
-        return $iModStat;
+        /**
+         * There is a bug in MySQL 5.6,* which under certain conditions affects OXID eShop Enterprise Edition.
+         * Version MySQL 5.6.* in neither recommended nor supported by OXID eSales.
+         * See https://bugs.mysql.com/bug.php?id=79203
+         */
+        if (is_null($requirementFits) &&
+            version_compare($installedVersion, '5.6.0', '>=') &&
+            version_compare($installedVersion, '5.7.0', '<')
+        ) {
+            $requirementFits = static::REQUIREMENT_PARTLY_FITS;
+        }
+
+        if (is_null($requirementFits) &&
+            version_compare($installedVersion, $minimalRequiredVersion, '>=') &&
+            version_compare($installedVersion, $maximalRequiredVersion, '<=')
+        ) {
+            $requirementFits = static::REQUIREMENT_FITS;
+        }
+
+        if (is_null($requirementFits)) {
+            $requirementFits = static::REQUIREMENT_PARTLY_FITS;
+        }
+
+        return $requirementFits;
     }
 
     /**
@@ -793,9 +754,12 @@ class SystemRequirements
      */
     public function checkGdInfo()
     {
+        /** Todo consider using gd_info() */
         $iModStat = extension_loaded('gd') ? 1 : 0;
         $iModStat = function_exists('imagecreatetruecolor') ? 2 : $iModStat;
+        $iModStat = function_exists('imagecreatefromgif') ? $iModStat : 0;
         $iModStat = function_exists('imagecreatefromjpeg') ? $iModStat : 0;
+        $iModStat = function_exists('imagecreatefrompng') ? $iModStat : 0;
 
         return $iModStat;
     }
@@ -808,32 +772,6 @@ class SystemRequirements
     public function checkIniSet()
     {
         return (@ini_set('session.name', 'sid') !== false) ? 2 : 0;
-    }
-
-    /**
-     * Checks if register_globals are off/on. Should be off.
-     *
-     * @return integer
-     */
-    public function checkRegisterGlobals()
-    {
-        $sGlobStatus = (strtolower((string) @ini_get('register_globals')));
-
-        return in_array($sGlobStatus, array('on', '1')) ? 0 : 2;
-    }
-
-    /**
-     * Checks if magic_quotes_gpc are off/on. Should be off.
-     *
-     * @return integer
-     */
-    public function checkMagicQuotesGpc()
-    {
-        if (function_exists('get_magic_quotes_gpc')) {
-            return get_magic_quotes_gpc() ? 0 : 2;
-        }
-
-        return 2;
     }
 
     /**
@@ -1180,7 +1118,7 @@ class SystemRequirements
      */
     protected function _getMinimumMemoryLimit()
     {
-        return '14M';
+        return '32M';
     }
 
     /**
@@ -1190,6 +1128,6 @@ class SystemRequirements
      */
     protected function _getRecommendMemoryLimit()
     {
-        return '30M';
+        return '60M';
     }
 }

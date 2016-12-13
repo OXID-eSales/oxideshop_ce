@@ -111,11 +111,11 @@ class SystemRequirementsTest extends \OxidTestCase
             // version 5.6.* is not allowed
             [
                 'version'        => '5.6.0',
-                'expectedResult' => 0
+                'expectedResult' => 1
             ],
             [
                 'version'        => '5.6.30-0ubuntu0.14.04.1',
-                'expectedResult' => 0
+                'expectedResult' => 1
             ],
             // version 5.7.* is allowed
             [
@@ -125,6 +125,14 @@ class SystemRequirementsTest extends \OxidTestCase
             [
                 'version'        => '5.7.12-1~exp1+deb.sury.org~trusty+1',
                 'expectedResult' => 2
+            ],
+            [
+                'version'        => '5.8.0',
+                'expectedResult' => 1
+            ],
+            [
+                'version'        => '5.8.22',
+                'expectedResult' => 1
             ],
         ];
     }
@@ -154,7 +162,7 @@ class SystemRequirementsTest extends \OxidTestCase
      */
     public function testGetReqInfoUrl()
     {
-        $sUrl = "http://oxidforge.org/system_requirements.html";
+        $sUrl = "http://oxidforge.org/en/installation.html";
         $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
 
         $this->assertEquals($sUrl . "#PHP_version_at_least_5.6", $systemRequirements->getReqInfoUrl("php_version"));
@@ -421,45 +429,6 @@ class SystemRequirementsTest extends \OxidTestCase
         );
     }
 
-    /**
-     * Test case for SystemRequirements::checkBug53632() when php 32bit
-     *
-     * @deprecated since v6.0 (2016-12-16); Minimum PHP version does not include this bug any more.
-     *
-     * @return null
-     */
-    public function testcheckBug53632_32bits()
-    {
-        $iState = 1;
-        if (version_compare(PHP_VERSION, "5.3", ">=")) {
-            $iState = version_compare(PHP_VERSION, "5.3.5", ">=") ? 2 : $iState;
-        } elseif (version_compare(PHP_VERSION, '5.2', ">=")) {
-            $iState = version_compare(PHP_VERSION, "5.2.17", ">=") ? 2 : $iState;
-        }
-
-        /** @var SystemRequirements|PHPUnit_Framework_MockObject_MockObject $systemRequirementsMock */
-        $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('_getPhpIntSize'));
-        $systemRequirementsMock->expects($this->once())->method('_getPhpIntSize')->will($this->returnValue(4));
-        $this->assertEquals($iState, $systemRequirementsMock->checkBug53632());
-    }
-
-    /**
-     * Test case for SystemRequirements::checkBug53632() when php 64bit
-     *
-     * @deprecated since v6.0 (2016-12-16); Minimum PHP version does not include this bug any more.
-     *
-     * @return null
-     */
-    public function testcheckBug53632_64bits()
-    {
-        $iState = 2;
-
-        /** @var SystemRequirements|PHPUnit_Framework_MockObject_MockObject $systemRequirementsMock */
-        $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('_getPhpIntSize'));
-        $systemRequirementsMock->expects($this->once())->method('_getPhpIntSize')->will($this->returnValue(8));
-        $this->assertEquals($iState, $systemRequirementsMock->checkBug53632());
-    }
-
     public function providerCheckPhpVersion()
     {
         return array(
@@ -470,14 +439,14 @@ class SystemRequirementsTest extends \OxidTestCase
             array('5.3.25', 0),
             array('5.4', 0),
             array('5.4.2', 0),
-            array('5.5.50', 0),
+            array('5.5.50', 1),
             array('5.6.0', 2),
             array('5.6.27', 2),
             array('7.0.0', 2),
             array('7.0.8-0ubuntu0.16.04.3', 2),
             array('7.0.12-2ubuntu2', 2),
-            array('7.1.0', 0),
-            array('7.1.22', 0),
+            array('7.1.0', 1),
+            array('7.1.22', 1),
         );
     }
 
@@ -505,8 +474,11 @@ class SystemRequirementsTest extends \OxidTestCase
     {
         $memoryLimitsWithExpectedSystemHealth = array(
             array('8M', 0),
-            array('14M', 1),
-            array('30M', 2),
+            array('31M', 0),
+            array('32M', 1),
+            array('59M', 1),
+            array('60M', 2),
+            array('61M', 2),
             array('-1', 2),
         );
 

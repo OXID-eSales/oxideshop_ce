@@ -312,7 +312,7 @@ class Shop extends \oxI18n
         $aViews = $oViewsValidator->getInvalidViews();
 
         foreach ($aViews as $sView) {
-            $oDb->execute('DROP VIEW IF EXISTS ' . $sView);
+            $oDb->execute('DROP VIEW IF EXISTS `' . $sView . '`');
         }
     }
 

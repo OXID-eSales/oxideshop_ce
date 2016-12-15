@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -268,6 +268,27 @@ class Utilities extends Core
             // error ? strange !?
             throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_WRITE_TO_FILE'), $sHtaccessPath), Utilities::ERROR_COULD_NOT_WRITE_TO_FILE);
         }
+    }
+
+    /**
+     * Returns true if htaccess file can be updated by setup process.
+     *
+     * Functionality is tested via:
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testInstallShopCantContinueDueToHtaccessProblem`
+     *
+     * @return bool
+     */
+    public function canHtaccessFileBeUpdated()
+    {
+        try {
+            $defaultPathParameters = $this->getDefaultPathParams();
+            $defaultPathParameters['sBaseUrlPath'] = $this->extractRewriteBase($defaultPathParameters['sShopURL']);
+            $this->updateHtaccessFile($defaultPathParameters);
+        } catch (Exception $exception) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

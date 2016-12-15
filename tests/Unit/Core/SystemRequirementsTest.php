@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version       OXID eShop CE
  */
 namespace Unit\Core;
@@ -505,5 +505,146 @@ class SystemRequirementsTest extends \OxidTestCase
         $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
 
         $this->assertEquals($expectedResult, $systemRequirements->checkMemoryLimit($memoryLimit));
+    }
+
+    public function testFilterSystemRequirementsInfo()
+    {
+        $systemRequirementsInfoInput = [
+            'group_a' => [
+                'module_a' => SystemRequirements::MODULE_STATUS_BLOCKS_SETUP,
+                'module_b' => SystemRequirements::MODULE_STATUS_OK,
+            ],
+            'group_b' => [
+                'module_c' => SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS,
+            ]
+        ];
+
+        $expectedSystemRequirementsInfo = [
+            'group_a' => [
+                'module_a' => SystemRequirements::MODULE_STATUS_OK,
+                'module_b' => SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS,
+            ],
+            'group_b' => [
+                'module_c' => SystemRequirements::MODULE_STATUS_BLOCKS_SETUP,
+            ]
+        ];
+
+        $filterFunction = function($groupId, $moduleId, $status) {
+            if (($groupId === 'group_a') && ($moduleId === 'module_a'))
+                $status = SystemRequirements::MODULE_STATUS_OK;
+            if (($groupId === 'group_a') && ($moduleId === 'module_b'))
+                $status = SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
+            if (($groupId === 'group_b') && ($moduleId === 'module_c'))
+                $status = SystemRequirements::MODULE_STATUS_BLOCKS_SETUP;
+
+            return $status;
+        };
+
+        $actualSystemRequirementsInfo = SystemRequirements::filter($systemRequirementsInfoInput, $filterFunction);
+
+        $this->assertSame($expectedSystemRequirementsInfo, $actualSystemRequirementsInfo);
+    }
+
+    /**
+     * @dataProvider canSetupContinuePositiveValuesProvider
+     *
+     * @param array $systemRequirementsInfo
+     */
+    public function testCanSetupContinueWithPositiveValues($systemRequirementsInfo)
+    {
+        $expectedValue = true;
+        $actualValue = SystemRequirements::canSetupContinue($systemRequirementsInfo);
+
+        $this->assertSame($expectedValue, $actualValue);
+    }
+
+    public function canSetupContinuePositiveValuesProvider()
+    {
+        $testCase1 = [
+            'group_a' => [
+                'module_a' => SystemRequirements::MODULE_STATUS_OK
+            ]
+        ];
+
+        $testCase2 = [
+            'group_a' => [
+                'module_a' => SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS,
+                'module_b' => SystemRequirements::MODULE_STATUS_OK,
+            ],
+            'group_b' => [
+                'module_c' => SystemRequirements::MODULE_STATUS_UNABLE_TO_DETECT,
+            ]
+        ];
+
+        return [
+            [$testCase1],
+            [$testCase2],
+        ];
+    }
+
+    /**
+     * @dataProvider canSetupContinueNegativeValuesProvider
+     *
+     * @param array $systemRequirementsInfo
+     */
+    public function testSetupCantContinueWithNegativeValue($systemRequirementsInfo)
+    {
+        $expectedValue = false;
+        $actualValue = SystemRequirements::canSetupContinue($systemRequirementsInfo);
+
+        $this->assertSame($expectedValue, $actualValue);
+    }
+
+    public function canSetupContinueNegativeValuesProvider()
+    {
+        $testCase1 = [
+            'group_a' => [
+                'module_a' => SystemRequirements::MODULE_STATUS_BLOCKS_SETUP
+            ]
+        ];
+
+        $testCase2 = [
+            'group_a' => [
+                'module_a' => SystemRequirements::MODULE_STATUS_UNABLE_TO_DETECT,
+                'module_b' => SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS,
+            ],
+            'group_b' => [
+                'module_c' => SystemRequirements::MODULE_STATUS_BLOCKS_SETUP,
+            ],
+        ];
+
+        return [
+            [$testCase1],
+            [$testCase2],
+        ];
+    }
+
+    public function testIterateThroughSystemRequirementsInfo()
+    {
+        $systemRequirementsInfo = [
+            'group_a' => [
+                'module_a' => 0,
+                'module_b' => 1,
+            ],
+            'group_b' => [
+                'module_c' => 2,
+                'module_d' => -1,
+            ],
+        ];
+
+        $expectedOutput = [
+            ['group_a', 'module_a', 0],
+            ['group_a', 'module_b', 1],
+            ['group_b', 'module_c', 2],
+            ['group_b', 'module_d', -1],
+        ];
+
+        $actualOutput = [];
+        $iteration = SystemRequirements::iterateThroughSystemRequirementsInfo($systemRequirementsInfo);
+        foreach ($iteration as list($groupId, $moduleId, $moduleState)) {
+            $actualOutput[] = [$groupId, $moduleId, $moduleState];
+        }
+
+        $this->assertSame($expectedOutput, $actualOutput);
     }
 }

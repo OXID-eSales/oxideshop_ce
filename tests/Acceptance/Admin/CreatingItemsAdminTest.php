@@ -2247,6 +2247,7 @@ class CreatingItemsAdminTest extends AdminTestCase
      * creating News
      *
      * @group creatingitems
+     * @group quarantine
      */
     public function testCreateNews()
     {

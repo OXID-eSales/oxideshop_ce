@@ -65,6 +65,8 @@ class ModuleRemoveTest extends BaseModuleTestCase
     /**
      * Test check shop environment after module deactivation in subshop.
      *
+     * @group quarantine
+     *
      * @dataProvider providerModuleDeactivation
      *
      * @param array $aInstallModules

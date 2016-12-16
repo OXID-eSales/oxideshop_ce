@@ -33,6 +33,7 @@ class BasketAdminTest extends AdminTestCase
      * testing option 'Product can be customized' from Administer products -> Extend tab
      *
      * @group main
+     * @group quarantine
      */
     public function testFrontendPersParamSaveBasket()
     {

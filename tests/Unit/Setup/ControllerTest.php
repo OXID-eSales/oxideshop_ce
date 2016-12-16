@@ -577,6 +577,8 @@ class ControllerTest extends \OxidTestCase
     /**
      * Testing controller::dbCreate()
      *
+     * @group quarantine
+     *
      * @return null
      */
     public function testDbCreateFailedEnDataInsert()
@@ -667,6 +669,8 @@ class ControllerTest extends \OxidTestCase
 
     /**
      * Testing controller::dbCreate()
+     *
+     * @group quarantine
      *
      * @return null
      */

@@ -1181,6 +1181,9 @@ class UtilsTest extends \OxidTestCase
         $this->assertEquals($sCompare, $oUtils->getPreviewId());
     }
 
+    /*
+     * @group quarantine
+     */
     public function testHandlePageNotFoundError()
     {
         $this->markTestIncomplete("Incorrect test for page not found headers. Normal headers mixed up with page not found");

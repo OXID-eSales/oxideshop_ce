@@ -438,6 +438,8 @@ class LangIntegrityTest extends \OxidTestCase
 
     /**
      * Test to make sure there are no unused and not needed translations
+     *
+     * @group quarantine
      */
     public function testNotUsedTranslations()
     {

@@ -1250,6 +1250,8 @@ class SessionTest extends \OxidTestCase
 
     /**
      * Test for bug #853
+     *
+     * @group quarantine
      */
     function testDbSessionHandlerExists()
     {

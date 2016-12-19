@@ -136,6 +136,7 @@ class ArticleAttributeAjax extends \ajaxListComponent
         $articleId = oxRegistry::getConfig()->getRequestParameter("oxid");
         $attributeId = oxRegistry::getConfig()->getRequestParameter("attr_oxid");
         $attributeValue = oxRegistry::getConfig()->getRequestParameter("attr_value");
+        $attributeCustomData = oxRegistry::getConfig()->getRequestParameter("customData");
 
         $article = oxNew("oxArticle");
         if ($article->load($articleId)) {
@@ -155,6 +156,11 @@ class ArticleAttributeAjax extends \ajaxListComponent
                 $objectToAttribute->init("oxobject2attribute");
                 if ($objectToAttribute->assignRecord($select)) {
                     $objectToAttribute->oxobject2attribute__oxvalue->setValue($attributeValue);
+                    foreach ($attributeCustomData as $key=>$value)
+                    {
+                        $fieldName = 'oxobject2attribute__'.$key;
+                        $objectToAttribute->$fieldName->setValue($value);
+                    }
                     $objectToAttribute->save();
                 }
             }

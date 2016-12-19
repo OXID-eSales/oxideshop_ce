@@ -28,6 +28,18 @@ use OxidEsales\TestingLibrary\TestSqlPathProvider;
 abstract class AcceptanceTestCase extends \OxidEsales\TestingLibrary\AcceptanceTestCase
 {
     /**
+     * Sets up default environment for tests.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        //Suppress check for new module versions on every admin login
+        $aParams = array("type" => "bool", "value" => true);
+        $this->callShopSC("oxConfig", null, null, array('preventModuleVersionNotify' => $aParams));
+    }
+
+    /**
      * Adds tests sql data to database.
      *
      * @param string $sTestSuitePath

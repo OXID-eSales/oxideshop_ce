@@ -474,14 +474,13 @@ class FunctionalityInAdminTest extends AdminTestCase
 
     /**
      * checking if order info is displayed correctly
+     * TODO: revisit test after bug 0004624 is fixed
      *
      * @group adminFunctionality
      * @group quarantine
      */
     public function testEditingOrdersProducts()
     {
-        $this->markTestSkipped(" fix test after bug 0004624 fix , so we need to move test to integration test with correct information");
-
         $this->updateSubshopOrders();
 
         $this->executeSql("UPDATE `oxorder` SET `OXFOLDER` = 'ORDERFOLDER_FINISHED' WHERE `OXID` = 'testorder7'");
@@ -496,6 +495,8 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->assertEquals("Example Set1: UPS 48 hours", $this->getSelectedLabel("setDelSet"));
         $this->select("setDelSet", "label=Standard");
         $this->clickAndWait("saveFormButton");
+        $this->waitForElement("setPayment");
+        sleep(1);
         $this->select("setPayment", "label=COD (Cash on Delivery)");
         $this->clickAndWait("saveFormButton");
         $this->openTab("Products");
@@ -965,14 +966,13 @@ class FunctionalityInAdminTest extends AdminTestCase
 
     /**
      * Core settings -> Settings -> Active Category at Start
+     * NOTE: according to comment in 0004482 in azure theme to mark some category in category tree (list) on first page is not needed.
      *
      * @group adminFunctionality
      * @group quarantine
      */
     public function testActiveCategoryAtStart()
     {
-        $this->markTestSkipped("waiting for desition from management, if this option should be in azure theme at all");
-
         $this->openShop();
         $this->assertElementNotPresent("test_BoxLeft_Cat_testcategory0_sub1");
         $this->loginAdmin("Master Settings", "Core Settings");
@@ -1004,11 +1004,6 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->openTab("Settings");
         $this->click("link=Shop frontend");
         $this->assertElementPresent("//input[@value='Test category 1 [EN] šÄßüл']");
-        //checking in frontend
-        $this->clearCache();
-        $this->openShop();
-        $this->assertElementPresent("//ul[@id='tree']/li/ul/li/a");
-        $this->assertEquals("Test category 1 [EN] šÄßüл", $this->getText("//ul[@id='tree']/li/ul/li/a"));
     }
 
     /**
@@ -1681,29 +1676,6 @@ class FunctionalityInAdminTest extends AdminTestCase
     }
 
     /**
-     * checking if switching themes works
-     *
-     * @group adminFunctionality
-     * @group quarantine
-     */
-    public function testConversionRateOptions()
-    {
-        $this->markTestSkipped("There is not done test, so we need to decide  finish or  delete test ");
-
-        //basic theme on
-        $this->loginAdmin("Master Settings", "Core Settings");
-        $this->openTab("System");
-        $this->click("link=Order");
-        $this->waitForText("Allow Orders from foreign Countries");
-        $this->assertElementPresent("confbools[blDisableNavBars]");
-        //checking in basic theme
-        $this->selectMenu("Master Settings", "Themes");
-        $this->openListItem("link=testtheme");
-        $this->clickAndWaitFrame("//input[@value='Activate']", "list");
-        $this->openTab("Settings");
-    }
-
-    /**
      * This simple test runs in all editions for subshop and varnish groups.
      * In this way CI generates test results for CE/PE editions.
      *
@@ -1719,103 +1691,6 @@ class FunctionalityInAdminTest extends AdminTestCase
         } else {
             $this->assertElementNotPresent("btn.new", "Subshop link should not exist.");
         }
-    }
-
-    /**
-     * checking if econda is loaded in frontend
-     *
-     * @group adminFunctionality
-     * @group quarantine
-     *
-     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
-     */
-    public function testEconda()
-    {
-        $this->markTestSkipped('deprecated sinve v5.3 (2016-11-04) Dynpages will be removed.');
-        //activating econda
-        $aConfigs = array("sShopCountry"      => array("type" => "str", "value" => 'de'),
-                          "blLoadDynContents" => array("type" => "bool", "value" => 'true'));
-
-        $this->callShopSC("oxConfig", null, null, $aConfigs);
-        $this->loginAdmin("Shop controlling", "econda");
-
-        if ($this->getTestConfig()->getShopEdition() === 'CE') {
-            $this->openTab('Interface');
-        }
-
-        $this->frame("edit");
-        $this->click("//input[@name='confbools[blEcondaActive]' and @type='checkbox']");
-        $this->clickAndWait("save");
-
-        //checking in frontend
-        $this->clearCache();
-        $this->openShop();
-
-        $sUrl = "//script[@src='" . $this->getTestConfig()->getShopUrl() . "modules/econda/out/emos2.js']";
-
-        $this->assertElementPresent($sUrl);
-        $this->open(shopURL . "modules/econda/out/emos2.js");
-        $this->assertTextPresent("function(){var URL_TRACKING_ALLOWED=true");
-        $this->goBack();
-        //home page checking
-        $this->clearCache();
-        $this->openShop();
-        $htmlSource = $this->getHtmlSource();
-
-        $this->assertContains("window.emosPropertiesEvent(emospro);", $htmlSource);
-        $this->assertContains('emospro.content = "Start";', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
-        //category page
-        $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
-        $htmlSource = $this->getHtmlSource();
-        $this->assertContains("window.emosPropertiesEvent(emospro);", $htmlSource);
-        $this->assertContains('emospro.content', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
-        //details page
-        $this->clickAndWait("productList_1");
-        $htmlSource = $this->getHtmlSource();
-        $this->assertContains("window.emosPropertiesEvent(emospro);", $htmlSource);
-        $this->assertContains('emospro.content', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
-        $this->assertContains('emospro.ec_Event = [["view","1000","Test', $htmlSource);
-        $this->clickAndWait("toBasket");
-        //acount page
-        $this->clickAndWait("//dl[@id='footerServices']//a[text()='%ACCOUNT%']");
-        $htmlSource = $this->getHtmlSource();
-        $this->assertContains('emospro.content = "Login\/Formular\/Login";', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
-        $this->type("loginUser", "example_test@oxid-esales.dev");
-        $this->type("loginPwd", "useruser");
-        $this->clickAndWait("loginButton");
-        $htmlSource = $this->getHtmlSource();
-        $this->assertContains('emospro.content = "Login\/Uebersicht";', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
-        $this->assertContains('emospro.login = [["' . md5('example_test@oxid-esales.dev') . '"', $htmlSource);
-        //basket page
-        $this->openBasket();
-        $htmlSource = $this->getHtmlSource();
-        $this->assertContains('emospro.content = "Shop\/Kaufprozess\/Warenkorb";', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
-        $this->assertContains('emospro.orderProcess = "1_Warenkorb";', $htmlSource);
-        //information page
-        $this->clickAndWait("link=Privacy Policy");
-        $htmlSource = $this->getHtmlSource();
-        $this->assertContains('emospro.content = "Info\/Sicherheit";', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
     }
 
     /**

@@ -67,6 +67,10 @@ class OnlineModuleVersionNotifier
      */
     public function versionNotify()
     {
+        if(true === oxRegistry::getConfig()->getConfigParam('preventModuleVersionNotify')){
+            return;
+        }
+
         $oOMNCaller = $this->_getOnlineModuleNotifierCaller();
         $oOMNCaller->doRequest($this->_formRequest());
     }

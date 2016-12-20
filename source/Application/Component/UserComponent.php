@@ -548,6 +548,8 @@ class UserComponent extends \oxView
      * If any additional configurations required right before user creation
      *
      * @param oxUser $user
+     *
+     * @return oxUser The user we gave in.
      */
     protected function configureUserBeforeCreation($user)
     {

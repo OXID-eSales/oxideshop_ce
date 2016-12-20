@@ -324,8 +324,6 @@ class NavigationTree extends \oxSuperCfg
      * Removes node from tree elements if it is marked as not visible (visible="0")
      *
      * @param DOMDocument $dom document to check group
-     *
-     * @return null
      */
     protected function removeInvisibleMenuNodes($dom)
     {

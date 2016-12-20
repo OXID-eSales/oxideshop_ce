@@ -1248,17 +1248,6 @@ class SessionTest extends \OxidTestCase
         $oSession->delBasket();
     }
 
-    /**
-     * Test for bug #853
-     *
-     * @group quarantine
-     */
-    function testDbSessionHandlerExists()
-    {
-        $this->markTestIncomplete('TODO: we do not have a database session handler at the moment');
-        //$this->assertTrue(file_exists(_DB_SESSION_HANDLER), _DB_SESSION_HANDLER . " does not exist");
-    }
-
     function testGetRequestChallengeToken()
     {
         $oSession = oxNew('oxSession');

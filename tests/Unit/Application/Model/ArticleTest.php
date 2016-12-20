@@ -4451,17 +4451,23 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetAttributesInOtherLang()
     {
-        $this->markTestSkipped('Does not work for some reason after changing oxobjectid to correct value');
-        $oArticle = $this->getMock('oxarticle', array('getLanguage'));
-        $oArticle->expects($this->any())->method('getLanguage')->will($this->returnValue(1));
-        $oArticle->load('1672');
-        $sSelect = "select oxattrid from oxobject2attribute where oxobjectid = '1672'";
-        $sID = oxDb::getDB()->getOne($sSelect);
-        $sSelect = "select oxvalue_1 from oxobject2attribute where oxattrid = '$sID' and oxobjectid = '1672'";
-        $sExpectedValue = oxDb::getDB()->getOne($sSelect);
-        $aAttrList = $oArticle->getAttributes();
-        $sAttribValue = $aAttrList[$sID]->oxobject2attribute__oxvalue->value;
-        $this->assertEquals($sExpectedValue, $sAttribValue);
+        $oldLanguage = $this->getLanguage();
+
+        $this->setLanguage(1);
+
+        $articleId = '1672';
+        $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+        $article->load($articleId);
+
+        $attributeId = oxDb::getDB()->getOne("SELECT oxattrid FROM oxobject2attribute WHERE oxobjectid = '?'", array($articleId));
+        $expectedValue = oxDb::getDB()->getOne("SELECT oxvalue_1 FROM oxobject2attribute WHERE oxattrid = '?' AND oxobjectid = '$articleId'", array($attributeId, $articleId));
+
+        $attributeList = $article->getAttributes();
+        $attributeValue = $attributeList[$attributeId]->oxattribute__oxvalue->value;
+
+        $this->setLanguage($oldLanguage);
+
+        $this->assertEquals($expectedValue, $attributeValue);
     }
 
     /**

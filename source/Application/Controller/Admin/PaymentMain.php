@@ -96,8 +96,6 @@ class PaymentMain extends \oxAdminDetails
 
     /**
      * Saves payment parameters changes.
-     *
-     * @return mixed
      */
     public function save()
     {
@@ -155,8 +153,6 @@ class PaymentMain extends \oxAdminDetails
 
     /**
      * Saves payment parameters data in dofferent language (eg. english).
-     *
-     * @return null
      */
     public function saveinnlang()
     {
@@ -185,8 +181,6 @@ class PaymentMain extends \oxAdminDetails
 
     /**
      * Deletes field from field array and stores object
-     *
-     * @return null
      */
     public function delFields()
     {
@@ -211,8 +205,6 @@ class PaymentMain extends \oxAdminDetails
 
     /**
      * Adds a field to field array and stores object
-     *
-     * @return null
      */
     public function addField()
     {

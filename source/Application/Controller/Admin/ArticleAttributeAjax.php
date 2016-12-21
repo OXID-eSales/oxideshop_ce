@@ -156,10 +156,13 @@ class ArticleAttributeAjax extends \ajaxListComponent
                 $objectToAttribute->init("oxobject2attribute");
                 if ($objectToAttribute->assignRecord($select)) {
                     $objectToAttribute->oxobject2attribute__oxvalue->setValue($attributeValue);
-                    foreach ($attributeCustomData as $key=>$value)
+                    if (isset($attributeCustomData) && is_array($attributeCustomData))
                     {
-                        $fieldName = 'oxobject2attribute__'.$key;
-                        $objectToAttribute->$fieldName->setValue($value);
+                        foreach ($attributeCustomData as $key=>$value)
+                        {
+                            $fieldName = 'oxobject2attribute__'.$key;
+                            $objectToAttribute->$fieldName->setValue($value);
+                        }
                     }
                     $objectToAttribute->save();
                 }

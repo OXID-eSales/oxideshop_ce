@@ -190,10 +190,12 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
         $sOxid = '_testAttributeArticle';
         $sAttrOxid = '_testAttributeSaveAttr';
         $sAttrValue = '_testAttrValue';
+        $aCustomData = '';
 
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("attr_oxid", $sAttrOxid);
         $this->setRequestParameter("attr_value", $sAttrValue);
+        $this->setRequestParameter("customData", $aCustomData);
 
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxvalue='$sAttrValue'"));
 

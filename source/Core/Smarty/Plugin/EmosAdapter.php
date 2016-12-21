@@ -200,7 +200,7 @@ class EmosAdapter extends oxSuperCfg
     /**
      * Checks whether shop is in utf, if not - iconv string for using with econda json_encode
      *
-     * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this function will be removed.
+     * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this method will be removed.
      *
      * @param string $sContent
      *

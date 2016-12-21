@@ -30,8 +30,6 @@ class LanguageexceptionTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {

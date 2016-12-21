@@ -2042,11 +2042,14 @@ class Config extends Base
     }
 
     /**
-     * Returns true if current installation works in UTF8 mode, or false if not
+     * Returns true if current installation works in utf-8 mode, or false if not.
      *
-     * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this function will be removed.
+     * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this method will be removed.
      *
-     * @return bool
+     * CAUTION: if you use this deprecated feature, you have to be sure, that there is a iUtfMode in your confi.inc.php,
+     *          otherwise the result of this method is probably always false.
+     *
+     * @return bool Cause the shop is only utf-8, we only return true here.
      */
     public function isUtf()
     {

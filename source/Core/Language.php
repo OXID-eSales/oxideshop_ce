@@ -635,6 +635,8 @@ class Language extends \oxSuperCfg
      * @param string $sCharset     charset which was used while making file
      * @param bool   $blRecodeKeys leave keys untouched or recode it
      *
+     * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this method will be removed.
+     *
      * @return array
      */
     protected function _recodeLangArray($aLangArray, $sCharset, $blRecodeKeys = false)
@@ -653,13 +655,14 @@ class Language extends \oxSuperCfg
         return $aLangArray;
     }
 
-     /**
+    /**
      * Goes through language array and recodes its values.
      *
      * @param array  $aLangArray  language data
      * @param string $sCharset    charset which was used while making file
      * @param string $newEncoding charset which was used while making file
      *
+     * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this method will be removed.
      */
     protected function _recodeLangArrayValues(&$aLangArray, $sCharset, $newEncoding)
     {
@@ -674,6 +677,8 @@ class Language extends \oxSuperCfg
      * @param array  $aLangArray  language data
      * @param string $sCharset    charset which was used while making file
      * @param string $newEncoding charset which was used while making file
+     *
+     * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this method will be removed.
      *
      * @return array
      */
@@ -944,12 +949,6 @@ class Language extends \oxSuperCfg
                     include $sLangFile;
 
                     $aLang = array_merge(['charset' => 'UTF-8'], $aLang);
-
-                    $aLang = $this->_recodeLangArray($aLang, $aLang['charset']);
-
-                    if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
-                        $aSeoReplaceChars = $this->_recodeLangArray($aSeoReplaceChars, $aLang['charset'], true);
-                    }
 
                     if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
                         $aLangSeoReplaceChars = array_merge($aLangSeoReplaceChars, $aSeoReplaceChars);

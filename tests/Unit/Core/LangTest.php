@@ -419,12 +419,12 @@ class LangTest extends \OxidTestCase
         $aResult = array(
             "charset" => "UTF-8",
             '_aSeoReplaceChars' => array(
-                iconv('ISO-8859-15', 'UTF-8', "ä") => "ae",
-                iconv('ISO-8859-15', 'UTF-8', "ö") => "oe",
-                iconv('ISO-8859-15', 'UTF-8', "ß") => "ss",
-                "x"                                => "z",
+                "ä" => "ae",
+                "ö" => "oe",
+                "ß" => "ss",
+                "x" => "z",
             ),
-            "TESTKEY" => iconv('ISO-8859-15', 'UTF-8', "testVäl")
+            "TESTKEY" => "testVäl"
         );
 
 

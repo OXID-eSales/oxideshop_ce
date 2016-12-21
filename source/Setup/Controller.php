@@ -119,6 +119,9 @@ class Controller extends Core
 
     /**
      * DB info entry page
+     *
+     * Functionality is tested via:
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToWelcomeScreenInCaseLicenseIsNotCheckedAsAgreed`
      */
     public function dbInfo()
     {
@@ -182,6 +185,12 @@ class Controller extends Core
 
     /**
      * Testing database connection
+     *
+     * Functionality is tested via:
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenNotAllFieldsAreFilled`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenDatabaseUserDoesNotHaveAccess`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenDatabaseUserIsValidButCantCreateDatabase`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testUserIsNotifiedIfAValidDatabaseAlreadyExistsBeforeTryingToOverwriteIt`
      */
     public function dbConnect()
     {
@@ -195,7 +204,7 @@ class Controller extends Core
         $databaseConfigValues = $this->getUtilitiesInstance()->getRequestVar("aDB", "post");
         $session->setSessionParam('aDB', $databaseConfigValues);
 
-        // check if iportant parameters are set
+        // check if important parameters are set
         if (!$databaseConfigValues['dbHost'] || !$databaseConfigValues['dbName']) {
             $setup->setNextStep($setup->getStep('STEP_DB_INFO'));
             $view->setMessage($language->getText('ERROR_FILL_ALL_FIELDS'));
@@ -259,6 +268,12 @@ class Controller extends Core
 
     /**
      * Creating database
+     *
+     * Functionality is tested via:
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenDatabaseUserIsValidButCantCreateDatabase`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testUserIsNotifiedIfAValidDatabaseAlreadyExistsBeforeTryingToOverwriteIt`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileIsMissing`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileHasSyntaxError`
      */
     public function dbCreate()
     {
@@ -352,6 +367,13 @@ class Controller extends Core
 
     /**
      * Writing config info
+     *
+     * Functionality is tested via:
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDirInfoEntryPageWhenNotAllFieldsAreFilled`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDirInfoEntryPageWhenPasswordIsTooShort`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDirInfoEntryPageWhenPasswordDoesNotMatch`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDirInfoEntryPageWhenInvalidEmailUsed`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDirInfoEntryPageWhenSetupCantFindConfigFile`
      */
     public function dirsWrite()
     {

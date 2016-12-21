@@ -182,17 +182,19 @@ class Utilities extends Core
     }
 
     /**
-     * Updates config.inc.php file contents
+     * Updates config.inc.php file contents.
      *
      * @param array $aParams paths parameters
      *
-     * @throws Exception exception is thrown is file cant be open for reading or can not be written
+     * @throws Exception File can't be found, opened for reading or written.
      */
     public function updateConfigFile($aParams)
     {
         $sConfPath = $aParams['sShopDir'] . "/config.inc.php";
 
         $oLang = $this->getInstance("Language");
+
+        $this->handleMissingConfigFileException($sConfPath);
 
         clearstatcache();
         @chmod($sConfPath, getDefaultFileMode());
@@ -218,6 +220,25 @@ class Utilities extends Core
             @chmod($sConfPath, getDefaultConfigFileMode());
         } else {
             throw new Exception(sprintf($oLang->getText('ERROR_CONFIG_FILE_IS_NOT_WRITABLE'), $aParams['sShopDir']));
+        }
+    }
+
+    /**
+     * Throws an exception in case config file is missing.
+     *
+     * This is necessary to suppress PHP warnings during Setup. With the help of exception this problem is
+     * caught and displayed properly.
+     *
+     * @param string $pathToConfigFile File path to eShop configuration file.
+     *
+     * @throws Exception Config file is missing.
+     */
+    private function handleMissingConfigFileException($pathToConfigFile)
+    {
+        if (!file_exists($pathToConfigFile)) {
+            $language = $this->getLanguageInstance();
+
+            throw new Exception(sprintf($language->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $pathToConfigFile));
         }
     }
 

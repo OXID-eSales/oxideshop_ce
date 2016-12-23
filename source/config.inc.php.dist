@@ -61,9 +61,6 @@
         'ppt',
     );
 
-    // Timezone information
-    date_default_timezone_set('Europe/Berlin');
-
     /**
      * Search engine friendly URL processor.
      * After changing this value, you should rename oxid.php file as well

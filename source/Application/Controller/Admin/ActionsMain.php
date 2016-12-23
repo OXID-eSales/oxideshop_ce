@@ -132,8 +132,6 @@ class ActionsMain extends \oxAdminDetails
 
     /**
      * Saves Promotions
-     *
-     * @return mixed
      */
     public function save()
     {

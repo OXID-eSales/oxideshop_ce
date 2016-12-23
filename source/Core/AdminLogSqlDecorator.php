@@ -60,7 +60,8 @@ class AdminLogSqlDecorator
     /**
      * Quotes the string for saving in database field;
      *
-     * @param $str
+     * @param string $str
+     *
      * @return string
      */
     protected function quote($str)

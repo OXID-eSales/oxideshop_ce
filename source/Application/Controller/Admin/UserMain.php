@@ -190,6 +190,8 @@ class UserMain extends \oxAdminDetails
      * Additional actions on user creation.
      *
      * @param oxUser $user
+     *
+     * @return oxUser
      */
     protected function onUserCreation($user)
     {

@@ -28,7 +28,7 @@ use stdClass;
 
 /**
  * Admin article main discount manager.
- * Performs collection and updatind (on user submit) main item information.
+ * Performs collection and updating (on user submit) main item information.
  * Admin Menu: Shop Settings -> Discounts -> Main.
  */
 class DiscountMain extends \oxAdminDetails
@@ -215,6 +215,11 @@ class DiscountMain extends \oxAdminDetails
         $this->setEditObjectId($oAttr->getId());
     }
 
+    /**
+     * Increment the maximum value of oxsort found in the database by certain amount and return it.
+     *
+     * @return int The incremented oxsort.
+     */
     public function getNextOxsort()
     {
         $shopId = oxRegistry::getConfig()->getShopId();

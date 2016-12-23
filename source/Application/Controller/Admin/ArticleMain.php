@@ -730,6 +730,8 @@ class ArticleMain extends \oxAdminDetails
 
     /**
      * @param oxBase $base
+     *
+     * @return oxBase $base
      */
     protected function updateBase($base)
     {

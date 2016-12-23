@@ -285,7 +285,7 @@ class ModuleChainsGenerator
     }
 
     /**
-     * @param $variablesLocator
+     * @param ModuleVariablesLocator $variablesLocator
      *
      * @return array
      */

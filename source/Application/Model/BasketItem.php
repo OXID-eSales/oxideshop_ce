@@ -253,7 +253,7 @@ class BasketItem extends \oxSuperCfg
     /**
      * Setter for basketItemkey.
      *
-     * @param $itemKey
+     * @param string $itemKey
      */
     public function setBasketItemKey($itemKey)
     {

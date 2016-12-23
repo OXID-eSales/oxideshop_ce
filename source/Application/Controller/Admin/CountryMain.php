@@ -83,8 +83,6 @@ class CountryMain extends \oxAdminDetails
 
     /**
      * Saves selection list parameters changes.
-     *
-     * @return mixed
      */
     public function save()
     {
@@ -118,8 +116,6 @@ class CountryMain extends \oxAdminDetails
 
     /**
      * Saves selection list parameters changes in different language (eg. english).
-     *
-     * @return null
      */
     public function saveinnlang()
     {

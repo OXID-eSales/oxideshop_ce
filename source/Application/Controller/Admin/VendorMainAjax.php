@@ -170,7 +170,9 @@ class VendorMainAjax extends \ajaxListComponent
     /**
      * Condition for updating oxarticles on add / remove vendor actions.
      *
-     * @param $vendorOxid
+     * @param array $articleIds
+     *
+     * @return string
      */
     protected function onVendorActionArticleUpdateConditions($articleIds)
     {
@@ -180,7 +182,7 @@ class VendorMainAjax extends \ajaxListComponent
     /**
      * Additional actions on vendor add/remove.
      *
-     * @param $vendorOxid
+     * @param string $vendorOxid
      */
     protected function onVendorAction($vendorOxid)
     {

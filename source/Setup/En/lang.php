@@ -63,8 +63,8 @@ $aLang = array(
 'ERROR_PASSWORD_TOO_SHORT'                      => 'Password is too short!',
 'ERROR_PASSWORDS_DO_NOT_MATCH'                  => 'Passwords do not match!',
 'ERROR_USER_NAME_DOES_NOT_MATCH_PATTERN'        => 'Please enter a valid e-mail address!',
-'ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS' => 'The installed MySQL version does not fit system requirements',
-'ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS' => 'WARNING: The installed MySQL version meets the <i>minimal</i> requirements, but is neither recommended nor supported',
+'ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS' => 'The installed MySQL version does not fit system requirements!',
+'ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS' => 'WARNING: The installed MySQL version meets the <i>minimal</i> requirements, but is neither recommended nor supported!',
 
 'ERROR_VIEWS_CANT_CREATE'                       => 'ERROR: Can\'t create views. Please check your database user privileges.',
 'ERROR_VIEWS_CANT_SELECT'                       => 'ERROR: Can\'t select from views. Please check your database user privileges.',

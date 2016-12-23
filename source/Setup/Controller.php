@@ -81,9 +81,7 @@ class Controller extends Core
             $blHtaccessUpdateError = true;
         }
 
-        $oSysReq = getSystemReqCheck();
-        $aInfo = $oSysReq->getSystemInfo();
-        $aInfo['server_config']['mysql_version'] = -1;
+        $aInfo = $this->getSystemInformation();
         foreach ($aInfo as $sGroup => $aModules) {
             // translating
             $sGroupName = $oLanguage->getModuleName($sGroup);
@@ -279,12 +277,12 @@ class Controller extends Core
                 return "default.php";
             } elseif ($oExcp->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS) {
                 $oSetup->setNextStep(null);
-                $this->formMessageIfMySqyVersionIsNotRecommended($oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DIRS_INFO'));
+                $this->formMessageIfMySqyVersionIsNotRecommended($oView, $oLang);
                 // check if DB is already UP and running
                 if (!$this->databaseCanBeOverwritten($oDb)) {
-                    $this->formMessageIfDBCanBeOverwritten($aDB['dbName'], $oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DIRS_INFO'));
+                    $this->formMessageIfDBCanBeOverwritten($aDB['dbName'], $oView, $oLang);
                 }
-                $this->formMessageInstallAnyway($oView, $oLang, $sSessionId, $sStep);
+                $this->formMessageInstallAnyway($oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DIRS_INFO'));
 
                 return "default.php";
             } else {
@@ -305,8 +303,8 @@ class Controller extends Core
 
         // check if DB is already UP and running
         if (!$this->databaseCanBeOverwritten($oDb)) {
-            $this->formMessageIfDBCanBeOverwritten($aDB['dbName'], $oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DIRS_INFO'));
-            $this->formMessageInstallAnyway($oView, $oLang, $sSessionId, $sStep);
+            $this->formMessageIfDBCanBeOverwritten($aDB['dbName'], $oView, $oLang);
+            $this->formMessageInstallAnyway($oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DIRS_INFO'));
 
             return "default.php";
         }
@@ -335,9 +333,28 @@ class Controller extends Core
 
         $aDB = $oSession->getSessionParam('aDB');
 
-        /** @var Database $oDb */
-        $oDb = $this->getInstance("Database");
-        $oDb->openDatabase($aDB);
+        try {
+            /** @var Database $oDb */
+            $oDb = $this->getInstance("Database");
+            $oDb->openDatabase($aDB);
+        } catch (Exception $exception) {
+            if ($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS) {
+                $oSetup->setNextStep(null);
+                $this->formMessageIfMySqyVersionIsNotRecommended($oView, $oLang);
+                // check if DB is already UP and running
+                if (!$this->databaseCanBeOverwritten($oDb)) {
+                    $this->formMessageIfDBCanBeOverwritten($aDB['dbName'], $oView, $oLang);
+                }
+                $this->formMessageInstallAnyway($oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DB_CREATE'));
+
+                return "default.php";
+            } else {
+                $oSetup->setNextStep($oSetup->getStep('STEP_DB_CREATE'));
+                $oView->setMessage($exception->getMessage());
+
+                return "default.php";
+            }
+        }
 
         // testing if Views can be created
         try {
@@ -352,8 +369,8 @@ class Controller extends Core
 
         // check if DB is already UP and running
         if (!$this->databaseCanBeOverwritten($oDb)) {
-            $this->formMessageIfDBCanBeOverwritten($aDB['dbName'], $oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DB_CREATE'));
-            $this->formMessageInstallAnyway($oView, $oLang, $sSessionId, $sStep);
+            $this->formMessageIfDBCanBeOverwritten($aDB['dbName'], $oView, $oLang);
+            $this->formMessageInstallAnyway($oView, $oLang, $oSession->getSid(), $oSetup->getStep('STEP_DB_CREATE'));
 
             return "default.php";
         }
@@ -583,13 +600,11 @@ class Controller extends Core
     /**
      * Show warning-question if database with same name already exists.
      *
-     * @param string   $sDBName    name of database to check if exist
-     * @param View     $oView      to set parameters for template
-     * @param Language $oLang      to translate text
-     * @param string   $sSessionId
-     * @param string   $sStep      where to redirect if chose to rewrite database
+     * @param string   $sDBName name of database to check if exist
+     * @param View     $oView   to set parameters for template
+     * @param Language $oLang   to translate text
      */
-    private function formMessageIfDBCanBeOverwritten($sDBName, $oView, $oLang, $sSessionId, $sStep)
+    private function formMessageIfDBCanBeOverwritten($sDBName, $oView, $oLang)
     {
         $oView->setMessage(sprintf($oLang->getText('ERROR_DB_ALREADY_EXISTS'), $sDBName));
     }
@@ -597,14 +612,12 @@ class Controller extends Core
     /**
      * Show warning-question if MySQL version does meet minimal requirements, but is neither recommended nor supported.
      *
-     * @param View     $oView      to set parameters for template
-     * @param Language $oLang      to translate text
-     * @param string   $sSessionId
-     * @param string   $sStep      where to redirect if chose to rewrite database
+     * @param View     $oView to set parameters for template
+     * @param Language $oLang to translate text
      */
-    private function formMessageIfMySqyVersionIsNotRecommended($oView, $oLang, $sSessionId, $sStep)
+    private function formMessageIfMySqyVersionIsNotRecommended($oView, $oLang)
     {
-        $oView->setMessage(sprintf($oLang->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS'), $sDBName));
+        $oView->setMessage(sprintf($oLang->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS')));
     }
 
     /**
@@ -724,5 +737,21 @@ class Controller extends Core
     {
         $editionPathSelector = $this->getEditionPathProvider($edition);
         return $editionPathSelector->getDatabaseSqlDirectory();
+    }
+
+    /**
+     * Cause the system requirement object is used on multiple places and we need an adjustment (a "don't know now" for
+     * the MySQL version), we wrap it here.
+     *
+     * @return array The system information, enriched with the "don't know now" MySQL version.
+     */
+    protected function getSystemInformation()
+    {
+        $systemRequirements = getSystemReqCheck();
+        $information = $systemRequirements->getSystemInfo();
+
+        $information['server_config']['mysql_version'] = -1;
+
+        return $information;
     }
 }

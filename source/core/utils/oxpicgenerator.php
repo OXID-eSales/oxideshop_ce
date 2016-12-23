@@ -287,6 +287,7 @@ if (!function_exists("imagecreatefromfile")) {
                 $hSourceImage = imagecreatefrompng($sSrc);
                 break;
             case "jpg":
+            case "jpeg":
                 $hSourceImage = imagecreatefromjpeg($sSrc);
                 break;
             case "gif":

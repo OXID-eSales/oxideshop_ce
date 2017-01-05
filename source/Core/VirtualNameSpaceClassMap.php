@@ -532,6 +532,7 @@ class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\C
             'OxidEsales\Eshop\Core\ServerProcessor' => \OxidEsales\EshopCommunity\Core\ServerProcessor::class,
             'OxidEsales\Eshop\Core\ServersManager' => \OxidEsales\EshopCommunity\Core\ServersManager::class,
             'OxidEsales\Eshop\Core\Session' => \OxidEsales\EshopCommunity\Core\Session::class,
+            'OxidEsales\Eshop\Core\SettingsHandler' => \OxidEsales\EshopCommunity\Core\SettingsHandler::class,
             'OxidEsales\Eshop\Core\Sha512Hasher' => \OxidEsales\EshopCommunity\Core\Sha512Hasher::class,
             'OxidEsales\Eshop\Core\ShopControl' => \OxidEsales\EshopCommunity\Core\ShopControl::class,
             'OxidEsales\Eshop\Core\ShopIdCalculator' => \OxidEsales\EshopCommunity\Core\ShopIdCalculator::class,

@@ -60,7 +60,7 @@ require "_header.php"; ?>
                 ?><a href="<?php $this->getReqInfoUrl( $aModuleInfo['module'] ); ?>" target="_blank"><?php
             }
             echo $aModuleInfo['modulename'];
-            if ( $aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" ) {
+            if ( $aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null" ) {
                 ?></a><?php
             }
             ?></li><?php

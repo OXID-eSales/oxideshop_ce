@@ -393,17 +393,15 @@ class ControllerTest extends \OxidTestCase
 
     /**
      * Testing controller::dbCreate()
-     *
-     * @return null
      */
     public function testDbCreateDbExists()
     {
         $oSetup = $this->getMock("Setup", array("setNextStep", "getStep"));
-        $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_DB_CREATE"));
+        $oSetup->expects($this->any())->method("getStep")->with($this->equalTo("STEP_DB_CREATE"));
 
         $oSession = $this->getMock('SetupSession', array("getSessionParam", "getSid"), array(), '', null);
         $oSession->expects($this->once())->method("getSessionParam")->with($this->equalTo("aDB"));
-        $oSession->expects($this->once())->method("getSid");
+        $oSession->expects($this->any())->method("getSid")->willReturn('SESSION_ID');
 
         $oSessionToCheckIfUserDecideToOverwriteDB = $this->getMock('SetupSession', array("getSessionParam"), array(), '', null);
         $oSessionToCheckIfUserDecideToOverwriteDB->expects($this->once())->method("getSessionParam")->with($this->equalTo("blOverwrite"));
@@ -413,7 +411,7 @@ class ControllerTest extends \OxidTestCase
 
         $oView = $this->getMock("viewStub", array("setTitle", "setMessage"));
         $oView->expects($this->once())->method("setTitle")->with($this->equalTo("STEP_4_2_TITLE"));
-        $oView->expects($this->once())->method("setMessage");
+        $oView->expects($this->any())->method("setMessage");
 
         $oUtils = $this->getMock("Utilities", array("getRequestVar"));
         $oUtils->expects($this->once())->method("getRequestVar");

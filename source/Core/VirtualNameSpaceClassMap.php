@@ -27,6 +27,9 @@ namespace OxidEsales\EshopCommunity\Core;
  * Each edition has its own map file. The map files will be merged like this: CE <- PE <- EE
  * So the mapping to a concrete class will be overwritten, if a class exists in a different edition.
  *
+ * NOTE: exceptions aren't working at the moment with the virtual namespaces (throwing them is the problem).
+ *       Use the OxidEsales\EshopCommunity namespace instead!
+ *
  * @inheritdoc
  */
 class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\ClassMap

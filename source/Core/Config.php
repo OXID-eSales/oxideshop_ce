@@ -1722,7 +1722,12 @@ class Config extends Base
     public function getRevision()
     {
         $fileName = $this->getConfigParam('sShopDir') . "/pkg.rev";
-        $rev = trim(@file_get_contents($fileName));
+
+        $rev = false;
+
+        if (file_exists($fileName) && is_readable($fileName)) {
+            $rev = trim(file_get_contents($fileName));
+        }
 
         if (!$rev) {
             return false;

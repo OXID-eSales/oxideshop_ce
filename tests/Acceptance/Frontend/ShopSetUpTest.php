@@ -26,6 +26,7 @@ use Exception;
 use oxConnectionException;
 use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 use OxidEsales\TestingLibrary\ServiceCaller;
+use OxidEsales\TestingLibrary\TestConfig;
 use oxRegistry;
 
 /** Selenium tests for frontend navigation. */
@@ -34,11 +35,9 @@ class ShopSetUpTest extends FrontendTestCase
     /** @var int How much more time wait for these tests. */
     protected $_iWaitTimeMultiplier = 7;
 
-    /**
-     * Regenerate views after test.
-     */
     protected function tearDown()
     {
+        $this->resetShop();
         parent::tearDown();
 
         $oServiceCaller = new ServiceCaller($this->getTestConfig());
@@ -273,5 +272,16 @@ class ShopSetUpTest extends FrontendTestCase
     protected function isPackage()
     {
         return file_exists($this->getTestConfig()->getShopPath() . '/pkg.info');
+    }
+
+    private function resetShop()
+    {
+        $testConfig = new TestConfig();
+        $serviceCaller = new ServiceCaller($testConfig);
+        $serviceCaller->setParameter('serial', $testConfig->getShopSerial());
+        $serviceCaller->setParameter('addDemoData', 1);
+        $serviceCaller->setParameter('turnOnVarnish', $testConfig->shouldEnableVarnish());
+        $serviceCaller->setParameter('setupPath', $testConfig->getShopSetupPath());
+        $serviceCaller->callService('ShopInstaller');
     }
 }

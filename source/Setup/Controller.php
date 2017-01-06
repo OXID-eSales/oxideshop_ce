@@ -26,6 +26,7 @@ use Exception;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\SystemRequirements;
 use OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
+use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
 use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
 
 /**
@@ -274,6 +275,10 @@ class Controller extends Core
      *   `Acceptance/Frontend/ShopSetUpTest.php::testUserIsNotifiedIfAValidDatabaseAlreadyExistsBeforeTryingToOverwriteIt`
      *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileIsMissing`
      *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileHasSyntaxError`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupShowsErrorMessageWhenMigrationFileContainsSyntaxErrors`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupShowsErrorMessageWhenMigrationExecutableIsMissing`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupShowsErrorMessageWhenViewRegenerationReturnsErrorCode`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupShowsErrorMessageWhenViewsRegenerationExecutableIsMissing`
      */
     public function dbCreate()
     {
@@ -334,6 +339,9 @@ class Controller extends Core
             // install demo/initial data
             try {
                 $this->installShopData($database, $databaseConfigValues['dbiDemoData']);
+            } catch (CommandExecutionFailedException $exception) {
+                $this->handleCommandExecutionFailedException($exception);
+                throw new SetupControllerExitException();
             } catch (Exception $exception) {
                 // there where problems with queries
                 $view->setMessage($language->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $exception->getMessage());
@@ -341,7 +349,13 @@ class Controller extends Core
                 throw new SetupControllerExitException();
             }
 
-            $this->getUtilitiesInstance()->regenerateViews();
+            try {
+                $this->getUtilitiesInstance()->executeExternalRegenerateViewsCommand();
+            } catch (CommandExecutionFailedException $exception) {
+                $this->handleCommandExecutionFailedException($exception);
+
+                throw new SetupControllerExitException();
+            }
         } catch (Exception $exception) {
             $view->setMessage($exception->getMessage());
 
@@ -591,16 +605,16 @@ class Controller extends Core
 
         // If demodata files are provided.
         if ($this->getUtilitiesInstance()->checkIfDemodataPrepared($demodata)) {
-            $this->getUtilitiesInstance()->migrateDatabase();
+            $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
 
             // Install demo data.
             $database->queryFile($this->getUtilitiesInstance()->getActiveEditionDemodataPackageSqlFilePath());
             // Copy demodata files.
-            $this->getUtilitiesInstance()->demodataAssetsInstall();
+            $this->getUtilitiesInstance()->executeExternalDemodataAssetsInstallCommand();
         } else {
             $database->queryFile("$baseSqlDir/initial_data.sql");
 
-            $this->getUtilitiesInstance()->migrateDatabase();
+            $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
 
             if ($demodata) {
                 $database->queryFile("$editionSqlDir/demodata.sql");
@@ -717,5 +731,43 @@ class Controller extends Core
     {
         $utilities = $this->getUtilitiesInstance();
         return $utilities->canHtaccessFileBeUpdated();
+    }
+
+    /**
+     * @param CommandExecutionFailedException $exception
+     */
+    private function handleCommandExecutionFailedException($exception)
+    {
+        $language = $this->getLanguageInstance();
+        $view = $this->getView();
+
+        $commandOutput = $exception->getCommandOutput();
+        $htmlCommandOutput = $this->convertCommandOutputToHtmlOutput($commandOutput);
+
+        $errorLines[] = sprintf(
+            $language->getText('EXTERNAL_COMMAND_ERROR_1'),
+            $exception->getCommand(),
+            $exception->getReturnCode()
+        );
+        $errorLines[] = $language->getText('EXTERNAL_COMMAND_ERROR_2');
+
+        $errorHeader = implode("<br />", $errorLines);
+        $errorMessage = implode("<br /><br />", [$errorHeader, $htmlCommandOutput]);
+
+        $view->setMessage($errorMessage);
+    }
+
+    /**
+     * @param string $commandOutput
+     * @return string
+     */
+    private function convertCommandOutputToHtmlOutput($commandOutput)
+    {
+        $commandOutput = Utilities::stripAnsiControlCodes($commandOutput);
+        $commandOutput = htmlspecialchars($commandOutput);
+        $commandOutput = str_replace("\n", "<br />", $commandOutput);
+        $commandOutput = "<span style=\"font-family: courier,serif\">$commandOutput</span>";
+
+        return $commandOutput;
     }
 }

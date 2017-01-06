@@ -49,9 +49,14 @@ class ShopSetUpTest extends FrontendTestCase
     const EN_LANGUAGE_SQL_FILENAME = 'en.sql';
     const HTACCESS_FILENAME = '.htaccess';
     const PACKAGE_INDICATOR_FILENAME = 'pkg.info';
+    const DB_MIGRATE_SCRIPT_FILENAME = 'oe-eshop-db_migrate';
+    const DB_VIEWS_REGENERATE_SCRIPT_FILENAME = 'oe-eshop-db_views_regenerate';
 
     const SETUP_DIRECTORY = 'Setup';
     const SETUP_SQL_DIRECTORY = 'Sql';
+    const INVALID_MIGRATION_FILENAME = 'Version20170101.php';
+    const MIGRATION_DIRECTORY = 'migration';
+    const MIGRATION_DATA_DIRECTORY = 'data';
     const VENDOR_DIRECTORY = 'vendor';
     const VENDOR_BIN_DIRECTORY = 'bin';
     const OXID_ESALES_VENDOR_DIRECTORY = 'oxid-esales';
@@ -615,6 +620,146 @@ class ShopSetUpTest extends FrontendTestCase
     /**
      * @group main
      */
+    public function testSetupShowsErrorMessageWhenMigrationFileContainsSyntaxErrors()
+    {
+        $this->clearDatabase();
+        list($host, $name, $user, $password) = $this->getDatabaseParameters();
+
+        $this->createInvalidMigration();
+
+        $this->goToSetup();
+
+        $this->selectSetupLanguage();
+        $this->clickContinueAndProceedTo(self::WELCOME_STEP);
+
+        $this->selectEshopLanguage();
+        $this->clickContinueAndProceedTo(self::LICENSE_STEP);
+
+        $this->selectAgreeWithLicense(true);
+        $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
+
+        $this->provideDatabaseParameters($host, $name, $user, $password);
+        $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
+
+        $this->provideEshopLoginParameters('test@test.com', '123456', '123456');
+        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+
+        $this->assertTextPresent("Error while executing command");
+        $this->assertTextPresent(self::DB_MIGRATE_SCRIPT_FILENAME);
+        $this->assertTextPresent("Return code: '1'");
+        $this->assertTextPresent("up to 20170101 from 0");
+        $this->assertTextPresent("INVALID_SQL_SYNTAX");
+
+        $this->deleteInvalidMigration();
+    }
+
+    /**
+     * @group main
+     */
+    public function testSetupShowsErrorMessageWhenMigrationExecutableIsMissing()
+    {
+        $this->clearDatabase();
+        list($host, $name, $user, $password) = $this->getDatabaseParameters();
+
+        $this->hideDatabaseMigrationExecutableFile();
+
+        $this->goToSetup();
+
+        $this->selectSetupLanguage();
+        $this->clickContinueAndProceedTo(self::WELCOME_STEP);
+
+        $this->selectEshopLanguage();
+        $this->clickContinueAndProceedTo(self::LICENSE_STEP);
+
+        $this->selectAgreeWithLicense(true);
+        $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
+
+        $this->provideDatabaseParameters($host, $name, $user, $password);
+        $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
+
+        $this->provideEshopLoginParameters('test@test.com', '123456', '123456');
+        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+
+        $this->assertTextPresent("Error while executing command");
+        $this->assertTextPresent(self::DB_MIGRATE_SCRIPT_FILENAME);
+        $this->assertTextPresent("Return code: '1'");
+        $this->assertTextPresent("Script \"oe-eshop-db_migrate\" was not found");
+
+        $this->showDatabaseMigrationExecutableFile();
+    }
+
+    /**
+     * @group main
+     */
+    public function testSetupShowsErrorMessageWhenViewRegenerationReturnsErrorCode()
+    {
+        $this->clearDatabase();
+        list($host, $name, $user, $password) = $this->getDatabaseParameters();
+
+        $this->goToSetup();
+
+        $this->modifyViewRegenerationToReturnBadReturnCode();
+
+        $this->selectSetupLanguage();
+        $this->clickContinueAndProceedTo(self::WELCOME_STEP);
+
+        $this->selectEshopLanguage();
+        $this->clickContinueAndProceedTo(self::LICENSE_STEP);
+
+        $this->selectAgreeWithLicense(true);
+        $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
+
+        $this->provideDatabaseParameters($host, $name, $user, $password);
+        $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
+
+        $this->provideEshopLoginParameters('test@test.com', '123456', '123456');
+        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+
+        $this->assertTextPresent("Error while executing command");
+        $this->assertTextPresent(self::DB_VIEWS_REGENERATE_SCRIPT_FILENAME);
+        $this->assertTextPresent("Return code: '1'");
+
+        $this->restoreViewRegenerationBinaryFile();
+    }
+
+    /**
+     * @group main
+     */
+    public function testSetupShowsErrorMessageWhenViewsRegenerationExecutableIsMissing()
+    {
+        $this->clearDatabase();
+        list($host, $name, $user, $password) = $this->getDatabaseParameters();
+
+        $this->hideDatabaseViewRegenerationExecutableFile();
+
+        $this->goToSetup();
+
+        $this->selectSetupLanguage();
+        $this->clickContinueAndProceedTo(self::WELCOME_STEP);
+
+        $this->selectEshopLanguage();
+        $this->clickContinueAndProceedTo(self::LICENSE_STEP);
+
+        $this->selectAgreeWithLicense(true);
+        $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
+
+        $this->provideDatabaseParameters($host, $name, $user, $password);
+        $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
+
+        $this->provideEshopLoginParameters('test@test.com', '123456', '123456');
+        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+
+        $this->assertTextPresent("Error while executing command");
+        $this->assertTextPresent(self::DB_VIEWS_REGENERATE_SCRIPT_FILENAME);
+        $this->assertTextPresent("Return code: '1'");
+        $this->assertTextPresent("Script \"oe-eshop-db_views_regenerate\" was not found");
+
+        $this->showDatabaseMigrationExecutableFile();
+    }
+
+    /**
+     * @group main
+     */
     public function testSetupShowsErrorMessageWhenAnInvalidLicenseIsEnteredAndRedirectsToPreviousTab()
     {
         if ($this->getTestConfig()->getShopEdition() === self::CE_EDITION_ID) {
@@ -864,6 +1009,41 @@ class ShopSetUpTest extends FrontendTestCase
         $serviceCaller->callService('ShopInstaller');
     }
 
+    private function getDatabaseMigrationExecutableFilePath()
+    {
+        return $this->getComposerVendorBinaryFile(self::DB_MIGRATE_SCRIPT_FILENAME);
+    }
+
+    private function getDatabaseViewRegenerationExecutableFilePath()
+    {
+        return $this->getComposerVendorBinaryFile(self::DB_VIEWS_REGENERATE_SCRIPT_FILENAME);
+    }
+
+    private function getComposerVendorBinaryFile($filename)
+    {
+        return $this->getPathFromArray([$this->getComposerVendorPath(), self::VENDOR_BIN_DIRECTORY, $filename]);
+    }
+
+    private function hideDatabaseMigrationExecutableFile()
+    {
+        $this->hideFile($this->getDatabaseMigrationExecutableFilePath());
+    }
+
+    private function showDatabaseMigrationExecutableFile()
+    {
+        $this->showFile($this->getDatabaseMigrationExecutableFilePath());
+    }
+
+    private function hideDatabaseViewRegenerationExecutableFile()
+    {
+        $this->hideFile($this->getDatabaseViewRegenerationExecutableFilePath());
+    }
+
+    private function showDatabaseViewRegenerationExecutableFile()
+    {
+        $this->showFile($this->getDatabaseViewRegenerationExecutableFilePath());
+    }
+
     /**
      * @return string
      */
@@ -967,6 +1147,8 @@ class ShopSetUpTest extends FrontendTestCase
     private function restoreModifiedFiles()
     {
         $this->showHtaccessFile();
+        $this->showDatabaseMigrationExecutableFile();
+        $this->showDatabaseViewRegenerationExecutableFile();
 
         $sqlFiles = $this->setupSqlFilesProvider();
         foreach ($sqlFiles as $sqlFilesArgumentList) {
@@ -974,6 +1156,9 @@ class ShopSetUpTest extends FrontendTestCase
             $this->showSetupSqlFile($sqlFileName);
             $this->excludeSyntaxErrorFromSetupSqlFile($sqlFileName);
         }
+
+        $this->deleteInvalidMigration();
+        $this->restoreViewRegenerationBinaryFile();
     }
 
     private function getDatabaseParameters()
@@ -1043,5 +1228,73 @@ class ShopSetUpTest extends FrontendTestCase
     {
         $this->waitForElement("//input[@name='sLicence']");
         $this->type("//input[@name='sLicence']", $licenseNumber);
+    }
+
+    private function createInvalidMigration()
+    {
+        $contents = <<<'EOL'
+<?php
+namespace OxidEsales\EshopCommunity\Migrations;
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
+class Version20170101 extends AbstractMigration {
+public function up(Schema $schema) {$this->addSql('INVALID_SQL_SYNTAX');}
+public function down(Schema $schema) {}
+}
+EOL;
+        file_put_contents($this->getInvalidMigrationFilePath(), $contents);
+    }
+
+    private function deleteInvalidMigration()
+    {
+        $fileNamePath = $this->getInvalidMigrationFilePath();
+        if (file_exists($fileNamePath))
+            unlink($fileNamePath);
+    }
+
+    private function getInvalidMigrationFilePath()
+    {
+        return $this->getPathFromArray(
+            [
+                $this->getShopPath(),
+                self::MIGRATION_DIRECTORY,
+                self::MIGRATION_DATA_DIRECTORY,
+                self::INVALID_MIGRATION_FILENAME,
+            ]
+        );
+    }
+
+    private function modifyViewRegenerationToReturnBadReturnCode()
+    {
+        $viewRegenerationBinaryFilePath = $this->getDatabaseViewRegenerationExecutableFilePath();
+
+        $fakeViewRegenerationBinaryContents = $this->getFakeViewRegenerationBinary();
+
+        if (file_get_contents($viewRegenerationBinaryFilePath) !== $fakeViewRegenerationBinaryContents) {
+            $this->hideFile($viewRegenerationBinaryFilePath);
+            file_put_contents($viewRegenerationBinaryFilePath, $fakeViewRegenerationBinaryContents);
+            chmod($viewRegenerationBinaryFilePath, 0755);
+        }
+    }
+
+    private function restoreViewRegenerationBinaryFile()
+    {
+        $viewRegenerationBinaryFilePath = $this->getDatabaseViewRegenerationExecutableFilePath();
+
+        if (file_get_contents($viewRegenerationBinaryFilePath) === $this->getFakeViewRegenerationBinary()) {
+            unlink($viewRegenerationBinaryFilePath);
+            $this->showFile($viewRegenerationBinaryFilePath);
+        }
+    }
+
+    private function getFakeViewRegenerationBinary()
+    {
+        $content = <<<SCRIPT
+#!/bin/bash
+
+false
+SCRIPT;
+
+        return $content;
     }
 }

@@ -204,4 +204,7 @@ $aLang = array(
 'LOAD_DYN_CONTENT_NOTICE'                       => '<p>Wenn diese Option gesetzt ist, sehen Sie ein zusätzliches Menü im Administrationsbereich Ihres OXID eShop.</p><p>Über dieses Menü erhalten Sie weitere Informationen über E-Commerce Services, wie z.B. Google Produktsuche oder econda.</p> <p>Sie können diese Einstellung im Administrationsbereich jederzeit wieder ändern.</p>',
 'ERROR_SETUP_CANCELLED'                         => 'Das Setup wurde abgebrochen, weil Sie die Lizenzvereinbarungen nicht akzeptiert haben.',
 'BUTTON_START_INSTALL'                          => 'Setup erneut starten',
+
+'EXTERNAL_COMMAND_ERROR_1'                      => 'Fehler beim Ausführen des Kommandos \'%s\'. Returncode: \'%d\'.',
+'EXTERNAL_COMMAND_ERROR_2'                      => 'Das Kommando gibt folgende Meldung zurück:',
 );

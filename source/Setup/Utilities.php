@@ -29,6 +29,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
 
 /**
  * Setup utilities class
@@ -38,9 +39,15 @@ class Utilities extends Core
     const DEMODATA_PACKAGE_NAME = 'oxideshop-demodata-%s';
 
     const DEMODATA_PACKAGE_SOURCE_DIRECTORY = 'src';
+    const COMPOSER_VENDOR_BIN_DIRECTORY = 'bin';
 
     const DEMODATA_SQL_FILENAME = 'demodata.sql';
     const LICENSE_TEXT_FILENAME = "lizenz.txt";
+
+    const ESHOP_FACTS_BINARY_FILENAME = 'oe-eshop-facts';
+    const DATABASE_VIEW_REGENERATION_BINARY_FILENAME = 'oe-eshop-db_views_regenerate';
+    const DATABASE_MIGRATION_BINARY_FILENAME = 'oe-eshop-db_migrate';
+    const DEMODATA_ASSETS_INSTALL_BINARY_FILENAME = 'oe-eshop-demodata_install';
 
     /**
      * Unable to find file
@@ -446,44 +453,94 @@ class Utilities extends Core
     }
 
     /**
-     * Calls views regeneration command
+     * Calls external database views regeneration command.
      */
-    public function regenerateViews()
+    public function executeExternalRegenerateViewsCommand()
     {
-        $vendorDir = $this->getVendorDir();
-        exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_views_regenerate");
+        $this->executeShellCommandViaEshopFactsBinary(self::DATABASE_VIEW_REGENERATION_BINARY_FILENAME);
     }
 
     /**
-     * Calls database migration command
+     * Calls external database migration command.
      */
-    public function migrateDatabase()
+    public function executeExternalDatabaseMigrationCommand()
     {
-        $vendorDir = $this->getVendorDir();
-
-        exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_migrate");
+        $this->executeShellCommandViaEshopFactsBinary(self::DATABASE_MIGRATION_BINARY_FILENAME);
     }
 
     /**
-     * Calls demodata assets install command
+     * Calls external demodata assets install command.
      */
-    public function demodataAssetsInstall()
+    public function executeExternalDemodataAssetsInstallCommand()
     {
-        $vendorDir = $this->getVendorDir();
-
-        exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-demodata_install");
+        $this->executeShellCommandViaEshopFactsBinary(self::DEMODATA_ASSETS_INSTALL_BINARY_FILENAME);
     }
 
     /**
+     * Executes a given command via the eShop facts helper binary file.
+     *
+     * @param string $command Command to execute.
+     */
+    private function executeShellCommandViaEshopFactsBinary($command)
+    {
+        $eshopFactsPathToBinary = $this->getFullPathToEshopFacts();
+        $this->executeShellCommand("$eshopFactsPathToBinary $command");
+    }
+
+    /**
+     * Execute shell command and capture output when return code is non zero.
+     *
+     * @param string $command Command to execute.
+     *
+     * @throws CommandExecutionFailedException When execution returns non zero return code.
+     */
+    private function executeShellCommand($command)
+    {
+        $commandWithStdErrRedirection = $command . " 2>&1";
+
+        exec($commandWithStdErrRedirection, $outputLines, $returnCode);
+
+        if (($returnCode !== 0)) {
+            $exception = new CommandExecutionFailedException($command);
+            $exception->setReturnCode($returnCode);
+            $exception->setCommandOutput($returnCode !== 127 ? $outputLines : ['Impossible to execute the command.']);
+
+            throw $exception;
+        }
+    }
+
+    /**
+     * Return path to composer vendor directory.
+     *
      * @return string
      */
-    private function getVendorDir()
+    private function getVendorDirectory()
     {
         /** @var ConfigFile $shopConfig */
         $shopConfig = Registry::get("oxConfigFile");
         $vendorDir = $shopConfig->getVar('vendorDirectory');
 
         return $vendorDir;
+    }
+
+    /**
+     * Return path to composer vendor bin directory.
+     *
+     * @return string
+     */
+    private function getVendorBinaryDirectory()
+    {
+        return implode(DIRECTORY_SEPARATOR, [$this->getVendorDirectory(), self::COMPOSER_VENDOR_BIN_DIRECTORY]);
+    }
+
+    /**
+     * Return full path to eShop facts binary file.
+     *
+     * @return string
+     */
+    private function getFullPathToEshopFacts()
+    {
+        return implode(DIRECTORY_SEPARATOR, [$this->getVendorBinaryDirectory(), self::ESHOP_FACTS_BINARY_FILENAME]);
     }
 
     /**
@@ -561,7 +618,7 @@ class Utilities extends Core
         return implode(
             DIRECTORY_SEPARATOR,
             [
-                $this->getUtilitiesInstance()->getVendorDir(),
+                $this->getUtilitiesInstance()->getVendorDirectory(),
                 EditionRootPathProvider::EDITIONS_DIRECTORY,
                 sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($editionSelector->getEdition())),
                 self::DEMODATA_PACKAGE_SOURCE_DIRECTORY,
@@ -588,5 +645,16 @@ class Utilities extends Core
         $licenseContent = $this->getFileContents($licensePath);
 
         return $licenseContent;
+    }
+
+    /**
+     * Removes any ANSI control codes from command output.
+     *
+     * @param string $outputWithAnsiControlCodes
+     * @return string
+     */
+    public static function stripAnsiControlCodes($outputWithAnsiControlCodes)
+    {
+        return preg_replace('/\x1b(\[|\(|\))[;?0-9]*[0-9A-Za-z]/', "", $outputWithAnsiControlCodes);
     }
 }

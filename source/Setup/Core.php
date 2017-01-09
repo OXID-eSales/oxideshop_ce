@@ -105,4 +105,44 @@ class Core
 
         return $class;
     }
+
+    /**
+     * @return Setup
+     */
+    protected function getSetupInstance()
+    {
+        return $this->getInstance("Setup");
+    }
+
+    /**
+     * @return Language
+     */
+    protected function getLanguageInstance()
+    {
+        return $this->getInstance("Language");
+    }
+
+    /**
+     * @return Utilities
+     */
+    protected function getUtilitiesInstance()
+    {
+        return $this->getInstance("Utilities");
+    }
+
+    /**
+     * @return Session
+     */
+    protected function getSessionInstance()
+    {
+        return $this->getInstance("Session");
+    }
+
+    /**
+     * @return Database
+     */
+    protected function getDatabaseInstance()
+    {
+        return $this->getInstance("Database");
+    }
 }

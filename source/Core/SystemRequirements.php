@@ -16,31 +16,32 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use Exception;
 use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
-use oxDb;
 use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use oxRegistry;
+use oxDb;
+use Exception;
 
 /**
  * System requirements class.
  */
 class SystemRequirements
 {
-    /** Your system does not fit the requirement */
-    const REQUIREMENT_FITS_NOT = 0;
+    const MODULE_STATUS_UNABLE_TO_DETECT = -1;
+    const MODULE_STATUS_BLOCKS_SETUP = 0;
+    const MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS = 1;
+    const MODULE_STATUS_OK = 2;
 
-    /** The requirement is not or only partly fit */
-    const REQUIREMENT_PARTLY_FITS = 1;
-
-    /** Your system fits the requirement */
-    const REQUIREMENT_FITS = 2;
+    const MODULE_GROUP_ID_SERVER_CONFIG = 'server_config';
+    const MODULE_ID_MOD_REWRITE = 'mod_rewrite';
+    const MODULE_ID_MYSQL_VERSION = 'mysql_version';
 
     /**
      * System required modules
@@ -581,17 +582,17 @@ class SystemRequirements
         $installedPhpVersion = $this->getPhpVersion();
 
         if (version_compare($installedPhpVersion, $minimalRequiredVersion, '<')) {
-            $requirementFits = static::REQUIREMENT_FITS_NOT;
+            $requirementFits = static::MODULE_STATUS_BLOCKS_SETUP;
         }
 
         if (is_null($requirementFits) &&
             version_compare($installedPhpVersion, $minimalRecommendedVersion, '>=')
             && version_compare($installedPhpVersion, $maximalRecommendedVersion, '<=')) {
-            $requirementFits = static::REQUIREMENT_FITS;
+            $requirementFits = static::MODULE_STATUS_OK;
         }
 
         if (is_null($requirementFits)) {
-            $requirementFits = static::REQUIREMENT_PARTLY_FITS;
+            $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
         }
 
         return $requirementFits;
@@ -718,7 +719,7 @@ class SystemRequirements
         }
 
         if (version_compare($installedVersion, $minimalRequiredVersion, '<')) {
-            $requirementFits = static::REQUIREMENT_FITS_NOT;
+            $requirementFits = static::MODULE_STATUS_BLOCKS_SETUP;
         }
 
         /**
@@ -730,18 +731,18 @@ class SystemRequirements
             version_compare($installedVersion, '5.6.0', '>=') &&
             version_compare($installedVersion, '5.7.0', '<')
         ) {
-            $requirementFits = static::REQUIREMENT_PARTLY_FITS;
+            $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
         }
 
         if (is_null($requirementFits) &&
             version_compare($installedVersion, $minimalRequiredVersion, '>=') &&
             version_compare($installedVersion, $maximalRequiredVersion, '<=')
         ) {
-            $requirementFits = static::REQUIREMENT_FITS;
+            $requirementFits = static::MODULE_STATUS_OK;
         }
 
         if (is_null($requirementFits)) {
-            $requirementFits = static::REQUIREMENT_PARTLY_FITS;
+            $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
         }
 
         return $requirementFits;
@@ -945,6 +946,27 @@ class SystemRequirements
     }
 
     /**
+     * Apply given filter function to all iterations of SystemRequirementInfo array.
+     *
+     * @param array    $systemRequirementsInfo
+     * @param \Closure $filterFunction         Filter function used for the update of actual values; Function will
+     *                                         receive the same arguments as provided from
+     *                                         `iterateThroughSystemRequirementsInfo` method.
+     *
+     * @return array An array which is in the same format as the main input argument but with updated data.
+     */
+    public static function filter($systemRequirementsInfo, $filterFunction)
+    {
+        $iterator = static::iterateThroughSystemRequirementsInfo($systemRequirementsInfo);
+
+        foreach ($iterator as list($groupId, $moduleId, $moduleState)) {
+            $systemRequirementsInfo[$groupId][$moduleId] = $filterFunction($groupId, $moduleId, $moduleState);
+        }
+
+        return $systemRequirementsInfo;
+    }
+
+    /**
      * Returns passed module state
      *
      * @param string $sModule module name to check
@@ -959,6 +981,44 @@ class SystemRequirements
             $iModStat = $this->$sCheckFunction();
 
             return $iModStat;
+        }
+    }
+
+    /**
+     * Returns true if given module state is acceptable for setup process to continue.
+     *
+     * @param array $systemRequirementsInfo
+     * @return bool
+     */
+    public static function canSetupContinue($systemRequirementsInfo)
+    {
+        $iterator = static::iterateThroughSystemRequirementsInfo($systemRequirementsInfo);
+
+        foreach ($iterator as list($groupId, $moduleId, $moduleState)) {
+            if ($moduleState === static::MODULE_STATUS_BLOCKS_SETUP) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Iterates through given SystemRequirementsInfo returning three items:
+     *
+     *   - GroupId
+     *   - ModuleId
+     *   - ModuleState
+     *
+     * @param array $systemRequirementsInfo
+     * @return \Generator Iterator which yields [group_id, module_id, module_state].
+     */
+    public static function iterateThroughSystemRequirementsInfo($systemRequirementsInfo)
+    {
+        foreach ($systemRequirementsInfo as $groupId => $modules) {
+            foreach ($modules as $moduleId => $moduleState) {
+                yield [$groupId, $moduleId, $moduleState];
+            }
         }
     }
 

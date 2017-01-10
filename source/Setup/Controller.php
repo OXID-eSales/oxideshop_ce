@@ -144,6 +144,7 @@ class Controller extends Core
         if (!isset($databaseConfigValues)) {
             // default values
             $databaseConfigValues['dbHost'] = "localhost";
+            $databaseConfigValues['dbPort'] = "3306";
             $databaseConfigValues['dbUser'] = "";
             $databaseConfigValues['dbPwd'] = "";
             $databaseConfigValues['dbName'] = "";

@@ -134,7 +134,8 @@ $aLang = array(
 
 'STEP_3_TITLE'                                  => 'Database',
 'STEP_3_DESC'                                   => 'Database is going to be created and needed tables are written. Please provide some information:',
-'STEP_3_DB_HOSTNAME'                            => 'Database hostname or IP',
+'STEP_3_DB_HOSTNAME'                            => 'Database server hostname or IP address',
+'STEP_3_DB_PORT'                                => 'Database server TCP Port',
 'STEP_3_DB_USER_NAME'                           => 'Database username',
 'STEP_3_DB_PASSWORD'                            => 'Database password',
 'STEP_3_DB_PASSWORD_SHOW'                       => 'Show password',

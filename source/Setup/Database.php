@@ -214,7 +214,7 @@ class Database extends Core
         if ($this->_oConn === null) {
             // ok open DB
             try {
-                $dsn = sprintf('mysql:host=%s', $aParams['dbHost']);
+                $dsn = sprintf('mysql:host=%s;port=%s', $aParams['dbHost'], $aParams['dbPort']);
                 $this->_oConn = new PDO(
                     $dsn,
                     $aParams['dbUser'],

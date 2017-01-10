@@ -134,7 +134,8 @@ $aLang = array(
 
 'STEP_3_TITLE'                                  => 'Datenbank',
 'STEP_3_DESC'                                   => 'Nun wird die Datenbank erstellt und mit den notwendigen Tabellen befüllt. Dazu benötigen wir einige Angaben von Ihnen:',
-'STEP_3_DB_HOSTNAME'                            => 'Datenbank Hostname oder IP Adresse',
+'STEP_3_DB_HOSTNAME'                            => 'Datenbankserver Hostname oder IP Adresse',
+'STEP_3_DB_PORT'                                => 'Datenbankserver TCP Port',
 'STEP_3_DB_USER_NAME'                           => 'Datenbank Benutzername',
 'STEP_3_DB_PASSWORD'                            => 'Datenbank Passwort',
 'STEP_3_DB_PASSWORD_SHOW'                       => 'Passwort anzeigen',

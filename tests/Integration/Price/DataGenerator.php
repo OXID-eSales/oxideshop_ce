@@ -473,11 +473,12 @@ class DataGenerator extends \OxidTestCase
     protected function _generateSqlDump()
     {
         $dbhost = $this->getConfigParam("dbHost");
+        $dbport = $this->getConfigParam("dbPort");
         $dbuser = $this->getConfigParam("dbUser");
         $dbpwd = $this->getConfigParam("dbPwd");
         $dbname = $this->getConfigParam("dbName");
         $dumpfile = "oxarticles.sql";
-        passthru("/usr/bin/mysqldump --opt --host=$dbhost --user=$dbuser --password=$dbpwd $dbname oxarticles > $this->sFilepath/$dumpfile");
+        passthru("/usr/bin/mysqldump --opt --host=$dbhost --port=$dbport --user=$dbuser --password=$dbpwd $dbname oxarticles > $this->sFilepath/$dumpfile");
         echo "$dumpfile ";
         passthru("tail -1 $this->sFilepath/$dumpfile");
     }

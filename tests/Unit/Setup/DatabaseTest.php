@@ -168,6 +168,7 @@ class DatabaseTest extends \OxidTestCase
     {
         $config = $this->getConfig();
         $parameters['dbHost'] = $config->getConfigParam('dbHost');
+        $parameters['dbPort'] = $config->getConfigParam('dbPort') ? $config->getConfigParam('dbPort') : 3306;
         $parameters['dbUser'] = $config->getConfigParam('dbUser');
         $parameters['dbPwd'] = $config->getConfigParam('dbPwd');
         $parameters['dbName'] = "wrong_database_name";
@@ -188,6 +189,7 @@ class DatabaseTest extends \OxidTestCase
     {
         $myConfig = $this->getConfig();
         $aParams['dbHost'] = $myConfig->getConfigParam('dbHost');
+        $aParams['dbPort'] = $myConfig->getConfigParam('dbPort') ? $myConfig->getConfigParam('dbPort') : 3306;
         $aParams['dbUser'] = $myConfig->getConfigParam('dbUser');
         $aParams['dbPwd'] = $myConfig->getConfigParam('dbPwd');
         $aParams['dbName'] = time();
@@ -209,6 +211,7 @@ class DatabaseTest extends \OxidTestCase
     {
         $config = $this->getConfig();
         $parameters['dbHost'] = $config->getConfigParam('dbHost');
+        $parameters['dbPort'] = $config->getConfigParam('dbPort') ? $config->getConfigParam('dbPort') : 3306;
         $parameters['dbUser'] = $config->getConfigParam('dbUser');
         $parameters['dbPwd'] = $config->getConfigParam('dbPwd');
         $parameters['dbName'] = $config->getConfigParam('dbName');
@@ -306,7 +309,7 @@ class DatabaseTest extends \OxidTestCase
     protected function createConnection()
     {
         $config = $this->getConfig();
-        $dsn = sprintf('mysql:dbname=%s;host=%s', $config->getConfigParam('dbName'), $config->getConfigParam('dbHost'));
+        $dsn = sprintf('mysql:dbname=%s;host=%s;port=%s', $config->getConfigParam('dbName'), $config->getConfigParam('dbHost'), $config->getConfigParam('dbPort'));
         $pdo = new PDO(
             $dsn,
             $config->getConfigParam('dbUser'),
@@ -326,7 +329,7 @@ class DatabaseTest extends \OxidTestCase
     protected function createConnectionMock()
     {
         $config = $this->getConfig();
-        $dsn = sprintf('mysql:host=%s', $config->getConfigParam('dbHost'));
+        $dsn = sprintf('mysql:host=%s;port=%s', $config->getConfigParam('dbHost'), $config->getConfigParam('dbPort'));
         $pdoMock = $this->getMock('PDO', array('exec'), array(
             $dsn,
             $config->getConfigParam('dbUser'),

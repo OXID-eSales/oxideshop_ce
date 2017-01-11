@@ -72,8 +72,8 @@ class UtilsServer extends \oxSuperCfg
             $this->_saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain);
         }
 
-        if (defined('OXID_PHP_UNIT')) {
-            // do NOT set cookies in php unit.
+        if (defined('OXID_PHP_UNIT') || php_sapi_name() === 'cli') {
+            // do NOT set cookies in php unit or in cli because it would issue warnings
             return;
         }
         $config = $this->getConfig();

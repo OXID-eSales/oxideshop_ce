@@ -10,7 +10,7 @@
     ],
     "require": {
         "php": ">=5.6",
-        "phpmailer/phpmailer": "^v5.2.21",
+        "phpmailer/phpmailer": "^v5.2.22",
         "smarty/smarty": "^v2.6.30",
         "oxid-esales/flow-theme": "^v2.0.0",
         "oxid-esales/eshop-db-migration-wrapper": "^v1.0.0",

@@ -243,17 +243,27 @@ class ConfigTest extends \OxidTestCase
         return $res;
     }
 
-    public function testIsUtfWhenInUtfMode()
+    public function testIsUtfWhenInISOMode()
     {
         $config = $this->getMock('oxConfig', array('getConfigParam'));
         $config->expects($this->any())->method('getConfigParam')->with($this->equalTo('iUtfMode'))->will($this->returnValue(0));
         $this->assertFalse($config->isUtf());
     }
 
-    public function testIsUtfWhenInISOMode()
+    public function testIsUtfWhenInUtfMode()
     {
         $config = $this->getMock('oxConfig', array('getConfigParam'));
         $config->expects($this->any())->method('getConfigParam')->with($this->equalTo('iUtfMode'))->will($this->returnValue(1));
+        $this->assertTrue($config->isUtf());
+    }
+
+    /**
+     * This iUtfMode parameter was removed, as OXID eShop is UTF8 only since 6.0 version.
+     * So this method should return true.
+     */
+    public function testIsUtfWhenNoUtfModeDefined()
+    {
+        $config = oxNew('oxConfig');
         $this->assertTrue($config->isUtf());
     }
 

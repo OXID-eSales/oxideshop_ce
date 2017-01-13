@@ -2051,14 +2051,17 @@ class Config extends Base
      *
      * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this method will be removed.
      *
-     * CAUTION: if you use this deprecated feature, you have to be sure, that there is a iUtfMode in your confi.inc.php,
-     *          otherwise the result of this method is probably always false.
+     * CAUTION: if you use this deprecated feature, you have to be sure, that there is a iUtfMode in your config.inc.php,
+     *          otherwise the result of this method is always true.
      *
-     * @return bool Cause the shop is only utf-8, we only return true here.
+     * @return bool
      */
     public function isUtf()
     {
-        return (bool) $this->getConfigParam('iUtfMode');
+        if ($this->getConfigParam('iUtfMode') !== null) {
+            return (bool) $this->getConfigParam('iUtfMode');
+        }
+        return true;
     }
 
     /**

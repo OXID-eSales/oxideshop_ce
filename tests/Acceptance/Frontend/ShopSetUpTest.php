@@ -392,6 +392,8 @@ class ShopSetUpTest extends FrontendTestCase
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileIsMissing($setupSqlFile)
     {
+        $this->markTestIncomplete('Need to replace plain PHP function usage like rename or check if file exist to service from testing library');
+
         if ($setupSqlFile === self::EN_LANGUAGE_SQL_FILENAME) {
             $this->markTestSkipped('Skipping this case to match functionality from current Setup implementation.');
         }
@@ -434,6 +436,8 @@ class ShopSetUpTest extends FrontendTestCase
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileHasSyntaxError($setupSqlFile)
     {
+        $this->markTestIncomplete('Need to replace plain PHP function usage like rename or check if file exist to service from testing library');
+
         $this->includeSyntaxErrorToSetupSqlFile($setupSqlFile);
 
         $this->clearDatabase();

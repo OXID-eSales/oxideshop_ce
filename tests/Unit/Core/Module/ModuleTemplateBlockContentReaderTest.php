@@ -27,6 +27,10 @@ use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockContentReader;
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
+/**
+ * @group module
+ * @package Unit\Core\Module
+ */
 class ModuleTemplateBlockContentReaderTest extends UnitTestCase
 {
     public function testCanCreateClass()

@@ -21,6 +21,10 @@
  */
 namespace Unit\Core;
 
+/**
+ * @group module
+ * @package Unit\Core
+ */
 class ModuleFilesValidatorTest extends \OxidTestCase
 {
 

@@ -23,6 +23,10 @@ namespace Integration\Modules;
 
 require_once __DIR__ . '/BaseModuleTestCase.php';
 
+/**
+ * @group module
+ * @package Integration\Modules
+ */
 class ModuleWithNoMetadataSupportTest extends BaseModuleTestCase
 {
     public function testModulesWithoutMetadataShouldBeAddToCleanup()

@@ -28,6 +28,7 @@ require_once __DIR__ . '/BaseModuleTestCase.php';
 /**
  * Class VirtualNameSpaceClassMapTest
  *
+ * @group module
  * @package Integration\Modules
  */
 class VirtualNameSpaceClassMapTest extends BaseModuleTestCase

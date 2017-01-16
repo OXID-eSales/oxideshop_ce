@@ -26,6 +26,10 @@ use \testModuleSimilarName_parent;
 use \oxRegistry;
 use \oxTestModules;
 
+/**
+ * @group module
+ * @package Unit\Core\Smarty
+ */
 class ModuleSimilarClassTest extends \OxidTestCase
 {
 

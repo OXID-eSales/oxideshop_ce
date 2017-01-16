@@ -25,6 +25,10 @@ use OxidEsales\EshopCommunity\Core\ModuleVariablesLocator;
 use oxTestModules;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
+/**
+ * @group module
+ * @package Unit\Core
+ */
 class ModuleChainsGeneratorTest extends \OxidTestCase
 {
 

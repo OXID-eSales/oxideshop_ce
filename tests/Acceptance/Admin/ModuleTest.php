@@ -28,7 +28,11 @@ use OxidEsales\TestingLibrary\ServiceCaller;
 use OxidEsales\TestingLibrary\Services\Files\Remove;
 use OxidEsales\TestingLibrary\Services\Library\FileHandler;
 
-/** Admin interface functionality. */
+/**
+ * Admin interface functionality.
+ *
+ * @group module
+ */
 class ModuleTest extends AdminTestCase
 {
     /**

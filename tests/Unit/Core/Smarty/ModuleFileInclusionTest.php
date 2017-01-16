@@ -29,6 +29,8 @@ use \oxRegistry;
  * module class is registered for oxnew but was not yet instantialized
  * module file inclusion makes autoload mod_parent by including the same module file
  * thus in the end module class is created twice resulting in php fatal error
+ *
+ * @group module
  */
 class ModuleFileInclusionTest extends \OxidTestCase
 {

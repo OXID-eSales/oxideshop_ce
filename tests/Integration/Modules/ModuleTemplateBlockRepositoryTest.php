@@ -25,6 +25,10 @@ use oxDb;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository;
 
+/**
+ * @group module
+ * @package Integration\Modules
+ */
 class ModuleTemplateBlockRepositoryTest extends UnitTestCase
 {
     private $shopTemplateName = 'filename.tpl';

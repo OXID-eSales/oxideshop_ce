@@ -28,6 +28,10 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 require_once __DIR__ . '/BaseModuleTestCase.php';
 
+/**
+ * @group module
+ * @package Integration\Modules
+ */
 class OnlineModuleNotifierTest extends BaseModuleTestCase
 {
     /**

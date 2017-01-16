@@ -26,6 +26,10 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter;
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockContentReader;
 
+/**
+ * @group module
+ * @package Integration\Modules
+ */
 class ModuleTemplateBlockTest extends UnitTestCase
 {
     public function testGetContentForModuleTemplateBlock()

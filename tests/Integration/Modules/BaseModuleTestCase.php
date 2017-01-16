@@ -29,6 +29,8 @@ require_once __DIR__ . '/Environment.php';
 
 /**
  * Base class for module integration tests.
+ *
+ * @group module
  */
 abstract class BaseModuleTestCase extends \OxidTestCase
 {

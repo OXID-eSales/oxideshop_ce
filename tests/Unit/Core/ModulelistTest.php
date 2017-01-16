@@ -24,6 +24,10 @@ namespace Unit\Core;
 use \oxDb;
 use OxidEsales\EshopCommunity\Core\ModuleList;
 
+/**
+ * @group module
+ * @package Unit\Core
+ */
 class ModulelistTest extends \OxidTestCase
 {
 

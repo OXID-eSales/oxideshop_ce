@@ -25,6 +25,10 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter;
 use oxTestModules;
 
+/**
+ * @group module
+ * @package Unit\Core\Module
+ */
 class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
 {
     public function testCanCreateClass()

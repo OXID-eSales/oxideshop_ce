@@ -28,6 +28,10 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 use oxModuleList;
 use PHPUnit_Framework_MockObject_MockObject;
 
+/**
+ * @group module
+ * @package Unit\Core\Module
+ */
 class ModuleTemplatePathFormatterTest extends UnitTestCase
 {
     /**

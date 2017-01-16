@@ -24,6 +24,10 @@ namespace Unit\Core;
 use \shop;
 use \oxRegistry;
 
+/**
+ * @group module
+ * @package Unit\Core
+ */
 class ModuleTest extends \OxidTestCase
 {
     /**

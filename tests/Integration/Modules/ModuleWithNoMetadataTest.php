@@ -23,6 +23,10 @@ namespace Integration\Modules;
 
 use oxRegistry;
 
+/**
+ * @group module
+ * @package Integration\Modules
+ */
 class ModuleWithNoMetadataTest extends \OxidTestCase
 {
     /**

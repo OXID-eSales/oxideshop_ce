@@ -88,14 +88,16 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->loginAdmin("Administer Orders", "Orders");
         $this->clickAndWaitFrame("link=12", "edit");
         $this->openTab("Downloads");
-        $this->assertEquals("1002-1", $this->getText("//div[2]/table/tbody/tr[2]/td[1]"));
-        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//div[2]/table/tbody/tr[2]/td[2]"));
-        $this->assertEquals("testFile3", $this->getText("//div[2]/table/tbody/tr[2]/td[3]"));
-        $this->assertEquals("0000-00-00 00:00:00", $this->getText("//div[2]/table/tbody/tr[2]/td[4]"));
-        $this->assertEquals("0000-00-00 00:00:00", $this->getText("//div[2]/table/tbody/tr[2]/td[5]"));
-        $this->assertEquals("0", $this->getText("//div[2]/table/tbody/tr[2]/td[6]"));
-        $this->assertEquals("20", $this->getText("//div[2]/table/tbody/tr[2]/td[7]"));
-        $this->assertEquals("0", $this->getText("//div[2]/table/tbody/tr[2]/td[9]"));
+        $this->getElement("//tr[@id='file.1']/td[1]");
+        $firstDownloadableProductLocator = "//tr[@id='file.1']";
+        $this->assertEquals("1002-1", $this->getText("{$firstDownloadableProductLocator}/td[1]"));
+        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("$firstDownloadableProductLocator/td[2]"));
+        $this->assertEquals("testFile3", $this->getText("$firstDownloadableProductLocator/td[3]"));
+        $this->assertEquals("0000-00-00 00:00:00", $this->getText("$firstDownloadableProductLocator/td[4]"));
+        $this->assertEquals("0000-00-00 00:00:00", $this->getText("$firstDownloadableProductLocator/td[5]"));
+        $this->assertEquals("0", $this->getText("$firstDownloadableProductLocator/td[6]"));
+        $this->assertEquals("20", $this->getText("$firstDownloadableProductLocator/td[7]"));
+        $this->assertEquals("0", $this->getText("$firstDownloadableProductLocator/td[9]"));
         $this->openTab("Main");
         $this->click("link=Current Date");
         $this->clickAndWait("saveFormButton");
@@ -117,11 +119,11 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->loginAdmin("Administer Orders", "Orders");
         $this->clickAndWaitFrame("link=12", "edit");
         $this->openTab("Downloads");
-        $this->assertEquals("1002-1", $this->getText("//div[2]/table/tbody/tr[2]/td[1]"));
-        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//div[2]/table/tbody/tr[2]/td[2]"));
-        $this->assertEquals("testFile3", $this->getText("//div[2]/table/tbody/tr[2]/td[3]"));
-        $this->assertEquals("20", $this->getText("//div[2]/table/tbody/tr[2]/td[7]"));
-        $this->assertEquals("0", $this->getText("//div[2]/table/tbody/tr[2]/td[9]"));
+        $this->assertEquals("1002-1", $this->getText("$firstDownloadableProductLocator/td[1]"));
+        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("$firstDownloadableProductLocator/td[2]"));
+        $this->assertEquals("testFile3", $this->getText("$firstDownloadableProductLocator/td[3]"));
+        $this->assertEquals("20", $this->getText("$firstDownloadableProductLocator/td[7]"));
+        $this->assertEquals("0", $this->getText("$firstDownloadableProductLocator/td[9]"));
     }
 
     /**

@@ -450,7 +450,7 @@ class oxDb
      *
      * @throws oxConnectionException error while initiating connection to DB
      *
-     * @return oxLegacyDb
+     * @return DatabaseInterface
      */
     public static function getDb($iFetchMode = oxDb::FETCH_MODE_NUM)
     {

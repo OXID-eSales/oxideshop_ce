@@ -384,46 +384,81 @@ class ModuleInstaller extends \oxSuperCfg
     /**
      * Add module templates to database.
      *
-     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
+     * @deprecated please use setTemplateBlocks this method will be removed because
+     * the combination of deleting and adding does unnessery writes and so it does not scale 
+     * also it's more likely to get race conditions (in the moment the blocks are deleted)
      *
      * @param array  $moduleBlocks Module blocks array
      * @param string $moduleId     Module id
      */
     protected function _addTemplateBlocks($moduleBlocks, $moduleId)
     {
+        $this->setTemplateBlocks($moduleBlocks, $moduleId);
+    }
+
+    /**
+     * Set module templates in the database.
+     * we do not use delete and add combination because
+     * the combination of deleting and adding does unnessery writes and so it does not scale 
+     * also it's more likely to get race conditions (in the moment the blocks are deleted)
+     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
+     *
+     * @param array  $moduleBlocks Module blocks array
+     * @param string $moduleId     Module id
+     */
+    protected function setTemplateBlocks($moduleBlocks, $moduleId)
+    {
+        if (!is_array($moduleBlocks)) {
+            $moduleBlocks = array();
+        }
         $shopId = $this->getConfig()->getShopId();
         $db = oxDb::getDb();
 
-        if (is_array($moduleBlocks)) {
-            foreach ($moduleBlocks as $moduleBlock) {
-                $id = oxUtilsObject::getInstance()->generateUId();
+        $knownBlocks = [];
+        foreach ($moduleBlocks as $moduleBlock) {
+            $blockId = md5(json_encode($moduleBlock));
+            $knownBlocks[] = $blockId;
 
-                $template = $moduleBlock["template"];
-                $position = isset($moduleBlock['position']) && is_numeric($moduleBlock['position']) ?
-                    intval($moduleBlock['position']) : 1;
+            $template = $moduleBlock["template"];
+            $position = isset($moduleBlock['position']) && is_numeric($moduleBlock['position']) ?
+                intval($moduleBlock['position']) : 1;
 
-                $block = $moduleBlock["block"];
-                $filePath = $moduleBlock["file"];
+            $block = $moduleBlock["block"];
+            $filePath = $moduleBlock["file"];
 
-                $theme = isset($moduleBlock['theme']) ? $moduleBlock['theme'] : '';
+            $theme = isset($moduleBlock['theme']) ? $moduleBlock['theme'] : '';
 
-                $sql = "INSERT INTO `oxtplblocks` (`OXID`, `OXACTIVE`, `OXSHOPID`, `OXTHEME`, `OXTEMPLATE`, `OXBLOCKNAME`, `OXPOS`, `OXFILE`, `OXMODULE`)
-                         VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO `oxtplblocks` (`OXID`, `OXACTIVE`, `OXSHOPID`, `OXTHEME`, `OXTEMPLATE`, `OXBLOCKNAME`, `OXPOS`, `OXFILE`, `OXMODULE`)
+                     VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?)
+                     ON DUPLICATE KEY UPDATE
+                      `OXID` = VALUES(OXID),
+                      `OXACTIVE` = VALUES(OXACTIVE),
+                      `OXSHOPID` = VALUES(OXSHOPID),
+                      `OXTHEME`  = VALUES(OXTHEME),
+                      `OXTEMPLATE` = VALUES(OXTEMPLATE),
+                      `OXBLOCKNAME` = VALUES(OXBLOCKNAME),
+                      `OXPOS` = VALUES(OXPOS),
+                      `OXFILE` = VALUES(OXFILE),
+                      `OXMODULE` = VALUES(OXMODULE)
+                     ";
 
-                $db->execute($sql, array(
-                    $id,
-                    $shopId,
-                    $theme,
-                    $template,
-                    $block,
-                    $position,
-                    $filePath,
-                    $moduleId
-                ));
-            }
+            $db->execute($sql, array(
+                $blockId,
+                $shopId,
+                $theme,
+                $template,
+                $block,
+                $position,
+                $filePath,
+                $moduleId
+            ));
         }
+        $db->execute(
+            "DELETE FROM oxtplblocks WHERE OXSHOPID = ? AND OXMODULE = ? AND OXID NOT IN (?) ",
+            array($shopId, $moduleId, join(',', $db->quoteArray($knownBlocks)))
+        );
     }
-
+    
     /**
      * Add module files to config for auto loader.
      *

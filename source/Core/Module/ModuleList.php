@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunity\Core;
+namespace OxidEsales\EshopCommunity\Core\Module;
 
 use oxDb;
 use oxModuleCache;

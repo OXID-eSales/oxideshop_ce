@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\EshopCommunity\Core;
+namespace OxidEsales\EshopCommunity\Core\Module;
 
-use OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner;
+use OxidEsales\Eshop\Core\SettingsHandler;
 use oxModuleCache;
 use oxModule;
 use oxDb;
@@ -85,7 +85,7 @@ class ModuleInstaller extends \oxSuperCfg
      *
      * @return bool
      */
-    public function activate(\OxidEsales\EshopCommunity\Core\Module $oModule)
+    public function activate(\OxidEsales\EshopCommunity\Core\Module\Module $oModule)
     {
         $blResult = false;
         if ($sModuleId = $oModule->getId()) {
@@ -118,7 +118,7 @@ class ModuleInstaller extends \oxSuperCfg
      *
      * @return bool
      */
-    public function deactivate(\OxidEsales\EshopCommunity\Core\Module $oModule)
+    public function deactivate(\OxidEsales\EshopCommunity\Core\Module\Module $oModule)
     {
         $blResult = false;
         if ($sModuleId = $oModule->getId()) {
@@ -321,7 +321,7 @@ class ModuleInstaller extends \oxSuperCfg
      *
      * @param oxModule $oModule
      */
-    protected function _addExtensions(\OxidEsales\EshopCommunity\Core\Module $oModule)
+    protected function _addExtensions(\OxidEsales\EshopCommunity\Core\Module\Module $oModule)
     {
         $aModules = $this->_removeNotUsedExtensions($this->getModulesWithExtendedClass(), $oModule);
 

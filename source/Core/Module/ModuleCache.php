@@ -20,8 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunity\Core;
+namespace OxidEsales\EshopCommunity\Core\Module;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxModule;
 
 /**
@@ -42,7 +43,7 @@ class ModuleCache extends \oxSuperCfg
      *
      * @param oxModule $_oModule
      */
-    public function __construct(\OxidEsales\EshopCommunity\Core\Module $_oModule)
+    public function __construct(\OxidEsales\EshopCommunity\Core\Module\Module $_oModule)
     {
         $this->_oModule = $_oModule;
     }

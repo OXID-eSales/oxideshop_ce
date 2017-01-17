@@ -21,7 +21,7 @@
  */
 namespace Unit\Core;
 
-use OxidEsales\EshopCommunity\Core\ModuleVariablesLocator;
+use OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator;
 use oxTestModules;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 

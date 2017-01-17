@@ -22,7 +22,7 @@
 namespace Unit\Core;
 
 use \oxDb;
-use OxidEsales\EshopCommunity\Core\ModuleList;
+use OxidEsales\EshopCommunity\Core\Module\ModuleList;
 
 /**
  * @group module

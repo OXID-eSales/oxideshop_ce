@@ -24,6 +24,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use oxBase;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator;
+use OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator;
 use oxSystemComponentException;
 use oxUtilsObject;
 use ReflectionClass;

@@ -37,5 +37,5 @@ interface IModuleValidator
      *
      * @return bool
      */
-    public function validate(\OxidEsales\EshopCommunity\Core\Module $oModule);
+    public function validate(\OxidEsales\EshopCommunity\Core\Module\Module $oModule);
 }

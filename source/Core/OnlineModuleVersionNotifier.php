@@ -56,7 +56,7 @@ class OnlineModuleVersionNotifier
      * @param oxOnlineModuleVersionNotifierCaller $oCaller     Online module version notifier caller object
      * @param oxModuleList                        $oModuleList Module list object
      */
-    public function __construct(\OxidEsales\EshopCommunity\Core\OnlineModuleVersionNotifierCaller $oCaller, \OxidEsales\EshopCommunity\Core\ModuleList $oModuleList)
+    public function __construct(\OxidEsales\EshopCommunity\Core\OnlineModuleVersionNotifierCaller $oCaller, \OxidEsales\EshopCommunity\Core\Module\ModuleList $oModuleList)
     {
         $this->_oCaller = $oCaller;
         $this->_oModuleList = $oModuleList;

@@ -30,8 +30,6 @@ class ModuleInstallerTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -44,8 +42,6 @@ class ModuleInstallerTest extends \OxidTestCase
 
     /**
      * oxModuleInstaller::activate() test case, empty array
-     *
-     * @return null
      */
     public function testActivate()
     {
@@ -69,8 +65,6 @@ class ModuleInstallerTest extends \OxidTestCase
 
     /**
      * oxModuleInstaller::activate() test case, already activated
-     *
-     * @return null
      */
     public function testActivateActive()
     {
@@ -99,8 +93,6 @@ class ModuleInstallerTest extends \OxidTestCase
 
     /**
      * oxModuleInstaller::activate() test case, append to chain
-     *
-     * @return null
      */
     public function testActivateChain()
     {
@@ -195,7 +187,6 @@ class ModuleInstallerTest extends \OxidTestCase
     /**
      * Test for bug #5656
      * Checks if call order of protected methods is correct
-     *
      */
     public function testDeactivate_eventCalledBeforeDeactivating()
     {

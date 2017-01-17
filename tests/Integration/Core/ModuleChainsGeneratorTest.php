@@ -23,8 +23,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 
-use OxidEsales\EshopCommunity\Core\ModuleChainsGenerator;
-use OxidEsales\EshopCommunity\Core\ModuleVariablesLocator;
+use OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator;
+use OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
 

@@ -26,7 +26,6 @@
  * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  *
  */
-
-class oxModuleVariablesLocator extends \OxidEsales\Eshop\Core\ModuleVariablesLocator
+class oxModuleVariablesLocator extends \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator
 {
 }

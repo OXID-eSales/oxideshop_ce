@@ -561,5 +561,6 @@ class ModuleInstaller extends \oxSuperCfg
         if ($this->getModuleCache()) {
             $this->getModuleCache()->resetCache();
         }
+        ModuleVariablesLocator::resetModuleVariables();
     }
 }

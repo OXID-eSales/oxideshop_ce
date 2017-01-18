@@ -36,6 +36,7 @@ class Unit_Core_oxDynImgGeneratorTest extends OxidTestCase
     public function testGetInstance()
     {
         $this->assertTrue(oxDynImgGenerator::getInstance() instanceof oxDynImgGenerator);
+        $this->assertInstanceOf('oxDynImgGenerator', oxDynImgGenerator::getInstance());
     }
 
     /**
@@ -47,6 +48,25 @@ class Unit_Core_oxDynImgGeneratorTest extends OxidTestCase
     {
         $oGen = new oxDynImgGenerator();
         $this->assertEquals(isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : "", $oGen->UNITgetImageUri());
+    }
+
+    /**
+     * Testing image uri getter with double slashed URI
+     *
+     * @return null
+     */
+    public function testGetImageUriWithDoubleSlash()
+    {
+        $sRequestedImageUri = "/out/pictures//generated/path/to/test.jpg";
+        $sExpectedUri = "out/pictures/generated/path/to/test.jpg";
+
+        $sRequestUri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null;
+        $_SERVER['REQUEST_URI'] = $sRequestedImageUri;
+
+        $oGen = new oxDynImgGenerator();
+        $this->assertEquals($sExpectedUri, $oGen->UNITgetImageUri());
+
+        $_SERVER['REQUEST_URI'] = $sRequestUri;
     }
 
     /**

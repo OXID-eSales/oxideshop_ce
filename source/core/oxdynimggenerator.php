@@ -253,6 +253,7 @@ class oxDynImgGenerator
 
 
             $sReqImg = isset($_SERVER["REQUEST_URI"]) ? urldecode($_SERVER["REQUEST_URI"]) : "";
+            $sReqImg = str_replace('//', '/', $sReqImg);
             if (($iPos = strpos($sReqImg, $sReqPath)) !== false) {
                 $this->_sImageUri = substr($sReqImg, $iPos);
             }

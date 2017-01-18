@@ -162,7 +162,7 @@ class PluginSmartyOxPriceTest extends \OxidTestCase
         $oEmptyCurrency = new stdClass();
 
         return array(
-            array('', $oEURCurrency, ''),
+            array('', $oEURCurrency, '0,00 EUR'),
             array(null, $oUSDCurrency, ''),
             array(0, $oEURCurrency, '0,00 EUR'),
             array(0, $oEURCurrencyZero, '0 EUR'),

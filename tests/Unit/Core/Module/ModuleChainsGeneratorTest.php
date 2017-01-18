@@ -58,25 +58,7 @@ class ModuleChainsGeneratorTest extends \OxidTestCase
         $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array('getModuleVariable'), array(), '', false);
         $valueMap = array(
             array('aDisabledModules', array('moduleName')),
-            array('aModulePaths', array("moduleName" => "oe/moduleName")),
-        );
-        $moduleVariablesLocator->expects($this->any())->method('getModuleVariable')->will($this->returnValueMap($valueMap));
-
-        $moduleChainsGenerator = oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
-
-        $this->assertEquals($aModuleChainResult, $moduleChainsGenerator->filterInactiveExtensions($aModuleChain));
-    }
-
-    public function testGetActiveModuleChainIfDisabledWithoutPath()
-    {
-        $aModuleChain = array("moduleName/myorder");
-        $aModuleChainResult = array();
-
-        /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
-        $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array('getModuleVariable'), array(), '', false);
-        $valueMap = array(
-            array('aDisabledModules', array('moduleName')),
-            array('aModulePaths', array("moduleName2" => "oe/moduleName2")),
+            array('aModuleExtensions', array("moduleName" => array("oe/moduleName/myorder"))),
         );
         $moduleVariablesLocator->expects($this->any())->method('getModuleVariable')->will($this->returnValueMap($valueMap));
 

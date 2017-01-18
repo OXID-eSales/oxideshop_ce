@@ -140,7 +140,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $environment = new Environment();
         $environment->prepare($installModules);
 
-        $module = oxNew('oxModule');
+        $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
         $module->load($moduleName);
         $this->deactivateModule($module, $moduleId);
         $this->activateModule($module, $moduleId);
@@ -151,7 +151,267 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
         $price = oxNew('oxPrice');
         $this->assertFalse(is_a($price, $priceAsserts['class']), 'Price object class not as expected ' . get_class($price));
-        #$price = $this->assertPrice(array('factor' => 1));
+        $this->assertPrice(array('factor' => 1));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerClassChainWithActivationAndDeactivation()
+    {
+
+        return array(
+            array(
+
+                // modules to be activated during test preparation
+                array('without_own_module_namespace',
+                      'with_own_module_namespace'),
+
+                // module that will be activated/deactivated
+                'with_own_module_namespace',
+
+                /// module id
+                'EshopTestModuleOne',
+
+                // full class chain to assert
+                array(
+                    '0' => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
+                    '1' => 'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
+                ),
+
+                // active class chain to assert
+                array(
+                    '0' => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice'
+                )
+            ),
+            array(
+
+                // modules to be activated during test preparation
+                array('without_own_module_namespace',
+                      'with_own_module_namespace'),
+
+                // directory name of the module that will be activated/deactivated
+                'without_own_module_namespace',
+
+                /// module id  that will be activated/deactivated
+                'without_own_module_namespace',
+
+                // full class chain to assert
+                array(
+                    '0' => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
+                    '1' => 'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
+                ),
+
+                // active class chain to assert
+                array(
+                    '1' => 'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
+                )
+            ),
+
+        );
+    }
+
+    /**
+     * Tests if module was activated and then properly deactivated when we have two modules.
+     * NOTE: do not instantiate price and test, as we already have some class alias in this PHP instance from the
+     *       test above.
+     *
+     * @group module
+     *
+     * @dataProvider providerClassChainWithActivationAndDeactivation()
+     *
+     * @param array  $installModules              modules to be activated during test preparation
+     * @param string $nameOfModuleToBeDeactivated directory name of the module that will be activated/deactivated
+     * @param string $idOfModuleToBeDeactivated   id of the module that will be activated/deactivated
+     * @param array  $fullClassChainToAssert
+     * @param array  $classChainWithActiveModulesToAssert
+     */
+    public function testClassChainWithActivationAndDeactivation(
+        $installModules,
+        $nameOfModuleToBeDeactivated,
+        $idOfModuleToBeDeactivated,
+        $fullClassChainToAssert,
+        $classChainWithActiveModulesToAssert
+    )
+    {
+        $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
+
+        $this->setUpEnvironmentAndActivateModules($installModules, $nameOfModuleToBeDeactivated, $idOfModuleToBeDeactivated, $module);
+        $this->assertClassChain($fullClassChainToAssert, $fullClassChainToAssert);
+
+        $this->deactivateModule($module, $idOfModuleToBeDeactivated);
+
+        $this->assertClassChain($fullClassChainToAssert, $classChainWithActiveModulesToAssert);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerModuleActivationAndDeactivationUsesModulesMetadata()
+    {
+        $environmentAssertsWithModulesActive = array(
+            'blocks'          => array(),
+            'extend'          => array(
+                'payment'                                                         => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
+                'oxprice'                                                         => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
+                \OxidEsales\Eshop\Application\Controller\PaymentController::class => \OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController::class,
+                \OxidEsales\Eshop\Core\Price::class                               => \OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice::class
+            ),
+            'files'           => array(
+                'EshopTestModuleOne'           => array(),
+                'without_own_module_namespace' =>
+                    array('testmoduletwomodel'             => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php',
+                          'testmoduletwopaymentcontroller' => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController.php',
+                          'testmoduletwoprice'             => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice.php'
+                    )
+            ),
+            'settings'        => array(),
+            'disabledModules' => array(),
+            'templates'       => array(),
+            'versions'        => array(
+                'EshopTestModuleOne'           => '1.0.0',
+                'without_own_module_namespace' => '1.0.0',
+            ),
+            'events'          => array('EshopTestModuleOne' => null, 'without_own_module_namespace' => null)
+        );
+
+        return array(
+            // test case 1: module with namespaced classes get deactivated, module with plain classes stays active
+            array(
+
+                // modules to be activated during test preparation
+                array('without_own_module_namespace',
+                      'with_own_module_namespace'),
+
+                // module name which will be deactivated
+                'with_own_module_namespace',
+
+                /// module id which will be deactivated
+                'EshopTestModuleOne',
+
+                array(
+                    // environment asserts with both modules active
+                    $environmentAssertsWithModulesActive,
+
+                    // environment asserts with one the deactivated module
+                    array(
+                        'blocks'          => array(),
+                        'extend'          => array(
+                            'payment'                                                         => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
+                            'oxprice'                                                         => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
+                            \OxidEsales\Eshop\Application\Controller\PaymentController::class => \OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController::class,
+                            \OxidEsales\Eshop\Core\Price::class                               => \OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice::class
+                        ),
+                        'files'           => array(
+                            'without_own_module_namespace' =>
+                                array('testmoduletwomodel'             => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php',
+                                      'testmoduletwopaymentcontroller' => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController.php',
+                                      'testmoduletwoprice'             => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice.php'
+                                )
+                        ),
+                        'settings'        => array(),
+                        'disabledModules' => array('EshopTestModuleOne'),
+                        'templates'       => array(),
+                        'versions'        => array(
+                            'without_own_module_namespace' => '1.0.0'
+                        ),
+                        'events'          => array(
+                            'without_own_module_namespace' => null
+                        )
+                    )
+                ),
+            ),
+            // test case 2: module with plain classes get deactivated, module with namespace stays active
+            array(
+
+                // modules to be activated during test preparation
+                array('without_own_module_namespace',
+                      'with_own_module_namespace'),
+
+                // module name which will be deactivated
+                'without_own_module_namespace',
+
+                /// module id which will be deactivated
+                'without_own_module_namespace',
+
+                array(
+                    // environment asserts with both modules active
+                    $environmentAssertsWithModulesActive,
+
+                    // environment asserts with one the deactivated module
+                    array(
+                        'blocks'          => array(),
+                        'extend'          => array(
+                            'payment'                                                         => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
+                            'oxprice'                                                         => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
+                            \OxidEsales\Eshop\Application\Controller\PaymentController::class => \OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController::class,
+                            \OxidEsales\Eshop\Core\Price::class                               => \OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice::class
+                        ),
+                        'files'           => null,
+                        'settings'        => array(),
+                        'disabledModules' => array('without_own_module_namespace'),
+                        'templates'       => array(),
+                        'versions'        => array(
+                            'EshopTestModuleOne' => '1.0.0',
+                        ),
+                        'events'          => array(
+                            'EshopTestModuleOne' => null
+                        )
+                    )
+                ),
+            ),
+
+        );
+    }
+
+    /**
+     * @dataProvider providerModuleActivationAndDeactivationUsesModulesMetadata()
+     *
+     * @param array  $installModules              modules to be activated during test preparation
+     * @param string $nameOfModuleToBeDeactivated directory name of the module that will be activated/deactivated
+     * @param string $idOfModuleToBeDeactivated   id of the module that will be activated/deactivated
+     * @param array  $resultToAsserts             (array key 0 -> before, array key 1 -> after case)
+     */
+    public function testModuleActivationAndDeactivationUsesModulesMetadata($installModules, $nameOfModuleToBeDeactivated, $idOfModuleToBeDeactivated, $resultToAsserts)
+    {
+        $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
+
+        $this->setUpEnvironmentAndActivateModules($installModules, $nameOfModuleToBeDeactivated, $idOfModuleToBeDeactivated, $module);
+        $this->runAsserts($resultToAsserts[0]);
+
+        $this->deactivateModule($module, $idOfModuleToBeDeactivated);
+
+        $this->runAsserts($resultToAsserts[1]);
+    }
+
+    /**
+     * @param array  $installModules
+     * @param string $nameOfModuleToBeDeactivated
+     * @param string $idOfModuleToBeDeactivated
+     */
+    protected function setUpEnvironmentAndActivateModules($installModules, $nameOfModuleToBeDeactivated, $idOfModuleToBeDeactivated, $module)
+    {
+        $environment = new Environment();
+        $environment->prepare($installModules);
+
+
+        $module->load($nameOfModuleToBeDeactivated);
+        $this->deactivateModule($module, $idOfModuleToBeDeactivated);
+        $this->activateModule($module, $idOfModuleToBeDeactivated);
+    }
+
+    /**
+     * @param array  $fullClassChainToAssert
+     * @param array  $classChainWithActiveModulesToAssert
+     */
+    protected function assertClassChain($fullClassChainToAssert, $classChainWithActiveModulesToAssert)
+    {
+        $utilsObject = new TestUtilsObject;
+        $moduleChainsGenerator = $utilsObject->getTheModuleChainsGenerator();
+        $class = 'OxidEsales\Eshop\Core\Price';
+        $classAlias = 'oxprice';
+        $this->assertEquals($fullClassChainToAssert, $moduleChainsGenerator->getFullChain($class, $classAlias), "Full class chain not as expected");
+        $this->assertEquals($classChainWithActiveModulesToAssert, $moduleChainsGenerator->filterInactiveExtensions($fullClassChainToAssert), "Class chain of active modules not as expected");
     }
 
     /**
@@ -199,23 +459,63 @@ class ModuleNamespaceTest extends BaseModuleTestCase
     }
 
     /**
-     * Test ModuleChainsGenerator::cleanModuleFromClassChainByPath
+     * @return array
      */
-    public function testModuleChainsGenerator_cleanModuleFromClassChainByPath()
+    public function providerTestModuleChainsGenerator_cleanModuleFromClassChain()
+    {
+        return array(
+            array(
+                // modules id to be activated
+                'without_own_module_namespace',
+
+                // modules name to be activated
+                'without_own_module_namespace',
+
+                // full class chain to assert after module was activated
+                array(
+                    'without_own_module_namespace/Application/Model/TestModuleTwoPrice'
+                ),
+            ),
+            array(
+                // modules id to be activated
+                'with_own_module_namespace',
+
+                // modules name to be activated
+                'EshopTestModuleOne',
+
+                // full class chain to assert after module was activated
+                array(
+                    'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
+                ),
+            ),
+        );
+
+    }
+
+    /**
+     * Test ModuleChainsGenerator::cleanModuleFromClassChain
+     *
+     * @dataProvider providerTestModuleChainsGenerator_cleanModuleFromClassChain()
+     *
+     * @param string $moduleNameToBeActivated
+     * @param string $moduleIdToBeActivated
+     * @param array  $fullChainToAssert
+     */
+    public function testModuleChainsGenerator_cleanModuleFromClassChain(
+        $moduleNameToBeActivated,
+        $moduleIdToBeActivated,
+        $fullChainToAssert
+    )
     {
         $environment = new Environment();
-        $environment->prepare(array('without_own_module_namespace'));
-
-        $disabledModules = array('bla', 'foo', 'without_own_module_namespace');
-        $this->getConfig()->saveShopConfVar('aarr', 'aDisabledModules', $disabledModules);
+        $environment->prepare(array($moduleNameToBeActivated));
 
         $utilsObject = new TestUtilsObject;
         $chain = $utilsObject->getTheModuleChainsGenerator();
 
-        $fullChain = array('without_own_module_namespace/Application/Model/TestModuleTwoPrice');
-        $this->assertEquals($fullChain, $chain->getFullChain('OxidEsales\Eshop\Core\Price', 'oxprice'));
+        $this->assertEquals($fullChainToAssert, $chain->getFullChain('OxidEsales\Eshop\Core\Price', 'oxprice'));
 
-        $cleanedChain = $chain->cleanModuleFromClassChainByPath('without_own_module_namespace', $fullChain);
+        $cleanedChain = $chain->cleanModuleFromClassChain($moduleIdToBeActivated, $fullChainToAssert);
         $this->assertEquals(array(), $cleanedChain);
     }
 

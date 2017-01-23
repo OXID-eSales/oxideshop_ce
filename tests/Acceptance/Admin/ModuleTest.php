@@ -23,18 +23,13 @@
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
 use OxidEsales\Eshop\Application\Controller\ContentController;
-use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
-use OxidEsales\TestingLibrary\ServiceCaller;
-use OxidEsales\TestingLibrary\Services\Files\Remove;
-use OxidEsales\TestingLibrary\Services\Library\FileHandler;
-use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin interface functionality.
  *
  * @group module
  */
-class ModuleTest extends AdminTestCase
+class ModuleTest extends ModuleBaseTest
 {
     /**
      * Testing modules in vendor directory. Checking when any file with source code class of module is deleted.
@@ -119,10 +114,10 @@ class ModuleTest extends AdminTestCase
 
         $this->loginAdmin("Extensions", "Modules");
 
-        $this->activateModuleAndCheck("Test module #1");
-        $this->activateModuleAndCheck("Test module #2");
-        $this->activateModuleAndCheck("Test module #7");
-        $this->activateModuleAndCheck("Namespaced module #1");
+        $this->activateModule("Test module #1");
+        $this->activateModule("Test module #2");
+        $this->activateModule("Test module #7");
+        $this->activateModule("Namespaced module #1");
 
         //checking if module all entry is displayed
         $this->openTab("Installed Shop Modules");
@@ -176,7 +171,7 @@ class ModuleTest extends AdminTestCase
 
         $this->loginAdmin('Extensions', 'Modules');
         /** The metadata.php of module 'Invalid Namespaced Module #1' refers to 2 non loadable classes */
-        $this->activateModuleAndCheck('Invalid Namespaced Module #1');
+        $this->activateModule('Invalid Namespaced Module #1');
 
         //checking if all expected non loadable classes are displayed
         $this->openTab("Installed Shop Modules");
@@ -191,7 +186,6 @@ class ModuleTest extends AdminTestCase
         $this->assertTextNotPresent('NonExistentClass');
         $this->assertTextNotPresent('NonExistentFile');
     }
-
 
     /**
      * Test, that the module deactivation works in the non demo mode.
@@ -410,71 +404,5 @@ class ModuleTest extends AdminTestCase
         $this->selectMenu("Extensions", "Modules");
         $this->frame("edit");
         $this->assertTextPresent("oxid/test6/view/myinfo6");
-    }
-
-    protected function assertActivationButtonIsPresent()
-    {
-        $this->assertButtonIsPresent('Activate');
-    }
-
-    protected function assertDeactivationButtonIsPresent()
-    {
-        $this->assertButtonIsPresent('Deactivate');
-    }
-
-    protected function assertButtonIsPresent($buttonValue)
-    {
-        $this->assertElementPresent("//form[@id='myedit']//input[@value='{$buttonValue}']");
-    }
-
-    protected function assertActivationButtonIsNotPresent()
-    {
-        $this->assertButtonIsNotPresent('Activate');
-    }
-
-    protected function assertDeactivationButtonIsNotPresent()
-    {
-        $this->assertButtonIsNotPresent('Deactivate');
-    }
-
-    protected function assertButtonIsNotPresent($buttonValue)
-    {
-        $this->assertElementNotPresent("//form[@id='myedit']//input[@value='{$buttonValue}']");
-    }
-
-    protected function switchToDemoMode()
-    {
-        $this->callShopSC("oxConfig", null, null, array("blDemoShop" => array("type" => "bool", "value" => "true")));
-    }
-
-    protected function deleteModuleClass()
-    {
-        $oServiceCaller = new ServiceCaller($this->getTestConfig());
-        $oServiceCaller->setParameter(Remove::FILES_PARAMETER_NAME,
-            [
-                $this->getTestConfig()->getShopPath() . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . 'test1'
-                . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . 'test1content.php'
-            ]
-        );
-        $oServiceCaller->callService(Remove::class);
-    }
-
-    /**
-     * Method activates module and checks if module information is present.
-     *
-     * @param string $moduleTitle
-     */
-    protected function activateModuleAndCheck($moduleTitle)
-    {
-        $this->openListItem($moduleTitle);
-        $this->frame("edit");
-        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']", "list");
-        $this->waitForFrameToLoad('list');
-        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
-        $this->assertTextPresent($moduleTitle);
-        $this->assertTextPresent("1.0");
-        $this->assertTextPresent("OXID");
-        $this->assertTextPresent("-");
-        $this->assertTextPresent("-");
     }
 }

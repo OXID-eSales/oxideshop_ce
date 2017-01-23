@@ -29,7 +29,7 @@ use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
  *
  * @group module
  */
-class ModuleNamespaceTest extends AdminTestCase
+class ModuleControllersTest extends AdminTestCase
 {
     const TEST_NAMESPACE_MODULE_FOLDER = 'test_module_controller_routing_ns';
     const TEST_NAMESPACE_MODULE_TITLE = 'Test metadata_controllers_feature_ns';

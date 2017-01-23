@@ -32,7 +32,29 @@ class Environment
      *
      * @var int
      */
-    private $shopId;
+    protected $shopId;
+
+    /**
+     * Path to be used as sShopPath for testing
+     *
+     * @var string
+     */
+    protected $path = null;
+
+    /**
+     * Name of fixture directory containing the test modules
+     *
+     * @var string
+     */
+    protected $fixtureDirectory = 'TestData';
+
+    /**
+     *
+     */
+    public function __construct($path = __DIR__)
+    {
+        $this->path = $path;
+    }
 
     /**
      * Sets shop Id for modules environment.
@@ -125,9 +147,9 @@ class Environment
      *
      * @return string
      */
-    private function getPathToTestDataDirectory()
+    protected function getPathToTestDataDirectory()
     {
-        return realpath(__DIR__) . '/TestData/';
+        return realpath($this->path) . '/' . $this->fixtureDirectory  . '/';
     }
 
     /**
@@ -135,7 +157,7 @@ class Environment
      *
      * @return array
      */
-    private function getAllModules()
+    protected function getAllModules()
     {
         $aModules = array_diff(scandir($this->getPathToTestDataDirectory() . 'modules'), array('..', '.'));
 
@@ -145,7 +167,7 @@ class Environment
     /**
      * Loads config parameters from DB and sets to config.
      */
-    private function loadShopParameters()
+    protected function loadShopParameters()
     {
         $aParameters = array(
             'aModules', 'aModuleEvents', 'aModuleVersions', 'aModuleFiles', 'aDisabledModules', 'aModuleTemplates'
@@ -162,7 +184,7 @@ class Environment
      *
      * @return array
      */
-    private function _getConfigValueFromDB($sVarName)
+    protected function _getConfigValueFromDB($sVarName)
     {
         $oDb = oxDb::getDb();
         $sQuery = "SELECT " . oxRegistry::getConfig()->getDecodeValueQuery() . "

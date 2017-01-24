@@ -406,7 +406,7 @@ form fieldset {
 }
 
 .msgBox {
-    width: 400px;
+    min-width: 400px;
     min-height: 150px;
     background: #fff;
     border: 1px solid #ccc;

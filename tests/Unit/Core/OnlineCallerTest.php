@@ -23,8 +23,9 @@ namespace Unit\Core;
 
 use \oxCurl;
 use \Exception;
-use oxOnlineCaller;
-use oxOnlineRequest;
+use \oxOnlineCaller;
+use \oxOnlineRequest;
+use \oxTestModules;
 
 /**
  * Class Unit_Core_oxoOnlineCallerTest
@@ -52,6 +53,8 @@ class OnlineCallerTest extends \OxidTestCase
 
     public function testCallWhenFailsAndItsLastAllowedCall()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         /** @var oxOnlineCaller $oCaller */
         $oCaller = $this->getMockForAbstractClass(
             'oxOnlineCaller',
@@ -66,6 +69,8 @@ class OnlineCallerTest extends \OxidTestCase
 
     public function testCallWhenFailsAndThereAreNotAllowedCallsCount()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         $oEmail = $this->getMock('oxEmail', array('send'));
         // Email send function must be called.
         $oEmail->expects($this->once())->method('send')->will($this->returnValue(true));
@@ -87,6 +92,8 @@ class OnlineCallerTest extends \OxidTestCase
 
     public function testCallWhenStatusCodeIndicatesError()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         $oCurl = $this->getMock('oxCurl', array('execute', 'getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue('_testResult'));
         $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(500));
@@ -108,6 +115,8 @@ class OnlineCallerTest extends \OxidTestCase
      */
     public function testCallSetsTimeoutOptionForCurlExecution()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         // Arrange
         $curlDouble = new oxOnlineCallerOxCurlOptionDouble();
 

@@ -219,8 +219,6 @@ class Content extends \oxI18n implements \oxIUrl
      * Replace the "&amp;" into "&" and call base class.
      *
      * @param array $dbRecord database record
-     *
-     * @return null
      */
     public function assign($dbRecord)
     {

@@ -21,8 +21,11 @@
  */
 namespace Integration\OnlineInfo;
 
-use oxCurl;
-use oxRegistry;
+use \oxCurl;
+use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
+use \oxRegistry;
+use \oxSystemComponentException;
+use \oxTestModules;
 
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
@@ -38,6 +41,8 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
 {
     public function testRequestHandlingWithPositiveResponse()
     {
+        $this->stubExceptionToNotWriteToLog(SystemComponentException::class);
+
         $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam('blShopStopped', false);
         $oConfig->setConfigParam('sShopVar', '');
@@ -68,7 +73,9 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
 
     public function testRequestHandlingWithNegativeResponse()
     {
-        if (!$this->getTestConfig()->getShopEdition() != 'CE') {
+        $this->stubExceptionToNotWriteToLog(SystemComponentException::class);
+
+        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
             $this->markTestSkipped('This test is for Community edition only.');
         }
 
@@ -101,6 +108,8 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
 
     public function testRequestHandlingWithInvalidResponse()
     {
+        $this->stubExceptionToNotWriteToLog(SystemComponentException::class);
+
         $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam('blShopStopped', false);
         $oConfig->setConfigParam('sShopVar', '');

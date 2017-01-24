@@ -199,7 +199,6 @@ class UserBasket extends \oxBase
      *
      * @return oxUserBasketItem
      */
-
     protected function _createItem($sProductId, $aSelList = null, $aPersParams = null)
     {
         $oNewItem = oxNew('oxuserbasketitem');

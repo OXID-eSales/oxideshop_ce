@@ -165,6 +165,8 @@ class VoucherSerieMain extends \DynExportBase
 
     /**
      * Prepares Export
+     *
+     * @return null
      */
     public function start()
     {

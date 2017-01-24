@@ -156,7 +156,6 @@ class AttributeList extends \oxList
         }
     }
 
-
     /**
      * get category attributes by category Id
      *
@@ -165,7 +164,6 @@ class AttributeList extends \oxList
      *
      * @return object;
      */
-
     public function getCategoryAttributes($sCategoryId, $iLang)
     {
         $aSessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');

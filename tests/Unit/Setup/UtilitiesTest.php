@@ -261,6 +261,66 @@ class UtilitiesTest extends \OxidTestCase
     }
 
     /**
+     * @param string $testInput
+     * @param string $expectedValue
+     * @param string $explanationOnWhatIsChecked
+     *
+     * @dataProvider stripAnsiControlCodesDataProvider
+     */
+    public function testStripAnsiControlCodes($testInput, $expectedValue, $explanationOnWhatIsChecked)
+    {
+        $actualValue = Utilities::stripAnsiControlCodes($testInput);
+
+        $this->assertSame($expectedValue, $actualValue, "Test case which failed: $explanationOnWhatIsChecked");
+    }
+
+    public function stripAnsiControlCodesDataProvider()
+    {
+        return [
+            [
+                "Regular text with no ANSI controls",
+                "Regular text with no ANSI controls",
+                "No ANSI codes used",
+            ],
+            [
+                "Test of \e[1;31mcolored\e[0m text",
+                "Test of colored text",
+                "Red foreground color",
+            ],
+            [
+                "Test of \e[44mbackground\e[0m text",
+                "Test of background text",
+                "Blue background color",
+            ],
+            [
+                "Test of \e[1;31m\e[44mcolored background\e[0m text",
+                "Test of colored background text",
+                "Red foreground with blue background color",
+            ],
+            [
+                "\e[0m\e[0m\e[0m\e[0m",
+                "",
+                "ANSI control codes only, empty text",
+            ],
+            [
+                "\e[0ma\e[0m\n\e[0mb\e[0m",
+                "a\nb",
+                "ANSI control codes combined with new lines and simple text",
+            ],
+            [
+                "",
+                "",
+                "Empty string",
+            ],
+            [
+                null,
+                "",
+                "Null converted to empty string",
+            ]
+        ];
+    }
+
+    /**
      * Test helper for cleaning up files.
      */
     private function removeTestFile()

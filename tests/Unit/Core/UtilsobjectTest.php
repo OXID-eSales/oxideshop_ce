@@ -23,6 +23,7 @@ namespace Unit\Core;
 
 use \oxarticle;
 
+use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Core\UtilsObject;
 use \oxNewDummyUserModule_parent;
@@ -31,6 +32,7 @@ use \oemodulenameoxorder_parent;
 use \oxAttribute;
 use \oxRegistry;
 use oxUtilsObject;
+use \oxTestModules;
 
 class modOxUtilsObject_oxUtilsObject extends \oxUtilsObject
 {
@@ -206,6 +208,8 @@ class UtilsobjectTest extends \OxidTestCase
 
     public function testOxNewCreationOfNonExistingClass()
     {
+        $this->stubExceptionToNotWriteToLog(SystemComponentException::class,  SystemComponentException::class);
+
         $this->setExpectedException('oxSystemComponentException', 'EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
 
         oxNew("non_existing_class");

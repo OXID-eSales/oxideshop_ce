@@ -23,6 +23,7 @@ namespace Unit\Core;
 
 use \oxArticle;
 
+use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
 use \stdClass;
 use \oxField;
 use \oxTestModules;
@@ -102,6 +103,8 @@ class FunctionsTest extends \OxidTestCase
 
     public function testOxNew()
     {
+        $this->stubExceptionToNotWriteToLog(SystemComponentException::class, SystemComponentException::class);
+
         $oNew = oxNew('oxArticle');
         $this->assertTrue($oNew instanceof \OxidEsales\EshopCommunity\Application\Model\Article);
 

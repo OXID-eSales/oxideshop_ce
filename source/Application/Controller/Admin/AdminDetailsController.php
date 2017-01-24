@@ -66,6 +66,8 @@ class AdminDetailsController extends \oxAdminView
 
     /**
      * Get language id for documentation by current language id.
+     *
+     * @return int
      */
     protected function getDocumentationLanguageId()
     {

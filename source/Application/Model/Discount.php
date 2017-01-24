@@ -480,7 +480,7 @@ class Discount extends \oxI18n
         return oxDb::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '" . $this->getId() . "' and oxtype = 'oxcategories'");
     }
 
-    /*
+    /**
      * Increment the maximum value of oxsort found in the database by certain amount and return it.
      *
      * @param int $shopId The id of the current shop

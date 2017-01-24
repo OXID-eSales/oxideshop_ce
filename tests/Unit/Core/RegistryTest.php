@@ -80,6 +80,7 @@ class RegistryTest extends \OxidTestCase
         $oTest2 = Registry::get("testCase");
 
         $this->assertEquals("testPublicVal", $oTest2->testPublic);
+        Registry::set("testCase", null);
     }
 
     /**
@@ -113,6 +114,7 @@ class RegistryTest extends \OxidTestCase
     {
         Registry::set("testKey", "testVal");
         $this->assertTrue(in_array(strtolower("testKey"), Registry::getKeys()));
+        oxRegistry::set("testKey", null);
     }
 
     public function testUnset()

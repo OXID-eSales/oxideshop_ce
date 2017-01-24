@@ -21,12 +21,15 @@
  */
 namespace Integration\OnlineInfo;
 
-use oxCurl;
-use oxModule;
-use oxOnlineModuleVersionNotifier;
-use oxOnlineModuleVersionNotifierCaller;
-use oxRegistry;
-use oxSimpleXml;
+use \oxCurl;
+use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
+use \oxModule;
+use \oxOnlineModuleVersionNotifier;
+use \oxOnlineModuleVersionNotifierCaller;
+use \oxRegistry;
+use \oxSimpleXml;
+use \oxSystemComponentException;
+use \oxTestModules;
 
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
@@ -40,6 +43,8 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
 {
     public function testRequestFormation()
     {
+        $this->stubExceptionToNotWriteToLog(SystemComponentException::class);
+
         $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
         $sEdition = $oConfig->getEdition();

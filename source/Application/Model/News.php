@@ -65,8 +65,6 @@ class News extends \oxI18n
      * Assigns object data.
      *
      * @param string $dbRecord database record to be assigned
-     *
-     * @return null
      */
     public function assign($dbRecord)
     {

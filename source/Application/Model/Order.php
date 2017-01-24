@@ -285,8 +285,6 @@ class Order extends \oxBase
      * Assigns data, stored in DB to oxorder object
      *
      * @param mixed $dbRecord DB record
-     *
-     * @return null
      */
     public function assign($dbRecord)
     {

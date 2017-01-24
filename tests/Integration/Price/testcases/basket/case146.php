@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * Price enter mode: Brutto;
  * Price view mode: Brutto;
  * Product count: 4;
@@ -15,7 +15,7 @@
  *  1. Payment -;
  *  2. Delivery - ;
  *  3. TS -
- * Short description: 
+ * Short description:
  * Brutto-Brutto mode.
  * From basketCalc.csv: II order. With active currency rate.
  */
@@ -40,7 +40,7 @@ $aData = array(
                 'amount'                   => 39,
         ),
     ),
-   
+
     'expected' => array (
         'articles' => array (
                 9200 => array ( '59,16', '709,92' ),
@@ -56,10 +56,10 @@ $aData = array(
                 'grandTotal'  => '1.387,40'
         ),
     ),
-    'options' => array (    
+    'options' => array (
         'config' => array(
             'blEnterNetPrice' => false,
-            'blShowNetPrice' => false     
+            'blShowNetPrice' => false
         ),
         'activeCurrencyRate' => 0.68,
     ),

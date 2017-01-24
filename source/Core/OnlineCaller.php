@@ -46,6 +46,9 @@ abstract class OnlineCaller
     /** Amount of seconds for curl execution timeout. */
     const CURL_EXECUTION_TIMEOUT = 5;
 
+    /** Amount of seconds for curl connect timeout. */
+    const CURL_CONNECT_TIMEOUT = 3;
+
     /**
      * @var oxCurl
      */

@@ -346,6 +346,8 @@ class OrderRecalculationTest extends \OxidTestCase
     /**
      * Place order and simulate clicking admin->order_main.
      * Test case: vouchers applied. (20% off each) and purchase amount 20% off discount
+     *
+     * @group quarantine
      */
     public function testPlaceOrderWithPercentageVouchersPlusDiscountSaveOrderMainRecalculates()
     {

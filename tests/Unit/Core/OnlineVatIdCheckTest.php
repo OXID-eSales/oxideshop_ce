@@ -52,6 +52,8 @@ class OnlineVatIdCheckTest extends \OxidTestCase
 
     /**
      * Testing vat id online checker
+     *
+     * @group quarantine
      */
     public function testCheckOnlineWithGoodVatId()
     {
@@ -84,6 +86,8 @@ class OnlineVatIdCheckTest extends \OxidTestCase
 
     /**
      * Testing vat id online checker - with wrong vat id
+     *
+     * @group quarantine
      */
     public function testCheckOnlineWithWrongVatId()
     {
@@ -109,6 +113,8 @@ class OnlineVatIdCheckTest extends \OxidTestCase
 
     /**
      * Testing vat id online checker - with invalid vat id
+     *
+     * @group quarantine
      */
     public function testCheckOnlineWithInvalidVatId()
     {

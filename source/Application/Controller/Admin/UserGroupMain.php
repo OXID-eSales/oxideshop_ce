@@ -84,8 +84,6 @@ class UserGroupMain extends \oxAdminDetails
 
     /**
      * Saves changed usergroup parameters.
-     *
-     * @return mixed
      */
     public function save()
     {

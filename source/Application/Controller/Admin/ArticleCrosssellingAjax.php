@@ -182,7 +182,7 @@ class ArticleCrosssellingAjax extends \ajaxListComponent
     /**
      * Method is used to overload and add additional actions.
      *
-     * @var oxArticle $article
+     * @param oxArticle $article
      */
     protected function onArticleAddingToCrossSelling($article)
     {

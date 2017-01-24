@@ -1223,14 +1223,14 @@ class Config extends Base
 
         $langAbbr = '-';
         // false means skip language folder check
-        if ($langId !== false) {
-            $lang = Registry::getLang();
+        if ($lang !== false) {
+            $language = Registry::getLang();
 
-            if (is_null($langId)) {
-                $langId = $lang->getEditLanguage();
+            if (is_null($lang)) {
+                $lang = $language->getEditLanguage();
             }
 
-            $langAbbr = $lang->getLanguageAbbr($langId);
+            $langAbbr = $language->getLanguageAbbr($lang);
         }
 
         if (is_null($shop)) {
@@ -1250,7 +1250,7 @@ class Config extends Base
         // Check for custom template
         $customTheme = $this->getConfigParam('sCustomTheme');
         if (!$return && !$admin && !$ignoreCust && $customTheme && $customTheme != $theme) {
-            $return = $this->getDir($file, $dir, $admin, $langId, $shop, $customTheme, $absolute);
+            $return = $this->getDir($file, $dir, $admin, $lang, $shop, $customTheme, $absolute);
         }
 
         //test lang level ..
@@ -1260,12 +1260,12 @@ class Config extends Base
 
         //test shop level ..
         if (!$return && !$admin) {
-            $return = $this->getShopLevelDir($base, $absBase, $file, $dir, $admin, $langId, $shop, $theme, $absolute, $ignoreCust);
+            $return = $this->getShopLevelDir($base, $absBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreCust);
         }
 
         //test theme language level ..
         $path = "$theme/$langAbbr/$dir/$file";
-        if (!$return && $langId !== false && is_readable($absBase . $path)) {
+        if (!$return && $lang !== false && is_readable($absBase . $path)) {
             $return = $base . $path;
         }
 
@@ -1277,7 +1277,7 @@ class Config extends Base
 
         //test out language level ..
         $path = "$langAbbr/$dir/$file";
-        if (!$return && $langId !== false && is_readable($absBase . $path)) {
+        if (!$return && $lang !== false && is_readable($absBase . $path)) {
             $return = $base . $path;
         }
 
@@ -1722,7 +1722,12 @@ class Config extends Base
     public function getRevision()
     {
         $fileName = $this->getConfigParam('sShopDir') . "/pkg.rev";
-        $rev = trim(@file_get_contents($fileName));
+
+        $rev = false;
+
+        if (file_exists($fileName) && is_readable($fileName)) {
+            $rev = trim(file_get_contents($fileName));
+        }
 
         if (!$rev) {
             return false;
@@ -2046,14 +2051,17 @@ class Config extends Base
      *
      * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this method will be removed.
      *
-     * CAUTION: if you use this deprecated feature, you have to be sure, that there is a iUtfMode in your confi.inc.php,
-     *          otherwise the result of this method is probably always false.
+     * CAUTION: if you use this deprecated feature, you have to be sure, that there is a iUtfMode in your config.inc.php,
+     *          otherwise the result of this method is always true.
      *
-     * @return bool Cause the shop is only utf-8, we only return true here.
+     * @return bool
      */
     public function isUtf()
     {
-        return (bool) $this->getConfigParam('iUtfMode');
+        if ($this->getConfigParam('iUtfMode') !== null) {
+            return (bool) $this->getConfigParam('iUtfMode');
+        }
+        return true;
     }
 
     /**

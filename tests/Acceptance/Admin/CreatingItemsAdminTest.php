@@ -2247,6 +2247,7 @@ class CreatingItemsAdminTest extends AdminTestCase
      * creating News
      *
      * @group creatingitems
+     * @group quarantine
      */
     public function testCreateNews()
     {
@@ -2589,23 +2590,27 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertElementNotPresent("nav.page.2");
         $this->frame("edit");
         $this->clickCreateNewItem();
+
         $this->type("editval[oxactions__oxtitle]", "create_delete action");
         $this->check("editval[oxactions__oxactive]");
         $this->type("editval[oxactions__oxactivefrom]", "2010-01-01");
         $this->type("editval[oxactions__oxactiveto]", "2010-12-12");
         $this->select("editval[oxactions__oxtype]", "label=Action");
         $this->clickAndWaitFrame("save", 'edit');
+
         $this->assertEquals("create_delete action", $this->getValue("editval[oxactions__oxtitle]"));
         $this->assertEquals("on", $this->getValue("editval[oxactions__oxactive]"));
         $this->assertEquals("2010-01-01 00:00:00", $this->getValue("editval[oxactions__oxactivefrom]"));
         $this->assertEquals("2010-12-12 00:00:00", $this->getValue("editval[oxactions__oxactiveto]"));
         $this->clickAndWaitFrame("save", 'list');
+
         $this->assertEquals("Deutsch", $this->getSelectedLabel("test_editlanguage"));
         $this->type("editval[oxactions__oxtitle]", "create_delete action1");
         $this->type("editval[oxactions__oxactivefrom]", "2010-02-01 00:00:00");
         $this->type("editval[oxactions__oxactiveto]", "2010-12-31 00:00:00");
         $this->uncheck("editval[oxactions__oxactive]");
         $this->clickAndWaitFrame("save", 'list');
+
         $this->assertEquals("create_delete action1", $this->getValue("editval[oxactions__oxtitle]"));
         $this->assertEquals("2010-02-01 00:00:00", $this->getValue("editval[oxactions__oxactivefrom]"));
         $this->assertEquals("2010-12-31 00:00:00", $this->getValue("editval[oxactions__oxactiveto]"));

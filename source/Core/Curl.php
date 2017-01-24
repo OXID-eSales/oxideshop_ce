@@ -35,6 +35,9 @@ class Curl
     /** Curl option for setting the timeout of whole execution process. */
     const EXECUTION_TIMEOUT_OPTION = 'CURLOPT_TIMEOUT';
 
+    /** Curl option for setting the timeout for connect. */
+    const CONNECT_TIMEOUT_OPTION = 'CURLOPT_CONNECTTIMEOUT';
+
     /**
      * Curl instance.
      *

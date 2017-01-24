@@ -243,17 +243,27 @@ class ConfigTest extends \OxidTestCase
         return $res;
     }
 
-    public function testIsUtfWhenInUtfMode()
+    public function testIsUtfWhenInISOMode()
     {
         $config = $this->getMock('oxConfig', array('getConfigParam'));
         $config->expects($this->any())->method('getConfigParam')->with($this->equalTo('iUtfMode'))->will($this->returnValue(0));
         $this->assertFalse($config->isUtf());
     }
 
-    public function testIsUtfWhenInISOMode()
+    public function testIsUtfWhenInUtfMode()
     {
         $config = $this->getMock('oxConfig', array('getConfigParam'));
         $config->expects($this->any())->method('getConfigParam')->with($this->equalTo('iUtfMode'))->will($this->returnValue(1));
+        $this->assertTrue($config->isUtf());
+    }
+
+    /**
+     * This iUtfMode parameter was removed, as OXID eShop is UTF8 only since 6.0 version.
+     * So this method should return true.
+     */
+    public function testIsUtfWhenNoUtfModeDefined()
+    {
+        $config = oxNew('oxConfig');
         $this->assertTrue($config->isUtf());
     }
 
@@ -296,7 +306,8 @@ class ConfigTest extends \OxidTestCase
 
         /** @var DatabaseConnectionException $oEx */
         $previousException = new \Exception();
-        $oEx = new DatabaseConnectionException('', 0, $previousException);
+        $oEx = $this->getMock(DatabaseConnectionException::class, ['debugOut'], ['', 0, $previousException]);
+        $oEx->expects($this->any())->method('debugOut');
 
         /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utilsMock */
         $utilsMock = $this->getMock('oxUtils', array('showMessageAndExit'));
@@ -2358,14 +2369,10 @@ class ConfigTest extends \OxidTestCase
      */
     public function testInit_noValuesFromConfig()
     {
-        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utilsMock */
-        $utilsMock = $this->getMock('oxUtils', array('showMessageAndExit'));
-        $utilsMock->expects($this->once())->method('showMessageAndExit');
-        oxRegistry::set('oxUtils', $utilsMock);
-
         /** @var oxconfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
-        $oConfig = $this->getMock("oxConfig", array("_loadVarsFromDb"));
+        $oConfig = $this->getMock('oxConfig', array('_loadVarsFromDb', '_handleDbConnectionException'));
         $oConfig->expects($this->once())->method('_loadVarsFromDb')->will($this->returnValue(false));
+        $oConfig->expects($this->once())->method('_handleDbConnectionException');
         $oConfig->setConfigParam('iDebug', -1);
 
         $oConfig->init();
@@ -2376,14 +2383,10 @@ class ConfigTest extends \OxidTestCase
      */
     public function testInit_noShopId()
     {
-        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utilsMock */
-        $utilsMock = $this->getMock('oxUtils', array('showMessageAndExit'));
-        $utilsMock->expects($this->once())->method('showMessageAndExit');
-        oxRegistry::set('oxUtils', $utilsMock);
-
         /** @var oxconfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
-        $oConfig = $this->getMock("oxConfig", array("getShopId"));
+        $oConfig = $this->getMock('oxConfig', array('getShopId', '_handleDbConnectionException'));
         $oConfig->expects($this->once())->method('getShopId')->will($this->returnValue(false));
+        $oConfig->expects($this->once())->method('_handleDbConnectionException');
         $oConfig->setConfigParam('iDebug', -1);
 
         $oConfig->init();

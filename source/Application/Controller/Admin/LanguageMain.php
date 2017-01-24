@@ -512,7 +512,7 @@ class LanguageMain extends \oxAdminDetails
     /**
      * Add exception to be displayed in frontend.
      *
-     * @param $message Language constant
+     * @param string $message Language constant
      */
     protected function addDisplayException($message)
     {

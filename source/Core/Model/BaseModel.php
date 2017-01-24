@@ -1551,8 +1551,9 @@ class BaseModel extends \oxSuperCfg
 
     /**
      * adds and activefrom/activeto to the query
-     * @param $query
-     * @param $tableName
+     *
+     * @param string $query
+     * @param string $tableName
      *
      * @return string
      */

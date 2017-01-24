@@ -209,6 +209,7 @@ namespace OxidEsales\EshopCommunity\Core {
                 $reqPath = 'out/pictures/generated';
 
                 $reqImg = isset($_SERVER["REQUEST_URI"]) ? urldecode($_SERVER["REQUEST_URI"]) : "";
+                $reqImg = str_replace('//', '/', $reqImg);
                 if (($pos = strpos($reqImg, $reqPath)) !== false) {
                     $this->_sImageUri = substr($reqImg, $pos);
                 }

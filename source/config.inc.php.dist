@@ -35,7 +35,7 @@
 
     // Shop directory information
     $this->sShopDir     = '<sShopDir>';
-    $this->sCompileDir  = '<sCompileDir>';
+    $this->sCompileDir  = '<sCompileDir>'; // Folder to store compiled files, required
 
     // Location of composer's vendor directory.
     $this->vendorDirectory = __DIR__ . '/../vendor';

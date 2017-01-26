@@ -163,7 +163,7 @@ class ModuleFilesValidator implements \oxIModuleValidator
     /**
      * Check if path has directory separator at the end. Add it if needed.
      *
-     * @param strig $sPathToModuleDirectory Module directory pat
+     * @param string $sPathToModuleDirectory Module directory pat
      *
      * @return string
      */

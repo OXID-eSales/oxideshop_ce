@@ -72,11 +72,13 @@ class OnlineModuleNotifierTest extends BaseModuleTestCase
         $modules->module = array();
 
         $aModulesInfo = array();
+        $aModulesInfo[] = array('id' => null, 'version' => null, 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'extending_1_class', 'version' => '1.0', 'activeInShop' => array($sShopUrl));
         $aModulesInfo[] = array('id' => 'extending_1_class_3_extensions', 'version' => '1.0', 'activeInShop' => array($sShopUrl));
         $aModulesInfo[] = array('id' => 'extending_3_blocks', 'version' => '1.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'extending_3_classes', 'version' => '1.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'extending_3_classes_with_1_extension', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'metadata_controllers_feature', 'version' => '1.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'no_extending', 'version' => '1.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'virtualnamespace_module1', 'version' => '1.0.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'virtualnamespace_module2', 'version' => '1.0.0', 'activeInShop' => array());

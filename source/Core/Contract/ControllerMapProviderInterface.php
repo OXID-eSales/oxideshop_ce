@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Core\Contract;
  * Those controllers are specified e.g. inside a form action with a controller key which is mapped to its class.
  *
  */
-interface ControllerProviderInterface
+interface ControllerMapProviderInterface
 {
     /**
      * Get all controller keys and their assigned classes

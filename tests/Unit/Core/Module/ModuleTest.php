@@ -21,6 +21,8 @@
  */
 namespace Unit\Core;
 
+use OxidEsales\Eshop\Core\Module\Module;
+use oxModule;
 use \shop;
 use \oxRegistry;
 
@@ -602,6 +604,119 @@ class ModuleTest extends \OxidTestCase
         $oModule->setModuleData($aModule);
 
         $this->assertEquals(array(), $oModule->getFiles());
+    }
+
+    /**
+     * @covers Module::getControllers()
+     */
+    public function testGetControllersWithMissingControllersKey() {
+        $metaData = array(
+            'id' => 'testModuleId'
+        );
+
+        $module = oxNew(Module::class);
+        $module->setModuleData($metaData);
+
+        $this->assertEquals(array(), $module->getControllers(), 'If key controllers is not set in metadata.php, Module::getControllers() will return an empty array');
+    }
+
+    /**
+     * @covers Module::getControllers()
+     *
+     * @dataProvider dataProviderTestGetControllersWithExistingControllers
+     *
+     * @param $metaDataControllers
+     * @param $expectedResult
+     * @param $message
+     */
+    public function testGetControllersWithExistingControllers($metaDataControllers, $expectedResult, $message) {
+        $expectedControllers = ['controller_id' => 'ControllerName'];
+
+        $metaData = array(
+            'id' => 'testModuleId',
+            'controllers' => $metaDataControllers
+        );
+
+        $module = oxNew(Module::class);
+        $module->setModuleData($metaData);
+
+        $this->assertEquals($expectedResult, $module->getControllers(), $message);
+    }
+
+    public function dataProviderTestGetControllersWithExistingControllers() {
+        return [
+            [
+                'metaDataControllers' => ['controller_id' => 'ControllerName'],
+                'expectedResult' => ['controller_id' => 'ControllerName'],
+                'message' => 'Controller value is not converted to lowercase'
+            ],
+            [
+                'metaDataControllers' => ['Controller_Id' => 'ControllerName'],
+                'expectedResult' => ['controller_id' => 'ControllerName'],
+                'message' => 'Controller Id is converted to lowercase'
+            ],
+            [
+                'metaDataControllers' => [],
+                'expectedResult' => [],
+                'message' => 'An empty array is returned, if controllers is an empty array'
+            ],
+            [
+                'metaDataControllers' => null,
+                'expectedResult' => [],
+                'message' => 'An empty array is returned, if controllers is null'
+            ],
+        ];
+    }
+
+    /**
+     * If the value for key controllers in metadata.php is set, but not an array an exception will be thrown
+     *
+     * @covers Module::getControllers()
+     *
+     * @dataProvider dataProviderTestGetControllersWithWrongMetadataValue
+     *
+     * @param $metaDataControllers
+     * @param $expectedException
+     */
+    public function testGetControllersWithWrongMetadataValue($metaDataControllers, $expectedException) {
+        $this->setExpectedException($expectedException);
+        $metaData = array(
+            'id' => 'testModuleId',
+            'controllers' => $metaDataControllers
+        );
+
+        $module = oxNew(Module::class);
+        $module->setModuleData($metaData);
+
+        $module->getControllers();
+    }
+
+    public function dataProviderTestGetControllersWithWrongMetadataValue () {
+
+        $expectedException = \InvalidArgumentException::class;
+
+        return [
+          [
+              'metaDataControllers' => false,
+              'expectedException' => $expectedException
+          ],
+          [
+              'metaDataControllers' => '',
+              'expectedException' => $expectedException
+          ],
+          [
+              'metaDataControllers' => 'string',
+              'expectedException' => $expectedException
+          ],
+          [
+              'metaDataControllers' => 1,
+              'expectedException' => $expectedException
+          ],
+          [
+              'metaDataControllers' => new \stdClass(),
+              'expectedException' => $expectedException
+          ],
+        ];
     }
 
     /**

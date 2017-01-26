@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use oxModule;
+use OxidEsales\EshopCommunity\Core\Module\Module;
 
 /**
  * Class responsible for cleaning not used extensions for module which is going to be activated.
@@ -33,16 +33,17 @@ use oxModule;
  */
 class ModuleExtensionsCleaner
 {
+
     /**
      * Removes garbage ( module not used extensions ) from all installed extensions list.
      * For example: some classes were renamed, so these should be removed.
      *
-     * @param array    $installedExtensions
-     * @param oxModule $module
+     * @param array  $installedExtensions
+     * @param Module $module
      *
      * @return array
      */
-    public function cleanExtensions($installedExtensions, oxModule $module)
+    public function cleanExtensions($installedExtensions, Module $module)
     {
         $moduleExtensions = $module->getExtensions();
 

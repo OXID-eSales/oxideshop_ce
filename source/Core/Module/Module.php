@@ -35,6 +35,27 @@ class Module extends \oxSuperCfg
 {
 
     /**
+     * Metadata version as defined in metadata.php
+     */
+    protected $metaDataVersion;
+
+    /**
+     * @return mixed
+     */
+    public function getMetaDataVersion()
+    {
+        return $this->metaDataVersion;
+    }
+
+    /**
+     * @param mixed $metaDataVersion
+     */
+    public function setMetaDataVersion($metaDataVersion)
+    {
+        $this->metaDataVersion = $metaDataVersion;
+    }
+
+    /**
      * Modules info array
      *
      * @var array
@@ -66,6 +87,16 @@ class Module extends \oxSuperCfg
     }
 
     /**
+     * Get the modules metadata array
+     *
+     * @return  array Module meta data array
+     */
+    public function getModuleData()
+    {
+        return $this->_aModule;
+    }
+
+    /**
      * Load module info
      *
      * @param string $sModuleId Module ID
@@ -78,9 +109,7 @@ class Module extends \oxSuperCfg
         $sMetadataPath = $sModulePath . "/metadata.php";
 
         if ($sModulePath && file_exists($sMetadataPath) && is_readable($sMetadataPath)) {
-            $aModule = array();
-            include $sMetadataPath;
-            $this->_aModule = $aModule;
+            $this->includeModuleMetaData($sMetadataPath);
             $this->_blRegistered = true;
             $this->_blMetadata = true;
             $this->_aModule['active'] = $this->isActive();
@@ -157,6 +186,20 @@ class Module extends \oxSuperCfg
     public function getExtensions()
     {
         return isset($this->_aModule['extend']) ? $this->_aModule['extend'] : array();
+    }
+
+    /**
+     * Returns associative array of module controller ids and corresponding classes.
+     *
+     * @return array
+     */
+    public function getControllers()
+    {
+        if (isset($this->_aModule['controllers']) && ! is_array($this->_aModule['controllers'])) {
+            throw new \InvalidArgumentException('Value for metadata key "controllers" must be an array');
+        }
+
+        return isset($this->_aModule['controllers']) ? array_change_key_case($this->_aModule['controllers']) : array();
     }
 
     /**
@@ -477,5 +520,27 @@ class Module extends \oxSuperCfg
     protected function _isInDisabledList($sId)
     {
         return in_array($sId, (array) $this->getConfig()->getConfigParam('aDisabledModules'));
+    }
+
+    /**
+     * Include data from metadata.php
+     *
+     * @param string $sMetadataPath
+     */
+    protected function includeModuleMetaData($sMetadataPath)
+    {
+        include $sMetadataPath;
+        /**
+         * Metadata should include a variable called $aModule, if this variable is not set,
+         * an empty array is assigned to self::aModule
+         */
+        if (!isset($aModule)) {
+            $aModule = array();
+        }
+        $this->setModuleData($aModule);
+
+        if (isset($sMetadataVersion)) {
+            $this->setMetaDataVersion($sMetadataVersion);
+        }
     }
 }

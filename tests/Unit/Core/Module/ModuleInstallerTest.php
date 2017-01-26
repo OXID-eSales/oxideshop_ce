@@ -21,6 +21,9 @@
  */
 namespace Unit\Core;
 
+use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\Eshop\Core\Module\ModuleInstaller;
+
 /**
  * @group module
  * @package Unit\Core
@@ -200,4 +203,50 @@ class ModuleInstallerTest extends \OxidTestCase
         $oModuleInstaller->deactivate($oModule);
     }
 
+    /**
+     * Ensure that addModuleControllers is called on module activation
+     *
+     * @covers ModuleInstaller::addModuleControllers()
+     */
+    public function testModuleInstallerActivateCallsAddModuleControllers () {
+        $moduleMock = $this->getMock(Module::class, ['getId','getMetaDataVersion']);
+        $moduleMock->expects($this->any())->method('getId')->will($this->returnValue('test'));
+        $moduleMock->expects($this->any())->method('getMetaDataVersion')->will($this->returnValue('2.0'));
+
+        $moduleInstaller = $this->getMock(ModuleInstaller::class, ['addModuleControllers']);
+        $moduleInstaller->expects($this->once())->method('addModuleControllers');
+
+        $moduleInstaller->activate($moduleMock);
+    }
+
+    /**
+     * Ensure that addModuleControllers is not called, if metaDataVersion is too low
+     *
+     * @covers ModuleInstaller::addModuleControllers()
+     */
+    public function testModuleInstallerActivateCallsAddModuleControllersChecksMetaDataVersion () {
+        $moduleMock = $this->getMock(Module::class, ['getId','getMetaDataVersion']);
+        $moduleMock->expects($this->any())->method('getId')->will($this->returnValue('test'));
+        $moduleMock->expects($this->any())->method('getMetaDataVersion')->will($this->returnValue('1.1'));
+
+        $moduleInstaller = $this->getMock(ModuleInstaller::class, ['addModuleControllers']);
+        $moduleInstaller->expects($this->never())->method('addModuleControllers');
+
+        $moduleInstaller->activate($moduleMock);
+    }
+
+    /**
+     * Ensure that deleteModuleControllers is called on module deactivation
+     *
+     * @covers @covers ModuleInstaller::deleteModuleControllers()
+     */
+    public function testModuleInstallerDeActivateCallsDeleteModuleControllers () {
+        $module = $this->getMock(Module::class, array('getId'));
+        $module->expects($this->any())->method('getId')->will($this->returnValue('test'));
+
+        $moduleInstaller = $this->getMock(ModuleInstaller::class, ['deleteModuleControllers']);
+        $moduleInstaller->expects($this->once())->method('deleteModuleControllers');
+
+        $moduleInstaller->deactivate($module);
+    }
 }

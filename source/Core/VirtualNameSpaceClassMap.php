@@ -437,13 +437,15 @@ class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\C
             'OxidEsales\Eshop\Core\CompanyVatInValidator' => \OxidEsales\EshopCommunity\Core\CompanyVatInValidator::class,
             'OxidEsales\Eshop\Core\Config' => \OxidEsales\EshopCommunity\Core\Config::class,
             'OxidEsales\Eshop\Core\ConfigFile' => \OxidEsales\EshopCommunity\Core\ConfigFile::class,
+            'OxidEsales\Eshop\Core\Contract\ClassNameResolverInterface' => \OxidEsales\EshopCommunity\Core\Contract\ClassNameResolverInterface::class,
+            'OxidEsales\Eshop\Core\Contract\ClassProviderStorageInterface' => \OxidEsales\EshopCommunity\Core\Contract\ClassProviderStorageInterface::class,
+            'OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface' => \OxidEsales\EshopCommunity\Core\Contract\ControllerMapProviderInterface::class,
             'OxidEsales\Eshop\Core\Contract\IConfigurable' => \OxidEsales\EshopCommunity\Core\Contract\IConfigurable::class,
             'OxidEsales\Eshop\Core\Contract\ICountryAware' => \OxidEsales\EshopCommunity\Core\Contract\ICountryAware::class,
             'OxidEsales\Eshop\Core\Contract\IDisplayError' => \OxidEsales\EshopCommunity\Core\Contract\IDisplayError::class,
             'OxidEsales\Eshop\Core\Contract\IModuleValidator' => \OxidEsales\EshopCommunity\Core\Contract\IModuleValidator::class,
             'OxidEsales\Eshop\Core\Contract\ISelectList' => \OxidEsales\EshopCommunity\Core\Contract\ISelectList::class,
             'OxidEsales\Eshop\Core\Contract\IUrl' => \OxidEsales\EshopCommunity\Core\Contract\IUrl::class,
-            'OxidEsales\Eshop\Core\Contract\ClassNameResolverInterface' => \OxidEsales\EshopCommunity\Core\Contract\ClassNameResolverInterface::class,
             'OxidEsales\Eshop\Core\Controller\BaseController' => \OxidEsales\EshopCommunity\Core\Controller\BaseController::class,
             'OxidEsales\Eshop\Core\Counter' => \OxidEsales\EshopCommunity\Core\Counter::class,
             'OxidEsales\Eshop\Core\CreditCardValidator' => \OxidEsales\EshopCommunity\Core\CreditCardValidator::class,
@@ -527,6 +529,10 @@ class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\C
             'OxidEsales\Eshop\Core\PriceList' => \OxidEsales\EshopCommunity\Core\PriceList::class,
             'OxidEsales\Eshop\Core\Registry' => \OxidEsales\EshopCommunity\Core\Registry::class,
             'OxidEsales\Eshop\Core\Request' => \OxidEsales\EshopCommunity\Core\Request::class,
+            'OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver' => \OxidEsales\EshopCommunity\Core\Routing\ControllerClassNameResolver::class,
+            'OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider' => \OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider::class,
+            'OxidEsales\Eshop\Core\Routing\Module\ClassProviderStorage' => \OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage::class,
+            'OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider' => \OxidEsales\EshopCommunity\Core\Routing\ShopControllerMapProvider::class,
             'OxidEsales\Eshop\Core\SeoDecoder' => \OxidEsales\EshopCommunity\Core\SeoDecoder::class,
             'OxidEsales\Eshop\Core\SeoEncoder' => \OxidEsales\EshopCommunity\Core\SeoEncoder::class,
             'OxidEsales\Eshop\Core\SepaBICValidator' => \OxidEsales\EshopCommunity\Core\SepaBICValidator::class,
@@ -572,9 +578,7 @@ class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\C
             'OxidEsales\Eshop\Core\ViewHelper\StyleRenderer' => \OxidEsales\EshopCommunity\Core\ViewHelper\StyleRenderer::class,
             'OxidEsales\Eshop\Core\VirtualNameSpaceClassMap' => \OxidEsales\EshopCommunity\Core\VirtualNameSpaceClassMap::class,
             'OxidEsales\Eshop\Core\WidgetControl' => \OxidEsales\EshopCommunity\Core\WidgetControl::class,
-            'OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver' => \OxidEsales\EshopCommunity\Core\Routing\ControllerClassNameResolver::class,
-            'OxidEsales\Eshop\Core\Routing\ModuleControllerProvider' => \OxidEsales\EshopCommunity\Core\Routing\ModuleControllerProvider::class,
-            'OxidEsales\Eshop\Core\Routing\ShopControllerProvider' => \OxidEsales\EshopCommunity\Core\Routing\ShopControllerProvider::class
+
         ];
     }
 

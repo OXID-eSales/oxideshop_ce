@@ -19,10 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
-
 namespace OxidEsales\EshopCommunity\Core\Routing;
 
-use OxidEsales\EshopCommunity\Core\Contract\ControllerProviderInterface;
+use OxidEsales\EshopCommunity\Core\Contract\ControllerMapProviderInterface;
 
 /**
  * This class determines the controllers which should be allowed to be called directly via
@@ -32,7 +31,7 @@ use OxidEsales\EshopCommunity\Core\Contract\ControllerProviderInterface;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ShopControllerProvider implements ControllerProviderInterface
+class ShopControllerMapProvider implements ControllerMapProviderInterface
 {
 
     private $controllerMap = [

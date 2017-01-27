@@ -1437,17 +1437,17 @@ class Utils extends \oxSuperCfg
      *
      * @return bool
      */
-    public function writeToLog($sLogMessage, $sLogFileName)
+    public function writeToLog($logMessage, $logFileName)
     {
-        $sLogDist = $this->getConfig()->getLogsDir() . $sLogFileName;
-        $blOk = false;
+        $logFilePath = $this->getConfig()->getLogsDir() . $logFileName;
+        $writeSucceed = false;
 
-        if (($oHandle = fopen($sLogDist, 'a')) !== false) {
-            fwrite($oHandle, $sLogMessage);
-            $blOk = fclose($oHandle);
+        if (($logFileResource = fopen($logFilePath, 'a')) !== false) {
+            fwrite($logFileResource, $logMessage);
+            $writeSucceed = fclose($logFileResource);
         }
 
-        return $blOk;
+        return $writeSucceed;
     }
 
     /**

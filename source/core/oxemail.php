@@ -388,7 +388,7 @@ class oxEmail extends PHPMailer
 
         if ($this->_getUseInlineImages()) {
             $this->_includeImages(
-                $myConfig->getImageDir(), $myConfig->getImageUrl(false, false), $myConfig->getPictureUrl(null, false),
+                $myConfig->getImageUrl(false), $myConfig->getImageUrl(false, false), $myConfig->getPictureUrl(null, false),
                 $myConfig->getImageDir(), $myConfig->getPictureDir(false)
             );
         }

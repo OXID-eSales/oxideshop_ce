@@ -550,7 +550,7 @@ class OrderarticleTest extends \OxidTestCase
     public function testUpdateArticleStock()
     {
         $oDB = oxDb::getDB();
-        $oDB->getOne("update oxarticles set oxtimestamp = '2005-03-24 14:33:53' where oxid = '_testArticleId'");
+        $oDB->execute("update oxarticles set oxtimestamp = '2005-03-24 14:33:53' where oxid = '_testArticleId'");
         $this->_oOrderArticle->updateArticleStock(-3, false);
 
         $oArticle = oxNew("oxArticle");

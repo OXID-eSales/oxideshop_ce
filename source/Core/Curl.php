@@ -385,7 +385,13 @@ class Curl
         if (!is_null($this->getHeader())) {
             $this->_setOpt(CURLOPT_HTTPHEADER, $this->getHeader());
         }
-        $this->_setOpt(CURLOPT_URL, $this->getUrl());
+        $url = $this->getUrl();
+        $this->_setOpt(CURLOPT_URL, $url);
+        $proxyParts = $this->getProxyForUrl($url);
+        if ($proxyParts) {
+            $this->_setOpt(CURLOPT_PROXY, $proxyParts['host']);
+            $this->_setOpt(CURLOPT_PROXYPORT, $proxyParts['port']);
+        }
 
         if ($this->getMethod() == "POST") {
             $this->_setOpt(CURLOPT_POST, 1);
@@ -399,6 +405,37 @@ class Curl
             }
         }
     }
+
+   /**
+    * get the proxy from the default setting by the given protocol of the given url
+    * @param string $url the target url
+    * @return null|array
+    */
+    protected function getProxyForUrl($url)
+    {
+        $targetUrlParts = parse_url($url);
+        $protocol = $targetUrlParts['scheme'];
+        return $this->getProxy($protocol);
+    }
+
+    /**
+    * get the proxy from the default setting by the given protocol
+    * @param string $scheme the target protocol
+    * @return null|array
+    */
+    protected function getProxy($scheme)
+    {
+        $proxy_conf = stream_context_get_options(stream_context_get_default());
+
+        if (array_key_exists($scheme, $proxy_conf)) {
+            $settings = $proxy_conf[$scheme];
+            $proxy = $settings['proxy'];
+            return parse_url($proxy);
+        }
+
+        return null;
+    }
+
 
     /**
      * Wrapper function to be mocked for testing.

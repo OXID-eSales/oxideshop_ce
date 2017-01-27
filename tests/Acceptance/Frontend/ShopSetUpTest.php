@@ -53,6 +53,8 @@ class ShopSetUpTest extends FrontendTestCase
     const DB_VIEWS_REGENERATE_SCRIPT_FILENAME = 'oe-eshop-db_views_regenerate';
 
     const SETUP_DIRECTORY = 'Setup';
+    const SOURCE_DIRECTORY = 'source';
+    const DEMODATA_SOURCE_DIRECTORY = 'src';
     const SETUP_SQL_DIRECTORY = 'Sql';
     const INVALID_MIGRATION_FILENAME = 'Version20170101.php';
     const MIGRATION_DIRECTORY = 'migration';
@@ -61,6 +63,7 @@ class ShopSetUpTest extends FrontendTestCase
     const VENDOR_BIN_DIRECTORY = 'bin';
     const OXID_ESALES_VENDOR_DIRECTORY = 'oxid-esales';
     const SHOP_DIRECTORY_FROM_COMPOSER_VENDOR_PATH = 'oxideshop-%s';
+    const DEMODATA_DIRECTORY_FROM_COMPOSER_VENDOR_PATH = 'oxideshop-demodata-%s';
 
     const CE_EDITION_ID = 'CE';
 
@@ -394,11 +397,8 @@ class ShopSetUpTest extends FrontendTestCase
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileIsMissing($setupSqlFile)
     {
-        $this->markTestIncomplete('Need to replace plain PHP function usage like rename or check if file exist to service from testing library');
-
-        if ($setupSqlFile === self::EN_LANGUAGE_SQL_FILENAME) {
-            $this->markTestSkipped('Skipping this case to match functionality from current Setup implementation.');
-        }
+        $this->skipLanguageSqlFilenameCase($setupSqlFile);
+        $this->skipInitialDataSqlCaseIfDemodataPackageIsInUse($setupSqlFile);
 
         $this->hideSetupSqlFile($setupSqlFile);
 
@@ -438,7 +438,7 @@ class ShopSetUpTest extends FrontendTestCase
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileHasSyntaxError($setupSqlFile)
     {
-        $this->markTestIncomplete('Need to replace plain PHP function usage like rename or check if file exist to service from testing library');
+        $this->skipInitialDataSqlCaseIfDemodataPackageIsInUse($setupSqlFile);
 
         $this->includeSyntaxErrorToSetupSqlFile($setupSqlFile);
 
@@ -987,6 +987,7 @@ class ShopSetUpTest extends FrontendTestCase
                 $this->getComposerVendorPath(),
                 self::OXID_ESALES_VENDOR_DIRECTORY,
                 $this->getShopDirectoryFromComposerVendorPath(),
+                $this->getTestConfig()->getShopEdition() === self::CE_EDITION_ID ? self::SOURCE_DIRECTORY : null,
                 self::SETUP_DIRECTORY,
             ]
         );
@@ -1068,27 +1069,54 @@ class ShopSetUpTest extends FrontendTestCase
         $this->showFile($this->getHtaccessFilePath());
     }
 
-    private function getSetupSqlFilePath($sqlFileName)
+    private function getSetupSqlFilePathBasedOnSourceDirectory($sqlFileName)
     {
-        $isDemoDataSqlFile = $sqlFileName === self::DEMODATA_SQL_FILENAME;
-        $isCommunityEdition = $this->getTestConfig()->getShopEdition() === self::CE_EDITION_ID;
+        return $this->getPathFromArray(
+            [$this->getShopSetupPath(), self::SETUP_SQL_DIRECTORY, $sqlFileName]
+        );
+    }
 
-        if (($isDemoDataSqlFile) && (!$isCommunityEdition))
-            return $this->getPathFromArray(
-                [$this->getShopSetupPathBasedOnEdition(), self::SETUP_SQL_DIRECTORY, $sqlFileName]
-            );
+    private function getSetupSqlFilePathBasedOnVendorDirectory($sqlFileName)
+    {
+        return $this->getPathFromArray(
+            [$this->getShopSetupPathBasedOnEdition(), self::SETUP_SQL_DIRECTORY, $sqlFileName]
+        );
+    }
 
-        return $this->getPathFromArray([$this->getShopSetupPath(), self::SETUP_SQL_DIRECTORY, $sqlFileName]);
+    private function getSetupSqlFilePathBasedOnDemodataPackageDirectory($sqlFileName)
+    {
+        $edition = $this->getTestConfig()->getShopEdition();
+
+        return $this->getPathFromArray(
+            [
+                $this->getComposerVendorPath(),
+                self::OXID_ESALES_VENDOR_DIRECTORY,
+                sprintf(self::DEMODATA_DIRECTORY_FROM_COMPOSER_VENDOR_PATH, strtolower($edition)),
+                self::DEMODATA_SOURCE_DIRECTORY,
+                $sqlFileName
+            ]
+        );
     }
 
     private function hideSetupSqlFile($sqlFileName)
     {
-        $this->hideFile($this->getSetupSqlFilePath($sqlFileName));
+        foreach ($this->iterateThroughAllSetupSqlFilePaths($sqlFileName) as $sqlFileNameWithPath) {
+            $this->hideFile($sqlFileNameWithPath);
+        }
     }
 
     private function showSetupSqlFile($sqlFileName)
     {
-        $this->showFile($this->getSetupSqlFilePath($sqlFileName));
+        foreach ($this->iterateThroughAllSetupSqlFilePaths($sqlFileName) as $sqlFileNameWithPath) {
+            $this->showFile($sqlFileNameWithPath);
+        }
+    }
+
+    private function isDemodataSqlFileFromDemodataPackageAvailable()
+    {
+        return file_exists(
+            $this->getSetupSqlFilePathBasedOnDemodataPackageDirectory(self::DEMODATA_SQL_FILENAME)
+        );
     }
 
     private function getHiddenFilePath($filePath)
@@ -1098,12 +1126,26 @@ class ShopSetUpTest extends FrontendTestCase
 
     private function includeSyntaxErrorToSetupSqlFile($sqlFileName)
     {
-        $this->includeSyntaxErrorToFile($this->getSetupSqlFilePath($sqlFileName));
+        foreach ($this->iterateThroughAllSetupSqlFilePaths($sqlFileName) as $sqlFileNameWithPath) {
+            $this->includeSyntaxErrorToFile($sqlFileNameWithPath);
+        }
     }
 
     private function excludeSyntaxErrorFromSetupSqlFile($sqlFileName)
     {
-        $this->excludeSyntaxErrorFromFile($this->getSetupSqlFilePath($sqlFileName));
+        foreach ($this->iterateThroughAllSetupSqlFilePaths($sqlFileName) as $sqlFileNameWithPath) {
+            $this->excludeSyntaxErrorFromFile($sqlFileNameWithPath);
+        }
+    }
+
+    private function iterateThroughAllSetupSqlFilePaths($sqlFileName)
+    {
+        yield $this->getSetupSqlFilePathBasedOnSourceDirectory($sqlFileName);
+        yield $this->getSetupSqlFilePathBasedOnVendorDirectory($sqlFileName);
+
+        if ($sqlFileName === self::DEMODATA_SQL_FILENAME) {
+            yield $this->getSetupSqlFilePathBasedOnDemodataPackageDirectory($sqlFileName);
+        }
     }
 
     private function includeSyntaxErrorToFile($filePath)
@@ -1304,5 +1346,21 @@ false
 SCRIPT;
 
         return $content;
+    }
+
+    private function skipInitialDataSqlCaseIfDemodataPackageIsInUse($setupSqlFile)
+    {
+        if (($setupSqlFile === self::INITIAL_DATA_SQL_FILENAME) && ($this->isDemodataSqlFileFromDemodataPackageAvailable())) {
+            $this->markTestSkipped(
+                self::INITIAL_DATA_SQL_FILENAME . " file is not available nor used if 'demodata' package is present."
+            );
+        }
+    }
+
+    private function skipLanguageSqlFilenameCase($setupSqlFile)
+    {
+        if ($setupSqlFile === self::EN_LANGUAGE_SQL_FILENAME) {
+            $this->markTestSkipped('Skipping this case to match functionality from current Setup implementation.');
+        }
     }
 }

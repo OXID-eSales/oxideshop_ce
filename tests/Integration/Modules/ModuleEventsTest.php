@@ -19,11 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Modules;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use oxRegistry;
 
-require_once __DIR__ . '/BaseModuleTestCase.php';
 require_once __DIR__ . '/TestData/modules/with_events/files/myevents.php';
 
 class ModuleEventsTest extends BaseModuleTestCase

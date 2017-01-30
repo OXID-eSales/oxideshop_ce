@@ -30,7 +30,6 @@ use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
-use OxidEsales\Eshop;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
@@ -44,6 +43,8 @@ use PDO;
  */
 class Database implements DatabaseInterface
 {
+    /** @var int code of Mysql duplicated key error. */
+    const MYSQL_DUPLICATE_KEY_ERROR_CODE = 1062;
 
     /**
      * Holds the necessary parameters to connect to the database
@@ -746,7 +747,7 @@ class Database implements DatabaseInterface
     /**
      * Get the database connection.
      *
-     * @return \Doctrine\DBAL\Connection $oConnection The database connection we want to use.
+     * @return DriverConnection $oConnection The database connection we want to use.
      */
     protected function getConnection()
     {
@@ -864,9 +865,10 @@ class Database implements DatabaseInterface
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately we can access PDOException and recover the original SQL error code and message.
                  */
-                $pdoException = $exception->getPrevious();
                 /** @var $pdoException PDOException */
-                $code = $pdoException->errorInfo[1];
+                $pdoException = $exception->getPrevious();
+
+                $code = $this->convertErrorCode($pdoException->errorInfo[1]);
                 $message = $pdoException->errorInfo[2];
 
                 $exceptionClass = DatabaseException::class;
@@ -878,14 +880,14 @@ class Database implements DatabaseInterface
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately we can access PDOException and recover the original SQL error code and message.
                  */
-                $code = $exception->errorInfo[1];
+                $code = $this->convertErrorCode($exception->errorInfo[1]);
                 $message = $exception->errorInfo[2];
 
-                $exceptionClass = 'OxidEsales\EshopCommunity\Core\Exception\DatabaseException';
+                $exceptionClass = DatabaseException::class;
 
                 break;
             default:
-                $exceptionClass = 'OxidEsales\EshopCommunity\Core\Exception\DatabaseException';
+                $exceptionClass = DatabaseException::class;
         }
 
         /** @var \oxException $convertedException */
@@ -904,7 +906,7 @@ class Database implements DatabaseInterface
      * @throws DatabaseConnectionException
      * @throws DatabaseException
      */
-    protected function handleException(\OxidEsales\EshopCommunity\Core\Exception\StandardException $exception)
+    protected function handleException(StandardException $exception)
     {
         throw $exception;
     }
@@ -1314,5 +1316,21 @@ class Database implements DatabaseInterface
             '/' . $connection->getDatabase();
 
         return $message;
+    }
+
+    /**
+     * Convert error code from MySQL to interface.
+     *
+     * @param int $code
+     *
+     * @return string
+     */
+    private function convertErrorCode($code)
+    {
+        if ($code === self::MYSQL_DUPLICATE_KEY_ERROR_CODE) {
+            $code = self::DUPLICATE_KEY_ERROR_CODE;
+        }
+
+        return $code;
     }
 }

@@ -35,7 +35,6 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  */
 abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
 {
-
     /**
      * @var string The name of the table, we use to test the database.
      */

@@ -30,6 +30,8 @@ use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
  */
 interface DatabaseInterface
 {
+    /** @var int code of exception to check against. Use same number as MySQL to avoid duplications. */
+    const DUPLICATE_KEY_ERROR_CODE = 1062;
 
     /**
      * The default fetch mode as implemented by the database driver, in Doctrine this is usually FETCH_MODE_BOTH

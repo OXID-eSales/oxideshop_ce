@@ -38,7 +38,6 @@ use OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException;
  */
 class DatabaseTest extends UnitTestCase
 {
-
     /** @var mixed Backing up for earlier value of database link object */
     private $dbObjectBackup = null;
 

@@ -41,7 +41,6 @@ use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
  */
 class DatabaseTest extends UnitTestCase
 {
-
     /**
      * Clean-up oxarticles table + parent::tearDown()
      */

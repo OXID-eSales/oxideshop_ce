@@ -25,6 +25,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter\Doct
 use PDO;
 use Doctrine\DBAL\DBALException;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\ResultSet;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter\DatabaseInterfaceImplementationTest;
@@ -36,16 +37,15 @@ use OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter\DatabaseIn
  */
 class DatabaseTest extends DatabaseInterfaceImplementationTest
 {
-
     /**
      * @var string The database exception class to be thrown
      */
-    const DATABASE_EXCEPTION_CLASS = 'OxidEsales\EshopCommunity\Core\Exception\DatabaseException';
+    const DATABASE_EXCEPTION_CLASS = DatabaseException::class;
 
     /**
      * @var string The result set class class
      */
-    const RESULT_SET_CLASS = 'OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\ResultSet';
+    const RESULT_SET_CLASS = ResultSet::class;
 
     /**
      * @var DatabaseInterface|Database The database to test.
@@ -392,6 +392,23 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
         $query = "SELECT OXID FROM " . self::TABLE_NAME . " WHERE OXID = {$actualQuotedValue}";
         $resultSet = $this->database->select($query);
         $resultSet->fetchAll();
+    }
+
+    public function testExceptionForDuplicatedEntry()
+    {
+        $tableName = self::TABLE_NAME;
+        $id = self::FIXTURE_OXID_1;
+        $this->database->execute("ALTER TABLE `oxdoctrinetest`ADD UNIQUE `oxid` (`oxid`);");
+        $this->database->execute("INSERT INTO $tableName (OXID) VALUES ('$id');");
+
+        try {
+            $this->database->execute("INSERT INTO $tableName (OXID) VALUES ('$id');");
+        } catch (DatabaseException $e) {
+            $this->assertEquals(DatabaseInterface::DUPLICATE_KEY_ERROR_CODE, $e->getCode());
+            return;
+        }
+
+        $this->fail('Database exception must be thrown due to duplicated entry.');
     }
 
     public function dataProviderTestQuoteWithInvalidValues()

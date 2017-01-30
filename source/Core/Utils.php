@@ -1432,8 +1432,8 @@ class Utils extends \oxSuperCfg
      *
      * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
      *
-     * @param string $sLogMessage  log message
-     * @param string $sLogFileName log file name
+     * @param string $logMessage  log message
+     * @param string $logFileName log file name
      *
      * @return bool
      */

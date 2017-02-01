@@ -531,8 +531,11 @@ class ShopControl extends \oxSuperCfg
     {
         $config = $this->getConfig();
 
-        error_reporting($this->_getErrorReportingLevel());
+        //Ensures config values are available, database connection is established,
+        //session is started, a possible SeoUrl is decoded, globals and environment variables are set.
+        $config->init();
 
+        error_reporting($this->_getErrorReportingLevel());
 
         $runOnceExecuted = oxRegistry::getSession()->getVariable('blRunOnceExecuted');
         if (!$runOnceExecuted && !$this->isAdmin() && $config->isProductiveMode()) {

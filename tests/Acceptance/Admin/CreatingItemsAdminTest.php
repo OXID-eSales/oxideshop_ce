@@ -1560,7 +1560,8 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertElementNotPresent("//tr[@id='test_variant.1']");
         $this->addSelection("allsel[]", "label=test selection list [EN] šÄßüл | test sellist šÄßüл");
         $this->clickAndWait("//b");
-        $this->assertEquals("selvar1 [DE]", $this->getValue("//tr[@id='test_variant.1']/td[3]/input"));
+
+        $this->waitForItemAppear("//tr[@id='test_variant.1']/td[3]/input[@value='selvar1 [DE]']");
         $this->assertEquals("10010-1", $this->getValue("//tr[@id='test_variant.1']/td[4]/input"));
         $this->assertEquals("3.5", $this->getValue("//tr[@id='test_variant.1']/td[5]/input"));
         $this->assertEquals("selvar2 [DE]", $this->getValue("//tr[@id='test_variant.2']/td[3]/input"));
@@ -1574,7 +1575,8 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("2.55", $this->getValue("//tr[@id='test_variant.4']/td[5]/input"));
         $this->addSelection("allsel[]", "label=test selection list [EN] šÄßüл | test sellist šÄßüл");
         $this->clickAndWait("//b");
-        $this->assertEquals("selvar1 [DE] | selvar1 [DE]", $this->getValue("//tr[@id='test_variant.1']/td[3]/input"));
+
+        $this->waitForItemAppear("//tr[@id='test_variant.1']/td[3]/input[@value='selvar1 [DE] | selvar1 [DE]']");
         $this->assertEquals("10010-1", $this->getValue("//tr[@id='test_variant.1']/td[4]/input"));
         $this->assertEquals("4.5", $this->getValue("//tr[@id='test_variant.1']/td[5]/input"));
         $this->assertEquals("selvar1 [DE] | selvar2 [DE]", $this->getValue("//tr[@id='test_variant.2']/td[3]/input"));
@@ -1623,7 +1625,8 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("10010-4-3", $this->getValue("//tr[@id='test_variant.16']/td[4]/input"));
         $this->assertEquals("2.6", $this->getValue("//tr[@id='test_variant.16']/td[5]/input"));
         $this->changeAdminEditLanguage('English', 'editlanguage');
-        $this->assertEquals("selvar1 [EN] šÄßüл | selvar1 [EN] šÄßüл", $this->getValue("//tr[@id='test_variant.1']/td[3]/input"));
+
+        $this->waitForItemAppear("//tr[@id='test_variant.1']/td[3]/input[@value='selvar1 [EN] šÄßüл | selvar1 [EN] šÄßüл']");
         $this->assertEquals("selvar1 [EN] šÄßüл | selvar2 [EN] šÄßüл", $this->getValue("//tr[@id='test_variant.2']/td[3]/input"));
         $this->assertEquals("selvar1 [EN] šÄßüл | selvar3 [EN] šÄßüл", $this->getValue("//tr[@id='test_variant.3']/td[3]/input"));
         $this->assertEquals("selvar1 [EN] šÄßüл | selvar4 [EN] šÄßüл", $this->getValue("//tr[@id='test_variant.4']/td[3]/input"));

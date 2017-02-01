@@ -1794,16 +1794,21 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("", $this->getEditorValue("oxcategories__oxlongdesc"));
         $this->typeToEditor("oxcategories__oxlongdesc", "long desc [EN]_šÄßüл");
         $this->clickAndWait("save");
-        $this->assertEquals("long desc [EN]_šÄßüл", $this->getEditorValue("oxcategories__oxlongdesc"));
+
+        $this->waitForElementText("long desc [EN]_šÄßüл", "editor_oxcategories__oxlongdesc");
         $this->changeAdminEditLanguage("Deutsch", "catlang");
-        $this->assertEquals("", $this->getEditorValue("oxcategories__oxlongdesc"));
+
+        $this->waitForElementText("", "editor_oxcategories__oxlongdesc");
         $this->typeToEditor("oxcategories__oxlongdesc", "long desc [DE]");
         $this->clickAndWait("save");
-        $this->assertEquals("long desc [DE]", $this->getEditorValue("oxcategories__oxlongdesc"));
+
+        $this->waitForElementText("long desc [DE]", "editor_oxcategories__oxlongdesc");
         $this->changeAdminEditLanguage("English", "catlang");
-        $this->assertEquals("long desc [EN]_šÄßüл", $this->getEditorValue("oxcategories__oxlongdesc"));
+
+        $this->waitForElementText("long desc [EN]_šÄßüл", "editor_oxcategories__oxlongdesc");
         $this->changeAdminEditLanguage("Deutsch", "catlang");
-        $this->assertEquals("long desc [DE]", $this->getEditorValue("oxcategories__oxlongdesc"));
+
+        $this->waitForElementText("long desc [DE]", "editor_oxcategories__oxlongdesc");
         $this->checkTabs(array('Picture', 'Sorting', 'SEO', 'Rights', 'Mall'));
         $this->frame("list");
         $this->type("where[oxcategories][oxtitle]", "create_delete");

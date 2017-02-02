@@ -443,6 +443,7 @@ class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\C
             'OxidEsales\Eshop\Core\Contract\IModuleValidator' => \OxidEsales\EshopCommunity\Core\Contract\IModuleValidator::class,
             'OxidEsales\Eshop\Core\Contract\ISelectList' => \OxidEsales\EshopCommunity\Core\Contract\ISelectList::class,
             'OxidEsales\Eshop\Core\Contract\IUrl' => \OxidEsales\EshopCommunity\Core\Contract\IUrl::class,
+            'OxidEsales\Eshop\Core\Contract\ClassNameResolverInterface' => \OxidEsales\EshopCommunity\Core\Contract\ClassNameResolverInterface::class,
             'OxidEsales\Eshop\Core\Controller\BaseController' => \OxidEsales\EshopCommunity\Core\Controller\BaseController::class,
             'OxidEsales\Eshop\Core\Counter' => \OxidEsales\EshopCommunity\Core\Counter::class,
             'OxidEsales\Eshop\Core\CreditCardValidator' => \OxidEsales\EshopCommunity\Core\CreditCardValidator::class,
@@ -571,7 +572,9 @@ class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\C
             'OxidEsales\Eshop\Core\ViewHelper\StyleRenderer' => \OxidEsales\EshopCommunity\Core\ViewHelper\StyleRenderer::class,
             'OxidEsales\Eshop\Core\VirtualNameSpaceClassMap' => \OxidEsales\EshopCommunity\Core\VirtualNameSpaceClassMap::class,
             'OxidEsales\Eshop\Core\WidgetControl' => \OxidEsales\EshopCommunity\Core\WidgetControl::class,
-
+            'OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver' => \OxidEsales\EshopCommunity\Core\Routing\ControllerClassNameResolver::class,
+            'OxidEsales\Eshop\Core\Routing\ModuleControllerProvider' => \OxidEsales\EshopCommunity\Core\Routing\ModuleControllerProvider::class,
+            'OxidEsales\Eshop\Core\Routing\ShopControllerProvider' => \OxidEsales\EshopCommunity\Core\Routing\ShopControllerProvider::class
         ];
     }
 

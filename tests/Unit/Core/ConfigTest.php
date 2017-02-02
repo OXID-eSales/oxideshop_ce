@@ -2481,6 +2481,32 @@ class ConfigTest extends \OxidTestCase
     }
 
     /**
+     * Test method getRequestControllerClass()
+     */
+    public function testGetRequestControllerClass()
+    {
+        Registry::set(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class, $this->getControllerClassNameResolverMock());
+
+        $config = oxNew('oxConfig');
+        $_POST['cl'] = 'DDD';
+
+        $this->assertEquals('Vendor1\OtherTestModule\SomeOtherController', $config->getRequestControllerClass());
+    }
+
+    /**
+     * Test method getRequestControllerClass()
+     */
+    public function testGetRequestControllerClassNoMatch()
+    {
+        Registry::set(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class, $this->getControllerClassNameResolverMock());
+
+        $config = oxNew('oxConfig');
+        $_POST['cl'] = 'unknownControlerId';
+
+        $this->assertNull($config->getRequestControllerClass());
+    }
+
+    /**
      * @return oxConfig|PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfigWithSslMocked()
@@ -2522,5 +2548,52 @@ class ConfigTest extends \OxidTestCase
         oxRegistry::set('oxUtilsUrl', $utilsUrl);
     }
 
+    /**
+     * Test helper
+     *
+     * @return OxidEsales\EshopCommunity\Core\ShopControllerProvider mock
+     */
+    private function getShopControllerProviderMock()
+    {
+        $map = array('aAa' => 'OxidEsales\EshopCommunity\Application\SomeController',
+                     'bbb' => 'OxidEsales\EshopCommunity\Application\SomeOtherController',
+                     'CCC' => 'OxidEsales\EshopCommunity\Application\SomeDifferentController');
+
+        $mock = $this->getMock('OxidEsales\EshopCommunity\Core\Routing\ShopControllerProvider', ['getControllerMap'], [], '', false);
+        $mock->expects($this->any())->method('getControllerMap')->will($this->returnValue($map));
+
+        return $mock;
+    }
+
+    /**
+     * Test helper
+     *
+     * @return OxidEsales\EshopCommunity\Core\ModuleControllerProvider mock
+     */
+    private function getModuleControllerProviderMock()
+    {
+        $map = array('cCc' => 'Vendor1\Testmodule\SomeController',
+                     'DDD' => 'Vendor1\OtherTestModule\SomeOtherController',
+                     'eee' => 'Vendor2\OtherTestModule\SomeDifferentController');
+
+        $mock = $this->getMock('OxidEsales\EshopCommunity\Core\Routing\ModuleControllerProvider', ['getControllerMap'], [], '', false);
+        $mock->expects($this->any())->method('getControllerMap')->will($this->returnValue($map));
+
+        return $mock;
+    }
+
+    /**
+     * Test helper
+     *
+     * @return OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver mock
+     */
+    private function getControllerClassNameResolverMock()
+    {
+        $resolver = $this->getMock('OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver', array('getModuleControllerProvider', 'getShopControllerProvider'));
+        $resolver->expects($this->any())->method('getShopControllerProvider')->will($this->returnValue($this->getShopControllerProviderMock()));
+        $resolver->expects($this->any())->method('getModuleControllerProvider')->will($this->returnValue($this->getModuleControllerProviderMock()));
+
+        return $resolver;
+    }
 
 }

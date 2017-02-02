@@ -708,6 +708,19 @@ class Config extends Base
     }
 
     /**
+     * Use this function to get the controller class hidden behind the request's 'cl' parameter.
+     *
+     * @return mixed
+     */
+    public function getRequestControllerClass()
+    {
+        $controllerId = $this->getRequestControllerId();
+        $controllerClass = Registry::getControllerClassNameResolver()->getClassNameById($controllerId);
+
+        return $controllerClass;
+    }
+
+    /**
      * Returns uploaded file parameter
      *
      * @param string $paramName param name

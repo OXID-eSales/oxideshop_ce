@@ -2832,11 +2832,11 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
                 $this->_sToBasketLink = $myConfig->getShopHomeUrl();
 
                 // override some classes as these should never showup
-                $sActClass = oxRegistry::getConfig()->getRequestParameter('cl');
-                if ($sActClass == 'thankyou') {
-                    $sActClass = 'basket';
+                $actControllerId = oxRegistry::getConfig()->getRequestControllerId();
+                if ($actControllerId == 'thankyou') {
+                    $actControllerId = 'basket';
                 }
-                $this->_sToBasketLink .= 'cl=' . $sActClass;
+                $this->_sToBasketLink .= 'cl=' . $actControllerId;
 
                 // this is not very correct
                 if ($sActCat = oxRegistry::getConfig()->getRequestParameter('cnid')) {

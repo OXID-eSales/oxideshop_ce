@@ -356,7 +356,7 @@ class AdminController extends \oxView
         $oLang = oxRegistry::getLang();
 
         // sets up navigation data
-        $this->_setupNavigation(oxRegistry::getConfig()->getRequestParameter('cl'));
+        $this->_setupNavigation(oxRegistry::getConfig()->getRequestControllerId());
 
         // active object id
         $sOxId = $this->getEditObjectId();

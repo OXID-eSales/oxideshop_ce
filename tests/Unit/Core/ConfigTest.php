@@ -2459,6 +2459,28 @@ class ConfigTest extends \OxidTestCase
     }
 
     /**
+     * Test method getRequestControllerId
+     */
+    public function testGetRequestControllerId()
+    {
+        $config = oxNew('oxConfig');
+        $_POST['cl'] = 'testControllerId';
+
+        $this->assertEquals('testControllerId', $config->getRequestControllerId());
+    }
+
+    /**
+     * Test method getRequestControllerId in case it is not set.
+     */
+    public function testGetRequestControllerIdNotSet()
+    {
+        $config = oxNew('oxConfig');
+        $_POST = [];
+
+        $this->assertNull($config->getRequestControllerId());
+    }
+
+    /**
      * @return oxConfig|PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfigWithSslMocked()

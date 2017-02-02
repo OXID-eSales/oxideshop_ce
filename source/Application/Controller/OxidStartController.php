@@ -38,7 +38,7 @@ class OxidStartController extends \oxUBase
     {
         $this->pageStart();
 
-        if ('oxstart' == oxRegistry::getConfig()->getRequestParameter('cl') || $this->isAdmin()) {
+        if ('oxstart' == oxRegistry::getConfig()->getRequestControllerId() || $this->isAdmin()) {
             return;
         }
 

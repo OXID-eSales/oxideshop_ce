@@ -759,7 +759,7 @@ class UserComponent extends \oxView
         $oConfig = $this->getConfig();
 
         $sLogoutLink = $oConfig->isSsl() ? $oConfig->getShopSecureHomeUrl() : $oConfig->getShopHomeUrl();
-        $sLogoutLink .= 'cl=' . $oConfig->getRequestParameter('cl') . $this->getParent()->getDynUrlParams();
+        $sLogoutLink .= 'cl=' . $oConfig->getRequestControllerId() . $this->getParent()->getDynUrlParams();
         if ($sParam = $oConfig->getRequestParameter('anid')) {
             $sLogoutLink .= '&amp;anid=' . $sParam;
         }

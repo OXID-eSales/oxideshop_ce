@@ -172,9 +172,9 @@ class VoucherSerieMain extends \DynExportBase
     {
         $sVoucherNr = trim(oxRegistry::getConfig()->getRequestParameter("voucherNr"));
         $bRandomNr = oxRegistry::getConfig()->getRequestParameter("randomVoucherNr");
-        $sClass = oxRegistry::getConfig()->getRequestParameter("cl");
+        $controllerId = oxRegistry::getConfig()->getRequestControllerId();
 
-        if ($sClass == 'voucherserie_generate' && !$bRandomNr && empty($sVoucherNr)) {
+        if ($controllerId == 'voucherserie_generate' && !$bRandomNr && empty($sVoucherNr)) {
             return;
         }
 

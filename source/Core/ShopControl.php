@@ -194,25 +194,26 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
-     * Returns controller class which should be loaded.
+     * Returns controllerId of controller which should be loaded.
+     * Use ControllerClassNameResolver to get controller class from controller id.
      *
      * @return string
      */
     protected function _getStartController()
     {
-        $class = oxRegistry::getConfig()->getRequestParameter('cl');
+        $controllerId = oxRegistry::getConfig()->getRequestControllerId();
 
-        if (!$class) {
+        if (!$controllerId) {
             $session = oxRegistry::getSession();
             if ($this->isAdmin()) {
-                $class = $session->getVariable("auth") ? 'admin_start' : 'login';
+                $controllerId = $session->getVariable("auth") ? 'admin_start' : 'login';
             } else {
-                $class = $this->_getFrontendStartController();
+                $controllerId = $this->_getFrontendStartController();
             }
-            $session->setVariable('cl', $class);
+            $session->setVariable('cl', $controllerId);
         }
 
-        return $class;
+        return $controllerId;
     }
 
     /**

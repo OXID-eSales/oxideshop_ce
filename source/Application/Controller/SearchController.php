@@ -308,7 +308,7 @@ class SearchController extends oxUBase
     {
         if ($this->_blSearchClass === null) {
             $this->_blSearchClass = false;
-            if (strtolower($this->getConfig()->getRequestParameter('cl')) == 'search') {
+            if ('search' == strtolower($this->getConfig()->getRequestControllerId())) {
                 $this->_blSearchClass = true;
             }
         }

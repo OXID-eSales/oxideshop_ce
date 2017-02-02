@@ -698,6 +698,16 @@ class Config extends Base
     }
 
     /**
+     * Get request 'cl' parameter which is the controller id.
+     *
+     * @return string|null
+     */
+    public function getRequestControllerId()
+    {
+        return $this->getRequestParameter('cl');
+    }
+
+    /**
      * Returns uploaded file parameter
      *
      * @param string $paramName param name

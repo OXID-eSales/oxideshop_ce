@@ -230,9 +230,9 @@ class BasketComponent extends \oxView
     protected function _getRedirectUrl()
     {
 
-        // active class
-        $sClass = oxRegistry::getConfig()->getRequestParameter('cl');
-        $sClass = $sClass ? $sClass . '?' : 'start?';
+        // active controller id
+        $controllerId = oxRegistry::getConfig()->getRequestControllerId();
+        $controllerId = $controllerId ? $controllerId . '?' : 'start?';
         $sPosition = '';
 
         // setting redirect parameters
@@ -253,13 +253,13 @@ class BasketComponent extends \oxView
         // reload and backbutton blocker
         if ($this->getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
             // saving return to shop link to session
-            oxRegistry::getSession()->setVariable('_backtoshop', $sClass . $sPosition);
+            oxRegistry::getSession()->setVariable('_backtoshop', $controllerId . $sPosition);
 
             // redirecting to basket
-            $sClass = 'basket?';
+            $controllerId = 'basket?';
         }
 
-        return $sClass . $sPosition;
+        return $controllerId . $sPosition;
     }
 
     /**

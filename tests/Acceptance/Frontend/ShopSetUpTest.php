@@ -255,7 +255,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToWelcomeScreenInCaseLicenseIsNotCheckedAsAgreed()
     {
@@ -276,7 +276,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenNotAllFieldsAreFilled()
     {
@@ -299,7 +299,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenDatabaseUserDoesNotHaveAccess()
     {
@@ -327,7 +327,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenDatabaseUserIsValidButCantCreateDatabase()
     {
@@ -357,7 +357,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testUserIsNotifiedIfAValidDatabaseAlreadyExistsBeforeTryingToOverwriteIt()
     {
@@ -390,7 +390,7 @@ class ShopSetUpTest extends FrontendTestCase
      * @param string $setupSqlFile
      *
      * @dataProvider setupSqlFilesProvider
-     * @group main
+     * @group setup
      *
      * @return boolean|null Used only for early return
      */
@@ -433,7 +433,7 @@ class ShopSetUpTest extends FrontendTestCase
      * @param string $setupSqlFile
      *
      * @dataProvider setupSqlFilesProvider
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileHasSyntaxError($setupSqlFile)
     {
@@ -478,7 +478,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDirInfoEntryPageWhenNotAllFieldsAreFilled()
     {
@@ -506,7 +506,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDirInfoEntryPageWhenPasswordIsTooShort()
     {
@@ -535,7 +535,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDirInfoEntryPageWhenPasswordDoesNotMatch()
     {
@@ -564,7 +564,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDirInfoEntryPageWhenInvalidEmailUsed()
     {
@@ -593,7 +593,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDirInfoEntryPageWhenSetupCantFindConfigFile()
     {
@@ -623,7 +623,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupShowsErrorMessageWhenMigrationFileContainsSyntaxErrors()
     {
@@ -659,7 +659,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupShowsErrorMessageWhenMigrationExecutableIsMissing()
     {
@@ -694,7 +694,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupShowsErrorMessageWhenViewRegenerationReturnsErrorCode()
     {
@@ -728,7 +728,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupShowsErrorMessageWhenViewsRegenerationExecutableIsMissing()
     {
@@ -763,7 +763,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupShowsErrorMessageWhenAnInvalidLicenseIsEnteredAndRedirectsToPreviousTab()
     {
@@ -801,7 +801,7 @@ class ShopSetUpTest extends FrontendTestCase
     /**
      * Test if System Requirements Page is displayed correctly when all the requirements are met.
      *
-     * @group main
+     * @group setup
      */
     public function testSystemRequirementsPageCanContinueWithSetup()
     {
@@ -819,7 +819,7 @@ class ShopSetUpTest extends FrontendTestCase
     /**
      * Test if System Requirements Page has requirement module names translated.
      *
-     * @group main
+     * @group setup
      */
     public function testSystemRequirementsPageShowsTranslatedModuleNames()
     {
@@ -833,7 +833,7 @@ class ShopSetUpTest extends FrontendTestCase
     /**
      * Test if System Requirements Page has requirement module group names translated.
      *
-     * @group main
+     * @group setup
      */
     public function testSystemRequirementsPageShowsTranslatedModuleGroupNames()
     {
@@ -847,7 +847,7 @@ class ShopSetUpTest extends FrontendTestCase
     /**
      * Test if System Requirements Page has requirement module state html class names correctly converted.
      *
-     * @group main
+     * @group setup
      */
     public function testSystemRequirementsContainsProperModuleStateHtmlClassNames()
     {
@@ -862,7 +862,7 @@ class ShopSetUpTest extends FrontendTestCase
     /**
      * Test htaccess exceptional case for system requirements in setup page
      *
-     * @group main
+     * @group setup
      */
     public function testInstallShopCantContinueDueToHtaccessProblem()
     {

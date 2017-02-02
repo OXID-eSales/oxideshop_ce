@@ -132,4 +132,14 @@ class RegistryTest extends \OxidTestCase
         oxRegistry::set("testKey", null);
         $this->assertFalse(Registry::instanceExists('testKey'));
     }
+
+    /**
+     * Test getter for ControllerClassNameProvider
+     */
+    public function testGetControllerClassNameResolver()
+    {
+        $object = Registry::getControllerClassNameResolver();
+        $this->assertTrue(is_a($object, '\OxidEsales\EshopCommunity\Core\Contract\ClassNameResolverInterface'));
+        $this->assertTrue(is_a($object, '\OxidEsales\EshopCommunity\Core\Routing\ControllerClassNameResolver'));
+    }
 }

@@ -131,6 +131,18 @@ class Registry
     }
 
     /**
+     * Returns ControllerClassNameProvider instance
+     *
+     * @static
+     *
+     * @return OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver
+     */
+    public static function getControllerClassNameResolver()
+    {
+        return self::get(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class);
+    }
+
+    /**
      * Return set instances.
      *
      * @return array

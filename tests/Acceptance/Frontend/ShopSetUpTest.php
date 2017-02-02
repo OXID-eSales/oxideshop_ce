@@ -26,7 +26,6 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 use OxidEsales\TestingLibrary\ServiceCaller;
 use OxidEsales\TestingLibrary\TestConfig;
-use oxRegistry;
 
 /** Selenium tests for frontend navigation. */
 class ShopSetUpTest extends FrontendTestCase

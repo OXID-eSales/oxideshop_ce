@@ -26,7 +26,6 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 use OxidEsales\TestingLibrary\ServiceCaller;
 use OxidEsales\TestingLibrary\TestConfig;
-use oxRegistry;
 
 /** Selenium tests for frontend navigation. */
 class ShopSetUpTest extends FrontendTestCase
@@ -53,6 +52,8 @@ class ShopSetUpTest extends FrontendTestCase
     const DB_VIEWS_REGENERATE_SCRIPT_FILENAME = 'oe-eshop-db_views_regenerate';
 
     const SETUP_DIRECTORY = 'Setup';
+    const SOURCE_DIRECTORY = 'source';
+    const DEMODATA_SOURCE_DIRECTORY = 'src';
     const SETUP_SQL_DIRECTORY = 'Sql';
     const INVALID_MIGRATION_FILENAME = 'Version20170101.php';
     const MIGRATION_DIRECTORY = 'migration';
@@ -61,6 +62,7 @@ class ShopSetUpTest extends FrontendTestCase
     const VENDOR_BIN_DIRECTORY = 'bin';
     const OXID_ESALES_VENDOR_DIRECTORY = 'oxid-esales';
     const SHOP_DIRECTORY_FROM_COMPOSER_VENDOR_PATH = 'oxideshop-%s';
+    const DEMODATA_DIRECTORY_FROM_COMPOSER_VENDOR_PATH = 'oxideshop-demodata-%s';
 
     const CE_EDITION_ID = 'CE';
 
@@ -253,7 +255,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToWelcomeScreenInCaseLicenseIsNotCheckedAsAgreed()
     {
@@ -267,14 +269,14 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::LICENSE_STEP);
 
         $this->selectAgreeWithLicense(false);
-        $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
+        $this->click(self::DATABASE_INFO_STEP);
 
-//        $this->assertTextPresent("Setup has been cancelled because you didn't accept the license conditions.");
+        $this->waitForText("Setup has been cancelled because you didn't accept the license conditions.");
         $this->waitForText("Welcome to installation wizard of OXID eShop");
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenNotAllFieldsAreFilled()
     {
@@ -290,14 +292,14 @@ class ShopSetUpTest extends FrontendTestCase
         $this->selectAgreeWithLicense(true);
         $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
 
-        $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
+        $this->click(self::DIRECTORY_LOGIN_STEP);
 
-//        $this->assertTextPresent("ERROR: Please fill in all needed fields!");
+        $this->waitForText("ERROR: Please fill in all needed fields!");
         $this->waitForText("Database is going to be created and needed tables are written. Please provide some information:");
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenDatabaseUserDoesNotHaveAccess()
     {
@@ -316,16 +318,16 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
 
         $this->provideDatabaseParameters($host, $port, 'test', 'test', 'test');
-        $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
+        $this->click(self::DIRECTORY_LOGIN_STEP);
 
-//        $this->assertTextPresent("ERROR: No database connection possible!");
-//        $this->assertTextPresent("Access denied for user");
+        $this->waitForText("ERROR: No database connection possible!");
+        $this->assertTextPresent("Access denied for user");
 
         $this->waitForText("Database is going to be created and needed tables are written. Please provide some information:");
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenDatabaseUserIsValidButCantCreateDatabase()
     {
@@ -348,14 +350,14 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
 
         $this->provideDatabaseParameters($host, $port, 'test', $user, $password);
-        $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
+        $this->click(self::DIRECTORY_LOGIN_STEP);
 
-//        $this->assertTextPresent("ERROR: Database not available and also cannot be created! - ERROR: Issue while inserting this SQL statements: ( CREATE DATABASE `test` ): SQLSTATE[42000]: Syntax error or access violation: 1044 Access denied for user '$user'@'$host' to database 'test'");
+        $this->waitForText("ERROR: Database not available and also cannot be created! - ERROR: Issue while inserting this SQL statements: ( CREATE DATABASE `test` ): SQLSTATE[42000]: Syntax error or access violation: 1044 Access denied for user '$user'@'$host' to database 'test'");
         $this->waitForText("Database is going to be created and needed tables are written. Please provide some information:");
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testUserIsNotifiedIfAValidDatabaseAlreadyExistsBeforeTryingToOverwriteIt()
     {
@@ -376,9 +378,9 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
 
         $this->provideDatabaseParameters($host, $port, $name, $user, $password);
-        $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
+        $this->click(self::DIRECTORY_LOGIN_STEP);
 
-        $this->assertTextPresent("ERROR: Seems there is already OXID eShop installed in database $name. Please delete it prior continuing!");
+        $this->waitForText("ERROR: Seems there is already OXID eShop installed in database $name. Please delete it prior continuing!");
         $this->assertTextPresent("If you want to install anyway click here");
         $this->click("//a[@id='step3Continue']");
         $this->waitForText("Please provide necessary data for running OXID eShop:");
@@ -388,17 +390,14 @@ class ShopSetUpTest extends FrontendTestCase
      * @param string $setupSqlFile
      *
      * @dataProvider setupSqlFilesProvider
-     * @group main
+     * @group setup
      *
      * @return boolean|null Used only for early return
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileIsMissing($setupSqlFile)
     {
-        $this->markTestIncomplete('Need to replace plain PHP function usage like rename or check if file exist to service from testing library');
-
-        if ($setupSqlFile === self::EN_LANGUAGE_SQL_FILENAME) {
-            $this->markTestSkipped('Skipping this case to match functionality from current Setup implementation.');
-        }
+        $this->skipLanguageSqlFilenameCase($setupSqlFile);
+        $this->skipInitialDataSqlCaseIfDemodataPackageIsInUse($setupSqlFile);
 
         $this->hideSetupSqlFile($setupSqlFile);
 
@@ -420,13 +419,13 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
 
         $this->provideEshopLoginParameters('test@test.com', '123456');
-        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+        $this->click(self::FINISH_CE_STEP);
 
         if ($setupSqlFile !== self::DATABASE_SCHEMA_SQL_FILENAME) {
-            $this->assertTextPresent("ERROR: Issue while inserting this SQL statements:");
+            $this->waitForText("ERROR: Issue while inserting this SQL statements:");
         }
 
-        $this->assertTextPresent("ERROR: Cannot open SQL file");
+        $this->waitForText("ERROR: Cannot open SQL file");
         $this->assertTextPresent("$setupSqlFile!");
     }
 
@@ -434,11 +433,11 @@ class ShopSetUpTest extends FrontendTestCase
      * @param string $setupSqlFile
      *
      * @dataProvider setupSqlFilesProvider
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileHasSyntaxError($setupSqlFile)
     {
-        $this->markTestIncomplete('Need to replace plain PHP function usage like rename or check if file exist to service from testing library');
+        $this->skipInitialDataSqlCaseIfDemodataPackageIsInUse($setupSqlFile);
 
         $this->includeSyntaxErrorToSetupSqlFile($setupSqlFile);
 
@@ -460,10 +459,10 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
 
         $this->provideEshopLoginParameters('test@test.com', '123456');
-        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+        $this->click(self::FINISH_CE_STEP);
 
         if ($setupSqlFile !== self::EN_LANGUAGE_SQL_FILENAME) {
-            $this->assertTextPresent("ERROR: Issue while inserting this SQL statements:");
+            $this->waitForText("ERROR: Issue while inserting this SQL statements:");
             $this->assertTextPresent("SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax;");
         }
     }
@@ -479,7 +478,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDirInfoEntryPageWhenNotAllFieldsAreFilled()
     {
@@ -500,14 +499,14 @@ class ShopSetUpTest extends FrontendTestCase
         $this->provideDatabaseParameters($host, $port, $name, $user, $password);
         $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
 
-        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+        $this->click(self::FINISH_CE_STEP);
 
-//        $this->assertTextPresent("ERROR: Please fill in all needed fields!");
+        $this->waitForText("ERROR: Please fill in all needed fields!");
         $this->waitForText("Please provide necessary data for running OXID eShop:");
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDirInfoEntryPageWhenPasswordIsTooShort()
     {
@@ -529,14 +528,14 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
 
         $this->provideEshopLoginParameters('test@test.com', '12345');
-        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+        $this->click(self::FINISH_CE_STEP);
 
-//        $this->assertTextPresent("Password is too short!");
+        $this->waitForText("Password is too short!");
         $this->waitForText("Please provide necessary data for running OXID eShop:");
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDirInfoEntryPageWhenPasswordDoesNotMatch()
     {
@@ -558,14 +557,14 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
 
         $this->provideEshopLoginParameters('test@test.com', '123456', '123457');
-        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+        $this->click(self::FINISH_CE_STEP);
 
-//        $this->assertTextPresent("Passwords do not match!");
+        $this->waitForText("Passwords do not match!");
         $this->waitForText("Please provide necessary data for running OXID eShop:");
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDirInfoEntryPageWhenInvalidEmailUsed()
     {
@@ -587,14 +586,14 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
 
         $this->provideEshopLoginParameters('invalid_email', '123456', '123456');
-        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+        $this->click(self::FINISH_CE_STEP);
 
-//        $this->assertTextPresent("Please enter a valid e-mail address!");
+        $this->waitForText("Please enter a valid e-mail address!");
         $this->waitForText("Please provide necessary data for running OXID eShop:");
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupRedirectsToDirInfoEntryPageWhenSetupCantFindConfigFile()
     {
@@ -617,14 +616,14 @@ class ShopSetUpTest extends FrontendTestCase
 
         $this->provideEshopDirectoryParameters(null, '/test/');
         $this->provideEshopLoginParameters('test@test.com', '123456', '123456');
-        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+        $this->click(self::FINISH_CE_STEP);
 
-//        $this->assertTextPresent("Could not open /test/config.inc.php for reading! Please consult our FAQ, forum or contact OXID Support staff!");
+        $this->waitForText("Could not open /test/config.inc.php for reading! Please consult our FAQ, forum or contact OXID Support staff!");
         $this->waitForText("Please provide necessary data for running OXID eShop:");
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupShowsErrorMessageWhenMigrationFileContainsSyntaxErrors()
     {
@@ -648,9 +647,9 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
 
         $this->provideEshopLoginParameters('test@test.com', '123456', '123456');
-        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+        $this->click(self::FINISH_CE_STEP);
 
-        $this->assertTextPresent("Error while executing command");
+        $this->waitForText("Error while executing command");
         $this->assertTextPresent(self::DB_MIGRATE_SCRIPT_FILENAME);
         $this->assertTextPresent("Return code: '1'");
         $this->assertTextPresent("up to 20170101 from 0");
@@ -660,7 +659,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupShowsErrorMessageWhenMigrationExecutableIsMissing()
     {
@@ -684,9 +683,9 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
 
         $this->provideEshopLoginParameters('test@test.com', '123456', '123456');
-        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+        $this->click(self::FINISH_CE_STEP);
 
-        $this->assertTextPresent("Error while executing command");
+        $this->waitForText("Error while executing command");
         $this->assertTextPresent(self::DB_MIGRATE_SCRIPT_FILENAME);
         $this->assertTextPresent("Return code: '1'");
         $this->assertTextPresent("Script \"oe-eshop-db_migrate\" was not found");
@@ -695,7 +694,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupShowsErrorMessageWhenViewRegenerationReturnsErrorCode()
     {
@@ -719,9 +718,9 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
 
         $this->provideEshopLoginParameters('test@test.com', '123456', '123456');
-        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+        $this->click(self::FINISH_CE_STEP);
 
-        $this->assertTextPresent("Error while executing command");
+        $this->waitForText("Error while executing command");
         $this->assertTextPresent(self::DB_VIEWS_REGENERATE_SCRIPT_FILENAME);
         $this->assertTextPresent("Return code: '1'");
 
@@ -729,7 +728,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupShowsErrorMessageWhenViewsRegenerationExecutableIsMissing()
     {
@@ -753,9 +752,9 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
 
         $this->provideEshopLoginParameters('test@test.com', '123456', '123456');
-        $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
+        $this->click(self::FINISH_CE_STEP);
 
-        $this->assertTextPresent("Error while executing command");
+        $this->waitForText("Error while executing command");
         $this->assertTextPresent(self::DB_VIEWS_REGENERATE_SCRIPT_FILENAME);
         $this->assertTextPresent("Return code: '1'");
         $this->assertTextPresent("Script \"oe-eshop-db_views_regenerate\" was not found");
@@ -764,7 +763,7 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
-     * @group main
+     * @group setup
      */
     public function testSetupShowsErrorMessageWhenAnInvalidLicenseIsEnteredAndRedirectsToPreviousTab()
     {
@@ -793,16 +792,16 @@ class ShopSetUpTest extends FrontendTestCase
         $this->clickContinueAndProceedTo(self::FINISH_CE_STEP);
 
         $this->provideLicenseNumber(self::INVALID_LICENSE_SERIAL_NUMBER);
-        $this->clickContinueAndProceedTo(self::FINISH_PE_EE_STEP);
+        $this->click(self::FINISH_PE_EE_STEP);
 
-//        $this->assertTextPresent("ERROR: Wrong license key!");
+        $this->waitForText("ERROR: Wrong license key!");
         $this->waitForText("Please confirm license key:", self::CLICK_AND_WAIT_TIMEOUT);
     }
 
     /**
      * Test if System Requirements Page is displayed correctly when all the requirements are met.
      *
-     * @group main
+     * @group setup
      */
     public function testSystemRequirementsPageCanContinueWithSetup()
     {
@@ -820,7 +819,7 @@ class ShopSetUpTest extends FrontendTestCase
     /**
      * Test if System Requirements Page has requirement module names translated.
      *
-     * @group main
+     * @group setup
      */
     public function testSystemRequirementsPageShowsTranslatedModuleNames()
     {
@@ -834,7 +833,7 @@ class ShopSetUpTest extends FrontendTestCase
     /**
      * Test if System Requirements Page has requirement module group names translated.
      *
-     * @group main
+     * @group setup
      */
     public function testSystemRequirementsPageShowsTranslatedModuleGroupNames()
     {
@@ -848,7 +847,7 @@ class ShopSetUpTest extends FrontendTestCase
     /**
      * Test if System Requirements Page has requirement module state html class names correctly converted.
      *
-     * @group main
+     * @group setup
      */
     public function testSystemRequirementsContainsProperModuleStateHtmlClassNames()
     {
@@ -863,7 +862,7 @@ class ShopSetUpTest extends FrontendTestCase
     /**
      * Test htaccess exceptional case for system requirements in setup page
      *
-     * @group main
+     * @group setup
      */
     public function testInstallShopCantContinueDueToHtaccessProblem()
     {
@@ -987,6 +986,7 @@ class ShopSetUpTest extends FrontendTestCase
                 $this->getComposerVendorPath(),
                 self::OXID_ESALES_VENDOR_DIRECTORY,
                 $this->getShopDirectoryFromComposerVendorPath(),
+                $this->getTestConfig()->getShopEdition() === self::CE_EDITION_ID ? self::SOURCE_DIRECTORY : null,
                 self::SETUP_DIRECTORY,
             ]
         );
@@ -1068,27 +1068,54 @@ class ShopSetUpTest extends FrontendTestCase
         $this->showFile($this->getHtaccessFilePath());
     }
 
-    private function getSetupSqlFilePath($sqlFileName)
+    private function getSetupSqlFilePathBasedOnSourceDirectory($sqlFileName)
     {
-        $isDemoDataSqlFile = $sqlFileName === self::DEMODATA_SQL_FILENAME;
-        $isCommunityEdition = $this->getTestConfig()->getShopEdition() === self::CE_EDITION_ID;
+        return $this->getPathFromArray(
+            [$this->getShopSetupPath(), self::SETUP_SQL_DIRECTORY, $sqlFileName]
+        );
+    }
 
-        if (($isDemoDataSqlFile) && (!$isCommunityEdition))
-            return $this->getPathFromArray(
-                [$this->getShopSetupPathBasedOnEdition(), self::SETUP_SQL_DIRECTORY, $sqlFileName]
-            );
+    private function getSetupSqlFilePathBasedOnVendorDirectory($sqlFileName)
+    {
+        return $this->getPathFromArray(
+            [$this->getShopSetupPathBasedOnEdition(), self::SETUP_SQL_DIRECTORY, $sqlFileName]
+        );
+    }
 
-        return $this->getPathFromArray([$this->getShopSetupPath(), self::SETUP_SQL_DIRECTORY, $sqlFileName]);
+    private function getSetupSqlFilePathBasedOnDemodataPackageDirectory($sqlFileName)
+    {
+        $edition = $this->getTestConfig()->getShopEdition();
+
+        return $this->getPathFromArray(
+            [
+                $this->getComposerVendorPath(),
+                self::OXID_ESALES_VENDOR_DIRECTORY,
+                sprintf(self::DEMODATA_DIRECTORY_FROM_COMPOSER_VENDOR_PATH, strtolower($edition)),
+                self::DEMODATA_SOURCE_DIRECTORY,
+                $sqlFileName
+            ]
+        );
     }
 
     private function hideSetupSqlFile($sqlFileName)
     {
-        $this->hideFile($this->getSetupSqlFilePath($sqlFileName));
+        foreach ($this->iterateThroughAllSetupSqlFilePaths($sqlFileName) as $sqlFileNameWithPath) {
+            $this->hideFile($sqlFileNameWithPath);
+        }
     }
 
     private function showSetupSqlFile($sqlFileName)
     {
-        $this->showFile($this->getSetupSqlFilePath($sqlFileName));
+        foreach ($this->iterateThroughAllSetupSqlFilePaths($sqlFileName) as $sqlFileNameWithPath) {
+            $this->showFile($sqlFileNameWithPath);
+        }
+    }
+
+    private function isDemodataSqlFileFromDemodataPackageAvailable()
+    {
+        return file_exists(
+            $this->getSetupSqlFilePathBasedOnDemodataPackageDirectory(self::DEMODATA_SQL_FILENAME)
+        );
     }
 
     private function getHiddenFilePath($filePath)
@@ -1098,12 +1125,26 @@ class ShopSetUpTest extends FrontendTestCase
 
     private function includeSyntaxErrorToSetupSqlFile($sqlFileName)
     {
-        $this->includeSyntaxErrorToFile($this->getSetupSqlFilePath($sqlFileName));
+        foreach ($this->iterateThroughAllSetupSqlFilePaths($sqlFileName) as $sqlFileNameWithPath) {
+            $this->includeSyntaxErrorToFile($sqlFileNameWithPath);
+        }
     }
 
     private function excludeSyntaxErrorFromSetupSqlFile($sqlFileName)
     {
-        $this->excludeSyntaxErrorFromFile($this->getSetupSqlFilePath($sqlFileName));
+        foreach ($this->iterateThroughAllSetupSqlFilePaths($sqlFileName) as $sqlFileNameWithPath) {
+            $this->excludeSyntaxErrorFromFile($sqlFileNameWithPath);
+        }
+    }
+
+    private function iterateThroughAllSetupSqlFilePaths($sqlFileName)
+    {
+        yield $this->getSetupSqlFilePathBasedOnSourceDirectory($sqlFileName);
+        yield $this->getSetupSqlFilePathBasedOnVendorDirectory($sqlFileName);
+
+        if ($sqlFileName === self::DEMODATA_SQL_FILENAME) {
+            yield $this->getSetupSqlFilePathBasedOnDemodataPackageDirectory($sqlFileName);
+        }
     }
 
     private function includeSyntaxErrorToFile($filePath)
@@ -1304,5 +1345,21 @@ false
 SCRIPT;
 
         return $content;
+    }
+
+    private function skipInitialDataSqlCaseIfDemodataPackageIsInUse($setupSqlFile)
+    {
+        if (($setupSqlFile === self::INITIAL_DATA_SQL_FILENAME) && ($this->isDemodataSqlFileFromDemodataPackageAvailable())) {
+            $this->markTestSkipped(
+                self::INITIAL_DATA_SQL_FILENAME . " file is not available nor used if 'demodata' package is present."
+            );
+        }
+    }
+
+    private function skipLanguageSqlFilenameCase($setupSqlFile)
+    {
+        if ($setupSqlFile === self::EN_LANGUAGE_SQL_FILENAME) {
+            $this->markTestSkipped('Skipping this case to match functionality from current Setup implementation.');
+        }
     }
 }

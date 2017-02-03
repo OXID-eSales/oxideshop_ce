@@ -500,6 +500,25 @@ class ConfigTest extends \OxidTestCase
     }
 
     /**
+     * Test method ActiveViewsIds
+     */
+    public function testGetActiveViewsIds()
+    {
+        $config = oxNew('oxConfig');
+
+        $view1 = $this->getMock('oxView', array('getClassKey'));
+        $view1->expects($this->once())->method('getClassKey')->will($this->returnValue('testViewId1'));
+
+        $view2 = $this->getMock('oxView', array('getClassKey'));
+        $view2->expects($this->once())->method('getClassKey')->will($this->returnValue('testViewId2'));
+
+        $config->setActiveView($view1);
+        $config->setActiveView($view2);
+
+        $this->assertEquals(array('testViewId1', 'testViewId2'), $config->getActiveViewsIds());
+    }
+
+    /**
      * Testing base shop id getter
      */
     public function testGetBaseShopId()
@@ -2559,7 +2578,7 @@ class ConfigTest extends \OxidTestCase
                      'bbb' => 'OxidEsales\EshopCommunity\Application\SomeOtherController',
                      'CCC' => 'OxidEsales\EshopCommunity\Application\SomeDifferentController');
 
-        $mock = $this->getMock('OxidEsales\EshopCommunity\Core\Routing\ShopControllerProvider', ['getControllerMap'], [], '', false);
+        $mock = $this->getMock(\OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider::class, ['getControllerMap'], [], '', false);
         $mock->expects($this->any())->method('getControllerMap')->will($this->returnValue($map));
 
         return $mock;
@@ -2576,7 +2595,7 @@ class ConfigTest extends \OxidTestCase
                      'DDD' => 'Vendor1\OtherTestModule\SomeOtherController',
                      'eee' => 'Vendor2\OtherTestModule\SomeDifferentController');
 
-        $mock = $this->getMock('OxidEsales\EshopCommunity\Core\Routing\ModuleControllerProvider', ['getControllerMap'], [], '', false);
+        $mock = $this->getMock(\OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider::class, ['getControllerMap'], [], '', false);
         $mock->expects($this->any())->method('getControllerMap')->will($this->returnValue($map));
 
         return $mock;
@@ -2589,9 +2608,7 @@ class ConfigTest extends \OxidTestCase
      */
     private function getControllerClassNameResolverMock()
     {
-        $resolver = $this->getMock('OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver', array('getModuleControllerProvider', 'getShopControllerProvider'));
-        $resolver->expects($this->any())->method('getShopControllerProvider')->will($this->returnValue($this->getShopControllerProviderMock()));
-        $resolver->expects($this->any())->method('getModuleControllerProvider')->will($this->returnValue($this->getModuleControllerProviderMock()));
+        $resolver = oxNew(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class, $this->getShopControllerProviderMock(), $this->getModuleControllerProviderMock());
 
         return $resolver;
     }

@@ -2052,6 +2052,10 @@ class Config extends Base
     }
 
     /**
+     * @deprecated since v6.0 (2017-02-3). Use Config::getActiveViewsIds() instead.
+     *
+     * NOTE: according to current logic, this returns the view ids.
+     *
      * Get active views names list
      *
      * @return array
@@ -2067,6 +2071,24 @@ class Config extends Base
         }
 
         return $names;
+    }
+
+    /**
+     * Get active views class id list
+     *
+     * @return array
+     */
+    public function getActiveViewsIds()
+    {
+        $ids = array();
+
+        if (is_array($this->getActiveViewsList())) {
+            foreach ($this->getActiveViewsList() as $view) {
+                $ids[] = $view->getClassKey();
+            }
+        }
+
+        return $ids;
     }
 
     /**

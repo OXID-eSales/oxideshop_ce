@@ -1561,72 +1561,48 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->addSelection("allsel[]", "label=test selection list [EN] šÄßüл | test sellist šÄßüл");
         $this->clickAndWait("//b");
 
-        $this->waitForItemAppear("//tr[@id='test_variant.1']/td[3]/input[@value='selvar1 [DE]']");
-        $this->assertEquals("10010-1", $this->getValue("//tr[@id='test_variant.1']/td[4]/input"));
-        $this->assertEquals("3.5", $this->getValue("//tr[@id='test_variant.1']/td[5]/input"));
-        $this->assertEquals("selvar2 [DE]", $this->getValue("//tr[@id='test_variant.2']/td[3]/input"));
-        $this->assertEquals("10010-2", $this->getValue("//tr[@id='test_variant.2']/td[4]/input"));
-        $this->assertEquals("2.5", $this->getValue("//tr[@id='test_variant.2']/td[5]/input"));
-        $this->assertEquals("selvar3 [DE]", $this->getValue("//tr[@id='test_variant.3']/td[3]/input"));
-        $this->assertEquals("10010-3", $this->getValue("//tr[@id='test_variant.3']/td[4]/input"));
-        $this->assertEquals("0.5", $this->getValue("//tr[@id='test_variant.3']/td[5]/input"));
-        $this->assertEquals("selvar4 [DE]", $this->getValue("//tr[@id='test_variant.4']/td[3]/input"));
-        $this->assertEquals("10010-4", $this->getValue("//tr[@id='test_variant.4']/td[4]/input"));
-        $this->assertEquals("2.55", $this->getValue("//tr[@id='test_variant.4']/td[5]/input"));
+        // String to access variant inputs (d1 = variant id, d2 = table column id)
+        $inputPath = "//tr[@id='test_variant.%d']/td[%d]/input";
+
+        // gets values of all three variant input fields: Title, Code, Price
+        $variantValues = function($index) use ($inputPath) {
+            // 3 = Title, 4 = Code, 5 = Price
+            return [
+                $this->getValue(sprintf($inputPath, $index, 3)),
+                $this->getValue(sprintf($inputPath, $index, 4)),
+                $this->getValue(sprintf($inputPath, $index, 5))
+            ];
+        };
+
+        $this->waitForItemAppear(sprintf($inputPath, 1, 3)."[@value='selvar1 [DE]']");
+        $this->assertEquals(["selvar1 [DE]", "10010-1", "3.5"], $variantValues(1));
+        $this->assertEquals(["selvar2 [DE]", "10010-2", "2.5"], $variantValues(2));
+        $this->assertEquals(["selvar3 [DE]", "10010-3", "0.5"], $variantValues(3));
+
         $this->addSelection("allsel[]", "label=test selection list [EN] šÄßüл | test sellist šÄßüл");
         $this->clickAndWait("//b");
 
-        $this->waitForItemAppear("//tr[@id='test_variant.1']/td[3]/input[@value='selvar1 [DE] | selvar1 [DE]']");
-        $this->assertEquals("10010-1", $this->getValue("//tr[@id='test_variant.1']/td[4]/input"));
-        $this->assertEquals("4.5", $this->getValue("//tr[@id='test_variant.1']/td[5]/input"));
-        $this->assertEquals("selvar1 [DE] | selvar2 [DE]", $this->getValue("//tr[@id='test_variant.2']/td[3]/input"));
-        $this->assertEquals("10010-1-1", $this->getValue("//tr[@id='test_variant.2']/td[4]/input"));
-        $this->assertEquals("3.5", $this->getValue("//tr[@id='test_variant.2']/td[5]/input"));
-        $this->assertEquals("selvar1 [DE] | selvar3 [DE]", $this->getValue("//tr[@id='test_variant.3']/td[3]/input"));
-        $this->assertEquals("10010-1-2", $this->getValue("//tr[@id='test_variant.3']/td[4]/input"));
-        $this->assertEquals("1.5", $this->getValue("//tr[@id='test_variant.3']/td[5]/input"));
-        $this->assertEquals("selvar1 [DE] | selvar4 [DE]", $this->getValue("//tr[@id='test_variant.4']/td[3]/input"));
-        $this->assertEquals("10010-1-3", $this->getValue("//tr[@id='test_variant.4']/td[4]/input"));
-        $this->assertEquals("3.55", $this->getValue("//tr[@id='test_variant.4']/td[5]/input"));
-        $this->assertEquals("selvar2 [DE] | selvar1 [DE]", $this->getValue("//tr[@id='test_variant.5']/td[3]/input"));
-        $this->assertEquals("10010-2", $this->getValue("//tr[@id='test_variant.5']/td[4]/input"));
-        $this->assertEquals("3.5", $this->getValue("//tr[@id='test_variant.5']/td[5]/input"));
-        $this->assertEquals("selvar2 [DE] | selvar2 [DE]", $this->getValue("//tr[@id='test_variant.6']/td[3]/input"));
-        $this->assertEquals("10010-2-1", $this->getValue("//tr[@id='test_variant.6']/td[4]/input"));
-        $this->assertEquals("2.5", $this->getValue("//tr[@id='test_variant.6']/td[5]/input"));
-        $this->assertEquals("selvar2 [DE] | selvar3 [DE]", $this->getValue("//tr[@id='test_variant.7']/td[3]/input"));
-        $this->assertEquals("10010-2-2", $this->getValue("//tr[@id='test_variant.7']/td[4]/input"));
-        $this->assertEquals("0.5", $this->getValue("//tr[@id='test_variant.7']/td[5]/input"));
-        $this->assertEquals("selvar2 [DE] | selvar4 [DE]", $this->getValue("//tr[@id='test_variant.8']/td[3]/input"));
-        $this->assertEquals("10010-2-3", $this->getValue("//tr[@id='test_variant.8']/td[4]/input"));
-        $this->assertEquals("2.55", $this->getValue("//tr[@id='test_variant.8']/td[5]/input"));
-        $this->assertEquals("selvar3 [DE] | selvar1 [DE]", $this->getValue("//tr[@id='test_variant.9']/td[3]/input"));
-        $this->assertEquals("10010-3", $this->getValue("//tr[@id='test_variant.9']/td[4]/input"));
-        $this->assertEquals("1.5", $this->getValue("//tr[@id='test_variant.9']/td[5]/input"));
-        $this->assertEquals("selvar3 [DE] | selvar2 [DE]", $this->getValue("//tr[@id='test_variant.10']/td[3]/input"));
-        $this->assertEquals("10010-3-1", $this->getValue("//tr[@id='test_variant.10']/td[4]/input"));
-        $this->assertEquals("0.5", $this->getValue("//tr[@id='test_variant.10']/td[5]/input"));
-        $this->assertEquals("selvar3 [DE] | selvar3 [DE]", $this->getValue("//tr[@id='test_variant.11']/td[3]/input"));
-        $this->assertEquals("10010-3-2", $this->getValue("//tr[@id='test_variant.11']/td[4]/input"));
-        $this->assertEquals("-1.5", $this->getValue("//tr[@id='test_variant.11']/td[5]/input"));
-        $this->assertEquals("selvar3 [DE] | selvar4 [DE]", $this->getValue("//tr[@id='test_variant.12']/td[3]/input"));
-        $this->assertEquals("10010-3-3", $this->getValue("//tr[@id='test_variant.12']/td[4]/input"));
-        $this->assertEquals("0.55", $this->getValue("//tr[@id='test_variant.12']/td[5]/input"));
-        $this->assertEquals("selvar4 [DE] | selvar1 [DE]", $this->getValue("//tr[@id='test_variant.13']/td[3]/input"));
-        $this->assertEquals("10010-4", $this->getValue("//tr[@id='test_variant.13']/td[4]/input"));
-        $this->assertEquals("3.55", $this->getValue("//tr[@id='test_variant.13']/td[5]/input"));
-        $this->assertEquals("selvar4 [DE] | selvar2 [DE]", $this->getValue("//tr[@id='test_variant.14']/td[3]/input"));
-        $this->assertEquals("10010-4-1", $this->getValue("//tr[@id='test_variant.14']/td[4]/input"));
-        $this->assertEquals("2.55", $this->getValue("//tr[@id='test_variant.14']/td[5]/input"));
-        $this->assertEquals("selvar4 [DE] | selvar3 [DE]", $this->getValue("//tr[@id='test_variant.15']/td[3]/input"));
-        $this->assertEquals("10010-4-2", $this->getValue("//tr[@id='test_variant.15']/td[4]/input"));
-        $this->assertEquals("0.55", $this->getValue("//tr[@id='test_variant.15']/td[5]/input"));
-        $this->assertEquals("selvar4 [DE] | selvar4 [DE]", $this->getValue("//tr[@id='test_variant.16']/td[3]/input"));
-        $this->assertEquals("10010-4-3", $this->getValue("//tr[@id='test_variant.16']/td[4]/input"));
-        $this->assertEquals("2.6", $this->getValue("//tr[@id='test_variant.16']/td[5]/input"));
+        $this->waitForItemAppear(sprintf($inputPath, 1, 3)."[@value='selvar1 [DE] | selvar1 [DE]']");
+        $this->assertEquals(["selvar1 [DE] | selvar1 [DE]", "10010-1", "4.5"], $variantValues(1));
+        $this->assertEquals(["selvar1 [DE] | selvar2 [DE]", "10010-1-1", "3.5"], $variantValues(2));
+        $this->assertEquals(["selvar1 [DE] | selvar3 [DE]", "10010-1-2", "1.5"], $variantValues(3));
+        $this->assertEquals(["selvar1 [DE] | selvar4 [DE]", "10010-1-3", "3.55"], $variantValues(4));
+        $this->assertEquals(["selvar2 [DE] | selvar1 [DE]", "10010-2", "3.5"], $variantValues(5));
+        $this->assertEquals(["selvar2 [DE] | selvar2 [DE]", "10010-2-1", "2.5"], $variantValues(6));
+        $this->assertEquals(["selvar2 [DE] | selvar3 [DE]", "10010-2-2", "0.5"], $variantValues(7));
+        $this->assertEquals(["selvar2 [DE] | selvar4 [DE]", "10010-2-3", "2.55"], $variantValues(8));
+        $this->assertEquals(["selvar3 [DE] | selvar1 [DE]", "10010-3", "1.5"], $variantValues(9));
+        $this->assertEquals(["selvar3 [DE] | selvar2 [DE]", "10010-3-1", "0.5"], $variantValues(10));
+        $this->assertEquals(["selvar3 [DE] | selvar3 [DE]", "10010-3-2", "-1.5"], $variantValues(11));
+        $this->assertEquals(["selvar3 [DE] | selvar4 [DE]", "10010-3-3", "0.55"], $variantValues(12));
+        $this->assertEquals(["selvar4 [DE] | selvar1 [DE]", "10010-4", "3.55"], $variantValues(13));
+        $this->assertEquals(["selvar4 [DE] | selvar2 [DE]", "10010-4-1", "2.55"], $variantValues(14));
+        $this->assertEquals(["selvar4 [DE] | selvar3 [DE]", "10010-4-2", "0.55"], $variantValues(15));
+        $this->assertEquals(["selvar4 [DE] | selvar4 [DE]", "10010-4-3", "2.6"], $variantValues(16));
+
         $this->changeAdminEditLanguage('English', 'editlanguage');
 
-        $this->waitForItemAppear("//tr[@id='test_variant.1']/td[3]/input[@value='selvar1 [EN] šÄßüл | selvar1 [EN] šÄßüл']");
+        $this->waitForItemAppear(sprintf($inputPath, 1, 3)."[@value='selvar1 [EN] šÄßüл | selvar1 [EN] šÄßüл']");
         $this->assertEquals("selvar1 [EN] šÄßüл | selvar2 [EN] šÄßüл", $this->getValue("//tr[@id='test_variant.2']/td[3]/input"));
         $this->assertEquals("selvar1 [EN] šÄßüл | selvar3 [EN] šÄßüл", $this->getValue("//tr[@id='test_variant.3']/td[3]/input"));
         $this->assertEquals("selvar1 [EN] šÄßüл | selvar4 [EN] šÄßüл", $this->getValue("//tr[@id='test_variant.4']/td[3]/input"));

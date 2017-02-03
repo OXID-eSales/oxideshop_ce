@@ -31,6 +31,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modu
  * Test, that the inheritance of modules and the shop works as expected.
  *
  * @group module
+ * @group quarantine
  */
 class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
 {

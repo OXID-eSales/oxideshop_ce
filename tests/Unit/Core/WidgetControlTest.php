@@ -45,7 +45,7 @@ class WidgetControlTest extends \OxidTestCase
         $oControl = $this->getMock("oxWidgetControl", array("_runOnce", "_runLast", "_process"), array(), '', false);
         $oControl->expects($this->once())->method('_runOnce');
         $oControl->expects($this->once())->method('_runLast');
-        $oControl->expects($this->once())->method('_process')->with($this->equalTo("start"), $this->equalTo("testFnc"), $this->equalTo("testParams"), $this->equalTo("testViewsChain"));
+        $oControl->expects($this->once())->method('_process')->with($this->equalTo(\OxidEsales\Eshop\Application\Controller\StartController::class), $this->equalTo("testFnc"), $this->equalTo("testParams"), $this->equalTo("testViewsChain"));
         $oControl->start("start", "testFnc", "testParams", "testViewsChain");
     }
 

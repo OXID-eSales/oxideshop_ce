@@ -42,10 +42,11 @@ class RoutingException extends \oxException
      * Use this exception to catch and rethrow exceptions of the underlying DBAL.
      * Provide the caught exception as the third parameter of the constructor to enable exception chaining.
      *
-     * @param string $message
+     * @param string $controllerId
      */
-    public function __construct($message)
+    public function __construct($controllerId)
     {
+        $message = sprintf('No controller defined for id %s', $controllerId);
         parent::__construct($message);
     }
 }

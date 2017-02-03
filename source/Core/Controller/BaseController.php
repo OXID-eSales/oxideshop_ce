@@ -93,6 +93,13 @@ class BaseController extends \oxSuperCfg
     protected $_sClass = null;
 
     /**
+     * Current view class key
+     *
+     * @var string
+     */
+    protected $classKey = null;
+
+    /**
      * Action function name
      *
      * @var string
@@ -342,23 +349,50 @@ class BaseController extends \oxSuperCfg
     }
 
     /**
+     * @deprecated since v6.0 (2017-02-3). Use BaseController::setClassKey() instead.
+     *
+     * NOTE: current usage and name misleading, the shop actually calls this function with the view's class id as argument.
+     *
      * Current view class name setter.
      *
-     * @param string $sClassName current view class name
+     * @param string $classKey current view class name
      */
-    public function setClassName($sClassName)
+    public function setClassName($classKey)
     {
-        $this->_sClass = $sClassName;
+        $this->_sClass = $classKey;
+        $this->setClassKey($classKey);
     }
 
     /**
+     * @deprecated since v6.0 (2017-02-3). Use BaseController::getClassId() instead.
+     *
      * Returns class name of current class
      *
      * @return string
      */
     public function getClassName()
     {
-        return $this->_sClass;
+        return $this->getClassKey();
+    }
+
+    /**
+     * Current view class key setter.
+     *
+     * @param string $classKey current view class key
+     */
+    public function setClassKey($classKey)
+    {
+        $this->classKey = $classKey;
+    }
+
+    /**
+     * Returns class key of current view
+     *
+     * @return string
+     */
+    public function getClassKey()
+    {
+        return $this->classKey;
     }
 
     /**

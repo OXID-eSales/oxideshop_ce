@@ -2490,4 +2490,15 @@ class UBaseTest extends \OxidTestCase
         $_GET[$baseController->getSortOrderParameterName()] = '';
         $this->assertNull($baseController->getUserSelectedSorting());
     }
+
+    /**
+     * Test class key setter and getter.
+     */
+    public function testSetGetClassKey()
+    {
+        $baseController = $baseController = oxNew('oxUBase');
+        $baseController->setClassKey('test_class_key');
+        $this->assertEquals('test_class_key', $baseController->getClassKey());
+    }
+
 }

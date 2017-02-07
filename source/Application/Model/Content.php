@@ -180,14 +180,15 @@ class Content extends \oxI18n implements \oxIUrl
      * Loads Content by using field oxloadid instead of oxid.
      *
      * @param string $sLoadId content load ID
+     * @param string $blActive selection state - active/inactive
      *
      * @return bool
      */
-    public function loadByIdent($sLoadId)
+    public function loadByIdent($sLoadId, $blActive = false)
     {
         $aData = $this->_loadFromDb($sLoadId);
 
-        if ($aData) {
+        if ($aData && (!$blActive || ($blActive && $aData['OXACTIVE']) == '1')) {
             $this->assign($aData);
             return true;
         }

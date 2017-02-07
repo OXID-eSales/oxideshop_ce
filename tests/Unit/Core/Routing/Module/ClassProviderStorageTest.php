@@ -75,14 +75,33 @@ class ControllerProviderCacheTest extends UnitTestCase
     /**
      * Test, that the cache leads to the before set value.
      */
-    public function testGetWithSetValueBefore()
+    public function testSetLowercasesModuleIdAndControllerKey()
     {
-        $value = ['ModuleA' => []];
+        $value = [
+            'ModuleA' => [
+                'MyControllerKeyOne' => '\MyNamespace\MyClassOne',
+                'MyControllerKeyTwo' => '\MyNamespace\MyClassTwo'
+            ],
+            'ModuleB' => [
+                'MyControllerKeyThree' => '\MyNamespace\MyClassThree',
+                'MyControllerKeyFour' => '\MyNamespace\MyClassFour'
+            ]
+        ];
+        $expectedValue = [
+            'modulea' => [
+                'mycontrollerkeyone' => '\MyNamespace\MyClassOne',
+                'mycontrollerkeytwo' => '\MyNamespace\MyClassTwo'
+            ],
+            'moduleb' => [
+                'mycontrollerkeythree' => '\MyNamespace\MyClassThree',
+                'mycontrollerkeyfour' => '\MyNamespace\MyClassFour'
+            ]
+        ];
 
         $cache = $this->testCreation();
         $cache->set($value);
 
-        $this->assertEquals($cache->get(), $value);
+        $this->assertEquals($cache->get(), $expectedValue);
 
         return $cache;
     }

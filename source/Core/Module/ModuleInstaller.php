@@ -23,6 +23,7 @@ namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\Module\ClassProviderStorage;
+use OxidEsales\EshopCommunity\Core\Exception\ModuleValidationException;
 use OxidEsales\EshopCommunity\Core\Exception\StandardException;
 use oxModuleCache;
 use oxDb;
@@ -111,10 +112,10 @@ class ModuleInstaller extends \oxSuperCfg
             if (version_compare($module->getMetaDataVersion(), '2.0', '>=')) {
                 try {
                     $this->addModuleControllers($module->getControllers(), $moduleId);
-                } catch (\Exception $exception) {
+                } catch (ModuleValidationException $exception) {
                     $this->deactivate($module);
                     $lang = Registry::getLang();
-                    $message = sprintf($lang->translateString('ERROR_CONTROLLER_NOT_UNIQUE', null, true), $exception->getMessage());
+                    $message = sprintf($lang->translateString('ERROR_METADATA_CONTROLLERS_NOT_UNIQUE', null, true), $exception->getMessage());
 
                     $standardException = oxNew(StandardException::class);
                     $standardException->setMessage($message);
@@ -536,8 +537,7 @@ class ModuleInstaller extends \oxSuperCfg
      */
     protected function addModuleControllers($moduleControllers, $moduleId)
     {
-
-        $this->validateModuleControllers($moduleControllers);
+        $this->validateModuleMetadataControllersOnActivation($moduleControllers);
 
         $classProviderStorage = $this->getClassProviderStorage();
 
@@ -641,11 +641,14 @@ class ModuleInstaller extends \oxSuperCfg
     }
 
     /**
+     * Ensure integrity of the controllerMap before storing it.
+     * Both keys and values must be unique with in the same shop or sub-shop.
+     *
      * @param array $moduleControllers
      *
-     * @throws \Exception
+     * @throws ModuleValidationException
      */
-    protected function validateModuleControllers($moduleControllers)
+    protected function validateModuleMetadataControllersOnActivation($moduleControllers)
     {
         $moduleControllerMapProvider = $this->getModuleControllerMapProvider();
         $shopControllerProvider = $this->getShopControllerProvider();
@@ -655,19 +658,21 @@ class ModuleInstaller extends \oxSuperCfg
 
         $existingMaps = array_merge($moduleControllerMap, $shopControllerMap);
 
-        /** Ensure, that controller keys are unique */
-        $duplicatedKeys = array_intersect_key($moduleControllers, $existingMaps);
-
+        /**
+         * Ensure, that controller keys are unique.
+         * As keys are always stored in lower case, we must test against lower case keys here as well
+         */
+        $duplicatedKeys = array_intersect_key(array_change_key_case($moduleControllers, CASE_LOWER), $existingMaps);
         if (!empty($duplicatedKeys)) {
-            /** Duplicated key exception */
-            throw new \Exception(implode(',', $duplicatedKeys));
+            throw new ModuleValidationException(implode(',', $duplicatedKeys));
         }
 
-        /** Ensure, that controller values are unique */
+        /**
+         * Ensure, that controller values are unique.
+         */
         $duplicatedValues = array_intersect($moduleControllers, $existingMaps);
-        if ($duplicatedValues) {
-            /** Duplicated value exception */
-            throw new \Exception(implode(',', $duplicatedValues));
+        if (!empty($duplicatedValues)) {
+            throw new ModuleValidationException(implode(',', $duplicatedValues));
         }
     }
 }

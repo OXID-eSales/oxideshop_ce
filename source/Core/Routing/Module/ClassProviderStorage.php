@@ -54,6 +54,8 @@ class ClassProviderStorage implements ClassProviderStorageInterface
      */
     public function set($value)
     {
+        $value = $this->toLowercase($value);
+
         /**
          * @todo see Implementation of \OxidEsales\EshopCommunity\Core\Module\ModuleInstaller::_saveToConfig
          *       setConfigParam and saveShopConfVar is called there. Ask someone (Vilma) why ;-)
@@ -83,9 +85,47 @@ class ClassProviderStorage implements ClassProviderStorageInterface
     public function remove($moduleId)
     {
         $controllerMap = $this->get();
-        unset($controllerMap[$moduleId]);
+        unset($controllerMap[strtolower($moduleId)]);
 
         $this->set($controllerMap);
+    }
+
+    /**
+     * Change the module IDs and the controller keys to lower case.
+     *
+     * @param array $modulesControllers The controller arrays of several modules.
+     *
+     * @return array The given controller arrays of several modules, with the module IDs and the controller keys in lower case.
+     */
+    private function toLowercase($modulesControllers)
+    {
+        $result = [];
+
+        if (!is_null($modulesControllers)) {
+            foreach ($modulesControllers as $moduleId => $controllers) {
+                $result[strtolower($moduleId)] = $this->controllerKeysToLowercase($controllers);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Change the controller keys to lower case.
+     *
+     * @param array $controllers The controllers array of one module.
+     *
+     * @return array The given controllers array with the controller keys in lower case.
+     */
+    private function controllerKeysToLowercase($controllers)
+    {
+        $result = [];
+
+        foreach ($controllers as $controllerKey => $controllerClass) {
+            $result[strtolower($controllerKey)] = $controllerClass;
+        }
+
+        return $result;
     }
 
     /**

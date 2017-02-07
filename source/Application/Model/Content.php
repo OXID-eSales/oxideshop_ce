@@ -219,7 +219,7 @@ class Content extends \oxI18n implements \oxIUrl
      */
     protected function filterInactive($data, $checkIfActive = false)
     {
-        return (!$checkIfActive || ($checkIfActive && $data['OXACTIVE']) == '1') ? $data : null;
+        return $data && (!$checkIfActive || ($checkIfActive && $data['OXACTIVE']) == '1') ? $data : null;
     }
 
     /**

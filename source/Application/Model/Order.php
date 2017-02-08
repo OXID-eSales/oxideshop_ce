@@ -1084,6 +1084,8 @@ class Order extends \oxBase
      *
      * @param array  $aArticleList array of basket products
      * @param oxuser $oUser        basket user object
+     *
+     * @return null
      */
     protected function _updateNoticeList($aArticleList, $oUser)
     {

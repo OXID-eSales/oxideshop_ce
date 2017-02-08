@@ -179,7 +179,7 @@ class Content extends \oxI18n implements \oxIUrl
     /**
      * Loads Content by using field oxloadid instead of oxid.
      *
-     * @param string $loadId content load ID
+     * @param string $loadId     content load ID
      * @param string $onlyActive selection state - active/inactive
      *
      * @return bool
@@ -193,7 +193,7 @@ class Content extends \oxI18n implements \oxIUrl
      * Assign content data, filter inactive if needed.
      *
      * @param array $fetchedContent Item data to assign
-     * @param bool $onlyActive Only assign if item is active
+     * @param bool  $onlyActive     Only assign if item is active
      *
      * @return bool
      */
@@ -213,7 +213,7 @@ class Content extends \oxI18n implements \oxIUrl
      * Decide if content item can be loaded by checking item activity if needed
      *
      * @param array $data
-     * @param bool $checkIfActive
+     * @param bool  $checkIfActive
      *
      * @return array | null
      */

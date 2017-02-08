@@ -25,7 +25,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
  * Test, that the inheritance of modules and the shop works as expected.
  *
  * @group module
- * @group quarantine
  */
 class BCModuleInheritanceTest extends BaseModuleInheritanceTestCase
 {

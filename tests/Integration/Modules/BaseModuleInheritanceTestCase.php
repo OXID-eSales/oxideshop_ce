@@ -30,7 +30,6 @@ use OxidEsales\EshopCommunity\Core\Registry;
  * Base class for module inheritance integration tests.
  *
  * @group module
- * @group quarantine
  */
 abstract class BaseModuleInheritanceTestCase extends BaseModuleTestCase
 {

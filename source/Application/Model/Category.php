@@ -23,6 +23,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxField;
 
@@ -641,7 +642,7 @@ class Category extends \oxI18n implements \oxIUrl
     public function getStdLink($iLang = null, $aParams = array())
     {
         if (isset($this->oxcategories__oxextlink) && $this->oxcategories__oxextlink->value) {
-            return oxRegistry::get("oxUtilsUrl")->processUrl($this->oxcategories__oxextlink->value, false);
+            return Registry::get("oxUtilsUrl")->processUrl($this->oxcategories__oxextlink->value);
         }
 
         if ($iLang === null) {
@@ -652,7 +653,7 @@ class Category extends \oxI18n implements \oxIUrl
             $this->_aStdUrls[$iLang] = $this->getBaseStdLink($iLang);
         }
 
-        return oxRegistry::get("oxUtilsUrl")->processUrl($this->_aStdUrls[$iLang], true, $aParams, $iLang);
+        return Registry::get("oxUtilsUrl")->processUrl($this->_aStdUrls[$iLang], true, $aParams, $iLang);
     }
 
     /**

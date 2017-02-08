@@ -32,7 +32,6 @@ use OxidEsales\EshopCommunity\Core\Contract\ControllerMapProviderInterface;
  */
 class ModuleControllerMapProvider implements ControllerMapProviderInterface
 {
-    private $cache = null;
 
     /**
      * Get the controller map of the modules.
@@ -41,32 +40,40 @@ class ModuleControllerMapProvider implements ControllerMapProviderInterface
      *  - the keys are the controller ids
      *  - the values are the routed class names
      *
-     * @return null|array The controller map of the modules.
+     * @return array
      */
     public function getControllerMap()
     {
-        return $this->getCache()->get();
-    }
+        $controllerMap = [];
 
-    /**
-     * Getter for the controller module cache.
-     *
-     * @return ClassProviderStorage The controller module cache.
-     */
-    private function getCache()
-    {
-        $this->safeGuardCache();
-
-        return $this->cache;
-    }
-
-    /**
-     * Safe guard for the modules controllers cache.
-     */
-    private function safeGuardCache()
-    {
-        if (is_null($this->cache)) {
-            $this->cache = oxNew(ClassProviderStorage::class);
+        $moduleControllerProviderStorage = $this->getModuleControllerProviderStorage();
+        $moduleControllersByModuleId = $moduleControllerProviderStorage->get();
+        if(is_array($moduleControllersByModuleId)){
+            $controllerMap = $this->flattenControllersMap($moduleControllersByModuleId);
         }
+
+        return $controllerMap;
+    }
+
+    /**
+     * @return ClassProviderStorage
+     */
+    protected function getModuleControllerProviderStorage()
+    {
+        return oxNew(ClassProviderStorage::class);
+    }
+
+    /**
+     * @param array $moduleControllersByModuleId
+     *
+     * @return array The input array
+     */
+    protected function flattenControllersMap(array $moduleControllersByModuleId)
+    {
+        $moduleControllersFlat = [];
+        foreach ($moduleControllersByModuleId as $moduleControllersOfOneModule){
+            $moduleControllersFlat = array_merge($moduleControllersFlat, $moduleControllersOfOneModule);
+        }
+        return $moduleControllersFlat;
     }
 }

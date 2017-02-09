@@ -96,8 +96,12 @@ class ModuleInstaller extends \oxSuperCfg
             $this->_addExtensions($module);
             $this->_removeFromDisabledList($moduleId);
 
+            if (version_compare($module->getMetaDataVersion(), '2.0', '<')) {
+                /** Support for the key 'files' was removed in MetaData version 2.0 */
+                $this->_addModuleFiles($module->getInfo("files"), $moduleId);
+            }
+
             $this->_addTemplateBlocks($module->getInfo("blocks"), $moduleId);
-            $this->_addModuleFiles($module->getInfo("files"), $moduleId);
             $this->_addTemplateFiles($module->getInfo("templates"), $moduleId);
             $settingsHandler = oxNew(SettingsHandler::class);
             $settingsHandler->setModuleType('module')->run($module);
@@ -105,12 +109,9 @@ class ModuleInstaller extends \oxSuperCfg
             $this->_addModuleExtensions($module->getExtensions(), $moduleId);
             $this->_addModuleEvents($module->getInfo("events"), $moduleId);
 
-            /**
-             * As key 'controllers' was added with MetaData version 2.0,
-             * do not read it, if the MetaData version is below.
-             */
             if (version_compare($module->getMetaDataVersion(), '2.0', '>=')) {
                 try {
+                    /** Support for the key 'controllers' was added in MetaData version 2.0 */
                     $this->addModuleControllers($module->getControllers(), $moduleId);
                 } catch (ModuleValidationException $exception) {
                     $this->deactivate($module);
@@ -408,7 +409,7 @@ class ModuleInstaller extends \oxSuperCfg
     /**
      * Add module templates to database.
      *
-     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
+     * @todo extract oxtplblocks query to ]
      *
      * @param array  $moduleBlocks Module blocks array
      * @param string $moduleId     Module id

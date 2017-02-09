@@ -48,7 +48,7 @@ class ModuleControllerMapProvider implements ControllerMapProviderInterface
 
         $moduleControllerProviderStorage = $this->getModuleControllerProviderStorage();
         $moduleControllersByModuleId = $moduleControllerProviderStorage->get();
-        if(is_array($moduleControllersByModuleId)){
+        if (is_array($moduleControllersByModuleId)) {
             $controllerMap = $this->flattenControllersMap($moduleControllersByModuleId);
         }
 
@@ -71,7 +71,7 @@ class ModuleControllerMapProvider implements ControllerMapProviderInterface
     protected function flattenControllersMap(array $moduleControllersByModuleId)
     {
         $moduleControllersFlat = [];
-        foreach ($moduleControllersByModuleId as $moduleControllersOfOneModule){
+        foreach ($moduleControllersByModuleId as $moduleControllersOfOneModule) {
             $moduleControllersFlat = array_merge($moduleControllersFlat, $moduleControllersOfOneModule);
         }
         return $moduleControllersFlat;

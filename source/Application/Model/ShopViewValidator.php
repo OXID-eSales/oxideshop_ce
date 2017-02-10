@@ -158,7 +158,7 @@ class ShopViewValidator
     protected function _getAllViews()
     {
         if (empty($this->_aAllViews)) {
-            $this->_aAllViews = oxDb::getDb()->getCol("SHOW TABLES LIKE  'oxv_%'");
+            $this->_aAllViews = oxDb::getDb()->getCol("SHOW TABLES LIKE  'oxv\_%'");
         }
 
         return $this->_aAllViews;

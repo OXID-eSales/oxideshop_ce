@@ -43,6 +43,9 @@ class VirtualNameSpaceClassMap extends \OxidEsales\EshopCommunity\Core\Edition\C
     public function getOverridableMap()
     {
         return [
+            /**  Added StandardException to virtual namespace for tests */
+            'OxidEsales\Eshop\Core\Exception\StandardException' => \OxidEsales\EshopCommunity\Core\Exception\StandardException::class,
+
             'OxidEsales\Eshop\Application\Component\BasketComponent' => \OxidEsales\EshopCommunity\Application\Component\BasketComponent::class,
             'OxidEsales\Eshop\Application\Component\CategoriesComponent' => \OxidEsales\EshopCommunity\Application\Component\CategoriesComponent::class,
             'OxidEsales\Eshop\Application\Component\CurrencyComponent' => \OxidEsales\EshopCommunity\Application\Component\CurrencyComponent::class,

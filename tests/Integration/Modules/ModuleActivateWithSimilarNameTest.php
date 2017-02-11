@@ -21,8 +21,6 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
-require_once __DIR__ . '/BaseModuleTestCase.php';
-
 class ModuleActivateWithSimilarNameTest extends BaseModuleTestCase
 {
     /**

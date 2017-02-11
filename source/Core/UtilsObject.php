@@ -272,7 +272,7 @@ class UtilsObject
             $this->_aClassNameCache[$className] = $realClassName;
         }
 
-        $object = $this->_getObject($realClassName, $argumentsCount, $arguments);
+        $object = new $realClassName(...$arguments);
         if ($shouldUseCache && $object instanceof \OxidEsales\EshopCommunity\Core\Model\BaseModel) {
             self::$_aInstanceCache[$cacheKey] = clone $object;
         }
@@ -281,6 +281,8 @@ class UtilsObject
     }
 
     /**
+     * @deprecated since v6.0.0 (2017-02-11). Use arguments unpacking instead.
+     *
      * Creates object with dynamic constructor parameters.
      * If parameter count > 5 - uses reflection class to create object.
      *

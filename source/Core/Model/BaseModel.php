@@ -1405,7 +1405,7 @@ class BaseModel extends \oxSuperCfg
 
         $result = $this->executeDatabaseQuery($updateQuery);
 
-        return null !== $result && intval($result);
+        return is_numeric($result);
     }
 
     /**

@@ -21,9 +21,6 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
-require_once __DIR__ . '/Validator.php';
-require_once __DIR__ . '/Environment.php';
-
 use OxidEsales\EshopCommunity\Core\Registry;
 
 /**

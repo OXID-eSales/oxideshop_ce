@@ -24,9 +24,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 use oxModule;
 use oxRegistry;
 
-require_once __DIR__ . '/Validator.php';
-require_once __DIR__ . '/Environment.php';
-
 /**
  * Base class for module integration tests.
  *

@@ -1403,7 +1403,9 @@ class BaseModel extends \oxSuperCfg
 
         $this->beforeUpdate();
 
-        return (bool) $this->executeDatabaseQuery($updateQuery);
+        $result = $this->executeDatabaseQuery($updateQuery);
+
+        return null !== $result && intval($result);
     }
 
     /**

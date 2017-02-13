@@ -613,9 +613,7 @@ class User extends \oxBase
             $this->deleteAdditionally($sOXIDQuoted);
 
             // and leaving all order related information
-            $rs = $oDb->execute("delete from oxremark where oxparentid = {$sOXIDQuoted} and oxtype !='o'");
-
-            $blDeleted = $rs->EOF;
+            $oDb->execute("delete from oxremark where oxparentid = {$sOXIDQuoted} and oxtype !='o'");
         }
 
         return $blDeleted;

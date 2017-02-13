@@ -1250,7 +1250,9 @@ class UserTest extends \OxidTestCase
 
         $oUser = oxNew('oxUser');
         $oUser->load($sUserId);
-        $oUser->delete();
+        $bSuccess = $oUser->delete();
+
+        $this->assertEquals(true, $bSuccess);
 
         $aWhat = array('oxuser'            => 'oxid',
                        'oxaddress'         => 'oxuserid',

@@ -23,6 +23,7 @@ namespace OxidEsales\EshopCommunity\Core\Routing;
 
 use OxidEsales\Eshop\Core\Routing\Module\ClassProviderStorage;
 use OxidEsales\EshopCommunity\Core\Contract\ControllerMapProviderInterface;
+use OxidEsales\EshopCommunity\Core\UtilsObject;
 
 /**
  * Provide the controller mappings from the metadata of all active modules.
@@ -46,21 +47,14 @@ class ModuleControllerMapProvider implements ControllerMapProviderInterface
     {
         $controllerMap = [];
 
-        $moduleControllerProviderStorage = $this->getModuleControllerProviderStorage();
-        $moduleControllersByModuleId = $moduleControllerProviderStorage->get();
+        $utilsObject = UtilsObject::getInstance();
+        $moduleControllersByModuleId = $utilsObject->getModuleVar(ClassProviderStorage::STORAGE_KEY);
+
         if (is_array($moduleControllersByModuleId)) {
             $controllerMap = $this->flattenControllersMap($moduleControllersByModuleId);
         }
 
         return $controllerMap;
-    }
-
-    /**
-     * @return ClassProviderStorage
-     */
-    protected function getModuleControllerProviderStorage()
-    {
-        return oxNew(ClassProviderStorage::class);
     }
 
     /**

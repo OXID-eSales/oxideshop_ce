@@ -24,6 +24,7 @@ namespace Unit\Integration\Routing;
 use OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider;
+use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 
 /**
  * Test the module ControllerProvider.
@@ -32,6 +33,16 @@ use OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider;
  */
 class ModuleControllerMapProviderTest extends UnitTestCase
 {
+
+    /**
+     * Set up fixture
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        ModuleVariablesLocator::resetModuleVariables();
+    }
 
     /**
      * The data provider for the method testGetControllerMapWithModules.
@@ -78,22 +89,48 @@ class ModuleControllerMapProviderTest extends UnitTestCase
      */
     public function testGetControllerMapWithModules($controllerKeysFromStorage, $expectedControllerKeys)
     {
-        /** @var \OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage|\PHPUnit_Framework_MockObject_MockObject $classProviderStorageMock */
-        $classProviderStorageMock = $this->getMockBuilder(ClassProviderStorage::class)
-            ->setMethods(array("get"))
-            ->getMock();
-        $classProviderStorageMock->expects($this->once())
-            ->method('get')
-            ->will($this->returnValue($controllerKeysFromStorage));
+        $this->getConfig()->saveShopConfVar('aarr', ClassProviderStorage::STORAGE_KEY, $controllerKeysFromStorage);
+        $this->assertModuleControllersNotCached();
 
         /** @var \OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider|\PHPUnit_Framework_MockObject_MockObject $moduleControllerMapProviderMock */
-        $moduleControllerMapProviderMock = $this->getMockBuilder(ModuleControllerMapProvider::class)
-            ->setMethods(array('getModuleControllerProviderStorage'))
-            ->getMock();
-        $moduleControllerMapProviderMock->expects($this->once())
-            ->method('getModuleControllerProviderStorage')
-            ->will($this->returnValue($classProviderStorageMock));
+        $moduleControllerMapProviderMock = oxNew(ModuleControllerMapProvider::class);
 
         $this->assertSame($expectedControllerKeys, $moduleControllerMapProviderMock->getControllerMap());
+        $this->assertModuleControllersCached($controllerKeysFromStorage);
+    }
+
+    /**
+     * Assert that module controller data is cached in filesystem.
+     *
+     * @param array $expectedControllerKeys
+     */
+    protected function assertModuleControllersCached($expectedControllerKeys)
+    {
+        $subShopSpecificCache = $this->getFileCache();
+        $this->assertEquals($expectedControllerKeys, $subShopSpecificCache->getFromCache(ClassProviderStorage::STORAGE_KEY));
+    }
+
+    /**
+     * Assert that module controller data is not cached in filesystem.
+     */
+    protected function assertModuleControllersNotCached()
+    {
+        $subShopSpecificCache = $this->getFileCache();
+        $this->assertNull($subShopSpecificCache->getFromCache(ClassProviderStorage::STORAGE_KEY));
+    }
+
+    /**
+     * Get a file cache object
+     */
+    private function getFileCache()
+    {
+        $shopId = $this->getTestConfig()->getShopId();
+
+        $shopIdCalculatorMock = $this->getMock('\OxidEsales\EshopCommunity\Core\ShopIdCalculator', array('getShopId'), array(), '', false);
+        $shopIdCalculatorMock->expects($this->any())->method('getShopId')->will($this->returnValue($shopId));
+
+        $subShopSpecificCache = oxNew('\OxidEsales\EshopCommunity\Core\SubShopSpecificFileCache', $shopIdCalculatorMock);
+
+        return $subShopSpecificCache;
     }
 }

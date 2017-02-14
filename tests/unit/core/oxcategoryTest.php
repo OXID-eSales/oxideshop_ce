@@ -533,7 +533,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         $oCategory = new oxcategory();
         $oCategory->oxcategories__oxextlink = new oxField('xxx', oxField::T_RAW);
 
-        $this->assertEquals('xxx?', $oCategory->getStdLink());
+        $this->assertEquals('xxx', $oCategory->getStdLink());
     }
 
     public function testGetStdLinkshoudlReturnDefaultLink()
@@ -564,7 +564,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         $oCategory = new oxcategory();
         $oCategory->oxcategories__oxextlink = new oxField('www.test.com', oxField::T_RAW);
 
-        $this->assertEquals('www.test.com?', $oCategory->getLink());
+        $this->assertEquals('www.test.com', $oCategory->getLink());
     }
 
     public function testGetLinkSeoDe()
@@ -603,7 +603,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         $oCategory = new oxcategory();
         $oCategory->oxcategories__oxextlink = new oxField('xxx', oxField::T_RAW);
 
-        $this->assertEquals('xxx?', $oCategory->getStdLink(2));
+        $this->assertEquals('xxx', $oCategory->getStdLink(2));
     }
 
     public function testGetStdLinkshoudlReturnDefaultLinkWithLangParam()

@@ -99,6 +99,10 @@ abstract class BaseModuleTestCase extends \OxidTestCase
             $this->assertTrue($oValidator->checkFiles($aExpectedResult['files']), 'Files do not match expectations');
         }
 
+        if (isset($aExpectedResult['controllers'])) {
+            $this->assertTrue($oValidator->checkControllers($aExpectedResult['controllers']), 'Controllers do not match expectations');
+        }
+
         if (isset($aExpectedResult['events'])) {
             $this->assertTrue($oValidator->checkEvents($aExpectedResult['events']), 'Events do not match expectations');
         }

@@ -40,6 +40,7 @@ class ModuleList extends \oxSuperCfg
     const MODULE_KEY_FILES = 'Files';
     const MODULE_KEY_TEMPLATES = 'Templates';
     const MODULE_KEY_EXTENSIONS = 'Extensions';
+    const MODULE_KEY_CONTROLLERS = 'Controllers';
 
     /**
      * Modules info array
@@ -301,6 +302,9 @@ class ModuleList extends \oxSuperCfg
 
         // removing from aModuleTemplates array
         $this->removeFromModulesArray(static::MODULE_KEY_TEMPLATES, $aDeletedModuleIds);
+
+        // removing from aModuleControllers array
+        $this->removeFromModulesArray(static::MODULE_KEY_CONTROLLERS, $aDeletedModuleIds);
 
         //removing from config tables and templates blocks table
         $this->_removeFromDatabase($aDeletedModuleIds);

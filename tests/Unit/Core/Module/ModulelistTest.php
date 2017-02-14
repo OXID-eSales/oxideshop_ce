@@ -663,22 +663,31 @@ class ModulelistTest extends \OxidTestCase
                 'files'      => array(
                     'metadata.php'
                 )
+            ),
+            'moduleId3' => array(
+                'extensions' => array(
+                    'ClassName3'  => 'moduleId3/classPath1'
+                ),
+                'controllers'     => array(
+                    'moduleId3_controller1' => 'moduleId3/controller1'
+                )
             )
         );
 
-        $aModuleIds = array('moduleId', 'moduleId2');
+        $aModuleIds = array('moduleId', 'moduleId2', 'moduleId3');
 
         $oModuleList = $this->getMock('oxmodulelist', array('getDeletedExtensions', '_removeExtensions', '_removeFromDisabledModulesArray', '_removeFromLegacyModulesArray', 'removeFromModulesArray', '_removeFromDatabase'));
         $oModuleList->expects($this->once())->method('getDeletedExtensions')->will($this->returnValue($aModuleInformation));
         $oModuleList->expects($this->once())->method('_removeExtensions')->with($aModuleIds);
         $oModuleList->expects($this->once())->method('_removeFromDisabledModulesArray')->with($aModuleIds);
-        $oModuleList->expects($this->exactly(6))->method('removeFromModulesArray')->withConsecutive(
+        $oModuleList->expects($this->exactly(7))->method('removeFromModulesArray')->withConsecutive(
             ['Paths', $aModuleIds],
             ['Events', $aModuleIds],
             ['Versions', $aModuleIds],
             ['Extensions', $aModuleIds],
             ['Files', $aModuleIds],
-            ['Templates', $aModuleIds]
+            ['Templates', $aModuleIds],
+            ['Controllers', $aModuleIds]
         );
         $oModuleList->expects($this->once())->method('_removeFromDatabase')->with($aModuleIds);
 
@@ -704,13 +713,14 @@ class ModulelistTest extends \OxidTestCase
         $oModuleList->expects($this->once())->method('getDeletedExtensions')->will($this->returnValue($aModuleInformation));
         $oModuleList->expects($this->once())->method('_removeExtensions')->with($aModuleIds);
         $oModuleList->expects($this->once())->method('_removeFromDisabledModulesArray')->with($aModuleIds);
-        $oModuleList->expects($this->exactly(6))->method('removeFromModulesArray')->withConsecutive(
+        $oModuleList->expects($this->exactly(7))->method('removeFromModulesArray')->withConsecutive(
             ['Paths', $aModuleIds],
             ['Events', $aModuleIds],
             ['Versions', $aModuleIds],
             ['Extensions', $aModuleIds],
             ['Files', $aModuleIds],
-            ['Templates', $aModuleIds]
+            ['Templates', $aModuleIds],
+            ['Controllers', $aModuleIds]
         );
         $oModuleList->expects($this->once())->method('_removeFromDatabase')->with($aModuleIds);
 

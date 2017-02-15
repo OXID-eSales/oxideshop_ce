@@ -22,8 +22,7 @@
 namespace Integration\Multilanguage;
 
 use oxDb;
-
-require_once 'MultilanguageTestCase.php';
+use OxidEsales\EshopCommunity\Tests\Integration\Multilanguage\MultilanguageTestCase;
 
 class AdditionalTablesTest extends MultilanguageTestCase
 {

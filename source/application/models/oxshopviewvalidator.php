@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -154,7 +154,7 @@ class oxShopViewValidator
     protected function _getAllViews()
     {
         if (empty($this->_aAllViews)) {
-            $this->_aAllViews = oxDb::getDb()->getCol("SHOW TABLES LIKE  'oxv_%'");
+            $this->_aAllViews = oxDb::getDb()->getCol("SHOW TABLES LIKE  'oxv\_%'");
         }
 
         return $this->_aAllViews;

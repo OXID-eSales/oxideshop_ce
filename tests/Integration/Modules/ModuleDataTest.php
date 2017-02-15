@@ -19,12 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Modules;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\BaseModuleTestCase;
-
-require_once __DIR__ . '/BaseModuleTestCase.php';
 
 class ModuleDataTest extends BaseModuleTestCase
 {

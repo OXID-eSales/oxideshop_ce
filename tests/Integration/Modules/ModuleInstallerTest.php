@@ -19,15 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version       OXID eShop CE
  */
-namespace Integration\Modules;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\BaseModuleTestCase;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\Environment;
-
-require_once __DIR__ . '/BaseModuleTestCase.php';
-require_once __DIR__ . '/Environment.php';
 
 class ModuleInstallerTest extends BaseModuleTestCase
 {

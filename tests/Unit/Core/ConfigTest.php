@@ -31,7 +31,7 @@ use \oxRegistry;
 use \oxTestModules;
 
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\EshopCommunity\Core\Registry;
 
 class modForTestGetBaseTplDirExpectsDefault extends oxConfig

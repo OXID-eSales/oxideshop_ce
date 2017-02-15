@@ -111,7 +111,7 @@ class Base
     public function getConfig()
     {
         if (self::$_oConfig == null) {
-            self::$_oConfig = oxRegistry::getConfig();
+            self::$_oConfig = Registry::getConfig();
         }
 
         return self::$_oConfig;

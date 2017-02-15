@@ -23,6 +23,7 @@ namespace Unit\Application\Controller\Admin;
 
 use oxArticleHelper;
 use \oxDb;
+use OxidEsales\Eshop\Application\Controller\Admin\AdminController;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -87,8 +88,8 @@ class AdminViewTest extends \OxidTestCase
         $sPref = $this->getConfig()->getEdition();
 
         // no lang abbr
-        $this->getProxyClass("oxadminview");
-        $oAdminView = $this->getMock("oxadminviewPROXY", array("_getServiceProtocol", "_getCountryByCode", "_getShopVersionNr"), array(), '', false);
+        $this->getProxyClass(AdminController::class);
+        $oAdminView = $this->getMock("OxidEsales_Eshop_Application_Controller_Admin_AdminControllerProxy", array("_getServiceProtocol", "_getCountryByCode", "_getShopVersionNr"), array(), '', false);
         $oAdminView->expects($this->any())->method('_getServiceProtocol')->will($this->returnValue("testprotocol"));
         $oAdminView->expects($this->any())->method('_getCountryByCode')->will($this->returnValue("testcountrycode"));
         $oAdminView->expects($this->any())->method('_getShopVersionNr')->will($this->returnValue("testshopversion"));

@@ -2234,10 +2234,21 @@ class Config extends Base
         if (0 != $this->getConfigParam('iDebug')) {
             Registry::getUtils()->showMessageAndExit($ex->getString());
         } else {
+            /**
+             * Render an error message.
+             * If offline.html exists its content is displayed.
+             * Like this the error message is overridable within that file.
+             */
+            $displayMessage = ''; // Do not disclose any information
+            if (file_exists(OX_OFFLINE_FILE) && is_readable(OX_OFFLINE_FILE)) {
+                $displayMessage = file_get_contents(OX_OFFLINE_FILE);
+            };
+
             header("HTTP/1.1 500 Internal Server Error");
-            header("Location: offline.html");
             header("Connection: close");
-            exit(1);
+            echo $displayMessage;
+
+            exit();
         }
     }
 

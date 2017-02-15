@@ -22,142 +22,8 @@
 
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Request;
+use OxidEsales\EshopCommunity\Core\UtilsObject;
 
-if (!defined('ESHOP_CONFIG_FILE')) {
-    define('ESHOP_CONFIG_FILE', 'config.inc.php');
-}
-
-if (!function_exists('showErrorIfConfigIsMissing')) {
-    function showErrorIfConfigIsMissing()
-    {
-        $configFileName = __DIR__ . DIRECTORY_SEPARATOR . ESHOP_CONFIG_FILE;
-
-        if (file_exists($configFileName)) {
-            return;
-        }
-
-        $message = printf(
-            "Config file '%s' could not be found! Please use '%s.dist' to make a copy.",
-            ESHOP_CONFIG_FILE,
-            ESHOP_CONFIG_FILE
-        );
-
-        die($message);
-    }
-}
-
-if (!function_exists('redirectIfShopNotConfigured')) {
-    function redirectIfShopNotConfigured()
-    {
-        $configFileName = __DIR__ . DIRECTORY_SEPARATOR . ESHOP_CONFIG_FILE;
-
-        if (file_exists($configFileName) && strpos(file_get_contents($configFileName), '<dbHost') === false) {
-            return;
-        }
-
-        $message = printf(
-            "Config file '%s' is not updated! Please navigate to '/Setup' or update '%s' manually.",
-            ESHOP_CONFIG_FILE,
-            ESHOP_CONFIG_FILE
-        );
-
-        header("HTTP/1.1 302 Found");
-        header("Location: Setup/index.php");
-        header("Connection: close");
-
-        die($message);
-    }
-}
-
-if (!function_exists('showErrorIfAutoloaderIsMissing')) {
-    function showErrorIfAutoloaderIsMissing($fileName)
-    {
-        if (file_exists($fileName)) {
-            return;
-        }
-
-        $message = printf(
-            "Autoloader file '%s' was not found! Please run 'composer install' to generate it.",
-            $fileName
-        );
-
-        die($message);
-    }
-}
-
-if (!function_exists('registerComposerAutoload')) {
-    /**
-     * Registers auto-loader for shop namespaced classes.
-     */
-    function registerComposerAutoload()
-    {
-        class AutoloadConfigFile
-        {
-            public function __construct()
-            {
-                showErrorIfConfigIsMissing();
-                include ESHOP_CONFIG_FILE;
-            }
-        }
-        $configFile = new AutoloadConfigFile();
-        $autoloaderFileName = $configFile->vendorDirectory . '/autoload.php';
-
-        showErrorIfAutoloaderIsMissing($autoloaderFileName);
-        require_once $autoloaderFileName;
-    }
-}
-
-if (!function_exists('registerVirtualNamespaceAutoLoad')) {
-    /**
-     * Registers auto-loader for classes of the virtual namespace
-     */
-    function registerVirtualNamespaceAutoLoad()
-    {
-        $classMapProvider = new \OxidEsales\EshopCommunity\Core\ClassMapProvider(new \OxidEsales\EshopCommunity\Core\Edition\EditionSelector());
-        $classMap = $classMapProvider->getOverridableVirtualNamespaceClassMap();
-        $virtualNamespaceAutoLoader = new \OxidEsales\EshopCommunity\Core\Autoload\VirtualNamespaceClassAutoload($classMap);
-
-        spl_autoload_register(array($virtualNamespaceAutoLoader, 'autoload'));
-    }
-}
-
-if (!function_exists('registerShopAutoLoad')) {
-    /**
-     * Registers auto-loader for shop legacy (non-namespaced) classes.
-     */
-    function registerShopAutoLoad()
-    {
-        $classMapProvider = new \OxidEsales\EshopCommunity\Core\ClassMapProvider(new \OxidEsales\EshopCommunity\Core\Edition\EditionSelector());
-        $notOverridableClassAutoloader = new \OxidEsales\EshopCommunity\Core\Autoload\NotOverridableClassAutoload($classMapProvider->getNotOverridableClassMap());
-        spl_autoload_register(array($notOverridableClassAutoloader, 'autoload'));
-
-        $shopAutoloader = new \OxidEsales\EshopCommunity\Core\Autoload\ShopAutoload();
-        spl_autoload_register(array($shopAutoloader, 'autoload'));
-    }
-}
-
-if (!function_exists('registerModuleAutoload')) {
-    /**
-     * Registers auto-loader for module files and extensions.
-     */
-    function registerModuleAutoload()
-    {
-        $moduleAutoloader = new \OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload();
-        spl_autoload_register(array($moduleAutoloader, 'autoload'));
-    }
-}
-
-if (!function_exists('getShopBasePath')) {
-    /**
-     * Returns framework base path.
-     *
-     * @return string
-     */
-    function getShopBasePath()
-    {
-        return OX_BASE_PATH;
-    }
-}
 
 /**
  * Returns true in case framework is called from shop administrator environment.
@@ -167,20 +33,6 @@ if (!function_exists('getShopBasePath')) {
 function isAdmin()
 {
     return defined('OX_IS_ADMIN') ? OX_IS_ADMIN : false;
-}
-
-if (!function_exists('error_404_handler')) {
-    /**
-     * error_404_handler handler for 404 (page not found) error
-     *
-     * @param string $sUrl url wich was given, can be not specified in some cases
-     *
-     * @return void
-     */
-    function error_404_handler($sUrl = '')
-    {
-        Registry::getUtils()->handlePageNotFoundError($sUrl);
-    }
 }
 
 /**
@@ -218,19 +70,6 @@ function dumpVar($mVar, $blToFile = false)
     }
 }
 
-if (!function_exists('isSearchEngineUrl')) {
-
-    /**
-     * Returns search engine url status
-     *
-     * @return bool
-     */
-    function isSearchEngineUrl()
-    {
-        return false;
-    }
-}
-
 /**
  * prints anything given into a file, for debugging
  *
@@ -262,44 +101,6 @@ function cmpart($a, $b)
     return ($a->cnt < $b->cnt) ? -1 : 1;
 }
 
-if (!function_exists('startProfile')) {
-    /**
-     * Start profiling
-     *
-     * @param string $sProfileName name of profile
-     */
-    function startProfile($sProfileName)
-    {
-        global $aStartTimes;
-        global $aExecutionCounts;
-        if (!isset($aExecutionCounts[$sProfileName])) {
-            $aExecutionCounts[$sProfileName] = 0;
-        }
-        if (!isset($aStartTimes[$sProfileName])) {
-            $aStartTimes[$sProfileName] = 0;
-        }
-        $aExecutionCounts[$sProfileName]++;
-        $aStartTimes[$sProfileName] = microtime(true);
-    }
-}
-
-if (!function_exists('stopProfile')) {
-    /**
-     * Stop profiling
-     *
-     * @param string $sProfileName name of profile
-     */
-    function stopProfile($sProfileName)
-    {
-        global $aProfileTimes;
-        global $aStartTimes;
-        if (!isset($aProfileTimes[$sProfileName])) {
-            $aProfileTimes[$sProfileName] = 0;
-        }
-        $aProfileTimes[$sProfileName] += microtime(true) - $aStartTimes[$sProfileName];
-    }
-}
-
 /**
  * Creates and returns new object. If creation is not available, dies and outputs
  * error message.
@@ -314,7 +115,7 @@ function oxNew($className)
 {
     startProfile('oxNew');
     $arguments = func_get_args();
-    $object = call_user_func_array(array(oxUtilsObject::getInstance(), "oxNew"), $arguments);
+    $object = call_user_func_array(array(UtilsObject::getInstance(), "oxNew"), $arguments);
     stopProfile('oxNew');
 
     return $object;
@@ -412,6 +213,115 @@ function ox_get_trusted($sTplName, $oSmarty)
 {
 }
 
+/**
+ * All functions or constants passed this point are overridable
+ * by those defined in modules/functions.php
+ *
+ */
+
+if (!defined('ESHOP_CONFIG_FILE')) {
+    define('ESHOP_CONFIG_FILE', 'config.inc.php');
+}
+
+if (!function_exists('redirectIfShopNotConfigured')) {
+    function redirectIfShopNotConfigured()
+    {
+        $configFileName = __DIR__ . DIRECTORY_SEPARATOR . ESHOP_CONFIG_FILE;
+
+        if (file_exists($configFileName) && strpos(file_get_contents($configFileName), '<dbHost') === false) {
+            return;
+        }
+
+        $message = sprintf(
+            "Config file '%s' is not updated! Please navigate to '/Setup' or update '%s' manually.",
+            ESHOP_CONFIG_FILE,
+            ESHOP_CONFIG_FILE
+        );
+
+        header("HTTP/1.1 302 Found");
+        header("Location: Setup/index.php");
+        header("Connection: close");
+
+        die($message);
+    }
+}
+
+if (!function_exists('getShopBasePath')) {
+    /**
+     * Returns framework base path.
+     *
+     * @return string
+     */
+    function getShopBasePath()
+    {
+        return OX_BASE_PATH;
+    }
+}
+
+if (!function_exists('error_404_handler')) {
+    /**
+     * error_404_handler handler for 404 (page not found) error
+     *
+     * @param string $sUrl url wich was given, can be not specified in some cases
+     *
+     * @return void
+     */
+    function error_404_handler($sUrl = '')
+    {
+        Registry::getUtils()->handlePageNotFoundError($sUrl);
+    }
+}
+
+if (!function_exists('isSearchEngineUrl')) {
+
+    /**
+     * Returns search engine url status
+     *
+     * @return bool
+     */
+    function isSearchEngineUrl()
+    {
+        return false;
+    }
+}
+
+if (!function_exists('startProfile')) {
+    /**
+     * Start profiling
+     *
+     * @param string $sProfileName name of profile
+     */
+    function startProfile($sProfileName)
+    {
+        global $aStartTimes;
+        global $aExecutionCounts;
+        if (!isset($aExecutionCounts[$sProfileName])) {
+            $aExecutionCounts[$sProfileName] = 0;
+        }
+        if (!isset($aStartTimes[$sProfileName])) {
+            $aStartTimes[$sProfileName] = 0;
+        }
+        $aExecutionCounts[$sProfileName]++;
+        $aStartTimes[$sProfileName] = microtime(true);
+    }
+}
+
+if (!function_exists('stopProfile')) {
+    /**
+     * Stop profiling
+     *
+     * @param string $sProfileName name of profile
+     */
+    function stopProfile($sProfileName)
+    {
+        global $aProfileTimes;
+        global $aStartTimes;
+        if (!isset($aProfileTimes[$sProfileName])) {
+            $aProfileTimes[$sProfileName] = 0;
+        }
+        $aProfileTimes[$sProfileName] += microtime(true) - $aStartTimes[$sProfileName];
+    }
+}
 
 if (!function_exists('getLangTableIdx')) {
 

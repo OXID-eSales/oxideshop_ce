@@ -21,7 +21,7 @@
  */
 namespace OxidEsales\EshopCommunity\Core\Autoload;
 
-use oxUtilsObject;
+use OxidEsales\EshopCommunity\Core\UtilsObject;
 
 /**
  * Autoloader for module classes and extensions.
@@ -32,7 +32,39 @@ use oxUtilsObject;
 class ModuleAutoload
 {
     /** @var array Classes, for which extension class chain was created. */
-    private $triedClasses = array();
+    public $triedClasses = array();
+
+    /**
+     * @var null|ModuleAutoload A singleton instance of this class or a sub class of this class
+     */
+    private static $instance = null;
+
+    /**
+     * ModuleAutoload constructor.
+     *
+     * Make constructor protected to ensure Singleton pattern
+     */
+    protected function __construct()
+    {
+    }
+
+    /**
+     * Magic clone method.
+     *
+     * Make method private to ensure Singleton pattern
+     */
+    private function __clone()
+    {
+    }
+
+    /**
+     * Magic wakeup method.
+     *
+     * Make method private to ensure Singleton pattern
+     */
+    private function __wakeup()
+    {
+    }
 
     /**
      * Tries to autoload given class. If class was not found in module files array,
@@ -40,24 +72,36 @@ class ModuleAutoload
      *
      * @param string $class Class name.
      */
-    public function autoload($class)
+    public static function autoload($class)
     {
-        startProfile("oxModuleAutoload");
+        $instance = static::getInstance();
 
         $class = strtolower(basename($class));
 
-        if ($classPath = $this->getFilePath($class)) {
+        if ($classPath = $instance->getFilePath($class)) {
             include $classPath;
         } else {
             $class = preg_replace('/_parent$/i', '', $class);
 
-            if (!in_array($class, $this->triedClasses)) {
-                $this->triedClasses[] = $class;
-                $this->createExtensionClassChain($class);
+            if (!in_array($class, $instance->triedClasses)) {
+                $instance->triedClasses[] = $class;
+                $instance->createExtensionClassChain($class);
             }
         }
+    }
 
-        stopProfile("oxModuleAutoload");
+    /**
+     * Returns the singleton instance of this class or of a sub class of this class.
+     *
+     * @return ModuleAutoload The singleton instance.
+     */
+    public static function getInstance()
+    {
+        if (null === static::$instance) {
+            static::$instance = new static();
+        }
+
+        return static::$instance;
     }
 
     /**
@@ -71,7 +115,7 @@ class ModuleAutoload
     {
         $filePath = '';
 
-        $moduleFiles = oxUtilsObject::getInstance()->getModuleVar('aModuleFiles');
+        $moduleFiles = UtilsObject::getInstance()->getModuleVar('aModuleFiles');
         if (is_array($moduleFiles)) {
             $basePath = getShopBasePath();
             foreach ($moduleFiles as $moduleId => $classPaths) {
@@ -95,7 +139,7 @@ class ModuleAutoload
      */
     protected function createExtensionClassChain($class)
     {
-        $utilsObject = oxUtilsObject::getInstance();
+        $utilsObject = UtilsObject::getInstance();
 
         $extensions = $utilsObject->getModuleVar('aModules');
         if (is_array($extensions)) {
@@ -110,3 +154,5 @@ class ModuleAutoload
         }
     }
 }
+
+spl_autoload_register([\OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload::class, 'autoload']);

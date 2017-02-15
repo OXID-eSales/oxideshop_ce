@@ -23,11 +23,10 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxBase;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator;
 use OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator;
-use oxSystemComponentException;
-use oxUtilsObject;
 use ReflectionClass;
 use ReflectionException;
 
@@ -68,13 +67,13 @@ class UtilsObject
     protected static $_aClassInstances = array();
 
     /**
-     * oxUtilsObject class instance.
+     * UtilsObject class instance.
      *
      * @var UtilsObject instance
      */
     private static $_instance = null;
 
-    /** @var ClassNameProvider */
+    /** @var BackwardsCompatibleClassNameProvider */
     private $classNameProvider;
 
     /** @var ModuleChainsGenerator */
@@ -84,15 +83,15 @@ class UtilsObject
     private $shopIdCalculator;
 
     /**
-     * @param ClassNameProvider     $classNameProvider
-     * @param ModuleChainsGenerator $moduleChainsGenerator
-     * @param ShopIdCalculator      $shopIdCalculator
+     * @param BackwardsCompatibleClassNameProvider $classNameProvider
+     * @param ModuleChainsGenerator                $moduleChainsGenerator
+     * @param ShopIdCalculator                     $shopIdCalculator
      */
     public function __construct($classNameProvider = null, $moduleChainsGenerator = null, $shopIdCalculator = null)
     {
         if (!$classNameProvider) {
-            $classMapProvider = new ClassMapProvider(new EditionSelector());
-            $classNameProvider = new ClassNameProvider($classMapProvider->getOverridableClassMap());
+            $backwardsCompatibleClassMap = include  'Autoload/BackwardsCompatibilityClassMap.php';
+            $classNameProvider = new BackwardsCompatibleClassNameProvider($backwardsCompatibleClassMap);
         }
         $this->classNameProvider = $classNameProvider;
 
@@ -120,7 +119,7 @@ class UtilsObject
     /**
      * Returns object instance
      *
-     * @return oxUtilsObject
+     * @return UtilsObject
      */
     public static function getInstance()
     {
@@ -136,15 +135,15 @@ class UtilsObject
             // null for classNameProvider because it is generated in the constructor
             $classNameProvider = null;
 
-            $moduleVariablesCache = $oUtilsObject->oxNew('oxFileCache');
-            $shopIdCalculator = $oUtilsObject->oxNew('oxShopIdCalculator', $moduleVariablesCache);
+            $moduleVariablesCache = $oUtilsObject->oxNew(FileCache::class);
+            $shopIdCalculator = $oUtilsObject->oxNew(ShopIdCalculator::class, $moduleVariablesCache);
 
-            $subShopSpecific = $oUtilsObject->oxNew('oxSubShopSpecificFileCache', $shopIdCalculator);
-            $moduleVariablesLocator = $oUtilsObject->oxNew('oxModuleVariablesLocator', $subShopSpecific, $shopIdCalculator);
-            $moduleChainsGenerator = $oUtilsObject->oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
+            $subShopSpecific = $oUtilsObject->oxNew(SubShopSpecificFileCache::class, $shopIdCalculator);
+            $moduleVariablesLocator = $oUtilsObject->oxNew(ModuleVariablesLocator::class, $subShopSpecific, $shopIdCalculator);
+            $moduleChainsGenerator = $oUtilsObject->oxNew(ModuleChainsGenerator::class, $moduleVariablesLocator);
 
             //generate UtilsObject again by oxnew to allow overloading by modules
-            self::$_instance = $oUtilsObject->oxNew('oxUtilsObject', $classNameProvider, $moduleChainsGenerator, $shopIdCalculator);
+            self::$_instance = $oUtilsObject->oxNew(UtilsObject::class, $classNameProvider, $moduleChainsGenerator, $shopIdCalculator);
         }
 
         return self::$_instance;
@@ -231,7 +230,7 @@ class UtilsObject
      *
      * @param string $className Name of class
      *
-     * @throws oxSystemComponentException in case that class does not exists
+     * @throws SystemComponentException in case that class does not exists
      *
      * @return object
      */
@@ -261,8 +260,8 @@ class UtilsObject
             $realClassName = $this->getClassName($className);
             //expect __autoload() (oxfunctions.php) to do its job when class_exists() is called
             if (!class_exists($realClassName)) {
-                /** @var $exception oxSystemComponentException */
-                $exception = oxNew("oxSystemComponentException");
+                /** @var $exception SystemComponentException */
+                $exception = oxNew(SystemComponentException::class);
                 $exception->setMessage('EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
                 $exception->setComponent($className);
                 $exception->debugOut();
@@ -360,7 +359,7 @@ class UtilsObject
     }
 
     /**
-     * @return ClassNameProvider
+     * @return BackwardsCompatibleClassNameProvider
      */
     protected function getClassNameProvider()
     {

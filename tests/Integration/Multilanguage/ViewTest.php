@@ -19,13 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Integration\Multilanguage;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Multilanguage;
 
 use oxField;
 use oxRegistry;
 use oxUtilsObject;
-
-require_once 'MultilanguageTestCase.php';
 
 class ViewTest extends MultilanguageTestCase
 {

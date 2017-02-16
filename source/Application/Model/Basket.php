@@ -1964,7 +1964,7 @@ class Basket extends \oxSuperCfg
      *
      * @param string $sId cost id ( optional )
      *
-     * @return array
+     * @return array|oxPrice|null
      */
     public function getCosts($sId = null)
     {

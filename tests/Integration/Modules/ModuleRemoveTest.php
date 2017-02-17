@@ -79,10 +79,11 @@ class ModuleRemoveTest extends BaseModuleTestCase
         }
 
         $oEnvironment = new Environment();
-        $oEnvironment->prepare($aInstallModules);
+        $oEnvironment->prepare($aInstallModules); //install modules in shop 1
 
         $oEnvironment->setShopId(2);
-        $oEnvironment->activateModules($aInstallModules);
+        $_POST['shp'] = 2;
+        $oEnvironment->activateModules($aInstallModules);  //activate modules in shop 2
 
         /** @var oxModuleList|MockObject $oModuleList */
         $oModuleList = $this->getMock('oxModuleList', array('getDeletedExtensions'));

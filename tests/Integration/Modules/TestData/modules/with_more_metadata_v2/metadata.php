@@ -41,7 +41,7 @@ $aModule = array(
         'user_connections.tpl'   => 'with_more_metadata_v2/views/tpl/user_connections.tpl',
     ),
     'controllers'  => [
-        'with_more_metadata_v2' => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\testData\modules\with_more_metadata_v2\MyModuleController',
-        'with_more_metadata_v2' => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\testData\modules\with_more_metadata_v2\MyOtherModuleController'
+        'with_more_metadata_v2_mymodulecontroller' => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\testData\modules\with_more_metadata_v2\MyModuleController',
+        'with_more_metadata_v2_myothermodulecontroller' => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\testData\modules\with_more_metadata_v2\MyOtherModuleController'
     ]
 );

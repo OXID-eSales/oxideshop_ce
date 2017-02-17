@@ -109,6 +109,7 @@ class Environment
         $config->setConfigParam('aModuleFiles', null);
         $config->setConfigParam('aModuleVersions', null);
         $config->setConfigParam('aModuleEvents', null);
+        $config->setConfigParam('aModuleControllers', null);
 
         $database = oxDb::getDb();
         $database->execute("DELETE FROM `oxconfig` WHERE `oxmodule` LIKE 'module:%' OR `oxvarname` LIKE '%Module%'");
@@ -178,7 +179,7 @@ class Environment
     protected function loadShopParameters()
     {
         $aParameters = array(
-            'aModules', 'aModuleEvents', 'aModuleVersions', 'aModuleFiles', 'aDisabledModules', 'aModuleTemplates'
+            'aModules', 'aModuleEvents', 'aModuleVersions', 'aModuleFiles', 'aDisabledModules', 'aModuleTemplates', 'aModuleControllers'
         );
         foreach ($aParameters as $sParameter) {
             oxRegistry::getConfig()->setConfigParam($sParameter, $this->_getConfigValueFromDB($sParameter));

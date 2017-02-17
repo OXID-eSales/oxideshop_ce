@@ -308,10 +308,10 @@ class ModuleInstallerTest extends \OxidTestCase
         $shopControllerMapProviderMock->expects($this->any())->method('getControllerMap')->will($this->returnValue($shopControllerMap));
 
         /** @var ModuleInstaller|\PHPUnit_Framework_MockObject_MockObject $moduleInstallerMock */
-        $moduleInstallerMock = $this->getMock(ModuleInstaller::class, ['getModuleControllerMapProvider','getShopControllerProvider','deactivate']);
+        $moduleInstallerMock = $this->getMock(ModuleInstaller::class, ['getModuleControllerMapProvider','getShopControllerMapProvider','deactivate']);
 
         $moduleInstallerMock->expects($this->any())->method('getModuleControllerMapProvider')->will($this->returnValue($moduleControllerMapProviderMock));
-        $moduleInstallerMock->expects($this->any())->method('getShopControllerProvider')->will($this->returnValue($shopControllerMapProviderMock));
+        $moduleInstallerMock->expects($this->any())->method('getShopControllerMapProvider')->will($this->returnValue($shopControllerMapProviderMock));
         $moduleInstallerMock->expects($this->once())->method('deactivate');
 
         /** moduleInstaller->activate calls addModuleControllers and this calls validateModuleMetadataControllersOnActivation */
@@ -333,9 +333,9 @@ class ModuleInstallerTest extends \OxidTestCase
         $shopControllerMapProviderMock->expects($this->any())->method('getControllerMap')->will($this->returnValue($shopControllerMap));
 
         /** @var ModuleInstaller|\PHPUnit_Framework_MockObject_MockObject $moduleInstallerMock */
-        $moduleInstallerMock = $this->getMock(ModuleInstaller::class, ['getModuleControllerMapProvider','getShopControllerProvider']);
+        $moduleInstallerMock = $this->getMock(ModuleInstaller::class, ['getModuleControllerMapProvider','getShopControllerMapProvider']);
         $moduleInstallerMock->expects($this->any())->method('getModuleControllerMapProvider')->will($this->returnValue($moduleControllerMapProviderMock));
-        $moduleInstallerMock->expects($this->any())->method('getShopControllerProvider')->will($this->returnValue($shopControllerMapProviderMock));
+        $moduleInstallerMock->expects($this->any())->method('getShopControllerMapProvider')->will($this->returnValue($shopControllerMapProviderMock));
 
         $moduleInstallerMock->validateModuleMetadataControllersOnActivation($metaDataControllerMap);
     }
@@ -401,9 +401,9 @@ class ModuleInstallerTest extends \OxidTestCase
         $shopControllerMapProviderMock->expects($this->any())->method('getControllerMap')->will($this->returnValue([]));
 
         /** @var ModuleInstaller|\PHPUnit_Framework_MockObject_MockObject $moduleInstallerMock */
-        $moduleInstallerMock = $this->getMock(ModuleInstaller::class, ['getModuleControllerMapProvider','getShopControllerProvider']);
+        $moduleInstallerMock = $this->getMock(ModuleInstaller::class, ['getModuleControllerMapProvider','getShopControllerMapProvider']);
         $moduleInstallerMock->expects($this->any())->method('getModuleControllerMapProvider')->will($this->returnValue($moduleControllerMapProviderMock));
-        $moduleInstallerMock->expects($this->any())->method('getShopControllerProvider')->will($this->returnValue($shopControllerMapProviderMock));
+        $moduleInstallerMock->expects($this->any())->method('getShopControllerMapProvider')->will($this->returnValue($shopControllerMapProviderMock));
 
         $moduleInstallerMock->validateModuleMetadataControllersOnActivation(['someKey' => 'ExistingValue']);
     }

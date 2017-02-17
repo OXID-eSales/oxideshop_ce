@@ -2572,7 +2572,7 @@ class ConfigTest extends \OxidTestCase
      *
      * @return OxidEsales\EshopCommunity\Core\ShopControllerProvider mock
      */
-    private function getShopControllerProviderMock()
+    private function getShopControllerMapProviderMock()
     {
         $map = array('aAa' => 'OxidEsales\EshopCommunity\Application\SomeController',
                      'bbb' => 'OxidEsales\EshopCommunity\Application\SomeOtherController',
@@ -2589,7 +2589,7 @@ class ConfigTest extends \OxidTestCase
      *
      * @return OxidEsales\EshopCommunity\Core\ModuleControllerProvider mock
      */
-    private function getModuleControllerProviderMock()
+    private function getModuleControllerMapProviderMock()
     {
         $map = array('cCc' => 'Vendor1\Testmodule\SomeController',
                      'DDD' => 'Vendor1\OtherTestModule\SomeOtherController',
@@ -2608,7 +2608,7 @@ class ConfigTest extends \OxidTestCase
      */
     private function getControllerClassNameResolverMock()
     {
-        $resolver = oxNew(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class, $this->getShopControllerProviderMock(), $this->getModuleControllerProviderMock());
+        $resolver = oxNew(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class, $this->getShopControllerMapProviderMock(), $this->getModuleControllerMapProviderMock());
 
         return $resolver;
     }

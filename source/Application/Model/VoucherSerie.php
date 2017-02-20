@@ -30,7 +30,7 @@ use oxDb;
  * Manages list of available Vouchers (fetches, deletes, etc.).
  *
  */
-class VoucherSerie extends \oxBase
+class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**

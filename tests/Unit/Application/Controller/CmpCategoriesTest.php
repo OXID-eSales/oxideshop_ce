@@ -357,14 +357,13 @@ class CmpCategoriesTest extends \OxidTestCase
                 $this->equalTo("returned click Manufacturer")
             );
 
-        oxTestModules::addFunction('oxUtilsObject', 'oxNew($cl)', '{if ("oxmanufacturerlist" == $cl) return \Unit\Application\Controller\CmpCategoriesTest::$oCL; return parent::oxNew($cl);}');
-
         $oCfg = $this->getMock('stdClass', array('getConfigParam', 'getShopHomeURL'));
         $oCfg->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('bl_perfLoadManufacturerTree'))->will($this->returnValue(true));
         $oCfg->expects($this->at(1))->method('getShopHomeURL')->will($this->returnValue("passitthru1"));
 
-        $o = $this->getMock('oxcmp_categories', array('getConfig'));
+        $o = $this->getMock('oxcmp_categories', array('getConfig', 'getManufacturerList'));
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
+        $o->expects($this->any())->method('getManufacturerList')->will($this->returnValue(self::$oCL));
 
         $o->setParent($oParent);
 

@@ -30,7 +30,7 @@ use Exception;
 /**
  * Class manages article select lists configuration
  */
-class SelectListMainAjax extends \ajaxListComponent
+class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

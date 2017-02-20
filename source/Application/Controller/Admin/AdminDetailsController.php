@@ -30,7 +30,7 @@ use oxField;
  *
  * @internal This class should not be directly extended, instead of it oxAdminDetails class should be used.
  */
-class AdminDetailsController extends \oxAdminView
+class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
     /**
      * Global editor object.
@@ -89,7 +89,7 @@ class AdminDetailsController extends \oxAdminView
     {
         $sEditObjectValue = '';
         if ($oObject && $sField && isset($oObject->$sField)) {
-            if ($oObject->$sField instanceof \OxidEsales\EshopCommunity\Core\Field) {
+            if ($oObject->$sField instanceof \OxidEsales\Eshop\Core\Field) {
                 $sEditObjectValue = $oObject->$sField->getRawValue();
             } else {
                 $sEditObjectValue = $oObject->$sField->value;

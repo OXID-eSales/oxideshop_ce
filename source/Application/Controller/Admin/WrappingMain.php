@@ -30,7 +30,7 @@ use stdClass;
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: System Administration -> Wrapping -> Main.
  */
-class WrappingMain extends \oxAdminDetails
+class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

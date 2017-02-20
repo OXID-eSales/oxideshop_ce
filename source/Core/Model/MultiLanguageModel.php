@@ -29,7 +29,7 @@ use oxDb;
 /**
  * Class handling multilanguage data fields
  */
-class MultiLanguageModel extends \oxBase
+class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**

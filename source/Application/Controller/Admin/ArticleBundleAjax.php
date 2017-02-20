@@ -28,7 +28,7 @@ use oxDb;
 /**
  * Class controls article assignment to attributes
  */
-class ArticleBundleAjax extends \ajaxListComponent
+class ArticleBundleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

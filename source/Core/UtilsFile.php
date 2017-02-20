@@ -27,7 +27,7 @@ use oxRegistry;
 /**
  * File manipulation utility class
  */
-class UtilsFile extends \oxSuperCfg
+class UtilsFile extends \OxidEsales\Eshop\Core\Base
 {
 
     /**

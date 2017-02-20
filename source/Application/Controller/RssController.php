@@ -29,7 +29,7 @@ use oxRssFeed;
 /**
  * Shop RSS page.
  */
-class RssController extends oxUBase
+class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**

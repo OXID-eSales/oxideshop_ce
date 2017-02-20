@@ -33,7 +33,7 @@ use oxDb;
  *
  * @internal This class should not be directly extended, instead of it oxAdminList class should be used.
  */
-class ArticleList extends \oxAdminList
+class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
     /**
      * Name of chosen object class (default null).

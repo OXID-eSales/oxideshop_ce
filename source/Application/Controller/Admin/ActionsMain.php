@@ -31,7 +31,7 @@ use stdClass;
  * this actions, etc.
  * Admin Menu: Manage Products -> actions -> Main.
  */
-class ActionsMain extends \oxAdminDetails
+class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

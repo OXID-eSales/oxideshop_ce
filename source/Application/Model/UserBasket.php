@@ -34,7 +34,7 @@ use oxDb;
  * articles to it.
  *
  */
-class UserBasket extends \oxBase
+class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**

@@ -31,7 +31,7 @@ use oxField;
  * upload any other picture, etc.
  * Admin Menu: Manage Products -> Articles -> Pictures.
  */
-class ArticlePictures extends \oxAdminDetails
+class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     /**
      * Loads article information - pictures, passes data to Smarty

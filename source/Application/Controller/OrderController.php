@@ -26,6 +26,7 @@ use oxAddress;
 use oxArticleInputException;
 use oxBasket;
 use oxBasketContentMarkGenerator;
+use OxidEsales\Eshop\Core\UtilsObject;
 use oxNoArticleException;
 use oxOrder;
 use oxOutOfStockException;
@@ -36,7 +37,7 @@ use oxUtilsObject;
  * Order manager. Arranges user ordering data, checks/validates
  * it, on success stores ordering data to DB.
  */
-class OrderController extends \oxUBase
+class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**
@@ -188,7 +189,7 @@ class OrderController extends \oxUBase
 
         // reload blocker
         if (!oxRegistry::getSession()->getVariable('sess_challenge')) {
-            oxRegistry::getSession()->setVariable('sess_challenge', oxUtilsObject::getInstance()->generateUID());
+            oxRegistry::getSession()->setVariable('sess_challenge', $this->getUtilsObjectInstance()->generateUID());
         }
 
         return $this->_sThisTemplate;
@@ -237,12 +238,12 @@ class OrderController extends \oxUBase
 
                 // proceeding to next view
                 return $this->_getNextStep($iSuccess);
-            } catch (\OxidEsales\EshopCommunity\Core\Exception\OutOfStockException $oEx) {
+            } catch (\OxidEsales\Eshop\Core\Exception\OutOfStockException $oEx) {
                 $oEx->setDestination('basket');
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'basket');
-            } catch (\OxidEsales\EshopCommunity\Core\Exception\NoArticleException $oEx) {
+            } catch (\OxidEsales\Eshop\Core\Exception\NoArticleException $oEx) {
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
-            } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oEx) {
+            } catch (\OxidEsales\Eshop\Core\Exception\ArticleInputException $oEx) {
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
             }
         }
@@ -578,5 +579,13 @@ class OrderController extends \oxUBase
         }
 
         return $blValid;
+    }
+
+    /**
+     * @return UtilsObject
+     */
+    protected function getUtilsObjectInstance()
+    {
+        return UtilsObject::getInstance();
     }
 }

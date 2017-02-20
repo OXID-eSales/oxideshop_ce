@@ -32,7 +32,7 @@ use oxDb;
  * deletes and etc.
  *
  */
-class Newsletter extends \oxBase
+class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**

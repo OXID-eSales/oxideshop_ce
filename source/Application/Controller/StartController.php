@@ -29,7 +29,7 @@ use oxUBase;
  * Starting shop page.
  * Shop starter, manages starting visible articles, etc.
  */
-class StartController extends oxUBase
+class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**

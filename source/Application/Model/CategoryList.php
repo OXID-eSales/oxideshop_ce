@@ -31,7 +31,7 @@ use Exception;
  * list structure.
  *
  */
-class CategoryList extends \oxList
+class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

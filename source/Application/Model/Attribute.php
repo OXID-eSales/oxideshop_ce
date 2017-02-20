@@ -32,7 +32,7 @@ use oxUtilsObject;
  * Collects and keeps attributes of chosen article.
  *
  */
-class Attribute extends \oxI18n
+class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     /**
      * Current class name

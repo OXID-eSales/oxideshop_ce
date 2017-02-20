@@ -31,7 +31,7 @@ use stdClass;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main Sets.
  */
-class DeliverySetMain extends \oxAdminDetails
+class DeliverySetMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

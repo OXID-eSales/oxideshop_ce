@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
  * - wrong type
  * - ID not set
  */
-class ObjectException extends \oxException
+class ObjectException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
     /**
      * Exception type, currently old class name is used.

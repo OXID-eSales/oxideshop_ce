@@ -26,7 +26,7 @@ namespace OxidEsales\EshopCommunity\Application\Component\Widget;
  * Widget parent.
  * Gather functionality needed for all widgets but not for other views.
  */
-class WidgetController extends \oxUBase
+class WidgetController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**

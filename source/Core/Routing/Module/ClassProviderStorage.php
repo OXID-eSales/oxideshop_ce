@@ -21,7 +21,7 @@
  */
 namespace OxidEsales\EshopCommunity\Core\Routing\Module;
 
-use OxidEsales\EshopCommunity\Core\Contract\ClassProviderStorageInterface;
+use OxidEsales\Eshop\Core\Contract\ClassProviderStorageInterface;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -57,7 +57,7 @@ class ClassProviderStorage implements ClassProviderStorageInterface
         $value = $this->toLowercase($value);
 
         /**
-         * @todo see Implementation of \OxidEsales\EshopCommunity\Core\Module\ModuleInstaller::_saveToConfig
+         * @todo see Implementation of \OxidEsales\Eshop\Core\Module\ModuleInstaller::_saveToConfig
          *       setConfigParam and saveShopConfVar is called there. Ask someone (Vilma) why ;-)
          */
         $this->getConfig()->saveShopConfVar('aarr', self::STORAGE_KEY, $value);

@@ -29,7 +29,7 @@ use oxRegistry;
  *
  * @subpackage oxcmp
  */
-class CategoriesComponent extends \oxView
+class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
 
     /**
@@ -182,7 +182,7 @@ class CategoriesComponent extends \oxView
     {
         $myConfig = $this->getConfig();
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
-            $oManufacturerTree = oxNew('oxmanufacturerlist');
+            $oManufacturerTree = $this->getManufacturerList();
             $shopHomeURL = $myConfig->getShopHomeUrl();
             $oManufacturerTree->buildManufacturerTree('manufacturerlist', $sActManufacturer, $shopHomeURL);
 
@@ -314,5 +314,13 @@ class CategoriesComponent extends \oxView
     public function setManufacturerTree($oManufacturerTree)
     {
         $this->_oManufacturerTree = $oManufacturerTree;
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Application\Model\ManufacturerList
+     */
+    protected function getManufacturerList()
+    {
+        return oxNew('oxmanufacturerlist');
     }
 }

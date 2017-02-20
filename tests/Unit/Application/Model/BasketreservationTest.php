@@ -25,6 +25,7 @@ use \oxField;
 use \oxDb;
 use \oxTestModules;
 use OxidEsales\EshopCommunity\Application\Model\BasketReservation;
+use \OxidEsales\Eshop\Core\UtilsObject;
 
 class BasketreservationTest extends \OxidTestCase
 {
@@ -39,13 +40,13 @@ class BasketreservationTest extends \OxidTestCase
     {
         $this->setSessionParam('basketReservationToken', null);
 
-        $oUO = $this->getMock('oxUtilsObject', array('generateUID'));
-        $oUO->expects($this->once())->method('generateUID')->will($this->returnValue('newvarval'));
-        oxTestModules::addModuleObject('oxUtilsObject', $oUO);
+        $utilsObject = $this->getMock(UtilsObject::class, array('generateUId'));
+        $utilsObject->expects($this->once())->method('generateUId')->will($this->returnValue('newvarval'));
 
-        $oR = oxNew('oxBasketReservation');
+        $basketReservation = $this->getMock(BasketReservation::class, array('getUtilsObjectInstance'));
+        $basketReservation->expects($this->any())->method('getUtilsObjectInstance')->willReturn($utilsObject);
 
-        $this->assertEquals('newvarval', $oR->UNITgetReservationsId());
+        $this->assertEquals('newvarval', $basketReservation->UNITgetReservationsId());
     }
 
     /**

@@ -31,7 +31,7 @@ use oxDb;
  * review text or delete it.
  * Admin Menu: Manage Products -> Articles -> Review.
  */
-class ArticleReview extends \oxAdminDetails
+class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     /**
      * Loads selected article review information, returns name of template

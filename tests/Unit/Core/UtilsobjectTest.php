@@ -115,6 +115,31 @@ class UtilsobjectTest extends \OxidTestCase
     }
 
     /**
+     * Test, that the method getInstance creates the object of the correct current edition namespace.
+     */
+    public function testEditionSpecificObjectIsCreatedCorrect()
+    {
+        $utilsObject = \OxidEsales\Eshop\Core\UtilsObject::getInstance();
+
+        $edition = $this->getConfig()->getEdition();
+        $expectedClass = 'OxidEsales\EshopCommunity\Core\UtilsObject';
+
+        switch ($edition) {
+            case 'CE':
+                $expectedClass = 'OxidEsales\EshopCommunity\Core\UtilsObject';
+                break;
+            case 'PE':
+                $expectedClass = 'OxidEsales\EshopProfessional\Core\UtilsObject';
+                break;
+            case 'EE':
+                $expectedClass = 'OxidEsales\EshopEnterprise\Core\UtilsObject';
+                break;
+        }
+
+        $this->assertEquals($expectedClass, get_class($utilsObject));
+    }
+
+    /**
      * Testing oxUtilsObject object creation.
      *
      * @return null

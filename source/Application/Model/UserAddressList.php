@@ -27,7 +27,7 @@ use oxDb;
 /**
  * Class oxUserAddressList
  */
-class UserAddressList extends \oxList
+class UserAddressList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

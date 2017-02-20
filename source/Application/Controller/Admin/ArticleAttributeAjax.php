@@ -29,7 +29,7 @@ use oxField;
 /**
  * Class controls article assignment to attributes
  */
-class ArticleAttributeAjax extends \ajaxListComponent
+class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

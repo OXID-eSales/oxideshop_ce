@@ -51,7 +51,7 @@ use oxSuperCfg;
  * The smarty tempaltes should include s tag like
  * [{insert name="oxid_tracker" title=$template_title}]
  */
-class EmosAdapter extends oxSuperCfg
+class EmosAdapter extends \OxidEsales\Eshop\Core\Base
 {
     /**
      * Current view category path
@@ -194,7 +194,7 @@ class EmosAdapter extends oxSuperCfg
      */
     protected function _getNewEmosItem()
     {
-        return new EmosItem();
+        return new \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem();
     }
 
     /**
@@ -495,7 +495,7 @@ class EmosAdapter extends oxSuperCfg
                 break;
             case 'content':
                 // backwards compatibility
-                $oContent = ($oCurrentView instanceof \OxidEsales\EshopCommunity\Application\Controller\ContentController) ? $oCurrentView->getContent() : null;
+                $oContent = ($oCurrentView instanceof \OxidEsales\Eshop\Application\Controller\ContentController) ? $oCurrentView->getContent() : null;
                 $sContentId = $oContent ? $oContent->oxcontents__oxloadid->value : null;
 
                 if (array_key_exists('content_' . $sContentId, $aContent)) {

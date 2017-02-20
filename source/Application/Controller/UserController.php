@@ -27,7 +27,7 @@ use oxRegistry;
  * User details.
  * Collects and arranges user object data (information, like shipping address, etc.).
  */
-class UserController extends \oxUBase
+class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Current class template.

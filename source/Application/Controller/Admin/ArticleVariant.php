@@ -31,7 +31,7 @@ use stdClass;
  * Collects and updates article variants data.
  * Admin Menu: Manage Products -> Articles -> Variants.
  */
-class ArticleVariant extends \oxAdminDetails
+class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

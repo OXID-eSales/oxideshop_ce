@@ -29,7 +29,7 @@ use oxRegistry;
  * Performs export function according to user chosen categories.
  * Admin Menu: Maine Menu -> Im/Export -> Export.
  */
-class ToolsMain extends \oxAdminDetails
+class ToolsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

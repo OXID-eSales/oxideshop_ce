@@ -29,7 +29,7 @@ use oxRegistry;
  * Performs newsletter creation (plain text format, collects neccessary information).
  * Admin Menu: Customer Info -> Newsletter -> Text.
  */
-class NewsletterPlain extends \oxAdminDetails
+class NewsletterPlain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

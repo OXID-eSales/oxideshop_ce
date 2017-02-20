@@ -33,7 +33,7 @@ use oxUtilsFile;
  * Article actions manager. Collects and keeps actions of chosen article.
  *
  */
-class Actions extends \oxI18n
+class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 
     /**

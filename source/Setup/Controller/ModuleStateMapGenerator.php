@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Setup\Controller;
 
-use OxidEsales\EshopCommunity\Core\SystemRequirements;
+use OxidEsales\Eshop\Core\SystemRequirements;
 
 /**
  * Class ModuleStateMapGenerator.

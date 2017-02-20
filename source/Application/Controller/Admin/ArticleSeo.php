@@ -29,7 +29,7 @@ use oxField;
 /**
  * Article seo config class
  */
-class ArticleSeo extends \Object_Seo
+class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
 
     /**
@@ -128,7 +128,7 @@ class ArticleSeo extends \Object_Seo
         if ($this->_aSelectionList === null) {
             $this->_aSelectionList = array();
 
-            $oProduct = oxNew('OxidEsales\EshopCommunity\Application\Model\Article');
+            $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oProduct->load($this->getEditObjectId());
 
             if ($oCatList = $this->_getCategoryList($oProduct)) {

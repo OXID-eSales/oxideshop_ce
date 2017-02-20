@@ -39,7 +39,7 @@ DEFINE("ERR_FILEIO", 1);
  *
  * @subpackage dyn
  */
-class DynamicExportBaseController extends \oxAdminDetails
+class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -951,7 +951,7 @@ class DynamicExportBaseController extends \oxAdminDetails
     /**
      * Get the actual database.
      *
-     * @return \OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface The database.
+     * @return \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface The database.
      */
     protected function getDb()
     {

@@ -32,7 +32,7 @@ use oxRegistry;
  *
  * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
  */
-class DynamicScreenList extends \Dynscreen
+class DynamicScreenList extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicScreenController
 {
 
     /**

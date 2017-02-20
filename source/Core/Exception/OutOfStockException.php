@@ -27,7 +27,7 @@ use oxRegistry;
 /**
  * exception class for an article which is out of stock
  */
-class OutOfStockException extends \oxArticleException
+class OutOfStockException extends \OxidEsales\Eshop\Core\Exception\ArticleException
 {
     /**
      * Exception type, currently old class name is used.

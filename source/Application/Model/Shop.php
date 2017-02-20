@@ -29,7 +29,7 @@ use oxDb;
  * Shop manager.
  * Performs configuration and object loading or deletion.
  */
-class Shop extends \oxI18n
+class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     /** @var string Name of current class. */
     protected $_sClassName = 'oxshop';
@@ -374,7 +374,7 @@ class Shop extends \oxI18n
         foreach ($aQueries as $sQuery) {
             try {
                 $oDb->execute($sQuery);
-            } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $exception) {
+            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
                 $exception->debugOut();
                 $bSuccess = false;
             }

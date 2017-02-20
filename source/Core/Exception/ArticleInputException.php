@@ -26,7 +26,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
  * Article input exception..
  *
  */
-class ArticleInputException extends \oxArticleException
+class ArticleInputException extends \OxidEsales\Eshop\Core\Exception\ArticleException
 {
     /**
      * Exception type, currently old class name is used.

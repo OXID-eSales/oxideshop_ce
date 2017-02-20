@@ -29,7 +29,7 @@ use oxDb;
  * DeliverySet list manager.
  *
  */
-class DeliverySetList extends \oxList
+class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

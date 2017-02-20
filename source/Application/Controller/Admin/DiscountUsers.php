@@ -32,7 +32,7 @@ use stdClass;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main.
  */
-class DiscountUsers extends \oxAdminDetails
+class DiscountUsers extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

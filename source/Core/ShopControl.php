@@ -23,10 +23,10 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use oxException;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
-use OxidEsales\EshopCommunity\Core\Exception\RoutingException;
-use OxidEsales\EshopCommunity\Core\Exception\StandardException;
-use OxidEsales\EshopEnterprise\Core\Cache\DynamicContent\ContentCache;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\RoutingException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Cache\DynamicContent\ContentCache;
 use oxOutput;
 use oxRegistry;
 use oxSystemComponentException;
@@ -38,7 +38,7 @@ use ReflectionMethod;
  * them (if needed), controls output, redirects according to
  * processed methods logic. This class is initialized from index.php
  */
-class ShopControl extends \oxSuperCfg
+class ShopControl extends \OxidEsales\Eshop\Core\Base
 {
     /**
      * Used to force handling, it allows other place like widget controller to skip it.
@@ -160,7 +160,7 @@ class ShopControl extends \oxSuperCfg
             $this->handleDbConnectionException($exception);
         } catch (\OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $exception) {
             $this->handleDbConnectionException($exception);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
             $this->_handleBaseException($exception);
         }
     }
@@ -257,7 +257,7 @@ class ShopControl extends \oxSuperCfg
 
         // If unmatched controller id is requested throw exception
         if (!$resolvedClass) {
-            throw new RoutingException($controllerKey);
+            throw new \OxidEsales\Eshop\Core\Exception\RoutingException($controllerKey);
         }
 
         return $resolvedClass;
@@ -793,9 +793,9 @@ class ShopControl extends \oxSuperCfg
      * Special methods are used here as the normal exception handling routines always need a database connection and
      * this would create a loop.
      *
-     * @param DatabaseConnectionException $exception Exception to handle
+     * @param \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $exception Exception to handle
      */
-    protected function handleDbConnectionException(DatabaseConnectionException $exception)
+    protected function handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $exception)
     {
         /**
          * Report the database connection exception
@@ -851,7 +851,7 @@ class ShopControl extends \oxSuperCfg
      */
     protected function logException(\Exception $exception)
     {
-        if (!$exception instanceof \OxidEsales\EshopCommunity\Core\Exception\StandardException) {
+        if (!$exception instanceof \OxidEsales\Eshop\Core\Exception\StandardException) {
             $exception = new oxException($exception->getMessage(), $exception->getCode(), $exception);
         }
         $exception->debugOut();
@@ -951,7 +951,7 @@ class ShopControl extends \oxSuperCfg
      *
      * @return bool Returns true, if the email was sent.
      */
-    protected function sendOfflineWarning(StandardException $exception)
+    protected function sendOfflineWarning(\OxidEsales\Eshop\Core\Exception\StandardException $exception)
     {
         $result = false;
         /** @var  $emailAddress Email address to sent the message to */
@@ -1017,7 +1017,7 @@ class ShopControl extends \oxSuperCfg
     {
         try {
             $controllerClass = $this->resolveControllerClass($controllerKey);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\RoutingException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\RoutingException $exception) {
             $this->handleRoutingException($exception);
             $controllerClass = $controllerKey;
         }

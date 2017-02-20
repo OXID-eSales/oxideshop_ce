@@ -30,7 +30,7 @@ use oxRegistry;
  * Performs loading, updating, inserting of article rates.
  *
  */
-class Rating extends \oxBase
+class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**

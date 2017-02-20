@@ -32,7 +32,7 @@ use stdClass;
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Shop Settings -> Shipping & Handling -> RDFa.
  */
-class DeliverySetRdfa extends \payment_rdfa
+class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\PaymentRdfa
 {
 
     /**

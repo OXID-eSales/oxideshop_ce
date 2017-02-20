@@ -40,7 +40,7 @@ class UniversallyUniqueIdGenerator
      *
      * @param oxOpenSSLFunctionalityChecker $openSSLChecker
      */
-    public function __construct(\OxidEsales\EshopCommunity\Core\OpenSSLFunctionalityChecker $openSSLChecker = null)
+    public function __construct(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker $openSSLChecker = null)
     {
         if (is_null($openSSLChecker)) {
             $openSSLChecker = oxNew('oxOpenSSLFunctionalityChecker');

@@ -57,7 +57,7 @@ class CompanyVatInValidator
      *
      * @param oxCountry $country
      */
-    public function setCountry(\OxidEsales\EshopCommunity\Application\Model\Country $country)
+    public function setCountry(\OxidEsales\Eshop\Application\Model\Country $country)
     {
         $this->_oCountry = $country;
     }
@@ -97,7 +97,7 @@ class CompanyVatInValidator
      *
      * @param oxCountry $country
      */
-    public function __construct(\OxidEsales\EshopCommunity\Application\Model\Country $country)
+    public function __construct(\OxidEsales\Eshop\Application\Model\Country $country)
     {
         $this->setCountry($country);
     }
@@ -107,7 +107,7 @@ class CompanyVatInValidator
      *
      * @param oxCompanyVatInChecker $validator
      */
-    public function addChecker(\OxidEsales\EshopCommunity\Core\CompanyVatInChecker $validator)
+    public function addChecker(\OxidEsales\Eshop\Core\CompanyVatInChecker $validator)
     {
         $this->_aCheckers[] = $validator;
     }
@@ -129,14 +129,14 @@ class CompanyVatInValidator
      *
      * @return bool
      */
-    public function validate(\OxidEsales\EshopCommunity\Application\Model\CompanyVatIn $companyVatNumber)
+    public function validate(\OxidEsales\Eshop\Application\Model\CompanyVatIn $companyVatNumber)
     {
         $result = false;
         $validators = $this->getCheckers();
 
         foreach ($validators as $validator) {
             $result = true;
-            if ($validator instanceof \OxidEsales\EshopCommunity\Core\Contract\ICountryAware) {
+            if ($validator instanceof \OxidEsales\Eshop\Core\Contract\ICountryAware) {
                 $validator->setCountry($this->getCountry());
             }
 

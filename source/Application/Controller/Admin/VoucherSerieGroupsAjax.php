@@ -29,7 +29,7 @@ use oxField;
 /**
  * Class manages voucher assignment to user groups
  */
-class VoucherSerieGroupsAjax extends \ajaxListComponent
+class VoucherSerieGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

@@ -27,7 +27,7 @@ use oxAdminList;
 /**
  * user list "view" class.
  */
-class ListReview extends \Article_List
+class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleList
 {
 
     /**

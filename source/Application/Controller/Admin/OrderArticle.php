@@ -31,7 +31,7 @@ use oxField;
  * Collects order articles information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders -> Articles.
  */
-class OrderArticle extends \oxAdminDetails
+class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

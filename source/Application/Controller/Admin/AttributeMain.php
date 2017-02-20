@@ -31,7 +31,7 @@ use stdClass;
  * this attribute, etc.
  * Admin Menu: Manage Products -> Attributes -> Main.
  */
-class AttributeMain extends \oxAdminDetails
+class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

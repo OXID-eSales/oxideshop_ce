@@ -1781,14 +1781,16 @@ class UtfTest extends \OxidTestCase
 
     public function testOxEmailIncludeImages()
     {
-        oxTestModules::addFunction('oxUtilsObject', 'generateUID', '{ return "xxx"; }');
+        $utilsObjectInstanceMock = $this->getMock(\OxidEsales\Eshop\Core\UtilsObject::class, array('generateUID'));
+        $utilsObjectInstanceMock->expects($this->any())->method('generateUID')->will($this->returnValue('xxx'));
 
         $sBodyToReturn = "agentūлитовfür <img src=\"__imagedir__/stars.jpg\" alt=\"agentūлитовfür\">";
         $sBodyToSet = "agentūлитовfür <img src=\"cid:xxx\" alt=\"agentūлитовfür\">";
 
-        $oEmail = $this->getMock('oxemail', array('getBody', 'setBody'));
+        $oEmail = $this->getMock('oxemail', array('getBody', 'setBody', 'getUtilsObjectInstance'));
         $oEmail->expects($this->once())->method('getBody')->will($this->returnValue($sBodyToReturn));
         $oEmail->expects($this->once())->method('setBody')->with($this->equalTo($sBodyToSet));
+        $oEmail->expects($this->once())->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectInstanceMock));
         $oEmail->UNITincludeImages("__imagedir__", null, null, $this->getConfig()->getImageDir());
     }
 

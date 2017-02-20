@@ -34,7 +34,7 @@ use oxBasket;
  * similar products, top offer articles.
  * OXID eShop -> SHOPPING CART.
  */
-class BasketController extends \oxUBase
+class BasketController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**

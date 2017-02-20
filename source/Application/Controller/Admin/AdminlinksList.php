@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * url or any keyword.
  * Admin Menu: Customer Info -> Links.
  */
-class AdminlinksList extends \oxAdminList
+class AdminlinksList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

@@ -214,7 +214,7 @@ class OnlineLicenseCheck
             if ($blResult) {
                 $this->_logSuccess();
             }
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
             $this->_setErrorMessage($oEx->getMessage());
             $this->_setIsException(true);
         }

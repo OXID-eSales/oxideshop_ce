@@ -30,7 +30,7 @@ use oxDb;
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Orders -> Display Orders.
  */
-class OrderList extends \oxAdminList
+class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
     /**
      * Name of chosen object class (default null).

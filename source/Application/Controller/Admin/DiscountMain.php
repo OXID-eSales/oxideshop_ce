@@ -31,7 +31,7 @@ use stdClass;
  * Performs collection and updating (on user submit) main item information.
  * Admin Menu: Shop Settings -> Discounts -> Main.
  */
-class DiscountMain extends \oxAdminDetails
+class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

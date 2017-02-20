@@ -28,14 +28,14 @@ use Exception;
 use oxDb;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
 
 /**
  * Article list manager.
  * Collects list of article according to collection rules (categories, etc.).
  *
  */
-class ArticleList extends \oxList
+class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**
@@ -669,7 +669,7 @@ class ArticleList extends \oxList
         $sArticleTable = $oBaseObject->getViewName();
         $sArticleFields = $oBaseObject->getSelectFields();
 
-        $oxIdsSql = implode(',', DatabaseProvider::getDb()->quoteArray($aIds));
+        $oxIdsSql = implode(',', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds));
 
         $sSelect = "select $sArticleFields from $sArticleTable ";
         $sSelect .= "where $sArticleTable.oxid in ( " . $oxIdsSql . " ) and ";

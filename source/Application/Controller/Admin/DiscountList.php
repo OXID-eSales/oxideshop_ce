@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * filter them by description, title or delete them.
  * Admin Menu: Shop Settings -> Discounts.
  */
-class DiscountList extends \oxAdminList
+class DiscountList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

@@ -27,7 +27,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
  * - not valid email adress
  * - negative value
  */
-class InputException extends \oxException
+class InputException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
     /**
      * Exception type, currently old class name is used.

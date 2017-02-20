@@ -29,7 +29,7 @@ use oxRegistry;
  * Collects some article base information, sets default recomendation text,
  * sends suggestion mail to user.
  */
-class SuggestController extends \oxUBase
+class SuggestController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Current class template name.

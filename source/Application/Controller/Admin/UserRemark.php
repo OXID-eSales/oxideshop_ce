@@ -31,7 +31,7 @@ use oxField;
  * Collects user history settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> History.
  */
-class UserRemark extends \oxAdminDetails
+class UserRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

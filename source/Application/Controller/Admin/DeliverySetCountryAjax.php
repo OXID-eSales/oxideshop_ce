@@ -28,7 +28,7 @@ use oxField;
 /**
  * Class manages deliveryset countries
  */
-class DeliverySetCountryAjax extends \ajaxListComponent
+class DeliverySetCountryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

@@ -34,7 +34,7 @@
  */
 function smarty_function_oxeval( $aParams, &$oSmarty )
 {
-    if ( $aParams['var'] && ( $aParams['var'] instanceof \OxidEsales\EshopCommunity\Core\Field ) ) {
+    if ( $aParams['var'] && ( $aParams['var'] instanceof \OxidEsales\Eshop\Core\Field ) ) {
         $aParams['var'] = trim($aParams['var']->getRawValue());
     }
 

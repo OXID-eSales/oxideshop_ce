@@ -56,7 +56,7 @@ class OnlineModuleVersionNotifier
      * @param oxOnlineModuleVersionNotifierCaller $oCaller     Online module version notifier caller object
      * @param oxModuleList                        $oModuleList Module list object
      */
-    public function __construct(\OxidEsales\EshopCommunity\Core\OnlineModuleVersionNotifierCaller $oCaller, \OxidEsales\EshopCommunity\Core\Module\ModuleList $oModuleList)
+    public function __construct(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller $oCaller, \OxidEsales\Eshop\Core\Module\ModuleList $oModuleList)
     {
         $this->_oCaller = $oCaller;
         $this->_oModuleList = $oModuleList;
@@ -67,7 +67,7 @@ class OnlineModuleVersionNotifier
      */
     public function versionNotify()
     {
-        if(true === oxRegistry::getConfig()->getConfigParam('preventModuleVersionNotify')){
+        if (true === oxRegistry::getConfig()->getConfigParam('preventModuleVersionNotify')) {
             return;
         }
 

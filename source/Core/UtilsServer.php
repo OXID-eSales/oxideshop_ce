@@ -27,7 +27,7 @@ use oxRegistry;
 /**
  * Server data manipulation class
  */
-class UtilsServer extends \oxSuperCfg
+class UtilsServer extends \OxidEsales\Eshop\Core\Base
 {
 
     /**

@@ -22,12 +22,10 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
  * @version   OXID eShop CE
  */
 
-use oxException;
-
 /**
  * Exception to be thrown on database connection errors
  */
-class DatabaseConnectionException extends oxException
+class DatabaseConnectionException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
 
     /**

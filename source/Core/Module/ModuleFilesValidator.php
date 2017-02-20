@@ -31,7 +31,7 @@ use oxModule;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ModuleFilesValidator implements \oxIModuleValidator
+class ModuleFilesValidator implements \OxidEsales\Eshop\Core\Contract\IModuleValidator
 {
 
     /**
@@ -81,7 +81,7 @@ class ModuleFilesValidator implements \oxIModuleValidator
      *
      * @return bool
      */
-    public function validate(\OxidEsales\EshopCommunity\Core\Module\Module $oModule)
+    public function validate(\OxidEsales\Eshop\Core\Module\Module $oModule)
     {
         $this->_resetMissingFiles();
         $blModuleValid = $this->_allModuleExtensionsExists($oModule);

@@ -43,10 +43,10 @@ class StyleRenderer
         $output = '';
 
         if (!$widget || $this->shouldForceRender($forceRender)) {
-            $styles = (array) $config->getGlobalParameter(StyleRegistrator::STYLES_PARAMETER_NAME . $suffix);
+            $styles = (array) $config->getGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\StyleRegistrator::STYLES_PARAMETER_NAME . $suffix);
             $output .= $this->formStylesOutput($styles);
             $output .= PHP_EOL;
-            $conditionalStyles = (array) $config->getGlobalParameter(StyleRegistrator::CONDITIONAL_STYLES_PARAMETER_NAME . $suffix);
+            $conditionalStyles = (array) $config->getGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\StyleRegistrator::CONDITIONAL_STYLES_PARAMETER_NAME . $suffix);
             $output .= $this->formConditionalStylesOutput($conditionalStyles);
         }
 

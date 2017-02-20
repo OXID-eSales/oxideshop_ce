@@ -28,7 +28,7 @@ use oxDb;
  * Order article list manager.
  *
  */
-class OrderArticleList extends \oxList
+class OrderArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

@@ -26,7 +26,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  * Media URL handler
  *
  */
-class MediaUrl extends \oxI18n
+class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 
     /**

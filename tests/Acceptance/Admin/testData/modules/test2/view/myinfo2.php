@@ -1,6 +1,6 @@
 <?php
-class myinfo2 extends myinfo2_parent {
-
+class myinfo2 extends myinfo2_parent
+{
     public function render()
     {
         $sTpl = parent::render();

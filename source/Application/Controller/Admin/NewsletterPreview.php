@@ -29,7 +29,7 @@ use oxRegistry;
  * Creates plaintext and HTML format newsletter preview.
  * Admin Menu: Customer Info -> Newsletter -> Preview.
  */
-class NewsletterPreview extends \oxAdminDetails
+class NewsletterPreview extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

@@ -27,7 +27,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Customer Info -> Newsletter.
  */
-class NewsletterList extends \oxAdminList
+class NewsletterList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

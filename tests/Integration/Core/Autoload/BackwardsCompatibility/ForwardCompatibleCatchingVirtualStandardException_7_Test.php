@@ -33,7 +33,7 @@ class ForwardCompatibleCatchingVirtualStandardException_7_Test extends \PHPUnit_
     public function testForwardCompatibleCatchingVirtualStandardException()
     {
         $this->markTestSkipped(
-            'This test will fail on Travia and CI as it MUST run in an own PHP process, which is not possible.'
+            'This test will fail on Travis and CI as it MUST run in an own PHP process, which is not possible.'
         );
 
         $exception = new \OxidEsales\EshopCommunity\Core\Exception\StandardException();

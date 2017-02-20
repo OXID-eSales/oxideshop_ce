@@ -33,11 +33,11 @@ use oxRegistry;
  */
 class ModuleChainsGenerator
 {
-    /** @var ModuleVariablesLocator */
+    /** @var \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator */
     private $moduleVariablesLocator;
 
     /**
-     * @param ModuleVariablesLocator $moduleVariablesLocator
+     * @param \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator $moduleVariablesLocator
      */
     public function __construct($moduleVariablesLocator)
     {
@@ -277,7 +277,7 @@ class ModuleChainsGenerator
     }
 
     /**
-     * @return ModuleVariablesLocator
+     * @return \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator
      */
     public function getModuleVariablesLocator()
     {
@@ -285,11 +285,11 @@ class ModuleChainsGenerator
     }
 
     /**
-     * @param ModuleVariablesLocator $variablesLocator
+     * @param \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator $variablesLocator
      *
      * @return array
      */
-    protected function getModulesArray(ModuleVariablesLocator $variablesLocator)
+    protected function getModulesArray(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator $variablesLocator)
     {
         $modules = (array) $variablesLocator->getModuleVariable('aModules');
 

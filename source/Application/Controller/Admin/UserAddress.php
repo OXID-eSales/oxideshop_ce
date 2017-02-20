@@ -29,7 +29,7 @@ use oxRegistry;
  * Collects user address settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> Addresses.
  */
-class UserAddress extends \oxAdminDetails
+class UserAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

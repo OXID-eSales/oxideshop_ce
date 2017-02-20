@@ -29,7 +29,7 @@ use oxDb;
  * Base class for user groups. Does nothing special yet.
  *
  */
-class Groups extends \oxI18n
+class Groups extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 
     /**

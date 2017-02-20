@@ -30,7 +30,7 @@ use Exception;
 /**
  * Class controls article assignment to action
  */
-class ActionsMainAjax extends \ajaxListComponent
+class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

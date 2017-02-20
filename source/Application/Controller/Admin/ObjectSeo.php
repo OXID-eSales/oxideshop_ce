@@ -29,7 +29,7 @@ use stdClass;
 /**
  * Base seo config class.
  */
-class ObjectSeo extends \oxAdminDetails
+class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     /**
      * Executes parent method parent::render(),

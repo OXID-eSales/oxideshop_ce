@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * and "deliveryset_main.tpl") to frame.
  * Admin Menu: Shop settings -> Shipping & Handling Sets.
  */
-class DeliverySetController extends \oxAdminView
+class DeliverySetController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

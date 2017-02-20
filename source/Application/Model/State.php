@@ -27,7 +27,7 @@ use oxDb;
 /**
  * State handler
  */
-class State extends \oxI18n
+class State extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 
     /**

@@ -31,7 +31,7 @@ use oxException;
  * Article files manager.
  *
  */
-class File extends \oxBase
+class File extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**

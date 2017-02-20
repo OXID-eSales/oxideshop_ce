@@ -30,7 +30,7 @@ use oxDb;
  *
  * @internal This class should not be directly extended, instead of it ajaxListComponent class should be used.
  */
-class ListComponentAjax extends \oxSuperCfg
+class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
 {
 
     /**

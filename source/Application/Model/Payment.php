@@ -30,7 +30,7 @@ use oxDb;
  * Performs payment methods, such as assigning to someone, returning value etc.
  *
  */
-class Payment extends \oxI18n
+class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 
     /**

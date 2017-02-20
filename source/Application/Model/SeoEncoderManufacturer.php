@@ -27,7 +27,7 @@ use oxDb;
 /**
  * Seo encoder base
  */
-class SeoEncoderManufacturer extends \oxSeoEncoder
+class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
 {
     /**
      * Root manufacturer uri cache

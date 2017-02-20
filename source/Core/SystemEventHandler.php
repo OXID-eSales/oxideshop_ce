@@ -108,7 +108,7 @@ class SystemEventHandler
      *
      * @param oxOnlineModuleVersionNotifier $oOnlineModuleVersionNotifier
      */
-    public function setOnlineModuleVersionNotifier(\OxidEsales\EshopCommunity\Core\OnlineModuleVersionNotifier $oOnlineModuleVersionNotifier)
+    public function setOnlineModuleVersionNotifier(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $oOnlineModuleVersionNotifier)
     {
         $this->_oOnlineModuleVersionNotifier = $oOnlineModuleVersionNotifier;
     }

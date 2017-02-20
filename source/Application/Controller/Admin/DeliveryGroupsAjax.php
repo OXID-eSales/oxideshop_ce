@@ -28,7 +28,7 @@ use oxField;
 /**
  * Class manages delivery groups
  */
-class DeliveryGroupsAjax extends \ajaxListComponent
+class DeliveryGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

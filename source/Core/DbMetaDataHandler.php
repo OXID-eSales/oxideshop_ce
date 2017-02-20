@@ -30,7 +30,7 @@ use oxSuperCfg;
  * Class for handling database related operations
  *
  */
-class DbMetaDataHandler extends oxSuperCfg
+class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
 {
     /**
      *

@@ -30,7 +30,7 @@ use stdClass;
  * Attribute list manager.
  *
  */
-class AttributeList extends \oxList
+class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

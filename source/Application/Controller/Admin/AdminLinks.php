@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * and "adminlinks_main.tpl") to frame.
  * Admin Menu: Customer Info -> Links.
  */
-class AdminLinks extends \oxAdminView
+class AdminLinks extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

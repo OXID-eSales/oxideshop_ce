@@ -29,7 +29,7 @@ use oxDb;
  * Currently calculates price/costs.
  *
  */
-class Delivery extends \oxI18n
+class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 
     /**

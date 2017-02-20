@@ -35,7 +35,7 @@ use oxDb;
  * Performs creation assigning, updating, deleting and other order functions.
  *
  */
-class Order extends \oxBase
+class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     // defining order state constants
@@ -1214,10 +1214,10 @@ class Order extends \oxBase
         foreach ($oBasket->getContents() as $key => $oContent) {
             try {
                 $oProd = $oContent->getArticle(true, null, true);
-            } catch (\OxidEsales\EshopCommunity\Core\Exception\NoArticleException $oEx) {
+            } catch (\OxidEsales\Eshop\Core\Exception\NoArticleException $oEx) {
                 $oBasket->removeItem($key);
                 throw $oEx;
-            } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oEx) {
+            } catch (\OxidEsales\Eshop\Core\Exception\ArticleInputException $oEx) {
                 $oBasket->removeItem($key);
                 throw $oEx;
             }

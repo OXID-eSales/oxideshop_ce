@@ -29,7 +29,7 @@ use oxRegistry;
  *
  * @subpackage oxcmp
  */
-class CurrencyComponent extends \oxView
+class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
 
     /**

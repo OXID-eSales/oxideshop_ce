@@ -31,7 +31,7 @@ use oxRegistry;
  * fulfils all required fields all information is sent to shop owner by
  * email. OXID eShop -> CONTACT.
  */
-class ContactController extends \oxUBase
+class ContactController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**

@@ -29,7 +29,7 @@ use oxField;
  * Manufacturer manager
  *
  */
-class Manufacturer extends \oxI18n implements \oxIUrl
+class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
 
     protected static $_aRootManufacturer = array();

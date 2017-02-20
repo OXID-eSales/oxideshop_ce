@@ -30,7 +30,7 @@ use oxSearch;
  * Articles searching class.
  * Performs searching through articles in database.
  */
-class SearchController extends oxUBase
+class SearchController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**

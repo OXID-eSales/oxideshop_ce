@@ -30,7 +30,7 @@ use Exception;
 /**
  * Class manages deliveryset and delivery configuration
  */
-class DeliverySetMainAjax extends \ajaxListComponent
+class DeliverySetMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

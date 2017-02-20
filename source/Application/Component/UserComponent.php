@@ -40,7 +40,7 @@ define('USER_LOGOUT', 3);
  *
  * @subpackage oxcmp
  */
-class UserComponent extends \oxView
+class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
 
     /**
@@ -211,12 +211,12 @@ class UserComponent extends \oxView
             $oUser = oxNew('oxuser');
             $oUser->login($sUser, $sPassword, $sCookie);
             $this->setLoginStatus(USER_LOGIN_SUCCESS);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\UserException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\UserException $oEx) {
             // for login component send excpetion text to a custom component (if defined)
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, '', false);
 
             return 'user';
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\CookieException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\CookieException $oEx) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
 
             return 'user';
@@ -484,22 +484,22 @@ class UserComponent extends \oxView
             $oUser->addToGroup('oxidnotyetordered');
             $oUser->logout();
             $database->commitTransaction();
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\UserException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\UserException $exception) {
             Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
             return false;
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\InputException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\InputException $exception) {
             Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
             return false;
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $exception) {
             Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
             return false;
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\ConnectionException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $exception) {
             Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
@@ -649,18 +649,18 @@ class UserComponent extends \oxView
             $blForceCheckOptIn = ($sBillingUsername !== null && $sBillingUsername !== $sUserName);
             $blEmailParam = $this->getConfig()->getConfigParam('blOrderOptInEmail');
             $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $blEmailParam, $blForceCheckOptIn);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\UserException $oEx) { // errors in input
+        } catch (\OxidEsales\Eshop\Core\Exception\UserException $oEx) { // errors in input
             // marking error code
             //TODO
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
 
             return;
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\InputException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\InputException $oEx) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'input_not_all_fields');
 
             return;
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\ConnectionException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $oEx) {
             //connection to external resource broken, change message and pass to the view
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
 

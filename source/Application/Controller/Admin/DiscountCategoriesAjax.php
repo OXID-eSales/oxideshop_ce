@@ -28,7 +28,7 @@ use oxField;
 /**
  * Class manages discount categories
  */
-class DiscountCategoriesAjax extends \ajaxListComponent
+class DiscountCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /** If this discount id comes from request, it means that new discount should be created. */
     const NEW_DISCOUNT_ID = "-1";

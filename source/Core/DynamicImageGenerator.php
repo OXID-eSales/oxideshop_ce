@@ -76,7 +76,7 @@ namespace {
 namespace OxidEsales\EshopCommunity\Core {
 
     use oxDb;
-    use OxidEsales\EshopCommunity\Core\Exception\StandardException;
+    use OxidEsales\Eshop\Core\Exception\StandardException;
     use oxSystemComponentException;
 
     /**
@@ -535,7 +535,7 @@ namespace OxidEsales\EshopCommunity\Core {
                 $this->_unlock($imageTarget);
             }
             if ($generatedImagePath && $generatedImagePath != $imageTarget) {
-                throw new StandardException('imageTarget path and generatedImage path differ');
+                throw new \OxidEsales\Eshop\Core\Exception\StandardException('imageTarget path and generatedImage path differ');
             }
 
             return $generatedImagePath;

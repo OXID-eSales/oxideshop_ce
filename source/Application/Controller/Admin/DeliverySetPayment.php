@@ -30,7 +30,7 @@ use oxRegistry;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling Set -> Payment
  */
-class DeliverySetPayment extends \oxAdminDetails
+class DeliverySetPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

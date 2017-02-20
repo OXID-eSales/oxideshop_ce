@@ -29,7 +29,7 @@ use oxField;
 /**
  * Class controls article crossselling configuration
  */
-class ArticleCrosssellingAjax extends \ajaxListComponent
+class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

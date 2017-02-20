@@ -28,7 +28,7 @@ use oxField;
 /**
  * Category seo config class
  */
-class CategorySeo extends \Object_Seo
+class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
 
     /**

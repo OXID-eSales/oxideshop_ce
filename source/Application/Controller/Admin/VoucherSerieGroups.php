@@ -30,7 +30,7 @@ use oxRegistry;
  * serie of vouchers.
  * Admin Menu: Shop Settings -> Vouchers -> Groups.
  */
-class VoucherSerieGroups extends \oxAdminDetails
+class VoucherSerieGroups extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

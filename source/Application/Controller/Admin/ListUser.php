@@ -27,7 +27,7 @@ use oxAdminList;
 /**
  * user list "view" class.
  */
-class ListUser extends \User_List
+class ListUser extends \OxidEsales\Eshop\Application\Controller\Admin\UserList
 {
 
     /**

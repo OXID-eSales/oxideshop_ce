@@ -29,7 +29,7 @@ use oxField;
 /**
  * Class manages user assignment to groups
  */
-class UserMainAjax extends \ajaxListComponent
+class UserMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

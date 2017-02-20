@@ -25,7 +25,7 @@ namespace  OxidEsales\EshopCommunity\Application\Component\Widget;
 /**
  * Beta note widget
  */
-class BetaNote extends \oxWidget
+class BetaNote extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
 
     /**

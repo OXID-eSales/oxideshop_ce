@@ -28,7 +28,7 @@ use oxArticle;
 /**
  * Article box widget
  */
-class ArticleBox extends \oxWidget
+class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
     /**
      * Names of components (classes) that are initiated and executed

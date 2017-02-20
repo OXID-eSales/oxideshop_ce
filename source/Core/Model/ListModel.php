@@ -28,7 +28,7 @@ use oxDb;
  * List manager.
  * Collects list data (eg. from DB), performs list changes updating (to DB), etc.
  */
-class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countable
+class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \Iterator, \Countable
 {
 
     /**

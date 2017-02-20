@@ -35,7 +35,7 @@ use oxField;
  * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  *
  */
-class RecommendationList extends \oxBase implements \oxIUrl
+class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
 
     /**
@@ -306,7 +306,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
      * @param oxList $oRecommList recommendation list
      * @param array  $aIds        article ids
      */
-    protected function _loadFirstArticles(\OxidEsales\EshopCommunity\Core\Model\ListModel $oRecommList, $aIds)
+    protected function _loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds)
     {
         $aIds = oxDb::getDb()->quoteArray($aIds);
         $sIds = implode(", ", $aIds);

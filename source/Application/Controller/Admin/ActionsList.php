@@ -30,7 +30,7 @@ use oxRegistry;
  * field ('oxactions.oxtitle').
  * Admin Menu: Manage Products -> Actions.
  */
-class ActionsList extends \oxAdminList
+class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

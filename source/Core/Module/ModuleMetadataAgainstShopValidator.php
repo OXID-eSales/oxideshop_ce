@@ -33,7 +33,7 @@ use oxModuleInstaller;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ModuleMetadataAgainstShopValidator implements \oxIModuleValidator
+class ModuleMetadataAgainstShopValidator implements \OxidEsales\Eshop\Core\Contract\IModuleValidator
 {
 
     /**
@@ -45,7 +45,7 @@ class ModuleMetadataAgainstShopValidator implements \oxIModuleValidator
      *
      * @return bool
      */
-    public function validate(\OxidEsales\EshopCommunity\Core\Module\Module $oModule)
+    public function validate(\OxidEsales\Eshop\Core\Module\Module $oModule)
     {
 
         $blModuleExtensionsMatchShopInformation = $this->_moduleExtensionsInformationExistsInShop($oModule);
@@ -66,7 +66,7 @@ class ModuleMetadataAgainstShopValidator implements \oxIModuleValidator
      *
      * @return bool
      */
-    private function _moduleExtensionsInformationExistsInShop(\OxidEsales\EshopCommunity\Core\Module\Module $oModule)
+    private function _moduleExtensionsInformationExistsInShop(\OxidEsales\Eshop\Core\Module\Module $oModule)
     {
         $aModuleExtensions = $oModule->getExtensions();
 
@@ -94,7 +94,7 @@ class ModuleMetadataAgainstShopValidator implements \oxIModuleValidator
      *
      * @return bool
      */
-    private function _moduleFilesInformationExistInShop(\OxidEsales\EshopCommunity\Core\Module\Module $oModule)
+    private function _moduleFilesInformationExistInShop(\OxidEsales\Eshop\Core\Module\Module $oModule)
     {
         $aModuleFiles = $oModule->getFiles();
 
@@ -114,7 +114,7 @@ class ModuleMetadataAgainstShopValidator implements \oxIModuleValidator
      *
      * @return bool
      */
-    private function _moduleHasAllExtensions(\OxidEsales\EshopCommunity\Core\Module\Module $oModule)
+    private function _moduleHasAllExtensions(\OxidEsales\Eshop\Core\Module\Module $oModule)
     {
         return true;
     }
@@ -126,7 +126,7 @@ class ModuleMetadataAgainstShopValidator implements \oxIModuleValidator
      *
      * @return bool
      */
-    private function _moduleHasAllFiles(\OxidEsales\EshopCommunity\Core\Module\Module $oModule)
+    private function _moduleHasAllFiles(\OxidEsales\Eshop\Core\Module\Module $oModule)
     {
         return true;
     }

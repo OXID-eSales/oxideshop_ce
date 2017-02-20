@@ -122,7 +122,7 @@ class ModuleVariablesLocator
         if (Registry::instanceExists('oxConfigFile')) {
             $config = Registry::get('oxConfigFile');
         } else {
-            $config = new ConfigFile(getShopBasePath() . '/config.inc.php');
+            $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . '/config.inc.php');
             Registry::set('oxConfigFile', $config);
         }
         return $config->getVar('sConfigKey') ?: Config::DEFAULT_CONFIG_KEY;
@@ -138,7 +138,7 @@ class ModuleVariablesLocator
     protected function getModuleVarFromDB($name)
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = DatabaseProvider::getMaster();
+        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
 
         $shopId = $this->getShopIdCalculator()->getShopId();
         $configKey = $this->getConfigurationKey();

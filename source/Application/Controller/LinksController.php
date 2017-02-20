@@ -30,7 +30,7 @@ use oxRegistry;
  * administrator GUI) with short link description and URL. OXID
  * eShop -> LINKS.
  */
-class LinksController extends \oxUBase
+class LinksController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**

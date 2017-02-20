@@ -30,7 +30,7 @@ use Exception;
 /**
  * Class controls article assignment to category.
  */
-class ArticleExtendAjax extends \ajaxListComponent
+class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**
      * Columns array

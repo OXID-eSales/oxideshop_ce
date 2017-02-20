@@ -29,7 +29,7 @@ use oxRegistry;
  * Collects user payment settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> Payment.
  */
-class UserPayment extends \oxAdminDetails
+class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

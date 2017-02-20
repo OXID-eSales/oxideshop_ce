@@ -36,7 +36,7 @@ use oxOnlineLicenseCheckResponse ;
  *
  * @ignore   This class will not be included in documentation.
  */
-class OnlineLicenseCheckCaller extends \oxOnlineCaller
+class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
 {
 
     /** Online License Key Check web service url. */
@@ -60,7 +60,7 @@ class OnlineLicenseCheckCaller extends \oxOnlineCaller
      * @throws oxException
      * @return oxOnlineLicenseCheckResponse
      */
-    public function doRequest(\OxidEsales\EshopCommunity\Core\OnlineLicenseCheckRequest $oRequest)
+    public function doRequest(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest)
     {
         return $this->_formResponse($this->call($oRequest));
     }

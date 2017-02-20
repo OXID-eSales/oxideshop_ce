@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 /**
  * Admin dyn General import manager.
  */
-class GenericImport extends \GenImport_Main
+class GenericImport extends \OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain
 {
 
     /**

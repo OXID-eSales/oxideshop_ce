@@ -32,7 +32,7 @@ use Exception;
  * General utils class
  *
  */
-class Utils extends \oxSuperCfg
+class Utils extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -1097,7 +1097,7 @@ class Utils extends \oxSuperCfg
 
         try { //may occur in case db is lost
             $this->getSession()->freeze();
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
             $oEx->debugOut();
             //do nothing else to make sure the redirect takes place
         }

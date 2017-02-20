@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * and "theme_main.tpl") to frame.
  * Admin Menu: Main Menu -> Theme.
  */
-class ModuleController extends \oxAdminView
+class ModuleController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

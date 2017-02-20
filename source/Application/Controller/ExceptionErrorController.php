@@ -27,7 +27,7 @@ use oxRegistry;
 /**
  * Displays exception errors
  */
-class ExceptionErrorController extends \oxUBase
+class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Current class template name.

@@ -27,7 +27,7 @@ use oxRegistry;
 /**
  * CMS - loads pages and displays it
  */
-class ContentController extends \oxUBase
+class ContentController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**

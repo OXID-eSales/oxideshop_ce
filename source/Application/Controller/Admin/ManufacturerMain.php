@@ -29,7 +29,7 @@ use stdClass;
  * Admin manufacturer main screen.
  * Performs collection and updating (on user submit) main item information.
  */
-class ManufacturerMain extends \oxAdminDetails
+class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

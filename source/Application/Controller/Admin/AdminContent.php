@@ -27,7 +27,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * and "content_main.tpl") to frame.
  * Admin Menu: Customerinformations -> Content.
  */
-class AdminContent extends \oxAdminView
+class AdminContent extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * and "usergroup_main.tpl") to frame.
  * Admin Menu: User Administration -> User Groups.
  */
-class UserGroupController extends \oxAdminView
+class UserGroupController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

@@ -28,7 +28,7 @@ use oxField;
 /**
  * Class manages discount users
  */
-class DiscountUsersAjax extends \ajaxListComponent
+class DiscountUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

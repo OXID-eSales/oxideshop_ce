@@ -28,7 +28,7 @@ use oxDb;
 /**
  * Class manages discount articles
  */
-class DiscountItemAjax extends \ajaxListComponent
+class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

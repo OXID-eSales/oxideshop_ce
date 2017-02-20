@@ -31,7 +31,7 @@ use oxBasket;
  * Performs session managing function, such as variables deletion,
  * initialisation and other session functions.
  */
-class Session extends \oxSuperCfg
+class Session extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -562,7 +562,7 @@ class Session extends \oxSuperCfg
      *
      * @return null
      */
-    protected function _validateBasket(\OxidEsales\EshopCommunity\Application\Model\Basket $oBasket)
+    protected function _validateBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
         $aCurrContent = $oBasket->getContents();
         if (empty($aCurrContent)) {

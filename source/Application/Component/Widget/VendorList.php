@@ -26,7 +26,7 @@ namespace OxidEsales\EshopCommunity\Application\Component\Widget;
  * Vendor list widget.
  * Forms vendor list.
  */
-class VendorList extends \oxWidget
+class VendorList extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
 
     /**

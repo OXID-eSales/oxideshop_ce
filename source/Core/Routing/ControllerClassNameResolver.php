@@ -22,8 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Core\Routing;
 
-use OxidEsales\EshopCommunity\Core\Contract\ClassNameResolverInterface;
-use OxidEsales\EshopCommunity\Core\Contract\ControllerMapProviderInterface;
+use OxidEsales\Eshop\Core\Contract\ClassNameResolverInterface;
+use OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface;
 
 /**
  * This class maps controller id to controller class name and vice versa.

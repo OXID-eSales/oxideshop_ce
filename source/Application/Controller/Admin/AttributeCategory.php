@@ -30,7 +30,7 @@ use oxRegistry;
  * this attribute, etc.
  * Admin Menu: Manage Products -> Attributes -> Gruppen.
  */
-class AttributeCategory extends \oxAdminDetails
+class AttributeCategory extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

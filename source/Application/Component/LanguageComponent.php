@@ -30,7 +30,7 @@ use oxRegistry;
  *
  * @subpackage oxcmp
  */
-class LanguageComponent extends \oxView
+class LanguageComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
 
     /**

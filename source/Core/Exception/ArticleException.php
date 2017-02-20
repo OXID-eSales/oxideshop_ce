@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 /**
  * Exception base class for an article
  */
-class ArticleException extends \oxException
+class ArticleException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
     /**
      * Exception type, currently old class name is used.

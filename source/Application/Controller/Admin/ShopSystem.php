@@ -30,7 +30,7 @@ use oxDb;
  * Collects shop system settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> System.
  */
-class ShopSystem extends \Shop_Config
+class ShopSystem extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
 
     /**

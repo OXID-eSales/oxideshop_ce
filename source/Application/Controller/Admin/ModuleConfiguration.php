@@ -32,7 +32,7 @@ use oxException;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main Sets.
  */
-class ModuleConfiguration extends \Shop_Config
+class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
     /** @var string Template name. */
     protected $_sModule = 'shop_config.tpl';
@@ -69,7 +69,7 @@ class ModuleConfiguration extends \Shop_Config
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
                     $iCount += count($aDbVariables['vars'][$sType]);
                 }
-            } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $oEx) {
+            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
                 $oEx->debugOut();
             }

@@ -34,7 +34,7 @@ use oxRegistry;
  *
  * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
-class AccountRecommlistController extends \Account
+class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
 
     /**
@@ -257,7 +257,7 @@ class AccountRecommlistController extends \Account
                 // marking entry as saved
                 $this->_blSavedEntry = (bool) $oRecommList->save();
                 $this->setActiveRecommList($this->_blSavedEntry ? $oRecommList : false);
-            } catch (\OxidEsales\EshopCommunity\Core\Exception\ObjectException $oEx) {
+            } catch (\OxidEsales\Eshop\Core\Exception\ObjectException $oEx) {
                 //add to display at specific position
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'user');
             }

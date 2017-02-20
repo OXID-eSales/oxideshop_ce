@@ -33,7 +33,7 @@ use oxRegistry;
  * email.
  * OXID eShop -> pricealarm.
  */
-class PriceAlarmController extends \oxUBase
+class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Current class template name.

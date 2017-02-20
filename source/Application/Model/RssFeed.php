@@ -31,7 +31,7 @@ use stdClass;
  * loads needed rss data
  *
  */
-class RssFeed extends \oxSuperCfg
+class RssFeed extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -227,7 +227,7 @@ class RssFeed extends \oxSuperCfg
      * @access protected
      * @return array
      */
-    protected function _getArticleItems(ArticleList $oList)
+    protected function _getArticleItems(\OxidEsales\Eshop\Application\Model\ArticleList $oList)
     {
         $myUtilsUrl = Registry::get("oxUtilsUrl");
         $aItems = array();
@@ -845,7 +845,7 @@ class RssFeed extends \oxSuperCfg
      *
      * @return string
      */
-    public function getRecommListArticlesTitle(RecommendationList $oRecommList)
+    public function getRecommListArticlesTitle(\OxidEsales\Eshop\Application\Model\RecommendationList $oRecommList)
     {
         $oLang = Registry::getLang();
         $iLang = $oLang->getBaseLanguage();
@@ -862,7 +862,7 @@ class RssFeed extends \oxSuperCfg
      *
      * @return string
      */
-    public function getRecommListArticlesUrl(RecommendationList $oRecommList)
+    public function getRecommListArticlesUrl(\OxidEsales\Eshop\Application\Model\RecommendationList $oRecommList)
     {
         $oLang = Registry::getLang();
         $iLang = $oLang->getBaseLanguage();
@@ -882,7 +882,7 @@ class RssFeed extends \oxSuperCfg
      *
      * @return null
      */
-    public function loadRecommListArticles(RecommendationList $oRecommList)
+    public function loadRecommListArticles(\OxidEsales\Eshop\Application\Model\RecommendationList $oRecommList)
     {
         if (($this->_aChannel = $this->_loadFromCache(self::RSS_RECOMMLISTARTS . $oRecommList->getId()))) {
             return;

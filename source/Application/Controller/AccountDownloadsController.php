@@ -28,7 +28,7 @@ use oxRegistry;
 /**
  * Account article file download page.
  */
-class AccountDownloadsController extends \Account
+class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
     /**
      * Current class template name.

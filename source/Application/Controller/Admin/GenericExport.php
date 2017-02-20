@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 /**
  * Admin dyn General export manager.
  */
-class GenericExport extends \DynExportBase
+class GenericExport extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController
 {
 
     /**

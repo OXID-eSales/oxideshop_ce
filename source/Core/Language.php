@@ -29,7 +29,7 @@ use stdClass;
 /**
  * Language related utility class
  */
-class Language extends \oxSuperCfg
+class Language extends \OxidEsales\Eshop\Core\Base
 {
 
     /**

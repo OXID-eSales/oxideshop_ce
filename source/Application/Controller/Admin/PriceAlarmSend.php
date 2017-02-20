@@ -30,7 +30,7 @@ use oxField;
  * pricealarm sending manager.
  * Performs sending of pricealarm to selected iAllCnt groups.
  */
-class PriceAlarmSend extends \oxAdminList
+class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

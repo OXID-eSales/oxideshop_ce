@@ -30,7 +30,7 @@ use oxDb;
  * Adds/removes chosen user group to/from newsletter mailing.
  * Admin Menu: Customer Info -> Newsletter -> Selection.
  */
-class NewsletterSelection extends \oxAdminDetails
+class NewsletterSelection extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

@@ -29,7 +29,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  *
  * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
  */
-class DynamicScreenLocal extends \oxAdminView
+class DynamicScreenLocal extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

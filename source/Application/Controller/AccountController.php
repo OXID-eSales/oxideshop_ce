@@ -31,7 +31,7 @@ use oxUtilsUrl;
  * is a link for logging out. Template includes Topoffer , bargain
  * boxes. OXID eShop -> MY ACCOUNT.
  */
-class AccountController extends \oxUBase
+class AccountController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Number of user's orders.

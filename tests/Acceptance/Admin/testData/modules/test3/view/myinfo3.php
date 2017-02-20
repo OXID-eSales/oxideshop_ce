@@ -1,5 +1,6 @@
 <?php
-class myinfo3 extends myinfo3_parent {
+class myinfo3 extends myinfo3_parent
+{
 
     public function render()
     {

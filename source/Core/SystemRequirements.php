@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use oxRegistry;
@@ -187,7 +187,7 @@ class SystemRequirements
             }
         }
 
-        throw new SystemComponentException(
+        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException(
             "Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL
         );
     }
@@ -305,7 +305,7 @@ class SystemRequirements
         }
 
         $sTmp = "$sPath/tmp/";
-        $config = new ConfigFile(getShopBasePath() . "/config.inc.php");
+        $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
         $sCfgTmp = $config->getVar('sCompileDir');
         if ($sCfgTmp && strpos($sCfgTmp, '<sCompileDir') === false) {
             $sTmp = $sCfgTmp;
@@ -714,7 +714,7 @@ class SystemRequirements
         $maximalRequiredVersion = '5.7.9999';
 
         if ($installedVersion === null) {
-            $resultContainingDatabaseVersion = DatabaseProvider::getDb()->getRow("SHOW VARIABLES LIKE 'version'");
+            $resultContainingDatabaseVersion = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getRow("SHOW VARIABLES LIKE 'version'");
             $installedVersion = $resultContainingDatabaseVersion[1];
         }
 

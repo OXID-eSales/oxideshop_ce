@@ -32,7 +32,7 @@ use oxRegistry;
  * ordered articles information, button to add article to basket.
  * OXID eShop -> MY ACCOUNT -> Newsletter.
  */
-class AccountOrderController extends \Account
+class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
 
     /**

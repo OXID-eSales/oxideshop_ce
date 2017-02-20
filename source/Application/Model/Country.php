@@ -28,7 +28,7 @@ use oxDb;
  * Country manager
  *
  */
-class Country extends \oxI18n
+class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 
     /**

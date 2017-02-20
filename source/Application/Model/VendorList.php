@@ -30,7 +30,7 @@ use oxField;
  * Collects list of vendors according to collection rules (activ, etc.).
  *
  */
-class VendorList extends \oxList
+class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

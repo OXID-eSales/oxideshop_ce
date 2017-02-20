@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 /**
  * Class for updating category tree structure in DB.
  */
-class CategoryUpdate extends \oxAdminView
+class CategoryUpdate extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

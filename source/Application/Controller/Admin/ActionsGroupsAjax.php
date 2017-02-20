@@ -29,7 +29,7 @@ use oxField;
 /**
  * Class manages promotion groups
  */
-class ActionsGroupsAjax extends \ajaxListComponent
+class ActionsGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**
      * Columns array

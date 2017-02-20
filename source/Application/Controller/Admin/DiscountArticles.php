@@ -30,7 +30,7 @@ use oxRegistry;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main.
  */
-class DiscountArticles extends \oxAdminDetails
+class DiscountArticles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

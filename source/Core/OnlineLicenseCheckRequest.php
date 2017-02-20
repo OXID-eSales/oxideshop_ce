@@ -30,7 +30,7 @@ namespace OxidEsales\EshopCommunity\Core;
  *
  * @ignore   This class will not be included in documentation.
  */
-class OnlineLicenseCheckRequest extends \oxOnlineRequest
+class OnlineLicenseCheckRequest extends \OxidEsales\Eshop\Core\OnlineRequest
 {
     /**
      * Web service protocol version.

@@ -26,7 +26,7 @@ namespace OxidEsales\EshopCommunity\Application\Component\Widget;
  * Product Ratings widget.
  * Forms product ratings.
  */
-class Rating extends \oxWidget
+class Rating extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
     /**
      * Names of components (classes) that are initiated and executed

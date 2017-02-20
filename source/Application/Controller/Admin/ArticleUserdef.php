@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 /**
  * Class reserved for extending (for customization - you can add you own fields, etc.).
  */
-class ArticleUserdef extends \oxAdminDetails
+class ArticleUserdef extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

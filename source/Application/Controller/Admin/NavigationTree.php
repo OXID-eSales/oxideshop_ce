@@ -34,7 +34,7 @@ use OxidEsales\Eshop\Core\Edition\EditionSelector;
 /**
  * Navigation tree control class
  */
-class NavigationTree extends \oxSuperCfg
+class NavigationTree extends \OxidEsales\Eshop\Core\Base
 {
     /**
      * stores DOM object for all navigation tree

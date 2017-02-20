@@ -35,7 +35,7 @@ use oxRegistry;
  * returned value escaping status.
  *
  */
-class Field // extends oxSuperCfg
+class Field // extends \OxidEsales\Eshop\Core\Base
 {
 
     /**

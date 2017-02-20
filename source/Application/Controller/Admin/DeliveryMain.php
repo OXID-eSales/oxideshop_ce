@@ -32,7 +32,7 @@ use oxField;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main.
  */
-class DeliveryMain extends \oxAdminDetails
+class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

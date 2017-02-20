@@ -31,7 +31,7 @@ use oxModule;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ModuleCache extends \oxSuperCfg
+class ModuleCache extends \OxidEsales\Eshop\Core\Base
 {
     /**
      * @var oxModule
@@ -43,7 +43,7 @@ class ModuleCache extends \oxSuperCfg
      *
      * @param oxModule $_oModule
      */
-    public function __construct(\OxidEsales\EshopCommunity\Core\Module\Module $_oModule)
+    public function __construct(\OxidEsales\Eshop\Core\Module\Module $_oModule)
     {
         $this->_oModule = $_oModule;
     }

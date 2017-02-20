@@ -28,7 +28,7 @@ use oxField;
  * Links manager.
  * Collects stored in DB links data (URL, description).
  */
-class Links extends \oxI18n
+class Links extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 
     /**

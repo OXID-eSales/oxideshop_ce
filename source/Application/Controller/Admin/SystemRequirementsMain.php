@@ -28,7 +28,7 @@ use oxSysRequirements;
  * Collects System information.
  * Admin Menu: Service -> System Requirements -> Main.
  */
-class SystemRequirementsMain extends \oxAdminDetails
+class SystemRequirementsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

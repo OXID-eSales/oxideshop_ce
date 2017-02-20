@@ -1,6 +1,6 @@
 <?php
-class test1Content extends test1Content_parent {
-
+class test1Content extends test1Content_parent
+{
     public function render()
     {
         $sTpl = parent::render();

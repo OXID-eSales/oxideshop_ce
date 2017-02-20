@@ -28,7 +28,7 @@ use oxRegistry;
  * simplified Exception classes for simply displaying errors
  * saves resources when exception functionality is not needed
  */
-class ExceptionToDisplay implements \oxIDisplayError
+class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayError
 {
 
     /**

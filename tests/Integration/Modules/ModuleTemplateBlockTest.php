@@ -23,8 +23,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use oxException;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter;
-use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockContentReader;
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
 
 /**
  * @group module

@@ -52,7 +52,7 @@ class BasketContentMarkGenerator
      *
      * @param oxBasket $oBasket
      */
-    public function __construct(\OxidEsales\EshopCommunity\Application\Model\Basket $oBasket)
+    public function __construct(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
         $this->_oBasket = $oBasket;
     }

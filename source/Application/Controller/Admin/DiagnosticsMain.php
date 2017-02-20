@@ -29,7 +29,7 @@ use oxRegistry;
  * Checks Version of System files.
  * Admin Menu: Service -> Version Checker -> Main.
  */
-class DiagnosticsMain extends \oxAdminDetails
+class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

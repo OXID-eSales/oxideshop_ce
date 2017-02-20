@@ -31,7 +31,7 @@ use Exception;
  * Collects and updates (on user submit) files.
  * Admin Menu: Manage Products -> Articles -> Files.
  */
-class ArticleFiles extends \oxAdminDetails
+class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

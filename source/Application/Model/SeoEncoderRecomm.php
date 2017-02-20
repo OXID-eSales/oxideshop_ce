@@ -29,7 +29,7 @@ use oxRegistry;
  *
  * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
-class SeoEncoderRecomm extends \oxSeoEncoder
+class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
 {
     /**
      * Returns SEO uri for tag.

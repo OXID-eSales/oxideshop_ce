@@ -26,7 +26,6 @@ use oxSystemComponentException;
 use oxField;
 use oxRegistry;
 use oxDb;
-use oxUtilsObject;
 use oxStr;
 use oxConfig;
 use Exception;
@@ -1465,7 +1464,7 @@ class Email extends \PHPMailer
             if (is_array($matches) && count($matches)) {
                 $imageCache = array();
                 $myUtils = oxRegistry::getUtils();
-                $myUtilsObject = oxUtilsObject::getInstance();
+                $myUtilsObject = $this->getUtilsObjectInstance();
                 $imgGenerator = oxNew("oxDynImgGenerator");
 
                 foreach ($matches as $image) {
@@ -2266,5 +2265,13 @@ class Email extends \PHPMailer
     private function _clearSidFromBody($altBody)
     {
         return oxStr::getStr()->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[A-Z0-9\.]+/i', '\1shp=' . $this->getConfig()->getShopId(), $altBody);
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Core\UtilsObject
+     */
+    protected function getUtilsObjectInstance()
+    {
+        return \OxidEsales\Eshop\Core\UtilsObject::getInstance();
     }
 }

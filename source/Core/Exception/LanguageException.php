@@ -27,7 +27,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
  *
  * @deprecated since 5.2.8 (2016.02.05); Will be removed as not used in code.
  */
-class LanguageException extends \oxException
+class LanguageException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
     /**
      * Exception type, currently old class name is used.

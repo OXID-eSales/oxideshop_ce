@@ -35,7 +35,7 @@ use SoapFault;
 /**
  * Online VAT id checker class.
  */
-class OnlineVatIdCheck extends \oxCompanyVatInChecker
+class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
 {
 
     /**
@@ -85,7 +85,7 @@ class OnlineVatIdCheck extends \oxCompanyVatInChecker
      *
      * @return bool
      */
-    public function validate(\OxidEsales\EshopCommunity\Application\Model\CompanyVatIn $oVatIn)
+    public function validate(\OxidEsales\Eshop\Application\Model\CompanyVatIn $oVatIn)
     {
         $oCheckVat = new stdClass();
         $oCheckVat->countryCode = $oVatIn->getCountryCode();

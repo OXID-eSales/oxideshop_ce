@@ -30,7 +30,7 @@ use Exception;
 /**
  * Class manages category attributes
  */
-class AttributeCategoryAjax extends \ajaxListComponent
+class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

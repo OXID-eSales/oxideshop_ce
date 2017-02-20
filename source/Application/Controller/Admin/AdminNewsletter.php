@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * and "newsletter_main.tpl") to frame.
  * Admin Menu: Customer Info -> Newsletter.
  */
-class AdminNewsletter extends \oxAdminView
+class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

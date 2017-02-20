@@ -30,7 +30,7 @@ use oxRegistry;
  * or remove any of them to article, etc.
  * Admin Menu: Manage Products -> Articles -> Selection.
  */
-class ArticleAttribute extends \oxAdminDetails
+class ArticleAttribute extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

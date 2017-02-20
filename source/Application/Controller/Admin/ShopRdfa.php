@@ -30,7 +30,7 @@ use oxRegistry;
  * Admin Menu: Main Menu -> Core Settings -> RDFa.
  *
  */
-class ShopRdfa extends \Shop_Config
+class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
 
     /**

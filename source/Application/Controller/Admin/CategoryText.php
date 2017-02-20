@@ -30,7 +30,7 @@ use stdClass;
  * Category text/description manager, enables editing of text.
  * Admin Menu: Manage Products -> Categories -> Text.
  */
-class CategoryText extends \oxAdminDetails
+class CategoryText extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

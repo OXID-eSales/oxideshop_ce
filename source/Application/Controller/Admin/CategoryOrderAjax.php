@@ -28,7 +28,7 @@ use oxDb;
 /**
  * Class manages category articles order
  */
-class CategoryOrderAjax extends \ajaxListComponent
+class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

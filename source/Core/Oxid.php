@@ -38,7 +38,7 @@ class Oxid
     public static function run()
     {
         /** @var ShopControl $shopControl */
-        $shopControl = oxNew(ShopControl::class);
+        $shopControl = oxNew(\OxidEsales\Eshop\Core\ShopControl::class);
 
         return $shopControl->start();
     }
@@ -53,7 +53,7 @@ class Oxid
     public static function runWidget()
     {
         /** @var WidgetControl $widgetControl */
-        $widgetControl = oxNew(WidgetControl::class);
+        $widgetControl = oxNew(\OxidEsales\Eshop\Core\WidgetControl::class);
 
         return $widgetControl->start();
     }

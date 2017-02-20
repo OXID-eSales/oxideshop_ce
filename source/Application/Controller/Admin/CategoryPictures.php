@@ -27,7 +27,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * Category thumbnail manager (Previews assigned pictures).
  * Admin Menu: Manage Products -> Categories -> Thumbnail.
  */
-class CategoryPictures extends \oxAdminDetails
+class CategoryPictures extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

@@ -27,7 +27,7 @@ namespace  OxidEsales\EshopCommunity\Application\Component\Widget;
  * Category tree widget.
  * Forms category tree.
  */
-class CategoryTree extends \oxWidget
+class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
 
     /**
@@ -82,7 +82,7 @@ class CategoryTree extends \oxWidget
      */
     public function getContentCategory()
     {
-        $request = oxNew('OxidEsales\EshopCommunity\Core\Request');
+        $request = oxNew(\OxidEsales\Eshop\Core\Request::class);
         return $request->getRequestParameter('oxcid', false);
     }
 }

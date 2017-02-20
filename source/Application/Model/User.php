@@ -22,10 +22,11 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
-use oxRegistry;
+use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\UtilsDate;
 use oxDb;
-use oxUtilsObject;
+use OxidEsales\Eshop\Core\UtilsObject;
 use oxInputValidator;
 use oxUserException;
 use oxConnectionException;
@@ -36,7 +37,7 @@ use oxConnectionException;
  * information, deletion and other.
  *
  */
-class User extends \oxBase
+class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**
@@ -276,11 +277,11 @@ class User extends \oxBase
         if (!$this->_oNewsSubscription->loadFromUserId($this->getId())) {
             if (!$this->_oNewsSubscription->loadFromEmail($this->oxuser__oxusername->value)) {
                 // no subscription defined yet - creating one
-                $this->_oNewsSubscription->oxnewssubscribed__oxuserid = new oxField($this->getId(), oxField::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxemail = new oxField($this->oxuser__oxusername->value, oxField::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxsal = new oxField($this->oxuser__oxsal->value, oxField::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxfname = new oxField($this->oxuser__oxfname->value, oxField::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxlname = new oxField($this->oxuser__oxlname->value, oxField::T_RAW);
+                $this->_oNewsSubscription->oxnewssubscribed__oxuserid = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
+                $this->_oNewsSubscription->oxnewssubscribed__oxemail = new \OxidEsales\Eshop\Core\Field($this->oxuser__oxusername->value, \OxidEsales\Eshop\Core\Field::T_RAW);
+                $this->_oNewsSubscription->oxnewssubscribed__oxsal = new \OxidEsales\Eshop\Core\Field($this->oxuser__oxsal->value, \OxidEsales\Eshop\Core\Field::T_RAW);
+                $this->_oNewsSubscription->oxnewssubscribed__oxfname = new \OxidEsales\Eshop\Core\Field($this->oxuser__oxfname->value, \OxidEsales\Eshop\Core\Field::T_RAW);
+                $this->_oNewsSubscription->oxnewssubscribed__oxlname = new \OxidEsales\Eshop\Core\Field($this->oxuser__oxlname->value, \OxidEsales\Eshop\Core\Field::T_RAW);
             }
         }
 
@@ -303,7 +304,7 @@ class User extends \oxBase
             $oDb = oxDb::getDb();
             $sViewName = getViewName('oxcountry', $iLang);
             $sQ = "select oxtitle from {$sViewName} where oxid = " . $oDb->quote($sId) . " ";
-            $oCountry = new oxField($oDb->getOne($sQ), oxField::T_RAW);
+            $oCountry = new \OxidEsales\Eshop\Core\Field($oDb->getOne($sQ), \OxidEsales\Eshop\Core\Field::T_RAW);
             if (!$sCountryId) {
                 $this->_oUserCountryTitle = $oCountry;
             }
@@ -407,9 +408,9 @@ class User extends \oxBase
             return $this->_sSelAddressId;
         }
 
-        $sAddressId = oxRegistry::getConfig()->getRequestParameter("oxaddressid");
-        if (!$sAddressId && !oxRegistry::getConfig()->getRequestParameter('reloadaddress')) {
-            $sAddressId = oxRegistry::getSession()->getVariable("deladrid");
+        $sAddressId = Registry::getConfig()->getRequestParameter("oxaddressid");
+        if (!$sAddressId && !Registry::getConfig()->getRequestParameter('reloadaddress')) {
+            $sAddressId = Registry::getSession()->getVariable("deladrid");
         }
 
         return $sAddressId;
@@ -511,21 +512,24 @@ class User extends \oxBase
      */
     public function save()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = Registry::getConfig();
 
         $blAddRemark = false;
         if ($this->oxuser__oxpassword->value && $this->oxuser__oxregister->value < 1) {
             $blAddRemark = true;
             //save oxregister value
-            $this->oxuser__oxregister = new oxField(date('Y-m-d H:i:s'), oxField::T_RAW);
+            $this->oxuser__oxregister = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s'), \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         // setting user rights
-        $this->oxuser__oxrights = new oxField($this->_getUserRights(), oxField::T_RAW);
+        $this->oxuser__oxrights = new \OxidEsales\Eshop\Core\Field($this->_getUserRights(), \OxidEsales\Eshop\Core\Field::T_RAW);
 
         // processing birth date which came from output as array
         if (is_array($this->oxuser__oxbirthdate->value)) {
-            $this->oxuser__oxbirthdate = new oxField($this->convertBirthday($this->oxuser__oxbirthdate->value), oxField::T_RAW);
+            $this->oxuser__oxbirthdate = new \OxidEsales\Eshop\Core\Field(
+                $this->convertBirthday($this->oxuser__oxbirthdate->value),
+                \OxidEsales\Eshop\Core\Field::T_RAW
+            );
         }
 
         $blRet = parent::save();
@@ -533,9 +537,12 @@ class User extends \oxBase
         //add registered remark
         if ($blAddRemark && $blRet) {
             $oRemark = oxNew('oxremark');
-            $oRemark->oxremark__oxtext = new oxField(oxRegistry::getLang()->translateString('usrRegistered', null, true), oxField::T_RAW);
-            $oRemark->oxremark__oxtype = new oxField('r', oxField::T_RAW);
-            $oRemark->oxremark__oxparentid = new oxField($this->getId(), oxField::T_RAW);
+            $oRemark->oxremark__oxtext = new \OxidEsales\Eshop\Core\Field(
+                Registry::getLang()->translateString('usrRegistered', null, true),
+                \OxidEsales\Eshop\Core\Field::T_RAW
+            );
+            $oRemark->oxremark__oxtype = new \OxidEsales\Eshop\Core\Field('r', \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oRemark->oxremark__oxparentid = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
             $oRemark->save();
         }
 
@@ -633,12 +640,12 @@ class User extends \oxBase
 
         // convert date's to international format
         if (isset($this->oxuser__oxcreate->value)) {
-            $this->oxuser__oxcreate->setValue(oxRegistry::get("oxUtilsDate")->formatDBDate($this->oxuser__oxcreate->value));
+            $this->oxuser__oxcreate->setValue(Registry::get(UtilsDate::class)->formatDBDate($this->oxuser__oxcreate->value));
         }
 
         // change newsSubcription user id
         if (isset($this->_oNewsSubscription)) {
-            $this->_oNewsSubscription->oxnewssubscribed__oxuserid = new oxField($oxID, oxField::T_RAW);
+            $this->_oNewsSubscription->oxnewssubscribed__oxuserid = new \OxidEsales\Eshop\Core\Field($oxID, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         return $blRet;
@@ -794,7 +801,7 @@ class User extends \oxBase
     public function getActiveCountry()
     {
         $sDeliveryCountry = '';
-        $soxAddressId = oxRegistry::getSession()->getVariable('deladrid');
+        $soxAddressId = Registry::getSession()->getVariable('deladrid');
         if ($soxAddressId) {
             $oDelAddress = oxNew('oxAddress');
             $oDelAddress->load($soxAddressId);
@@ -843,13 +850,13 @@ class User extends \oxBase
             if ($masterDb->getOne($sQ)) {
                 /** @var oxUserException $oEx */
                 $oEx = oxNew('oxUserException');
-                $oLang = oxRegistry::getLang();
+                $oLang = Registry::getLang();
                 $oEx->setMessage(sprintf($oLang->translateString('ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage()), $this->oxuser__oxusername->value));
                 throw $oEx;
             }
         }
 
-        $this->oxuser__oxshopid = new oxField($sShopID, oxField::T_RAW);
+        $this->oxuser__oxshopid = new Field($sShopID, Field::T_RAW);
         if (($blOK = $this->save())) {
             // dropping/cleaning old delivery address/payment info
             $oDb->execute("delete from oxaddress where oxaddress.oxuserid = " . $oDb->quote($this->oxuser__oxid->value) . " ");
@@ -878,8 +885,8 @@ class User extends \oxBase
             $oGroup = oxNew('oxGroups');
             if ($oGroup->load($sGroupID)) {
                 $oNewGroup = oxNew('oxobject2group');
-                $oNewGroup->oxobject2group__oxobjectid = new oxField($this->getId(), oxField::T_RAW);
-                $oNewGroup->oxobject2group__oxgroupsid = new oxField($sGroupID, oxField::T_RAW);
+                $oNewGroup->oxobject2group__oxobjectid = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oNewGroup->oxobject2group__oxgroupsid = new \OxidEsales\Eshop\Core\Field($sGroupID, \OxidEsales\Eshop\Core\Field::T_RAW);
                 if ($oNewGroup->save()) {
                     $this->_oGroups[$sGroupID] = $oGroup;
 
@@ -960,8 +967,8 @@ class User extends \oxBase
 
             // creating if it does not exist
             if (!$oBasket->assignRecord($oBasket->buildSelectString($aWhere))) {
-                $oBasket->oxuserbaskets__oxtitle = new oxField($sName);
-                $oBasket->oxuserbaskets__oxuserid = new oxField($this->getId());
+                $oBasket->oxuserbaskets__oxtitle = new \OxidEsales\Eshop\Core\Field($sName);
+                $oBasket->oxuserbaskets__oxuserid = new \OxidEsales\Eshop\Core\Field($this->getId());
 
                 // marking basket as new (it will not be saved in DB yet)
                 $oBasket->setIsNewBasket();
@@ -1058,7 +1065,7 @@ class User extends \oxBase
     public function checkValues($sLogin, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)
     {
         /** @var oxInputValidator $oInputValidator */
-        $oInputValidator = oxRegistry::get('oxInputValidator');
+        $oInputValidator = Registry::get('oxInputValidator');
 
         // 1. checking user name
         $sLogin = $oInputValidator->checkLogin($this, $sLogin, $aInvAddress);
@@ -1067,7 +1074,7 @@ class User extends \oxBase
         $oInputValidator->checkEmail($this, $sLogin);
 
         // 3. password
-        $oInputValidator->checkPassword($this, $sPassword, $sPassword2, ((int) oxRegistry::getConfig()->getRequestParameter('option') == 3));
+        $oInputValidator->checkPassword($this, $sPassword, $sPassword2, ((int) Registry::getConfig()->getRequestParameter('option') == 3));
 
         // 4. required fields
         $oInputValidator->checkRequiredFields($this, $aInvAddress, $aDelAddress);
@@ -1078,14 +1085,14 @@ class User extends \oxBase
         // 6. vat id check.
         try {
             $oInputValidator->checkVatId($this, $aInvAddress);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\ConnectionException $e) {
+        } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $e) {
             // R080730 just oxInputException is passed here
             // if it oxConnectionException, it means it could not check vat id
             // and will set 'not checked' status to it later
         }
 
         // throwing first validation error
-        if ($oError = oxRegistry::get("oxInputValidator")->getFirstValidationError()) {
+        if ($oError = Registry::get("oxInputValidator")->getFirstValidationError()) {
             throw $oError;
         }
     }
@@ -1216,7 +1223,7 @@ class User extends \oxBase
             $oAddress->setId($sAddressId);
             $oAddress->load($sAddressId);
             $oAddress->assign($aDelAddress);
-            $oAddress->oxaddress__oxuserid = new oxField($this->getId(), oxField::T_RAW);
+            $oAddress->oxaddress__oxuserid = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
             $oAddress->oxaddress__oxcountry = $this->getUserCountry($oAddress->oxaddress__oxcountryid->value);
             $oAddress->save();
 
@@ -1224,10 +1231,10 @@ class User extends \oxBase
             $this->_aAddresses = null;
 
             // saving delivery Address for later use
-            oxRegistry::getSession()->setVariable('deladrid', $oAddress->getId());
+            Registry::getSession()->setVariable('deladrid', $oAddress->getId());
         } else {
             // resetting
-            oxRegistry::getSession()->setVariable('deladrid', null);
+            Registry::getSession()->setVariable('deladrid', null);
         }
     }
 
@@ -1318,7 +1325,7 @@ class User extends \oxBase
      */
     public function login($sUser, $sPassword, $blCookie = false)
     {
-        if ($this->isAdmin() && !count(oxRegistry::get("oxUtilsServer")->getOxCookie())) {
+        if ($this->isAdmin() && !count(Registry::get("oxUtilsServer")->getOxCookie())) {
             /** @var oxCookieException $oEx */
             $oEx = oxNew('oxCookieException');
             $oEx->setMessage('ERROR_MESSAGE_COOKIE_NOCOOKIE');
@@ -1343,14 +1350,14 @@ class User extends \oxBase
             $this->setUser(null);
 
             if ($this->isAdmin()) {
-                oxRegistry::getSession()->setVariable('auth', $this->oxuser__oxid->value);
+                Registry::getSession()->setVariable('auth', $this->oxuser__oxid->value);
             } else {
-                oxRegistry::getSession()->setVariable('usr', $this->oxuser__oxid->value);
+                Registry::getSession()->setVariable('usr', $this->oxuser__oxid->value);
             }
 
             // cookie must be set ?
             if ($blCookie && $oConfig->getConfigParam('blShowRememberMe')) {
-                oxRegistry::get("oxUtilsServer")->setUserCookie($this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $oConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value);
+                Registry::get("oxUtilsServer")->setUserCookie($this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $oConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value);
             }
 
             return true;
@@ -1370,14 +1377,14 @@ class User extends \oxBase
     public function logout()
     {
         // deleting session info
-        oxRegistry::getSession()->deleteVariable('usr'); // for front end
-        oxRegistry::getSession()->deleteVariable('auth'); // for back end
-        oxRegistry::getSession()->deleteVariable('dynvalue');
-        oxRegistry::getSession()->deleteVariable('paymentid');
-        // oxRegistry::getSession()->deleteVariable( 'deladrid' );
+        Registry::getSession()->deleteVariable('usr'); // for front end
+        Registry::getSession()->deleteVariable('auth'); // for back end
+        Registry::getSession()->deleteVariable('dynvalue');
+        Registry::getSession()->deleteVariable('paymentid');
+        // Registry::getSession()->deleteVariable( 'deladrid' );
 
         // delete cookie
-        oxRegistry::get("oxUtilsServer")->deleteUserCookie($this->getConfig()->getShopID());
+        Registry::get("oxUtilsServer")->deleteUserCookie($this->getConfig()->getShopID());
 
         // unsetting global user
         $this->setUser(null);
@@ -1411,7 +1418,7 @@ class User extends \oxBase
         $blAdmin = $this->isAdmin() || $blForceAdmin;
 
         // first - checking session info
-        $sUserID = $blAdmin ? oxRegistry::getSession()->getVariable('auth') : oxRegistry::getSession()->getVariable('usr');
+        $sUserID = $blAdmin ? Registry::getSession()->getVariable('auth') : Registry::getSession()->getVariable('usr');
 
         // trying automatic login (by 'remember me' cookie)
         $blFoundInCookie = false;
@@ -1425,9 +1432,9 @@ class User extends \oxBase
             if ($this->load($sUserID)) {
                 // storing into session
                 if ($blAdmin) {
-                    oxRegistry::getSession()->setVariable('auth', $sUserID);
+                    Registry::getSession()->setVariable('auth', $sUserID);
                 } else {
-                    oxRegistry::getSession()->setVariable('usr', $sUserID);
+                    Registry::getSession()->setVariable('usr', $sUserID);
                 }
 
                 // marking the way user was loaded
@@ -1438,9 +1445,9 @@ class User extends \oxBase
         } else {
             // no user
             if ($blAdmin) {
-                oxRegistry::getSession()->deleteVariable('auth');
+                Registry::getSession()->deleteVariable('auth');
             } else {
-                oxRegistry::getSession()->deleteVariable('usr');
+                Registry::getSession()->deleteVariable('usr');
             }
 
             return false;
@@ -1457,7 +1464,7 @@ class User extends \oxBase
         $sUserID = null;
         $oConfig = $this->getConfig();
         $sShopID = $oConfig->getShopId();
-        if (($sSet = oxRegistry::get("oxUtilsServer")->getUserCookie($sShopID))) {
+        if (($sSet = Registry::get("oxUtilsServer")->getUserCookie($sShopID))) {
             $oDb = oxDb::getDb();
             $aData = explode('@@@', $sSet);
             $sUser = $aData[0];
@@ -1478,7 +1485,7 @@ class User extends \oxBase
             }
             // if cookie info is not valid, remove it.
             if (!$sUserID) {
-                oxRegistry::get('oxUtilsServer')->deleteUserCookie($sShopID);
+                Registry::get('oxUtilsServer')->deleteUserCookie($sShopID);
             }
         }
 
@@ -1528,13 +1535,13 @@ class User extends \oxBase
                 // map all user data fields
                 foreach ($aData as $fldname => $value) {
                     $sField = "oxuser__" . strtolower($fldname);
-                    $this->$sField = new oxField($aData[$fldname]);
+                    $this->$sField = new Field($aData[$fldname]);
                 }
 
-                $this->oxuser__oxactive = new oxField(1);
-                $this->oxuser__oxshopid = new oxField($sShopID);
-                $this->oxuser__oxldapkey = new oxField($sUser);
-                $this->oxuser__oxrights = new oxField("user");
+                $this->oxuser__oxactive = new \OxidEsales\Eshop\Core\Field(1);
+                $this->oxuser__oxshopid = new \OxidEsales\Eshop\Core\Field($sShopID);
+                $this->oxuser__oxldapkey = new \OxidEsales\Eshop\Core\Field($sUser);
+                $this->oxuser__oxrights = new \OxidEsales\Eshop\Core\Field("user");
                 $this->setPassword("ldap user");
 
                 $this->save();
@@ -1568,8 +1575,8 @@ class User extends \oxBase
         $sAuthRights = null;
 
         // choosing possible user rights index
-        $sAuthUserID = $this->isAdmin() ? oxRegistry::getSession()->getVariable('auth') : null;
-        $sAuthUserID = $sAuthUserID ? $sAuthUserID : oxRegistry::getSession()->getVariable('usr');
+        $sAuthUserID = $this->isAdmin() ? Registry::getSession()->getVariable('auth') : null;
+        $sAuthUserID = $sAuthUserID ? $sAuthUserID : Registry::getSession()->getVariable('usr');
         if ($sAuthUserID) {
             $sAuthRights = $oDb->getOne('select oxrights from ' . $this->getViewName() . ' where oxid=' . $oDb->quote($sAuthUserID));
         }
@@ -1605,10 +1612,10 @@ class User extends \oxBase
     {
 
         // set oxcreate date
-        $this->oxuser__oxcreate = new oxField(date('Y-m-d H:i:s'), oxField::T_RAW);
+        $this->oxuser__oxcreate = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s'), \OxidEsales\Eshop\Core\Field::T_RAW);
 
         if (!isset($this->oxuser__oxboni->value)) {
-            $this->oxuser__oxboni = new oxField($this->getBoni(), oxField::T_RAW);
+            $this->oxuser__oxboni = new \OxidEsales\Eshop\Core\Field($this->getBoni(), \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         return parent::_insert();
@@ -1705,7 +1712,7 @@ class User extends \oxBase
         }
 
         // sets active page
-        $iActPage = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+        $iActPage = (int) Registry::getConfig()->getRequestParameter('pgNr');
         $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
         // load only lists which we show on screen
@@ -1818,14 +1825,15 @@ class User extends \oxBase
      */
     public function setUpdateKey($blReset = false)
     {
-        $sUpKey = $blReset ? '' : oxUtilsObject::getInstance()->generateUId();
-        $iUpTime = $blReset ? 0 : oxRegistry::get("oxUtilsDate")->getTime() + $this->getUpdateLinkTerm();
+        $utilsObject = $this->getUtilsObjectInstance();
+        $sUpKey = $blReset ? '' : $utilsObject->generateUId();
+        $iUpTime = $blReset ? 0 : Registry::get(UtilsDate::class)->getTime() + $this->getUpdateLinkTerm();
 
         // generating key
-        $this->oxuser__oxupdatekey = new oxField($sUpKey, oxField::T_RAW);
+        $this->oxuser__oxupdatekey = new \OxidEsales\Eshop\Core\Field($sUpKey, Field::T_RAW);
 
         // setting expiration time for 6 hours
-        $this->oxuser__oxupdateexp = new oxField($iUpTime, oxField::T_RAW);
+        $this->oxuser__oxupdateexp = new \OxidEsales\Eshop\Core\Field($iUpTime, Field::T_RAW);
 
         // saving
         $this->save();
@@ -1907,8 +1915,8 @@ class User extends \oxBase
         // encoding only if password was not empty (e.g. user registration without pass)
         $sPassword = $sPassword ? $this->encodePassword($sPassword, $sSalt) : '';
 
-        $this->oxuser__oxpassword = new oxField($sPassword, oxField::T_RAW);
-        $this->oxuser__oxpasssalt = new oxField($sSalt, oxField::T_RAW);
+        $this->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field($sPassword, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxuser__oxpasssalt = new \OxidEsales\Eshop\Core\Field($sSalt, \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -2036,7 +2044,7 @@ class User extends \oxBase
         $masterDb = oxDb::getMaster();
         $iPending = $masterDb->getOne("select count(oxuserid) from oxinvitations where oxuserid = " . $masterDb->quote($sUserId) . " and md5(oxemail) = " . $masterDb->quote($sRecEmail) . " and oxpending = 1 and oxaccepted = 0");
         if ($iPoints && $iPending) {
-            $this->oxuser__oxpoints = new oxField($iPoints, oxField::T_RAW);
+            $this->oxuser__oxpoints = new Field($iPoints, Field::T_RAW);
             if ($blSet = $this->save()) {
                 // updating users statistics
                 $masterDb->execute("UPDATE oxinvitations SET oxpending = '0', oxaccepted = '1' where oxuserid = " . $masterDb->quote($sUserId) . " and md5(oxemail) = " . $masterDb->quote($sRecEmail));
@@ -2046,8 +2054,8 @@ class User extends \oxBase
                 }
             }
         }
-        oxRegistry::getSession()->deleteVariable('su');
-        oxRegistry::getSession()->deleteVariable('re');
+        Registry::getSession()->deleteVariable('su');
+        Registry::getSession()->deleteVariable('re');
 
         return $blSet;
     }
@@ -2063,7 +2071,7 @@ class User extends \oxBase
         $iPoints = $this->getConfig()->getConfigParam('dPointsForInvitation');
         if ($iPoints) {
             $iNewPoints = $this->oxuser__oxpoints->value + $iPoints;
-            $this->oxuser__oxpoints = new oxField($iNewPoints, oxField::T_RAW);
+            $this->oxuser__oxpoints = new Field($iNewPoints, Field::T_RAW);
             $blSet = $this->save();
         }
 
@@ -2082,7 +2090,7 @@ class User extends \oxBase
 
         if ($sUserId && is_array($aRecEmail) && count($aRecEmail) > 0) {
             //iserting statistics about invitation
-            $sDate = oxRegistry::get("oxUtilsDate")->formatDBDate(date("Y-m-d"), true);
+            $sDate = Registry::get(UtilsDate::class)->formatDBDate(date("Y-m-d"), true);
             $aRecEmail = oxDb::getDb()->quoteArray($aRecEmail);
             foreach ($aRecEmail as $sRecEmail) {
                 $sSql = "INSERT INTO oxinvitations SET oxuserid = " . $oDb->quote($sUserId) . ", oxemail = $sRecEmail,  oxdate='$sDate', oxpending = '1', oxaccepted = '0', oxtype = '1' ";
@@ -2282,5 +2290,13 @@ class User extends \oxBase
             . oxDb::getDb()->quote($user);
 
         return $query;
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Core\UtilsObject
+     */
+    protected function getUtilsObjectInstance()
+    {
+        return UtilsObject::getInstance();
     }
 }

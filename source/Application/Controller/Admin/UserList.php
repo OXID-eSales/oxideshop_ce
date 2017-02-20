@@ -30,7 +30,7 @@ use oxUser;
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: User Administration -> Users.
  */
-class UserList extends \oxAdminList
+class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
     /**
      * Name of chosen object class (default null).

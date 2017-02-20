@@ -27,7 +27,7 @@ use oxField;
 /**
  * Manages product assignment to category.
  */
-class Object2Category extends \oxBase
+class Object2Category extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**

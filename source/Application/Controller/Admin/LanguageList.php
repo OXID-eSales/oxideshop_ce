@@ -29,7 +29,7 @@ use Exception;
 /**
  * Admin selectlist list manager.
  */
-class LanguageList extends \oxAdminList
+class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

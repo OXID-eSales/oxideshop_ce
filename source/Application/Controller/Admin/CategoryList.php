@@ -32,7 +32,7 @@ use stdClass;
  * filter them by sorting, title or delete them.
  * Admin Menu: Manage Products -> Categories.
  */
-class CategoryList extends \oxAdminList
+class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

@@ -31,7 +31,7 @@ use oxDb;
  * Base object for content pages
  *
  */
-class Content extends \oxI18n implements \oxIUrl
+class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
 
     /**

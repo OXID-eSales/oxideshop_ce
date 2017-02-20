@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 /**
  * Class for extending
  */
-class UserOverview extends \oxAdminDetails
+class UserOverview extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

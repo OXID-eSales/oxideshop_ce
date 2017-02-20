@@ -30,7 +30,7 @@ use oxRegistry;
  * Article file download page.
  *
  */
-class DownloadController extends \oxUBase
+class DownloadController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Prevents from loading any component as this controller
@@ -65,7 +65,7 @@ class DownloadController extends \oxUBase
                         $sError = "ERROR_MESSAGE_FILE_DOESNOT_EXIST";
                     }
                 }
-            } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $oEx) {
+            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
                 $sError = "ERROR_MESSAGE_FILE_DOWNLOAD_FAILED";
             }
         } else {

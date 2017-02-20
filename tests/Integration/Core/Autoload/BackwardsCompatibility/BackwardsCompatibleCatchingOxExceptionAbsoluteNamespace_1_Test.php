@@ -35,7 +35,7 @@ class BackwardsCompatibleCatchingOxExceptionAbsoluteNamespace_1_Test extends \PH
     public function testBackwardsCompatibleCatchingOxExceptionAbsoluteNamespace()
     {
         $this->markTestSkipped(
-            'This test will fail on Travia and CI as it MUST run in an own PHP process, which is not possible.'
+            'This test will fail on Travis and CI as it MUST run in an own PHP process, which is not possible.'
         );
 
         $exception = oxNew(\OxidEsales\EshopCommunity\Core\Exception\StandardException::class);

@@ -28,7 +28,7 @@ use oxDb;
  * Payment list manager.
  *
  */
-class PaymentList extends \oxList
+class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

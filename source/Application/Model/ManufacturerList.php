@@ -30,7 +30,7 @@ use oxField;
  * Collects list of manufacturers according to collection rules (activ, etc.).
  *
  */
-class ManufacturerList extends \oxList
+class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

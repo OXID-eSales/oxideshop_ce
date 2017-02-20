@@ -30,7 +30,7 @@ use stdClass;
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: User Administration -> User Groups -> Main.
  */
-class UserGroupMain extends \oxAdminDetails
+class UserGroupMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

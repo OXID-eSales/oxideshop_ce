@@ -27,7 +27,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * and "manufacturer_main.tpl") to frame.
  * Admin Menu: Settings -> Manufacturers
  */
-class ManufacturerController extends \oxAdminView
+class ManufacturerController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

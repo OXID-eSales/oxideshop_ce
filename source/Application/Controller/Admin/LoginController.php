@@ -30,7 +30,7 @@ use oxView;
  * Administrator login form.
  * Performs administrator login form data collection.
  */
-class LoginController extends \oxAdminView
+class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
     /** Login page view id. */
     const VIEW_ID = 'login';
@@ -126,7 +126,7 @@ class LoginController extends \oxAdminView
                 oxRegistry::getSession()->setVariable('currentadminshop', $iSubshop);
                 oxRegistry::getConfig()->setShopId($iSubshop);
             }
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\UserException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\UserException $oEx) {
             $myUtilsView->addErrorToDisplay('LOGIN_ERROR');
             $oStr = getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
@@ -134,7 +134,7 @@ class LoginController extends \oxAdminView
             $this->addTplParam('profile', $oStr->htmlspecialchars($sProfile));
 
             return;
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\CookieException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\CookieException $oEx) {
             $myUtilsView->addErrorToDisplay('LOGIN_NO_COOKIE_SUPPORT');
             $oStr = getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
@@ -142,7 +142,7 @@ class LoginController extends \oxAdminView
             $this->addTplParam('profile', $oStr->htmlspecialchars($sProfile));
 
             return;
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\ConnectionException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $oEx) {
             $myUtilsView->addErrorToDisplay($oEx);
         }
 

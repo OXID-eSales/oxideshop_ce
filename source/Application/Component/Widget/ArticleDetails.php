@@ -29,7 +29,7 @@ use oxCategory;
 /**
  * Article detailed information widget.
  */
-class ArticleDetails extends \oxWidget
+class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
 
     /**
@@ -1008,7 +1008,7 @@ class ArticleDetails extends \oxWidget
 
         $oCategory = $this->getActiveCategory();
 
-        if ($this->getListType() != 'search' && $oCategory && $oCategory instanceof \OxidEsales\EshopCommunity\Application\Model\Category) {
+        if ($this->getListType() != 'search' && $oCategory && $oCategory instanceof \OxidEsales\Eshop\Application\Model\Category) {
             if ($sSortBy = $oCategory->getDefaultSorting()) {
                 $sSortDir = ($oCategory->getDefaultSortingMode()) ? "desc" : "asc";
                 $aSorting = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);

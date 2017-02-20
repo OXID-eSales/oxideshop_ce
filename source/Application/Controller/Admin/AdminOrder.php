@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * and "order_overview.tpl") to frame.
  * Admin Menu: Orders -> Display Orders.
  */
-class AdminOrder extends \oxAdminView
+class AdminOrder extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

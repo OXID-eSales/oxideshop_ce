@@ -35,7 +35,7 @@ use OxidEsales\Eshop\Application\Model\Article;
  * title, article No., short Description and etc.).
  * Admin Menu: Manage Products -> Articles -> Main.
  */
-class ArticleMain extends \oxAdminDetails
+class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

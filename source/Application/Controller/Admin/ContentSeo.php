@@ -27,7 +27,7 @@ use oxRegistry;
 /**
  * Content seo config class
  */
-class ContentSeo extends \Object_Seo
+class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
 
     /**

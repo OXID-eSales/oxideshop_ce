@@ -29,7 +29,7 @@ use oxDb;
  * Implements search
  *
  */
-class Search extends \oxSuperCfg
+class Search extends \OxidEsales\Eshop\Core\Base
 {
 
     /**

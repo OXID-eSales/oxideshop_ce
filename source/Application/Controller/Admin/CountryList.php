@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 /**
  * Admin selectlist list manager.
  */
-class CountryList extends \oxAdminList
+class CountryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

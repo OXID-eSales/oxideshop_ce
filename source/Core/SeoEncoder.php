@@ -26,13 +26,13 @@ use Exception;
 use oxRegistry;
 use oxDb;
 use oxStr;
-use OxidEsales\EshopCommunity\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 
 /**
  * Seo encoder base
  *
  */
-class SeoEncoder extends \oxSuperCfg
+class SeoEncoder extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -798,7 +798,7 @@ class SeoEncoder extends \oxSuperCfg
         $success = true;
         try {
             $dataBase->execute($query);
-        } catch (StandardException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
             $exception->debugOut();
             $success = false;
         }

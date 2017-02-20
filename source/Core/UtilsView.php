@@ -24,7 +24,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use oxException;
 use oxField;
 use OxidEsales\Eshop\Core\Contract\IDisplayError;
-use OxidEsales\EshopCommunity\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
@@ -36,7 +36,7 @@ use Smarty;
 /**
  * View utility class
  */
-class UtilsView extends \oxSuperCfg
+class UtilsView extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -171,12 +171,12 @@ class UtilsView extends \oxSuperCfg
         }
 
         $aEx = oxRegistry::getSession()->getVariable('Errors');
-        if ($oEr instanceof \OxidEsales\EshopCommunity\Core\Exception\StandardException) {
+        if ($oEr instanceof \OxidEsales\Eshop\Core\Exception\StandardException) {
             $oEx = oxNew('oxExceptionToDisplay');
             $oEx->setMessage($oEr->getMessage());
             $oEx->setExceptionType($oEr->getType());
 
-            if ($oEr instanceof \OxidEsales\EshopCommunity\Core\Exception\SystemComponentException) {
+            if ($oEr instanceof \OxidEsales\Eshop\Core\Exception\SystemComponentException) {
                 $oEx->setMessageArgs($oEr->getComponent());
             }
 
@@ -184,12 +184,12 @@ class UtilsView extends \oxSuperCfg
             $oEx->setStackTrace($oEr->getTraceAsString());
             $oEx->setDebug($blFull);
             $oEr = $oEx;
-        } elseif ($oEr && !($oEr instanceof \OxidEsales\EshopCommunity\Core\Contract\IDisplayError)) {
+        } elseif ($oEr && !($oEr instanceof \OxidEsales\Eshop\Core\Contract\IDisplayError)) {
             // assuming that a string was given
             $sTmp = $oEr;
             $oEr = oxNew('oxDisplayError');
             $oEr->setMessage($sTmp);
-        } elseif ($oEr instanceof \OxidEsales\EshopCommunity\Core\Contract\IDisplayError) {
+        } elseif ($oEr instanceof \OxidEsales\Eshop\Core\Contract\IDisplayError) {
             // take the object
         } else {
             $oEr = null;
@@ -746,7 +746,7 @@ class UtilsView extends \oxSuperCfg
                     $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']] = array();
                 }
                 $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']][] = $this->_getTemplateBlock($activeBlockTemplate['OXMODULE'], $activeBlockTemplate['OXFILE']);
-            } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $exception) {
+            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
                 $exception->debugOut();
             }
         }

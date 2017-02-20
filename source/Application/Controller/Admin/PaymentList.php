@@ -27,7 +27,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Shop Settings -> Payment Methods.
  */
-class PaymentList extends \oxAdminList
+class PaymentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

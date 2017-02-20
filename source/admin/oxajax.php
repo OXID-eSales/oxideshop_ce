@@ -57,7 +57,7 @@ if ($blAjaxCall) {
 
         try {
             $oAjaxComponent = oxNew($sContainer . '_ajax');
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\SystemComponentException $oCe) {
+        } catch (\OxidEsales\Eshop\Core\Exception\SystemComponentException $oCe) {
             $oEx = oxNew('oxFileException');
             $oEx->setMessage('EXCEPTION_FILENOTFOUND');
             $oEx->setFileName($sFile);

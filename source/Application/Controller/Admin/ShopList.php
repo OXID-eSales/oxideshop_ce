@@ -29,7 +29,7 @@ use oxRegistry;
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Main Menu -> Core Settings.
  */
-class ShopList extends \oxAdminList
+class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
     /** New Shop indicator. */
     const NEW_SHOP_ID = '-1';

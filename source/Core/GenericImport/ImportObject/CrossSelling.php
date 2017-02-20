@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 /**
  * Import object for Cross-selling.
  */
-class CrossSelling extends ImportObject
+class CrossSelling extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
     /** @var string Database table name. */
     protected $tableName = 'oxobject2article';

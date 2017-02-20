@@ -31,7 +31,7 @@ use oxField;
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Shop Settings -> Payment Methods -> Main.
  */
-class PaymentMain extends \oxAdminDetails
+class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     /**
      * Keeps all act. fields to store

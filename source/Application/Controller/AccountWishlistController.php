@@ -34,7 +34,7 @@ use oxField;
  * login name in special field. OXID eShop -> MY ACCOUNT
  *  -> Newsletter.
  */
-class AccountWishlistController extends \Account
+class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
 
     /**

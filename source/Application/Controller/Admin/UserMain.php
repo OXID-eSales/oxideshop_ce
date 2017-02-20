@@ -31,7 +31,7 @@ use Exception;
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: User Administration -> Users -> Main.
  */
-class UserMain extends \oxAdminDetails
+class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     private $_sSaveError = null;

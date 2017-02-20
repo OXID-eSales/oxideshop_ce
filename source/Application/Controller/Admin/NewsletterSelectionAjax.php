@@ -28,7 +28,7 @@ use oxField;
 /**
  * Class manages newsletter user groups rights
  */
-class NewsletterSelectionAjax extends \ajaxListComponent
+class NewsletterSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

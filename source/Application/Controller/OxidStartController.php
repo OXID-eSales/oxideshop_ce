@@ -27,7 +27,7 @@ use oxRegistry;
 /**
  * Encapsulates methods for application initialization.
  */
-class OxidStartController extends \oxUBase
+class OxidStartController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Initializes globals and environment vars

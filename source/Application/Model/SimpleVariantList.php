@@ -26,7 +26,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  * Simple variant list.
  *
  */
-class SimpleVariantList extends \oxList
+class SimpleVariantList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

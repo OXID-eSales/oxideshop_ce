@@ -29,7 +29,7 @@ use oxField;
  * Voucher Serie generator class
  *
  */
-class VoucherSerieGenerate extends \VoucherSerie_Main
+class VoucherSerieGenerate extends \OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain
 {
 
     /**

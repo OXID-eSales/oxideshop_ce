@@ -33,7 +33,7 @@ interface ICountryAware
      *
      * @param oxCountry $oCountry
      */
-    public function setCountry(\OxidEsales\EshopCommunity\Application\Model\Country $oCountry);
+    public function setCountry(\OxidEsales\Eshop\Application\Model\Country $oCountry);
 
     /**
      * Country getter

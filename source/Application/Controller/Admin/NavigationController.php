@@ -29,7 +29,7 @@ use oxSysRequirements;
 /**
  * Administrator GUI navigation manager class.
  */
-class NavigationController extends \oxAdminView
+class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

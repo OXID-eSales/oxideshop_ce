@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 /**
  * exception class for non existing articles
  */
-class NoArticleException extends \oxArticleException
+class NoArticleException extends \OxidEsales\Eshop\Core\Exception\ArticleException
 {
     /**
      * Exception type, currently old class name is used.

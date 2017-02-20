@@ -29,7 +29,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  *
  * @deprecated v5.3 (2016-05-10); Econda will be moved to own module.
  */
-class DynEconda extends \Shop_Config
+class DynEconda extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
 
     /**

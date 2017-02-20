@@ -31,7 +31,7 @@ use oxRegistry;
  * Performs loading, updating, inserting of article review.
  *
  */
-class Review extends \oxBase
+class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**

@@ -28,7 +28,7 @@ use oxDb;
 /**
  * Class manages vendor assignment to articles
  */
-class VendorMainAjax extends \ajaxListComponent
+class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

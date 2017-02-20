@@ -31,7 +31,7 @@ use oxAdminDetails;
  * Newsletter sending manager.
  * Performs sending of newsletter to selected user groups.
  */
-class NewsletterSend extends \Newsletter_Selection
+class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\NewsletterSelection
 {
 
     /**

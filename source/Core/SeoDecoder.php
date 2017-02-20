@@ -29,7 +29,7 @@ use oxRegistry;
  * Seo encoder base
  *
  */
-class SeoDecoder extends \oxSuperCfg
+class SeoDecoder extends \OxidEsales\Eshop\Core\Base
 {
 
     /**

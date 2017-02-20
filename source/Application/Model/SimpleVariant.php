@@ -29,7 +29,7 @@ use oxPrice;
  * Lightweight variant handler. Implemnets only absolutely needed oxArticle methods.
  *
  */
-class SimpleVariant extends \oxI18n implements \oxIUrl
+class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
 
     /**
@@ -191,7 +191,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
      * @param oxPrice $oPrice Price object
      * @param object  $oCur   Currency object
      */
-    protected function _applyCurrency(\OxidEsales\EshopCommunity\Core\Price $oPrice, $oCur = null)
+    protected function _applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null)
     {
         if (!$oCur) {
             $oCur = $this->getConfig()->getActShopCurrencyObject();

@@ -27,7 +27,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * Collects user articles settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> Articles.
  */
-class UserArticle extends \oxAdminDetails
+class UserArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

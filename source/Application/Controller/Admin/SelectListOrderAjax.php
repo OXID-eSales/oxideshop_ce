@@ -27,7 +27,7 @@ use oxRegistry;
 /**
  * Class manages article select lists sorting
  */
-class SelectListOrderAjax extends \ajaxListComponent
+class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

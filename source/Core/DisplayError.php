@@ -27,7 +27,7 @@ use oxRegistry;
 /**
  * simple class to add a error message to display
  */
-class DisplayError implements \oxIDisplayError
+class DisplayError implements \OxidEsales\Eshop\Core\Contract\IDisplayError
 {
     /**
      * Error message

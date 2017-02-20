@@ -27,7 +27,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
  * - file does not exist
  * - file is not valid xml
  */
-class FileException extends \oxException
+class FileException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
     /**
      * Exception type, currently old class name is used.

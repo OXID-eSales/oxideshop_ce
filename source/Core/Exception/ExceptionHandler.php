@@ -102,7 +102,7 @@ class ExceptionHandler
     public function handleUncaughtException($oEx)
     {
         // split between php or shop exception
-        if (!($oEx instanceof \OxidEsales\EshopCommunity\Core\Exception\StandardException)) {
+        if (!($oEx instanceof \OxidEsales\Eshop\Core\Exception\StandardException)) {
             $this->_dealWithNoOxException($oEx);
 
             return; // Return straight away ! (in case of unit testing)

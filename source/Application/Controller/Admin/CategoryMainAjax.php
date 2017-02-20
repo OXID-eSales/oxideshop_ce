@@ -31,7 +31,7 @@ use Exception;
 /**
  * Class manages category articles
  */
-class CategoryMainAjax extends \ajaxListComponent
+class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

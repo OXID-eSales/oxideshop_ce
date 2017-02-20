@@ -29,7 +29,7 @@ use oxObjectException;
  * Class, responsible for retrieving correct vat for users and articles
  *
  */
-class VatSelector extends \oxSuperCfg
+class VatSelector extends \OxidEsales\Eshop\Core\Base
 {
 
     /**

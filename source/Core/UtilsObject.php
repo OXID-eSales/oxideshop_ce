@@ -23,10 +23,11 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxBase;
-use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
-use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
-use OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator;
-use OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\Eshop\Core\Module\ModuleChainsGenerator;
+use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use ReflectionClass;
 use ReflectionException;
 
@@ -96,20 +97,13 @@ class UtilsObject
         $this->classNameProvider = $classNameProvider;
 
         if (!$shopIdCalculator) {
-            $moduleVariablesCache = new FileCache();
-
-            $editionSelector = new EditionSelector();
-
-            if ($editionSelector->getEdition() === $editionSelector::ENTERPRISE) {
-                $shopIdCalculator = new \OxidEsales\EshopEnterprise\Core\ShopIdCalculator($moduleVariablesCache);
-            } else {
-                $shopIdCalculator = new ShopIdCalculator($moduleVariablesCache);
-            }
+            $moduleVariablesCache = new \OxidEsales\Eshop\Core\FileCache();
+            $shopIdCalculator = new \OxidEsales\Eshop\Core\ShopIdCalculator($moduleVariablesCache);
         }
         $this->shopIdCalculator = $shopIdCalculator;
 
         if (!$moduleChainsGenerator) {
-            $subShopSpecificCache = new SubShopSpecificFileCache($shopIdCalculator);
+            $subShopSpecificCache = new \OxidEsales\Eshop\Core\SubShopSpecificFileCache($shopIdCalculator);
             $moduleVariablesLocator = new ModuleVariablesLocator($subShopSpecificCache, $shopIdCalculator);
             $moduleChainsGenerator = new ModuleChainsGenerator($moduleVariablesLocator);
         }
@@ -128,22 +122,22 @@ class UtilsObject
             self::$_instance = null;
         }
 
-        if (!self::$_instance instanceof UtilsObject) {
+        if (!self::$_instance instanceof \OxidEsales\Eshop\Core\UtilsObject) {
             $oUtilsObject = new UtilsObject();
             // set the not overloaded(by modules) version early so oxnew can be used internally
             self::$_instance = $oUtilsObject;
             // null for classNameProvider because it is generated in the constructor
             $classNameProvider = null;
 
-            $moduleVariablesCache = $oUtilsObject->oxNew(FileCache::class);
-            $shopIdCalculator = $oUtilsObject->oxNew(ShopIdCalculator::class, $moduleVariablesCache);
+            $moduleVariablesCache = $oUtilsObject->oxNew(\OxidEsales\Eshop\Core\FileCache::class);
+            $shopIdCalculator = $oUtilsObject->oxNew(\OxidEsales\Eshop\Core\ShopIdCalculator::class, $moduleVariablesCache);
 
-            $subShopSpecific = $oUtilsObject->oxNew(SubShopSpecificFileCache::class, $shopIdCalculator);
-            $moduleVariablesLocator = $oUtilsObject->oxNew(ModuleVariablesLocator::class, $subShopSpecific, $shopIdCalculator);
-            $moduleChainsGenerator = $oUtilsObject->oxNew(ModuleChainsGenerator::class, $moduleVariablesLocator);
+            $subShopSpecific = $oUtilsObject->oxNew(\OxidEsales\Eshop\Core\SubShopSpecificFileCache::class, $shopIdCalculator);
+            $moduleVariablesLocator = $oUtilsObject->oxNew(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, $subShopSpecific, $shopIdCalculator);
+            $moduleChainsGenerator = $oUtilsObject->oxNew(\OxidEsales\Eshop\Core\Module\ModuleChainsGenerator::class, $moduleVariablesLocator);
 
             //generate UtilsObject again by oxnew to allow overloading by modules
-            self::$_instance = $oUtilsObject->oxNew(UtilsObject::class, $classNameProvider, $moduleChainsGenerator, $shopIdCalculator);
+            self::$_instance = $oUtilsObject->oxNew(\OxidEsales\Eshop\Core\UtilsObject::class, $classNameProvider, $moduleChainsGenerator, $shopIdCalculator);
         }
 
         return self::$_instance;
@@ -261,7 +255,7 @@ class UtilsObject
             //expect __autoload() (oxfunctions.php) to do its job when class_exists() is called
             if (!class_exists($realClassName)) {
                 /** @var $exception SystemComponentException */
-                $exception = oxNew(SystemComponentException::class);
+                $exception = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
                 $exception->setMessage('EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
                 $exception->setComponent($className);
                 $exception->debugOut();
@@ -272,7 +266,7 @@ class UtilsObject
         }
 
         $object = new $realClassName(...$arguments);
-        if ($shouldUseCache && $object instanceof \OxidEsales\EshopCommunity\Core\Model\BaseModel) {
+        if ($shouldUseCache && $object instanceof \OxidEsales\Eshop\Core\Model\BaseModel) {
             self::$_aInstanceCache[$cacheKey] = clone $object;
         }
 

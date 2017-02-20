@@ -22,14 +22,12 @@
 
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
-use \oxException;
-
 /**
  * Class ModuleValidationException
  *
  * This exception should be thrown, if a module validation fails in any point (activation, deactivation, module list, etc)
  */
-class ModuleValidationException extends oxException
+class ModuleValidationException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
     /**
      * Exception type

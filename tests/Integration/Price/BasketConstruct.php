@@ -89,7 +89,7 @@ class BasketConstruct
         // group setup
         try {
             $this->createGroup($testCase['group']);
-        } catch (DatabaseException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
             /** We will ignore exceptions that occur because of duplicate keys (MySQL Error 1062)  */
             if ($exception->getCode() != 1062) {
                 throw $exception;

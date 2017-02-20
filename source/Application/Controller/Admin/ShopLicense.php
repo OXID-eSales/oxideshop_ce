@@ -30,7 +30,7 @@ use oxSystemComponentException;
  * Collects shop license settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> License.
  */
-class ShopLicense extends \Shop_Config
+class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
     /**
      * Current class template.

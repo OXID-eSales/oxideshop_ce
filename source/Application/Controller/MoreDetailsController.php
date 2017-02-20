@@ -29,7 +29,7 @@ use oxRegistry;
  * If chosen article has more pictures there is ability to create
  * gallery of pictures.
  */
-class MoreDetailsController extends \Details
+class MoreDetailsController extends \OxidEsales\Eshop\Application\Controller\ArticleDetailsController
 {
 
     /**

@@ -27,7 +27,7 @@ use oxBase;
 /**
  * Import object for Categories.
  */
-class Category extends ImportObject
+class Category extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
     /** @var string Database table name. */
     protected $tableName = 'oxcategories';

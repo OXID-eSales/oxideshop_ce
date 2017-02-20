@@ -34,7 +34,7 @@ use oxViewConfig;
  * Base view class. Collects and passes data to template engine, sets some global
  * configuration parameters.
  */
-class BaseController extends \oxSuperCfg
+class BaseController extends \OxidEsales\Eshop\Core\Base
 {
     /**
      * Array of data that is passed to template engine - array( "varName" => "varValue").

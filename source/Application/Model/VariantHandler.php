@@ -29,7 +29,7 @@ use oxDb;
  * VariantHandler encapsulates methods dealing with multidimensional variant and variant names.
  *
  */
-class VariantHandler extends \oxSuperCfg
+class VariantHandler extends \OxidEsales\Eshop\Core\Base
 {
 
     /**

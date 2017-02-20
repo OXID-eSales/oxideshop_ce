@@ -29,7 +29,7 @@ use oxRegistry;
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Customer Info -> Newsletter -> Main.
  */
-class NewsletterMain extends \oxAdminDetails
+class NewsletterMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

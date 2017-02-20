@@ -396,7 +396,7 @@ if (!function_exists('getRequestUrl')) {
      * @param string $sParams     Parameters to object
      * @param bool   $blReturnUrl If return url
      *
-     * @deprecated since v6.0.0 (2016-05-16); Use OxidEsales\EshopCommunity\Core\Request::getRequestUrl().
+     * @deprecated since v6.0.0 (2016-05-16); Use OxidEsales\Eshop\Core\Request::getRequestUrl().
      *
      * @return string
      */

@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * them by Description or delete them.
  * Admin Menu: Manage Products -> Attributes.
  */
-class AttributeList extends \oxAdminList
+class AttributeList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

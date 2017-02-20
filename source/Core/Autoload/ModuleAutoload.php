@@ -21,7 +21,7 @@
  */
 namespace OxidEsales\EshopCommunity\Core\Autoload;
 
-use OxidEsales\EshopCommunity\Core\UtilsObject;
+use OxidEsales\Eshop\Core\UtilsObject;
 
 /**
  * Autoloader for module classes and extensions.

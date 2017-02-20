@@ -35,7 +35,7 @@ use Exception;
  * to any chosen article group.
  * Admin Menu: Manage Products -> Articles -> Extended.
  */
-class ArticleExtend extends \oxAdminDetails
+class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

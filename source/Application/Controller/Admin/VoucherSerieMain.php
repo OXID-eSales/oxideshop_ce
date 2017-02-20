@@ -31,7 +31,7 @@ use oxAdminView;
  * and etc.
  * Admin Menu: Shop Settings -> Vouchers -> Main.
  */
-class VoucherSerieMain extends \DynExportBase
+class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController
 {
 
     /**

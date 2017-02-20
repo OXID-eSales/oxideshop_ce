@@ -30,7 +30,7 @@ use oxDb;
  * Performs Wrapping data/objects loading, deleting.
  *
  */
-class Wrapping extends \oxI18n
+class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 
     /**

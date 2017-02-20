@@ -27,7 +27,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * and "actions_main.tpl") to frame.
  * Admin Menu: Manage Products -> Actions.
  */
-class ActionsController extends \oxAdminView
+class ActionsController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

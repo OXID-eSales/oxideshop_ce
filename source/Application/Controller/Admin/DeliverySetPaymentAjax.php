@@ -29,7 +29,7 @@ use Exception;
 /**
  * Class manages deliveryset payment
  */
-class DeliverySetPaymentAjax extends \ajaxListComponent
+class DeliverySetPaymentAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

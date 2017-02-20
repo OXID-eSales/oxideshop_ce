@@ -69,7 +69,7 @@ class ShopIdCalculator
         if (Registry::instanceExists('oxConfigFile')) {
             $config = Registry::get('oxConfigFile');
         } else {
-            $config = new ConfigFile(getShopBasePath() . '/config.inc.php');
+            $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . '/config.inc.php');
             Registry::set('oxConfigFile', $config);
         }
         return $config->getVar('sConfigKey') ?: Config::DEFAULT_CONFIG_KEY;

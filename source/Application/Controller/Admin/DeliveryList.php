@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * filter them by description, title or delete them.
  * Admin Menu: Shop Settings -> Shipping & Handling.
  */
-class DeliveryList extends \oxAdminList
+class DeliveryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

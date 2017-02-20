@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * Starting admin menu window.
  * Admin Menu.
  */
-class AdminStart extends \oxAdminView
+class AdminStart extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

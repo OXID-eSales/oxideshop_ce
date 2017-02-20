@@ -31,7 +31,7 @@ use oxUser;
  * Review of chosen article.
  * Collects article review data, saves new review to DB.
  */
-class ReviewController extends \Details
+class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleDetailsController
 {
 
     /**

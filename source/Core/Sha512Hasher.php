@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Core;
 /**
  * Encrypt string with sha512 algorithm.
  */
-class Sha512Hasher extends \oxHasher
+class Sha512Hasher extends \OxidEsales\Eshop\Core\Hasher
 {
 
     /** Algorithm name. */

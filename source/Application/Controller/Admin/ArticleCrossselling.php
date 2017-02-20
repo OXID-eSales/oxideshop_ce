@@ -30,7 +30,7 @@ use oxRegistry;
  * assigning of article to crosselling/accesories with other products.
  * Admin Menu: Manage Products -> Articles -> Crosssell.
  */
-class ArticleCrossselling extends \oxAdminDetails
+class ArticleCrossselling extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

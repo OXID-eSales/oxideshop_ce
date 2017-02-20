@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * and "discount_main.tpl") to frame.
  * Admin Menu: Shop Settings -> Discounts.
  */
-class DiscountController extends \oxAdminView
+class DiscountController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

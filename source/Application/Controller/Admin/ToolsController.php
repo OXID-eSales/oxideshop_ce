@@ -29,7 +29,7 @@ use oxRegistry;
  * Returns template, that arranges two other templates ("delivery_list.tpl"
  * and "delivery_main.tpl") to frame.
  */
-class ToolsController extends \oxAdminView
+class ToolsController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

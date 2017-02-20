@@ -32,7 +32,7 @@ use oxGroups;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling Sets -> Users.
  */
-class DeliverySetUsers extends \oxAdminDetails
+class DeliverySetUsers extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

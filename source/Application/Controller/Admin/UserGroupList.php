@@ -27,7 +27,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: User Administration -> User Groups.
  */
-class UserGroupList extends \oxAdminList
+class UserGroupList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

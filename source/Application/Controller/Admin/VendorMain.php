@@ -29,7 +29,7 @@ use stdClass;
  * Admin vendor main screen.
  * Performs collection and updating (on user submit) main item information.
  */
-class VendorMain extends \oxAdminDetails
+class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

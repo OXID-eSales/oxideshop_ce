@@ -143,37 +143,40 @@ class EmailTest extends \OxidTestCase
      */
     public function testIncludeImagesErrorTestCase()
     {
-        oxTestModules::addFunction("oxUtilsObject", "generateUId", "{ return 'xxx'; }");
         $config = $this->getConfig();
 
-        $oArticle = oxNew('oxArticle');
-        $oArticle->load('1351');
-        $sImgUrl = $oArticle->getThumbnailUrl();
-        $iImgFile = basename($sImgUrl);
-        $sTitle = $oArticle->oxarticles__oxtitle->value;
+        $article = oxNew('oxArticle');
+        $article->load('1351');
+        $imageUrl = $article->getThumbnailUrl();
+        $imageFile = basename($imageUrl);
+        $title = $article->oxarticles__oxtitle->value;
         $imageDirectory = $config->getImageDir();
 
         $imageGenerator = $this->getMock('oxDynImgGenerator', array('getImagePath'));
         $imageGenerator->expects($this->any())->method('getImagePath')->will($this->returnValue($config->getPictureDir(false) .'generated/product/thumb/185_150_75/nopic.jpg'));
         oxTestModules::addModuleObject('oxDynImgGenerator', $imageGenerator);
 
-        $sBody = '<img src="' . $imageDirectory . 'stars.jpg" border="0" hspace="0" vspace="0" alt="stars" align="texttop">';
-        $sBody .= '<img src="' . $config->getImageUrl() . 'logo.png" border="0" hspace="0" vspace="0" alt="logo" align="texttop">';
-        $sBody .= '<img src="' . $sImgUrl . '" border="0" hspace="0" vspace="0" alt="' . $sTitle . '" align="texttop">';
+        $body = '<img src="' . $imageDirectory . 'stars.jpg" border="0" hspace="0" vspace="0" alt="stars" align="texttop">';
+        $body .= '<img src="' . $config->getImageUrl() . 'logo.png" border="0" hspace="0" vspace="0" alt="logo" align="texttop">';
+        $body .= '<img src="' . $imageUrl . '" border="0" hspace="0" vspace="0" alt="' . $title . '" align="texttop">';
 
-        $sGenBody = '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="stars" align="texttop">';
-        $sGenBody .= '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="logo" align="texttop">';
-        $sGenBody .= '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="' . $sTitle . '" align="texttop">';
+        $generatedEmailBody = '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="stars" align="texttop">';
+        $generatedEmailBody .= '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="logo" align="texttop">';
+        $generatedEmailBody .= '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="' . $title . '" align="texttop">';
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock('oxemail', array('getBody', 'addEmbeddedImage', 'setBody'));
-        $oEmail->expects($this->once())->method('getBody')->will($this->returnValue($sBody));
-        $oEmail->expects($this->at(1))->method('addEmbeddedImage')->with($this->equalTo($imageDirectory . 'stars.jpg'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
-        $oEmail->expects($this->at(2))->method('addEmbeddedImage')->with($this->equalTo($imageDirectory . 'logo.png'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/png'))->will($this->returnValue(true));
-        $oEmail->expects($this->at(3))->method('addEmbeddedImage')->with($this->equalTo($config->getPictureDir(false) . 'generated/product/thumb/185_150_75/' . $iImgFile), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
-        $oEmail->expects($this->once())->method('setBody')->with($this->equalTo($sGenBody));
+        $utilsObjectMock = $this->getMock(\OxidEsales\Eshop\Core\UtilsObject::class, ['generateUId']);
+        $utilsObjectMock->expects($this->any())->method('generateUId')->will($this->returnValue('xxx'));
 
-        $oEmail->_includeImages(
+        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
+        $email = $this->getMock('oxemail', array('getBody', 'addEmbeddedImage', 'setBody', 'getUtilsObjectInstance'));
+        $email->expects($this->at(1))->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectMock));
+        $email->expects($this->at(2))->method('addEmbeddedImage')->with($this->equalTo($imageDirectory . 'stars.jpg'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
+        $email->expects($this->at(3))->method('addEmbeddedImage')->with($this->equalTo($imageDirectory . 'logo.png'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/png'))->will($this->returnValue(true));
+        $email->expects($this->at(4))->method('addEmbeddedImage')->with($this->equalTo($config->getPictureDir(false) . 'generated/product/thumb/185_150_75/' . $imageFile), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
+        $email->expects($this->once())->method('getBody')->will($this->returnValue($body));
+        $email->expects($this->once())->method('setBody')->with($this->equalTo($generatedEmailBody));
+
+        $email->_includeImages(
             $imageDirectory, $config->getImageUrl(false), $config->getPictureUrl(null),
             $imageDirectory, $config->getPictureDir(false)
         );

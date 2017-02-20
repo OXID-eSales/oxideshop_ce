@@ -29,7 +29,7 @@ use oxUBase;
 /**
  * Managing Gift Wrapping
  */
-class WrappingController extends oxUBase
+class WrappingController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**

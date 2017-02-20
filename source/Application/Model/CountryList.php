@@ -27,7 +27,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  * Collects a list of countries according to collection rules (active).
  *
  */
-class CountryList extends \oxList
+class CountryList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

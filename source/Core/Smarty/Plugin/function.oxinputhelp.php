@@ -41,7 +41,7 @@ function smarty_function_oxinputhelp($params, &$smarty)
 
     try {
         $sTranslation = $oLang->translateString( $sIdent, $iLang, $blAdmin );
-    } catch (\OxidEsales\EshopCommunity\Core\Exception\LanguageException $oEx ) {
+    } catch (\OxidEsales\Eshop\Core\Exception\LanguageException $oEx ) {
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }
 

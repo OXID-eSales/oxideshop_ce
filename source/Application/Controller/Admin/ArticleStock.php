@@ -33,7 +33,7 @@ use stdClass;
  * stock message, etc; Updates information (on user submit).
  * Admin Menu: Manage Products -> Articles -> Inventory.
  */
-class ArticleStock extends \oxAdminDetails
+class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

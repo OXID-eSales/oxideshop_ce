@@ -229,7 +229,7 @@ class Controller extends Core
                 $view->setMessage($language->getText('ERROR_DB_CONNECT') . " - " . $exception->getMessage());
 
                 throw new SetupControllerExitException();
-            } elseif ($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS) {
+            } elseif ($exception->getCode() === \Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS) {
                 $setup->setNextStep($setup->getStep('STEP_DB_INFO'));
                 $view->setMessage($exception->getMessage());
 

@@ -29,7 +29,7 @@ use oxDb;
  * Organizes list of discount objects.
  *
  */
-class DiscountList extends \oxList
+class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

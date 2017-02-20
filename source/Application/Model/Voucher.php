@@ -33,7 +33,7 @@ use oxField;
  * managing functions.
  *
  */
-class Voucher extends \oxBase
+class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     protected $_oSerie = null;

@@ -25,7 +25,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use Exception;
 use oxDb;
 use oxField;
-use OxidEsales\Eshop\Application\Model\Contract\ArticleInterface;
 use OxidEsales\Eshop\Core\Registry;
 use oxList;
 use oxPrice;
@@ -47,7 +46,7 @@ define('OXARTICLE_LINKTYPE_RECOMM', 5);
  * discounts, etc.
  *
  */
-class Article extends \oxI18n implements ArticleInterface, \oxIUrl
+class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Application\Model\Contract\ArticleInterface, \OxidEsales\Eshop\Core\Contract\IUrl
 {
 
     /**
@@ -1996,7 +1995,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      *
      * @param oxPrice $oPrice the new price object
      */
-    public function setPrice(\OxidEsales\EshopCommunity\Core\Price $oPrice)
+    public function setPrice(\OxidEsales\Eshop\Core\Price $oPrice)
     {
         $this->_oPrice = $oPrice;
     }
@@ -3080,7 +3079,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      *
      * @param oxPrice $oPrice target price
      */
-    public function applyVats(\OxidEsales\EshopCommunity\Core\Price $oPrice)
+    public function applyVats(\OxidEsales\Eshop\Core\Price $oPrice)
     {
         $this->_applyVAT($oPrice, $this->getArticleVat());
     }
@@ -3687,7 +3686,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
 
                     if (isset($this->$sField)) {
                         $sLongDesc = null;
-                        if ($this->$sField instanceof \OxidEsales\EshopCommunity\Core\Field) {
+                        if ($this->$sField instanceof \OxidEsales\Eshop\Core\Field) {
                             $sLongDesc = $this->$sField->getRawValue();
                         } elseif (is_object($this->$sField)) {
                             $sLongDesc = $this->$sField->value;
@@ -3908,7 +3907,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      * @param oxPrice $oPrice Price object
      * @param double  $dVat   VAT percent
      */
-    protected function _applyVAT(\OxidEsales\EshopCommunity\Core\Price $oPrice, $dVat)
+    protected function _applyVAT(\OxidEsales\Eshop\Core\Price $oPrice, $dVat)
     {
         startProfile(__FUNCTION__);
         $oPrice->setVAT($dVat);
@@ -3926,7 +3925,7 @@ class Article extends \oxI18n implements ArticleInterface, \oxIUrl
      * @param oxPrice $oPrice Price object
      * @param object  $oCur   Currency object
      */
-    protected function _applyCurrency(\OxidEsales\EshopCommunity\Core\Price $oPrice, $oCur = null)
+    protected function _applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null)
     {
         if (!$oCur) {
             $oCur = $this->getConfig()->getActShopCurrencyObject();

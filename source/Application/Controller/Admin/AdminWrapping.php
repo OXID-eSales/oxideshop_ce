@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * and "user_main.tpl") to frame.
  * Admin Menu: User Administration -> Users.
  */
-class AdminWrapping extends \oxAdminView
+class AdminWrapping extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

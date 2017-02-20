@@ -24,8 +24,8 @@ namespace OxidEsales\EshopCommunity\Core;
 use oxDb;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database as DatabaseAdapter;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
 
 /**
  * Database connection class
@@ -107,7 +107,7 @@ class DatabaseProvider
      *
      * @return DatabaseInterface
      */
-    public static function getDb($fetchMode = DatabaseProvider::FETCH_MODE_NUM)
+    public static function getDb($fetchMode = \OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_NUM)
     {
         if (null === static::$db) {
             $databaseFactory = static::getInstance();
@@ -134,7 +134,7 @@ class DatabaseProvider
      *
      * @return DatabaseInterface
      */
-    public static function getMaster($fetchMode = DatabaseProvider::FETCH_MODE_NUM)
+    public static function getMaster($fetchMode = \OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_NUM)
     {
         static::getDb($fetchMode)->forceMasterConnection();
 
@@ -260,7 +260,10 @@ class DatabaseProvider
         $isDatabaseConfigured = $this->isDatabaseConfigured($configFile);
 
         if (!$isDatabaseConfigured) {
-            throw new DatabaseNotConfiguredException('The database connection has not been configured in config.inc.php', 0);
+            throw new \OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException(
+                'The database connection has not been configured in config.inc.php',
+                0
+            );
         }
     }
 
@@ -339,7 +342,7 @@ class DatabaseProvider
      *
      * @return bool
      */
-    protected function isDatabaseConfigured(ConfigFile $config)
+    protected function isDatabaseConfigured(\OxidEsales\EshopCommunity\Core\ConfigFile $config)
     {
         $isValid = true;
 

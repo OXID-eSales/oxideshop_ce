@@ -29,7 +29,7 @@ use oxRegistry;
  * them (if needed), controls output, redirects according to
  * processed methods logic. This class is initialized from index.php
  */
-class WidgetControl extends \oxShopControl
+class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
 {
     /**
      * Skip handler set for widget as it already set in oxShopControl.

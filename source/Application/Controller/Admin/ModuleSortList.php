@@ -28,7 +28,7 @@ use oxRegistry;
  * Extensions sorting list handler.
  * Admin Menu: Extensions -> Module -> Installed Shop Modules.
  */
-class ModuleSortList extends \oxAdminDetails
+class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

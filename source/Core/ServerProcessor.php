@@ -31,7 +31,7 @@ use oxUtilsDate;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ServerProcessor extends \oxSuperCfg
+class ServerProcessor extends \OxidEsales\Eshop\Core\Base
 {
 
     /** @var oxServersManager */
@@ -95,10 +95,10 @@ class ServerProcessor extends \oxSuperCfg
      * @param oxUtilsDate      $oUtilsDate
      */
     public function __construct(
-        \OxidEsales\EshopCommunity\Core\ServersManager $oServerNodesManager,
-        \OxidEsales\EshopCommunity\Core\ServerChecker $oServerNodeChecker,
-        \OxidEsales\EshopCommunity\Core\UtilsServer $oUtilsServer,
-        \OxidEsales\EshopCommunity\Core\UtilsDate $oUtilsDate
+        \OxidEsales\Eshop\Core\ServersManager $oServerNodesManager,
+        \OxidEsales\Eshop\Core\ServerChecker $oServerNodeChecker,
+        \OxidEsales\Eshop\Core\UtilsServer $oUtilsServer,
+        \OxidEsales\Eshop\Core\UtilsDate $oUtilsDate
     ) {
         $this->_oServerNodesManager = $oServerNodesManager;
         $this->_oServerNodeChecker = $oServerNodeChecker;

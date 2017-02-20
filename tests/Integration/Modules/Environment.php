@@ -65,6 +65,8 @@ class Environment
     {
         $this->shopId = $shopId;
         oxRegistry::getConfig()->setShopId($shopId);
+        $utilsObject = new \OxidEsales\Eshop\Core\UtilsObject;
+        oxRegistry::set('oxUtilsObject', $utilsObject);
         $this->loadShopParameters();
     }
 

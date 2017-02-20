@@ -31,7 +31,7 @@ use oxUBase;
  *
  * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
-class RecommendationAddController extends \Details
+class RecommendationAddController extends \OxidEsales\Eshop\Application\Controller\ArticleDetailsController
 {
     /**
      * Template name

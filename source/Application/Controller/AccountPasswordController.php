@@ -32,7 +32,7 @@ use oxRegistry;
  * etc. Some fields must be entered. OXID eShop -> MY ACCOUNT
  * -> Update your billing and delivery settings.
  */
-class AccountPasswordController extends \Account
+class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
 
     /**

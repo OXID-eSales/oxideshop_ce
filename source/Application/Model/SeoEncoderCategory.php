@@ -27,7 +27,7 @@ use oxDb;
 /**
  * Seo encoder category
  */
-class SeoEncoderCategory extends \oxSeoEncoder
+class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
 {
     /** @var array _aCatCache cache for categories. */
     protected $_aCatCache = array();

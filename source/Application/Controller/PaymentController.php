@@ -29,7 +29,7 @@ use oxRegistry;
  * Payment manager.
  * Customer payment manager class. Performs payment validation function, etc.
  */
-class PaymentController extends \oxUBase
+class PaymentController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**

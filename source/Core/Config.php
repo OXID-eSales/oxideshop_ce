@@ -28,7 +28,7 @@ use oxDb;
 use oxException;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
 use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
@@ -42,7 +42,7 @@ define('MAX_64BIT_INTEGER', '18446744073709551615');
  * @mixin \OxidEsales\EshopEnterprise\Core\Config
  * @mixin \OxidEsales\EshopProfessional\Core\Config
  */
-class Config extends Base
+class Config extends \OxidEsales\Eshop\Core\Base
 {
     const DEFAULT_CONFIG_KEY = 'fq45QS09_fqyx09239QQ';
 
@@ -400,7 +400,7 @@ class Config extends Base
             // loading shop config
             if (empty($shopID) || !$configLoaded) {
                 // if no config values where loaded (some problems with DB), throwing an exception
-                $oEx = new DatabaseConnectionException(
+                $oEx = new \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException(
                     "Unable to load shop config values from database",
                     0,
                     new \Exception()
@@ -435,11 +435,11 @@ class Config extends Base
             //application initialization
             $this->_oStart = oxNew('oxStart');
             $this->_oStart->appInit();
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $oEx) {
             $this->_handleDbConnectionException($oEx);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\DatabaseException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $oEx) {
             $this->_handleDbConnectionException($oEx);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\CookieException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\CookieException $oEx) {
             $this->_handleCookieException($oEx);
         }
     }
@@ -663,7 +663,7 @@ class Config extends Base
      */
     public function getRequestParameter($name, $raw = false)
     {
-        $request = Registry::get(Request::class);
+        $request = Registry::get(\OxidEsales\Eshop\Core\Request::class);
         return $raw ? $request->getRequestParameter($name) : $request->getRequestEscapedParameter($name);
     }
 
@@ -673,13 +673,13 @@ class Config extends Base
      * @param string $name         Name of parameter.
      * @param string $defaultValue Default value if no value provided.
      *
-     * @deprecated on 6.0.0 (2016-05-16); use OxidEsales\EshopCommunity\Core\Request::getRequestEscapedParameter()
+     * @deprecated on 6.0.0 (2016-05-16); use OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()
      *
      * @return mixed
      */
     public function getRequestEscapedParameter($name, $defaultValue = null)
     {
-        return Registry::get(Request::class)->getRequestEscapedParameter($name, $defaultValue);
+        return Registry::get(\OxidEsales\Eshop\Core\Request::class)->getRequestEscapedParameter($name, $defaultValue);
     }
 
     /**
@@ -688,13 +688,13 @@ class Config extends Base
      * @param string $name         Name of parameter.
      * @param string $defaultValue Default value if no value provided.
      *
-     * @deprecated on 6.0.0 (2016-05-16); use OxidEsales\EshopCommunity\Core\Request::getRequestEscapedParameter()
+     * @deprecated on 6.0.0 (2016-05-16); use OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()
      *
      * @return mixed
      */
     public function getRequestRawParameter($name, $defaultValue = null)
     {
-        return Registry::get(Request::class)->getRequestParameter($name, $defaultValue);
+        return Registry::get(\OxidEsales\Eshop\Core\Request::class)->getRequestParameter($name, $defaultValue);
     }
 
     /**
@@ -770,7 +770,7 @@ class Config extends Base
      */
     public function checkParamSpecialChars(&$value, $raw = null)
     {
-        return Registry::get(Request::class)->checkParamSpecialChars($value, $raw);
+        return Registry::get(\OxidEsales\Eshop\Core\Request::class)->checkParamSpecialChars($value, $raw);
     }
 
     /**
@@ -1857,7 +1857,7 @@ class Config extends Base
         $varTypeQuoted = $db->quote($varType);
         $varValueQuoted = $db->quote($value);
         $configKeyQuoted = $db->quote($this->getConfigParam('sConfigKey'));
-        $newOXIDdQuoted = $db->quote(UtilsObject::getInstance()->generateUID());
+        $newOXIDdQuoted = $db->quote(\OxidEsales\Eshop\Core\UtilsObject::getInstance()->generateUID());
 
         $query = "delete from oxconfig where oxshopid = $shopIdQuoted and oxvarname = $varNameQuoted and oxmodule = $moduleQuoted";
         $db->execute($query);
@@ -1959,7 +1959,7 @@ class Config extends Base
      */
     public function getBaseShopId()
     {
-        return ShopIdCalculator::BASE_SHOP_ID;
+        return \OxidEsales\Eshop\Core\ShopIdCalculator::BASE_SHOP_ID;
     }
 
     /**

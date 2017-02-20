@@ -31,7 +31,7 @@ use oxField;
  * information, deletion and other.
  *
  */
-class NewsSubscribed extends \oxBase
+class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**

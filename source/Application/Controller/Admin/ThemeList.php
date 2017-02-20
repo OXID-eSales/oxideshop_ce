@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * field ('oxactions.oxtitle').
  * Admin Menu: Manage Products -> Actions.
  */
-class ThemeList extends \oxAdminList
+class ThemeList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

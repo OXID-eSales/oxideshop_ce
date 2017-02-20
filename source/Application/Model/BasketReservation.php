@@ -23,8 +23,9 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\UtilsObject;
 use oxRegistry;
-use oxUtilsObject;
 use oxField;
 use oxDb;
 use oxuserbasket;
@@ -33,7 +34,7 @@ use oxuserbasket;
  * Basket reservations handler class
  *
  */
-class BasketReservation extends \oxSuperCfg
+class BasketReservation extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -59,7 +60,8 @@ class BasketReservation extends \oxSuperCfg
     {
         $sId = oxRegistry::getSession()->getVariable('basketReservationToken');
         if (!$sId) {
-            $sId = oxUtilsObject::getInstance()->generateUId();
+            $utilsObject = $this->getUtilsObjectInstance();
+            $sId = $utilsObject->generateUId();
             oxRegistry::getSession()->setVariable('basketReservationToken', $sId);
         }
 
@@ -160,7 +162,7 @@ class BasketReservation extends \oxSuperCfg
      *
      * @return array
      */
-    protected function _basketDifference(\OxidEsales\EshopCommunity\Application\Model\Basket $oBasket)
+    protected function _basketDifference(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
         $aDiff = $this->_getReservedItems();
         // refreshing history
@@ -361,5 +363,13 @@ class BasketReservation extends \oxSuperCfg
 
             oxRegistry::getSession()->deleteVariable("iBasketReservationTimeout");
         }
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Core\UtilsObject
+     */
+    protected function getUtilsObjectInstance()
+    {
+        return Registry::get(UtilsObject::class);
     }
 }

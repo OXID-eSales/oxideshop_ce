@@ -29,7 +29,7 @@ use oxSeoEncoderCategory;
 /**
  * Locator controller for: category, vendor, manufacturers and search lists.
  */
-class Locator extends \oxSuperCfg
+class Locator extends \OxidEsales\Eshop\Core\Base
 {
 
     /**

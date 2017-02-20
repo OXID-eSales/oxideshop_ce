@@ -28,7 +28,7 @@ use oxField;
 /**
  * Manufacturer seo config class
  */
-class ManufacturerSeo extends \Object_Seo
+class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
 
     /**

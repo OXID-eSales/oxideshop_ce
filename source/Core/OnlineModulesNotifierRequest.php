@@ -30,7 +30,7 @@ namespace OxidEsales\EshopCommunity\Core;
  *
  * @ignore   This class will not be included in documentation.
  */
-class OnlineModulesNotifierRequest extends \oxOnlineRequest
+class OnlineModulesNotifierRequest extends \OxidEsales\Eshop\Core\OnlineRequest
 {
 
     /**

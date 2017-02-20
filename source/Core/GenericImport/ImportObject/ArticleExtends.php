@@ -27,7 +27,7 @@ use oxI18n;
 /**
  * Import object for Article Extends.
  */
-class ArticleExtends extends ImportObject
+class ArticleExtends extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
     /** @var string Database table name. */
     protected $tableName = 'oxartextends';

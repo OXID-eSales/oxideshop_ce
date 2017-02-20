@@ -29,7 +29,7 @@ use oxField;
  * Manager class for shopping basket item (class may be overriden).
  *
  */
-class UserBasketItem extends \oxBase
+class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**

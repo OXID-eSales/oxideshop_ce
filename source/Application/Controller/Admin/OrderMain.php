@@ -32,7 +32,7 @@ use oxPaymentList;
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Orders -> Display Orders -> Main.
  */
-class OrderMain extends \oxAdminDetails
+class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     /**
      * Whitelist of parameters whose change does not require a full order recalculation.

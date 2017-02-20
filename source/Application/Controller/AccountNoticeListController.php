@@ -31,7 +31,7 @@ use oxRegistry;
  * store them to shopping basket, view detail information.
  * OXID eShop -> MY ACCOUNT -> Newsletter.
  */
-class AccountNoticeListController extends \Account
+class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
     /**
      * Current class template name.

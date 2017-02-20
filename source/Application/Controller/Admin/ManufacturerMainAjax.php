@@ -27,7 +27,7 @@ use oxDb;
 /**
  * Class manages manufacturer assignment to articles
  */
-class ManufacturerMainAjax extends \ajaxListComponent
+class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

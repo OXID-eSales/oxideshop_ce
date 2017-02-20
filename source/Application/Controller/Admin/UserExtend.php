@@ -30,7 +30,7 @@ use oxField;
  * Collects user extended settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> Extended.
  */
-class UserExtend extends \oxAdminDetails
+class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

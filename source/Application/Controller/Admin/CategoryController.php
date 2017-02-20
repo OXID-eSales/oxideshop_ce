@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  * and "category_main.tpl") to frame.
  * Admin Menu: Manage Products -> Categories.
  */
-class CategoryController extends \oxAdminView
+class CategoryController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

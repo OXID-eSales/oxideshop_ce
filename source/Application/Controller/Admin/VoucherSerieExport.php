@@ -29,7 +29,7 @@ use oxUtilsObject;
 /**
  * General export class.
  */
-class VoucherSerieExport extends \VoucherSerie_Main
+class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain
 {
 
     /**

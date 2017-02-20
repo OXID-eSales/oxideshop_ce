@@ -27,7 +27,7 @@ use oxRegistry;
 /**
  * CMS - loads pages and displays it
  */
-class ClearCookiesController extends \oxUBase
+class ClearCookiesController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Current view template

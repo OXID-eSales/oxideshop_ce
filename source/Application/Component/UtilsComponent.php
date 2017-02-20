@@ -31,7 +31,7 @@ use oxRegistry;
  *
  * @subpackage oxcmp
  */
-class UtilsComponent extends \oxView
+class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
 
     /**

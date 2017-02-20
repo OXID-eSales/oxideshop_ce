@@ -29,7 +29,7 @@ use oxRegistry;
  * Collects order addressing information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders -> Address.
  */
-class OrderAddress extends \oxAdminDetails
+class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     /**
      * Executes parent method parent::render(), creates oxorder object

@@ -28,7 +28,7 @@ use oxDb;
 /**
  * Class manages article select lists sorting
  */
-class AttributeOrderAjax extends \ajaxListComponent
+class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**

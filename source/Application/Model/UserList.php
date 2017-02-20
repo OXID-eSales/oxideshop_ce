@@ -28,7 +28,7 @@ use oxDb;
  * User list manager.
  *
  */
-class UserList extends \oxList
+class UserList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

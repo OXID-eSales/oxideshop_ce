@@ -28,7 +28,7 @@ use oxRegistry;
  * Comparing Products.
  * Takes a few products and show attribute values to compare them.
  */
-class CompareController extends \oxUBase
+class CompareController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**

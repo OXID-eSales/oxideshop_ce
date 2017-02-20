@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 /**
  * Import object for Orders.
  */
-class Order extends ImportObject
+class Order extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
     /** @var string Database table name. */
     protected $tableName = 'oxorder';

@@ -29,7 +29,7 @@ use oxRegistry;
  * There is possibility to change category sorting.
  * Admin Menu: Manage Products -> Categories -> Order.
  */
-class CategoryOrder extends \oxAdminDetails
+class CategoryOrder extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

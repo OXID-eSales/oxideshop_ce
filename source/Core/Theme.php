@@ -31,7 +31,7 @@ use oxRegistry;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class Theme extends \oxSuperCfg
+class Theme extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -90,7 +90,7 @@ class Theme extends \oxSuperCfg
             $this->getConfig()->saveShopConfVar("str", 'sTheme', $this->getId());
             $this->getConfig()->saveShopConfVar("str", 'sCustomTheme', '');
         }
-        $settingsHandler = oxNew(SettingsHandler::class);
+        $settingsHandler = oxNew(\OxidEsales\Eshop\Core\SettingsHandler::class);
         $settingsHandler->setModuleType('theme')->run($this);
     }
 

@@ -32,7 +32,7 @@ use Exception;
  * Returns template, that arranges two other templates ("tools_list.tpl"
  * and "tools_main.tpl") to frame.
  */
-class ToolsList extends \oxAdminList
+class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

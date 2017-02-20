@@ -23,6 +23,7 @@ namespace Unit\Application\Model;
 
 use oxEmailHelper;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\UtilsObject;
 use \oxnewssubscribed;
 use oxUser;
 use oxUtilsObject;
@@ -529,12 +530,13 @@ class UserTest extends \OxidTestCase
     {
         $iCurrTime = time();
 
-        // overriding utility functions
-        oxTestModules::addFunction("oxUtilsObject", "generateUId", "{ return 'xxx'; }");
+        $utilsObjectInstanceMock = $this->getMock(UtilsObject::class, array('generateUID'));
+        $utilsObjectInstanceMock->expects($this->any())->method('generateUID')->will($this->returnValue('xxx'));
         $this->setTime($iCurrTime);
 
-        $oUser = $this->getMock('oxuser', array('save'));
+        $oUser = $this->getMock('oxuser', array('save', 'getUtilsObjectInstance'));
         $oUser->expects($this->once())->method('save');
+        $oUser->expects($this->once())->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectInstanceMock));
         $oUser->setUpdateKey();
 
         $this->assertEquals('xxx', $oUser->oxuser__oxupdatekey->value);

@@ -31,7 +31,7 @@ use oxModule;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ModuleMetadataValidator implements \oxIModuleValidator
+class ModuleMetadataValidator implements \OxidEsales\Eshop\Core\Contract\IModuleValidator
 {
 
     /**
@@ -43,7 +43,7 @@ class ModuleMetadataValidator implements \oxIModuleValidator
      *
      * @return bool
      */
-    public function validate(\OxidEsales\EshopCommunity\Core\Module\Module $oModule)
+    public function validate(\OxidEsales\Eshop\Core\Module\Module $oModule)
     {
         return file_exists($oModule->getMetadataPath());
     }

@@ -29,7 +29,7 @@ use oxRegistry;
  * Used only in some specific cases (usually when you need to outpt just template
  * having text information).
  */
-class TemplateController extends \oxUBase
+class TemplateController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Executes parent method parent::render(), returns name of template file.

@@ -29,7 +29,7 @@ use oxDb;
 /**
  * Class for validating input
  */
-class InputValidator extends \oxSuperCfg
+class InputValidator extends \OxidEsales\Eshop\Core\Base
 {
 
     /**

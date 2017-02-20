@@ -29,7 +29,7 @@ use oxRegistry;
  * Collects order articles information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders -> Articles.
  */
-class OrderDownloads extends \oxAdminDetails
+class OrderDownloads extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

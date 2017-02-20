@@ -34,7 +34,7 @@ use oxNoArticleException;
  *
  * @subpackage oxcmp
  */
-class BasketComponent extends \oxView
+class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
 
     /**
@@ -373,7 +373,7 @@ class BasketComponent extends \oxView
 
             $basketItem = $this->addItemToBasket($basket, $data, $errorDestination);
 
-            if (($basketItem instanceof \OxidEsales\EshopCommunity\Application\Model\BasketItem) && $basketItem->getBasketItemKey()) {
+            if (($basketItem instanceof \OxidEsales\Eshop\Application\Model\BasketItem) && $basketItem->getBasketItemKey()) {
                 $basketItemAmounts[$basketItem->getBasketItemKey()] += $data['amount'];
             }
 
@@ -533,18 +533,18 @@ class BasketComponent extends \oxView
                 $itemData['bundle'],
                 $itemData['oldBasketItemId']
             );
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\OutOfStockException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\OutOfStockException $exception) {
             $exception->setDestination($errorDestination);
             // #950 Change error destination to basket popup
             if (!$errorDestination && $this->getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
                 $errorDestination = 'popup';
             }
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\ArticleInputException $exception) {
             //add to display at specific position
             $exception->setDestination($errorDestination);
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\NoArticleException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\NoArticleException $exception) {
             //ignored, best solution F ?
         }
 

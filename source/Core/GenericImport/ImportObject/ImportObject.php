@@ -140,7 +140,7 @@ abstract class ImportObject
             $shopObject->init($this->getTableName());
         }
 
-        if ($shopObject instanceof \OxidEsales\EshopCommunity\Core\Model\MultiLanguageModel) {
+        if ($shopObject instanceof \OxidEsales\Eshop\Core\Model\MultiLanguageModel) {
             $shopObject->setLanguage(0);
             $shopObject->setEnableMultilang(false);
         }
@@ -376,7 +376,7 @@ abstract class ImportObject
         $objectName = $this->getShopObjectName();
         if ($objectName) {
             $shopObject = oxNew($objectName, 'core');
-            if ($shopObject instanceof \OxidEsales\EshopCommunity\Core\Model\MultiLanguageModel) {
+            if ($shopObject instanceof \OxidEsales\Eshop\Core\Model\MultiLanguageModel) {
                 $shopObject->setLanguage(0);
                 $shopObject->setEnableMultilang(false);
             }

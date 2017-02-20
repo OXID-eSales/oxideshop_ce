@@ -28,7 +28,7 @@ use oxBase;
 /**
  * Import object for Articles.
  */
-class Article extends ImportObject
+class Article extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
     /** @var string Database table name. */
     protected $tableName = 'oxarticles';

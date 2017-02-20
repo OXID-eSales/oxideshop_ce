@@ -29,7 +29,7 @@ use oxDb;
  * Promotion List manager.
  *
  */
-class ActionList extends \oxList
+class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

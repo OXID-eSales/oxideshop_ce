@@ -29,7 +29,7 @@ use oxDb;
  * Collects list of content
  *
  */
-class ContentList extends \oxList
+class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

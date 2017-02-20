@@ -28,7 +28,7 @@ use oxField;
 /**
  * Import object for Users.
  */
-class User extends ImportObject
+class User extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
     /** @var string Database table name. */
     protected $tableName = 'oxuser';

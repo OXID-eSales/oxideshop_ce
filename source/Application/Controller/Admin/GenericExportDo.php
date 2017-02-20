@@ -27,7 +27,7 @@ use oxRegistry;
 /**
  * General export class.
  */
-class GenericExportDo extends \DynExportBase
+class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController
 {
 
     /**

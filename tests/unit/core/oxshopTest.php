@@ -104,6 +104,40 @@ class Unit_Core_oxshopTest extends OxidTestCase
 
 
     /**
+     * Testing oxshop::generateViews() for removing old unused 'oxv_*' views.
+     */
+    public function testGenerateViews_CheckRemovingUnnecessaryViews()
+    {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
+        
+        $oDB = oxDb::getDb();
+
+        // creating view which has to be removed
+        $oDB->Execute('CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxshops_zz-2015` AS SELECT * FROM oxshops');
+
+        $oShop = new oxShop();
+        $this->assertTrue($oShop->generateViews(false, null));
+
+        $oDbMetaDataHandler = oxNew('oxDbMetaDataHandler');
+        $this->assertFalse($oDbMetaDataHandler->tableExists('oxv_oxshops_zz-2015'), 'Old view "oxv_oxshops_zz" is not removed');
+    }
+
+    /**
+     * Testing ShopViewValidator::_getAllViews().
+     */
+    public function testShowViewTables()
+    {
+        $shopViewValidator = oxNew('oxShopViewValidator');
+
+        $invalidViews = $shopViewValidator->getInvalidViews();
+
+        $this->assertNotEmpty($invalidViews);
+        $this->assertNotContains('oxvouchers', $invalidViews);
+    }
+
+    /**
      * Test call to getMultishopTables when it's not set anywhere
      */
     public function testGetMultishopTablesDefaultNotSet()

@@ -693,7 +693,7 @@ class UserComponent extends \oxView
      *
      * @return array
      */
-    private function cleanBillingAddress($aBillingAddress)
+    protected function cleanBillingAddress($aBillingAddress)
     {
         if (is_array($aBillingAddress)) {
             $skipFields = array('oxuser__oxid', 'oxid', 'oxuser__oxpoints', 'oxpoints', 'oxuser__oxboni', 'oxboni');
@@ -710,7 +710,7 @@ class UserComponent extends \oxView
      *
      * @return array
      */
-    private function cleanDeliveryAddress($aDeliveryAddress)
+    protected function cleanDeliveryAddress($aDeliveryAddress)
     {
         if (is_array($aDeliveryAddress)) {
             $skipFields = array('oxaddress__oxid', 'oxid', 'oxaddress__oxuserid', 'oxuserid', 'oxaddress__oxaddressuserid', 'oxaddressuserid');

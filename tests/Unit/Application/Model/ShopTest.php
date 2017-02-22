@@ -21,8 +21,10 @@
  */
 namespace Unit\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\EshopCommunity\Core\I18n;
 
+use \oxDb;
 use \oxField;
 
 class ShopTest extends \OxidTestCase
@@ -101,6 +103,36 @@ class ShopTest extends \OxidTestCase
         $oShop->createViewQuery($sTable, array(0 => $sLang));
         $aQueries = $oShop->getQueries();
         $this->assertEquals(rtrim($sQuery), rtrim($aQueries[0]));
+    }
+
+    /**
+     * Testing oxshop::generateViews() for removing old unused 'oxv_*' views.
+     */
+    public function testGenerateViews_CheckRemovingUnnecessaryViews()
+    {
+        $database = oxDb::getDb();
+
+        // creating view which has to be removed
+        $database->Execute('CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxshops_zz-2015` AS SELECT * FROM oxshops');
+
+        $shop = oxNew(Shop::class);
+        $this->assertTrue($shop->generateViews(false, null));
+
+        $oDbMetaDataHandler = oxNew('oxDbMetaDataHandler');
+        $this->assertFalse($oDbMetaDataHandler->tableExists('oxv_oxshops_zz-2015'), 'Old view "oxv_oxshops_zz" is not removed');
+    }
+
+    /**
+     * Testing ShopViewValidator::_getAllViews().
+     */
+    public function testShowViewTables()
+    {
+        $shopViewValidator = oxNew('oxShopViewValidator');
+
+        $invalidViews = $shopViewValidator->getInvalidViews();
+
+        $this->assertNotEmpty($invalidViews);
+        $this->assertNotContains('oxvouchers', $invalidViews);
     }
 
     /**

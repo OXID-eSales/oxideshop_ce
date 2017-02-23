@@ -265,8 +265,8 @@ class BasketReservationStockUpdateTest extends \OxidTestCase
      */
     private function insertArticle()
     {
-        $this->testArticleId = substr_replace( oxUtilsObject::getInstance()->generateUId(), '_', 0, 1 );
-        $this->testArticleParentId = substr_replace( oxUtilsObject::getInstance()->generateUId(), '_', 0, 1 );
+        $this->testArticleId = substr_replace( oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1 );
+        $this->testArticleParentId = substr_replace( oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1 );
 
         //copy from original article parent and variant
         $articleParent = oxNew('oxarticle');
@@ -301,7 +301,7 @@ class BasketReservationStockUpdateTest extends \OxidTestCase
         //mocked to circumvent delivery address change md5 check from requestParameter
         $order->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(0));
 
-        $this->testOrderId = substr_replace( oxUtilsObject::getInstance()->generateUId(), '_', 0, 1 );
+        $this->testOrderId = substr_replace( oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1 );
         $order->setId($this->testOrderId);
 
         return $order;
@@ -367,7 +367,7 @@ class BasketReservationStockUpdateTest extends \OxidTestCase
      */
     private function insertUser()
     {
-        $this->testUserId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $this->testUserId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         $user = oxNew('oxUser');
         $user->setId($this->testUserId);
@@ -397,7 +397,7 @@ class BasketReservationStockUpdateTest extends \OxidTestCase
 
         $user->save();
 
-        $newId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $newId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
         $oDb = oxDb::getDb();
         $sQ = 'insert into `oxobject2delivery` (oxid, oxdeliveryid, oxobjectid, oxtype ) ' .
               " values ('$newId', 'oxidstandard', '" . $this->testUserId . "', 'oxdelsetu')";

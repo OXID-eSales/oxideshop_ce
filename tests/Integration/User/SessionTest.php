@@ -26,7 +26,6 @@ use oxField;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxRegistry;
 use oxUser;
-use oxUtilsObject;
 
 class SessionTest extends UnitTestCase
 {
@@ -170,7 +169,7 @@ class SessionTest extends UnitTestCase
      */
     private function _insertUser($data)
     {
-        $userOxid = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $userOxid = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         $user = oxNew('oxUser');
         $user->setId($userOxid);

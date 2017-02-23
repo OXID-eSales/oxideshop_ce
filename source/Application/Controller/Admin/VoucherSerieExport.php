@@ -24,7 +24,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
-use oxUtilsObject;
 
 /**
  * General export class.
@@ -103,7 +102,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
     {
         $sSessionFileName = oxRegistry::getSession()->getVariable("sExportFileName");
         if (!$sSessionFileName) {
-            $sSessionFileName = md5($this->getSession()->getId() . oxUtilsObject::getInstance()->generateUId());
+            $sSessionFileName = md5($this->getSession()->getId() . oxRegistry::getUtilsObject()->generateUId());
             oxRegistry::getSession()->setVariable("sExportFileName", $sSessionFileName);
         }
 

@@ -25,7 +25,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
-use oxUtilsObject;
 use stdClass;
 use OxidEsales\Eshop\Application\Model\Article;
 
@@ -293,7 +292,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $myConfig = $this->getConfig();
 
         $sOldId = $sOldId ? $sOldId : $this->getEditObjectId();
-        $sNewId = $sNewId ? $sNewId : oxUtilsObject::getInstance()->generateUID();
+        $sNewId = $sNewId ? $sNewId : oxRegistry::getUtilsObject()->generateUID();
 
         $oArticle = oxNew('oxBase');
         $oArticle->init('oxarticles');
@@ -346,7 +345,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
             $this->resetContentCache();
 
-            $myUtilsObject = oxUtilsObject::getInstance();
+            $myUtilsObject = oxRegistry::getUtilsObject();
             $oDb = oxDb::getDb();
 
             //copy variants
@@ -389,7 +388,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function _copyCategories($sOldId, $newArticleId)
     {
-        $myUtilsObject = oxUtilsObject::getInstance();
+        $myUtilsObject = oxRegistry::getUtilsObject();
         $oDb = oxDb::getDb();
 
         $sO2CView = getViewName('oxobject2category');
@@ -415,7 +414,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function _copyAttributes($sOldId, $sNewId)
     {
-        $myUtilsObject = oxUtilsObject::getInstance();
+        $myUtilsObject = oxRegistry::getUtilsObject();
         $oDb = oxDb::getDb();
 
         $sQ = "select oxid from oxobject2attribute where oxobjectid = " . $oDb->quote($sOldId);
@@ -442,7 +441,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function _copyFiles($sOldId, $sNewId)
     {
-        $myUtilsObject = oxUtilsObject::getInstance();
+        $myUtilsObject = oxRegistry::getUtilsObject();
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
         $sQ = "SELECT * FROM `oxfiles` WHERE `oxartid` = " . $oDb->quote($sOldId);
@@ -470,7 +469,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function _copySelectlists($sOldId, $sNewId)
     {
-        $myUtilsObject = oxUtilsObject::getInstance();
+        $myUtilsObject = oxRegistry::getUtilsObject();
         $oDb = oxDb::getDb();
 
         $sQ = "select oxselnid from oxobject2selectlist where oxobjectid = " . $oDb->quote($sOldId);
@@ -495,7 +494,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function _copyCrossseling($sOldId, $sNewId)
     {
-        $myUtilsObject = oxUtilsObject::getInstance();
+        $myUtilsObject = oxRegistry::getUtilsObject();
         $oDb = oxDb::getDb();
 
         $sQ = "select oxobjectid from oxobject2article where oxarticlenid = " . $oDb->quote($sOldId);
@@ -520,7 +519,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function _copyAccessoires($sOldId, $sNewId)
     {
-        $myUtilsObject = oxUtilsObject::getInstance();
+        $myUtilsObject = oxRegistry::getUtilsObject();
         $oDb = oxDb::getDb();
 
         $sQ = "select oxobjectid from oxaccessoire2article where oxarticlenid= " . $oDb->quote($sOldId);

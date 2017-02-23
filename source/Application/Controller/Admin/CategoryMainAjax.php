@@ -25,7 +25,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
-use oxUtilsObject;
 use Exception;
 
 /**
@@ -156,7 +155,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
                 $sO2CView = $this->_getViewName('oxobject2category');
 
                 $oNew = oxNew('oxobject2category');
-                $myUtilsObject = oxUtilsObject::getInstance();
+                $myUtilsObject = oxRegistry::getUtilsObject();
                 $oActShop = $myConfig->getActiveShop();
 
                 $sProdIds = "";

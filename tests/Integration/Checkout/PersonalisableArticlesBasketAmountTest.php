@@ -24,7 +24,6 @@ namespace Integration\Checkout;
 use oxBasket;
 use oxField;
 use oxRegistry;
-use oxUtilsObject;
 
 /**
  * Test basket contents for configurable articles (oxarticles.oxisconfigurable = true).
@@ -208,7 +207,7 @@ class PersonalisableArticlesBasketAmountTest extends \OxidTestCase
      */
     private function insertArticle()
     {
-        $this->testArticleId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $this->testArticleId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         //copy from original article
         $articleParent = oxNew('oxarticle');

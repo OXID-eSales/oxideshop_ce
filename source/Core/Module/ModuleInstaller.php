@@ -29,7 +29,6 @@ use oxModuleCache;
 use oxDb;
 use OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner;
 use OxidEsales\Eshop\Core\SettingsHandler;
-use oxUtilsObject;
 
 /**
  * Modules installer class.
@@ -421,7 +420,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
 
         if (is_array($moduleBlocks)) {
             foreach ($moduleBlocks as $moduleBlock) {
-                $id = oxUtilsObject::getInstance()->generateUId();
+                $id = Registry::getUtilsObject()->generateUId();
 
                 $template = $moduleBlock["template"];
                 $position = isset($moduleBlock['position']) && is_numeric($moduleBlock['position']) ?

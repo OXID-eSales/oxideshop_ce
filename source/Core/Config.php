@@ -1857,7 +1857,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $varTypeQuoted = $db->quote($varType);
         $varValueQuoted = $db->quote($value);
         $configKeyQuoted = $db->quote($this->getConfigParam('sConfigKey'));
-        $newOXIDdQuoted = $db->quote(\OxidEsales\Eshop\Core\UtilsObject::getInstance()->generateUID());
+        $newOXIDdQuoted = $db->quote(\OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID());
 
         $query = "delete from oxconfig where oxshopid = $shopIdQuoted and oxvarname = $varNameQuoted and oxmodule = $moduleQuoted";
         $db->execute($query);

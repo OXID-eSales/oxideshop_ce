@@ -24,7 +24,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
-use oxUtilsObject;
 use oxException;
 
 /**
@@ -184,7 +183,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     protected function _copyConfigVars($shop)
     {
         $config = $this->getConfig();
-        $utilsObject = oxUtilsObject::getInstance();
+        $utilsObject = oxRegistry::getUtilsObject();
         $db = oxDb::getDb();
 
         $nonCopyVars = $this->_getNonCopyConfigVars();

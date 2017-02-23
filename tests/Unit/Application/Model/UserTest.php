@@ -26,7 +26,6 @@ use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
 use OxidEsales\Eshop\Core\UtilsObject;
 use \oxnewssubscribed;
 use oxUser;
-use oxUtilsObject;
 use \oxUtilsServer;
 use \oxField;
 use \oxInputException;
@@ -205,7 +204,7 @@ class UserTest extends \OxidTestCase
         $oUser->save();
 
         $sUserId = $oUser->getId();
-        $sId = oxUtilsObject::getInstance()->generateUID();
+        $sId = oxRegistry::getUtilsObject()->generateUID();
 
         // loading user groups
         $sGroupId = $oDb->getOne('select oxid from oxgroups order by rand() ');
@@ -266,7 +265,7 @@ class UserTest extends \OxidTestCase
      */
     public function testGetOrdersWhenPagingIsOn()
     {
-        $oUtils = oxUtilsObject::getInstance();
+        $oUtils = oxRegistry::getUtilsObject();
         $oDb = $this->getDb();
 
         $oUser = $this->createUser();
@@ -1726,7 +1725,7 @@ class UserTest extends \OxidTestCase
         $sUserId = $oUser->getId();
         $sShopId = $this->getConfig()->getShopId();
 
-        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
+        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . oxRegistry::getUtilsObject()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
         $oDb->Execute($sQ);
 
         $oBasket = $this->getProxyClass("oxBasket");
@@ -1759,7 +1758,7 @@ class UserTest extends \OxidTestCase
         $sUserId = $oUser->getId();
         $sShopId = $this->getConfig()->getShopId();
 
-        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
+        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . oxRegistry::getUtilsObject()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
         $oDb->Execute($sQ);
 
         $oBasket = $this->getProxyClass("oxBasket");
@@ -1791,7 +1790,7 @@ class UserTest extends \OxidTestCase
         $sUserId = $oUser->getId();
         $sShopId = $this->getConfig()->getShopId();
 
-        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
+        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . oxRegistry::getUtilsObject()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
         $oDb->Execute($sQ);
 
         $oBasket = $this->getProxyClass("oxBasket");

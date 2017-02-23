@@ -166,4 +166,33 @@ class RegistryTest extends \OxidTestCase
         $this->assertTrue(is_a($object, '\OxidEsales\EshopCommunity\Core\Contract\ClassNameResolverInterface'));
         $this->assertTrue(is_a($object, '\OxidEsales\EshopCommunity\Core\Routing\ControllerClassNameResolver'));
     }
+
+    /**
+     * Test Registry::get() for UtilsObject
+     * NOTE: unit tests always get a brand new instance of UtilsObject
+     */
+    public function testRegistryGetForBcUtilsObjectClassName()
+    {
+        $object = Registry::get('oxUtilsObject');
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsObject::class));
+    }
+
+    /**
+     * Test Registry::get() for UtilsObject
+     * NOTE: unit tests always get a brand new instance of UtilsObject
+     */
+    public function testRegistryGetForNamespaceUtilsObject()
+    {
+        $object = Registry::get(\OxidEsales\Eshop\Core\UtilsObject::class);
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsObject::class));
+    }
+
+    /**
+     * Test Registry::getUtilsObject()
+     */
+    public function testRegistryGetUtilsObject()
+    {
+        $object = Registry::getUtilsObject();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsObject::class));
+    }
 }

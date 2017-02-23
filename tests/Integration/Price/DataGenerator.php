@@ -22,7 +22,7 @@
 namespace Integration\Price;
 
 use oxDb;
-use oxUtilsObject;
+use oxRegistry;
 
 require_once __DIR__. '/BasketConstruct.php';
 
@@ -122,7 +122,7 @@ class DataGenerator extends \OxidTestCase
     // What additional costs to generate
     private $aGenCosts = array(
         array("wrapping", 1),
-        //array( "payment",  3 ), 
+        //array( "payment",  3 ),
         //array( "delivery", 3 )
     );
     private $blGenDiscounts = false;
@@ -221,7 +221,7 @@ class DataGenerator extends \OxidTestCase
      */
     protected function _generateData($i)
     {
-        $oUtil = oxUtilsObject::getInstance();
+        $oUtil = oxRegistry::getUtilsObject();
         // init result array
         $aData = array();
 

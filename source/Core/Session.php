@@ -23,7 +23,6 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
-use oxUtilsObject;
 use oxBasket;
 
 /**
@@ -302,7 +301,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _initNewSessionChallenge()
     {
-        $this->setVariable('sess_stoken', sprintf('%X', crc32(oxUtilsObject::getInstance()->generateUID())));
+        $this->setVariable('sess_stoken', sprintf('%X', crc32(oxRegistry::getUtilsObject()->generateUID())));
     }
 
     /**

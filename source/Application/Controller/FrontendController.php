@@ -37,7 +37,6 @@ use oxPrice;
 use oxRecommList;
 use oxRegistry;
 use oxShop;
-use oxUtilsObject;
 use oxVendor;
 use oxViewConfig;
 use stdClass;
@@ -2578,7 +2577,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getFormId()
     {
         if ($this->_sFormId === null) {
-            $this->_sFormId = oxUtilsObject::getInstance()->generateUId();
+            $this->_sFormId = oxRegistry::getUtilsObject()->generateUId();
             oxRegistry::getSession()->setVariable('sessionuformid', $this->_sFormId);
         }
 

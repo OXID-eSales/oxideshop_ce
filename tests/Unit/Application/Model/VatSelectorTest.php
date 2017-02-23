@@ -26,7 +26,7 @@ use oxObjectException;
 use \oxuser;
 use \oxDb;
 use \oxTestModules;
-use oxUtilsObject;
+use oxRegistry;
 
 /**
  * oxvatselector test
@@ -50,7 +50,7 @@ class VatSelectorTest extends \OxidTestCase
         parent::setUp();
         // demo article
         $sId = $this->getTestConfig()->getShopEdition() == 'EE'? '2275': '2077';
-        $sNewId = oxUtilsObject::getInstance()->generateUId();
+        $sNewId = oxRegistry::getUtilsObject()->generateUId();
 
         $this->oArticle = oxNew('oxArticle');
         $this->oArticle->disableLazyLoading();
@@ -67,7 +67,7 @@ class VatSelectorTest extends \OxidTestCase
         // demo category
         $sId = $this->getTestConfig()->getShopEdition() == 'EE'? '30e44ab82c03c3848.49471214': '8a142c3e4143562a5.46426637';
 
-        $sNewId = oxUtilsObject::getInstance()->generateUId();
+        $sNewId = oxRegistry::getUtilsObject()->generateUId();
 
         $this->oCategory = oxNew('oxBase');
         $this->oCategory->Init('oxcategories');

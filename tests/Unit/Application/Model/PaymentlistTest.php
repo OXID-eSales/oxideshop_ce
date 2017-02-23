@@ -22,7 +22,7 @@
 namespace Unit\Application\Model;
 
 use \oxField;
-use oxUtilsObject;
+use oxRegistry;
 
 class PaymentlistTest extends \OxidTestCase
 {
@@ -37,7 +37,7 @@ class PaymentlistTest extends \OxidTestCase
      */
     protected function _getUId()
     {
-        $sUId = oxUtilsObject::getInstance()->generateUId();
+        $sUId = oxRegistry::getUtilsObject()->generateUId();
         $sUId[0] = '_';
 
         return $sUId;

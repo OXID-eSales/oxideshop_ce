@@ -28,7 +28,7 @@ use \oxField;
 use \oxDb;
 use OxidEsales\EshopCommunity\Application\Model\ManufacturerList;
 use \oxTestModules;
-use oxUtilsObject;
+use oxRegistry;
 use OxidEsales\EshopCommunity\Application\Model\VendorList;
 
 /**
@@ -108,7 +108,7 @@ class ArticleMainTest extends \OxidTestCase
     public function testCopyCategories()
     {
         $oDb = oxDb::getDb();
-        $oUtils = oxUtilsObject::getInstance();
+        $oUtils = oxRegistry::getUtilsObject();
         $iShopId = $this->getConfig()->getShopId();
 
         $sO2CView = getViewName('oxobject2category');
@@ -130,7 +130,7 @@ class ArticleMainTest extends \OxidTestCase
     public function testCopyAttributes()
     {
         $oDb = oxDb::getDb();
-        $oUtils = oxUtilsObject::getInstance();
+        $oUtils = oxRegistry::getUtilsObject();
         $iShopId = $this->getConfig()->getShopId();
 
         // creating few oxprice2article records
@@ -151,7 +151,7 @@ class ArticleMainTest extends \OxidTestCase
     public function testCopySelectlists()
     {
         $oDb = oxDb::getDb();
-        $oUtils = oxUtilsObject::getInstance();
+        $oUtils = oxRegistry::getUtilsObject();
         $iShopId = $this->getConfig()->getShopId();
 
         // creating few oxprice2article records
@@ -172,7 +172,7 @@ class ArticleMainTest extends \OxidTestCase
     public function testCopyFiles()
     {
         $oDb = oxDb::getDb();
-        $oUtils = oxUtilsObject::getInstance();
+        $oUtils = oxRegistry::getUtilsObject();
         $iShopId = $this->getConfig()->getShopId();
 
         // creating few files records
@@ -193,7 +193,7 @@ class ArticleMainTest extends \OxidTestCase
     public function testCopyCrossseling()
     {
         $oDb = oxDb::getDb();
-        $oUtils = oxUtilsObject::getInstance();
+        $oUtils = oxRegistry::getUtilsObject();
         $iShopId = $this->getConfig()->getShopId();
 
         // creating few oxprice2article records
@@ -214,7 +214,7 @@ class ArticleMainTest extends \OxidTestCase
     public function testCopyAccessoires()
     {
         $oDb = oxDb::getDb();
-        $oUtils = oxUtilsObject::getInstance();
+        $oUtils = oxRegistry::getUtilsObject();
         $iShopId = $this->getConfig()->getShopId();
 
         // creating few oxprice2article records
@@ -236,7 +236,7 @@ class ArticleMainTest extends \OxidTestCase
     public function testCopyStaffelpreis()
     {
         $oDb = oxDb::getDb();
-        $oUtils = oxUtilsObject::getInstance();
+        $oUtils = oxRegistry::getUtilsObject();
         $iShopId = $this->getConfig()->getShopId();
 
         // creating few oxprice2article records

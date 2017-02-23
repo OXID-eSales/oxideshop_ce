@@ -53,7 +53,7 @@ class Registry
         if (isset(self::$instances[$key])) {
             return self::$instances[$key];
         } else {
-            self::$instances[$key] = oxNew($className);
+            self::$instances[$key] = self::createObject($key, $className);
 
             return self::$instances[$key];
         }
@@ -131,6 +131,18 @@ class Registry
     }
 
     /**
+     * Returns UtilsObject instance
+     *
+     * @static
+     *
+     * @return OxidEsales\Eshop\Core\UtilsObject
+     */
+    public static function getUtilsObject()
+    {
+        return self::get('oxUtilsObject');
+    }
+
+    /**
      * Returns ControllerClassNameProvider instance
      *
      * @static
@@ -162,5 +174,27 @@ class Registry
     public static function instanceExists($className)
     {
         return isset(self::$instances[strtolower($className)]);
+    }
+
+    /**
+     * Special case handling: The recommended way to get an instance of OxUtilsObject is to use Registry::getUtilsObject
+     * IMPORTANT: the utilsobject is not delivered from Registry::instances this way, so Registry::set
+     *           will have no effect on which UtilsObject is delivered.
+     *           Also Registry::instanceExists will always return false for UtilsObject.
+     * This does only affect BC classname and virtual namespace, not the edition own classes atm.
+     *
+     * @param string $key       Class key used for instance caching.
+     * @param string $className Class name.
+     *
+     * @return object
+     */
+    protected static function createObject($key, $className)
+    {
+        if (('oxutilsobject' == $key) || (strtolower(\OxidEsales\Eshop\Core\UtilsObject::class) == $key)) {
+            $object = \OxidEsales\Eshop\Core\UtilsObject::getInstance();
+        } else {
+            $object = oxNew($className);
+        }
+        return $object;
     }
 }

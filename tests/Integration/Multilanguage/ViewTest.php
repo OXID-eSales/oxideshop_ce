@@ -23,7 +23,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Multilanguage;
 
 use oxField;
 use oxRegistry;
-use oxUtilsObject;
 
 class ViewTest extends MultilanguageTestCase
 {
@@ -99,7 +98,7 @@ class ViewTest extends MultilanguageTestCase
      */
     private function insertArticle()
     {
-        $this->testArticleId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $this->testArticleId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         //copy from original article
         $article = oxNew('oxArticle');

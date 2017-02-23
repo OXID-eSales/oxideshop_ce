@@ -2297,6 +2297,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function getUtilsObjectInstance()
     {
-        return UtilsObject::getInstance();
+        return Registry::getUtilsObject();
     }
 }

@@ -2272,6 +2272,6 @@ class Email extends \PHPMailer
      */
     protected function getUtilsObjectInstance()
     {
-        return \OxidEsales\Eshop\Core\UtilsObject::getInstance();
+        return \OxidEsales\Eshop\Core\Registry::getUtilsObject();
     }
 }

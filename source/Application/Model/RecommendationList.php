@@ -26,7 +26,6 @@ use Exception;
 use oxDb;
 use oxRegistry;
 use oxList;
-use oxUtilsObject;
 use oxField;
 
 /**
@@ -231,7 +230,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $database->startTransaction();
             try {
                 if (!$database->getOne("select oxid from oxobject2list where oxobjectid=" . $database->quote($sOXID) . " and oxlistid=" . $database->quote($this->getId()))) {
-                    $sUid = oxUtilsObject::getInstance()->generateUID();
+                    $sUid = oxRegistry::getUtilsObject()->generateUID();
                     $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $database->quote($sOXID) . ", " . $database->quote($this->getId()) . ", " . $database->quote($sDesc) . " )";
                     $blAdd = $database->execute($sQ);
                 }

@@ -432,8 +432,8 @@ class OrderRecalculationTest extends \OxidTestCase
      */
     private function insertArticle()
     {
-        $this->testArticleId = substr_replace( oxUtilsObject::getInstance()->generateUId(), '_', 0, 1 );
-        $this->testArticleParentId = substr_replace( oxUtilsObject::getInstance()->generateUId(), '_', 0, 1 );
+        $this->testArticleId = substr_replace( oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1 );
+        $this->testArticleParentId = substr_replace( oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1 );
 
         //copy from original article parent and variant
         $articleParent = oxNew('oxarticle');
@@ -468,7 +468,7 @@ class OrderRecalculationTest extends \OxidTestCase
         //mocked to circumvent delivery address change md5 check from requestParameter
         $order->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(0));
 
-        $this->testOrderId = substr_replace( oxUtilsObject::getInstance()->generateUId(), '_', 0, 1 );
+        $this->testOrderId = substr_replace( oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1 );
         $order->setId($this->testOrderId);
 
         return $order;
@@ -503,7 +503,7 @@ class OrderRecalculationTest extends \OxidTestCase
      */
     private function insertUser()
     {
-        $this->testUserId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $this->testUserId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         $user = oxNew('oxUser');
         $user->setId($this->testUserId);
@@ -533,7 +533,7 @@ class OrderRecalculationTest extends \OxidTestCase
 
         $user->save();
 
-        $newId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $newId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
         $oDb = oxDb::getDb();
         $sQ = 'insert into `oxobject2delivery` (oxid, oxdeliveryid, oxobjectid, oxtype ) ' .
               " values ('$newId', 'oxidstandard', '" . $this->testUserId . "', 'oxdelsetu')";
@@ -548,7 +548,7 @@ class OrderRecalculationTest extends \OxidTestCase
         $startDate = date('Y-m-d 00:00:00', time() - 86400);
         $endDate = date('Y-m-d 00:00:00', time() + 86400);
 
-        $this->voucherSeriesId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $this->voucherSeriesId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
         $voucherSeries = oxNew('oxVoucherSerie');
         $voucherSeries->setId($this->voucherSeriesId);
         $voucherSeries->oxvoucherseries__oxshopid = new oxField('1', oxField::T_RAW);
@@ -566,7 +566,7 @@ class OrderRecalculationTest extends \OxidTestCase
         $voucherSeries->save();
 
         for ($i=1; $i<=4; $i++) {
-            $voucherId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+            $voucherId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
             $voucher = oxNew('oxVoucher');
             $voucher->setId($voucherId);
             $voucher->oxvouchers__oxvouchernr = new oxField($prefix . $i, oxField::T_RAW);
@@ -584,7 +584,7 @@ class OrderRecalculationTest extends \OxidTestCase
         $startDate = date('Y-m-d 00:00:00', time() - 86400);
         $endDate = date('Y-m-d 00:00:00', time() + 86400);
 
-        $this->discountId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $this->discountId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
         $discount = oxNew('oxDiscount');
         $discount->setId($this->discountId);
         $discount->oxdiscount__oxshopid = new oxField('1', oxField::T_RAW);
@@ -600,7 +600,7 @@ class OrderRecalculationTest extends \OxidTestCase
         $discount->oxdiscount__oxaddsum = new oxField('20', oxField::T_RAW);
         $discount->save();
 
-        $newId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $newId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
         $oDb = oxDb::getDb();
         $sQ = 'insert into `oxobject2discount` (oxid, oxdiscountid, oxobjectid, oxtype ) ' .
               " values ('$newId', '" . $this->discountId . "', '" . $this->testArticleId . "', 'oxarticles')";

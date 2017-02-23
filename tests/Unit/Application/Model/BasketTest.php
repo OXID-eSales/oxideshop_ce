@@ -31,7 +31,6 @@ use \oxbasket;
 use \oxField;
 use \oxPrice;
 use OxidEsales\EshopCommunity\Core\Price;
-use oxUtilsObject;
 use oxVoucherHelper;
 use \stdClass;
 use \oxbasketitem;
@@ -85,7 +84,7 @@ class BasketTest extends \OxidTestCase
 
         $sId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2275' : '2077';
 
-        $sNewId = oxUtilsObject::getInstance()->generateUId();
+        $sNewId = oxRegistry::getUtilsObject()->generateUId();
 
         oxTestModules::addFunction('oxarticle', 'getLink( $iLang = null, $blMain = false  )', '{return "htpp://link_for_article/".$this->getId();}');
 
@@ -102,7 +101,7 @@ class BasketTest extends \OxidTestCase
         $this->oArticle->save();
 
         // making category
-        $sCatId = oxUtilsObject::getInstance()->generateUId();
+        $sCatId = oxRegistry::getUtilsObject()->generateUId();
         $this->oCategory = oxNew('oxCategory');
         $this->oCategory->setId($sCatId);
         $this->oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
@@ -207,7 +206,7 @@ class BasketTest extends \OxidTestCase
         $oDisc2Art->save();
 
         // adding variant for article
-        $sNewVarId = oxUtilsObject::getInstance()->generateUId();
+        $sNewVarId = oxRegistry::getUtilsObject()->generateUId();
         $this->oVariant = oxNew('oxArticle');
         $this->oVariant->disableLazyLoading();
         $this->oVariant->Load($sNewId);

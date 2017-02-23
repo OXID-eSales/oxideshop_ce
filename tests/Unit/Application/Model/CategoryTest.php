@@ -24,7 +24,6 @@ namespace Unit\Application\Model;
 use oxCategory;
 use oxCategoryHelper;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
-use oxUtilsObject;
 use \oxUtilsView;
 use \oxField;
 use \oxDb;
@@ -134,12 +133,12 @@ class CategoryTest extends \OxidTestCase
     private function reload()
     {
         if (@$this->_oCategory->getId()) {
-            $oObj = oxUtilsObject::getInstance()->oxNew("oxCategory", "core");
+            $oObj = oxRegistry::getUtilsObject()->oxNew("oxCategory", "core");
             $oObj->load($this->_oCategory->getId());
             $this->_oCategory = $oObj;
         }
         if (@$this->_oCategoryB->getId()) {
-            $oObj = oxUtilsObject::getInstance()->oxNew("oxCategory", "core");
+            $oObj = oxRegistry::getUtilsObject()->oxNew("oxCategory", "core");
             $oObj->load($this->_oCategoryB->getId());
             $this->_oCategoryB = $oObj;
         }

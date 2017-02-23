@@ -22,7 +22,6 @@
 namespace Unit\Application\Model;
 
 use \oxField;
-use oxUtilsObject;
 use oxVoucherException;
 use \stdclass;
 use \oxDb;
@@ -338,7 +337,7 @@ class VoucherTest extends \OxidTestCase
         $oNewVoucher = oxNew('oxvoucher');
         $oNewVoucher->getVoucherByNr($sVoucherNr);
 
-        $oNewVoucher->oxvouchers__oxorderid = new oxField(oxUtilsObject::getInstance()->generateUID());
+        $oNewVoucher->oxvouchers__oxorderid = new oxField(oxRegistry::getUtilsObject()->generateUID());
         $oNewVoucher->save();
 
         $oNewVoucher = oxNew('oxvoucher');

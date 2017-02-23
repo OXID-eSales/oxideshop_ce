@@ -26,7 +26,6 @@ use oxCategory;
 use oxRegistry;
 use oxShop;
 use oxSystemComponentException;
-use oxUtilsObject;
 use oxView;
 use oxViewConfig;
 
@@ -584,7 +583,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             // looking for function name
             $aParams = explode('/', $aParams[0]);
             $sClassName = $aParams[0];
-            $realClassName = oxUtilsObject::getInstance()->getClassName($sClassName);
+            $realClassName = oxRegistry::getUtilsObject()->getClassName($sClassName);
 
             if (false === class_exists($realClassName)) {
                 //If redirect tries to use a not existing class throw an exception.

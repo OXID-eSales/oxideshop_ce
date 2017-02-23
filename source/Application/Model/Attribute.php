@@ -25,7 +25,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use oxDb;
 use oxRegistry;
 use oxField;
-use oxUtilsObject;
 
 /**
  * Article attributes manager.
@@ -122,7 +121,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                     $sVarId = substr($sVarId, 6);
                     $oNewAssign = oxNew("oxBase");
                     $oNewAssign->init("oxobject2attribute");
-                    $sNewId = oxUtilsObject::getInstance()->generateUID();
+                    $sNewId = oxRegistry::getUtilsObject()->generateUID();
                     if ($oNewAssign->load($sId)) {
                         $oNewAssign->oxobject2attribute__oxobjectid = new oxField($sVarId);
                         $oNewAssign->setId($sNewId);

@@ -22,7 +22,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxDb;
-use oxUtilsObject;
+use oxRegistry;
 
 /**
  * Settings handler class.
@@ -85,7 +85,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
 
         if (is_array($moduleSettings)) {
             foreach ($moduleSettings as $setting) {
-                $oxid = oxUtilsObject::getInstance()->generateUId();
+                $oxid = oxRegistry::getUtilsObject()->generateUId();
 
                 $module = $this->getModuleConfigId($moduleId);
                 $name = $setting["name"];

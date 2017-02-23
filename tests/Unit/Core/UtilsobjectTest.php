@@ -181,7 +181,7 @@ class UtilsobjectTest extends \OxidTestCase
 
         $config = $this->getConfig();
 
-        oxUtilsObject::getInstance()->setModuleVar("aModules", $aModules);
+        oxRegistry::getUtilsObject()->setModuleVar("aModules", $aModules);
         $config->setConfigParam("aModules", $aModules);
 
         $configFile = oxRegistry::get("oxConfigFile");
@@ -215,7 +215,7 @@ class UtilsobjectTest extends \OxidTestCase
 
         $config = $this->getConfig();
 
-        oxUtilsObject::getInstance()->setModuleVar("aModules", $aModules);
+        oxRegistry::getUtilsObject()->setModuleVar("aModules", $aModules);
         $config->setConfigParam("aModules", $aModules);
 
         $configFile = oxRegistry::get("oxConfigFile");
@@ -245,8 +245,8 @@ class UtilsobjectTest extends \OxidTestCase
      */
     public function testGenerateUid()
     {
-        $id1 = oxUtilsObject::getInstance()->generateUid();
-        $id2 = oxUtilsObject::getInstance()->generateUid();
+        $id1 = oxRegistry::getUtilsObject()->generateUid();
+        $id2 = oxRegistry::getUtilsObject()->generateUid();
         $this->assertNotEquals($id1, $id2);
     }
 

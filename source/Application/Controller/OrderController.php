@@ -586,6 +586,6 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      */
     protected function getUtilsObjectInstance()
     {
-        return UtilsObject::getInstance();
+        return oxRegistry::getUtilsObject();
     }
 }

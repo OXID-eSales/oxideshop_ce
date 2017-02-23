@@ -1680,6 +1680,7 @@ class Email extends \PHPMailer
      * Preventing possible email spam over php mail() exploit (http://www.securephpwiki.com/index.php/Email_Injection)
      *
      * {@inheritdoc}
+     * @return boolean
      */
     public function setFrom($address, $name = null, $auto = true)
     {

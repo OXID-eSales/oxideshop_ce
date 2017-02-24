@@ -115,7 +115,7 @@ require_once OX_BASE_PATH . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTOR
  * Like this the shop configuration is available there.
  */
 $configFile = new \OxidEsales\Eshop\Core\ConfigFile(OX_BASE_PATH . "config.inc.php");
-\OxidEsales\Eshop\Core\Registry::set("oxConfigFile", $configFile);
+\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);
 unset($configFile);
 
 /**

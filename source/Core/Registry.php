@@ -39,6 +39,20 @@ class Registry
     protected static $instances = array();
 
     /**
+     * Hold BC class to virtual namespace class map
+     *
+     * @var null| array
+     */
+    protected static $backwardsCompatibilityClassMap = null;
+
+    /**
+     * Hold virtual namespace to class map
+     *
+     * @var null| array
+     */
+    protected static $virtualNameSpaceClassMap = null;
+
+    /**
      * Instance getter. Return existing instance or initializes the new one
      *
      * @param string $className Class name
@@ -49,7 +63,7 @@ class Registry
      */
     public static function get($className)
     {
-        $key = strtolower($className);
+        $key = self::getStorageKey($className);
         if (isset(self::$instances[$key])) {
             return self::$instances[$key];
         } else {
@@ -71,15 +85,15 @@ class Registry
      */
     public static function set($className, $instance)
     {
-        $className = strtolower($className);
+        $key = self::getStorageKey($className);
 
         if (is_null($instance)) {
-            unset(self::$instances[$className]);
+            unset(self::$instances[$key]);
 
             return;
         }
 
-        self::$instances[$className] = $instance;
+        self::$instances[$key] = $instance;
     }
 
     /**
@@ -173,7 +187,54 @@ class Registry
      */
     public static function instanceExists($className)
     {
-        return isset(self::$instances[strtolower($className)]);
+        $key = self::getStorageKey($className);
+        return isset(self::$instances[$key]);
+    }
+
+    /**
+     * Get backwardsCompatibilityClassMap
+     *
+     * @return array
+     */
+    public static function getBackwardsCompatibilityClassMap()
+    {
+        if (is_null(self::$backwardsCompatibilityClassMap)) {
+            $classMap = include OX_BASE_PATH . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR . 'BackwardsCompatibilityClassMap.php';
+            self::$backwardsCompatibilityClassMap = array_flip(array_map('strtolower', $classMap));
+        }
+
+        return self::$backwardsCompatibilityClassMap;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getVirtualNameSpaceClassMap()
+    {
+        if (is_null(self::$virtualNameSpaceClassMap)) {
+            $classMap = new \OxidEsales\Eshop\Core\Autoload\VirtualNameSpaceClassMap;
+            self::$virtualNameSpaceClassMap = $classMap->getClassMap();
+        }
+
+        return self::$virtualNameSpaceClassMap;
+    }
+
+    /**
+     * Figure out which key to use for instance cache.
+     *
+     * @param string $className
+     *
+     * @return string
+     */
+    public static function getStorageKey($className)
+    {
+        $key = strtolower($className);
+        if (!\OxidEsales\EshopCommunity\Core\UtilsObject::isNamespacedClass($className)) {
+            $bcMap = self::getBackwardsCompatibilityClassMap();
+            $virtualKey = isset($bcMap[$key]) ? $bcMap[$key] : $key;
+            $key = $virtualKey;
+        }
+        return strtolower($key);
     }
 
     /**

@@ -592,7 +592,7 @@ class VirtualNameSpaceClassMap
             'OxidEsales\Eshop\Core\WidgetControl' => \OxidEsales\EshopCommunity\Core\WidgetControl::class,
         ];
 
-        
+
 
         return $classMap;
     }

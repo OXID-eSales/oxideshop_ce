@@ -341,6 +341,16 @@ class UtilsObject
     }
 
     /**
+     * @param string $className
+     *
+     * @return bool
+     */
+    public static function isNamespacedClass($className)
+    {
+        return strpos($className, '\\') !== false;
+    }
+
+    /**
      * Disables module
      *
      * @param string $sModule
@@ -390,13 +400,4 @@ class UtilsObject
         return count($arguments) < 2 && (!isset($arguments[0]) || is_scalar($arguments[0]));
     }
 
-    /**
-     * @param string $className
-     *
-     * @return bool
-     */
-    private static function isNamespacedClass($className)
-    {
-        return strpos($className, '\\') !== false;
-    }
 }

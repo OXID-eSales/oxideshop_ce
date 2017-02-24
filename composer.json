@@ -24,7 +24,7 @@
         "oxid-esales/coding-standards": "^v3.0.1",
         "oxid-esales/coding-standards-wrapper": "dev-master",
         "incenteev/composer-parameter-handler": "~v2.0",
-        "oxid-esales/oxideshop-ide-helper": "dev-master",
+        "oxid-esales/oxideshop-ide-helper": "^1.0",
         "oxid-esales/eshop-virtual-namespace-generator": "^1.0"
     },
     "autoload": {

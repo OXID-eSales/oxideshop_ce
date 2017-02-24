@@ -25,12 +25,8 @@ namespace OxidEsales\EshopCommunity\Core\Autoload;
 /**
  * This file holds the mapping of classes from the virtual namespace to the concrete classes of each edition.
  * Each edition has its own map file. The map files will be merged like this: CE <- PE <- EE
- * So the mapping to a concrete class will be overwritten, if a class exists in a different edition.
- *
- * NOTE: exceptions aren't working at the moment with the virtual namespaces (throwing them is the problem).
- *       Use the OxidEsales\EshopCommunity namespace instead!
- *
- * @inheritdoc
+ * So the mapping to a concrete class of the OXID eShop communitiy edition will be overwritten, if this class exists the
+ * PE or EE edition.
  */
 class VirtualNameSpaceClassMap
 {
@@ -42,7 +38,7 @@ class VirtualNameSpaceClassMap
      */
     public function getClassMap()
     {
-        return [
+        $classMap = [
             'OxidEsales\Eshop\Application\Component\BasketComponent' => \OxidEsales\EshopCommunity\Application\Component\BasketComponent::class,
             'OxidEsales\Eshop\Application\Component\CategoriesComponent' => \OxidEsales\EshopCommunity\Application\Component\CategoriesComponent::class,
             'OxidEsales\Eshop\Application\Component\CurrencyComponent' => \OxidEsales\EshopCommunity\Application\Component\CurrencyComponent::class,
@@ -424,14 +420,9 @@ class VirtualNameSpaceClassMap
             'OxidEsales\Eshop\Application\Model\Wrapping' => \OxidEsales\EshopCommunity\Application\Model\Wrapping::class,
             'OxidEsales\Eshop\Core\AdminLogSqlDecorator' => \OxidEsales\EshopCommunity\Core\AdminLogSqlDecorator::class,
             'OxidEsales\Eshop\Core\ApplicationServer' => \OxidEsales\EshopCommunity\Core\ApplicationServer::class,
-            'OxidEsales\Eshop\Core\Autoload\AliasAutoload' => \OxidEsales\EshopCommunity\Core\Autoload\AliasAutoload::class,
-            'OxidEsales\Eshop\Core\Autoload\ModuleAutoload' => \OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload::class,
-            'OxidEsales\Eshop\Core\Autoload\NotOverridableClassAutoload' => \OxidEsales\EshopCommunity\Core\Autoload\NotOverridableClassAutoload::class,
-            'OxidEsales\Eshop\Core\Autoload\VirtualNamespaceClassAutoload' => \OxidEsales\EshopCommunity\Core\Autoload\VirtualNamespaceClassAutoload::class,
+            'OxidEsales\Eshop\Core\Autoload\VirtualNameSpaceClassMap' => \OxidEsales\EshopCommunity\Core\Autoload\VirtualNameSpaceClassMap::class,
+            'OxidEsales\Eshop\Core\BackwardsCompatibleClassNameProvider' => \OxidEsales\EshopCommunity\Core\BackwardsCompatibleClassNameProvider::class,
             'OxidEsales\Eshop\Core\Base' => \OxidEsales\EshopCommunity\Core\Base::class,
-            'OxidEsales\Eshop\Core\ClassMap' => \OxidEsales\EshopCommunity\Core\ClassMap::class,
-            'OxidEsales\Eshop\Core\ClassMapProvider' => \OxidEsales\EshopCommunity\Core\ClassMapProvider::class,
-            'OxidEsales\Eshop\Core\ClassNameProvider' => \OxidEsales\EshopCommunity\Core\BackwardsCompatibleClassNameProvider::class,
             'OxidEsales\Eshop\Core\CompanyVatInChecker' => \OxidEsales\EshopCommunity\Core\CompanyVatInChecker::class,
             'OxidEsales\Eshop\Core\CompanyVatInCountryChecker' => \OxidEsales\EshopCommunity\Core\CompanyVatInCountryChecker::class,
             'OxidEsales\Eshop\Core\CompanyVatInValidator' => \OxidEsales\EshopCommunity\Core\CompanyVatInValidator::class,
@@ -598,9 +589,11 @@ class VirtualNameSpaceClassMap
             'OxidEsales\Eshop\Core\ViewHelper\JavaScriptRenderer' => \OxidEsales\EshopCommunity\Core\ViewHelper\JavaScriptRenderer::class,
             'OxidEsales\Eshop\Core\ViewHelper\StyleRegistrator' => \OxidEsales\EshopCommunity\Core\ViewHelper\StyleRegistrator::class,
             'OxidEsales\Eshop\Core\ViewHelper\StyleRenderer' => \OxidEsales\EshopCommunity\Core\ViewHelper\StyleRenderer::class,
-            'OxidEsales\Eshop\Core\VirtualNameSpaceClassMap' => \OxidEsales\EshopCommunity\Core\VirtualNameSpaceClassMap::class,
             'OxidEsales\Eshop\Core\WidgetControl' => \OxidEsales\EshopCommunity\Core\WidgetControl::class,
-
         ];
+
+        
+
+        return $classMap;
     }
 }

@@ -24,10 +24,14 @@ namespace OxidEsales\EshopCommunity\Application\Component;
 
 use oxDb;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Form\UpdatableFieldsConstructor;
 use oxRegistry;
 use oxUser;
 use Exception;
 use oxField;
+use OxidEsales\Eshop\Core\Contract\AbstractUpdatableFields;
+use OxidEsales\Eshop\Application\Model\User\UserUpdatableFields;
+use OxidEsales\Eshop\Application\Model\User\UserShippingAddressUpdatableFields;
 
 // defining login/logout states
 define('USER_LOGIN_SUCCESS', 1);
@@ -428,10 +432,11 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $sPassword2 = $oConfig->getRequestParameter('lgn_pwd2', true);
 
         $aInvAdress = $oConfig->getRequestParameter('invadr', true);
-        $aInvAdress = $this->cleanBillingAddress($aInvAdress);
+
+        $aInvAdress = $this->cleanAddress($aInvAdress, oxNew(UserUpdatableFields::class));
 
         $aDelAdress = $this->_getDelAddressData();
-        $aDelAdress = $this->cleanDeliveryAddress($aDelAdress);
+        $aDelAdress = $this->cleanAddress($aDelAdress, oxNew(UserShippingAddressUpdatableFields::class));
 
         $database = oxDb::getDb();
         $database->startTransaction();
@@ -649,11 +654,11 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // collecting values to check
         $aDelAdress = $this->_getDelAddressData();
-        $aDelAdress = $this->cleanDeliveryAddress($aDelAdress);
+        $aDelAdress = $this->cleanAddress($aDelAdress, oxNew(UserShippingAddressUpdatableFields::class));
 
         // if user company name, user name and additional info has special chars
         $aInvAdress = oxRegistry::getConfig()->getRequestParameter('invadr', true);
-        $aInvAdress = $this->cleanBillingAddress($aInvAdress);
+        $aInvAdress = $this->cleanAddress($aInvAdress, oxNew(UserUpdatableFields::class));
 
         $sUserName = $oUser->oxuser__oxusername->value;
         $sPassword = $sPassword2 = $oUser->oxuser__oxpassword->value;
@@ -707,37 +712,21 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     }
 
     /**
-     * Removes sensitive fields from billing address data.
-     *
-     * @param array $aBillingAddress
+     * @param array                   $address
+     * @param AbstractUpdatableFields $updatableFields
      *
      * @return array
      */
-    private function cleanBillingAddress($aBillingAddress)
+    protected function cleanAddress($address, $updatableFields)
     {
-        if (is_array($aBillingAddress)) {
-            $skipFields = array('oxuser__oxid', 'oxid', 'oxuser__oxpoints', 'oxpoints', 'oxuser__oxboni', 'oxboni');
-            $aBillingAddress = array_change_key_case($aBillingAddress);
-            $aBillingAddress = array_diff_key($aBillingAddress, array_flip($skipFields));
+        if (is_array($address)) {
+            /** @var UpdatableFieldsConstructor $updatableFieldsConstructor */
+            $updatableFieldsConstructor = oxNew(UpdatableFieldsConstructor::class);
+            $cleaner = $updatableFieldsConstructor->getAllowedFieldsCleaner($updatableFields);
+            return $cleaner->filterByUpdatableFields($address);
         }
-        return $aBillingAddress;
-    }
 
-    /**
-     * Removes sensitive fields from billing address data.
-     *
-     * @param array $aDeliveryAddress
-     *
-     * @return array
-     */
-    private function cleanDeliveryAddress($aDeliveryAddress)
-    {
-        if (is_array($aDeliveryAddress)) {
-            $skipFields = array('oxaddress__oxid', 'oxid', 'oxaddress__oxuserid', 'oxuserid', 'oxaddress__oxaddressuserid', 'oxaddressuserid');
-            $aDeliveryAddress = array_change_key_case($aDeliveryAddress);
-            $aDeliveryAddress = array_diff_key($aDeliveryAddress, array_flip($skipFields));
-        }
-        return $aDeliveryAddress;
+        return $address;
     }
 
     /**

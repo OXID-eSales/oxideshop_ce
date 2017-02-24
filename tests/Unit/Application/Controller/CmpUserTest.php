@@ -61,7 +61,6 @@ class modcmp_user extends oxcmp_user
 
 class CmpUserTest extends \OxidTestCase
 {
-
     /**
      * Tear down the fixture.
      *
@@ -980,7 +979,7 @@ class CmpUserTest extends \OxidTestCase
 
     /**
      * Test _changeUser_noRedirect().
-     * 
+     *
      * @return null
      */
     public function testChangeUserNoRedirectUserException()
@@ -1119,12 +1118,15 @@ class CmpUserTest extends \OxidTestCase
     {
         $this->setRequestParameter('blnewssubscribed', false);
         $aRawVal = array(
+            // Existing fields which users should not be able to change.
             'oxuser__oxid'        => 'newId',
             'oxid'        => 'newId',
             'oxuser__oxpoints'        => 'newPoints',
             'oxpoints'        => 'newPoints',
             'oxuser__oxboni'        => 'newBoni',
             'oxboni'        => 'newBoni',
+
+            // Fields which users should be capable to change.
             'oxuser__oxfname'     => 'fname',
             'oxuser__oxlname'     => 'lname',
             'oxuser__oxstreetnr'  => 'nr',
@@ -1224,6 +1226,120 @@ class CmpUserTest extends \OxidTestCase
         $this->setRequestParameter('deladr', $aRawVal);
         $oUserView = $this->getProxyClass("oxcmp_user");
         $this->assertEquals(array(), $oUserView->UNITgetDelAddressData());
+    }
+
+    public function testChangeUserBillingAddress()
+    {
+        $this->setRequestParameter('blnewssubscribed', false);
+        $this->setRequestParameter('blshowshipaddress', true);
+        $formFields = array(
+            // Existing fields which users should not be able to change.
+            'oxuser__oxid'        => 'newId',
+            'oxid'        => 'newId',
+            'oxuser__oxpoints'        => 'newPoints',
+            'oxpoints'        => 'newPoints',
+            'oxuser__oxboni'        => 'newBoni',
+            'oxboni'        => 'newBoni',
+
+            // By default, user should not be capable to change new fields.
+            'oxaddress__newfield'        => 'newId',
+            'newfield'        => 'newId',
+
+            // Fields which users should be capable to change.
+            'oxuser__oxfname'     => 'fname',
+            'oxuser__oxlname'     => 'lname',
+            'oxuser__oxstreetnr'  => 'nr',
+            'oxuser__oxstreet'    => 'street',
+            'oxuser__oxzip'       => 'zip',
+            'oxuser__oxcity'      => 'city',
+            'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984'
+        );
+        $this->setRequestParameter('invadr', $formFields);
+
+        $expectedUserData = [
+            'oxuser__oxfname'     => 'fname',
+            'oxuser__oxlname'     => 'lname',
+            'oxuser__oxstreetnr'  => 'nr',
+            'oxuser__oxstreet'    => 'street',
+            'oxuser__oxzip'       => 'zip',
+            'oxuser__oxcity'      => 'city',
+            'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984'
+        ];
+
+        $user = $this->getMock($this->getProxyClassName('oxUser'), ['changeUserData']);
+        $user->expects($this->any())->method('changeUserData')->with(
+            $this->anything(),
+            $this->anything(),
+            $this->anything(),
+            $this->equalTo($expectedUserData),
+            $this->anything()
+        );
+
+        $oSession = $this->getMock('oxSession', array('getBasket', 'checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+
+        $oUserView = $this->getMock($this->getProxyClassName('oxcmp_user'), array('getSession', 'getUser', '_getBillingAddressData'));
+        $oUserView->expects($this->any())->method('_getBillingAddressData')->will($this->returnValue(null));
+        $oUserView->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
+        $oUserView->expects($this->once())->method('getUser')->will($this->returnValue($user));
+        $this->assertTrue($oUserView->UNITchangeUser_noRedirect());
+    }
+
+    public function testChangeUserDeliveryAddress()
+    {
+        $this->setRequestParameter('blnewssubscribed', false);
+        $this->setRequestParameter('blshowshipaddress', true);
+        $formFields = array(
+            // Existing fields which users should not be able to change.
+            'oxaddress__oxid'        => 'newId',
+            'oxid'        => 'newId',
+            'oxaddress__oxuserid'        => 'newId',
+            'oxuserid'        => 'newId',
+            'oxaddress__oxaddressuserid'        => 'newId',
+            'oxaddressuserid'        => 'newId',
+
+            // By default, user should not be capable to change new fields.
+            'oxaddress__newfield'        => 'newId',
+            'newfield'        => 'newId',
+
+            // Fields which users should be capable to change.
+            'oxaddress__oxfname'     => 'fname',
+            'oxaddress__oxlname'     => 'lname',
+            'oxaddress__oxstreetnr'  => 'nr',
+            'oxaddress__oxstreet'    => 'street',
+            'oxaddress__oxzip'       => 'zip',
+            'oxaddress__oxcity'      => 'city',
+            'oxaddress__oxcountryid' => 'a7c40f631fc920687.20179984'
+        );
+        $this->setRequestParameter('deladr', $formFields);
+
+        $expectedUserData = [
+            'oxaddress__oxfname'     => 'fname',
+            'oxaddress__oxlname'     => 'lname',
+            'oxaddress__oxstreetnr'  => 'nr',
+            'oxaddress__oxstreet'    => 'street',
+            'oxaddress__oxzip'       => 'zip',
+            'oxaddress__oxcity'      => 'city',
+            'oxaddress__oxcountryid' => 'a7c40f631fc920687.20179984'
+        ];
+
+        $user = $this->getMock($this->getProxyClassName('oxUser'), ['changeUserData']);
+        $user->expects($this->any())->method('changeUserData')->with(
+            $this->anything(),
+            $this->anything(),
+            $this->anything(),
+            $this->anything(),
+            $this->equalTo($expectedUserData)
+        );
+
+        $oSession = $this->getMock('oxSession', array('getBasket', 'checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+
+        $oUserView = $this->getMock($this->getProxyClassName('oxcmp_user'), array('getSession', 'getUser', '_getBillingAddressData'));
+        $oUserView->expects($this->any())->method('_getBillingAddressData')->will($this->returnValue(null));
+        $oUserView->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
+        $oUserView->expects($this->once())->method('getUser')->will($this->returnValue($user));
+        $this->assertTrue($oUserView->UNITchangeUser_noRedirect());
     }
 
     /**

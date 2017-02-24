@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  */
 class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Current class name
      *

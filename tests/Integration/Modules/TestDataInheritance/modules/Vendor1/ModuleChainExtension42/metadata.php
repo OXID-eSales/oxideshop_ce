@@ -23,19 +23,16 @@
 /**
  * Metadata version
  */
-$sMetadataVersion = '1.1';
+$sMetadataVersion = '2.0';
 
 /**
  * Module information
  */
 $aModule = array(
-    'id'           => 'bc_module_inheritance_2_5', // maybe find a better name for that
-    'title'        => 'Test backwards compatible PHP class inheritance 2.5',
-    'description'  => 'All involved module classes and shop class use the old notation without namespaces',
-    'thumbnail'    => 'picture.png',
-    'version'      => '1.0',
-    'author'       => 'OXID eSales AG',
-    'files'       => array(
-        'vendor_2_module_5_myclass' => 'bc_module_inheritance_2_5/vendor_2_module_5_myclass.php'
-    )
+    'id'          => 'Vendor1/ModuleChainExtension42',
+    'title'       => 'Test plain module class chain extension of namespaced module class 4.2',
+    'description' => 'This module has the namespaced class in it.',
+    'thumbnail'   => 'picture.png',
+    'version'     => '1.0',
+    'author'      => 'OXID eSales AG',
 );

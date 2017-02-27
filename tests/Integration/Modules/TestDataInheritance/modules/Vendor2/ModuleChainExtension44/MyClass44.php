@@ -15,27 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2017
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 
-/**
- * Metadata version
- */
-$sMetadataVersion = '1.1';
+namespace OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension44;
 
-/**
- * Module information
- */
-$aModule = array(
-    'id'           => 'bc_module_inheritance_2_5', // maybe find a better name for that
-    'title'        => 'Test backwards compatible PHP class inheritance 2.5',
-    'description'  => 'All involved module classes and shop class use the old notation without namespaces',
-    'thumbnail'    => 'picture.png',
-    'version'      => '1.0',
-    'author'       => 'OXID eSales AG',
-    'files'       => array(
-        'vendor_2_module_5_myclass' => 'bc_module_inheritance_2_5/vendor_2_module_5_myclass.php'
-    )
-);
+class MyClass44 extends MyClass44_parent
+{
+
+}

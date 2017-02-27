@@ -88,6 +88,24 @@ class BCModuleInheritanceTest extends BaseModuleInheritanceTestCase
                 'moduleToActivate' => ['bc_module_inheritance_1_5'],
                 'moduleClassName'  => 'vendor_1_module_5_myclass',
                 'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class]
+            ],
+            'case_3_1' => [
+                //Test case 3.1 plain module chain extends plain OXID eShop class
+                'moduleToActivate' => ['module_chain_extension_3_1'],
+                'moduleClassName'  => 'vendor_1_module_3_1_myclass',
+                'shopClassNames'   => ['oxArticle']
+            ],
+            'case_3_2' => [
+                //Test case 3.1 plain module chain extends namespaced OXID eShop Community class
+                'moduleToActivate' => ['module_chain_extension_3_2'],
+                'moduleClassName'  => 'vendor_1_module_3_2_myclass',
+                'shopClassNames'   => [\OxidEsales\EshopCommunity\Application\Model\Article::class]
+            ],
+            'case_3_3' => [
+                //Test case 3.3 plain module chain extends virtual OXID eShop class
+                'moduleToActivate' => ['module_chain_extension_3_3'],
+                'moduleClassName'  => 'vendor_1_module_3_3_myclass',
+                'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class]
             ]
         ];
     }

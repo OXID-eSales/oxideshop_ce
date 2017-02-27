@@ -21,6 +21,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\EshopCommunity\Core\FileCache;
 use OxidEsales\EshopCommunityTestModule\Vendor1\ModuleInheritance16\MyClass;
 use OxidEsales\EshopCommunityTestModule\Vendor1\namespaced_from_ns\MyClass as namespaced_from_ns;
 use OxidEsales\EshopCommunityTestModule\Vendor1\namespaced_from_virtual\MyClass as namespaced_from_virtual;
@@ -44,7 +45,7 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
      *
      * @param array  $moduleToActivate The module we want to activate.
      * @param string $moduleClassName  The module class we want to instantiate.
-     * @param array $shopClassName    The shop class from which the module class should inherit.
+     * @param array  $shopClassName    The shop class from which the module class should inherit.
      */
     public function testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames)
     {
@@ -95,6 +96,18 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
                 'moduleClassName'  => namespaced_from_virtual::class,
                 'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class]
             ],
+            'case_3_5' => [
+                // Test case 3.5 namespaced module class chain extends namespaced OXID eShop Community class
+                'moduleToActivate' => ['Vendor1/ModuleChainExtension35'],
+                'moduleClassName'  => \OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension35\MyClass35::class,
+                'shopClassNames'   => [\OxidEsales\EshopCommunity\Application\Model\Article::class],
+            ],
+            'case_3_6' => [
+                // Test case 3.6 namespaced module class chain extends virtual OXID eShop class
+                'moduleToActivate' => ['Vendor1/ModuleChainExtension36'],
+                'moduleClassName'  => \OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension36\MyClass36::class,
+                'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class],
+            ],
         ];
     }
 
@@ -135,7 +148,7 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
                 'shopClassNames'    => [namespaced_from_ns::class]
             ],
             'case_2_7' => [
-                //Test case 2.7 namespaced module_2 extends plain module_1
+                // Test case 2.7 namespaced module_2 extends plain module_1
                 'modulesToActivate' => ['Vendor2/ModuleInheritance27', 'bc_module_inheritance_1_1'],
                 'moduleClassName'   => ModuleInheritance27MyClass::class,
                 'shopClassNames'    => ['vendor_1_module_1_onemoreclass']
@@ -145,7 +158,158 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
                 'modulesToActivate' => ['Vendor1/ModuleInheritance28a', 'Vendor2/ModuleInheritance28b'],
                 'moduleClassName'   => \OxidEsales\EshopCommunityTestModule\Vendor2\ModuleInheritance28b\MyClass::class,
                 'shopClassNames'    => [\OxidEsales\EshopCommunityTestModule\Vendor1\ModuleInheritance28a\MyClass::class]
-            ]
+            ],
+            'case_4_1' => [
+                // Test case 4.1 plain module_2 chain extends plain module_1
+                'modulesToActivate' => ['module_chain_extension_4_1_a', 'module_chain_extension_4_1_b'],
+                'moduleClassName'   => 'vendor_1_module_4_1_b_myclass',
+                'shopClassNames'    => ['vendor_1_module_4_1_a_myclass']
+            ],
+            'case_4_2' => [
+                // Test case 4.2 plain module_2 chain extends namespaced module_1
+                'modulesToActivate' => ['Vendor1/ModuleChainExtension42', 'module_chain_extension_4_2'],
+                'moduleClassName'   => 'module_chain_extension_4_2_myclass',
+                'shopClassNames'    => [\OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension42\MyClass42::class]
+            ],
+            'case_4_3' => [
+                // Test case 4.3 namespaced module class chain extends plain module class
+                'moduleToActivate' => ['bc_module_inheritance_4_3', 'Vendor2/ModuleChainExtension43'],
+                'moduleClassName'  => \OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension43\MyClass43::class,
+                'shopClassNames'   => ['vendor_1_module_4_3_myclass']
+            ],
+            'case_4_4' => [
+                // Test case 4.4 namespaced module class chain extends other namespaced module class
+                'moduleToActivate' => ['Vendor1/ModuleChainExtension44', 'Vendor2/ModuleChainExtension44'],
+                'moduleClassName'  => \OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension44\MyClass44::class,
+                'shopClassNames'   => [\OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension44\MyClass44::class],
+            ],
+        ];
+    }
+
+    /**
+     * Test, that the chain is build correct, after we ordered the module extensions over the admin controller.
+     *
+     * @param array $storedModuleChain The module chain we want to store over the admin controller.
+     *
+     * @dataProvider dataProviderTestChainAfterAdminControllerSave
+     */
+    public function testChainAfterAdminControllerSave($storedModuleChain)
+    {
+        $this->markTestSkippedUntil('2017-03-31', 'The most test cases did not work, cause the chain building seems buggy for mixed bc and namespaced classes (the story ESDEV-4251 is blocking this subtask)');
+
+        $activatedModules = [
+            'Vendor1/ModuleChainExtension37a',
+            'Vendor2/ModuleChainExtension37b',
+            'Vendor3/ModuleChainExtension37c',
+        ];
+        $this->environment->prepare($activatedModules);
+
+        $this->callAdminSaveModuleOrder($storedModuleChain);
+
+        // We clear the file cache here, cause officially we say, that you should empty the temporary directory after reordering.
+        FileCache::clearCache();
+
+        // check, if the inheritance chain is built as expected
+        $moduleObject = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+
+        $actualChain = $this->buildInheritanceChainHead($moduleObject);
+        $expectedChain = [$storedModuleChain[2], $storedModuleChain[1], $storedModuleChain[0], 'OxidEsales\EshopCommunity\Application\Model\Article'];
+
+        $this->assertEquals($expectedChain, $actualChain, 'The inheritance chain is not formed as expected!');
+    }
+
+    /**
+     * Get the head of the inheritance chain of the given object. With head here are ment the first four elements.
+     *
+     * @param object $moduleObject The object for which we want to build the inheritance chain head (first four elements).
+     *
+     * @return array The first four elements of the inheritance chain.
+     */
+    protected function buildInheritanceChainHead($moduleObject)
+    {
+        $moduleObjectClass = get_class($moduleObject);
+        $classParents = array_keys(class_parents($moduleObject));
+
+        return [$moduleObjectClass, $classParents[0], $classParents[1], $classParents[2]];
+    }
+
+    /**
+     * Call the admin controller with a given module extension order.
+     *
+     * @param array $storedModuleChain The ordered module extensions we want to send to the controller.
+     */
+    protected function callAdminSaveModuleOrder($storedModuleChain)
+    {
+        $this->setAdminMode(true);
+        $this->setModuleChainAsRequestParameter($storedModuleChain);
+
+        $oView = oxNew(\OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleSortList::class);
+        $oView->save();
+    }
+
+    /**
+     * Set the module order as a request parameter.
+     *
+     * @param array $storedModuleChain The ordered module extensions we want to send to the controller.
+     */
+    protected function setModuleChainAsRequestParameter($storedModuleChain)
+    {
+        $modulesSendToController = ["OxidEsales---Eshop---Application---Model---Article" => $storedModuleChain];
+        $json = json_encode($modulesSendToController);
+
+        $this->setRequestParameter("aModules", $json);
+    }
+
+    /**
+     * Data provider for the method testChainAfterAdminControllerSave.
+     *
+     * @return array The test cases for the method testChainAfterAdminControllerSave.
+     */
+    public function dataProviderTestChainAfterAdminControllerSave()
+    {
+        return [
+            'case_1' => [
+                'storedModuleChain' => [
+                    'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37a\MyClass37a',
+                    'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37b\MyClass37b',
+                    'OxidEsales\EshopCommunityTestModule\Vendor3\ModuleChainExtension37c\MyClass37c',
+                ]
+            ],
+            'case_2' => [
+                'storedModuleChain' => [
+                    'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37a\MyClass37a',
+                    'OxidEsales\EshopCommunityTestModule\Vendor3\ModuleChainExtension37c\MyClass37c',
+                    'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37b\MyClass37b',
+                ]
+            ],
+            'case_3' => [
+                'storedModuleChain' => [
+                    'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37b\MyClass37b',
+                    'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37a\MyClass37a',
+                    'OxidEsales\EshopCommunityTestModule\Vendor3\ModuleChainExtension37c\MyClass37c',
+                ]
+            ],
+            'case_4' => [
+                'storedModuleChain' => [
+                    'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37b\MyClass37b',
+                    'OxidEsales\EshopCommunityTestModule\Vendor3\ModuleChainExtension37c\MyClass37c',
+                    'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37a\MyClass37a',
+                ]
+            ],
+            'case_5' => [
+                'storedModuleChain' => [
+                    'OxidEsales\EshopCommunityTestModule\Vendor3\ModuleChainExtension37c\MyClass37c',
+                    'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37a\MyClass37a',
+                    'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37b\MyClass37b',
+                ]
+            ],
+            'case_6' => [
+                'storedModuleChain' => [
+                    'OxidEsales\EshopCommunityTestModule\Vendor3\ModuleChainExtension37c\MyClass37c',
+                    'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37b\MyClass37b',
+                    'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37a\MyClass37a',
+                ]
+            ],
         ];
     }
 }

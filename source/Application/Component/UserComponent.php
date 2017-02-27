@@ -613,9 +613,29 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Session variables:
      * <b>ordrem</b>
      *
+     * @deprecated since v6.0.0 (2017-02-27); Use changeUserWithoutRedirect().
+     *
      * @return  bool true on success, false otherwise
      */
     protected function _changeUser_noRedirect()
+    {
+        return $this->changeUserWithoutRedirect();
+    }
+
+    /**
+     * Mostly used for customer profile editing screen (OXID eShop ->
+     * MY ACCOUNT). Checks if oUser is set (oxcmp_user::oUser) - if
+     * not - executes oxcmp_user::_loadSessionUser(). If user unchecked newsletter
+     * subscription option - removes him from this group. There is an
+     * additional MUST FILL fields checking. Function returns true or false
+     * according to user data submission status.
+     *
+     * Session variables:
+     * <b>ordrem</b>
+     *
+     * @return  bool true on success, false otherwise
+     */
+    protected function changeUserWithoutRedirect()
     {
         if (!$this->getSession()->checkSessionChallenge()) {
             return;

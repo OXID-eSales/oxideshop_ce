@@ -347,7 +347,7 @@ class UtilsobjectTest extends \OxidTestCase
             )
         ));
 
-        $oUtilsObject = oxNew('oxUtilsObject');
+        $oUtilsObject = oxRegistry::getUtilsObject();
         $oUtilsObject->setModuleVar('aModules', array($class => $extension));
 
         return $oUtilsObject;

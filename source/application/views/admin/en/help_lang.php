@@ -136,6 +136,17 @@ $aLang =  array(
                                                  '<li>oxaddress__oxcountryid = Country</li>' .
                                                  '<li>oxaddress__oxfon = Telephone number</li></ul>',
 
+'HELP_SHOP_CONFIG_SETORDELETECURRENCY'        => 'Add or remove currencies. currency parameters are with @ symbol separated.<br /><br />'.
+                                                 '<ul>'.
+                                                 '<li><span class="navipath_or_inputname">[name]</span> - currency code according to ISO 4217 ( f.e. EUR )</li>'.
+                                                 '<li><span class="navipath_or_inputname">[rate]</span> - currency rate to basic currency. Basic currency has always 1.00</li>'.
+                                                 '<li><span class="navipath_or_inputname">[decimal separator]</span> - decimal separator</li>'.
+                                                 '<li><span class="navipath_or_inputname">[thousand separator]</span> - thousand separator</li>'.
+                                                 '<li><span class="navipath_or_inputname">[symbol]</span> - currency sign</li>'.
+                                                 '<li><span class="navipath_or_inputname">[decimal precision] - decimal precision</span> - </li>'.
+                                                 '<li><span class="navipath_or_inputname">[symbol position]</span> - optional parameter "Front". If used, stays currency sign in front of price. Otherwise - behind ( default )</li>'.
+                                                 '</ul>',
+
 'HELP_SHOP_CONFIG_USENEGATIVESTOCK'           => 'With <span class="navipath_or_inputname">Allow negative Stock Values</span> you can define how stock levels are calculated of products are out of stock:<br>' .
                                                  '<ul><li>If the setting is checked, negative stock values are calculated if further units are bought.</li>' .
                                                  '<li>If the setting is unchecked, the stock value never falls below 0, even if further units are bought.</li></ul>',

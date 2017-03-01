@@ -25,6 +25,7 @@ namespace OxidEsales\EshopCommunity\Setup;
 use Exception;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\SystemRequirements;
+use OxidEsales\EshopCommunity\Core\ConfigFile;
 use OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
 use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
 use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
@@ -129,8 +130,9 @@ class Controller extends Core
         $view = $this->getView();
         $session = $this->getSessionInstance();
         $systemRequirements = getSystemReqCheck();
+        $utilities = $this->getUtilitiesInstance();
 
-        $eulaOptionValue = $this->getUtilitiesInstance()->getRequestVar("iEula", "post");
+        $eulaOptionValue = $utilities->getRequestVar("iEula", "post");
         $eulaOptionValue = (int)($eulaOptionValue ? $eulaOptionValue : $session->getSessionParam("eula"));
         if (!$eulaOptionValue) {
             $setup = $this->getSetupInstance();
@@ -141,6 +143,8 @@ class Controller extends Core
         }
 
         $databaseConfigValues = $session->getSessionParam('aDB');
+        $demodataPackageExists = $utilities->isDemodataPrepared();
+
         if (!isset($databaseConfigValues)) {
             // default values
             $databaseConfigValues['dbHost'] = "localhost";
@@ -148,7 +152,7 @@ class Controller extends Core
             $databaseConfigValues['dbUser'] = "";
             $databaseConfigValues['dbPwd'] = "";
             $databaseConfigValues['dbName'] = "";
-            $databaseConfigValues['dbiDemoData'] = 1;
+            $databaseConfigValues['dbiDemoData'] = $demodataPackageExists ? 1 : 0;
         }
 
         $this->setViewOptions(
@@ -157,7 +161,8 @@ class Controller extends Core
             [
                 "aDB" => $databaseConfigValues,
                 "blMbStringOn" => $systemRequirements->getModuleInfo('mb_string'),
-                "blUnicodeSupport" => $systemRequirements->getModuleInfo('unicode_support')
+                "blUnicodeSupport" => $systemRequirements->getModuleInfo('unicode_support'),
+                "demodataPackageExists" => $demodataPackageExists
             ]
         );
     }
@@ -336,10 +341,16 @@ class Controller extends Core
         try {
             $baseSqlDir = $this->getUtilitiesInstance()->getSqlDirectory(EditionSelector::COMMUNITY);
             $database->queryFile("$baseSqlDir/database_schema.sql");
+            $utilities = $this->getUtilitiesInstance();
+            $demodataInstallationRequired = $databaseConfigValues['dbiDemoData'];
+
+            if ($demodataInstallationRequired && !$utilities->isDemodataPrepared()) {
+                throw new SetupControllerExitException($language->getText('ERROR_NO_DEMODATA_INSTALLED'));
+            }
 
             // install demo/initial data
             try {
-                $this->installShopData($database, $databaseConfigValues['dbiDemoData']);
+                $this->installShopData($database, $demodataInstallationRequired);
             } catch (CommandExecutionFailedException $exception) {
                 $this->handleCommandExecutionFailedException($exception);
                 throw new SetupControllerExitException();
@@ -597,15 +608,14 @@ class Controller extends Core
      * Installs demodata or initial, dependent on parameter
      *
      * @param Database $database
-     * @param int      $demodata
+     * @param int      $demodataRequired
      */
-    private function installShopData($database, $demodata = 0)
+    private function installShopData($database, $demodataRequired = 0)
     {
-        $editionSqlDir = $this->getUtilitiesInstance()->getSqlDirectory();
         $baseSqlDir = $this->getUtilitiesInstance()->getSqlDirectory(EditionSelector::COMMUNITY);
 
         // If demodata files are provided.
-        if ($this->getUtilitiesInstance()->checkIfDemodataPrepared($demodata)) {
+        if ($demodataRequired && $this->getUtilitiesInstance()->isDemodataPrepared()) {
             $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
 
             // Install demo data.
@@ -616,10 +626,6 @@ class Controller extends Core
             $database->queryFile("$baseSqlDir/initial_data.sql");
 
             $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
-
-            if ($demodata) {
-                $database->queryFile("$editionSqlDir/demodata.sql");
-            }
         }
     }
 

@@ -596,15 +596,14 @@ class Utilities extends Core
     }
 
     /**
-     * Check if setup should import the demodata file created from demodata servers.
+     * Check if demodata package is installed.
      *
-     * @param int $useDemodata
      * @return bool
      */
-    public function checkIfDemodataPrepared($useDemodata)
+    public function isDemodataPrepared()
     {
         $demodataSqlFile = $this->getActiveEditionDemodataPackageSqlFilePath();
-        return $useDemodata && file_exists($demodataSqlFile) ? true : false;
+        return file_exists($demodataSqlFile) ? true : false;
     }
 
     /**

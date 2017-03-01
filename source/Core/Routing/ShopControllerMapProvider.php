@@ -21,8 +21,6 @@
  */
 namespace OxidEsales\EshopCommunity\Core\Routing;
 
-use OxidEsales\EshopCommunity\Core\Contract\ControllerMapProviderInterface;
-
 /**
  * This class determines the controllers which should be allowed to be called directly via
  * HTTP GET/POST Parameters, inside form actions or with oxid_include_widget.
@@ -31,7 +29,7 @@ use OxidEsales\EshopCommunity\Core\Contract\ControllerMapProviderInterface;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ShopControllerMapProvider implements ControllerMapProviderInterface
+class ShopControllerMapProvider implements \OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface
 {
 
     private $controllerMap = [

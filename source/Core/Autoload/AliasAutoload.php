@@ -214,6 +214,8 @@ class AliasAutoload
     private function getVirtualClassMap()
     {
         if (is_null($this->virtualNameSpaceClassMap)) {
+            //IMPORTANT: we must use 'new' and the explicit namespace here because virtual namespace
+            //           objects are not available at this moment.
             $classMapProvider = new \OxidEsales\EshopCommunity\Core\Autoload\VirtualNameSpaceClassMapProvider;
             $this->virtualNameSpaceClassMap = $classMapProvider->getClassMap();
         }

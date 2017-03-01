@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Request;
-use OxidEsales\EshopCommunity\Core\UtilsObject;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Request;
+use OxidEsales\Eshop\Core\UtilsObject;
 
 
 /**

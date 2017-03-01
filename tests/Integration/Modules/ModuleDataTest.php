@@ -38,7 +38,7 @@ class ModuleDataTest extends BaseModuleTestCase
     /**
      * Test, that including a metadata file without proper metadata does not break anything
      *
-     * @covers Module::includeModuleMetaData()
+     * @covers OxidEsales\Eshop\Core\Module\Module::includeModuleMetaData()
      */
     public function testIncludeModuleMetaDataIncludeEmptyMetadata() {
         $module = oxNew(Module::class);
@@ -57,7 +57,7 @@ class ModuleDataTest extends BaseModuleTestCase
     /**
      * Test, that including a metadata file returns the expected value for Module::getModuleData()
      *
-     * @covers Module::includeModuleMetaData()
+     * @covers OxidEsales\Eshop\Core\Module\Module::includeModuleMetaData()
      */
     public function testIncludeModuleMetaDataIncludeSetsModuleData() {
         $metaDataFile = $this->testModuleDirectory . 'metadata.php';
@@ -72,7 +72,7 @@ class ModuleDataTest extends BaseModuleTestCase
     /**
      * Test, that including a metadata file returns the expected value for Module::getMetaDataVersion()
      *
-     * @covers Module::includeModuleMetaData()
+     * @covers OxidEsales\Eshop\Core\Module\Module::includeModuleMetaData()
      */
     public function testIncludeModuleMetaDataIncludeSetsMetaDataVersion() {
         $metaDataFile = $this->testModuleDirectory . 'metadata.php';

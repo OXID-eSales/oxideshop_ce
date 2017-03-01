@@ -28,7 +28,7 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 /**
  * Tests for Account class
- * @covers AccountNoticeListController
+ * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountNoticeListController
  */
 class AccountNoticeListControllerTest extends \OxidTestCase
 {

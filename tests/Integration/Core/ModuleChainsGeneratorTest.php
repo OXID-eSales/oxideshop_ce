@@ -32,7 +32,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  * Class ModuleChainsGeneratorTest
  *
  * @package OxidEsales\EshopCommunity\Tests\Integration\Core
- * @covers  \OxidEsales\EshopCommunity\Core\ModuleChainsGenerator
+ * @covers  OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator
  */
 class ModuleChainsGeneratorTest extends UnitTestCase
 {

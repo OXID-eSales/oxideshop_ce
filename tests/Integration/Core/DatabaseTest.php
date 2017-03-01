@@ -34,7 +34,7 @@ use OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException;
  * Class DatabaseTest
  *
  * @group database-adapter
- * @covers OxidEsales\EshopCommunity\Core\Database
+ * @covers OxidEsales\EshopCommunity\Core\DatabaseProvider
  */
 class DatabaseTest extends UnitTestCase
 {

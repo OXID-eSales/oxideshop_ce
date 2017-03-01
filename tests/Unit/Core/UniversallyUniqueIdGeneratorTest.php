@@ -25,8 +25,6 @@ use \oxUniversallyUniqueIdGenerator;
 
 /**
  * Class Unit_Core_oxServersClusterIdGeneratorTest
- *
- * @covers oxServerNodesManager
  */
 class UniversallyUniqueIdGeneratorTest extends \OxidTestCase
 {

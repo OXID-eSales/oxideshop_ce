@@ -36,7 +36,7 @@ use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
  * Class DbTest
  *
  * @group   database-adapter
- * @covers  DatabaseProvider
+ * @covers  OxidEsales\Eshop\Core\DatabaseProvider
  * @package Unit\Core
  */
 class DatabaseTest extends UnitTestCase

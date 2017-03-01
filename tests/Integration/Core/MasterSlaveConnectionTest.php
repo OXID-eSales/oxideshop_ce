@@ -29,7 +29,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 /**
  * Class MasterSlaveConnectionTest
  *
- * @covers \OxidEsales\EshopCommunity\Core\Database
+ * @covers \OxidEsales\EshopCommunity\Core\DatabaseProvider
  */
 class MasterSlaveConnectionTest extends UnitTestCase
 {

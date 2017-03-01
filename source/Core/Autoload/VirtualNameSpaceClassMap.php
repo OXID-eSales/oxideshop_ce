@@ -452,7 +452,6 @@ class VirtualNameSpaceClassMap
             'OxidEsales\Eshop\Core\Decryptor' => \OxidEsales\EshopCommunity\Core\Decryptor::class,
             'OxidEsales\Eshop\Core\DisplayError' => \OxidEsales\EshopCommunity\Core\DisplayError::class,
             'OxidEsales\Eshop\Core\DynamicImageGenerator' => \OxidEsales\EshopCommunity\Core\DynamicImageGenerator::class,
-            'OxidEsales\Eshop\Core\Edition\ClassMap' => \OxidEsales\EshopCommunity\Core\Edition\ClassMap::class,
             'OxidEsales\Eshop\Core\Edition\EditionPathProvider' => \OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider::class,
             'OxidEsales\Eshop\Core\Edition\EditionRootPathProvider' => \OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider::class,
             'OxidEsales\Eshop\Core\Edition\EditionSelector' => \OxidEsales\EshopCommunity\Core\Edition\EditionSelector::class,

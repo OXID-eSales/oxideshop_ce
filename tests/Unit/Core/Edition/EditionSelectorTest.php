@@ -24,6 +24,7 @@ namespace Unit\Core\Edition;
 use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxRegistry;
+use OxidEsales\Eshop\Core\ConfigFile;
 
 // TODO: class should be refactored to testable state.
 class EditionSelectorTest extends UnitTestCase
@@ -120,10 +121,10 @@ class EditionSelectorTest extends UnitTestCase
     public function testForcingEditionByConfigWhenNotRegistered()
     {
         $path = $this->createFile('config.inc.php', '<?php $this->edition = "EE";');
-        $this->setConfigParam('sShopDir', dirname($path));
+        $fakeConfigFile = new ConfigFile($path);
 
         $configFile = oxRegistry::get('oxConfigFile');
-        oxRegistry::set('oxConfigFile', null);
+        oxRegistry::set('oxConfigFile', $fakeConfigFile);
 
         $editionSelector = new EditionSelector();
         $this->assertTrue($editionSelector->isEnterprise());

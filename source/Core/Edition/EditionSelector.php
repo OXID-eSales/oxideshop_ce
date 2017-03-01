@@ -24,6 +24,7 @@ namespace OxidEsales\EshopCommunity\Core\Edition;
 
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Autoload\VirtualNameSpaceClassMapProvider;
 
 /**
  * Class is responsible for returning edition.
@@ -43,13 +44,22 @@ class EditionSelector
     private $edition = null;
 
     /**
+     * Virtual class map provider.
+     *
+     * @var OxidEsales\Eshop\Core\Autoload\VirtualNameSpaceClassMapProvider
+     */
+    private $virtualClassMapProvider = null;
+
+    /**
      * EditionSelector constructor.
      *
-     * @param string|null $edition to force edition.
+     * @param string|null                           $edition                 to force edition.
+     * @param VirtualNameSpaceClassMapProvider|null $virtualClassMapProvider Optional classMapProviderr
      */
-    public function __construct($edition = null)
+    public function __construct($edition = null, $virtualClassMapProvider = null)
     {
         $this->edition = $edition ?: $this->findEdition();
+        $this->virtualClassMapProvider = $virtualClassMapProvider;
     }
 
     /**
@@ -95,29 +105,25 @@ class EditionSelector
     protected function findEdition()
     {
         if (!class_exists('OxidEsales\EshopCommunity\Core\Registry') || !Registry::instanceExists('oxConfigFile')) {
-            $configFile = new ConfigFile(getShopBasePath() . "config.inc.php");
+            $configFile = new ConfigFile(OX_BASE_PATH . DIRECTORY_SEPARATOR . "config.inc.php");
         }
         $configFile = isset($configFile) ? $configFile : Registry::get('oxConfigFile');
-        $edition = $configFile->getVar('edition') ?: $this->findEditionByClassMap();
+        $edition = $configFile->getVar('edition') ?: $this->getVirtualClassMapProvider()->getEdition();
         $configFile->setVar('edition', $edition);
 
         return strtoupper($edition);
     }
 
     /**
-     * Determine shop version by ClassMap existence.
+     * Getter for virtualClassMap Provider.
      *
-     * @return string
+     * @return |OxidEsales\Eshop\Core\Autoload\VirtualNameSpaceClassMapProvider
      */
-    protected function findEditionByClassMap()
+    protected function getVirtualClassMapProvider()
     {
-        $edition = static::COMMUNITY;
-        if (class_exists('OxidEsales\EshopEnterprise\ClassMap')) {
-            $edition = static::ENTERPRISE;
-        } elseif (class_exists('OxidEsales\EshopProfessional\ClassMap')) {
-            $edition = static::PROFESSIONAL;
+        if (is_null($this->virtualClassMapProvider)) {
+            $this->virtualClassMapProvider = oxNew(\OxidEsales\Eshop\Core\Autoload\VirtualNameSpaceClassMapProvider::class);
         }
-
-        return $edition;
+        return $this->virtualClassMapProvider;
     }
 }

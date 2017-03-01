@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2017
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 
 namespace OxidEsales\EshopCommunity\Core\Autoload;
@@ -32,6 +32,37 @@ namespace OxidEsales\EshopCommunity\Core\Autoload;
  */
 class VirtualNameSpaceClassMapProvider
 {
+
+    /**
+     * Array with virtual name space class map class names.
+     *
+     * @var array
+     */
+    private $virtualNameSpaceClassMaps = [
+        'CE' => \OxidEsales\EshopCommunity\Core\Autoload\VirtualNameSpaceClassMap::class,
+        'PE' => \OxidEsales\EshopProfessional\Core\Autoload\VirtualNameSpaceClassMap::class,
+        'EE' => \OxidEsales\EshopEnterprise\Core\Autoload\VirtualNameSpaceClassMap::class
+    ];
+
+    /**
+     * Array with virtual namespace class map file names.
+     *
+     * @var array
+     */
+    private $virtualNameSpaceClassMapFiles = [];
+
+    /**
+     * Class constructor.
+     */
+    public function __construct()
+    {
+        $this->virtualNameSpaceClassMapFiles = [
+            'CE' => OX_BASE_PATH . 'Core/Autoload/VirtualNameSpaceClassMap.php',
+            'PE' => VENDOR_PATH . 'oxid-esales/oxideshop-pe/Core/Autoload/VirtualNameSpaceClassMap.php',
+            'EE' => VENDOR_PATH . 'oxid-esales/oxideshop-ee/Core/Autoload/VirtualNameSpaceClassMap.php',
+        ];
+    }
+
     /**
      * Get array mapping virtual namespace class name as key to real edition namespace class name.
      *
@@ -40,50 +71,79 @@ class VirtualNameSpaceClassMapProvider
     public function getClassMap()
     {
         $virtualClassMap = $this->getVirtualClassMap();
+
         return $virtualClassMap->getClassMap();
+    }
+
+    /**
+     * Get current edition. If no edition is set in config.inc.php check for available files.
+     *
+     * @return string
+     */
+    public function getEdition()
+    {
+        $editionByConfig = $this->getEditionByConfig();
+        $editionBySource = $this->getEditionBySource();
+
+        $edition = $editionByConfig ? $editionByConfig : $editionBySource;
+        if (!$edition) {
+            trigger_error('OXID eShop Edition could not be found in config file or from sources', E_USER_ERROR);
+        }
+
+        return $edition;
     }
 
     /**
      * Return the corresponding virtual class map.
      * When creating the instance of VirtualNameSpaceClassMap is is assured, that no auto loader will be triggered.
      *
-     * @return OxidEsales\Eshop\Core\Autoload\VirtualNameSpaceClassMap
+     * @return \OxidEsales\EshopCommunity\Core\Autoload\VirtualNameSpaceClassMap
      */
     private function getVirtualClassMap()
     {
+        $edition = $this->getEdition();
+
+        if (!file_exists($this->virtualNameSpaceClassMapFiles[$edition])) {
+            trigger_error('The corresponding classmap for edition "' . $edition . '" was not found:  ' . $this->virtualNameSpaceClassMapFiles[$edition], E_USER_ERROR);
+        }
+
+        $virtualClassMap = new $this->virtualNameSpaceClassMaps[$edition]();
+
+        return $virtualClassMap;
+    }
+
+    /**
+     * Get edition from config.inc.php.
+     *
+     * @return string
+     */
+    private function getEditionByConfig()
+    {
         /** The properties defined in the config file will dynamically loaded into this class */
         include OX_BASE_PATH . DIRECTORY_SEPARATOR . 'config.inc.php';
-        $editionByConfig = $this->edition;
+        $editionByConfig = strtoupper($this->edition);
+
+        return $editionByConfig;
+    }
+
+    /**
+     * Get edition by checking which source files exist.
+     * Includes available class map files in the process.
+     *
+     * @return string
+     */
+    private function getEditionBySource()
+    {
         $editionBySource = null;
-        $virtualNameSpaceClassMapFiles = [
-            'CE' => OX_BASE_PATH . 'Core/Autoload/VirtualNameSpaceClassMap.php',
-            'PE' => VENDOR_PATH . 'oxid-esales/oxideshop-pe/Core/Autoload/VirtualNameSpaceClassMap.php',
-            'EE' => VENDOR_PATH . 'oxid-esales/oxideshop-ee/Core/Autoload/VirtualNameSpaceClassMap.php',
-        ];
-        $virtualNameSpaceClassMaps = [
-            'CE' => \OxidEsales\EshopCommunity\Core\Autoload\VirtualNameSpaceClassMap::class,
-            'PE' => \OxidEsales\EshopProfessional\Core\Autoload\VirtualNameSpaceClassMap::class,
-            'EE' => \OxidEsales\EshopEnterprise\Core\Autoload\VirtualNameSpaceClassMap::class
-        ];
 
         /** Include all classes needed for object creation in order not to trigger other autoloaders */
-        foreach ($virtualNameSpaceClassMapFiles as $currentEdition => $virtualNameSpaceClassMapFile) {
-            if (file_exists($virtualNameSpaceClassMapFile)) {
+        foreach ($this->virtualNameSpaceClassMapFiles as $currentEdition => $virtualNameSpaceClassMapFile) {
+            if (file_exists($virtualNameSpaceClassMapFile) && is_readable($virtualNameSpaceClassMapFile)) {
                 include_once $virtualNameSpaceClassMapFile;
                 $editionBySource = $currentEdition;
             }
         }
 
-        $edition =  $editionByConfig ? strtoupper($editionByConfig) : $editionBySource;
-        if (!$edition) {
-            trigger_error('OXID eShop Edition could not be found in config file or from sources', E_USER_ERROR);
-        }
-
-        if (!file_exists($virtualNameSpaceClassMapFiles[$edition])) {
-            trigger_error('The corresponding classmap for edition "' . $edition . '" was not found:  ' . $virtualNameSpaceClassMapFiles[$edition], E_USER_ERROR);
-        }
-
-        $virtualClassMap = new $virtualNameSpaceClassMaps[$edition]();
-        return $virtualClassMap;
+        return $editionBySource;
     }
 }

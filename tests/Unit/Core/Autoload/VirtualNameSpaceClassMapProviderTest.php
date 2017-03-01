@@ -28,9 +28,8 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  *
  * @package Unit\Core\Routing\Module
  */
-class ControllerProviderCacheTest extends UnitTestCase
+class VirtualNamespaceClassMapProviderTest extends UnitTestCase
 {
-
     /**
      * Test class map getter.
      */
@@ -46,5 +45,15 @@ class ControllerProviderCacheTest extends UnitTestCase
         $test = new \OxidEsales\EshopCommunity\Core\Autoload\VirtualNameSpaceClassMapProvider;
         $virtualClassMap = $test->getClassMap();
         $this->assertEquals($expectedMatch, $virtualClassMap[$virtualClassName]);
+    }
+
+    /**
+     * Test edition getter.
+     */
+    public function testGetEdition()
+    {
+        $shopEdition = $this->getTestConfig()->getShopEdition();
+        $test = new \OxidEsales\EshopCommunity\Core\Autoload\VirtualNameSpaceClassMapProvider;
+        $this->assertEquals($shopEdition, $test->getEdition());
     }
 }

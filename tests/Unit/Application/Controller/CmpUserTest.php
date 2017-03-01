@@ -1063,13 +1063,13 @@ class CmpUserTest extends \OxidTestCase
         $iLastCustNr = 999;
         $sPassword = $sPassword2 = crc32('_Test@oxid.de');
         $aInvAddress = array(
-            'oxuser__oxfname'     => 'fname',
-            'oxuser__oxlname'     => 'lname',
-            'oxuser__oxstreet'    => 'street',
-            'oxuser__oxstreetnr'  => 'nr',
-            'oxuser__oxzip'       => 'zip',
-            'oxuser__oxcity'      => 'city',
-            'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984'
+            'oxuser__oxfname'        => 'fname',
+            'oxuser__oxlname'        => 'lname',
+            'oxuser__oxstreet'       => 'street',
+            'oxuser__oxstreetnr'     => 'nr',
+            'oxuser__oxzip'          => 'zip',
+            'oxuser__oxcity'         => 'city',
+            'oxuser__oxcountryid'    => 'a7c40f631fc920687.20179984'
         );
         $aDelAddress = array(
             'oxaddress__oxfname'     => 'fname',
@@ -1120,11 +1120,11 @@ class CmpUserTest extends \OxidTestCase
         $aRawVal = array(
             // Existing fields which users should not be able to change.
             'oxuser__oxid'        => 'newId',
-            'oxid'        => 'newId',
-            'oxuser__oxpoints'        => 'newPoints',
-            'oxpoints'        => 'newPoints',
-            'oxuser__oxboni'        => 'newBoni',
-            'oxboni'        => 'newBoni',
+            'oxid'                => 'newId',
+            'oxuser__oxpoints'    => 'newPoints',
+            'oxpoints'            => 'newPoints',
+            'oxuser__oxboni'      => 'newBoni',
+            'oxboni'              => 'newBoni',
 
             // Fields which users should be capable to change.
             'oxuser__oxfname'     => 'fname',
@@ -1167,7 +1167,7 @@ class CmpUserTest extends \OxidTestCase
     {
         $this->setRequestParameter('blnewssubscribed', false);
         $aRawVal = array(
-            'OXID'        => 'newId',
+            'OXID'                => 'newId',
             'oxuser__oxfname'     => 'fname',
             'oxuser__oxlname'     => 'lname',
             'oxuser__oxstreetnr'  => 'nr',
@@ -1235,15 +1235,15 @@ class CmpUserTest extends \OxidTestCase
         $formFields = array(
             // Existing fields which users should not be able to change.
             'oxuser__oxid'        => 'newId',
-            'oxid'        => 'newId',
-            'oxuser__oxpoints'        => 'newPoints',
-            'oxpoints'        => 'newPoints',
-            'oxuser__oxboni'        => 'newBoni',
-            'oxboni'        => 'newBoni',
+            'oxid'                => 'newId',
+            'oxuser__oxpoints'    => 'newPoints',
+            'oxpoints'            => 'newPoints',
+            'oxuser__oxboni'      => 'newBoni',
+            'oxboni'              => 'newBoni',
 
             // By default, user should not be capable to change new fields.
-            'oxaddress__newfield'        => 'newId',
-            'newfield'        => 'newId',
+            'oxaddress__newfield' => 'newId',
+            'newfield'            => 'newId',
 
             // Fields which users should be capable to change.
             'oxuser__oxfname'     => 'fname',
@@ -1291,36 +1291,36 @@ class CmpUserTest extends \OxidTestCase
         $this->setRequestParameter('blshowshipaddress', true);
         $formFields = array(
             // Existing fields which users should not be able to change.
-            'oxaddress__oxid'        => 'newId',
-            'oxid'        => 'newId',
+            'oxaddress__oxid'            => 'newId',
+            'oxid'                       => 'newId',
             'oxaddress__oxuserid'        => 'newId',
-            'oxuserid'        => 'newId',
-            'oxaddress__oxaddressuserid'        => 'newId',
-            'oxaddressuserid'        => 'newId',
+            'oxuserid'                   => 'newId',
+            'oxaddress__oxaddressuserid' => 'newId',
+            'oxaddressuserid'            => 'newId',
 
             // By default, user should not be capable to change new fields.
             'oxaddress__newfield'        => 'newId',
-            'newfield'        => 'newId',
+            'newfield'                   => 'newId',
 
             // Fields which users should be capable to change.
-            'oxaddress__oxfname'     => 'fname',
-            'oxaddress__oxlname'     => 'lname',
-            'oxaddress__oxstreetnr'  => 'nr',
-            'oxaddress__oxstreet'    => 'street',
-            'oxaddress__oxzip'       => 'zip',
-            'oxaddress__oxcity'      => 'city',
-            'oxaddress__oxcountryid' => 'a7c40f631fc920687.20179984'
+            'oxaddress__oxfname'         => 'fname',
+            'oxaddress__oxlname'         => 'lname',
+            'oxaddress__oxstreetnr'      => 'nr',
+            'oxaddress__oxstreet'        => 'street',
+            'oxaddress__oxzip'           => 'zip',
+            'oxaddress__oxcity'          => 'city',
+            'oxaddress__oxcountryid'     => 'a7c40f631fc920687.20179984'
         );
         $this->setRequestParameter('deladr', $formFields);
 
         $expectedUserData = [
-            'oxaddress__oxfname'     => 'fname',
-            'oxaddress__oxlname'     => 'lname',
-            'oxaddress__oxstreetnr'  => 'nr',
-            'oxaddress__oxstreet'    => 'street',
-            'oxaddress__oxzip'       => 'zip',
-            'oxaddress__oxcity'      => 'city',
-            'oxaddress__oxcountryid' => 'a7c40f631fc920687.20179984'
+            'oxaddress__oxfname'         => 'fname',
+            'oxaddress__oxlname'         => 'lname',
+            'oxaddress__oxstreetnr'      => 'nr',
+            'oxaddress__oxstreet'        => 'street',
+            'oxaddress__oxzip'           => 'zip',
+            'oxaddress__oxcity'          => 'city',
+            'oxaddress__oxcountryid'     => 'a7c40f631fc920687.20179984'
         ];
 
         $user = $this->getMock($this->getProxyClassName('oxUser'), ['changeUserData']);

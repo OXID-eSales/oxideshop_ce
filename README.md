@@ -27,6 +27,10 @@ When checking out this repository or downloading the zip file from this place, c
 4. `$ composer install --no-dev`
 5. `$ cp source/config.inc.php.dist source/config.inc.php`
 
+If you want to install OXID eShop including example data like products, categories etc., you first need to install the demo data package:
+
+1. `$ composer require oxid-esales/oxideshop-demodata-ce:dev-b-6.0`
+
 ### IDE code completion
 
 You can easily enable code completion in your IDE by installing [this script](https://github.com/OXID-eSales/eshop-ide-helper>) and generating it as described.

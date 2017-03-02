@@ -281,55 +281,6 @@ class UtilsObject
     }
 
     /**
-     * @deprecated since v6.0.0 (2017-02-11). Use arguments unpacking instead.
-     *
-     * Creates object with dynamic constructor parameters.
-     * If parameter count > 5 - uses reflection class to create object.
-     *
-     * @param string $className      class name
-     * @param int    $argumentsCount argument count
-     * @param array  $arguments      constructor parameters
-     *
-     * @throws oxSystemComponentException in case parameters count > 5
-     *
-     * @return mixed
-     */
-    protected function _getObject($className, $argumentsCount, $arguments)
-    {
-        // dynamic creation (if parameter count < 4) gives more performance for regular objects
-        switch ($argumentsCount) {
-            case 0:
-                $object = new $className();
-                break;
-            case 1:
-                $object = new $className($arguments[0]);
-                break;
-            case 2:
-                $object = new $className($arguments[0], $arguments[1]);
-                break;
-            case 3:
-                $object = new $className($arguments[0], $arguments[1], $arguments[2]);
-                break;
-            default:
-                try {
-                    // unlimited constructor arguments support
-                    $reflection = new ReflectionClass($className);
-                    $object = $reflection->newInstanceArgs($arguments);
-                } catch (ReflectionException $reflectionException) {
-                    // something went wrong?
-                    $systemComponentException = oxNew("oxSystemComponentException");
-                    $systemComponentException->setMessage($reflectionException->getMessage());
-                    $systemComponentException->setComponent($className);
-                    $systemComponentException->debugOut();
-
-                    throw $systemComponentException;
-                }
-        }
-
-        return $object;
-    }
-
-    /**
      * Returns generated unique ID.
      *
      * @return string

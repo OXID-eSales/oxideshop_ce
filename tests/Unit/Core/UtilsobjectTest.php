@@ -115,7 +115,7 @@ class UtilsobjectTest extends \OxidTestCase
     }
 
     /**
-     * Testing oxUtilsObject::_getObject();
+     * Testing oxUtilsObject object creation.
      *
      * @return null
      */

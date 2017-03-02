@@ -108,18 +108,19 @@ class ShopTest extends \OxidTestCase
     /**
      * Testing oxshop::generateViews() for removing old unused 'oxv_*' views.
      */
-    public function testGenerateViews_CheckRemovingUnnecessaryViews()
+    public function testGenerateViewsRemovingUnnecessaryViews()
     {
         $database = oxDb::getDb();
 
         // creating view which has to be removed
-        $database->Execute('CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxshops_zz-2015` AS SELECT * FROM oxshops');
+        $database->execute('CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxshops_zz-2015` AS SELECT * FROM oxshops');
 
         $shop = oxNew(Shop::class);
         $this->assertTrue($shop->generateViews(false, null));
 
-        $oDbMetaDataHandler = oxNew('oxDbMetaDataHandler');
-        $this->assertFalse($oDbMetaDataHandler->tableExists('oxv_oxshops_zz-2015'), 'Old view "oxv_oxshops_zz" is not removed');
+        $databaseMetaDataHandler = oxNew('oxDbMetaDataHandler');
+        $incorrectViewExists = $databaseMetaDataHandler->tableExists('oxv_oxshops_zz-2015');
+        $this->assertFalse($incorrectViewExists, 'Old view "oxv_oxshops_zz" is not removed');
     }
 
     /**

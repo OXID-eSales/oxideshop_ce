@@ -20,18 +20,25 @@
  * @version   OXID eShop CE
  */
 
-    // Database connection information
+    // database connection information
     $this->dbType = 'pdo_mysql';
     $this->dbHost = '<dbHost>'; // database host name
     $this->dbPort  = 3306; // tcp port to which the database is bound
     $this->dbName = '<dbName>'; // database name
     $this->dbUser = '<dbUser>'; // database user name
     $this->dbPwd  = '<dbPwd>'; // database user password
+
+    // Shop URL information
     $this->sShopURL     = '<sShopURL>'; // eShop base url, required
-    $this->sSSLShopURL  = null;            // eShop SSL url, optional
-    $this->sAdminSSLURL = null;            // eShop Admin SSL url, optional
+    $this->sSSLShopURL  = null; // eShop SSL url, optional
+    $this->sAdminSSLURL = null; // eShop Admin SSL url, optional
+
+    // Shop directory information
     $this->sShopDir     = '<sShopDir>';
     $this->sCompileDir  = '<sCompileDir>';
+
+    // Location of composer's vendor directory.
+    $this->vendorDirectory = __DIR__ . '/../vendor';
 
     /**
      * Force shop edition. Even if enterprise or professional packages exists, shop edition can still be forced here.
@@ -39,21 +46,55 @@
      */
     $this->edition = '';
 
-    // Location of composer's vendor directory.
-    $this->vendorDirectory = __DIR__ . '/../vendor';
-
     // File type whitelist for file upload
-    $this->aAllowedUploadTypes = array('jpg', 'gif', 'png', 'pdf', 'mp3', 'avi', 'mpg', 'mpeg', 'doc', 'xls', 'ppt');
-
-    // Timezone information
-    date_default_timezone_set('Europe/Berlin');
+    $this->aAllowedUploadTypes = array(
+        'jpg',
+        'gif',
+        'png',
+        'pdf',
+        'mp3',
+        'avi',
+        'mpg',
+        'mpeg',
+        'doc',
+        'xls',
+        'ppt',
+    );
 
     /**
      * Search engine friendly URL processor.
      * After changing this value, you should rename oxid.php file as well
      * Always leave .php extension here unless you know what you are doing
      */
-    $this->sOXIDPHP = "oxid.php";
+    $this->sOXIDPHP = 'oxid.php';
+
+    /*
+     * Should requests coming via stdurl and not redirected to seo url be logged to seologs db table?
+     * Note: only active if in productive mode, as the eShop in non productive more will always log such urls
+     */
+    $this->blSeoLogging = false;
+
+    // List of all Search-Engine Robots
+    $this->aRobots = array(
+        'googlebot',
+        'ultraseek',
+        'crawl',
+        'spider',
+        'fireball',
+        'robot',
+        'slurp',
+        'fast',
+        'altavista',
+        'teoma',
+        'msnbot',
+        'bingbot',
+        'yandex',
+        'gigabot',
+        'scrubby',
+    );
+
+    // Deactivate Static URL's for these Robots
+    $this->aRobotsExcept = array();
 
     /**
      * Enable debug mode for template development or bugfixing
@@ -67,6 +108,12 @@
      * 8 = display smarty template names (requires /tmp cleanup)
      */
     $this->iDebug = 0;
+
+    /**
+     * Should template blocks be highlighted in frontend?
+     * This is mainly intended for module writers in non productive environment
+     */
+    $this->blDebugTemplateBlocks = false;
 
     // Log all modifications performed in Admin
     $this->blLogChangesInAdmin = false;
@@ -95,28 +142,6 @@
      */
     $this->aCookiePaths = null;
 
-    // List of all Search-Engine Robots
-    $this->aRobots = array(
-                        'googlebot',
-                        'ultraseek',
-                        'crawl',
-                        'spider',
-                        'fireball',
-                        'robot',
-                        'slurp',
-                        'fast',
-                        'altavista',
-                        'teoma',
-                        'msnbot',
-                        'bingbot',
-                        'yandex',
-                        'gigabot',
-                        'scrubby'
-                        );
-
-    // Deactivate Static URL's for these Robots
-    $this->aRobotsExcept = array();
-
     // IP addresses for which session/cookie id match and user agent change checks are off
     $this->aTrustedIPs = array();
 
@@ -132,18 +157,6 @@
      * slowly, while too high value may have spiking impact on the performance.
      */
     $this->iBasketReservationCleanPerRequest = 200;
-
-    /**
-     * Should template blocks be highlighted in frontend?
-     * This is mainly intended for module writers in non productive environment
-     */
-    $this->blDebugTemplateBlocks = false;
-
-    /**
-     * Should requests, coming via stdurl and not redirected to seo url be logged to seologs db table?
-     * Note: only active if in productive mode, as the eShop in non productive more will always log such urls
-     */
-    $this->blSeoLogging = false;
 
     /**
      * To override FrontendController::$_aUserComponentNames use this array option:
@@ -164,13 +177,16 @@
     // Enable temporarily in case you can't access the backend due to broken views
     $this->blSkipViewUsage = false;
 
+    // Show "Update Views" button in admin
+    $this->blShowUpdateViews = true;
+
+    // Control the removal of Setup directory
+    $this->blDelSetupDir = true;
+
     /**
      * Enterprise Edition related config options.
      * This options have no effect on Community/Professional Editions.
      */
-
-    //Time limit in ms to be notified about slow queries
-    $this->iDebugSlowQueryTime = 20;
 
     /**
      * Enables Rights and Roles engine
@@ -186,19 +202,20 @@
      * Do not forget to add these fields to oxfield2shop table.
      * Note: The field names are case sensitive here.
      */
-    $this->aMultishopArticleFields = array("OXPRICE", "OXPRICEA", "OXPRICEB", "OXPRICEC", "OXUPDATEPRICE", "OXUPDATEPRICEA", "OXUPDATEPRICEB", "OXUPDATEPRICEC", "OXUPDATEPRICETIME");
-
-    // Show "Update Views" button in admin
-    $this->blShowUpdateViews = true;
-
-    // If default 30 seconds is not enougth
-    // @set_time_limit(3000);
+    $this->aMultishopArticleFields = array(
+        'OXPRICE',
+        'OXPRICEA',
+        'OXPRICEB',
+        'OXPRICEC',
+        'OXUPDATEPRICE',
+        'OXUPDATEPRICEA',
+        'OXUPDATEPRICEB',
+        'OXUPDATEPRICEC',
+        'OXUPDATEPRICETIME',
+    );
 
     /**
      * Database master-slave configuration:
      * aSlaveHosts - array of slave hosts: array('localhost', '10.2.3.12')
      */
     $this->aSlaveHosts = null;
-
-    // Control the removal of Setup directory
-    $this->blDelSetupDir = true;

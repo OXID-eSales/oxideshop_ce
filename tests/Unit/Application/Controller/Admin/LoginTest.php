@@ -62,7 +62,7 @@ class LoginTest extends \OxidTestCase
      *  Check if login with special characters in login name and
      *  passworod works fine
      *
-     *  M#1386
+     * M#1386
      *
      * @return null
      */

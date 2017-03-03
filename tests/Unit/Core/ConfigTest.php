@@ -21,6 +21,8 @@
  */
 namespace Unit\Core;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxubase;
 
@@ -298,28 +300,29 @@ class ConfigTest extends \OxidTestCase
     }
 
     /**
-     * Testing config init - no connection to DB
+     * When a DatabaseException is thrown, method handleDatabaseException on the ExceptionHandler is called
+     *
+     * @covers Config::init()
      */
-    public function testInit_noConnection()
+    public function testInitCallesExceptionHandlerOnDatabaseException()
     {
         $this->setTime(time());
 
-        /** @var DatabaseConnectionException $oEx */
+        /**
+         * An instance of OxidEsales\Eshop\Core\Exception\DatabaseException::class should be caught and passed to the ExceptionHandler
+         */
         $previousException = new \Exception();
-        $oEx = $this->getMock(DatabaseConnectionException::class, ['debugOut'], ['', 0, $previousException]);
-        $oEx->expects($this->any())->method('debugOut');
+        $exception = new \OxidEsales\Eshop\Core\Exception\DatabaseException('', 0, $previousException);
 
-        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utilsMock */
-        $utilsMock = $this->getMock('oxUtils', array('showMessageAndExit'));
-        $utilsMock->expects($this->once())->method('showMessageAndExit')->with($this->equalTo($oEx->getString()));
-        oxRegistry::set('oxUtils', $utilsMock);
+        $exceptionHandlerMock = $this->getMock(ExceptionHandler::class, ['handleDatabaseException']);
+        $exceptionHandlerMock->expects($this->once())->method('handleDatabaseException');
 
-        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
-        $oConfig = $this->getMock("oxConfig", array("_loadVarsFromDb"));
-        $oConfig->expects($this->once())->method('_loadVarsFromDb')->will($this->throwException($oEx));
-        $oConfig->setConfigParam('iDebug', -1);
+        /** @var Config|PHPUnit_Framework_MockObject_MockObject $config */
+        $config = $this->getMock(Config::class, ['_loadVarsFromDb','getExceptionHandler']);
+        $config->expects($this->any())->method('_loadVarsFromDb')->will($this->throwException($exception));
+        $config->expects($this->any())->method('getExceptionHandler')->will($this->returnValue($exceptionHandlerMock));
 
-        $oConfig->init();
+        $config->init();
     }
 
     /**
@@ -2523,6 +2526,19 @@ class ConfigTest extends \OxidTestCase
         $_POST['cl'] = 'unknownControlerId';
 
         $this->assertNull($config->getRequestControllerClass());
+    }
+
+    /**
+     * @covers Config::getExceptionHandler()
+     */
+    public function testGetExceptionHandlerReturnsInstanceOfExceptionHandler ()
+    {
+        $expectedClass = \OxidEsales\Eshop\Core\Exception\ExceptionHandler::class;
+
+        $config = oxNew(Config::class);
+        $actualObject = $config->getExceptionHandler();
+
+        $this ->assertInstanceOf($expectedClass, $actualObject);
     }
 
     /**

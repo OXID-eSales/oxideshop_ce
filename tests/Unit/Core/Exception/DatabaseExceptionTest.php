@@ -19,8 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace Unit\Core\Exception;
 
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseErrorException;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 
@@ -40,10 +41,10 @@ class DatabaseExceptionTest extends UnitTestCase
     {
         $message = 'message';
         $code = 1;
-        $previous = new Exception();
+        $previous = new \Exception();
 
         $expected = 'oxException';
-        $actualException = new DatabaseException($message, $code, $previous);
+        $actualException = new DatabaseErrorException($message, $code, $previous);
 
         $this->assertInstanceOf($expected, $actualException, 'DatabaseException is not an instance of oxException');
     }

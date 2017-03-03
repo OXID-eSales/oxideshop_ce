@@ -833,6 +833,9 @@ class UtilsTest extends \OxidTestCase
 
     }
 
+    /**
+     * @group slow-tests
+     */
     public function testGetRemoteCachePath()
     {
         $vfsStream = $this->getVfsStreamWrapper();

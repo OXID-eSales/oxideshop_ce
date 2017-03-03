@@ -400,12 +400,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
             // loading shop config
             if (empty($shopID) || !$configLoaded) {
                 // if no config values where loaded (some problems with DB), throwing an exception
-                $oEx = new \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException(
+                $exception = new \OxidEsales\Eshop\Core\Exception\DatabaseException(
                     "Unable to load shop config values from database",
                     0,
                     new \Exception()
                 );
-                throw $oEx;
+                throw $exception;
             }
 
             // loading theme config options
@@ -435,12 +435,10 @@ class Config extends \OxidEsales\Eshop\Core\Base
             //application initialization
             $this->_oStart = oxNew('oxStart');
             $this->_oStart->appInit();
-        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $oEx) {
-            $this->_handleDbConnectionException($oEx);
-        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $oEx) {
-            $this->_handleDbConnectionException($oEx);
-        } catch (\OxidEsales\Eshop\Core\Exception\CookieException $oEx) {
-            $this->_handleCookieException($oEx);
+        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
+            $this->_handleDbConnectionException($exception);
+        } catch (\OxidEsales\Eshop\Core\Exception\CookieException $exception) {
+            $this->_handleCookieException($exception);
         }
     }
 
@@ -2213,33 +2211,16 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Shows exception message if debug mode is enabled, redirects otherwise.
+     * Handle database exception.
+     * At this point everything has crashed already and not much of shop business logic is left to call.
+     * So just go straight and call the ExceptionHandler.
      *
-     * @param oxException $ex message to show on exit
-     *
+     * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception
      */
-    protected function _handleDbConnectionException($ex)
+    protected function _handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception)
     {
-        $ex->debugOut();
-        if (0 != $this->getConfigParam('iDebug')) {
-            Registry::getUtils()->showMessageAndExit($ex->getString());
-        } else {
-            /**
-             * Render an error message.
-             * If offline.html exists its content is displayed.
-             * Like this the error message is overridable within that file.
-             */
-            $displayMessage = ''; // Do not disclose any information
-            if (file_exists(OX_OFFLINE_FILE) && is_readable(OX_OFFLINE_FILE)) {
-                $displayMessage = file_get_contents(OX_OFFLINE_FILE);
-            };
-
-            header("HTTP/1.1 500 Internal Server Error");
-            header("Connection: close");
-            echo $displayMessage;
-
-            exit();
-        }
+        $exceptionHandler = $this->getExceptionHandler();
+        $exceptionHandler->handleDatabaseException($exception);
     }
 
     /**
@@ -2315,5 +2296,15 @@ class Config extends \OxidEsales\Eshop\Core\Base
     protected function getEditionTemplate($templateName)
     {
         return false;
+    }
+
+    /**
+     * @return object
+     */
+    protected function getExceptionHandler()
+    {
+        $exceptionHandler = new \OxidEsales\Eshop\Core\Exception\ExceptionHandler();
+
+        return $exceptionHandler;
     }
 }

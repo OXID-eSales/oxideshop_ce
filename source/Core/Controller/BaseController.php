@@ -552,7 +552,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
                 if (!$this->_blIsComponent) {
                     /** @var oxSystemComponentException $oEx */
                     $oEx = oxNew('oxSystemComponentException');
-                    $oEx->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND');
+                    $oEx->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND'. ' ' . $sFunction);
                     $oEx->setComponent($sFunction);
                     throw $oEx;
                 }
@@ -575,45 +575,45 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             $myConfig = $this->getConfig();
 
             // page parameters is the part which goes after '?'
-            $aParams = explode('?', $sNewAction);
+            $params = explode('?', $sNewAction);
 
             // action parameters is the part before '?'
-            $sPageParams = isset($aParams[1]) ? $aParams[1] : null;
+            $pageParams = isset($params[1]) ? $params[1] : null;
 
             // looking for function name
-            $aParams = explode('/', $aParams[0]);
-            $sClassName = $aParams[0];
-            $realClassName = oxRegistry::getUtilsObject()->getClassName($sClassName);
+            $params = explode('/', $params[0]);
+            $className = $params[0];
+            $realClassName = oxRegistry::getUtilsObject()->getClassName($className);
 
             if (false === class_exists($realClassName)) {
                 //If redirect tries to use a not existing class throw an exception.
                 //we'll be redirected to start page directly.
-                /** @var oxSystemComponentException $exception */
-                $exception = oxNew('oxSystemComponentException');
-                $exception->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND');
-                $exception->setComponent($sClassName);
+                $exception =  new \OxidEsales\Eshop\Core\Exception\SystemComponentException();
+                /** Use setMessage here instead of passing it in constructor in order to test exception message */
+                $exception->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' ' . $className);
+                $exception->setComponent($className);
                 throw $exception;
             }
 
             // building redirect path ...
-            $sHeader = ($sClassName) ? "cl=$sClassName&" : ''; // adding view name
-            $sHeader .= ($sPageParams) ? "$sPageParams&" : ''; // adding page params
-            $sHeader .= $this->getSession()->sid(); // adding session Id
+            $header = ($className) ? "cl=$className&" : ''; // adding view name
+            $header .= ($pageParams) ? "$pageParams&" : ''; // adding page params
+            $header .= $this->getSession()->sid(); // adding session Id
 
-            $sUrl = $myConfig->getCurrentShopUrl($this->isAdmin());
+            $url = $myConfig->getCurrentShopUrl($this->isAdmin());
 
-            $sUrl = "{$sUrl}index.php?{$sHeader}";
+            $url = "{$url}index.php?{$header}";
 
-            $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl($sUrl);
+            $url = oxRegistry::get("oxUtilsUrl")->processUrl($url);
 
-            if (oxRegistry::getUtils()->seoIsActive() && $sSeoUrl = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sUrl)) {
-                $sUrl = $sSeoUrl;
+            if (oxRegistry::getUtils()->seoIsActive() && $seoUrl = oxRegistry::get("oxSeoEncoder")->getStaticUrl($url)) {
+                $url = $seoUrl;
             }
 
             $this->onExecuteNewAction();
 
             //#M341 do not add redirect parameter
-            oxRegistry::getUtils()->redirect($sUrl, (bool) $myConfig->getRequestParameter('redirected'), 302);
+            oxRegistry::getUtils()->redirect($url, (bool) $myConfig->getRequestParameter('redirected'), 302);
         }
     }
 

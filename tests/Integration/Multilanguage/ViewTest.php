@@ -24,6 +24,13 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Multilanguage;
 use oxField;
 use oxRegistry;
 
+/**
+ * Class ViewTest
+ *
+ * @group slow-tests
+ *
+ * @package OxidEsales\EshopCommunity\Tests\Integration\Multilanguage
+ */
 class ViewTest extends MultilanguageTestCase
 {
     /**

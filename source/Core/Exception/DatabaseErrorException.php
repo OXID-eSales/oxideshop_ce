@@ -1,6 +1,4 @@
 <?php
-namespace OxidEsales\EshopCommunity\Core\Exception;
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -22,16 +20,18 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\EshopCommunity\Core\Exception;
+
 /**
- * Exception to be thrown on database connection errors
+ * Exception to be thrown on database errors
  */
-class DatabaseConnectionException extends \OxidEsales\EshopCommunity\Core\Exception\DatabaseException
+class DatabaseErrorException extends \OxidEsales\EshopCommunity\Core\Exception\DatabaseException
 {
 
     /**
-     * DatabaseConnectionException constructor.
+     * DatabaseException constructor.
      *
-     * Use this exception to catch and rethrow exceptions of the underlying DBAL, that occur while connection to the database.
+     * Use this exception to catch and rethrow exceptions of the underlying DBAL.
      * Provide the caught exception as the third parameter of the constructor to enable exception chaining.
      *
      * @param string     $message

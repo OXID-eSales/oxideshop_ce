@@ -25,6 +25,8 @@ ini_set('display_errors', 0);
 
 define('INSTALLATION_ROOT_PATH', dirname(__DIR__));
 define('OX_BASE_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR);
+// Will be exception.log after CI is adapted
+// define('OX_LOG_FILE', OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'exception.log');
 define('OX_LOG_FILE', OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'EXCEPTION_LOG.txt');
 define('OX_OFFLINE_FILE', OX_BASE_PATH . 'offline.html');
 define('VENDOR_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
@@ -42,38 +44,44 @@ if (!is_dir(OX_BASE_PATH . 'Core')) {
  * Provide a handler for cachable fatal errors, like failed requirement of files.
  * No information about paths or filenames must be disclosed to the frontend,
  * as this would be a security problem on productive systems.
+ * This error handler just is a last resort for exceptions not caught by the application
  *
  * As this is the last resort no further errors must happen.
  */
 register_shutdown_function(function () {
+    $handledErrorTypes = [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_RECOVERABLE_ERROR, E_USER_ERROR, E_USER_DEPRECATED];
+
     $error = error_get_last();
-    if (in_array($error['type'], [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR, ])) {
+    if (in_array($error['type'], $handledErrorTypes)) {
+        $errorType = array_flip(array_slice(get_defined_constants(true)['Core'], 0, 16, true))[$error['type']];
+
         $time = microtime(true);
         $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
-        $date = new DateTime(date('Y-m-d H:i:s.' . $micro, $time));
+        $date = new \DateTime(date('Y-m-d H:i:s.' . $micro, $time));
         $timestamp = $date->format('D M H:i:s.u Y');
 
         /** report the error */
-        $logMessage = "[$timestamp] [:error] [type {$error['type']}] " . $error['message'] . PHP_EOL;
-        if (!file_put_contents(OX_LOG_FILE, $logMessage, FILE_APPEND)) {
-            $message = 'No details are available in log file as it does not exist or is not writable';
+        $logMessage = "[$timestamp] [uncaught error] [type $errorType] [file {$error['file']}] [line {$error['line']}] [code ] [message {$error['message']}]". PHP_EOL;
+        file_put_contents(OX_LOG_FILE, $logMessage, FILE_APPEND);
+
+        // Do not display an error message, if this file is included during a CLI command
+        if ('cli' !== strtolower(php_sapi_name())) {
+            /**
+             * Render an error message.
+             * If offline.html exists its content is displayed.
+             * Like this the error message is overridable within that file.
+             */
+            $displayMessage = '';
+            if (file_exists(OX_OFFLINE_FILE) && is_readable(OX_OFFLINE_FILE)) {
+                $displayMessage = file_get_contents(OX_OFFLINE_FILE);
+            };
+
+            header("HTTP/1.1 500 Internal Server Error");
+            header("Connection: close");
+            echo $displayMessage;
         }
 
-        /**
-         * Render an error message.
-         * If offline.html exists its content is displayed.
-         * Like this the error message is overridable within that file.
-         */
-        $displayMessage = '';
-        if (file_exists(OX_OFFLINE_FILE) && is_readable(OX_OFFLINE_FILE)) {
-            $displayMessage = file_get_contents(OX_OFFLINE_FILE);
-        };
-
-        header("HTTP/1.1 500 Internal Server Error");
-        header("Connection: close");
-        echo $displayMessage;
-
-        exit();
+        exit(1);
     }
 });
 
@@ -128,8 +136,25 @@ $configFile = new \OxidEsales\Eshop\Core\ConfigFile(OX_BASE_PATH . "config.inc.p
 unset($configFile);
 
 /**
+ * Set exception handler before including modules/functions.php so it can be overwritten easliy by shop operators.
+ */
+$debugMode = (bool) \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('iDebug');
+set_exception_handler(
+    [
+        new \OxidEsales\Eshop\Core\Exception\ExceptionHandler($debugMode),
+        'handleUncaughtException'
+    ]
+);
+unset($debugMode);
+
+/**
+ * Generic utility method file.
+ * The global object factory function oxNew is defined here.
+ */
+require_once OX_BASE_PATH . 'oxfunctions.php';
+
+/**
  * Custom bootstrap functionality.
- * Registry is a
  */
 if (file_exists(OX_BASE_PATH . 'modules/functions.php') &&
     is_readable(OX_BASE_PATH . 'modules/functions.php')
@@ -138,12 +163,10 @@ if (file_exists(OX_BASE_PATH . 'modules/functions.php') &&
 }
 
 /**
- * Generic utility method file.
- * The global object factory function oxNew is defined here.
  * The functions defined conditionally in this file may have been overwritten in 'modules/functions.php',
  * so their functionality may have changed completely.
  */
-require_once OX_BASE_PATH . 'oxfunctions.php';
+require_once OX_BASE_PATH . 'overridablefunctions.php';
 
 //sets default PHP ini params
 ini_set('session.name', 'sid');

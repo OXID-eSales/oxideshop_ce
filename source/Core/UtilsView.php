@@ -151,15 +151,11 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     public function addErrorToDisplay($oEr, $blFull = false, $useCustomDestination = false, $customDestination = "", $activeController = "")
     {
-        if ($useCustomDestination && (oxRegistry::getConfig()->getRequestParameter('CustomError') || $customDestination != '')) {
-            // check if the current request wants do display exceptions on its own
-            $destination = oxRegistry::getConfig()->getRequestParameter('CustomError');
-            if ($customDestination != '') {
-                $destination = $customDestination;
-            }
-        } else {
-            //default
-            $destination = 'default';
+        //default
+        $destination = 'default';
+        $customDestination = $customDestination ? $customDestination : oxRegistry::getConfig()->getRequestParameter('CustomError');
+        if ($useCustomDestination && $customDestination) {
+            $destination = $customDestination;
         }
 
         //starting session if not yet started as all exception

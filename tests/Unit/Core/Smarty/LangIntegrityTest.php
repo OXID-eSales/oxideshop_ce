@@ -426,6 +426,8 @@ class LangIntegrityTest extends \OxidTestCase
      * Dependency added only for map, because can't add dependency on test with data provider.
      * Granted there are workarounds to make it depend on test with data provider, it is not the best practice.
      * So, if testIdentsMatch fails, this test might not give correct results. In such a case, fix idents first!
+     *
+     * @group slow-tests
      */
     public function testMissingTemplateConstants()
     {

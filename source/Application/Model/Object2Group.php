@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxField;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 
 /**
@@ -53,7 +53,7 @@ class Object2Group extends \OxidEsales\Eshop\Core\Model\BaseModel
      * The table oxobject2group has an UNIQUE index on (OXGROUPSID, OXOBJECTID, OXSHOPID)
      * which ensures that a relationship would not be duplicated.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      *
      * @return bool
      */
@@ -61,7 +61,7 @@ class Object2Group extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         try {
             return parent::save();
-        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseErrorException $exception) {
             if ($exception->getCode() !== \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database::DUPLICATE_KEY_ERROR_CODE) {
                 throw $exception;
             }

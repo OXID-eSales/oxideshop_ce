@@ -32,7 +32,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use PDO;
 
@@ -348,7 +348,7 @@ class Database implements DatabaseInterface
         try {
             $resultSet = $this->select($query, $parameters);
             $result = $resultSet->fields;
-        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseErrorException $exception) {
             /** Only log exception, do not re-throw here, as legacy code expects this behavior */
             $this->logException($exception);
             $result = array();
@@ -490,7 +490,7 @@ class Database implements DatabaseInterface
      *
      * @param string $level The transaction isolation level
      *
-     * @throws \InvalidArgumentException|DatabaseException     *
+     * @throws \InvalidArgumentException|DatabaseErrorException     *
      *
      * @return bool|integer
      */
@@ -531,7 +531,7 @@ class Database implements DatabaseInterface
      * @param string $query      The sql statement to execute.
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      *
      * @return integer Number of rows affected by the SQL statement
      */
@@ -564,7 +564,7 @@ class Database implements DatabaseInterface
      * @param string $query      The sql select statement to be executed.
      * @param array  $parameters The parameters array for the given query.
      *
-     * @throws DatabaseException The exception, that can occur while executing the sql statement.
+     * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
      *
      * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
@@ -624,7 +624,7 @@ class Database implements DatabaseInterface
      * @param int    $offset     Offset of the first row to return
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseException The exception, that can occur while executing the sql statement.
+     * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
      *
      * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
@@ -673,7 +673,7 @@ class Database implements DatabaseInterface
      * @param string $query      The sql select statement to be executed.
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      *
      * @return array The values of the first column of a corresponding sql query.
      */
@@ -724,7 +724,7 @@ class Database implements DatabaseInterface
      * @param array  $parameters The query parameters.
      * @param array  $types      The parameter types.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      *
      * @return integer The number of affected rows.
      */
@@ -873,23 +873,31 @@ class Database implements DatabaseInterface
                 $code = $this->convertErrorCode($pdoException->errorInfo[1]);
                 $message = $pdoException->errorInfo[2];
 
-                $exceptionClass = DatabaseException::class;
+                $exceptionClass = DatabaseErrorException::class;
 
                 break;
             case $exception instanceof PDOException:
                 /**
-                 * The shop used to the (My)SQL errors (integer) in the error code, but $pdoException uses SQLSTATE error code (string)
+                 * The shop uses the (My)SQL errors (integer) in the error code, but $pdoException uses SQLSTATE error code (string)
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
-                 * Fortunately we can access PDOException and recover the original SQL error code and message.
+                 * Fortunately in some cases we can access PDOException and recover the original SQL error code and message.
                  */
-                $code = $this->convertErrorCode($exception->errorInfo[1]);
-                $message = $exception->errorInfo[2];
+                if (isset($exception->errorInfo[1])) {
+                    $code = $this->convertErrorCode($exception->errorInfo[1]);
+                }
+                if ($exception->errorInfo[2]) {
+                    $message = $exception->errorInfo[2];
+                }
+                /** In case the original code (int) cannot be recovered, code is set to 0 */
+                if (!is_integer($code)) {
+                    $code = 0;
+                }
 
-                $exceptionClass = DatabaseException::class;
+                $exceptionClass = DatabaseErrorException::class;
 
                 break;
             default:
-                $exceptionClass = DatabaseException::class;
+                $exceptionClass = DatabaseErrorException::class;
         }
 
         /** @var \oxException $convertedException */
@@ -906,7 +914,7 @@ class Database implements DatabaseInterface
      *
      * @throws StandardException
      * @throws DatabaseConnectionException
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      */
     protected function handleException(\OxidEsales\Eshop\Core\Exception\StandardException $exception)
     {
@@ -949,7 +957,7 @@ class Database implements DatabaseInterface
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      * @throws \InvalidArgumentException
      *
      * @return array

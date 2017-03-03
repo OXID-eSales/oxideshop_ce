@@ -75,6 +75,9 @@ class UtilsFileTest extends \OxidTestCase
         $this->assertNull($oUtilsFile->UNITgetImageSize('nonexisting', '666', 'nonexisting'));
     }
 
+    /**
+     * @group slow-tests
+     */
     public function testUrlValidateBadUrl()
     {
         $oUtilsFile = oxNew('oxUtilsFile');

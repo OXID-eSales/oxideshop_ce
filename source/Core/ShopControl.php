@@ -141,9 +141,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     public function start($controllerKey = null, $function = null, $parameters = null, $viewsChain = null)
     {
-        //sets default exception handler
-        $this->_setDefaultExceptionHandler();
-
         try {
             $this->_runOnce();
 
@@ -156,10 +153,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $this->_handleSystemException($exception);
         } catch (\OxidEsales\Eshop\Core\Exception\CookieException $exception) {
             $this->_handleCookieException($exception);
-        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException $exception) {
-            $this->handleDbConnectionException($exception);
-        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $exception) {
-            $this->handleDbConnectionException($exception);
+        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
+            \OxidEsales\Eshop\Core\Exception\ExceptionHandler::handleDatabaseException($exception);
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
             $this->_handleBaseException($exception);
         }
@@ -179,20 +174,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         return 0;
     }
 
-    /**
-     * Sets default exception handler.
-     * Ideally all exceptions should be handled with try catch and default exception should never be reached.
-     *
-     * @return null
-     */
-    protected function _setDefaultExceptionHandler()
-    {
-        if (isset($this->_blHandlerSet)) {
-            return;
-        }
-
-        set_exception_handler(array(oxNew('oxexceptionhandler', $this->_isDebugMode()), 'handleUncaughtException'));
-    }
 
     /**
      * @deprecated since v6.0 (2017-02-03). Use ShopControl::getStartControllerKey() instead.
@@ -488,7 +469,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $templateFile = $this->getConfig()->getTemplatePath($templateName, $this->isAdmin());
         if (!file_exists($templateFile)) {
             $ex = oxNew('oxSystemComponentException');
-            $ex->setMessage('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND');
+            $ex->setMessage('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND' . ' ' . $templateName);
             $ex->setComponent($templateName);
 
             $templateName = "message/exception.tpl";
@@ -823,7 +804,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             header("Connection: close");
             echo $displayMessage;
 
-            exit();
+            exit(1);
         }
     }
 
@@ -1015,6 +996,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function getControllerClass($controllerKey)
     {
+        /** Remove try catch block after routing BC is removed */
         try {
             $controllerClass = $this->resolveControllerClass($controllerKey);
         } catch (\OxidEsales\Eshop\Core\Exception\RoutingException $exception) {

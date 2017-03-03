@@ -22,6 +22,7 @@
 namespace Integration\OnlineInfo;
 
 use oxCurl;
+use OxidEsales\Eshop\Core\Curl;
 use oxOnlineLicenseCheck;
 use oxOnlineLicenseCheckCaller;
 use oxRegistry;
@@ -126,10 +127,11 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
         $sXml .=   '<productId>eShop</productId>';
         $sXml .= '</olcRequest>'."\n";
 
-        $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute'));
+        /** @var oxCurl $oCurl */
+        $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute', 'getStatusCode'));
         $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
-        /** @var oxCurl $oCurl */
+        $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
 
         $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
         $oSimpleXml = oxNew('oxSimpleXml');
@@ -217,10 +219,11 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
         $sXml .=   '<productId>eShop</productId>';
         $sXml .= '</olcRequest>'."\n";
 
-        $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute'));
-        $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
+        /** @var Curl $oCurl */
+        $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute','getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
-        /** @var oxCurl $oCurl */
+        $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
+        $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
 
         $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
 

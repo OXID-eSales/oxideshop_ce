@@ -24,7 +24,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter\Doct
 
 use PDO;
 use Doctrine\DBAL\DBALException;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseErrorException;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\ResultSet;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database;
@@ -40,7 +40,7 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
     /**
      * @var string The database exception class to be thrown
      */
-    const DATABASE_EXCEPTION_CLASS = DatabaseException::class;
+    const DATABASE_EXCEPTION_CLASS = DatabaseErrorException::class;
 
     /**
      * @var string The result set class class
@@ -403,7 +403,7 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
 
         try {
             $this->database->execute("INSERT INTO $tableName (OXID) VALUES ('$id');");
-        } catch (DatabaseException $e) {
+        } catch (DatabaseErrorException $e) {
             $this->assertEquals(DatabaseInterface::DUPLICATE_KEY_ERROR_CODE, $e->getCode());
             return;
         }

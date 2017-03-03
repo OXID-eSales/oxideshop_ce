@@ -41,6 +41,13 @@ require_once __DIR__. '/BasketConstruct.php';
  *     c.) By adding / removing articles
  * 4.) Recalculate
  */
+/**
+ * Class OrderTest
+ *
+ * @group slow-tests
+ *
+ * @package Integration\Price
+ */
 class OrderTest extends BaseTestCase
 {
     /** @var string Test case directory */

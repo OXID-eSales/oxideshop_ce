@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core\Database\Adapter;
 
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 
 /**
  * The database connection interface specifies how a database connection should look and act.
@@ -174,7 +174,7 @@ interface DatabaseInterface
      * @param string $query      The sql select statement to be executed.
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      *
      * @return array The values of the first column of a corresponding sql query.
      */
@@ -203,7 +203,7 @@ interface DatabaseInterface
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      * @throws \InvalidArgumentException
      *
      * @return array
@@ -230,7 +230,7 @@ interface DatabaseInterface
      * @param string $query      The sql select statement to be executed.
      * @param array  $parameters The parameters array for the given query.
      *
-     * @throws DatabaseException The exception, that can occur while executing the sql statement.
+     * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
      *
      * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
@@ -260,7 +260,7 @@ interface DatabaseInterface
      * @param int    $offset     Offset of the first row to return
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseException The exception, that can occur while executing the sql statement.
+     * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
      *
      * @return ResultSetInterface The result of the given query.
      */
@@ -282,7 +282,7 @@ interface DatabaseInterface
      * @param string $query      The sql select statement to be executed.
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      *
      * @return integer Number of rows affected by the SQL statement
      */
@@ -349,21 +349,21 @@ interface DatabaseInterface
     /**
      * Start a database transaction.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      */
     public function startTransaction();
 
     /**
      * Commit a database transaction.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      */
     public function commitTransaction();
 
     /**
      * RollBack a database transaction.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      */
     public function rollbackTransaction();
 
@@ -388,7 +388,7 @@ interface DatabaseInterface
      *
      * @param string $level The transaction isolation level
      *
-     * @throws \InvalidArgumentException|DatabaseException
+     * @throws \InvalidArgumentException|DatabaseErrorException
      *
      * @return
      */

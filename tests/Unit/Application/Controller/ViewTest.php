@@ -306,7 +306,7 @@ class ViewTest extends \OxidTestCase
         try {
             $oView->executeFunction('yyy');
         } catch (oxSystemComponentException $oEx) {
-            $this->assertEquals("ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND", $oEx->getMessage());
+            $this->assertEquals("ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND yyy", $oEx->getMessage());
 
             return;
         }
@@ -340,7 +340,7 @@ class ViewTest extends \OxidTestCase
         $view = $this->getMock('oxView', array('getConfig'));
         $view->expects($this->once())->method('getConfig')->will($this->returnValue($config));
 
-        $this->setExpectedException('oxSystemComponentException', 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND');
+        $this->setExpectedException('oxSystemComponentException', 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' testAction');
         $view->_executeNewAction("testAction");
     }
 

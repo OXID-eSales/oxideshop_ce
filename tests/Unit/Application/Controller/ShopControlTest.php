@@ -150,7 +150,7 @@ class ShopControlTest extends \OxidTestCase
     {
         oxRegistry::get("oxConfigFile")->setVar('iDebug', -1);
 
-        $componentException = $this->getMock(oxSystemComponentException::class, ['debugOut']);
+        $componentException = $this->getMock(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class, ['debugOut']);
         $componentException->expects($this->any())->method('debugOut');
 
         $oxUtils = $this->getMock("oxUtils", array("redirect"));
@@ -165,7 +165,7 @@ class ShopControlTest extends \OxidTestCase
         $oControl->expects($this->any())->method('_process')->will($this->throwException($componentException));
 
         try {
-            $oControl->start('classToLoad', 'functionToLoad');
+            $oControl->start('basket');
         } catch (Exception $oExcp) {
             // To handle exception _process is called one more time in debug mode, that's why it's needed to be caught.
         }
@@ -180,8 +180,7 @@ class ShopControlTest extends \OxidTestCase
     {
         $this->setExpectedException('oxException', 'log debug');
 
-        $this->setRequestParameter('cl', 'testClassId');
-        $this->setRequestParameter('fnc', 'testFnc');
+        $this->setRequestParameter('cl', 'basket');
 
         $oUtilsView = $this->getMock('oxUtilsView', array('addErrorToDisplay'), array(), '', false);
         $oUtilsView->expects($this->any())->method('addErrorToDisplay');
@@ -192,8 +191,8 @@ class ShopControlTest extends \OxidTestCase
         $oControl = $this->getMock("oxShopControl", array("getConfig", "_runOnce", "isAdmin", "_process", "_isDebugMode", 'getStartControllerKey'), array(), '', false, false, true);
         $oControl->expects($this->any())->method('getConfig');
         $oControl->expects($this->any())->method('_runOnce');
-        $oControl->expects($this->once())->method('getStartControllerKey')->will($this->returnValue('testClass'));
-        $oControl->expects($this->any())->method('_process')->with($this->equalTo("testClass"), $this->equalTo("testFnc"))->will($this->throwException($oMockEx));
+        $oControl->expects($this->once())->method('getStartControllerKey')->will($this->returnValue('basket'));
+        $oControl->expects($this->any())->method('_process')->with($this->equalTo(\OxidEsales\Eshop\Application\Controller\BasketController::class))->will($this->throwException($oMockEx));
         $oControl->expects($this->any())->method('_isDebugMode')->will($this->returnValue(true));
 
         $oControl->start();

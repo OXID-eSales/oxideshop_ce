@@ -1,6 +1,4 @@
 <?php
-namespace OxidEsales\EshopCommunity\Core\Exception;
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -22,24 +20,20 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\EshopCommunity\Core\Exception;
+
+
 /**
- * Exception to be thrown on database connection errors
+ * Error handler, deals with PHP errors
  */
-class DatabaseConnectionException extends \OxidEsales\EshopCommunity\Core\Exception\DatabaseException
+class ErrorHandler
 {
 
-    /**
-     * DatabaseConnectionException constructor.
-     *
-     * Use this exception to catch and rethrow exceptions of the underlying DBAL, that occur while connection to the database.
-     * Provide the caught exception as the third parameter of the constructor to enable exception chaining.
-     *
-     * @param string     $message
-     * @param int        $code
-     * @param \Exception $previous Previous exception thrown by the underlying DBAL
-     */
-    public function __construct($message, $code, \Exception $previous)
+    public static function deprecationErrorHandler($code, $message, $file, $line)
     {
-        parent::__construct($message, $code, $previous);
+        $logFile = dirname(OX_LOG_FILE). DIRECTORY_SEPARATOR . 'deprecation.log';
+        $logMessage = vsprintf('[file %s] [line %s] [message %s]', [$file, $line, $message]) . PHP_EOL;
+
+        file_put_contents($logFile, $logMessage, FILE_APPEND);
     }
 }

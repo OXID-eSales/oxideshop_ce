@@ -23,6 +23,13 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Multilanguage;
 
 use oxDb;
 
+/**
+ * Class AdditionalTablesTest
+ *
+ * @group slow-tests
+ *
+ * @package OxidEsales\EshopCommunity\Tests\Integration\Multilanguage
+ */
 class AdditionalTablesTest extends MultilanguageTestCase
 {
     /**

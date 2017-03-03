@@ -23,6 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxCurl;
+use OxidEsales\EshopCommunity\Core\Exception\StandardException;
 use oxOnlineServerEmailBuilder;
 use oxSimpleXml;
 use oxOnlineRequest;
@@ -106,9 +107,10 @@ abstract class OnlineCaller
         try {
             $sXml = $this->_formXMLRequest($oRequest);
             $sOutputXml = $this->_executeCurlCall($this->_getServiceUrl(), $sXml);
-            if ($this->_getCurl()->getStatusCode() != 200) {
+            $statusCode = $this->_getCurl()->getStatusCode();
+            if ($statusCode != 200) {
                 /** @var oxException $oException */
-                $oException = oxNew('oxException');
+                $oException = new StandardException();
                 throw $oException;
             }
             $this->_resetFailedCallsCount($iFailedCallsCount);

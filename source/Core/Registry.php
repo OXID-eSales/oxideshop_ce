@@ -199,7 +199,7 @@ class Registry
     public static function getBackwardsCompatibilityClassMap()
     {
         if (is_null(self::$backwardsCompatibilityClassMap)) {
-            $classMap = include OX_BASE_PATH . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR . 'BackwardsCompatibilityClassMap.php';
+            $classMap = include CORE_AUTOLOADER_PATH . 'BackwardsCompatibilityClassMap.php';
             self::$backwardsCompatibilityClassMap = array_flip(array_map('strtolower', $classMap));
         }
 

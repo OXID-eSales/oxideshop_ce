@@ -29,6 +29,15 @@ define('OX_LOG_FILE', OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'EXCEPTION_LO
 define('OX_OFFLINE_FILE', OX_BASE_PATH . 'offline.html');
 define('VENDOR_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
 
+//Where CORE_AUTOLOADER_PATH points depends in if the shop is installed as compilation or not.
+if (!is_dir(OX_BASE_PATH . 'Core')) {
+    //we need this in case of compilation installation
+    define('CORE_AUTOLOADER_PATH', VENDOR_PATH . 'oxid-esales' . DIRECTORY_SEPARATOR . 'oxideshop-ce' . DIRECTORY_SEPARATOR .
+                                   'source' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR);
+} else {
+    define('CORE_AUTOLOADER_PATH', OX_BASE_PATH . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR );
+}
+
 /**
  * Provide a handler for cachable fatal errors, like failed requirement of files.
  * No information about paths or filenames must be disclosed to the frontend,
@@ -101,14 +110,14 @@ require_once VENDOR_PATH . 'autoload.php';
  *
  * Past this point you should use only create instances of classes from the virtual namespace
  */
-require_once OX_BASE_PATH . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR . 'AliasAutoload.php';
+require_once CORE_AUTOLOADER_PATH . 'AliasAutoload.php';
 
 /**
  * Register the module autoload.
  * It will load classes like YourModule_parent or classes defined in the metadata key 'extends'
  * When this autoloader is called a database connection will be triggered
  */
-require_once OX_BASE_PATH . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR . 'ModuleAutoload.php';
+require_once CORE_AUTOLOADER_PATH . 'ModuleAutoload.php';
 
 /**
  * Store the shop configuration in the Registry prior including the custom bootstrap functionality.

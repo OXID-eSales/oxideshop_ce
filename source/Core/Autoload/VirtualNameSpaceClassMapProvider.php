@@ -57,7 +57,7 @@ class VirtualNameSpaceClassMapProvider
     public function __construct()
     {
         $this->virtualNameSpaceClassMapFiles = [
-            'CE' => OX_BASE_PATH . 'Core/Autoload/VirtualNameSpaceClassMap.php',
+            'CE' => CORE_AUTOLOADER_PATH . 'VirtualNameSpaceClassMap.php',
             'PE' => VENDOR_PATH . 'oxid-esales/oxideshop-pe/Core/Autoload/VirtualNameSpaceClassMap.php',
             'EE' => VENDOR_PATH . 'oxid-esales/oxideshop-ee/Core/Autoload/VirtualNameSpaceClassMap.php',
         ];

@@ -613,6 +613,23 @@ class Utilities extends Core
      */
     public function getActiveEditionDemodataPackageSqlFilePath()
     {
+        return implode(
+            DIRECTORY_SEPARATOR,
+            [
+                $this->getActiveEditionDemodataPackagePath(),
+                self::DEMODATA_PACKAGE_SOURCE_DIRECTORY,
+                self::DEMODATA_SQL_FILENAME,
+            ]
+        );
+    }
+
+    /**
+     * Return full path to demodata package based on current eShop edition.
+     *
+     * @return string
+     */
+    public function getActiveEditionDemodataPackagePath()
+    {
         $editionSelector = new EditionSelector();
 
         return implode(
@@ -621,8 +638,6 @@ class Utilities extends Core
                 $this->getUtilitiesInstance()->getVendorDirectory(),
                 EditionRootPathProvider::EDITIONS_DIRECTORY,
                 sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($editionSelector->getEdition())),
-                self::DEMODATA_PACKAGE_SOURCE_DIRECTORY,
-                self::DEMODATA_SQL_FILENAME,
             ]
         );
     }

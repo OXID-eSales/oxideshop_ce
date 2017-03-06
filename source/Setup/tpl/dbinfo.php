@@ -23,6 +23,7 @@ require "_header.php"; ?>
 <?php
 $this->getText('STEP_3_DESC');
 $aDB = $this->getViewParam( "aDB" );
+$demodataPackageExists = $this->getViewParam('demodataPackageExists');
 
 ?><br>
 <br>
@@ -56,12 +57,17 @@ $aDB = $this->getViewParam( "aDB" );
   <tr>
     <td><?php $this->getText('STEP_3_DB_DEMODATA'); ?>:</td>
     <td>
-        &nbsp;&nbsp;<input type="radio" name="aDB[dbiDemoData]" value="1" <?php if( $aDB['dbiDemoData'] == 1) echo( "checked"); ?>><?php $this->getText('BUTTON_RADIO_INSTALL_DB_DEMO'); ?><br>
+        &nbsp;&nbsp;<input type="radio" name="aDB[dbiDemoData]" value="1" <?php if( $aDB['dbiDemoData'] == 1) echo( "checked"); ?> <?php echo !$demodataPackageExists ? "disabled" : "" ?>><?php $this->getText('BUTTON_RADIO_INSTALL_DB_DEMO'); ?> <?php echo !$demodataPackageExists ? "<span class='exclamation-icon'></span>" : "" ?><br>
         &nbsp;&nbsp;<input type="radio" name="aDB[dbiDemoData]" value="0" <?php if( $aDB['dbiDemoData'] == 0) echo( "checked"); ?>><?php $this->getText('BUTTON_RADIO_NOT_INSTALL_DB_DEMO'); ?><br>
     </td>
   </tr>
 </table>
 <input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
+
+<?php if (!$demodataPackageExists) { ?>
+    <ul class="req"><li class="pmin"><?php $this->getText('NOTICE_NO_DEMODATA_INSTALLED'); ?></li></ul><br>
+<?php } ?>
+
 <input type="submit" id="step3Submit" class="edittext" value="<?php $this->getText('BUTTON_DB_CREATE'); ?>">
 </form>
 <?php require "_footer.php";

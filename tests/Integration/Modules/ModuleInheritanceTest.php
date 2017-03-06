@@ -31,6 +31,64 @@ use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modu
 /**
  * Test, that the inheritance of modules and the shop works as expected.
  *
+ * See also OxidEsales\EshopCommunity\Tests\Integration\Modules\BCModuleInheritanceTest
+ *
+ * Below, there are listed all possible combinations which are possible. You have to read the tables as follows:
+ * E.g. Test Case 1.1 is: A "plain module class" "extends via PHP" a "Plain shop class"
+ *
+ *
+ * 1. Simple extending shop classes in modules
+ * +-------------------------------+--------------------+-------------------------+---------------------------------+
+ * |        extends via PHP        | plain module class | namespaced module class | virtual namespaced module class |
+ * +-------------------------------+--------------------+-------------------------+---------------------------------+
+ * | Plain shop class              |                1.1 |                     1.6 | not planned                     |
+ * | Namespaced shop class         |                1.2 |                     1.7 | not planned                     |
+ * | Virtual namespaced shop class |                1.5 |                    1.10 | not planned                     |
+ * +-------------------------------+--------------------+-------------------------+---------------------------------+
+ *
+ *
+ *
+ * 2. Simple extending module classes from other modules
+ * +--------------------------------------------------------------+--------------------+-------------------------+
+ * |                       extends via PHP                        | plain module class | namespaced module class |
+ * +--------------------------------------------------------------+--------------------+-------------------------+
+ * | plain module class which extends an other class              |                2.1 |                     2.3 |
+ * | namespaced module class which extends an other class         |                2.2 |                     2.4 |
+ * | plain module class which chain extends a shop class          |                2.5 |                     2.7 |
+ * | namespaced module class which does not extend an other class |                2.6 |                     2.8 |
+ * +--------------------------------------------------------------+--------------------+-------------------------+
+ *
+ * Together with "2. Simple extending module classes from other modules" we implemented some other test cases.
+ * These test cases should be already covered by the test cases in table 1 and 3.
+ * If you remove these unnecessary test cases, there should be only 4 test cases left:
+ * +--------------------------+--------------------+-------------------------+
+ * |     extends via PHP      | plain module class | namespaced module class |
+ * +--------------------------+--------------------+-------------------------+
+ * | plain module class       |                    |                         |
+ * | namespaced module class  |                    |                         |
+ * +--------------------------+--------------------+-------------------------+
+ *
+ *
+ *
+ *  3. Chain extending shop classes in modules
+ * +-------------------------------+--------------------+-------------------------+
+ * |       extends via chain       | plain module class | namespaced module class |
+ * +-------------------------------+--------------------+-------------------------+
+ * | Plain shop class              | 3.1                | no need                 |
+ * | Namespaced shop class         | no need            | 3.5                     |
+ * | Virtual namespaced shop class | 3.3                | 3.6                     |
+ * +-------------------------------+--------------------+-------------------------+
+ *
+ *
+ *
+ * 4. Chain extending module classes from other modules
+ * +-------------------------+--------------------+-------------------------+
+ * |    extends via chain    | plain module class | namespaced module class |
+ * +-------------------------+--------------------+-------------------------+
+ * | plain module class      |                4.1 |                     4.3 |
+ * | namespaced module class |                4.2 |                     4.4 |
+ * +-------------------------+--------------------+-------------------------+
+ *
  * @group module
  */
 class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
@@ -45,7 +103,7 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
      *
      * @param array  $moduleToActivate The module we want to activate.
      * @param string $moduleClassName  The module class we want to instantiate.
-     * @param array  $shopClassName    The shop class from which the module class should inherit.
+     * @param array  $shopClassNames   The shop class from which the module class should inherit.
      */
     public function testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames)
     {
@@ -63,7 +121,7 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
      *
      * @param array  $modulesToActivate The modules we want to activate.
      * @param string $moduleClassName   The module class we want to instantiate.
-     * @param array $shopClassName     The shop class from which the module class should inherit.
+     * @param array  $shopClassNames    The shop class from which the module class should inherit.
      */
     public function testMultiModuleInheritanceTestPhpInheritance($modulesToActivate, $moduleClassName, $shopClassNames)
     {

@@ -1312,7 +1312,7 @@ class Utils extends \oxSuperCfg
     /**
      * Processes logging.
      *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
      * @param string $sText     Log message text
      * @param bool   $blNewline If true, writes message to new line (default false)
@@ -1430,7 +1430,7 @@ class Utils extends \oxSuperCfg
     /**
      * Writes given log message. Returns write state
      *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
      * @param string $logMessage  log message
      * @param string $logFileName log file name

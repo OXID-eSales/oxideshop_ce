@@ -39,7 +39,7 @@ class StandardException extends \Exception
 
     /**
      * Log file path/name
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
      * @var string
      */
@@ -75,7 +75,7 @@ class StandardException extends \Exception
     /**
      * Set log file path/name
      *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
      * @param string $sFile File name
      */
@@ -87,7 +87,7 @@ class StandardException extends \Exception
     /**
      * Get log file path/name
      *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
      * @return string
      */
@@ -150,7 +150,7 @@ class StandardException extends \Exception
         //We are most likely are already dealing with an exception so making sure no other exceptions interfere
         try {
             $sLogMsg = $this->getString() . "\n---------------------------------------------\n";
-            //deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+            //deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
             oxRegistry::getUtils()->writeToLog($sLogMsg, $this->getLogFileName());
             //end deprecated
         } catch (\Exception $e) {

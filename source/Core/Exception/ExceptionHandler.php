@@ -35,7 +35,7 @@ class ExceptionHandler
     /**
      * Log file path/name
      *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
      * @var string
      */
@@ -71,7 +71,7 @@ class ExceptionHandler
     /**
      * Set log file path/name
      *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
      * @param string $sFile file name
      */
@@ -83,7 +83,7 @@ class ExceptionHandler
     /**
      * Get log file path/name
      *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
      * @return string
      */
@@ -157,7 +157,7 @@ class ExceptionHandler
     {
         if (0 != $this->_iDebug) {
             $sLogMsg = date('Y-m-d H:i:s') . $oEx . "\n---------------------------------------------\n";
-            //deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+            //deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
             oxRegistry::getUtils()->writeToLog($sLogMsg, $this->getLogFileName());
             //end deprecated
             if (defined('OXID_PHP_UNIT')) {

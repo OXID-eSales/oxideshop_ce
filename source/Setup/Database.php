@@ -236,18 +236,39 @@ class Database extends Core
                 throw new Exception($this->getInstance("Language")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS'), Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS);
             }
 
+            $databaseConnectProblem = null;
             try {
                 $this->_oConn->exec("USE `{$aParams['dbName']}`");
             } catch (Exception $e) {
-                throw new Exception($this->getInstance("Language")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . $e->getMessage(), Database::ERROR_COULD_NOT_CREATE_DB, $e);
+                $databaseConnectException = new Exception($this->getInstance("Language")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . $e->getMessage(), Database::ERROR_COULD_NOT_CREATE_DB, $e);
             }
 
-            if (1 === $oSysReq->checkMysqlVersion($this->getDatabaseVersion())) {
+            if (1 === $oSysReq->checkMysqlVersion($this->getDatabaseVersion()) && !$this->userDecidedIgnoreDBWarning()) {
                 throw new Exception($this->getInstance("Language")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS'), Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS);
+            }
+
+            if (is_a($databaseConnectException, 'Exception')) {
+                throw $databaseConnectException;
             }
         }
 
         return $this->_oConn;
+    }
+
+    /**
+     * Connect to database.
+     *
+     * @param string $sDbName
+     *
+     * @throws Exception
+     */
+    public function connectDb($sDbName)
+    {
+        try {
+            $this->_oConn->exec("USE `$sDbName`");
+        } catch (Exception $e) {
+            throw new Exception($this->getInstance("Language")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . $e->getMessage(), Database::ERROR_COULD_NOT_CREATE_DB, $e);
+        }
     }
 
     /**

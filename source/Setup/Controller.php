@@ -178,6 +178,9 @@ class Controller extends Core
         if ($this->userDecidedOverwriteDB()) {
             $session->setSessionParam('blOverwrite', true);
         }
+        if ($this->userDecidedIgnoreDBWarning()) {
+            $session->setSessionParam('blIgnoreDbRecommendations', true);
+        }
 
         $this->setViewOptions(
             'dirsinfo.php',
@@ -234,27 +237,21 @@ class Controller extends Core
                 $view->setMessage($exception->getMessage());
 
                 throw new SetupControllerExitException();
-            } elseif ($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS) {
+            } elseif (($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS) && !$this->userDecidedIgnoreDBWarning()) {
                 $setup->setNextStep(null);
                 $this->formMessageIfMySqyVersionIsNotRecommended($view, $language);
+                $databaseExists = false;
                 // check if DB is already UP and running
                 if (!$this->databaseCanBeOverwritten($database)) {
                     $this->formMessageIfDBCanBeOverwritten($databaseConfigValues['dbName'], $view, $language);
+                    $databaseExists = true;
                 }
-                $this->formMessageInstallAnyway($view, $language, $session->getSid(), $setup->getStep('STEP_DIRS_INFO'));
+                $this->formMessageIgnoreDbVersionNotRecommended($view, $language, $session->getSid(), $setup->getStep('STEP_DIRS_INFO'), $databaseExists);
 
                 throw new SetupControllerExitException();
             } else {
-                try {
-                    // if database is not there, try to create it
-                    $database->createDb($databaseConfigValues['dbName']);
-                } catch (Exception $exception) {
-                    $setup->setNextStep($setup->getStep('STEP_DB_INFO'));
-                    $view->setMessage($exception->getMessage());
-
-                    throw new SetupControllerExitException();
-                }
-                $view->setViewParam("blCreated", 1);
+                $this->ensureDatabasePresent($database, $databaseConfigValues['dbName']);
+                $database->openDatabase($databaseConfigValues);
             }
         }
 
@@ -301,19 +298,20 @@ class Controller extends Core
             $database = $this->getDatabaseInstance();
             $database->openDatabase($databaseConfigValues);
         } catch (Exception $exception) {
-            if ($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS) {
-                $bIgnore = (bool)$this->getInstance('Utilities')->getRequestVar('ow');
-
-                if ($bIgnore === false) {
-                    $setup->setNextStep(null);
-                    $this->formMessageIfMySqyVersionIsNotRecommended($view, $language);
-                    // check if DB is already UP and running
-                    if (!$this->databaseCanBeOverwritten($database)) {
-                        $this->formMessageIfDBCanBeOverwritten($databaseConfigValues['dbName'], $view, $language);
-                    }
-                    $this->formMessageInstallAnyway($view, $language, $session->getSid(), $setup->getStep('STEP_DB_CREATE'));
-                    throw new SetupControllerExitException();
+            if (($exception->getCode() === Database::ERROR_COULD_NOT_CREATE_DB) && $this->userDecidedIgnoreDBWarning()) {
+                //User agreed to ignore SystemRequirements warning, database does not exist yet, create database.
+                $this->ensureDatabasePresent($database, $databaseConfigValues['dbName']);
+                $database->connectDb($databaseConfigValues['dbName']);
+            } elseif (($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS) && !$this->userDecidedIgnoreDBWarning()) {
+                $setup->setNextStep(null);
+                $this->formMessageIfMySqyVersionIsNotRecommended($view, $language);
+                // check if DB is already UP and running
+                if (!$this->databaseCanBeOverwritten($database)) {
+                    $this->formMessageIfDBCanBeOverwritten($databaseConfigValues['dbName'], $view, $language);
                 }
+                $this->formMessageInstallAnyway($view, $language, $session->getSid(), $setup->getStep('STEP_DB_CREATE'));
+
+                throw new SetupControllerExitException();
             } else {
                 $setup->setNextStep($setup->getStep('STEP_DB_CREATE'));
                 $view->setMessage($exception->getMessage());
@@ -553,25 +551,6 @@ class Controller extends Core
     }
 
     /**
-     * Return if user already decided to overwrite database.
-     *
-     * @return bool
-     */
-    private function userDecidedOverwriteDB()
-    {
-        $userDecidedOverwriteDatabase = false;
-
-        $overwriteCheck = $this->getUtilitiesInstance()->getRequestVar("ow", "get");
-        $session = $this->getSessionInstance();
-
-        if (isset($overwriteCheck) || $session->getSessionParam('blOverwrite')) {
-            $userDecidedOverwriteDatabase = true;
-        }
-
-        return $userDecidedOverwriteDatabase;
-    }
-
-    /**
      * Show warning-question if database with same name already exists.
      *
      * @param string   $databaseName name of database to check if exist
@@ -604,7 +583,22 @@ class Controller extends Core
      */
     private function formMessageInstallAnyway($view, $language, $sessionId, $setupStep)
     {
-        $view->setMessage("<br><br>" . $language->getText('STEP_4_2_NOT_RECOMMENDED_MYSQL_VERSION') . " <a href=\"index.php?sid=" . $sessionId . "&istep=" . $setupStep . "&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $language->getText('HERE') . "</a>");
+        $view->setMessage("<br><br>" . $language->getText('STEP_4_2_OVERWRITE_DB') . " <a href=\"index.php?sid=" . $sessionId . "&istep=" . $setupStep . "&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $language->getText('HERE') . "</a>");
+    }
+
+    /**
+     * Show a message and a link to continue installation process, not regarding errors and warnings
+     *
+     * @param View     $view           to set parameters for template
+     * @param Language $language       to translate text
+     * @param string   $sessionId
+     * @param string   $setupStep      where to redirect if chose to rewrite database
+     * @param bool     $databaseExists Database already exists
+     */
+    private function formMessageIgnoreDbVersionNotRecommended($view, $language, $sessionId, $setupStep, $databaseExists)
+    {
+        $ignoreParam = $databaseExists ? '&ow=1&owrec=1' : '&owrec=1';
+        $view->setMessage("<br><br>" . $language->getText('STEP_4_2_NOT_RECOMMENDED_MYSQL_VERSION') . " <a href=\"index.php?sid=" . $sessionId . "&istep=" . $setupStep . $ignoreParam . "id=\"step3Continue\" style=\"text-decoration: underline;\">" . $language->getText('HERE') . "</a>");
     }
 
     /**
@@ -779,5 +773,31 @@ class Controller extends Core
         $commandOutput = "<span style=\"font-family: courier,serif\">$commandOutput</span>";
 
         return $commandOutput;
+    }
+
+    /**
+     * Ensure the database is available
+     *
+     * @throws SetupControllerExitException
+     */
+    /**
+     * @param Database $database
+     * @param string   $dbName
+     *
+     * @throws SetupControllerExitException
+     */
+    private function ensureDatabasePresent($database, $dbName)
+    {
+        try {
+            // if database is not there, try to create it
+            $database->createDb($dbName);
+        } catch (Exception $exception) {
+            $setup = $this->getSetupInstance();
+            $setup->setNextStep($setup->getStep('STEP_DB_INFO'));
+            $this->getView()->setMessage($exception->getMessage());
+
+            throw new SetupControllerExitException();
+        }
+        $this->getView()->setViewParam("blCreated", 1);
     }
 }

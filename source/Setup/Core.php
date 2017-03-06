@@ -145,4 +145,42 @@ class Core
     {
         return $this->getInstance("Database");
     }
+
+    /**
+     * Return true if user already decided to overwrite database.
+     *
+     * @return bool
+     */
+    protected function userDecidedOverwriteDB()
+    {
+        $userDecidedOverwriteDatabase = false;
+
+        $overwriteCheck = $this->getUtilitiesInstance()->getRequestVar("ow", "get");
+        $session = $this->getSessionInstance();
+
+        if (isset($overwriteCheck) || $session->getSessionParam('blOverwrite')) {
+            $userDecidedOverwriteDatabase = true;
+        }
+
+        return $userDecidedOverwriteDatabase;
+    }
+
+    /**
+     * Return true if user already decided to ignore database recommended version related warnings.
+     *
+     * @return bool
+     */
+    protected function userDecidedIgnoreDBWarning()
+    {
+        $userDecidedIgnoreDBWarning = false;
+
+        $overwriteCheck = $this->getUtilitiesInstance()->getRequestVar("owrec", "get");
+        $session = $this->getSessionInstance();
+
+        if (isset($overwriteCheck) || $session->getSessionParam('blIgnoreDbRecommendations')) {
+            $userDecidedIgnoreDBWarning = true;
+        }
+
+        return $userDecidedIgnoreDBWarning;
+    }
 }

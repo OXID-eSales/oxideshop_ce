@@ -238,7 +238,7 @@ class Controller extends Core
                 $setup->setNextStep(null);
                 $this->formMessageIfMySqyVersionIsNotRecommended($view, $language);
                 // check if DB is already UP and running
-                if (!$this->databaseCanBeOverwritten($databaseConfigValues)) {
+                if (!$this->databaseCanBeOverwritten($database)) {
                     $this->formMessageIfDBCanBeOverwritten($databaseConfigValues['dbName'], $view, $language);
                 }
                 $this->formMessageInstallAnyway($view, $language, $session->getSid(), $setup->getStep('STEP_DIRS_INFO'));
@@ -303,7 +303,7 @@ class Controller extends Core
         } catch (Exception $exception) {
             if ($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS) {
                 $bIgnore = (bool)$this->getInstance('Utilities')->getRequestVar('ow');
-                
+
                 if ($bIgnore === false) {
                     $setup->setNextStep(null);
                     $this->formMessageIfMySqyVersionIsNotRecommended($view, $language);

@@ -30,6 +30,7 @@ use OxidEsales\Eshop\Core\Exception\DatabaseException;
  */
 interface DatabaseInterface
 {
+
     /** @var int code of exception to check against. Use same number as MySQL to avoid duplications. */
     const DUPLICATE_KEY_ERROR_CODE = 1062;
 
@@ -143,14 +144,14 @@ interface DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $result = Database::getDb->getOne(
+     * $result = DatabaseProvider::getDb->getOne(
      *   'SELECT ´id´ FROM ´mytable´ WHERE ´id´ = ? LIMIT 0, 1',
      *   array($id1)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement we want to execute.
+     * @param string $query      The sql select statement to be executed.
      * @param array  $parameters Array of parameters, for the given sql statement.
      *
      * @return array The row, we selected with the given sql statement.
@@ -163,14 +164,14 @@ interface DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $result = Database::getDb->getRow(
+     * $result = DatabaseProvider::getDb->getRow(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? LIMIT 0, 1',
      *   array($id1)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement
+     * @param string $query      The sql select statement to be executed.
      * @param array  $parameters The parameters array.
      *
      * @throws DatabaseException
@@ -189,11 +190,11 @@ interface DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $result = Database::getDb->getAll(
+     * $result = DatabaseProvider::getDb->getAll(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ? LIMIT 0, 1',
      *   array($id1, $id2)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
      * @param string $query      If parameters are given, the "?" in the string will be replaced by the values in the array
@@ -219,14 +220,14 @@ interface DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $resultSet = Database::getDb->select(
+     * $resultSet = DatabaseProvider::getDb->select(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
      *   array($id1, $id2)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement
+     * @param string $query      The sql select statement to be executed.
      * @param array  $parameters The parameters array for the given query.
      *
      * @throws DatabaseException The exception, that can occur while executing the sql statement.
@@ -245,16 +246,16 @@ interface DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $resultSet = Database::getDb->selectLimit(
+     * $resultSet = DatabaseProvider::getDb->selectLimit(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
      *   $rowCount,
      *   $offset,
      *   array($id1, $id2)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement
+     * @param string $query      The sql select statement to be executed.
      * @param int    $rowCount   Maximum number of rows to return
      * @param int    $offset     Offset of the first row to return
      * @param array  $parameters The parameters array.
@@ -267,8 +268,18 @@ interface DatabaseInterface
 
     /**
      * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
+     * This method has to be used EXCLUSIVELY for non read statements.
      *
-     * @param string $query      The sql statement we want to execute.
+     * IMPORTANT:
+     * You are strongly encouraged to use prepared statements like this:
+     * $resultSet = DatabaseProvider::getDb->execute(
+     *   'DELETE * FROM `mytable` WHERE `id` = ? OR `id` = ?',
+     *   array($id1, $id2)
+     * );
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * SQL injection vulnerability.
+     *
+     * @param string $query      The sql select statement to be executed.
      * @param array  $parameters The parameters array.
      *
      * @throws DatabaseException
@@ -285,13 +296,13 @@ interface DatabaseInterface
      * but when the statement is executed and the value could not have been quoted, a DatabaseException is thrown.
      * You are strongly encouraged to always use prepared statements instead of quoting the values on your own.
      * E.g. use
-     * $resultSet = Database::getDb->select(
+     * $resultSet = DatabaseProvider::getDb->select(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
      *   array($id1, $id2)
      * );
      * instead of
-     * $resultSet = Database::getDb->select(
-     *  'SELECT * FROM ´mytable´ WHERE ´id´ = ' . Database::getDb->quote($id1) . ' OR ´id´ = ' . Database::getDb->quote($id1)
+     * $resultSet = DatabaseProvider::getDb->select(
+     *  'SELECT * FROM ´mytable´ WHERE ´id´ = ' . DatabaseProvider::getDb->quote($id1) . ' OR ´id´ = ' . DatabaseProvider::getDb->quote($id1)
      * );
      *
      * @param mixed $value The string or numeric value to be quoted.

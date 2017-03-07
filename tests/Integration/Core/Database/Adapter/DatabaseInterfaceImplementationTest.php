@@ -369,7 +369,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 [
                     [self::FIXTURE_OXID_2], [self::FIXTURE_OXID_3] // expected result
                 ]
-            ),
+            )
         );
     }
 
@@ -396,6 +396,31 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                ')';
 
         $resultSet = $this->database->selectLimit($sql, $rowCount, $offset);
+        $actualResult = $resultSet->fetchAll();
+
+        $this->assertSame($expectedResult, $actualResult, $assertionMessage);
+    }
+
+    /**
+     * Test, that the method 'selectLimit' returns the expected rows if offset is not set.
+     *
+     * This test assumes that there are at least 3 entries in the table.
+     */
+    public function testSelectLimitReturnsExpectedResultForMissingOffsetParameter()
+    {
+        $rowCount = 2;
+        $expectedResult = [[self::FIXTURE_OXID_1], [self::FIXTURE_OXID_2]];
+        $assertionMessage = 'If parameter offet is not set, selectLimit will return the number of records 
+        given in the parameter $rowcount starting from the first record in the result set';
+
+        $this->loadFixtureToTestTable();
+        $sql = 'SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE OXID IN (' .
+               '"' . self::FIXTURE_OXID_1 . '",' .
+               '"' . self::FIXTURE_OXID_2 . '",' .
+               '"' . self::FIXTURE_OXID_3 . '"' .
+               ')';
+
+        $resultSet = $this->database->selectLimit($sql, $rowCount);
         $actualResult = $resultSet->fetchAll();
 
         $this->assertSame($expectedResult, $actualResult, $assertionMessage);

@@ -126,7 +126,7 @@ class DatabaseProvider
     /**
      * Return the database master connection instance as a singleton.
      * In case the shop is not allowed a master/slave setup, this function
-     * is simply a wrapper for Database::getDb.
+     * is simply a wrapper for DatabaseProvider::getDb.
      *
      * @param int $fetchMode The fetch mode. Default is numeric (0).
      *

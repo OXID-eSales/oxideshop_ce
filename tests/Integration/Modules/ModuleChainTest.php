@@ -21,6 +21,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\Eshop\Core\Registry;
+
 /**
  * Test for the module class chain.
  *
@@ -31,6 +33,35 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
  */
 class ModuleChainTest extends BaseModuleTestCase
 {
+    /**
+     * @var Environment The helper object for the environment.
+     */
+    protected $environment = null;
+
+    /**
+     * Standard set up method. Calls parent first.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $configFile = Registry::get('oxConfigFile');
+        $configFile->setVar('sShopDir', realpath(__DIR__ . '/TestData'));
+
+        Registry::set('oxConfigFile', $configFile);
+
+        $this->environment = new Environment();
+    }
+
+    /**
+     * Standard tear down method. Calls parent last.
+     */
+    public function tearDown()
+    {
+        $this->environment->clean();
+
+        parent::setUp();
+    }
     /**
      * Test, that a deactivated module is not used in the module chain.
      */
@@ -47,5 +78,34 @@ class ModuleChainTest extends BaseModuleTestCase
     public function testModuleActivationRemovesNotExistingChainClasses()
     {
         // @todo: implement test case
+    }
+
+    /**
+     * Assert, that the class inheritance chain of the given object is formed as expected.
+     *
+     * @param array  $expectedChain The expected class inheritance chain.
+     * @param object $object        The object for which we want to assure, that the class inheritance chain is as expected.
+     */
+    protected function assertClassChain($expectedChain, $object)
+    {
+        $this->assertEquals(
+            $expectedChain,
+            $this->getClassChain($object),
+            'The class inheritance chain of the given object does not fit to the expected one!'
+        );
+    }
+
+    /**
+     * Get the class chain of the given object.
+     *
+     * @param object $instance The object we want to have the class chain for.
+     *
+     * @return array The class chain of the given object.
+     */
+    protected function getClassChain($instance)
+    {
+        $parents = array_keys(class_parents($instance));
+
+        return array_merge([get_class($instance)], $parents);
     }
 }

@@ -23,6 +23,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use Exception;
 use oxDb;
+use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 
 class Environment
@@ -64,9 +66,9 @@ class Environment
     public function setShopId($shopId)
     {
         $this->shopId = $shopId;
-        oxRegistry::getConfig()->setShopId($shopId);
-        $utilsObject = new \OxidEsales\Eshop\Core\UtilsObject;
-        oxRegistry::set('oxUtilsObject', $utilsObject);
+        Registry::getConfig()->setShopId($shopId);
+        $utilsObject = new \OxidEsales\Eshop\Core\UtilsObject();
+        Registry::set('oxUtilsObject', $utilsObject);
         $this->loadShopParameters();
     }
 
@@ -104,7 +106,7 @@ class Environment
      */
     public function clean()
     {
-        $config = oxRegistry::getConfig();
+        $config = Registry::getConfig();
         $config->setConfigParam('aModules', null);
         $config->setConfigParam('aModuleTemplates', null);
         $config->setConfigParam('aDisabledModules', array());
@@ -124,7 +126,7 @@ class Environment
      */
     public function setShopConfigParameters()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = Registry::getConfig();
         $oConfig->setShopId($this->getShopId());
         $oConfig->setConfigParam('sShopDir', $this->getPathToTestDataDirectory());
     }
@@ -134,22 +136,56 @@ class Environment
      *
      * @param array $modules
      *
-     * @throws Exception
+     * @throws Exception If the module could not be loaded or activated.
      */
     public function activateModules($modules)
     {
-        $oModule = oxNew('oxModule');
         foreach ($modules as $moduleId) {
-            if ($oModule->load($moduleId)) {
-                $moduleCache = oxNew('oxModuleCache', $oModule);
-                $moduleInstaller = oxNew('oxModuleInstaller', $moduleCache);
+            $this->activateModuleById($moduleId);
+        }
+    }
 
-                if (!$moduleInstaller->activate($oModule)) {
-                    throw new Exception("Module $moduleId was not activated.");
-                }
-            } else {
+    /**
+     * Activate the module with the given ID.
+     *
+     * @param string $moduleId The ID of the module to activate.
+     *
+     * @throws Exception If the module could not be loaded or activated.
+     */
+    public function activateModuleById($moduleId)
+    {
+        $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
+
+        if ($module->load($moduleId)) {
+            $moduleInstaller = $this->getModuleInstaller($module);
+
+            if (!$moduleInstaller->activate($module)) {
                 throw new Exception("Module $moduleId was not activated.");
             }
+        } else {
+            throw new Exception("Module $moduleId was not activated.");
+        }
+    }
+
+    /**
+     * Deactivate a module, given by its ID.
+     *
+     * @param string $moduleId The ID of the module we want to deactivate.
+     *
+     * @throws Exception
+     */
+    public function deactivateModuleById($moduleId)
+    {
+        $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
+
+        if ($module->load($moduleId)) {
+            $moduleInstaller = $this->getModuleInstaller($module);
+
+            if (!$moduleInstaller->deactivate($module)) {
+                throw new Exception("Module $moduleId was not deactivated.");
+            }
+        } else {
+            throw new Exception("Module $moduleId was not deactivated. Couldn't find/load the module.");
         }
     }
 
@@ -184,7 +220,7 @@ class Environment
             'aModules', 'aModuleEvents', 'aModuleVersions', 'aModuleFiles', 'aDisabledModules', 'aModuleTemplates', 'aModuleControllers'
         );
         foreach ($aParameters as $sParameter) {
-            oxRegistry::getConfig()->setConfigParam($sParameter, $this->_getConfigValueFromDB($sParameter));
+            Registry::getConfig()->setConfigParam($sParameter, $this->_getConfigValueFromDB($sParameter));
         }
     }
 
@@ -198,7 +234,7 @@ class Environment
     protected function _getConfigValueFromDB($sVarName)
     {
         $oDb = oxDb::getDb();
-        $sQuery = "SELECT " . oxRegistry::getConfig()->getDecodeValueQuery() . "
+        $sQuery = "SELECT " . Registry::getConfig()->getDecodeValueQuery() . "
                    FROM `oxconfig`
                    WHERE `OXVARNAME` = '{$sVarName}'
                    AND `OXSHOPID` = {$this->getShopId()}";
@@ -207,5 +243,20 @@ class Environment
         $aExtensionsToCheck = $sResult ? unserialize($sResult) : array();
 
         return $aExtensionsToCheck;
+    }
+
+    /**
+     * Get the module installer with a given module set in the module cache.
+     *
+     * @param Module $module
+     *
+     * @return object
+     */
+    protected function getModuleInstaller($module)
+    {
+        $moduleCache = oxNew(\OxidEsales\Eshop\Core\Module\ModuleCache::class, $module);
+        $moduleInstaller = oxNew(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class, $moduleCache);
+
+        return $moduleInstaller;
     }
 }

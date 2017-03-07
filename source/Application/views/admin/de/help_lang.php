@@ -139,6 +139,17 @@ $aLang =  array(
                                                  '<ul><li>Wenn die Einstellung aktiv ist, werden negative Lagerbestände berechnet, wenn weitere Exemplare bestellt werden.</li>' .
                                                  '<li>Wenn die Einstellung nicht aktiv ist, fällt der Lagerbestand eines Artikels nie unter 0. Auch dann nicht, wenn der Artikel bereits ausverkauft ist und noch weitere Exemplare bestellt werden.</li></ul>',
 
+'HELP_SHOP_CONFIG_SETORDELETECURRENCY'        => 'Hier können Sie Währungen hinzufügen oder entfernen. Jede Zeile enthält Währungsparameter, die durch das Symbol @ getrennt werden.<br /><br />'.
+                                                 '<ul>'.
+                                                 '<li>Währungsabkürzung laut ISO 4217 (z.B. EUR)</li>'.
+                                                 '<li>Wechselkurs zur Basiswährung mit dem Wert 1.00</li>'.
+                                                 '<li>Dezimaltrennzeichen</li>'.
+                                                 '<li>Tausendertrennzeichen</li>'.
+                                                 '<li>Währungszeichen</li>'.
+                                                 '<li>Anzahl der Nachkommastellen</li>'.
+                                                 '<li>optionaler Parameter "Front". Falls angegeben, wird die Währungsabkürzung vor dem Preis angezeigt.</li>'.
+                                                 '</ul>',
+
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'Auf der Startseite Ihres eShops werden die unter <span class="filename_filepath_or_italic">Frisch eingetroffen!</span> die neusten Artikel in Ihrem eShop angezeigt. Sie können die Artikel, die hier angezeigt werden, manuell einstellen oder automatisch berechnen lassen. Mit dieser Einstellung wählen Sie, wie die neusten Artikel berechnet werden sollen: Nach dem Datum, an dem die Artikel erstellt wurden, oder nach dem Datum der letzten Änderung im Administrationsbereich/der letzten Bestellung im Shop.',
 
 'HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES'         => 'Aktivieren Sie diese Einstellung, um zusätzliche Produktinformationen im Administrationsbereich anzuzeigen und um technische Informationen zu statistischen Zwecken sowie zur Verbesserung unserer Service-Qualität an OXID-Server zu senden. Dabei werden keine geschäftsrelevanten Daten (Benutzer, Umsatz etc.) übermittelt.',

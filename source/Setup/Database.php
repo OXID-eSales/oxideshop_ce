@@ -180,7 +180,6 @@ class Database extends Core
      */
     public function getDatabaseVersion()
     {
-
         $oStatement = $this->execSql("SHOW VARIABLES LIKE 'version'");
         return $oStatement->fetchColumn(1);
     }
@@ -243,13 +242,16 @@ class Database extends Core
                 $databaseConnectException = new Exception($this->getInstance("Language")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . $e->getMessage(), Database::ERROR_COULD_NOT_CREATE_DB, $e);
             }
 
-            if (1 === $oSysReq->checkMysqlVersion($this->getDatabaseVersion()) && !$this->userDecidedIgnoreDBWarning()) {
+            if ((1 === $oSysReq->checkMysqlVersion($this->getDatabaseVersion())) && !$this->userDecidedIgnoreDBWarning()) {
                 throw new Exception($this->getInstance("Language")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS'), Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS);
             }
 
             if (is_a($databaseConnectException, 'Exception')) {
                 throw $databaseConnectException;
             }
+        } else {
+            // Make sure the database is connected
+            $this->connectDb($aParams['dbName']);
         }
 
         return $this->_oConn;
@@ -282,6 +284,7 @@ class Database extends Core
     {
         try {
             $this->execSql("CREATE DATABASE `$sDbName`");
+            $this->connectDb($sDbName);
         } catch (Exception $e) {
             $oSetup = $this->getInstance("Setup");
             $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));

@@ -237,7 +237,7 @@ class Controller extends Core
                 $view->setMessage($exception->getMessage());
 
                 throw new SetupControllerExitException();
-            } elseif (($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS) && !$this->userDecidedIgnoreDBWarning()) {
+            } elseif (($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS)) {
                 $setup->setNextStep(null);
                 $this->formMessageIfMySqyVersionIsNotRecommended($view, $language);
                 $databaseExists = false;
@@ -251,7 +251,6 @@ class Controller extends Core
                 throw new SetupControllerExitException();
             } else {
                 $this->ensureDatabasePresent($database, $databaseConfigValues['dbName']);
-                $database->openDatabase($databaseConfigValues);
             }
         }
 
@@ -301,15 +300,16 @@ class Controller extends Core
             if (($exception->getCode() === Database::ERROR_COULD_NOT_CREATE_DB) && $this->userDecidedIgnoreDBWarning()) {
                 //User agreed to ignore SystemRequirements warning, database does not exist yet, create database.
                 $this->ensureDatabasePresent($database, $databaseConfigValues['dbName']);
-                $database->connectDb($databaseConfigValues['dbName']);
-            } elseif (($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS) && !$this->userDecidedIgnoreDBWarning()) {
+            } elseif (($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS)) {
                 $setup->setNextStep(null);
                 $this->formMessageIfMySqyVersionIsNotRecommended($view, $language);
+                $databaseExists = false;
                 // check if DB is already UP and running
                 if (!$this->databaseCanBeOverwritten($database)) {
                     $this->formMessageIfDBCanBeOverwritten($databaseConfigValues['dbName'], $view, $language);
+                    $databaseExists = true;
                 }
-                $this->formMessageInstallAnyway($view, $language, $session->getSid(), $setup->getStep('STEP_DB_CREATE'));
+                $this->formMessageIgnoreDbVersionNotRecommended($view, $language, $session->getSid(), $setup->getStep('STEP_DB_CREATE'), $databaseExists);
 
                 throw new SetupControllerExitException();
             } else {
@@ -598,7 +598,8 @@ class Controller extends Core
     private function formMessageIgnoreDbVersionNotRecommended($view, $language, $sessionId, $setupStep, $databaseExists)
     {
         $ignoreParam = $databaseExists ? '&ow=1&owrec=1' : '&owrec=1';
-        $view->setMessage("<br><br>" . $language->getText('STEP_4_2_NOT_RECOMMENDED_MYSQL_VERSION') . " <a href=\"index.php?sid=" . $sessionId . "&istep=" . $setupStep . $ignoreParam . "id=\"step3Continue\" style=\"text-decoration: underline;\">" . $language->getText('HERE') . "</a>");
+        $info = $databaseExists ? 'STEP_4_2_OVERWRITE_DB' : 'STEP_4_2_NOT_RECOMMENDED_MYSQL_VERSION';
+        $view->setMessage("<br><br>" . $language->getText($info) . " <a href=\"index.php?sid=" . $sessionId . "&istep=" . $setupStep . $ignoreParam . "id=\"step3Continue\" style=\"text-decoration: underline;\">" . $language->getText('HERE') . "</a>");
     }
 
     /**

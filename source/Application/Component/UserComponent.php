@@ -712,24 +712,6 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     }
 
     /**
-     * @param array                   $address
-     * @param AbstractUpdatableFields $updatableFields
-     *
-     * @return array
-     */
-    protected function cleanAddress($address, $updatableFields)
-    {
-        if (is_array($address)) {
-            /** @var UpdatableFieldsConstructor $updatableFieldsConstructor */
-            $updatableFieldsConstructor = oxNew(UpdatableFieldsConstructor::class);
-            $cleaner = $updatableFieldsConstructor->getAllowedFieldsCleaner($updatableFields);
-            return $cleaner->filterByUpdatableFields($address);
-        }
-
-        return $address;
-    }
-
-    /**
      * Returns delivery address from request. Before returning array is checked if
      * all needed data is there
      *
@@ -837,5 +819,23 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         if (!$sRe && ($sReNew = oxRegistry::getConfig()->getRequestParameter('re'))) {
             oxRegistry::getSession()->setVariable('re', $sReNew);
         }
+    }
+
+    /**
+     * @param array                   $address
+     * @param AbstractUpdatableFields $updatableFields
+     *
+     * @return array
+     */
+    private function cleanAddress($address, $updatableFields)
+    {
+        if (is_array($address)) {
+            /** @var UpdatableFieldsConstructor $updatableFieldsConstructor */
+            $updatableFieldsConstructor = oxNew(UpdatableFieldsConstructor::class);
+            $cleaner = $updatableFieldsConstructor->getAllowedFieldsCleaner($updatableFields);
+            return $cleaner->filterByUpdatableFields($address);
+        }
+
+        return $address;
     }
 }

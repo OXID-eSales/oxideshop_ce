@@ -26,6 +26,61 @@ class Unit_Core_oxshopTest extends OxidTestCase
     protected $_aLangTables = array();
 
 
+    /**
+     * Testing oxshop::generateViews() for removing old unused 'oxv_*' views
+     */
+    public function testGenerateViews_CheckRemovingUnnecessaryViews_ShouldBeRemoved()
+    {
+        $this->markTestSkipped("Skip EE related tests for PE and CE editions");
+
+        $oDB = oxDb::getDb();
+
+        // creating view which has to be removed
+        $oDB->Execute('CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxshops_zz-2015` AS SELECT * FROM oxshops');
+
+        $oShop = new oxShop();
+        $oShop->load($this->_sOXID);
+
+        $aMultiShopTables = oxRegistry::getConfig()->getConfigParam('aMultiShopTables');
+        $oShop->setMultiShopTables($aMultiShopTables);
+
+        $this->assertTrue($oShop->generateViews(false, null));
+
+        $oDbMetaDataHandler = oxNew('oxDbMetaDataHandler');
+
+        $this->assertFalse($oDbMetaDataHandler->tableExists('oxv_oxshops_zz-2015'), 'Old view "oxv_oxshops_zz" is not removed');
+    }
+
+    /**
+     * Testing oxshop::generateViews() for removing old unused 'oxv_*' views.
+     */
+    public function testGenerateViews_CheckRemovingUnnecessaryViews()
+    {
+
+        $oDB = oxDb::getDb();
+
+        // creating view which has to be removed
+        $oDB->Execute('CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxshops_zz-2015` AS SELECT * FROM oxshops');
+
+        $oShop = new oxShop();
+        $this->assertTrue($oShop->generateViews(false, null));
+
+        $oDbMetaDataHandler = oxNew('oxDbMetaDataHandler');
+        $this->assertFalse($oDbMetaDataHandler->tableExists('oxv_oxshops_zz-2015'), 'Old view "oxv_oxshops_zz" is not removed');
+    }
+
+    /**
+     * Testing ShopViewValidator::_getAllViews().
+     */
+    public function testShowViewTables()
+    {
+        $shopViewValidator = oxNew('oxShopViewValidator');
+
+        $invalidViews = $shopViewValidator->getInvalidViews();
+
+        $this->assertNotEmpty($invalidViews);
+        $this->assertNotContains('oxvouchers', $invalidViews);
+    }
 
     public function testStructure()
     {

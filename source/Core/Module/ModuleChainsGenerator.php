@@ -193,7 +193,7 @@ class ModuleChainsGenerator
                 class_alias($class, $extensionParentClass);
             }
 
-            if (!$this->isNamespacedClass($extensionPath)) {
+            if (!\OxidEsales\Eshop\Core\UtilsObject::isNamespacedClass($extensionPath)) {
                 $modulesDirectory = oxRegistry::get("oxConfigFile")->getVar("sShopDir");
                 $extensionParentPath = "$modulesDirectory/modules/$extensionPath.php";
 
@@ -210,16 +210,6 @@ class ModuleChainsGenerator
         }
 
         return true;
-    }
-
-    /**
-     * @param string $className
-     *
-     * @return bool
-     */
-    private function isNamespacedClass($className)
-    {
-        return strpos($className, '\\') !== false;
     }
 
     /**

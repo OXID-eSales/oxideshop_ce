@@ -122,7 +122,7 @@ class EditionSelector
     protected function getVirtualClassMapProvider()
     {
         if (is_null($this->virtualClassMapProvider)) {
-            $this->virtualClassMapProvider = new \OxidEsales\Eshop\Core\Autoload\VirtualNameSpaceClassMapProvider();
+            $this->virtualClassMapProvider = Registry::get(\OxidEsales\Eshop\Core\Autoload\VirtualNameSpaceClassMapProvider::class);
         }
         return $this->virtualClassMapProvider;
     }

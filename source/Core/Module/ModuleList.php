@@ -81,7 +81,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModulesWithExtendedClass()
     {
-        return $this->getConfig()->getModulesWithExtendedClass();
+        return $this->parseModuleChains(oxRegistry::getConfig()->getConfigParam('aModules'));
     }
 
     /**
@@ -403,6 +403,31 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     public function getModule()
     {
         return oxNew('oxModule');
+    }
+
+    /**
+     * Parse array of module chains to nested array
+     *
+     * @param array $modules Module array (config format)
+     *
+     * @return array
+     */
+    public function parseModuleChains($modules)
+    {
+        $moduleArray = array();
+
+        if (is_array($modules)) {
+            foreach ($modules as $class => $moduleChain) {
+                if (strstr($moduleChain, '&')) {
+                    $moduleChain = explode('&', $moduleChain);
+                } else {
+                    $moduleChain = array($moduleChain);
+                }
+                $moduleArray[$class] = $moduleChain;
+            }
+        }
+
+        return $moduleArray;
     }
 
     /**

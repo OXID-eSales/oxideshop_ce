@@ -950,4 +950,44 @@ class ModulelistTest extends \OxidTestCase
 
         $this->assertSame(array(), $oModuleList->getModuleExtensions('mod'));
     }
+
+    /**
+     * ModuleList::parseModuleChains() test case, empty
+     *
+     * @return null
+     */
+    public function testParseModuleChainsEmpty()
+    {
+        $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
+        $modules = array();
+        $modulesArray = array();
+        $this->assertEquals($modulesArray, $moduleList->parseModuleChains($modules));
+    }
+
+    /**
+     * ModuleList::parseModuleChains() test case, single
+     *
+     * @return null
+     */
+    public function testParseModuleChainsSingle()
+    {
+        $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
+        $modules = array('oxtest' => 'test/mytest');
+        $modulesArray = array('oxtest' => array('test/mytest'));
+        $this->assertEquals($modulesArray, $moduleList->parseModuleChains($modules));
+    }
+
+    /**
+     * ModuleList::parseModuleChains() test case
+     *
+     * @return null
+     */
+    public function testParseModuleChains()
+    {
+        $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
+        $modules = array('oxtest' => 'test/mytest&test1/mytest1');
+        $modulesArray = array('oxtest' => array('test/mytest', 'test1/mytest1'));
+        $this->assertEquals($modulesArray, $moduleList->parseModuleChains($modules));
+    }
+
 }

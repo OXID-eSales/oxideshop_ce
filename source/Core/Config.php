@@ -2154,26 +2154,16 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Parse array of module chains to nested array
      *
+     * @deprecated on 6.0.0 (2017-03-09); use OxidEsales\Eshop\Core\ModuleList::parseModuleChains() instead.
+     *
      * @param array $modules Module array (config format)
      *
      * @return array
      */
     public function parseModuleChains($modules)
     {
-        $moduleArray = array();
-
-        if (is_array($modules)) {
-            foreach ($modules as $class => $moduleChain) {
-                if (strstr($moduleChain, '&')) {
-                    $moduleChain = explode('&', $moduleChain);
-                } else {
-                    $moduleChain = array($moduleChain);
-                }
-                $moduleArray[$class] = $moduleChain;
-            }
-        }
-
-        return $moduleArray;
+        $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
+        return $moduleList->parseModuleChains($modules);
     }
 
     /**

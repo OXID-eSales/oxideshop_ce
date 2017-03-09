@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -134,9 +134,9 @@ class Unit_Core_oxshopTest extends OxidTestCase
 
         return array(
             array('oxarticles', null, $aMockedFunctionReturns,
-                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles` AS SELECT ' . $sFieldsMultilang . ' FROM oxarticles'), // default
+                'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles` AS SELECT ' . $sFieldsMultilang . ' FROM oxarticles'), // default
             array('oxarticles', 'de', $aMockedFunctionReturns,
-                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles_de` AS SELECT ' . $sFields . ' FROM oxarticles'),
+                'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles_de` AS SELECT ' . $sFields . ' FROM oxarticles'),
         );
     }
 
@@ -157,40 +157,6 @@ class Unit_Core_oxshopTest extends OxidTestCase
         $this->assertEquals(rtrim($sQuery), rtrim($aQueries[0]));
     }
 
-
-    /**
-     * Testing oxshop::generateViews() for removing old unused 'oxv_*' views.
-     */
-    public function testGenerateViews_CheckRemovingUnnecessaryViews()
-    {
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $this->markTestSkipped('This test is for Community or Professional edition only.');
-        }
-        
-        $oDB = oxDb::getDb();
-
-        // creating view which has to be removed
-        $oDB->Execute('CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxshops_zz-2015` AS SELECT * FROM oxshops');
-
-        $oShop = new oxShop();
-        $this->assertTrue($oShop->generateViews(false, null));
-
-        $oDbMetaDataHandler = oxNew('oxDbMetaDataHandler');
-        $this->assertFalse($oDbMetaDataHandler->tableExists('oxv_oxshops_zz-2015'), 'Old view "oxv_oxshops_zz" is not removed');
-    }
-
-    /**
-     * Testing ShopViewValidator::_getAllViews().
-     */
-    public function testShowViewTables()
-    {
-        $shopViewValidator = oxNew('oxShopViewValidator');
-
-        $invalidViews = $shopViewValidator->getInvalidViews();
-
-        $this->assertNotEmpty($invalidViews);
-        $this->assertNotContains('oxvouchers', $invalidViews);
-    }
 
     /**
      * Test call to getMultishopTables when it's not set anywhere

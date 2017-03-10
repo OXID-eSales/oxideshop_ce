@@ -340,20 +340,20 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     /**
      * Add extension to module
      *
-     * @param \OxidEsales\Eshop\Core\Module\Module $oModule
+     * @param OxidEsales\Eshop\Core\Module\Module $module
      */
-    protected function _addExtensions(\OxidEsales\Eshop\Core\Module\Module $oModule)
+    protected function _addExtensions(\OxidEsales\Eshop\Core\Module\Module $module)
     {
-        $aModules = $this->_removeNotUsedExtensions($this->getModulesWithExtendedClass(), $oModule);
+        $modules = $this->_removeNotUsedExtensions($this->getModulesWithExtendedClass(), $module);
 
-        if ($oModule->hasExtendClass()) {
-            $aAddModules = $oModule->getExtensions();
-            $aModules = $this->_mergeModuleArrays($aModules, $aAddModules);
+        if ($module->hasExtendClass()) {
+            $addModules = $module->getExtensions();
+            $modules = $this->_mergeModuleArrays($modules, $addModules);
         }
 
-        $aModules = $this->buildModuleChains($aModules);
+        $modules = $this->buildModuleChains($modules);
 
-        $this->_saveToConfig('aModules', $aModules);
+        $this->_saveToConfig('aModules', $modules);
     }
 
     /**

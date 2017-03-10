@@ -185,7 +185,8 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getExtensions()
     {
-        return isset($this->_aModule['extend']) ? $this->_aModule['extend'] : array();
+        $rawExtensions = isset($this->_aModule['extend']) ? $this->_aModule['extend'] : array();
+        return $this->getVirtualShopClassExtensionsForBc($rawExtensions);
     }
 
     /**
@@ -542,5 +543,29 @@ class Module extends \OxidEsales\Eshop\Core\Base
         if (isset($sMetadataVersion)) {
             $this->setMetaDataVersion($sMetadataVersion);
         }
+    }
+
+    /**
+     * @deprecated since v6.0.0 (2017-03-14); Needed to ensure backwards compatibility.
+     *
+     * Translate module metadata information about patched shop classes
+     * into virtual namespace. There might still be BC class names used in module metadata.php.
+     *
+     * @param array $rawExtensions Extension information from module metadata.php.
+     *
+     * @return array
+     */
+    protected function getVirtualShopClassExtensionsForBc($rawExtensions)
+    {
+        $extensions = [];
+
+        foreach ($rawExtensions as $classToBePatched => $moduleClass) {
+            if (!\OxidEsales\Eshop\Core\UtilsObject::isNamespacedClass($classToBePatched)) {
+                $bcMap = oxRegistry::getBackwardsCompatibilityClassMap();
+                $classToBePatched = $bcMap[strtolower($classToBePatched)] ?: $classToBePatched;
+            }
+            $extensions[$classToBePatched] = $moduleClass;
+        }
+        return $extensions;
     }
 }

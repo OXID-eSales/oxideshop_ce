@@ -407,4 +407,95 @@ class ModuleInstallerTest extends \OxidTestCase
 
         $moduleInstallerMock->validateModuleMetadataControllersOnActivation(['someKey' => 'ExistingValue']);
     }
+
+    /**
+     * \OxidEsales\Eshop\Core\Module\ModuleInstaller::activate() in case of mixed (bc and namespace) module chain.
+     * Resulting aModule config variable must all patch the same virtual namespace shop class.
+     */
+    public function testActivateMixedChain()
+    {
+        $modulesBefore = [];
+        $this->getConfig()->setConfigParam('aModules', $modulesBefore);
+        $this->assertEquals($modulesBefore, $this->getConfig()->getConfigParam('aModules'));
+
+        $modulesAfter = ['OxidEsales\Eshop\Application\Model\Article' =>
+                             'module_chain_extension_3_1/vendor_1_module_3_1_myclass' . '&' .
+                             'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37a\MyClass37a' . '&' .
+                             'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37b\MyClass37b' . '&' .
+                             'OxidEsales\EshopCommunityTestModule'
+                            ];
+
+        $firstModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId'));
+        $firstExtends = array('oxarticle' => 'module_chain_extension_3_1/vendor_1_module_3_1_myclass');
+        $firstModule->setModuleData(['extend' => $firstExtends]);
+        $firstModule->expects($this->any())->method('getId')->will($this->returnValue('test1'));
+
+        $secondModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId'));
+        $secondModule->setModuleData(['extend' => ['oxarticle' => 'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37a\MyClass37a']]);
+        $secondModule->expects($this->any())->method('getId')->will($this->returnValue('test2'));
+
+        $thirdModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId'));
+        $thirdExtends = [\OxidEsales\Eshop\Application\Model\Article::class
+                          => 'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37b\MyClass37b'];
+        $thirdModule->setModuleData(['extend' => $thirdExtends]);
+        $thirdModule->expects($this->any())->method('getId')->will($this->returnValue('test3'));
+        $thirdModule->expects($this->any())->method('getExtensions')->will($this->returnValue($thirdExtends));
+
+        $fourthModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId'));
+        $fourthExtends = array('oxArticle' => 'OxidEsales\EshopCommunityTestModule');
+        $fourthModule->setModuleData(['extend' => $fourthExtends]);
+        $fourthModule->expects($this->any())->method('getId')->will($this->returnValue('test1'));
+
+        $moduleInstaller = oxNew(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class);
+
+        $this->assertTrue($moduleInstaller->activate($firstModule));
+        $this->assertTrue($moduleInstaller->activate($secondModule));
+        $this->assertTrue($moduleInstaller->activate($thirdModule));
+        $this->assertTrue($moduleInstaller->activate($fourthModule));
+
+        $this->assertEquals($modulesAfter, $this->getConfig()->getConfigParam('aModules'));
+    }
+
+    /**
+     * \OxidEsales\Eshop\Core\Module\ModuleInstaller::activate() in case of mixed (bc and namespace) module chain.
+     * Case namespace is spelled incorrectly (lowercase, works only on case insensitive file systems)
+     * plus case that bc class is not found.
+     */
+    public function testActivateMixedChainNoMatch()
+    {
+        $modulesBefore = [];
+        $this->getConfig()->setConfigParam('aModules', $modulesBefore);
+        $this->assertEquals($modulesBefore, $this->getConfig()->getConfigParam('aModules'));
+
+        $modulesAfter = ['OxidEsales\Eshop\Application\Model\Article' =>
+                             'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37a\MyClass37a',
+                         'oxidesales\eshop\application\model\article' =>
+                             'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37b\MyClass37b',
+                         'oxunknown' => 'module_chain_extension_3_1/vendor_1_module_3_1_myclass'];
+
+        $firstModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId', 'getExtensions'));
+        $firstExtends = [\OxidEsales\Eshop\Application\Model\Article::class
+                          => 'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37a\MyClass37a'];
+        $firstModule->expects($this->any())->method('getId')->will($this->returnValue('test1'));
+        $firstModule->expects($this->any())->method('getExtensions')->will($this->returnValue($firstExtends));
+
+        $secondModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId', 'getExtensions'));
+        $secondExtends = ['oxidesales\eshop\application\model\article'
+                         => 'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37b\MyClass37b'];
+        $secondModule->expects($this->any())->method('getId')->will($this->returnValue('test2'));
+        $secondModule->expects($this->any())->method('getExtensions')->will($this->returnValue($secondExtends));
+
+        $thirdModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId', 'getExtensions'));
+        $thirdExtends = array('oxunknown' => 'module_chain_extension_3_1/vendor_1_module_3_1_myclass');
+        $thirdModule->expects($this->any())->method('getId')->will($this->returnValue('test3'));
+        $thirdModule->expects($this->any())->method('getExtensions')->will($this->returnValue($thirdExtends));
+
+        $moduleInstaller = oxNew(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class);
+
+        $this->assertTrue($moduleInstaller->activate($firstModule));
+        $this->assertTrue($moduleInstaller->activate($secondModule));
+        $this->assertTrue($moduleInstaller->activate($thirdModule));
+
+        $this->assertEquals($modulesAfter, $this->getConfig()->getConfigParam('aModules'));
+    }
 }

@@ -81,9 +81,9 @@ class ModuleActivateWithSimilarNameTest extends BaseModuleTestCase
             array(
                 'blocks'          => array(),
                 'extend'          => array(
-                    'oxarticle' => 'extending_3_classes_with_1_extension/mybaseclass&with_1_extension/mybaseclass',
-                    'oxorder'   => 'extending_3_classes_with_1_extension/mybaseclass',
-                    'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass',
+                    \OxidEsales\Eshop\Application\Model\Article::class => 'extending_3_classes_with_1_extension/mybaseclass&with_1_extension/mybaseclass',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_3_classes_with_1_extension/mybaseclass',
+                    \OxidEsales\Eshop\Application\Model\User::class    => 'extending_3_classes_with_1_extension/mybaseclass',
                 ),
                 'files'           => array(),
                 'settings'        => array(),
@@ -123,9 +123,9 @@ class ModuleActivateWithSimilarNameTest extends BaseModuleTestCase
             array(
                 'blocks'          => array(),
                 'extend'          => array(
-                    'oxarticle' => 'extending_3_classes_with_1_extension/mybaseclass&with_1_extension/mybaseclass',
-                    'oxorder'   => 'extending_3_classes_with_1_extension/mybaseclass',
-                    'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass',
+                    \OxidEsales\Eshop\Application\Model\Article::class => 'extending_3_classes_with_1_extension/mybaseclass&with_1_extension/mybaseclass',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_3_classes_with_1_extension/mybaseclass',
+                    \OxidEsales\Eshop\Application\Model\User::class    => 'extending_3_classes_with_1_extension/mybaseclass',
                 ),
                 'files'           => array(),
                 'settings'        => array(),

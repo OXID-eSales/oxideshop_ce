@@ -131,7 +131,7 @@ class ModuleRemoveTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    'oxorder' => 'extending_1_class/myorder',
+                    \OxidEsales\Eshop\Application\Model\Order::class => 'extending_1_class/myorder',
                 ),
                 'files'           => array(
                     'with_2_files' => array(
@@ -212,7 +212,7 @@ class ModuleRemoveTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    'oxorder' => 'extending_1_class/myorder',
+                    \OxidEsales\Eshop\Application\Model\Order::class => 'extending_1_class/myorder',
                 ),
                 'files'           => array(
                     'with_2_files' => array(
@@ -286,8 +286,8 @@ class ModuleRemoveTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    'oxorder'   => 'extending_1_class/myorder',
-                    'oxarticle' =>'with_metadata_v2/myarticle'
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder',
+                    \OxidEsales\Eshop\Application\Model\Article::class =>'with_metadata_v2/myarticle'
                 ),
                 'files'           => array(
                     'with_2_files' => array(

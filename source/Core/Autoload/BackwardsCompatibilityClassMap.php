@@ -21,7 +21,6 @@
  */
 
 return [
-    'OxidEsales\\EshopCommunity\\Core\\MailValidator'                                   => 'oxmailvalidator',
     'OxidEsales\\Eshop\\Application\\Component\\BasketComponent'                        => 'oxcmp_basket',
     'OxidEsales\\Eshop\\Application\\Component\\CategoriesComponent'                    => 'oxcmp_categories',
     'OxidEsales\\Eshop\\Application\\Component\\CurrencyComponent'                      => 'oxcmp_cur',
@@ -513,6 +512,7 @@ return [
     'OxidEsales\\Eshop\\Core\\InputValidator'                                           => 'oxinputvalidator',
     'OxidEsales\\Eshop\\Core\\LDAP'                                                     => 'oxldap',
     'OxidEsales\\Eshop\\Core\\Language'                                                 => 'oxlang',
+    'OxidEsales\\Eshop\\Core\\MailValidator'                                            => 'oxmailvalidator',
     'OxidEsales\\Eshop\\Core\\Model\\BaseModel'                                         => 'oxbase',
     'OxidEsales\\Eshop\\Core\\Model\\ListModel'                                         => 'oxlist',
     'OxidEsales\\Eshop\\Core\\Model\\MultiLanguageModel'                                => 'oxi18n',

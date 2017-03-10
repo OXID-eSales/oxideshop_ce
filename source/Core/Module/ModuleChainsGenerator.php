@@ -87,31 +87,35 @@ class ModuleChainsGenerator
         $currentExtendedClasses = array_intersect($allExtendedClasses, [$lowerCaseClassName, $lowerCaseClassAlias]);
         $activeChain = array();
         if (!empty($currentExtendedClasses)) {
-            /**
+            /*
              * there may be 2 class chains, matching the same class:
              * - one for the class alias like 'oxUser' - metadata v1.1
              * - another for the real class name like 'OxidEsales\Eshop\Application\Model\User' - metadata v1.2
              * These chains must be merged in the same order as they appear in the modules array
              */
             $classChains = [];
-            /** Get the position of the class name */
+            /* Get the position of the class name */
             if (false !== $position = array_search($lowerCaseClassName, $allExtendedClasses)) {
                 $classChains[$position] = explode("&", $modules[$lowerCaseClassName]);
             }
-            /** Get the position of the alias class name */
+            /* Get the position of the alias class name */
             if (false !== $position = array_search($lowerCaseClassAlias, $allExtendedClasses)) {
                 $classChains[$position] = explode("&", $modules[$lowerCaseClassAlias]);
             }
 
-            /** Notice that the array keys will be ordered, but do not necessarily start at 0 */
+            /* Notice that the array keys will be ordered, but do not necessarily start at 0 */
             ksort($classChains);
             $fullChain = [];
             if (1 === count($classChains)) {
-                /** @var array $fullChain uses the one and only element of the array */
+                /**
+                 * @var array $fullChain uses the one and only element of the array
+                 */
                 $fullChain = reset($classChains);
             }
             if (2 === count($classChains)) {
-                /** @var array $fullChain merges the first and then the second array from the $classChains */
+                /**
+                 * @var array $fullChain merges the first and then the second array from the $classChains
+                 */
                 $fullChain = array_merge(reset($classChains), next($classChains));
             }
 
@@ -129,32 +133,118 @@ class ModuleChainsGenerator
      */
     public function filterInactiveExtensions($classChain)
     {
-        $variablesLocator = $this->getModuleVariablesLocator();
-        $disabledModules = $variablesLocator->getModuleVariable('aDisabledModules');
-        $modulePaths = $variablesLocator->getModuleVariable('aModulePaths');
+        $disabledModules = $this->getDisabledModuleIds();
 
-        if (is_array($disabledModules) && count($disabledModules) > 0) {
-            foreach ($disabledModules as $disabledModuleId) {
-                $disabledModuleDirectory = $disabledModuleId;
-                if (is_array($modulePaths) && array_key_exists($disabledModuleId, $modulePaths)) {
-                    if (isset($modulePaths[$disabledModuleId])) {
-                        $disabledModuleDirectory = $modulePaths[$disabledModuleId];
-                    }
-                }
-                foreach ($classChain as $key => $moduleClass) {
-                    if (strpos($moduleClass, $disabledModuleDirectory . "/") === 0) {
-                        unset($classChain[$key]);
-                    } elseif (strpos($disabledModuleDirectory, ".")) {
-                        // If module consists of one file without own dir (getting module.php as id, instead of module)
-                        if (strpos($disabledModuleDirectory, strtolower($moduleClass)) === 0) {
-                            unset($classChain[$key]);
-                        }
-                    }
-                }
+        foreach ($disabledModules as $disabledModuleId) {
+            $classChain = $this->cleanModuleFromClassChain($disabledModuleId, $classChain);
+        }
+
+        return $classChain;
+    }
+
+    /**
+     * Clean classes from chain for given module id.
+     * Classes might be in module chain by path (old way) or by module namespace(new way).
+     * This function removes all classes from class chain for classes inside a deactivated module's directory.
+     *
+     * @param string $moduleId
+     * @param array  $classChain
+     *
+     * @return array
+     */
+    public function cleanModuleFromClassChain($moduleId, $classChain)
+    {
+        //WIP, need to also handle aModuleExtensions
+
+        $cleanedClassChain = $this->cleanModuleFromClassChainByPath($moduleId, $classChain);
+        return $cleanedClassChain;
+    }
+
+    /**
+     * Clean classes from chain for given module id.
+     * This function removes all classes from class chain for classes inside a deactivated module's directory.
+     *
+     * @param string $moduleId
+     * @param array  $classChain
+     *
+     * @return array
+     */
+    public function cleanModuleFromClassChainByPath($moduleId, $classChain)
+    {
+        foreach ($classChain as $key => $moduleClass) {
+            $moduleDirectory = $this->getModuleDirectoryByModuleId($moduleId);
+            if ($this->modulePathMatch($moduleClass, $moduleDirectory)) {
+                unset($classChain[$key]);
             }
         }
 
         return $classChain;
+    }
+
+    /**
+     * Check if given class is connected to given module directory.
+     * NOTE: for old style modules, the shop config variable 'aModules' contains the path to the module file
+     *       relative to shop/modules directory.
+     *
+     * @param string $moduleClass
+     * @param string $moduleDirectory
+     *
+     * @return bool
+     */
+    protected function modulePathMatch($moduleClass, $moduleDirectory)
+    {
+        $match = false;
+        if (strpos($moduleClass, $moduleDirectory . "/") === 0) {
+            $match = true;
+        } elseif (strpos($moduleDirectory, ".") && (strpos($moduleDirectory, strtolower($moduleClass)) === 0)) {
+            // If module consists of one file without own dir (getting module.php as id, instead of module)
+            $match = true;
+        }
+
+        return $match;
+    }
+
+    /**
+     * Get Ids of all deactivated module.
+     * If none are deactivated, returns an empty array.
+     *
+     * @return array
+     */
+    public function getDisabledModuleIds()
+    {
+        $variablesLocator = $this->getModuleVariablesLocator();
+        $disabledModules = $variablesLocator->getModuleVariable('aDisabledModules');
+        $disabledModules = is_array($disabledModules) ? $disabledModules : array();
+
+        return $disabledModules;
+    }
+
+    /**
+     * SPIKE: extract function to match moduleId with installation path
+     *        Example: aModulePaths = array('MyTestModule' => 'myvendor/mymodule',
+     *                                      'oepaypal'     => 'oe/oepaypal')
+     *
+     * TODD: Think about case sensitivity issues
+     *
+     * Get module path relative to source/modules for given module id.
+     *
+     * @param string $moduleId
+     *
+     * @return string
+     */
+    public function getModuleDirectoryByModuleId($moduleId)
+    {
+        $variablesLocator = $this->getModuleVariablesLocator();
+        $modulePaths = $variablesLocator->getModuleVariable('aModulePaths');
+
+        $moduleDirectory = $moduleId;
+        if (is_array($modulePaths) && array_key_exists($moduleId, $modulePaths)) {
+            if (isset($modulePaths[$moduleId])) {
+                $moduleDirectory = $modulePaths[$moduleId];
+            }
+        }
+
+        return $moduleDirectory;
     }
 
     /**

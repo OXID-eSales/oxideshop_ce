@@ -19,10 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Modules;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
-require_once __DIR__ . '/BaseModuleTestCase.php';
+class TestUtilsObject extends \OxidEsales\EshopCommunity\Core\UtilsObject
+{
+    public function getTheModuleChainsGenerator() {
+        return $this->getModuleChainsGenerator();
+    }
 
+    public function getTheClassNameProvider() {
+        return $this->getClassNameProvider();
+    }
+
+}
 
 class ModuleNamespaceTest extends BaseModuleTestCase
 {
@@ -66,6 +75,22 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
         return array(
             $first,
+            $second
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function providerNamespacedModuleDeactivation()
+    {
+        $second = $this->caseModuleNamespace();
+        $second[3]['disabledModules'] = array('EshopTestModuleOne');
+        $second[3]['files'] = array();
+        $second[3]['events'] = array();
+        $second[3]['versions'] = array();
+
+        return array(
             $second
         );
     }
@@ -126,8 +151,72 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
         $price = oxNew('oxPrice');
         $this->assertFalse(is_a($price, $priceAsserts['class']), 'Price object class not as expected ' . get_class($price));
-
         #$price = $this->assertPrice(array('factor' => 1));
+    }
+
+    /**
+     * Test ModuleChainsGenerator::getModuleDirectoryByModuleId
+     */
+    public function testModuleChainsGenerator_getModuleDirectoryByModuleId()
+    {
+        $modulePaths = array('bla' => 'foo/bar', 'MyTestModule' => 'myvendor/mymodule');
+        $this->getConfig()->saveShopConfVar('aarr', 'aModulePaths', $modulePaths);
+
+        $utilsObject = new TestUtilsObject;
+        $chain = $utilsObject->getTheModuleChainsGenerator();
+
+        $this->assertEquals('urgs', $chain->getModuleDirectoryByModuleId('urgs'));
+        $this->assertEquals('foo/bar', $chain->getModuleDirectoryByModuleId('bla'));
+        $this->assertEquals('myvendor/mymodule', $chain->getModuleDirectoryByModuleId('MyTestModule'));
+
+        ##Beware the case
+        $this->assertEquals('myTestmodule', $chain->getModuleDirectoryByModuleId('myTestmodule'));
+    }
+
+    /**
+     * Test ModuleChainsGenerator::getDisabledModuleIds
+     */
+    public function testModuleChainsGenerator_getDisabledModuleIds()
+    {
+        $disabledModules = array('bla', 'foo', 'wahoo');
+        $this->getConfig()->saveShopConfVar('aarr', 'aDisabledModules', $disabledModules);
+
+        $utilsObject = new TestUtilsObject;
+        $chain = $utilsObject->getTheModuleChainsGenerator();
+        $this->assertEquals($disabledModules, $chain->getDisabledModuleIds());
+    }
+
+    /**
+     * Test ModuleChainsGenerator::getDisabledModuleIds
+     */
+    public function testModuleChainsGenerator_getDisabledModuleIds_NoneDisabled()
+    {
+        $this->getConfig()->saveShopConfVar('bool', 'aDisabledModules', false);
+
+        $utilsObject = new TestUtilsObject;
+        $chain = $utilsObject->getTheModuleChainsGenerator();
+        $this->assertEquals(array(), $chain->getDisabledModuleIds());
+    }
+
+    /**
+     * Test ModuleChainsGenerator::cleanModuleFromClassChainByPath
+     */
+    public function testModuleChainsGenerator_cleanModuleFromClassChainByPath()
+    {
+        $environment = new Environment();
+        $environment->prepare(array('without_own_module_namespace'));
+
+        $disabledModules = array('bla', 'foo', 'without_own_module_namespace');
+        $this->getConfig()->saveShopConfVar('aarr', 'aDisabledModules', $disabledModules);
+
+        $utilsObject = new TestUtilsObject;
+        $chain = $utilsObject->getTheModuleChainsGenerator();
+
+        $fullChain = array('without_own_module_namespace/Application/Model/TestModuleTwoPrice');
+        $this->assertEquals($fullChain, $chain->getFullChain('OxidEsales\Eshop\Core\Price', 'oxprice'));
+
+        $cleanedChain = $chain->cleanModuleFromClassChainByPath('without_own_module_namespace', $fullChain);
+        $this->assertEquals(array(), $cleanedChain);
     }
 
     /**

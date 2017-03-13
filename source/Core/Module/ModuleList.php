@@ -638,6 +638,10 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     protected function _isVendorDir($sModuleDir)
     {
+        if (!is_dir($sModuleDir)) {
+            return false;
+        }
+
         $currentDirectoryContents = scandir($sModuleDir);
         $currentDirectoryContents = array_diff($currentDirectoryContents, ['.', '..']);
         foreach ($currentDirectoryContents as $entry) {

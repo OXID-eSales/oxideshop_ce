@@ -782,7 +782,8 @@ class ModulelistTest extends \OxidTestCase
         return [
             ['module1', false],
             ['vendor1', true],
-            ['notVendor', false]
+            ['notVendor', false],
+            ['this_directory_does_not_exist', false]
         ];
     }
 

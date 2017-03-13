@@ -74,7 +74,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modu
  * +-------------------------------+--------------------+-------------------------+
  * |       extends via chain       | plain module class | namespaced module class |
  * +-------------------------------+--------------------+-------------------------+
- * | Plain shop class              | 3.1                | no need                 |
+ * | Plain shop class              | 3.1                | 3.4                     |
  * | Namespaced shop class         | no need            | 3.5                     |
  * | Virtual namespaced shop class | 3.3                | 3.6                     |
  * +-------------------------------+--------------------+-------------------------+
@@ -93,6 +93,11 @@ use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modu
  */
 class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
 {
+    /**
+     * @var \OxidEsales\Eshop\Core\Module\ModuleChainsGenerator
+     */
+    protected $moduleChainsGenerator = null;
+
     /**
      * This test covers the PHP inheritance between one module class and one shop class.
      *
@@ -245,7 +250,9 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
     }
 
     /**
-     * Test, that the chain is build correct, after we ordered the module extensions over the admin controller.
+     * Test cases 3.4 and 3.6.
+     * Test, that the chain is build correct, after we ordered the module extensions via OXID
+     * Eshop Admin -> Extensions -> Modules -> Save
      *
      * @param array $storedModuleChain The module chain we want to store over the admin controller.
      *
@@ -253,8 +260,6 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
      */
     public function testChainAfterAdminControllerSave($storedModuleChain)
     {
-        $this->markTestSkippedUntil('2017-03-31', 'The most test cases did not work, cause the chain building seems buggy for mixed bc and namespaced classes (the story ESDEV-4251 is blocking this subtask)');
-
         $activatedModules = [
             'Vendor1/ModuleChainExtension37a',
             'Vendor2/ModuleChainExtension37b',
@@ -264,35 +269,19 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
 
         $this->callAdminSaveModuleOrder($storedModuleChain);
 
-        // We clear the file cache here, cause officially we say, that you should empty the temporary directory after reordering.
-        FileCache::clearCache();
+        // We need to call ModulevariablesLocator::resetModuleVariables() to ensure that no stale cache interferes.
+        \OxidEsales\Eshop\Core\Module\ModulevariablesLocator::resetModuleVariables();
 
         // check, if the inheritance chain is built as expected
-        $moduleObject = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+        $moduleChainsGenerator = $this->getModuleChainsGenerator();
+        $actualChain = $moduleChainsGenerator->getActiveChain(\OxidEsales\Eshop\Application\Model\Article::class);
 
-        $actualChain = $this->buildInheritanceChainHead($moduleObject);
-        $expectedChain = [$storedModuleChain[2], $storedModuleChain[1], $storedModuleChain[0], 'OxidEsales\EshopCommunity\Application\Model\Article'];
-
-        $this->assertEquals($expectedChain, $actualChain, 'The inheritance chain is not formed as expected!');
-    }
-
-    /**
-     * Get the head of the inheritance chain of the given object. With head here are ment the first four elements.
-     *
-     * @param object $moduleObject The object for which we want to build the inheritance chain head (first four elements).
-     *
-     * @return array The first four elements of the inheritance chain.
-     */
-    protected function buildInheritanceChainHead($moduleObject)
-    {
-        $moduleObjectClass = get_class($moduleObject);
-        $classParents = array_keys(class_parents($moduleObject));
-
-        return [$moduleObjectClass, $classParents[0], $classParents[1], $classParents[2]];
+        $this->assertEquals($storedModuleChain, $actualChain, 'The inheritance chain is not formed as expected!');
     }
 
     /**
      * Call the admin controller with a given module extension order.
+     * Should be simulate the result of clicking in the OXID eShop admin into Extensions -> Modules -> Press Button Save
      *
      * @param array $storedModuleChain The ordered module extensions we want to send to the controller.
      */
@@ -370,4 +359,22 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
             ],
         ];
     }
+
+    /**
+     * Test helper. Shop id will always be one.
+     *
+     * @return \OxidEsales\Eshop\Core\Module\ModuleChainsGenerator
+     */
+    protected function getModuleChainsGenerator()
+    {
+        if (is_null($this->moduleChainsGenerator)) {
+            $shopIdCalculatorMock = $this->getMock(\OxidEsales\Eshop\Core\ShopIdCalculator::class, ['getId'], [], '', false);
+            $shopIdCalculatorMock->expects($this->any())->method('getId')->will($this->returnValue(1));
+            $subShopSpecificCache = new \OxidEsales\Eshop\Core\SubShopSpecificFileCache($shopIdCalculatorMock);
+            $moduleVariablesLocator = new \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator($subShopSpecificCache, $shopIdCalculatorMock);
+            $this->moduleChainsGenerator = new \OxidEsales\Eshop\Core\Module\ModuleChainsGenerator($moduleVariablesLocator);
+        }
+        return $this->moduleChainsGenerator;
+    }
+
 }

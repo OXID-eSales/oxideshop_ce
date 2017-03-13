@@ -67,7 +67,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
  * +-------------------------------+--------------------+-------------------------+
  * |       extends via chain       | plain module class | namespaced module class |
  * +-------------------------------+--------------------+-------------------------+
- * | Plain shop class              | 3.1                | no need                 |
+ * | Plain shop class              | 3.1                | 3.4                     |
  * | Namespaced shop class         | no need            | 3.5                     |
  * | Virtual namespaced shop class | 3.3                | 3.6                     |
  * +-------------------------------+--------------------+-------------------------+

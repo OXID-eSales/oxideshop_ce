@@ -57,6 +57,26 @@ class ModuleChainsGenerator
         if (!$classAlias) {
             $classAlias = $className;
         }
+        $activeChain = $this->getActiveChain($className, $classAlias);
+        if (!empty($activeChain)) {
+            $className = $this->createClassExtensions($activeChain, $classAlias);
+        }
+        return $className;
+    }
+
+    /**
+     * Assembles class chains.
+     *
+     * @param string $className  Class name.
+     * @param string $classAlias Class alias, used for searching module extensions. Class is used if no alias given.
+     *
+     * @return string
+     */
+    public function getActiveChain($className, $classAlias = null)
+    {
+        if (!$classAlias) {
+            $classAlias = $className;
+        }
         $lowerCaseClassAlias = strtolower($classAlias);
         $lowerCaseClassName = strtolower($className);
 
@@ -65,6 +85,7 @@ class ModuleChainsGenerator
         $modules = array_change_key_case($modules);
         $allExtendedClasses = array_keys($modules);
         $currentExtendedClasses = array_intersect($allExtendedClasses, [$lowerCaseClassName, $lowerCaseClassAlias]);
+        $activeChain = array();
         if (!empty($currentExtendedClasses)) {
             /**
              * there may be 2 class chains, matching the same class:
@@ -95,13 +116,8 @@ class ModuleChainsGenerator
             }
 
             $activeChain = $this->filterInactiveExtensions($fullChain);
-
-            if (!empty($activeChain)) {
-                $className = $this->createClassExtensions($activeChain, $classAlias);
-            }
         }
-
-        return $className;
+        return $activeChain;
     }
 
     /**

@@ -266,20 +266,7 @@ interface DatabaseInterface
     public function selectLimit($query, $rowCount = -1, $offset = -1, $parameters = array());
 
     /**
-     * Execute read statements like SELECT or SHOW and return the results as a ResultSet.
      * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
-     *
-     * IMPORTANT:
-     * You are strongly encouraged to use prepared statements like this:
-     * $resultSet = Database::getDb->execute(
-     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
-     *   array($id1, $id2)
-     * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
-     * SQL injection vulnerability.
-     *
-     * @param string $query      The sql statement we want to execute.
-     * @param array  $parameters The parameters array.
      *
      * @throws DatabaseException
      *

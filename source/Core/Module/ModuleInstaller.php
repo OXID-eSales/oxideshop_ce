@@ -21,13 +21,9 @@
  */
 namespace OxidEsales\EshopCommunity\Core\Module;
 
+use OxidEsales\Eshop\Core\Exception\ModuleValidationException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\Module\ClassProviderStorage;
-use OxidEsales\Eshop\Core\Exception\ModuleValidationException;
-use OxidEsales\Eshop\Core\Exception\StandardException;
-use oxModuleCache;
-use oxDb;
-use OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner;
 use OxidEsales\Eshop\Core\SettingsHandler;
 
 /**
@@ -38,25 +34,26 @@ use OxidEsales\Eshop\Core\SettingsHandler;
  */
 class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
 {
+
     /**
-     * @var oxModuleCache
+     * @var \OxidEsales\Eshop\Core\Module\ModuleCache
      */
     protected $_oModuleCache;
 
-    /** @var ModuleExtensionsCleaner */
+    /** @var \OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner */
     private $moduleCleaner;
 
     /**
      * Sets dependencies.
      *
-     * @param \OxidEsales\Eshop\Core\Module\ModuleCache $moduleCache
-     * @param ModuleExtensionsCleaner                   $moduleCleaner
+     * @param \OxidEsales\Eshop\Core\Module\ModuleCache             $moduleCache
+     * @param \OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner $moduleCleaner
      */
     public function __construct(\OxidEsales\Eshop\Core\Module\ModuleCache $moduleCache = null, $moduleCleaner = null)
     {
         $this->setModuleCache($moduleCache);
         if (is_null($moduleCleaner)) {
-            $moduleCleaner = oxNew(ModuleExtensionsCleaner::class);
+            $moduleCleaner = oxNew(\OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner::class);
         }
         $this->moduleCleaner = $moduleCleaner;
     }
@@ -64,7 +61,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets module cache.
      *
-     * @param oxModuleCache $oModuleCache
+     * @param \OxidEsales\Eshop\Core\Module\ModuleCache $oModuleCache
      */
     public function setModuleCache($oModuleCache)
     {
@@ -74,7 +71,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     /**
      * Gets module cache.
      *
-     * @return oxModuleCache
+     * @return \OxidEsales\Eshop\Core\Module\ModuleCache
      */
     public function getModuleCache()
     {
@@ -84,7 +81,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     /**
      * Activate extension by merging module class inheritance information with shop module array
      *
-     * @param Module $module
+     * @param \OxidEsales\Eshop\Core\Module\Module $module
      *
      * @return bool
      */
@@ -137,7 +134,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     /**
      * Deactivate extension by adding disable module class information to disabled module array
      *
-     * @param Module $module
+     * @param \OxidEsales\Eshop\Core\Module\Module $module
      *
      * @return bool
      */
@@ -235,7 +232,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns module cleaner object.
      *
-     * @return ModuleExtensionsCleaner
+     * @return \OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner
      */
     protected function getModuleCleaner()
     {
@@ -283,7 +280,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _deleteBlock($sModuleId)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sShopId = $this->getConfig()->getShopId();
         $oDb->execute("DELETE FROM `oxtplblocks` WHERE `oxmodule` =" . $oDb->quote($sModuleId) . " AND `oxshopid` = " . $oDb->quote($sShopId));
     }
@@ -343,7 +340,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     /**
      * Add extension to module
      *
-     * @param OxidEsales\Eshop\Core\Module\Module $oModule
+     * @param \OxidEsales\Eshop\Core\Module\Module $oModule
      */
     protected function _addExtensions(\OxidEsales\Eshop\Core\Module\Module $oModule)
     {
@@ -416,7 +413,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     protected function _addTemplateBlocks($moduleBlocks, $moduleId)
     {
         $shopId = $this->getConfig()->getShopId();
-        $db = oxDb::getDb();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         if (is_array($moduleBlocks)) {
             foreach ($moduleBlocks as $moduleBlock) {
@@ -434,16 +431,19 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
                 $sql = "INSERT INTO `oxtplblocks` (`OXID`, `OXACTIVE`, `OXSHOPID`, `OXTHEME`, `OXTEMPLATE`, `OXBLOCKNAME`, `OXPOS`, `OXFILE`, `OXMODULE`)
                          VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?)";
 
-                $db->execute($sql, array(
-                    $id,
-                    $shopId,
-                    $theme,
-                    $template,
-                    $block,
-                    $position,
-                    $filePath,
-                    $moduleId
-                ));
+                $db->execute(
+                    $sql,
+                    array(
+                        $id,
+                        $shopId,
+                        $theme,
+                        $template,
+                        $block,
+                        $position,
+                        $filePath,
+                        $moduleId
+                    )
+                );
             }
         }
     }
@@ -581,7 +581,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      * @param array                                $installedExtensions Installed extensions
      * @param \OxidEsales\Eshop\Core\Module\Module $module              Module
      *
-     * @deprecated on b-dev, ModuleExtensionsCleaner::cleanExtensions() should be used.
+     * @deprecated on b-dev, \OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner::cleanExtensions() should be used.
      *
      * @return array
      */

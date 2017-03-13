@@ -268,6 +268,9 @@ interface DatabaseInterface
     /**
      * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
      *
+     * @param string $query      The sql statement we want to execute.
+     * @param array  $parameters The parameters array.
+     *
      * @throws DatabaseException
      *
      * @return integer Number of rows affected by the SQL statement

@@ -40,17 +40,20 @@ class ModuleFileInclusionTest extends \OxidTestCase
      */
     public function testModuleInclusion()
     {
-        $filePath = $this->createFile('testModuleInclusion.php', '<?php
-            class testModuleInclusion extends testModuleInclusion_parent {
-                public function sayHi() {
-                    return "Hi!";
-                }
-            }
-        ');
+        $wrapper = $this->getVfsStreamWrapper();
+        oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
+        $wrapper->createStructure(array(
+            'modules' => array(
+                'testmoduleinclusion.php' => "<?php 
+                    class testmoduleinclusion extends testmoduleinclusion_parent {
+                        public function sayHi() {
+                            return \"Hi!\";
+                        }
+                    }"
+            )
+        ));
 
         oxRegistry::get('oxUtilsObject')->setModuleVar('aModules', array('oxarticle' => 'testmoduleinclusion'));
-
-        include_once $filePath;
 
         $oTestMod = oxNew('testModuleInclusion');
         $this->assertEquals("Hi!", $oTestMod->sayHi());
@@ -64,17 +67,21 @@ class ModuleFileInclusionTest extends \OxidTestCase
      */
     public function testMissingModuleInChain()
     {
-        $filePath = $this->createFile('testModuleInclusion.php', '<?php
-            class testModuleInclusion extends testModuleInclusion_parent {
-                public function sayHi() {
-                    return "Hi!";
-                }
-            }
-        ');
+
+        $wrapper = $this->getVfsStreamWrapper();
+        oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
+        $wrapper->createStructure(array(
+            'modules' => array(
+                'testmoduleinclusion.php' => "<?php 
+                    class testmoduleinclusion extends testmoduleinclusion_parent {
+                        public function sayHi() {
+                            return \"Hi!\";
+                        }
+                    }"
+            )
+        ));
 
         oxRegistry::get('oxUtilsObject')->setModuleVar('aModules', array('oxarticle' => 'testmod2&testmoduleinclusion'));
-
-        include_once $filePath;
 
         $oTestArt = oxNew('oxArticle');
         $this->assertEquals("Hi!", $oTestArt->sayHi());

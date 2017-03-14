@@ -210,8 +210,6 @@ class UserbasketitemTest extends \OxidTestCase
     // testing if getter returns article we expect
     public function testGetArticleTestingIfGetterWorksFine()
     {
-        oxAddClassModule('modOxArticle_oxUserBasketItem', 'oxArticle');
-
         $sProductId = "2000";
 
         $oBasketItem = oxNew('oxuserbasketitem');

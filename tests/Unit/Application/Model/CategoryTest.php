@@ -263,7 +263,6 @@ class CategoryTest extends \OxidTestCase
 
     public function testAssignParseLongDesc()
     {
-        oxAddClassModule('oxcategoryTest_oxUtilsView', 'oxUtilsView');
         $this->getConfig()->setConfigParam('bl_perfParseLongDescinSmarty', true);
         $this->_oCategory->oxcategories__oxlongdesc = new oxField('aa[{* smarty comment *}]zz', oxField::T_RAW);
         $this->_oCategory->setId('test33');

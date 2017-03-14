@@ -739,48 +739,50 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns invalid extensions array by module id.
+     * Returns shop classes and associated invalid module classes for a given module id
      *
-     * @param string $sModuleId Module id
+     * @param string $moduleId Module id
      *
      * @return array
      */
-    private function _getInvalidExtensions($sModuleId)
+    private function _getInvalidExtensions($moduleId)
     {
-        $aModules = $this->getModuleExtensions($sModuleId);
-        $aDeletedExt = array();
+        $extendedShopClasses = $this->getModuleExtensions($moduleId);
+        $invalidModuleClasses = array();
 
-        foreach ($aModules as $sOxClass => $aModulesList) {
-            foreach ($aModulesList as $sModulePath) {
-                if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($sModulePath)) {
-                    $sExtPath = $this->getConfig()->getModulesDir() . $sModulePath . '.php';
-                    if (!file_exists($sExtPath)) {
-                        $aDeletedExt[$sOxClass][] = $sModulePath;
+        foreach ($extendedShopClasses as $extendedShopClass => $moduleClasses) {
+            foreach ($moduleClasses as $moduleClass) {
+                if (\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($moduleClass)) {
+                    /** @var \Composer\Autoload\ClassLoader $composerClassLoader */
+                    $composerClassLoader = include VENDOR_PATH . 'autoload.php';
+                    if (!$composerClassLoader->findFile($moduleClass)) {
+                        $invalidModuleClasses[$extendedShopClass][] = $moduleClass;
                     }
                 } else {
                     /** Note: $aDeletedExt is passed by reference */
-                    $this->_backwardsCompatibleGetInvalidExtensions($sModulePath, $aDeletedExt, $sOxClass);
+                    $this->backwardsCompatibleGetInvalidExtensions($moduleClass, $invalidModuleClasses, $extendedShopClass);
                 }
             }
         }
 
-        return $aDeletedExt;
+        return $invalidModuleClasses;
     }
 
     /**
      * Backwards compatible version of self::_getInvalidExtensions()
      *
-     * @param string $sModulePath
-     * @param array  $aDeletedExt Note: This parameter is passed by reference
-     * @param string $sOxClass
+     * @param string $moduleClass          The module class, which extends a given shop class
+     * @param array  $invalidModuleClasses The Collection of module classes , which are marked as deleted
+     *                                     Note: This parameter is passed by reference
+     * @param string $extendedShopClass    The shop class, which is extended by the module class
      *
      * @deprecated since v6.0 (2017-03-14); This method will be removed in the future.
      */
-    private function _backwardsCompatibleGetInvalidExtensions($sModulePath, &$aDeletedExt, $sOxClass)
+    private function backwardsCompatibleGetInvalidExtensions($moduleClass, &$invalidModuleClasses, $extendedShopClass)
     {
-        $sExtPath = $this->getConfig()->getModulesDir() . $sModulePath . '.php';
-        if (!file_exists($sExtPath)) {
-            $aDeletedExt[$sOxClass][] = $sModulePath;
+        $moduleClassFile = $this->getConfig()->getModulesDir() . $moduleClass . '.php';
+        if (!is_readable($moduleClassFile)) {
+            $invalidModuleClasses[$extendedShopClass][] = $moduleClass;
         }
     }
 }

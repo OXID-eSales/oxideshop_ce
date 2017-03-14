@@ -708,9 +708,7 @@ class InputValidatorTest extends \OxidTestCase
      */
     public function testCheckEmailEmailValidation()
     {
-        oxAddClassModule('Unit_oxInputValidatorTest_oxutils', 'oxUtils');
-
-        $oUser = oxNew('oxuser');
+       $oUser = oxNew('oxuser');
         $oUser->setId("testlalaa_");
 
         $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));

@@ -434,8 +434,6 @@ class NewsletterTest extends \OxidTestCase
 
     public function testSendMailAndFail()
     {
-        oxAddClassModule('modEmailOxNewsLetter', 'oxEmail');
-
         $oTestNews = oxNew("oxNewsLetter");
         if (!$oTestNews->load('oxidnewsletter')) {
             $this->fail('can not load news');

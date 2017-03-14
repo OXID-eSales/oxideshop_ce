@@ -72,7 +72,6 @@ class DeliverysetListTest extends \OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        oxAddClassModule('modOxDeliverySetList', 'oxDeliverySetList');
 
         //set default user
         $this->_oUser = oxNew('oxuser');
@@ -89,7 +88,6 @@ class DeliverysetListTest extends \OxidTestCase
         $oAdress->oxaddress__oxcountryid = new oxField('a7c40f6323c4bfb36.59919433', oxField::T_RAW); //italien
         $oAdress->save();
         $this->getSession()->setVariable('deladrid', '_testAddressId');
-        modOxDeliverySetList_paymentList::$dBasketPrice = null;
     }
 
     /**
@@ -99,9 +97,6 @@ class DeliverysetListTest extends \OxidTestCase
      */
     protected function tearDown()
     {
-        oxRemClassModule('oxDb_noActiveSnippetInDeliveryList');
-        oxRemClassModule('modOxDeliverySetList');
-
         $this->cleanUpTable('oxuser');
         $this->cleanUpTable('oxaddress');
         $this->cleanUpTable('oxdeliveryset');

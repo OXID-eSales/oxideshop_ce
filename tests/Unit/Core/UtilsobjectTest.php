@@ -199,6 +199,12 @@ class UtilsobjectTest extends \OxidTestCase
 
     public function testOxNewClassExtendingWhenClassesDoesNotExists()
     {
+        /**
+         * Real error handling on missing files is disabled for the tests, but when the shop tries to include that not
+         * existing file we expect an error to be thrown
+         */
+        $this->setExpectedException(\PHPUnit_Framework_Error_Warning::class);
+
         $structure = array(
             'modules' => array(
                 'oxNewDummyModule.php' => '<?php class oxNewDummyModule {}',
@@ -292,7 +298,7 @@ class UtilsobjectTest extends \OxidTestCase
         $sClassNameExpect = 'oxorder';
 
         $sClassNameWhichExtends = 'oemodulenameoxorder_different2';
-        $oUtilsObject = $this->_prepareFakeModule($sClassName, $sClassNameWhichExtends);
+        $oUtilsObject = $this->prepareFakeModuleNonExistentClass($sClassName, $sClassNameWhichExtends);
 
         $this->assertSame($sClassNameExpect, $oUtilsObject->getClassName($sClassName));
     }
@@ -305,7 +311,7 @@ class UtilsobjectTest extends \OxidTestCase
         oxRegistry::get("oxConfigFile")->setVar('blDoNotDisableModuleOnError', false);
 
         $sClassNameWhichExtends = 'oemodulenameoxorder_different3';
-        $oUtilsObject = $this->_prepareFakeModule($sClassName, $sClassNameWhichExtends);
+        $oUtilsObject = $this->prepareFakeModuleNonExistentClass($sClassName, $sClassNameWhichExtends);
 
         $this->assertSame($sClassNameExpect, $oUtilsObject->getClassName($sClassName));
     }
@@ -317,8 +323,6 @@ class UtilsobjectTest extends \OxidTestCase
         $sClassName = 'oxorder';
         $sClassNameWhichExtends = 'oemodulenameoxorder_different4';
         $oUtilsObject = $this->_prepareFakeModule($sClassName, $sClassNameWhichExtends);
-
-        $this->setExpectedException('oxSystemComponentException', 'EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
 
         $oUtilsObject->getClassName($sClassName);
     }
@@ -343,7 +347,32 @@ class UtilsobjectTest extends \OxidTestCase
         oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
         $wrapper->createStructure(array(
             'modules' => array(
-                'oemodulenameoxorder.php' => '<?php class oemodulenameoxorder extends oemodulenameoxorder_parent {}'
+                $extension . '.php' => "<?php class $extension extends {$extension}_parent {}"
+            )
+        ));
+
+        $oUtilsObject = oxRegistry::getUtilsObject();
+        $oUtilsObject->setModuleVar('aModules', array($class => $extension));
+
+        return $oUtilsObject;
+    }
+
+    /**
+     * Make a module, which classname is not the expected one. I.e. class name does not match file name.
+     * The parent class name matches the expections i.e. {$extension}_parent
+     *
+     * @param $class
+     * @param $extension
+     *
+     * @return \OxidEsales\Eshop\Core\UtilsObject
+     */
+    private function prepareFakeModuleNonExistentClass($class, $extension)
+    {
+        $wrapper = $this->getVfsStreamWrapper();
+        oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
+        $wrapper->createStructure(array(
+            'modules' => array(
+                $extension . '.php' => "<?php class {$extension}NonExistent extends {$extension}_parent {}"
             )
         ));
 

@@ -108,7 +108,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $sModulePath = $this->getModuleFullPath($sModuleId);
         $sMetadataPath = $sModulePath . "/metadata.php";
 
-        if ($sModulePath && file_exists($sMetadataPath) && is_readable($sMetadataPath)) {
+        if ($sModulePath && is_readable($sMetadataPath)) {
             $this->includeModuleMetaData($sMetadataPath);
             $this->_blRegistered = true;
             $this->_blMetadata = true;
@@ -247,6 +247,8 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated since v6.0.0 (2017-03-21); Use self::getModuleIdByClassName()
+     *
      * Get the module id of given extended class name or namespace.
      *
      * @param string $className
@@ -255,11 +257,28 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getIdFromExtension($className)
     {
+        return $this->getModuleIdByClassName($className);
+    }
+
+    /**
+     * Get the module id for a given class name. If there are duplicates, the first module id will be returned.
+     *
+     * @param string $className
+     *
+     * @return string
+     */
+    public function getModuleIdByClassName($className)
+    {
+        if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($className)) {
+            return $this->backwardsCompatibleGetModuleIdByClassName($className);
+        }
+
         $moduleId = '';
         $extensions = (array) $this->getConfig()->getConfigParam('aModuleExtensions');
         foreach ($extensions as $id => $moduleClasses) {
             if (in_array($className, $moduleClasses)) {
                 $moduleId = $id;
+                break;
             }
         }
 
@@ -526,13 +545,13 @@ class Module extends \OxidEsales\Eshop\Core\Base
     /**
      * Include data from metadata.php
      *
-     * @param string $sMetadataPath
+     * @param string $metadataPath Path to metadata.php
      */
-    protected function includeModuleMetaData($sMetadataPath)
+    protected function includeModuleMetaData($metadataPath)
     {
-        include $sMetadataPath;
+        include $metadataPath;
         /**
-         * Metadata should include a variable called $aModule, if this variable is not set,
+         * metadata.php should include a variable called $aModule, if this variable is not set,
          * an empty array is assigned to self::aModule
          */
         if (!isset($aModule)) {
@@ -540,6 +559,9 @@ class Module extends \OxidEsales\Eshop\Core\Base
         }
         $this->setModuleData($aModule);
 
+        /**
+         * metadata.php should include a variable called $sMetadataVersion
+         */
         if (isset($sMetadataVersion)) {
             $this->setMetaDataVersion($sMetadataVersion);
         }
@@ -567,5 +589,28 @@ class Module extends \OxidEsales\Eshop\Core\Base
             $extensions[$classToBePatched] = $moduleClass;
         }
         return $extensions;
+    }
+
+    /**
+     * @deprecated since v6.0.0 (2017-03-21); Needed to ensure backwards compatibility.
+     *
+     * Backwards compatible version of self::getModuleIdByClassName()
+     *
+     * @param string $classPath The class path as defined in metadata.php section 'extend'. This is not a valid file path.
+     *
+     * @return bool
+     */
+    private function backwardsCompatibleGetModuleIdByClassName($classPath)
+    {
+        $moduleId = '';
+        $extensions = (array) $this->getConfig()->getConfigParam('aModuleExtensions');
+        foreach ($extensions as $id => $moduleClasses) {
+            if (in_array($classPath, $moduleClasses)) {
+                $moduleId = $id;
+                break;
+            }
+        }
+
+        return $moduleId;
     }
 }

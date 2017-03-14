@@ -17,9 +17,8 @@ $aModule = array(
        'oxprice' => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice'
 
     ),
-    'files' => array('TestModuleTwoModel'  => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php',
-                     'TestModuleTwoPaymentController' => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController.php',
-                     'TestModuleTwoPrice' => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice.php'
+    'files' => array(
+        'TestModuleTwoModel'  => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php'
     ),
     'settings' => array(
     )

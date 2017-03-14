@@ -176,8 +176,6 @@ class ManufacturerlistTest extends \OxidTestCase
      */
     public function testSEOsetManufacturerData()
     {
-        oxAddClassModule('modUtils_oxManufacturerlist', 'oxutils');
-
         $oManufacturerlist = $this->getProxyClass("oxManufacturerlist");
         $oManufacturerlist->loadManufacturerList();
 

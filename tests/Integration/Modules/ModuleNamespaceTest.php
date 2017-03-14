@@ -123,6 +123,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $this->activateModule($module, $moduleId);
 
         $this->runAsserts($resultToAsserts);
+
         $this->assertPrice($priceAsserts);
     }
 
@@ -154,7 +155,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $this->runAsserts($resultToAsserts);
 
         $price = oxNew('oxPrice');
-        $this->assertFalse(is_a($price, $priceAsserts['class']), 'Price object class not as expected ' . get_class($price));
+        $this->assertFalse(is_a($price, $priceAsserts['class']), 'Price object class not as expected ('.$priceAsserts['class'].') :' . get_class($price));
         $this->assertPrice(array('factor' => 1));
     }
 
@@ -264,9 +265,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
             'files'           => array(
                 'EshopTestModuleOne'           => array(),
                 'without_own_module_namespace' =>
-                    array('testmoduletwomodel'             => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php',
-                          'testmoduletwopaymentcontroller' => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController.php',
-                          'testmoduletwoprice'             => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice.php'
+                    array('testmoduletwomodel'             => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php'
                     )
             ),
             'settings'        => array(),
@@ -308,9 +307,8 @@ class ModuleNamespaceTest extends BaseModuleTestCase
                         ),
                         'files'           => array(
                             'without_own_module_namespace' =>
-                                array('testmoduletwomodel'             => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php',
-                                      'testmoduletwopaymentcontroller' => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController.php',
-                                      'testmoduletwoprice'             => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice.php'
+                                array(
+                                    'testmoduletwomodel'             => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php'
                                 )
                         ),
                         'settings'        => array(),
@@ -541,9 +539,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
             'files' => [
                 'EshopTestModuleOne'           => [],
                 'without_own_module_namespace' => [
-                    'testmoduletwomodel'             => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php',
-                    'testmoduletwopaymentcontroller' => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController.php',
-                    'testmoduletwoprice'             => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice.php'
+                    'testmoduletwomodel'             => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php'
                 ]
             ],
             'settings' => [],
@@ -560,8 +556,6 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $environmentAssertsAfterDeactivation['files'] = [
             'without_own_module_namespace' => [
                 'testmoduletwomodel'             => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php',
-                 'testmoduletwopaymentcontroller' => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController.php',
-                 'testmoduletwoprice'             => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice.php'
             ]
         ];
         $environmentAssertsAfterDeactivation['versions'] = ['without_own_module_namespace' => '1.0.0'];
@@ -755,9 +749,8 @@ class ModuleNamespaceTest extends BaseModuleTestCase
                 ),
                 'files'           => array(
                     'without_own_module_namespace' => array(
-                        'testmoduletwomodel' => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php',
-                        'testmoduletwopaymentcontroller' => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController.php',
-                        'testmoduletwoprice' => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice.php')
+                        'testmoduletwomodel' => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php'
+                    )
                 ),
                 'settings'        => array(),
                 'disabledModules' => array(),
@@ -772,8 +765,6 @@ class ModuleNamespaceTest extends BaseModuleTestCase
                   'class'  => 'TestModuleTwoPrice')
         );
     }
-
-
 
     /**
      * Check test article's price. Module multiplies the price by factor.
@@ -790,7 +781,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
         // check for module price class
         if (isset($asserts['class'])) {
-            $this->assertTrue(is_a($price, $asserts['class']), 'Price object class not as expected ' . get_class($price));
+            $this->assertTrue(is_a($price, $asserts['class']), 'Price object class not as expected '.$asserts['class'].':' . get_class($price));
         }
 
         $this->assertEquals($factor * self::TEST_PRICE, $price->getPrice(), 'Price not as expected.');

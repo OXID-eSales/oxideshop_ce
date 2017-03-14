@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-class TestModuleTwoPrice extends TestModuleTwoPrice_parent {
+class TestModuleTwoPrice extends testmoduletwoprice_parent {
 
     /**
      * Double the original price

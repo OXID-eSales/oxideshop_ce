@@ -166,10 +166,6 @@ class OrderTest extends \OxidTestCase
         $this->cleanUpTable('oxaddress');
         $this->cleanUpTable('oxobject2group', 'oxobjectid');
 
-        oxRemClassModule('modOxUtils_order');
-        oxRemClassModule('modOxUtilsObject_order');
-        oxRemClassModule('modOxOrder_order');
-        oxRemClassModule('modOxPayment_order');
         parent::tearDown();
     }
 
@@ -491,8 +487,6 @@ class OrderTest extends \OxidTestCase
     public function testExecute()
     {
         $oConfig = $this->getConfig();
-
-        oxAddClassModule('modOxOrder_order', 'oxorder');
 
         //basket name in session will be "basket"
         $oConfig->setConfigParam('blMallSharedBasket', 1);

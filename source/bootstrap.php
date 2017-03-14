@@ -35,7 +35,7 @@ if (!is_dir(OX_BASE_PATH . 'Core')) {
     define('CORE_AUTOLOADER_PATH', VENDOR_PATH . 'oxid-esales' . DIRECTORY_SEPARATOR . 'oxideshop-ce' . DIRECTORY_SEPARATOR .
                                    'source' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR);
 } else {
-    define('CORE_AUTOLOADER_PATH', OX_BASE_PATH . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR );
+    define('CORE_AUTOLOADER_PATH', OX_BASE_PATH . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR);
 }
 
 /**
@@ -99,7 +99,7 @@ if (!file_exists(OX_BASE_PATH . "config.inc.php") ||
 /*
  * Require and register composer autoloader.
  * This autoloader will load classes in the real existing namespace like '\OxidEsales\EshopCommunity\Core\UtilsObject'
- * It will always come first, even if you move it after the other autoloaders as it reisters itself with prepend = true
+ * It will always come first, even if you move it after the other autoloaders as it registers itself with prepend = true
  */
 require_once VENDOR_PATH . 'autoload.php';
 

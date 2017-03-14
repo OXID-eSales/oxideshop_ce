@@ -90,10 +90,10 @@ class ModuleTest extends ModuleBaseTest
 
         // Assert that added information appeared.
         $this->assertChecked("//input[@name='confbools[testEmptyBoolConfig]' and @type='checkbox']");
-        $this->assertElementValue("confstrs[testEmptyStrConfig]", 'testString', 'Without default value text input (str) should be empty');
-        $this->assertElementValue("confarrs[testEmptyArrConfig]", "option1\noption2\noption3", 'Without default value text area array (arr) should be empty');
-        $this->assertElementValue("confaarrs[testEmptyAArrConfig]", "key1 => option1\nkey2 => option2", 'Without default value text area assoc array (aarr) should be empty');
-        $this->assertElementValue("confselects[testEmptySelectConfig]", '2', 'Without default value first option should be selected for selects');
+        $this->assertElementValue("confstrs[testEmptyStrConfig]", 'testString', 'Value for text input (str) should have been saved');
+        $this->assertElementValue("confarrs[testEmptyArrConfig]", "option1\noption2\noption3", 'Values for text area array (arr) should have been saved');
+        $this->assertElementValue("confaarrs[testEmptyAArrConfig]", "key1 => option1\nkey2 => option2", 'Values for text area assoc array (aarr) should have been saved');
+        $this->assertElementValue("confselects[testEmptySelectConfig]", '2', 'Value for select should have been saved');
 
         $oPassword = $this->getElement("confpassword[testEmptyPasswordConfig]");
         $this->assertEquals('', $oPassword->getValue(), 'With saved value password should be empty');
@@ -141,7 +141,7 @@ class ModuleTest extends ModuleBaseTest
 
         $this->clearCache();
         $this->openShop();
-        $this->open(shopURL."en/About-Us/");
+        $this->open(shopURL . "en/About-Us/");
         $this->assertTextPresent("About Us + info1 + info2 + info7 + namespace1");
 
         $this->deleteModuleClass();
@@ -154,7 +154,7 @@ class ModuleTest extends ModuleBaseTest
 
         $this->clearCache();
         $this->openShop();
-        $this->open(shopURL."en/About-Us/");
+        $this->open(shopURL . "en/About-Us/");
         $this->assertTextPresent("About Us + info2 + info7 + namespace1");
         $this->assertTextNotPresent("About Us + info1 + info2 + info7 + namespace1");
     }
@@ -176,8 +176,7 @@ class ModuleTest extends ModuleBaseTest
         //checking if all expected non loadable classes are displayed
         $this->openTab("Installed Shop Modules");
         $this->assertTextPresent("Problematic Files");
-        $this->assertTextPresent('NonExistentClass');
-        $this->assertTextPresent('NonExistentFile');
+        $this->assertTextPresent('NonExistentFile', 'The class name of a non existing class file should be listen in the section "Problematic Files"');
 
         //checking if clicking "Yes" fixes the problematic files
         $this->clickAndWait("yesButton");

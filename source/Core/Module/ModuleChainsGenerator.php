@@ -15,15 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
 
 namespace OxidEsales\EshopCommunity\Core\Module;
-
-use oxConfig;
-use oxRegistry;
 
 /**
  * Generates class chains for extended classes by modules.
@@ -33,6 +30,7 @@ use oxRegistry;
  */
 class ModuleChainsGenerator
 {
+
     /** @var \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator */
     private $moduleVariablesLocator;
 
@@ -61,6 +59,7 @@ class ModuleChainsGenerator
         if (!empty($activeChain)) {
             $className = $this->createClassExtensions($activeChain, $classAlias);
         }
+
         return $className;
     }
 
@@ -237,7 +236,7 @@ class ModuleChainsGenerator
      * @param array  $classChain Module names
      * @param string $baseClass  Oxid base class
      *
-     * @throws \oxSystemComponentException missing system component exception
+     * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException missing system component exception
      *
      * @return string
      */
@@ -261,41 +260,96 @@ class ModuleChainsGenerator
     }
 
     /**
-     * Creating middle classes
+     * Checks, if a given class can be loaded and create an alias for _parent.
+     * If the class cannot be loaded, some error handling is done.
+     *
+     * @see self::onModuleExtensionCreationError
+     * @see self::handleSpecialCases
+     *
      * e.g. class suboutput1_parent extends oxoutput {}
      *      class suboutput2_parent extends suboutput1 {}
      *
-     * @param string $class
-     * @param string $extensionPath
+     * @param string $parentClass
+     * @param string $moduleClass
      *
-     * @throws \oxSystemComponentException
+     * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException
+     *
+     * @return bool Return on error
+     */
+    protected function createClassExtension($parentClass, $moduleClass)
+    {
+        if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($moduleClass)) {
+            return $this->backwardsCompatibleCreateClassExtension($parentClass, $moduleClass);
+        }
+
+        /**
+         * Test if the class file could be loaded
+         */
+        /** @var \Composer\Autoload\ClassLoader $composerClassLoader */
+        $composerClassLoader = include VENDOR_PATH . 'autoload.php';
+        if (!strpos($moduleClass, '_parent') &&
+            !$composerClassLoader->findFile($moduleClass)) {
+            $this->handleSpecialCases($parentClass);
+            $this->onModuleExtensionCreationError($moduleClass);
+
+            return false;
+        }
+
+        if (!class_exists($moduleClass, false)) {
+            $moduleClassParentAlias = $moduleClass . "_parent";
+            if (!class_exists($moduleClassParentAlias, false)) {
+                class_alias($parentClass, $moduleClassParentAlias);
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Backwards compatible self::createClassExtension
+     *
+     * @param string $parentClass     Name of the parent class
+     * @param string $moduleClassPath Path of the module class as it is defined in metadata.php 'extend' section.
+     *                                This is not a valid file system path
      *
      * @return bool
+     *
+     * @deprecated since v6.0 (2017-03-14); This method will be removed in the future.
      */
-    protected function createClassExtension($class, $extensionPath)
+    private function backwardsCompatibleCreateClassExtension($parentClass, $moduleClassPath)
     {
-        $extensionClass = basename($extensionPath);
+        $moduleClass = basename($moduleClassPath);
+        $modulesDirectory = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sShopDir");
+        $moduleClassFile = "$modulesDirectory/modules/$moduleClassPath.php";
+        $moduleClassParentAlias = $moduleClass . "_parent";
 
-        if (!class_exists($extensionClass, false)) {
-            $extensionParentClass = $extensionClass . "_parent";
+        /**
+         * Test if the class file could be read
+         */
+        if (!is_readable($moduleClassFile)) {
+            $this->handleSpecialCases($parentClass);
+            $this->onModuleExtensionCreationError($moduleClass);
 
-            if (!class_exists($extensionParentClass, false)) {
-                class_alias($class, $extensionParentClass);
+            return false;
+        }
+
+        if (!class_exists($moduleClass, false)) {
+            /**
+             * Create parent alias before trying to load the module class as the class extends this alias
+             */
+            if (!class_exists($moduleClassParentAlias, false)) {
+                class_alias($parentClass, $moduleClassParentAlias);
             }
+            include_once $moduleClassFile;
 
-            if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($extensionPath)) {
-                $modulesDirectory = oxRegistry::get("oxConfigFile")->getVar("sShopDir");
-                $extensionParentPath = "$modulesDirectory/modules/$extensionPath.php";
+            /**
+             * Test if the class could be loaded
+             */
+            if (!class_exists($moduleClass)) {
+                $this->handleSpecialCases($parentClass);
+                $this->onModuleExtensionCreationError($moduleClassPath);
 
-                //including original file
-                if (file_exists($extensionParentPath)) {
-                    include_once $extensionParentPath;
-                } elseif (!class_exists($extensionClass)) {
-                    $this->handleSpecialCases($class, $extensionClass);
-                    $this->onModuleExtensionCreationError($extensionPath, $extensionClass);
-
-                    return false;
-                }
+                return false;
             }
         }
 
@@ -307,13 +361,12 @@ class ModuleChainsGenerator
      * but we can't create it as module class extending it does not exist. So we will use original oxConfig object instead.
      *
      * @param string $requestedClass Class, for which extension chain was generated.
-     * @param string $extensionClass
      */
-    protected function handleSpecialCases($requestedClass, $extensionClass)
+    protected function handleSpecialCases($requestedClass)
     {
         if ($requestedClass == "oxconfig") {
-            $config = new oxConfig();
-            oxRegistry::set("oxConfig", $config);
+            $config = new \OxidEsales\Eshop\Core\Config();
+            \OxidEsales\Eshop\Core\Registry::set("oxConfig", $config);
         }
     }
 
@@ -321,20 +374,27 @@ class ModuleChainsGenerator
      * If blDoNotDisableModuleOnError config value is false, disables bad module.
      * To avoid problems with unit tests it only throw an exception if class does not exist.
      *
-     * @param string $classExtension
      * @param string $moduleClass
      *
-     * @throws \oxSystemComponentException
+     * @throws \OxidEsales\EshopCommunity\Core\Exception\SystemComponentException
      */
-    protected function onModuleExtensionCreationError($classExtension, $moduleClass)
+    protected function onModuleExtensionCreationError($moduleClass)
     {
-        $disableModuleOnError = !oxRegistry::get("oxConfigFile")->getVar("blDoNotDisableModuleOnError");
+        $disableModuleOnError = !$this->getConfigBlDoNotDisableModuleOnError();
         if ($disableModuleOnError) {
-            $this->disableModule($classExtension);
+            if ($this->disableModule($moduleClass)) {
+                /** An exception is not thrown, but just logged here */
+                $module = oxNew("oxModule");
+                $moduleId = $module->getIdByPath($moduleClass);
+                $message = sprintf('Module class %s not found. Module ID %s disabled', $moduleClass, $moduleId);
+                $exception = new \OxidEsales\Eshop\Core\Exception\SystemComponentException($message);
+                $exception->debugOut();
+            }
         } else {
-            $exception = oxNew("oxSystemComponentException");
-            $exception->setMessage("EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND");
+            $exception = new \OxidEsales\EshopCommunity\Core\Exception\SystemComponentException();
+            $exception->setMessage('EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' ' . $moduleClass);
             $exception->setComponent($moduleClass);
+
             throw $exception;
         }
     }
@@ -342,7 +402,9 @@ class ModuleChainsGenerator
     /**
      * Disables module, adds to aDisabledModules config.
      *
-     * @param array $modulePath Full module path
+     * @param string $modulePath Full module path
+     *
+     * @return bool
      */
     public function disableModule($modulePath)
     {
@@ -353,7 +415,7 @@ class ModuleChainsGenerator
         $moduleCache = oxNew('oxModuleCache', $module);
         $moduleInstaller = oxNew('oxModuleInstaller', $moduleCache);
 
-        $moduleInstaller->deactivate($module);
+        return $moduleInstaller->deactivate($module);
     }
 
     /**
@@ -378,5 +440,13 @@ class ModuleChainsGenerator
         $modules = (array) $variablesLocator->getModuleVariable('aModules');
 
         return $modules;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getConfigBlDoNotDisableModuleOnError()
+    {
+        return \OxidEsales\Eshop\Core\Registry::get("oxConfigFile")->getVar("blDoNotDisableModuleOnError");
     }
 }

@@ -530,8 +530,6 @@ class BasketitemTest extends \OxidTestCase
      */
     public function testGetArticle_notVisibleArticle_doNotCheck()
     {
-        oxAddClassModule('modOxArticle_notVisible_oxbasketItem', 'oxArticle');
-
         $article = $this->createArticle();
         $oBasketItem = oxNew('oxBasketItem');
         $oBasketItem->getArticle(false, $article->getId());

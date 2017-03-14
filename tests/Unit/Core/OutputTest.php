@@ -54,27 +54,6 @@ class oxConfigForUnit_oxoutputTest extends oxconfig
 class OutputTest extends \OxidTestCase
 {
     /**
-     * Initialize the fixture.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        oxAddClassModule('oxUtils_Extended', 'oxUtils');
-        oxAddClassModule('oxOutput_Extended', 'oxOutput');
-    }
-
-    /**
-     * Tear down the fixture.
-     */
-    public function tearDown()
-    {
-        oxRemClassModule('oxUtils_Extended');
-        oxRemClassModule('oxOutput_Extended');
-
-        parent::tearDown();
-    }
-
-    /**
      * Testing output processor
      */
     public function testProcess()

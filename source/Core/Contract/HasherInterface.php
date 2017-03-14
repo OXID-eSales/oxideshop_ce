@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunity\Core;
+namespace OxidEsales\EshopCommunity\Core\Contract;
 
 /**
- * Hasher abstract class
+ * Hasher interface
  */
-abstract class Hasher
+interface HasherInterface
 {
 
     /**
@@ -35,5 +35,5 @@ abstract class Hasher
      *
      * @return string
      */
-    abstract public function hash($string);
+    public function hash($string);
 }

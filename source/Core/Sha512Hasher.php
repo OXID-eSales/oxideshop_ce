@@ -22,10 +22,12 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Core\Contract\HasherInterface;
+
 /**
  * Encrypt string with sha512 algorithm.
  */
-class Sha512Hasher extends \OxidEsales\Eshop\Core\Hasher
+class Sha512Hasher implements HasherInterface
 {
 
     /** Algorithm name. */

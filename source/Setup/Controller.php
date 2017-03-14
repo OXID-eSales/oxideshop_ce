@@ -378,6 +378,12 @@ class Controller extends Core
         //update dyn pages / shop country config options (from first step)
         $database->saveShopSettings(array());
 
+        // update shop version
+        $versionConfig = new \VersionConfig();
+        if (isset($versionConfig->version)) {
+            $database->execSql("update `oxshops` set `oxversion` = '{$versionConfig->version}'");
+        }
+
         try {
             $adminData = $session->getSessionParam('aAdminData');
             // creating admin user

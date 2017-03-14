@@ -23,6 +23,7 @@ namespace Unit\Setup;
 
 require_once getShopBasePath() . '/Setup/functions.php';
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
 use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
 use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
@@ -174,5 +175,28 @@ class SetupTest extends \OxidTestCase
         $this->assertEquals('pmin', $oSetup->getModuleClass(1));
         $this->assertEquals('null', $oSetup->getModuleClass(-1));
         $this->assertEquals('fail', $oSetup->getModuleClass(0));
+    }
+
+    /**
+     * Testing if ViewConfig class gives us the version information
+     */
+    public function testVersionConfig()
+    {
+        $versionConfig = new \VersionConfig();
+        $this->assertNotEmpty($versionConfig->version);
+    }
+
+    /**
+     * Testing if ViewConfig class gives us the version information
+     */
+    public function testVersionConfigParams()
+    {
+        // creating test file
+        $versionFile = Registry::getConfig()->getConfigParam('sCompileDir') . '/' . uniqid("version_");
+        $contents = array('<?php', '$this->version = "specialVersion";');
+        file_put_contents($versionFile, implode("\n", $contents));
+
+        $versionConfig = new \VersionConfig($versionFile);
+        $this->assertEquals($versionConfig->version, "specialVersion");
     }
 }

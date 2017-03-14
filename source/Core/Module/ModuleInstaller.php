@@ -421,7 +421,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
 
                 $template = $moduleBlock["template"];
                 $position = isset($moduleBlock['position']) && is_numeric($moduleBlock['position']) ?
-                    intval($moduleBlock['position']) : 1;
+                    (int) $moduleBlock['position'] : 1;
 
                 $block = $moduleBlock["block"];
                 $filePath = $moduleBlock["file"];

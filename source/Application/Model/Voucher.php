@@ -875,8 +875,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getVoucherTimeout()
     {
-        $iVoucherTimeout = intval(oxRegistry::getConfig()->getConfigParam('iVoucherTimeout')) ?
-            intval(oxRegistry::getConfig()->getConfigParam('iVoucherTimeout')) :
+        $iVoucherTimeout = (int) oxRegistry::getConfig()->getConfigParam('iVoucherTimeout') ?:
             3 * 3600;
 
         return $iVoucherTimeout;

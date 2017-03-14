@@ -114,7 +114,7 @@ require_once CORE_AUTOLOADER_PATH . 'AliasAutoload.php';
 
 /**
  * Register the module autoload.
- * It will load classes like YourModule_parent or classes defined in the metadata key 'extends'
+ * It will load classes classes defined in the metadata key 'files'
  * When this autoloader is called a database connection will be triggered
  */
 require_once CORE_AUTOLOADER_PATH . 'ModuleAutoload.php';

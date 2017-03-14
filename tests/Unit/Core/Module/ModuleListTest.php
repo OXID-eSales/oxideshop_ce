@@ -22,13 +22,14 @@
 namespace Unit\Core;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\Module\ModuleMetadataValidator;
 use OxidEsales\EshopCommunity\Core\Module\ModuleList;
 
 /**
  * @group module
  * @package Unit\Core
  */
-class ModulelistTest extends \OxidTestCase
+class ModuleListTest extends \OxidTestCase
 {
 
     /**
@@ -36,7 +37,7 @@ class ModulelistTest extends \OxidTestCase
      *
      * @return null
      */
-    public function setup()
+    public function setUp()
     {
         parent::setUp();
     }
@@ -876,6 +877,58 @@ class ModulelistTest extends \OxidTestCase
 
         $aDeletedExtensions = $oModuleList->getDeletedExtensions();
         $this->assertEquals($aDeletedExt, $aDeletedExtensions);
+    }
+
+    /**
+     * Non loadable classes should be listed in the "PROBLEMATIC FILES" section in
+     * OXID eShop Admin -> Extensions -> Modules -> "Installed Shop Modules" Tab and therefore they must form part of
+     * the so called "deleted extensions"
+     *
+     * The return value of the method covered by this test is independent from the session variable
+     * "blSkipDeletedExtChecking", the rendering of the error message is not.
+     *
+     * @see \OxidEsales\EshopCommunity\Tests\Acceptance\Admin\ModuleTest::testGetDeletedExtensionsForNamespaceModuleShowErrorForNonLoadableClasses
+     *
+     * @covers \OxidEsales\EshopCommunity\Core\Module\ModuleList::getDeletedExtensions
+     */
+    public function testGetDeletedExtensionsForNonLoadableClasses()
+    {
+        $expectedDeletedExtensions = [
+            'SomeVendor\SomeModule\Application\Model\Article' => [
+                'extensions' => [
+                    'OxidEsales\Eshop\Application\Model\Article' => [
+                        'SomeVendor\SomeModule\Application\Model\Article'
+                    ]
+                ]
+            ]
+        ];
+
+        /** @var array $aModules Contains a class, which is not loadable - in this case - as it does not exist */
+        $aModules = [\OxidEsales\Eshop\Application\Model\Article::class => \SomeVendor\SomeModule\Application\Model\Article::class];
+        $this->setConfigParam("aModules", $aModules);
+
+        $moduleMetadataValidatorMock = $this->getMock(
+            \OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator::class,
+            ['validate']
+        );
+        $moduleMetadataValidatorMock->expects($this->any())->method('validate')->will($this->returnValue(true));
+
+        $moduleValidatorFactoryMock = $this->getMock(
+            \OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory::class,
+            ['getModuleMetadataValidator']
+        );
+        $moduleValidatorFactoryMock->expects($this->any())->method('getModuleMetadataValidator')->will($this->returnValue($moduleMetadataValidatorMock));
+
+        /** @var \OxidEsales\EshopCommunity\Core\Module\ModuleList|\PHPUnit_Framework_MockObject_MockObject $moduleListMock  */
+        $moduleListMock = $this->getMock(
+            \OxidEsales\EshopCommunity\Core\Module\ModuleList::class,
+            ['getModuleValidatorFactory']
+        );
+        $moduleListMock->expects($this->any())->method('getModuleValidatorFactory')->will($this->returnValue($moduleValidatorFactoryMock));
+
+        $actualDeletedExtensions = $moduleListMock->getDeletedExtensions();
+
+        $this->assertEquals($expectedDeletedExtensions, $actualDeletedExtensions);
     }
 
     public function testGetModuleIds()

@@ -165,6 +165,35 @@ class ModuleTest extends AdminTestCase
     }
 
     /**
+     * @covers \OxidEsales\EshopCommunity\Core\Module\ModuleList::_getInvalidExtensions()
+     */
+    public function testGetDeletedExtensionsForNamespaceModuleShowErrorForNonLoadableClasses()
+    {
+        $testConfig = $this->getTestConfig();
+        if ($testConfig->isSubShop()) {
+            $this->markTestSkipped('Test is not for SubShop');
+        }
+
+        $this->loginAdmin('Extensions', 'Modules');
+        /** The metadata.php of module 'Invalid Namespaced Module #1' refers to 2 non loadable classes */
+        $this->activateModuleAndCheck('Invalid Namespaced Module #1');
+
+        //checking if all expected non loadable classes are displayed
+        $this->openTab("Installed Shop Modules");
+        $this->assertTextPresent("Problematic Files");
+        $this->assertTextPresent('NonExistentClass');
+        $this->assertTextPresent('NonExistentFile');
+
+        //checking if clicking "Yes" fixes the problematic files
+        $this->clickAndWait("yesButton");
+        $this->openTab("Installed Shop Modules");
+        $this->assertTextNotPresent("Problematic Files");
+        $this->assertTextNotPresent('NonExistentClass');
+        $this->assertTextNotPresent('NonExistentFile');
+    }
+
+
+    /**
      * Test, that the module deactivation works in the non demo mode.
      *
      * @group adminFunctionality

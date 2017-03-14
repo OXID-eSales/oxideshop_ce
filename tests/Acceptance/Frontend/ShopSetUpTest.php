@@ -381,7 +381,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->click(self::DIRECTORY_LOGIN_STEP);
 
         $this->waitForText("ERROR: Seems there is already OXID eShop installed in database $name. Please delete it prior continuing!");
-        $this->assertTextPresent("If you want to install anyway click here");
+        $this->assertTextPresent("If you want to overwrite all existing data and install anyway click here");
         $this->click("//a[@id='step3Continue']");
         $this->waitForText("Please provide necessary data for running OXID eShop:");
     }

@@ -42,7 +42,7 @@ class Email extends \PHPMailer
      *
      * @var int
      */
-    public $SMTP_PORT = 25;
+    public $smtpPort = 25;
 
     /**
      * Password reminder mail template
@@ -502,13 +502,13 @@ class Email extends \PHPMailer
     {
         $isSmtp = false;
         if ($smtpHost) {
-            $smtpPort = $this->SMTP_PORT;
+            $smtpPort = $this->smtpPort;
             $match = array();
             if (getStr()->preg_match('@^(.*?)(:([0-9]+))?$@i', $smtpHost, $match)) {
                 $smtpHost = $match[1];
                 $smtpPort = (int) $match[3];
                 if (!$smtpPort) {
-                    $smtpPort = $this->SMTP_PORT;
+                    $smtpPort = $this->smtpPort;
                 }
             }
             if ($isSmtp = (bool) ($rHandle = @fsockopen($smtpHost, $smtpPort, $errNo, $errStr, 30))) {

@@ -22,7 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use oxModule;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 
 /**
  * Module metadata validation class.
@@ -39,12 +40,75 @@ class ModuleMetadataValidator implements \OxidEsales\Eshop\Core\Contract\IModule
      * Return true if module metadata is valid.
      * Return false if module metadata is not valid, or if metadata file does not exist.
      *
-     * @param oxModule $oModule object to validate metadata.
+     * @param \OxidEsales\Eshop\Core\Module\Module $module object to validate metadata.
      *
      * @return bool
      */
-    public function validate(\OxidEsales\Eshop\Core\Module\Module $oModule)
+    public function validate(\OxidEsales\Eshop\Core\Module\Module $module)
     {
-        return file_exists($oModule->getMetadataPath());
+        return file_exists($module->getMetadataPath());
+    }
+
+    /**
+     * Check module metadata for incorrect namespace shop classes.
+     * Class might be misspelled or not found n virtual namespace.
+     *
+     * @param \OxidEsales\Eshop\Core\Module\Module $module
+     *
+     * @throws \OxidEsales\Eshop\Core\Exception\ModuleValidationException
+     */
+    public function checkModuleExtensionsForIncorrectNamespaceClasses(\OxidEsales\Eshop\Core\Module\Module $module)
+    {
+        $incorrect = $this->getIncorrectExtensions($module);
+        if (!empty($incorrect)) {
+            $message = $this->prepareMessage('MODULE_METADATA_PROBLEMATIC_DATA_IN_EXTEND', $incorrect);
+            throw new \OxidEsales\Eshop\Core\Exception\ModuleValidationException($message);
+        }
+    }
+
+    /**
+     * Getter for possible incorrect extension info in metadata.php.
+     * If the module patches a namespace class it must either belong to the shop
+     * virtual namespace or to another module.
+     *
+     * @param \OxidEsales\Eshop\Core\Module\Module $module
+     *
+     * @return array
+     */
+    public function getIncorrectExtensions(\OxidEsales\Eshop\Core\Module\Module $module)
+    {
+        $incorrect = [];
+        $rawExtensions = $module->getExtensions();
+        $virtualNamespaceClassMapProvider = Registry::get(\OxidEsales\Eshop\Core\Autoload\VirtualNameSpaceClassMapProvider::class);
+        $map = $virtualNamespaceClassMapProvider->getClassMap();
+
+        foreach ($rawExtensions as $classToBePatched => $moduleClass) {
+            if (NamespaceInformationProvider::isNamespacedClass($classToBePatched)
+                 && (NamespaceInformationProvider::classBelongsToShopEditionNamespace($classToBePatched)
+                      || (NamespaceInformationProvider::classBelongsToShopVirtualNamespace($classToBePatched) && !isset($map[$classToBePatched]))
+                    )
+                ) {
+                $incorrect[$classToBePatched] = $moduleClass;
+            }
+        }
+        return $incorrect;
+    }
+
+    /**
+     * @param string $languageConstant
+     * @param array  $incorrect
+     *
+     * @return string
+     */
+    protected function prepareMessage($languageConstant, $incorrect = array())
+    {
+        $additionalInformation = '';
+        foreach ($incorrect as $patchee => $patch) {
+            $additionalInformation .= $patchee . ' => ' . $patch . ', ';
+        }
+        $additionalInformation = rtrim($additionalInformation, ', ');
+        $message = sprintf(Registry::getLang()->translateString($languageConstant, null, true), $additionalInformation);
+
+        return $message;
     }
 }

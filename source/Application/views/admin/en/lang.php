@@ -733,6 +733,11 @@ $aLang = array(
     'MODULE_DELETEEXTENSION'                         => 'Do you want to delete all registered module information and saved configurations?',
     'MODULE_PASSWORDS_DO_NOT_MATCH'                  => 'Passwords do not match!',
     'MODULE_REPEAT_PASSWORD'                         => 'Confirm password',
+    //@TODO: integrate links to documentation when it is officially available
+    // In MODULE_METADATA_PROBLEMATIC_DATA_IN_EXTEND ad links to offical equivalents of
+    // http://oxid-eshop-developer-documentation.readthedocs.io/en/latest/modules/metadata/version20.html
+    // and http://oxid-eshop-developer-documentation.readthedocs.io/en/latest/modules/using_namespaces_in_modules.html
+    'MODULE_METADATA_PROBLEMATIC_DATA_IN_EXTEND'     => 'Invalid metadata in extend section. The following extended shop classes are either mistyped or don\'t belong to the virtual name space: <br> %s',
     'LANGUAGE_ERRORGENERATEVIEWS'                    => "Please don't forget to update the database views under Service->Tools",
     'LANGUAGE_ACTIVE'                                => 'Active in frontend',
     'LANGUAGE_LIST_MENUITEM'                         => 'Master Settings',

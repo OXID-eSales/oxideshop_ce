@@ -1555,9 +1555,8 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getInvoiceNum()
     {
-        $sQ = 'select max(oxorder.oxinvoicenr) from oxorder where oxorder.oxshopid = "' . $this->getConfig()->getShopId() . '" ';
-
-        return (( int ) oxDb::getDb()->getOne($sQ, false) + 1);
+        $sCounterIdent = ($this->_blSeparateNumbering) ? 'oxOrder_oxinvoicenr_' . $this->getConfig()->getShopId() : 'oxOrder_oxinvoicenr';
+        return oxNew('oxCounter')->getNext($sCounterIdent);
     }
 
     /**
@@ -1567,9 +1566,8 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getNextBillNum()
     {
-        $sQ = 'select max(cast(oxorder.oxbillnr as unsigned)) from oxorder where oxorder.oxshopid = "' . $this->getConfig()->getShopId() . '" ';
-
-        return (( int ) oxDb::getDb()->getOne($sQ, false) + 1);
+        $sCounterIdent = ($this->_blSeparateNumbering) ? 'oxOrder_oxbillnr_' . $this->getConfig()->getShopId() : 'oxOrder_oxbillnr';
+        return oxNew('oxCounter')->getNext($sCounterIdent);
     }
 
     /**

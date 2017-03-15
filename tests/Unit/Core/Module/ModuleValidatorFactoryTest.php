@@ -32,18 +32,11 @@ class ModuleValidatorFactoryTest extends \OxidTestCase
     {
         $oModuleValidatorFactory = oxNew('oxModuleValidatorFactory');
         $this->assertInstanceOf('oxIModuleValidator', $oModuleValidatorFactory->getModuleMetadataValidator());
-        $this->assertInstanceOf('oxIModuleValidator', $oModuleValidatorFactory->getModuleFilesValidator());
     }
 
     public function testModuleValidatorReturnCorrectInterfaceForMetadata()
     {
         $oModuleValidatorFactory = oxNew('oxModuleValidatorFactory');
         $this->assertInstanceOf('oxModuleMetadataValidator', $oModuleValidatorFactory->getModuleMetadataValidator());
-    }
-
-    public function testModuleValidatorReturnCorrectInterfaceForFiles()
-    {
-        $oModuleValidatorFactory = oxNew('oxModuleValidatorFactory');
-        $this->assertInstanceOf('oxModuleFilesValidator', $oModuleValidatorFactory->getModuleFilesValidator());
     }
 }

@@ -41,15 +41,4 @@ class ModuleValidatorFactory
     {
         return oxNew('oxModuleMetadataValidator');
     }
-
-    /**
-     * Return module validator by provided type.
-     * Returned validator implements interface oxIModuleValidator.
-     *
-     * @return oxModuleFilesValidator
-     */
-    public function getModuleFilesValidator()
-    {
-        return oxNew('oxModuleFilesValidator');
-    }
 }

@@ -21,6 +21,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\Eshop\Core\Registry;
+
 /**
  * Test, that the inheritance of modules and the shop works as expected.
  *
@@ -68,7 +70,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
  * |       extends via chain       | plain module class | namespaced module class |
  * +-------------------------------+--------------------+-------------------------+
  * | Plain shop class              | 3.1                | 3.4                     |
- * | Namespaced shop class         | no need            | 3.5                     |
+ * | Namespaced shop class         | 3.2                | 3.5                     |
  * | Virtual namespaced shop class | 3.3                | 3.6                     |
  * +-------------------------------+--------------------+-------------------------+
  *
@@ -100,6 +102,29 @@ class BCModuleInheritanceTest extends BaseModuleInheritanceTestCase
      */
     public function testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames)
     {
+        parent::testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
+    }
+
+    /**
+     * It is forbidden to directly extend shop classes from edition namespaces.
+     * Shop checks this during module activation and prevents by throwing an error.
+     * This test covers PHP inheritance between one module class and one shop class.
+     *
+     * The module class extends the PHP class directly like '<module class> extends <shop class>'
+     * In this case the parent class of the module class must be the shop class as instantiated with oxNew
+     *
+     * @dataProvider dataProviderTestModuleInheritanceTestPhpInheritanceForbidden
+     *
+     * @param array  $moduleToActivate  The module we want to activate.
+     * @param string $moduleClassName   The module class we want to instantiate.
+     * @param array  $shopClassNames    The shop classes from which the module class should inherit.
+     * @param string $expectedException Part of the expected exception message.
+     */
+    public function testModuleInheritanceTestPhpInheritanceForbidden($moduleToActivate, $moduleClassName, $shopClassNames, $expectedException)
+    {
+        $message = sprintf(Registry::getLang()->translateString('MODULE_METADATA_PROBLEMATIC_DATA_IN_EXTEND', null, true), $expectedException);
+        $this->setExpectedException(\OxidEsales\EshopCommunity\Core\Exception\ModuleValidationException::class, $message);
+
         parent::testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
     }
 
@@ -153,17 +178,29 @@ class BCModuleInheritanceTest extends BaseModuleInheritanceTestCase
                 'moduleClassName'  => 'vendor_1_module_3_1_myclass',
                 'shopClassNames'   => ['oxArticle']
             ],
-            'case_3_2' => [
-                //Test case 3.1 plain module chain extends namespaced OXID eShop Community class
-                'moduleToActivate' => ['module_chain_extension_3_2'],
-                'moduleClassName'  => 'vendor_1_module_3_2_myclass',
-                'shopClassNames'   => [\OxidEsales\EshopCommunity\Application\Model\Article::class]
-            ],
             'case_3_3' => [
                 //Test case 3.3 plain module chain extends virtual OXID eShop class
                 'moduleToActivate' => ['module_chain_extension_3_3'],
                 'moduleClassName'  => 'vendor_1_module_3_3_myclass',
                 'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class]
+            ]
+        ];
+    }
+
+    /**
+     * DataProvider for the testModuleInheritanceTestPhpInheritance method.
+     *
+     * @return array The different test cases we execute.
+     */
+    public function dataProviderTestModuleInheritanceTestPhpInheritanceForbidden()
+    {
+        return [
+            'case_3_2' => [
+                //Test case 3.2 plain module chain extends namespaced OXID eShop Community class
+                'moduleToActivate' => ['module_chain_extension_3_2'],
+                'moduleClassName'  => 'vendor_1_module_3_2_myclass',
+                'shopClassNames'   => [\OxidEsales\EshopCommunity\Application\Model\Article::class],
+                'expectsException' => \OxidEsales\EshopCommunity\Application\Model\Article::class . ' => module_chain_extension_3_2/vendor_1_module_3_2_myclass'
             ]
         ];
     }

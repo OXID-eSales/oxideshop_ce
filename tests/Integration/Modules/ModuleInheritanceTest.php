@@ -22,6 +22,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use OxidEsales\EshopCommunity\Core\FileCache;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunityTestModule\Vendor1\ModuleInheritance16\MyClass;
 use OxidEsales\EshopCommunityTestModule\Vendor1\namespaced_from_ns\MyClass as namespaced_from_ns;
 use OxidEsales\EshopCommunityTestModule\Vendor1\namespaced_from_virtual\MyClass as namespaced_from_virtual;
@@ -75,7 +76,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modu
  * |       extends via chain       | plain module class | namespaced module class |
  * +-------------------------------+--------------------+-------------------------+
  * | Plain shop class              | 3.1                | 3.4                     |
- * | Namespaced shop class         | no need            | 3.5                     |
+ * | Namespaced shop class         | 3.2                | 3.5                     |
  * | Virtual namespaced shop class | 3.3                | 3.6                     |
  * +-------------------------------+--------------------+-------------------------+
  *
@@ -113,6 +114,30 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
     public function testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames)
     {
          parent::testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
+    }
+
+    /**
+     * It is forbidden to directly extend shop classes from edition namespaces.
+     * Shop checks this during module activation and prevents by throwing an error.
+     *
+     * This test covers the PHP inheritance between one module class and one shop class.
+     *
+     * The module class extends the PHP class directly like '<module class> extends <shop class>'.
+     * In this case the parent class of the module class must be the shop class as instantiated with oxNew.
+     *
+     * @dataProvider dataProviderTestModuleInheritanceTestPhpInheritanceForbidden
+     *
+     * @param array  $moduleToActivate The module we want to activate.
+     * @param string $moduleClassName  The module class we want to instantiate.
+     * @param array  $shopClassNames   The shop class from which the module class should inherit.
+     * @param string $expectedException Part of the expected exception message.
+     */
+    public function testModuleInheritanceTestPhpInheritanceForbidden($moduleToActivate, $moduleClassName, $shopClassNames, $expectedException)
+    {
+        $message = sprintf(Registry::getLang()->translateString('MODULE_METADATA_PROBLEMATIC_DATA_IN_EXTEND', null, true), $expectedException);
+        $this->setExpectedException(\OxidEsales\EshopCommunity\Core\Exception\ModuleValidationException::class, $message);
+
+        parent::testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
     }
 
     /**
@@ -159,17 +184,30 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
                 'moduleClassName'  => namespaced_from_virtual::class,
                 'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class]
             ],
-            'case_3_5' => [
-                // Test case 3.5 namespaced module class chain extends namespaced OXID eShop Community class
-                'moduleToActivate' => ['Vendor1/ModuleChainExtension35'],
-                'moduleClassName'  => \OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension35\MyClass35::class,
-                'shopClassNames'   => [\OxidEsales\EshopCommunity\Application\Model\Article::class],
-            ],
             'case_3_6' => [
                 // Test case 3.6 namespaced module class chain extends virtual OXID eShop class
                 'moduleToActivate' => ['Vendor1/ModuleChainExtension36'],
                 'moduleClassName'  => \OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension36\MyClass36::class,
                 'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class],
+            ],
+        ];
+    }
+
+    /**
+     * DataProvider for the testModuleInheritanceTestPhpInheritance method.
+     *
+     * @return array The different test cases we execute.
+     */
+    public function dataProviderTestModuleInheritanceTestPhpInheritanceForbidden()
+    {
+        return [
+            'case_3_5' => [
+                // Test case 3.5 namespaced module class chain extends namespaced OXID eShop Community class
+                'moduleToActivate' => ['Vendor1/ModuleChainExtension35'],
+                'moduleClassName'  => \OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension35\MyClass35::class,
+                'shopClassNames'   => [\OxidEsales\EshopCommunity\Application\Model\Article::class],
+                'expectsException' => \OxidEsales\EshopCommunity\Application\Model\Article::class .
+                                      ' => ' . \OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension35\MyClass35::class
             ],
         ];
     }

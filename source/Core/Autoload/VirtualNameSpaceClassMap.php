@@ -25,8 +25,11 @@ namespace OxidEsales\EshopCommunity\Core\Autoload;
 /**
  * This file holds the mapping of classes from the virtual namespace to the concrete classes of each edition.
  * Each edition has its own map file. The map files will be merged like this: CE <- PE <- EE
- * So the mapping to a concrete class of the OXID eShop communitiy edition will be overwritten, if this class exists the
+ * So the mapping to a concrete class of the OXID eShop community edition will be overwritten, if this class exists the
  * PE or EE edition.
+ *
+ * @internal Do not make a module extension for this class.
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class VirtualNameSpaceClassMap
 {
@@ -527,6 +530,7 @@ class VirtualNameSpaceClassMap
             'OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator::class,
             'OxidEsales\Eshop\Core\Module\ModuleValidatorFactory' => \OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory::class,
             'OxidEsales\Eshop\Core\Module\ModuleVariablesLocator' => \OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator::class,
+            'OxidEsales\Eshop\Core\NamespaceInformationProvider' => \OxidEsales\EshopCommunity\Core\NamespaceInformationProvider::class,
             'OxidEsales\Eshop\Core\NoJsValidator' => \OxidEsales\EshopCommunity\Core\NoJsValidator::class,
             'OxidEsales\Eshop\Core\OnlineCaller' => \OxidEsales\EshopCommunity\Core\OnlineCaller::class,
             'OxidEsales\Eshop\Core\OnlineLicenseCheck' => \OxidEsales\EshopCommunity\Core\OnlineLicenseCheck::class,
@@ -599,7 +603,7 @@ class VirtualNameSpaceClassMap
             'OxidEsales\Eshop\Core\WidgetControl' => \OxidEsales\EshopCommunity\Core\WidgetControl::class,
         ];
 
-
+        
 
         return $classMap;
     }

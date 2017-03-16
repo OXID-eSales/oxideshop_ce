@@ -209,7 +209,7 @@ class ModuleChainsGenerator
                 class_alias($class, $extensionParentClass);
             }
 
-            if (!\OxidEsales\Eshop\Core\UtilsObject::isNamespacedClass($extensionPath)) {
+            if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($extensionPath)) {
                 $modulesDirectory = oxRegistry::get("oxConfigFile")->getVar("sShopDir");
                 $extensionParentPath = "$modulesDirectory/modules/$extensionPath.php";
 

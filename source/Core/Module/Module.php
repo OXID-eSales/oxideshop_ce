@@ -560,7 +560,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $extensions = [];
 
         foreach ($rawExtensions as $classToBePatched => $moduleClass) {
-            if (!\OxidEsales\Eshop\Core\UtilsObject::isNamespacedClass($classToBePatched)) {
+            if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($classToBePatched)) {
                 $bcMap = oxRegistry::getBackwardsCompatibilityClassMap();
                 $classToBePatched = $bcMap[strtolower($classToBePatched)] ?: $classToBePatched;
             }

@@ -233,7 +233,7 @@ class Registry
     public static function getStorageKey($className)
     {
         $key = strtolower($className);
-        if (!\OxidEsales\EshopCommunity\Core\UtilsObject::isNamespacedClass($className)) {
+        if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($className)) {
             $bcMap = self::getBackwardsCompatibilityClassMap();
             $virtualKey = isset($bcMap[$key]) ? $bcMap[$key] : $key;
             $key = $virtualKey;

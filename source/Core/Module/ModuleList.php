@@ -747,7 +747,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
 
         foreach ($aModules as $sOxClass => $aModulesList) {
             foreach ($aModulesList as $sModulePath) {
-                if (!\OxidEsales\Eshop\Core\UtilsObject::isNamespacedClass($sModulePath)) {
+                if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($sModulePath)) {
                     $sExtPath = $this->getConfig()->getModulesDir() . $sModulePath . '.php';
                     if (!file_exists($sExtPath)) {
                         $aDeletedExt[$sOxClass][] = $sModulePath;

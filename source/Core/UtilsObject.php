@@ -214,7 +214,7 @@ class UtilsObject
         array_shift($arguments);
         $argumentsCount = count($arguments);
         $shouldUseCache = $this->shouldCacheObject($className, $arguments);
-        if (!static::isNamespacedClass($className)) {
+        if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($className)) {
             $className = strtolower($className);
         }
 
@@ -322,16 +322,6 @@ class UtilsObject
     public static function resetModuleVars()
     {
         ModuleVariablesLocator::resetModuleVariables();
-    }
-
-    /**
-     * @param string $className
-     *
-     * @return bool
-     */
-    public static function isNamespacedClass($className)
-    {
-        return strpos($className, '\\') !== false;
     }
 
     /**

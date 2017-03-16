@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-
+header('Content-Type: text/html; charset=ISO-8859-15');
 error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
 
 //setting basic configuration parameters

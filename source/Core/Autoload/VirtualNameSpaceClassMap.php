@@ -526,6 +526,7 @@ class VirtualNameSpaceClassMap
             'OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter::class,
             'OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository::class,
             'OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator::class,
+            'OxidEsales\Eshop\Core\Module\ModuleTranslationPathFinder' => \OxidEsales\EshopCommunity\Core\Module\ModuleTranslationPathFinder::class,
             'OxidEsales\Eshop\Core\Module\ModuleValidatorFactory' => \OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory::class,
             'OxidEsales\Eshop\Core\Module\ModuleVariablesLocator' => \OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator::class,
             'OxidEsales\Eshop\Core\NamespaceInformationProvider' => \OxidEsales\EshopCommunity\Core\NamespaceInformationProvider::class,

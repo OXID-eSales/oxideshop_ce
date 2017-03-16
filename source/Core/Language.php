@@ -877,12 +877,9 @@ class Language extends \OxidEsales\Eshop\Core\Base
         if (is_array($aModulePaths)) {
             $oConfig = $this->getConfig();
             foreach ($aModulePaths as $sPath) {
-                $sFullPath = $oConfig->getModulesDir() . $sPath;
-                if (file_exists($sFullPath . '/Application/')) {
-                    $sFullPath .= '/Application';
-                }
-                $sFullPath .= ($blForAdmin) ? '/views/admin/' : '/translations/';
-                $sFullPath .= $sLang;
+                $moduleTranslationPathFinder = oxNew(\OxidEsales\Eshop\Core\Module\ModuleTranslationPathFinder::class);
+                $sFullPath = $moduleTranslationPathFinder->findTranslationPath($sLang, $blForAdmin, $sPath);
+
                 $aLangFiles = $this->_appendLangFile($aLangFiles, $sFullPath);
                 //load admin modules options lang files
                 if ($blForAdmin) {
@@ -1370,7 +1367,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
         return $oDb->getAll($sQuery);
     }
-
 
     /**
      * gets language code array from aLanguageParams array

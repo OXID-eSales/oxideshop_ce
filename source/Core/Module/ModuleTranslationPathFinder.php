@@ -44,15 +44,66 @@ class ModuleTranslationPathFinder
      */
     public function findTranslationPath($language, $admin, $modulePath)
     {
-        $config = Registry::getConfig();
-        $fullPath = $config->getModulesDir() . $modulePath;
+        $fullPath = $this->getModulesDirectory() . $modulePath;
 
-        if (file_exists($fullPath . '/Application/')) {
+        if ($this->hasUppercaseApplicationDirectory($fullPath)) {
             $fullPath .= '/Application';
+        } else {
+            if ($this->hasLowercaseApplicationDirectory($fullPath)) {
+                $fullPath .= '/application';
+            }
         }
         $fullPath .= ($admin) ? '/views/admin/' : '/translations/';
         $fullPath .= $language;
 
         return $fullPath;
+    }
+
+    /**
+     * Getter for the modules directory.
+     *
+     * @return string The modules directory.
+     */
+    protected function getModulesDirectory()
+    {
+        $config = Registry::getConfig();
+
+        return $config->getModulesDir();
+    }
+
+    /**
+     * Check, if the module directory has an folder called 'Application'.
+     *
+     * @param string $pathToModule The path to the module to check.
+     *
+     * @return bool Has the given module a folder Application?
+     */
+    protected function hasUppercaseApplicationDirectory($pathToModule)
+    {
+        return $this->directoryExists($pathToModule . '/Application/');
+    }
+
+    /**
+     * Check, if the module directory has an folder called 'application'.
+     *
+     * @param string $pathToModule The path to the module to check.
+     *
+     * @return bool Has the given module a folder 'application'?
+     */
+    protected function hasLowercaseApplicationDirectory($pathToModule)
+    {
+        return $this->directoryExists($pathToModule . '/application/');
+    }
+
+    /**
+     * Does the given path points to an existing directory?
+     *
+     * @param string $path The path we want to check, if itexists.
+     *
+     * @return bool Does the given path points to an existing directory?
+     */
+    protected function directoryExists($path)
+    {
+        return file_exists($path);
     }
 }

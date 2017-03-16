@@ -30,9 +30,13 @@ class TestUtilsObject extends \OxidEsales\EshopCommunity\Core\UtilsObject
     public function getTheClassNameProvider() {
         return $this->getClassNameProvider();
     }
-
 }
 
+/**
+ * Class ModuleNamespaceTest
+ *
+ * @package OxidEsales\EshopCommunity\Tests\Integration\Modules
+ */
 class ModuleNamespaceTest extends BaseModuleTestCase
 {
     const TEST_PRICE = 10.0;
@@ -252,10 +256,10 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $environmentAssertsWithModulesActive = array(
             'blocks'          => array(),
             'extend'          => array(
-                'payment'                                                         => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
-                'oxprice'                                                         => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
-                \OxidEsales\Eshop\Application\Controller\PaymentController::class => \OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController::class,
-                \OxidEsales\Eshop\Core\Price::class                               => \OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice::class
+                \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController&' .
+                                                                                     'OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController',
+                \OxidEsales\Eshop\Core\Price::class                               => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
+                                                                                     'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
             ),
             'files'           => array(
                 'EshopTestModuleOne'           => array(),
@@ -297,10 +301,10 @@ class ModuleNamespaceTest extends BaseModuleTestCase
                     array(
                         'blocks'          => array(),
                         'extend'          => array(
-                            'payment'                                                         => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
-                            'oxprice'                                                         => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
-                            \OxidEsales\Eshop\Application\Controller\PaymentController::class => \OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController::class,
-                            \OxidEsales\Eshop\Core\Price::class                               => \OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice::class
+                            \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController&' .
+                                                                                                 'OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController',
+                            \OxidEsales\Eshop\Core\Price::class                               => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
+                                                                                                 'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
                         ),
                         'files'           => array(
                             'without_own_module_namespace' =>
@@ -342,10 +346,10 @@ class ModuleNamespaceTest extends BaseModuleTestCase
                     array(
                         'blocks'          => array(),
                         'extend'          => array(
-                            'payment'                                                         => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
-                            'oxprice'                                                         => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
-                            \OxidEsales\Eshop\Application\Controller\PaymentController::class => \OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController::class,
-                            \OxidEsales\Eshop\Core\Price::class                               => \OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice::class
+                            \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController&' .
+                                                                                                 'OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController',
+                            \OxidEsales\Eshop\Core\Price::class                               => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
+                                                                                                 'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
                         ),
                         'files'           => null,
                         'settings'        => array(),
@@ -520,6 +524,170 @@ class ModuleNamespaceTest extends BaseModuleTestCase
     }
 
     /**
+     * Data provider.
+     *
+     * @return array
+     */
+    public function providerTestModuleDeactivateDelete()
+    {
+        $environmentAssertsWithModulesActive = [
+            'blocks'          => [],
+            'extend'          => [
+                \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController' .
+                '&OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController',
+                \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
+                  'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
+            ],
+            'files' => [
+                'EshopTestModuleOne'           => [],
+                'without_own_module_namespace' => [
+                    'testmoduletwomodel'             => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php',
+                    'testmoduletwopaymentcontroller' => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController.php',
+                    'testmoduletwoprice'             => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice.php'
+                ]
+            ],
+            'settings' => [],
+            'disabledModules' => [],
+            'templates'       => [],
+            'versions'        => [
+                'EshopTestModuleOne' => '1.0.0',
+                'without_own_module_namespace' => '1.0.0',
+            ],
+            'events'          => array('EshopTestModuleOne' => null, 'without_own_module_namespace' => null)
+        ];
+
+        $environmentAssertsAfterDeactivation = $environmentAssertsWithModulesActive;
+        $environmentAssertsAfterDeactivation['files'] = [
+            'without_own_module_namespace' => [
+                'testmoduletwomodel'             => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php',
+                 'testmoduletwopaymentcontroller' => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController.php',
+                 'testmoduletwoprice'             => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice.php'
+            ]
+        ];
+        $environmentAssertsAfterDeactivation['versions'] = ['without_own_module_namespace' => '1.0.0'];
+        $environmentAssertsAfterDeactivation['events'] = ['without_own_module_namespace' => null];
+        $environmentAssertsAfterDeactivation['disabledModules'] = ['EshopTestModuleOne'];
+
+        $environmentAssertsAfterCleanup = $environmentAssertsAfterDeactivation;
+        unset($environmentAssertsAfterCleanup['disabledModules']);
+        $environmentAssertsAfterCleanup['extend'] = [
+             \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
+             \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
+        ];
+
+        $priceAssertsWihModulesActive = ['factor' => 2 * 3,
+                                         'class'  => 'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'];
+
+        $priceAssertsAfterDeactivation = ['factor' => 3,
+                                          'class'  => 'TestModuleTwoPrice'];
+
+        return [[
+
+            // modules to be activated during test preparation
+           ['without_own_module_namespace',
+            'with_own_module_namespace'],
+
+            // module that will be activated/deactivated
+            'with_own_module_namespace',
+
+            /// module id
+            'EshopTestModuleOne',
+
+            // environment asserts
+            [$environmentAssertsWithModulesActive,
+             $environmentAssertsAfterDeactivation,
+             $environmentAssertsAfterCleanup
+            ],
+
+            // price multiplier
+            [$priceAssertsWihModulesActive,
+             $priceAssertsAfterDeactivation]
+        ]];
+    }
+
+    /**
+     * Tests if module was activated and then properly deactivated.
+     *
+     * @group module
+     *
+     * @dataProvider  providerTestModuleDeactivateDelete
+     *
+     * @param array  $installModules
+     * @param string $moduleName
+     * @param string $moduleId
+     * @param array  $resultToAsserts (array key 0 -> before, array key 1 -> after case)
+     * @param array  $priceAsserts
+     */
+    public function testModuleDeactivateDelete($installModules, $moduleName, $moduleId, $resultToAsserts, $priceAsserts)
+    {
+        $environment = new Environment();
+        $environment->prepare($installModules);
+
+        $module = oxNew('oxModule');
+        $module->load($moduleName);
+        $this->deactivateModule($module, $moduleId);
+        $this->activateModule($module, $moduleId);
+        $this->runAsserts($resultToAsserts[0]);
+
+        // information should not not only be in the database but also in the file cache, so let's check this:
+        // config.1.adisabledmodules.txt
+        // config.1.amodulefiles.txt
+        // config.1.amodules.txt
+        // NOTE: file cache is filled a different times, 'amodulefiles' and 'adisabledmodules' are only generated
+        //       when oxPrice object is created here
+
+        $subShopSpecificCache = $this->getFileCache();
+        $this->assertEquals($resultToAsserts[0]['extend'], $subShopSpecificCache->getFromCache('amodules'));
+        $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
+        $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
+
+        // Deactivating a module via shop admin means: the module id is marked as disabled and module deactivation event
+        // is called if any exists (which is not the case here).
+        // Now deactivate the module and check what's left in cache and database
+        $this->deactivateModule($module, $moduleId); //this is done via module installer
+
+        //NOTE: moduleInstaller also cleans the moduleCache which in turn calls ModuleVariablesLocator::resetModuleVariables();
+        //      and this cleans the file cache.
+        $this->assertNull($subShopSpecificCache->getFromCache('amodules'));
+        $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
+        $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
+        $this->runAsserts($resultToAsserts[1]);
+
+        //Trick the shop into thinking the module was deleted. Caches are empty, change data directly in database.
+        //NOTE: using shop to store changes in database triggers refill of amodules cache.
+        $newAModules = $this->removeModule();
+
+        // Accessing the admin modulelist controller refills the file cache for 'amodules'
+        // because the controller calls oxModuleList::getModulesDir(
+        $moduleList = oxNew('OxidEsales\Eshop\Core\Module\ModuleList');
+        $moduleList->getModulesFromDir($this->getConfig()->getModulesDir());
+        $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
+        $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
+        $this->assertEquals($newAModules, $subShopSpecificCache->getFromCache('amodules'));
+
+        $expectedDeletedExtension = array('EshopTestModuleNone' => array('files' => array('EshopTestModuleNone/metadata.php')));
+        $this->assertEquals($expectedDeletedExtension, $moduleList->getDeletedExtensions());
+        $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
+        $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
+        $this->assertEquals($newAModules, $subShopSpecificCache->getFromCache('amodules'));
+
+        // run cleanup on module list
+        $moduleList->cleanup();
+        $this->runAsserts($resultToAsserts[2]);
+        $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
+        $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
+        $this->assertNull($subShopSpecificCache->getFromCache('amodules'));
+
+        // run ModuleList::getModulesFromDir again
+        $moduleList->getModulesFromDir($this->getConfig()->getModulesDir());
+        $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
+        $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
+        $this->assertEquals($resultToAsserts[2]['extend'], $subShopSpecificCache->getFromCache('amodules'));
+
+        $this->assertPrice($priceAsserts[1]);
+    }
+
+    /**
      * Data provider case for namespaced module
      *
      * @return array
@@ -582,8 +750,8 @@ class ModuleNamespaceTest extends BaseModuleTestCase
             array(
                 'blocks'          => array(),
                 'extend'          => array(
-                   'payment' => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
-                   'oxprice' => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice'
+                    \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
+                    \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice'
                 ),
                 'files'           => array(
                     'without_own_module_namespace' => array(
@@ -605,6 +773,8 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         );
     }
 
+
+
     /**
      * Check test article's price. Module multiplies the price by factor.
      *
@@ -625,5 +795,54 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
         $this->assertEquals($factor * self::TEST_PRICE, $price->getPrice(), 'Price not as expected.');
         return $price;
+    }
+
+    /**
+     * Change module info in oxconfig to trick shop into thinking module was deleted.
+     *
+     * @return array
+     */
+    private function removeModule()
+    {
+        $modules = array(
+            \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController&' .
+                                  'OxidEsales\EshopTestModuleNone\Application\Controller\TestModuleNonePaymentController',
+            \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
+                                 'OxidEsales\EshopTestModuleNone\Application\Model\TestModuleNonePrice'
+        );
+
+        $extensions = array(
+            'without_own_module_namespace' => array('without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
+                                                    'without_own_module_namespace/Application/Model/TestModuleTwoPrice'),
+            'EshopTestModuleNone' => array('OxidEsales\EshopTestModuleNone\Application\Controller\TestModuleNonePaymentController',
+                                           'OxidEsales\EshopTestModuleNone\Application\Model\TestModuleNonePrice')
+        );
+
+        $disabledModules = array('EshopTestModuleNone');
+
+        $this->getConfig()->saveShopConfVar('aarr', 'aModules', $modules);
+        $this->getConfig()->saveShopConfVar('aarr', 'aModuleExtensions', $extensions);
+        $this->getConfig()->saveShopConfVar('arr', 'aDisabledModules', $disabledModules);
+
+        $subShopSpecificCache = $this->getFileCache();
+        $subShopSpecificCache->clearCache();
+        $this->assertNull($subShopSpecificCache->getFromCache('amodules'));
+        $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
+        $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
+
+        return $modules;
+    }
+
+    /**
+     * Get a file cache object
+     */
+    private function getFileCache()
+    {
+        $shopIdCalculatorMock = $this->getMock('\OxidEsales\EshopCommunity\Core\ShopIdCalculator', array('getShopId'), array(), '', false);
+        $shopIdCalculatorMock->expects($this->any())->method('getShopId')->will($this->returnValue(1));
+
+        $subShopSpecificCache = oxNew('\OxidEsales\EshopCommunity\Core\SubShopSpecificFileCache', $shopIdCalculatorMock);
+
+        return $subShopSpecificCache;
     }
 }

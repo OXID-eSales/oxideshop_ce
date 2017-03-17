@@ -4445,8 +4445,6 @@ class ArticleTest extends \OxidTestCase
     /**
      * Test get attributes in other language.
      *
-     * @group quarantine
-     *
      * @return null
      */
     public function testGetAttributesInOtherLang()

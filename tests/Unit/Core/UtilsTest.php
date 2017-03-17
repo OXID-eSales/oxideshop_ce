@@ -1180,7 +1180,7 @@ class UtilsTest extends \OxidTestCase
     }
 
     /**
-     * @group quarantine
+     * Test case for oxUtils::handlePageNotFoundError.
      */
     public function testHandlePageNotFoundErrorWithoutUrl()
     {
@@ -1200,7 +1200,7 @@ class UtilsTest extends \OxidTestCase
     }
 
     /**
-     * @group quarantine
+     * Test case for oxUtils::handlePageNotFoundError.
      */
     public function testHandlePageNotFoundErrorWithUrl()
     {
@@ -1220,7 +1220,7 @@ class UtilsTest extends \OxidTestCase
     }
 
     /**
-     * @group quarantine
+     * Test case for oxUtils::handlePageNotFoundError.
      */
     public function testHandlePageNotFoundErrorWithUrlAndRenderException()
     {

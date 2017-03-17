@@ -2201,8 +2201,6 @@ class OrderTest extends \OxidTestCase
     {
         $this->_insertTestOrder();
 
-        //$myConfig = $this->getMock( 'oxConfig', array('hasModule') );
-        //$myConfig->expects( $this->any())->method('hasModule')->will($this->returnValue(true) );
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('iPayment_blActive', false);
 
@@ -2216,7 +2214,7 @@ class OrderTest extends \OxidTestCase
         $oPayment->save();
 
         $oGateway = $oOrder->UNITgetGateway();
-        $this->assertEquals(PaymentGateway::class, get_class($oGateway));
+        $this->assertInstanceOf('OxidEsales\EshopCommunity\Application\Model\PaymentGateway', $oGateway);
     }
 
     public function testSetPayment()
@@ -2910,7 +2908,7 @@ class OrderTest extends \OxidTestCase
 
     public function testDeleteNotExistingOrder()
     {
-        $oOrder = oxNew('oxOrder');;
+        $oOrder = oxNew('oxOrder');
         $this->assertFalse($oOrder->delete('_noSuchOrderId'));
     }
 

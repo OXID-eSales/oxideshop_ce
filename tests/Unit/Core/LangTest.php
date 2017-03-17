@@ -123,7 +123,34 @@ class LangTest extends \OxidTestCase
         $this->assertEquals($sUrlLang, $oLang->getUrlLang());
     }
 
-    public function testGetLangFilesPathArrayCustom()
+    public function testGetLangFilesContainsAllLanguages()
+    {
+        $sPath = $this->getConfig()->getAppDir();
+
+        $aPathArray = array(
+            $sPath . "translations/de/lang.php",
+            $sPath . "translations/de/translit_lang.php",
+            $sPath . "views/azure/de/lang.php",
+            $sPath . "views/azure/de/cust_lang.php"
+        );
+
+        $oLang = oxNew('oxLang');
+        foreach ($aPathArray as $languageFilePath) {
+            $this->assertContains($languageFilePath, $oLang->UNITgetLangFilesPathArray(0));
+        }
+    }
+
+    public function testGetLangFilesPathContainsCustomLanguage()
+    {
+        $sPath = $this->getConfig()->getAppDir();
+
+        $customLangPath = $sPath . "views/azure/de/cust_lang.php";
+
+        $oLang = oxNew('oxLang');
+        $this->assertContains($customLangPath, $oLang->UNITgetLangFilesPathArray(0));
+    }
+
+    public function testGetLangFilesPathContainsOnlyAvailableLanguages()
     {
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community and Professional editions only.');

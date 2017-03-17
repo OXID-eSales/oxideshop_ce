@@ -435,14 +435,14 @@ class PaymentTest extends \OxidTestCase
         oxAddClassModule('Unit\Application\Controller\PaymentHelper2', 'oxPayment');
 
         $oBasket = $this->getMock('oxBasket', array('getPriceForPayment'));
-        $oBasket->expects($this->once())->method('getPriceForPayment')->will($this->returnValue(100));
+        $oBasket->expects($this->atLeastOnce())->method('getPriceForPayment')->will($this->returnValue(100));
 
         $oSession = $this->getMock('oxSession', array('getBasket'));
-        $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
+        $oSession->expects($this->atLeastOnce())->method('getBasket')->will($this->returnValue($oBasket));
 
         $oPayment = $this->getMock('Payment', array('getUser', 'getSession'));
-        $oPayment->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
-        $oPayment->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $oPayment->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue($oUser));
+        $oPayment->expects($this->atLeastOnce())->method('getSession')->will($this->returnValue($oSession));
         $this->setRequestParameter("paymentid", 'testId');
 
         $oPayment->validatePayment();
@@ -461,15 +461,15 @@ class PaymentTest extends \OxidTestCase
         oxAddClassModule('Unit\Application\Controller\PaymentHelper2', 'oxPayment');
 
         $oBasket = $this->getMock('oxBasket', array('getPriceForPayment'));
-        $oBasket->expects($this->once())->method('getPriceForPayment')->will($this->returnValue(100));
+        $oBasket->expects($this->atLeastOnce())->method('getPriceForPayment')->will($this->returnValue(100));
         $oBasket->setShipping('currentShipping');
 
         $oSession = $this->getMock('oxSession', array('getBasket'));
-        $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
+        $oSession->expects($this->atLeastOnce())->method('getBasket')->will($this->returnValue($oBasket));
 
         $oPayment = $this->getMock('Payment', array('getUser', 'getSession'));
-        $oPayment->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
-        $oPayment->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $oPayment->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue($oUser));
+        $oPayment->expects($this->atLeastOnce())->method('getSession')->will($this->returnValue($oSession));
         $this->setRequestParameter("paymentid", 'testId');
         $this->setRequestParameter("sShipSet", 'newShipping');
 

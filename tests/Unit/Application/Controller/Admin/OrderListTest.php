@@ -69,7 +69,7 @@ class OrderListTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testBuildSelectString()
+    public function testBuildSelectStringForOrderList()
     {
         $oDb = oxDb::getDb();
         $oListObject = oxNew('oxOrder');

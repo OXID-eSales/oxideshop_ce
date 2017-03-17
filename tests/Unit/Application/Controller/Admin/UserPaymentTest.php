@@ -178,11 +178,10 @@ class UserPaymentTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testGetPaymentTypes()
+    public function testGetPaymentTypesIsCorrect()
     {
         $oUserView = $this->getProxyClass('user_payment');
         $oPaymentList = $oUserView->getPaymentTypes();
-        $this->assertEquals(6, $oPaymentList->count());
         $blIsLoaded = false;
         foreach ($oPaymentList as $oPayment) {
             if ($oPayment->oxpayments__oxdesc->value = 'Rechnung') {
@@ -190,6 +189,26 @@ class UserPaymentTest extends \OxidTestCase
             }
         }
         $this->assertTrue($blIsLoaded);
+    }
+
+    /**
+     * Test getPaymentTypes().
+     *
+     * @return null
+     */
+    public function testGetPaymentTypesAmountIsCorrect()
+    {
+        $oUserView = $this->getProxyClass('user_payment');
+        $oPaymentList = $oUserView->getPaymentTypes();
+
+        $payments = $oPaymentList->getArray();
+        $paymentsIds = '';
+        foreach ($payments as $payment)
+        {
+            $paymentsIds .= $payment->getId() ."\n";
+        }
+
+        $this->assertEquals(6, $oPaymentList->count(), $paymentsIds);
     }
 
     /**

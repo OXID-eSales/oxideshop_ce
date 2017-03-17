@@ -103,7 +103,7 @@ class WrappingTest extends \OxidTestCase
         $this->setRequestParameter("chosencard", "testCardId");
 
         $oBasketItem1 = $this->getMock("oxBasketItem", array("setWrapping"));
-        $oBasketItem1->expects($this->once())->method('setWrapping')->with($this->equalTo(2));
+        $oBasketItem1->expects($this->atLeastOnce())->method('setWrapping')->with($this->equalTo(2));
 
         $oBasketItem2 = $this->getMock("oxBasketItem", array("setWrapping"));
         $oBasketItem2->expects($this->never())->method('setWrapping');
@@ -113,20 +113,20 @@ class WrappingTest extends \OxidTestCase
         $oContents->offsetSet(2, $oBasketItem2);
 
         $oBasket = $this->getMock("oxBasket", array("getContents", "setCardMessage", "setCardId", "onUpdate"));
-        $oBasket->expects($this->once())->method('getContents')->will($this->returnValue($oContents));
-        $oBasket->expects($this->once())->method('setCardMessage')->with($this->equalTo("testCardMessage"));
-        $oBasket->expects($this->once())->method('setCardId')->with($this->equalTo("testCardId"));
-        $oBasket->expects($this->once())->method('onUpdate');
+        $oBasket->expects($this->atLeastOnce())->method('getContents')->will($this->returnValue($oContents));
+        $oBasket->expects($this->atLeastOnce())->method('setCardMessage')->with($this->equalTo("testCardMessage"));
+        $oBasket->expects($this->atLeastOnce())->method('setCardId')->with($this->equalTo("testCardId"));
+        $oBasket->expects($this->atLeastOnce())->method('onUpdate');
 
         $oSession = $this->getMock("oxSession", array("getBasket"));
-        $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
+        $oSession->expects($this->atLeastOnce())->method('getBasket')->will($this->returnValue($oBasket));
 
         $oViewConfig = $this->getMock("oxViewConfig", array("getShowGiftWrapping"));
-        $oViewConfig->expects($this->once())->method('getShowGiftWrapping')->will($this->returnValue(true));
+        $oViewConfig->expects($this->atLeastOnce())->method('getShowGiftWrapping')->will($this->returnValue(true));
 
         $oView = $this->getMock("Wrapping", array("getViewConfig", "getSession"), array(), '', false);
-        $oView->expects($this->once())->method('getViewConfig')->will($this->returnValue($oViewConfig));
-        $oView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $oView->expects($this->atLeastOnce())->method('getViewConfig')->will($this->returnValue($oViewConfig));
+        $oView->expects($this->atLeastOnce())->method('getSession')->will($this->returnValue($oSession));
         $this->assertEquals("order", $oView->changeWrapping());
     }
 }

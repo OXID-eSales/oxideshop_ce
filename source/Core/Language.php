@@ -124,6 +124,13 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected $_iObjectTplLanguageId = null;
 
     /**
+     * The module translation path finder.
+     *
+     * @var \OxidEsales\Eshop\Core\Module\ModuleTranslationPathFinder
+     */
+    protected $moduleTranslationPathFinder = null;
+
+    /**
      * Set translation state
      *
      * @param bool $blIsTranslated State is string translated or not. Default true.
@@ -877,7 +884,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         if (is_array($aModulePaths)) {
             $oConfig = $this->getConfig();
             foreach ($aModulePaths as $sPath) {
-                $moduleTranslationPathFinder = oxNew(\OxidEsales\Eshop\Core\Module\ModuleTranslationPathFinder::class);
+                $moduleTranslationPathFinder = $this->getModuleTranslationPathFinder();
                 $sFullPath = $moduleTranslationPathFinder->findTranslationPath($sLang, $blForAdmin, $sPath);
 
                 $aLangFiles = $this->_appendLangFile($aLangFiles, $sFullPath);
@@ -1396,5 +1403,19 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function _getLanguageIdsFromLanguagesArray($aLanguages)
     {
         return array_keys($aLanguages);
+    }
+
+    /**
+     * Getter for the module translation path finder.
+     *
+     * @return \OxidEsales\Eshop\Core\Module\ModuleTranslationPathFinder The module translation finder.
+     */
+    protected function getModuleTranslationPathFinder()
+    {
+        if (is_null($this->moduleTranslationPathFinder)) {
+            $this->moduleTranslationPathFinder = oxNew(\OxidEsales\Eshop\Core\Module\ModuleTranslationPathFinder::class);
+        }
+
+        return $this->moduleTranslationPathFinder;
     }
 }

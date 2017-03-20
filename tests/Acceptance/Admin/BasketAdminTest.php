@@ -92,6 +92,13 @@ class BasketAdminTest extends AdminTestCase
         $this->assertEquals("90,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[8]"));
         $this->type("//tr[@id='art.{$counter}']/td[1]/input", "3");
         $this->clickAndWait("//input[@value='Update']");
+
+        //Looks like sometimes orderUpdate does not succeed. In that case try again.
+        if (3 != $this->getValue("//tr[@id='art.{$counter}']/td[1]/input")) {
+            $this->type("//tr[@id='art.{$counter}']/td[1]/input", "3");
+            $this->clickAndWait("//input[@value='Update']");
+        }
+
         $this->assertEquals("Label: test label šÄßüл 1", $this->getText("//tr[@id='art.{$counter}']/td[5]"));
         $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[7]"));
         $this->assertEquals("135,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[8]"));

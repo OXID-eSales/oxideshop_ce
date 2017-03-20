@@ -493,14 +493,18 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->type("editval[oxorder__oxdelcost]", "10");
         $this->select("setDelSet", "label=Example Set1: UPS 48 hours");
         $this->clickAndWait("saveFormButton");
+        $this->openTab("Main");
         $this->assertEquals("----", $this->getSelectedLabel("setPayment"));
         $this->assertEquals("Example Set1: UPS 48 hours", $this->getSelectedLabel("setDelSet"));
         $this->select("setDelSet", "label=Standard");
         $this->clickAndWait("saveFormButton");
         $this->waitForElement("setPayment");
-        sleep(1);
+        $this->openTab("Main");
+        $this->assertEquals("Standard", $this->getSelectedLabel("setDelSet"));
+        $this->assertEquals("----", $this->getSelectedLabel("setPayment"));
         $this->select("setPayment", "label=COD (Cash on Delivery)");
         $this->clickAndWait("saveFormButton");
+        $this->openTab("Main");
         $this->openTab("Products");
         $this->type("sSearchArtNum", "1001");
         $this->clickAndWait("//input[@name='search']");
@@ -971,7 +975,6 @@ class FunctionalityInAdminTest extends AdminTestCase
      * NOTE: according to comment in 0004482 in azure theme to mark some category in category tree (list) on first page is not needed.
      *
      * @group adminFunctionality
-     * @group quarantine
      */
     public function testActiveCategoryAtStart()
     {

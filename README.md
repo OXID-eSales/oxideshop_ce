@@ -5,7 +5,7 @@ OXID eShop
 
 This repository contains the sources of OXID eShop Community Edition.
 
-###About OXID eShop:
+### About OXID eShop:
 
 OXID eShop is a flexible open source e-commerce software with a wide range of functionalities. 
 Thanks to its modular, modern and state-of-the-art architecture, it can be modified, expanded 

@@ -65,13 +65,10 @@ class Registry
     public static function get($className)
     {
         $key = self::getStorageKey($className);
-        if (isset(self::$instances[$key])) {
-            return self::$instances[$key];
-        } else {
+        if (!isset(self::$instances[$key])) {
             self::$instances[$key] = self::createObject($key, $className);
-
-            return self::$instances[$key];
         }
+        return self::$instances[$key];
     }
 
     /**

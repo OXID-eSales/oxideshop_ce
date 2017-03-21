@@ -1122,8 +1122,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
     public function processUrl($sUrl, $iLang = null)
     {
         $iLang = isset($iLang) ? $iLang : $this->getBaseLanguage();
-        $iDefaultLang = intval(oxRegistry::getConfig()->getConfigParam('sDefaultLang'));
-        $iBrowserLanguage = intval($this->detectLanguageByBrowser());
+        $iDefaultLang = (int) oxRegistry::getConfig()->getConfigParam('sDefaultLang');
+        $iBrowserLanguage = (int) $this->detectLanguageByBrowser();
         /** @var oxStrRegular $oStr */
         $oStr = getStr();
 

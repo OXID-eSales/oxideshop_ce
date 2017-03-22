@@ -117,7 +117,6 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         foreach ($aMDVariants as $sVarId => $oValue) {
             if (strpos($sVarId, "mdvar_") === 0) {
                 foreach ($oValue as $sId) {
-                    //var_dump($sVarId, $oAttribute->oxattribute__oxid->value);
                     $sVarId = substr($sVarId, 6);
                     $oNewAssign = oxNew("oxBase");
                     $oNewAssign->init("oxobject2attribute");

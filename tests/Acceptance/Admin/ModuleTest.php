@@ -134,17 +134,15 @@ class ModuleTest extends AdminTestCase
             $this->getText($namespacedModuleClassElementLocator)
         );
 
-        //TODO: uncomment when classes ordering issue will be solved.
-//        $test1ModuleClassElementLocator = "//li[@id='$childClassesContainerId']//li[@id='test1/controllers/test1content']/span";
-//        $this->assertEquals('test1/controllers/test1content', $this->getText($test1ModuleClassElementLocator));
-//        $test2ModuleClassElementLocator = "//li[@id='$childClassesContainerId']//li[@id='test2/view/myinfo2']/span";
-//        $this->assertEquals('test2/view/myinfo2', $this->getText($test2ModuleClassElementLocator));
-//        $test7ModuleClassElementLocator = "//li[@id='$childClassesContainerId']//li[@id='oxid/test7/view/myinfo7']/span";
-//        $this->assertEquals('oxid/test7/view/myinfo7', $this->getText($test7ModuleClassElementLocator));
+        $test1ModuleClassElementLocator = "//li[@id='$childClassesContainerId']//li[@id='test1/controllers/test1content']/span";
+        $this->assertEquals('test1/controllers/test1content', $this->getText($test1ModuleClassElementLocator));
+        $test2ModuleClassElementLocator = "//li[@id='$childClassesContainerId']//li[@id='test2/view/myinfo2']/span";
+        $this->assertEquals('test2/view/myinfo2', $this->getText($test2ModuleClassElementLocator));
+        $test7ModuleClassElementLocator = "//li[@id='$childClassesContainerId']//li[@id='oxid/test7/view/myinfo7']/span";
+        $this->assertEquals('oxid/test7/view/myinfo7', $this->getText($test7ModuleClassElementLocator));
 
-        //TODO: uncomment when solution will be implemented.
-//        $this->open(shopURL."?cl=ModuleController&fnc=showContent");
-//        $this->assertTextPresent(' + namespace1');
+        $this->open(shopURL."?cl=content&fnc=showContent");
+        $this->assertTextPresent(' + namespace1');
 
         $this->clearCache();
         $this->openShop();

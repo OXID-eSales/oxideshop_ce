@@ -27,6 +27,7 @@ use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 use OxidEsales\TestingLibrary\ServiceCaller;
 use OxidEsales\TestingLibrary\Services\Files\Remove;
 use OxidEsales\TestingLibrary\Services\Library\FileHandler;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin interface functionality.
@@ -229,6 +230,159 @@ class ModuleTest extends AdminTestCase
         $this->assertActivationButtonIsNotPresent();
         $this->assertDeactivationButtonIsNotPresent();
         $this->assertTextPresent('Please note: modules can\'t be activated or deactivated in demo shop mode.', "N");
+    }
+
+    /**
+     * Testing modules in vendor directory. Checking when any file with source code class of module is deleted.
+     *
+     * @group adminFunctionality
+     */
+    public function testModulesHandlingDeleteFile()
+    {
+        $testConfig = $this->getTestConfig();
+        if ($testConfig->isSubShop()) {
+            $this->markTestSkipped("Test is not for SubShop");
+        }
+
+        $this->loginAdmin("Extensions", "Modules");
+        $this->openListItem("Test module #6 (in vendor dir)");
+        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
+        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
+        $this->assertTextPresent("1.0");
+        $this->assertTextPresent("OXID eSales");
+        $this->assertTextPresent("info@oxid-esales.com");
+        $this->assertTextPresent("http://www.oxid-esales.com");
+
+        $this->openListItem("Test module #6 (in vendor dir)");
+        $this->openTab("Test tab EN");
+
+        $this->clearCache();
+        $this->openShop();
+        $this->open(shopURL."en/About-Us/");
+        $this->assertTextPresent("About Us + info6");
+
+        // vendor file name is change from myinfo6 to myinfo6test
+        $aModules = array('content' => 'oxid/test6/view/myinfo6test');
+        Registry::getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
+
+        $this->clearCache();
+        $this->openShop();
+        $this->open(shopURL."en/About-Us/");
+        $this->assertTextNotPresent(strtoupper("About Us + info6"));
+        $this->clearCache();
+        $this->openShop();
+        $this->assertTextNotPresent("Module #6 title EN");
+        $this->switchLanguage("Deutsch");
+        $this->assertTextNotPresent("Module #6 title DE");
+
+        //checking if module is deactive after  vendor file rename
+        $this->loginAdmin("Extensions", "Modules");
+        $this->frame("edit");
+        $this->assertTextPresent("Invalid modules were detected");
+        $this->assertTextPresent("Do you want to delete all registered module information and saved configurations");
+        $this->assertTextPresent("content => oxid/test6/view/myinfo6test");
+        $this->clickAndWaitFrame("yesButton");
+        $this->openListItem("link=Test module #6 (in vendor dir)");
+        $this->assertElementNotPresent("//form[@id='myedit']//input[@value='Deactivate']");
+
+        //checking if module (oxblock, menu.xml) is disabled in shop after vendor file rename
+        $this->clearCache();
+        $this->openShop();
+        $this->assertTextNotPresent("Module #6 title EN");
+        $this->switchLanguage("Deutsch");
+        $this->assertTextNotPresent("Module #6 title DE");
+        $this->clearCache();
+        $this->openShop();
+        $this->open(shopURL."en/About-Us/");
+        $this->assertTextNotPresent("About Us + info6");
+
+        //file name is reset to the original
+        $aModules = array('content' => 'oxid/test6/view/myinfo6');
+        Registry::getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
+        $this->loginAdmin("Extensions", "Modules");
+        $this->clickAndWait("link=Test module #6 (in vendor dir)");
+        $this->frame("edit");
+        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
+        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
+        $this->selectMenu("Extensions", "Modules");
+        $this->frame("edit");
+        $this->assertTextPresent("oxid/test6/view/myinfo6");
+    }
+
+    /**
+     * Testing modules in vendor directory. Checking when any file with source code class of module is deleted.
+     *
+     * @group adminFunctionality
+     */
+    public function testModulesHandlingDeleteVendorDir()
+    {
+        $testConfig = $this->getTestConfig();
+        if ($testConfig->isSubShop()) {
+            $this->markTestSkipped("Test is not for SubShop");
+        }
+
+        $this->loginAdmin("Extensions", "Modules");
+        $this->clickAndWait("link=Test module #6 (in vendor dir)");
+        $this->frame("edit");
+        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
+        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
+        $this->selectMenu("Extensions", "Modules");
+        $this->clickAndWait("link=Test module #6 (in vendor dir)");
+        $this->clickAndWait("link=Test module #6 (in vendor dir)");
+        $this->waitForElement("link=Test tab EN");
+        $this->openTab("Test tab EN");
+        $this->clearCache();
+        $this->openShop();
+        $this->open(shopURL."en/About-Us/");
+        $this->assertTextPresent("About Us + info6");
+
+        //vendor dir name is changed from test6 to test6test
+        $aModules = array('content' => 'oxid/test6test/view/myinfo6');
+        Registry::getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
+        $this->clearCache();
+        $this->openShop();
+        $this->open(shopURL."en/About-Us/");
+        $this->assertTextNotPresent("About Us + info6");
+        $this->assertTextPresent("About Us");
+
+        //checking if module is deactivated after /dir rename
+        $this->loginAdmin("Extensions", "Modules");
+        $this->frame("edit");
+        $this->assertTextPresent("Invalid modules were detected");
+        $this->assertTextPresent("Do you want to delete all registered module information and saved configurations");
+        $this->assertTextPresent("oxid/metadata.php");
+        $this->clickAndWait("yesButton");
+        $this->frame("list");
+        $this->clickAndWait("link=Test module #6 (in vendor dir)");
+        $this->frame("edit");
+        $this->assertElementNotPresent("//form[@id='myedit']//input[@value='Deactivate']");
+        $this->assertTextNotPresent("Invalid modules were detected");
+
+        //checking if module (oxblock, menu.xml) is disabled in shop after vendor dir rename
+        //NOTE: we need functionality to clean the tmp folder before reimplementing he check for oxblock
+        $this->clearCache();
+        $this->openShop();
+        $this->clickAndWait("link=%HOME%");
+
+        $this->assertTextNotPresent("Module #6 title EN");
+        $this->switchLanguage("Deutsch");
+        $this->assertTextNotPresent("Module #6 title DE");
+        $this->clearCache();
+        $this->openShop();
+        $this->open(shopURL."en/About-Us/");
+        $this->assertTextNotPresent("About Us + info6");
+
+        //checking if is restore the vendor dir name to original
+        Registry::getConfig()->saveShopConfVar("aarr", "aModules", array());
+        $this->loginAdmin("Extensions", "Modules");
+        $this->clickAndWait("link=Test module #6 (in vendor dir)");
+        $this->clickAndWait("link=Test module #6 (in vendor dir)");
+        $this->frame("edit");
+        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
+        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
+        $this->selectMenu("Extensions", "Modules");
+        $this->frame("edit");
+        $this->assertTextPresent("oxid/test6/view/myinfo6");
     }
 
     protected function assertActivationButtonIsPresent()

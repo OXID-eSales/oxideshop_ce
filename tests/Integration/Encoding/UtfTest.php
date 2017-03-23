@@ -31,6 +31,7 @@ use oxDb;
 use oxEmail;
 use oxField;
 use oxGroups;
+use OxidEsales\EshopCommunity\Application\Model\RssFeed;
 use oxLinks;
 use oxList;
 use oxObject2Category;
@@ -1199,19 +1200,24 @@ class UtfTest extends \OxidTestCase
     {
         $value = 'agentūЛитовfür';
 
-        oxTestModules::addFunction('oxrssfeed', '_getSearchParamsTranslation', '{return $aA[0].$aA[1].$aA[2].$aA[3].$aA[4];}');
-
         $shop = oxNew('oxShop');
         $shop->oxshops__oxname = new oxField('Test Shop');
 
         $config = $this->getMock('oxconfig', array('getActiveShop'));
         $config->expects($this->any())->method('getActiveShop')->will($this->returnValue($shop));
 
-        $rssFeed = oxNew('oxrssfeed');
-        $rssFeed->setConfig($config);
+        $rssFeedMock = $this->getMock(RssFeed::class, ['_getSearchParamsTranslation']);
+        $rssFeedMock->method('_getSearchParamsTranslation')->will(
+            $this->returnCallback(
+                function ($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId) {
+                    return $sSearch . $sId . $sCatId . $sVendorId . $sManufacturerId;
+                }
+            )
+        );
+        $rssFeedMock->setConfig($config);
 
         $expectedSearchArticleTitle = 'Test Shop/SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURERtssscat' . $value . 'man';
-        $this->assertEquals($expectedSearchArticleTitle, $rssFeed->getSearchArticlesTitle('tsss', 'cat', $value, 'man'));
+        $this->assertEquals($expectedSearchArticleTitle, $rssFeedMock->getSearchArticlesTitle('tsss', 'cat', $value, 'man'));
     }
 
     public function testOxSearchGetWhereWithSearchIngLongDescSecondLanguage()

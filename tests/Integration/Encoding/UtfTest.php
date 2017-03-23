@@ -1134,36 +1134,39 @@ class UtfTest extends \OxidTestCase
 
     public function testOxRssFeedGetArticleItems()
     {
-        $sValue = 'agentūrų Литовские für';
         oxTestModules::addFunction('oxutilsurl', 'prepareUrlForNoSession', '{return $aA[0]."extra";}');
-        $oCfg = $this->getConfig();
-        $oCfg->setConfigParam('aCurrencies', array('EUR@1.00@.@.@EUR@1'));
+
+        $config = $this->getConfig();
+        $config->setConfigParam('aCurrencies', array('EUR@1.00@.@.@EUR@1'));
         $this->getConfig()->setConfigParam('bl_perfParseLongDescinSmarty', false);
-        $oRss = oxNew('oxrssfeed');
-        $oRss->setConfig($oCfg);
 
-        $oLongDesc = new stdClass();
-        $oLongDesc->value = "";
+        $rssFeed = oxNew('oxrssfeed');
+        $rssFeed->setConfig($config);
 
-        $oArt2 = $this->getMock('oxarticle', array("getLink", 'getLongDescription'));
-        $oArt2->expects($this->any())->method('getLink')->will($this->returnValue("artlink"));
-        $oArt2->expects($this->any())->method('getLongDescription')->will($this->returnValue($oLongDesc));
-        $oArt2->oxarticles__oxtitle = new oxField('title2');
-        $oArt2->oxarticles__oxprice = new oxField(10);
-        $oArt2->oxarticles__oxshortdesc = new oxField($sValue);
-        $oArt2->oxarticles__oxtimestamp = new oxField('2011-09-06 09:46:42');
-        $oArr = new oxarticlelist();
-        $oArr->assign(array($oArt2));
+        $shortDescription = 'agentūrų Литовские für';
+        $longDescription = new stdClass();
+        $longDescription->value = "";
 
-        $oSAr2 = new stdClass();
-        $oSAr2->title = 'title2 10.0 EUR';
-        $oSAr2->link = 'artlinkextra';
-        $oSAr2->guid = 'artlinkextra';
-        $oSAr2->isGuidPermalink = true;
-        $oSAr2->description = "&lt;img src=&#039;" . $oArt2->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;" . $sValue;
-        $oSAr2->date = "Tue, 06 Sep 2011 09:46:42 +0200";
+        $articleMock = $this->getMock('oxarticle', array("getLink", 'getLongDescription'));
+        $articleMock->expects($this->any())->method('getLink')->will($this->returnValue("artlink"));
+        $articleMock->expects($this->any())->method('getLongDescription')->will($this->returnValue($longDescription));
+        $articleMock->oxarticles__oxtitle = new oxField('title2');
+        $articleMock->oxarticles__oxprice = new oxField(10);
+        $articleMock->oxarticles__oxshortdesc = new oxField($shortDescription);
+        $articleMock->oxarticles__oxtimestamp = new oxField('2011-09-06 09:46:42');
 
-        $this->assertEquals(array($oSAr2), $oRss->UNITgetArticleItems($oArr));
+        $articleList = new oxarticlelist();
+        $articleList->assign(array($articleMock));
+
+        $expectedArticle = new stdClass();
+        $expectedArticle->title = 'title2 10.0 EUR';
+        $expectedArticle->link = 'artlinkextra';
+        $expectedArticle->guid = 'artlinkextra';
+        $expectedArticle->isGuidPermalink = true;
+        $expectedArticle->description = "&lt;img src=&#039;" . $articleMock->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;" . $shortDescription;
+        $expectedArticle->date = "Tue, 06 Sep 2011 09:46:42 +0200";
+
+        $this->assertEquals(array($expectedArticle), $rssFeed->UNITgetArticleItems($articleList));
 
     }
 
@@ -1194,17 +1197,21 @@ class UtfTest extends \OxidTestCase
 
     public function testOxRssFeedGetSearchArticlesTitle()
     {
-        $sValue = 'agentūЛитовfür';
+        $value = 'agentūЛитовfür';
 
         oxTestModules::addFunction('oxrssfeed', '_getSearchParamsTranslation', '{return $aA[0].$aA[1].$aA[2].$aA[3].$aA[4];}');
 
-        $oRss = oxNew('oxrssfeed');
-        $oCfg = $this->getMock('oxconfig', array('getActiveShop'));
-        $oShop = oxNew('oxShop');
-        $oShop->oxshops__oxname = new oxField('Test Shop');
-        $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
-        $oRss->setConfig($oCfg);
-        $this->assertEquals('Test Shop/SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURERtssscat' . $sValue . 'man', $oRss->getSearchArticlesTitle('tsss', 'cat', $sValue, 'man'));
+        $shop = oxNew('oxShop');
+        $shop->oxshops__oxname = new oxField('Test Shop');
+
+        $config = $this->getMock('oxconfig', array('getActiveShop'));
+        $config->expects($this->any())->method('getActiveShop')->will($this->returnValue($shop));
+
+        $rssFeed = oxNew('oxrssfeed');
+        $rssFeed->setConfig($config);
+
+        $expectedSearchArticleTitle = 'Test Shop/SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURERtssscat' . $value . 'man';
+        $this->assertEquals($expectedSearchArticleTitle, $rssFeed->getSearchArticlesTitle('tsss', 'cat', $value, 'man'));
     }
 
     public function testOxSearchGetWhereWithSearchIngLongDescSecondLanguage()

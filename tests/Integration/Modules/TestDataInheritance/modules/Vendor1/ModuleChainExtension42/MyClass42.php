@@ -20,7 +20,7 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension42;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension42;
 
 class MyClass42
 {

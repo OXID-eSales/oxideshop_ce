@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance24;
 
-class MyClass extends \OxidEsales\EshopCommunityTestModule\Vendor1\namespaced_from_ns\MyClass
+class MyClass extends \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_ns\MyClass
 {
 
 }

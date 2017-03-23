@@ -41,8 +41,6 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 {
     const TEST_PRICE = 10.0;
 
-    const TESTS_INTEGRATION_MODULES_TEST_SOURCE = '/tests/Integration/Modules/TestData';
-
     protected function setUp()
     {
         parent::setUp();
@@ -125,8 +123,6 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $this->activateModule($module, $moduleId);
 
         $this->runAsserts($resultToAsserts);
-
-        $this->setShopDir();
         $this->assertPrice($priceAsserts);
     }
 
@@ -152,7 +148,6 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $module->load($moduleName);
         $this->deactivateModule($module, $moduleId);
         $this->activateModule($module, $moduleId);
-        $this->setShopDir();
         $this->assertPrice($priceAsserts);
 
         $this->deactivateModule($module, $moduleId);
@@ -185,7 +180,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
                 // full class chain to assert
                 array(
                     '0' => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
-                    '1' => 'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
+                    '1' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice::class
                 ),
 
                 // active class chain to assert
@@ -208,12 +203,12 @@ class ModuleNamespaceTest extends BaseModuleTestCase
                 // full class chain to assert
                 array(
                     '0' => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
-                    '1' => 'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
+                    '1' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice::class
                 ),
 
                 // active class chain to assert
                 array(
-                    '1' => 'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
+                    '1' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice::class
                 )
             ),
 
@@ -262,9 +257,9 @@ class ModuleNamespaceTest extends BaseModuleTestCase
             'blocks'          => array(),
             'extend'          => array(
                 \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController&' .
-                                                                                     'OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController',
+                                                                                     'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Controller\TestModuleOnePaymentController',
                 \OxidEsales\Eshop\Core\Price::class                               => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
-                                                                                     'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
+                                                                                     'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice'
             ),
             'files'           => array(
                 'EshopTestModuleOne'           => array(),
@@ -305,9 +300,9 @@ class ModuleNamespaceTest extends BaseModuleTestCase
                         'blocks'          => array(),
                         'extend'          => array(
                             \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController&' .
-                                                                                                 'OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController',
+                                                                                                 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Controller\TestModuleOnePaymentController',
                             \OxidEsales\Eshop\Core\Price::class                               => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
-                                                                                                 'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
+                                                                                                 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice'
                         ),
                         'files'           => array(
                             'without_own_module_namespace' =>
@@ -349,9 +344,9 @@ class ModuleNamespaceTest extends BaseModuleTestCase
                         'blocks'          => array(),
                         'extend'          => array(
                             \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController&' .
-                                                                                                 'OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController',
+                                                                                                 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Controller\TestModuleOnePaymentController',
                             \OxidEsales\Eshop\Core\Price::class                               => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
-                                                                                                 'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
+                                                                                                 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice'
                         ),
                         'files'           => null,
                         'settings'        => array(),
@@ -491,7 +486,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
                 // full class chain to assert after module was activated
                 array(
-                    'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
+                    'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice'
                 ),
             ),
         );
@@ -536,9 +531,9 @@ class ModuleNamespaceTest extends BaseModuleTestCase
             'blocks'          => [],
             'extend'          => [
                 \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController' .
-                '&OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController',
+                '&OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Controller\TestModuleOnePaymentController',
                 \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
-                  'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'
+                  'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice'
             ],
             'files' => [
                 'EshopTestModuleOne'           => [],
@@ -574,7 +569,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         ];
 
         $priceAssertsWihModulesActive = ['factor' => 2 * 3,
-                                         'class'  => 'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice'];
+                                         'class'  => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice'];
 
         $priceAssertsAfterDeactivation = ['factor' => 3,
                                           'class'  => 'TestModuleTwoPrice'];
@@ -681,7 +676,6 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
         $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
         $this->assertEquals($resultToAsserts[2]['extend'], $subShopSpecificCache->getFromCache('amodules'));
-        $this->setShopDir();
         $this->assertPrice($priceAsserts[1]);
     }
 
@@ -707,8 +701,8 @@ class ModuleNamespaceTest extends BaseModuleTestCase
             array(
                 'blocks'          => array(),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Controller\PaymentController::class => \OxidEsales\EshopTestModule\Application\Controller\TestModuleOnePaymentController::class,
-                    \OxidEsales\Eshop\Core\Price::class => \OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice::class
+                    \OxidEsales\Eshop\Application\Controller\PaymentController::class => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Controller\TestModuleOnePaymentController::class,
+                    \OxidEsales\Eshop\Core\Price::class => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice::class
                 ),
                 'files'           => array('EshopTestModuleOne' => array()),
                 'settings'        => array(),
@@ -722,7 +716,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
             // price multiplier
             array('factor' => 2,
-                  'class'  => 'OxidEsales\EshopTestModule\Application\Model\TestModuleOnePrice')
+                  'class'  => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice')
         );
     }
 
@@ -801,16 +795,16 @@ class ModuleNamespaceTest extends BaseModuleTestCase
     {
         $modules = array(
             \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController&' .
-                                  'OxidEsales\EshopTestModuleNone\Application\Controller\TestModuleNonePaymentController',
+                                  'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespaceNone\Application\Controller\TestModuleNonePaymentController',
             \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
-                                 'OxidEsales\EshopTestModuleNone\Application\Model\TestModuleNonePrice'
+                                 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespaceNone\Application\Model\TestModuleNonePrice'
         );
 
         $extensions = array(
             'without_own_module_namespace' => array('without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
                                                     'without_own_module_namespace/Application/Model/TestModuleTwoPrice'),
-            'EshopTestModuleNone' => array('OxidEsales\EshopTestModuleNone\Application\Controller\TestModuleNonePaymentController',
-                                           'OxidEsales\EshopTestModuleNone\Application\Model\TestModuleNonePrice')
+            'EshopTestModuleNone' => array('OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespaceNone\Application\Controller\TestModuleNonePaymentController',
+                                           'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespaceNone\Application\Model\TestModuleNonePrice')
         );
 
         $disabledModules = array('EshopTestModuleNone');
@@ -841,15 +835,4 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         return $subShopSpecificCache;
     }
 
-    /**
-     * This test suite uses custom test modules, which are stored in real files in an unexpected directory.
-     * The parameter sShopDir in oxConfigFile will be reset to a new source directory in order to make the tests
-     * find this modules.
-     */
-    private function setShopDir()
-    {
-        $currentShopDir = \OxidEsales\Eshop\Core\Registry::get("oxConfigFile")->getVar("sShopDir");
-        $testShopDir = str_replace('/source', self::TESTS_INTEGRATION_MODULES_TEST_SOURCE, $currentShopDir);
-        \OxidEsales\Eshop\Core\Registry::get("oxConfigFile")->setVar("sShopDir", $testShopDir);
-    }
 }

@@ -20,7 +20,7 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension44;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleChainExtension44;
 
 class MyClass44 extends MyClass44_parent
 {

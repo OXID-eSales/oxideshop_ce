@@ -36,10 +36,10 @@ $aModule = [
     'version'      => '1.0.0',
     'author'       => 'OXID eSales AG',
     'extend'       => [
-        \OxidEsales\Eshop\Core\Price::class => \OxidEsales\EshopAcceptanceTestModule\Vendor1\WithNamespaceAndMetadataV2\Application\Model\TestModuleNinePrice::class
+        \OxidEsales\Eshop\Core\Price::class => \OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\Vendor1\WithNamespaceAndMetadataV2\Application\Model\TestModuleNinePrice::class
     ],
     'controllers'  => [
-        'vendor1_metadatav2demo_mymodulecontroller' => \OxidEsales\EshopAcceptanceTestModule\Vendor1\WithNamespaceAndMetadataV2\Application\Controller\MyModuleController::class
+        'vendor1_metadatav2demo_mymodulecontroller' => \OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\Vendor1\WithNamespaceAndMetadataV2\Application\Controller\MyModuleController::class
     ],
     'templates' => [
         'vendor1_controller_routing.tpl' => 'Vendor1/WithNamespaceAndMetadataV2/views/tpl/vendor1_controller_routing.tpl'

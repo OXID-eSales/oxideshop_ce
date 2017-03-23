@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
-namespace OxidEsales\EshopCommunityTestModule\Vendor2\ModuleInheritance28b;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance28b;
 
-use OxidEsales\EshopCommunityTestModule\Vendor1\ModuleInheritance28a\MyClass as AnotherMyClass;
+use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleInheritance28a\MyClass as AnotherMyClass;
 
 class MyClass extends AnotherMyClass {}
 

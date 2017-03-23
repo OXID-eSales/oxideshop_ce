@@ -20,6 +20,6 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunityTestModule\Vendor1\namespaced_from_ns;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_ns;
 
 class MyClass extends \OxidEsales\EshopCommunity\Application\Model\Article {}

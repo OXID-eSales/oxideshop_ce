@@ -420,9 +420,9 @@ class ModuleInstallerTest extends \OxidTestCase
 
         $modulesAfter = ['OxidEsales\Eshop\Application\Model\Article' =>
                              'module_chain_extension_3_1/vendor_1_module_3_1_myclass' . '&' .
-                             'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37a\MyClass37a' . '&' .
-                             'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37b\MyClass37b' . '&' .
-                             'OxidEsales\EshopCommunityTestModule'
+                             'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleChainExtension37a\MyClass37a' . '&' .
+                             'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension37b\MyClass37b' . '&' .
+                             'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules'
                             ];
 
         $firstModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId'));
@@ -431,18 +431,18 @@ class ModuleInstallerTest extends \OxidTestCase
         $firstModule->expects($this->any())->method('getId')->will($this->returnValue('test1'));
 
         $secondModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId'));
-        $secondModule->setModuleData(['extend' => ['oxarticle' => 'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37a\MyClass37a']]);
+        $secondModule->setModuleData(['extend' => ['oxarticle' => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleChainExtension37a\MyClass37a']]);
         $secondModule->expects($this->any())->method('getId')->will($this->returnValue('test2'));
 
         $thirdModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId'));
         $thirdExtends = [\OxidEsales\Eshop\Application\Model\Article::class
-                          => 'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37b\MyClass37b'];
+                          => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension37b\MyClass37b'];
         $thirdModule->setModuleData(['extend' => $thirdExtends]);
         $thirdModule->expects($this->any())->method('getId')->will($this->returnValue('test3'));
         $thirdModule->expects($this->any())->method('getExtensions')->will($this->returnValue($thirdExtends));
 
         $fourthModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId'));
-        $fourthExtends = array('oxArticle' => 'OxidEsales\EshopCommunityTestModule');
+        $fourthExtends = array('oxArticle' => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules');
         $fourthModule->setModuleData(['extend' => $fourthExtends]);
         $fourthModule->expects($this->any())->method('getId')->will($this->returnValue('test1'));
 
@@ -468,20 +468,20 @@ class ModuleInstallerTest extends \OxidTestCase
         $this->assertEquals($modulesBefore, $this->getConfig()->getConfigParam('aModules'));
 
         $modulesAfter = ['OxidEsales\Eshop\Application\Model\Article' =>
-                             'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37a\MyClass37a',
+                             'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleChainExtension37a\MyClass37a',
                          'OxidEsales\Eshop\Application\Model\Order' =>
-                             'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37b\MyClass37b',
+                             'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension37b\MyClass37b',
                          'oxunknown' => 'module_chain_extension_3_1/vendor_1_module_3_1_myclass'];
 
         $firstModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId', 'getExtensions'));
         $firstExtends = [\OxidEsales\Eshop\Application\Model\Article::class
-                          => 'OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension37a\MyClass37a'];
+                          => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleChainExtension37a\MyClass37a'];
         $firstModule->expects($this->any())->method('getId')->will($this->returnValue('test1'));
         $firstModule->expects($this->any())->method('getExtensions')->will($this->returnValue($firstExtends));
 
         $secondModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId', 'getExtensions'));
         $secondExtends = ['OxidEsales\Eshop\Application\Model\Order'
-                         => 'OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension37b\MyClass37b'];
+                         => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension37b\MyClass37b'];
         $secondModule->expects($this->any())->method('getId')->will($this->returnValue('test2'));
         $secondModule->expects($this->any())->method('getExtensions')->will($this->returnValue($secondExtends));
 

@@ -19,6 +19,6 @@
  * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
-namespace OxidEsales\EshopCommunityTestModule\Vendor3\ModuleChainExtension37c;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor3\ModuleChainExtension37c;
 
 class MyClass37c extends MyClass37c_parent {}

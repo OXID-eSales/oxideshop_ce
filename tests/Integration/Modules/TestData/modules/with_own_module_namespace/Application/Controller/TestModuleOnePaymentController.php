@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopTestModule\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Controller;
 
 use oxRegistry;
 
@@ -30,7 +30,7 @@ class TestModuleOnePaymentController extends TestModuleOnePaymentController_pare
     {
         $template = parent::render();
 
-        $model = oxNew(\OxidEsales\EshopTestModule\Application\Model\TestModuleOneModel::class);
+        $model = oxNew(\OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOneModel::class);
         $message = $model->getInfo();
 
         oxRegistry::getSession()->setVariable('payerror', '-1');

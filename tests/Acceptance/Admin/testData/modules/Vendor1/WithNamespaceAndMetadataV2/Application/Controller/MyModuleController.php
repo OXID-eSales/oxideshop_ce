@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopAcceptanceTestModule\Vendor1\WithNamespaceAndMetadataV2\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\Vendor1\WithNamespaceAndMetadataV2\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
 

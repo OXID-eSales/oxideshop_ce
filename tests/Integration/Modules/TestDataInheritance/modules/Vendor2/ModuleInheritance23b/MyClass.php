@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
-namespace OxidEsales\EshopCommunityTestModule\Vendor2\ModuleInheritance23b;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance23b;
 
 use \vendor_1_module_1_myclass2;
 

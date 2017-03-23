@@ -25,7 +25,6 @@ use Exception;
 use oxDb;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 class Environment
 {
@@ -67,8 +66,6 @@ class Environment
     {
         $this->shopId = $shopId;
         Registry::getConfig()->setShopId($shopId);
-        $utilsObject = new \OxidEsales\Eshop\Core\UtilsObject();
-        Registry::set('oxUtilsObject', $utilsObject);
         $this->loadShopParameters();
     }
 
@@ -129,6 +126,7 @@ class Environment
         $oConfig = Registry::getConfig();
         $oConfig->setShopId($this->getShopId());
         $oConfig->setConfigParam('sShopDir', $this->getPathToTestDataDirectory());
+        \OxidEsales\Eshop\Core\Registry::get("oxConfigFile")->setVar("sShopDir", $this->getPathToTestDataDirectory());
     }
 
     /**

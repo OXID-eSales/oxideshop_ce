@@ -20,6 +20,6 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunityTestModule\Vendor1\ModuleInheritance16;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleInheritance16;
 
 class MyClass extends \oxArticle {}

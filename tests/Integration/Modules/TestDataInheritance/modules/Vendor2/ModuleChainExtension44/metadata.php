@@ -36,7 +36,7 @@ $aModule = array(
     'version'     => '1.0',
     'author'      => 'OXID eSales AG',
     'extend'     => [
-        \OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension44\MyClass44::class
-        => \OxidEsales\EshopCommunityTestModule\Vendor2\ModuleChainExtension44\MyClass44::class
+        \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension44\MyClass44::class
+        => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleChainExtension44\MyClass44::class
     ]
 );

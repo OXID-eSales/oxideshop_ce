@@ -35,5 +35,5 @@ $aModule = array(
     'thumbnail'   => 'picture.png',
     'version'     => '1.0',
     'author'      => 'OXID eSales AG',
-    'extend'      => [\OxidEsales\EshopCommunity\Application\Model\Article::class => \OxidEsales\EshopCommunityTestModule\Vendor1\ModuleChainExtension35\MyClass35::class]
+    'extend'      => [\OxidEsales\EshopCommunity\Application\Model\Article::class => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension35\MyClass35::class]
 );

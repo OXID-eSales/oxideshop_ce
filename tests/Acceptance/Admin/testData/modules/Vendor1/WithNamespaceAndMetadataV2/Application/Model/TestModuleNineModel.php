@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopAcceptanceTestModule\Vendor1\WithNamespaceAndMetadataV2\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\Vendor1\WithNamespaceAndMetadataV2\Application\Model;
 
 class TestModuleNineModel
 {

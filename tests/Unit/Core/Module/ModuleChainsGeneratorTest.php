@@ -92,46 +92,54 @@ class ModuleChainsGeneratorTest extends \OxidTestCase
      */
     public function testOnModuleExtensionCreationError()
     {
-        $blDoNotDisableModuleOnError = false;
+        $blDoNotDisableModuleOnError = true;
         $message= 'If blDoNotDisableModuleOnError is false, no Exception will be thrown.
                    In this case then the module will be disabled and createClassChain will return the shop class and
                    not the module class.';
 
-        /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
-        $moduleVariablesLocatorMock = $this->getMock(
-          \OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator::class,
-          ['getModuleVariable'],
-          [],
-          '',
-          false
-        );
-        $valueMap = [
-          ['aModules', ['content' => 'content&notExistingClass']],
-          ['aDisabledModules', []]
-        ];
-        $moduleVariablesLocatorMock
-          ->expects($this->any())
-          ->method('getModuleVariable')
-          ->will($this->returnValueMap($valueMap));
+        $moduleChainsGeneratorMock = $this->generateModuleChainsGeneratorWithNonExistingFileConfiguration($blDoNotDisableModuleOnError);
 
-        $moduleChainsGeneratorMock = $this->getMock(
-          \OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::class,
-          ['getConfigBlDoNotDisableModuleOnError', 'getConfigDebugMode'],
-          [$moduleVariablesLocatorMock]
-        );
-        $moduleChainsGeneratorMock
-          ->expects($this->any())
-          ->method('getConfigBlDoNotDisableModuleOnError')
-          ->will($this->returnValue($blDoNotDisableModuleOnError));
-
-        /**
-         * Real error handling on missing files is disabled for the tests, but when the shop tries to include that not
-         * existing file we expect an error to be thrown
-         */
-        $this->setExpectedException(\PHPUnit_Framework_Error_Warning::class);
+        $this->setExpectedException(\OxidEsales\EshopCommunity\Core\Exception\SystemComponentException::class);
         $actualClassName = $moduleChainsGeneratorMock->createClassChain('content');
 
         $this->assertEquals('content', $actualClassName, $message);
+    }
+
+    /**
+     * @param bool $blDoNotDisableModuleOnError
+     *
+     * @return \OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator
+     */
+    private function generateModuleChainsGeneratorWithNonExistingFileConfiguration($blDoNotDisableModuleOnError)
+    {
+        /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
+        $moduleVariablesLocatorMock = $this->getMock(
+            \OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator::class,
+            ['getModuleVariable'],
+            [],
+            '',
+            false
+        );
+        $valueMap = [
+            ['aModules', ['content' => 'content&notExistingClass']],
+            ['aDisabledModules', []]
+        ];
+        $moduleVariablesLocatorMock
+            ->expects($this->any())
+            ->method('getModuleVariable')
+            ->will($this->returnValueMap($valueMap));
+
+        $moduleChainsGeneratorMock = $this->getMock(
+            \OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::class,
+            ['getConfigBlDoNotDisableModuleOnError', 'getConfigDebugMode'],
+            [$moduleVariablesLocatorMock]
+        );
+        $moduleChainsGeneratorMock
+            ->expects($this->any())
+            ->method('getConfigBlDoNotDisableModuleOnError')
+            ->will($this->returnValue($blDoNotDisableModuleOnError));
+
+        return $moduleChainsGeneratorMock;
     }
 
     public function dataProviderTestOnModuleExtensionCreationError()

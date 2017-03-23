@@ -28,6 +28,37 @@ use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 /** Admin interface functionality. */
 class FunctionalityInAdminTest extends AdminTestCase
 {
+    /** @var array To store translation error value. */
+    private $translationError = [];
+
+    /**
+     * Set translation error value if some case would change it.
+     */
+    public function setUp()
+    {
+        $this->translationError = $this->errorsInPage["ERROR: Tran"];
+        parent::setUp();
+    }
+
+    /**
+     * Restore translation error value as some case might change it.
+     */
+    public function tearDown()
+    {
+        parent::tearDown();
+        $this->errorsInPage["ERROR: Tran"] = $this->translationError;
+    }
+
+    /**
+     * Skip check for error when translation does not exist.
+     * Some translations might be missing as tests add new language.
+     * In these cases no need to check if everything is translated.
+     */
+    private function skipTranslationCheck()
+    {
+        unset($this->errorsInPage["ERROR: Tran"]);
+    }
+
     /**
      * Testing downloadable product in admin ant frontend
      *
@@ -860,6 +891,8 @@ class FunctionalityInAdminTest extends AdminTestCase
      */
     public function testNewLanguageCreatingAndNavigation()
     {
+        $this->skipTranslationCheck();
+
         //EN lang
         $this->loginAdmin("Master Settings", "Languages");
         $this->clickCreateNewItem();

@@ -30,7 +30,7 @@ class EditionRootPathProviderTest extends UnitTestCase
 {
     public function providerReturnsEditionPath()
     {
-        $vendorDirectory = $this->getConfig()->getConfigParam('vendorDirectory');
+        $vendorDirectory = VENDOR_PATH;
         return array(
             array(EditionSelector::ENTERPRISE, realpath("$vendorDirectory/oxid-esales/oxideshop-ee").'/'),
             array(EditionSelector::PROFESSIONAL, realpath("$vendorDirectory/oxid-esales/oxideshop-pe/").'/'),

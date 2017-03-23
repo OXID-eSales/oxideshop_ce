@@ -39,12 +39,6 @@
      */
     $this->edition = '';
 
-    /**
-     * Location of composer's vendor directory.
-     * Do not change this setting. Change the value of VENDOR_PATH in bootstrap.php instead.
-     */
-    $this->vendorDirectory = VENDOR_PATH;
-
     // File type whitelist for file upload
     $this->aAllowedUploadTypes = array('jpg', 'gif', 'png', 'pdf', 'mp3', 'avi', 'mpg', 'mpeg', 'doc', 'xls', 'ppt');
 

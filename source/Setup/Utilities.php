@@ -518,10 +518,7 @@ class Utilities extends Core
      */
     private function getVendorDirectory()
     {
-        $configFile = new ConfigFile(OX_BASE_PATH . self::CONFIG_FILE_NAME);
-        $vendorDir = $configFile->getVar('vendorDirectory');
-
-        return $vendorDir;
+        return VENDOR_PATH;
     }
 
     /**

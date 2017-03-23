@@ -63,7 +63,7 @@ class EditionRootPathProvider
             $configFile = new ConfigFile(getShopBasePath() . '/config.inc.php');
             Registry::set('oxConfigFile', $configFile);
         }
-        $editionsPath = $configFile->getVar('vendorDirectory')  .'/'. static::EDITIONS_DIRECTORY;
+        $editionsPath = VENDOR_PATH  .'/'. static::EDITIONS_DIRECTORY;
         $path = getShopBasePath();
         if ($this->getEditionSelector()->isEnterprise()) {
             $path = $editionsPath  .'/'. static::ENTERPRISE_DIRECTORY;

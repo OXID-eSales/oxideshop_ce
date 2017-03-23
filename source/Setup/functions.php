@@ -159,8 +159,7 @@ if (!function_exists('getVendorDirectory')) {
      */
     function getVendorDirectory()
     {
-        $oConfigFile = new OxidEsales\EshopCommunity\Core\ConfigFile(OX_BASE_PATH . "config.inc.php");
-        return $oConfigFile->vendorDirectory;
+        return VENDOR_PATH;
     }
 }
 

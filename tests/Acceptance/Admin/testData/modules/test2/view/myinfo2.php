@@ -1,6 +1,13 @@
 <?php
+
+/**
+ * Class myinfo2
+ */
 class myinfo2 extends myinfo2_parent
 {
+    /**
+     * @return mixed
+     */
     public function render()
     {
         $sTpl = parent::render();

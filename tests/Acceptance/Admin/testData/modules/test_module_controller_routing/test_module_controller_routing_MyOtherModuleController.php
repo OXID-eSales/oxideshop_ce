@@ -22,6 +22,9 @@
 
 use OxidEsales\Eshop\Core\Registry;
 
+/**
+ * Class test_module_controller_routing_MyOtherModuleController
+ */
 class test_module_controller_routing_MyOtherModuleController extends test_module_controller_routing_MyModuleController
 {
     const MESSAGE_PREFIX = 'MyOtherModuleController - ';

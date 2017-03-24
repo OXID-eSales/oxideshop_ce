@@ -37,6 +37,10 @@ use oxRegistry;
 use oxField;
 use oxDb;
 
+/**
+ * Class BaseModel
+ * @package OxidEsales\EshopCommunity\Core\Model
+ */
 class BaseModel extends \OxidEsales\Eshop\Core\Base
 {
 

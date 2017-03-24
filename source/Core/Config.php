@@ -2299,7 +2299,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * @return object
+     * @return \OxidEsales\Eshop\Core\Exception\ExceptionHandler
      */
     protected function getExceptionHandler()
     {

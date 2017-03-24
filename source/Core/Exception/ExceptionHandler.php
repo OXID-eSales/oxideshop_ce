@@ -184,6 +184,8 @@ class ExceptionHandler
      * If offline.html exists its content is displayed.
      * Like this the error message is overridable within that file.
      * Do not display an error message, if this file is included during a CLI command
+     *
+     * @return null
      */
     public function displayOfflinePage()
     {
@@ -210,7 +212,9 @@ class ExceptionHandler
      * Print a debug message to the screen.
      *
      * @param \Exception $exception  The exception to be treated
-     * @param bool      $logWritten True, if an entry was written to the log file
+     * @param bool       $logWritten True, if an entry was written to the log file
+     *
+     * @return null
      */
     protected function displayDebugMessage(\Exception $exception, $logWritten)
     {
@@ -266,5 +270,4 @@ class ExceptionHandler
     {
         exit(1);
     }
-
 }

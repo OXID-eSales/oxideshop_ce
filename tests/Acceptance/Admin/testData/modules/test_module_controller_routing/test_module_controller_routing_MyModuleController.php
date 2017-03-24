@@ -22,6 +22,9 @@
 
 use OxidEsales\Eshop\Core\Registry;
 
+/**
+ * Class test_module_controller_routing_MyModuleController
+ */
 class test_module_controller_routing_MyModuleController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**

@@ -28,6 +28,9 @@ if (!defined('ESHOP_CONFIG_FILE')) {
 }
 
 if (!function_exists('redirectIfShopNotConfigured')) {
+    /**
+     * @return null
+     */
     function redirectIfShopNotConfigured()
     {
         $configFileName = __DIR__ . DIRECTORY_SEPARATOR . ESHOP_CONFIG_FILE;

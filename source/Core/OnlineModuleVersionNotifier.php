@@ -64,6 +64,8 @@ class OnlineModuleVersionNotifier
 
     /**
      * Perform Online Module version Notification. Returns result
+     *
+     * @return null
      */
     public function versionNotify()
     {

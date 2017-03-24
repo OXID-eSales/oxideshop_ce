@@ -158,7 +158,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
                 $aBadFiles = array("php", 'php4', 'php5', "jsp", "cgi", "cmf", "exe");
 
                 if (in_array($aFilename[1], $aBadFiles)) {
-                    oxRegistry::getUtils()->showMessageAndExit("We don't play this game, go away");
+                    oxRegistry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
                 }
 
                 //reading SQL dump file

@@ -292,7 +292,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
 
                 // unallowed files ?
                 if (in_array($sFileType, $this->_aBadFiles) || ($blDemo && !in_array($sFileType, $this->_aAllowedFiles))) {
-                    oxRegistry::getUtils()->showMessageAndExit("We don't play this game, go away");
+                    oxRegistry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
                 }
 
                 // removing file type

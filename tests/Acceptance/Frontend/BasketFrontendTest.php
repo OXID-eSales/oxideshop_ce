@@ -1230,9 +1230,9 @@ class BasketFrontendTest extends FrontendTestCase
 
         // submit
         $this->_confirmAndOrder();
-        //billing address was changed, so message was displayed:" %ERROR_DELIVERY_ADDRESS_WAS_CHANGED_DURING_CHECKOUT%"
-        //$this->assertTextPresent("%ERROR_DELIVERY_ADDRESS_WAS_CHANGED_DURING_CHECKOUT%");
-        // submit
+
+        $this->assertTextPresent("%ERROR_DELIVERY_ADDRESS_WAS_CHANGED_DURING_CHECKOUT%");
+
         $this->_confirmAndOrder();
         $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
     }

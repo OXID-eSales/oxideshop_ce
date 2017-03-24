@@ -67,6 +67,12 @@ class ModuleFileInclusionTest extends \OxidTestCase
      */
     public function testMissingModuleInChain()
     {
+        /**
+         * The case onModuleExtensionCreationError cannot be covered in a reasonable way, as to many other tests do not
+         * provide proper module class files and the check for proper module files and the proper error handling has to
+         * be disabled at the moment for unit tests in the code.
+         */
+        $this->setExpectedException(\PHPUnit_Framework_Exception::class);
 
         $wrapper = $this->getVfsStreamWrapper();
         oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());

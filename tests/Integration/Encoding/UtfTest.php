@@ -1135,8 +1135,6 @@ class UtfTest extends \OxidTestCase
 
     public function testOxRssFeedGetArticleItems()
     {
-        oxTestModules::addFunction('oxutilsurl', 'prepareUrlForNoSession', '{return $aA[0]."extra";}');
-
         $config = $this->getConfig();
         $config->setConfigParam('aCurrencies', array('EUR@1.00@.@.@EUR@1'));
         $this->getConfig()->setConfigParam('bl_perfParseLongDescinSmarty', false);
@@ -1161,8 +1159,8 @@ class UtfTest extends \OxidTestCase
 
         $expectedArticle = new stdClass();
         $expectedArticle->title = 'title2 10.0 EUR';
-        $expectedArticle->link = 'artlinkextra';
-        $expectedArticle->guid = 'artlinkextra';
+        $expectedArticle->link = 'artlink';
+        $expectedArticle->guid = 'artlink';
         $expectedArticle->isGuidPermalink = true;
         $expectedArticle->description = "&lt;img src=&#039;" . $articleMock->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;" . $shortDescription;
         $expectedArticle->date = "Tue, 06 Sep 2011 09:46:42 +0200";

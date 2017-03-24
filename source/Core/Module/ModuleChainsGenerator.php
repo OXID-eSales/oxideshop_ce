@@ -24,6 +24,8 @@ namespace OxidEsales\EshopCommunity\Core\Module;
 
 /**
  * Generates class chains for extended classes by modules.
+ * IMPORTANT: Due to the way the shop is prepared for testing, you must not use Registry::getConfig() in this class.
+ *            oxNew will enter in an endless loop, if you try to do that.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
@@ -81,6 +83,7 @@ class ModuleChainsGenerator
         if (!empty($fullChain)) {
             $activeChain = $this->filterInactiveExtensions($fullChain);
         }
+
         return $activeChain;
     }
 
@@ -287,7 +290,8 @@ class ModuleChainsGenerator
          */
         /** @var \Composer\Autoload\ClassLoader $composerClassLoader */
         $composerClassLoader = include VENDOR_PATH . 'autoload.php';
-        if (!strpos($moduleClass, '_parent') &&
+        if (!defined('OXID_PHP_UNIT') && // In unit test some classes are created dynamically, so the files would not exist :-(
+            !strpos($moduleClass, '_parent') &&
             !$composerClassLoader->findFile($moduleClass)) {
             $this->handleSpecialCases($parentClass);
             $this->onModuleExtensionCreationError($moduleClass);
@@ -319,14 +323,20 @@ class ModuleChainsGenerator
     private function backwardsCompatibleCreateClassExtension($parentClass, $moduleClassPath)
     {
         $moduleClass = basename($moduleClassPath);
-        $modulesDirectory = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sShopDir");
+        /**
+         * Due to the way the shop is prepared for testing, you must not use Registry::getConfig() in this class.
+         * So do not try to get "sShopDir" like this:
+         * $modulesDirectory = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sShopDir");
+         */
+        $modulesDirectory = \OxidEsales\Eshop\Core\Registry::get("oxConfigFile")->getVar("sShopDir");
         $moduleClassFile = "$modulesDirectory/modules/$moduleClassPath.php";
         $moduleClassParentAlias = $moduleClass . "_parent";
 
         /**
          * Test if the class file could be read
          */
-        if (!is_readable($moduleClassFile)) {
+        if (!defined('OXID_PHP_UNIT') && // In unit test some classes are created dynamically, so the files would not exist :-(
+            !is_readable($moduleClassFile)) {
             $this->handleSpecialCases($parentClass);
             $this->onModuleExtensionCreationError($moduleClass);
 

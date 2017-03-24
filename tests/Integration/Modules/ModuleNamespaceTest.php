@@ -41,6 +41,8 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 {
     const TEST_PRICE = 10.0;
 
+    const TESTS_INTEGRATION_MODULES_TEST_SOURCE = '/tests/Integration/Modules/TestData';
+
     protected function setUp()
     {
         parent::setUp();
@@ -124,6 +126,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
         $this->runAsserts($resultToAsserts);
 
+        $this->setShopDir();
         $this->assertPrice($priceAsserts);
     }
 
@@ -149,6 +152,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $module->load($moduleName);
         $this->deactivateModule($module, $moduleId);
         $this->activateModule($module, $moduleId);
+        $this->setShopDir();
         $this->assertPrice($priceAsserts);
 
         $this->deactivateModule($module, $moduleId);
@@ -677,7 +681,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
         $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
         $this->assertEquals($resultToAsserts[2]['extend'], $subShopSpecificCache->getFromCache('amodules'));
-
+        $this->setShopDir();
         $this->assertPrice($priceAsserts[1]);
     }
 
@@ -835,5 +839,17 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $subShopSpecificCache = oxNew('\OxidEsales\EshopCommunity\Core\SubShopSpecificFileCache', $shopIdCalculatorMock);
 
         return $subShopSpecificCache;
+    }
+
+    /**
+     * This test suite uses custom test modules, which are stored in real files in an unexpected directory.
+     * The parameter sShopDir in oxConfigFile will be reset to a new source directory in order to make the tests
+     * find this modules.
+     */
+    private function setShopDir()
+    {
+        $currentShopDir = \OxidEsales\Eshop\Core\Registry::get("oxConfigFile")->getVar("sShopDir");
+        $testShopDir = str_replace('/source', self::TESTS_INTEGRATION_MODULES_TEST_SOURCE, $currentShopDir);
+        \OxidEsales\Eshop\Core\Registry::get("oxConfigFile")->setVar("sShopDir", $testShopDir);
     }
 }

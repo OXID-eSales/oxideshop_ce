@@ -73,7 +73,7 @@ class SessionTest extends \OxidTestCase
         $oSession = $this->_getSessionMock(array('setSessionParam', 'getSessionParam', '_getNewSessionID'));
         $oSession->setIsNewSession(null);
         $oSession->expects($this->at(0))->method('getSessionParam')->with($this->equalTo('setup_session'))->will($this->returnValue(null));
-        $oSession->expects($this->at(1))->method('_getNewSessionID')->will($this->returnValue('someSID'));
+        $oSession->expects($this->at(1))->method('_getNewSessionID')->will($this->returnValue($this->generateUniqueSessionId()));
         $oSession->expects($this->at(2))->method('setSessionParam')->with($this->equalTo('setup_session'), $this->equalTo(true));
         $oSession->UNITvalidateSession();
     }
@@ -170,5 +170,15 @@ class SessionTest extends \OxidTestCase
         $oSession->expects($this->at(0))->method('_getSessionData')->will($this->returnValue($aParams));
 
         $this->assertSame('testParam', $oSession->getSessionParam('testKey'), 'Incorrect found response.');
+    }
+
+    /**
+     * Generate unique string suitable for session id.
+     *
+     * @return string
+     */
+    private function generateUniqueSessionId()
+    {
+        return str_replace('.', '', uniqid("", true));
     }
 }

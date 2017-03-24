@@ -3,4 +3,4 @@
  * Shop version
  */
 
-$this->version = '6.0.0-beta.3';
+$this->version = '6.0.0-rc.1';

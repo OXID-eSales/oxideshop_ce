@@ -101,13 +101,15 @@ class FunctionsTest extends \OxidTestCase
         $this->assertTrue(cmpart($oA, $oB) == -1);
     }
 
-    public function testOxNew()
+    public function testOxNewWithExistingClassName()
     {
-        $this->stubExceptionToNotWriteToLog(SystemComponentException::class, SystemComponentException::class);
+        $article = oxNew('oxArticle');
 
-        $oNew = oxNew('oxArticle');
-        $this->assertTrue($oNew instanceof \OxidEsales\EshopCommunity\Application\Model\Article);
+        $this->assertTrue($article instanceof \OxidEsales\EshopCommunity\Application\Model\Article);
+    }
 
+    public function testOxNewWithNonExistingClassName()
+    {
         $this->stubExceptionToNotWriteToLog(SystemComponentException::class,  SystemComponentException::class);
 
         $this->setExpectedException(SystemComponentException::class, 'non_existing_class');

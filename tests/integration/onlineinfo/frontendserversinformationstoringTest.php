@@ -43,24 +43,20 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
         $sServerIp = '192.168.0.5';
         $sCurrentTime = time();
         $aExpectedFrontendServersData = array(
-            $sServerId => array(
-                'id'                => $sServerId,
-                'timestamp'         => $sCurrentTime,
-                'ip'                => $sServerIp,
-                'lastFrontendUsage' => $sCurrentTime,
-                'lastAdminUsage'    => '',
-                'isValid'           => true,
-            ),
+            'id'                => $sServerId,
+            'timestamp'         => $sCurrentTime,
+            'ip'                => $sServerIp,
+            'lastFrontendUsage' => $sCurrentTime,
+            'lastAdminUsage'    => '',
+            'isValid'           => true,
         );
         $aExpectedAdminServersData = array(
-            $sServerId => array(
-                'id'                => $sServerId,
-                'timestamp'         => $sCurrentTime,
-                'ip'                => $sServerIp,
-                'lastFrontendUsage' => '',
-                'lastAdminUsage'    => $sCurrentTime,
-                'isValid'           => true,
-            ),
+            'id'                => $sServerId,
+            'timestamp'         => $sCurrentTime,
+            'ip'                => $sServerIp,
+            'lastFrontendUsage' => '',
+            'lastAdminUsage'    => $sCurrentTime,
+            'isValid'           => true,
         );
 
         return array(
@@ -78,30 +74,29 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
     public function testFrontendServerFirstAccess($blIsAdmin, $aExpectedServersData)
     {
         $sServerId = $this->_sServerId;
-        $sServerIp = $aExpectedServersData[$sServerId]['ip'];
+        $sServerIp = $aExpectedServersData['ip'];
         $this->setAdminMode($blIsAdmin);
-        $oUtilsDate = $this->_createDateMock($aExpectedServersData, $sServerId);
+        $oUtilsDate = $this->_createDateMock($aExpectedServersData);
         $oUtilsServer = $this->_createServerMock($sServerId, $sServerIp);
 
-        $this->getConfig()->saveShopConfVar('arr', 'aServersData', null);
+        $this->getConfig()->saveSystemConfigParameter('arr', 'aServersData_'.$sServerId, null);
 
         $oServerProcessor = new oxServerProcessor(new oxServersManager(), new oxServerChecker(), $oUtilsServer, $oUtilsDate);
         $oServerProcessor->process();
-        $aServersData = $this->getConfigParam('aServersData');
+        $aServersData = $this->getConfig()->getSystemConfigParameter('aServersData_'.$sServerId);
 
         $this->assertEquals($aExpectedServersData, $aServersData);
     }
 
     /**
      * @param $aExpectedServersData
-     * @param $sServerId
      *
      * @return oxUtilsDate
      */
-    private function _createDateMock($aExpectedServersData, $sServerId)
+    private function _createDateMock($aExpectedServersData)
     {
         $oUtilsDate = $this->getMock('oxUtilsDate', array('getTime'));
-        $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($aExpectedServersData[$sServerId]['timestamp']));
+        $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($aExpectedServersData['timestamp']));
 
         return $oUtilsDate;
     }

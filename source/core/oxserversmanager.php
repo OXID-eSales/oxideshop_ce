@@ -40,21 +40,6 @@ class oxServersManager
     const INACTIVE_NODE_STORAGE_PERIOD = 259200;
 
     /**
-     * Servers data array.
-     *
-     * @var array
-     */
-    private $_aServersData = array();
-
-    /**
-     * Initiates servers array with content from configuration.
-     */
-    public function __construct()
-    {
-        $this->_aServersData = (array) oxRegistry::getConfig()->getSystemConfigParameter('aServersData');
-    }
-
-    /**
      * Returns server based on server id.
      *
      * @param string $sServerId
@@ -63,7 +48,7 @@ class oxServersManager
      */
     public function getServer($sServerId)
     {
-        $aServerData = $this->_getServerData($sServerId);
+        $aServerData = $this->_getServerDataFromDb($sServerId);
 
         return $this->_createServer($sServerId, $aServerData);
     }
@@ -75,8 +60,7 @@ class oxServersManager
      */
     public function saveServer($oServer)
     {
-        $aServersData = $this->_getServersData();
-        $aServersData[$oServer->getId()] = array(
+        $aServerData = array(
             'id'                => $oServer->getId(),
             'timestamp'         => $oServer->getTimestamp(),
             'ip'                => $oServer->getIp(),
@@ -84,32 +68,7 @@ class oxServersManager
             'lastAdminUsage'    => $oServer->getLastAdminUsage(),
             'isValid'           => $oServer->isValid()
         );
-
-        $this->_save($aServersData);
-    }
-
-    /**
-     * Returns servers information array.
-     *
-     * @return array
-     */
-    protected function _getServersData()
-    {
-        return $this->_aServersData;
-    }
-
-    /**
-     * Returns server information from configuration.
-     *
-     * @param string $sServerId
-     *
-     * @return array
-     */
-    protected function _getServerData($sServerId)
-    {
-        $aServers = $this->_getServersData();
-
-        return array_key_exists($sServerId, $aServers) ? $aServers[$sServerId] : array();
+        $this->_saveToDb($oServer->getId(), $aServerData);
     }
 
     /**
@@ -155,13 +114,13 @@ class oxServersManager
      */
     public function getServers()
     {
-        $this->markInActiveServers();
-        $this->deleteInActiveServers();
+        $aServersData = $this->_getServersData();
+        $aServersData = $this->markInActiveServers($aServersData);
+        $aServersData = $this->deleteInActiveServers($aServersData);
 
-        $aServers = $this->_getServersData();
         $aValidServers = array();
 
-        foreach ($aServers as $aServer) {
+        foreach ($aServersData as $aServer) {
             if ($aServer['isValid']) {
                 unset($aServer['isValid']);
                 unset($aServer['timestamp']);
@@ -179,49 +138,101 @@ class oxServersManager
      */
     public function deleteServer($sServerId)
     {
-        $aServersData = $this->_getServersData();
-        unset($aServersData[$sServerId]);
-        $this->_save($aServersData);
+        $this->_saveToDb($sServerId, null);
     }
 
     /**
      * Mark servers as inactive if they are not used anymore
+     *
+     * @param array $aServersData Information of all servers data
+     *
+     * @return array $aServersData Information of all servers data
      */
-    public function markInActiveServers()
+    public function markInActiveServers($aServersData = null)
     {
-        $aServersData = $this->_getServersData();
-
         foreach ($aServersData as $sServerId => $aServerData) {
             if ($aServerData['timestamp'] < oxRegistry::get("oxUtilsDate")->getTime() - self::NODE_AVAILABILITY_CHECK_PERIOD) {
                 $oServer = $this->getServer($sServerId);
                 $oServer->setIsValid(false);
                 $this->saveServer($oServer);
+                $aServersData[$sServerId]['isValid'] = false;
             }
         }
+        return $aServersData;
     }
 
     /**
      * Removes information about old and not used servers
+     *
+     * @param array $aServersData Information of all servers data
+     *
+     * @return array $aServersData Information of all servers data
      */
-    public function deleteInActiveServers()
+    public function deleteInActiveServers($aServersData)
     {
-        $aServersData = $this->_getServersData();
-
         foreach ($aServersData as $sServerId => $aServerData) {
             if ($aServerData['timestamp'] < oxRegistry::get("oxUtilsDate")->getTime() - self::INACTIVE_NODE_STORAGE_PERIOD) {
                 $this->deleteServer($sServerId);
+                unset($aServersData[$sServerId]);
             }
         }
+        return $aServersData;
     }
 
     /**
-     * Saves servers data.
+     * Returns all servers information array from configuration.
      *
-     * @param array $aServersData Servers data
+     * @return array
      */
-    protected function _save($aServersData)
+    protected function _getServersData()
     {
-        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aServersData);
-        $this->_aServersData = $aServersData;
+        $aServersData = array();
+        $rs = $this->_getAllServersDataFromDb();
+        if ($rs != false && $rs->recordCount() > 0) {
+            while (!$rs->EOF) {
+                $aServersData[substr($rs->fields['oxvarname'], 13)] = (array)unserialize($rs->fields['oxvarvalue']);
+                $rs->moveNext();
+            }
+        }
+        return $aServersData;
+    }
+
+    /**
+     * Returns all servers information array from database.
+     *
+     * @return object ResultSetInterface
+     */
+    protected function _getAllServersDataFromDb()
+    {
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $oConfig = oxRegistry::getConfig();
+
+        $sConfigsQuery = "SELECT oxvarname, " . $oConfig->getDecodeValueQuery() .
+            " as oxvarvalue FROM oxconfig WHERE oxvarname like 'aServersData_%' AND oxshopid = ?";
+
+        return $oDb->select($sConfigsQuery, array($oConfig->getBaseShopId()));
+    }
+
+    /**
+     * Returns server information from configuration.
+     *
+     * @param string $sServerId
+     *
+     * @return array
+     */
+    protected function _getServerDataFromDb($sServerId)
+    {
+        return (array) oxRegistry::getConfig()->getSystemConfigParameter('aServersData_'.$sServerId);
+    }
+
+    /**
+     * Saves servers data to database.
+     *
+     * @param string $sServerId Server id
+     * @param array $aServerData Server data
+     */
+    protected function _saveToDb($sServerId, $aServerData)
+    {
+        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData_'.$sServerId, $aServerData);
     }
 }

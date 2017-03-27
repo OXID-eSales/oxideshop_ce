@@ -148,14 +148,22 @@ class oxSystemEventHandler
      */
     public function onShopStart()
     {
-        $oProcessor = $this->_getServerProcessor();
-        $oProcessor->process();
+        $this->_runServerProcessor();
 
         if ($this->_isSendingShopDataEnabled() && !oxRegistry::getUtils()->isSearchEngine()) {
             $this->_sendShopInformation();
         }
 
         $this->_validateOffline();
+    }
+
+    /**
+     * Run serverProcessor to save frontend server node information
+     */
+    protected function _runServerProcessor()
+    {
+        $oProcessor = $this->_getServerProcessor();
+        $oProcessor->process();
     }
 
     /**

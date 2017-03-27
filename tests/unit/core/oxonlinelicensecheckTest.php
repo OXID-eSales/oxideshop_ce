@@ -218,11 +218,11 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
             'value' => $iSubShops,
         ));
 
+        oxDb::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
+
         $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
         $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
         /** @var oxConfig $oConfig */
-        $oConfig->setConfigParam('aServersData', array());
-        $this->setConfigParam('aServersData', array());
         oxRegistry::set('oxConfig', $oConfig);
 
         $oRequest = new oxOnlineLicenseCheckRequest();

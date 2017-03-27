@@ -39,15 +39,16 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $oConfig->saveShopConfVar('arr', 'aSerials', array('license_key'));
         $oConfig->saveShopConfVar('arr', 'sClusterId', array('generated_unique_cluster_id'));
         $iValidNodeTime =  oxRegistry::get("oxUtilsDate")->getTime();
-        $oConfig->saveShopConfVar('arr', 'aServersData', array(
-            'server_id1' => array(
-                'id' => 'server_id1',
-                'timestamp' => $iValidNodeTime,
-                'ip' => '127.0.0.1',
-                'lastFrontendUsage' => $iValidNodeTime,
-                'lastAdminUsage' => $iValidNodeTime,
-                'isValid' => true,
-        )));
+
+        oxDb::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
+        $oConfig->saveSystemConfigParameter('arr', 'aServersData_server_id1', array(
+            'id' => 'server_id1',
+            'timestamp' => $iValidNodeTime,
+            'ip' => '127.0.0.1',
+            'lastFrontendUsage' => $iValidNodeTime,
+            'lastAdminUsage' => $iValidNodeTime,
+            'isValid' => true,
+        ));
 
         // imitating package revision file
         $oConfig->setConfigParam('sShopDir', $this->mockPackageRevisionFile());
@@ -116,18 +117,18 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
     {
         $oConfig = $this->getConfig();
 
+        oxDb::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
         $oConfig->setConfigParam('aSerials', array('license_key'));
         $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
         $iValidNodeTime =  oxRegistry::get("oxUtilsDate")->getTime();
-        $oConfig->setConfigParam('aServersData', array(
-            'server_id1' => array(
-                'id' => 'server_id1',
-                'timestamp' => $iValidNodeTime,
-                'ip' => '127.0.0.1',
-                'lastFrontendUsage' => $iValidNodeTime,
-                'lastAdminUsage' => $iValidNodeTime,
-                'isValid' => true,
-            )));
+        $oConfig->saveSystemConfigParameter('arr', 'aServersData_server_id1', array(
+            'id' => 'server_id1',
+            'timestamp' => $iValidNodeTime,
+            'ip' => '127.0.0.1',
+            'lastFrontendUsage' => $iValidNodeTime,
+            'lastAdminUsage' => $iValidNodeTime,
+            'isValid' => true,
+        ));
 
         // imitating package revision file
         $oConfig->setConfigParam('sShopDir', $this->mockPackageRevisionFile());

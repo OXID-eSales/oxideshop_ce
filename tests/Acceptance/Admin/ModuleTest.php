@@ -176,7 +176,7 @@ class ModuleTest extends ModuleBaseTest
         //checking if all expected non loadable classes are displayed
         $this->openTab("Installed Shop Modules");
         $this->assertTextPresent("Problematic Files");
-        $this->assertTextPresent('NonExistentFile', 'The class name of a non existing class file should be listen in the section "Problematic Files"');
+        $this->assertTextPresent('NonExistentFile', 'The class name of a non existing class file should be listed in the section "Problematic Files"');
 
         //checking if clicking "Yes" fixes the problematic files
         $this->clickAndWait("yesButton");

@@ -159,7 +159,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $this->runAsserts($resultToAsserts);
 
         $price = oxNew('oxPrice');
-        $this->assertFalse(is_a($price, $priceAsserts['class']), 'Price object class not as expected ('.$priceAsserts['class'].') :' . get_class($price));
+        $this->assertFalse(is_a($price, $priceAsserts['class']), 'Price object class not as expected (' . $priceAsserts['class'] . ') :' . get_class($price));
         $this->assertPrice(array('factor' => 1));
     }
 
@@ -785,7 +785,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
         // check for module price class
         if (isset($asserts['class'])) {
-            $this->assertTrue(is_a($price, $asserts['class']), 'Price object class not as expected '.$asserts['class'].':' . get_class($price));
+            $this->assertTrue(is_a($price, $asserts['class']), 'Price object class not as expected ' . $asserts['class'] . ':' . get_class($price));
         }
 
         $this->assertEquals($factor * self::TEST_PRICE, $price->getPrice(), 'Price not as expected.');

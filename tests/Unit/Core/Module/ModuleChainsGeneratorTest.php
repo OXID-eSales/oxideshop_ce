@@ -21,6 +21,7 @@
  */
 namespace Unit\Core;
 
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator;
 use oxTestModules;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
@@ -88,25 +89,13 @@ class ModuleChainsGeneratorTest extends \OxidTestCase
     }
 
     /**
+     * @dataProvider dataProviderTestOnModuleExtensionCreationError
+     *
      * @covers \OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::onModuleExtensionCreationError
      */
-    public function testOnModuleExtensionCreationError()
+    public function testOnModuleExtensionCreationError($blDoNotDisableModuleOnError, $expectedException, $message)
     {
-        /**
-         * The case onModuleExtensionCreationError cannot be covered in a reasonable way, as to many other tests do not
-         * provide proper module class files and the check for proper module files and the proper error handling has to
-         * be disabled at the moment for unit tests in the code.
-         */
-        $this->setExpectedException(\PHPUnit_Framework_Exception::class);
-        /**
-         * This would be the proper test
-         * $this->setExpectedException(\OxidEsales\EshopCommunity\Core\Exception\SystemComponentException::class);
-         */
-
-        $blDoNotDisableModuleOnError = true;
-        $message= 'If blDoNotDisableModuleOnError is false, no Exception will be thrown.
-                   In this case then the module will be disabled and createClassChain will return the shop class and
-                   not the module class.';
+        $this->setExpectedException($expectedException);
 
         $moduleChainsGeneratorMock = $this->generateModuleChainsGeneratorWithNonExistingFileConfiguration($blDoNotDisableModuleOnError);
 
@@ -141,13 +130,22 @@ class ModuleChainsGeneratorTest extends \OxidTestCase
 
         $moduleChainsGeneratorMock = $this->getMock(
             \OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::class,
-            ['getConfigBlDoNotDisableModuleOnError', 'getConfigDebugMode'],
+            ['getConfigBlDoNotDisableModuleOnError', 'getConfigDebugMode', 'isUnitTest'],
             [$moduleVariablesLocatorMock]
         );
         $moduleChainsGeneratorMock
             ->expects($this->any())
             ->method('getConfigBlDoNotDisableModuleOnError')
             ->will($this->returnValue($blDoNotDisableModuleOnError));
+
+        /**
+         * It is fake not to be a unit test in order to execute the error handling, which is not done for the rest of
+         * the tests.
+         */
+        $moduleChainsGeneratorMock
+            ->expects($this->any())
+            ->method('isUnitTest')
+            ->will($this->returnValue(false));
 
         return $moduleChainsGeneratorMock;
     }
@@ -159,8 +157,14 @@ class ModuleChainsGeneratorTest extends \OxidTestCase
             'blDoNotDisableModuleOnError' => 0,
             'expectedException' => null,
             'message' => 'If blDoNotDisableModuleOnError is false, no Exception will be thrown.
-                          In this case then the module will be disabled and createClassChain will return the shop class and
+                          In this case the module will be disabled and createClassChain will return the shop class and
                           not the module class.'
+          ],
+          [
+            'blDoNotDisableModuleOnError' => 1,
+            'expectedException' => SystemComponentException::class,
+            'message' => 'If blDoNotDisableModuleOnError is true, an Exception will be thrown.
+                          In this case the module will not be disabled.'
           ],
         ];
     }

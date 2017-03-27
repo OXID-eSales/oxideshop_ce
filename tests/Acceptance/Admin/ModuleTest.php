@@ -23,6 +23,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
 use OxidEsales\Eshop\Application\Controller\ContentController;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin interface functionality.

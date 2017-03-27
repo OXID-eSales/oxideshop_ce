@@ -289,7 +289,7 @@ class ModuleChainsGenerator
          */
         /** @var \Composer\Autoload\ClassLoader $composerClassLoader */
         $composerClassLoader = include VENDOR_PATH . 'autoload.php';
-        if (!defined('OXID_PHP_UNIT') && // In unit test some classes are created dynamically, so the files would not exist :-(
+        if (!$this->isUnitTest() && // In unit test some classes are created dynamically, so the files would not exist :-(
             !strpos($moduleClass, '_parent') &&
             !$composerClassLoader->findFile($moduleClass)) {
             $this->handleSpecialCases($parentClass);
@@ -334,7 +334,7 @@ class ModuleChainsGenerator
         /**
          * Test if the class file could be read
          */
-        if (!defined('OXID_PHP_UNIT') && // In unit test some classes are created dynamically, so the files would not exist :-(
+        if (!$this->isUnitTest() && // In unit test some classes are created dynamically, so the files would not exist :-(
             !is_readable($moduleClassFile)) {
             $this->handleSpecialCases($parentClass);
             $this->onModuleExtensionCreationError($moduleClass);
@@ -392,7 +392,10 @@ class ModuleChainsGenerator
         $disableModuleOnError = !$this->getConfigBlDoNotDisableModuleOnError();
         if ($disableModuleOnError) {
             if ($this->disableModule($moduleClass)) {
-                /** An exception is not thrown, but just logged here */
+                /**
+                 * The business logic does allow to throw an exception here, but just at least the disabling of the
+                 * module must be logged
+                 */
                 $module = oxNew("oxModule");
                 $moduleId = $module->getIdByPath($moduleClass);
                 $message = sprintf('Module class %s not found. Module ID %s disabled', $moduleClass, $moduleId);
@@ -457,5 +460,15 @@ class ModuleChainsGenerator
     protected function getConfigBlDoNotDisableModuleOnError()
     {
         return \OxidEsales\Eshop\Core\Registry::get("oxConfigFile")->getVar("blDoNotDisableModuleOnError");
+    }
+
+    /**
+     * Conveniance method for tests
+     *
+     * @return bool
+     */
+    protected function isUnitTest()
+    {
+        return defined('OXID_PHP_UNIT');
     }
 }

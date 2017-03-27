@@ -275,6 +275,8 @@ if (!function_exists("imagecreatefromfile")) {
     /**
      * Create a new image from file or URL
      *
+     * @deprecated since v5.3 (2017-03-27); imagecreatefromfile will not be used in v6.
+     *
      * @return resource an image resource identifier on success, false on errors.
      */
     function imagecreatefromfile($sSrc)

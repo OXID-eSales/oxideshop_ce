@@ -187,7 +187,7 @@ class oxServersManager
     protected function _getServersData()
     {
         $aServersData = array();
-        $rs = $this->_getAllServersDataFromDb();
+        $rs = $this->_getAllServersDataConfigsFromDb();
         if ($rs != false && $rs->recordCount() > 0) {
             while (!$rs->EOF) {
                 $aServersData[substr($rs->fields['oxvarname'], 13)] = (array)unserialize($rs->fields['oxvarvalue']);
@@ -202,7 +202,7 @@ class oxServersManager
      *
      * @return object ResultSetInterface
      */
-    protected function _getAllServersDataFromDb()
+    protected function _getAllServersDataConfigsFromDb()
     {
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $oConfig = oxRegistry::getConfig();
@@ -222,7 +222,33 @@ class oxServersManager
      */
     protected function _getServerDataFromDb($sServerId)
     {
-        return (array) oxRegistry::getConfig()->getSystemConfigParameter('aServersData_'.$sServerId);
+        $aServerData = array();
+        $sData = $this->_getConfigValueFromDB('aServersData_'.$sServerId);
+
+        if ($sData != false ) {
+            $aServerData = (array)unserialize($sData);
+        }
+        return $aServerData;
+    }
+
+    /**
+     * Returns configuration value from database.
+     *
+     * @param string $sVarName Variable name
+     *
+     * @return string
+     */
+    private function _getConfigValueFromDB($sVarName)
+    {
+        $oConfig = oxRegistry::getConfig();
+        $oDb = oxDb::getDb();
+
+        $sConfigsQuery = "SELECT " . $oConfig->getDecodeValueQuery() .
+            " as oxvarvalue FROM oxconfig WHERE oxvarname = ? AND oxshopid = ?";
+
+        $sResult = $oDb->getOne($sConfigsQuery, array($sVarName, $oConfig->getBaseShopId()), false);
+
+        return $sResult;
     }
 
     /**
@@ -233,6 +259,23 @@ class oxServersManager
      */
     protected function _saveToDb($sServerId, $aServerData)
     {
-        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData_'.$sServerId, $aServerData);
+        $oConfig = oxRegistry::getConfig();
+        $sVarName = 'aServersData_'.$sServerId;
+        $sConfigKey = $oConfig->getConfigParam('sConfigKey');
+        $sValue = serialize($aServerData);
+        $sVarType = 'arr';
+        $sShopId = $oConfig->getBaseShopId();
+        $oDb = oxDb::getDb();
+        if ($this->_getConfigValueFromDB($sVarName) !== false) {
+            $sQ = "UPDATE oxconfig SET oxvarvalue=ENCODE( ?, ?) WHERE oxvarname = ? and oxshopid = ?";
+            $oDb->execute($sQ, array($sValue, $sConfigKey, $sVarName, $sShopId));
+        } else {
+            $sOXID = md5($oConfig->getBaseShopId().$sVarName);
+
+            $sQ = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
+               values(?, ?, '', ?, ?, ENCODE( ?, ?) )";
+            $oDb->execute($sQ, array($sOXID, $sShopId, $sVarName, $sVarType, $sValue, $sConfigKey));
+        }
+
     }
 }

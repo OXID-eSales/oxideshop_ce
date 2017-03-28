@@ -30,9 +30,10 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
     {
         parent::setUp();
         oxDb::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
-        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', null);
-        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash2', null);
-        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash3', null);
+        $oConfig = oxRegistry::getConfig();
+        $oConfig->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', null);
+        $oConfig->saveSystemConfigParameter('arr', 'aServersData_serverNameHash2', null);
+        $oConfig->saveSystemConfigParameter('arr', 'aServersData_serverNameHash3', null);
 
     }
 
@@ -111,14 +112,15 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
                 'lastAdminUsage'    => 'adminUsageTimestamp',
                 'isValid'           => true
         );
-        $this->assertEquals($aExpectedServerData, $this->getConfig()->getSystemConfigParameter('aServersData_serverNameHash1'));
+        $this->assertEquals($aExpectedServerData, oxRegistry::getConfig()->getSystemConfigParameter('aServersData_serverNameHash1'));
     }
 
     public function testUpdatingServer()
     {
-        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', array());
-        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash3', array());
-        oxRegistry::getConfig()->saveSystemConfigParameter(
+        $oConfig = oxRegistry::getConfig();
+        $oConfig->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', array());
+        $oConfig->saveSystemConfigParameter('arr', 'aServersData_serverNameHash3', array());
+        $oConfig->saveSystemConfigParameter(
             'arr',
             'aServersData_serverNameHash2',
             array(  'id'                => 'serverNameHash2',
@@ -153,9 +155,12 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             ),
             'serverNameHash3' => array(),
         );
-        $this->assertEquals($aExpectedServerData['serverNameHash1'], $this->getConfig()->getSystemConfigParameter('aServersData_serverNameHash1'));
-        $this->assertEquals($aExpectedServerData['serverNameHash2'], $this->getConfig()->getSystemConfigParameter('aServersData_serverNameHash2'));
-        $this->assertEquals($aExpectedServerData['serverNameHash3'], $this->getConfig()->getSystemConfigParameter('aServersData_serverNameHash3'));
+        $oConfig->setConfigParam('aServersData_serverNameHash1', null);
+        $oConfig->setConfigParam('aServersData_serverNameHash2', null);
+        $oConfig->setConfigParam('aServersData_serverNameHash3', null);
+        $this->assertEquals($aExpectedServerData['serverNameHash1'], $oConfig->getSystemConfigParameter('aServersData_serverNameHash1'));
+        $this->assertEquals($aExpectedServerData['serverNameHash2'], $oConfig->getSystemConfigParameter('aServersData_serverNameHash2'));
+        $this->assertEquals($aExpectedServerData['serverNameHash3'], $oConfig->getSystemConfigParameter('aServersData_serverNameHash3'));
     }
 
     public function testUpdatingEmptyServer()
@@ -183,7 +188,8 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
                 'isValid'           => false
             ),
         );
-        $this->assertEquals($aExpectedServerData['serverNameHash1'], $this->getConfig()->getSystemConfigParameter('aServersData_serverNameHash1'));
+        oxRegistry::getConfig()->setConfigParam('aServersData_serverNameHash1', null);
+        $this->assertEquals($aExpectedServerData['serverNameHash1'], oxRegistry::getConfig()->getSystemConfigParameter('aServersData_serverNameHash1'));
     }
 
     public function testGetServerNodes()
@@ -209,16 +215,19 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
     public function testDeleteServer()
     {
+        $oConfig = oxRegistry::getConfig();
         $this->_storeInitialServersData();
 
-        $this->assertNotNull($this->getConfig()->getSystemConfigParameter('aServersData_serverNameHash1'));
-        $this->assertNotNull($this->getConfig()->getSystemConfigParameter('aServersData_serverNameHash2'));
+        $this->assertNotNull($oConfig->getSystemConfigParameter('aServersData_serverNameHash1'));
+        $this->assertNotNull($oConfig->getSystemConfigParameter('aServersData_serverNameHash2'));
 
         $oManager = new oxServersManager();
         $oManager->deleteServer('serverNameHash1');
 
-        $this->assertNull($this->getConfig()->getSystemConfigParameter('aServersData_serverNameHash1'));
-        $this->assertNotNull($this->getConfig()->getSystemConfigParameter('aServersData_serverNameHash2'));
+        $oConfig->setConfigParam('aServersData_serverNameHash1', null);
+        $oConfig->setConfigParam('aServersData_serverNameHash2', null);
+        $this->assertNull($oConfig->getSystemConfigParameter('aServersData_serverNameHash1'));
+        $this->assertNotNull($oConfig->getSystemConfigParameter('aServersData_serverNameHash2'));
     }
 
     public function testMarkInactive()

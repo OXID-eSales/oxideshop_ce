@@ -32,6 +32,7 @@ DEFINE('ACTION_UPDATE', 3);
 DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
 use oxObjectException;
 use oxRegistry;
 use oxField;
@@ -1379,8 +1380,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * be loaded through oxList.
      *
      * @throws oxObjectException Throws on failure inserting
+     * @throws DatabaseException On database errors
      *
-     * @return bool
+     * @return bool Will always return true. On failure an exception is thrown.
      */
     protected function _update()
     {
@@ -1405,8 +1407,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
                      " where {$coreTableName}.oxid = " . $database->quote($this->getId());
 
         $this->beforeUpdate();
+        $this->executeDatabaseQuery($updateQuery);
 
-        return (bool) $this->executeDatabaseQuery($updateQuery);
+        return true;
     }
 
     /**

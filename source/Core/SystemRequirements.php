@@ -559,7 +559,7 @@ class SystemRequirements
         $result = 1;
         $iErrNo = 0;
         $sErrStr = '';
-        if ($oRes = @fsockopen('www.example.com', 80, $iErrNo, $sErrStr, 10)) {
+        if ($oRes = @fsockopen('localhost', 80, $iErrNo, $sErrStr, 10)) {
             $result = 2;
             fclose($oRes);
         }

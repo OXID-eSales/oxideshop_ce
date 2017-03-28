@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -211,7 +211,9 @@ interface DatabaseInterface
      *
      * @param string $sqlSelect      The sql select statement
      * @param int    $rowCount       Maximum number of rows to return
-     * @param int    $offset         Offset of the first row to return
+     * @param int    $offset         Offset of the first row to return.
+     *                               The current default value of -1 is @deprecated since v5.3.3 (2017-03-28).
+     *                               The default value in V6.0 is zero.
      * @param array  $parameters     The parameters array.
      * @param bool   $executeOnSlave Execute this statement on the slave database. Only evaluated in a master-slave setup.
      *                               This parameter is deprecated since v5.3.0 (2016-06-17). Different solution in 6.0.

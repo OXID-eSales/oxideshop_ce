@@ -264,7 +264,7 @@ interface DatabaseInterface
      *
      * @return ResultSetInterface The result of the given query.
      */
-    public function selectLimit($query, $rowCount = -1, $offset = -1, $parameters = array());
+    public function selectLimit($query, $rowCount = -1, $offset = 0, $parameters = array());
 
     /**
      * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.

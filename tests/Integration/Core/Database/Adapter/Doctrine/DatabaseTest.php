@@ -179,6 +179,23 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
     }
 
     /**
+     * Verify that method 'selectLimit' does not allow a negative offset value.
+     */
+    public function testSelectLimitForOffsetBelowZero()
+    {
+        $this->loadFixtureToTestTable();
+        $sql = 'SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE OXID IN (' .
+               '"' . self::FIXTURE_OXID_1 . '",' .
+               '"' . self::FIXTURE_OXID_2 . '",' .
+               '"' . self::FIXTURE_OXID_3 . '"' .
+               ')';
+
+        $this->setExpectedException(\InvalidArgumentException::class, 'Argument $offset must not be smaller than zero.');
+
+        $this->database->selectLimit($sql, 1, -1);
+    }
+
+    /**
      * Test, that startTransaction() throws the expected Exception on failure.
      */
     public function testStartTransactionThrowsExpectedExceptionOnFailure()

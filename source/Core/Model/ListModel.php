@@ -386,7 +386,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
 
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         if ($this->_aSqlLimit[0] || $this->_aSqlLimit[1]) {
-            $rs = $oDb->selectLimit($sql, $this->_aSqlLimit[1], $this->_aSqlLimit[0], $parameters);
+            $rs = $oDb->selectLimit($sql, $this->_aSqlLimit[1], max(0, $this->_aSqlLimit[0]), $parameters);
         } else {
             $rs = $oDb->select($sql, $parameters);
         }

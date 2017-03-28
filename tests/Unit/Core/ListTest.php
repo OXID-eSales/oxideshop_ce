@@ -239,6 +239,30 @@ class ListTest extends \OxidTestCase
         $this->assertEquals('1', count($oList));
     }
 
+    /**
+     * Test ListModel with negative offset which results in not using limit for select.
+     */
+    public function testSelectStringIfLimitIsSetAndOffsetNegative()
+    {
+        $action = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+        $action->init('oxactions');
+        $action->setId('_test1');
+        $action->oxactions__oxtitle = new oxField('action1', oxField::T_RAW);
+        $action->save();
+
+        $action = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+        $action->init('oxactions');
+        $action->setId('_test2');
+        $action->oxactions__oxtitle = new oxField('action2', oxField::T_RAW);
+        $action->save();
+
+        $list = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class, 'oxactions');
+        $list->setSqlLimit(1, -10);
+        $list->selectString('select * from oxactions where oxid like "\_%"');
+
+        $this->assertEquals('2', count($list));
+    }
+
     public function testSelectStringEmpty()
     {
         $oList = oxNew("oxlist");

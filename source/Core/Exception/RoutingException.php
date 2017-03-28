@@ -37,10 +37,9 @@ class RoutingException extends \OxidEsales\Eshop\Core\Exception\StandardExceptio
     protected $type = 'RoutingException';
 
     /**
-     * DatabaseException constructor.
+     * RoutingException constructor.
      *
-     * Use this exception to catch and rethrow exceptions of the underlying DBAL.
-     * Provide the caught exception as the third parameter of the constructor to enable exception chaining.
+     * This exception is thrown in case no controller class can be found for a supplied controller Id.
      *
      * @param string $controllerId
      */

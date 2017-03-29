@@ -30,11 +30,6 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
     {
         parent::setUp();
         oxDb::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
-        $oConfig = oxRegistry::getConfig();
-        $oConfig->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', null);
-        $oConfig->saveSystemConfigParameter('arr', 'aServersData_serverNameHash2', null);
-        $oConfig->saveSystemConfigParameter('arr', 'aServersData_serverNameHash3', null);
-
     }
 
     public function tearDown()
@@ -105,14 +100,15 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $oServerList->saveServer($oServer);
 
         $aExpectedServerData = array(
+            'serverNameHash1' => array(
                 'id'                => 'serverNameHash1',
                 'timestamp'         => 'timestamp',
                 'ip'                => '127.0.0.1',
                 'lastFrontendUsage' => 'frontendUsageTimestamp',
                 'lastAdminUsage'    => 'adminUsageTimestamp',
                 'isValid'           => true
-        );
-        $this->assertEquals($aExpectedServerData, oxRegistry::getConfig()->getSystemConfigParameter('aServersData_serverNameHash1'));
+        ));
+        $this->assertEquals($aExpectedServerData, $oServerList->getServersData());
     }
 
     public function testUpdatingServer()
@@ -155,12 +151,8 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             ),
             'serverNameHash3' => array(),
         );
-        $oConfig->setConfigParam('aServersData_serverNameHash1', null);
-        $oConfig->setConfigParam('aServersData_serverNameHash2', null);
-        $oConfig->setConfigParam('aServersData_serverNameHash3', null);
-        $this->assertEquals($aExpectedServerData['serverNameHash1'], $oConfig->getSystemConfigParameter('aServersData_serverNameHash1'));
-        $this->assertEquals($aExpectedServerData['serverNameHash2'], $oConfig->getSystemConfigParameter('aServersData_serverNameHash2'));
-        $this->assertEquals($aExpectedServerData['serverNameHash3'], $oConfig->getSystemConfigParameter('aServersData_serverNameHash3'));
+
+        $this->assertEquals($aExpectedServerData, $oServerList->getServersData());
     }
 
     public function testUpdatingEmptyServer()
@@ -188,8 +180,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
                 'isValid'           => false
             ),
         );
-        oxRegistry::getConfig()->setConfigParam('aServersData_serverNameHash1', null);
-        $this->assertEquals($aExpectedServerData['serverNameHash1'], oxRegistry::getConfig()->getSystemConfigParameter('aServersData_serverNameHash1'));
+        $this->assertEquals($aExpectedServerData, $oServerList->getServersData());
     }
 
     public function testGetServerNodes()
@@ -215,19 +206,20 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
     public function testDeleteServer()
     {
-        $oConfig = oxRegistry::getConfig();
         $this->_storeInitialServersData();
 
-        $this->assertNotNull($oConfig->getSystemConfigParameter('aServersData_serverNameHash1'));
-        $this->assertNotNull($oConfig->getSystemConfigParameter('aServersData_serverNameHash2'));
-
         $oManager = new oxServersManager();
+        $aServersData = $oManager->getServersData();
+
+        $this->assertNotNull($aServersData['serverNameHash1']);
+        $this->assertNotNull($aServersData['serverNameHash2']);
+
         $oManager->deleteServer('serverNameHash1');
 
-        $oConfig->setConfigParam('aServersData_serverNameHash1', null);
-        $oConfig->setConfigParam('aServersData_serverNameHash2', null);
-        $this->assertNull($oConfig->getSystemConfigParameter('aServersData_serverNameHash1'));
-        $this->assertNotNull($oConfig->getSystemConfigParameter('aServersData_serverNameHash2'));
+        $aServersData2 = $oManager->getServersData();
+
+        $this->assertNull($aServersData2['serverNameHash1']);
+        $this->assertNotNull($aServersData2['serverNameHash2']);
     }
 
     public function testMarkInactive()

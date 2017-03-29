@@ -66,8 +66,8 @@ if (!function_exists('getCountryList')) {
     {
         $aCountries = array();
         $relativePath = 'Application/Controller/Admin/ShopCountries.php';
-        if (file_exists(getVendorDirectory() . "/oxid-esales/oxideshop-ce/source/$relativePath")) {
-            include getVendorDirectory() . "/oxid-esales/oxideshop-ce/source/$relativePath";
+        if (file_exists(getVendorDirectory() . "oxid-esales/oxideshop-ce/source/$relativePath")) {
+            include getVendorDirectory() . "oxid-esales/oxideshop-ce/source/$relativePath";
         } else {
             include __DIR__ . "/../$relativePath";
         }
@@ -86,8 +86,8 @@ if (!function_exists('getLocation')) {
     {
         $aLocationCountries = array();
         $relativePath = 'Application/Controller/Admin/ShopCountries.php';
-        if (file_exists(getVendorDirectory() . "/oxid-esales/oxideshop-ce/source/$relativePath")) {
-            include getVendorDirectory() . "/oxid-esales/oxideshop-ce/source/$relativePath";
+        if (file_exists(getVendorDirectory() . "oxid-esales/oxideshop-ce/source/$relativePath")) {
+            include getVendorDirectory() . "oxid-esales/oxideshop-ce/source/$relativePath";
         } else {
             include __DIR__ . "/../$relativePath";
         }
@@ -105,8 +105,8 @@ if (!function_exists('getLanguages')) {
     {
         $aLanguages = array();
         $relativePath = 'Application/Controller/Admin/ShopCountries.php';
-        if (file_exists(getVendorDirectory() . "/oxid-esales/oxideshop-ce/source/$relativePath")) {
-            include getVendorDirectory() . "/oxid-esales/oxideshop-ce/source/$relativePath";
+        if (file_exists(getVendorDirectory() . "oxid-esales/oxideshop-ce/source/$relativePath")) {
+            include getVendorDirectory() . "oxid-esales/oxideshop-ce/source/$relativePath";
         } else {
             include __DIR__ . "/../$relativePath";
         }

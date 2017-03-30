@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Smarty;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
 use \testModuleInclusion_parent;
 use \oxRegistry;
@@ -44,7 +44,7 @@ class ModuleFileInclusionTest extends \OxidTestCase
         oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
         $wrapper->createStructure(array(
             'modules' => array(
-                'testmoduleinclusion.php' => "<?php 
+                'testmoduleinclusion.php' => "<?php
                     class testmoduleinclusion extends testmoduleinclusion_parent {
                         public function sayHi() {
                             return \"Hi!\";

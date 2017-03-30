@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use DynExportBase;
 use Exception;
@@ -145,7 +145,7 @@ class DynExportBaseTest extends \OxidTestCase
     public function testStart()
     {
         $testFile = $this->createFile('test.txt', '');
-        $oView = $this->getMock('Unit\Application\Controller\Admin\_DynExportBase', array("prepareExport"));
+        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\_DynExportBase::class, array("prepareExport"));
         $oView->expects($this->once())->method('prepareExport')->will($this->returnValue(5));
         $oView->setVar('sFilePath', $testFile);
         $oView->start();
@@ -216,7 +216,7 @@ class DynExportBaseTest extends \OxidTestCase
         $this->setRequestParameter("aExportResultset", array("aaaaa"));
         $testFile = $this->createFile('test.txt', '');
 
-        $oView = $this->getMock('Unit\Application\Controller\Admin\_DynExportBase', array("nextTick"));
+        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\_DynExportBase::class, array("nextTick"));
         $oView->expects($this->any())->method('nextTick')->will($this->returnValue(5));
         $oView->setVar('sFilePath', $testFile);
         $oView->setExportPerTick(30);
@@ -238,7 +238,7 @@ class DynExportBaseTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("iExportNrofLines", 10);
         $testFile = $this->createFile('test.txt', '');
 
-        $oView = $this->getMock('Unit\Application\Controller\Admin\_DynExportBase', array("nextTick"));
+        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\_DynExportBase::class, array("nextTick"));
         $oView->expects($this->any())->method('nextTick')->will($this->returnValue(5));
         $oView->setVar('sFilePath', $testFile);
         $oView->run();

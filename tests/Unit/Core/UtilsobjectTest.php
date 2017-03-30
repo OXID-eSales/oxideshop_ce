@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxarticle;
 
@@ -86,7 +86,7 @@ class UtilsobjectTest extends \OxidTestCase
      */
     public function tearDown()
     {
-        oxRemClassModule('Unit\Core\modOxUtilsObject_oxUtilsObject');
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\modOxUtilsObject_oxUtilsObject::class);
 
         $oArticle = oxNew('oxArticle');
         $oArticle->delete('testArticle');
@@ -146,11 +146,11 @@ class UtilsobjectTest extends \OxidTestCase
      */
     public function testGetObject()
     {
-        $this->assertTrue(oxNew('Unit\Core\_oxutils_test') instanceof _oxutils_test);
-        $this->assertTrue(oxNew('Unit\Core\_oxutils_test', 1) instanceof _oxutils_test);
-        $this->assertTrue(oxNew('Unit\Core\_oxutils_test', 1, 2) instanceof _oxutils_test);
-        $this->assertTrue(oxNew('Unit\Core\_oxutils_test', 1, 2, 3) instanceof _oxutils_test);
-        $this->assertTrue(oxNew('Unit\Core\_oxutils_test', 1, 2, 3, 4) instanceof _oxutils_test);
+        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class) instanceof _oxutils_test);
+        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1) instanceof _oxutils_test);
+        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1, 2) instanceof _oxutils_test);
+        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1, 2, 3) instanceof _oxutils_test);
+        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1, 2, 3, 4) instanceof _oxutils_test);
     }
 
     public function testOxNewSettingParameters()

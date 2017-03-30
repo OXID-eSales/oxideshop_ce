@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Database;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Database;
 
 use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\TestingLibrary\UnitTestCase;

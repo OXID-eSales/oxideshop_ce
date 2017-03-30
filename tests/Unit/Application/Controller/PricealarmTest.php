@@ -21,7 +21,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxDb;
 use \oxRegistry;

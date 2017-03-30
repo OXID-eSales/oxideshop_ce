@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxCategoryList;
 use \oxField;
@@ -180,7 +180,7 @@ class CategoryListTest extends \OxidTestCase
     {
         parent::setUp();
 
-        $this->classForMock = ($this->getTestConfig()->getShopEdition() === 'EE') ? 'Unit\Application\Model\oxCategoryListHelperEE' : 'Unit\Application\Model\oxCategoryListHelperCE';
+        $this->classForMock = ($this->getTestConfig()->getShopEdition() === 'EE') ? \OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxCategoryListHelperEE::class : \OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxCategoryListHelperCE::class;
 
         $this->_oList = oxNew($this->classForMock);
         $this->_sNoCat = '_no_such_cat_';
@@ -674,7 +674,7 @@ class CategoryListTest extends \OxidTestCase
         $this->_oList->setVar('blForceFull', false);
         $this->_oList->setVar('iForceLevel', 0);
 
-        $moduleName = ($this->getTestConfig()->getShopEdition() === 'EE') ? 'Unit\Application\Model\oxCategoryListHelperLoadCategoryMenusEE' : 'Unit\Application\Model\oxCategoryListHelperLoadCategoryMenusPE';
+        $moduleName = ($this->getTestConfig()->getShopEdition() === 'EE') ? \OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxCategoryListHelperLoadCategoryMenusEE::class : \OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxCategoryListHelperLoadCategoryMenusPE::class;
         oxAddClassModule($moduleName, 'oxcontentlist');
 
         $this->_oList->load();

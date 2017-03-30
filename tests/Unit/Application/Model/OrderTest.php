@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use Exception;
 use oxArticleHelper;
@@ -744,7 +744,7 @@ class OrderTest extends \OxidTestCase
 
     public function testGetShippingSetList()
     {
-        oxAddClassModule('Unit\Application\Model\modoxdeliverylist_oxorder', 'oxdeliverylist');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modoxdeliverylist_oxorder::class, 'oxdeliverylist');
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->setId("_testOrderId");

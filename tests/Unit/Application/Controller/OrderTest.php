@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use oxBasket;
 use oxOutOfStockException;
@@ -150,7 +150,7 @@ class OrderTest extends \OxidTestCase
         $oUser->setId('_testUserId');
         $oUser->save();
 
-        oxAddClassModule('\Unit\Application\Controller\UtilsHelper', 'oxUtils');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\UtilsHelper::class, 'oxUtils');
         PaymentHelper::$dBasketPrice = null;
     }
 
@@ -372,7 +372,7 @@ class OrderTest extends \OxidTestCase
      */
     public function testRender()
     {
-        oxAddClassModule('Unit\Application\Controller\PaymentHelper', 'oxpayment');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper::class, 'oxpayment');
 
         $config = $this->getConfig();
         $session = oxRegistry::getSession();
@@ -587,7 +587,7 @@ class OrderTest extends \OxidTestCase
     {
         $oConfig = $this->getConfig();
 
-        oxAddClassModule('\Unit\Application\Controller\OrderHelper', 'oxorder');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\OrderHelper::class, 'oxorder');
 
         //basket name in session will be "basket"
         $oConfig->setConfigParam('blMallSharedBasket', 1);
@@ -731,7 +731,7 @@ class OrderTest extends \OxidTestCase
         $oBasket->expects($this->once())->method('getPaymentId')->will($this->returnValue('oxidinvoice'));
 
         PaymentHelper::$dBasketPrice = null;
-        oxAddClassModule('Unit\Application\Controller\PaymentHelper', 'oxPayment');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper::class, 'oxPayment');
 
         $oOrder = $this->getMock('Order', array('getBasket'));
         $oOrder->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));

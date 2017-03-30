@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxField;
 use OxidEsales\EshopEnterprise\Application\Model\Country;
@@ -53,7 +53,7 @@ class CountryListTest extends \OxidTestCase
             $country->oxcountry__oxactive = new oxField(0, oxField::T_RAW);
             $country->oxcountry__oxorder = new oxField(0, oxField::T_RAW);
             $country->oxcountry__oxtitle = new oxField($title, oxField::T_RAW);
-            
+
             $country->save();
         }
     }

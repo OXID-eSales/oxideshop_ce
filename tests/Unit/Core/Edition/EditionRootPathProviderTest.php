@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Edition;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Edition;
 
 use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
 use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;

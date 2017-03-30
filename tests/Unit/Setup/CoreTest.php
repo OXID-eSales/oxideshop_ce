@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Setup;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Setup;
 
 use OxidEsales\EshopCommunity\Setup\Core;
 

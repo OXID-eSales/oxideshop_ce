@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use oxSystemComponentException;
 use oxUtilsHelper;
@@ -284,7 +284,7 @@ class ViewTest extends \OxidTestCase
      */
     public function testExecuteFunction()
     {
-        $oView = $this->getMock('Unit\Application\Controller\modOxView', array('xxx', '_executeNewAction'));
+        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\modOxView::class, array('xxx', '_executeNewAction'));
         $oView->expects($this->once())->method('xxx')->will($this->returnValue('xxx'));
         $oView->expects($this->once())->method('_executeNewAction')->with($this->equalTo('xxx'));
         $oView->executeFunction('xxx');
@@ -299,7 +299,7 @@ class ViewTest extends \OxidTestCase
 
     public function testExecuteFunctionThrowsExeption()
     {
-        $oView = $this->getMock('Unit\Application\Controller\modOxView', array('xxx'));
+        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\modOxView::class, array('xxx'));
         $oView->expects($this->never())->method('xxx');
 
 

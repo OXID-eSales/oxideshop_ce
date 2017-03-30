@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxcmp_user;
 use \Exception;
@@ -369,7 +369,7 @@ class CmpUserTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getShopHomeUrl')->will($this->returnValue('shopurl/?'));
         $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(false));
 
-        $oView = $this->getMock('Unit\Application\Controller\modcmp_user', array('getConfig'));
+        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\modcmp_user::class, array('getConfig'));
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->setRequestParameter('cl', 'testclass');
@@ -392,7 +392,7 @@ class CmpUserTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getShopSecureHomeUrl')->will($this->returnValue('sslshopurl/?'));
         $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(true));
 
-        $oView = $this->getMock('Unit\Application\Controller\modcmp_user', array('getConfig'));
+        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\modcmp_user::class, array('getConfig'));
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $this->setRequestParameter('cl', 'testclass');
         $this->setRequestParameter('cnid', 'catid');

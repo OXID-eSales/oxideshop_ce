@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Smarty;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
 use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
 use \testModuleSimilarName_parent;
@@ -42,7 +42,7 @@ class ModuleSimilarClassTest extends \OxidTestCase
         oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
         $wrapper->createStructure(array(
             'modules' => array(
-                'testmodulesimilarname.php' => "<?php 
+                'testmodulesimilarname.php' => "<?php
                     class testModuleSimilarName extends testModuleSimilarName_parent {
                         public function sayHi() {
                             return \"Hi!\";
@@ -69,7 +69,7 @@ class ModuleSimilarClassTest extends \OxidTestCase
         oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
         $wrapper->createStructure(array(
             'modules' => array(
-                'testmodulesimilarname.php' => "<?php 
+                'testmodulesimilarname.php' => "<?php
                     class testModuleSimilarName extends testModuleSimilarName_parent {
                         public function sayHi() {
                             return \"Hi!\";

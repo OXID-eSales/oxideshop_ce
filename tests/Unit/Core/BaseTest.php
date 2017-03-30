@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxObjectException;
 
@@ -1557,7 +1557,7 @@ class BaseTest extends \OxidTestCase
      */
     public function  testSaveIsDerived()
     {
-        $oBase = $this->getMock('Unit\Core\_oxBase', array('update'));
+        $oBase = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxBase::class, array('update'));
         $oBase->expects($this->any())
             ->method('update')
             ->will($this->returnValue(true));
@@ -1701,7 +1701,7 @@ class BaseTest extends \OxidTestCase
         $sInsert = "Insert into oxarticles (`OXID`,`OXTITLE`) values ('_test','test')";
         $myDB->Execute($sInsert);
 
-        $oBase = $this->getMock('Unit\Core\_oxBase', array('_getUpdateFields'));
+        $oBase = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxBase::class, array('_getUpdateFields'));
         $oBase->expects($this->any())
             ->method('_getUpdateFields')
             ->will($this->returnValue(''));
@@ -1825,7 +1825,7 @@ class BaseTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxUtils', 'fromFileCache', '{return false;}');
         oxTestModules::addFunction('oxUtils', 'fromStaticCache', '{return false;}');
-        $oBase = $this->getMock('Unit\Core\_oxBase', array('isAdmin'));
+        $oBase = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxBase::class, array('isAdmin'));
         $oBase->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oBase->init('oxactions');
 

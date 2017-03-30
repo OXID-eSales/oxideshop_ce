@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxDb;
 use OxidEsales\EshopCommunity\Core\GenericImport\GenericImport;
@@ -47,7 +47,7 @@ class GenericImportTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxRemClassModule('GenericImportTest_oxUtilsServer');
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\GenericImportTest_oxUtilsServer::class);
         $this->cleanUpTable('oxuser');
         parent::tearDown();
     }
@@ -57,7 +57,7 @@ class GenericImportTest extends OxidTestCase
      */
     public function testInit()
     {
-        oxAddClassModule('Unit\Core\GenericImportTest_oxUtilsServer', 'oxUtilsServer');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\GenericImportTest_oxUtilsServer::class, 'oxUtilsServer');
         $oImport = new GenericImport();
 
         /** @var oxUser|MockObject $oUser */

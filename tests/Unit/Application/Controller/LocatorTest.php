@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use oxArticle;
 use \oxLocator;
@@ -229,7 +229,7 @@ class LocatorTest extends \OxidTestCase
         $oConfig = $this->getMock('oxconfig', array('getConfigParam'));
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
 
-        $oLocator = $this->getMock('Unit\Application\Controller\testOxLocator', array('getConfig'));
+        $oLocator = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\testOxLocator::class, array('getConfig'));
         $oLocator->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         // testing

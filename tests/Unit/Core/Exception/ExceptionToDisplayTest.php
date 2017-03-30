@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Exception;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
 
 use \oxRegistry;
 use \oxTestModules;

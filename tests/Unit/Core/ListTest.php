@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxI18n;
 use \stdClass;
@@ -351,7 +351,7 @@ class ListTest extends \OxidTestCase
 
         $sQ = "select * from oxarticles limit 0,5";
         $oSubj = oxNew('oxList');
-        $oSubj->init("Unit\\Core\\TestElement", "oxarticles");
+        $oSubj->init(\OxidEsales\EshopCommunity\Tests\Unit\Core\TestElement::class, "oxarticles");
         $oSubj->selectString($sQ);
 
         $oElement = new TestElement();

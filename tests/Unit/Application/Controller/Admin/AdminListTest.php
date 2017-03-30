@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxActions;
 use \oxField;
@@ -157,7 +157,7 @@ class AdminListTest extends \OxidTestCase
         $_POST['oxid'] = '_testId';
         $this->setRequestParameter('oxid', '_testId');
 
-        $oAdminList = $this->getProxyClass('Unit\Application\Controller\Admin\AdminListHelper');
+        $oAdminList = $this->getProxyClass(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\AdminListHelper::class);
         $oAdminList->setNonPublicVar('_sListClass', 'oxlinks');
         $oAdminList->deleteEntry();
 

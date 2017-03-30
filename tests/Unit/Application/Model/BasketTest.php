@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxArticleInputException;
 use oxNoArticleException;
@@ -1257,7 +1257,7 @@ class BasketTest extends \OxidTestCase
         $oBasketItem = oxNew('oxbasketitem');
         $oBasketItem->init($this->oArticle->getId(), 1);
 
-        $oBasket = $this->getMock('Unit\Application\Model\modForTestAddBundles', array('_getItemBundles', 'addToBasket', '_getBasketBundles'));
+        $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, array('_getItemBundles', 'addToBasket', '_getBasketBundles'));
         $oBasket->expects($this->once())->method('_getItemBundles')->will($this->returnValue(array('x' => 1)));
         $oBasket->expects($this->exactly(1))->method('addToBasket')->will($this->returnValue($oBasketItem));
         $oBasket->expects($this->once())->method('_getBasketBundles')->will($this->returnValue(array('x' => 1)));
@@ -1284,7 +1284,7 @@ class BasketTest extends \OxidTestCase
         $this->oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
         $this->oArticle->oxarticles__oxstockflag = new oxField(2, oxField::T_RAW);
         $this->oArticle->save();
-        $oBasket = $this->getMock('Unit\Application\Model\modForTestAddBundles', array('addToBasket'));
+        $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, array('addToBasket'));
         $oBasket->expects($this->never())->method('addToBasket')->will($this->returnValue($oBasketItem));
 
         // testing
@@ -1309,7 +1309,7 @@ class BasketTest extends \OxidTestCase
         $this->oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
         $this->oArticle->oxarticles__oxstockflag = new oxField(3, oxField::T_RAW);
         $this->oArticle->save();
-        $oBasket = $this->getMock('Unit\Application\Model\modForTestAddBundles', array('addToBasket'));
+        $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, array('addToBasket'));
         $oBasket->expects($this->never())->method('addToBasket')->will($this->returnValue($oBasketItem));
 
         // testing
@@ -1331,7 +1331,7 @@ class BasketTest extends \OxidTestCase
         $oBasketItem->expects($this->any())->method('isDiscountArticle')->will($this->returnValue(true));
         $oBasketItem->init($this->oArticle->getId(), 1);
 
-        $oBasket = $this->getMock('Unit\Application\Model\modForTestAddBundles', array('_getItemBundles', 'addToBasket', '_getBasketBundles'));
+        $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, array('_getItemBundles', 'addToBasket', '_getBasketBundles'));
         $oBasket->expects($this->never())->method('_getItemBundles');
         $oBasket->expects($this->never())->method('addToBasket');
         $oBasket->expects($this->once())->method('_getBasketBundles');
@@ -1382,7 +1382,7 @@ class BasketTest extends \OxidTestCase
         $oBasketItem2 = oxNew('oxbasketitem');
         $oBasketItem2->init($oArticle->getId(), 1);
 
-        $oBasket = $this->getMock('Unit\Application\Model\modForTestAddBundles', array('_addBundlesToBasket'));
+        $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, array('_addBundlesToBasket'));
         $oBasket->expects($this->exactly(3))->method('_addBundlesToBasket');
 
         // testing
@@ -2213,7 +2213,7 @@ class BasketTest extends \OxidTestCase
     {
         $sVoucherId = '_testVoucherId';
 
-        $oBasket = $this->getMock('Unit\Application\Model\modForTestAddBundles', array('onUpdate'));
+        $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, array('onUpdate'));
         $oBasket->expects($this->once())->method('onUpdate');
 
         $oBasket->setVar('aVouchers', array($sVoucherId => 1));
@@ -2227,7 +2227,7 @@ class BasketTest extends \OxidTestCase
      */
     public function testRemoveVoucherWithNotAssignedVoucherId()
     {
-        $oBasket = $this->getMock('Unit\Application\Model\modForTestAddBundles', array('onUpdate'));
+        $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, array('onUpdate'));
         $oBasket->expects($this->never())->method('onUpdate');
 
         $oBasket->setVar('aVouchers', array('_xxx' => 1));
@@ -2301,7 +2301,7 @@ class BasketTest extends \OxidTestCase
         $oUser = $this->getMock('oxuser', array('getBasket'));
         $oUser->expects($this->once())->method('getBasket')->will($this->returnValue($oUserBasket));
 
-        $oBasket = $this->getMock('Unit\Application\Model\modForTestAddBundles', array('getBasketUser', 'addToBasket', '_canSaveBasket'));
+        $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, array('getBasketUser', 'addToBasket', '_canSaveBasket'));
         $oBasket->expects($this->once())->method('getBasketUser')->will($this->returnValue($oUser));
         $oBasket->expects($this->once())->method('addToBasket');
         $oBasket->setVar('aBasketContents', array(new oxbasketitem()));

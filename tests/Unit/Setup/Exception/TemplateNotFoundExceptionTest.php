@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace Unit\Setup\Exception;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Setup\Exception;
 
 use OxidEsales\EshopCommunity\Setup\Exception\TemplateNotFoundException;
 

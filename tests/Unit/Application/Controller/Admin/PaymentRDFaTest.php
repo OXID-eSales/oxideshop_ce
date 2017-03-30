@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \stdClass;
 
@@ -64,7 +64,7 @@ class PaymentRDFaTest extends \OxidTestCase
         $oDB = oxDb::getDb();
 
         $iExists = $oDB->GetOne(
-            'SELECT 1 FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?', 
+            'SELECT 1 FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?',
             array($sTestID, 'rdfapayment')
         );
         $this->assertFalse(empty($iExists));
@@ -104,7 +104,7 @@ class PaymentRDFaTest extends \OxidTestCase
         $oView->save();
 
         $aCurrObjIDs = $oDB->GetCol(
-            'SELECT oxobjectid FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?', 
+            'SELECT oxobjectid FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?',
             array($sTestID, 'rdfapayment')
         );
         sort($aObjIDs);

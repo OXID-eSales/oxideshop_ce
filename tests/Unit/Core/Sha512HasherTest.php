@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 class Sha512HasherTest extends \OxidTestCase
 {
@@ -31,4 +31,4 @@ class Sha512HasherTest extends \OxidTestCase
 
         $this->assertSame($sHash, $oHasher->hash('somestring05853e9aba10b9c25a3b8af5618ec9fa'));
     }
-} 
+}

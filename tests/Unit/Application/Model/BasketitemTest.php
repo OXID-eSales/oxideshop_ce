@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxArticleException;
 use oxArticleInputException;
@@ -509,17 +509,17 @@ class BasketitemTest extends \OxidTestCase
     {
         $article = $this->createArticle();
 
-        oxAddClassModule('Unit\Application\Model\BasketItemTest_ArticleHelper', 'oxArticle');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\BasketItemTest_ArticleHelper::class, 'oxArticle');
 
         $oBasketItem = oxNew('oxBasketItem');
         try {
             $oBasketItem->getArticle(true, $article->getId());
         } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oEx) {
-            oxRemClassModule('Unit\Application\Model\BasketItemTest_ArticleHelper');
+            oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\BasketItemTest_ArticleHelper::class);
             return;
         }
 
-        oxRemClassModule('Unit\Application\Model\BasketItemTest_ArticleHelper');
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\BasketItemTest_ArticleHelper::class);
         $this->fail('Execption was not thrown when article is not buyable');
     }
 
@@ -544,7 +544,7 @@ class BasketitemTest extends \OxidTestCase
      */
     public function testGetArticle_notVisibleArticle()
     {
-        oxAddClassModule('Unit\Application\Model\modOxArticle_notVisible_oxbasketItem', 'oxArticle');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxArticle_notVisible_oxbasketItem::class, 'oxArticle');
 
         $article = $this->createArticle();
         $oBasketItem = oxNew('oxBasketItem');

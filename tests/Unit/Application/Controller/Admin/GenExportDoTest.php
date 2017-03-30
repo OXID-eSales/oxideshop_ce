@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxTestModules;
 
@@ -106,7 +106,7 @@ class GenExportDoTest extends \OxidTestCase
      */
     public function testNextTick()
     {
-        oxTestModules::addFunction("oxUtilsView", "getSmarty", "{return \\Unit\\Application\\Controller\\Admin\\GenExportDoTest_smarty::getInstance();}");
+        oxTestModules::addFunction("oxUtilsView", "getSmarty", "{return \\OxidEsales\\EshopCommunity\\Tests\\Unit\\Application\\Controller\\Admin\\GenExportDoTest_smarty::getInstance();}");
 
         $oView = $this->getMock("GenExport_Do", array("getOneArticle", "write", "getViewId"));
         $oView->expects($this->once())->method('getOneArticle')->will($this->returnValue(oxNew('oxArticle')));

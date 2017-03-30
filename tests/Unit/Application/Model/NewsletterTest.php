@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use Exception;
 use oxException;
@@ -201,8 +201,8 @@ class NewsletterTest extends \OxidTestCase
         $sSql = "update oxnewssubscribed set oxemailfailed = '0' where oxuserid = 'oxdefaultadmin' ";
         $oDB->Execute($sSql);
 
-        oxRemClassModule('modEmailOxNewsLetter');
-        oxRemClassModule('modEmailOxNewsLetter2');
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modEmailOxNewsLetter::class);
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modEmailOxNewsLetter2::class);
 
         parent::tearDown();
     }
@@ -262,7 +262,7 @@ class NewsletterTest extends \OxidTestCase
         $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
-        $oTestNews = $this->getMock('Unit\Application\Model\oxnewsletterForUnit_oxnewsletterTest', array('_assignProducts'));
+        $oTestNews = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxnewsletterForUnit_oxnewsletterTest::class, array('_assignProducts'));
         $oTestNews->expects($this->once())->method('_assignProducts')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Controller\FrontendController'), $this->equalTo(true));
         $oTestNews->load('newstest');
         $oTestNews->setNonPublicVar('_oUser', $oUser);
@@ -398,7 +398,7 @@ class NewsletterTest extends \OxidTestCase
 
     public function testSendMail()
     {
-        oxAddClassModule('Unit\Application\Model\modEmailOxNewsLetter2', 'oxEmail');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modEmailOxNewsLetter2::class, 'oxEmail');
 
         $oTestNews = oxNew("oxNewsLetter");
         if (!$oTestNews->load('oxidnewsletter')) {
@@ -417,7 +417,7 @@ class NewsletterTest extends \OxidTestCase
      */
     public function testSendMail_Subject()
     {
-        oxAddClassModule('Unit\Application\Model\modEmailOxNewsLetterSubject', 'oxEmail');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modEmailOxNewsLetterSubject::class, 'oxEmail');
 
         $oTestNews = oxNew("oxNewsLetter");
         if (!$oTestNews->load('oxidnewsletter')) {

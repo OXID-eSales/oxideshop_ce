@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace Unit\Setup\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Setup\Controller;
 
 use OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
 

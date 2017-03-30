@@ -24,9 +24,9 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Autoload;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
- * Test the module controller provider cache.
+ * Class VirtualNamespaceClassMapProviderTest
  *
- * @package Unit\Core\Routing\Module
+ * @package OxidEsales\EshopCommunity\Tests\Unit\Core\Autoload
  */
 class VirtualNamespaceClassMapProviderTest extends UnitTestCase
 {

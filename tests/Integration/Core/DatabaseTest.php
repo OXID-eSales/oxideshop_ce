@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace Integration\Core;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use oxDb;
 use OxidEsales\EshopCommunity\Core\ConfigFile;

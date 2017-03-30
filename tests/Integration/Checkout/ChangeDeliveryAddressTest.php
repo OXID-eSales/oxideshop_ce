@@ -2,7 +2,7 @@
 /**
  * #PHPHEADER_OXID_LICENSE_INFORMATION#
  */
-namespace Integration\Checkout;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Checkout;
 
 use oxField;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;

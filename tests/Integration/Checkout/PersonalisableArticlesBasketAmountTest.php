@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Integration\Checkout;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Checkout;
 
 use oxBasket;
 use oxField;

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\OnlineInfo;
+namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
 use oxCurl;
 use OxidEsales\Eshop\Core\Curl;

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2017
  * @version       OXID eShop CE
  */
-namespace Unit\Integration\Routing;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Routing;
 
 use OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage;
 use OxidEsales\TestingLibrary\UnitTestCase;

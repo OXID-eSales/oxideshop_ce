@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Timestamp;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Timestamp;
 
 use oxDb;
 use oxField;
@@ -193,8 +193,8 @@ class TimestampTest extends \OxidTestCase
     public function testAllTablesHasOxTimestamp()
     {
         $oDb = oxDb::getDb();
-        $sQ = "SELECT TABLE_NAME FROM information_schema.tables 
-          WHERE TABLE_TYPE='BASE TABLE' 
+        $sQ = "SELECT TABLE_NAME FROM information_schema.tables
+          WHERE TABLE_TYPE='BASE TABLE'
             AND TABLE_NAME NOT LIKE 'oxmigrations%'
             AND TABLE_SCHEMA = DATABASE()";
         $aTableNames = $oDb->getAll($sQ);

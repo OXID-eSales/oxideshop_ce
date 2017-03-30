@@ -40,6 +40,7 @@ use ReflectionMethod;
  */
 class ShopControl extends \OxidEsales\Eshop\Core\Base
 {
+
     /**
      * Used to force handling, it allows other place like widget controller to skip it.
      *
@@ -114,6 +115,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Path to the file, which holds the timestamp of the moment the last offline warning was sent.
+     *
      * @var
      */
     protected $offlineWarningTimestampFile;
@@ -154,7 +156,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         } catch (\OxidEsales\Eshop\Core\Exception\CookieException $exception) {
             $this->_handleCookieException($exception);
         } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
-            \OxidEsales\Eshop\Core\Exception\ExceptionHandler::handleDatabaseException($exception);
+            $this->handleDatabaseException($exception);
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
             $this->_handleBaseException($exception);
         }
@@ -220,6 +222,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             }
             $session->setVariable('cl', $controllerKey);
         }
+
         return $controllerKey;
     }
 
@@ -758,54 +761,35 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * If the database connection has not been configured, redirect to the OXID eShop setup wizard
-     */
-    protected function handleDbNotConfiguredException()
-    {
-        /**
-         * The shop standard redirect mechanism needs a working database connection.
-         * Use a special method here.
-         */
-        $this->redirectToSetupWizardWithoutDbConnection();
-    }
-
-    /**
-     * Report the exception and in case that iDebug is not set, redirect to maintenance page.
-     * Special methods are used here as the normal exception handling routines always need a database connection and
-     * this would create a loop.
+     * Handle database exceptions
+     * There is still space for improving this as a similar exception handling for database exceptions may be done in
+     * \OxidEsales\EshopCommunity\Core\Config::init() and the current method may not be executed
      *
-     * @param \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $exception Exception to handle
+     * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception Exception to handle
      */
-    protected function handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $exception)
+    protected function handleDatabaseException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception)
     {
         /**
-         * Report the database connection exception
+         * There may be some more exceptions, while trying to retrieve debug mode.
+         * As we are already inside the exception handling process, we MUST catch any exception here.
+         * The exception newly thrown will not be handled as we might end up in a loop.
          */
-        $this->reportDatabaseConnectionException($exception);
-
-        /**
-         * Render the database connection exception
-         */
-        if ($this->_isDebugMode()) {
-            echo '<pre>' . $exception->getString() . '</pre>';
-            exit(1);
-        } else {
-            /**
-             * Render an error message.
-             * If offline.html exists its content is displayed.
-             * Like this the error message is overridable within that file.
-             */
-            $displayMessage = ''; // Do not disclose any information
-            if (file_exists(OX_OFFLINE_FILE) && is_readable(OX_OFFLINE_FILE)) {
-                $displayMessage = file_get_contents(OX_OFFLINE_FILE);
-            };
-
-            header("HTTP/1.1 500 Internal Server Error");
-            header("Connection: close");
-            echo $displayMessage;
-
-            exit(1);
+        try {
+            $debugMode = $this->_isDebugMode();
+        } catch (\Exception $newException) {
+            $this->logException($newException);
+            $debugMode = 0;
         }
+        if ($exception instanceof \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException) {
+            try {
+                $this->reportDatabaseConnectionException($exception);
+            } catch (\Exception $newException) {
+                $this->logException($newException);
+            }
+        }
+
+        $exceptionHandler = new \OxidEsales\Eshop\Core\Exception\ExceptionHandler($debugMode);
+        $exceptionHandler->handleDatabaseException($exception);
     }
 
     /**
@@ -815,7 +799,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function _handleBaseException($exception)
     {
-        $exception->debugOut();
+        $this->logException($exception);
 
         if ($this->_isDebugMode()) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception);
@@ -833,39 +817,9 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function logException(\Exception $exception)
     {
         if (!$exception instanceof \OxidEsales\Eshop\Core\Exception\StandardException) {
-            $exception = new oxException($exception->getMessage(), $exception->getCode(), $exception);
+            $exception = new \OxidEsales\Eshop\Core\Exception\StandardException($exception->getMessage(), $exception->getCode(), $exception);
         }
         $exception->debugOut();
-    }
-
-    /**
-     * Redirect to the OXID eShop maintenance page.
-     * This method is used instead of the eShop standard redirection mechanism
-     * in case no database connection is available.
-     *
-     * This method forms part of the exception handling process. Any further exceptions must be caught.
-     */
-    protected function redirectToMaintenancePageWithoutDbConnection()
-    {
-        header("HTTP/1.1 302 Found");
-        header("Location: ". OX_OFFLINE_FILE);
-        header("Connection: close");
-        exit(1);
-    }
-
-    /**
-     * Redirect to the OXID eShop setup wizard.
-     * This method is used instead of the eShop standard redirection mechanism
-     * in case no database connection is available.
-     *
-     * This method forms part of the exception handling process. Any further exceptions must be caught.
-     */
-    protected static function redirectToSetupWizardWithoutDbConnection()
-    {
-        header("HTTP/1.1 302 Found");
-        header("Location: Setup/index.php");
-        header("Connection: close");
-        exit();
     }
 
     /**
@@ -879,11 +833,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function reportDatabaseConnectionException(DatabaseConnectionException $exception)
     {
-        /**
-         * Log the exception
-         */
-        $this->logException($exception);
-
         /**
          * If the shop is not in debug mode, a "shop offline" warning is send to the shop admin.
          * In order not to spam the shop admin, the warning will be sent in a certain interval of time.
@@ -940,16 +889,15 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         if ($emailAddress) {
             /** As we are inside the exception handling process, any further exceptions must be caught */
-            try {
-                $failedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
+            $failedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
 
-                $date = date(DATE_RFC822); // RFC 822 (example: Mon, 15 Aug 05 15:52:01 +0000)
-                $script = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
-                $referrer = $_SERVER['HTTP_REFERER'];
+            $date = date(DATE_RFC822); // RFC 822 (example: Mon, 15 Aug 05 15:52:01 +0000)
+            $script = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
+            $referrer = $_SERVER['HTTP_REFERER'];
 
-                //sending a message to admin
-                $emailSubject = 'Offline warning!';
-                $emailBody = "
+            //sending a message to admin
+            $emailSubject = 'Offline warning!';
+            $emailBody = "
                 Database connection error in OXID eShop:
                 Date: {$date}
                 Shop: {$failedShop}
@@ -960,27 +908,24 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
                 Script: {$script}
                 Referrer: {$referrer}";
 
-                $mailer = new PHPMailer();
-                $mailer->isMail();
+            $mailer = new PHPMailer();
+            $mailer->isMail();
 
-                $mailer->setFrom($emailAddress);
-                $mailer->addAddress($emailAddress);
-                $mailer->Subject = $emailSubject;
-                $mailer->Body = $emailBody;
-                /** Set the priority of the message
-                 * For most clients expecting the Priority header:
-                 * 1 = High, 2 = Medium, 3 = Low
-                 * */
-                $mailer->Priority = 1;
-                /** MS Outlook custom header */
-                $mailer->addCustomHeader("X-MSMail-Priority: Urgent");
-                /** Set the Importance header: */
-                $mailer->addCustomHeader("Importance: High");
+            $mailer->setFrom($emailAddress);
+            $mailer->addAddress($emailAddress);
+            $mailer->Subject = $emailSubject;
+            $mailer->Body = $emailBody;
+            /** Set the priority of the message
+             * For most clients expecting the Priority header:
+             * 1 = High, 2 = Medium, 3 = Low
+             * */
+            $mailer->Priority = 1;
+            /** MS Outlook custom header */
+            $mailer->addCustomHeader("X-MSMail-Priority: Urgent");
+            /** Set the Importance header: */
+            $mailer->addCustomHeader("Importance: High");
 
-                $result = $mailer->send();
-            } catch (\Exception $exception) {
-                $this->logException($exception);
-            }
+            $result = $mailer->send();
         }
 
         return $result;
@@ -1003,6 +948,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $this->handleRoutingException($exception);
             $controllerClass = $controllerKey;
         }
+
         return $controllerClass;
     }
 }

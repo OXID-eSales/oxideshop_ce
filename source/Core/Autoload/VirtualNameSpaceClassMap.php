@@ -471,7 +471,6 @@ class VirtualNameSpaceClassMap
             'OxidEsales\Eshop\Core\Exception\DatabaseErrorException' => \OxidEsales\EshopCommunity\Core\Exception\DatabaseErrorException::class,
             'OxidEsales\Eshop\Core\Exception\DatabaseException' => \OxidEsales\EshopCommunity\Core\Exception\DatabaseException::class,
             'OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException' => \OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException::class,
-            'OxidEsales\Eshop\Core\Exception\ErrorHandler' => \OxidEsales\EshopCommunity\Core\Exception\ErrorHandler::class,
             'OxidEsales\Eshop\Core\Exception\ExceptionHandler' => \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::class,
             'OxidEsales\Eshop\Core\Exception\ExceptionToDisplay' => \OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay::class,
             'OxidEsales\Eshop\Core\Exception\FileException' => \OxidEsales\EshopCommunity\Core\Exception\FileException::class,

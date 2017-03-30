@@ -34,7 +34,7 @@ class ExceptionHandler
      *
      * @var string
      */
-    protected $_sFileName = OX_LOG_FILE;
+    protected $_sFileName;
 
     /**
      * Shop debug
@@ -51,6 +51,7 @@ class ExceptionHandler
     public function __construct($iDebug = 0)
     {
         $this->_iDebug = (int) $iDebug;
+        $this->_sFileName = basename(OX_LOG_FILE);
     }
 
     /**

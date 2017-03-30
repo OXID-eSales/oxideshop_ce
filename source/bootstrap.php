@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link          http://www.oxid-esales.com
+ * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * @version   OXID eShop CE
  */
 
 error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
@@ -25,26 +25,31 @@ ini_set('display_errors', 0);
 
 define('INSTALLATION_ROOT_PATH', dirname(__DIR__));
 define('OX_BASE_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR);
-// Will be exception.log after CI is adapted
-// define('OX_LOG_FILE', OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'exception.log');
 define('OX_LOG_FILE', OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'EXCEPTION_LOG.txt');
 define('OX_OFFLINE_FILE', OX_BASE_PATH . 'offline.html');
 define('VENDOR_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
 
-//Where CORE_AUTOLOADER_PATH points depends in if the shop is installed as compilation or not.
+/**
+ * Where CORE_AUTOLOADER_PATH points depends on how OXID eShop has been installed. If it is installed as part of a
+ * compilation, the directory 'Core', where the auto load classes are located, does not reside inside OX_BASE_PATH,
+ * but inside VENDOR_PATH.
+ */
 if (!is_dir(OX_BASE_PATH . 'Core')) {
-    //we need this in case of compilation installation
-    define('CORE_AUTOLOADER_PATH', VENDOR_PATH . 'oxid-esales' . DIRECTORY_SEPARATOR . 'oxideshop-ce' . DIRECTORY_SEPARATOR .
-                                   'source' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR);
+    define('CORE_AUTOLOADER_PATH', VENDOR_PATH .
+                                   'oxid-esales' . DIRECTORY_SEPARATOR .
+                                   'oxideshop-ce' . DIRECTORY_SEPARATOR .
+                                   'source' . DIRECTORY_SEPARATOR .
+                                   'Core' . DIRECTORY_SEPARATOR .
+                                   'Autoload' . DIRECTORY_SEPARATOR);
 } else {
     define('CORE_AUTOLOADER_PATH', OX_BASE_PATH . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR);
 }
 
 /**
- * Provide a handler for cachable fatal errors, like failed requirement of files.
- * No information about paths or filenames must be disclosed to the frontend,
+ * Provide a handler for catchable fatal errors, like failed requirement of files.
+ * No information about paths or file names must be disclosed to the frontend,
  * as this would be a security problem on productive systems.
- * This error handler just is a last resort for exceptions not caught by the application
+ * This error handler is just a last resort for exceptions, which are not caught by the application.
  *
  * As this is the last resort no further errors must happen.
  */
@@ -88,9 +93,7 @@ register_shutdown_function(function () {
 /**
  * First of all ensure, that the shop config file is available.
  */
-if (!file_exists(OX_BASE_PATH . "config.inc.php") ||
-    !is_readable(OX_BASE_PATH . "config.inc.php")
-) {
+if (!is_readable(OX_BASE_PATH . "config.inc.php")) {
     $message = sprintf(
         "Config file '%s' could not be found! Please use '%s.dist' to make a copy.",
         OX_BASE_PATH . "config.inc.php",
@@ -156,9 +159,7 @@ require_once OX_BASE_PATH . 'oxfunctions.php';
 /**
  * Custom bootstrap functionality.
  */
-if (file_exists(OX_BASE_PATH . 'modules/functions.php') &&
-    is_readable(OX_BASE_PATH . 'modules/functions.php')
-) {
+if (is_readable(OX_BASE_PATH . 'modules/functions.php')) {
     include OX_BASE_PATH . 'modules/functions.php';
 }
 

@@ -43,6 +43,7 @@ use PDO;
  */
 class Database implements DatabaseInterface
 {
+
     /** @var int code of Mysql duplicated key error. */
     const MYSQL_DUPLICATE_KEY_ERROR_CODE = 1062;
 
@@ -306,7 +307,15 @@ class Database implements DatabaseInterface
         // END deprecated
 
         if ($this->doesStatementProduceOutput($query)) {
-            return $this->getConnection()->fetchColumn($query, $parameters);
+            try {
+                return $this->getConnection()->fetchColumn($query, $parameters);
+            } catch (DBALException $exception) {
+                $exception = $this->convertException($exception);
+                $this->handleException($exception);
+            } catch (PDOException $exception) {
+                $exception = $this->convertException($exception);
+                $this->handleException($exception);
+            }
         }
 
         return false;
@@ -539,6 +548,7 @@ class Database implements DatabaseInterface
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
+
         // END deprecated
 
         return $this->executeUpdate($query, $parameters);

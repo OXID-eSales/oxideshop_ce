@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 /**
  * Exception to be thrown when the database has not been configured in the configuration file config.inc.php
  */
-class DatabaseNotConfiguredException extends \OxidEsales\EshopCommunity\Core\Exception\DatabaseException
+class DatabaseNotConfiguredException extends \OxidEsales\Eshop\Core\Exception\DatabaseException
 {
 
     /**

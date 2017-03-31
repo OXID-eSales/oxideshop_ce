@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 /**
  * Exception to be thrown on database connection errors
  */
-class DatabaseConnectionException extends \OxidEsales\EshopCommunity\Core\Exception\DatabaseException
+class DatabaseConnectionException extends \OxidEsales\Eshop\Core\Exception\DatabaseException
 {
 
     /**

@@ -93,6 +93,13 @@ class ModuleMetadataValidatorTest extends \OxidTestCase
                                      ],
                                  'expected' => []
             ],
+            'all_is_well_extend_shop_edition_test_namespace' => ['metadata_extend' =>
+                                                            ['\OxidEsales\EshopCommunity\Tests\SomeVendor\SomeNamespace\Article' => '\MyVendor\MyModule1\MyArticleClass',
+                                                             '\somevendor\SomeOtherNamespace\Order' => '\MyVendor\MyModule1\MyOrderClass',
+                                                             'oxUser' => '\MyVendor\MyModule1\MyUserClass'
+                                                            ],
+                                                        'expected' => []
+            ],
             'case_mismatch' => ['metadata_extend' =>
                                           ['oxidEsales\eshop\application\model\article' => '\MyVendor\MyModule1\MyArticleClass',
                                            'OxidEsales\Eshop\Application\Model\Order' => '\MyVendor\MyModule1\MyOrderClass',

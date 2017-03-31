@@ -285,7 +285,15 @@ class Database implements DatabaseInterface
     {
         $this->fetchMode = $this->fetchModeMap[$fetchMode];
 
-        $this->getConnection()->setFetchMode($this->fetchMode);
+        try {
+            $this->getConnection()->setFetchMode($this->fetchMode);
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
     }
 
     /**
@@ -392,8 +400,17 @@ class Database implements DatabaseInterface
         }
 
         $string = trim(str_replace($identifierQuoteCharacter, '', $string));
+        try {
+            $result = $this->getConnection()->quoteIdentifier($string);
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
 
-        return $this->getConnection()->quoteIdentifier($string);
+        return $result;
     }
 
     /**
@@ -419,7 +436,17 @@ class Database implements DatabaseInterface
      */
     public function quote($value)
     {
-        return $this->getConnection()->quote($value);
+        try {
+            $result = $this->getConnection()->quote($value);
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
+        return $result;
     }
 
     /**
@@ -456,6 +483,9 @@ class Database implements DatabaseInterface
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
     }
 
@@ -469,6 +499,9 @@ class Database implements DatabaseInterface
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
     }
 
@@ -480,6 +513,9 @@ class Database implements DatabaseInterface
         try {
             $this->getConnection()->rollBack();
         } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
@@ -517,6 +553,9 @@ class Database implements DatabaseInterface
                 $result = $this->execute('SET SESSION TRANSACTION ISOLATION LEVEL ' . $level);
             }
         } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
@@ -756,6 +795,9 @@ class Database implements DatabaseInterface
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
 
         return $affectedRows;
@@ -991,6 +1033,9 @@ class Database implements DatabaseInterface
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
 
         if ($this->doesStatementProduceOutput($query)) {
@@ -1009,7 +1054,17 @@ class Database implements DatabaseInterface
      */
     public function getLastInsertId()
     {
-        return $this->getConnection()->lastInsertId();
+        try {
+            $lastInsertId = $this->getConnection()->lastInsertId();
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
+        return $lastInsertId;
     }
 
     /**
@@ -1040,10 +1095,18 @@ class Database implements DatabaseInterface
               TABLE_SCHEMA = '$databaseName'
               AND
               TABLE_NAME = '$table'";
-        $columns = $connection->executeQuery($query)->fetchAll();
+
+        try {
+            $columns = $connection->executeQuery($query)->fetchAll();
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
         /** Depending on the fetch mode we may find numeric or string key in the array $rawColumns */
-
-
         $result = [];
 
         foreach ($columns as $column) {
@@ -1128,7 +1191,17 @@ class Database implements DatabaseInterface
      */
     public function isRollbackOnly()
     {
-        return $this->connection->isRollbackOnly();
+        try {
+            $isRollbackOnly = $this->connection->isRollbackOnly();
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
+        return $isRollbackOnly;
     }
 
     /**
@@ -1138,7 +1211,17 @@ class Database implements DatabaseInterface
      */
     public function isTransactionActive()
     {
-        return $this->connection->isTransactionActive();
+        try {
+            $isTransactionActive = $this->connection->isTransactionActive();
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
+        return $isTransactionActive;
     }
 
     /**

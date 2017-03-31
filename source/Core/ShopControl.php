@@ -788,6 +788,10 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             }
         }
 
+        /**
+         * Do not use oxNew here as this code forms already part of the exception handling process and there should at
+         * least shop code called as possible.
+         */
         $exceptionHandler = new \OxidEsales\Eshop\Core\Exception\ExceptionHandler($debugMode);
         $exceptionHandler->handleDatabaseException($exception);
     }

@@ -171,9 +171,7 @@ class ExceptionHandler
      */
     public function writeExceptionToLog(\Exception $exception)
     {
-        /**
-         * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
-         */
+        /** self::_sFileName is @deprecated since v6.0 (2017-03-30); Logging mechanism will change in the future. */
         $logFile = dirname(OX_LOG_FILE) . DIRECTORY_SEPARATOR . $this->_sFileName;
         $logMessage = $this->getFormattedException($exception);
 

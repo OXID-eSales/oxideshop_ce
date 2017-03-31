@@ -83,9 +83,18 @@ class NamespaceInformationProviderTest extends UnitTestCase
         $this->assertTrue(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopEditionNamespace('OxidEsales\EshopCommunity\Application\Model\Article'));
         $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopEditionNamespace('OxidEsales\Eshop\Application\Model\Article'));
         $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopEditionNamespace(\OxidEsales\Eshop\Application\Model\Article::class));
-
     }
 
-
-
+    /**
+     * Test method classBelongsToShopEditionNamespace.
+     */
+    public function testClassBelongsToShopEditionTestNamespace()
+    {
+        $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopEditionTestNamespace('oxArticle'));
+        $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopEditionTestNamespace('oxarticle'));
+        $this->assertTrue(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopEditionTestNamespace(\OxidEsales\EshopCommunity\Tests\Unit\Core\NamespaceInformationProviderTest::class));
+        $this->assertTrue(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopEditionTestNamespace('OxidEsales\EshopCommunity\Tests\Unit\Core\NamespaceInformationProviderTest'));
+        $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopEditionTestNamespace('OxidEsales\Eshop\Application\Model\Article'));
+        $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopEditionTestNamespace(\OxidEsales\Eshop\Application\Model\Article::class));
+    }
 }

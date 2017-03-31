@@ -44,6 +44,17 @@ class NamespaceInformationProvider
     ];
 
     /**
+     * Array contains names of the official OXID eShop edition namespaces for tests.
+     *
+     * @var array
+     */
+    private static $shopEditionTestNamespaces = [
+        'CE' => 'OxidEsales\\EshopCommunity\\Tests\\',
+        'PE' => 'OxidEsales\\EshopProfessional\\Tests\\',
+        'EE' => 'OxidEsales\\EshopEnterprise\\Tests\\'
+    ];
+
+    /**
      * OXID eShop virtual namespace.
      *
      * @var string
@@ -58,6 +69,16 @@ class NamespaceInformationProvider
     public static function getShopEditionNamespaces()
     {
         return static::$shopEditionNamespaces;
+    }
+
+    /**
+     * Getter for array with official OXID eShop Edition test namespaces.
+     *
+     * @return array
+     */
+    public static function getShopEditionTestNamespaces()
+    {
+        return static::$shopEditionTestNamespaces;
     }
 
     /**
@@ -90,18 +111,19 @@ class NamespaceInformationProvider
      */
     public static function classBelongsToShopEditionNamespace($className)
     {
-        $belongsToShopEdition = false;
-        $editionNamespaces = static::getShopEditionNamespaces();
-        $check = array_values($editionNamespaces);
-        $lcClassName = strtolower(ltrim($className, '\\'));
+        return static::classBelongsToNamespace($className, static::getShopEditionNamespaces());
+    }
 
-        foreach ($check as $namespace) {
-            if (false !== strpos($lcClassName, strtolower($namespace))) {
-                $belongsToShopEdition = true;
-                continue;
-            }
-        }
-        return $belongsToShopEdition;
+    /**
+     * Check if given class belongs to a shop edition test namespace.
+     *
+     * @param string $className
+     *
+     * @return bool
+     */
+    public static function classBelongsToShopEditionTestNamespace($className)
+    {
+        return static::classBelongsToNamespace($className, static::getShopEditionTestNamespaces());
     }
 
     /**
@@ -118,5 +140,28 @@ class NamespaceInformationProvider
         $belongsToVirtualNamespace = (false !== strpos($lcClassName, strtolower($virtualNamespace)));
 
         return $belongsToVirtualNamespace;
+    }
+
+    /**
+     * Check if given class belongs to one of the supplied namespaces.
+     *
+     * @param string $className
+     * @param array  $namespaces
+     *
+     * @return bool
+     */
+    private static function classBelongsToNamespace($className, $namespaces)
+    {
+        $belongsToNamespace = false;
+        $check = array_values($namespaces);
+        $lcClassName = strtolower(ltrim($className, '\\'));
+
+        foreach ($check as $namespace) {
+            if (false !== strpos($lcClassName, strtolower($namespace))) {
+                $belongsToNamespace = true;
+                continue;
+            }
+        }
+        return $belongsToNamespace;
     }
 }

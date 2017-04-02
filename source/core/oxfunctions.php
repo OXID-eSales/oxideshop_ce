@@ -299,13 +299,17 @@ function debug($mVar)
  * Sorting for crossselling
  *
  * @param object $a first compare item
- * @param object $b second compre item
+ * @param object $b second compare item
  *
  * @return integer
  */
 function cmpart($a, $b)
 {
-    // sorting for crossselling
+    if (!is_object($a) || !is_object($b)) {
+        return 0;
+    }
+
+    // sorting for cross-selling
     if ($a->cnt == $b->cnt) {
         return 0;
     }

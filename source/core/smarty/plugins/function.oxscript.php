@@ -45,7 +45,7 @@
 function smarty_function_oxscript($params, &$smarty)
 {
     $myConfig             = oxRegistry::getConfig();
-    $sSuffix               = ($smarty->_tpl_vars["__oxid_include_dynamic"])?'_dynamic':'';
+    $sSuffix              = isset($smarty->_tpl_vars["__oxid_include_dynamic"]) ? '_dynamic' : '';
     $sIncludes            = 'includes'.$sSuffix;
     $sScripts             = 'scripts'.$sSuffix;
     $iPriority            = !empty($params['priority']) ? $params['priority'] : 3;

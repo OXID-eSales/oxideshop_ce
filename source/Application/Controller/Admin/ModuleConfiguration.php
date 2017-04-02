@@ -56,7 +56,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
     {
         $sModuleId = $this->_sModuleId = $this->getEditObjectId();
 
-        $oModule = oxNew('oxModule');
+        $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
 
         if ($sModuleId && $oModule->load($sModuleId)) {
             try {
@@ -70,11 +70,11 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                     $iCount += count($aDbVariables['vars'][$sType]);
                 }
             } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
                 $oEx->debugOut();
             }
         } else {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
         }
 
         $this->_aViewData["oModule"] = $oModule;
@@ -89,7 +89,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     protected function _getModuleForConfigVars()
     {
-        return oxConfig::OXMODULE_MODULE_PREFIX . $this->_sModuleId;
+        return \OxidEsales\Eshop\Core\Config::OXMODULE_MODULE_PREFIX . $this->_sModuleId;
     }
 
     /**

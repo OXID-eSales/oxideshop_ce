@@ -55,7 +55,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
             $sTheme = $this->_sTheme = $this->getConfig()->getConfigParam('sTheme');
         }
 
-        $oTheme = oxNew('oxTheme');
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         if ($oTheme->load($sTheme)) {
             $this->_aViewData["oTheme"] = $oTheme;
 
@@ -67,11 +67,11 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
                 }
             } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
                 $oEx->debugOut();
             }
         } else {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
         }
 
         return 'theme_config.tpl';
@@ -88,7 +88,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
             $this->_sTheme = $this->getEditObjectId();
         }
 
-        return oxConfig::OXMODULE_THEME_PREFIX . $this->_sTheme;
+        return \OxidEsales\Eshop\Core\Config::OXMODULE_THEME_PREFIX . $this->_sTheme;
     }
 
     /**

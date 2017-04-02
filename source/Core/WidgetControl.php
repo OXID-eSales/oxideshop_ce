@@ -65,10 +65,10 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      */
     public function start($class = null, $function = null, $parameters = null, $viewsChain = null)
     {
-        //$aParams = ( isset($aParams) ) ? $aParams : oxRegistry::getConfig()->getRequestParameter( 'oxwparams' );
+        //$aParams = ( isset($aParams) ) ? $aParams : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter( 'oxwparams' );
 
-        if (!isset($viewsChain) && oxRegistry::getConfig()->getRequestParameter('oxwparent')) {
-            $viewsChain = explode("|", oxRegistry::getConfig()->getRequestParameter('oxwparent'));
+        if (!isset($viewsChain) && \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxwparent')) {
+            $viewsChain = explode("|", \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxwparent'));
         }
 
         parent::start($class, $function, $parameters, $viewsChain);
@@ -93,7 +93,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
             }
 
             // Setting back last active view.
-            $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+            $oSmarty = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getSmarty();
             $oSmarty->assign('oView', $oConfig->getActiveView());
         }
     }
@@ -106,7 +106,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      * @param array  $parameters Parameters array
      * @param array  $viewsChain Array of views keys that should be initialized as well
      *
-     * @return oxView Current active view
+     * @return \OxidEsales\Eshop\Core\Controller\BaseController Current active view
      */
     protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
     {

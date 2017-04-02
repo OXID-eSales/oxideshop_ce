@@ -67,11 +67,11 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function allowRating($sUserId, $sType, $sObjectId)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $myConfig = $this->getConfig();
 
         if ($iRatingLogsTimeout = $myConfig->getConfigParam('iRatingLogsTimeout')) {
-            $sExpDate = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() - $iRatingLogsTimeout * 24 * 60 * 60);
+            $sExpDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime() - $iRatingLogsTimeout * 24 * 60 * 60);
             $oDb->execute("delete from oxratings where oxtimestamp < '$sExpDate'");
         }
         $sSelect = "select oxid from oxratings where oxuserid = " . $oDb->quote($sUserId) . " and oxtype=" . $oDb->quote($sType) . " and oxobjectid = " . $oDb->quote($sObjectId);
@@ -94,7 +94,7 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getRatingAverage($sObjectId, $sType, $aIncludedObjectsIds = null)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sQuerySnipet = '';
         if (is_array($aIncludedObjectsIds) && count($aIncludedObjectsIds) > 0) {
@@ -113,7 +113,7 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
             LIMIT 1";
 
         $fRating = 0;
-        $database = oxDb::getMaster();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
         if ($fRating = $database->getOne($sSelect)) {
             $fRating = round($fRating, 1);
         }
@@ -132,7 +132,7 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getRatingCount($sObjectId, $sType, $aIncludedObjectsIds = null)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sQuerySnipet = '';
         if (is_array($aIncludedObjectsIds) && count($aIncludedObjectsIds) > 0) {
@@ -152,7 +152,7 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $iCount = 0;
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = oxDb::getMaster();
+        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
         $iCount = $masterDb->getOne($sSelect);
 
         return $iCount;

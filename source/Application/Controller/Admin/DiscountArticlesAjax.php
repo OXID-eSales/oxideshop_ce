@@ -79,7 +79,7 @@ class DiscountArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         $sArticleTable = $this->_getViewName('oxarticles');
         $sO2CView = $this->_getViewName('oxobject2category');
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sOxid = $oConfig->getRequestParameter('oxid');
         $sSynchOxid = $oConfig->getRequestParameter('synchoxid');
 
@@ -127,10 +127,10 @@ class DiscountArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
 
         if ($this->getConfig()->getRequestParameter('all')) {
             $sQ = parent::_addFilter("delete oxobject2discount.* " . $this->_getQuery());
-            oxDb::getDb()->execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aChosenArt)) . ") ";
-            oxDb::getDb()->execute($sQ);
+            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ);
         }
     }
 
@@ -163,7 +163,7 @@ class DiscountArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     protected function addArticleToDiscount($discountListId, $articleId)
     {
-        $object2Discount = oxNew("oxBase");
+        $object2Discount = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $object2Discount->init('oxobject2discount');
         $object2Discount->oxobject2discount__oxdiscountid = new oxField($discountListId);
         $object2Discount->oxobject2discount__oxobjectid = new oxField($articleId);

@@ -51,7 +51,7 @@ class AdminLogSqlDecorator
      */
     protected function getUserId()
     {
-        $user = oxNew('oxUser');
+        $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         if ($user->loadAdminUser()) {
             return $user->getId();
         }
@@ -66,6 +66,6 @@ class AdminLogSqlDecorator
      */
     protected function quote($str)
     {
-        return oxDb::getDb()->quote($str);
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($str);
     }
 }

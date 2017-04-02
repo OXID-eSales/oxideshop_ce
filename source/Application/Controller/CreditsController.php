@@ -54,7 +54,7 @@ class CreditsController extends \OxidEsales\Eshop\Application\Controller\Content
     {
         if ($this->_oContent === null) {
             $this->_oContent = false;
-            $oContent = oxNew('oxcontent');
+            $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
             if ($oContent->loadByIdent($this->getContentId())) {
                 $this->_oContent = $oContent;
             }

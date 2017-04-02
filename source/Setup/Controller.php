@@ -558,9 +558,9 @@ class Controller extends Core
     /**
      * Show warning-question if database with same name already exists.
      *
-     * @param string   $databaseName name of database to check if exist
-     * @param View     $view         to set parameters for template
-     * @param Language $language     to translate text
+     * @param string                                                            $databaseName name of database to check if exist
+     * @param View                                                              $view         to set parameters for template
+     * @param \OxidEsales\Eshop\Application\Controller\Admin\LanguageController $language     to translate text
      */
     private function formMessageIfDBCanBeOverwritten($databaseName, $view, $language)
     {
@@ -570,8 +570,8 @@ class Controller extends Core
     /**
      * Show warning-question if MySQL version does meet minimal requirements, but is neither recommended nor supported.
      *
-     * @param View     $view     to set parameters for template
-     * @param Language $language to translate text
+     * @param View                                                              $view     to set parameters for template
+     * @param \OxidEsales\Eshop\Application\Controller\Admin\LanguageController $language to translate text
      */
     private function formMessageIfMySqyVersionIsNotRecommended($view, $language)
     {
@@ -581,10 +581,10 @@ class Controller extends Core
     /**
      * Show a message and a link to continue installation process, not regarding errors and warnings
      *
-     * @param View     $view      to set parameters for template
-     * @param Language $language  to translate text
-     * @param string   $sessionId
-     * @param string   $setupStep where to redirect if chose to rewrite database
+     * @param View                                                              $view      to set parameters for template
+     * @param \OxidEsales\Eshop\Application\Controller\Admin\LanguageController $language  to translate text
+     * @param string                                                            $sessionId
+     * @param string                                                            $setupStep where to redirect if chose to rewrite database
      */
     private function formMessageInstallAnyway($view, $language, $sessionId, $setupStep)
     {
@@ -594,11 +594,11 @@ class Controller extends Core
     /**
      * Show a message and a link to continue installation process, not regarding errors and warnings
      *
-     * @param View     $view           to set parameters for template
-     * @param Language $language       to translate text
-     * @param string   $sessionId
-     * @param string   $setupStep      where to redirect if chose to rewrite database
-     * @param bool     $databaseExists Database already exists
+     * @param View                                                              $view           to set parameters for template
+     * @param \OxidEsales\Eshop\Application\Controller\Admin\LanguageController $language       to translate text
+     * @param string                                                            $sessionId
+     * @param string                                                            $setupStep      where to redirect if chose to rewrite database
+     * @param bool                                                              $databaseExists Database already exists
      */
     private function formMessageIgnoreDbVersionNotRecommended($view, $language, $sessionId, $setupStep, $databaseExists)
     {

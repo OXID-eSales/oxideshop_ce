@@ -72,7 +72,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         // convert date's to international format
         if ($this->oxnews__oxdate) {
-            $this->oxnews__oxdate->setValue(oxRegistry::get("oxUtilsDate")->formatDBDate($this->oxnews__oxdate->value));
+            $this->oxnews__oxdate->setValue(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($this->oxnews__oxdate->value));
         }
     }
 
@@ -134,7 +134,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         }
 
         if ($blDelete = parent::delete($sOxid)) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $oDb->execute("delete from oxobject2group where oxobject2group.oxobjectid = " . $oDb->quote($sOxid));
         }
 
@@ -146,7 +146,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     protected function _update()
     {
-        $this->oxnews__oxdate->setValue(oxRegistry::get("oxUtilsDate")->formatDBDate($this->oxnews__oxdate->value, true));
+        $this->oxnews__oxdate->setValue(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($this->oxnews__oxdate->value, true));
 
         parent::_update();
     }
@@ -158,11 +158,11 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     protected function _insert()
     {
-        if (!$this->oxnews__oxdate || oxRegistry::get("oxUtilsDate")->isEmptyDate($this->oxnews__oxdate->value)) {
+        if (!$this->oxnews__oxdate || \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->isEmptyDate($this->oxnews__oxdate->value)) {
             // if date field is empty, assigning current date
             $this->oxnews__oxdate = new oxField(date('Y-m-d'));
         } else {
-            $this->oxnews__oxdate = new oxField(oxRegistry::get("oxUtilsDate")->formatDBDate($this->oxnews__oxdate->value, true));
+            $this->oxnews__oxdate = new oxField(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($this->oxnews__oxdate->value, true));
         }
 
         return parent::_insert();
@@ -177,12 +177,12 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = oxField::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         switch (strtolower($sFieldName)) {
             case 'oxlongdesc':
             case 'oxnews__oxlongdesc':
-                $iDataType = oxField::T_RAW;
+                $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;
                 break;
         }
         return parent::_setFieldData($sFieldName, $sValue, $iDataType);
@@ -195,8 +195,8 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getLongDesc()
     {
-        /** @var oxUtilsView $oUtilsView */
-        $oUtilsView = oxRegistry::get("oxUtilsView");
+        /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
+        $oUtilsView = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView");
         return $oUtilsView->parseThroughSmarty($this->oxnews__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
     }
 }

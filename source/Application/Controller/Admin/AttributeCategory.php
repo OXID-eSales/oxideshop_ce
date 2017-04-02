@@ -47,13 +47,13 @@ class AttributeCategory extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oAttr = oxNew("oxattribute");
+            $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
             $oAttr->load($soxId);
             $this->_aViewData["edit"] = $oAttr;
         }
 
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oAttributeCategoryAjax = oxNew('attribute_category_ajax');
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+            $oAttributeCategoryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AttributeCategoryAjax::class);
             $this->_aViewData['oxajax'] = $oAttributeCategoryAjax->getColumns();
 
             return "popups/attribute_category.tpl";

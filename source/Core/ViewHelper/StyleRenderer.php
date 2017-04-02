@@ -38,7 +38,7 @@ class StyleRenderer
      */
     public function render($widget, $forceRender, $isDynamic)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
         $output = '';
 

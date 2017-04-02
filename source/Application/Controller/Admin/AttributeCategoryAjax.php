@@ -66,11 +66,11 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
     protected function _getQuery()
     {
         $myConfig = $this->getConfig();
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sCatTable = $this->_getViewName('oxcategories');
-        $sDiscountId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchDiscountId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sDiscountId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchDiscountId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sDiscountId) {
@@ -103,13 +103,13 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
     {
         $aChosenCat = $this->_getActionIds('oxcategory2attribute.oxid');
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxcategory2attribute.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
-            $sChosenCategories = implode(", ", oxDb::getDb()->quoteArray($aChosenCat));
+            $sChosenCategories = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCat));
             $sQ = "delete from oxcategory2attribute where oxcategory2attribute.oxid in (" . $sChosenCategories . ") ";
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
 
         $this->resetContentCache();
@@ -123,21 +123,21 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
     public function addCatToAttr()
     {
         $aAddCategory = $this->_getActionIds('oxcategories.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
-        $oAttribute = oxNew("oxattribute");
+        $oAttribute = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
         // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sCatTable = $this->_getViewName('oxcategories');
             $aAddCategory = $this->_getAll($this->_addFilter("select $sCatTable.oxid " . $this->_getQuery()));
         }
 
         if ($oAttribute->load($soxId) && is_array($aAddCategory)) {
-            oxDb::getDb()->startTransaction();
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
             try {
-                $database = oxDb::getDb();
+                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
                 foreach ($aAddCategory as $sAdd) {
-                    $oNewGroup = oxNew("oxBase");
+                    $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                     $oNewGroup->init("oxcategory2attribute");
                     $sOxSortField = 'oxcategory2attribute__oxsort';
                     $sObjectIdField = 'oxcategory2attribute__oxobjectid';
@@ -151,11 +151,11 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
                     $oNewGroup->save();
                 }
             } catch (Exception $exception) {
-                oxDb::getDb()->rollbackTransaction();
+                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
                 throw $exception;
             }
         }
-        oxDb::getDb()->commitTransaction();
+        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
 
         $this->resetContentCache();
     }

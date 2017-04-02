@@ -68,7 +68,7 @@ class ModuleExtensionsCleaner
      */
     protected function filterExtensionsByModuleId($modules, $moduleId)
     {
-        $modulePaths = \oxRegistry::getConfig()->getConfigParam('aModulePaths');
+        $modulePaths = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModulePaths');
         $path = $modulePaths[$moduleId];
         // TODO: This condition should be removed. Need to check integration tests.
         if (!$path) {

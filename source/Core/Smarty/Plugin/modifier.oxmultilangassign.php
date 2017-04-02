@@ -38,8 +38,8 @@ function smarty_modifier_oxmultilangassign( $sIdent, $args = null )
         $sIdent = 'IDENT MISSING';
     }
 
-    $oLang = oxRegistry::getLang();
-    $oConfig = oxRegistry::getConfig();
+    $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+    $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
     $oShop = $oConfig->getActiveShop();
     $iLang = $oLang->getTplLanguage();
     $blShowError = true;

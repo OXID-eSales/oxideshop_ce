@@ -42,8 +42,8 @@ class ModuleTemplateBlockRepository
      */
     public function getBlocksCount($modulesId, $shopId)
     {
-        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $modulesIdQuery = implode(", ", oxDb::getDb()->quoteArray($modulesId));
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $modulesIdQuery = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($modulesId));
         $sql = "select COUNT(*)
                             from oxtplblocks
                             where oxactive=1
@@ -65,7 +65,7 @@ class ModuleTemplateBlockRepository
      */
     public function getBlocks($shopTemplateName, $activeModulesId, $shopId, $themesId = [])
     {
-        $modulesId = implode(", ", oxDb::getDb()->quoteArray($activeModulesId));
+        $modulesId = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($activeModulesId));
 
         $activeThemesIdQuery = $this->formActiveThemesIdQuery($themesId);
         $sql = "select *
@@ -76,7 +76,7 @@ class ModuleTemplateBlockRepository
                         and oxmodule in ( " . $modulesId . " )
                         and oxtheme in (" . $activeThemesIdQuery . ")
                         order by oxpos asc, oxtheme asc, oxid asc";
-        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
         return $db->getAll($sql, [$shopId, $shopTemplateName]);
     }
@@ -93,6 +93,6 @@ class ModuleTemplateBlockRepository
         $defaultThemeIndicator = '';
         array_unshift($activeThemeIds, $defaultThemeIndicator);
 
-        return implode(', ', oxDb::getDb()->quoteArray($activeThemeIds));
+        return implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($activeThemeIds));
     }
 }

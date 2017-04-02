@@ -49,13 +49,13 @@ class DownloadController extends \OxidEsales\Eshop\Application\Controller\Fronte
      */
     public function render()
     {
-        $sFileOrderId = oxRegistry::getConfig()->getRequestParameter('sorderfileid');
+        $sFileOrderId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sorderfileid');
 
         if ($sFileOrderId) {
-            $oArticleFile = oxNew('oxFile');
+            $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
             try {
-                /** @var oxOrderFile $oOrderFile */
-                $oOrderFile = oxNew('oxOrderFile');
+                /** @var \OxidEsales\Eshop\Application\Model\OrderFile $oOrderFile */
+                $oOrderFile = oxNew(\OxidEsales\Eshop\Application\Model\OrderFile::class);
                 if ($oOrderFile->load($sFileOrderId)) {
                     $sFileId = $oOrderFile->getFileId();
                     $blLoadedAndExists = $oArticleFile->load($sFileId) && $oArticleFile->exist();
@@ -74,8 +74,8 @@ class DownloadController extends \OxidEsales\Eshop\Application\Controller\Fronte
         if ($sError) {
             $oEx = new oxExceptionToDisplay();
             $oEx->setMessage($sError);
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
-            oxRegistry::getUtils()->redirect(oxRegistry::getConfig()->getShopUrl() . 'index.php?cl=account_downloads');
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl() . 'index.php?cl=account_downloads');
         }
     }
 }

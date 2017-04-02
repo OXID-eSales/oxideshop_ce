@@ -45,7 +45,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
     protected $_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
 
     /**
-     * @var oxOrderFileList
+     * @var \OxidEsales\Eshop\Application\Model\OrderFileList
      */
     protected $_oOrderFilesList = null;
 
@@ -60,14 +60,14 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
         $aPaths = array();
         $aPath = array();
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        /** @var oxSeoEncoder $oSeoEncoder */
-        $oSeoEncoder = oxRegistry::get("oxSeoEncoder");
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        /** @var \OxidEsales\Eshop\Core\SeoEncoder $oSeoEncoder */
+        $oSeoEncoder = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder");
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
         $aPath['link'] = $oSeoEncoder->getStaticUrl($this->getViewConfig()->getSelfLink() . "cl=account");
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_DOWNLOADS', $iBaseLanguage, false);
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_DOWNLOADS', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -85,7 +85,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
             return $this->_oOrderFilesList;
         }
 
-        $oOrderFileList = oxNew('oxOrderFileList');
+        $oOrderFileList = oxNew(\OxidEsales\Eshop\Application\Model\OrderFileList::class);
         $oOrderFileList->loadUserFiles($this->getUser()->getId());
 
         $this->_oOrderFilesList = $this->_prepareForTemplate($oOrderFileList);
@@ -96,7 +96,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
     /**
      * Returns prepared orders files list
      *
-     * @param oxorderfilelist $oOrderFileList - list or orderfiles
+     * @param \OxidEsales\Eshop\Application\Model\OrderFileList $oOrderFileList - list or orderfiles
      *
      * @return array
      */

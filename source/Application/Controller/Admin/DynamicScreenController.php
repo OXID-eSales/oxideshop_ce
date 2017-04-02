@@ -52,10 +52,10 @@ class DynamicScreenController extends \OxidEsales\Eshop\Application\Controller\A
     protected function _setupNavigation($sNode)
     {
         $myAdminNavig = $this->getNavigation();
-        $sNode = oxRegistry::getConfig()->getRequestParameter("menu");
+        $sNode = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("menu");
 
         // active tab
-        $iActTab = oxRegistry::getConfig()->getRequestParameter('actedit');
+        $iActTab = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('actedit');
         $iActTab = $iActTab ? $iActTab : $this->_iDefEdit;
 
         $sActTab = $iActTab ? "&actedit=$iActTab" : '';
@@ -67,8 +67,8 @@ class DynamicScreenController extends \OxidEsales\Eshop\Application\Controller\A
         $sEditUrl = $myAdminNavig->getEditUrl($sNode, $iActTab) . $sActTab;
         if (!getStr()->preg_match("/^http(s)?:\/\//", $sEditUrl)) {
             //internal link, adding path
-            /** @var oxUtilsUrl $oUtilsUrl */
-            $oUtilsUrl = oxRegistry::get("oxUtilsUrl");
+            /** @var \OxidEsales\Eshop\Core\UtilsUrl $oUtilsUrl */
+            $oUtilsUrl = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl");
             $sSelfLinkParameter = $this->getViewConfig()->getViewConfigParam('selflink');
             $sEditUrl = $oUtilsUrl->appendParamSeparator($sSelfLinkParameter) . $sEditUrl;
         }

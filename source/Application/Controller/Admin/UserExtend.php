@@ -46,12 +46,12 @@ class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oUser = oxNew("oxuser");
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->load($soxId);
 
             //show country in active language
-            $oCountry = oxNew("oxCountry");
-            $oCountry->loadInLang(oxRegistry::getLang()->getObjectTplLanguage(), $oUser->oxuser__oxcountryid->value);
+            $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
+            $oCountry->loadInLang(\OxidEsales\Eshop\Core\Registry::getLang()->getObjectTplLanguage(), $oUser->oxuser__oxcountryid->value);
             $oUser->oxuser__oxcountry = new oxField($oCountry->oxcountry__oxtitle->value);
 
             $this->_aViewData["edit"] = $oUser;
@@ -79,9 +79,9 @@ class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             return false;
         }
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oUser = oxNew("oxuser");
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         if ($soxId != "-1") {
             $oUser->load($soxId);
         } else {
@@ -91,11 +91,11 @@ class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         // checkbox handling
         $aParams['oxuser__oxactive'] = $oUser->oxuser__oxactive->value;
 
-        $blNewsParams = oxRegistry::getConfig()->getRequestParameter("editnews");
+        $blNewsParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editnews");
         if (isset($blNewsParams)) {
             $oNewsSubscription = $oUser->getNewsSubscription();
             $oNewsSubscription->setOptInStatus((int) $blNewsParams);
-            $oNewsSubscription->setOptInEmailStatus((int) oxRegistry::getConfig()->getRequestParameter("emailfailed"));
+            $oNewsSubscription->setOptInEmailStatus((int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("emailfailed"));
         }
 
         $oUser->assign($aParams);

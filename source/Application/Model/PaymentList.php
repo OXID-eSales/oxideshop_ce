@@ -64,15 +64,15 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Creates payment list filter SQL to load current state payment list
      *
-     * @param string $sShipSetId user chosen delivery set
-     * @param double $dPrice     basket products price
-     * @param oxuser $oUser      session user object
+     * @param string                                   $sShipSetId user chosen delivery set
+     * @param double                                   $dPrice     basket products price
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      session user object
      *
      * @return string
      */
     protected function _getFilterSelect($sShipSetId, $dPrice, $oUser)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sBoni = ($oUser && $oUser->oxuser__oxboni->value) ? $oUser->oxuser__oxboni->value : 0;
 
         $sTable = getViewName('oxpayments');
@@ -88,7 +88,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         // checking for current session user which gives additional restrictions for user itself, users group and country
         if ($oUser) {
-            // user groups ( maybe would be better to fetch by function oxuser::getUserGroups() ? )
+            // user groups ( maybe would be better to fetch by function \OxidEsales\Eshop\Application\Model\User::getUserGroups() ? )
             foreach ($oUser->getUserGroups() as $oGroup) {
                 if ($sGroupIds) {
                     $sGroupIds .= ', ';
@@ -119,7 +119,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Returns user country id for for payment selection
      *
-     * @param oxuser $oUser oxuser object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser oxuser object
      *
      * @return string
      */
@@ -140,9 +140,9 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Loads and returns list of user payments.
      *
-     * @param string $sShipSetId user chosen delivery set
-     * @param double $dPrice     basket product price excl. discount
-     * @param oxuser $oUser      session user object
+     * @param string                                   $sShipSetId user chosen delivery set
+     * @param double                                   $dPrice     basket product price excl. discount
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      session user object
      *
      * @return array
      */
@@ -172,7 +172,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadRDFaPaymentList($dPrice = null)
     {
-        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $sTable = getViewName('oxpayments');
         $sQ = "select $sTable.*, oxobject2payment.oxobjectid from $sTable left join (select oxobject2payment.* from oxobject2payment where oxobject2payment.oxtype = 'rdfapayment') as oxobject2payment on oxobject2payment.oxpaymentid=$sTable.oxid ";
         $sQ .= "where $sTable.oxactive = 1 ";

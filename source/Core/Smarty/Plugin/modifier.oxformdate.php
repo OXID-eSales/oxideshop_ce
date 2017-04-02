@@ -44,16 +44,16 @@ function smarty_modifier_oxformdate( $oConvObject, $sFieldType = null, $blPassed
         $oConvObject->setValue($sValue);
     }
 
-    $myConfig = oxRegistry::getConfig();
+    $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
     // if such format applies to this type of field - sets formatted value to passed object
     if ( !$myConfig->getConfigParam( 'blSkipFormatConversion' ) ) {
         if ( $oConvObject->fldtype == "datetime" || $sFieldType == "datetime")
-            oxRegistry::get('oxUtilsDate')->convertDBDateTime( $oConvObject );
+            \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate')->convertDBDateTime( $oConvObject );
         elseif ( $oConvObject->fldtype == "timestamp" || $sFieldType == "timestamp")
-            oxRegistry::get('oxUtilsDate')->convertDBTimestamp( $oConvObject );
+            \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate')->convertDBTimestamp( $oConvObject );
         elseif ( $oConvObject->fldtype == "date" || $sFieldType == "date")
-            oxRegistry::get('oxUtilsDate')->convertDBDate( $oConvObject );
+            \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate')->convertDBDate( $oConvObject );
     }
 
     return $oConvObject->value;

@@ -41,13 +41,13 @@ class OnlineServerEmailBuilder
      *
      * @param string $sBody Email body in XML format.
      *
-     * @return oxEmail
+     * @return \OxidEsales\Eshop\Core\Email
      */
     public function build($sBody)
     {
-        /** @var oxEmail $oExpirationEmail */
-        $oExpirationEmail = oxNew('oxEmail');
-        $oExpirationEmail->setSubject(oxRegistry::getLang()->translateString('SUBJECT_UNABLE_TO_SEND_VIA_CURL', null, true));
+        /** @var \OxidEsales\Eshop\Core\Email $oExpirationEmail */
+        $oExpirationEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
+        $oExpirationEmail->setSubject(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('SUBJECT_UNABLE_TO_SEND_VIA_CURL', null, true));
         $oExpirationEmail->setRecipient('olc@oxid-esales.com');
         $oExpirationEmail->setFrom($this->_getShopInfoAddress());
         $oExpirationEmail->setBody($sBody);
@@ -62,7 +62,7 @@ class OnlineServerEmailBuilder
      */
     private function _getShopInfoAddress()
     {
-        $oShop = oxRegistry::getConfig()->getActiveShop();
+        $oShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop();
 
         return $oShop->oxshops__oxinfoemail->value;
     }

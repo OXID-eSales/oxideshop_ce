@@ -55,14 +55,14 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
         // calculating
         $iUserCount = $this->getUserCount();
 
-        $iStart = (int) oxRegistry::getConfig()->getRequestParameter("iStart");
+        $iStart = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("iStart");
 
-        $oNewsletter = oxNew("oxNewsLetter");
+        $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
         $oNewsletter->load($this->getEditObjectId());
         $oNewsletterGroups = $oNewsletter->getGroups();
 
         // send emails....
-        $oDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
+        $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $sQGroups = " ( oxobject2group.oxgroupsid in ( ";
         $blSep = false;
         foreach ($oNewsletterGroups as $sInGroup) {
@@ -106,14 +106,14 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
 
                     // must check if such user is in DB
                     // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                    if (!oxDb::getMaster()->getOne("select oxid from oxuser where oxid = " . $oDB->quote($sUserId))) {
+                    if (!\OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne("select oxid from oxuser where oxid = " . $oDB->quote($sUserId))) {
                         $sUserId = null;
                     }
 
                     // #559
                     if (!isset($sUserId) || !$sUserId) {
                         // there is no user object so we fake one
-                        $oUser = oxNew("oxuser");
+                        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
                         $oUser->oxuser__oxusername = new oxField($oRs->fields['oxemail']);
                         $oUser->oxuser__oxsal = new oxField($oRs->fields['oxsal']);
                         $oUser->oxuser__oxfname = new oxField($oRs->fields['oxfname']);
@@ -125,7 +125,7 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
 
                     if ($oNewsletter->send($iSendCnt)) {
                         // add user history
-                        $oRemark = oxNew("oxremark");
+                        $oRemark = oxNew(\OxidEsales\Eshop\Application\Model\Remark::class);
                         $oRemark->oxremark__oxtext = new oxField($oNewsletter->getPlainText());
                         $oRemark->oxremark__oxparentid = new oxField($sUserId);
                         $oRemark->oxremark__oxshopid = new oxField($sShopId);
@@ -164,10 +164,10 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
      */
     public function getUserCount()
     {
-        $iCnt = oxRegistry::getSession()->getVariable("iUserCount");
+        $iCnt = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("iUserCount");
         if ($iCnt === null) {
             $iCnt = parent::getUserCount();
-            oxRegistry::getSession()->setVariable("iUserCount", $iCnt);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("iUserCount", $iCnt);
         }
 
         return $iCnt;
@@ -178,7 +178,7 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
      */
     public function resetUserCount()
     {
-        oxRegistry::getSession()->deleteVariable("iUserCount");
+        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("iUserCount");
         $this->_iUserCount = null;
     }
 

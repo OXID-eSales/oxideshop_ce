@@ -34,14 +34,14 @@ use oxModule;
 class ModuleCache extends \OxidEsales\Eshop\Core\Base
 {
     /**
-     * @var oxModule
+     * @var \OxidEsales\Eshop\Core\Module\Module
      */
     protected $_oModule = null;
 
     /**
      * Sets dependencies.
      *
-     * @param oxModule $_oModule
+     * @param \OxidEsales\Eshop\Core\Module\Module $_oModule
      */
     public function __construct(\OxidEsales\Eshop\Core\Module\Module $_oModule)
     {
@@ -51,7 +51,7 @@ class ModuleCache extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets module.
      *
-     * @param oxModule $oModule
+     * @param \OxidEsales\Eshop\Core\Module\Module $oModule
      */
     public function setModule($oModule)
     {
@@ -61,7 +61,7 @@ class ModuleCache extends \OxidEsales\Eshop\Core\Base
     /**
      * Gets module.
      *
-     * @return oxModule
+     * @return \OxidEsales\Eshop\Core\Module\Module
      */
     public function getModule()
     {

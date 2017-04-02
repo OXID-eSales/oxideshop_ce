@@ -39,10 +39,10 @@
  */
 function smarty_insert_oxid_tracker($params, &$smarty)
 {
-    $config = oxRegistry::getConfig();
+    $config = \OxidEsales\Eshop\Core\Registry::getConfig();
     if ($config->getConfigParam('blEcondaActive')) {
 
-        $output = oxRegistry::get("oxEmosAdapter")->getCode($params, $smarty);
+        $output = \OxidEsales\Eshop\Core\Registry::get("oxEmosAdapter")->getCode($params, $smarty);
 
         // returning JS code to output
         if (strlen(trim($output))) {

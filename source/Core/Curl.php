@@ -271,10 +271,10 @@ class Curl
     {
         if (strpos($name, 'CURLOPT_') !== 0 || !defined($constant = strtoupper($name))) {
             /**
-             * @var oxException $exception
+             * @var \OxidEsales\Eshop\Core\Exception\StandardException $exception
              */
-            $exception = oxNew('oxException');
-            $lang = oxRegistry::getLang();
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
+            $lang = \OxidEsales\Eshop\Core\Registry::getLang();
             $exception->setMessage(sprintf($lang->translateString('EXCEPTION_NOT_VALID_CURL_CONSTANT', $lang->getTplLanguage()), $name));
             throw $exception;
         }
@@ -312,10 +312,10 @@ class Curl
 
         if ($curlErrorNumber) {
             /**
-             * @var oxException $exception
+             * @var \OxidEsales\Eshop\Core\Exception\StandardException $exception
              */
-            $exception = oxNew('oxException');
-            $lang = oxRegistry::getLang();
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
+            $lang = \OxidEsales\Eshop\Core\Registry::getLang();
             $exception->setMessage(sprintf($lang->translateString('EXCEPTION_CURL_ERROR', $lang->getTplLanguage()), $curlErrorNumber));
             throw $exception;
         }

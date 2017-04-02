@@ -52,7 +52,7 @@ class PriceAlarmMail extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             SELECT oxprice, oxartid
             FROM oxpricealarm
             WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = '$shopId' ";
-        $result = oxDb::getDb()->select($query);
+        $result = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($query);
         if ($result != false && $result->count() > 0) {
             $simpleCache = array();
             while (!$result->EOF) {
@@ -63,7 +63,7 @@ class PriceAlarmMail extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
                         $this->_aViewData['iAllCnt'] += 1;
                     }
                 } else {
-                    $article = oxNew("oxArticle");
+                    $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                     if ($article->load($articleId)) {
                         $articlePrice = $simpleCache[$articleId] = $article->getPrice()->getBruttoPrice();
                         if ($articlePrice <= $price) {

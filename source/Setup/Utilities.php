@@ -259,7 +259,7 @@ class Utilities extends Core
      */
     public function updateHtaccessFile($aParams, $sSubFolder = "")
     {
-        /** @var Language $oLang */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\LanguageController $oLang */
         $oLang = $this->getInstance("Language");
 
         // preparing rewrite base param

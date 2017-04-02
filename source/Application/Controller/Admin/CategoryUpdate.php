@@ -50,7 +50,7 @@ class CategoryUpdate extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     protected function _getCategoryList()
     {
         if ($this->_oCatList == null) {
-            $this->_oCatList = oxNew("oxCategoryList");
+            $this->_oCatList = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
             $this->_oCatList->updateCategoryTree(false);
         }
 

@@ -40,7 +40,7 @@ class JavaScriptRenderer
      */
     public function render($widget, $forceRender, $isDynamic = false)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $output = '';
         $suffix = $isDynamic ? '_dynamic' : '';
         $filesParameterName = \OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::FILES_PARAMETER_NAME . $suffix;

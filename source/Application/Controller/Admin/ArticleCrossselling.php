@@ -44,7 +44,7 @@ class ArticleCrossselling extends \OxidEsales\Eshop\Application\Controller\Admin
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oArticle = oxNew('oxArticle');
+        $this->_aViewData['edit'] = $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         // crossselling
         $this->_createCategoryTree("artcattree");
@@ -62,14 +62,14 @@ class ArticleCrossselling extends \OxidEsales\Eshop\Application\Controller\Admin
             }
         }
 
-        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
         if ($iAoc == 1) {
-            $oArticleCrossellingAjax = oxNew('article_crossselling_ajax');
+            $oArticleCrossellingAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleCrosssellingAjax::class);
             $this->_aViewData['oxajax'] = $oArticleCrossellingAjax->getColumns();
 
             return "popups/article_crossselling.tpl";
         } elseif ($iAoc == 2) {
-            $oArticleAccessoriesAjax = oxNew('article_accessories_ajax');
+            $oArticleAccessoriesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleAccessoriesAjax::class);
             $this->_aViewData['oxajax'] = $oArticleAccessoriesAjax->getColumns();
 
             return "popups/article_accessories.tpl";

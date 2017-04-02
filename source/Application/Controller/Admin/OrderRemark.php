@@ -46,16 +46,16 @@ class OrderRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        $sRemoxId = oxRegistry::getConfig()->getRequestParameter("rem_oxid");
+        $sRemoxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("rem_oxid");
         if (isset($soxId) && $soxId != "-1") {
-            $oOrder = oxNew("oxorder");
+            $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             $oOrder->load($soxId);
 
             // all remark
-            $oRems = oxNew("oxlist");
+            $oRems = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oRems->init("oxremark");
             $sUserIdField = 'oxorder__oxuserid';
-            $sQuotedUserId = oxDb::getDb()->quote($oOrder->$sUserIdField->value);
+            $sQuotedUserId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($oOrder->$sUserIdField->value);
             $sSelect = "select * from oxremark where oxparentid=" . $sQuotedUserId . " order by oxcreate desc";
             $oRems->selectString($sSelect);
             foreach ($oRems as $key => $val) {
@@ -69,7 +69,7 @@ class OrderRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $this->_aViewData["allremark"] = $oRems;
 
             if (isset($sRemoxId)) {
-                $oRemark = oxNew("oxRemark");
+                $oRemark = oxNew(\OxidEsales\Eshop\Application\Model\Remark::class);
                 $oRemark->load($sRemoxId);
                 $this->_aViewData["remarktext"] = $oRemark->oxremark__oxtext->value;
                 $this->_aViewData["remarkheader"] = $oRemark->oxremark__oxheader->value;
@@ -86,13 +86,13 @@ class OrderRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         parent::save();
 
-        $oOrder = oxNew("oxorder");
+        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($oOrder->load($this->getEditObjectId())) {
-            $oRemark = oxNew("oxremark");
-            $oRemark->load(oxRegistry::getConfig()->getRequestParameter("rem_oxid"));
+            $oRemark = oxNew(\OxidEsales\Eshop\Application\Model\Remark::class);
+            $oRemark->load(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("rem_oxid"));
 
-            $oRemark->oxremark__oxtext = new oxField(oxRegistry::getConfig()->getRequestParameter("remarktext"));
-            $oRemark->oxremark__oxheader = new oxField(oxRegistry::getConfig()->getRequestParameter("remarkheader"));
+            $oRemark->oxremark__oxtext = new oxField(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("remarktext"));
+            $oRemark->oxremark__oxheader = new oxField(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("remarkheader"));
             $oRemark->oxremark__oxtype = new oxField("r");
             $oRemark->oxremark__oxparentid = new oxField($oOrder->oxorder__oxuserid->value);
             $oRemark->save();
@@ -104,7 +104,7 @@ class OrderRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function delete()
     {
-        $oRemark = oxNew("oxRemark");
-        $oRemark->delete(oxRegistry::getConfig()->getRequestParameter("rem_oxid"));
+        $oRemark = oxNew(\OxidEsales\Eshop\Application\Model\Remark::class);
+        $oRemark->delete(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("rem_oxid"));
     }
 }

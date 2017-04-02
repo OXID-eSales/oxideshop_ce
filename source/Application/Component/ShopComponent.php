@@ -58,7 +58,7 @@ class ShopComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         if (!$oShop->$sActiveField->value && 'oxstart' != $sClassName && !$this->isAdmin()) {
             // redirect to offline if there is no active shop
-            oxRegistry::getUtils()->redirectOffline();
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirectOffline();
         }
 
         return $oShop;

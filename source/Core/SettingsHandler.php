@@ -81,11 +81,11 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
         $config = $this->getConfig();
         $shopId = $config->getShopId();
         $moduleConfigs = $this->getModuleConfigs($moduleId);
-        $db = oxDb::getDb();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         if (is_array($moduleSettings)) {
             foreach ($moduleSettings as $setting) {
-                $oxid = oxRegistry::getUtilsObject()->generateUId();
+                $oxid = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUId();
 
                 $module = $this->getModuleConfigId($moduleId);
                 $name = $setting["name"];
@@ -159,7 +159,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
      */
     protected function getModuleConfigs($moduleId)
     {
-        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $config = $this->getConfig();
         $shopId = $config->getShopId();
         $module = $this->getModuleConfigId($moduleId);
@@ -204,7 +204,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
      */
     protected function removeModuleConfigs($moduleId, $configsToRemove)
     {
-        $db = oxDb::getDb();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $quotedShopId = $db->quote($this->getConfig()->getShopId());
         $quotedModuleId = $db->quote($this->getModuleConfigId($moduleId));
 

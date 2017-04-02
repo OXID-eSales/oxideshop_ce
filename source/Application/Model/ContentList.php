@@ -135,7 +135,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _loadFromDb($iType)
     {
         $sSql = $this->_getSQLByType($iType);
-        $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sSql);
+        $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sSql);
 
         return $aData;
     }
@@ -183,7 +183,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _getSQLByType($iType)
     {
         $sSQLAdd = '';
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sSQLType = " AND `oxtype` = " . $oDb->quote($iType);
 
         if ($iType == self::TYPE_CATEGORY_MENU) {
@@ -191,7 +191,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         if ($iType == self::TYPE_SERVICE_LIST) {
-            $sIdents = implode(", ", oxDb::getDb()->quoteArray($this->getServiceKeys()));
+            $sIdents = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($this->getServiceKeys()));
             $sSQLAdd = " AND OXLOADID IN (" . $sIdents . ")";
             $sSQLType = '';
         }

@@ -49,7 +49,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * User object
      *
-     * @var oxUser
+     * @var \OxidEsales\Eshop\Application\Model\User
      */
     protected $_oUser = null;
 
@@ -91,8 +91,8 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      * assigned users, countries or user groups. Performs
      * additional filtering according to these parameters
      *
-     * @param oxUser $oUser      user object
-     * @param string $sCountryId user country id
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      user object
+     * @param string                                   $sCountryId user country id
      *
      * @return array
      */
@@ -132,8 +132,8 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Creates delivery set list filter SQL to load current state delivery set list
      *
-     * @param oxUser $oUser      user object
-     * @param string $sCountryId user country id
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      user object
+     * @param string                                   $sCountryId user country id
      *
      * @return string
      */
@@ -152,7 +152,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
             // user ID
             $sUserId = $oUser->getId();
 
-            // user groups ( maybe would be better to fetch by function oxuser::getUserGroups() ? )
+            // user groups ( maybe would be better to fetch by function \OxidEsales\Eshop\Application\Model\User::getUserGroups() ? )
             $aGroupIds = $oUser->getUserGroups();
         }
 
@@ -167,11 +167,11 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sCountrySql = $sCountryId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sCountryId) . ")" : '0';
         $sUserSql = $sUserId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelsetu' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sUserId) . ")" : '0';
-        $sGroupSql = count($aIds) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelsetg' and oxobject2delivery.OXOBJECTID in (" . implode(', ', oxDb::getDb()->quoteArray($aIds)) . ") )" : '0';
+        $sGroupSql = count($aIds) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelsetg' and oxobject2delivery.OXOBJECTID in (" . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . ") )" : '0';
 
         $sQ .= "and (
             select
@@ -195,9 +195,9 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Creates current state delivery set list
      *
-     * @param oxUser $oUser      user object
-     * @param string $sCountryId user country id
-     * @param string $sDelSet    preferred delivery set ID (optional)
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      user object
+     * @param string                                   $sCountryId user country id
+     * @param string                                   $sDelSet    preferred delivery set ID (optional)
      *
      * @return array
      */
@@ -226,9 +226,9 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      *   2. active ship set id (string)
      *   3. payment list for active ship set (array)
      *
-     * @param string $sShipSet current ship set id (can be null if not set yet)
-     * @param oxUser $oUser    active user
-     * @param double $oBasket  basket object
+     * @param string                                   $sShipSet current ship set id (can be null if not set yet)
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser    active user
+     * @param double                                   $oBasket  basket object
      *
      * @return array
      */
@@ -251,8 +251,8 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $sShipSet = null;
             }
 
-            $oPayList = oxRegistry::get("oxPaymentList");
-            $oDelList = oxRegistry::get("oxDeliveryList");
+            $oPayList = \OxidEsales\Eshop\Core\Registry::get("oxPaymentList");
+            $oDelList = \OxidEsales\Eshop\Core\Registry::get("oxDeliveryList");
 
             $oCur = $this->getConfig()->getActShopCurrencyObject();
             $dBasketPrice = $oBasket->getPriceForPayment() / $oCur->rate;
@@ -281,7 +281,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Get current user object. If user is not set, try to get current user.
      *
-     * @return oxUser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getUser()
     {
@@ -295,7 +295,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Set current user object
      *
-     * @param oxUser $oUser user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      */
     public function setUser($oUser)
     {
@@ -323,7 +323,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $sTable = getViewName('oxdeliveryset');
         if ($sDelId) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sSubSql = "( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelsetid=$sTable.oxid where " . $this->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelid = " . $oDb->quote($sDelId) . " ) as $sTable";
         } else {
             $sSubSql = $sTable;

@@ -48,7 +48,7 @@ class DeliverySetUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         $soxId = $this->getEditObjectId();
 
         // all usergroups
-        $oGroups = oxNew('oxlist');
+        $oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oGroups->init('oxgroups');
         $oGroups->selectString("select * from " . getViewName("oxgroups", $this->_iEditLang));
 
@@ -68,7 +68,7 @@ class DeliverySetUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         $oGroups = $aNewList;
 
         if (isset($soxId) && $soxId != "-1") {
-            $oDelivery = oxNew("oxdeliveryset");
+            $oDelivery = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySet::class);
             $oDelivery->load($soxId);
 
             //Disable editing for derived articles
@@ -79,14 +79,14 @@ class DeliverySetUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
 
         $this->_aViewData["allgroups2"] = $oGroups;
 
-        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
         if ($iAoc == 1) {
-            $oDeliverysetGroupsAjax = oxNew('deliveryset_groups_ajax');
+            $oDeliverysetGroupsAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetGroupsAjax::class);
             $this->_aViewData['oxajax'] = $oDeliverysetGroupsAjax->getColumns();
 
             return "popups/deliveryset_groups.tpl";
         } elseif ($iAoc == 2) {
-            $oDeliverysetUsersAjax = oxNew('deliveryset_users_ajax');
+            $oDeliverysetUsersAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetUsersAjax::class);
             $this->_aViewData['oxajax'] = $oDeliverysetUsersAjax->getColumns();
 
             return "popups/deliveryset_users.tpl";

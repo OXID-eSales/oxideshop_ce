@@ -39,7 +39,7 @@ function smarty_function_oxeval( $aParams, &$oSmarty )
     }
 
     // processign only if enabled
-    if ( oxRegistry::getConfig()->getConfigParam( 'bl_perfParseLongDescinSmarty' ) || isset( $aParams['force'] ) ) {
+    if ( \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam( 'bl_perfParseLongDescinSmarty' ) || isset( $aParams['force'] ) ) {
         include_once $oSmarty->_get_plugin_filepath( 'function', 'eval' );
         return smarty_function_eval( $aParams, $oSmarty );
     }

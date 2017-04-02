@@ -53,7 +53,7 @@ class ShopSystem extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConf
 
         $aConfArrs = array();
 
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 
         $aLanguages = $oLang->getLanguageArray();
         $sLangAbbr = $aLanguages[$oLang->getObjectTplLanguage()]->abbr;
@@ -67,7 +67,7 @@ class ShopSystem extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConf
         }
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = oxDb::getMaster();
+        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
         $sShopCountry = $masterDb->getOne("select DECODE( oxvarvalue, " . $masterDb->quote($myConfig->getConfigParam('sConfigKey')) . ") as oxvarvalue from oxconfig where oxshopid = '$soxId' and oxvarname = 'sShopCountry'");
 
         $this->_aViewData["shop_countries"] = $aLocationCountries[$sLangAbbr];

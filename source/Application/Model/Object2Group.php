@@ -44,7 +44,7 @@ class Object2Group extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         parent::__construct();
         $this->init('oxobject2group');
-        $this->oxobject2group__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
+        $this->oxobject2group__oxshopid = new oxField($this->getConfig()->getShopId(), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**

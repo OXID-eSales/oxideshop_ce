@@ -102,14 +102,14 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * list sorting rules. Loads list of articles which belong to this vendor
      * Generates page navigation data
      * such as previous/next window URL, number of available pages, generates
-     * meta tags info (oxUBase::_convertForMetaTags()) and returns name of
+     * meta tags info (\OxidEsales\Eshop\Application\Controller\FrontendController::_convertForMetaTags()) and returns name of
      * template to render.
      *
      * @return  string  $this->_sThisTemplate   current template file name
      */
     public function render()
     {
-        oxUBase::render();
+        \OxidEsales\Eshop\Application\Controller\FrontendController::render();
 
         // load vendor
         if (($this->_getVendorId() && $this->getVendorTree())) {
@@ -155,7 +155,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
         $iNrOfCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
         $iNrOfCatArticles = $iNrOfCatArticles ? $iNrOfCatArticles : 1;
 
-        $oArtList = oxNew('oxArticleList');
+        $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->setSqlLimit($iNrOfCatArticles * $this->_getRequestPageNr(), $iNrOfCatArticles);
         $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 
@@ -192,13 +192,13 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     protected function _addPageNrParam($sUrl, $iPage, $iLang = null)
     {
-        if (oxRegistry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor())) {
+        if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor())) {
             if ($iPage) {
                 // only if page number > 0
                 $sUrl = $oVendor->getBaseSeoLink($iLang, $iPage);
             }
         } else {
-            $sUrl = oxUBase::_addPageNrParam($sUrl, $iPage, $iLang);
+            $sUrl = \OxidEsales\Eshop\Application\Controller\FrontendController::_addPageNrParam($sUrl, $iPage, $iLang);
         }
 
         return $sUrl;
@@ -211,7 +211,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     public function generatePageNavigationUrl()
     {
-        if ((oxRegistry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor()))) {
+        if ((\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor()))) {
             return $oVendor->getLink();
         } else {
             return parent::generatePageNavigationUrl();
@@ -313,7 +313,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     protected function _getVendorId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('cnid');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
     }
 
     /**
@@ -450,13 +450,13 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
     /**
      * Returns vendor tree
      *
-     * @return oxVendorList
+     * @return \OxidEsales\Eshop\Application\Model\VendorList
      */
     public function getVendorTree()
     {
         if ($this->_getVendorId() && $this->_oVendorTree === null) {
-            /** @var oxVendorList $oVendorTree */
-            $oVendorTree = oxNew('oxVendorList');
+            /** @var \OxidEsales\Eshop\Application\Model\VendorList $oVendorTree */
+            $oVendorTree = oxNew(\OxidEsales\Eshop\Application\Model\VendorList::class);
             $oVendorTree->buildVendorTree(
                 'vendorlist',
                 $this->getActVendor()->getId(),
@@ -471,7 +471,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
     /**
      * Vendor tree setter
      *
-     * @param oxVendorList $oVendorTree vendor tree
+     * @param \OxidEsales\Eshop\Application\Model\VendorList $oVendorTree vendor tree
      */
     public function setVendorTree($oVendorTree)
     {

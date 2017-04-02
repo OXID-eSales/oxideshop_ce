@@ -187,7 +187,7 @@ class PriceList
     /**
      * Add an oxPrice object to prices array
      *
-     * @param oxprice $oPrice oxprice object
+     * @param \OxidEsales\Eshop\Core\Price $oPrice oxprice object
      */
     public function addToPriceList($oPrice)
     {
@@ -214,7 +214,7 @@ class PriceList
             $dVatTotal += $oPrice->getVatValue();
         }
 
-        $oPrice = oxNew('oxPrice');
+        $oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
 
         if ($dNetoTotal) {
             $dVat = $dVatTotal * 100 / $dNetoTotal;

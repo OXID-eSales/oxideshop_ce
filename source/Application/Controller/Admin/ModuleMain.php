@@ -45,23 +45,23 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
      */
     public function render()
     {
-        if (oxRegistry::getConfig()->getRequestParameter("moduleId")) {
-            $sModuleId = oxRegistry::getConfig()->getRequestParameter("moduleId");
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("moduleId")) {
+            $sModuleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("moduleId");
         } else {
             $sModuleId = $this->getEditObjectId();
         }
 
-        $oModule = oxNew('oxModule');
+        $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
 
         if ($sModuleId) {
             if ($oModule->load($sModuleId)) {
-                $iLang = oxRegistry::getLang()->getTplLanguage();
+                $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage();
 
                 $this->_aViewData["oModule"] = $oModule;
                 $this->_aViewData["sModuleName"] = basename($oModule->getInfo("title", $iLang));
                 $this->_aViewData["sModuleId"] = str_replace("/", "_", $oModule->getModulePath());
             } else {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
+                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
             }
         }
 
@@ -78,30 +78,30 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
     public function activateModule()
     {
         if ($this->getConfig()->isDemoShop()) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
 
             return;
         }
 
         $sModule = $this->getEditObjectId();
-        /** @var oxModule $oModule */
-        $oModule = oxNew('oxModule');
+        /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */
+        $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
         if (!$oModule->load($sModule)) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
 
             return;
         }
         try {
-            /** @var oxModuleCache $oModuleCache */
+            /** @var \OxidEsales\Eshop\Core\Module\ModuleCache $oModuleCache */
             $oModuleCache = oxNew('oxModuleCache', $oModule);
-            /** @var oxModuleInstaller $oModuleInstaller */
+            /** @var \OxidEsales\Eshop\Core\Module\ModuleInstaller $oModuleInstaller */
             $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
 
             if ($oModuleInstaller->activate($oModule)) {
                 $this->_aViewData["updatenav"] = "1";
             }
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
             $oEx->debugOut();
         }
     }
@@ -114,30 +114,30 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
     public function deactivateModule()
     {
         if ($this->getConfig()->isDemoShop()) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
 
             return;
         }
 
         $sModule = $this->getEditObjectId();
-        /** @var oxModule $oModule */
-        $oModule = oxNew('oxModule');
+        /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */
+        $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
         if (!$oModule->load($sModule)) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
 
             return;
         }
         try {
-            /** @var oxModuleCache $oModuleCache */
+            /** @var \OxidEsales\Eshop\Core\Module\ModuleCache $oModuleCache */
             $oModuleCache = oxNew('oxModuleCache', $oModule);
-            /** @var oxModuleInstaller $oModuleInstaller */
+            /** @var \OxidEsales\Eshop\Core\Module\ModuleInstaller $oModuleInstaller */
             $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
 
             if ($oModuleInstaller->deactivate($oModule)) {
                 $this->_aViewData["updatenav"] = "1";
             }
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
             $oEx->debugOut();
         }
     }

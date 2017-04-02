@@ -199,7 +199,7 @@ class SystemRequirements
      */
     public function getConfig()
     {
-        return oxRegistry::getConfig();
+        return \OxidEsales\Eshop\Core\Registry::getConfig();
     }
 
     /**
@@ -808,7 +808,7 @@ class SystemRequirements
     }
 
     /**
-     * Additional sql: do not check collation for oxsysrequirements::$_aException columns
+     * Additional sql: do not check collation for \OxidEsales\Eshop\Core\SystemRequirements::$_aException columns
      *
      * @return string
      */
@@ -823,7 +823,7 @@ class SystemRequirements
     }
 
     /**
-     * Checks tables and columns (oxsysrequirements::$_aColumns) collation
+     * Checks tables and columns (\OxidEsales\Eshop\Core\SystemRequirements::$_aColumns) collation
      *
      * @return array
      */
@@ -837,7 +837,7 @@ class SystemRequirements
                     where TABLE_NAME not like "oxv\_%" and table_schema = "' . $myConfig->getConfigParam('dbName') . '"
                     and COLUMN_NAME in ("' . implode('", "', $this->_aColumns) . '") ' . $this->_getAdditionalCheck() .
                    'ORDER BY TABLE_NAME, COLUMN_NAME DESC;';
-        $aRez = oxDb::getDb()->getAll($sSelect);
+        $aRez = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getAll($sSelect);
         foreach ($aRez as $aRetTable) {
             if (!$sCollation) {
                 $sCollation = $aRetTable[2];
@@ -1149,9 +1149,9 @@ class SystemRequirements
      */
     protected function fetchBlockRecords()
     {
-        $activeThemeId = oxNew('oxTheme')->getActiveThemeId();
+        $activeThemeId = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemeId();
         $config = $this->getConfig();
-        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
         $query = "select * from oxtplblocks where oxactive=1 and oxshopid=? and oxtheme in ('', ?)";
 

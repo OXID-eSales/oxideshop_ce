@@ -75,10 +75,6 @@ namespace {
 
 namespace OxidEsales\EshopCommunity\Core {
 
-    use oxDb;
-    use OxidEsales\Eshop\Core\Exception\StandardException;
-    use oxSystemComponentException;
-
     /**
      * Image generator class
      */
@@ -169,7 +165,7 @@ namespace OxidEsales\EshopCommunity\Core {
          * @param string $method Methods name
          * @param array  $args   Argument array
          *
-         * @throws oxSystemComponentException Throws an exception if the called method does not exist or is not accessable in current class
+         * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException Throws an exception if the called method does not exist or is not accessable in current class
          *
          * @return string
          */
@@ -184,7 +180,7 @@ namespace OxidEsales\EshopCommunity\Core {
                 }
             }
 
-            throw new oxSystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+            throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
         }
 
         /**
@@ -418,7 +414,7 @@ namespace OxidEsales\EshopCommunity\Core {
             list($width, $height, $quality) = $this->_getImageInfo();
             if ($width && $height && $quality) {
                 $config = Registry::getConfig();
-                $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+                $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
                 // parameter names
                 $names = [];
@@ -481,7 +477,7 @@ namespace OxidEsales\EshopCommunity\Core {
          * @param string $imageSource File path of the source image
          * @param string $imageTarget File path of the image to be generated
          *
-         * @throws StandardException If the path of imageTarget and generated image are not the same
+         * @throws OxidEsales\Eshop\Core\Exception\StandardException If the path of imageTarget and generated image are not the same
          *
          * @return bool|string Return false on failure or file path of the generated image on success
          */

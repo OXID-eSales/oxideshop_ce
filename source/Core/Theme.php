@@ -78,7 +78,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     {
         $sError = $this->checkForActivationErrors();
         if ($sError) {
-            /** @var oxException $oException */
+            /** @var \OxidEsales\Eshop\Core\Exception\StandardException $oException */
             $oException = oxNew("oxException", $sError);
             throw $oException;
         }
@@ -104,7 +104,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
         $this->_aThemeList = array();
         $sOutDir = $this->getConfig()->getViewsDir();
         foreach (glob($sOutDir . "*", GLOB_ONLYDIR) as $sDir) {
-            $oTheme = oxNew('oxTheme');
+            $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
             if ($oTheme->load(basename($sDir))) {
                 $this->_aThemeList[$sDir] = $oTheme;
             }
@@ -154,7 +154,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
      */
     public function getActiveThemesList()
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $activeThemeList = array();
         if (!$this->isAdmin()) {
@@ -179,7 +179,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
         if (!$sParent) {
             return null;
         }
-        $oTheme = oxNew('oxTheme');
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         if ($oTheme->load($sParent)) {
             return $oTheme;
         }

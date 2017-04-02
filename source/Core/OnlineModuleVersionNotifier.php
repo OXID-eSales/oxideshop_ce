@@ -44,17 +44,17 @@ use oxOnlineModulesNotifierRequest;
 class OnlineModuleVersionNotifier
 {
 
-    /** @var oxOnlineModuleVersionNotifierCaller */
+    /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller */
     private $_oCaller = null;
 
-    /** @var oxModuleList */
+    /** @var \OxidEsales\Eshop\Core\Module\ModuleList */
     private $_oModuleList = null;
 
     /**
      * Class constructor, initiates class parameters.
      *
-     * @param oxOnlineModuleVersionNotifierCaller $oCaller     Online module version notifier caller object
-     * @param oxModuleList                        $oModuleList Module list object
+     * @param \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller $oCaller     Online module version notifier caller object
+     * @param \OxidEsales\Eshop\Core\Module\ModuleList                 $oModuleList Module list object
      */
     public function __construct(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller $oCaller, \OxidEsales\Eshop\Core\Module\ModuleList $oModuleList)
     {
@@ -69,7 +69,7 @@ class OnlineModuleVersionNotifier
      */
     public function versionNotify()
     {
-        if (true === oxRegistry::getConfig()->getConfigParam('preventModuleVersionNotify')) {
+        if (true === \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('preventModuleVersionNotify')) {
             return;
         }
 
@@ -87,7 +87,7 @@ class OnlineModuleVersionNotifier
         $aPreparedModules = array();
         $aModules = $this->_getModules();
         foreach ($aModules as $oModule) {
-            /** @var oxModule $oModule */
+            /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */
 
             $oPreparedModule = new stdClass();
             $oPreparedModule->id = $oModule->getId();
@@ -96,7 +96,7 @@ class OnlineModuleVersionNotifier
             $oPreparedModule->activeInShops = new stdClass();
             $oPreparedModule->activeInShops->activeInShop = array();
             if ($oModule->isActive()) {
-                $oPreparedModule->activeInShops->activeInShop[] = oxRegistry::getConfig()->getShopUrl();
+                $oPreparedModule->activeInShops->activeInShop[] = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
             }
             $aPreparedModules[] = $oPreparedModule;
         }
@@ -122,7 +122,7 @@ class OnlineModuleVersionNotifier
     /**
      * Returns caller.
      *
-     * @return oxOnlineModuleVersionNotifierCaller
+     * @return \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller
      */
     protected function _getOnlineModuleNotifierCaller()
     {

@@ -92,7 +92,7 @@ class VoucherSerieGenerate extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     public function generateVoucher($iCnt)
     {
-        $iAmount = abs((int) oxRegistry::getSession()->getVariable("voucherAmount"));
+        $iAmount = abs((int) \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("voucherAmount"));
 
         // creating new vouchers
         if ($iCnt < $iAmount && ($oVoucherSerie = $this->_getVoucherSerie())) {
@@ -100,10 +100,10 @@ class VoucherSerieGenerate extends \OxidEsales\Eshop\Application\Controller\Admi
                 $this->_iGenerated = $iCnt;
             }
 
-            $blRandomNr = ( bool ) oxRegistry::getSession()->getVariable("randomVoucherNr");
-            $sVoucherNr = $blRandomNr ? oxRegistry::getUtilsObject()->generateUID() : oxRegistry::getSession()->getVariable("voucherNr");
+            $blRandomNr = ( bool ) \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("randomVoucherNr");
+            $sVoucherNr = $blRandomNr ? \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID() : \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("voucherNr");
 
-            $oNewVoucher = oxNew("oxvoucher");
+            $oNewVoucher = oxNew(\OxidEsales\Eshop\Application\Model\Voucher::class);
             $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField($oVoucherSerie->getId());
             $oNewVoucher->oxvouchers__oxvouchernr = new oxField($sVoucherNr);
             $oNewVoucher->save();
@@ -123,7 +123,7 @@ class VoucherSerieGenerate extends \OxidEsales\Eshop\Application\Controller\Admi
         $iExportedItems = 0;
 
         // file is open
-        $iStart = oxRegistry::getConfig()->getRequestParameter("iStart");
+        $iStart = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("iStart");
 
         for ($i = $iStart; $i < $iStart + $this->iGeneratePerTick; $i++) {
             if (($iExportedItems = $this->nextTick($i)) === false) {

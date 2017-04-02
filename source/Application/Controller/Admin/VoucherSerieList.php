@@ -51,7 +51,7 @@ class VoucherSerieList extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
     public function deleteEntry()
     {
         // first we remove vouchers
-        $oVoucherSerie = oxNew("oxvoucherserie");
+        $oVoucherSerie = oxNew(\OxidEsales\Eshop\Application\Model\VoucherSerie::class);
         $oVoucherSerie->load($this->getEditObjectId());
         $oVoucherSerie->deleteVoucherList();
 

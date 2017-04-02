@@ -63,7 +63,7 @@ class DeliverySet extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             return false;
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sOxIdQuoted = $oDb->quote($sOxId);
         $oDb->execute('delete from oxobject2payment where oxobjectid = ' . $sOxIdQuoted);
@@ -82,7 +82,7 @@ class DeliverySet extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getIdByName($sTitle)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "SELECT `oxid` FROM `" . getViewName('oxdeliveryset') . "` WHERE  `oxtitle` = " . $oDb->quote($sTitle);
         $sId = $oDb->getOne($sQ);
 

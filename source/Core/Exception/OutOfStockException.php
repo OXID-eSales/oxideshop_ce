@@ -134,9 +134,9 @@ class OutOfStockException extends \OxidEsales\Eshop\Core\Exception\ArticleExcept
     {
         // in case destination not set, overriding default error message
         if (!$sDestination) {
-            $this->message = oxRegistry::getLang()->translateString($this->getMessage()) . ": " . $this->getRemainingAmount();
+            $this->message = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->getMessage()) . ": " . $this->getRemainingAmount();
         } else {
-            $this->message = oxRegistry::getLang()->translateString($this->getMessage()) . ": ";
+            $this->message = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->getMessage()) . ": ";
         }
     }
 }

@@ -63,7 +63,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     /**
      * Emos object storage
      *
-     * @var emos
+     * @var \OxidEsales\Eshop\Core\Smarty\Plugin\Emos
      */
     protected $_oEmos = null;
 
@@ -132,7 +132,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns new emos controller object
      *
-     * @return emos
+     * @return \OxidEsales\Eshop\Core\Smarty\Plugin\Emos
      */
     public function getEmos()
     {
@@ -147,7 +147,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
             $this->_oEmos->addPageId($this->_getEmosPageId($this->_getTplName()));
 
             // language id
-            $this->_oEmos->addLangId(oxRegistry::getLang()->getBaseLanguage());
+            $this->_oEmos->addLangId(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
 
             // set site ID
             $this->_oEmos->addSiteId($this->getConfig()->getShopId());
@@ -210,7 +210,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     {
         $myConfig = $this->getConfig();
         if (!$myConfig->isUtf()) {
-            $sContent = iconv(oxRegistry::getLang()->translateString('charset'), 'UTF-8', $sContent);
+            $sContent = iconv(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('charset'), 'UTF-8', $sContent);
         }
 
         return $sContent;
@@ -220,7 +220,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted product title
      *
-     * @param oxarticle $oProduct product which title must be prepared
+     * @param \OxidEsales\Eshop\Application\Model\Article $oProduct product which title must be prepared
      *
      * @return string
      */
@@ -237,7 +237,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     /**
      * Converts a oxarticle object to an EMOS_Item
      *
-     * @param oxarticle $oProduct article to convert
+     * @param \OxidEsales\Eshop\Application\Model\Article $oProduct article to convert
      * @param string $sCatPath category path
      * @param int $iQty buyable amount
      *
@@ -319,7 +319,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     /**
      * Builds basket product category path
      *
-     * @param oxarticle $oArticle article to build category id
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article to build category id
      *
      * @return string
      */
@@ -328,7 +328,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
         $sCatPath = '';
         if ($oCategory = $oArticle->getCategory()) {
             $sTable = $oCategory->getViewName();
-            $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
             $sQ = "select {$sTable}.oxtitle as oxtitle from {$sTable}
                        where {$sTable}.oxleft <= " . $oDb->quote($oCategory->oxcategories__oxleft->value) . " and
                              {$sTable}.oxright >= " . $oDb->quote($oCategory->oxcategories__oxright->value) . " and
@@ -362,9 +362,9 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
         $sPageId = $this->getConfig()->getShopId() .
             $this->_getEmosCl() .
             $sTplName .
-            oxRegistry::getConfig()->getRequestParameter('cnid') .
-            oxRegistry::getConfig()->getRequestParameter('anid') .
-            oxRegistry::getConfig()->getRequestParameter('option');
+            \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid') .
+            \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid') .
+            \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('option');
 
         return md5($sPageId);
     }
@@ -376,7 +376,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getTplName()
     {
-        if (!($sCurrTpl = basename(( string )oxRegistry::getConfig()->getRequestParameter('tpl')))) {
+        if (!($sCurrTpl = basename(( string )\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('tpl')))) {
             // in case template was not defined in request
             $sCurrTpl = $this->getConfig()->getActiveView()->getTemplateName();
         }
@@ -407,7 +407,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets controller information in Emos.
      *
-     * @param Emos $oEmos
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
      * @param array $aParams
      * @param Smarty $oSmarty
      */
@@ -420,11 +420,11 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
         $oConfig = $this->getConfig();
         $oCurrentView = $oConfig->getActiveView();
         $sFunction = $oCurrentView->getFncName();
-        /** @var oxStrRegular $oStr */
+        /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
         $oStr = getStr();
         $sTplName = $this->_getTplName();
-        /** @var oxUser $oUser */
-        $oUser = oxNew('oxuser');
+        /** @var \OxidEsales\Eshop\Application\Model\User $oUser */
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         if (!$oUser->loadActiveUser()) {
             $oUser = false;
         }
@@ -449,7 +449,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                 }
                 break;
             case 'thankyou':
-                /** @var ThankYou $oCurrentView */
+                /** @var \OxidEsales\Eshop\Application\Controller\ThankYouController $oCurrentView */
                 $this->_setBasketInformation($oEmos, $oUser, $oCurrentView->getOrder(), $oCurrentView->getBasket());
                 break;
             case 'oxwarticledetails':
@@ -474,7 +474,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                 }
                 break;
             case 'contact':
-                /** @var Contact $oCurrentView */
+                /** @var \OxidEsales\Eshop\Application\Controller\ContactController $oCurrentView */
                 if ($oCurrentView->getContactSendStatus()) {
                     $aContent['contact'] = $aContent['contact_success'];
                     $oEmos->addContact('Kontakt');
@@ -483,7 +483,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                 }
                 break;
             case 'newsletter':
-                /** @var NewsLetter $oCurrentView */
+                /** @var \OxidEsales\Eshop\Application\Controller\NewsletterController $oCurrentView */
                 $aContent['newsletter'] = $oCurrentView->getNewsletterStatus() ? $aContent['newsletter_success'] : $aContent['newsletter_failure'];
                 break;
             case 'info':
@@ -530,14 +530,14 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * Only tracking first search page, not the following pages.
      * #4018: The emospro.search string is URL-encoded forwarded to econda instead of URL-escaped.
      *
-     * @param Emos $oEmos
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
      * @param Smarty $oSmarty
      */
     private function _setSearchInformation($oEmos, $oSmarty)
     {
         $iPage = $this->getConfig()->getRequestParameter('pgNr');
         if (!$iPage) {
-            $sSearchParamForLink = oxRegistry::getConfig()->getRequestParameter('searchparam', true);
+            $sSearchParamForLink = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam', true);
             $iSearchCount = 0;
             if (($oSmarty->_tpl_vars['oView']) && $oSmarty->_tpl_vars['oView']->getArticleCount()) {
                 $iSearchCount = $oSmarty->_tpl_vars['oView']->getArticleCount();
@@ -550,10 +550,10 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * Sets basket information to Emos.
      * Uses username (email address) instead of customer number.
      *
-     * @param Emos $oEmos
-     * @param oxUser $oUser
-     * @param oxOrder $oOrder
-     * @param oxBasket $oBasket
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser
+     * @param \OxidEsales\Eshop\Application\Model\Order $oOrder
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
      */
     private function _setBasketInformation($oEmos, $oUser, $oOrder, $oBasket)
     {
@@ -573,11 +573,11 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
         $aBasket = array();
         $aBasketProducts = $oBasket->getContents();
         foreach ($aBasketProducts as $oContent) {
-            /** @var oxBasketItem $oContent */
+            /** @var \OxidEsales\Eshop\Application\Model\BasketItem $oContent */
             $sId = $oContent->getProductId();
 
-            /** @var oxArticle $oProduct */
-            $oProduct = oxNew('oxArticle');
+            /** @var \OxidEsales\Eshop\Application\Model\Article $oProduct */
+            $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oProduct->load($sId);
 
             $sPath = $this->_getBasketProductCatPath($oProduct);
@@ -590,13 +590,13 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets user registration action to Emos.
      *
-     * @param Emos $oEmos
-     * @param oxUser $oUser
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser
      */
     private function _setUserRegistration($oEmos, $oUser)
     {
-        $iError = oxRegistry::getConfig()->getRequestParameter('newslettererror');
-        $iSuccess = oxRegistry::getConfig()->getRequestParameter('success');
+        $iError = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('newslettererror');
+        $iSuccess = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('success');
 
         if ($iError && $iError < 0) {
             $oEmos->addRegister($oUser ? $oUser->getId() : 'NULL', abs($iError));
@@ -610,13 +610,13 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets basket actions (update and add) information to Emos.
      *
-     * @param Emos $oEmos
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
      */
     private function _setBasketActionsInfo($oEmos)
     {
         // get the last Call for special handling function "tobasket", "changebasket"
-        if (($aLastCall = oxRegistry::getSession()->getVariable('aLastcall'))) {
-            oxRegistry::getSession()->deleteVariable('aLastcall');
+        if (($aLastCall = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('aLastcall'))) {
+            \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('aLastcall');
         }
 
         // ADD To Basket and Remove from Basket
@@ -627,7 +627,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
             switch ($sCallAction) {
                 case 'changebasket':
                     foreach ($aCallData as $sItemId => $aItemData) {
-                        $oProduct = oxNew('oxArticle');
+                        $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                         if ($aItemData['oldam'] > $aItemData['am'] && $oProduct->load($aItemData['aid'])) {
                             //ECONDA FIX always use the main category
                             //$sPath = $this->_getDeepestCategoryPath( $oProduct );
@@ -643,7 +643,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                 case 'tobasket':
                     foreach ($aCallData as $sItemId => $aItemData) {
                         // ECONDA FIX if there is a "add to basket" in the artcle list view, we do not have a product ID here
-                        $oProduct = oxNew('oxArticle');
+                        $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                         if ($oProduct->load($sItemId)) {
                             //ECONDA FIX always use the main category
                             //$sPath = $this->_getDeepestCategoryPath( $oProduct );

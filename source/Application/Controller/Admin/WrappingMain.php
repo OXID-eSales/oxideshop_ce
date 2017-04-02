@@ -47,7 +47,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oWrapping = oxNew("oxwrapping");
+            $oWrapping = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
             $oWrapping->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oWrapping->getAvailableInLangs();
@@ -63,7 +63,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             }
 
             // remove already created languages
-            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
@@ -89,19 +89,19 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
         // checkbox handling
         if (!isset($aParams['oxwrapping__oxactive'])) {
             $aParams['oxwrapping__oxactive'] = 0;
         }
 
-        $oWrapping = oxNew("oxwrapping");
+        $oWrapping = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
 
         if ($soxId != "-1") {
             $oWrapping->loadInLang($this->_iEditLang, $soxId);
             // #1173M - not all pic are deleted, after article is removed
-            oxRegistry::get("oxUtilsPic")->overwritePic($oWrapping, 'oxwrapping', 'oxpic', 'WP', '0', $aParams, $this->getConfig()->getPictureDir(false));
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic")->overwritePic($oWrapping, 'oxwrapping', 'oxpic', 'WP', '0', $aParams, $this->getConfig()->getPictureDir(false));
         } else {
             $aParams['oxwrapping__oxid'] = null;
             //$aParams = $oWrapping->ConvertNameArray2Idx( $aParams);
@@ -116,7 +116,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oWrapping->assign($aParams);
         $oWrapping->setLanguage($this->_iEditLang);
 
-        $oWrapping = oxRegistry::get("oxUtilsFile")->processFiles($oWrapping);
+        $oWrapping = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oWrapping);
         $oWrapping->save();
 
         // set oxid if inserted
@@ -131,14 +131,14 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
         // checkbox handling
         if (!isset($aParams['oxwrapping__oxactive'])) {
             $aParams['oxwrapping__oxactive'] = 0;
         }
 
-        $oWrapping = oxNew("oxwrapping");
+        $oWrapping = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
 
         if ($soxId != "-1") {
             $oWrapping->load($soxId);
@@ -156,7 +156,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oWrapping->assign($aParams);
         $oWrapping->setLanguage($this->_iEditLang);
 
-        $oWrapping = oxRegistry::get("oxUtilsFile")->processFiles($oWrapping);
+        $oWrapping = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oWrapping);
         $oWrapping->save();
 
         // set oxid if inserted

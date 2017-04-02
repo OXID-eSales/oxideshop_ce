@@ -31,11 +31,12 @@ use oxRegistry;
  */
 class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
 {
+
     /**
      * Returns SEO uri for tag.
      *
-     * @param oxRecommList $oRecomm recommendation list object
-     * @param int          $iLang   language
+     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $oRecomm recommendation list object
+     * @param int                                                    $iLang   language
      *
      * @return string
      */
@@ -65,15 +66,15 @@ class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
     /**
      * Returns full url for passed tag
      *
-     * @param oxRecommList $oRecomm recommendation list object
-     * @param int          $iLang   language
+     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $oRecomm recommendation list object
+     * @param int                                                    $iLang   language
      *
      * @return string
      */
     public function getRecommUrl($oRecomm, $iLang = null)
     {
         if (!isset($iLang)) {
-            $iLang = oxRegistry::getLang()->getBaseLanguage();
+            $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
 
         return $this->_getFullUrl($this->getRecommUri($oRecomm, $iLang), $iLang);
@@ -82,17 +83,17 @@ class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
     /**
      * Returns tag SEO url for specified page
      *
-     * @param oxRecommList $oRecomm recommendation list object
-     * @param int          $iPage   page tu prepare number
-     * @param int          $iLang   language
-     * @param bool         $blFixed fixed url marker (default is false)
+     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $oRecomm recommendation list object
+     * @param int                                                    $iPage   page tu prepare number
+     * @param int                                                    $iLang   language
+     * @param bool                                                   $blFixed fixed url marker (default is false)
      *
      * @return string
      */
     public function getRecommPageUrl($oRecomm, $iPage, $iLang = null, $blFixed = false)
     {
         if (!isset($iLang)) {
-            $iLang = oxRegistry::getLang()->getBaseLanguage();
+            $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
         $sStdUrl = $oRecomm->getBaseStdLink($iLang) . '&amp;pgNr=' . $iPage;
         $sParams = (int) ($iPage + 1);

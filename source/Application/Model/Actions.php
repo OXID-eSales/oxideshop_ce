@@ -59,11 +59,11 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function addArticle($articleId)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "select max(oxsort) from oxactions2article where oxactionid = " . $oDb->quote($this->getId()) . " and oxshopid = '" . $this->getShopId() . "'";
         $iSort = ((int) $oDb->getOne($sQ)) + 1;
 
-        $oNewGroup = oxNew('oxBase');
+        $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $oNewGroup->init('oxactions2article');
         $oNewGroup->oxactions2article__oxshopid = new oxField($this->getShopId());
         $oNewGroup->oxactions2article__oxactionid = new oxField($this->getId());
@@ -82,7 +82,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function removeArticle($articleId)
     {
         // remove actions from articles also
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDelete = "delete from oxactions2article where oxactionid = " . $oDb->quote($this->getId()) . " and oxartid = " . $oDb->quote($articleId) . " and oxshopid = '" . $this->getShopId() . "'";
         $iRemovedArticles = $oDb->execute($sDelete);
 
@@ -106,7 +106,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         }
 
         // remove actions from articles also
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDelete = "delete from oxactions2article where oxactionid = " . $oDb->quote($articleId) . " and oxshopid = '" . $this->getShopId() . "'";
         $oDb->execute($sDelete);
 
@@ -120,7 +120,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getTimeLeft()
     {
-        $iNow = oxRegistry::get("oxUtilsDate")->getTime();
+        $iNow = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
         $iFrom = strtotime($this->oxactions__oxactiveto->value);
 
         return $iFrom - $iNow;
@@ -133,7 +133,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getTimeUntilStart()
     {
-        $iNow = oxRegistry::get("oxUtilsDate")->getTime();
+        $iNow = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
         $iFrom = strtotime($this->oxactions__oxactivefrom->value);
 
         return $iFrom - $iNow;
@@ -144,9 +144,9 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function start()
     {
-        $this->oxactions__oxactivefrom = new oxField(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
+        $this->oxactions__oxactivefrom = new oxField(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
         if ($this->oxactions__oxactiveto->value && ($this->oxactions__oxactiveto->value != '0000-00-00 00:00:00')) {
-            $iNow = oxRegistry::get("oxUtilsDate")->getTime();
+            $iNow = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
             $iTo = strtotime($this->oxactions__oxactiveto->value);
             if ($iNow > $iTo) {
                 $this->oxactions__oxactiveto = new oxField('0000-00-00 00:00:00');
@@ -160,7 +160,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function stop()
     {
-        $this->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
+        $this->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
         $this->save();
     }
 
@@ -178,7 +178,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         ) {
             return false;
         }
-        $iNow = oxRegistry::get("oxUtilsDate")->getTime();
+        $iNow = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
         $iFrom = strtotime($this->oxactions__oxactivefrom->value);
         if ($iNow < $iFrom) {
             return false;
@@ -201,8 +201,8 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getLongDesc()
     {
-        /** @var oxUtilsView $oUtilsView */
-        $oUtilsView = oxRegistry::get("oxUtilsView");
+        /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
+        $oUtilsView = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView");
         return $oUtilsView->parseThroughSmarty($this->oxactions__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
     }
 
@@ -216,10 +216,10 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sArtId = $this->fetchBannerArticleId();
 
         if ($sArtId) {
-            $oArticle = oxNew('oxArticle');
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
             if ($this->isAdmin()) {
-                $oArticle->setLanguage(oxRegistry::getLang()->getEditLanguage());
+                $oArticle->setLanguage(\OxidEsales\Eshop\Core\Registry::getLang()->getEditLanguage());
             }
 
             if ($oArticle->load($sArtId)) {
@@ -238,7 +238,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     protected function fetchBannerArticleId()
     {
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $articleId = $database->getOne(
             'select oxobjectid from oxobject2action ' .
@@ -257,7 +257,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getBannerPictureUrl()
     {
         if (isset($this->oxactions__oxpic) && $this->oxactions__oxpic->value) {
-            $sPromoDir = oxRegistry::get("oxUtilsFile")->normalizeDir(oxUtilsFile::PROMO_PICTURE_DIR);
+            $sPromoDir = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->normalizeDir(\OxidEsales\Eshop\Core\UtilsFile::PROMO_PICTURE_DIR);
 
             return $this->getConfig()->getPictureUrl($sPromoDir . $this->oxactions__oxpic->value, false);
         }
@@ -274,8 +274,8 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sUrl = null;
 
         if (isset($this->oxactions__oxlink) && $this->oxactions__oxlink->value) {
-            /** @var oxUtilsUrl $oUtilsUlr */
-            $oUtilsUlr = oxRegistry::get("oxUtilsUrl");
+            /** @var \OxidEsales\Eshop\Core\UtilsUrl $oUtilsUlr */
+            $oUtilsUlr = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl");
             $sUrl = $oUtilsUlr->addShopHost($this->oxactions__oxlink->value);
             $sUrl = $oUtilsUlr->processUrl($sUrl);
         } else {

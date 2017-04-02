@@ -76,7 +76,7 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             return;
         }
 
-        $iCur = oxRegistry::getConfig()->getRequestParameter('cur');
+        $iCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cur');
         if (isset($iCur)) {
             $aCurrencies = $myConfig->getCurrencyArray();
             if (!isset($aCurrencies[$iCur])) {
@@ -119,7 +119,7 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $oParentView = $this->getParent();
         $oParentView->setActCurrency($this->_oActCur);
 
-        $oUrlUtils = oxRegistry::get("oxUtilsUrl");
+        $oUrlUtils = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl");
         $sUrl = $oUrlUtils->cleanUrl($this->getConfig()->getTopActiveView()->getLink(), array("cur"));
 
         if ($this->getConfig()->getConfigParam('bl_perfLoadCurrency')) {

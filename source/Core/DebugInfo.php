@@ -131,8 +131,8 @@ class DebugInfo
      */
     public function formatGeneralInfo()
     {
-        $log = "cl=" . oxRegistry::getConfig()->getActiveView()->getClassName();
-        if (($fnc = oxRegistry::getConfig()->getActiveView()->getFncName())) {
+        $log = "cl=" . \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getClassName();
+        if (($fnc = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getFncName())) {
             $log .= " fnc=$fnc";
         }
 
@@ -147,7 +147,7 @@ class DebugInfo
     public function formatTimeStamp()
     {
         $log = '';
-        $className = oxRegistry::getConfig()->getActiveView()->getClassName();
+        $className = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getClassName();
         $log .= "<div id='" . $className . "_executed'>Executed: " . date('Y-m-d H:i:s') . "</div>";
         $log .= "<div id='" . $className . "_timestamp'>Timestamp: " . microtime(true) . "</div>";
 

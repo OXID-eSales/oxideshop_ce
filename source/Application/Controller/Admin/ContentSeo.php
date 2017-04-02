@@ -47,7 +47,7 @@ class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      */
     protected function _getEncoder()
     {
-        return oxRegistry::get("oxSeoEncoderContent");
+        return \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderContent");
     }
 
     /**
@@ -57,7 +57,7 @@ class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      */
     public function getEntryUri()
     {
-        $oContent = oxNew('oxcontent');
+        $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
         if ($oContent->load($this->getEditObjectId())) {
             return $this->_getEncoder()->getContentUri($oContent, $this->getEditLang());
         }

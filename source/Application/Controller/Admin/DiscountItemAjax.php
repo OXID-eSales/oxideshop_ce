@@ -70,7 +70,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $sArticleTable = $this->_getViewName('oxarticles');
         $sO2CView = $this->_getViewName('oxobject2category');
         $sDiscTable = $this->_getViewName('oxdiscount');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sOxid = $oConfig->getRequestParameter('oxid');
         $sSynchOxid = $oConfig->getRequestParameter('synchoxid');
 
@@ -125,7 +125,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $aChosenArt = $this->_getActionIds('oxdiscount.oxitmartid');
         if (is_array($aChosenArt)) {
             $sQ = "update oxdiscount set oxitmartid = '' where oxid = ? and oxitmartid = ?";
-            oxDb::getDb()->execute($sQ, array($soxId, reset($aChosenArt)));
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, array($soxId, reset($aChosenArt)));
         }
     }
 
@@ -138,7 +138,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $soxId = $this->getConfig()->getRequestParameter('synchoxid');
         if ($soxId && $soxId != "-1" && is_array($aChosenArt)) {
             $sQ = "update oxdiscount set oxitmartid = ? where oxid = ?";
-            oxDb::getDb()->execute($sQ, array(reset($aChosenArt), $soxId));
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, array(reset($aChosenArt), $soxId));
         }
     }
 
@@ -151,7 +151,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
     protected function _getQueryCols()
     {
         $oConfig = $this->getConfig();
-        $sLangTag = oxRegistry::getLang()->getLanguageTag();
+        $sLangTag = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag();
 
         $sQ = '';
         $blSep = false;

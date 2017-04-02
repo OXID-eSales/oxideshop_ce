@@ -72,7 +72,7 @@ class DiscountUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         $oConfig = $this->getConfig();
 
         $sUserTable = $this->_getViewName('oxuser');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sId = $oConfig->getRequestParameter('oxid');
         $sSynchId = $oConfig->getRequestParameter('synchoxid');
 
@@ -112,10 +112,10 @@ class DiscountUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         $aRemoveGroups = $this->_getActionIds('oxobject2discount.oxid');
         if ($oConfig->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aRemoveGroups)) . ") ";
-            oxDb::getDb()->Execute($sQ);
+            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -134,7 +134,7 @@ class DiscountUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenUsr)) {
             foreach ($aChosenUsr as $sChosenUsr) {
-                $oObject2Discount = oxNew("oxBase");
+                $oObject2Discount = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Discount->init('oxobject2discount');
                 $oObject2Discount->oxobject2discount__oxdiscountid = new oxField($soxId);
                 $oObject2Discount->oxobject2discount__oxobjectid = new oxField($sChosenUsr);

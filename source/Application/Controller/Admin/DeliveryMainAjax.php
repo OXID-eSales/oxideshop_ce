@@ -60,7 +60,7 @@ class DeliveryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
     protected function _getQuery()
     {
         $sCountryTable = $this->_getViewName('oxcountry');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sId = $this->getConfig()->getRequestParameter('oxid');
         $sSynchId = $this->getConfig()->getRequestParameter('synchoxid');
 
@@ -93,10 +93,10 @@ class DeliveryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $aChosenCntr = $this->_getActionIds('oxobject2delivery.oxid');
         if ($this->getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCntr)) {
-            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aChosenCntr)) . ") ";
-            oxDb::getDb()->Execute($sQ);
+            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCntr)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -116,7 +116,7 @@ class DeliveryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
 
         if ($soxId && $soxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
-                $oObject2Delivery = oxNew('oxBase');
+                $oObject2Delivery = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Delivery->init('oxobject2delivery');
                 $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($soxId);
                 $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sChosenCntr);

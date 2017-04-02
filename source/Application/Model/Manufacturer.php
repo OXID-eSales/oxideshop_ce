@@ -144,10 +144,10 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
 
         // manufacturer article count is stored in cache
         if ($this->_blShowArticleCnt && !$this->isAdmin()) {
-            $this->_iNrOfArticles = oxRegistry::get("oxUtilsCount")->getManufacturerArticleCount($this->getId());
+            $this->_iNrOfArticles = \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount")->getManufacturerArticleCount($this->getId());
         }
 
-        $this->oxmanufacturers__oxnrofarticles = new oxField($this->_iNrOfArticles, oxField::T_RAW);
+        $this->oxmanufacturers__oxnrofarticles = new oxField($this->_iNrOfArticles, \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -175,9 +175,9 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     protected function _setRootObjectData()
     {
         $this->setId('root');
-        $this->oxmanufacturers__oxicon = new oxField('', oxField::T_RAW);
-        $this->oxmanufacturers__oxtitle = new oxField(oxRegistry::getLang()->translateString('BY_MANUFACTURER', $this->getLanguage(), false), oxField::T_RAW);
-        $this->oxmanufacturers__oxshortdesc = new oxField('', oxField::T_RAW);
+        $this->oxmanufacturers__oxicon = new oxField('', \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxmanufacturers__oxtitle = new oxField(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('BY_MANUFACTURER', $this->getLanguage(), false), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxmanufacturers__oxshortdesc = new oxField('', \OxidEsales\Eshop\Core\Field::T_RAW);
 
         return true;
     }
@@ -192,7 +192,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
      */
     public function getBaseSeoLink($iLang, $iPage = 0)
     {
-        $oEncoder = oxRegistry::get("oxSeoEncoderManufacturer");
+        $oEncoder = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderManufacturer");
         if (!$iPage) {
             return $oEncoder->getManufacturerUrl($this, $iLang);
         }
@@ -209,7 +209,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
      */
     public function getLink($iLang = null)
     {
-        if (!oxRegistry::getUtils()->seoIsActive()) {
+        if (!\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
             return $this->getStdLink($iLang);
         }
 
@@ -258,7 +258,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
             $iLang = $this->getLanguage();
         }
 
-        return oxRegistry::get("oxUtilsUrl")->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
+        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
     }
 
     /**
@@ -343,7 +343,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     public function delete($sOXID = null)
     {
         if (parent::delete($sOXID)) {
-            oxRegistry::get("oxSeoEncoderManufacturer")->onDeleteManufacturer($this);
+            \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderManufacturer")->onDeleteManufacturer($this);
 
             return true;
         }
@@ -365,7 +365,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
                 $sSize = $oConfig->getConfigParam('sIconsize');
             }
 
-            return oxRegistry::get("oxPictureHandler")->getPicUrl("manufacturer/icon/", $sIcon, $sSize);
+            return \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler")->getPicUrl("manufacturer/icon/", $sIcon, $sSize);
         }
     }
 

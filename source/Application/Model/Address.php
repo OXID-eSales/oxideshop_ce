@@ -54,7 +54,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _getStateObject()
     {
         if (is_null($this->_oStateObject)) {
-            $this->_oStateObject = oxNew('oxState');
+            $this->_oStateObject = oxNew(\OxidEsales\Eshop\Application\Model\State::class);
         }
 
         return $this->_oStateObject;

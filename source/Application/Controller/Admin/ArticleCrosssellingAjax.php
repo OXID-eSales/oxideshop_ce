@@ -75,9 +75,9 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
         $sArticleTable = $this->_getViewName('oxarticles');
         $sView = $this->_getViewName('oxobject2category');
 
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
-        $oDb = oxDb::getDb();
+        $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // category selected or not ?
         if (!$sSelId) {
@@ -140,13 +140,13 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
     {
         $aChosenArt = $this->_getActionIds('oxobject2article.oxid');
         // removing all
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2article.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", oxDb::getDb()->quoteArray($aChosenArt));
+            $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxobject2article where oxobject2article.oxid in (" . $sChosenArticles . ") ";
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -156,18 +156,18 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
     public function addArticleCross()
     {
         $aChosenArt = $this->_getActionIds('oxarticles.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
             $aChosenArt = $this->_getAll(parent::_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         if ($oArticle->load($soxId) && $soxId && $soxId != "-1" && is_array($aChosenArt)) {
             foreach ($aChosenArt as $sAdd) {
-                $oNewGroup = oxNew('oxBase');
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNewGroup->init('oxobject2article');
                 $oNewGroup->oxobject2article__oxobjectid = new oxField($sAdd);
                 $oNewGroup->oxobject2article__oxarticlenid = new oxField($oArticle->oxarticles__oxid->value);
@@ -182,7 +182,7 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
     /**
      * Method is used to overload and add additional actions.
      *
-     * @param oxArticle $article
+     * @param \OxidEsales\Eshop\Application\Model\Article $article
      */
     protected function onArticleAddingToCrossSelling($article)
     {

@@ -98,7 +98,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         if ($aArticlesIds = $this->getSession()->getVariable('aHistoryArticles')) {
             return $aArticlesIds;
-        } elseif ($sArticlesIds = oxRegistry::get("oxUtilsServer")->getOxCookie('aHistoryArticles')) {
+        } elseif ($sArticlesIds = \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->getOxCookie('aHistoryArticles')) {
             return explode('|', $sArticlesIds);
         }
     }
@@ -111,11 +111,11 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function setHistoryArticles($aArticlesIds)
     {
         if ($this->getSession()->getId()) {
-            oxRegistry::getSession()->setVariable('aHistoryArticles', $aArticlesIds);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('aHistoryArticles', $aArticlesIds);
             // clean cookie, if session started
-            oxRegistry::get("oxUtilsServer")->setOxCookie('aHistoryArticles', '');
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->setOxCookie('aHistoryArticles', '');
         } else {
-            oxRegistry::get("oxUtilsServer")->setOxCookie('aHistoryArticles', implode('|', $aArticlesIds));
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->setOxCookie('aHistoryArticles', implode('|', $aArticlesIds));
         }
     }
 
@@ -292,14 +292,14 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         $sShopID = $this->getConfig()->getShopId();
-        $sActionID = oxDb::getDb()->quote(strtolower($sActionID));
+        $sActionID = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote(strtolower($sActionID));
 
         //echo $sSelect;
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
         $sArticleFields = $oBaseObject->getSelectFields();
 
-        $oBase = oxNew("oxActions");
+        $oBase = oxNew(\OxidEsales\Eshop\Application\Model\Actions::class);
         $sActiveSql = $oBase->getSqlActiveSnippet();
         $sViewName = $oBase->getViewName();
 
@@ -334,7 +334,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
 
-        $sArticleId = oxDb::getDb()->quote($sArticleId);
+        $sArticleId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sArticleId);
 
         $sSelect = "SELECT $sArticleTable.*
                         FROM $sArticleTable INNER JOIN oxobject2article ON oxobject2article.oxobjectid=$sArticleTable.oxid ";
@@ -383,7 +383,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             return;
         }
 
-        $sArticleId = oxDb::getDb()->quote($sArticleId);
+        $sArticleId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sArticleId);
 
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
@@ -430,7 +430,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         // #1970C - if any filters are used, we can not use cached category article count
         $iArticleCount = null;
         if ($aSessionFilter) {
-            $iArticleCount = oxDb::getDb()->getOne($this->_getCategoryCountSelect($sCatId, $aSessionFilter));
+            $iArticleCount = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($this->_getCategoryCountSelect($sCatId, $aSessionFilter));
         }
 
         if ($iLimit = (int) $iLimit) {
@@ -444,7 +444,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         // this select is FAST so no need to hazzle here with getNrOfArticles()
-        return oxRegistry::get("oxUtilsCount")->getCatArticleCount($sCatId);
+        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount")->getCatArticleCount($sCatId);
     }
 
     /**
@@ -492,7 +492,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _getArticleSelect($sRecommId, $sArticlesFilter = null)
     {
-        $sRecommId = oxDb::getDb()->quote($sRecommId);
+        $sRecommId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sRecommId);
 
         $sArtView = getViewName('oxarticles');
         $sSelect = "select distinct $sArtView.*, oxobject2list.oxdesc from oxobject2list ";
@@ -512,7 +512,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadSearchIds($sSearchStr = '', $sSearchCat = '', $sSearchVendor = '', $sSearchManufacturer = '')
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sSearchCat = $sSearchCat ? $sSearchCat : null;
         $sSearchVendor = $sSearchVendor ? $sSearchVendor : null;
         $sSearchManufacturer = $sSearchManufacturer ? $sSearchManufacturer : null;
@@ -591,7 +591,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             return $this->count();
         }
 
-        return oxRegistry::get("oxUtilsCount")->getPriceCatArticleCount($oCategory->getId(), $dPriceFrom, $dPriceTo);
+        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount")->getPriceCatArticleCount($oCategory->getId(), $dPriceFrom, $dPriceTo);
     }
 
     /**
@@ -630,7 +630,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sSelect = $this->_getVendorSelect($sVendorId);
         $this->selectString($sSelect);
 
-        return oxRegistry::get("oxUtilsCount")->getVendorArticleCount($sVendorId);
+        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount")->getVendorArticleCount($sVendorId);
     }
 
     /**
@@ -647,7 +647,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sSelect = $this->_getManufacturerSelect($sManufacturerId);
         $this->selectString($sSelect);
 
-        return oxRegistry::get("oxUtilsCount")->getManufacturerArticleCount($sManufacturerId);
+        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount")->getManufacturerArticleCount($sManufacturerId);
     }
 
     /**
@@ -730,7 +730,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function loadStockRemindProducts($aBasketContents)
     {
         if (is_array($aBasketContents) && count($aBasketContents)) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             foreach ($aBasketContents as $oBasketItem) {
                 $aArtIds[] = $oDb->quote($oBasketItem->getProductId());
             }
@@ -764,7 +764,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $iTimeToUpdate = $this->fetchNextUpdateTime();
 
         // next day?
-        $iCurrUpdateTime = oxRegistry::get("oxUtilsDate")->getTime();
+        $iCurrUpdateTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
         $iNextUpdateTime = $iCurrUpdateTime + 3600 * 24;
 
         // renew next update time
@@ -779,7 +779,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
     /**
      * Updates prices where new price > 0, update time != '0000-00-00 00:00:00'
-     * and <= CURRENT_TIMESTAMP. Returns update execution state (result of oxDb::execute())
+     * and <= CURRENT_TIMESTAMP. Returns update execution state (result of \OxidEsales\Eshop\Core\DatabaseProvider::execute())
      *
      * @param bool $blForceUpdate if true, forces price update without timeout check, default value is FALSE
      *
@@ -793,11 +793,11 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         if ($blForceUpdate || $this->_canUpdatePrices()) {
             // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
-            $database = oxDb::getDb();
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $database->startTransaction();
             try {
-                $sCurrUpdateTime = date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime());
+                $sCurrUpdateTime = date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
 
                 // Collect article id's for later recalculation.
                 $sQ = "SELECT `oxid` FROM `oxarticles`
@@ -822,7 +822,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             // recalculate oxvarminprice and oxvarmaxprice for parent
             if (is_array($aUpdatedArticleIds)) {
                 foreach ($aUpdatedArticleIds as $sArticleId) {
-                    $oArticle = oxNew('oxArticle');
+                    $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                     $oArticle->load($sArticleId);
                     $oArticle->onChange();
                 }
@@ -841,7 +841,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _createIdListFromSql($sSql)
     {
-        $rs = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->select($sSql);
+        $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->select($sSql);
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $rs->fields = array_change_key_case($rs->fields, CASE_LOWER);
@@ -867,7 +867,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sFilter = '';
         $iCnt = 0;
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         foreach ($aFilter as $sAttrId => $sValue) {
             if ($sValue) {
                 if ($sFilter) {
@@ -902,7 +902,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _getFilterSql($sCatId, $aFilter)
     {
         $sArticleTable = getViewName('oxarticles');
-        $aIds = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($this->_getFilterIdsSql($sCatId, $aFilter));
+        $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($this->_getFilterIdsSql($sCatId, $aFilter));
         $sIds = '';
 
         if ($aIds) {
@@ -910,7 +910,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
                 if ($sIds) {
                     $sIds .= ', ';
                 }
-                $sIds .= oxDb::getDb()->quote(current($aArt));
+                $sIds .= \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote(current($aArt));
             }
 
             if ($sIds) {
@@ -948,12 +948,12 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         // ----------------------------------
         // filtering ?
         $sFilterSql = '';
-        $iLang = oxRegistry::getLang()->getBaseLanguage();
+        $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         if ($aSessionFilter && isset($aSessionFilter[$sCatId][$iLang])) {
             $sFilterSql = $this->_getFilterSql($sCatId, $aSessionFilter[$sCatId][$iLang]);
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sSelect = "SELECT $sFields, $sArticleTable.oxtimestamp FROM $sO2CView as oc left join $sArticleTable
                     ON $sArticleTable.oxid = oc.oxobjectid
@@ -980,12 +980,12 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         // ----------------------------------
         // filtering ?
         $sFilterSql = '';
-        $iLang = oxRegistry::getLang()->getBaseLanguage();
+        $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         if ($aSessionFilter && isset($aSessionFilter[$sCatId][$iLang])) {
             $sFilterSql = $this->_getFilterSql($sCatId, $aSessionFilter[$sCatId][$iLang]);
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sSelect = "SELECT COUNT(*) FROM $sO2CView as oc left join $sArticleTable
                     ON $sArticleTable.oxid = oc.oxobjectid
@@ -1009,9 +1009,9 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             return '';
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $myConfig = $this->getConfig();
-        $myUtils = oxRegistry::getUtils();
+        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         $sArticleTable = $this->getBaseObject()->getViewName();
 
         $aSearch = explode(' ', $sSearchString);
@@ -1028,7 +1028,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $aSearchCols = $myConfig->getConfigParam('aSearchCols');
         $oBaseObject = $this->getBaseObject();
-        $myUtilsString = oxRegistry::get("oxUtilsString");
+        $myUtilsString = \OxidEsales\Eshop\Core\Registry::get("oxUtilsString");
         foreach ($aSearch as $sSearchString) {
             if (!strlen($sSearchString)) {
                 continue;
@@ -1107,7 +1107,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oBaseObject = $this->getBaseObject();
         $sFieldNames = $oBaseObject->getSelectFields();
         $sSelect = "select $sFieldNames from $sArticleTable ";
-        $sSelect .= "where $sArticleTable.oxvendorid = " . oxDb::getDb()->quote($sVendorId) . " ";
+        $sSelect .= "where $sArticleTable.oxvendorid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sVendorId) . " ";
         $sSelect .= " and " . $oBaseObject->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''  ";
 
         if ($this->_sCustomSorting) {
@@ -1130,7 +1130,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oBaseObject = $this->getBaseObject();
         $sFieldNames = $oBaseObject->getSelectFields();
         $sSelect = "select $sFieldNames from $sArticleTable ";
-        $sSelect .= "where $sArticleTable.oxmanufacturerid = " . oxDb::getDb()->quote($sManufacturerId) . " ";
+        $sSelect .= "where $sArticleTable.oxmanufacturerid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sManufacturerId) . " ";
         $sSelect .= " and " . $oBaseObject->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''  ";
 
         if ($this->_sCustomSorting) {
@@ -1153,7 +1153,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         // crontab is off?
         if (!$oConfig->getConfigParam("blUseCron")) {
             $iTimeToUpdate = $oConfig->getConfigParam("iTimeToUpdatePrices");
-            if (!$iTimeToUpdate || $iTimeToUpdate <= oxRegistry::get("oxUtilsDate")->getTime()) {
+            if (!$iTimeToUpdate || $iTimeToUpdate <= \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()) {
                 $blCan = true;
             }
         }
@@ -1170,7 +1170,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         // Function is called inside a transaction or from admin backend which uses master connection only.
         // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // fetching next update time
         $sQ = $this->getQueryToFetchNextUpdateTime();

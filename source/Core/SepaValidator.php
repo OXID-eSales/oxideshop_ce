@@ -108,7 +108,7 @@ class SepaValidator
      */
     public function isValidBIC($sBIC)
     {
-        $oBICValidator = oxNew('oxSepaBICValidator');
+        $oBICValidator = oxNew(\OxidEsales\Eshop\Core\SepaBICValidator::class);
 
         return $oBICValidator->isValid($sBIC);
     }
@@ -122,7 +122,7 @@ class SepaValidator
      */
     public function isValidIBAN($sIBAN)
     {
-        $oIBANValidator = oxNew('oxSepaIBANValidator');
+        $oIBANValidator = oxNew(\OxidEsales\Eshop\Core\SepaIBANValidator::class);
         $oIBANValidator->setCodeLengths($this->getIBANCodeLengths());
 
         return $oIBANValidator->isValid($sIBAN);

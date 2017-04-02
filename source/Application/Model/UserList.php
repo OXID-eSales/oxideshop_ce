@@ -55,7 +55,7 @@ class UserList extends \OxidEsales\Eshop\Core\Model\ListModel
             return;
         }
 
-        $quotedSearchStr = oxDb::getDb()->quote("%$sSearchStr%");
+        $quotedSearchStr = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote("%$sSearchStr%");
 
         $sSelect = "select oxuser.oxid, oxuser.oxfname, oxuser.oxlname from oxuser ";
         $sSelect .= "left join oxuserbaskets on oxuserbaskets.oxuserid = oxuser.oxid ";

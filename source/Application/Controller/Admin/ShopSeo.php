@@ -51,14 +51,14 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         $this->_aViewData['subjlang'] = $this->_iEditLang;
 
         // loading shop
-        $oShop = oxNew('oxShop');
+        $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         $oShop->loadInLang($this->_iEditLang, $this->_aViewData['edit']->getId());
         $this->_aViewData['edit'] = $oShop;
 
         // loading static seo urls
-        $sQ = "select oxstdurl, oxobjectid from oxseo where oxtype='static' and oxshopid=" . oxDb::getDb()->quote($oShop->getId()) . " group by oxobjectid order by oxstdurl";
+        $sQ = "select oxstdurl, oxobjectid from oxseo where oxtype='static' and oxshopid=" . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($oShop->getId()) . " group by oxobjectid order by oxstdurl";
 
-        $oList = oxNew('oxlist');
+        $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init('oxbase', 'oxseo');
         $oList->selectString($sQ);
 
@@ -80,14 +80,14 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         $sActObject = null;
         if ($this->_sActSeoObject) {
             $sActObject = $this->_sActSeoObject;
-        } elseif (is_array($aStatUrl = oxRegistry::getConfig()->getRequestParameter('aStaticUrl'))) {
+        } elseif (is_array($aStatUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl'))) {
             $sActObject = $aStatUrl['oxseo__oxobjectid'];
         }
 
         if ($sActObject && $sActObject != '-1') {
             $this->_aViewData['sActSeoObject'] = $sActObject;
 
-            $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
             $sQ = "select oxseourl, oxlang from oxseo where oxobjectid = " . $oDb->quote($sActObject) . " and oxshopid = " . $oDb->quote($iShopId);
             $oRs = $oDb->select($sQ);
             if ($oRs != false && $oRs->count() > 0) {
@@ -108,17 +108,17 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         // saving config params
         $this->saveConfVars();
 
-        $oShop = oxNew('oxShop');
+        $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($oShop->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
             //assigning values
             $oShop->setLanguage(0);
-            $oShop->assign(oxRegistry::getConfig()->getRequestParameter('editval'));
+            $oShop->assign(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval'));
             $oShop->setLanguage($this->_iEditLang);
             $oShop->save();
 
             // saving static url changes
-            if (is_array($aStaticUrl = oxRegistry::getConfig()->getRequestParameter('aStaticUrl'))) {
-                $this->_sActSeoObject = oxRegistry::get("oxSeoEncoder")->encodeStaticUrls($this->_processUrls($aStaticUrl), $oShop->getId(), $this->_iEditLang);
+            if (is_array($aStaticUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl'))) {
+                $this->_sActSeoObject = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->encodeStaticUrls($this->_processUrls($aStaticUrl), $oShop->getId(), $this->_iEditLang);
             }
         }
     }
@@ -177,7 +177,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      */
     public function deleteStaticUrl()
     {
-        $aStaticUrl = oxRegistry::getConfig()->getRequestParameter('aStaticUrl');
+        $aStaticUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl');
         if (is_array($aStaticUrl)) {
             $sObjectid = $aStaticUrl['oxseo__oxobjectid'];
             if ($sObjectid && $sObjectid != '-1') {
@@ -195,7 +195,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
     {
         // active shop id
         $shopId = $this->getEditObjectId();
-        $db = oxDb::getDb();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $db->execute("delete from oxseo where oxtype='static' and oxobjectid = " . $db->quote($staticUrlId) . " and oxshopid = " . $db->quote($shopId));
     }
 }

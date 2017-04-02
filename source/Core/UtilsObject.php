@@ -304,7 +304,7 @@ class UtilsObject
     /**
      * Returns shop id.
      *
-     * @deprecated use oxConfig::getShopId() or oxShopIdCalculator::getShopId instead.
+     * @deprecated use \OxidEsales\Eshop\Core\Config::getShopId() or \OxidEsales\Eshop\Core\ShopIdCalculator::getShopId instead.
      *
      * @return string
      */

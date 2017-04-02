@@ -44,7 +44,7 @@ class SimpleVariantList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Sets parent variant
      *
-     * @param oxArticle $oParent Parent article
+     * @param \OxidEsales\Eshop\Application\Model\Article $oParent Parent article
      */
     public function setParent($oParent)
     {

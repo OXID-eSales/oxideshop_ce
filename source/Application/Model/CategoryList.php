@@ -200,7 +200,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         //excluding long desc
         if (!$this->isAdmin() && !$this->_blHideEmpty && !$this->getLoadFull()) {
-            $oCat = oxNew('oxCategory');
+            $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if (!($this->_sActCat && $oCat->load($this->_sActCat) && $oCat->oxcategories__oxrootid->value)) {
                 $oCat = null;
                 $this->_sActCat = null;
@@ -225,7 +225,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * constructs the sql snippet responsible for depth optimizations,
      * loads only selected category's siblings
      *
-     * @param oxCategory $oCat selected category
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat selected category
      *
      * @return string
      */
@@ -237,7 +237,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
         // load complete tree of active category, if it exists
         if ($oCat) {
             // select children here, siblings will be selected from union
-            $sDepthSnippet .= " or ($sViewName.oxparentid = " . oxDb::getDb()->quote($oCat->oxcategories__oxid->value) . ")";
+            $sDepthSnippet .= " or ($sViewName.oxparentid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($oCat->oxcategories__oxid->value) . ")";
         }
 
         // load 1'st category level (roots)
@@ -260,8 +260,8 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * siblings of the same root (siblings of the category, and parents and
      * grandparents etc)
      *
-     * @param oxCategory $oCat     current category object
-     * @param array      $aColumns required column names (optional)
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat     current category object
+     * @param array                                        $aColumns required column names (optional)
      *
      * @return string
      */
@@ -276,7 +276,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
         return "UNION SELECT " . $this->_getSqlSelectFieldsForTree('maincats', $aColumns)
                . " FROM oxcategories AS subcats"
                . " LEFT JOIN $sViewName AS maincats on maincats.oxparentid = subcats.oxparentid"
-               . " WHERE subcats.oxrootid = " . oxDb::getDb()->quote($oCat->oxcategories__oxrootid->value)
+               . " WHERE subcats.oxrootid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($oCat->oxcategories__oxrootid->value)
                . " AND subcats.oxleft <= " . (int) $oCat->oxcategories__oxleft->value
                . " AND subcats.oxright >= " . (int) $oCat->oxcategories__oxright->value;
     }
@@ -289,7 +289,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _loadFromDb()
     {
         $sSql = $this->_getSelectString(false, null, 'oxparentid, oxsort, oxtitle');
-        $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sSql);
+        $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sSql);
 
         return $aData;
     }
@@ -346,7 +346,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _ppLoadFullCategory($sId)
     {
         if (isset($this->_aArray[$sId])) {
-            $oNewCat = oxNew('oxCategory');
+            $oNewCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if ($oNewCat->load($sId)) {
                 // replace aArray object with fully loaded category
                 $this->_aArray[$sId] = $oNewCat;
@@ -398,7 +398,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Getter for active category
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category
      */
     public function getClickCat()
     {
@@ -486,7 +486,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _ppAddContentCategories()
     {
         // load content pages for adding them into menu tree
-        $oContentList = oxNew("oxContentList");
+        $oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);
         $oContentList->loadCatMenues();
 
         foreach ($oContentList as $sCatId => $aContent) {
@@ -572,7 +572,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function updateCategoryTree($blVerbose = true, $sShopID = null)
     {
         // Only called from admin and admin mode reads from master (see ESDEV-3804 and ESDEV-3822).
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $database->startTransaction();
 
         try {
@@ -643,7 +643,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _updateNodes($oxRootId, $isRoot, $thisRoot)
     {
         // Called from inside a transaction so master is picked automatically (see ESDEV-3804 and ESDEV-3822).
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         if ($isRoot) {
             $thisRoot = $oxRootId;

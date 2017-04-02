@@ -81,7 +81,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
     /**
      * Validates VAT.
      *
-     * @param oxCompanyVatIn $oVatIn Company VAT identification number object.
+     * @param \OxidEsales\Eshop\Application\Model\CompanyVatIn $oVatIn Company VAT identification number object.
      *
      * @return bool
      */
@@ -116,11 +116,11 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
         $sLogMessage = "Warning: $sErrStr in $sErrFile on line $iErrLine";
 
         // fetching exception log file name
-        $oEx = oxNew("oxException");
+        $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
         $sLogFileName = $oEx->getLogFileName();
 
         // logs error message
-        return oxRegistry::getUtils()->writeToLog($sLogMessage, $sLogFileName);
+        return \OxidEsales\Eshop\Core\Registry::getUtils()->writeToLog($sLogMessage, $sLogFileName);
     }
 
     /**
@@ -216,7 +216,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
     public function getWsdlUrl()
     {
         // overriding wsdl url
-        if (($sWsdl = oxRegistry::getConfig()->getConfigParam("sVatIdCheckInterfaceWsdl"))) {
+        if (($sWsdl = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sVatIdCheckInterfaceWsdl"))) {
             $this->_sWsdl = $sWsdl;
         }
 

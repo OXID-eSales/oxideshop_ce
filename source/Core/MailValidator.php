@@ -65,7 +65,7 @@ class MailValidator
      */
     public function __construct()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sEmailValidationRule = $oConfig->getConfigParam('sEmailValidationRule');
         if (!empty($sEmailValidationRule)) {
             $this->_sMailValidationRule = $sEmailValidationRule;

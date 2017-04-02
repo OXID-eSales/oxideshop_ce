@@ -77,7 +77,7 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != self::NEW_SHOP_ID) {
             // load object
-            $oShop = oxNew('oxShop');
+            $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             if (!$oShop->load($soxId)) {
                 $soxId = $myConfig->getBaseShopId();
                 $oShop->load($soxId);
@@ -93,13 +93,13 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
 
         if ($this->_aViewData['updatenav']) {
             //skipping requirements checking when reloading nav frame
-            oxRegistry::getSession()->setVariable("navReload", true);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("navReload", true);
         }
 
         //making sure we really change shops on low level
         if ($soxId && $soxId != self::NEW_SHOP_ID) {
             $myConfig->setShopId($soxId);
-            oxRegistry::getSession()->setVariable('currentadminshop', $soxId);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('currentadminshop', $soxId);
         }
 
         return 'shop_list.tpl';
@@ -114,9 +114,9 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
     {
         // we override this to add our shop if we are not malladmin
         $this->_aWhere = parent::buildWhere();
-        if (!oxRegistry::getSession()->getVariable('malladmin')) {
+        if (!\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('malladmin')) {
             // we only allow to see our shop
-            $this->_aWhere[getViewName("oxshops") . ".oxid"] = oxRegistry::getSession()->getVariable("actshop");
+            $this->_aWhere[getViewName("oxshops") . ".oxid"] = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("actshop");
         }
 
         return $this->_aWhere;

@@ -52,7 +52,7 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
     protected function _getQuery()
     {
         $sSelTable = $this->_getViewName('oxselectlist');
-        $sArtId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
 
         return " from $sSelTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sSelTable.oxid " .
                  "where oxobjectid = '$sArtId' ";
@@ -73,10 +73,10 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     public function setSorting()
     {
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $sSelect = "select * from oxobject2selectlist where oxobjectid='$sSelId' order by oxsort";
 
-        $oList = oxNew("oxlist");
+        $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init("oxbase", "oxobject2selectlist");
         $oList->selectString($sSelect);
 
@@ -95,8 +95,8 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
         }
 
         //
-        if (($iKey = array_search(oxRegistry::getConfig()->getRequestParameter('sortoxid'), $aIdx2Id)) !== false) {
-            $iDir = (oxRegistry::getConfig()->getRequestParameter('direction') == 'up') ? ($iKey - 1) : ($iKey + 1);
+        if (($iKey = array_search(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sortoxid'), $aIdx2Id)) !== false) {
+            $iDir = (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('direction') == 'up') ? ($iKey - 1) : ($iKey + 1);
             if (isset($aIdx2Id[$iDir])) {
                 // exchanging indexes
                 $oDir1 = $oList->offsetGet($aIdx2Id[$iDir]);

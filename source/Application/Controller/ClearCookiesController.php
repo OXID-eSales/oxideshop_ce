@@ -57,7 +57,7 @@ class ClearCookiesController extends \OxidEsales\Eshop\Application\Controller\Fr
      */
     protected function _removeCookies()
     {
-        $oUtilsServer = oxRegistry::get("oxUtilsServer");
+        $oUtilsServer = \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer");
         if (isset($_SERVER['HTTP_COOKIE'])) {
             $aCookies = explode(';', $_SERVER['HTTP_COOKIE']);
             foreach ($aCookies as $sCookie) {
@@ -79,8 +79,8 @@ class ClearCookiesController extends \OxidEsales\Eshop\Application\Controller\Fr
         $aPaths = array();
         $aPath = array();
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('INFO_ABOUT_COOKIES', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('INFO_ABOUT_COOKIES', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

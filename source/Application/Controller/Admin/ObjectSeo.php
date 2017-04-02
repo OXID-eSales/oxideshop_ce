@@ -58,7 +58,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         }
 
         $iLang = $this->getEditLang();
-        $aLangs = oxRegistry::getLang()->getLanguageNames();
+        $aLangs = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames();
         foreach ($aLangs as $sLangId => $sLanguage) {
             $oLang = new stdClass();
             $oLang->sLangDesc = $sLanguage;
@@ -76,7 +76,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     {
         // saving/updating seo params
         if (($sOxid = $this->_getSaveObjectId())) {
-            $aSeoData = oxRegistry::getConfig()->getRequestParameter('aSeoData');
+            $aSeoData = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aSeoData');
             $iShopId = $this->getConfig()->getShopId();
             $iLang = $this->getEditLang();
 
@@ -121,7 +121,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         $sParams = null;
         if (isset($aSeoData['oxparams'])) {
             if (preg_match('/([a-z]*#)?(?<objectseo>[a-z0-9]+)(#[0-9])?/i', $aSeoData['oxparams'], $aMatches)) {
-                $sQuotedObjectSeoId = oxDb::getDb()->quote($aMatches['objectseo']);
+                $sQuotedObjectSeoId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($aMatches['objectseo']);
                 $sParams = "oxparams = {$sQuotedObjectSeoId}";
             }
         }
@@ -161,11 +161,11 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         $iShopId = $this->getConfig()->getShopId();
 
         $sQ = "select oxfixed from oxseo where
-                   oxseo.oxobjectid = " . oxDb::getDb()->quote($this->getEditObjectId()) . " and
+                   oxseo.oxobjectid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->getEditObjectId()) . " and
                    oxseo.oxshopid = '{$iShopId}' and oxseo.oxlang = {$iLang} and oxparams = '' ";
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return (bool) oxDb::getMaster()->getOne($sQ);
+        return (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ);
     }
 
     /**

@@ -64,7 +64,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
 
             // remove already created languages
-            $this->_aViewData["posslang"] = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            $this->_aViewData["posslang"] = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
 
             foreach ($oOtherLang as $id => $language) {
                 $oLang = new stdClass();
@@ -94,7 +94,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     public function save()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
         // checkbox handling
         if (!isset($aParams['oxlinks__oxactive'])) {
             $aParams['oxlinks__oxactive'] = 0;
@@ -109,7 +109,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         if (!$aParams['oxlinks__oxinsert']) {
             // sets default (?) date format to output
             // else if possible - changes date format to system compatible
-            $sDate = date(oxRegistry::getLang()->translateString("simpleDateFormat"));
+            $sDate = date(\OxidEsales\Eshop\Core\Registry::getLang()->translateString("simpleDateFormat"));
             if ($sDate == "simpleDateFormat") {
                 $aParams['oxlinks__oxinsert'] = date("Y-m-d");
             } else {
@@ -117,7 +117,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
         }
 
-        $iEditLanguage = oxRegistry::getConfig()->getRequestParameter("editlanguage");
+        $iEditLanguage = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editlanguage");
         $oLinks = oxNew("oxlinks", getViewName('oxlinks'));
 
         if ($soxId != "-1") {
@@ -153,14 +153,14 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
         // checkbox handling
         if (!isset($aParams['oxlinks__oxactive'])) {
             $aParams['oxlinks__oxactive'] = 0;
         }
 
         $oLinks = oxNew("oxlinks", getViewName('oxlinks'));
-        $iEditLanguage = oxRegistry::getConfig()->getRequestParameter("editlanguage");
+        $iEditLanguage = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editlanguage");
 
         if ($soxId != "-1") {
             $oLinks->loadInLang($iEditLanguage, $soxId);
@@ -178,7 +178,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $oLinks->assign($aParams);
 
         // apply new language
-        $oLinks->setLanguage(oxRegistry::getConfig()->getRequestParameter("new_lang"));
+        $oLinks->setLanguage(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("new_lang"));
         $oLinks->save();
 
         // set oxid if inserted

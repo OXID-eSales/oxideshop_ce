@@ -127,25 +127,25 @@ function oxNew($className)
  *
  * @param bool $blAssoc data fetch mode
  *
- * @deprecated since v6.0.0 (2016-05-16); Use oxDb::getDb().
+ * @deprecated since v6.0.0 (2016-05-16); Use \OxidEsales\Eshop\Core\DatabaseProvider::getDb().
  *
  * @return oxDb
  */
 function getDb($blAssoc = true)
 {
-    return oxDb::getDb($blAssoc);
+    return \OxidEsales\Eshop\Core\DatabaseProvider::getDb($blAssoc);
 }
 
 /**
  * Returns string handler
  *
- * @deprecated since v6.0.0 (2016-05-16); Use oxStr::getStr().
+ * @deprecated since v6.0.0 (2016-05-16); Use \OxidEsales\Eshop\Core\Str::getStr().
  *
  * @return oxStrRegular|oxStrMb
  */
 function getStr()
 {
-    return oxStr::getStr();
+    return \OxidEsales\Eshop\Core\Str::getStr();
 }
 
 /**

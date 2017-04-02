@@ -114,7 +114,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         $this->_checkArticleFile($aFileInfo);
 
         $sFileHash = $this->_getFileHash($aFileInfo['tmp_name']);
-        $this->oxfiles__oxstorehash = new oxField($sFileHash, oxField::T_RAW);
+        $this->oxfiles__oxstorehash = new oxField($sFileHash, \OxidEsales\Eshop\Core\Field::T_RAW);
         $sUploadTo = $this->getStoreLocation();
 
         if (!$this->_uploadFile($aFileInfo['tmp_name'], $sUploadTo)) {
@@ -149,7 +149,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getBaseDownloadDirPath()
     {
-        $sConfigValue = oxRegistry::getConfig()->getConfigParam('sDownloadsDir');
+        $sConfigValue = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDownloadsDir');
 
         //Unix full path is set
         if ($sConfigValue && $sConfigValue[0] == DIRECTORY_SEPARATOR) {
@@ -333,7 +333,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
             return false;
         }
         $sHash = $this->oxfiles__oxstorehash->value;
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $iCount = $oDb->getOne(
             'SELECT COUNT(*) FROM `oxfiles` WHERE `OXSTOREHASH` = ' . $oDb->quote($sHash)
         );
@@ -359,7 +359,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function download()
     {
-        $oUtils = oxRegistry::getUtils();
+        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         $sFileName = $this->_getFilenameForUrl();
         $sFileLocations = $this->getStoreLocation();
 
@@ -398,10 +398,10 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($this->_blHasValidDownloads == null) {
             $this->_blHasValidDownloads = false;
-            $sNow = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
+            $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
             $sFileId = $this->getId();
 
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $sSql = "SELECT
                         `oxorderfiles`.`oxid`

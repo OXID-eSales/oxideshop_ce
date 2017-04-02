@@ -238,7 +238,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     {
         if ($sParentId && $this->_oParentProd === null) {
             $this->_oParentProd = false;
-            $oProduct = oxNew('oxArticle');
+            $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if (($oProduct->load($sParentId))) {
                 $this->_processProduct($oProduct);
                 $this->_oParentProd = $oProduct;
@@ -294,7 +294,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
             $this->_blCanRate = false;
 
             if ($this->ratingIsActive() && $oUser = $this->getUser()) {
-                $oRating = oxNew('oxrating');
+                $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                 $this->_blCanRate = $oRating->allowRating($oUser->getId(), 'oxarticle', $this->getProduct()->getId());
             }
         }
@@ -336,7 +336,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     public function getLinkType()
     {
         if ($this->_iLinkType === null) {
-            $sListType = oxRegistry::getConfig()->getRequestParameter('listtype');
+            $sListType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
             if ('vendor' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $sListType) {
@@ -458,7 +458,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
             $sParentIdField = 'oxarticles__oxparentid';
             $sArtId = $oProduct->$sParentIdField->value ? $oProduct->$sParentIdField->value : $oProduct->getId();
 
-            $oHistoryArtList = oxNew('oxArticleList');
+            $oHistoryArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             $oHistoryArtList->loadHistoryArticles($sArtId, $iCnt);
             $this->_aLastProducts = $oHistoryArtList;
         }
@@ -820,10 +820,10 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
         if ($this->_sBidPrice === null) {
             $this->_sBidPrice = false;
 
-            $aParams = oxRegistry::getConfig()->getRequestParameter('pa');
+            $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pa');
             $oCur = $this->getConfig()->getActShopCurrencyObject();
-            $iPrice = oxRegistry::getUtils()->currency2Float($aParams['price']);
-            $this->_sBidPrice = oxRegistry::getLang()->formatCurrency($iPrice, $oCur);
+            $iPrice = \OxidEsales\Eshop\Core\Registry::getUtils()->currency2Float($aParams['price']);
+            $this->_sBidPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($iPrice, $oCur);
         }
 
         return $this->_sBidPrice;
@@ -840,12 +840,12 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
         $oProduct = $this->getProduct();
         $sParentIdField = 'oxarticles__oxparentid';
         if (($oParent = $this->_getParentProduct($oProduct->$sParentIdField->value))) {
-            $sVarSelId = oxRegistry::getConfig()->getRequestParameter("varselid");
+            $sVarSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid");
 
             return $oParent->getVariantSelections($sVarSelId, $oProduct->getId());
         }
 
-        return $oProduct->getVariantSelections(oxRegistry::getConfig()->getRequestParameter("varselid"));
+        return $oProduct->getVariantSelections(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid"));
     }
 
     /**
@@ -871,7 +871,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     public function getProduct()
     {
         $myConfig = $this->getConfig();
-        $myUtils = oxRegistry::getUtils();
+        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         if ($this->_oProduct === null) {
             if ($this->getViewParameter('_object')) {
@@ -881,17 +881,17 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
                 //as blLoadVariants = false affect "ab price" functionality
                 $myConfig->setConfigParam('blLoadVariants', true);
 
-                $sOxid = oxRegistry::getConfig()->getRequestParameter('anid');
+                $sOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid');
 
                 // object is not yet loaded
-                $this->_oProduct = oxNew('oxArticle');
+                $this->_oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
                 if (!$this->_oProduct->load($sOxid)) {
                     $myUtils->redirect($myConfig->getShopHomeUrl());
                     $myUtils->showMessageAndExit('');
                 }
 
-                $sVarSelId = oxRegistry::getConfig()->getRequestParameter("varselid");
+                $sVarSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid");
                 $aVarSelections = $this->_oProduct->getVariantSelections($sVarSelId);
                 if ($aVarSelections && $aVarSelections['oActiveVariant'] && $aVarSelections['blPerfectFit']) {
                     $this->_oProduct = $aVarSelections['oActiveVariant'];
@@ -929,7 +929,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
         parent::render();
 
-        $oCategory = oxNew('oxCategory');
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
         // if category parameter is not found, use category from product
         $sCatId = $this->getViewParameter("cnid");
@@ -973,8 +973,8 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     /**
      * Runs additional checks for article.
      *
-     * @param oxUtils  $myUtils  General utils
-     * @param oxConfig $myConfig Main shop configuration
+     * @param \OxidEsales\Eshop\Core\Utils  $myUtils  General utils
+     * @param \OxidEsales\Eshop\Core\Config $myConfig Main shop configuration
      */
     protected function _additionalChecksForArticle($myUtils, $myConfig)
     {

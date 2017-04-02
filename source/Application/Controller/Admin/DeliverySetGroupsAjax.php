@@ -55,7 +55,7 @@ class DeliverySetGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Adm
      */
     protected function _getQuery()
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sId = $this->getConfig()->getRequestParameter('oxid');
         $sSynchId = $this->getConfig()->getRequestParameter('synchoxid');
 
@@ -90,11 +90,11 @@ class DeliverySetGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Adm
         $aRemoveGroups = $this->_getActionIds('oxobject2delivery.oxid');
         if ($this->getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sRemoveGroups = implode(", ", oxDb::getDb()->quoteArray($aRemoveGroups));
+            $sRemoveGroups = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups));
             $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . $sRemoveGroups . ") ";
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -113,7 +113,7 @@ class DeliverySetGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Adm
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenCat)) {
             foreach ($aChosenCat as $sChosenCat) {
-                $oObject2Delivery = oxNew('oxBase');
+                $oObject2Delivery = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Delivery->init('oxobject2delivery');
                 $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($soxId);
                 $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sChosenCat);

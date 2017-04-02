@@ -38,7 +38,7 @@ class ArticleUserdef extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     {
         parent::render();
 
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $this->_aViewData["edit"] = $oArticle;
 
         $soxId = $this->getEditObjectId();

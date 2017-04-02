@@ -69,16 +69,16 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function save()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
-        $aRDFaPayments = (array) oxRegistry::getConfig()->getRequestParameter("ardfapayments");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aRDFaPayments = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("ardfapayments");
 
         // Delete old mappings
-        $oDb = oxDb::getDb();
-        $oDb->execute("DELETE FROM oxobject2payment WHERE oxpaymentid = '" . oxRegistry::getConfig()->getRequestParameter("oxid") . "' AND OXTYPE = 'rdfapayment'");
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb->execute("DELETE FROM oxobject2payment WHERE oxpaymentid = '" . \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid") . "' AND OXTYPE = 'rdfapayment'");
 
         // Save new mappings
         foreach ($aRDFaPayments as $sPayment) {
-            $oMapping = oxNew("oxBase");
+            $oMapping = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
             $oMapping->init("oxobject2payment");
             $oMapping->assign($aParams);
             $oMapping->oxobject2payment__oxobjectid = new oxField($sPayment);
@@ -113,9 +113,9 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function getAssignedRDFaPayments()
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $aRDFaPayments = array();
-        $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid=' . $oDb->quote(oxRegistry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfapayment" ';
+        $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid=' . $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfapayment" ';
         $rs = $oDb->select($sSelect);
         if ($rs && $rs->count()) {
             while (!$rs->EOF) {

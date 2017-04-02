@@ -54,7 +54,7 @@ class RecommendationAddController extends \OxidEsales\Eshop\Application\Controll
      */
     public function render()
     {
-        oxUBase::render();
+        \OxidEsales\Eshop\Application\Controller\FrontendController::render();
 
         return $this->_sThisTemplate;
     }

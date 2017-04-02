@@ -85,7 +85,7 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
     public function getFieldList($dVat = null)
     {
         if ($this->_aFieldList == null && $this->oxselectlist__oxvaldesc->value) {
-            $this->_aFieldList = oxRegistry::getUtils()->assignValuesFromText($this->oxselectlist__oxvaldesc->value, $dVat);
+            $this->_aFieldList = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($this->oxselectlist__oxvaldesc->value, $dVat);
             foreach ($this->_aFieldList as $sKey => $oField) {
                 $this->_aFieldList[$sKey]->name = getStr()->strip_tags($this->_aFieldList[$sKey]->name);
             }
@@ -112,7 +112,7 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
 
         // remove selectlists from articles also
         if ($blRemove = parent::delete($sOXID)) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $oDb->execute("delete from oxobject2selectlist where oxselnid = " . $oDb->quote($sOXID) . " ");
         }
 
@@ -158,7 +158,7 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
     {
         if ($this->_aList === null && $this->oxselectlist__oxvaldesc->value) {
             $this->_aList = false;
-            $aList = oxRegistry::getUtils()->assignValuesFromText($this->oxselectlist__oxvaldesc->getRawValue(), $this->getVat());
+            $aList = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($this->oxselectlist__oxvaldesc->getRawValue(), $this->getVat());
             foreach ($aList as $sKey => $oField) {
                 if ($oField->name) {
                     $this->_aList[$sKey] = oxNew("oxSelection", getStr()->strip_tags($oField->name), $sKey, false, $this->_aList === false ? true : false);

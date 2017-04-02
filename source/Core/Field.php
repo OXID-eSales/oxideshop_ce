@@ -156,7 +156,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      */
     public function convertToFormattedDbDate()
     {
-        $this->setValue(oxRegistry::get("oxUtilsDate")->formatDBDate($this->rawValue), self::T_RAW);
+        $this->setValue(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($this->rawValue), self::T_RAW);
     }
 
     /**

@@ -46,11 +46,11 @@ class DeliveryUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        $sSelGroup = oxRegistry::getConfig()->getRequestParameter("selgroup");
+        $sSelGroup = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("selgroup");
 
         $sViewName = getViewName("oxgroups", $this->_iEditLang);
         // all usergroups
-        $oGroups = oxNew("oxlist");
+        $oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oGroups->init('oxgroups');
         $oGroups->selectString("select * from {$sViewName}");
 
@@ -70,7 +70,7 @@ class DeliveryUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $oGroups = $aNewList;
 
         if (isset($soxId) && $soxId != "-1") {
-            $oDelivery = oxNew("oxdelivery");
+            $oDelivery = oxNew(\OxidEsales\Eshop\Application\Model\Delivery::class);
             $oDelivery->load($soxId);
 
             //Disable editing for derived articles
@@ -81,14 +81,14 @@ class DeliveryUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         $this->_aViewData["allgroups2"] = $oGroups;
 
-        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
         if ($iAoc == 1) {
-            $oDeliveryUsersAjax = oxNew('delivery_users_ajax');
+            $oDeliveryUsersAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryUsersAjax::class);
             $this->_aViewData['oxajax'] = $oDeliveryUsersAjax->getColumns();
 
             return "popups/delivery_users.tpl";
         } elseif ($iAoc == 2) {
-            $oDeliveryGroupsAjax = oxNew('delivery_groups_ajax');
+            $oDeliveryGroupsAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryGroupsAjax::class);
             $this->_aViewData['oxajax'] = $oDeliveryGroupsAjax->getColumns();
 
             return "popups/delivery_groups.tpl";

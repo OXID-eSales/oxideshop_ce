@@ -40,7 +40,7 @@ class CategoryPictures extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oCategory = oxNew('oxCategory');
+        $this->_aViewData['edit'] = $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != '-1') {

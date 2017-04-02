@@ -1305,6 +1305,7 @@ class oxBasket extends oxSuperCfg
      */
     protected function _calcBasketWrapping()
     {
+        $oWrappingCost = null;
         $oWrappingPrices = oxNew('oxPriceList');
 
         foreach ($this->_aBasketContents as $oBasketItem) {

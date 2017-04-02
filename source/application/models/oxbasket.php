@@ -1320,7 +1320,6 @@ class oxBasket extends oxSuperCfg
         }
 
         if ($oWrappingPrices->getCount()) {
-            $oWrappingCost = oxNew('oxPrice');
             $oWrappingCost = $oWrappingPrices->calculateToPrice();
         }
 

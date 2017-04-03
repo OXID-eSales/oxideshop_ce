@@ -179,21 +179,3 @@ if (!class_exists("Conf", false)) {
         }
     }
 }
-
-if (!class_exists("VersionConfig")) {
-    /**
-     * Version information loader class
-     */
-    class VersionConfig
-    {
-        /**
-         * Class constructor, loads version.php file data
-
-         * @param null|string $configFile
-         */
-        public function __construct($configFile = null)
-        {
-            include $configFile ? $configFile : OX_BASE_PATH . "version.php";
-        }
-    }
-}

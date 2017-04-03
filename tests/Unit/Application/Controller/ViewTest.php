@@ -21,6 +21,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Core\ShopVersion;
 use oxSystemComponentException;
 use oxUtilsHelper;
 use \oxView;
@@ -425,7 +426,7 @@ class ViewTest extends \OxidTestCase
     public function testGetShopVersion()
     {
         $oView = oxNew('oxView');
-        $this->assertEquals($this->getConfig()->getActiveShop()->oxshops__oxversion->value, $oView->getShopVersion());
+        $this->assertEquals(ShopVersion::getVersion(), $oView->getShopVersion());
     }
 
     public function testIsDemoVersion()

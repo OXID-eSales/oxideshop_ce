@@ -570,6 +570,7 @@ class VirtualNameSpaceClassMap
             'OxidEsales\Eshop\Core\Sha512Hasher' => \OxidEsales\EshopCommunity\Core\Sha512Hasher::class,
             'OxidEsales\Eshop\Core\ShopControl' => \OxidEsales\EshopCommunity\Core\ShopControl::class,
             'OxidEsales\Eshop\Core\ShopIdCalculator' => \OxidEsales\EshopCommunity\Core\ShopIdCalculator::class,
+            'OxidEsales\Eshop\Core\ShopVersion' => \OxidEsales\EshopCommunity\Core\ShopVersion::class,
             'OxidEsales\Eshop\Core\SimpleXml' => \OxidEsales\EshopCommunity\Core\SimpleXml::class,
             'OxidEsales\Eshop\Core\Smarty\Plugin\Emos' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\Emos::class,
             'OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosAdapter::class,

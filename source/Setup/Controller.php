@@ -24,6 +24,7 @@ namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\Eshop\Core\SystemRequirements;
 use OxidEsales\EshopCommunity\Core\ConfigFile;
 use OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
@@ -379,10 +380,8 @@ class Controller extends Core
         $database->saveShopSettings(array());
 
         // update shop version
-        $versionConfig = new \VersionConfig();
-        if (isset($versionConfig->version)) {
-            $database->execSql("update `oxshops` set `oxversion` = '{$versionConfig->version}'");
-        }
+        $version = ShopVersion::getVersion();
+        $database->execSql("update `oxshops` set `oxversion` = '{$version}'");
 
         try {
             $adminData = $session->getSessionParam('aAdminData');

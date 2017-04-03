@@ -28,6 +28,7 @@ use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
 use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
 use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Setup\Core;
 use OxidEsales\EshopCommunity\Setup\Setup;
 
@@ -177,26 +178,9 @@ class SetupTest extends \OxidTestCase
         $this->assertEquals('fail', $oSetup->getModuleClass(0));
     }
 
-    /**
-     * Testing if ViewConfig class gives us the version information
-     */
-    public function testVersionConfig()
+    public function testShopVersion()
     {
-        $versionConfig = new \VersionConfig();
-        $this->assertNotEmpty($versionConfig->version);
-    }
-
-    /**
-     * Testing if ViewConfig class gives us the version information
-     */
-    public function testVersionConfigParams()
-    {
-        // creating test file
-        $versionFile = Registry::getConfig()->getConfigParam('sCompileDir') . '/' . uniqid("version_");
-        $contents = array('<?php', '$this->version = "specialVersion";');
-        file_put_contents($versionFile, implode("\n", $contents));
-
-        $versionConfig = new \VersionConfig($versionFile);
-        $this->assertEquals($versionConfig->version, "specialVersion");
+        $version = ShopVersion::getVersion();
+        $this->assertNotEmpty($version);
     }
 }

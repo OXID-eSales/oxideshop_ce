@@ -23,6 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core\Controller;
 
 use oxCategory;
+use OxidEsales\EshopCommunity\Core\ShopVersion;
 use oxRegistry;
 use oxShop;
 use oxSystemComponentException;
@@ -655,11 +656,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopVersion()
     {
-        if ($this->_sVersion == null) {
-            $this->_sVersion = $this->getConfig()->getActiveShop()->oxshops__oxversion->value;
-        }
-
-        return $this->_sVersion;
+        return ShopVersion::getVersion();
     }
 
     /**

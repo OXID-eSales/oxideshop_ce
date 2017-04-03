@@ -1205,7 +1205,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_continueToNextStep();
 
         //Order Step4
-        $this->openWindow(shopURL."en/my-address/", "222");
+        $this->openWindow($this->getSubShopAwareUrl(shopURL . "en/my-address/"), "222");
         $this->waitForText("%SHIPPING_ADDRESSES%");
         $this->click("userChangeShippingAddress");
         $this->waitForItemAppear("delCountrySelect");
@@ -1219,7 +1219,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_continueToNextStep();
         $this->assertTextNotPresent("%ERROR_DELIVERY_ADDRESS_WAS_CHANGED_DURING_CHECKOUT%");
         //changing billing address once more
-        $this->openWindow(shopURL."en/my-address/", "222");
+        $this->openWindow($this->getSubShopAwareUrl(shopURL . "en/my-address/"), "222");
         $this->waitForText("%SHIPPING_ADDRESSES%");
         $this->click("userChangeAddress");
         $this->waitForItemAppear("invCountrySelect");
@@ -1235,6 +1235,17 @@ class BasketFrontendTest extends FrontendTestCase
 
         $this->_confirmAndOrder();
         $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
+    }
+
+    /**
+     * Form a URL which is aware of the current subshop id.
+     *
+     * @param string $url Full destination URL
+     * @return string
+     */
+    private function getSubShopAwareUrl($url)
+    {
+        return $url . '?' . http_build_query(['shp' => oxSHOPID]);
     }
 
     /**

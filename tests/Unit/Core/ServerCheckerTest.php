@@ -63,8 +63,8 @@ class ServerCheckerTest extends \OxidTestCase
     public function providerCheckIfNodeIsNotValid()
     {
         $iNodeCreationTime = 1400000000;
-        $iExactTimeWhenNodeIsNotValid = $iNodeCreationTime + 12 * 60 * 60;
-        $iTimeWhenServerNodeIsNotValid = $iNodeCreationTime + 13 * 60 * 60;
+        $iExactTimeWhenNodeIsNotValid = $iNodeCreationTime + 24 * 60 * 60;
+        $iTimeWhenServerNodeIsNotValid = $iNodeCreationTime + 25 * 60 * 60;
         $iServerTimeIsSmallerThanNodeTime = $iNodeCreationTime - 1;
 
         return array(

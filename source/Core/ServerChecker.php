@@ -39,7 +39,7 @@ class ServerChecker
     /**
      * Time in seconds, server node information life time.
      */
-    const NODE_VALIDITY_TIME = 43200;
+    const NODE_VALIDITY_TIME = 86400;
 
     /**
      * Current checking time - timestamp.

@@ -152,14 +152,26 @@ class SystemEventHandler
      */
     public function onShopStart()
     {
-        $oProcessor = $this->_getServerProcessor();
-        $oProcessor->process();
-
-        if ($this->_isSendingShopDataEnabled() && !\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
-            $this->_sendShopInformation();
-        }
+        $this->validateOnline();
 
         $this->_validateOffline();
+    }
+
+    /**
+     * Check if shop is valid online.
+     */
+    protected function validateOnline()
+    {
+        try {
+            $oProcessor = $this->_getServerProcessor();
+            $oProcessor->process();
+
+            if ($this->_isSendingShopDataEnabled() && !\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
+                $this->_sendShopInformation();
+            }
+        } catch (Exception $eException) {
+            \OxidEsales\Eshop\Core\Registry::getUtils()->logger("OLC-Error: " . $eException->getMessage());
+        }
     }
 
     /**
@@ -262,7 +274,7 @@ class SystemEventHandler
     }
 
     /**
-     * Return oxConfig from registry.
+     * Return Config from registry.
      *
      * @return \OxidEsales\Eshop\Core\Config
      */

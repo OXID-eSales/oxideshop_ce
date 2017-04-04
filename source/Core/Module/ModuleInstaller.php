@@ -601,7 +601,6 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     protected function _saveToConfig($sVariableName, $sVariableValue, $sVariableType = 'aarr')
     {
         $oConfig = $this->getConfig();
-        $oConfig->setConfigParam($sVariableName, $sVariableValue);
         $oConfig->saveShopConfVar($sVariableType, $sVariableName, $sVariableValue);
     }
 

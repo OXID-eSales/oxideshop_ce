@@ -108,7 +108,6 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
 
                 $position = $setting["position"] ? $setting["position"] : 1;
 
-                $config->setConfigParam($name, $value);
                 $config->saveShopConfVar($type, $name, $value, $shopId, $module);
 
                 $deleteSql = "DELETE FROM `oxconfigdisplay` WHERE OXCFGMODULE=" . $db->quote($module) . " AND OXCFGVARNAME=" . $db->quote($name);

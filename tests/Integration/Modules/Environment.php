@@ -107,6 +107,7 @@ class Environment
         $config->setConfigParam('aModules', null);
         $config->setConfigParam('aModuleTemplates', null);
         $config->setConfigParam('aDisabledModules', array());
+        $config->setConfigParam('aModulePaths', array());
         $config->setConfigParam('aModuleFiles', null);
         $config->setConfigParam('aModuleVersions', null);
         $config->setConfigParam('aModuleEvents', null);

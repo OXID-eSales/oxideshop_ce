@@ -824,6 +824,7 @@ class SystemRequirements
 
     /**
      * Checks tables and columns (oxsysrequirements::$_aColumns) collation
+     * Due to convention the IDs should be latin1_general_ci encoded
      *
      * @return array
      */
@@ -832,19 +833,15 @@ class SystemRequirements
         $myConfig = $this->getConfig();
 
         $aCollations = array();
-        $sCollation = '';
+        $sCollation = 'latin1_general_ci';
         $sSelect = 'select TABLE_NAME, COLUMN_NAME, COLLATION_NAME from INFORMATION_SCHEMA.columns
                     where TABLE_NAME not like "oxv\_%" and table_schema = "' . $myConfig->getConfigParam('dbName') . '"
                     and COLUMN_NAME in ("' . implode('", "', $this->_aColumns) . '") ' . $this->_getAdditionalCheck() .
                    'ORDER BY TABLE_NAME, COLUMN_NAME DESC;';
         $aRez = oxDb::getDb()->getAll($sSelect);
         foreach ($aRez as $aRetTable) {
-            if (!$sCollation) {
-                $sCollation = $aRetTable[2];
-            } else {
-                if ($aRetTable[2] && $sCollation != $aRetTable[2]) {
-                    $aCollations[$aRetTable[0]][$aRetTable[1]] = $aRetTable[2];
-                }
+            if ($aRetTable[2] && $sCollation != $aRetTable[2]) {
+                $aCollations[$aRetTable[0]][$aRetTable[1]] = $aRetTable[2];
             }
         }
 

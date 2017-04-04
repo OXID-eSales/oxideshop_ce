@@ -96,7 +96,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         'content',
         'account',
         'clearcookies',
-        'oxwServiceMenu',
+        //allowing some widgets so login page can use same layout as the normal shop
+        'oxwservicemenu',
+        'oxwminibasket',
     );
 
     /**

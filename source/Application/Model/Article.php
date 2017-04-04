@@ -2864,13 +2864,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns formatted delivery date. If the date is not set ('0000-00-00') returns false.
+     * Returns formatted delivery date. If the date is past or not set ('0000-00-00') returns false.
      *
      * @return string | bool
      */
     public function getDeliveryDate()
     {
-        if ($this->oxarticles__oxdelivery->value != '0000-00-00') {
+        if ($this->oxarticles__oxdelivery->value != '0000-00-00' && $this->oxarticles__oxdelivery->value > date('Y-m-d')) {
             return oxRegistry::get("oxUtilsDate")->formatDBDate($this->oxarticles__oxdelivery->value);
         }
 

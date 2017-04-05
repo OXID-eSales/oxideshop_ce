@@ -36,7 +36,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
     public function testGettingExistingServerByServerId()
     {
         $aServers = array('serverNameHash1' => array('timestamp' => 'timestamp'));
-        $this->getConfig()->setConfigParam('aServersData', $aServers);
+        $this->getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aServers);
 
         $oExpectedServer = new oxApplicationServer();
         $oExpectedServer->setId('serverNameHash1');
@@ -53,7 +53,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             'serverNameHash2' => array('timestamp' => 'timestamp2'),
             'serverNameHash3' => array('timestamp' => 'timestamp3'),
         );
-        $this->getConfig()->setConfigParam('aServersData', $aServers);
+        $this->getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aServers);
 
         $oExpectedServer = new oxApplicationServer();
         $oExpectedServer->setId('serverNameHash2');
@@ -65,7 +65,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
     public function testGettingNotExistingServerByServerId()
     {
-        $this->getConfig()->setConfigParam('aServersData', null);
+        $this->getConfig()->saveSystemConfigParameter('arr', 'aServersData', null);
 
         $oExpectedServer = new oxApplicationServer();
         $oExpectedServer->setId('serverNameHash1');
@@ -76,7 +76,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
     public function testServerSavingWhenNoServersExists()
     {
-        oxRegistry::getConfig()->setConfigParam('aServersData', null);
+        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', null);
 
         $oServer = new oxApplicationServer();
         $oServer->setId('serverNameHash1');
@@ -100,12 +100,12 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
                 'isValid'           => true
             ),
         );
-        $this->assertEquals($aExpectedServerData, $this->getConfig()->getConfigParam('aServersData'));
+        $this->assertEquals($aExpectedServerData, $this->getConfig()->getSystemConfigParameter('aServersData'));
     }
 
     public function testUpdatingServer()
     {
-        oxRegistry::getConfig()->setConfigParam(
+        oxRegistry::getConfig()->saveSystemConfigParameter('arr',
             'aServersData', array(
                                  'serverNameHash1' => array(),
                                  'serverNameHash2' => array(
@@ -143,12 +143,12 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             ),
             'serverNameHash3' => array(),
         );
-        $this->assertEquals($aExpectedServerData, $this->getConfig()->getConfigParam('aServersData'));
+        $this->assertEquals($aExpectedServerData, $this->getConfig()->getSystemConfigParameter('aServersData'));
     }
 
     public function testUpdatingEmptyServer()
     {
-        oxRegistry::getConfig()->setConfigParam(
+        oxRegistry::getConfig()->saveSystemConfigParameter('arr',
             'aServersData', array(
                                  'serverNameHash1' => array(),
                             )
@@ -175,7 +175,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
                 'isValid'           => false
             ),
         );
-        $this->assertEquals($aExpectedServerData, $this->getConfig()->getConfigParam('aServersData'));
+        $this->assertEquals($aExpectedServerData, $this->getConfig()->getSystemConfigParameter('aServersData'));
     }
 
     public function testGetServerNodes()
@@ -211,7 +211,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             ),
         );
 
-        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
+        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aStoredData);
 
         $oManager = new oxServersManager();
 
@@ -239,14 +239,14 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             ),
         );
 
-        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
+        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aStoredData);
 
-        $this->assertSame(2, count(oxRegistry::getConfig()->getConfigParam('aServersData')));
+        $this->assertSame(2, count(oxRegistry::getConfig()->getSystemConfigParameter('aServersData')));
 
         $oManager = new oxServersManager();
         $oManager->deleteServer('serverNameHash1');
 
-        $this->assertSame(1, count(oxRegistry::getConfig()->getConfigParam('aServersData')));
+        $this->assertSame(1, count(oxRegistry::getConfig()->getSystemConfigParameter('aServersData')));
     }
 
     public function testMarkInactive()
@@ -273,7 +273,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             ),
         );
 
-        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
+        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aStoredData);
 
         $oManager = new oxServersManager();
         $oManager->markInActiveServers();
@@ -305,7 +305,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             ),
         );
 
-        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
+        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aStoredData);
 
         $oManager = new oxServersManager();
         $oManager->markInActiveServers();
@@ -337,12 +337,12 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             ),
         );
 
-        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
+        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aStoredData);
 
         $oManager = new oxServersManager();
         $oManager->deleteInActiveServers();
 
-        $this->assertSame(2, count(oxRegistry::getConfig()->getConfigParam('aServersData')));
+        $this->assertSame(2, count(oxRegistry::getConfig()->getSystemConfigParameter('aServersData')));
     }
 
     public function testDeleteInactive()
@@ -369,12 +369,12 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             ),
         );
 
-        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
+        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aStoredData);
 
         $oManager = new oxServersManager();
         $oManager->deleteInActiveServers();
 
-        $this->assertSame(1, count(oxRegistry::getConfig()->getConfigParam('aServersData')));
+        $this->assertSame(1, count(oxRegistry::getConfig()->getSystemConfigParameter('aServersData')));
     }
 
 

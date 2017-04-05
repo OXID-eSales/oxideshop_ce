@@ -51,7 +51,7 @@ class oxServersManager
      */
     public function __construct()
     {
-        $this->_aServersData = (array) oxRegistry::getConfig()->getConfigParam('aServersData');
+        $this->_aServersData = (array) oxRegistry::getConfig()->getSystemConfigParameter('aServersData');
     }
 
     /**

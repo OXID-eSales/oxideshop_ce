@@ -46,7 +46,7 @@ class ArticleListTest extends \OxidTestCase
 
         $this->setRequestParameter('folder', $sObjects . 'TestFolderName');
 
-        $oAdminList = $this->getMock('article_list', array("getItemList"));
+        $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, array("getItemList"));
         $oAdminList->expects($this->once())->method('getItemList')->will($this->returnValue(null));
         $aBuildWhere = $oAdminList->buildWhere();
         $this->assertEquals('oxArticleTestFolderName', $aBuildWhere[getViewName('oxarticles') . '.oxfolder']);
@@ -89,7 +89,7 @@ class ArticleListTest extends \OxidTestCase
         $this->setRequestParameter("art_category", "mnf@@" . $sManId);
 
         // testing..
-        $oView = $this->getMock("Article_List", array("getItemList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, array("getItemList"));
         $oView->expects($this->any())->method('getItemList')->will($this->returnValue(oxNew('oxarticlelist')));
         $this->assertEquals('article_list.tpl', $oView->render());
 
@@ -131,7 +131,7 @@ class ArticleListTest extends \OxidTestCase
         $oList->offsetSet("3", $oArticle3);
 
         // testing..
-        $oView = $this->getMock("Article_List", array("getItemList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, array("getItemList"));
         $oView->expects($this->any())->method('getItemList')->will($this->returnValue($oList));
         $this->assertEquals('article_list.tpl', $oView->render());
 
@@ -239,10 +239,10 @@ class ArticleListTest extends \OxidTestCase
 
         $this->setRequestParameter("oxid", "testId");
 
-        $oSess = $this->getMock('oxsession', array('checkSessionChallenge'));
+        $oSess = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSess->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
 
-        $oView = $this->getMock("Article_List", array("_authorize", 'getSession'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, array("_authorize", 'getSession'));
         $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
         $oView->expects($this->any())->method('getSession')->will($this->returnValue($oSess));
         $oView->deleteEntry();

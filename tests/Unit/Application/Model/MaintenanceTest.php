@@ -33,7 +33,7 @@ class MaintenanceTest extends \OxidTestCase
      */
     public function testExecute()
     {
-        $oList = $this->getMock('oxArticleList', array('updateUpcomingPrices'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('updateUpcomingPrices'));
         $oList->expects($this->once())->method('updateUpcomingPrices')->with($this->equalTo(true));
 
         oxTestModules::addModuleObject('oxarticlelist', $oList);

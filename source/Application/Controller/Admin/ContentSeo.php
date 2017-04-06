@@ -47,7 +47,7 @@ class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      */
     protected function _getEncoder()
     {
-        return \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderContent");
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class);
     }
 
     /**

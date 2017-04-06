@@ -99,7 +99,7 @@ class ModuleTest extends \OxidTestCase
     public function testLoadByDir()
     {
         $aModulesPaths = array("testModuleId" => "test/path");
-        $oModule = $this->getMock("oxModule", array("load", "getModulePaths"));
+        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array("load", "getModulePaths"));
         $oModule->expects($this->at(0))->method('getModulePaths')->will($this->returnValue($aModulesPaths));
         $oModule->expects($this->at(1))->method('load')->with($this->equalTo("noSuchTest/path"))->will($this->returnValue(false));
         $oModule->expects($this->at(2))->method('getModulePaths')->will($this->returnValue($aModulesPaths));
@@ -274,7 +274,7 @@ class ModuleTest extends \OxidTestCase
      */
     public function testIsActiveWithNonExistingModuleLoaded()
     {
-        $oModule = $this->getMock("oxmodule", array("getDisabledModules"));
+        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array("getDisabledModules"));
         $oModule->expects($this->any())->method('getDisabledModules')->will($this->returnValue(array()));
         $oModule->load('non_existing_module');
 
@@ -352,7 +352,7 @@ class ModuleTest extends \OxidTestCase
      */
     public function testIsActive_shopClassExtendedByMoreThanOneClass($aAlreadyActivatedModule, $aModuleToActivate, $blResult)
     {
-        $oConfig = $this->getMock('oxConfig', array('getModulesWithExtendedClass'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getModulesWithExtendedClass'));
         $oConfig->expects($this->any())->method('getModulesWithExtendedClass')->will($this->returnValue($aAlreadyActivatedModule));
 
         $oModule = oxNew('oxModule');
@@ -416,12 +416,12 @@ class ModuleTest extends \OxidTestCase
     {
         $sModId = "testModule";
 
-        $oConfig = $this->getMock('oxconfig', array('getModulesDir'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getModulesDir'));
         $oConfig->expects($this->any())
             ->method('getModulesDir')
             ->will($this->returnValue("/var/path/to/modules/"));
 
-        $oModuleStub = $this->getMock('oxmodule', array('getModulePath', 'getConfig'));
+        $oModuleStub = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getModulePath', 'getConfig'));
         $oModuleStub->expects($this->any())
             ->method('getModulePath')
             ->will($this->returnValue($sModuleId));
@@ -466,12 +466,12 @@ class ModuleTest extends \OxidTestCase
     {
         $sModId = "testModule";
 
-        $oConfig = $this->getMock('oxconfig', array('getModulesDir'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getModulesDir'));
         $oConfig->expects($this->any())
             ->method('getModulesDir')
             ->will($this->returnValue("/var/path/to/modules/"));
 
-        $oModule = $this->getMock('oxmodule', array('getModulePath', 'getConfig'));
+        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getModulePath', 'getConfig'));
         $oModule->expects($this->any())
             ->method('getModulePath')
             ->with($this->equalTo($sModId))
@@ -493,12 +493,12 @@ class ModuleTest extends \OxidTestCase
     {
         $sModId = "testModule";
 
-        $oConfig = $this->getMock('oxconfig', array('getModulesDir'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getModulesDir'));
         $oConfig->expects($this->any())
             ->method('getModulesDir')
             ->will($this->returnValue("/var/path/to/modules/"));
 
-        $oModule = $this->getMock('oxmodule', array('getModulePath', 'getConfig'));
+        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getModulePath', 'getConfig'));
         $oModule->expects($this->any())
             ->method('getModulePath')
             ->with($this->equalTo($sModId))
@@ -523,12 +523,12 @@ class ModuleTest extends \OxidTestCase
     {
         $sModId = "testModule";
 
-        $oConfig = $this->getMock('oxconfig', array('getModulesDir'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getModulesDir'));
         $oConfig->expects($this->any())
             ->method('getModulesDir')
             ->will($this->returnValue("/var/path/to/modules/"));
 
-        $oModule = $this->getMock('oxmodule', array('getModulePath', 'getConfig'));
+        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getModulePath', 'getConfig'));
         $oModule->expects($this->any())
             ->method('getModulePath')
             ->with($this->equalTo($sModId))
@@ -821,7 +821,7 @@ class ModuleTest extends \OxidTestCase
     public function testGetTitle()
     {
         $iLang = oxRegistry::getLang()->getTplLanguage();
-        $oModule = $this->getMock('oxModule', array('getInfo'));
+        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getInfo'));
         $oModule->expects($this->once())->method('getInfo')->with($this->equalTo("title"), $this->equalTo($iLang))->will($this->returnValue("testTitle"));
 
         $this->assertEquals("testTitle", $oModule->getTitle());
@@ -835,7 +835,7 @@ class ModuleTest extends \OxidTestCase
     public function testGetDescription()
     {
         $iLang = oxRegistry::getLang()->getTplLanguage();
-        $oModule = $this->getMock('oxModule', array('getInfo'));
+        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getInfo'));
         $oModule->expects($this->once())->method('getInfo')->with($this->equalTo("description"), $this->equalTo($iLang))->will($this->returnValue("testDesc"));
 
         $this->assertEquals("testDesc", $oModule->getDescription());

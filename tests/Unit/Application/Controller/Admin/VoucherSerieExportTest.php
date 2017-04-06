@@ -90,7 +90,7 @@ class VoucherSerieExportTest extends \OxidTestCase
      */
     public function testGetExportFilePath()
     {
-        $oView = $this->getMock("VoucherSerie_Export", array("_getExportFileName"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieExport::class, array("_getExportFileName"));
         $oView->expects($this->once())->method('_getExportFileName')->will($this->returnValue("testName"));
 
         $this->assertEquals($this->getConfig()->getConfigParam('sShopDir') . "/export/" . "testName", $oView->UNITgetExportFilePath());
@@ -115,7 +115,7 @@ class VoucherSerieExportTest extends \OxidTestCase
         $oVoucher->oxvouchers__oxvouchernr = new oxField("_testvoucher");
         $oVoucher->save();
 
-        $oView = $this->getMock("VoucherSerie_Export", array("write", "_getVoucherSerie"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieExport::class, array("write", "_getVoucherSerie"));
         $oView->expects($this->at(0))->method('_getVoucherSerie')->will($this->returnValue($oVoucherSerie));
         $oView->expects($this->at(1))->method('write')->with($this->equalTo("Gutscheine"));
         $oView->expects($this->at(2))->method('write')->with($this->equalTo("_testvoucher"));

@@ -65,10 +65,10 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $oNewGroup->init('oxactions2article');
-        $oNewGroup->oxactions2article__oxshopid = new oxField($this->getShopId());
-        $oNewGroup->oxactions2article__oxactionid = new oxField($this->getId());
-        $oNewGroup->oxactions2article__oxartid = new oxField($articleId);
-        $oNewGroup->oxactions2article__oxsort = new oxField($iSort);
+        $oNewGroup->oxactions2article__oxshopid = new \OxidEsales\Eshop\Core\Field($this->getShopId());
+        $oNewGroup->oxactions2article__oxactionid = new \OxidEsales\Eshop\Core\Field($this->getId());
+        $oNewGroup->oxactions2article__oxartid = new \OxidEsales\Eshop\Core\Field($articleId);
+        $oNewGroup->oxactions2article__oxsort = new \OxidEsales\Eshop\Core\Field($iSort);
         $oNewGroup->save();
     }
 
@@ -144,12 +144,12 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function start()
     {
-        $this->oxactions__oxactivefrom = new oxField(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
+        $this->oxactions__oxactivefrom = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
         if ($this->oxactions__oxactiveto->value && ($this->oxactions__oxactiveto->value != '0000-00-00 00:00:00')) {
             $iNow = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
             $iTo = strtotime($this->oxactions__oxactiveto->value);
             if ($iNow > $iTo) {
-                $this->oxactions__oxactiveto = new oxField('0000-00-00 00:00:00');
+                $this->oxactions__oxactiveto = new \OxidEsales\Eshop\Core\Field('0000-00-00 00:00:00');
             }
         }
         $this->save();
@@ -160,7 +160,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function stop()
     {
-        $this->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
+        $this->oxactions__oxactiveto = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
         $this->save();
     }
 

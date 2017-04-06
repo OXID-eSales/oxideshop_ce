@@ -39,7 +39,7 @@ function smarty_function_oxcontent( $params, &$smarty )
 {
     $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
     $sText = $myConfig->getActiveShop()->oxshops__oxproductive->value ? null : "<b>content not found ! check ident(".$params['ident'].") !</b>";
-    $smarty->oxidcache = new oxField($sText, \OxidEsales\Eshop\Core\Field::T_RAW);
+    $smarty->oxidcache = new \OxidEsales\Eshop\Core\Field($sText, \OxidEsales\Eshop\Core\Field::T_RAW);
 
     $sIdent = isset( $params['ident'] )?$params['ident']:null;
     $sOxid  = isset( $params['oxid'] )?$params['oxid']:null;

@@ -44,7 +44,7 @@ class UserAddressTest extends \OxidTestCase
         $this->setRequestParameter("oxaddressid", "testaddressid");
 
         // testing..
-        $oView = $this->getMock("User_Address", array("_allowAdminEdit"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserAddress::class, array("_allowAdminEdit"));
         $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(false));
         $this->assertEquals('user_address.tpl', $oView->render());
         $aViewData = $oView->getViewData();
@@ -74,7 +74,7 @@ class UserAddressTest extends \OxidTestCase
 
         // testing..
         try {
-            $oView = $this->getMock("User_Address", array("_allowAdminEdit"));
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserAddress::class, array("_allowAdminEdit"));
             $oView->expects($this->at(0))->method('_allowAdminEdit')->with($this->equalTo("testId"))->will($this->returnValue(true));
             $oView->save();
         } catch (Exception $oExcp) {
@@ -98,7 +98,7 @@ class UserAddressTest extends \OxidTestCase
         $this->setRequestParameter("editval", array("oxaddress__oxid" => "testOxId"));
 
         // testing..
-        $oView = $this->getMock("User_Address", array("_allowAdminEdit"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserAddress::class, array("_allowAdminEdit"));
         $oView->expects($this->at(0))->method('_allowAdminEdit')->with($this->equalTo("testId"))->will($this->returnValue(true));
         $oView->delAddress();
     }

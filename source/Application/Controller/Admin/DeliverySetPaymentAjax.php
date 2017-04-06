@@ -121,9 +121,9 @@ class DeliverySetPaymentAjax extends \OxidEsales\Eshop\Application\Controller\Ad
                     if (!isset($sID) || !$sID) {
                         $oObject = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                         $oObject->init('oxobject2payment');
-                        $oObject->oxobject2payment__oxpaymentid = new oxField($sChosenSet);
-                        $oObject->oxobject2payment__oxobjectid = new oxField($soxId);
-                        $oObject->oxobject2payment__oxtype = new oxField("oxdelset");
+                        $oObject->oxobject2payment__oxpaymentid = new \OxidEsales\Eshop\Core\Field($sChosenSet);
+                        $oObject->oxobject2payment__oxobjectid = new \OxidEsales\Eshop\Core\Field($soxId);
+                        $oObject->oxobject2payment__oxtype = new \OxidEsales\Eshop\Core\Field("oxdelset");
                         $oObject->save();
                     }
                 }

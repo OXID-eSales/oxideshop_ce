@@ -223,7 +223,7 @@ class ForgotpwdTest extends \OxidTestCase
         $this->setRequestParameter('password_new', $sPass);
         $this->setRequestParameter('password_new_confirm', $sPass);
 
-        $oUser = $this->getMock('oxUser', array('checkPassword'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('checkPassword'));
         oxTestModules::addModuleObject('oxuser', $oUser);
 
         $oInputValidator = $this->getMock('oxInputValidator');
@@ -254,7 +254,7 @@ class ForgotpwdTest extends \OxidTestCase
      */
     public function testGetTitle()
     {
-        $oView = $this->getMock("ForgotPwd", array('showUpdateScreen', 'updateSuccess'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ForgotPasswordController::class, array('showUpdateScreen', 'updateSuccess'));
         $oView->expects($this->any())->method('showUpdateScreen')->will($this->returnValue(false));
         $oView->expects($this->any())->method('updateSuccess')->will($this->returnValue(false));
 
@@ -266,7 +266,7 @@ class ForgotpwdTest extends \OxidTestCase
      */
     public function testGetTitle_ShowUpdateScreen()
     {
-        $oView = $this->getMock("ForgotPwd", array('showUpdateScreen', 'updateSuccess'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ForgotPasswordController::class, array('showUpdateScreen', 'updateSuccess'));
         $oView->expects($this->any())->method('showUpdateScreen')->will($this->returnValue(true));
         $oView->expects($this->any())->method('updateSuccess')->will($this->returnValue(true));
 
@@ -278,7 +278,7 @@ class ForgotpwdTest extends \OxidTestCase
      */
     public function testGetTitle_UpdateSuccess()
     {
-        $oView = $this->getMock("ForgotPwd", array('showUpdateScreen', 'updateSuccess'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ForgotPasswordController::class, array('showUpdateScreen', 'updateSuccess'));
         $oView->expects($this->any())->method('showUpdateScreen')->will($this->returnValue(false));
         $oView->expects($this->any())->method('updateSuccess')->will($this->returnValue(true));
 

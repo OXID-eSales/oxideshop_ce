@@ -66,7 +66,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         if ($oArticle->oxarticles__oxparentid->value) {
             $oParentArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oParentArticle->load($oArticle->oxarticles__oxparentid->value);
-            $oArticle->oxarticles__oxisdownloadable = new oxField($oParentArticle->oxarticles__oxisdownloadable->value);
+            $oArticle->oxarticles__oxisdownloadable = new \OxidEsales\Eshop\Core\Field($oParentArticle->oxarticles__oxisdownloadable->value);
             $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;
         }
 
@@ -155,7 +155,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         }
 
         if ($aNewFile['name']) {
-            $oArticleFile->oxfiles__oxfilename = new oxField($aNewFile['name'], \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oArticleFile->oxfiles__oxfilename = new \OxidEsales\Eshop\Core\Field($aNewFile['name'], \OxidEsales\Eshop\Core\Field::T_RAW);
             try {
                 $oArticleFile->processFile('newArticleFile');
             } catch (Exception $e) {
@@ -168,7 +168,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         }
 
         //save media url
-        $oArticleFile->oxfiles__oxartid = new oxField($soxId, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oArticleFile->oxfiles__oxartid = new \OxidEsales\Eshop\Core\Field($soxId, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticleFile->save();
     }
 

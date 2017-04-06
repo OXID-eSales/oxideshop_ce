@@ -90,7 +90,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
             // set selected delivery type
             if (!$oDelivery->oxdelivery__oxdeltype->value) {
-                $oDelivery->oxdelivery__oxdeltype = new oxField("a"); // default
+                $oDelivery->oxdelivery__oxdeltype = new \OxidEsales\Eshop\Core\Field("a"); // default
             }
             $aDelTypes[$oDelivery->oxdelivery__oxdeltype->value]->selected = true;
         }

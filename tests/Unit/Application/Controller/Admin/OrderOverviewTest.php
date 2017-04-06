@@ -74,7 +74,7 @@ class OrderOverviewTest extends \OxidTestCase
         oxTestModules::addFunction('oxpayment', 'load', '{ $this->oxpayments__oxdesc = new oxField("testValue"); return true; }');
 
         // defining parameters
-        $oOrder = $this->getMock("oxorder", array("getPaymentType"));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getPaymentType"));
         $oOrder->oxorder__oxpaymenttype = new oxField("testValue");
 
         $oView = oxNew('Order_Overview');

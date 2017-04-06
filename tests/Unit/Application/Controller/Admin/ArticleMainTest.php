@@ -82,7 +82,7 @@ class ArticleMainTest extends \OxidTestCase
 
         $aTasks[] = "resetContentCache";
 
-        $oView = $this->getMock("Article_Main", $aTasks);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class, $aTasks);
         $oView->expects($this->once())->method('_copyCategories');
         $oView->expects($this->once())->method('_copyAttributes');
         $oView->expects($this->once())->method('_copySelectlists');
@@ -276,7 +276,7 @@ class ArticleMainTest extends \OxidTestCase
      */
     public function testSaveinnlang()
     {
-        $oView = $this->getMock("Article_Main", array("save"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class, array("save"));
         $oView->expects($this->once())->method('save');
         $oView->saveinnlang();
     }
@@ -302,7 +302,7 @@ class ArticleMainTest extends \OxidTestCase
 
             $aTasks[] = 'resetContentCache';
 
-            $oView = $this->getMock("Article_Main", $aTasks);
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class, $aTasks);
 
             $oView->expects($this->once())->method('resetContentCache');
 
@@ -378,13 +378,13 @@ class ArticleMainTest extends \OxidTestCase
     public function testGetTitle()
     {
         $oO1 = oxNew('oxArticle');
-        $oO1->oxarticles__oxtitle = $this->getMock("oxfield", array("__get"));
+        $oO1->oxarticles__oxtitle = $this->getMock(\OxidEsales\Eshop\Core\Field::class, array("__get"));
         $oO1->oxarticles__oxtitle->expects($this->once())->method('__get')->will($this->returnValue("oxtitle"));
 
         $oO2 = oxNew('oxArticle');
-        $oO2->oxarticles__oxtitle = $this->getMock("oxfield", array("__get"));
+        $oO2->oxarticles__oxtitle = $this->getMock(\OxidEsales\Eshop\Core\Field::class, array("__get"));
         $oO2->oxarticles__oxtitle->expects($this->once())->method('__get')->will($this->returnValue(null));
-        $oO2->oxarticles__oxvarselect = $this->getMock("oxfield", array("__get"));
+        $oO2->oxarticles__oxvarselect = $this->getMock(\OxidEsales\Eshop\Core\Field::class, array("__get"));
         $oO2->oxarticles__oxvarselect->expects($this->once())->method('__get')->will($this->returnValue("oxvarselect"));
 
         $oView = oxNew('Article_Main');
@@ -552,7 +552,7 @@ class ArticleMainTest extends \OxidTestCase
         $oParentVariants->offsetSet("var1", $oVar1);
         $oParentVariants->offsetSet("var2", $oVar2);
 
-        $oParentArticle = $this->getMock("article_main", array("getAdminVariants"));
+        $oParentArticle = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class, array("getAdminVariants"));
         $oParentArticle->expects($this->once())->method('getAdminVariants')->will($this->returnValue($oParentVariants));
         $oParentArticle->oxarticles__oxid = new oxField("testParentId");
 
@@ -560,7 +560,7 @@ class ArticleMainTest extends \OxidTestCase
         $oVariants->offsetSet("var1", $oVar1);
         $oVariants->offsetSet("var2", $oVar2);
 
-        $oArticle = $this->getMock("oxArticle", array("getAdminVariants"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getAdminVariants"));
         $oArticle->expects($this->once())->method('getAdminVariants')->will($this->returnValue($oVariants));
         $oArticle->oxarticles__oxid = new oxField("testId2");
 
@@ -570,7 +570,7 @@ class ArticleMainTest extends \OxidTestCase
                        array("testId1", " -- testTitle"),
                        array("testId2", " -- testTitle"));
 
-        $oView = $this->getMock("article_main", array("_getTitle"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class, array("_getTitle"));
         $oView->expects($this->atLeastOnce())->method('_getTitle')->will($this->returnValue("testTitle"));
         $oView->UNITformJumpList($oArticle, $oParentArticle);
         $this->assertEquals($aData, $oView->getViewDataElement("thisvariantlist"));
@@ -593,7 +593,7 @@ class ArticleMainTest extends \OxidTestCase
         $oVariants->offsetSet("var1", $oVar1);
         $oVariants->offsetSet("var2", $oVar2);
 
-        $oArticle = $this->getMock("oxArticle", array("getAdminVariants"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getAdminVariants"));
         $oArticle->expects($this->once())->method('getAdminVariants')->will($this->returnValue($oVariants));
         $oArticle->oxarticles__oxid = new oxField("testId2");
 
@@ -601,7 +601,7 @@ class ArticleMainTest extends \OxidTestCase
                        array("testId1", " - testTitle"),
                        array("testId2", " - testTitle"));
 
-        $oView = $this->getMock("article_main", array("_getTitle"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class, array("_getTitle"));
         $oView->expects($this->atLeastOnce())->method('_getTitle')->will($this->returnValue("testTitle"));
         $oView->UNITformJumpList($oArticle, null);
         $this->assertEquals($aData, $oView->getViewDataElement("thisvariantlist"));

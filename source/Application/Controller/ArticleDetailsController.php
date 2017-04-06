@@ -409,10 +409,10 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             if ($articleRating !== null && $articleRating >= 1 && $articleRating <= 5) {
                 $rating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                 if ($rating->allowRating($user->getId(), 'oxarticle', $article->getId())) {
-                    $rating->oxratings__oxuserid = new oxField($user->getId());
-                    $rating->oxratings__oxtype = new oxField('oxarticle');
-                    $rating->oxratings__oxobjectid = new oxField($article->getId());
-                    $rating->oxratings__oxrating = new oxField($articleRating);
+                    $rating->oxratings__oxuserid = new \OxidEsales\Eshop\Core\Field($user->getId());
+                    $rating->oxratings__oxtype = new \OxidEsales\Eshop\Core\Field('oxarticle');
+                    $rating->oxratings__oxobjectid = new \OxidEsales\Eshop\Core\Field($article->getId());
+                    $rating->oxratings__oxrating = new \OxidEsales\Eshop\Core\Field($articleRating);
                     $rating->save();
                     $article->addToRatingAverage($articleRating);
                 }
@@ -420,12 +420,12 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
             if (($reviewText = trim(( string ) $this->getConfig()->getRequestParameter('rvw_txt', true)))) {
                 $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
-                $review->oxreviews__oxobjectid = new oxField($article->getId());
-                $review->oxreviews__oxtype = new oxField('oxarticle');
-                $review->oxreviews__oxtext = new oxField($reviewText, \OxidEsales\Eshop\Core\Field::T_RAW);
-                $review->oxreviews__oxlang = new oxField(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
-                $review->oxreviews__oxuserid = new oxField($user->getId());
-                $review->oxreviews__oxrating = new oxField(($articleRating !== null) ? $articleRating : 0);
+                $review->oxreviews__oxobjectid = new \OxidEsales\Eshop\Core\Field($article->getId());
+                $review->oxreviews__oxtype = new \OxidEsales\Eshop\Core\Field('oxarticle');
+                $review->oxreviews__oxtext = new \OxidEsales\Eshop\Core\Field($reviewText, \OxidEsales\Eshop\Core\Field::T_RAW);
+                $review->oxreviews__oxlang = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
+                $review->oxreviews__oxuserid = new \OxidEsales\Eshop\Core\Field($user->getId());
+                $review->oxreviews__oxrating = new \OxidEsales\Eshop\Core\Field(($articleRating !== null) ? $articleRating : 0);
                 $review->save();
             }
         }
@@ -915,14 +915,14 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         $price = $utils->currency2Float($parameters['price']);
 
         $priceAlarm = oxNew(\OxidEsales\Eshop\Application\Model\PriceAlarm::class);
-        $priceAlarm->oxpricealarm__oxuserid = new oxField(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('usr'));
-        $priceAlarm->oxpricealarm__oxemail = new oxField($parameters['email']);
-        $priceAlarm->oxpricealarm__oxartid = new oxField($parameters['aid']);
-        $priceAlarm->oxpricealarm__oxprice = new oxField($utils->fRound($price, $activeCurrency));
-        $priceAlarm->oxpricealarm__oxshopid = new oxField($config->getShopId());
-        $priceAlarm->oxpricealarm__oxcurrency = new oxField($activeCurrency->name);
+        $priceAlarm->oxpricealarm__oxuserid = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('usr'));
+        $priceAlarm->oxpricealarm__oxemail = new \OxidEsales\Eshop\Core\Field($parameters['email']);
+        $priceAlarm->oxpricealarm__oxartid = new \OxidEsales\Eshop\Core\Field($parameters['aid']);
+        $priceAlarm->oxpricealarm__oxprice = new \OxidEsales\Eshop\Core\Field($utils->fRound($price, $activeCurrency));
+        $priceAlarm->oxpricealarm__oxshopid = new \OxidEsales\Eshop\Core\Field($config->getShopId());
+        $priceAlarm->oxpricealarm__oxcurrency = new \OxidEsales\Eshop\Core\Field($activeCurrency->name);
 
-        $priceAlarm->oxpricealarm__oxlang = new oxField(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
+        $priceAlarm->oxpricealarm__oxlang = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
 
         $priceAlarm->save();
 

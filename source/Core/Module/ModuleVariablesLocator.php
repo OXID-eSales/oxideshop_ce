@@ -119,11 +119,11 @@ class ModuleVariablesLocator
      */
     protected function getConfigurationKey()
     {
-        if (Registry::instanceExists('oxConfigFile')) {
-            $config = Registry::get('oxConfigFile');
+        if (Registry::instanceExists(\OxidEsales\Eshop\Core\ConfigFile::class)) {
+            $config = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
         } else {
             $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . '/config.inc.php');
-            Registry::set('oxConfigFile', $config);
+            Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $config);
         }
         return $config->getVar('sConfigKey') ?: Config::DEFAULT_CONFIG_KEY;
     }

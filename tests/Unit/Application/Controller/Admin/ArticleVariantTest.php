@@ -128,7 +128,7 @@ class ArticleVariantTest extends \OxidTestCase
         $aMethods[] = "savevariant";
         $aMethods[] = "resetContentCache";
 
-        $oView = $this->getMock("Article_Variant", $aMethods);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleVariant::class, $aMethods);
         $oView->expects($this->at(0))->method('savevariant')->with($this->equalTo("oxid1"), $this->equalTo("param1"));
         $oView->expects($this->at(1))->method('savevariant')->with($this->equalTo("oxid2"), $this->equalTo("param2"));
         $oView->expects($this->at(2))->method('resetContentCache');

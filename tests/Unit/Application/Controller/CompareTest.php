@@ -70,7 +70,7 @@ class CompareTest extends \OxidTestCase
         $aItems = array("testId1" => "testVal1", "testId2" => "testVal2", "testId3" => "testVal3");
         $aResult = array("testId1" => true, "testId2" => true, "testId3" => true);
 
-        $oView = $this->getMock("compare", array("getCompareItems", "setCompareItems"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\CompareController::class, array("getCompareItems", "setCompareItems"));
         $oView->expects($this->once())->method('getCompareItems')->will($this->returnValue($aItems));
         $oView->expects($this->once())->method('setCompareItems')->with($this->equalTo($aResult));
         $oView->moveLeft();
@@ -83,7 +83,7 @@ class CompareTest extends \OxidTestCase
     {
         $this->setRequestParameter('aid', "");
 
-        $oView = $this->getMock("compare", array("getCompareItems", "setCompareItems"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\CompareController::class, array("getCompareItems", "setCompareItems"));
         $oView->expects($this->never())->method('getCompareItems');
         $oView->expects($this->never())->method('setCompareItems');
         $oView->moveLeft();
@@ -98,7 +98,7 @@ class CompareTest extends \OxidTestCase
         $aItems = array("testId1" => "testVal1", "testId2" => "testVal2", "testId3" => "testVal3");
         $aResult = array("testId1" => true, "testId2" => true, "testId3" => true);
 
-        $oView = $this->getMock("compare", array("getCompareItems", "setCompareItems"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\CompareController::class, array("getCompareItems", "setCompareItems"));
         $oView->expects($this->once())->method('getCompareItems')->will($this->returnValue($aItems));
         $oView->expects($this->once())->method('setCompareItems')->with($this->equalTo($aResult));
         $oView->moveRight();
@@ -111,7 +111,7 @@ class CompareTest extends \OxidTestCase
     {
         $this->setRequestParameter('aid', "");
 
-        $oView = $this->getMock("compare", array("getCompareItems", "setCompareItems"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\CompareController::class, array("getCompareItems", "setCompareItems"));
         $oView->expects($this->never())->method('getCompareItems');
         $oView->expects($this->never())->method('setCompareItems');
         $oView->moveRight();
@@ -145,10 +145,10 @@ class CompareTest extends \OxidTestCase
      */
     public function testGetOrderCnt()
     {
-        $oUser = $this->getMock("oxuser", array("getOrderCount"));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("getOrderCount"));
         $oUser->expects($this->once())->method('getOrderCount')->will($this->returnValue(999));
 
-        $oView = $this->getMock("compare", array("getUser"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\CompareController::class, array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
 
         $this->assertEquals(999, $oView->getOrderCnt());
@@ -235,7 +235,7 @@ class CompareTest extends \OxidTestCase
         $aArrayKeys = array($sArrayKey);
         $oArtList = array($sArrayKey => "zyyy");
 
-        $oSearch = $this->getMock("compare", array("getCompArtList"));
+        $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\CompareController::class, array("getCompArtList"));
         $oSearch->expects($this->once())->method("getCompArtList")->will($this->returnValue($oArtList));
         $this->assertEquals($aArrayKeys, $oSearch->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of keys from result of getCompArtList()");
     }
@@ -245,7 +245,7 @@ class CompareTest extends \OxidTestCase
      */
     public function testGetPageNavigation()
     {
-        $oCompare = $this->getMock('compare', array('generatePageNavigation'));
+        $oCompare = $this->getMock(\OxidEsales\Eshop\Application\Controller\CompareController::class, array('generatePageNavigation'));
         $oCompare->expects($this->any())->method('generatePageNavigation')->will($this->returnValue("aaa"));
         $this->assertEquals('aaa', $oCompare->getPageNavigation());
     }
@@ -255,7 +255,7 @@ class CompareTest extends \OxidTestCase
      */
     public function testSetNoPaging()
     {
-        $oCompare = $this->getMock('compare', array('_setArticlesPerPage'));
+        $oCompare = $this->getMock(\OxidEsales\Eshop\Application\Controller\CompareController::class, array('_setArticlesPerPage'));
 
         $oCompare->expects($this->once())->method('_setArticlesPerPage')->with($this->equalTo(0));
         $oCompare->setNoPaging();

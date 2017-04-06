@@ -114,10 +114,10 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
                     if (!isset($sUserId) || !$sUserId) {
                         // there is no user object so we fake one
                         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-                        $oUser->oxuser__oxusername = new oxField($oRs->fields['oxemail']);
-                        $oUser->oxuser__oxsal = new oxField($oRs->fields['oxsal']);
-                        $oUser->oxuser__oxfname = new oxField($oRs->fields['oxfname']);
-                        $oUser->oxuser__oxlname = new oxField($oRs->fields['oxlname']);
+                        $oUser->oxuser__oxusername = new \OxidEsales\Eshop\Core\Field($oRs->fields['oxemail']);
+                        $oUser->oxuser__oxsal = new \OxidEsales\Eshop\Core\Field($oRs->fields['oxsal']);
+                        $oUser->oxuser__oxfname = new \OxidEsales\Eshop\Core\Field($oRs->fields['oxfname']);
+                        $oUser->oxuser__oxlname = new \OxidEsales\Eshop\Core\Field($oRs->fields['oxlname']);
                         $oNewsletter->prepare($oUser, $blLoadAction);
                     } else {
                         $oNewsletter->prepare($sUserId, $blLoadAction);
@@ -126,10 +126,10 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
                     if ($oNewsletter->send($iSendCnt)) {
                         // add user history
                         $oRemark = oxNew(\OxidEsales\Eshop\Application\Model\Remark::class);
-                        $oRemark->oxremark__oxtext = new oxField($oNewsletter->getPlainText());
-                        $oRemark->oxremark__oxparentid = new oxField($sUserId);
-                        $oRemark->oxremark__oxshopid = new oxField($sShopId);
-                        $oRemark->oxremark__oxtype = new oxField("n");
+                        $oRemark->oxremark__oxtext = new \OxidEsales\Eshop\Core\Field($oNewsletter->getPlainText());
+                        $oRemark->oxremark__oxparentid = new \OxidEsales\Eshop\Core\Field($sUserId);
+                        $oRemark->oxremark__oxshopid = new \OxidEsales\Eshop\Core\Field($sShopId);
+                        $oRemark->oxremark__oxtype = new \OxidEsales\Eshop\Core\Field("n");
                         $oRemark->save();
                     } else {
                         $this->_aMailErrors[] = "problem sending to : " . $oRs->fields['oxemail'];

@@ -120,9 +120,9 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
             foreach ($groupIds as $groupId) {
                 $object2Discount = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $object2Discount->init('oxobject2discount');
-                $object2Discount->oxobject2discount__oxdiscountid = new oxField($discountId);
-                $object2Discount->oxobject2discount__oxobjectid = new oxField($groupId);
-                $object2Discount->oxobject2discount__oxtype = new oxField("oxgroups");
+                $object2Discount->oxobject2discount__oxdiscountid = new \OxidEsales\Eshop\Core\Field($discountId);
+                $object2Discount->oxobject2discount__oxobjectid = new \OxidEsales\Eshop\Core\Field($groupId);
+                $object2Discount->oxobject2discount__oxtype = new \OxidEsales\Eshop\Core\Field("oxgroups");
                 $object2Discount->save();
             }
         }

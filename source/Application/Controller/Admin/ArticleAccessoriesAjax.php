@@ -152,9 +152,9 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
             foreach ($aChosenArt as $sChosenArt) {
                 $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNewGroup->init("oxaccessoire2article");
-                $oNewGroup->oxaccessoire2article__oxobjectid = new oxField($sChosenArt);
-                $oNewGroup->oxaccessoire2article__oxarticlenid = new oxField($oArticle->oxarticles__oxid->value);
-                $oNewGroup->oxaccessoire2article__oxsort = new oxField(0);
+                $oNewGroup->oxaccessoire2article__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenArt);
+                $oNewGroup->oxaccessoire2article__oxarticlenid = new \OxidEsales\Eshop\Core\Field($oArticle->oxarticles__oxid->value);
+                $oNewGroup->oxaccessoire2article__oxsort = new \OxidEsales\Eshop\Core\Field(0);
                 $oNewGroup->save();
             }
 

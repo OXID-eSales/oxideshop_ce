@@ -171,7 +171,7 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
      */
     private function stubActiveModulesList($activeModules = ['myTestModule' => 'myTestModulePath'])
     {
-        $moduleListMock = $this->getMock('oxmodulelist', ['getActiveModuleInfo']);
+        $moduleListMock = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, ['getActiveModuleInfo']);
         $moduleListMock->method('getActiveModuleInfo')->willReturn($activeModules);
         oxTestModules::addModuleObject('oxmodulelist', $moduleListMock);
     }

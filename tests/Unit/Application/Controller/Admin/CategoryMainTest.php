@@ -219,7 +219,7 @@ class CategoryMainTest extends \OxidTestCase
         $this->_oCategory->save();
         $this->assertEquals('Test_title', $oDb->getOne("select oxtitle from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
 
-        /** @var Category_Main $oView */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass('Category_Main');
         $oView->UNITdeleteCatPicture($this->_oCategory, 'oxtitle');
         $this->assertEquals('Test_title', $oDb->getOne("select oxtitle from oxcategories where oxid='_testCatId' "));
@@ -238,7 +238,7 @@ class CategoryMainTest extends \OxidTestCase
         $this->_oCategory->save();
         $this->assertEquals('testIcon.jpg', $oDb->getOne("select oxpromoicon from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
 
-        /** @var Category_Main $oView */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass('Category_Main');
         $oView->UNITdeleteCatPicture($this->_oCategory, 'oxpromoicon');
         $this->assertEquals('', $oDb->getOne("select oxpromoicon from oxcategories where oxid='_testCatId' "));
@@ -257,7 +257,7 @@ class CategoryMainTest extends \OxidTestCase
         $this->_oCategory->save();
         $this->assertEquals('testIcon.jpg', $oDb->getOne("select oxthumb from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
 
-        /** @var Category_Main $oView */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass('Category_Main');
         $oView->UNITdeleteCatPicture($this->_oCategory, 'oxthumb');
         $this->assertEquals('', $oDb->getOne("select oxthumb from oxcategories where oxid='_testCatId' "));
@@ -276,7 +276,7 @@ class CategoryMainTest extends \OxidTestCase
         $this->_oCategory->save();
         $this->assertEquals('testIcon.jpg', $oDb->getOne("select oxicon from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
 
-        /** @var Category_Main $oView */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass('Category_Main');
         $oView->UNITdeleteCatPicture($this->_oCategory, 'oxicon');
         $this->assertEquals('', $oDb->getOne("select oxicon from oxcategories where oxid='_testCatId' "));
@@ -289,12 +289,12 @@ class CategoryMainTest extends \OxidTestCase
      */
     public function testDeletePicture_demoShopMode()
     {
-        $oConfig = $this->getMock("oxConfig", array("isDemoShop"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("isDemoShop"));
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
 
         oxRegistry::getSession()->deleteVariable("Errors");
 
-        /** @var Category_Main $oView */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass("Category_Main");
         $oView->setConfig($oConfig);
         $oView->deletePicture();

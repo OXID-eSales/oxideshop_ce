@@ -49,7 +49,7 @@ class UserPaymentTest extends \OxidTestCase
      */
     public function testRender()
     {
-        $oView = $this->getMock("user_payment", array("getSelUserPayment", "getPaymentId", "getPaymentTypes", "getUser", "getUserPayments", "_allowAdminEdit"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserPayment::class, array("getSelUserPayment", "getPaymentId", "getPaymentTypes", "getUser", "getUserPayments", "_allowAdminEdit"));
         $oView->expects($this->once())->method('getSelUserPayment')->will($this->returnValue("getSelUserPayment"));
         $oView->expects($this->once())->method('getPaymentId')->will($this->returnValue("getPaymentId"));
         $oView->expects($this->once())->method('getPaymentTypes')->will($this->returnValue("getPaymentTypes"));
@@ -81,7 +81,7 @@ class UserPaymentTest extends \OxidTestCase
         $this->setRequestParameter("dynvalue", "testId");
 
         try {
-            $oView = $this->getMock("user_payment", array("_allowAdminEdit"));
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserPayment::class, array("_allowAdminEdit"));
             $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(true));
             $oView->save();
         } catch (Exception $oExcp) {
@@ -107,7 +107,7 @@ class UserPaymentTest extends \OxidTestCase
         $this->setRequestParameter("editval", array("oxuserpayments__oxid" => "testId"));
 
         try {
-            $oView = $this->getMock("user_payment", array("_allowAdminEdit"));
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserPayment::class, array("_allowAdminEdit"));
             $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(true));
             $oView->delPayment();
         } catch (Exception $oExcp) {
@@ -166,7 +166,7 @@ class UserPaymentTest extends \OxidTestCase
         $this->setRequestParameter('oxpaymentid', null);
         $oUserPayment = oxNew('oxUserPayment');
         $oUserPayment->oxuserpayments__oxid = new oxField('oxidinvoice');
-        $oUser = $this->getMock('oxuser', array('getUserPayments'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getUserPayments'));
         $oUser->expects($this->once())->method('getUserPayments')->will($this->returnValue(array($oUserPayment)));
         $oUserView = $this->getProxyClass('user_payment');
         $oUserView->setNonPublicVar("_oActiveUser", $oUser);

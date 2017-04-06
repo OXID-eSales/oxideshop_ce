@@ -76,7 +76,7 @@ class ContentMainTest extends \OxidTestCase
 
         // testing..
         try {
-            $oView = $this->getMock("Content_Main", array("_checkIdent"));
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ContentMain::class, array("_checkIdent"));
             $oView->expects($this->once())->method('_checkIdent')->will($this->returnValue(false));
             $oView->save();
         } catch (Exception $oExcp) {

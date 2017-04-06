@@ -52,7 +52,7 @@ class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             //show country in active language
             $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
             $oCountry->loadInLang(\OxidEsales\Eshop\Core\Registry::getLang()->getObjectTplLanguage(), $oUser->oxuser__oxcountryid->value);
-            $oUser->oxuser__oxcountry = new oxField($oCountry->oxcountry__oxtitle->value);
+            $oUser->oxuser__oxcountry = new \OxidEsales\Eshop\Core\Field($oCountry->oxcountry__oxtitle->value);
 
             $this->_aViewData["edit"] = $oUser;
         }

@@ -239,8 +239,8 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
         if (($oUser = $this->getUser())) {
             if (!($oRecommList = $this->getActiveRecommList())) {
                 $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
-                $oRecommList->oxrecommlists__oxuserid = new oxField($oUser->getId());
-                $oRecommList->oxrecommlists__oxshopid = new oxField($this->getConfig()->getShopId());
+                $oRecommList->oxrecommlists__oxuserid = new \OxidEsales\Eshop\Core\Field($oUser->getId());
+                $oRecommList->oxrecommlists__oxshopid = new \OxidEsales\Eshop\Core\Field($this->getConfig()->getShopId());
             } else {
                 $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
             }
@@ -249,9 +249,9 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
             $sAuthor = trim(( string ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recomm_author', true));
             $sText = trim(( string ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recomm_desc', true));
 
-            $oRecommList->oxrecommlists__oxtitle = new oxField($sTitle);
-            $oRecommList->oxrecommlists__oxauthor = new oxField($sAuthor);
-            $oRecommList->oxrecommlists__oxdesc = new oxField($sText);
+            $oRecommList->oxrecommlists__oxtitle = new \OxidEsales\Eshop\Core\Field($sTitle);
+            $oRecommList->oxrecommlists__oxauthor = new \OxidEsales\Eshop\Core\Field($sAuthor);
+            $oRecommList->oxrecommlists__oxdesc = new \OxidEsales\Eshop\Core\Field($sText);
 
             try {
                 // marking entry as saved

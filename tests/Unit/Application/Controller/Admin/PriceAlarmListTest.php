@@ -73,7 +73,7 @@ class PriceAlarmListTest extends \OxidTestCase
         $sViewName = getViewName("oxpricealarm");
         $sArtViewName = getViewName("oxarticles");
 
-        $oView = $this->getMock("PriceAlarm_List", array("_authorize"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PriceAlarmList::class, array("_authorize"));
         $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
         $oView->init();
 

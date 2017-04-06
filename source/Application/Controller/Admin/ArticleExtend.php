@@ -180,22 +180,22 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
             $oMediaUrl = oxNew(\OxidEsales\Eshop\Application\Model\MediaUrl::class);
             $oMediaUrl->setLanguage($this->_iEditLang);
-            $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oMediaUrl->oxmediaurls__oxisuploaded = new \OxidEsales\Eshop\Core\Field(0, \OxidEsales\Eshop\Core\Field::T_RAW);
 
             //handle uploaded file
             if ($aMediaFile['name']) {
                 try {
                     $sMediaUrl = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFile('mediaFile', 'out/media/');
-                    $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(1, \OxidEsales\Eshop\Core\Field::T_RAW);
+                    $oMediaUrl->oxmediaurls__oxisuploaded = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
                 } catch (Exception $e) {
                     return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($e->getMessage());
                 }
             }
 
             //save media url
-            $oMediaUrl->oxmediaurls__oxobjectid = new oxField($soxId, \OxidEsales\Eshop\Core\Field::T_RAW);
-            $oMediaUrl->oxmediaurls__oxurl = new oxField($sMediaUrl, \OxidEsales\Eshop\Core\Field::T_RAW);
-            $oMediaUrl->oxmediaurls__oxdesc = new oxField($sMediaDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oMediaUrl->oxmediaurls__oxobjectid = new \OxidEsales\Eshop\Core\Field($soxId, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oMediaUrl->oxmediaurls__oxurl = new \OxidEsales\Eshop\Core\Field($sMediaUrl, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oMediaUrl->oxmediaurls__oxdesc = new \OxidEsales\Eshop\Core\Field($sMediaDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
             $oMediaUrl->save();
         }
 
@@ -299,8 +299,8 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $resultFromDatabase = $database->select($query);
         if ($resultFromDatabase != false && $resultFromDatabase->count() > 0) {
             while (!$resultFromDatabase->EOF) {
-                $articleNumber = new oxField($resultFromDatabase->fields[1]);
-                $articleTitle = new oxField($resultFromDatabase->fields[0] . " " . $resultFromDatabase->fields[2]);
+                $articleNumber = new \OxidEsales\Eshop\Core\Field($resultFromDatabase->fields[1]);
+                $articleTitle = new \OxidEsales\Eshop\Core\Field($resultFromDatabase->fields[0] . " " . $resultFromDatabase->fields[2]);
                 $resultFromDatabase->fetchRow();
             }
         }

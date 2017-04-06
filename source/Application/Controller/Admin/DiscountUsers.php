@@ -54,16 +54,16 @@ class DiscountUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $oGroups->selectString("select * from " . getViewName("oxgroups", $this->_iEditLang));
 
         $oRoot = new stdClass();
-        $oRoot->oxgroups__oxid = new oxField("");
-        $oRoot->oxgroups__oxtitle = new oxField("-- ");
+        $oRoot->oxgroups__oxid = new \OxidEsales\Eshop\Core\Field("");
+        $oRoot->oxgroups__oxtitle = new \OxidEsales\Eshop\Core\Field("-- ");
         // rebuild list as we need the "no value" entry at the first position
         $aNewList = array();
         $aNewList[] = $oRoot;
 
         foreach ($oGroups as $val) {
             $aNewList[$val->oxgroups__oxid->value] = new stdClass();
-            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxid = new oxField($val->oxgroups__oxid->value);
-            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxtitle = new oxField($val->oxgroups__oxtitle->value);
+            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxid = new \OxidEsales\Eshop\Core\Field($val->oxgroups__oxid->value);
+            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxtitle = new \OxidEsales\Eshop\Core\Field($val->oxgroups__oxtitle->value);
         }
 
         $this->_aViewData["allgroups2"] = $aNewList;

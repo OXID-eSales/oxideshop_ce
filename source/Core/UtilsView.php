@@ -255,11 +255,11 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         if (is_array($sDesc)) {
             foreach ($sDesc as $name => $aData) {
-                $smarty->oxidcache = new oxField($aData[1], \OxidEsales\Eshop\Core\Field::T_RAW);
+                $smarty->oxidcache = new \OxidEsales\Eshop\Core\Field($aData[1], \OxidEsales\Eshop\Core\Field::T_RAW);
                 $result[$name] = $smarty->fetch("ox:" . $aData[0] . $activeLanguageId);
             }
         } else {
-            $smarty->oxidcache = new oxField($sDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $smarty->oxidcache = new \OxidEsales\Eshop\Core\Field($sDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
             $result = $smarty->fetch("ox:{$sOxid}{$activeLanguageId}");
         }
 

@@ -216,7 +216,7 @@ class SessionTest extends UnitTestCase
         $this->setRequestParameter('lgn_usr', $username);
         $this->setRequestParameter('lgn_pwd', $password);
 
-        $parent = $this->getMock('oxUser', array('isEnabledPrivateSales'));
+        $parent = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isEnabledPrivateSales'));
         $parent->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(false));
 
         $userComponent = oxNew('oxcmp_user');

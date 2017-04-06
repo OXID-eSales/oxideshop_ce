@@ -119,9 +119,9 @@ class ActionsGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             foreach ($aChosenGroup as $sChosenGroup) {
                 $oObject2Promotion = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Promotion->init('oxobject2action');
-                $oObject2Promotion->oxobject2action__oxactionid = new oxField($soxId);
-                $oObject2Promotion->oxobject2action__oxobjectid = new oxField($sChosenGroup);
-                $oObject2Promotion->oxobject2action__oxclass = new oxField("oxgroups");
+                $oObject2Promotion->oxobject2action__oxactionid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oObject2Promotion->oxobject2action__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenGroup);
+                $oObject2Promotion->oxobject2action__oxclass = new \OxidEsales\Eshop\Core\Field("oxgroups");
                 $oObject2Promotion->save();
             }
 

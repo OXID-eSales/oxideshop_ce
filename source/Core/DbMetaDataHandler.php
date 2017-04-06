@@ -566,7 +566,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $configFile = \OxidEsales\Eshop\Core\Registry::get('oxConfigFile');
+        $configFile = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
         $originalSkipViewUsageStatus = $configFile->getVar('blSkipViewUsage');
         $config->setConfigParam('blSkipViewUsage', 1);
 

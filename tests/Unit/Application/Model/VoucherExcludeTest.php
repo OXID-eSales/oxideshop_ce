@@ -471,7 +471,7 @@ class VoucherExcludeTest extends \OxidTestCase
      */
     public function testGetProductDiscountValue_ThrowNoArticleException()
     {
-        $oVoucher = $this->getMock('oxVoucher', array('isAdmin'));
+        $oVoucher = $this->getMock(\OxidEsales\Eshop\Application\Model\Voucher::class, array('isAdmin'));
         $oVoucher->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oVoucher->load('test_111');
 
@@ -487,7 +487,7 @@ class VoucherExcludeTest extends \OxidTestCase
      */
     public function testGetCategoryDiscountValue_ThrowNoArticleException()
     {
-        $oVoucher = $this->getMock('oxVoucher', array('isAdmin'));
+        $oVoucher = $this->getMock(\OxidEsales\Eshop\Application\Model\Voucher::class, array('isAdmin'));
         $oVoucher->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oVoucher->load('test_333');
 

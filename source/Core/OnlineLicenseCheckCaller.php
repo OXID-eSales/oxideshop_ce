@@ -93,17 +93,17 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
         /** @var \OxidEsales\Eshop\Core\UtilsXml $oUtilsXml */
         $oUtilsXml = \OxidEsales\Eshop\Core\Registry::get("oxUtilsXml");
         if (empty($sRawResponse) || !($oDomDoc = $oUtilsXml->loadXml($sRawResponse))) {
-            throw new oxException('OLC_ERROR_RESPONSE_NOT_VALID');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('OLC_ERROR_RESPONSE_NOT_VALID');
         }
 
         if ($oDomDoc->documentElement->nodeName != $this->_sResponseElement) {
-            throw new oxException('OLC_ERROR_RESPONSE_UNEXPECTED');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('OLC_ERROR_RESPONSE_UNEXPECTED');
         }
 
         $oResponseNode = $oDomDoc->firstChild;
 
         if (!$oResponseNode->hasChildNodes()) {
-            throw new oxException('OLC_ERROR_RESPONSE_NOT_VALID');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('OLC_ERROR_RESPONSE_NOT_VALID');
         }
 
         $oNodes = $oResponseNode->childNodes;

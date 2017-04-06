@@ -241,7 +241,7 @@ class DatabaseProvider
          * Do the configuration of the database connection parameters
          */
         /** @var ConfigFile $configFile */
-        $configFile = Registry::get('oxConfigFile');
+        $configFile = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
 
         return $configFile;
     }

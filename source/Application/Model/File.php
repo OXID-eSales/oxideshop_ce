@@ -114,11 +114,11 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         $this->_checkArticleFile($aFileInfo);
 
         $sFileHash = $this->_getFileHash($aFileInfo['tmp_name']);
-        $this->oxfiles__oxstorehash = new oxField($sFileHash, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxfiles__oxstorehash = new \OxidEsales\Eshop\Core\Field($sFileHash, \OxidEsales\Eshop\Core\Field::T_RAW);
         $sUploadTo = $this->getStoreLocation();
 
         if (!$this->_uploadFile($aFileInfo['tmp_name'], $sUploadTo)) {
-            throw new oxException('EXCEPTION_COULDNOTWRITETOFILE');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_COULDNOTWRITETOFILE');
         }
     }
 
@@ -133,12 +133,12 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         //checking params
         if (!isset($aFileInfo['name']) || !isset($aFileInfo['tmp_name'])) {
-            throw new oxException('EXCEPTION_NOFILE');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_NOFILE');
         }
 
         // error uploading file ?
         if (isset($aFileInfo['error']) && $aFileInfo['error']) {
-            throw new oxException('EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
         }
     }
 
@@ -364,7 +364,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sFileLocations = $this->getStoreLocation();
 
         if (!$this->exist() || !$this->isUnderDownloadFolder()) {
-            throw new oxException('EXCEPTION_NOFILE');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_NOFILE');
         }
 
         $oUtils->setHeader("Pragma: public");

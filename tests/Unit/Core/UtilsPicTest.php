@@ -171,7 +171,7 @@ class UtilsPicTest extends \OxidTestCase
         //$oConfig = $this->getMock( 'oxconfig', array( 'hasModule' ) );
         $oConfig = $this->getMock('oxconfig');
 
-        $oUtilsPic = $this->getMock('oxutilspic', array('getConfig'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('getConfig'));
         $oUtilsPic->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->assertFalse($oUtilsPic->UNITdeletePicture('xxx', 'yyy'));
@@ -184,7 +184,7 @@ class UtilsPicTest extends \OxidTestCase
         //$oConfig->expects( $this->exactly( 2 ) )->method( 'hasModule')->will( $this->returnValue( false ) );
         $oConfig = $this->getMock('oxconfig');
 
-        $oUtilsPic = $this->getMock('oxutilspic', array('getConfig'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('getConfig'));
         $oUtilsPic->expects($this->exactly(2))->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->assertFalse($oUtilsPic->UNITdeletePicture('nopic.jpg', 'yyy'));
@@ -198,7 +198,7 @@ class UtilsPicTest extends \OxidTestCase
         //$oConfig->expects( $this->once() )->method( 'hasModule')->will( $this->returnValue( false ) );
         $oConfig = $this->getMock('oxconfig');
 
-        $oUtilsPic = $this->getMock('oxutilspic', array('getConfig'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('getConfig'));
         $oUtilsPic->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->assertFalse($oUtilsPic->UNITdeletePicture(time(), 'yyy'));
@@ -235,7 +235,7 @@ class UtilsPicTest extends \OxidTestCase
      */
     public function testIsPicDeletable($filename, $response, $expectedResult)
     {
-        $utilsPicMock = $this->getMock('oxUtilsPic', array('fetchIsImageDeletable'));
+        $utilsPicMock = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('fetchIsImageDeletable'));
         $utilsPicMock->method('fetchIsImageDeletable')->willReturn($response);
 
         $this->assertEquals($expectedResult, $utilsPicMock->UNITisPicDeletable($filename, 'test', 'file'));
@@ -246,7 +246,7 @@ class UtilsPicTest extends \OxidTestCase
      */
     public function testIsPicDeletableNoPic()
     {
-        $utilsPicMock = $this->getMock('oxUtilsPic', array('fetchIsImageDeletable'));
+        $utilsPicMock = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('fetchIsImageDeletable'));
         $utilsPicMock->expects($this->never())->method('fetchIsImageDeletable');
 
         $this->assertEquals(false, $utilsPicMock->UNITisPicDeletable('nopic.jpg', 'test', 'file'));
@@ -258,7 +258,7 @@ class UtilsPicTest extends \OxidTestCase
     // bad input
     public function testOverwritePicBadInput()
     {
-        $oUtilsPic = $this->getMock('oxutilspic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->never())->method('safePictureDelete');
 
         $blFalse = $oUtilsPic->overwritePic(new stdClass(), 'xxx', 'xxx', '', '', '', '');
@@ -268,7 +268,7 @@ class UtilsPicTest extends \OxidTestCase
     // params are not ok
     public function testOverwritePicBadParams()
     {
-        $oUtilsPic = $this->getMock('oxutilspic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->never())->method('safePictureDelete');
 
         $oObject = new stdClass();
@@ -281,11 +281,11 @@ class UtilsPicTest extends \OxidTestCase
     // all is fine
     public function testOverwritePicGoodParams()
     {
-        $oFiles = $this->getMock('oxUtilsFile', array('getImageDirByType'));
+        $oFiles = $this->getMock(\OxidEsales\Eshop\Core\UtilsFile::class, array('getImageDirByType'));
         $oFiles->expects($this->atLeastOnce())->method('getImageDirByType')->will($this->returnValue('/test_image_dir/'));
         oxTestModules::addModuleObject('oxUtilsFile', $oFiles);
 
-        $oUtilsPic = $this->getMock('oxutilspic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->once())->method('safePictureDelete')->with($this->equalTo('yyy'), $this->equalTo('yyy/test_image_dir/'), $this->equalTo('oxtbl'), $this->equalTo('oxpic'))->will($this->returnValue(true));
 
         $oObject = new stdClass();
@@ -298,11 +298,11 @@ class UtilsPicTest extends \OxidTestCase
     // Test if corect path to file is generated (M:1268)
     public function testOverwritePic_generatesCorectFilePath()
     {
-        $oFiles = $this->getMock('oxUtilsFile', array('getImageDirByType'));
+        $oFiles = $this->getMock(\OxidEsales\Eshop\Core\UtilsFile::class, array('getImageDirByType'));
         $oFiles->expects($this->atLeastOnce())->method('getImageDirByType')->will($this->returnValue('/testType_dir/'));
         oxTestModules::addModuleObject('oxUtilsFile', $oFiles);
 
-        $oUtilsPic = $this->getMock('oxutilspic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->once())->method('safePictureDelete')->with($this->equalTo('testPictureName'), $this->equalTo('testAbsPath/testType_dir/'));
 
         $oObject = new stdclass();
@@ -317,7 +317,7 @@ class UtilsPicTest extends \OxidTestCase
     // deeper code must not allow deletion
     public function testSafePictureDeleteMustFailDeletion()
     {
-        $oUtilsPic = $this->getMock('oxutilspic', array('_isPicDeletable', '_deletePicture'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('_isPicDeletable', '_deletePicture'));
         $oUtilsPic->expects($this->once())->method('_isPicDeletable')->will($this->returnValue(false));
         $oUtilsPic->expects($this->never())->method('_deletePicture');
 
@@ -327,7 +327,7 @@ class UtilsPicTest extends \OxidTestCase
     //
     public function testSafePictureDeleteMustSucceed()
     {
-        $oUtilsPic = $this->getMock('oxutilspic', array('_isPicDeletable', '_deletePicture'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('_isPicDeletable', '_deletePicture'));
         $oUtilsPic->expects($this->once())->method('_isPicDeletable')->will($this->returnValue(true));
         $oUtilsPic->expects($this->once())->method('_deletePicture')->will($this->returnValue(true));
 

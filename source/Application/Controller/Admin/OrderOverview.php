@@ -98,7 +98,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             if ($oPayment->load($oOrder->oxorder__oxpaymenttype->value)) {
                 // in case due to security reasons payment info was not kept in db
                 $oUserPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
-                $oUserPayment->oxpayments__oxdesc = new oxField($oPayment->oxpayments__oxdesc->value);
+                $oUserPayment->oxpayments__oxdesc = new \OxidEsales\Eshop\Core\Field($oPayment->oxpayments__oxdesc->value);
             }
         }
 
@@ -127,7 +127,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($oOrder->load($this->getEditObjectId())) {
-            $oOrder->oxorder__oxsenddate = new oxField(date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
+            $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field(date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
             $oOrder->save();
 
             // #1071C
@@ -154,7 +154,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($oOrder->load($this->getEditObjectId())) {
-            $oOrder->oxorder__oxsenddate = new oxField("0000-00-00 00:00:00");
+            $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field("0000-00-00 00:00:00");
             $oOrder->save();
         }
     }

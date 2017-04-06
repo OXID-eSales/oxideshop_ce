@@ -111,7 +111,7 @@ class OnlineModuleVersionNotifier
      */
     protected function _formRequest()
     {
-        $oRequestParams = new oxOnlineModulesNotifierRequest();
+        $oRequestParams = new \OxidEsales\Eshop\Core\OnlineModulesNotifierRequest();
 
         $oRequestParams->modules = new stdClass();
         $oRequestParams->modules->module = $this->_prepareModulesInformation();

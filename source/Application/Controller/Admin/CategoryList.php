@@ -92,13 +92,13 @@ class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
         // rebuild list as we need the root entry at the first position
         $aNewList = array();
         $oRoot = new stdClass();
-        $oRoot->oxcategories__oxid = new oxField(null, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $oRoot->oxcategories__oxtitle = new oxField($oLang->translateString("viewAll", $iLang), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oRoot->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field(null, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oRoot->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field($oLang->translateString("viewAll", $iLang), \OxidEsales\Eshop\Core\Field::T_RAW);
         $aNewList[] = $oRoot;
 
         $oRoot = new stdClass();
-        $oRoot->oxcategories__oxid = new oxField("oxrootid", \OxidEsales\Eshop\Core\Field::T_RAW);
-        $oRoot->oxcategories__oxtitle = new oxField("-- " . $oLang->translateString("mainCategory", $iLang) . " --", \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oRoot->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field("oxrootid", \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oRoot->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field("-- " . $oLang->translateString("mainCategory", $iLang) . " --", \OxidEsales\Eshop\Core\Field::T_RAW);
         $aNewList[] = $oRoot;
 
         foreach ($oCatTree as $oCategory) {

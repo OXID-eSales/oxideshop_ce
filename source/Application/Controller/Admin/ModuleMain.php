@@ -61,7 +61,7 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
                 $this->_aViewData["sModuleName"] = basename($oModule->getInfo("title", $iLang));
                 $this->_aViewData["sModuleId"] = str_replace("/", "_", $oModule->getModulePath());
             } else {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
+                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
             }
         }
 
@@ -87,7 +87,7 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */
         $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
         if (!$oModule->load($sModule)) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
 
             return;
         }
@@ -123,7 +123,7 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */
         $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
         if (!$oModule->load($sModule)) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
 
             return;
         }

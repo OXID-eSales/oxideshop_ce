@@ -33,7 +33,7 @@ class ModuleMetadataValidatorTest extends \OxidTestCase
     public function testValidateModuleWithoutMetadataFile()
     {
         $sPathToMetadata = '';
-        $oModuleStub = $this->getMock('oxModule', array('getMetadataPath'));
+        $oModuleStub = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getMetadataPath'));
         $oModuleStub->expects($this->any())
             ->method('getMetadataPath')
             ->will($this->returnValue($sPathToMetadata));
@@ -52,7 +52,7 @@ class ModuleMetadataValidatorTest extends \OxidTestCase
 
         $sPathToMetadata = $this->createFile($sMetadataFileName, $sMetadataContent);
 
-        $oModuleStub = $this->getMock('oxModule', array('getMetadataPath'));
+        $oModuleStub = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getMetadataPath'));
         $oModuleStub->expects($this->any())
             ->method('getMetadataPath')
             ->will($this->returnValue($sPathToMetadata));

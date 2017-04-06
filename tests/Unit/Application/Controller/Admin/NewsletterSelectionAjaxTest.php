@@ -140,7 +140,7 @@ class NewsletterSelectionAjaxTest extends \OxidTestCase
      */
     public function testRemoveGroupFromNewsletter()
     {
-        $oView = $this->getMock("newsletter_selection_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NewsletterSelectionAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testGroupRemove1', '_testGroupRemove2')));
 
         $sSql = "select count(oxid) from oxobject2group where oxid in ('_testGroupRemove1', '_testGroupRemove2')";
@@ -180,7 +180,7 @@ class NewsletterSelectionAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2group where oxobjectid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock("newsletter_selection_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NewsletterSelectionAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testGroupAdd1', '_testGroupAdd2')));
 
         $oView->addGroupToNewsletter();
@@ -204,7 +204,7 @@ class NewsletterSelectionAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2group where oxobjectid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock("newsletter_selection_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NewsletterSelectionAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testGroupAdd1', '_testGroupAdd2')));
 
         $oView->addGroupToNewsletter();

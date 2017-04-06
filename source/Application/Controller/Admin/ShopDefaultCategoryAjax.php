@@ -67,7 +67,7 @@ class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\A
         $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($oShop->load($sShopId)) {
-            $oShop->oxshops__oxdefcat = new oxField('');
+            $oShop->oxshops__oxdefcat = new \OxidEsales\Eshop\Core\Field('');
             $oShop->save();
         }
     }
@@ -81,7 +81,7 @@ class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\A
         $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($oShop->load($sShopId)) {
-            $oShop->oxshops__oxdefcat = new oxField($sChosenCat);
+            $oShop->oxshops__oxdefcat = new \OxidEsales\Eshop\Core\Field($sChosenCat);
             $oShop->save();
         }
     }

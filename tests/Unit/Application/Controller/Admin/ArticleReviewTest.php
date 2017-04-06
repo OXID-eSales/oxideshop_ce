@@ -105,7 +105,7 @@ class ArticleReviewTest extends \OxidTestCase
         $this->setRequestParameter("editval", array('oxreviews__oxtext' => 6, 'oxreviews__oxrating' => 6));
         $this->getConfig()->setConfigParam("blGBModerate", "_testReviewId");
 
-        $oView = $this->getMock("Article_Review", array("resetContentCache"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleReview::class, array("resetContentCache"));
         $oView->expects($this->once())->method('resetContentCache');
         $oView->save();
 
@@ -131,7 +131,7 @@ class ArticleReviewTest extends \OxidTestCase
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxreviews where oxid = 'testReviewId'"));
         $this->setRequestParameter("rev_oxid", "testReviewId");
 
-        $oView = $this->getMock("Article_Review", array("resetContentCache"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleReview::class, array("resetContentCache"));
         $oView->expects($this->once())->method('resetContentCache');
 
         $oView->delete();

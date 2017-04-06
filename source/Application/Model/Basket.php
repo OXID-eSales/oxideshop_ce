@@ -673,7 +673,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
         // does this object still exists ?
         if ($oArticle = $oBasketItem->getArticle()) {
-            $aDiscounts = \OxidEsales\Eshop\Core\Registry::get("oxDiscountList")->getBasketItemBundleDiscounts($oArticle, $this, $this->getBasketUser());
+            $aDiscounts = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DiscountList::class)->getBasketItemBundleDiscounts($oArticle, $this, $this->getBasketUser());
 
             foreach ($aDiscounts as $oDiscount) {
                 $iAmnt = $oDiscount->getBundleAmount($oBasketItem->getAmount());
@@ -704,7 +704,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getBasketBundles($aBundles = array())
     {
-        $aDiscounts = \OxidEsales\Eshop\Core\Registry::get("oxDiscountList")->getBasketBundleDiscounts($this, $this->getBasketUser());
+        $aDiscounts = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DiscountList::class)->getBasketBundleDiscounts($this, $this->getBasketUser());
 
         // calculating amount of non bundled/discount items
         $dAmount = 0;
@@ -805,7 +805,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         $this->_oDiscountProductsPriceList = oxNew(\OxidEsales\Eshop\Core\PriceList::class);
         $this->_oNotDiscountedProductsPriceList = oxNew(\OxidEsales\Eshop\Core\PriceList::class);
 
-        $oDiscountList = \OxidEsales\Eshop\Core\Registry::get("oxDiscountList");
+        $oDiscountList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DiscountList::class);
 
         /** @var \oxBasketItem $oBasketItem */
         foreach ($this->_aBasketContents as $oBasketItem) {
@@ -924,7 +924,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
         // list of active delivery costs
         if ($myConfig->getConfigParam('bl_perfLoadDelivery')) {
-            $aDeliveryList = \OxidEsales\Eshop\Core\Registry::get("oxDeliveryList")->getDeliveryList(
+            $aDeliveryList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliveryList::class)->getDeliveryList(
                 $this,
                 $oUser,
                 $this->_findDelivCountry(),
@@ -1211,12 +1211,12 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             //if total discount was set on order recalculation
             $oTotalPrice = $this->getTotalDiscount();
             $oDiscount = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
-            $oDiscount->oxdiscount__oxaddsum = new oxField($oTotalPrice->getPrice());
-            $oDiscount->oxdiscount__oxaddsumtype = new oxField('abs');
+            $oDiscount->oxdiscount__oxaddsum = new \OxidEsales\Eshop\Core\Field($oTotalPrice->getPrice());
+            $oDiscount->oxdiscount__oxaddsumtype = new \OxidEsales\Eshop\Core\Field('abs');
             $aDiscounts[] = $oDiscount;
         } else {
             // discounts for basket
-            $aDiscounts = \OxidEsales\Eshop\Core\Registry::get("oxDiscountList")->getBasketDiscounts($this, $this->getBasketUser());
+            $aDiscounts = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DiscountList::class)->getBasketDiscounts($this, $this->getBasketUser());
         }
 
         if ($oPriceList = $this->getDiscountProductsPrice()) {
@@ -1830,7 +1830,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             $oUser = $this->getUser();
 
             // choosing first preferred delivery set
-            list(, $sActShipSet) = \OxidEsales\Eshop\Core\Registry::get("oxDeliverySetList")->getDeliverySetData(null, $oUser, $this);
+            list(, $sActShipSet) = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliverySetList::class)->getDeliverySetData(null, $oUser, $this);
             // in case nothing was found and no user set - choosing default
             $this->_sShippingSetId = $sActShipSet ? $sActShipSet : ($oUser ? null : 'oxidstandard');
         } elseif (!$this->isAdmin() && $sActPaymentId == 'oxempty') {

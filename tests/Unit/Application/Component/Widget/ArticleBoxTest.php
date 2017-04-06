@@ -124,7 +124,7 @@ class ArticleBoxTest extends \OxidTestCase
         $sLinkUrl = $oArticleBox->getProduct()->getMainLink();
 
         $oArticleBox->setParent("search");
-        $oConfig = $this->getMock("oxConfig", array('getTopActiveView'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getTopActiveView'));
         $oSearch = oxNew('Search');
         $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oSearch));
 
@@ -245,10 +245,10 @@ class ArticleBoxTest extends \OxidTestCase
         $oList = oxNew('aList');
         $oList->setActiveCategory($oCategory);
 
-        $oConfig = $this->getMock('oxConfig', array('getTopActiveView'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getTopActiveView'));
         $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oList));
 
-        $oArticleBox = $this->getMock('oxwArticleBox', array('getConfig'));
+        $oArticleBox = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleBox::class, array('getConfig'));
         $oArticleBox->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->assertTrue($oArticleBox->getActiveCategory() instanceof Category);
@@ -267,10 +267,10 @@ class ArticleBoxTest extends \OxidTestCase
         $oList = oxNew('aList');
         $oList->setActiveCategory($oCategory);
 
-        $oConfig = $this->getMock('oxConfig', array('getTopActiveView'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getTopActiveView'));
         $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oList));
 
-        $oArticleBox = $this->getMock('oxwArticleBox', array('getConfig'));
+        $oArticleBox = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleBox::class, array('getConfig'));
         $oArticleBox->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->assertTrue($oArticleBox->getActiveCategory() instanceof Category);

@@ -122,15 +122,15 @@ class VoucherSerieMainTest extends \OxidTestCase
     public function testGetStatus()
     {
         // no series..
-        $oView = $this->getMock("VoucherSerie_Main", array("_getVoucherSerie"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain::class, array("_getVoucherSerie"));
         $oView->expects($this->once())->method('_getVoucherSerie')->will($this->returnValue(false));
         $this->assertNull($oView->getStatus());
 
         // with serie..
-        $oSerie = $this->getMock("oxVoucherSerie", array("countVouchers"));
+        $oSerie = $this->getMock(\OxidEsales\Eshop\Application\Model\VoucherSerie::class, array("countVouchers"));
         $oSerie->expects($this->once())->method('countVouchers')->will($this->returnValue("testCountVouchers"));
 
-        $oView = $this->getMock("VoucherSerie_Main", array("_getVoucherSerie"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain::class, array("_getVoucherSerie"));
         $oView->expects($this->once())->method('_getVoucherSerie')->will($this->returnValue($oSerie));
         $this->assertEquals("testCountVouchers", $oView->getStatus());
     }

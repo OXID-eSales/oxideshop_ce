@@ -53,7 +53,7 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
         $sXml .=   '<message>ACK</message>';
         $sXml .= '</olc>'."\n";
 
-        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sXml));
         /** @var oxCurl $oCurl */
 
@@ -89,7 +89,7 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
         $sXml .=   '<message>NACK</message>';
         $sXml .= '</olc>'."\n";
 
-        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sXml));
         /** @var oxCurl $oCurl */
 
@@ -117,7 +117,7 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
         $sXml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
         $sXml .= 'Some random XML'."\n";
 
-        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sXml));
         /** @var oxCurl $oCurl */
 

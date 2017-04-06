@@ -143,11 +143,11 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
                     $sObjectIdField = 'oxcategory2attribute__oxobjectid';
                     $sAttributeIdField = 'oxcategory2attribute__oxattrid';
                     $sOxIdField = 'oxattribute__oxid';
-                    $oNewGroup->$sObjectIdField = new oxField($sAdd);
-                    $oNewGroup->$sAttributeIdField = new oxField($oAttribute->$sOxIdField->value);
+                    $oNewGroup->$sObjectIdField = new \OxidEsales\Eshop\Core\Field($sAdd);
+                    $oNewGroup->$sAttributeIdField = new \OxidEsales\Eshop\Core\Field($oAttribute->$sOxIdField->value);
                     $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ";
 
-                    $oNewGroup->$sOxSortField = new oxField(( int ) $database->getOne($sSql));
+                    $oNewGroup->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql));
                     $oNewGroup->save();
                 }
             } catch (Exception $exception) {

@@ -166,7 +166,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _addCategoryFields($oVendor)
     {
-        $oVendor->oxcategories__oxid = new oxField("v_" . $oVendor->oxvendor__oxid->value);
+        $oVendor->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field("v_" . $oVendor->oxvendor__oxid->value);
         $oVendor->oxcategories__oxicon = $oVendor->oxvendor__oxicon;
         $oVendor->oxcategories__oxtitle = $oVendor->oxvendor__oxtitle;
         $oVendor->oxcategories__oxdesc = $oVendor->oxvendor__oxshortdesc;
@@ -202,7 +202,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         // only when SEO id on and in front end
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {
-            $oEncoder = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderVendor");
+            $oEncoder = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class);
 
             // preparing root vendor category
             if ($this->_oRoot) {

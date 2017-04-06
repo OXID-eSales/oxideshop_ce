@@ -54,7 +54,7 @@ class ModuleRemoveTest extends BaseModuleTestCase
         $oEnvironment->prepare($aInstallModules);
 
         /** @var oxModuleList|MockObject $oModuleList */
-        $oModuleList = $this->getMock('oxModuleList', array('getDeletedExtensions'));
+        $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getDeletedExtensions'));
         $oModuleList->expects($this->any())->method('getDeletedExtensions')->will($this->returnValue($aRemovedExtensions));
 
         $oModuleList->cleanup();
@@ -86,7 +86,7 @@ class ModuleRemoveTest extends BaseModuleTestCase
         $oEnvironment->activateModules($aInstallModules);  //activate modules in shop 2
 
         /** @var oxModuleList|MockObject $oModuleList */
-        $oModuleList = $this->getMock('oxModuleList', array('getDeletedExtensions'));
+        $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getDeletedExtensions'));
         $oModuleList->expects($this->any())->method('getDeletedExtensions')->will($this->returnValue($aRemovedExtensions));
 
         $oModuleList->cleanup();

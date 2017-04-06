@@ -33,7 +33,7 @@ class SuperConfigTest extends \OxidTestCase
         $oConfig = $this->getConfig();
         $this->assertEquals($oConfig, $oOxSuperCfg->getConfig());
 
-        $config = $this->getMock('oxConfig', array('getConfigParam'));
+        $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $config->expects($this->once())->method('getConfigParam')->will($this->returnValue(true));
         $oOxSuperCfg->setConfig($config);
         $this->assertTrue($oOxSuperCfg->getConfig()->getConfigParam('xxx'));
@@ -46,7 +46,7 @@ class SuperConfigTest extends \OxidTestCase
         $oSession = oxRegistry::getSession();
         $this->assertEquals($oSession, $oOxSuperCfg->getSession());
 
-        $oSession = $this->getMock('oxConfig', array('getId'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getId'));
         $oSession->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
         $oOxSuperCfg->setSession($oSession);
         $this->assertEquals('xxx', $oOxSuperCfg->getSession()->getId());

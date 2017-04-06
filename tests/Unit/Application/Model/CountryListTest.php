@@ -47,7 +47,7 @@ class CountryListTest extends \OxidTestCase
         );
 
         foreach ($aCountryTitle as $oxid => $title) {
-            /** @var Country $country */
+            /** @var \OxidEsales\Eshop\Application\Controller\Admin\CountryController $country */
             $country = oxNew('oxCountry');
             $country->setId($oxid);
             $country->oxcountry__oxactive = new oxField(0, oxField::T_RAW);

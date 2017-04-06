@@ -327,7 +327,7 @@ class ModuleChainsGenerator
          * So do not try to get "sShopDir" like this:
          * $modulesDirectory = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sShopDir");
          */
-        $modulesDirectory = \OxidEsales\Eshop\Core\Registry::get("oxConfigFile")->getVar("sShopDir");
+        $modulesDirectory = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar("sShopDir");
         $moduleClassFile = "$modulesDirectory/modules/$moduleClassPath.php";
         $moduleClassParentAlias = $moduleClass . "_parent";
 
@@ -373,9 +373,9 @@ class ModuleChainsGenerator
      */
     protected function handleSpecialCases($requestedClass)
     {
-        if ($requestedClass == "oxconfig") {
+        if (($requestedClass == "oxconfig") || ($requestedClass == \OxidEsales\Eshop\Core\Config::class)) {
             $config = new \OxidEsales\Eshop\Core\Config();
-            \OxidEsales\Eshop\Core\Registry::set("oxConfig", $config);
+            \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
         }
     }
 
@@ -460,7 +460,7 @@ class ModuleChainsGenerator
      */
     protected function getConfigBlDoNotDisableModuleOnError()
     {
-        return \OxidEsales\Eshop\Core\Registry::get("oxConfigFile")->getVar("blDoNotDisableModuleOnError");
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar("blDoNotDisableModuleOnError");
     }
 
     /**

@@ -616,7 +616,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function _isDebugMode()
     {
-        return (bool) Registry::get("oxConfigFile")->getVar('iDebug');
+        return (bool) Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('iDebug');
     }
 
     /**
@@ -863,7 +863,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $wasSentWithinThreshold = false;
 
         /** @var int $threshold Threshold in seconds */
-        $threshold = Registry::get("oxConfigFile")->getVar('offlineWarningInterval');
+        $threshold = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('offlineWarningInterval');
         if (file_exists($this->offlineWarningTimestampFile)) {
             $lastSentTimestamp = (int) file_get_contents($this->offlineWarningTimestampFile);
             $lastSentBefore = time() - $lastSentTimestamp;
@@ -889,7 +889,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         $result = false;
         /** @var  $emailAddress Email address to sent the message to */
-        $emailAddress = Registry::get("oxConfigFile")->getVar('sAdminEmail');
+        $emailAddress = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('sAdminEmail');
 
         if ($emailAddress) {
             /** As we are inside the exception handling process, any further exceptions must be caught */

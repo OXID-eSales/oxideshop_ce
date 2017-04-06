@@ -101,10 +101,10 @@ class ArticlelistTest extends \OxidTestCase
      */
     public function testLoadStockRemindProductsNoCriticalStockProductsFound()
     {
-        $oItem1 = $this->getMock("oxbasketitem", array("getProductId"));
+        $oItem1 = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array("getProductId"));
         $oItem1->expects($this->once())->method("getProductId")->will($this->returnValue('someid1'));
 
-        $oItem2 = $this->getMock("oxbasketitem", array("getProductId"));
+        $oItem2 = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array("getProductId"));
         $oItem2->expects($this->once())->method("getProductId")->will($this->returnValue('someid1'));
 
         $oArtList = oxNew('oxArticleList');
@@ -130,10 +130,10 @@ class ArticlelistTest extends \OxidTestCase
         $oArticle->oxarticles__oxprice = new oxField('256', oxField::T_RAW);
         $oArticle->save();
 
-        $oItem1 = $this->getMock("oxbasketitem", array("getProductId"));
+        $oItem1 = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array("getProductId"));
         $oItem1->expects($this->once())->method("getProductId")->will($this->returnValue('_testArticleId'));
 
-        $oItem2 = $this->getMock("oxbasketitem", array("getProductId"));
+        $oItem2 = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array("getProductId"));
         $oItem2->expects($this->once())->method("getProductId")->will($this->returnValue('someid1'));
 
         $oArtList = oxNew('oxArticleList');
@@ -568,7 +568,7 @@ class ArticlelistTest extends \OxidTestCase
         $sArticleTable = $this->_getArticleTable();
 
         //$oTest = $this->getProxyClass('oxArticleList');
-        $oTest = $this->getMock('oxArticleList', array('_createIdListFromSql', '_getCategorySelect'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('_createIdListFromSql', '_getCategorySelect'));
         $oTest->expects($this->once())->method('_getCategorySelect')
             ->with($this->equalTo("$sArticleTable.oxid as oxid"), $this->equalTo('testCat'), $this->equalTo(array(1)))
             ->will($this->returnValue('testRes'));
@@ -639,7 +639,7 @@ class ArticlelistTest extends \OxidTestCase
     public function testLoadCategoryArticlesOverMock()
     {
 
-        $oTest = $this->getMock('oxArticleList', array('_getCategorySelect', 'selectString'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('_getCategorySelect', 'selectString'));
 
         $sArticleTable = $this->_getArticleTable();
 
@@ -660,7 +660,7 @@ class ArticlelistTest extends \OxidTestCase
     public function testLoadCategoryArticlesWithLimit()
     {
 
-        $oTest = $this->getMock('oxArticleList', array('_getCategorySelect', 'selectString'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('_getCategorySelect', 'selectString'));
 
         $sArticleTable = $this->_getArticleTable();
 
@@ -845,7 +845,7 @@ EOT;
         $sExpt .= " $sArticleTable.oxsearchkeys like '%testSearch%'  or $sArticleTable.oxartnum";
         $sExpt .= " like '%testSearch%'  )  ) ";
 
-        $oTest = $this->getMock('oxArticleList', array("_createIdListFromSql"));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("_createIdListFromSql"));
         $oTest->expects($this->once())->method("_createIdListFromSql")
             ->with($this->equalTo($sExpt))
             ->will($this->returnValue(true));
@@ -873,7 +873,7 @@ EOT;
         $sExpt .= " $sArticleTable.oxsearchkeys like '%testSearch%'  or $sArticleTable.oxartnum";
         $sExpt .= " like '%testSearch%'  )  )  order by oxtitle desc ";
 
-        $oTest = $this->getMock('oxArticleList', array("_createIdListFromSql"));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("_createIdListFromSql"));
         $oTest->expects($this->once())->method("_createIdListFromSql")
             ->with($this->equalTo($sExpt))
             ->will($this->returnValue(true));
@@ -903,7 +903,7 @@ EOT;
         $sExpt .= " or $sArticleTable.oxshortdesc like '%testSearch%'  or $sArticleTable.oxsearchkeys";
         $sExpt .= " like '%testSearch%'  or $sArticleTable.oxartnum like '%testSearch%'  )  ) ";
 
-        $oTest = $this->getMock('oxArticleList', array("_createIdListFromSql"));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("_createIdListFromSql"));
         $oTest->expects($this->once())->method("_createIdListFromSql")
             ->with($sExpt)
             ->will($this->returnValue(true));
@@ -930,7 +930,7 @@ EOT;
         $sExpt .= " and ( ( $sArticleTable.oxtitle like '%testSearch%'  or $sArticleTable.oxshortdesc";
         $sExpt .= " like '%testSearch%'  or $sArticleTable.oxsearchkeys like '%testSearch%'  or $sArticleTable.oxartnum like '%testSearch%'  )  ) ";
 
-        $oTest = $this->getMock('oxArticleList', array("_createIdListFromSql"));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("_createIdListFromSql"));
         $oTest->expects($this->once())->method("_createIdListFromSql")
             ->with($sExpt)
             ->will($this->returnValue(true));
@@ -957,7 +957,7 @@ EOT;
         $sExpt .= " and ( ( $sArticleTable.oxtitle like '%testSearch%'  or $sArticleTable.oxshortdesc";
         $sExpt .= " like '%testSearch%'  or $sArticleTable.oxsearchkeys like '%testSearch%'  or $sArticleTable.oxartnum like '%testSearch%'  )  ) ";
 
-        $oTest = $this->getMock('oxArticleList', array("_createIdListFromSql"));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("_createIdListFromSql"));
         $oTest->expects($this->once())->method("_createIdListFromSql")
             ->with($sExpt)
             ->will($this->returnValue(true));
@@ -987,7 +987,7 @@ EOT;
         $sExpt .= " like '%testSearch%'  or $sArticleTable.oxsearchkeys like '%testSearch%'  or";
         $sExpt .= " $sArticleTable.oxartnum like '%testSearch%'  )  ) ";
 
-        $oTest = $this->getMock('oxArticleList', array("_createIdListFromSql"));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("_createIdListFromSql"));
         $oTest->expects($this->once())->method("_createIdListFromSql")
             ->with($sExpt)
             ->will($this->returnValue(true));
@@ -1014,7 +1014,7 @@ EOT;
         $sExpt .= " and $sArticleTable.oxissearch = 1  and ( ( $sAEV.oxlongdesc like";
         $sExpt .= " '%testSearch%'  )  ) ";
 
-        $oTest = $this->getMock('oxArticleList', array("_createIdListFromSql"));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("_createIdListFromSql"));
         $oTest->expects($this->once())->method("_createIdListFromSql")
             ->with($this->equalTo($sExpt))
             ->will($this->returnValue(true));
@@ -1103,7 +1103,7 @@ EOT;
         $iPrice1 = 12;
         $iPrice2 = 15;
 
-        $oTest = $this->getMock('oxArticleList', array("_createIdListFromSql", "_getPriceSelect"));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("_createIdListFromSql", "_getPriceSelect"));
         $oTest->expects($this->once())->method("_getPriceSelect")
             ->with($iPrice1, $iPrice2)
             ->will($this->returnValue('testRes'));
@@ -1184,7 +1184,7 @@ EOT;
      */
     public function testLoadPriceArticles_totalArticlesCount()
     {
-        $oUtilsCount = $this->getMock('oxUtilsCount', array("getPriceCatArticleCount"));
+        $oUtilsCount = $this->getMock(\OxidEsales\Eshop\Core\UtilsCount::class, array("getPriceCatArticleCount"));
         $oUtilsCount->expects($this->once())->method("getPriceCatArticleCount")->will($this->returnValue(25));
 
         oxTestModules::addModuleObject("oxUtilsCount", $oUtilsCount);
@@ -1204,7 +1204,7 @@ EOT;
      */
     public function testLoadPriceArticles_totalArticlesCount_noCategory()
     {
-        $oArticleList = $this->getMock('oxArticleList', array("count"));
+        $oArticleList = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("count"));
         $oArticleList->expects($this->once())->method("count")->will($this->returnValue(25));
 
         $iRes = $oArticleList->loadPriceArticles(1, 2);
@@ -1250,7 +1250,7 @@ EOT;
     public function testLoadNewestArticlesAktion()
     {
         //testing over mock
-        $oTest = $this->getMock('oxArticleList', array('loadActionArticles'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadActionArticles'));
         $oTest->expects($this->once())->method('loadActionArticles')
             ->with('oxnewest');
 
@@ -1279,7 +1279,7 @@ EOT;
         $sExpt .= " order by oxtimestamp desc limit 4";
 
         //testing over mock
-        $oTest = $this->getMock('oxArticleList', array('selectString'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('selectString'));
         $oTest->expects($this->once())->method('selectString')
             ->with($sExpt);
         $this->setConfigParam('iNewestArticlesMode', 2);
@@ -1289,7 +1289,7 @@ EOT;
         $sExpt .= " and " . $oArticle->getSqlActiveSnippet() . " and oxissearch = 1";
         $sExpt .= " order by oxtimestamp desc limit 5";
 
-        $oTest = $this->getMock('oxArticleList', array('selectString'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('selectString'));
         $oTest->expects($this->once())->method('selectString')
             ->with($sExpt);
         $this->setConfigParam('iNewestArticlesMode', 2);
@@ -1299,7 +1299,7 @@ EOT;
         $sExpt .= " and " . $oArticle->getSqlActiveSnippet() . " and oxissearch = 1";
         $sExpt .= " order by oxtimestamp desc limit 4";
 
-        $oTest = $this->getMock('oxArticleList', array('selectString'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('selectString'));
         $oTest->expects($this->once())->method('selectString')
             ->with($sExpt);
         $this->setConfigParam('iNewestArticlesMode', 2);
@@ -1327,7 +1327,7 @@ EOT;
         $sExpt .= " order by oxinsert desc limit 4";
 
         //testing over mock
-        $oTest = $this->getMock('oxArticleList', array('selectString'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('selectString'));
         $oTest->expects($this->once())->method('selectString')
             ->with($sExpt);
         $this->setConfigParam('iNewestArticlesMode', 2);
@@ -1373,7 +1373,7 @@ EOT;
     public function testLoadTop5ArticlesAktion()
     {
         //testing over mock
-        $oTest = $this->getMock('oxArticleList', array('loadActionArticles'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadActionArticles'));
         $oTest->expects($this->once())->method('loadActionArticles')
             ->with('oxtop5');
 
@@ -1399,7 +1399,7 @@ EOT;
         $sExpt .= " and $sArticleTable.oxsoldamount>0 order by $sArticleTable.oxsoldamount desc limit 5";
 
         //testing over mock
-        $oTest = $this->getMock('oxArticleList', array('selectString'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('selectString'));
         $oTest->expects($this->once())->method('selectString')
             ->with($sExpt);
 
@@ -1425,7 +1425,7 @@ EOT;
         $sExpt .= " and $sArticleTable.oxsoldamount>0 order by $sArticleTable.oxsoldamount desc limit 10";
 
         //testing over mock
-        $oTest = $this->getMock('oxArticleList', array('selectString'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('selectString'));
         $oTest->expects($this->once())->method('selectString')
             ->with($sExpt);
 
@@ -1493,7 +1493,7 @@ EOT;
         //testing over mock
         $sVendorId = 'testVendor';
 
-        $oTest = $this->getMock('oxArticleList', array("_createIdListFromSql", "_getVendorSelect"));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("_createIdListFromSql", "_getVendorSelect"));
         $oTest->expects($this->once())->method("_getVendorSelect")
             ->with($sVendorId)
             ->will($this->returnValue('testRes'));
@@ -1512,7 +1512,7 @@ EOT;
         //testing over mock
         $sManId = 'testVendor';
 
-        $oTest = $this->getMock('oxArticleList', array("_createIdListFromSql", "_getManufacturerSelect"));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("_createIdListFromSql", "_getManufacturerSelect"));
         $oTest->expects($this->once())->method("_getManufacturerSelect")
             ->with($sManId)
             ->will($this->returnValue('testRes'));
@@ -1529,7 +1529,7 @@ EOT;
     {
         $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE' ? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
 
-        $oTest = $this->getMock('oxArticleList', array("selectString", "_getVendorSelect"));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("selectString", "_getVendorSelect"));
         $oTest->expects($this->once())->method("_getVendorSelect")
             ->with($sVendorId)
             ->will($this->returnValue('testRes'));
@@ -1552,7 +1552,7 @@ EOT;
     {
         $sManId = $this->getTestConfig()->getShopEdition() == 'EE' ? '88a996f859f94176da943f38ee067984' : 'fe07958b49de225bd1dbc7594fb9a6b0';
 
-        $oTest = $this->getMock('oxArticleList', array("selectString", "_getManufacturerSelect"));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("selectString", "_getManufacturerSelect"));
         $oTest->expects($this->once())->method("_getManufacturerSelect")
             ->with($sManId)
             ->will($this->returnValue('testRes'));
@@ -1573,7 +1573,7 @@ EOT;
     public function testLoadHistoryArticlesSingleArticle()
     {
         /** @var oxArticleList|PHPUnit_Framework_MockObject_MockObject $articleList */
-        $articleList = $this->getMock("oxArticleList", array('loadIds', 'sortByIds'));
+        $articleList = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadIds', 'sortByIds'));
         $articleList->expects($this->any())->method("loadIds")->will($this->returnValue(true));
         $articleList->expects($this->any())->method("sortByIds")->will($this->returnValue(true));
         $articleList->loadHistoryArticles(1);
@@ -1592,7 +1592,7 @@ EOT;
     {
         $this->getSession()->setId('sessionId');
 
-        $oTest = $this->getMock("oxArticleList", array('loadIds'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadIds'));
         $oTest->expects($this->any())->method("loadIds")->will($this->returnValue(true));
         $oTest->loadHistoryArticles(1);
         $oTest->loadHistoryArticles(2);
@@ -1610,7 +1610,7 @@ EOT;
     {
         $this->getSession()->setId('sessionId');
 
-        $oTest = $this->getMock("oxArticleList", array('loadIds', 'sortByIds'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadIds', 'sortByIds'));
         $oTest->expects($this->any())->method("loadIds")->will($this->returnValue(true));
         $oTest->expects($this->any())->method("sortByIds")->will($this->returnValue(true));
         $oTest->loadHistoryArticles(1);
@@ -1631,7 +1631,7 @@ EOT;
     {
         $this->getSession()->setId('sessionId');
 
-        $oTest = $this->getMock("oxArticleList", array('loadIds'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadIds'));
         $oTest->expects($this->any())->method("loadIds")->will($this->returnValue(true));
         $oTest->loadHistoryArticles(1);
         $oTest->loadHistoryArticles(2);
@@ -1652,7 +1652,7 @@ EOT;
     {
         $this->getSession()->setId('sessionId');
 
-        $oTest = $this->getMock("oxArticleList", array('loadIds'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadIds'));
         $oTest->expects($this->any())->method("loadIds")->will($this->returnValue(true));
         $oTest->loadHistoryArticles(1);
         $oTest->loadHistoryArticles(2);
@@ -1680,7 +1680,7 @@ EOT;
 
         $sExpt = "select `$sArticleTable`.`oxid` from $sArticleTable where $sArticleTable.oxid in ( '1','a','3','a\'a' ) and " . $oArticle->getSqlActiveSnippet();
 
-        $oTest = $this->getMock("oxArticleList", array('selectString'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('selectString'));
         $oTest->expects($this->once())->method("selectString")->with($sExpt)->will($this->returnValue(true));
         $oTest->loadIds(array(1, "a", 3, "a'a"));
     }
@@ -1694,7 +1694,7 @@ EOT;
     {
         $this->setTime(100);
 
-        $oTest = $this->getMock("oxArticleList", array('selectString'));
+        $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('selectString'));
         $oTest->expects($this->never())->method("selectString");
         $oTest->loadIds(null);
     }
@@ -2084,7 +2084,7 @@ EOT;
      */
     public function testupdateUpcomingPrices()
     {
-        $oList = $this->getMock("oxArticleList", array("_canUpdatePrices", "renewPriceUpdateTime"));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("_canUpdatePrices", "renewPriceUpdateTime"));
         $oList->expects($this->at(0))->method("_canUpdatePrices")->will($this->returnValue(true));
         $oList->expects($this->at(1))->method("renewPriceUpdateTime")->will($this->returnValue(true));
 

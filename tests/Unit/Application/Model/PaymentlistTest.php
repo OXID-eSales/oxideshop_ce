@@ -682,7 +682,7 @@ class PaymentlistTest extends \OxidTestCase
         $this->assertNull($oList->getCountryId(null));
 
         // now passing user and testing
-        $oUser = $this->getMock('oxuser', array('getActiveCountry'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getActiveCountry'));
         $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('xxx'));
 
         $this->assertEquals('xxx', $oList->getCountryId($oUser));

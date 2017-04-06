@@ -133,8 +133,8 @@ class UserGroupMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         if ($soxId && $soxId != "-1" && is_array($aAddUsers)) {
             foreach ($aAddUsers as $sAdduser) {
                 $oNewGroup = oxNew(\OxidEsales\Eshop\Application\Model\Object2Group::class);
-                $oNewGroup->oxobject2group__oxobjectid = new oxField($sAdduser);
-                $oNewGroup->oxobject2group__oxgroupsid = new oxField($soxId);
+                $oNewGroup->oxobject2group__oxobjectid = new \OxidEsales\Eshop\Core\Field($sAdduser);
+                $oNewGroup->oxobject2group__oxgroupsid = new \OxidEsales\Eshop\Core\Field($soxId);
                 $oNewGroup->save();
             }
         }

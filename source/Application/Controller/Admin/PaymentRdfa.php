@@ -81,7 +81,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $oMapping = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
             $oMapping->init("oxobject2payment");
             $oMapping->assign($aParams);
-            $oMapping->oxobject2payment__oxobjectid = new oxField($sPayment);
+            $oMapping->oxobject2payment__oxobjectid = new \OxidEsales\Eshop\Core\Field($sPayment);
             $oMapping->save();
         }
     }

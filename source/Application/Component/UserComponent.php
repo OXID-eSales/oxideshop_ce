@@ -449,9 +449,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             $iActState = $blActiveLogin ? 0 : 1;
 
             // setting values
-            $oUser->oxuser__oxusername = new oxField($sUser, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oUser->oxuser__oxusername = new \OxidEsales\Eshop\Core\Field($sUser, \OxidEsales\Eshop\Core\Field::T_RAW);
             $oUser->setPassword($sPassword);
-            $oUser->oxuser__oxactive = new oxField($iActState, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oUser->oxuser__oxactive = new \OxidEsales\Eshop\Core\Field($iActState, \OxidEsales\Eshop\Core\Field::T_RAW);
 
             // used for checking if user email currently subscribed
             $iSubscriptionStatus = $oUser->getNewsSubscription()->getOptInStatus();

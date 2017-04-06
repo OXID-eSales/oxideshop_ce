@@ -162,12 +162,12 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
             if ($blDeleteMaster) {
                 //reseting master picture field
-                $oArticle->{"oxarticles__oxpic" . $iIndex} = new oxField();
+                $oArticle->{"oxarticles__oxpic" . $iIndex} = new \OxidEsales\Eshop\Core\Field();
             }
 
             // cleaning oxzoom fields
             if (isset($oArticle->{"oxarticles__oxzoom" . $iIndex})) {
-                $oArticle->{"oxarticles__oxzoom" . $iIndex} = new oxField();
+                $oArticle->{"oxarticles__oxzoom" . $iIndex} = new \OxidEsales\Eshop\Core\Field();
             }
 
             if ($iIndex == 1) {
@@ -190,7 +190,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             }
 
             //reseting field
-            $oArticle->oxarticles__oxicon = new oxField();
+            $oArticle->oxarticles__oxicon = new \OxidEsales\Eshop\Core\Field();
         }
     }
 
@@ -208,7 +208,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             }
 
             //reseting field
-            $oArticle->oxarticles__oxthumb = new oxField();
+            $oArticle->oxarticles__oxthumb = new \OxidEsales\Eshop\Core\Field();
         }
     }
 
@@ -224,11 +224,11 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $sThumb = $oArticle->oxarticles__oxthumb->value;
 
         if ($sIcon == "nopic.jpg") {
-            $oArticle->oxarticles__oxicon = new oxField();
+            $oArticle->oxarticles__oxicon = new \OxidEsales\Eshop\Core\Field();
         }
 
         if ($sThumb == "nopic.jpg") {
-            $oArticle->oxarticles__oxthumb = new oxField();
+            $oArticle->oxarticles__oxthumb = new \OxidEsales\Eshop\Core\Field();
         }
     }
 

@@ -55,7 +55,7 @@ class OnlineLicenseCheckTest extends \OxidTestCase
             )
         );
 
-        $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getMandateCount'));
         $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
 
         /** @var oxConfig $oConfig */
@@ -70,16 +70,16 @@ class OnlineLicenseCheckTest extends \OxidTestCase
         $oRequest->productSpecificInformation->servers = array('server' => $aServers);
         $oRequest->productSpecificInformation->counters = array('counter' => $aCounters);
 
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
+        $oCaller = $this->getMock(\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller::class, array('doRequest'), array(), '', false);
         $oCaller->expects($this->once())->method('doRequest')->with($oRequest);
         /** @var oxOnlineLicenseCheckCaller $oCaller */
 
-        $oUserCounter = $this->getMock('oxUserCounter', array('getAdminCount', 'getActiveAdminCount'), array(), '', false);
+        $oUserCounter = $this->getMock(\OxidEsales\Eshop\Core\UserCounter::class, array('getAdminCount', 'getActiveAdminCount'), array(), '', false);
         $oUserCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue($iAdminUsers));
         $oUserCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($iActiveAdminUsers));
         /** @var oxUserCounter $oUserCounter */
 
-        $oServersManager = $this->getMock('oxServersManager', array('getServers'), array(), '', false);
+        $oServersManager = $this->getMock(\OxidEsales\Eshop\Core\ServersManager::class, array('getServers'), array(), '', false);
         $oServersManager->expects($this->once())->method('getServers')->will($this->returnValue($aServers));
         /** @var oxServersManager $oServersManager */
 
@@ -99,7 +99,7 @@ class OnlineLicenseCheckTest extends \OxidTestCase
         $oResponse->code = 0;
         $oResponse->message = 'ACK';
 
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
+        $oCaller = $this->getMock(\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller::class, array('doRequest'), array(), '', false);
         $oCaller->expects($this->any())->method('doRequest')->will($this->returnValue($oResponse));
 
         $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
@@ -128,7 +128,7 @@ class OnlineLicenseCheckTest extends \OxidTestCase
         $oResponse->code = 1;
         $oResponse->message = 'NACK';
 
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
+        $oCaller = $this->getMock(\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller::class, array('doRequest'), array(), '', false);
         $oCaller->expects($this->any())->method('doRequest')->will($this->returnValue($oResponse));
         /** @var oxOnlineLicenseCheckCaller $oCaller */
 
@@ -176,7 +176,7 @@ class OnlineLicenseCheckTest extends \OxidTestCase
             )
         );
 
-        $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getMandateCount'));
         $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
         /** @var oxConfig $oConfig */
         oxRegistry::set('oxConfig', $oConfig);
@@ -196,16 +196,16 @@ class OnlineLicenseCheckTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam("aSerials", array('key1', 'key2'));
 
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
+        $oCaller = $this->getMock(\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller::class, array('doRequest'), array(), '', false);
         $oCaller->expects($this->once())->method('doRequest')->with($oRequest);
         /** @var oxOnlineLicenseCheckCaller $oUserCounter */
 
-        $oUserCounter = $this->getMock('oxUserCounter', array('getAdminCount', 'getActiveAdminCount'), array(), '', false);
+        $oUserCounter = $this->getMock(\OxidEsales\Eshop\Core\UserCounter::class, array('getAdminCount', 'getActiveAdminCount'), array(), '', false);
         $oUserCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue($iAdminUsers));
         $oUserCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($iActiveAdminUsers));
         /** @var oxUserCounter $oUserCounter */
 
-        $oServersManager = $this->getMock('oxServersManager', array('getServers'), array(), '', false);
+        $oServersManager = $this->getMock(\OxidEsales\Eshop\Core\ServersManager::class, array('getServers'), array(), '', false);
         $oServersManager->expects($this->once())->method('getServers')->will($this->returnValue($aServers));
         /** @var oxServersManager $oServersManager */
 
@@ -224,7 +224,7 @@ class OnlineLicenseCheckTest extends \OxidTestCase
             'value' => $iSubShops,
         ));
 
-        $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getMandateCount'));
         $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
         /** @var oxConfig $oConfig */
         $oConfig->setConfigParam('aServersData', array());
@@ -246,7 +246,7 @@ class OnlineLicenseCheckTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam("aSerials", array('key1', 'key2'));
 
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
+        $oCaller = $this->getMock(\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller::class, array('doRequest'), array(), '', false);
         $oCaller->expects($this->once())->method('doRequest')->with($oRequest);
         /** @var oxOnlineLicenseCheckCaller $oUserCounter */
 
@@ -256,7 +256,7 @@ class OnlineLicenseCheckTest extends \OxidTestCase
 
     public function testIsExceptionWhenExceptionWasThrown()
     {
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
+        $oCaller = $this->getMock(\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller::class, array('doRequest'), array(), '', false);
         $oCaller->expects($this->any())->method('doRequest')->will($this->throwException(new oxException()));
         /** @var oxOnlineLicenseCheckCaller $oUserCounter */
 
@@ -272,7 +272,7 @@ class OnlineLicenseCheckTest extends \OxidTestCase
         $oResponse->code = 0;
         $oResponse->message = 'ACK';
 
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
+        $oCaller = $this->getMock(\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller::class, array('doRequest'), array(), '', false);
         $oCaller->expects($this->any())->method('doRequest')->will($this->returnValue($oResponse));
         /** @var oxOnlineLicenseCheckCaller $oUserCounter */
 

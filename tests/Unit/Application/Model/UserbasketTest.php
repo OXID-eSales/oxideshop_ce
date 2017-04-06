@@ -200,7 +200,7 @@ class UserbasketTest extends \OxidTestCase
 
     public function testGetItemsWithActiveArticleCheck()
     {
-        $oA = $this->getMock('oxarticle', array('getSqlActiveSnippet'));
+        $oA = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getSqlActiveSnippet'));
         $oA->expects($this->once())->method('getSqlActiveSnippet')->will($this->returnValue('1'));
 
         oxTestModules::addModuleObject('oxarticle', $oA);
@@ -212,7 +212,7 @@ class UserbasketTest extends \OxidTestCase
 
     public function testGetItemsWithoutActiveArticleCheck()
     {
-        $oA = $this->getMock('oxarticle', array('getSqlActiveSnippet'));
+        $oA = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getSqlActiveSnippet'));
         $oA->expects($this->never())->method('getSqlActiveSnippet');
 
         oxTestModules::addModuleObject('oxarticle', $oA);
@@ -341,7 +341,7 @@ class UserbasketTest extends \OxidTestCase
     {
         $oItems = array('123' => '321');
 
-        $oBasket = $this->getMock('oxuserbasket', array('getItems', '_getItemKey'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\UserBasket::class, array('getItems', '_getItemKey'));
         $oBasket->expects($this->once())->method('getItems')->will($this->returnValue($oItems));
         $oBasket->expects($this->once())->method('_getItemKey')->with($this->equalTo('123'), $this->equalTo('testsellist'), $this->equalTo('testparam'));
 
@@ -495,7 +495,7 @@ class UserbasketTest extends \OxidTestCase
      */
     public function testIsEmpty_newBasket()
     {
-        $oBasket = $this->getMock('oxUserBasket', array('isNewBasket', 'getItemCount'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\UserBasket::class, array('isNewBasket', 'getItemCount'));
         $oBasket->expects($this->once())->method('isNewBasket')->will($this->returnValue(true));
         $oBasket->expects($this->never())->method('getItemCount');
 
@@ -509,7 +509,7 @@ class UserbasketTest extends \OxidTestCase
      */
     public function testIsEmpty_hasItems()
     {
-        $oBasket = $this->getMock('oxUserBasket', array('isNewBasket', 'getItemCount'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\UserBasket::class, array('isNewBasket', 'getItemCount'));
         $oBasket->expects($this->once())->method('isNewBasket')->will($this->returnValue(false));
         $oBasket->expects($this->once())->method('getItemCount')->will($this->returnValue(1));
 

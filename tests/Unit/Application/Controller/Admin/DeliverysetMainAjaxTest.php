@@ -129,7 +129,7 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
      */
     public function testRemoveFromSet()
     {
-        $oView = $this->getMock("deliveryset_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testDeliverysetMain1', '_testDeliverysetMain2')));
 
         $sSql = "select count(oxid) from oxdel2delset where oxid in ('_testDeliverysetMain1', '_testDeliverysetMain2')";
@@ -170,7 +170,7 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxdel2delset where oxdelsetid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock("deliveryset_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testActionAdd1', '_testActionAdd2')));
 
         $oView->addToSet();
@@ -194,7 +194,7 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxdel2delset where oxdelsetid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock("deliveryset_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testActionAdd1', '_testActionAdd2')));
 
         $oView->addToSet();

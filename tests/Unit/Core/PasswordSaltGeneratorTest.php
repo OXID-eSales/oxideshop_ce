@@ -75,7 +75,7 @@ class PasswordSaltGeneratorTest extends \OxidTestCase
             $oOpenSSLFunctionalityChecker = oxNew('oxOpenSSLFunctionalityChecker');
         } else {
             /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
-            $oOpenSSLFunctionalityChecker = $this->getMock('oxOpenSSLFunctionalityChecker', array('isOpenSslRandomBytesGeneratorAvailable'));
+            $oOpenSSLFunctionalityChecker = $this->getMock(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker::class, array('isOpenSslRandomBytesGeneratorAvailable'));
             $oOpenSSLFunctionalityChecker->expects($this->any())->method('isOpenSslRandomBytesGeneratorAvailable')->will($this->returnValue($blIsOpenSslRandomBytesGeneratorAvailable));
         }
 

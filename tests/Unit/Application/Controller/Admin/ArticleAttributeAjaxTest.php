@@ -118,7 +118,7 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
      */
     public function testRemoveAttr()
     {
-        $oView = $this->getMock("article_attribute_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleAttributeAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testAttribute1', '_testAttribute2')));
 
         $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxobjectid='_testObjectId'"));
@@ -150,7 +150,7 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
      */
     public function testAddAttr()
     {
-        $oView = $this->getMock("article_attribute_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleAttributeAjax::class, array("_getActionIds"));
         $sSynchOxid = '_testObjectIdAdd1';
         $this->setRequestParameter("synchoxid", $sSynchOxid);
 

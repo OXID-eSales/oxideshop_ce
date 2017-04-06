@@ -96,7 +96,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
             }
 
             $sEditObjectValue = $this->_processEditValue($sEditObjectValue);
-            $oObject->$sField = new oxField($sEditObjectValue, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oObject->$sField = new \OxidEsales\Eshop\Core\Field($sEditObjectValue, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         return $sEditObjectValue;
@@ -224,7 +224,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
 
         // add first fake category for not assigned articles
         $oRoot = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
-        $oRoot->oxcategories__oxtitle = new oxField('--');
+        $oRoot->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field('--');
 
         $oCatTree->assign(array_merge(array('' => $oRoot), $oCatTree->getArray()));
 
@@ -288,7 +288,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
 
         $oObject = oxNew($sFolderClass);
         if ($oObject->load($this->getEditObjectId())) {
-            $oObject->{$oObject->getCoreTableName() . '__oxfolder'} = new oxField($sFolder);
+            $oObject->{$oObject->getCoreTableName() . '__oxfolder'} = new \OxidEsales\Eshop\Core\Field($sFolder);
             $oObject->save();
         }
     }

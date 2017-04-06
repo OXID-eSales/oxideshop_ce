@@ -158,7 +158,7 @@ class OrderRecalculationTest extends \OxidTestCase
 
         //order is finished, now see what happens in admin when clicking on tab main
         oxRegistry::getSession()->deleteVariable('sess_challenge');
-        $orderMain = $this->getMock('order_main', array('getEditObjectId'));
+        $orderMain = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\OrderMain::class, array('getEditObjectId'));
         $orderMain->expects($this->any())->method('getEditObjectId')->will($this->returnValue($this->testOrderId));
         $orderMain->setAdminMode(true);
         $orderMain->render();
@@ -223,7 +223,7 @@ class OrderRecalculationTest extends \OxidTestCase
 
         //order is finished, now see what happens in admin when clicking on tab main
         oxRegistry::getSession()->deleteVariable('sess_challenge');
-        $orderMain = $this->getMock('order_main', array('getEditObjectId'));
+        $orderMain = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\OrderMain::class, array('getEditObjectId'));
         $orderMain->expects($this->any())->method('getEditObjectId')->will($this->returnValue($this->testOrderId));
         $orderMain->setAdminMode(true);
         $orderMain->render();
@@ -305,7 +305,7 @@ class OrderRecalculationTest extends \OxidTestCase
 
         //order is finished, now see what happens in admin when clicking on tab main
         oxRegistry::getSession()->deleteVariable('sess_challenge');
-        $orderMain = $this->getMock('order_main', array('getEditObjectId'));
+        $orderMain = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\OrderMain::class, array('getEditObjectId'));
         $orderMain->expects($this->any())->method('getEditObjectId')->will($this->returnValue($this->testOrderId));
         $orderMain->setAdminMode(true);
         $orderMain->render();
@@ -389,7 +389,7 @@ class OrderRecalculationTest extends \OxidTestCase
 
         //order is finished, now see what happens in admin when clicking on tab main
         oxRegistry::getSession()->deleteVariable('sess_challenge');
-        $orderMain = $this->getMock('order_main', array('getEditObjectId'));
+        $orderMain = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\OrderMain::class, array('getEditObjectId'));
         $orderMain->expects($this->any())->method('getEditObjectId')->will($this->returnValue($this->testOrderId));
         $orderMain->setAdminMode(true);
         $orderMain->render();
@@ -462,7 +462,7 @@ class OrderRecalculationTest extends \OxidTestCase
      */
     private function createOrder()
     {
-        $order = $this->getMock('oxOrder', array('validateDeliveryAddress', '_sendOrderByEmail'));
+        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateDeliveryAddress', '_sendOrderByEmail'));
         // sending order by email is always successful for tests
         $order->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(1));
         //mocked to circumvent delivery address change md5 check from requestParameter

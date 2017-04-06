@@ -35,7 +35,7 @@ class SelectListListTest extends \OxidTestCase
     public function testInit()
     {
         // testing..
-        $oView = $this->getMock("SelectList_List", array("_authorize"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListList::class, array("_authorize"));
         $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
         $oView->init();
         $oView->render();

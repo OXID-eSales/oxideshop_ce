@@ -59,10 +59,10 @@ class ArticleSeoTest extends \OxidTestCase
     {
         $productId = $this->ensureProductIdExists();
 
-        $seoEncoder = $this->getMock("oxSeoEncoderCategory", array("getArticleVendorUri"));
+        $seoEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array("getArticleVendorUri"));
         $seoEncoder->expects($this->at(0))->method('getArticleVendorUri')->will($this->returnValue("ArticleVendorUri"));
 
-        $oView = $this->getMock("Article_Seo", array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang"));
 
         $oView->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue($productId));
         $oView->expects($this->at(1))->method('_getEncoder')->will($this->returnValue($seoEncoder));
@@ -79,10 +79,10 @@ class ArticleSeoTest extends \OxidTestCase
     {
         $productId = $this->ensureProductIdExists();
 
-        $seoEncoder = $this->getMock("oxSeoEncoderCategory", array("getArticleManufacturerUri"));
+        $seoEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array("getArticleManufacturerUri"));
         $seoEncoder->expects($this->at(0))->method('getArticleManufacturerUri')->will($this->returnValue("ArticleManufacturerUri"));
 
-        $view = $this->getMock("Article_Seo", array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang"));
+        $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang"));
 
         $view->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue($productId));
         $view->expects($this->at(1))->method('_getEncoder')->will($this->returnValue($seoEncoder));
@@ -99,10 +99,10 @@ class ArticleSeoTest extends \OxidTestCase
     {
         $productId = $this->ensureProductIdExists();
 
-        $seoEncoder = $this->getMock("oxSeoEncoderCategory", array("getArticleUri"));
+        $seoEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array("getArticleUri"));
         $seoEncoder->expects($this->at(0))->method('getArticleUri')->will($this->returnValue("ArticleUri"));
 
-        $view = $this->getMock("Article_Seo", array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang", "getActCatId"));
+        $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang", "getActCatId"));
 
         $view->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue($productId));
         $view->expects($this->at(1))->method('_getEncoder')->will($this->returnValue($seoEncoder));
@@ -120,10 +120,10 @@ class ArticleSeoTest extends \OxidTestCase
     {
         $productId = $this->ensureProductIdExists();
 
-        $seoEncoder = $this->getMock("oxSeoEncoderCategory", array("getArticleMainUri"));
+        $seoEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array("getArticleMainUri"));
         $seoEncoder->expects($this->at(0))->method('getArticleMainUri')->will($this->returnValue("ArticleMainUri"));
 
-        $view = $this->getMock("Article_Seo", array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang", "getActCatId"));
+        $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang", "getActCatId"));
 
         $view->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue($productId));
         $view->expects($this->at(1))->method('_getEncoder')->will($this->returnValue($seoEncoder));
@@ -225,7 +225,7 @@ class ArticleSeoTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxvendor', 'load', '{ return true; }');
 
-        $oView = $this->getMock("Article_Seo", array("getActCatType"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getActCatType"));
         $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxvendor"));
         $this->assertTrue($oView->getActVendor() instanceof Vendor);
     }
@@ -237,7 +237,7 @@ class ArticleSeoTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxmanufacturer', 'load', '{ return true; }');
 
-        $oView = $this->getMock("Article_Seo", array("getActCatType"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getActCatType"));
         $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxmanufacturer"));
         $this->assertTrue($oView->getActManufacturer() instanceof Manufacturer);
     }
@@ -247,7 +247,7 @@ class ArticleSeoTest extends \OxidTestCase
      */
     public function testGetListTypeCaseAny()
     {
-        $oView = $this->getMock("Article_Seo", array("getActCatType"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getActCatType"));
         $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxany"));
         $this->assertNull($oView->getListType());
     }
@@ -257,7 +257,7 @@ class ArticleSeoTest extends \OxidTestCase
      */
     public function testGetListTypeCaseVendor()
     {
-        $oView = $this->getMock("Article_Seo", array("getActCatType"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getActCatType"));
         $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxvendor"));
         $this->assertEquals("vendor", $oView->getListType());
     }
@@ -267,7 +267,7 @@ class ArticleSeoTest extends \OxidTestCase
      */
     public function testGetListTypeCaseManufacturer()
     {
-        $oView = $this->getMock("Article_Seo", array("getActCatType"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getActCatType"));
         $oView->expects($this->any())->method('getActCatType')->will($this->returnValue("oxmanufacturer"));
         $this->assertEquals("manufacturer", $oView->getListType());
     }
@@ -278,7 +278,7 @@ class ArticleSeoTest extends \OxidTestCase
      */
     public function testGetAltSeoEntryId()
     {
-        $oView = $this->getMock("Article_Seo", array("getEditObjectId"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getEditObjectId"));
         $oView->expects($this->once())->method('getEditObjectId')->will($this->returnValue(999));
         $this->assertEquals(999, $oView->UNITgetAltSeoEntryId());
     }
@@ -288,7 +288,7 @@ class ArticleSeoTest extends \OxidTestCase
      */
     public function testGetEditLang()
     {
-        $oView = $this->getMock("Article_Seo", array("getActCatLang"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getActCatLang"));
         $oView->expects($this->once())->method('getActCatLang')->will($this->returnValue(999));
         $this->assertEquals(999, $oView->getEditLang());
     }
@@ -319,7 +319,7 @@ class ArticleSeoTest extends \OxidTestCase
     {
         $this->setRequestParameter("aSeoData", null);
 
-        $oView = $this->getMock("Article_Seo", array("getSelectionList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getSelectionList"));
         $oView->expects($this->once())->method("getSelectionList")->will($this->returnValue(array("type" => array(999 => "value"))));
         $this->assertEquals("type", $oView->getActCatType());
 
@@ -335,7 +335,7 @@ class ArticleSeoTest extends \OxidTestCase
     {
         $this->setRequestParameter("aSeoData", null);
 
-        $oView = $this->getMock("Article_Seo", array("getSelectionList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getSelectionList"));
         $oView->expects($this->once())->method("getSelectionList")->will($this->returnValue(array("type" => array(999 => "value"))));
         $this->assertEquals(999, $oView->getActCatLang());
 
@@ -351,10 +351,10 @@ class ArticleSeoTest extends \OxidTestCase
     {
         $this->setRequestParameter("aSeoData", null);
 
-        $oItem = $this->getMock("oxManufacturer", array("getId"));
+        $oItem = $this->getMock(\OxidEsales\Eshop\Application\Model\Manufacturer::class, array("getId"));
         $oItem->expects($this->once())->method("getId")->will($this->returnValue("value"));
 
-        $oView = $this->getMock("Article_Seo", array("getSelectionList", "getActCatType", "getActCatLang"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getSelectionList", "getActCatType", "getActCatLang"));
         $oView->expects($this->once())->method("getSelectionList")->will($this->returnValue(array("type" => array(999 => array($oItem)))));
         $oView->expects($this->once())->method("getActCatType")->will($this->returnValue("type"));
         $oView->expects($this->once())->method("getActCatLang")->will($this->returnValue(999));
@@ -409,7 +409,7 @@ class ArticleSeoTest extends \OxidTestCase
         $product = oxNew('oxArticle');
         $product->load($productId);
 
-        $view = $this->getMock("Article_Seo", array("getEditObjectId", "_getCategoryList", "_getVendorList", "_getManufacturerList", "_getTagList"));
+        $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getEditObjectId", "_getCategoryList", "_getVendorList", "_getManufacturerList", "_getTagList"));
         $view->expects($this->any())->method("getEditObjectId")->will($this->returnValue($productId));
         $view->expects($this->any())->method("_getCategoryList")->will($this->returnValue("CategoryList"));
         $view->expects($this->any())->method("_getVendorList")->will($this->returnValue("VendorList"));
@@ -429,7 +429,7 @@ class ArticleSeoTest extends \OxidTestCase
      */
     public function testProcessParam()
     {
-        $oView = $this->getMock("Article_Seo", array("getActCatId"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getActCatId"));
 
         $oView->expects($this->once())->method("getActCatId")->will($this->returnValue("testParam2"));
 
@@ -447,7 +447,7 @@ class ArticleSeoTest extends \OxidTestCase
                                  ( 'objectid', 'ident', '{$ShopId}', '{$iLang}', 'stdurl', 'seourl', 'type', 1, 'catid' )";
         oxDb::getDb()->execute($sQ);
 
-        $oView = $this->getMock("Article_Seo", array("_getSaveObjectId", "getActCatId", "getEditLang", "processParam"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("_getSaveObjectId", "getActCatId", "getEditLang", "processParam"));
         $oView->expects($this->at(0))->method('_getSaveObjectId')->will($this->returnValue("objectid"));
         $oView->expects($this->at(1))->method('getEditLang')->will($this->returnValue(0));
         $oView->expects($this->at(2))->method('getActCatId')->will($this->returnValue("catid"));

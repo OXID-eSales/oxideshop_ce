@@ -176,7 +176,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function setSelList($aSelList)
     {
-        $this->oxuserbasketitems__oxsellist = new oxField(serialize($aSelList), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxuserbasketitems__oxsellist = new \OxidEsales\Eshop\Core\Field(serialize($aSelList), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -200,7 +200,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function setPersParams($sPersParams)
     {
-        $this->oxuserbasketitems__oxpersparam = new oxField(serialize($sPersParams), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxuserbasketitems__oxpersparam = new \OxidEsales\Eshop\Core\Field(serialize($sPersParams), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**

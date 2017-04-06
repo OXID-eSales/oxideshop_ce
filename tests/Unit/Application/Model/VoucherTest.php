@@ -629,7 +629,7 @@ class VoucherTest extends \OxidTestCase
     public function testIsAvailablePriceWhenPriceIsBelowMinVal()
     {
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][$this->getRandLTAmnt()];
-        $oConfig = $this->getMock('oxconfig', array('getActShopCurrencyObject'), array(), '', false);
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActShopCurrencyObject'), array(), '', false);
         $myCurr = new stdclass();
         $myCurr->rate = 1000;
         $oConfig->expects($this->once())->method('getActShopCurrencyObject')->will($this->returnValue($myCurr));
@@ -1399,7 +1399,7 @@ class VoucherTest extends \OxidTestCase
         $oDiscount->oxdiscount__oxitmamount = new oxField();
         $oDiscount->oxdiscount__oxitmmultiple = new oxField();
 
-        $oVoucher = $this->getMock("oxvoucher", array("_getSerieDiscount", "_getBasketItems", "isAdmin"));
+        $oVoucher = $this->getMock(\OxidEsales\Eshop\Application\Model\Voucher::class, array("_getSerieDiscount", "_getBasketItems", "isAdmin"));
         $oVoucher->expects($this->once())->method('_getSerieDiscount')->will($this->returnValue($oDiscount));
         $oVoucher->expects($this->once())->method('_getBasketItems')->will($this->returnValue(array($oBasketItem1)));
         $oVoucher->expects($this->any())->method('isAdmin')->will($this->returnValue(false));

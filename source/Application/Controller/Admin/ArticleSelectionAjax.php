@@ -135,11 +135,11 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
                     $sObjectIdField = 'oxobject2selectlist__oxobjectid';
                     $sSelectetionIdField = 'oxobject2selectlist__oxselnid';
                     $sOxSortField = 'oxobject2selectlist__oxsort';
-                    $oNew->$sObjectIdField = new oxField($soxId);
-                    $oNew->$sSelectetionIdField = new oxField($sAdd);
+                    $oNew->$sObjectIdField = new \OxidEsales\Eshop\Core\Field($soxId);
+                    $oNew->$sSelectetionIdField = new \OxidEsales\Eshop\Core\Field($sAdd);
                     $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  {$database->quote($soxId)} ";
                     // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                    $oNew->$sOxSortField = new oxField(( int ) $database->getOne($sSql));
+                    $oNew->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql));
                     $oNew->save();
                 }
             } catch (Exception $exception) {

@@ -301,7 +301,7 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
         if ($oUser = $this->getUser()) {
             $blPublic = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blpublic');
             $oBasket = $oUser->getBasket('wishlist');
-            $oBasket->oxuserbaskets__oxpublic = new oxField(($blPublic == 1) ? $blPublic : 0);
+            $oBasket->oxuserbaskets__oxpublic = new \OxidEsales\Eshop\Core\Field(($blPublic == 1) ? $blPublic : 0);
             $oBasket->save();
         }
     }

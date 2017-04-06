@@ -59,7 +59,7 @@ class OrderListTest extends \OxidTestCase
         oxTestModules::addFunction('oxorder', 'load', '{ return true; }');
         oxTestModules::addFunction('oxorder', 'cancelOrder', '{ return true; }');
 
-        $oView = $this->getMock("order_list", array("init"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\OrderList::class, array("init"));
         $oView->expects($this->once())->method('init');
         $oView->storno();
     }

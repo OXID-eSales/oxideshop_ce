@@ -51,7 +51,7 @@ class RecommendationTest extends \OxidTestCase
      */
     public function testGetSimilarRecommLists()
     {
-        $oRecommList = $this->getMock("oxrecommlist", array("getRecommListsByIds"));
+        $oRecommList = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, array("getRecommListsByIds"));
         $oRecommList->expects($this->once())->method("getRecommListsByIds")->with($this->equalTo(array("articleId")))->will($this->returnValue("oxRecommListMock"));
         oxTestModules::addModuleObject('oxrecommlist', $oRecommList);
 

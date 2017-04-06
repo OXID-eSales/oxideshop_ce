@@ -125,7 +125,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
         $blSubscribe = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("subscribeStatus");
 
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-        $oUser->oxuser__oxusername = new oxField($aParams['oxuser__oxusername'], \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oUser->oxuser__oxusername = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxusername'], \OxidEsales\Eshop\Core\Field::T_RAW);
 
         $blUserLoaded = false;
 
@@ -137,13 +137,13 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
 
                 return;
             } else {
-                $oUser->oxuser__oxactive = new oxField(1, \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oUser->oxuser__oxrights = new oxField('user', \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getShopId(), \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oUser->oxuser__oxfname = new oxField($aParams['oxuser__oxfname'], \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oUser->oxuser__oxlname = new oxField($aParams['oxuser__oxlname'], \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oUser->oxuser__oxsal = new oxField($aParams['oxuser__oxsal'], \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oUser->oxuser__oxcountryid = new oxField($aParams['oxuser__oxcountryid'], \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oUser->oxuser__oxactive = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oUser->oxuser__oxrights = new \OxidEsales\Eshop\Core\Field('user', \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oUser->oxuser__oxshopid = new \OxidEsales\Eshop\Core\Field($this->getConfig()->getShopId(), \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oUser->oxuser__oxfname = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxfname'], \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oUser->oxuser__oxlname = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxlname'], \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oUser->oxuser__oxsal = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxsal'], \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oUser->oxuser__oxcountryid = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxcountryid'], \OxidEsales\Eshop\Core\Field::T_RAW);
                 $blUserLoaded = $oUser->save();
             }
         } else {

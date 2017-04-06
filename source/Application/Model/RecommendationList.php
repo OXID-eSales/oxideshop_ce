@@ -414,8 +414,8 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     {
         $dOldRating = $this->oxrecommlists__oxrating->value;
         $dOldCnt = $this->oxrecommlists__oxratingcnt->value;
-        $this->oxrecommlists__oxrating = new oxField(($dOldRating * $dOldCnt + $iRating) / ($dOldCnt + 1), \OxidEsales\Eshop\Core\Field::T_RAW);
-        $this->oxrecommlists__oxratingcnt = new oxField($dOldCnt + 1, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxrecommlists__oxrating = new \OxidEsales\Eshop\Core\Field(($dOldRating * $dOldCnt + $iRating) / ($dOldCnt + 1), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxrecommlists__oxratingcnt = new \OxidEsales\Eshop\Core\Field($dOldCnt + 1, \OxidEsales\Eshop\Core\Field::T_RAW);
         $this->save();
     }
 
@@ -446,7 +446,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      */
     public function getBaseSeoLink($iLang, $iPage = 0)
     {
-        $oEncoder = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderRecomm");
+        $oEncoder = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class);
         if (!$iPage) {
             return $oEncoder->getRecommUrl($this, $iLang);
         }

@@ -32,7 +32,7 @@ class ModuleVariablesLocatorTest extends \OxidTestCase
     {
         $cache = $this->getMock('oxFileCache');
 
-        $shopIdCalculator = $this->getMock('oxShopIdCalculator', array('getShopId'), array(), '', false);
+        $shopIdCalculator = $this->getMock(\OxidEsales\Eshop\Core\ShopIdCalculator::class, array('getShopId'), array(), '', false);
         $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue($this->getShopId()));
 
         $moduleCache = oxNew('oxModuleVariablesLocator', $cache, $shopIdCalculator);

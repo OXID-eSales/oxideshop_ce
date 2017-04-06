@@ -122,7 +122,7 @@ class PaymentRDFaTest extends \OxidTestCase
         $aAssignedRDFaPayments = array('GoogleCheckout');
         $aExpResp = array();
 
-        $oView = $this->getMock('Payment_RDFa', array('getAssignedRDFaPayments'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentRdfa::class, array('getAssignedRDFaPayments'));
         $oView->expects($this->once())->method('getAssignedRDFaPayments')->will($this->returnValue($aAssignedRDFaPayments));
         $aCurrResp = $oView->getAllRDFaPayments();
 

@@ -68,7 +68,7 @@ class ThankyouTest extends \OxidTestCase
     {
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(10.12);
-        $oBasket = $this->getMock('oxBasket', array('getPrice'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPrice'));
         $oBasket->expects($this->once())->method('getPrice')->will($this->returnValue($oPrice));
 
         $oThankyou = $this->getProxyClass('thankyou');
@@ -111,7 +111,7 @@ class ThankyouTest extends \OxidTestCase
         $sInsert = "Insert into oxorder (`oxid`, `oxordernr`) values ('_test', '158')";
         $myDB->Execute($sInsert);
 
-        $oBasket = $this->getMock('oxBasket', array('getOrderId'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getOrderId'));
         $oBasket->expects($this->once())->method('getOrderId')->will($this->returnValue('_test'));
 
         $oThankyou = $this->getProxyClass('thankyou');
@@ -124,10 +124,10 @@ class ThankyouTest extends \OxidTestCase
     {
         $this->oArticle = $this->getProxyClass('oxarticle');
         $this->oArticle->load('1126');
-        $oBasketItem = $this->getMock('oxBasketItem', array('getArticle'));
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle'));
         $oBasketItem->expects($this->once())->method('getArticle')->will($this->returnValue($this->oArticle));
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->once())->method('getContents')->will($this->returnValue(array($oBasketItem)));
 
         $oThankyou = $this->getProxyClass('thankyou');
@@ -150,7 +150,7 @@ class ThankyouTest extends \OxidTestCase
 
         $oBasketItem = $this->getProxyClass('oxbasketitem');
         $oBasketItem->setNonPublicVar('_sProductId', '_testArt');
-        $oBasket = $this->getMock('oxBasket', array('getContents', 'getProductsCount', 'getOrderId'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents', 'getProductsCount', 'getOrderId'));
         $oBasket->expects($this->once())->method('getContents')->will($this->returnValue(array($oBasketItem)));
         $oBasket->expects($this->once())->method('getProductsCount')->will($this->returnValue(1));
         $oBasket->expects($this->once())->method('getOrderId')->will($this->returnValue(1));
@@ -165,7 +165,7 @@ class ThankyouTest extends \OxidTestCase
         $oUser = oxNew("oxuser");
         $oUser->oxuser__oxpassword = new oxField("");
 
-        $oBasket = $this->getMock('oxBasket', array('getProductsCount'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getProductsCount'));
         $oBasket->expects($this->once())->method('getProductsCount')->will($this->returnValue(1));
 
         $oThankyou = $this->getProxyClass('thankyou');
@@ -209,7 +209,7 @@ class ThankyouTest extends \OxidTestCase
         $oOrder = oxNew('oxOrder');
         $oOrder->oxorder__oxbillcountryid = new oxField('a7c40f631fc920687.20179984');
 
-        $oTh = $this->getMock('thankyou', array('getOrder'));
+        $oTh = $this->getMock(\OxidEsales\Eshop\Application\Controller\ThankYouController::class, array('getOrder'));
         $oTh->expects($this->any())->method('getOrder')->will($this->returnValue($oOrder));
 
         $this->assertEquals('DEU', $oTh->getCountryISO3());

@@ -54,17 +54,17 @@ class DeliveryUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $oGroups->init('oxgroups');
         $oGroups->selectString("select * from {$sViewName}");
 
-        $oRoot = new oxGroups();
-        $oRoot->oxgroups__oxid = new oxField("");
-        $oRoot->oxgroups__oxtitle = new oxField("-- ");
+        $oRoot = new \OxidEsales\Eshop\Application\Model\Groups();
+        $oRoot->oxgroups__oxid = new \OxidEsales\Eshop\Core\Field("");
+        $oRoot->oxgroups__oxtitle = new \OxidEsales\Eshop\Core\Field("-- ");
         // rebuild list as we need the "no value" entry at the first position
         $aNewList = array();
         $aNewList[] = $oRoot;
 
         foreach ($oGroups as $val) {
-            $aNewList[$val->oxgroups__oxid->value] = new oxGroups();
-            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxid = new oxField($val->oxgroups__oxid->value);
-            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxtitle = new oxField($val->oxgroups__oxtitle->value);
+            $aNewList[$val->oxgroups__oxid->value] = new \OxidEsales\Eshop\Application\Model\Groups();
+            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxid = new \OxidEsales\Eshop\Core\Field($val->oxgroups__oxid->value);
+            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxtitle = new \OxidEsales\Eshop\Core\Field($val->oxgroups__oxtitle->value);
         }
 
         $oGroups = $aNewList;

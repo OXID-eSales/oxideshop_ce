@@ -488,7 +488,7 @@ class CategoryListTest extends \OxidTestCase
         $oCat->oxcategories__oxleft = new oxField('151');
         $oCat->oxcategories__oxright = new oxField('959');
 
-        $oList = $this->getMock('oxCategoryList', array('_getSqlSelectFieldsForTree'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, array('_getSqlSelectFieldsForTree'));
         $oList->expects($this->once())->method('_getSqlSelectFieldsForTree')
             ->with($this->equalTo('maincats'), $this->equalTo(null))
             ->will($this->returnValue('qqqqq'));
@@ -497,14 +497,14 @@ class CategoryListTest extends \OxidTestCase
 
         $this->assertEquals("UNION SELECT qqqqq FROM oxcategories AS subcats LEFT JOIN $sViewName AS maincats on maincats.oxparentid = subcats.oxparentid WHERE subcats.oxrootid = 'rootid' AND subcats.oxleft <= 151 AND subcats.oxright >= 959", $oList->UNITgetDepthSqlUnion($oCat));
 
-        $oList = $this->getMock('oxCategoryList', array('_getSqlSelectFieldsForTree'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, array('_getSqlSelectFieldsForTree'));
         $oList->expects($this->once())->method('_getSqlSelectFieldsForTree')
             ->with($this->equalTo('maincats'), $this->equalTo('lalala'))
             ->will($this->returnValue('qqqqq'));
 
         $this->assertEquals("UNION SELECT qqqqq FROM oxcategories AS subcats LEFT JOIN $sViewName AS maincats on maincats.oxparentid = subcats.oxparentid WHERE subcats.oxrootid = 'rootid' AND subcats.oxleft <= 151 AND subcats.oxright >= 959", $oList->UNITgetDepthSqlUnion($oCat, 'lalala'));
 
-        $oList = $this->getMock('oxCategoryList', array('_getSqlSelectFieldsForTree'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, array('_getSqlSelectFieldsForTree'));
         $oList->expects($this->never())->method('_getSqlSelectFieldsForTree');
 
         $this->assertEquals("", $oList->UNITgetDepthSqlUnion(null));
@@ -838,7 +838,7 @@ class CategoryListTest extends \OxidTestCase
         $oCat->oxcategories__oxactive = new oxField(1);
         $oCat->oxcategories__oxtitle = new oxField("_test");
         $oCat->save();
-        $oCat2 = $this->getMock('oxCategory', array('getSubCats'));
+        $oCat2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getSubCats'));
         $oCat2->expects($this->any())->method('getSubCats')->will($this->returnValue(array($oCat)));
         $oCat2->setId("_test2");
         $oCat2->oxcategories__oxparentid = new oxField("oxrootid");

@@ -200,10 +200,10 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             if ($sOrderId && $oOrder->load($sOrderId)) {
                 $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
-                $oOrderArticle->oxorderarticles__oxartid = new oxField($oProduct->getId());
-                $oOrderArticle->oxorderarticles__oxartnum = new oxField($oProduct->oxarticles__oxartnum->value);
-                $oOrderArticle->oxorderarticles__oxamount = new oxField($dAmount);
-                $oOrderArticle->oxorderarticles__oxselvariant = new oxField(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sel'));
+                $oOrderArticle->oxorderarticles__oxartid = new \OxidEsales\Eshop\Core\Field($oProduct->getId());
+                $oOrderArticle->oxorderarticles__oxartnum = new \OxidEsales\Eshop\Core\Field($oProduct->oxarticles__oxartnum->value);
+                $oOrderArticle->oxorderarticles__oxamount = new \OxidEsales\Eshop\Core\Field($dAmount);
+                $oOrderArticle->oxorderarticles__oxselvariant = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sel'));
                 $oOrder->recalculateOrder(array($oOrderArticle));
             }
         }

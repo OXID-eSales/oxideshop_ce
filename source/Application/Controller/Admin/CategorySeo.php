@@ -43,7 +43,7 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
         if ($oCategory->load($sOxid)) {
             $blShowSuffixParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blShowSuffix');
             $sShowSuffixField = 'oxcategories__oxshowsuffix';
-            $oCategory->$sShowSuffixField = new oxField((int) $blShowSuffixParameter);
+            $oCategory->$sShowSuffixField = new \OxidEsales\Eshop\Core\Field((int) $blShowSuffixParameter);
             $oCategory->save();
 
             $this->_getEncoder()->markRelatedAsExpired($oCategory);
@@ -59,7 +59,7 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
      */
     protected function _getEncoder()
     {
-        return \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderCategory");
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class);
     }
 
     /**

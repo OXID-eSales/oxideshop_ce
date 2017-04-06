@@ -127,9 +127,9 @@ class DeliveryCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
             foreach ($aChosenCat as $sChosenCat) {
                 $oObject2Delivery = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Delivery->init('oxobject2delivery');
-                $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($soxId);
-                $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sChosenCat);
-                $oObject2Delivery->oxobject2delivery__oxtype = new oxField("oxcategories");
+                $oObject2Delivery->oxobject2delivery__oxdeliveryid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oObject2Delivery->oxobject2delivery__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenCat);
+                $oObject2Delivery->oxobject2delivery__oxtype = new \OxidEsales\Eshop\Core\Field("oxcategories");
                 $oObject2Delivery->save();
             }
         }

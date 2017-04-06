@@ -43,7 +43,7 @@ class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\Obj
         if ($oManufacturer->load($this->getEditObjectId())) {
             $sShowSuffixField = 'oxmanufacturers__oxshowsuffix';
             $blShowSuffixParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blShowSuffix');
-            $oManufacturer->$sShowSuffixField = new oxField((int) $blShowSuffixParameter);
+            $oManufacturer->$sShowSuffixField = new \OxidEsales\Eshop\Core\Field((int) $blShowSuffixParameter);
             $oManufacturer->save();
         }
 
@@ -57,7 +57,7 @@ class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\Obj
      */
     protected function _getEncoder()
     {
-        return \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderManufacturer");
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class);
     }
 
     /**

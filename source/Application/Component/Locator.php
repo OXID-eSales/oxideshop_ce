@@ -112,7 +112,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
             if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && $iPage) {
                 /** @var \OxidEsales\Eshop\Application\Model\SeoEncoderCategory $oSeoEncoderCategory */
-                $oSeoEncoderCategory = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderCategory");
+                $oSeoEncoderCategory = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class);
                 $oCategory->toListLink = $oSeoEncoderCategory->getCategoryPageUrl($oCategory, $iPage);
             } else {
                 $oCategory->toListLink = $this->_makeLink($oCategory->getLink(), $this->_getPageNumber($iPage));
@@ -167,7 +167,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
             $oVendor->iProductPos = $this->_getProductPos($oCurrArticle, $oIdList, $oLocatorTarget);
 
             if ($blSeo && $iPage) {
-                $oVendor->toListLink = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderVendor")->getVendorPageUrl($oVendor, $iPage);
+                $oVendor->toListLink = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class)->getVendorPageUrl($oVendor, $iPage);
             } else {
                 $oVendor->toListLink = $this->_makeLink($oVendor->getLink(), $this->_getPageNumber($iPage));
             }
@@ -214,7 +214,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
             if ($blSeo && $iPage) {
                 /** @var \OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer $oSeoEncoderManufacturer */
-                $oSeoEncoderManufacturer = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderManufacturer");
+                $oSeoEncoderManufacturer = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class);
                 $oManufacturer->toListLink = $oSeoEncoderManufacturer->getManufacturerPageUrl($oManufacturer, $iPage);
             } else {
                 $oManufacturer->toListLink = $this->_makeLink($oManufacturer->getLink(), $this->_getPageNumber($iPage));
@@ -337,7 +337,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
             if ($blSeo && $iPage) {
                 /** @var \OxidEsales\Eshop\Application\Model\SeoEncoderRecomm $oSeoEncoderRecomm */
-                $oSeoEncoderRecomm = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderRecomm");
+                $oSeoEncoderRecomm = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class);
                 $oRecommList->toListLink = $oSeoEncoderRecomm->getRecommPageUrl($oRecommList, $iPage);
             } else {
                 $oRecommList->toListLink = $this->_makeLink($oRecommList->getLink(), $this->_getPageNumber($iPage));

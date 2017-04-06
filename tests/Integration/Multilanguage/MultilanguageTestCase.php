@@ -71,8 +71,8 @@ abstract class MultilanguageTestCase extends \OxidTestCase
         }
         //we need a fresh instance of language object in registry,
         //otherwise stale data is used for language abbreviations.
-        oxRegistry::set('oxLang', null);
-        oxRegistry::set('oxTableViewNameGenerator', null);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, null);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\TableViewNameGenerator::class, null);
 
         $this->updateViews();
 

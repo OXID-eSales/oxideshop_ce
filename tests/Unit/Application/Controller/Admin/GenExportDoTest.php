@@ -93,7 +93,7 @@ class GenExportDoTest extends \OxidTestCase
      */
     public function testNextTickNoMoreArticleFound()
     {
-        $oView = $this->getMock("GenExport_Do", array("getOneArticle", "write"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericExportDo::class, array("getOneArticle", "write"));
         $oView->expects($this->once())->method('getOneArticle')->will($this->returnValue(false));
         $oView->expects($this->never())->method('write');
         $this->assertFalse($oView->nextTick(1));
@@ -108,7 +108,7 @@ class GenExportDoTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxUtilsView", "getSmarty", "{return \\OxidEsales\\EshopCommunity\\Tests\\Unit\\Application\\Controller\\Admin\\GenExportDoTest_smarty::getInstance();}");
 
-        $oView = $this->getMock("GenExport_Do", array("getOneArticle", "write", "getViewId"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericExportDo::class, array("getOneArticle", "write", "getViewId"));
         $oView->expects($this->once())->method('getOneArticle')->will($this->returnValue(oxNew('oxArticle')));
         $oView->expects($this->once())->method('write');
         $oView->expects($this->once())->method('getViewId')->will($this->returnValue('dyn_interface'));

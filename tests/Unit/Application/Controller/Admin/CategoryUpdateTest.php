@@ -39,10 +39,10 @@ class CategoryUpdateTest extends \OxidTestCase
     public function testGetCatListUpdateInfo()
     {
         // testing..
-        $oCategoryList = $this->getMock("oxCategoryList", array("getUpdateInfo"));
+        $oCategoryList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, array("getUpdateInfo"));
         $oCategoryList->expects($this->once())->method('getUpdateInfo');
 
-        $oView = $this->getMock("Category_Update", array("_getCategoryList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategoryUpdate::class, array("_getCategoryList"));
         $oView->expects($this->once())->method('_getCategoryList')->will($this->returnValue($oCategoryList));
         $oView->getCatListUpdateInfo();
     }

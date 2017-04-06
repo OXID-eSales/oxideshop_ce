@@ -67,7 +67,7 @@ class ShopConfigTest extends \OxidTestCase
         $aTasks[] = "resetContentCache";
         $aTasks[] = "_getModuleForConfigVars";
 
-        $oConfig = $this->getMock("oxconfig", array("saveShopConfVar"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("saveShopConfVar"));
         $oConfig->expects($this->at(0))->method('saveShopConfVar')
             ->with(
                 $this->equalTo("bool"),
@@ -110,7 +110,7 @@ class ShopConfigTest extends \OxidTestCase
             );
 
         // testing..
-        $oView = $this->getMock("Shop_Config", $aTasks, array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration::class, $aTasks, array(), '', false);
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $oView->expects($this->once())->method('resetContentCache');
         $oView->expects($this->once())->method('_getModuleForConfigVars')
@@ -133,7 +133,7 @@ class ShopConfigTest extends \OxidTestCase
      */
     public function testSave()
     {
-        $oView = $this->getMock("Shop_Config", array("saveConfVars"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration::class, array("saveConfVars"));
         $oView->expects($this->once())->method('saveConfVars');
         $oView->save();
     }

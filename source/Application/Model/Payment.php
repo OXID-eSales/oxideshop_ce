@@ -430,7 +430,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                 return false;
             }
             if (count(
-                \OxidEsales\Eshop\Core\Registry::get("oxDeliverySetList")
+                \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliverySetList::class)
                     ->getDeliverySetList(
                         $oUser,
                         $oUser->getActiveCountry()
@@ -461,7 +461,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $dBasketPrice = $dBasketPrice / $oCur->rate;
 
         if ($sShipSetId) {
-            $aPaymentList = \OxidEsales\Eshop\Core\Registry::get("oxPaymentList")->getPaymentList($sShipSetId, $dBasketPrice, $oUser);
+            $aPaymentList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\PaymentList::class)->getPaymentList($sShipSetId, $dBasketPrice, $oUser);
 
             if (!array_key_exists($this->getId(), $aPaymentList)) {
                 $this->_iPaymentError = -3;

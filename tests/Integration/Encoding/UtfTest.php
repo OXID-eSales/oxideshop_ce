@@ -1146,7 +1146,7 @@ class UtfTest extends \OxidTestCase
         $longDescription = new stdClass();
         $longDescription->value = "";
 
-        $articleMock = $this->getMock('oxarticle', array("getLink", 'getLongDescription'));
+        $articleMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getLink", 'getLongDescription'));
         $articleMock->expects($this->any())->method('getLink')->will($this->returnValue("artlink"));
         $articleMock->expects($this->any())->method('getLongDescription')->will($this->returnValue($longDescription));
         $articleMock->oxarticles__oxtitle = new oxField('title2');
@@ -1174,7 +1174,7 @@ class UtfTest extends \OxidTestCase
         $sValue = 'agentūrų Литовские für';
         $oRss = oxNew('oxrssfeed');
 
-        $oCfg = $this->getMock('oxconfig', array('getActiveShop'));
+        $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop'));
         $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField($sValue);
         $oShop->oxshops__oxversion = new oxField('oxversion');
@@ -1201,7 +1201,7 @@ class UtfTest extends \OxidTestCase
         $shop = oxNew('oxShop');
         $shop->oxshops__oxname = new oxField('Test Shop');
 
-        $config = $this->getMock('oxconfig', array('getActiveShop'));
+        $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop'));
         $config->expects($this->any())->method('getActiveShop')->will($this->returnValue($shop));
 
         $rssFeedMock = $this->getMock(RssFeed::class, ['_getSearchParamsTranslation']);
@@ -1371,7 +1371,7 @@ class UtfTest extends \OxidTestCase
     {
         $sValue = 'ūЛü';
 
-        $oValidator = $this->getMock('oxInputValidator', array("_addValidationError"));
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array("_addValidationError"));
         $oValidator->expects($this->once())->method('_addValidationError')->with($this->equalTo("oxuser__oxpassword"));
         $oValidator->checkPassword(new oxUser(), $sValue, $sValue, true);
     }
@@ -1632,7 +1632,7 @@ class UtfTest extends \OxidTestCase
         $oCat = new oxCategory();
         $oCat->oxcategories__oxtitle = new oxField($sValue);
 
-        $oView = $this->getMock('alist', array('getCatTreePath'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getCatTreePath'));
         $oView->expects($this->once())->method('getCatTreePath')->will($this->returnValue(array($oCat)));
 
         $this->assertEquals($sResult, $oView->UNITgetCatPathString());
@@ -1642,11 +1642,11 @@ class UtfTest extends \OxidTestCase
     {
         $sValue = "agentūЛитовfür \n \r \t \xc2\x95 \xc2\xa0";
         $oActCat = new oxCategory();
-        $oActCat->oxcategories__oxlongdesc = $this->getMock('oxField', array('__get'));
+        $oActCat->oxcategories__oxlongdesc = $this->getMock(\OxidEsales\Eshop\Core\Field::class, array('__get'));
         $oActCat->oxcategories__oxlongdesc->expects($this->once())->method('__get')->will($this->returnValue(''));
 
         $oArticle = oxNew('oxArticle');
-        $oArticle->oxarticles__oxtitle = $this->getMock('oxField', array('__get'));
+        $oArticle->oxarticles__oxtitle = $this->getMock(\OxidEsales\Eshop\Core\Field::class, array('__get'));
         $oArticle->oxarticles__oxtitle->expects($this->exactly(2))->method('__get')->will($this->returnValue($sValue));
 
         $oArtList = new oxlist();
@@ -1655,7 +1655,7 @@ class UtfTest extends \OxidTestCase
 
         $sCatPathString = 'sCatPathString';
 
-        $oListView = $this->getMock('alist', array('getActiveCategory', 'getArticleList', '_getCatPathString'));
+        $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory', 'getArticleList', '_getCatPathString'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oActCat));
         $oListView->expects($this->any())->method('getArticleList')->will($this->returnValue($oArtList));
         $oListView->expects($this->any())->method('_getCatPathString')->will($this->returnValue($sCatPathString));
@@ -1671,10 +1671,10 @@ class UtfTest extends \OxidTestCase
         $sValue = "agentūЛитовfür\n\r\t\xc2\x95\xc2\xa0";
         $sDescription = oxRegistry::getLang()->translateString('INC_HEADER_YOUAREHERE');
         $oActCat = new oxCategory();
-        $oActCat->oxcategories__oxtitle = $this->getMock('oxField', array('__get'));
+        $oActCat->oxcategories__oxtitle = $this->getMock(\OxidEsales\Eshop\Core\Field::class, array('__get'));
         $oActCat->oxcategories__oxtitle->expects($this->once())->method('__get')->will($this->returnValue($sValue));
 
-        $oListView = $this->getMock('alist', array('getActiveCategory'));
+        $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oActCat));
 
         $sDescription = "agentūЛитовfür     . " . $this->getConfig()->getActiveShop()->oxshops__oxtitleprefix->value;
@@ -1704,10 +1704,10 @@ class UtfTest extends \OxidTestCase
         $aCatTree[] = $oParentCategory;
         $aCatTree[] = $oCategory;
 
-        $oCategoryTree = $this->getMock('oxcategorylist', array('getPath'));
+        $oCategoryTree = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, array('getPath'));
         $oCategoryTree->expects($this->any())->method('getPath')->will($this->returnValue($aCatTree));
 
-        $oListView = $this->getMock('alist', array('getActiveCategory', 'getCategoryTree'));
+        $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory', 'getCategoryTree'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCategory));
         $oListView->expects($this->any())->method('getCategoryTree')->will($this->returnValue($oCategoryTree));
 
@@ -1723,7 +1723,7 @@ class UtfTest extends \OxidTestCase
         $oArt->setArticleLongDesc($sValue);
         $oArtList = new oxlist();
         $oArtList->offsetSet(0, $oArt);
-        $oView = $this->getMock('alist', array('getArticleList', '_prepareMetaDescription', '_getCatPathString'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getArticleList', '_prepareMetaDescription', '_getCatPathString'));
         $oView->expects($this->once())->method('getArticleList')->will($this->returnValue($oArtList));
         $oView->expects($this->once())->method('_getCatPathString')->will($this->returnValue(''));
         $oView->expects($this->once())->method('_prepareMetaDescription')->with($this->equalTo($sResult), $this->equalTo(-1), $this->equalTo(false))->will($this->returnValue($sResult));
@@ -1741,7 +1741,7 @@ class UtfTest extends \OxidTestCase
         $oArt->oxarticles__oxsearchkeys = new oxField($sValue, oxField::T_RAW);
 
         $sMetaKeywParam = ($oArt->oxarticles__oxsearchkeys->value) ? $oArt->oxarticles__oxsearchkeys->value . " " . $sMetaKeywParam : $sMetaKeywParam;
-        $oView = $this->getMock('details', array('getProduct'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oView->expects($this->any())->method('getProduct')->will($this->returnValue($oArt));
 
         $this->assertEquals('agentūЛитовfür test, best nest fest - agentūЛитовfür test, best nest fest', $oView->getMetaDescription());
@@ -1798,7 +1798,7 @@ class UtfTest extends \OxidTestCase
         $sBodyToReturn = "agentūлитовfür <img src=\"__imagedir__/stars.jpg\" alt=\"agentūлитовfür\">";
         $sBodyToSet = "agentūлитовfür <img src=\"cid:xxx\" alt=\"agentūлитовfür\">";
 
-        $oEmail = $this->getMock('oxemail', array('getBody', 'setBody', 'getUtilsObjectInstance'));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('getBody', 'setBody', 'getUtilsObjectInstance'));
         $oEmail->expects($this->once())->method('getBody')->will($this->returnValue($sBodyToReturn));
         $oEmail->expects($this->once())->method('setBody')->with($this->equalTo($sBodyToSet));
         $oEmail->expects($this->once())->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectInstanceMock));

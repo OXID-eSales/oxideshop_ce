@@ -181,7 +181,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
                         $sSuffix = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('(main category)', $this->getEditLang());
                         $sTitleField = 'oxcategories__oxtitle';
                         $sTitle = $oCat->$sTitleField->getRawValue() . " " . $sSuffix;
-                        $oCat->$sTitleField = new oxField($sTitle, \OxidEsales\Eshop\Core\Field::T_RAW);
+                        $oCat->$sTitleField = new \OxidEsales\Eshop\Core\Field($sTitle, \OxidEsales\Eshop\Core\Field::T_RAW);
                     }
                     $aCatList[] = $oCat;
                 }
@@ -327,7 +327,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      */
     protected function _getEncoder()
     {
-        return \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderArticle");
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class);
     }
 
     /**

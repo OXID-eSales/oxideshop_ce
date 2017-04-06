@@ -165,8 +165,8 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             if ($oParent = $this->_getProductParent($oArticle->oxarticles__oxparentid->value)) {
                 // assign field from parent for new variant
                 // #4406
-                $oArticle->oxarticles__oxisconfigurable = new oxField($oParent->oxarticles__oxisconfigurable->value);
-                $oArticle->oxarticles__oxremindactive = new oxField($oParent->oxarticles__oxremindactive->value);
+                $oArticle->oxarticles__oxisconfigurable = new \OxidEsales\Eshop\Core\Field($oParent->oxarticles__oxisconfigurable->value);
+                $oArticle->oxarticles__oxremindactive = new \OxidEsales\Eshop\Core\Field($oParent->oxarticles__oxremindactive->value);
             }
         }
 

@@ -82,7 +82,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         } else {
             // create ident to make life easier
             $sUId = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUId();
-            $oContent->oxcontents__oxloadid = new oxField($sUId);
+            $oContent->oxcontents__oxloadid = new \OxidEsales\Eshop\Core\Field($sUId);
         }
 
         $this->_aViewData["edit"] = $oContent;

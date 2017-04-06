@@ -75,7 +75,7 @@ class UtilsUrlTest extends \OxidTestCase
         $this->setRequestParameter("currency", 1);
         $aBaseUrlParams = array("param1" => "value1", "param2" => "value2");
 
-        $oUtils = $this->getMock("oxUtilsUrl", array("getBaseAddUrlParams"));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\UtilsUrl::class, array("getBaseAddUrlParams"));
         $oUtils->expects($this->once())->method('getBaseAddUrlParams')->will($this->returnValue($aBaseUrlParams));
 
         $aBaseUrlParams['cur'] = 1;
@@ -242,7 +242,7 @@ class UtilsUrlTest extends \OxidTestCase
     {
         $aParameters = array('param1' => 'value1', 'param2' => 'value2');
 
-        $oUtils = $this->getMock('oxUtilsUrl', array('getBaseAddUrlParams'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\UtilsUrl::class, array('getBaseAddUrlParams'));
         $oUtils->expects($this->any())->method('getBaseAddUrlParams')->will($this->returnValue($aParameters));
 
         $sShopUrl = $this->getConfig()->getSslShopUrl();
@@ -254,7 +254,7 @@ class UtilsUrlTest extends \OxidTestCase
     {
         $aParameters = array('param1' => 'value1', 'param2' => 'value2');
 
-        $oUtils = $this->getMock('oxUtilsUrl', array('getBaseAddUrlParams'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\UtilsUrl::class, array('getBaseAddUrlParams'));
         $oUtils->expects($this->any())->method('getBaseAddUrlParams')->will($this->returnValue($aParameters));
 
         $this->assertEquals("http://some-url/", $oUtils->processUrl("http://some-url/"));
@@ -274,7 +274,7 @@ class UtilsUrlTest extends \OxidTestCase
     public function testProcessUrlWithLocalUrlSIDShouldBeAdded()
     {
         /** @var oxSession $oSession */
-        $oSession = $this->getMock('oxSession', array('isSidNeeded'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('isSidNeeded'));
         $oSession->expects($this->any())->method('isSidNeeded')->will($this->returnValue(true));
         $oSession->setId('SID');
 
@@ -288,7 +288,7 @@ class UtilsUrlTest extends \OxidTestCase
     public function testProcessUrlWithRelativeUrlShouldActLikeLocal()
     {
         /** @var oxSession $oSession */
-        $oSession = $this->getMock('oxSession', array('isSidNeeded'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('isSidNeeded'));
         $oSession->expects($this->any())->method('isSidNeeded')->will($this->returnValue(true));
         $oSession->setId('SID');
 
@@ -368,7 +368,7 @@ class UtilsUrlTest extends \OxidTestCase
     {
         $sUrl = $this->getConfig()->getConfigParam("sShopURL") . "index.php?param1=value1";
 
-        $oUtils = $this->getMock("oxUtilsUrl", array("isAdmin"));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\UtilsUrl::class, array("isAdmin"));
         $oUtils->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $this->assertEquals($sUrl, $oUtils->processSeoUrl($sUrl));
     }
@@ -382,7 +382,7 @@ class UtilsUrlTest extends \OxidTestCase
         $this->getConfig()->setShopId($iShopId);
         $sUrl = $this->getConfig()->getConfigParam("sShopURL");
 
-        $oUtils = $this->getMock("oxUtilsUrl", array("isAdmin"));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\UtilsUrl::class, array("isAdmin"));
         $oUtils->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $this->assertEquals($sUrl, $oUtils->processSeoUrl($sUrl));
     }
@@ -413,7 +413,7 @@ class UtilsUrlTest extends \OxidTestCase
     {
         $oUtils = oxNew('oxUtilsUrl');
 
-        $oUtilsServer = $this->getMock('oxUtilsServer', array('getServerVar'));
+        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array('getServerVar'));
         $oUtilsServer->expects($this->at(0))->method('getServerVar')->with($this->equalTo("HTTPS"))->will($this->returnValue($sHttps));
         $oUtilsServer->expects($this->at(1))->method('getServerVar')->with($this->equalTo("HTTP_X_FORWARDED_PROTO"))->will($this->returnValue($sHttpXForwarded));
         $oUtilsServer->expects($this->at(2))->method('getServerVar')->with($this->equalTo("HTTP_HOST"))->will($this->returnValue($sHttpHost));
@@ -502,7 +502,7 @@ class UtilsUrlTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("aLanguageURLs", array());
         $this->getConfig()->setConfigParam("sAdminSSLURL", 'https://adminHost');
 
-        $oUtils = $this->getMock("oxUtilsUrl", array('isAdmin'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\UtilsUrl::class, array('isAdmin'));
         $oUtils->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
         $this->assertSame(true, $oUtils->isCurrentShopHost('https://adminHost'));
     }

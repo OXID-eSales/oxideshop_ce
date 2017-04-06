@@ -133,7 +133,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         if ($oObject) {
             $oDescField = $oObject->getLongDescription();
             $sEditObjectValue = $this->_processEditValue($oDescField->getRawValue());
-            $oDescField = new oxField($sEditObjectValue, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oDescField = new \OxidEsales\Eshop\Core\Field($sEditObjectValue, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         return $sEditObjectValue;
@@ -271,9 +271,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         $base = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $base->init("oxobject2category");
-        $base->oxobject2category__oxtime = new oxField(0);
-        $base->oxobject2category__oxobjectid = new oxField($sOXID);
-        $base->oxobject2category__oxcatnid = new oxField($sCatID);
+        $base->oxobject2category__oxtime = new \OxidEsales\Eshop\Core\Field(0);
+        $base->oxobject2category__oxobjectid = new \OxidEsales\Eshop\Core\Field($sOXID);
+        $base->oxobject2category__oxcatnid = new \OxidEsales\Eshop\Core\Field($sCatID);
 
         $base = $this->updateBase($base);
 
@@ -310,11 +310,11 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
             // setting oxinsert/oxtimestamp
             $iNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
-            $oArticle->oxarticles__oxinsert = new oxField($iNow);
+            $oArticle->oxarticles__oxinsert = new \OxidEsales\Eshop\Core\Field($iNow);
 
             // mantis#0001590: OXRATING and OXRATINGCNT not set to 0 when copying article
-            $oArticle->oxarticles__oxrating = new oxField(0);
-            $oArticle->oxarticles__oxratingcnt = new oxField(0);
+            $oArticle->oxarticles__oxrating = new \OxidEsales\Eshop\Core\Field(0);
+            $oArticle->oxarticles__oxratingcnt = new \OxidEsales\Eshop\Core\Field(0);
 
             $oArticle->setId($sNewId);
             $oArticle->save();
@@ -450,11 +450,11 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             while (!$oRs->EOF) {
                 $oFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
                 $oFile->setId($myUtilsObject->generateUID());
-                $oFile->oxfiles__oxartid = new oxField($sNewId);
-                $oFile->oxfiles__oxfilename = new oxField($oRs->fields['OXFILENAME']);
-                $oFile->oxfiles__oxfilesize = new oxField($oRs->fields['OXFILESIZE']);
-                $oFile->oxfiles__oxstorehash = new oxField($oRs->fields['OXSTOREHASH']);
-                $oFile->oxfiles__oxpurchasedonly = new oxField($oRs->fields['OXPURCHASEDONLY']);
+                $oFile->oxfiles__oxartid = new \OxidEsales\Eshop\Core\Field($sNewId);
+                $oFile->oxfiles__oxfilename = new \OxidEsales\Eshop\Core\Field($oRs->fields['OXFILENAME']);
+                $oFile->oxfiles__oxfilesize = new \OxidEsales\Eshop\Core\Field($oRs->fields['OXFILESIZE']);
+                $oFile->oxfiles__oxstorehash = new \OxidEsales\Eshop\Core\Field($oRs->fields['OXSTOREHASH']);
+                $oFile->oxfiles__oxpurchasedonly = new \OxidEsales\Eshop\Core\Field($oRs->fields['OXPURCHASEDONLY']);
                 $oFile->save();
                 $oRs->fetchRow();
             }

@@ -73,7 +73,7 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
         $sXml .=   '<productId>eShop</productId>';
         $sXml .= '</omvnRequest>'."\n";
 
-        $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('setParameters', 'execute'));
         $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
         /** @var oxCurl $oCurl */
@@ -95,7 +95,7 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
             'active' => true,
         ));
 
-        $oModuleList = $this->getMock('oxModuleList', array('getList'));
+        $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getList'));
         $oModuleList->expects($this->any())->method('getList')->will($this->returnValue(array($oModule1, $oModule2)));
         /** @var oxModule $oModuleList */
 

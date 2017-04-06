@@ -53,7 +53,7 @@ class ModuleInstallerTest extends \OxidTestCase
         $aModulesBefore = array();
         $aModulesAfter = array('oxtest' => 'testdir/mytest');
 
-        $oModule = $this->getMock('oxModule', array('getId', 'getExtensions'));
+        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId', 'getExtensions'));
         $aExtends = array('oxtest' => 'testdir/mytest');
         $oModule->expects($this->any())->method('getId')->will($this->returnValue('test1'));
         $oModule->expects($this->any())->method('getExtensions')->will($this->returnValue($aExtends));
@@ -80,7 +80,7 @@ class ModuleInstallerTest extends \OxidTestCase
 
         $oModuleInstaller = oxNew('oxModuleInstaller');
 
-        $oModule = $this->getMock('oxModule', array('getId', 'getExtensions'));
+        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId', 'getExtensions'));
         $oModule->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oModule->expects($this->any())->method('getExtensions')->will($this->returnValue(array('oxtest' => 'test/mytest')));
 
@@ -104,7 +104,7 @@ class ModuleInstallerTest extends \OxidTestCase
         $aModulesBefore = array('oxtest' => 'test/mytest');
         $aModulesAfter = array('oxtest' => 'test/mytest&test1/mytest1');
 
-        $oModule = $this->getMock('oxModule', array('getId', 'getExtensions'));
+        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId', 'getExtensions'));
         $oModule->expects($this->any())->method('getId')->will($this->returnValue('test1'));
         $oModule->expects($this->any())->method('getExtensions')->will($this->returnValue(array('oxtest' => 'test1/mytest1')));
 
@@ -195,10 +195,10 @@ class ModuleInstallerTest extends \OxidTestCase
      */
     public function testDeactivate_eventCalledBeforeDeactivating()
     {
-        $oModule = $this->getMock('oxModule', array('getId'));
+        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId'));
         $oModule->expects($this->any())->method('getId')->will($this->returnValue('test'));
 
-        $oModuleInstaller = $this->getMock('oxModuleInstaller', array('_addToDisabledList', '_callEvent'));
+        $oModuleInstaller = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class, array('_addToDisabledList', '_callEvent'));
         $oModuleInstaller->expects($this->at(0))->method('_callEvent')->with();
         $oModuleInstaller->expects($this->at(1))->method('_addToDisabledList')->with();
 

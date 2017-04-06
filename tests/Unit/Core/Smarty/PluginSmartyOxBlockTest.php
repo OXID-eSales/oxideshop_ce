@@ -47,7 +47,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blDebugTemplateBlocks', false);
 
-        $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
@@ -93,7 +93,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blDebugTemplateBlocks', false);
 
-        $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
@@ -128,7 +128,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blDebugTemplateBlocks', true);
 
-        $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
@@ -208,7 +208,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blDebugTemplateBlocks', false);
 
-        $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
@@ -268,7 +268,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blDebugTemplateBlocks', false);
 
-        $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
@@ -306,7 +306,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blDebugTemplateBlocks', true);
 
-        $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(

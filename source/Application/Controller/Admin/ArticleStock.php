@@ -188,7 +188,7 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oArticlePrice->init("oxprice2article");
         $oArticlePrice->assign($aParams);
 
-        $oArticlePrice->$sType = new oxField($dPrice);
+        $oArticlePrice->$sType = new \OxidEsales\Eshop\Core\Field($dPrice);
 
         //validating
         if ($oArticlePrice->$sType->value &&

@@ -251,8 +251,8 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $sShipSet = null;
             }
 
-            $oPayList = \OxidEsales\Eshop\Core\Registry::get("oxPaymentList");
-            $oDelList = \OxidEsales\Eshop\Core\Registry::get("oxDeliveryList");
+            $oPayList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\PaymentList::class);
+            $oDelList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliveryList::class);
 
             $oCur = $this->getConfig()->getActShopCurrencyObject();
             $dBasketPrice = $oBasket->getPriceForPayment() / $oCur->rate;

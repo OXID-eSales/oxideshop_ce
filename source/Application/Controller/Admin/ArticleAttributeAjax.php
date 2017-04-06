@@ -114,8 +114,8 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             foreach ($aAddCat as $sAdd) {
                 $oNew = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNew->init("oxobject2attribute");
-                $oNew->oxobject2attribute__oxobjectid = new oxField($soxId);
-                $oNew->oxobject2attribute__oxattrid = new oxField($sAdd);
+                $oNew->oxobject2attribute__oxobjectid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oNew->oxobject2attribute__oxattrid = new \OxidEsales\Eshop\Core\Field($sAdd);
                 $oNew->save();
             }
 

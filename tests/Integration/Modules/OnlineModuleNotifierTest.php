@@ -41,7 +41,7 @@ class OnlineModuleNotifierTest extends BaseModuleTestCase
         $oEnvironment->prepare(array('extending_1_class', 'extending_1_class_3_extensions', 'with_everything'));
 
         /** @var oxOnlineModuleVersionNotifierCaller|MockObject $oCaller */
-        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller', array('doRequest'), array(), '', false);
+        $oCaller = $this->getMock(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller::class, array('doRequest'), array(), '', false);
         $oCaller->expects($this->any())->method('doRequest')->with($this->equalTo($this->getExpectedRequest()));
 
         $oModuleList = oxNew('oxModuleList');

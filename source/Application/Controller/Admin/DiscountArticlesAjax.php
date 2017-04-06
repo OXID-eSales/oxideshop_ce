@@ -165,9 +165,9 @@ class DiscountArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     {
         $object2Discount = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $object2Discount->init('oxobject2discount');
-        $object2Discount->oxobject2discount__oxdiscountid = new oxField($discountListId);
-        $object2Discount->oxobject2discount__oxobjectid = new oxField($articleId);
-        $object2Discount->oxobject2discount__oxtype = new oxField("oxarticles");
+        $object2Discount->oxobject2discount__oxdiscountid = new \OxidEsales\Eshop\Core\Field($discountListId);
+        $object2Discount->oxobject2discount__oxobjectid = new \OxidEsales\Eshop\Core\Field($articleId);
+        $object2Discount->oxobject2discount__oxtype = new \OxidEsales\Eshop\Core\Field("oxarticles");
 
         $object2Discount->save();
     }

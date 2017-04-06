@@ -56,7 +56,7 @@ class ModuleChainsGeneratorTest extends UnitTestCase
         }
 
         /** @var ModuleVariablesLocator|\PHPUnit_Framework_MockObject_MockObject $moduleVariablesLocatorMock */
-        $moduleVariablesLocatorMock = $this->getMock('oxModuleVariablesLocator', array(), array(), '', false);
+        $moduleVariablesLocatorMock = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, array(), array(), '', false);
 
         /**
          * Create a Mock with disabled constructor
@@ -93,7 +93,7 @@ class ModuleChainsGeneratorTest extends UnitTestCase
         }
 
         /** @var ModuleVariablesLocator|\PHPUnit_Framework_MockObject_MockObject $moduleVariablesLocatorMock */
-        $moduleVariablesLocatorMock = $this->getMock('oxModuleVariablesLocator', array(), array(), '', false);
+        $moduleVariablesLocatorMock = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, array(), array(), '', false);
 
         /**
          * Create a Mock with disabled constructor

@@ -66,11 +66,11 @@ class DetailsTest extends \OxidTestCase
     {
         $this->setConfigParam('blSeoMode', true);
 
-        $oProduct = $this->getMock("oxarticle", array("getBaseSeoLink", "getBaseStdLink"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getBaseSeoLink", "getBaseStdLink"));
         $oProduct->expects($this->once())->method('getBaseSeoLink')->will($this->returnValue("testSeoUrl"));
         $oProduct->expects($this->never())->method('getBaseStdLink')->will($this->returnValue("testStdUrl"));
 
-        $oDetailsView = $this->getMock("details", array("getProduct"));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct"));
         $oDetailsView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 
         $this->assertEquals("testSeoUrl", $oDetailsView->getCanonicalUrl());
@@ -85,11 +85,11 @@ class DetailsTest extends \OxidTestCase
     {
         $this->setConfigParam('blSeoMode', false);
 
-        $oProduct = $this->getMock("oxarticle", array("getBaseSeoLink", "getBaseStdLink"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getBaseSeoLink", "getBaseStdLink"));
         $oProduct->expects($this->never())->method('getBaseSeoLink')->will($this->returnValue("testSeoUrl"));
         $oProduct->expects($this->once())->method('getBaseStdLink')->will($this->returnValue("testStdUrl"));
 
-        $oDetailsView = $this->getMock("details", array("getProduct"));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct"));
         $oDetailsView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 
         $this->assertEquals("testStdUrl", $oDetailsView->getCanonicalUrl());
@@ -113,7 +113,7 @@ class DetailsTest extends \OxidTestCase
         $oVariant->oxarticles__oxparentid = new oxField($oParent->getId());
         $oVariant->save();
 
-        $oDetailsView = $this->getMock("details", array("getProduct"));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct"));
         $oDetailsView->expects($this->any())->method('getProduct')->will($this->returnValue($oVariant));
         $this->assertTrue($oDetailsView->drawParentUrl());
     }
@@ -159,12 +159,12 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetAddUrlParams()
     {
-        $oDetailsView = $this->getMock("details", array("getListType", "getDynUrlParams"));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getListType", "getDynUrlParams"));
         $oDetailsView->expects($this->once())->method('getListType')->will($this->returnValue("somelisttype"));
         $oDetailsView->expects($this->never())->method('getDynUrlParams');
         $this->assertNull($oDetailsView->UNITgetAddUrlParams());
 
-        $oDetailsView = $this->getMock("details", array("getListType", "getDynUrlParams"));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getListType", "getDynUrlParams"));
         $oDetailsView->expects($this->once())->method('getListType')->will($this->returnValue("search"));
         $oDetailsView->expects($this->once())->method('getDynUrlParams')->will($this->returnValue("searchparams"));
         $this->assertEquals("searchparams", $oDetailsView->UNITgetAddUrlParams());
@@ -177,11 +177,11 @@ class DetailsTest extends \OxidTestCase
      */
     public function testProcessProduct()
     {
-        $oProduct = $this->getMock("oxarticle", array("setLinkType", "appendLink"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("setLinkType", "appendLink"));
         $oProduct->expects($this->once())->method('setLinkType')->with($this->equalTo("search"));
         $oProduct->expects($this->once())->method('appendLink')->with($this->equalTo("searchparams"));
 
-        $oDetailsView = $this->getMock("details", array("getLinkType", "_getAddUrlParams"));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getLinkType", "_getAddUrlParams"));
         $oDetailsView->expects($this->once())->method('getLinkType')->will($this->returnValue("search"));
         $oDetailsView->expects($this->once())->method('_getAddUrlParams')->will($this->returnValue("searchparams"));
 
@@ -197,30 +197,30 @@ class DetailsTest extends \OxidTestCase
     public function testGetLinkType()
     {
         $this->setRequestParameter('listtype', 'vendor');
-        $oDetailsView = $this->getMock("details", array('getActiveCategory'));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getActiveCategory'));
         $oDetailsView->expects($this->never())->method('getActiveCategory');
         $this->assertEquals(OXARTICLE_LINKTYPE_VENDOR, $oDetailsView->getLinkType());
 
         $this->setRequestParameter('listtype', 'manufacturer');
-        $oDetailsView = $this->getMock("details", array('getActiveCategory'));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getActiveCategory'));
         $oDetailsView->expects($this->never())->method('getActiveCategory');
         $this->assertEquals(OXARTICLE_LINKTYPE_MANUFACTURER, $oDetailsView->getLinkType());
 
         $this->setRequestParameter('listtype', null);
-        $oDetailsView = $this->getMock("details", array('getActiveCategory'));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getActiveCategory'));
         $oDetailsView->expects($this->once())->method('getActiveCategory')->will($this->returnValue(null));
         $this->assertEquals(OXARTICLE_LINKTYPE_CATEGORY, $oDetailsView->getLinkType());
 
-        $oCategory = $this->getMock("oxcategory", array('isPriceCategory'));
+        $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('isPriceCategory'));
         $oCategory->expects($this->once())->method('isPriceCategory')->will($this->returnValue(true));
 
         $this->setRequestParameter('listtype', "recommlist");
-        $oDetailsView = $this->getMock("details", array('getActiveCategory'));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getActiveCategory'));
         $oDetailsView->expects($this->never())->method('getActiveCategory')->will($this->returnValue($oCategory));
         $this->assertEquals(OXARTICLE_LINKTYPE_RECOMM, $oDetailsView->getLinkType());
 
         $this->setRequestParameter('listtype', null);
-        $oDetailsView = $this->getMock("details", array('getActiveCategory'));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getActiveCategory'));
         $oDetailsView->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
         $this->assertEquals(OXARTICLE_LINKTYPE_PRICECATEGORY, $oDetailsView->getLinkType());
     }
@@ -232,10 +232,10 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetParentProduct()
     {
-        $oProduct = $this->getMock("oxarticle", array("isBuyable"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("isBuyable"));
         $oProduct->expects($this->any())->method('isBuyable')->will($this->returnValue(true));
 
-        $oDetailsView = $this->getMock("details", array("getProduct"));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct"));
         $oDetailsView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
         $oProduct = $oDetailsView->UNITgetParentProduct('1126');
@@ -275,11 +275,11 @@ class DetailsTest extends \OxidTestCase
         $this->setRequestParameter('anid', oxDb::getDb()->getOne($sQ));
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new Exception( \$aA[0] ); }");
 
-        $oParentProduct = $this->getMock("oxArticle", array("isVisible"));
+        $oParentProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("isVisible"));
         $oParentProduct->expects($this->once())->method('isVisible')->will($this->returnValue(false));
 
         try {
-            $oDetailsView = $this->getMock("details", array("_getParentProduct"));
+            $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("_getParentProduct"));
             $oDetailsView->expects($this->once())->method('_getParentProduct')->will($this->returnValue($oParentProduct));
             $oDetailsView->getProduct();
         } catch (Exception $oExcp) {
@@ -297,7 +297,7 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetProductInvisibleProduct()
     {
-        $oProduct = $this->getMock('oxarticle', array('isVisible'));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('isVisible'));
         $oProduct->expects($this->once())->method('isVisible')->will($this->returnValue(false));
 
         $this->setRequestParameter('anid', 'notexistingproductid');
@@ -362,7 +362,7 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetProductWithDirectVariant()
     {
-        $oProduct = $this->getMock('oxarticle', array('load', 'getVariantSelections'));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('load', 'getVariantSelections'));
         $oProduct->expects($this->once())->method('load')
             ->with($this->equalTo('anid__'))
             ->will($this->returnValue(1));
@@ -386,7 +386,7 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetProductWithIndirectVariant()
     {
-        $oProduct = $this->getMock('oxarticle', array('load', 'getVariantSelections'));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('load', 'getVariantSelections'));
         $oProduct->expects($this->once())->method('load')
             ->with($this->equalTo('anid__'))
             ->will($this->returnValue(1));
@@ -413,7 +413,7 @@ class DetailsTest extends \OxidTestCase
         $oProduct = oxNew('oxArticle');
         $oProduct->oxarticles__oxparentid = new oxField('parent');
 
-        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
         $this->assertTrue($oDetails->drawParentUrl());
@@ -432,7 +432,7 @@ class DetailsTest extends \OxidTestCase
         $oArticle->load($sArtID);
         $sActPic = $this->getConfig()->getPictureUrl(null) . "generated/product/1/380_340_75/" . basename($oArticle->oxarticles__oxpic1->value);
 
-        $oDetails = $this->getMock('details', array("getPicturesProduct"));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getPicturesProduct"));
         $oDetails->expects($this->once())->method('getPicturesProduct')->will($this->returnValue($oArticle));
         $aPicGallery = $oDetails->getPictureGallery();
 
@@ -500,10 +500,10 @@ class DetailsTest extends \OxidTestCase
     public function testGetSelectLists()
     {
         $this->setConfigParam('bl_perfLoadSelectLists', true);
-        $oArticle = $this->getMock('oxarticle', array('getSelectLists'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getSelectLists'));
         $oArticle->expects($this->any())->method('getSelectLists')->will($this->returnValue("aaa"));
 
-        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
 
         $this->assertEquals('aaa', $oDetails->getSelectLists());
@@ -516,10 +516,10 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetReviews()
     {
-        $oArticle = $this->getMock('oxarticle', array('getReviews'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getReviews'));
         $oArticle->expects($this->any())->method('getReviews')->will($this->returnValue("aaa"));
 
-        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
 
         $this->assertEquals('aaa', $oDetails->getReviews());
@@ -572,10 +572,10 @@ class DetailsTest extends \OxidTestCase
     {
         $articleId = "articleId";
         $aArrayKeys = array($articleId);
-        $oProduct = $this->getMock("oxarticle", array("getId"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getId"));
         $oProduct->expects($this->once())->method("getId")->will($this->returnValue($articleId));
 
-        $oDetails = $this->getMock("details", array("getProduct"));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct"));
         $oDetails->expects($this->once())->method("getProduct")->will($this->returnValue($oProduct));
         $this->assertEquals($aArrayKeys, $oDetails->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of key from result of getProduct()");
     }
@@ -587,10 +587,10 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetAccessoires()
     {
-        $oArticle = $this->getMock('oxarticle', array('getAccessoires'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getAccessoires'));
         $oArticle->expects($this->any())->method('getAccessoires')->will($this->returnValue("aaa"));
 
-        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
 
         $this->assertEquals("aaa", $oDetails->getAccessoires());
@@ -603,10 +603,10 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetAlsoBoughtTheseProducts()
     {
-        $oArticle = $this->getMock('oxarticle', array('getCustomerAlsoBoughtThisProducts'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getCustomerAlsoBoughtThisProducts'));
         $oArticle->expects($this->any())->method('getCustomerAlsoBoughtThisProducts')->will($this->returnValue("aaa"));
 
-        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
 
         $this->assertEquals("aaa", $oDetails->getAlsoBoughtTheseProducts());
@@ -622,7 +622,7 @@ class DetailsTest extends \OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxblfixedprice = new oxField(1, oxField::T_RAW);
 
-        $oView = $this->getMock('details', array('getProduct'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
 
         $this->assertEquals(false, $oView->isPriceAlarm());
@@ -638,7 +638,7 @@ class DetailsTest extends \OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxblfixedprice = new oxField(0, oxField::T_RAW);
 
-        $oView = $this->getMock('details', array('getProduct'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
 
         $this->assertEquals(true, $oView->isPriceAlarm());
@@ -662,7 +662,7 @@ class DetailsTest extends \OxidTestCase
         $oCategoryTree = oxNew('oxCategoryList');
         $oCategoryTree->buildTree($sCatId, false, false, false);
 
-        $oDetails = $this->getMock('details', array('getProduct', 'getCategoryTree'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct', 'getCategoryTree'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->expects($this->any())->method('getCategoryTree')->will($this->returnValue($oCategoryTree));
 
@@ -687,7 +687,7 @@ class DetailsTest extends \OxidTestCase
         $oProduct = oxNew("oxArticle");
         $oProduct->load("1849");
 
-        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
         $sMeta = $oProduct->oxarticles__oxtitle->value . ' - ' . $oProduct->getLongDescription();
 
@@ -704,13 +704,13 @@ class DetailsTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam('bl_perfParseLongDescinSmarty', true);
 
-        $oProduct = $this->getMock('oxarticle', array('getLongDesc', 'getLongDescription'));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getLongDesc', 'getLongDescription'));
         $oProduct->expects($this->once())->method('getLongDesc')->will($this->returnValue('parsed description'));
         $oProduct->expects($this->never())->method('getLongDescription')->will($this->returnValue('not parsed description'));
         $oProduct->oxarticles__oxshortdesc = new oxField('Short description', oxField::T_RAW);
         $oProduct->oxarticles__oxtitle = new oxField('Title', oxField::T_RAW);
 
-        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 
         $sMeta = 'Title - parsed description';
@@ -771,7 +771,7 @@ class DetailsTest extends \OxidTestCase
         $oProduct->oxarticles__oxtitle = new oxField('product title');
         $oProduct->oxarticles__oxvarselect = new oxField('and varselect');
 
-        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 
         $this->assertEquals('product title and varselect', $oDetails->getTitle());
@@ -784,7 +784,7 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetTitle_noproduct()
     {
-        $oView = $this->getMock('Details', array('getProduct'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue(null));
         $this->assertNull($oView->getTitle());
     }
@@ -796,7 +796,7 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetCanonicalUrl_noproduct()
     {
-        $oView = $this->getMock('Details', array('getProduct'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue(null));
         $this->assertNull($oView->getCanonicalUrl());
     }
@@ -814,17 +814,17 @@ class DetailsTest extends \OxidTestCase
         $this->setSessionParam('usr', 'oxdefaultadmin');
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
-        $oProduct = $this->getMock('oxArticle', array('getId', 'addToRatingAverage'));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
 
         /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
-        $oDetails = $this->getMock('Details', array('getProduct', 'canAcceptFormData'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct', 'canAcceptFormData'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
         $oDetails->saveReview();
@@ -846,17 +846,17 @@ class DetailsTest extends \OxidTestCase
         $this->setSessionParam('usr', null);
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
-        $oProduct = $this->getMock('oxArticle', array('getId', 'addToRatingAverage'));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
 
         /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
-        $oDetails = $this->getMock('Details', array('getProduct'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->saveReview();
 
@@ -876,12 +876,12 @@ class DetailsTest extends \OxidTestCase
         $this->setRequestParameter('anid', 'test');
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
-        $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
 
@@ -889,7 +889,7 @@ class DetailsTest extends \OxidTestCase
         $oUser->load('oxdefaultadmin');
 
         /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
-        $oDetails = $this->getMock('details', array('getProduct', 'getUser', 'canAcceptFormData'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct', 'getUser', 'canAcceptFormData'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oDetails->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
@@ -911,12 +911,12 @@ class DetailsTest extends \OxidTestCase
         $this->setRequestParameter('anid', 'test');
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
-        $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
 
@@ -924,7 +924,7 @@ class DetailsTest extends \OxidTestCase
         $oUser->load('oxdefaultadmin');
 
         /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
-        $oDetails = $this->getMock('details', array('getProduct', 'getUser', 'canAcceptFormData'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct', 'getUser', 'canAcceptFormData'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oDetails->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
@@ -947,17 +947,17 @@ class DetailsTest extends \OxidTestCase
         $this->setSessionParam('usr', 'oxdefaultadmin');
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
-        $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
 
         /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
-        $oDetails = $this->getMock('details', array('getProduct', 'canAcceptFormData'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct', 'canAcceptFormData'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
         $oDetails->saveReview();
@@ -977,12 +977,12 @@ class DetailsTest extends \OxidTestCase
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
         /** @var Details|PHPUnit_Framework_MockObject_MockObject $oRecomm */
-        $oRecomm = $this->getMock("details", array("getViewConfig", 'getArticleList'));
+        $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getViewConfig", 'getArticleList'));
         $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
         $oRecomm->expects($this->never())->method('getArticleList');
 
@@ -1003,24 +1003,24 @@ class DetailsTest extends \OxidTestCase
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(true));
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
-        $oProduct = $this->getMock('oxArticle', array('getId'));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oProduct->expects($this->once())->method('getId')->will($this->returnValue('test_artid'));
 
         $this->setRequestParameter('recomm', 'test_recomm');
         $this->setRequestParameter('recomm_txt', 'test_recommtext');
 
         /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
-        $oRecommList = $this->getMock('oxRecommList', array('load', 'addArticle'));
+        $oRecommList = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, array('load', 'addArticle'));
         $oRecommList->expects($this->once())->method('load')->with($this->equalTo('test_recomm'));
         $oRecommList->expects($this->once())->method('addArticle')->with($this->equalTo('test_artid'), $this->equalTo('test_recommtext'));
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
         /** @var Details|PHPUnit_Framework_MockObject_MockObject $oRecomm */
-        $oRecomm = $this->getMock("details", array("getViewConfig", 'getProduct'));
+        $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getViewConfig", 'getProduct'));
         $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
         $oRecomm->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 
@@ -1052,15 +1052,15 @@ class DetailsTest extends \OxidTestCase
 
         $this->setRequestParameter('listtype', 'aaa');
 
-        $oCat1 = $this->getMock('oxcategory', array('getLink'));
+        $oCat1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getLink'));
         $oCat1->expects($this->once())->method('getLink')->will($this->returnValue('linkas1'));
         $oCat1->oxcategories__oxtitle = new oxField('title1');
 
-        $oCat2 = $this->getMock('oxcategory', array('getLink'));
+        $oCat2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getLink'));
         $oCat2->expects($this->once())->method('getLink')->will($this->returnValue('linkas2'));
         $oCat2->oxcategories__oxtitle = new oxField('title2');
 
-        $oView = $this->getMock("details", array("getCatTreePath"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getCatTreePath"));
         $oView->expects($this->once())->method('getCatTreePath')->will($this->returnValue(array($oCat1, $oCat2)));
 
         $this->assertTrue(count($oView->getBreadCrumb()) >= 1);
@@ -1073,26 +1073,26 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetVariantSelections()
     {
-        $oProduct = $this->getMock("oxarticle", array("getVariantSelections"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getVariantSelections"));
         $oProduct->expects($this->once())->method("getVariantSelections")->will($this->returnValue("varselections"));
         //$oProduct->expects( $this->never() )->method( "getId" );
 
         // no parent
-        $oView = $this->getMock("details", array("getProduct", "_getParentProduct"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct", "_getParentProduct"));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
         $oView->expects($this->once())->method('_getParentProduct')->will($this->returnValue(false));
 
         $this->assertEquals("varselections", $oView->getVariantSelections());
 
-        $oProduct = $this->getMock("oxarticle", array("getVariantSelections"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getVariantSelections"));
         $oProduct->expects($this->never())->method('getVariantSelections')->will($this->returnValue("varselections"));
         //$oProduct->expects( $this->once() )->method( 'getId');
 
-        $oParent = $this->getMock("oxarticle", array("getVariantSelections"));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getVariantSelections"));
         $oParent->expects($this->once())->method('getVariantSelections')->will($this->returnValue("parentselections"));
 
         // has parent
-        $oView = $this->getMock("details", array("getProduct", "_getParentProduct"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct", "_getParentProduct"));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
         $oView->expects($this->once())->method('_getParentProduct')->will($this->returnValue($oParent));
 
@@ -1110,7 +1110,7 @@ class DetailsTest extends \OxidTestCase
         $oProduct->expects($this->never())->method('getId');
 
         // no picture product id
-        $oView = $this->getMock("details", array("getProduct", 'getVariantSelections'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct", 'getVariantSelections'));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
         $oView->expects($this->once())->method('getVariantSelections')->will($this->returnValue(false));
         $this->assertSame($oProduct, $oView->getPicturesProduct());
@@ -1126,7 +1126,7 @@ class DetailsTest extends \OxidTestCase
             'blPerfectFit'   => false
         );
         // no picture product id
-        $oView = $this->getMock("details", array("getProduct", 'getVariantSelections'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct", 'getVariantSelections'));
         $oView->expects($this->never())->method('getProduct');
         $oView->expects($this->once())->method('getVariantSelections')->will($this->returnValue($aInfo));
         $this->assertSame($oProduct, $oView->getPicturesProduct());
@@ -1142,7 +1142,7 @@ class DetailsTest extends \OxidTestCase
             'blPerfectFit'   => true
         );
         // no picture product id
-        $oView = $this->getMock("details", array("getProduct", 'getVariantSelections'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct", 'getVariantSelections'));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue('prod'));
         $oView->expects($this->once())->method('getVariantSelections')->will($this->returnValue($aInfo));
         $this->assertEquals('prod', $oView->getPicturesProduct());
@@ -1192,10 +1192,10 @@ class DetailsTest extends \OxidTestCase
 
     public function testIsReviewActive()
     {
-        $oConfig = $this->getMock('oxConfig', array('getConfigParam'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_perfLoadReviews'))->will($this->returnValue('test_isactive'));
 
-        $oView = $this->getMock('Details', array('getConfig'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getConfig'));
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->assertSame('test_isactive', $oView->isReviewActive());
@@ -1204,12 +1204,12 @@ class DetailsTest extends \OxidTestCase
     public function testAddme_invalidEmail()
     {
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('sendPricealarmNotification'));
         $oEmail->expects($this->never())->method('sendPricealarmNotification');
         oxTestModules::addModuleObject('oxEmail', $oEmail);
 
         /** @var oxPriceAlarm|PHPUnit_Framework_MockObject_MockObject $oPriceAlarm */
-        $oPriceAlarm = $this->getMock('oxpricealarm', array('save'));
+        $oPriceAlarm = $this->getMock(\OxidEsales\Eshop\Application\Model\PriceAlarm::class, array('save'));
         $oPriceAlarm->expects($this->never())->method('save');
         oxTestModules::addModuleObject('oxpricealarm', $oPriceAlarm);
 
@@ -1227,17 +1227,17 @@ class DetailsTest extends \OxidTestCase
     public function testAddme_mailsent()
     {
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('sendPricealarmNotification'));
         $oEmail->expects($this->once())->method('sendPricealarmNotification')->will($this->returnValue(123));
         oxTestModules::addModuleObject('oxEmail', $oEmail);
 
         /** @var oxPriceAlarm|PHPUnit_Framework_MockObject_MockObject $oPriceAlarm */
-        $oPriceAlarm = $this->getMock('oxPriceAlarm', array('save'));
+        $oPriceAlarm = $this->getMock(\OxidEsales\Eshop\Application\Model\PriceAlarm::class, array('save'));
         $oPriceAlarm->expects($this->once())->method('save');
         oxTestModules::addModuleObject('oxpricealarm', $oPriceAlarm);
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
-        $oProduct = $this->getMock('oxArticle', array('getId'));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oProduct->expects($this->once())->method('getId')->will($this->returnValue('test_artid'));
 
         /** @var Details|PHPUnit_Framework_MockObject_MockObject $oView */
@@ -1344,7 +1344,7 @@ class DetailsTest extends \OxidTestCase
         $oArt->load('2000');
         $oArt->oxarticles__oxratingcnt = new oxField(0);
 
-        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oArt));
 
         $this->assertFalse($oDetails->getRDFaNormalizedRating());
@@ -1359,7 +1359,7 @@ class DetailsTest extends \OxidTestCase
         $oArt->oxarticles__oxratingcnt = new oxField('5');
         $oArt->oxarticles__oxrating = new oxField('10');
 
-        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oArt));
 
         $aNomalizedRating = $oDetails->getRDFaNormalizedRating();
@@ -1416,7 +1416,7 @@ class DetailsTest extends \OxidTestCase
         $oArt = oxNew('oxArticle');
         $oArt->load('2000');
 
-        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oArt));
 
         $this->assertTrue($oDetails->getRDFaPaymentMethods() instanceof paymentlist);
@@ -1433,7 +1433,7 @@ class DetailsTest extends \OxidTestCase
         $oArt = oxNew('oxArticle');
         $oArt->load('2000');
 
-        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oArt));
 
         $this->assertTrue($oDetails->getProductsDeliveryList() instanceof DeliveryList);
@@ -1476,7 +1476,7 @@ class DetailsTest extends \OxidTestCase
     {
         $oController = oxNew('Details');
 
-        $oCategory = $this->getMock('oxCategory', array('getDefaultSorting'));
+        $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getDefaultSorting'));
         $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue(''));
         $oController->setActiveCategory($oCategory);
 
@@ -1492,7 +1492,7 @@ class DetailsTest extends \OxidTestCase
     {
         $oController = oxNew('Details');
 
-        $oCategory = $this->getMock('oxCategory', array('getDefaultSorting'));
+        $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getDefaultSorting'));
         $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
         $oController->setActiveCategory($oCategory);
 
@@ -1508,7 +1508,7 @@ class DetailsTest extends \OxidTestCase
     {
         $oController = oxNew('Details');
 
-        $oCategory = $this->getMock('oxCategory', array('getDefaultSorting', 'getDefaultSortingMode'));
+        $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getDefaultSorting', 'getDefaultSortingMode'));
         $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
         $oCategory->expects($this->any())->method('getDefaultSortingMode')->will($this->returnValue(null));
         $oController->setActiveCategory($oCategory);
@@ -1526,7 +1526,7 @@ class DetailsTest extends \OxidTestCase
     {
         $oController = oxNew('Details');
 
-        $oCategory = $this->getMock('oxCategory', array('getDefaultSorting', 'getDefaultSortingMode'));
+        $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getDefaultSorting', 'getDefaultSortingMode'));
         $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
         $oCategory->expects($this->any())->method('getDefaultSortingMode')->will($this->returnValue(false));
 
@@ -1544,7 +1544,7 @@ class DetailsTest extends \OxidTestCase
     {
         $oController = oxNew('Details');
 
-        $oCategory = $this->getMock('oxCategory', array('getDefaultSorting', 'getDefaultSortingMode'));
+        $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getDefaultSorting', 'getDefaultSortingMode'));
         $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
         $oCategory->expects($this->any())->method('getDefaultSortingMode')->will($this->returnValue(true));
 
@@ -1563,7 +1563,7 @@ class DetailsTest extends \OxidTestCase
         $this->setRequestParameter('listtype', 'search');
         $oController = oxNew('Details');
 
-        $oCategory = $this->getMock('oxCategory', array('getDefaultSorting', 'getDefaultSortingMode'));
+        $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getDefaultSorting', 'getDefaultSortingMode'));
         $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
         $oCategory->expects($this->any())->method('getDefaultSortingMode')->will($this->returnValue(true));
 
@@ -1603,7 +1603,7 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetSortingParameters_ExpectNull()
     {
-        $oController = $this->getMock('Details', array('getSorting'));
+        $oController = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getSorting'));
         $oController->expects($this->any())->method('getSorting')->will($this->returnValue(null));
 
         $this->assertNull($oController->getSortingParameters());

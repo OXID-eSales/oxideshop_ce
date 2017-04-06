@@ -125,7 +125,7 @@ class PaymentMainTest extends \OxidTestCase
         $this->setRequestParameter("aFields", array("testField2"));
 
         // testing..
-        $oView = $this->getMock("Payment_Main", array("save"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentMain::class, array("save"));
         $oView->expects($this->once())->method('save');
         $oView->delFields();
     }

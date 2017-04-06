@@ -173,8 +173,8 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             foreach ($aAddArticle as $sAdd) {
                 $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNewGroup->init("oxobject2attribute");
-                $oNewGroup->oxobject2attribute__oxobjectid = new oxField($sAdd);
-                $oNewGroup->oxobject2attribute__oxattrid = new oxField($oAttribute->oxattribute__oxid->value);
+                $oNewGroup->oxobject2attribute__oxobjectid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                $oNewGroup->oxobject2attribute__oxattrid = new \OxidEsales\Eshop\Core\Field($oAttribute->oxattribute__oxid->value);
                 $oNewGroup->save();
 
                 $this->onArticleAddToAttributeList($sAdd);

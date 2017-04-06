@@ -42,7 +42,7 @@ class VendorMainTest extends \OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = $this->getMock("Vendor_Main", array("_createCategoryTree"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMain::class, array("_createCategoryTree"));
         $oView->expects($this->once())->method('_createCategoryTree');
         $this->assertEquals('vendor_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();

@@ -347,7 +347,7 @@ class ActionsTest extends \OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        $promotionMock = $this->getMock('oxActions', array('fetchBannerArticleId'));
+        $promotionMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, array('fetchBannerArticleId'));
         $promotionMock->expects($this->any())->method('fetchBannerArticleId')->willReturn($databaseResult);
         $promotionMock->setId('promoid');
         $this->assertNull($promotionMock->getBannerArticle());
@@ -364,7 +364,7 @@ class ActionsTest extends \OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        $promotionMock = $this->getMock('oxActions', array('fetchBannerArticleId'));
+        $promotionMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, array('fetchBannerArticleId'));
         $promotionMock->expects($this->any())->method('fetchBannerArticleId')->willReturn($databaseResult);
         $promotionMock->setId('promoid');
         $this->assertNull($promotionMock->getBannerArticle());
@@ -381,7 +381,7 @@ class ActionsTest extends \OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        $promotionMock = $this->getMock('oxActions', array('fetchBannerArticleId'));
+        $promotionMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, array('fetchBannerArticleId'));
         $promotionMock->expects($this->any())->method('fetchBannerArticleId')->willReturn($databaseResult);
         $promotionMock->setId('promoid');
         $oArt = $promotionMock->getBannerArticle();
@@ -448,10 +448,10 @@ class ActionsTest extends \OxidTestCase
     {
         $sUrl = "action-link";
 
-        $oUtilsUrl = $this->getMock('oxUtilsUrl', array('processUrl', 'addShopHost'));
+        $oUtilsUrl = $this->getMock(\OxidEsales\Eshop\Core\UtilsUrl::class, array('processUrl', 'addShopHost'));
         $oUtilsUrl->expects($this->any())->method('addShopHost')->with($sUrl)->will($this->returnValue('http://with-url/' . $sUrl));
         $oUtilsUrl->expects($this->any())->method('processUrl')->with('http://with-url/' . $sUrl)->will($this->returnValue($sUrl . '/with-params'));
-        oxRegistry::set("oxUtilsUrl", $oUtilsUrl);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsUrl::class, $oUtilsUrl);
 
         $oPromo = oxNew('oxActions');
         $oPromo->oxactions__oxlink = new oxField($sUrl);
@@ -475,11 +475,11 @@ class ActionsTest extends \OxidTestCase
      */
     public function testGetBannerLink_noLinkWithAssignedArticle()
     {
-        $oArticle = $this->getMock('oxArticle', array('getLink'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getLink'));
         $oArticle->expects($this->once())->method('getLink')
             ->will($this->returnValue("testLinkToArticle"));
 
-        $oPromo = $this->getMock('oxActions', array('getBannerArticle'));
+        $oPromo = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, array('getBannerArticle'));
         $oPromo->expects($this->once())->method('getBannerArticle')
             ->will($this->returnValue($oArticle));
 

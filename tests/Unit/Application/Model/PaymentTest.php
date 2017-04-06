@@ -245,7 +245,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->oxpayments__oxid = new oxField('oxempty', oxField::T_RAW);
         $oPayment->oxpayments__oxactive = new oxField(1);
 
-        $oUser = $this->getMock('oxuser', array('getActiveCountry'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getActiveCountry'));
         $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('otherCountry'));
         $oUser->Load('oxdefaultadmin');
 

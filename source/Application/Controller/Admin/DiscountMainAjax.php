@@ -114,9 +114,9 @@ class DiscountMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
             foreach ($aChosenCntr as $sChosenCntr) {
                 $oObject2Discount = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Discount->init('oxobject2discount');
-                $oObject2Discount->oxobject2discount__oxdiscountid = new oxField($soxId);
-                $oObject2Discount->oxobject2discount__oxobjectid = new oxField($sChosenCntr);
-                $oObject2Discount->oxobject2discount__oxtype = new oxField("oxcountry");
+                $oObject2Discount->oxobject2discount__oxdiscountid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oObject2Discount->oxobject2discount__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenCntr);
+                $oObject2Discount->oxobject2discount__oxtype = new \OxidEsales\Eshop\Core\Field("oxcountry");
                 $oObject2Discount->save();
             }
         }

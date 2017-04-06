@@ -45,10 +45,10 @@ class ModuleChainTest extends BaseModuleTestCase
     {
         parent::setUp();
 
-        $configFile = Registry::get('oxConfigFile');
+        $configFile = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
         $configFile->setVar('sShopDir', realpath(__DIR__ . '/TestData'));
 
-        Registry::set('oxConfigFile', $configFile);
+        Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);
 
         $this->environment = new Environment();
     }

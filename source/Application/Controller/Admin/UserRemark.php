@@ -92,10 +92,10 @@ class UserRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         // try to load if exists
         $oRemark->load(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("rem_oxid"));
 
-        $oRemark->oxremark__oxtext = new oxField(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("remarktext"));
-        $oRemark->oxremark__oxheader = new oxField(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("remarkheader"));
-        $oRemark->oxremark__oxparentid = new oxField($this->getEditObjectId());
-        $oRemark->oxremark__oxtype = new oxField("r");
+        $oRemark->oxremark__oxtext = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("remarktext"));
+        $oRemark->oxremark__oxheader = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("remarkheader"));
+        $oRemark->oxremark__oxparentid = new \OxidEsales\Eshop\Core\Field($this->getEditObjectId());
+        $oRemark->oxremark__oxtype = new \OxidEsales\Eshop\Core\Field("r");
         $oRemark->save();
     }
 

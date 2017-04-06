@@ -42,7 +42,7 @@ class WidgetControlTest extends \OxidTestCase
      */
     public function testStart()
     {
-        $oControl = $this->getMock("oxWidgetControl", array("_runOnce", "_runLast", "_process"), array(), '', false);
+        $oControl = $this->getMock(\OxidEsales\Eshop\Core\WidgetControl::class, array("_runOnce", "_runLast", "_process"), array(), '', false);
         $oControl->expects($this->once())->method('_runOnce');
         $oControl->expects($this->once())->method('_runLast');
         $oControl->expects($this->once())->method('_process')->with($this->equalTo(\OxidEsales\Eshop\Application\Controller\StartController::class), $this->equalTo("testFnc"), $this->equalTo("testParams"), $this->equalTo("testViewsChain"));
@@ -56,7 +56,7 @@ class WidgetControlTest extends \OxidTestCase
      */
     public function testRunLast()
     {
-        $oConfig = $this->getMock("oxConfig", array("hasActiveViewsChain"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("hasActiveViewsChain"));
         $oConfig->expects($this->any())->method('hasActiveViewsChain')->will($this->returnValue(true));
 
         $oConfig->setActiveView("testView1");
@@ -65,7 +65,7 @@ class WidgetControlTest extends \OxidTestCase
         $this->assertEquals(array("testView1", "testView2"), $oConfig->getActiveViewsList());
 
 
-        $oControl = $this->getMock("oxWidgetControl", array("getConfig"));
+        $oControl = $this->getMock(\OxidEsales\Eshop\Core\WidgetControl::class, array("getConfig"));
         $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $oControl->UNITrunLast();

@@ -211,10 +211,10 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
                 foreach ($aArticles as $sAdd) {
                     $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                     $oNewGroup->init('oxactions2article');
-                    $oNewGroup->oxactions2article__oxshopid = new oxField($sShopId);
-                    $oNewGroup->oxactions2article__oxactionid = new oxField($soxId);
-                    $oNewGroup->oxactions2article__oxartid = new oxField($sAdd);
-                    $oNewGroup->oxactions2article__oxsort = new oxField($iSort++);
+                    $oNewGroup->oxactions2article__oxshopid = new \OxidEsales\Eshop\Core\Field($sShopId);
+                    $oNewGroup->oxactions2article__oxactionid = new \OxidEsales\Eshop\Core\Field($soxId);
+                    $oNewGroup->oxactions2article__oxartid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                    $oNewGroup->oxactions2article__oxsort = new \OxidEsales\Eshop\Core\Field($iSort++);
                     $oNewGroup->save();
                 }
                 $articleAdded = true;

@@ -123,7 +123,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function setCategoryId($sCategoryId)
     {
-        $this->oxcontents__oxcatid = new oxField($sCategoryId);
+        $this->oxcontents__oxcatid = new \OxidEsales\Eshop\Core\Field($sCategoryId);
     }
 
     /**
@@ -266,7 +266,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getBaseSeoLink($iLang)
     {
-        return \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderContent")->getContentUrl($this, $iLang);
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class)->getContentUrl($this, $iLang);
     }
 
     /**
@@ -401,7 +401,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         if (parent::delete($sOXID)) {
-            \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderContent")->onDeleteContent($sOXID);
+            \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class)->onDeleteContent($sOXID);
 
             return true;
         }

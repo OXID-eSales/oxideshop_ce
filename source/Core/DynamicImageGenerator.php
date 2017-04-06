@@ -31,7 +31,7 @@ namespace {
          */
         function getGeneratorInstanceName()
         {
-            return "oxdynimggenerator";
+            return \OxidEsales\Eshop\Core\DynamicImageGenerator::class;
         }
     }
 

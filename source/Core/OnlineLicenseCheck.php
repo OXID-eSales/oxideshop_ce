@@ -266,7 +266,7 @@ class OnlineLicenseCheck
             }
         } else {
             // validation result is unknown
-            throw new oxException('OLC_ERROR_RESPONSE_NOT_VALID');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('OLC_ERROR_RESPONSE_NOT_VALID');
         }
 
         return $blValid;

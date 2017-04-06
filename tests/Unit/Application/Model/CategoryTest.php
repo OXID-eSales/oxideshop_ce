@@ -207,7 +207,7 @@ class CategoryTest extends \OxidTestCase
 
     public function testGetSqlActiveSnippet()
     {
-        $oCategory = $this->getMock('oxCategory', array('isAdmin', 'getViewName'));
+        $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('isAdmin', 'getViewName'));
         $oCategory->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oCategory->expects($this->any())->method('getViewName')->will($this->returnValue('xxx'));
 
@@ -697,7 +697,7 @@ class CategoryTest extends \OxidTestCase
 
     public function testSetGetSubCats()
     {
-        $oSubCat = $this->getMock('oxcategory', array('getIsVisible'));
+        $oSubCat = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getIsVisible'));
         $oSubCat->expects($this->once())->method('getIsVisible')->will($this->returnValue(true));
         $oCategory = $this->getProxyClass("oxcategory");
         $oCategory->setSubCats(array($oSubCat));
@@ -709,7 +709,7 @@ class CategoryTest extends \OxidTestCase
 
     public function testSetGetSubCat()
     {
-        $oSubCat = $this->getMock('oxcategory', array('getIsVisible'));
+        $oSubCat = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getIsVisible'));
         $oSubCat->expects($this->any())->method('getIsVisible')->will($this->returnValue(true));
         $oCategory = $this->getProxyClass("oxcategory");
         $oCategory->setSubCat($oSubCat);
@@ -983,10 +983,10 @@ class CategoryTest extends \OxidTestCase
         $oAttr = oxNew('oxAttribute');
         $oAttrList->offsetSet(1, $oAttr);
 
-        $oCAttrList = $this->getMock('oxattributelist', array('getCategoryAttributes'));
+        $oCAttrList = $this->getMock(\OxidEsales\Eshop\Application\Model\AttributeList::class, array('getCategoryAttributes'));
         $oCAttrList->expects($this->any())->method('getCategoryAttributes')->will($this->returnValue($oAttrList));
 
-        $oCategory = $this->getMock('oxcategory', array('getAttributes'));
+        $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getAttributes'));
         $oCategory->expects($this->any())->method('getAttributes')->will($this->returnValue($oCAttrList));
 
         $this->assertEquals($oCAttrList->getArray(), $oCategory->getAttributes()->getArray());

@@ -82,8 +82,8 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
 
         // creating if it does not exist
         if (!$oReservations->assignRecord($oReservations->buildSelectString($aWhere))) {
-            $oReservations->oxuserbaskets__oxtitle = new oxField('reservations');
-            $oReservations->oxuserbaskets__oxuserid = new oxField($sBasketId);
+            $oReservations->oxuserbaskets__oxtitle = new \OxidEsales\Eshop\Core\Field('reservations');
+            $oReservations->oxuserbaskets__oxuserid = new \OxidEsales\Eshop\Core\Field($sBasketId);
             // marking basket as new (it will not be saved in DB yet)
             $oReservations->setIsNewBasket();
         }
@@ -358,7 +358,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     {
         if ($oReserved = $this->getReservations()) {
             $iTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
-            $oReserved->oxuserbaskets__oxupdate = new oxField($iTime);
+            $oReserved->oxuserbaskets__oxupdate = new \OxidEsales\Eshop\Core\Field($iTime);
             $oReserved->save();
 
             \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("iBasketReservationTimeout");

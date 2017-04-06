@@ -236,7 +236,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
             // overriding some standard value and parameters
             $this->_sThisTemplate = $this->_sThisMoreTemplate;
             $category = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
-            $category->oxcategories__oxactive = new oxField(1, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $category->oxcategories__oxactive = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
             $this->setActiveCategory($category);
         } elseif (($category = $this->getActiveCategory())) {
             $this->_blIsCat = true;

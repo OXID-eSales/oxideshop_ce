@@ -61,7 +61,7 @@ class GenericImportTest extends OxidTestCase
         $oImport = new GenericImport();
 
         /** @var oxUser|MockObject $oUser */
-        $oUser = $this->getMock('oxUser', array('isAdmin'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
         $oUser->loadAdminUser();

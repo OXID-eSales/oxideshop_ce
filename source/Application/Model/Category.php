@@ -332,7 +332,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             // - discounts
             $oDb->execute("delete from oxobject2discount where oxobject2discount.oxobjectid=$sOxidQuoted ");
 
-            \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderCategory")->onDeleteCategory($this);
+            \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->onDeleteCategory($this);
         }
 
         return $blRet;
@@ -529,7 +529,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     public function getBaseSeoLink($iLang, $iPage = 0)
     {
-        $oEncoder = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderCategory");
+        $oEncoder = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class);
         if (!$iPage) {
             return $oEncoder->getCategoryUrl($this, $iLang);
         }
@@ -869,9 +869,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
                 $this->setId();
             }
 
-            $this->oxcategories__oxrootid = new oxField($oParent->oxcategories__oxrootid->value, \OxidEsales\Eshop\Core\Field::T_RAW);
-            $this->oxcategories__oxleft = new oxField($oParent->oxcategories__oxright->value, \OxidEsales\Eshop\Core\Field::T_RAW);
-            $this->oxcategories__oxright = new oxField($oParent->oxcategories__oxright->value + 1, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxcategories__oxrootid = new \OxidEsales\Eshop\Core\Field($oParent->oxcategories__oxrootid->value, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxcategories__oxleft = new \OxidEsales\Eshop\Core\Field($oParent->oxcategories__oxright->value, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxcategories__oxright = new \OxidEsales\Eshop\Core\Field($oParent->oxcategories__oxright->value + 1, \OxidEsales\Eshop\Core\Field::T_RAW);
 
             return parent::_insert();
         } else {
@@ -880,9 +880,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
                 $this->setId();
             }
 
-            $this->oxcategories__oxrootid = new oxField($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
-            $this->oxcategories__oxleft = new oxField(1, \OxidEsales\Eshop\Core\Field::T_RAW);
-            $this->oxcategories__oxright = new oxField(2, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxcategories__oxrootid = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxcategories__oxleft = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxcategories__oxright = new \OxidEsales\Eshop\Core\Field(2, \OxidEsales\Eshop\Core\Field::T_RAW);
 
             return parent::_insert();
         }
@@ -904,7 +904,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         $sOldParentID = $database->getOne("select oxparentid from oxcategories where oxid = " . $database->quote($this->getId()));
 
         if ($this->_blIsSeoObject && $this->isAdmin()) {
-            \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderCategory")->markRelatedAsExpired($this);
+            \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->markRelatedAsExpired($this);
         }
 
         $blRes = parent::_update();
@@ -986,7 +986,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         }
 
         if ($blRes && $this->_blIsSeoObject && $this->isAdmin()) {
-            \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderCategory")->markRelatedAsExpired($this);
+            \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->markRelatedAsExpired($this);
         }
 
         return $blRes;

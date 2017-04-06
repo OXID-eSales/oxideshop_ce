@@ -169,9 +169,9 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
             foreach ($aChosenArt as $sAdd) {
                 $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNewGroup->init('oxobject2article');
-                $oNewGroup->oxobject2article__oxobjectid = new oxField($sAdd);
-                $oNewGroup->oxobject2article__oxarticlenid = new oxField($oArticle->oxarticles__oxid->value);
-                $oNewGroup->oxobject2article__oxsort = new oxField(0);
+                $oNewGroup->oxobject2article__oxobjectid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                $oNewGroup->oxobject2article__oxarticlenid = new \OxidEsales\Eshop\Core\Field($oArticle->oxarticles__oxid->value);
+                $oNewGroup->oxobject2article__oxsort = new \OxidEsales\Eshop\Core\Field(0);
                 $oNewGroup->save();
             }
 

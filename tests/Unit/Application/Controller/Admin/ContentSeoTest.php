@@ -77,10 +77,10 @@ class ContentSeoTest extends \OxidTestCase
         $oContent->setId("_test1");
         $oContent->save();
 
-        $oEncoder = $this->getMock("oxSeoEncoderContent", array("getContentUri"));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array("getContentUri"));
         $oEncoder->expects($this->once())->method('getContentUri')->will($this->returnValue("ContentUri"));
 
-        $oView = $this->getMock("Content_Seo", array("getEditObjectId", "_getEncoder"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ContentSeo::class, array("getEditObjectId", "_getEncoder"));
         $oView->expects($this->once())->method('getEditObjectId')->will($this->returnValue("_test1"));
         $oView->expects($this->once())->method('_getEncoder')->will($this->returnValue($oEncoder));
         $this->assertEquals("ContentUri", $oView->getEntryUri());
@@ -97,7 +97,7 @@ class ContentSeoTest extends \OxidTestCase
         $oContent->setId("_test1");
         $oContent->save();
 
-        $oView = $this->getMock("Content_Seo", array("getEditLang"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ContentSeo::class, array("getEditLang"));
         $oView->expects($this->once())->method('getEditLang')->will($this->returnValue(0));
 
         $this->assertEquals($oContent->getBaseStdLink(0, true, false), $oView->UNITgetStdUrl("_test1"));

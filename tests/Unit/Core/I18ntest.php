@@ -108,7 +108,7 @@ class I18ntest extends \OxidTestCase
     public function testUpdateAndSeoIsOnMock()
     {
 
-        $oSeo = $this->getMock('oxseoencoder', array('markAsExpired'));
+        $oSeo = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('markAsExpired'));
         $oSeo->expects($this->once())->method('markAsExpired')->with(
             $this->equalTo('testa'),
             $this->equalTo(null),
@@ -163,7 +163,7 @@ class I18ntest extends \OxidTestCase
 
     public function testSetEnableMultilanguageCacheTest()
     {
-        $oI18n = $this->getMock('oxI18n', array('modifyCacheKey'));
+        $oI18n = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('modifyCacheKey'));
         $oI18n->expects($this->once())->method('modifyCacheKey')->with("_nonml");
         $oI18n->setEnableMultilang(false);
     }
@@ -462,12 +462,12 @@ class I18ntest extends \OxidTestCase
     {
         $iCurrTime = 1453734000; //some rounded timestamp
 
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
         /** @var oxUtilsDate $oUtils */
         oxRegistry::set('oxUtilsDate', $oUtilsDate);
 
-        $oI18n = $this->getMock('oxI18n', array('getViewName'));
+        $oI18n = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('getViewName'));
         $oI18n->expects($this->once())->method('getViewName')->with($this->equalTo(null))->will($this->returnValue('oxi18n'));
 
         $oI18n->UNITaddField('oxactive', 0);
@@ -490,7 +490,7 @@ class I18ntest extends \OxidTestCase
     {
         $iCurrTime = 1453734000; //some rounded timestamp
 
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
         /** @var oxUtilsDate $oUtils */
         oxRegistry::set('oxUtilsDate', $oUtilsDate);
@@ -498,7 +498,7 @@ class I18ntest extends \OxidTestCase
         $sTable = 'oxi18n';
 
         /** @var oxI18n|PHPUnit_Framework_MockObject_MockObject $oI18n */
-        $oI18n = $this->getMock('oxI18n', array('getCoreTableName', 'getViewName', 'isMultilingualField', 'getLanguage'));
+        $oI18n = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('getCoreTableName', 'getViewName', 'isMultilingualField', 'getLanguage'));
         $oI18n->expects($this->any())->method('getCoreTableName')->will($this->returnValue($sTable));
         $oI18n->expects($this->once())->method('getViewName')->will($this->returnValue('oxi18n'));
         $oI18n->expects($this->never())->method('getLanguage');
@@ -548,7 +548,7 @@ class I18ntest extends \OxidTestCase
      */
     public function testGetUpdateSqlFieldNameMLfield()
     {
-        $oObj = $this->getMock('oxi18n', array('isMultilingualField'));
+        $oObj = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('isMultilingualField'));
         $oObj->expects($this->exactly(2))->method('isMultilingualField')
             ->with($this->equalTo('field'))
             ->will($this->returnValue(true));
@@ -566,7 +566,7 @@ class I18ntest extends \OxidTestCase
      */
     public function testGetUpdateSqlFieldNameNonMLfield()
     {
-        $oObj = $this->getMock('oxi18n', array('isMultilingualField'));
+        $oObj = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('isMultilingualField'));
         $oObj->expects($this->exactly(2))->method('isMultilingualField')
             ->with($this->equalTo('field'))
             ->will($this->returnValue(false));
@@ -637,7 +637,7 @@ class I18ntest extends \OxidTestCase
      */
     public function testGetUpdateFields()
     {
-        $oObj = $this->getMock('oxi18n', array('_getUpdateFieldsForTable', 'getCoreTableName'));
+        $oObj = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('_getUpdateFieldsForTable', 'getCoreTableName'));
         $oObj->expects($this->exactly(1))->method('_getUpdateFieldsForTable')
             ->with($this->equalTo('coretable'), $this->equalTo('useskipsavefields'))
             ->will($this->returnValue('returned val'));
@@ -783,7 +783,7 @@ class I18ntest extends \OxidTestCase
             $oObj->UNITgetLanguageSetTables()
         );
 
-        $oLang = $this->getMock('oxLang', array('getLanguageIds'));
+        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('getLanguageIds'));
         $oLang->expects($this->any())->method('getLanguageIds')->will($this->returnValue(array(0 => 'de', 1 => 'en', 90 => 'lt')));
 
         oxTestModules::addModuleObject('oxLang', $oLang);
@@ -883,7 +883,7 @@ class I18ntest extends \OxidTestCase
      */
     public function testGetAllFields()
     {
-        $oObj = $this->getMock('oxi18n', array('_getTableFields', 'getViewName'));
+        $oObj = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('_getTableFields', 'getViewName'));
         $oObj->expects($this->exactly(1))->method('_getTableFields')
             ->with($this->equalTo('view'), $this->equalTo('simeple?'))
             ->will($this->returnValue('returned val'));
@@ -893,7 +893,7 @@ class I18ntest extends \OxidTestCase
 
         $this->assertEquals('returned val', $oObj->UNITGetAllFields('simeple?'));
 
-        $oObj = $this->getMock('oxi18n', array('getViewName'));
+        $oObj = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('getViewName'));
         $oObj->expects($this->exactly(1))->method('getViewName')
             ->will($this->returnValue(''));
         $oObj->setEnableMultilang(false);

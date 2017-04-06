@@ -97,9 +97,9 @@ class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             foreach ($aChosenCntr as $sChosenCntr) {
                 $oObject2Payment = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Payment->init('oxobject2payment');
-                $oObject2Payment->oxobject2payment__oxpaymentid = new oxField($sOxId);
-                $oObject2Payment->oxobject2payment__oxobjectid = new oxField($sChosenCntr);
-                $oObject2Payment->oxobject2payment__oxtype = new oxField("oxcountry");
+                $oObject2Payment->oxobject2payment__oxpaymentid = new \OxidEsales\Eshop\Core\Field($sOxId);
+                $oObject2Payment->oxobject2payment__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenCntr);
+                $oObject2Payment->oxobject2payment__oxtype = new \OxidEsales\Eshop\Core\Field("oxcountry");
                 $oObject2Payment->save();
             }
         }

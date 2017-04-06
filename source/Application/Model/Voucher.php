@@ -539,20 +539,20 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oDiscount = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
 
         $oDiscount->setId($oSeries->getId());
-        $oDiscount->oxdiscount__oxshopid = new oxField($oSeries->oxvoucherseries__oxshopid->value);
-        $oDiscount->oxdiscount__oxactive = new oxField(true);
-        $oDiscount->oxdiscount__oxactivefrom = new oxField($oSeries->oxvoucherseries__oxbegindate->value);
-        $oDiscount->oxdiscount__oxactiveto = new oxField($oSeries->oxvoucherseries__oxenddate->value);
-        $oDiscount->oxdiscount__oxtitle = new oxField($oSeries->oxvoucherseries__oxserienr->value);
-        $oDiscount->oxdiscount__oxamount = new oxField(1);
-        $oDiscount->oxdiscount__oxamountto = new oxField(MAX_64BIT_INTEGER);
-        $oDiscount->oxdiscount__oxprice = new oxField(0);
-        $oDiscount->oxdiscount__oxpriceto = new oxField(MAX_64BIT_INTEGER);
-        $oDiscount->oxdiscount__oxaddsumtype = new oxField($oSeries->oxvoucherseries__oxdiscounttype->value == 'percent' ? '%' : 'abs');
-        $oDiscount->oxdiscount__oxaddsum = new oxField($oSeries->oxvoucherseries__oxdiscount->value);
-        $oDiscount->oxdiscount__oxitmartid = new oxField();
-        $oDiscount->oxdiscount__oxitmamount = new oxField();
-        $oDiscount->oxdiscount__oxitmmultiple = new oxField();
+        $oDiscount->oxdiscount__oxshopid = new \OxidEsales\Eshop\Core\Field($oSeries->oxvoucherseries__oxshopid->value);
+        $oDiscount->oxdiscount__oxactive = new \OxidEsales\Eshop\Core\Field(true);
+        $oDiscount->oxdiscount__oxactivefrom = new \OxidEsales\Eshop\Core\Field($oSeries->oxvoucherseries__oxbegindate->value);
+        $oDiscount->oxdiscount__oxactiveto = new \OxidEsales\Eshop\Core\Field($oSeries->oxvoucherseries__oxenddate->value);
+        $oDiscount->oxdiscount__oxtitle = new \OxidEsales\Eshop\Core\Field($oSeries->oxvoucherseries__oxserienr->value);
+        $oDiscount->oxdiscount__oxamount = new \OxidEsales\Eshop\Core\Field(1);
+        $oDiscount->oxdiscount__oxamountto = new \OxidEsales\Eshop\Core\Field(MAX_64BIT_INTEGER);
+        $oDiscount->oxdiscount__oxprice = new \OxidEsales\Eshop\Core\Field(0);
+        $oDiscount->oxdiscount__oxpriceto = new \OxidEsales\Eshop\Core\Field(MAX_64BIT_INTEGER);
+        $oDiscount->oxdiscount__oxaddsumtype = new \OxidEsales\Eshop\Core\Field($oSeries->oxvoucherseries__oxdiscounttype->value == 'percent' ? '%' : 'abs');
+        $oDiscount->oxdiscount__oxaddsum = new \OxidEsales\Eshop\Core\Field($oSeries->oxvoucherseries__oxdiscount->value);
+        $oDiscount->oxdiscount__oxitmartid = new \OxidEsales\Eshop\Core\Field();
+        $oDiscount->oxdiscount__oxitmamount = new \OxidEsales\Eshop\Core\Field();
+        $oDiscount->oxdiscount__oxitmmultiple = new \OxidEsales\Eshop\Core\Field();
 
         return $oDiscount;
     }

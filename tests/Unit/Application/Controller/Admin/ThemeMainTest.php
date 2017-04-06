@@ -52,7 +52,7 @@ class ThemeMainTest extends \OxidTestCase
 
     public function testSetTheme()
     {
-        $oTM = $this->getMock('Theme_Main', array('getEditObjectId'));
+        $oTM = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ThemeMain::class, array('getEditObjectId'));
         $oTM->expects($this->any())->method('getEditObjectId')->will($this->returnValue('azure'));
 
         oxTestModules::addFunction('oxTheme', 'load($name)', '{if ($name != "azure") throw new Exception("FAIL TO LOAD"); return true;}');
@@ -71,7 +71,7 @@ class ThemeMainTest extends \OxidTestCase
      */
     public function testThemeConfigExceptionInRender()
     {
-        $oTM = $this->getMock('Theme_Main', array('themeInConfigFile'));
+        $oTM = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ThemeMain::class, array('themeInConfigFile'));
         $oTM->expects($this->once())->method('themeInConfigFile');
         $oTM->render();
     }

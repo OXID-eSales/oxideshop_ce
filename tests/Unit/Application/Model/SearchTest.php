@@ -337,7 +337,7 @@ class SearchTest extends UnitTestCase
         $this->assertEquals(1, $oSearchList->count());
         $this->assertEquals(1, $iAllArtCnt);
 
-        /** @var Article $oArticle */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $oArticle */
         $oArticle = $oSearchList->current();
         $this->assertEquals("1142", $oArticle->getId());
     }
@@ -720,7 +720,7 @@ class SearchTest extends UnitTestCase
             $sIDCat = "30e44ab8593023055.23928895";
         }
 
-        /** @var Article $oArticle */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $oArticle */
         $oArticle = oxNew('oxArticle');
 
         $sArticleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
@@ -767,7 +767,7 @@ class SearchTest extends UnitTestCase
 
         $this->getConfig()->setConfigParam('aSearchCols', array('oxtitle'));
 
-        /** @var Article $oArticle */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $oArticle */
         $oArticle = oxNew('oxArticle');
 
         $sArticleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
@@ -805,7 +805,7 @@ class SearchTest extends UnitTestCase
 
         $iCurrTime = 0;
 
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
         /** @var oxUtilsDate $oUtils */
         oxRegistry::set('oxUtilsDate', $oUtilsDate);

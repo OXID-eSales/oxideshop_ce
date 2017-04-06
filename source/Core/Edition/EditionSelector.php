@@ -107,7 +107,7 @@ class EditionSelector
         if (!class_exists('OxidEsales\EshopCommunity\Core\Registry') || !Registry::instanceExists('oxConfigFile')) {
             $configFile = new ConfigFile(OX_BASE_PATH . DIRECTORY_SEPARATOR . "config.inc.php");
         }
-        $configFile = isset($configFile) ? $configFile : Registry::get('oxConfigFile');
+        $configFile = isset($configFile) ? $configFile : Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
         $edition = $configFile->getVar('edition') ?: $this->getVirtualClassMapProvider()->getEdition();
         $configFile->setVar('edition', $edition);
 

@@ -46,7 +46,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $oCfg->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('blDisableNavBars'))->will($this->returnValue(true));
         $oCfg->expects($this->once())->method('getTopActiveView')->will($this->returnValue($oActView));
 
-        $o = $this->getMock('oxcmp_categories', array('_getActCat', 'getConfig'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('_getActCat', 'getConfig'));
         $o->expects($this->never())->method('_getActCat');
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
 
@@ -62,7 +62,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $oCfg->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('blDisableNavBars'))->will($this->returnValue(false));
         $oCfg->expects($this->never())->method('getTopActiveView')->will($this->returnValue($oActView));
 
-        $o = $this->getMock('oxcmp_categories', array('_getActCat', 'getConfig'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('_getActCat', 'getConfig'));
         $o->expects($this->once())->method('_getActCat')->will($this->throwException(new Exception("passed: OK")));
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
 
@@ -86,7 +86,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $oCfg->expects($this->once())->method('getTopActiveView')->will($this->returnValue($oActView));
 
-        $o = $this->getMock('oxcmp_categories', array('_getActCat', 'getConfig'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('_getActCat', 'getConfig'));
         $o->expects($this->once())->method('_getActCat')->will($this->throwException(new Exception("passed: OK")));
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
 
@@ -110,7 +110,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $oCfg->expects($this->at(1))->method('getTopActiveView')->will($this->returnValue($oActView));
         $oCfg->expects($this->at(2))->method('getConfigParam')->with($this->equalTo('bl_perfLoadManufacturerTree'))->will($this->returnValue(true));
 
-        $o = $this->getMock('oxcmp_categories', array('_getActCat', 'getConfig', '_loadManufacturerTree'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('_getActCat', 'getConfig', '_loadManufacturerTree'));
         $o->expects($this->once())->method('_getActCat')->will($this->returnValue("actcat.."));
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $o->expects($this->once())->method('_loadManufacturerTree')->with($this->equalTo("manid"))->will($this->throwException(new Exception("passed: OK")));
@@ -137,7 +137,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $oCfg->expects($this->at(1))->method('getTopActiveView')->will($this->returnValue($oActView));
         $oCfg->expects($this->at(2))->method('getConfigParam')->with($this->equalTo('bl_perfLoadManufacturerTree'))->will($this->returnValue(false));
 
-        $o = $this->getMock('oxcmp_categories', array('_getActCat', 'getConfig', '_loadManufacturerTree', '_loadCategoryTree'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('_getActCat', 'getConfig', '_loadManufacturerTree', '_loadCategoryTree'));
         $o->expects($this->once())->method('_getActCat')->will($this->returnValue("actcat.."));
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $o->expects($this->never())->method('_loadManufacturerTree');
@@ -164,7 +164,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $oCfg->expects($this->at(1))->method('getTopActiveView')->will($this->returnValue($oActView));
         $oCfg->expects($this->at(2))->method('getConfigParam')->with($this->equalTo('bl_perfLoadManufacturerTree'))->will($this->returnValue(false));
 
-        $o = $this->getMock('oxcmp_categories', array('_getActCat', 'getConfig', '_loadManufacturerTree', '_loadCategoryTree'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('_getActCat', 'getConfig', '_loadManufacturerTree', '_loadCategoryTree'));
         $o->expects($this->once())->method('_getActCat')->will($this->returnValue("actcat.."));
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $o->expects($this->never())->method('_loadManufacturerTree');
@@ -179,7 +179,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $oParent = $this->getMock('stdClass', array('getViewProduct'));
         $oParent->expects($this->never())->method('getViewProduct')->will($this->returnValue(false));
 
-        $o = $this->getMock('oxcmp_categories', array());
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array());
         $o->setParent($oParent);
 
         $this->setRequestParameter('anid', '');
@@ -243,7 +243,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $oCfg = $this->getMock('stdClass', array('getActiveShop'));
         $oCfg->expects($this->once())->method('getActiveShop')->will($this->returnValue($oActShop));
 
-        $o = $this->getMock('oxcmp_categories', array('getConfig', 'getProduct', '_addAdditionalParams'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('getConfig', 'getProduct', '_addAdditionalParams'));
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $o->expects($this->once())->method('getProduct')->will($this->returnValue(null));
         $o->expects($this->never())->method('_addAdditionalParams');
@@ -262,7 +262,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $oCfg = $this->getMock('stdClass', array('getActiveShop'));
         $oCfg->expects($this->once())->method('getActiveShop')->will($this->returnValue($oActShop));
 
-        $o = $this->getMock('oxcmp_categories', array('getConfig', 'getProduct', '_addAdditionalParams'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('getConfig', 'getProduct', '_addAdditionalParams'));
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $o->expects($this->once())->method('getProduct')->will($this->returnValue(null));
         $o->expects($this->never())->method('_addAdditionalParams');
@@ -275,7 +275,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
     public function testGetActCatWithProduct()
     {
-        $o = $this->getMock('oxcmp_categories', array('getProduct', '_addAdditionalParams'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('getProduct', '_addAdditionalParams'));
         $o->expects($this->once())->method('getProduct')->will($this->returnValue("product"));
         $o->expects($this->once())->method('_addAdditionalParams')->with(
             $this->equalTo("product"),
@@ -291,7 +291,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
     public function testGetActCatWithProductAltBranches()
     {
-        $o = $this->getMock('oxcmp_categories', array('getProduct', '_addAdditionalParams'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('getProduct', '_addAdditionalParams'));
         $o->expects($this->once())->method('getProduct')->will($this->returnValue("product"));
         $o->expects($this->once())->method('_addAdditionalParams')->with(
             $this->equalTo("product"),
@@ -307,7 +307,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
     public function testLoadCategoryTree()
     {
-        $oCategoryList = $this->getMock('oxCategoryList', array('buildTree', 'getClickCat'));
+        $oCategoryList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, array('buildTree', 'getClickCat'));
         $oCategoryList->expects($this->once())->method('buildTree')->with($this->equalTo('act cat'));
 
         oxTestModules::addModuleObject('oxCategoryList', $oCategoryList);
@@ -330,7 +330,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $oCfg = $this->getMock('stdClass', array('getConfigParam'));
         $oCfg->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('bl_perfLoadManufacturerTree'))->will($this->returnValue(false));
 
-        $o = $this->getMock('oxcmp_categories', array('getConfig'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('getConfig'));
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
 
         $this->assertNull($o->UNITloadManufacturerTree("act Manufacturer"));
@@ -361,7 +361,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $oCfg->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('bl_perfLoadManufacturerTree'))->will($this->returnValue(true));
         $oCfg->expects($this->at(1))->method('getShopHomeURL')->will($this->returnValue("passitthru1"));
 
-        $o = $this->getMock('oxcmp_categories', array('getConfig', 'getManufacturerList'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('getConfig', 'getManufacturerList'));
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $o->expects($this->any())->method('getManufacturerList')->will($this->returnValue(self::$oCL));
 
@@ -378,7 +378,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $oParent = $this->getMock('stdClass', array('getManufacturerTree', 'getCategoryTree'));
         $oParent->expects($this->never())->method('getManufacturerTree');
 
-        $o = $this->getMock('oxcmp_categories', array('getConfig'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('getConfig'));
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $o->setParent($oParent);
 
@@ -397,7 +397,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $oParent->expects($this->once())->method('setManufacturerlist')->with($this->equalTo($oMTree));
         $oParent->expects($this->once())->method('setRootManufacturer')->with($this->equalTo("root Manufacturer cat"));
 
-        $o = $this->getMock('oxcmp_categories', array('getConfig'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('getConfig'));
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $o->setManufacturerTree($oMTree);
         $o->setParent($oParent);
@@ -415,7 +415,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $oParent = $this->getMock('stdClass', array('setManufacturerTree'));
         $oParent->expects($this->never())->method('setManufacturerTree');
 
-        $o = $this->getMock('oxcmp_categories', array('getConfig'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('getConfig'));
         $o->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $o->setParent($oParent);
         $o->setCategoryTree($oCTree);
@@ -457,11 +457,11 @@ class CmpCategoriesTest extends \OxidTestCase
         $this->setRequestParameter("searchmanufacturer", "testSearchManufacturer");
         $this->setRequestParameter("listtype", "search");
 
-        $oParent = $this->getMock("oxView", array("setListType", "setCategoryId"));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("setListType", "setCategoryId"));
         $oParent->expects($this->once())->method("setListType")->with($this->equalTo('search'));
         $oParent->expects($this->once())->method("setCategoryId")->with($this->equalTo("testCatId"));
 
-        $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
+        $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
         $this->assertEquals("testCatId", $oCmp->UNITaddAdditionalParams(oxNew('oxarticle'), "testCatId", "testManId", "testVendorId"));
     }
@@ -481,14 +481,14 @@ class CmpCategoriesTest extends \OxidTestCase
         $this->setRequestParameter("searchmanufacturer", null);
         $this->setRequestParameter("listtype", null);
 
-        $oParent = $this->getMock("oxView", array("setListType", "setCategoryId"));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("setListType", "setCategoryId"));
         $oParent->expects($this->once())->method("setListType")->with($this->equalTo('manufacturer'));
         $oParent->expects($this->once())->method("setCategoryId")->with($this->equalTo("testManId"));
 
-        $oProduct = $this->getMock("oxArticle", array("getManufacturerId"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getManufacturerId"));
         $oProduct->expects($this->once())->method("getManufacturerId")->will($this->returnValue("testManId"));
 
-        $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
+        $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
         $this->assertEquals("testManId", $oCmp->UNITaddAdditionalParams($oProduct, "testCatId", "testManId", "testVendorId"));
     }
@@ -507,15 +507,15 @@ class CmpCategoriesTest extends \OxidTestCase
         $this->setRequestParameter("searchmanufacturer", null);
         $this->setRequestParameter("listtype", null);
 
-        $oParent = $this->getMock("oxView", array("setListType", "setCategoryId"));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("setListType", "setCategoryId"));
         $oParent->expects($this->once())->method("setListType")->with($this->equalTo('vendor'));
         $oParent->expects($this->once())->method("setCategoryId")->with($this->equalTo("v_testVendorId"));
 
-        $oProduct = $this->getMock("oxArticle", array("getVendorId", "getManufacturerId"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getVendorId", "getManufacturerId"));
         $oProduct->expects($this->once())->method("getVendorId")->will($this->returnValue("testVendorId"));
         $oProduct->expects($this->once())->method("getManufacturerId")->will($this->returnValue("_testManId"));
 
-        $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
+        $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
         $this->assertEquals("v_testVendorId", $oCmp->UNITaddAdditionalParams($oProduct, "v_testVendorId", "testManId", "v_testVendorId"));
     }
@@ -533,14 +533,14 @@ class CmpCategoriesTest extends \OxidTestCase
         $this->setRequestParameter("searchmanufacturer", null);
         $this->setRequestParameter("listtype", null);
 
-        $oParent = $this->getMock("oxView", array("setListType", "setCategoryId"));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("setListType", "setCategoryId"));
         $oParent->expects($this->once())->method("setListType")->with($this->equalTo(null));
         $oParent->expects($this->once())->method("setCategoryId")->with($this->equalTo("testCatId"));
 
-        $oProduct = $this->getMock("oxArticle", array("getCategoryIds"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getCategoryIds"));
         $oProduct->expects($this->once())->method("getCategoryIds")->will($this->returnValue(array("testCatId")));
 
-        $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
+        $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
         $this->assertEquals("testCatId", $oCmp->UNITaddAdditionalParams($oProduct, null, null, null));
     }
@@ -558,15 +558,15 @@ class CmpCategoriesTest extends \OxidTestCase
         $this->setRequestParameter("searchmanufacturer", null);
         $this->setRequestParameter("listtype", null);
 
-        $oParent = $this->getMock("oxView", array("setListType", "setCategoryId"));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("setListType", "setCategoryId"));
         $oParent->expects($this->once())->method("setListType")->with($this->equalTo('manufacturer'));
         $oParent->expects($this->once())->method("setCategoryId")->with($this->equalTo("testManId"));
 
-        $oProduct = $this->getMock("oxArticle", array("getCategoryIds", "getManufacturerId"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getCategoryIds", "getManufacturerId"));
         $oProduct->expects($this->once())->method("getCategoryIds")->will($this->returnValue(false));
         $oProduct->expects($this->once())->method("getManufacturerId")->will($this->returnValue("testManId"));
 
-        $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
+        $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
         $this->assertEquals("testManId", $oCmp->UNITaddAdditionalParams($oProduct, null, null, null));
     }
@@ -584,16 +584,16 @@ class CmpCategoriesTest extends \OxidTestCase
         $this->setRequestParameter("searchmanufacturer", null);
         $this->setRequestParameter("listtype", null);
 
-        $oParent = $this->getMock("oxView", array("setListType", "setCategoryId"));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("setListType", "setCategoryId"));
         $oParent->expects($this->once())->method("setListType")->with($this->equalTo('vendor'));
         $oParent->expects($this->once())->method("setCategoryId")->with($this->equalTo("testVendorId"));
 
-        $oProduct = $this->getMock("oxArticle", array("getCategoryIds", "getManufacturerId", "getVendorId"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getCategoryIds", "getManufacturerId", "getVendorId"));
         $oProduct->expects($this->once())->method("getCategoryIds")->will($this->returnValue(false));
         $oProduct->expects($this->once())->method("getManufacturerId")->will($this->returnValue(false));
         $oProduct->expects($this->once())->method("getVendorId")->will($this->returnValue("testVendorId"));
 
-        $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
+        $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
         $this->assertEquals("testVendorId", $oCmp->UNITaddAdditionalParams($oProduct, null, null, null));
     }

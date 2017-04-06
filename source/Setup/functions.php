@@ -47,9 +47,9 @@ if (!function_exists('getSystemReqCheck')) {
         if ($editionSelector->isEnterprise()) {
             $systemRequirements = new \OxidEsales\EshopEnterprise\Core\SystemRequirements;
         } elseif ($editionSelector->isProfessional()) {
-            $systemRequirements = new OxidEsales\EshopProfessional\Core\SystemRequirements;
+            $systemRequirements = new \OxidEsales\EshopProfessional\Core\SystemRequirements;
         } else {
-            $systemRequirements = new OxidEsales\EshopCommunity\Core\SystemRequirements;
+            $systemRequirements = new \OxidEsales\EshopCommunity\Core\SystemRequirements;
         }
 
         return $systemRequirements;

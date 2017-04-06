@@ -91,10 +91,10 @@ class OrderRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $oRemark = oxNew(\OxidEsales\Eshop\Application\Model\Remark::class);
             $oRemark->load(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("rem_oxid"));
 
-            $oRemark->oxremark__oxtext = new oxField(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("remarktext"));
-            $oRemark->oxremark__oxheader = new oxField(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("remarkheader"));
-            $oRemark->oxremark__oxtype = new oxField("r");
-            $oRemark->oxremark__oxparentid = new oxField($oOrder->oxorder__oxuserid->value);
+            $oRemark->oxremark__oxtext = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("remarktext"));
+            $oRemark->oxremark__oxheader = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("remarkheader"));
+            $oRemark->oxremark__oxtype = new \OxidEsales\Eshop\Core\Field("r");
+            $oRemark->oxremark__oxparentid = new \OxidEsales\Eshop\Core\Field($oOrder->oxorder__oxuserid->value);
             $oRemark->save();
         }
     }

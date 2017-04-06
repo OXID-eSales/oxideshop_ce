@@ -244,7 +244,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         // ids of deliveries that does not fit for us to skip double check
         $aSkipDeliveries = array();
-        $aDelSetList = \OxidEsales\Eshop\Core\Registry::get("oxDeliverySetList")->getDeliverySetList($oUser, $sDelCountry, $sDelSet);
+        $aDelSetList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliverySetList::class)->getDeliverySetList($oUser, $sDelCountry, $sDelSet);
 
         // must choose right delivery set to use its delivery list
         foreach ($aDelSetList as $sDeliverySetId => $oDeliverySet) {

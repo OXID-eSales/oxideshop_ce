@@ -39,7 +39,7 @@ class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
         $this->stubExceptionToNotWriteToLog();
 
         /** @var oxCurl $oCurl */
-        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
         /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
         $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder');
         $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
@@ -54,7 +54,7 @@ class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('sClusterId', 'generated_unique_cluster_id');
 
-        $oCurl = $this->getMock('oxCurl', array('execute', 'setParameters'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'setParameters'));
         $oCurl->expects($this->once())->method('execute');
         $oCurl->expects($this->once())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $this->_getExpectedXml())));
         /** @var oxCurl $oCurl */

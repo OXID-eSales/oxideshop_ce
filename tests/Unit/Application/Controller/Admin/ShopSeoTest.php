@@ -118,7 +118,7 @@ class ShopSeoTest extends \OxidTestCase
 
         // testing..
         try {
-            $oView = $this->getMock("Shop_Seo", $aTasks);
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopSeo::class, $aTasks);
             foreach ($aTasks as $sMethodName) {
                 $oView->expects($this->any())->method($sMethodName);
             }
@@ -143,7 +143,7 @@ class ShopSeoTest extends \OxidTestCase
                        'oxseo__oxseourl' => array("seourl1", "seourl2"));
 
         // testing..
-        $oView = $this->getMock("Shop_Seo", array("_cleanupUrl"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopSeo::class, array("_cleanupUrl"));
         $oView->expects($this->at(0))->method('_cleanupUrl')->with($this->equalTo("stdurl"));
         $oView->expects($this->at(1))->method('_cleanupUrl')->with($this->equalTo("seourl1"));
         $oView->expects($this->at(2))->method('_cleanupUrl')->with($this->equalTo("seourl2"));

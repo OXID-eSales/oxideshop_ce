@@ -145,12 +145,12 @@ class ArticleExtendTest extends \OxidTestCase
         $this->setRequestParameter("mediaUrl", "testUrl");
         $this->setRequestParameter("mediaDesc", "testDesc");
 
-        $oConfig = $this->getMock("oxConfig", array("getUploadedFile", "isDemoShop"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getUploadedFile", "isDemoShop"));
         $oConfig->expects($this->exactly(2))->method('getUploadedFile')->will($this->returnValue(array("name" => "testName")));
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(false));
 
         // testing..
-        $oView = $this->getMock("Article_Extend", array("getConfig", "resetContentCache"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtend::class, array("getConfig", "resetContentCache"), array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oView->expects($this->any())->method('resetContentCache');
         $this->assertEquals("handleUploadedFile", $oView->save());
@@ -171,12 +171,12 @@ class ArticleExtendTest extends \OxidTestCase
         $this->setRequestParameter("mediaUrl", "testUrl");
         $this->setRequestParameter("mediaDesc", "testDesc");
 
-        $oConfig = $this->getMock("oxConfig", array("getUploadedFile", "isDemoShop"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getUploadedFile", "isDemoShop"));
         $oConfig->expects($this->exactly(2))->method('getUploadedFile')->will($this->returnValue(array("name" => "testName")));
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(false));
 
         // testing..
-        $oView = $this->getMock("Article_Extend", array("getConfig", "resetContentCache"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtend::class, array("getConfig", "resetContentCache"), array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oView->expects($this->any())->method('resetContentCache');
 
@@ -199,7 +199,7 @@ class ArticleExtendTest extends \OxidTestCase
      */
     public function testSaveDemoShopFileUpload()
     {
-        $oConfig = $this->getMock("oxConfig", array("getUploadedFile", "isDemoShop"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getUploadedFile", "isDemoShop"));
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
         $oConfig->expects($this->exactly(2))->method('getUploadedFile')->will(
             $this->onConsecutiveCalls(
@@ -207,7 +207,7 @@ class ArticleExtendTest extends \OxidTestCase
             )
         );
         // testing..
-        $oView = $this->getMock("Article_Extend", array("getConfig", "resetContentCache"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtend::class, array("getConfig", "resetContentCache"), array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oView->expects($this->any())->method('resetContentCache');
         $oView->save();

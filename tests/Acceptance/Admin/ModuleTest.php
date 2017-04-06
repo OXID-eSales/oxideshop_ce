@@ -412,7 +412,7 @@ class ModuleTest extends ModuleBaseTest
      */
     private function updateInformationAboutShopExtension($existingExtensionInformation, $newExtensionInformation)
     {
-        Registry::set('oxConfig', null);
+        Registry::set(\OxidEsales\Eshop\Core\Config::class, null);
         $activeModules = Registry::getConfig()->getConfigParam("aModules");
         foreach ($activeModules as $shopClassName => $moduleClassName) {
             if (strpos($moduleClassName, $existingExtensionInformation) !== false) {

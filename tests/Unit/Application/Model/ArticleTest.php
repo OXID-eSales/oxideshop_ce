@@ -363,7 +363,7 @@ class ArticleTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam('blUseTimeCheck', true);
 
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue(0));
         /** @var oxUtilsDate $oUtils */
         oxRegistry::set('oxUtilsDate', $oUtilsDate);
@@ -388,7 +388,7 @@ class ArticleTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('blVariantParentBuyable', false);
         $this->getConfig()->setConfigParam('blUseTimeCheck', true);
 
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue(0));
         /** @var oxUtilsDate $oUtils */
         oxRegistry::set('oxUtilsDate', $oUtilsDate);
@@ -869,7 +869,7 @@ class ArticleTest extends \OxidTestCase
     {
         $oParent = oxNew('oxArticle');
 
-        $oVariant = $this->getMock('oxarticle', array('getParentArticle', '_isFieldEmpty'));
+        $oVariant = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getParentArticle', '_isFieldEmpty'));
         $oVariant->expects($this->once())->method('getParentArticle')->will($this->returnValue($oParent));
         $oVariant->expects($this->never())->method('_isFieldEmpty');
         $this->assertNull($oVariant->UNITassignParentFieldValue('xxx'));
@@ -1031,7 +1031,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle->oxarticles__oxprice->value = 30;
         $this->assertEquals(30, $oArticle->UNITgetAmountPrice(12));
 
-        $oArticle = $this->getMock("oxarticle", array("skipDiscounts"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("skipDiscounts"));
         $oArticle->expects($this->any())->method('skipDiscounts')->will($this->returnValue(true));
         $oArticle->load($oArticle->getId());
         $oArticle->oxarticles__oxprice = new oxField(50);
@@ -1088,7 +1088,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testFillAmountPriceListCalls_applyVAT()
     {
-        $oArticle = $this->getMock('oxarticle', array('_applyVAT') /*, array(), '', false*/);
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('_applyVAT') /*, array(), '', false*/);
         $oArticle->expects($this->exactly(0))->method('_applyVAT');
         $oArticle->load('1126');
         $dArticlePrice = $oArticle->UNITgetGroupPrice();
@@ -1105,7 +1105,7 @@ class ArticleTest extends \OxidTestCase
         $oP2A->oxprice2article__oxaddperc = new oxField('5');
         $oAmPriceList[$oP2A->getId()] = $oP2A;
 
-        $oArticle = $this->getMock('oxarticle', array('_applyVAT') /*, array(), '', false*/);
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('_applyVAT') /*, array(), '', false*/);
         // one for main, two for am prices
         $oArticle->expects($this->exactly(1))->method('_applyVAT');
         $oArticle->getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', 0);
@@ -1760,7 +1760,7 @@ class ArticleTest extends \OxidTestCase
         $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
         oxDb::getDB()->execute("insert into oxreviews (oxid, oxtype, oxobjectid, oxuserid, oxtext) values ('_test1', 'oxarticle', '_testArt', 'oxdefaultadmin', '$sExpectedText' )");
-        $oArticle = $this->getMock('oxarticle', array('getUser'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getUser'));
         $oArticle->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oArticle->load('_testArt');
         $this->getConfig()->setConfigParam('blGBModerate', true);
@@ -2065,7 +2065,7 @@ class ArticleTest extends \OxidTestCase
     public function testLoadAmountPriceInfo_skipDiscounts_noErrorThrown()
     {
         oxArticleHelper::resetAmountPrice();
-        $oArticle = $this->getMock('oxArticle', array('skipDiscounts'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('skipDiscounts'));
         $oArticle->expects($this->any())->method('skipDiscounts')->will($this->returnValue(true));
         $oArticle->load('1651');
         $oAmPriceList = $oArticle->loadAmountPriceInfo();
@@ -2175,7 +2175,7 @@ class ArticleTest extends \OxidTestCase
     {
         $iCurrTime = 0;
 
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
         /** @var oxUtilsDate $oUtils */
         oxRegistry::set('oxUtilsDate', $oUtilsDate);
@@ -2632,7 +2632,7 @@ class ArticleTest extends \OxidTestCase
             $sVendId = 'd2e44d9b31fcce448.08890330';
         }
 
-        $oArticle = $this->getMock('oxarticle', array('getVendorId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getVendorId'));
         $oArticle->expects($this->any())->method('getVendorId')->will($this->returnValue(false));
         $oArticle->oxarticles__oxvendorid = new oxField($sVendId);
 
@@ -2655,7 +2655,7 @@ class ArticleTest extends \OxidTestCase
             $sVendId = 'd2e44d9b31fcce448.08890330';
         }
 
-        $oArticle = $this->getMock('oxarticle', array('getVendorId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getVendorId'));
         $oArticle->expects($this->any())->method('getVendorId')->will($this->returnValue(false));
         $oArticle->oxarticles__oxvendorid = new oxField($sVendId);
 
@@ -2705,7 +2705,7 @@ class ArticleTest extends \OxidTestCase
             $sManId = '88a996f859f94176da943f38ee067984';
         }
 
-        $oArticle = $this->getMock('oxarticle', array('getManufacturerId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getManufacturerId'));
         $oArticle->expects($this->any())->method('getManufacturerId')->will($this->returnValue(false));
         $oArticle->oxarticles__oxmanufacturerid = new oxField($sManId, oxField::T_RAW);
 
@@ -2729,7 +2729,7 @@ class ArticleTest extends \OxidTestCase
         }
 
         $this->getConfig()->setConfigParam('bl_perfLoadManufacturerTree', false);
-        $oArticle = $this->getMock('oxarticle', array('getManufacturerId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getManufacturerId'));
         $oArticle->expects($this->any())->method('getManufacturerId')->will($this->returnValue(false));
         $oArticle->oxarticles__oxmanufacturerid = new oxField($sManId, oxField::T_RAW);
 
@@ -2968,7 +2968,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testInCategory()
     {
-        $oArticle = $this->getMock('oxarticle', array('getCategoryIds'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getCategoryIds'));
         $oArticle->expects($this->any())->method('getCategoryIds')->will($this->returnValue(array('123', '234')));
         $this->assertTrue($oArticle->inCategory('123'));
     }
@@ -3246,7 +3246,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetPrice()
     {
-        $oArticle = $this->getMock('oxarticle', array('getBasePrice', 'skipDiscounts'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getBasePrice', 'skipDiscounts'));
         $oArticle->expects($this->any())->method('getBasePrice')->will($this->returnValue(123));
         $oArticle->expects($this->any())->method('skipDiscounts')->will($this->returnValue(false));
         $oTPrice = $oArticle->getPrice();
@@ -3320,7 +3320,7 @@ class ArticleTest extends \OxidTestCase
 
         oxTestModules::addFunction('oxVatSelector', 'getArticleVat', '{return 99;}');
 
-        $oArticle = $this->getMock('oxArticle', array('_applyVAT'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('_applyVAT'));
         $oArticle->expects($this->once())->method('_applyVAT')->will($this->returnValue(null))->with($oPrice, 99);
 
         $oArticle->applyVats($oPrice);
@@ -3412,7 +3412,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetBasketPrice()
     {
-        $oArticle = $this->getMock('oxarticle', array('getBasePrice', '_applyVAT', 'skipDiscounts'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getBasePrice', '_applyVAT', 'skipDiscounts'));
         $oArticle->expects($this->any())->method('getBasePrice')->will($this->returnValue(90));
         $oArticle->expects($this->any())->method('_applyVAT');
         $oArticle->expects($this->any())->method('skipDiscounts')->will($this->returnValue(true));
@@ -3427,14 +3427,14 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetBasketPriceSetsBasketUser()
     {
-        $oArticle = $this->getMock('oxarticle', array('getBasePrice', '_applyVAT', 'skipDiscounts'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getBasePrice', '_applyVAT', 'skipDiscounts'));
         $oArticle->expects($this->any())->method('getBasePrice')->will($this->returnValue(90));
         $oArticle->expects($this->any())->method('_applyVAT');
         $oArticle->expects($this->any())->method('skipDiscounts')->will($this->returnValue(true));
 
         $oUser = oxNew('oxUser');
         $oUser->iamtheone = 'test';
-        $oBasket = $this->getMock('oxbasket', array('getBasketUser'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getBasketUser'));
         $oBasket->expects($this->any())->method('getBasketUser')->will($this->returnValue($oUser));
         $oPrice = $oArticle->getBasketPrice(2, array(), $oBasket);
         $this->assertSame($oUser, $oArticle->getArticleUser());
@@ -3448,7 +3448,7 @@ class ArticleTest extends \OxidTestCase
     public function testGetBasketPriceWithDiscount()
     {
         oxRegistry::get("oxDiscountList")->forceReload();
-        $oArticle = $this->getMock('oxarticle', array('getBasePrice', '_applyVAT', 'skipDiscounts'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getBasePrice', '_applyVAT', 'skipDiscounts'));
         $oArticle->expects($this->any())->method('getBasePrice')->will($this->returnValue(90));
         $oArticle->expects($this->any())->method('_applyVAT');
         $oArticle->expects($this->any())->method('skipDiscounts')->will($this->returnValue(false));
@@ -3464,7 +3464,7 @@ class ArticleTest extends \OxidTestCase
     public function testGetBasketPriceWithTheSameDiscount()
     {
         oxRegistry::get("oxDiscountList")->forceReload();
-        $oArticle = $this->getMock('oxarticle', array('getBasePrice', '_applyVAT', 'skipDiscounts'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getBasePrice', '_applyVAT', 'skipDiscounts'));
         $oArticle->expects($this->any())->method('getBasePrice')->will($this->returnValue(90));
         $oArticle->expects($this->any())->method('_applyVAT');
         $oArticle->expects($this->any())->method('skipDiscounts')->will($this->returnValue(false));
@@ -3607,10 +3607,10 @@ class ArticleTest extends \OxidTestCase
         $oArticle->oxarticles__oxpricea = new oxField(12, oxField::T_RAW);
         $oArticle->save();
 
-        $oUser = $this->getMock('oxuser', array('inGroup'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('inGroup'));
         $oUser->expects($this->any())->method('inGroup')->will($this->returnValue(true));
 
-        $oArticle = $this->getMock('oxarticle', array('getUser'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getUser'));
         $oArticle->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oArticle->load('_testArt');
 
@@ -3627,7 +3627,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->oxarticles__oxpriceb = new oxField(12, oxField::T_RAW);
         $oArticle->save();
-        $oUser = $this->getMock('oxuser', array('inGroup'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('inGroup'));
         $oUser->expects($this->any())->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(false), $this->returnValue(true), $this->returnValue(false)));
         $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArt');
@@ -3645,7 +3645,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->oxarticles__oxpricec = new oxField(12, oxField::T_RAW);
         $oArticle->save();
-        $oUser = $this->getMock('oxuser', array('inGroup'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('inGroup'));
         $oUser->expects($this->any())->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(false), $this->returnValue(false), $this->returnValue(true)));
         $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArt');
@@ -3665,7 +3665,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle->oxarticles__oxprice = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxpricea = new oxField(0, oxField::T_RAW);
         $oArticle->save();
-        $oUser = $this->getMock('oxuser', array('inGroup'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('inGroup'));
         $oUser->expects($this->any())->method('inGroup')->will($this->returnValue(true));
         $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArt');
@@ -3981,7 +3981,7 @@ class ArticleTest extends \OxidTestCase
         $oVariant->oxarticles__oxvendorid = new oxField('oxvendorid');
         $oVariant->oxarticles__oxmanufacturerid = new oxField('oxmanufacturerid');
         $oVariant->save();
-        $oArticle = $this->getMock('oxarticle', array('_onChangeResetCounts'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('_onChangeResetCounts'));
         $oArticle->expects($this->any())->method('_onChangeResetCounts');
         $oArticle->load('_testArt');
         $oArticle->oxarticles__oxstockflag = new oxField(2, oxField::T_RAW);
@@ -4001,7 +4001,7 @@ class ArticleTest extends \OxidTestCase
         $this->_createArticle('_testArt');
         $oVariant = $this->_createVariant('_testVar', '_testArt');
         $oVariant->delete();
-        $oArticle = $this->getMock('oxarticle', array('_onChangeResetCounts'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('_onChangeResetCounts'));
         $oArticle->expects($this->any())->method('_onChangeResetCounts')->with($this->equalTo('_testArt'), $this->equalTo('oxvendorid'), $this->equalTo('oxmanufacturerid'));
         $oArticle->load('_testArt');
         $oArticle->oxarticles__oxstockflag = new oxField(2);
@@ -4135,11 +4135,11 @@ class ArticleTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
         $this->getConfig()->setConfigParam('blUseStock', true);
 
-        $oBR = $this->getMock('oxBasketReservation', array('getReservedAmount'));
+        $oBR = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketReservation::class, array('getReservedAmount'));
         $oBR->expects($this->once())->method('getReservedAmount')->with($this->equalTo($oArticle->getId()))->will($this->returnValue(5));
-        $oS = $this->getMock('oxSession', array('getBasketReservations'));
+        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
         $oS->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oBR));
-        $oA = $this->getMock('oxarticle', array('getSession'));
+        $oA = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getSession'));
         $oA->expects($this->any())->method('getSession')->will($this->returnValue($oS));
         $oA->load($oArticle->getId());
 
@@ -4258,11 +4258,11 @@ class ArticleTest extends \OxidTestCase
         $oArticle->oxarticles__oxstockflag = new oxField(2, oxField::T_RAW);
         $oArticle->save();
 
-        $oBR = $this->getMock('oxBasketReservation', array('getReservedAmount'));
+        $oBR = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketReservation::class, array('getReservedAmount'));
         $oBR->expects($this->once())->method('getReservedAmount')->with($this->equalTo('_testArt'))->will($this->returnValue(5));
-        $oS = $this->getMock('oxSession', array('getBasketReservations'));
+        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
         $oS->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oBR));
-        $oA = $this->getMock('oxarticle', array('getSession', '_assignStock'));
+        $oA = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getSession', '_assignStock'));
         $oA->expects($this->any())->method('getSession')->will($this->returnValue($oS));
         $oA->expects($this->any())->method('_assignStock')->will($this->returnValue(null));
         $oA->load($oArticle->getId());
@@ -4726,11 +4726,11 @@ class ArticleTest extends \OxidTestCase
 
         $this->_createArticle('_testArt', '_testVar');
 
-        $oBR = $this->getMock('oxBasketReservation', array('getReservedAmount'));
+        $oBR = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketReservation::class, array('getReservedAmount'));
         $oBR->expects($this->once())->method('getReservedAmount')->with($this->equalTo('_testArt'))->will($this->returnValue(5));
-        $oS = $this->getMock('oxSession', array('getBasketReservations'));
+        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
         $oS->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oBR));
-        $oA = $this->getMock('oxarticle', array('getSession'));
+        $oA = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getSession'));
         $oA->expects($this->any())->method('getSession')->will($this->returnValue($oS));
         $oA->load('_testArt');
         $oA->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
@@ -4907,7 +4907,7 @@ class ArticleTest extends \OxidTestCase
 
         $sUrl = $this->getConfig()->getShopHomeURL() . 'cl=details&amp;anid=xxx&amp;cnid=yyy&amp;pgNr=10&amp;mnid=mmm&amp;listtype=search';
 
-        $oArticle = $this->getMock('oxarticle', array('getSession'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getSession'));
         $oArticle->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
         $oArticle->setId('xxx');
 
@@ -5248,7 +5248,7 @@ class ArticleTest extends \OxidTestCase
         $oParentArticle->oxarticles__oxthumb = new oxField('parent_thumb.jpg', oxField::T_RAW);
         $oParentArticle->oxarticles__oxzoom1 = new oxField('parent_zoom1.jpg', oxField::T_RAW);
 
-        $oVarArticle = $this->getMock('oxarticle', array('getParentArticle', '_hasMasterImage'));
+        $oVarArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getParentArticle', '_hasMasterImage'));
         $oVarArticle->expects($this->any())->method('getParentArticle')->will($this->returnValue($oParentArticle));
         $oVarArticle->expects($this->any())->method('_hasMasterImage')->will($this->returnValue(true));
 
@@ -5284,7 +5284,7 @@ class ArticleTest extends \OxidTestCase
         $oParentArticle->oxarticles__oxpic2 = new oxField('parent_pic2.jpg', oxField::T_RAW);
         $oParentArticle->oxarticles__oxtitle = new oxField('testArt', oxField::T_RAW);
 
-        $oVarArticle = $this->getMock('oxarticle', array('getParentArticle', '_hasMasterImage'));
+        $oVarArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getParentArticle', '_hasMasterImage'));
         $oVarArticle->init(null, true);
         $oVarArticle->expects($this->any())->method('getParentArticle')->will($this->returnValue($oParentArticle));
         $oVarArticle->expects($this->any())->method('_hasMasterImage')->will($this->returnValue(true));
@@ -5320,7 +5320,7 @@ class ArticleTest extends \OxidTestCase
         $oParentArticle->oxarticles__oxthumb = new oxField('parent_thumb.jpg', oxField::T_RAW);
         $oParentArticle->oxarticles__oxzoom1 = new oxField('parent_zoom1.jpg', oxField::T_RAW);
 
-        $oVarArticle = $this->getMock('oxarticle', array('getParentArticle', '_hasMasterImage', '_assignZoomPictureValues'));
+        $oVarArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getParentArticle', '_hasMasterImage', '_assignZoomPictureValues'));
         $oVarArticle->expects($this->any())->method('getParentArticle')->will($this->returnValue($oParentArticle));
         $oVarArticle->expects($this->any())->method('_hasMasterImage')->will($this->returnValue(false));
         $oVarArticle->expects($this->any())->method('_assignZoomPictureValues')->will($this->returnValue(new oxField()));
@@ -5432,7 +5432,7 @@ class ArticleTest extends \OxidTestCase
         $sUrl1 = $this->getConfig()->getShopHomeURL() . 'cl=details&amp;anid=xxx&amp;cnid=yyy&amp;pgNr=10&amp;mnid=mmm&amp;listtype=search&amp;lang=1';
         $sUrl2 = $this->getConfig()->getShopHomeURL() . 'cl=details&amp;anid=xxx&amp;cnid=yyy&amp;pgNr=10&amp;mnid=mmm&amp;listtype=search';
 
-        $oArticle = $this->getMock('oxarticle', array('getSession'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getSession'));
         $oArticle->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
         $oArticle->setId('xxx');
 
@@ -5460,7 +5460,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetDispSelList()
     {
-        $oArticle = $this->getMock('oxarticle', array('getSelectLists'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getSelectLists'));
         $oArticle->expects($this->once())->method('getSelectLists')->will($this->returnValue('aaa'));
         $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', true);
         $this->getConfig()->setConfigParam('bl_perfLoadSelectListsInAList', true);
@@ -5501,7 +5501,7 @@ class ArticleTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtilsUrl', 'processUrl($url, $blFinalUrl = true, $aParams = NULL, $iLang = NULL)', '{return "PROC".$url.(int)$final."CORP";}');
 
         $this->setRequestParameter('cnid', 'yyy');
-        $oArticle = $this->getMock("oxarticle", array('getId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oArticle->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
 
         $this->assertEquals('PROC' . $this->getConfig()->getShopUrl() . 'index.php' . '0CORPcl=moredetails&amp;cnid=yyy&amp;anid=xxx', $oArticle->getMoreDetailLink());
@@ -5532,7 +5532,7 @@ class ArticleTest extends \OxidTestCase
 
         oxTestModules::addFunction('oxUtilsUrl', 'processUrl($url, $blFinalUrl = true, $aParams = NULL, $iLang = NULL)', '{return "PROC".$url.(int)$final."CORP";}');
 
-        $oArticle = $this->getMock("oxarticle", array('getId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oArticle->expects($this->exactly(2))->method('getId')->will($this->returnValue('xxx'));
 
         $this->assertEquals('PROC' . $this->getConfig()->getShopUrl() . 'index.php' . '0CORPcl=basket&amp;cnid=yyy&amp;fnc=tobasket&amp;aid=xxx&amp;anid=xxx&amp;tpl=file.tpl', $oArticle->getToBasketLink());
@@ -5548,7 +5548,7 @@ class ArticleTest extends \OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return 'seolink'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "isSearchEngine", "{return true;}");
 
-        $oArticle = $this->getMock("oxarticle", array('getLink'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getLink'));
         $oArticle->expects($this->once())->method('getLink')->will($this->returnValue('seolink'));
 
         $this->assertEquals('seolink', $oArticle->getToBasketLink());
@@ -5684,7 +5684,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetFPriceIfNotSet()
     {
-        $oArticle = $this->getMock('oxarticle', array('getPrice'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getPrice'));
         $oArticle->expects($this->once())->method('getPrice')->will($this->returnValue(null));
         $this->assertNull($oArticle->getFPrice());
     }
@@ -5720,7 +5720,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetPictureUrl()
     {
-        $oPH = $this->getMock('oxPictureHandler', array('getPicUrl'));
+        $oPH = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('getPicUrl'));
         $oPH->expects($this->once())->method('getPicUrl')->with($this->equalTo('product/1/'), $this->equalTo('nopic.jpg'))->will($this->returnValue('testPic1Url'));
 
         oxTestModules::addModuleObject('oxPictureHandler', $oPH);
@@ -5755,7 +5755,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetPictureUrl_noIndex()
     {
-        $oConfig = $this->getMock('oxConfig', array('getPictureUrl'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getPictureUrl'));
         $oConfig->expects($this->never())->method('getPictureUrl');
 
         $oArticle = $this->getProxyClass("oxarticle");
@@ -5771,7 +5771,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetIconUrlNewPath()
     {
-        $oArticle = $this->getMock('oxarticle', array('_getIconName', '_isFieldEmpty', '_assignPictureValues'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('_getIconName', '_isFieldEmpty', '_assignPictureValues'));
 
         $oArticle->oxarticles__oxpic1 = new oxField("30-360-back_p1_z_f_th_665.jpg");
 
@@ -5792,7 +5792,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetThumbnailUrlNewPath()
     {
-        $oArticle = $this->getMock('oxarticle', array('_isFieldEmpty', '_assignPictureValues'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('_isFieldEmpty', '_assignPictureValues'));
         $oArticle->oxarticles__oxthumb = new oxField("detail1_z3_ico_th.jpg");
         $oArticle->expects($this->any())->method('_isFieldEmpty')->will($this->returnValue(false));
         $oArticle->expects($this->any())->method('_assignPictureValues')->will($this->returnValue(null));
@@ -5811,7 +5811,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetZoomPictureUrlNewPath()
     {
-        $oArticle = $this->getMock('oxarticle', array('_isFieldEmpty'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('_isFieldEmpty'));
         $oArticle->oxarticles__oxpic1 = new oxField("30-360-back_p1_z_f_th_665.jpg");
         $oArticle->expects($this->any())->method('_isFieldEmpty')->will($this->returnValue(false));
 
@@ -5830,7 +5830,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetZoomPictureUrl_noIndex()
     {
-        $oConfig = $this->getMock('oxConfig', array('getPictureUrl'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getPictureUrl'));
         $oConfig->expects($this->never())->method('getPictureUrl');
 
         $oArticle = $this->getProxyClass("oxarticle");
@@ -6369,7 +6369,7 @@ class ArticleTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oArticle = $this->getMock('oxarticle', array('getSession'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getSession'));
         $oArticle->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
         $oArticle->setId('xxx');
 
@@ -6417,7 +6417,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testInPriceCategoryNoException($return, $expected)
     {
-        $articleMock = $this->getMock('oxArticle', array('fetchFirstInPriceCategory'));
+        $articleMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('fetchFirstInPriceCategory'));
         $articleMock->expects($this->any())
             ->method('fetchFirstInPriceCategory')
             ->willReturn($return);
@@ -6446,7 +6446,7 @@ class ArticleTest extends \OxidTestCase
             array('95', "'95'"),
         )));
 
-        $articleMock = $this->getMock('oxArticle', array('getDatabase'));
+        $articleMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getDatabase'));
         $articleMock->expects($this->any())->method('getDatabase')->willReturn($dbMock);
         $articleMock->setId('_testx');
         $articleMock->oxarticles__oxprice = new oxField('95');
@@ -6462,7 +6462,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testOnChange_callsCountResetOnStockChange()
     {
-        $oArticle = $this->getMock("oxarticle", array("_onChangeStockResetCount"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("_onChangeStockResetCount"));
         $oArticle->expects($this->once())->method('_onChangeStockResetCount')->with($this->equalTo('_testArt'));
         $oArticle->onChange(ACTION_UPDATE_STOCK, '_testArt');
     }
@@ -6475,7 +6475,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testOnChange_callsCountResetOnlyStockChange()
     {
-        $oArticle = $this->getMock("oxarticle", array("_onChangeStockResetCount"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("_onChangeStockResetCount"));
         $oArticle->expects($this->never())->method('_onChangeStockResetCount');
         $oArticle->onChange(null, '_testArt');
     }
@@ -6488,7 +6488,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testOnChange_onChangeStockResetCount()
     {
-        $oArticle = $this->getMock("oxarticle", array("_onChangeResetCounts"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("_onChangeResetCounts"));
         $oArticle->expects($this->once())->method('_onChangeResetCounts')->with($this->equalTo('_testArt'), $this->equalTo('_testVendorId'), $this->equalTo('_testManufacturerId'));
         $oArticle->oxarticles__oxvendorid = new oxField("_testVendorId");
         $oArticle->oxarticles__oxmanufacturerid = new oxField("_testManufacturerId");
@@ -6506,7 +6506,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testHasMasterImage_noImage()
     {
-        $oConfig = $this->getMock("oxconfig", array("getMasterPicturePath"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getMasterPicturePath"));
         $oConfig->expects($this->any())->method('getMasterPicturePath')->with($this->equalTo('product/1/testPic1.jpg'))->will($this->returnValue(false));
 
         $oArticle = $this->getProxyClass("oxarticle");
@@ -6524,7 +6524,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testHasMasterImage_withDefaultNoImageValue()
     {
-        $oConfig = $this->getMock("oxconfig", array("getMasterPicturePath"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getMasterPicturePath"));
         $oConfig->expects($this->never())->method('getMasterPicturePath');
 
         $oArticle = $this->getProxyClass("oxarticle");
@@ -6542,7 +6542,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testHasMasterImage_withEmptyImageValue()
     {
-        $oConfig = $this->getMock("oxconfig", array("getMasterPicturePath"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getMasterPicturePath"));
         $oConfig->expects($this->never())->method('getMasterPicturePath');
 
         $oArticle = $this->getProxyClass("oxarticle");
@@ -6559,7 +6559,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testHasMasterImage_hasImage()
     {
-        $oConfig = $this->getMock("oxconfig", array("getMasterPicturePath"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getMasterPicturePath"));
         $oConfig->expects($this->at(0))->method('getMasterPicturePath')->with($this->equalTo('product/1/testPic1.jpg'))->will($this->returnValue(true));
         $oConfig->expects($this->at(1))->method('getMasterPicturePath')->with($this->equalTo('product/2/testPic2.jpg'))->will($this->returnValue(true));
 
@@ -6579,7 +6579,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testHasMasterImage_IfParentHasImage()
     {
-        $oConfig = $this->getMock("oxconfig", array("getMasterPicturePath"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getMasterPicturePath"));
         $oConfig->expects($this->any())->method('getMasterPicturePath')->will($this->returnValue(true));
 
         $oArticle = $this->getProxyClass("oxArticle");
@@ -6678,14 +6678,14 @@ class ArticleTest extends \OxidTestCase
     public function testGetVariantSelections()
     {
         oxTestModules::addFunction("oxVariantHandler", "buildVariantSelections", "{return 'buildVariantSelections';}");
-        $oVariantHandler = $this->getMock('oxVariantHandler', array("buildVariantSelections"));
+        $oVariantHandler = $this->getMock(\OxidEsales\Eshop\Application\Model\VariantHandler::class, array("buildVariantSelections"));
         $aVariantSelections = array('selections' => 'asd', 'rawselections' => 'asd');
         $oVariantHandler->expects($this->once())->method("buildVariantSelections")
             ->with($this->equalTo('varname'), $this->equalTo('variants'), $this->equalTo(1), $this->equalTo(2), $this->equalTo(3))
             ->will($this->returnValue($aVariantSelections));
         oxTestModules::addModuleObject("oxVariantHandler", $oVariantHandler);
 
-        $oProduct = $this->getMock("oxArticle", array("getVariants"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getVariants"));
         $oProduct->expects($this->once())->method('getVariants')->will($this->returnValue('variants'));
         $oProduct->oxarticles__oxvarcount = new oxField(3);
         $oProduct->oxarticles__oxvarname = new oxField('varname');
@@ -6701,14 +6701,14 @@ class ArticleTest extends \OxidTestCase
     public function testGetVariantSelectionsWithAllInactiveVariants()
     {
         oxTestModules::addFunction("oxVariantHandler", "buildVariantSelections", "{return 'buildVariantSelections';}");
-        $oVariantHandler = $this->getMock('oxVariantHandler', array("buildVariantSelections"));
+        $oVariantHandler = $this->getMock(\OxidEsales\Eshop\Application\Model\VariantHandler::class, array("buildVariantSelections"));
         $aVariantSelections = array('selections' => 'asd', 'rawselections' => '');
         $oVariantHandler->expects($this->once())->method("buildVariantSelections")
             ->with($this->equalTo('varname'), $this->equalTo('variants'), $this->equalTo(1), $this->equalTo(2), $this->equalTo(3))
             ->will($this->returnValue($aVariantSelections));
         oxTestModules::addModuleObject("oxVariantHandler", $oVariantHandler);
 
-        $oProduct = $this->getMock("oxArticle", array("getVariants"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getVariants"));
         $oProduct->expects($this->once())->method('getVariants')->will($this->returnValue('variants'));
         $oProduct->oxarticles__oxvarcount = new oxField(3);
         $oProduct->oxarticles__oxvarname = new oxField('varname');
@@ -6723,14 +6723,14 @@ class ArticleTest extends \OxidTestCase
     public function testGetVariantSelectionsWithNoVariants()
     {
         oxTestModules::addFunction("oxVariantHandler", "buildVariantSelections", "{return 'buildVariantSelections';}");
-        $oVariantHandler = $this->getMock('oxVariantHandler', array("buildVariantSelections"));
+        $oVariantHandler = $this->getMock(\OxidEsales\Eshop\Application\Model\VariantHandler::class, array("buildVariantSelections"));
         $aVariantSelections = array('selections' => 'asd', 'rawselections' => '');
         $oVariantHandler->expects($this->once())->method("buildVariantSelections")
             ->with($this->equalTo('varname'), $this->equalTo(array()), $this->equalTo(1), $this->equalTo(2), $this->equalTo(3))
             ->will($this->returnValue($aVariantSelections));
         oxTestModules::addModuleObject("oxVariantHandler", $oVariantHandler);
 
-        $oProduct = $this->getMock("oxArticle", array("getVariants"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getVariants"));
         $oProduct->expects($this->once())->method('getVariants')->will($this->returnValue(array()));
         $oProduct->oxarticles__oxvarcount = new oxField(3);
         $oProduct->oxarticles__oxvarname = new oxField('varname');
@@ -7054,7 +7054,7 @@ class ArticleTest extends \OxidTestCase
     public function testStaticCacheInAdmin()
     {
         $this->setAdminMode(1);
-        $oArticle = $this->getMock('oxArticle', array('_loadFromDb'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('_loadFromDb'));
 
         $oArticle->expects($this->exactly(4))->method('_loadFromDb')->with($this->equalTo("2176"))->
             will($this->returnValue(array("oxid" => 2176, "oxparentid" => 2000)));

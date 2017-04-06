@@ -306,4 +306,227 @@ class RegistryTest extends \OxidTestCase
         //When you explicitly request an EDITION namespace object this is NOT stored under the virtual namespace key.
         $this->assertFalse(Registry::instanceExists($virtualClassName));
     }
+
+    /**
+     * Test Registry::getInputValidator().
+     */
+    public function testRegistryGetInputValidator()
+    {
+        $object = Registry::getInputValidator();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\InputValidator::class));
+    }
+
+    /**
+     * Test Registry::getPictureHandler().
+     */
+    public function testRegistryGetPictureHandler()
+    {
+        $object = Registry::getPictureHandler();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\PictureHandler::class));
+    }
+
+    /**
+     * Test Registry::getSeoDecoder().
+     */
+    public function testRegistryGetSeoDecoder()
+    {
+        $object = Registry::getSeoDecoder();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\SeoDecoder::class));
+    }
+
+    /**
+     * Test Registry::getSeoEncoder().
+     */
+    public function testRegistryGetSeoEncoder()
+    {
+        $object = Registry::getSeoEncoder();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\SeoEncoder::class));
+    }
+
+    /**
+     * Test Registry::getUtilsCount().
+     */
+    public function testRegistryGetUtilsCount()
+    {
+        $object = Registry::getUtilsCount();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsCount::class));
+    }
+
+    /**
+     * Test Registry::getUtilsDate().
+     */
+    public function testRegistryGetUtilsDate()
+    {
+        $object = Registry::getUtilsDate();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsDate::class));
+    }
+
+    /**
+     * Test Registry::getUtilsFile().
+     */
+    public function testRegistryGetUtilsFile()
+    {
+        $object = Registry::getUtilsFile();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsFile::class));
+    }
+
+    /**
+     * Test Registry::getUtilsPic().
+     */
+    public function testRegistryGetUtilsPic()
+    {
+        $object = Registry::getUtilsPic();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsPic::class));
+    }
+
+    /**
+     * Test Registry::getUtilsServer().
+     */
+    public function testRegistryGetUtilsServer()
+    {
+        $object = Registry::getUtilsServer();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsServer::class));
+    }
+
+    /**
+     * Test Registry::getUtilsString().
+     */
+    public function testRegistryGetUtilsString()
+    {
+        $object = Registry::getUtilsString();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsString::class));
+    }
+
+    /**
+     * Test Registry::getUtilsUrl().
+     */
+    public function testRegistryGetUtilsUrl()
+    {
+        $object = Registry::getUtilsUrl();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsUrl::class));
+    }
+
+    /**
+     * Test Registry::getUtilsView().
+     */
+    public function testRegistryGetUtilsView()
+    {
+        $object = Registry::getUtilsView();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsView::class));
+    }
+
+    /**
+     * Test Registry::getUtilsXml().
+     */
+    public function testRegistryGetUtilsXml()
+    {
+        $object = Registry::getUtilsXml();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsXml::class));
+    }
+
+    /**
+     * Test Registry dedicated getters vs. Registry::get() for BC classes.
+     * Test belongs to BC layer.
+     */
+    public function testRegistryBCGet()
+    {
+        $this->assertTrue(Registry::getInputValidator() === Registry::get('oxInputValidator'));
+        $this->assertTrue(Registry::getPictureHandler() === Registry::get('oxPictureHandler'));
+        $this->assertTrue(Registry::getSeoDecoder() === Registry::get('oxSeoDecoder'));
+        $this->assertTrue(Registry::getSeoEncoder() === Registry::get('oxSeoEncoder'));
+        $this->assertTrue(Registry::getUtilsCount() === Registry::get('oxUtilsCount'));
+        $this->assertTrue(Registry::getUtilsDate() === Registry::get('oxUtilsDate'));
+        $this->assertTrue(Registry::getUtilsFile() === Registry::get('oxUtilsFile'));
+        $this->assertTrue(Registry::getUtilsPic() === Registry::get('oxUtilsPic'));
+        $this->assertTrue(Registry::getUtilsServer() === Registry::get('oxUtilsServer'));
+        $this->assertTrue(Registry::getUtilsString() === Registry::get('oxUtilsString'));
+        $this->assertTrue(Registry::getUtilsUrl() === Registry::get('oxUtilsUrl'));
+        $this->assertTrue(Registry::getUtilsView() === Registry::get('oxUtilsView'));
+        $this->assertTrue(Registry::getUtilsXml() === Registry::get('oxUtilsXml'));
+        $this->assertTrue(Registry::getConfig() === Registry::get('oxConfig'));
+        $this->assertTrue(Registry::getSession() === Registry::get('oxSession'));
+        $this->assertTrue(Registry::getLang() === Registry::get('oxLang'));
+        $this->assertTrue(Registry::getUtils() === Registry::get('oxUtils'));
+        $this->assertTrue(Registry::getUtilsObject() === Registry::get('oxUtilsObject'));
+    }
+
+
+    /**
+     * @dataProvider dataProviderTestRegistryGettersReturnIdenticalObjects
+     *
+     * @param $method
+     */
+    public function testRegistryGettersReturnIdenticalObjects($method)
+    {
+        $object_1 = Registry::$method();
+        $object_2 = Registry::$method();
+
+        $this->assertTrue(($object_1 === $object_2), '2 consecutive calls to Registry::' . $method . '() will return identical objects');
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestRegistryGettersReturnIdenticalObjects()
+    {
+        return [
+            ['getInputValidator'],
+            ['getPictureHandler'],
+            ['getSeoDecoder'],
+            ['getSeoEncoder'],
+            ['getUtilsCount'],
+            ['getUtilsDate'],
+            ['getUtilsFile'],
+            ['getUtilsPic'],
+            ['getUtilsServer'],
+            ['getUtilsString'],
+            ['getUtilsUrl'],
+            ['getUtilsView'],
+            ['getUtilsXml'],
+            ['getConfig'],
+            ['getSession'],
+            ['getLang'],
+            ['getUtils'],
+            ['getUtilsObject'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderTestRegistryGettersReturnProperInstances
+     *
+     * @param $method
+     */
+    public function testRegistryGettersReturnProperInstances($method, $instance)
+    {
+        $object = Registry::$method();
+
+        $this->assertInstanceOf($instance, $object, 'Registry::' . $method . '() returns an object, which is an instance of ' . $instance);
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestRegistryGettersReturnProperInstances()
+    {
+        return [
+            ['getInputValidator', \OxidEsales\Eshop\Core\InputValidator::class],
+            ['getPictureHandler', \OxidEsales\Eshop\Core\PictureHandler::class],
+            ['getSeoDecoder', \OxidEsales\Eshop\Core\SeoDecoder::class],
+            ['getSeoEncoder', \OxidEsales\Eshop\Core\SeoEncoder::class],
+            ['getUtilsCount', \OxidEsales\Eshop\Core\UtilsCount::class],
+            ['getUtilsDate', \OxidEsales\Eshop\Core\UtilsDate::class],
+            ['getUtilsFile', \OxidEsales\Eshop\Core\UtilsFile::class],
+            ['getUtilsPic', \OxidEsales\Eshop\Core\UtilsPic::class],
+            ['getUtilsServer', \OxidEsales\Eshop\Core\UtilsServer::class],
+            ['getUtilsString', \OxidEsales\Eshop\Core\UtilsString::class],
+            ['getUtilsUrl', \OxidEsales\Eshop\Core\UtilsUrl::class],
+            ['getUtilsView', \OxidEsales\Eshop\Core\UtilsView::class],
+            ['getUtilsXml', \OxidEsales\Eshop\Core\UtilsXml::class],
+            ['getConfig', \OxidEsales\Eshop\Core\Config::class],
+            ['getSession', \OxidEsales\Eshop\Core\Session::class],
+            ['getLang', \OxidEsales\Eshop\Core\Language::class],
+            ['getUtils', \OxidEsales\Eshop\Core\Utils::class],
+            ['getUtilsObject', \OxidEsales\Eshop\Core\UtilsObject::class],
+        ];
+    }
 }

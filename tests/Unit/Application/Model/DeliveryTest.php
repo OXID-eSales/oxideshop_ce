@@ -706,12 +706,12 @@ class DeliveryTest extends \OxidTestCase
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
 
         /** @var oxOrderArticle|PHPUnit_Framework_MockObject_MockObject $oOrderArticle */
-        $oOrderArticle = $this->getMock('oxOrderArticle', array(), array(), '', false);
+        $oOrderArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderArticle::class, array(), array(), '', false);
         $oOrderArticle->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oBasketItem->getArticle()));
         $oOrderArticle->expects($this->any())->method('isOrderArticle')->will($this->returnValue(true));
 
         /** @var oxBasketItem $oBasketItem|PHPUnit_Framework_MockObject_MockObject */
-        $oBasketItem = $this->getMock('oxBasketItem', array(), array(), '', false);
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array(), array(), '', false);
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($oOrderArticle));
 
         $this->assertEquals(5, $oDelivery->getDeliveryAmount($oBasketItem));
@@ -754,12 +754,12 @@ class DeliveryTest extends \OxidTestCase
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
 
         /** @var oxOrderArticle|PHPUnit_Framework_MockObject_MockObject $oOrderArticle */
-        $oOrderArticle = $this->getMock('oxOrderArticle', array(), array(), '', false);
+        $oOrderArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderArticle::class, array(), array(), '', false);
         $oOrderArticle->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oBasketItem->getArticle()));
         $oOrderArticle->expects($this->any())->method('isOrderArticle')->will($this->returnValue(true));
 
         /** @var oxBasketItem $oBasketItem|PHPUnit_Framework_MockObject_MockObject */
-        $oBasketItem = $this->getMock('oxBasketItem', array(), array(), '', false);
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array(), array(), '', false);
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($oOrderArticle));
 
         $this->assertEquals(48, $oDelivery->getDeliveryAmount($oBasketItem));

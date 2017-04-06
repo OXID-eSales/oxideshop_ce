@@ -71,7 +71,7 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
                     if ($sParentId && $sParentId != 'oxrootid') {
                         $oParentCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
                         if ($oParentCat->loadInLang($iLang, $oCat->oxcategories__oxparentid->value)) {
-                            $sSeoUrl .= \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderCategory")->getCategoryUri($oParentCat);
+                            $sSeoUrl .= \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->getCategoryUri($oParentCat);
                         }
                     }
                 }

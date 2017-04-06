@@ -35,7 +35,7 @@ class ServiceMenuTest extends \OxidTestCase
      */
     public function testGetCompareItemsCnt()
     {
-        $oCompare = $this->getMock("compare", array("getCompareItemsCnt"));
+        $oCompare = $this->getMock(\OxidEsales\Eshop\Application\Controller\CompareController::class, array("getCompareItemsCnt"));
         $oCompare->expects($this->once())->method("getCompareItemsCnt")->will($this->returnValue(10));
         oxTestModules::addModuleObject('compare', $oCompare);
 
@@ -51,7 +51,7 @@ class ServiceMenuTest extends \OxidTestCase
     public function testGetCompareItems()
     {
         $aItems = array("testId1" => "testVal1", "testId2" => "testVal2", "testId3" => "testVal3");
-        $oCompare = $this->getMock("compare", array("getCompareItems"));
+        $oCompare = $this->getMock(\OxidEsales\Eshop\Application\Controller\CompareController::class, array("getCompareItems"));
         $oCompare->expects($this->once())->method("getCompareItems")->will($this->returnValue($aItems));
         oxTestModules::addModuleObject('compare', $oCompare);
 
@@ -68,7 +68,7 @@ class ServiceMenuTest extends \OxidTestCase
     {
         $aItems = array("testId1" => "testVal1", "testId2" => "testVal2", "testId3" => "testVal3");
         $aResult = '{"testId1":"testVal1","testId2":"testVal2","testId3":"testVal3"}';
-        $oCompare = $this->getMock("compare", array("getCompareItems"));
+        $oCompare = $this->getMock(\OxidEsales\Eshop\Application\Controller\CompareController::class, array("getCompareItems"));
         $oCompare->expects($this->once())->method("getCompareItems")->will($this->returnValue($aItems));
         oxTestModules::addModuleObject('compare', $oCompare);
 

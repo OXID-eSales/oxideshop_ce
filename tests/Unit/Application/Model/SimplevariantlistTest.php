@@ -43,7 +43,7 @@ class SimplevariantlistTest extends \OxidTestCase
         $sParent = "someString";
         $aDbFields = array("field1" => "val1");
 
-        $oListObjectMock = $this->getMock('oxSimpleVariant', array('setParent'));
+        $oListObjectMock = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('setParent'));
         $oListObjectMock->expects($this->once())->method('setParent')->with($sParent);
 
         $oSubj = $this->getProxyClass("oxSimpleVariantList");

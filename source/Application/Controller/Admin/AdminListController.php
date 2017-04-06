@@ -540,7 +540,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     protected function _convertToDBDate($value, $fieldType)
     {
-        $convertedObject = new oxField();
+        $convertedObject = new \OxidEsales\Eshop\Core\Field();
         $convertedObject->setValue($value);
         if ($fieldType == "datetime") {
             if (strlen($value) == 10 || strlen($value) == 22 || (strlen($value) == 19 && !stripos($value, "m"))) {
@@ -611,7 +611,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     protected function _convertTime($fullDate)
     {
         $date = substr($fullDate, 0, 10);
-        $convertedObject = new oxField();
+        $convertedObject = new \OxidEsales\Eshop\Core\Field();
         $convertedObject->setValue($date);
         \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->convertDBDate($convertedObject, true);
         $stringModifier = getStr();

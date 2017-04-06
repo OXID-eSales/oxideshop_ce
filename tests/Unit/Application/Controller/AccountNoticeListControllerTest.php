@@ -74,7 +74,7 @@ class AccountNoticeListControllerTest extends \OxidTestCase
      */
     public function testGetSimilarProducts()
     {
-        $oProduct = $this->getMock("oxArticleList", array("getSimilarProducts"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("getSimilarProducts"));
         $oProduct->expects($this->any())->method('getSimilarProducts')->will($this->returnValue("testSimilarProducts"));
 
         /** @var AccountNoticeListController|MockObject $oView */
@@ -103,10 +103,10 @@ class AccountNoticeListControllerTest extends \OxidTestCase
      */
     public function testGetNoticeProductList()
     {
-        $oBasket = $this->getMock("oxBasket", array("getArticles"));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getArticles"));
         $oBasket->expects($this->once())->method('getArticles')->will($this->returnValue("articles"));
 
-        $oUser = $this->getMock("oxUser", array("getBasket"));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("getBasket"));
         $oUser->expects($this->once())->method('getBasket')->with($this->equalTo("noticelist"))->will($this->returnValue($oBasket));
 
         /** @var \OxidEsales\EshopCommunity\Application\Controller\AccountNoticeListController|MockObject $oView */

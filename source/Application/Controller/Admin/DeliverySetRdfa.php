@@ -77,7 +77,7 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
             $oMapping = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
             $oMapping->init("oxobject2delivery");
             $oMapping->assign($aParams);
-            $oMapping->oxobject2delivery__oxobjectid = new oxField($sDelivery);
+            $oMapping->oxobject2delivery__oxobjectid = new \OxidEsales\Eshop\Core\Field($sDelivery);
             $oMapping->save();
         }
     }

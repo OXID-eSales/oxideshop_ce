@@ -247,7 +247,7 @@ class Environment
     /**
      * Get the module installer with a given module set in the module cache.
      *
-     * @param Module $module
+     * @param \OxidEsales\Eshop\Application\Controller\Admin\ModuleController $module
      *
      * @return object
      */

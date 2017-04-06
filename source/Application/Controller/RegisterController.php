@@ -136,7 +136,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
             $oUser->setUpdateKey(true);
 
             // saving ..
-            $oUser->oxuser__oxactive = new oxField(1);
+            $oUser->oxuser__oxactive = new \OxidEsales\Eshop\Core\Field(1);
             $oUser->save();
 
             // forcing user login

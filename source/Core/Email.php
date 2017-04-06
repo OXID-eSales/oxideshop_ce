@@ -331,7 +331,7 @@ class Email extends \PHPMailer
             }
         }
 
-        throw new oxSystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
     }
 
     /**
@@ -663,9 +663,9 @@ class Email extends \PHPMailer
     {
         // add user history
         $remark = oxNew(\OxidEsales\Eshop\Application\Model\Remark::class);
-        $remark->oxremark__oxtext = new oxField($this->getAltBody(), \OxidEsales\Eshop\Core\Field::T_RAW);
-        $remark->oxremark__oxparentid = new oxField($user->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
-        $remark->oxremark__oxtype = new oxField("o", \OxidEsales\Eshop\Core\Field::T_RAW);
+        $remark->oxremark__oxtext = new \OxidEsales\Eshop\Core\Field($this->getAltBody(), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $remark->oxremark__oxparentid = new \OxidEsales\Eshop\Core\Field($user->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $remark->oxremark__oxtype = new \OxidEsales\Eshop\Core\Field("o", \OxidEsales\Eshop\Core\Field::T_RAW);
         $remark->save();
     }
 

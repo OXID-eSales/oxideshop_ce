@@ -38,7 +38,7 @@ class ModuleChainsGeneratorTest extends \OxidTestCase
         $aModuleChain = array("oe/moduleName2/myorder");
 
         /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
-        $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array('getModuleVariable'), array(), '', false);
+        $moduleVariablesLocator = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, array('getModuleVariable'), array(), '', false);
         $valueMap = array(
             array('aDisabledModules', array('moduleName')),
             array('aModulePaths', array("moduleName2" => "oe/moduleName2", "moduleName" => "oe/moduleName")),
@@ -56,7 +56,7 @@ class ModuleChainsGeneratorTest extends \OxidTestCase
         $aModuleChainResult = array();
 
         /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
-        $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array('getModuleVariable'), array(), '',
+        $moduleVariablesLocator = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, array('getModuleVariable'), array(), '',
           false);
         $valueMap = array(
             array('aDisabledModules', array('moduleName')),
@@ -77,11 +77,11 @@ class ModuleChainsGeneratorTest extends \OxidTestCase
         $oModule->load($sModuleId);
 
         /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
-        $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array(), array(), '', false);
+        $moduleVariablesLocator = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, array(), array(), '', false);
 
         $moduleChainsGenerator = oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
 
-        $oModuleInstaller = $this->getMock('oxModuleInstaller', array('deactivate'));
+        $oModuleInstaller = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class, array('deactivate'));
         $oModuleInstaller->expects($this->once())->method('deactivate')->with($oModule);
         oxTestModules::addModuleObject('oxModuleInstaller', $oModuleInstaller);
 

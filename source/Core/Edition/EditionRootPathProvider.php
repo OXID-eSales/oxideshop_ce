@@ -57,11 +57,11 @@ class EditionRootPathProvider
      */
     public function getDirectoryPath()
     {
-        if (Registry::instanceExists('oxConfigFile')) {
-            $configFile = Registry::get('oxConfigFile');
+        if (Registry::instanceExists(\OxidEsales\Eshop\Core\ConfigFile::class)) {
+            $configFile = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
         } else {
             $configFile = new ConfigFile(getShopBasePath() . '/config.inc.php');
-            Registry::set('oxConfigFile', $configFile);
+            Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);
         }
         $editionsPath = VENDOR_PATH . static::EDITIONS_DIRECTORY;
         $path = getShopBasePath();

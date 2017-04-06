@@ -95,7 +95,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
                 $sTitle = $this->_prepareArticleTitle($oArticle);
 
                 // create uri for all categories
-                $sSeoUri = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderRecomm")->getRecommUri($oRecomm, $iLang);
+                $sSeoUri = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class)->getRecommUri($oRecomm, $iLang);
                 $sSeoUri = $this->_processSeoUrl($sSeoUri . $sTitle, $oArticle->getId(), $iLang);
 
                 $aStdParams = array('recommid' => $oRecomm->getId(), 'listtype' => $this->_getListType());
@@ -168,7 +168,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
 
         // writing category path
         $sSeoUri = $this->_processSeoUrl(
-            \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderCategory")->getCategoryUri($oCategory, $iLang) . $sTitle,
+            \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->getCategoryUri($oCategory, $iLang) . $sTitle,
             $oArticle->getId(),
             $iLang
         );
@@ -398,7 +398,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
                 $sTitle = $this->_prepareArticleTitle($oArticle);
 
                 // create uri for all categories
-                $sSeoUri = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderVendor")->getVendorUri($oVendor, $iLang);
+                $sSeoUri = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class)->getVendorUri($oVendor, $iLang);
                 $sSeoUri = $this->_processSeoUrl($sSeoUri . $sTitle, $oArticle->getId(), $iLang);
 
                 $aStdParams = array('cnid' => "v_" . $oVendor->getId(), 'listtype' => $this->_getListType());
@@ -475,7 +475,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
                 $sTitle = $this->_prepareArticleTitle($oArticle);
 
                 // create uri for all categories
-                $sSeoUri = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderManufacturer")->getManufacturerUri($oManufacturer, $iLang);
+                $sSeoUri = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class)->getManufacturerUri($oManufacturer, $iLang);
                 $sSeoUri = $this->_processSeoUrl($sSeoUri . $sTitle, $oArticle->getId(), $iLang);
 
                 $aStdParams = array('mnid' => $oManufacturer->getId(), 'listtype' => $this->_getListType());

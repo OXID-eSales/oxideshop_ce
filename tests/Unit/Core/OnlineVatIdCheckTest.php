@@ -179,7 +179,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oExpect->countryCode = 'LT';
         $oExpect->vatNumber = '1212';
 
-        $oOnlineVatCheck = $this->getMock('oxOnlineVatIdCheck', array('_checkOnline'));
+        $oOnlineVatCheck = $this->getMock(\OxidEsales\Eshop\Core\OnlineVatIdCheck::class, array('_checkOnline'));
         $oOnlineVatCheck->expects($this->once())->method('_checkOnline')->with($this->equalTo($oExpect));
 
         $oOnlineVatCheck->validate($oVatIn);
@@ -193,7 +193,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oExpect->countryCode = 'LT';
         $oExpect->vatNumber = '1212';
 
-        $oOnlineVatCheck = $this->getMock('oxOnlineVatIdCheck', array('_checkOnline'));
+        $oOnlineVatCheck = $this->getMock(\OxidEsales\Eshop\Core\OnlineVatIdCheck::class, array('_checkOnline'));
         $oOnlineVatCheck->expects($this->once())->method('_checkOnline')->with($this->equalTo($oExpect))->will($this->returnValue(false));
 
         $this->assertFalse($oOnlineVatCheck->validate($oVatIn));

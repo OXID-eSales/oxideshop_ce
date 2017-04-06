@@ -105,7 +105,7 @@ class NewsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             $aParams['oxnews__oxdate'] = "";
         }
 
-        $oConvObject = new oxField();
+        $oConvObject = new \OxidEsales\Eshop\Core\Field();
         $oConvObject->fldmax_length = 0;
         $oConvObject->fldtype = "date";
         $oConvObject->value = $aParams['oxnews__oxdate'];
@@ -156,7 +156,7 @@ class NewsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             $aParams['oxnews__oxdate'] = "";
         }
 
-        $oConvObject = new oxField();
+        $oConvObject = new \OxidEsales\Eshop\Core\Field();
         $oConvObject->fldmax_length = 0;
         $oConvObject->fldtype = "date";
         $oConvObject->value = $aParams['oxnews__oxdate'];

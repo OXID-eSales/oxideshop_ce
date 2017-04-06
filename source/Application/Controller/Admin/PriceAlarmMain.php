@@ -78,14 +78,14 @@ class PriceAlarmMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $oLetter = new stdClass();
             $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
             if (isset($aParams['oxpricealarm__oxlongdesc']) && $aParams['oxpricealarm__oxlongdesc']) {
-                $oLetter->oxpricealarm__oxlongdesc = new oxField(stripslashes($aParams['oxpricealarm__oxlongdesc']), \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oLetter->oxpricealarm__oxlongdesc = new \OxidEsales\Eshop\Core\Field(stripslashes($aParams['oxpricealarm__oxlongdesc']), \OxidEsales\Eshop\Core\Field::T_RAW);
             } else {
                 $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
                 $sDesc = $oEmail->sendPricealarmToCustomer($oPricealarm->oxpricealarm__oxemail->value, $oPricealarm, null, true);
 
                 $iOldLang = $oLang->getTplLanguage();
                 $oLang->setTplLanguage($iLang);
-                $oLetter->oxpricealarm__oxlongdesc = new oxField($sDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oLetter->oxpricealarm__oxlongdesc = new \OxidEsales\Eshop\Core\Field($sDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
                 $oLang->setTplLanguage($iOldLang);
             }
 

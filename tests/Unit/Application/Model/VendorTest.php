@@ -177,7 +177,7 @@ class VendorTest extends \OxidTestCase
         /**
          * Insert an article for this vendor
          *
-         * @var Article $article
+         * @var \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $article
          */
         $article = oxNew('oxArticle');
         $article->setId('_vendorTestArticleId');
@@ -185,7 +185,7 @@ class VendorTest extends \OxidTestCase
         $article->save();
 
         /** @var Vendor|\PHPUnit_Framework_MockObject_MockObject $vendor */
-        $vendor = $this->getMock('oxvendor', array('isAdmin'));
+        $vendor = $this->getMock(\OxidEsales\Eshop\Application\Model\Vendor::class, array('isAdmin'));
         $vendor->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $vendor->setShowArticleCnt(true);
         $vendor->load($this->testVendorId);
@@ -336,7 +336,7 @@ class VendorTest extends \OxidTestCase
         /**
          * Insert an article for this vendor
          *
-         * @var Article $article
+         * @var \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $article
          */
         $article = oxNew('oxArticle');
         $article->setId('_vendorTestArticleId');

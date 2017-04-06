@@ -65,7 +65,7 @@ class ActionsOrderAjaxTest extends \OxidTestCase
         $sViewTable = $this->getSelectListViewTable();
         $aData = array('startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => "select count( * )  from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'  ", 'records' => array(), 'totalRecords' => 0);
 
-        $oView = $this->getMock("actions_order_ajax", array("_output"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsOrderAjax::class, array("_output"));
         $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
         $oView->setsorting();
     }
@@ -84,7 +84,7 @@ class ActionsOrderAjaxTest extends \OxidTestCase
         $sViewTable = $this->getSelectListViewTable();
         $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'  ", 'records' => array(), 'totalRecords' => 0);
 
-        $oView = $this->getMock("actions_order_ajax", array("_output"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsOrderAjax::class, array("_output"));
         $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
         $oView->setsorting();
     }

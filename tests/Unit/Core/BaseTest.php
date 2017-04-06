@@ -300,7 +300,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testIsLoaded()
     {
-        $oBase = $this->getMock("oxbase", array("_addField", "buildSelectString", "assignRecord", "getViewName"));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array("_addField", "buildSelectString", "assignRecord", "getViewName"));
         $oBase->expects($this->once())->method('_addField')->with($this->equalTo('oxid'), $this->equalTo(0));
         $oBase->expects($this->once())->method('getViewName')->will($this->returnValue("testView"));
         $oBase->expects($this->once())->method('buildSelectString')->with($this->equalto(array("testView.oxid" => "xxx")))->will($this->returnValue("testSql"));
@@ -319,10 +319,10 @@ class BaseTest extends \OxidTestCase
      */
     public function testIsDerivedBothShopIdsAreNull()
     {
-        $oConfig = $this->getMock('oxconfig', array('getShopId'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopId'));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue(null));
 
-        $oBase = $this->getMock('oxbase', array('getConfig', 'getShopId'), array(), '', false);
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
         $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue(null));
 
@@ -338,10 +338,10 @@ class BaseTest extends \OxidTestCase
     {
         $expected = $this->getConfig()->getEdition() === 'EE' ? false : null;
 
-        $oConfig = $this->getMock('oxconfig', array('getShopId'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopId'));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
-        $oBase = $this->getMock('oxbase', array('getConfig', 'getShopId'), array(), '', false);
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
         $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
@@ -357,10 +357,10 @@ class BaseTest extends \OxidTestCase
     {
         $expected = $this->getConfig()->getEdition() === 'EE' ? true : null;
 
-        $oConfig = $this->getMock('oxconfig', array('getShopId'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopId'));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
-        $oBase = $this->getMock('oxbase', array('getConfig', 'getShopId'), array(), '', false);
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
         $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('yyy'));
 
@@ -374,7 +374,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testAllowDerivedUpdate()
     {
-        $oBase = $this->getMock('oxbase', array('isDerived'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('isDerived'));
         $oBase->expects($this->once())->method('isDerived')->will($this->returnValue(false));
         $this->assertTrue($oBase->allowDerivedUpdate());
     }
@@ -386,7 +386,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testAllowDerivedDelete()
     {
-        $oBase = $this->getMock('oxbase', array('isDerived'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('isDerived'));
         $oBase->expects($this->once())->method('isDerived')->will($this->returnValue(false));
         $this->assertTrue($oBase->allowDerivedDelete());
     }
@@ -398,7 +398,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testConvertingFields()
     {
-        $oBase = $this->getMock('oxbase', array('_initDataStructure', 'isAdmin', 'exists', 'isDerived', '_update', '_insert', 'onChange', 'getId'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('_initDataStructure', 'isAdmin', 'exists', 'isDerived', '_update', '_insert', 'onChange', 'getId'));
         $oBase->expects($this->once())->method('_initDataStructure');
         $oBase->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
         $oBase->expects($this->once())->method('exists')->will($this->returnValue(false));
@@ -1492,7 +1492,7 @@ class BaseTest extends \OxidTestCase
     public function  testSaveIfExists()
     {
         $oBase = new _oxBase();
-        $oBase = $this->getMock('oxbase', array('update'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('update'));
         $oBase->expects($this->any())
             ->method('update')
             ->will($this->returnValue(true));
@@ -1523,7 +1523,7 @@ class BaseTest extends \OxidTestCase
      */
     public function  testSaveIfNew()
     {
-        $oBase = $this->getMock('oxbase', array('_insert'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('_insert'));
         $oBase->expects($this->any())
             ->method('_insert')
             ->will($this->returnValue(true));
@@ -1540,7 +1540,7 @@ class BaseTest extends \OxidTestCase
      */
     public function  testSaveIfCannotInsert()
     {
-        $oBase = $this->getMock('oxbase', array('_insert'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('_insert'));
         $oBase->expects($this->any())
             ->method('_insert')
             ->will($this->returnValue(false));
@@ -2183,7 +2183,7 @@ class BaseTest extends \OxidTestCase
     {
         $iCurrTime = 1453734000; //some rounded timestamp
 
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
         /** @var oxUtilsDate $oUtils */
         oxRegistry::set('oxUtilsDate', $oUtilsDate);

@@ -190,7 +190,7 @@ if (!function_exists('getViewName')) {
      */
     function getViewName($table, $languageId = null, $shopId = null)
     {
-        $viewNameGenerator = Registry::get('oxTableViewNameGenerator');
+        $viewNameGenerator = Registry::get(\OxidEsales\Eshop\Core\TableViewNameGenerator::class);
 
         return $viewNameGenerator->getViewName($table, $languageId, $shopId);
     }

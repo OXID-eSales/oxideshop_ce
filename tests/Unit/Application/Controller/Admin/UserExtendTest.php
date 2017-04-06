@@ -42,7 +42,7 @@ class UserExtendTest extends \OxidTestCase
         $this->setRequestParameter("oxid", "oxdefaultadmin");
 
         // testing..
-        $oView = $this->getMock("User_Extend", array("_allowAdminEdit"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserExtend::class, array("_allowAdminEdit"));
         $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(false));
         $this->assertEquals('user_extend.tpl', $oView->render());
         $aViewData = $oView->getViewData();
@@ -74,7 +74,7 @@ class UserExtendTest extends \OxidTestCase
 
         // testing..
         try {
-            $oView = $this->getMock("User_Extend", array("_allowAdminEdit"));
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserExtend::class, array("_allowAdminEdit"));
             $oView->expects($this->at(0))->method('_allowAdminEdit')->with($this->equalTo("testId"))->will($this->returnValue(true));
             $oView->save();
         } catch (Exception $oExcp) {

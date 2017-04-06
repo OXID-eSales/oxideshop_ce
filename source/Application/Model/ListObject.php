@@ -59,7 +59,7 @@ class ListObject
         }
         foreach ($aData as $sKey => $sValue) {
             $sFieldName = strtolower($this->_sTableName . '__' . $sKey);
-            $this->$sFieldName = new oxField($sValue);
+            $this->$sFieldName = new \OxidEsales\Eshop\Core\Field($sValue);
         }
     }
 

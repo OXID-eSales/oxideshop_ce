@@ -122,8 +122,8 @@ class DeliverySetMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin
                     if (!isset($sID) || !$sID) {
                         $oDel2delset = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                         $oDel2delset->init('oxdel2delset');
-                        $oDel2delset->oxdel2delset__oxdelid = new oxField($sChosenSet);
-                        $oDel2delset->oxdel2delset__oxdelsetid = new oxField($soxId);
+                        $oDel2delset->oxdel2delset__oxdelid = new \OxidEsales\Eshop\Core\Field($sChosenSet);
+                        $oDel2delset->oxdel2delset__oxdelsetid = new \OxidEsales\Eshop\Core\Field($soxId);
                         $oDel2delset->save();
                     }
                 }

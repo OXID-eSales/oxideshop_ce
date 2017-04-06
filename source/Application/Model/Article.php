@@ -1224,7 +1224,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function setRatingAverage($iRating)
     {
-        $this->oxarticles__oxrating = new oxField($iRating);
+        $this->oxarticles__oxrating = new \OxidEsales\Eshop\Core\Field($iRating);
     }
 
     /**
@@ -1234,7 +1234,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function setRatingCount($iRatingCnt)
     {
-        $this->oxarticles__oxratingcnt = new oxField($iRatingCnt);
+        $this->oxarticles__oxratingcnt = new \OxidEsales\Eshop\Core\Field($iRatingCnt);
     }
 
     /**
@@ -1978,7 +1978,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
 
         $this->_blSkipDiscounts = false;
-        if (\OxidEsales\Eshop\Core\Registry::get("oxDiscountList")->hasSkipDiscountCategories()) {
+        if (\OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DiscountList::class)->hasSkipDiscountCategories()) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sO2CView = getViewName('oxobject2category', $this->getLanguage());
             $sViewName = getViewName('oxcategories', $this->getLanguage());
@@ -2127,7 +2127,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // setting price
         $oBasketPrice->setPrice($dBasePrice);
 
-        $dVat = \OxidEsales\Eshop\Core\Registry::get("oxVatSelector")->getBasketItemVat($this, $oBasket);
+        $dVat = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\VatSelector::class)->getBasketItemVat($this, $oBasket);
         $this->_calculatePrice($oBasketPrice, $dVat);
 
         // returning final price object
@@ -2167,7 +2167,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
             $this->_deleteRecords($sOXID);
 
-            Registry::get("oxSeoEncoderArticle")->onDeleteArticle($this);
+            Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class)->onDeleteArticle($this);
 
             $this->onChange(ACTION_DELETE, $sOXID, $this->oxarticles__oxparentid->value);
 
@@ -2198,7 +2198,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $dAmount += $iStockCount;
             $iStockCount = 0;
         }
-        $this->oxarticles__oxstock = new oxField($iStockCount);
+        $this->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field($iStockCount);
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oDb->execute('update oxarticles set oxarticles.oxstock = ' . $oDb->quote($iStockCount) . ' where oxarticles.oxid = ' . $oDb->quote($this->getId()));
@@ -2271,7 +2271,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function resetParent()
     {
         $sParentId = $this->oxarticles__oxparentid->value;
-        $this->oxarticles__oxparentid = new oxField('', \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxarticles__oxparentid = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);
         $this->_blAllowEmptyParentId = true;
         $this->save();
         $this->_blAllowEmptyParentId = false;
@@ -2503,7 +2503,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         if ($this->_oLongDesc === null) {
             // initializing
-            $this->_oLongDesc = new oxField();
+            $this->_oLongDesc = new \OxidEsales\Eshop\Core\Field();
 
             // choosing which to get..
             $sOxid = $this->getId();
@@ -2546,8 +2546,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function setArticleLongDesc($longDescription)
     {
         // setting current value
-        $this->_oLongDesc = new oxField($longDescription, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $this->oxarticles__oxlongdesc = new oxField($longDescription, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->_oLongDesc = new \OxidEsales\Eshop\Core\Field($longDescription, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxarticles__oxlongdesc = new \OxidEsales\Eshop\Core\Field($longDescription, \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -2610,7 +2610,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getBaseSeoLink($iLang, $blMain = false)
     {
         /** @var \OxidEsales\Eshop\Application\Model\SeoEncoderArticle $oEncoder */
-        $oEncoder = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderArticle");
+        $oEncoder = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class);
         if (!$blMain) {
             return $oEncoder->getArticleUrl($this, $iLang, $this->getLinkType());
         }
@@ -3093,7 +3093,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         // apply discounts
         if (!$this->skipDiscounts()) {
-            $oDiscountList = \OxidEsales\Eshop\Core\Registry::get("oxDiscountList");
+            $oDiscountList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DiscountList::class);
             $aDiscounts = $oDiscountList->getArticleDiscounts($this, $this->getArticleUser());
 
             reset($aDiscounts);
@@ -3594,7 +3594,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $this->_applyCurrency($oPrice);
         // apply discounts
         if (!$this->skipDiscounts()) {
-            $oDiscountList = \OxidEsales\Eshop\Core\Registry::get("oxDiscountList");
+            $oDiscountList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DiscountList::class);
             $aDiscounts = $oDiscountList->getArticleDiscounts($this, $this->getArticleUser());
 
             reset($aDiscounts);
@@ -3668,7 +3668,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 if (!$oArtExt->load($this->getId())) {
                     $oArtExt->setId($this->getId());
                 }
-                $oArtExt->oxartextends__oxlongdesc = new oxField($sValue, \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oArtExt->oxartextends__oxlongdesc = new \OxidEsales\Eshop\Core\Field($sValue, \OxidEsales\Eshop\Core\Field::T_RAW);
                 $oArtExt->save();
             }
         } else {
@@ -3693,7 +3693,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                         }
                         if (isset($sLongDesc)) {
                             $sAEField = $oArtExt->_getFieldLongName($sKey);
-                            $oArtExt->$sAEField = new oxField($sLongDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
+                            $oArtExt->$sAEField = new \OxidEsales\Eshop\Core\Field($sLongDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
                         }
                     }
                 }
@@ -3895,7 +3895,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getArticleVat()
     {
         if (!isset($this->_dArticleVat)) {
-            $this->_dArticleVat = \OxidEsales\Eshop\Core\Registry::get("oxVatSelector")->getArticleVat($this);
+            $this->_dArticleVat = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\VatSelector::class)->getArticleVat($this);
         }
 
         return $this->_dArticleVat;
@@ -3912,7 +3912,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         startProfile(__FUNCTION__);
         $oPrice->setVAT($dVat);
         /** @var \OxidEsales\Eshop\Application\Model\VatSelector $oVatSelector */
-        $oVatSelector = \OxidEsales\Eshop\Core\Registry::get("oxVatSelector");
+        $oVatSelector = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\VatSelector::class);
         if (($dVat = $oVatSelector->getArticleUserVat($this)) !== false) {
             $oPrice->setUserVat($dVat);
         }
@@ -4156,7 +4156,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $oBasePrice = $this->_getGroupPrice();
                 foreach ($oAmPriceList as $oAmPrice) {
                     if ($oAmPrice->oxprice2article__oxaddperc->value) {
-                        $oAmPrice->oxprice2article__oxaddabs = new oxField(
+                        $oAmPrice->oxprice2article__oxaddabs = new \OxidEsales\Eshop\Core\Field(
                             \OxidEsales\Eshop\Core\Price::percent($oBasePrice, 100 - $oAmPrice->oxprice2article__oxaddperc->value),
                             \OxidEsales\Eshop\Core\Field::T_RAW
                         );
@@ -4318,7 +4318,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         // #1125 A. must round (using floor()) value taken from database and cast to int
         if (!$myConfig->getConfigParam('blAllowUnevenAmounts') && !$this->isAdmin()) {
-            $this->oxarticles__oxstock = new oxField((int) floor($this->oxarticles__oxstock->value));
+            $this->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field((int) floor($this->oxarticles__oxstock->value));
         }
         //GREEN light
         $this->_iStockStatus = 0;
@@ -4429,9 +4429,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         // set oxinsert
         $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
-        $this->oxarticles__oxinsert = new oxField($sNow);
+        $this->oxarticles__oxinsert = new \OxidEsales\Eshop\Core\Field($sNow);
         if (!is_object($this->oxarticles__oxsubclass) || $this->oxarticles__oxsubclass->value == '') {
-            $this->oxarticles__oxsubclass = new oxField('oxarticle');
+            $this->oxarticles__oxsubclass = new \OxidEsales\Eshop\Core\Field('oxarticle');
         }
 
         return parent::_insert();
@@ -5019,7 +5019,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $sParent = $this->getParentArticle();
         if ($sParent) {
             foreach ($this->_getCopyParentFields() as $sField) {
-                $this->$sField = new oxField($sParent->$sField->value);
+                $this->$sField = new \OxidEsales\Eshop\Core\Field($sParent->$sField->value);
             }
         }
     }

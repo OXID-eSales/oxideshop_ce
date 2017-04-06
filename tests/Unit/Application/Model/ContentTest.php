@@ -100,7 +100,7 @@ class ContentTest extends \OxidTestCase
      */
     public function testGetTermsVersion()
     {
-        $oContent = $this->getMock("oxContent", array("loadByIdent"));
+        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array("loadByIdent"));
         $oContent->oxcontents__oxtermversion = new oxField("testVersion");
         $oContent->expects($this->once())->method('loadByIdent')->with($this->equalTo('oxagb'))->will($this->returnValue(true));
         $this->assertEquals("testVersion", $oContent->getTermsVersion());
@@ -202,7 +202,7 @@ class ContentTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oContent = $this->getMock('oxcontent', array('getStdLink'));
+        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getStdLink'));
         $oContent->expects($this->once())->method('getStdLink')->will($this->returnValue('stdlink'));
 
         $this->assertEquals('stdlink', $oContent->getLink());
@@ -254,7 +254,7 @@ class ContentTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oContent = $this->getMock('oxcontent', array('getStdLink'));
+        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getStdLink'));
         $oContent->expects($this->once())->method('getStdLink')->with($this->equalTo(1))->will($this->returnValue('stdlink'));
 
         $this->assertEquals('stdlink', $oContent->getLink(1));
@@ -264,7 +264,7 @@ class ContentTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oContent = $this->getMock('oxcontent', array('getStdLink'));
+        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getStdLink'));
         $oContent->expects($this->once())->method('getStdLink')->will($this->returnValue('stdlink'));
 
         $this->assertEquals('stdlink', $oContent->getLink(0));

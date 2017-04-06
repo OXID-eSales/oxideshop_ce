@@ -63,7 +63,7 @@ class Object2Category extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function setProductId($sId)
     {
-        $this->oxobject2category__oxobjectid = new oxField($sId);
+        $this->oxobject2category__oxobjectid = new \OxidEsales\Eshop\Core\Field($sId);
     }
 
     /**
@@ -83,6 +83,6 @@ class Object2Category extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function setCategoryId($sId)
     {
-        $this->oxobject2category__oxcatnid = new oxField($sId);
+        $this->oxobject2category__oxcatnid = new \OxidEsales\Eshop\Core\Field($sId);
     }
 }

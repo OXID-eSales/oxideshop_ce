@@ -52,7 +52,7 @@ class User extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObjec
             $userName = $data['OXUSERNAME'];
 
             $user = oxNew("oxUser", "core");
-            $user->oxuser__oxusername = new oxField($userName, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $user->oxuser__oxusername = new \OxidEsales\Eshop\Core\Field($userName, \OxidEsales\Eshop\Core\Field::T_RAW);
 
             if ($user->exists($id) && $id != $user->getId()) {
                 throw new Exception("USER $userName already exists!");

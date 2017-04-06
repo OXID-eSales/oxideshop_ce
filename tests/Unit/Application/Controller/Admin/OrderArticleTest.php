@@ -305,7 +305,7 @@ class OrderArticleTest extends \OxidTestCase
         $oProduct = oxNew('oxArticle');
         $oProduct->oxarticles__oxartnum = new oxField($sProdArtNr);
 
-        $oView = $this->getMock("Order_Article", array("getSearchProductArtNr", "getProductList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\OrderArticle::class, array("getSearchProductArtNr", "getProductList"));
         $oView->expects($this->once())->method('getSearchProductArtNr')->will($this->returnValue($sProdArtNr));
         $oView->expects($this->once())->method('getProductList')->will($this->returnValue(array($oProduct)));
 

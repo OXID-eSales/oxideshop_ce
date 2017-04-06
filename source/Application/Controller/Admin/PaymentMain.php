@@ -129,7 +129,7 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         if (empty($aRules)) {
             $this->_aViewData["noticeoxaddsumrules"] = 1;
         }
-        $oPayment->oxpayments__oxaddsumrules = new oxField(array_sum($aRules));
+        $oPayment->oxpayments__oxaddsumrules = new \OxidEsales\Eshop\Core\Field(array_sum($aRules));
 
 
         //#708
@@ -143,7 +143,7 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $sValdesc .= $oField->name . "__@@";
         }
 
-        $oPayment->oxpayments__oxvaldesc = new oxField($sValdesc, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oPayment->oxpayments__oxvaldesc = new \OxidEsales\Eshop\Core\Field($sValdesc, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oPayment->setLanguage($this->_iEditLang);
         $oPayment->save();
 

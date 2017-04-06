@@ -215,7 +215,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         if ($myConfig->isDemoShop()) {
             // disabling uploading pictures if this is demo shop
-            $oEx = new oxExceptionToDisplay();
+            $oEx = new \OxidEsales\Eshop\Core\Exception\ExceptionToDisplay();
             $oEx->setMessage('CATEGORY_PICTURES_UPLOADISDISABLED');
 
             /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
@@ -281,7 +281,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $sDir = $myConfig->getPictureDir(false);
             $myUtilsPic->safePictureDelete($item->$sItemKey->value, $sDir . $oUtilsFile->getImageDirByType($sImgType), 'oxcategories', $field);
 
-            $item->$sItemKey = new oxField();
+            $item->$sItemKey = new \OxidEsales\Eshop\Core\Field();
             $item->save();
         }
     }

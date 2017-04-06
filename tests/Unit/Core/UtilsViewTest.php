@@ -52,7 +52,7 @@ class UtilsViewTest extends \OxidTestCase
         }
 
         //
-        $oUtilsView = $this->getMock("oxUtilsView", array("isAdmin"));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array("isAdmin"));
         $oUtilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $this->assertEquals($aDirs, $oUtilsView->getTemplateDirs());
     }
@@ -71,7 +71,7 @@ class UtilsViewTest extends \OxidTestCase
             $shopPath . 'out/azure/tpl/',
         );
 
-        $utilsView = $this->getMock("oxUtilsView", array("isAdmin"));
+        $utilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array("isAdmin"));
         $utilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $this->assertEquals($dirs, $utilsView->getTemplateDirs());
     }
@@ -89,7 +89,7 @@ class UtilsViewTest extends \OxidTestCase
             $shopPath . 'Application/views/admin/tpl/',
         );
 
-        $utilsView = $this->getMock("oxUtilsView", array("isAdmin"));
+        $utilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array("isAdmin"));
         $utilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $this->assertEquals($dirs, $utilsView->getTemplateDirs());
     }
@@ -120,7 +120,7 @@ class UtilsViewTest extends \OxidTestCase
         }
 
         //
-        $oUtilsView = $this->getMock("oxUtilsView", array("isAdmin"));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array("isAdmin"));
         $oUtilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oUtilsView->setTemplateDir("testDir1");
         $oUtilsView->setTemplateDir("testDir2");
@@ -134,7 +134,7 @@ class UtilsViewTest extends \OxidTestCase
      */
     public function testGetSmartyCacheCheck()
     {
-        $oUtilsView = $this->getMock('oxutilsview', array('_fillCommonSmartyProperties', '_smartyCompileCheck'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('_fillCommonSmartyProperties', '_smartyCompileCheck'));
         $oUtilsView->expects($this->once())->method('_fillCommonSmartyProperties');
         $oUtilsView->expects($this->once())->method('_smartyCompileCheck');
 
@@ -170,10 +170,10 @@ class UtilsViewTest extends \OxidTestCase
 
     public function testAddErrorToDisplayCustomDestinationFromParam()
     {
-        $oSession = $this->getMock('oxSession', array('getId'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getId'));
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(true));
 
-        $oxUtilsView = $this->getMock('oxUtilsView', array('getSession'));
+        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getSession'));
         $oxUtilsView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
         $oxUtilsView->addErrorToDisplay("testMessage", false, true, "myDest");
@@ -191,10 +191,10 @@ class UtilsViewTest extends \OxidTestCase
         $this->setRequestParameter('CustomError', 'myDest');
         $this->setRequestParameter('actcontrol', 'oxwminibasket');
 
-        $oSession = $this->getMock('oxSession', array('getId'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getId'));
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(true));
 
-        $oxUtilsView = $this->getMock('oxUtilsView', array('getSession'));
+        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getSession'));
         $oxUtilsView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
         $oxUtilsView->addErrorToDisplay("testMessage", false, true, "");
@@ -208,10 +208,10 @@ class UtilsViewTest extends \OxidTestCase
     public function testAddErrorToDisplayDefaultDestination()
     {
         $this->setRequestParameter('actcontrol', 'start');
-        $oSession = $this->getMock('oxSession', array('getId'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getId'));
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(true));
 
-        $oxUtilsView = $this->getMock('oxUtilsView', array('getSession'));
+        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getSession'));
         $oxUtilsView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
         $oxUtilsView->addErrorToDisplay("testMessage", false, true, "");
@@ -228,10 +228,10 @@ class UtilsViewTest extends \OxidTestCase
         $oTest = oxNew('oxException');
         $oTest->setMessage("testMessage");
 
-        $oSession = $this->getMock('oxSession', array('getId'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getId'));
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(true));
 
-        $oxUtilsView = $this->getMock('oxUtilsView', array('getSession'));
+        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getSession'));
         $oxUtilsView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
         $oxUtilsView->addErrorToDisplay($oTest, false, false, "");
@@ -243,10 +243,10 @@ class UtilsViewTest extends \OxidTestCase
 
     public function testAddErrorToDisplayIfNotSet()
     {
-        $oSession = $this->getMock('oxSession', array('getId'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getId'));
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(true));
 
-        $oxUtilsView = $this->getMock('oxUtilsView', array('getSession'));
+        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getSession'));
         $oxUtilsView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
         $oxUtilsView->addErrorToDisplay(null, false, false, "");
@@ -260,13 +260,13 @@ class UtilsViewTest extends \OxidTestCase
 
     public function testAddErrorToDisplay_startsSessionIfNotStarted()
     {
-        $oSession = $this->getMock('oxSession', array('getId', 'isHeaderSent', 'setForceNewSession', 'start'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getId', 'isHeaderSent', 'setForceNewSession', 'start'));
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(false));
         $oSession->expects($this->once())->method('isHeaderSent')->will($this->returnValue(false));
         $oSession->expects($this->once())->method('setForceNewSession');
         $oSession->expects($this->once())->method('start');
 
-        $oxUtilsView = $this->getMock('oxUtilsView', array('getSession'));
+        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getSession'));
         $oxUtilsView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
         $oxUtilsView->addErrorToDisplay(null, false, false, "");
@@ -280,13 +280,13 @@ class UtilsViewTest extends \OxidTestCase
         $aData['shop'] = new stdClass();
         $aData['shop']->urlSeparator = '?';
 
-        $oActView = $this->getMock('oxview', array('getViewData'));
+        $oActView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getViewData'));
         $oActView->expects($this->once())->method('getViewData')->will($this->returnValue($aData));
 
         $oUtilsView = oxNew('oxutilsview');
         $this->assertEquals('?', $oUtilsView->parseThroughSmarty('[{$shop->urlSeparator}]', time(), $oActView));
 
-        $oActView = $this->getMock('oxview', array('getViewData'));
+        $oActView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getViewData'));
         $oActView->expects($this->once())->method('getViewData')->will($this->returnValue($aData));
 
         $oUtilsView = oxNew('oxutilsview');

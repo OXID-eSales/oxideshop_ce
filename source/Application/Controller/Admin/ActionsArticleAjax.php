@@ -147,9 +147,9 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
 
         $oObject2Promotion = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $oObject2Promotion->init('oxobject2action');
-        $oObject2Promotion->oxobject2action__oxactionid = new oxField($sActionId);
-        $oObject2Promotion->oxobject2action__oxobjectid = new oxField($sArticleId);
-        $oObject2Promotion->oxobject2action__oxclass = new oxField("oxarticle");
+        $oObject2Promotion->oxobject2action__oxactionid = new \OxidEsales\Eshop\Core\Field($sActionId);
+        $oObject2Promotion->oxobject2action__oxobjectid = new \OxidEsales\Eshop\Core\Field($sArticleId);
+        $oObject2Promotion->oxobject2action__oxclass = new \OxidEsales\Eshop\Core\Field("oxarticle");
         $oObject2Promotion->save();
     }
 }

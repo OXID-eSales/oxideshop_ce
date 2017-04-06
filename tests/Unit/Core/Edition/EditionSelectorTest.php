@@ -123,14 +123,14 @@ class EditionSelectorTest extends UnitTestCase
         $path = $this->createFile('config.inc.php', '<?php $this->edition = "EE";');
         $fakeConfigFile = new ConfigFile($path);
 
-        $configFile = oxRegistry::get('oxConfigFile');
-        oxRegistry::set('oxConfigFile', $fakeConfigFile);
+        $configFile = oxRegistry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $fakeConfigFile);
 
         $editionSelector = new EditionSelector();
         $this->assertTrue($editionSelector->isEnterprise());
         $this->assertFalse($editionSelector->isCommunity());
         $this->assertFalse($editionSelector->isProfessional());
 
-        oxRegistry::set('oxConfigFile', $configFile);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);
     }
 }

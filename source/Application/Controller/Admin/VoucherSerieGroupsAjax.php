@@ -110,8 +110,8 @@ class VoucherSerieGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Ad
         if ($soxId && $soxId != "-1" && is_array($aChosenCat)) {
             foreach ($aChosenCat as $sChosenCat) {
                 $oNewGroup = oxNew(\OxidEsales\Eshop\Application\Model\Object2Group::class);
-                $oNewGroup->oxobject2group__oxobjectid = new oxField($soxId);
-                $oNewGroup->oxobject2group__oxgroupsid = new oxField($sChosenCat);
+                $oNewGroup->oxobject2group__oxobjectid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oNewGroup->oxobject2group__oxgroupsid = new \OxidEsales\Eshop\Core\Field($sChosenCat);
                 $oNewGroup->save();
             }
         }

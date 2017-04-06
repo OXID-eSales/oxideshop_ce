@@ -168,10 +168,10 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
                         continue;
                     }
 
-                    $oNew->oxobject2category__oxid = new oxField($oNew->setId(md5($sAdd . $sCategoryID . $sShopID)));
-                    $oNew->oxobject2category__oxobjectid = new oxField($sAdd);
-                    $oNew->oxobject2category__oxcatnid = new oxField($sCategoryID);
-                    $oNew->oxobject2category__oxtime = new oxField(time());
+                    $oNew->oxobject2category__oxid = new \OxidEsales\Eshop\Core\Field($oNew->setId(md5($sAdd . $sCategoryID . $sShopID)));
+                    $oNew->oxobject2category__oxobjectid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                    $oNew->oxobject2category__oxcatnid = new \OxidEsales\Eshop\Core\Field($sCategoryID);
+                    $oNew->oxobject2category__oxtime = new \OxidEsales\Eshop\Core\Field(time());
 
                     $oNew->save();
 

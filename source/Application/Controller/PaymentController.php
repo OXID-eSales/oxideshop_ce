@@ -372,7 +372,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
             // load sets, active set, and active set payment list
             list($aAllSets, $sActShipSet, $aPaymentList) =
-                \OxidEsales\Eshop\Core\Registry::get("oxDeliverySetList")->getDeliverySetData($sActShipSet, $this->getUser(), $oBasket);
+                \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliverySetList::class)->getDeliverySetData($sActShipSet, $this->getUser(), $oBasket);
 
             $oBasket->setShipping($sActShipSet);
 

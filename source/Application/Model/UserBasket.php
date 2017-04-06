@@ -85,11 +85,11 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         $this->_blNewBasket = false;
 
         if (!isset($this->oxuserbaskets__oxpublic->value)) {
-            $this->oxuserbaskets__oxpublic = new oxField(1, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxuserbaskets__oxpublic = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         $iTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
-        $this->oxuserbaskets__oxupdate = new oxField($iTime);
+        $this->oxuserbaskets__oxupdate = new \OxidEsales\Eshop\Core\Field($iTime);
 
         return parent::_insert();
     }
@@ -102,7 +102,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $this->_blNewBasket = true;
         $iTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
-        $this->oxuserbaskets__oxupdate = new oxField($iTime);
+        $this->oxuserbaskets__oxupdate = new \OxidEsales\Eshop\Core\Field($iTime);
     }
 
     /**
@@ -202,8 +202,8 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _createItem($sProductId, $aSelList = null, $aPersParams = null)
     {
         $oNewItem = oxNew(\OxidEsales\Eshop\Application\Model\UserBasketItem::class);
-        $oNewItem->oxuserbasketitems__oxartid = new oxField($sProductId, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $oNewItem->oxuserbasketitems__oxbasketid = new oxField($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oNewItem->oxuserbasketitems__oxartid = new \OxidEsales\Eshop\Core\Field($sProductId, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oNewItem->oxuserbasketitems__oxbasketid = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
         if ($aPersParams && count($aPersParams)) {
             $oNewItem->setPersParams($aPersParams);
         }
@@ -311,14 +311,14 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
                     unset($this->_aBasketItems[$this->_getItemKey($sProductId, $aSel, $aPersParam)]);
                 }
             } else {
-                $oUserBasketItem->oxuserbasketitems__oxamount = new oxField($dAmount, \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oUserBasketItem->oxuserbasketitems__oxamount = new \OxidEsales\Eshop\Core\Field($dAmount, \OxidEsales\Eshop\Core\Field::T_RAW);
                 $oUserBasketItem->save();
 
                 $this->_aBasketItems[$this->_getItemKey($sProductId, $aSel, $aPersParam)] = $oUserBasketItem;
             }
 
             //update timestamp
-            $this->oxuserbaskets__oxupdate = new oxField(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
+            $this->oxuserbaskets__oxupdate = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
             $this->save();
 
             return $dAmount;

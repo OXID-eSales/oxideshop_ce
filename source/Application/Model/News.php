@@ -160,9 +160,9 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         if (!$this->oxnews__oxdate || \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->isEmptyDate($this->oxnews__oxdate->value)) {
             // if date field is empty, assigning current date
-            $this->oxnews__oxdate = new oxField(date('Y-m-d'));
+            $this->oxnews__oxdate = new \OxidEsales\Eshop\Core\Field(date('Y-m-d'));
         } else {
-            $this->oxnews__oxdate = new oxField(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($this->oxnews__oxdate->value, true));
+            $this->oxnews__oxdate = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($this->oxnews__oxdate->value, true));
         }
 
         return parent::_insert();

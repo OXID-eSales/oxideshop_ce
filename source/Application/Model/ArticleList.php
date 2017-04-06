@@ -1247,7 +1247,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function getDescriptionJoin()
     {
-        $table = Registry::get('oxTableViewNameGenerator')->getViewName('oxarticles');
+        $table = Registry::get(\OxidEsales\Eshop\Core\TableViewNameGenerator::class)->getViewName('oxarticles');
         $descriptionJoin = '';
         $searchColumns = $this->getConfig()->getConfigParam('aSearchCols');
 
@@ -1272,7 +1272,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $searchTable = $table;
 
         if ($field == 'oxlongdesc') {
-            $searchTable = Registry::get('oxTableViewNameGenerator')->getViewName('oxartextends');
+            $searchTable = Registry::get(\OxidEsales\Eshop\Core\TableViewNameGenerator::class)->getViewName('oxartextends');
         }
 
         return $searchTable;

@@ -135,9 +135,9 @@ class DeliveryUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             foreach ($aChosenUsr as $sChosenUsr) {
                 $oObject2Delivery = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Delivery->init('oxobject2delivery');
-                $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($soxId);
-                $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sChosenUsr);
-                $oObject2Delivery->oxobject2delivery__oxtype = new oxField('oxuser');
+                $oObject2Delivery->oxobject2delivery__oxdeliveryid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oObject2Delivery->oxobject2delivery__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenUsr);
+                $oObject2Delivery->oxobject2delivery__oxtype = new \OxidEsales\Eshop\Core\Field('oxuser');
                 $oObject2Delivery->save();
             }
         }

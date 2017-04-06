@@ -224,10 +224,10 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
                 if ($dRating !== null && $dRating >= 1 && $dRating <= 5) {
                     $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                     if ($oRating->allowRating($oRevUser->getId(), $sType, $oActObject->getId())) {
-                        $oRating->oxratings__oxuserid = new oxField($oRevUser->getId());
-                        $oRating->oxratings__oxtype = new oxField($sType);
-                        $oRating->oxratings__oxobjectid = new oxField($oActObject->getId());
-                        $oRating->oxratings__oxrating = new oxField($dRating);
+                        $oRating->oxratings__oxuserid = new \OxidEsales\Eshop\Core\Field($oRevUser->getId());
+                        $oRating->oxratings__oxtype = new \OxidEsales\Eshop\Core\Field($sType);
+                        $oRating->oxratings__oxobjectid = new \OxidEsales\Eshop\Core\Field($oActObject->getId());
+                        $oRating->oxratings__oxrating = new \OxidEsales\Eshop\Core\Field($dRating);
                         $oRating->save();
 
                         $oActObject->addToRatingAverage($dRating);
@@ -238,12 +238,12 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
 
                 if (($sReviewText = trim(( string ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
                     $oReview = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
-                    $oReview->oxreviews__oxobjectid = new oxField($oActObject->getId());
-                    $oReview->oxreviews__oxtype = new oxField($sType);
-                    $oReview->oxreviews__oxtext = new oxField($sReviewText, \OxidEsales\Eshop\Core\Field::T_RAW);
-                    $oReview->oxreviews__oxlang = new oxField(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
-                    $oReview->oxreviews__oxuserid = new oxField($oRevUser->getId());
-                    $oReview->oxreviews__oxrating = new oxField(($dRating !== null) ? $dRating : null);
+                    $oReview->oxreviews__oxobjectid = new \OxidEsales\Eshop\Core\Field($oActObject->getId());
+                    $oReview->oxreviews__oxtype = new \OxidEsales\Eshop\Core\Field($sType);
+                    $oReview->oxreviews__oxtext = new \OxidEsales\Eshop\Core\Field($sReviewText, \OxidEsales\Eshop\Core\Field::T_RAW);
+                    $oReview->oxreviews__oxlang = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
+                    $oReview->oxreviews__oxuserid = new \OxidEsales\Eshop\Core\Field($oRevUser->getId());
+                    $oReview->oxreviews__oxrating = new \OxidEsales\Eshop\Core\Field(($dRating !== null) ? $dRating : null);
                     $oReview->save();
 
                     $this->_blReviewSendStatus = true;

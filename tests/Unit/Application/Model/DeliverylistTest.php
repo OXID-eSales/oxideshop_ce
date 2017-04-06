@@ -359,7 +359,7 @@ class DeliverylistTest extends \OxidTestCase
     public function testOxDeliveryList()
     {
         /** @var oxDeliveryList|MockObject $oList */
-        $oList = $this->getMock('oxDeliveryList', array('setHomeCountry'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliveryList::class, array('setHomeCountry'));
         $oList->expects($this->once())->method('setHomeCountry');
         $oList->__construct();
 
@@ -429,12 +429,12 @@ class DeliverylistTest extends \OxidTestCase
     public function testGetListExecTestWithUser()
     {
         /** @var oxUser|MockObject $oUser */
-        $oUser = $this->getMock('oxUser', array('getId', 'getActiveCountry'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getId', 'getActiveCountry'));
         $oUser->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
         $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('yyy'));
 
         /** @var oxDeliveryList|MockObject $oList */
-        $oList = $this->getMock('oxDeliveryList', array('getUser', '_getFilterSelect', 'selectString', 'rewind'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliveryList::class, array('getUser', '_getFilterSelect', 'selectString', 'rewind'));
         $oList->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $oList->expects($this->once())->method('_getFilterSelect');
         $oList->expects($this->once())->method('selectString');
@@ -450,7 +450,7 @@ class DeliverylistTest extends \OxidTestCase
     public function testGetListExecTestNoUser()
     {
         /** @var oxDeliveryList|MockObject $oList */
-        $oList = $this->getMock('oxDeliveryList', array('getUser', 'selectString', 'rewind'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliveryList::class, array('getUser', 'selectString', 'rewind'));
         $oList->expects($this->once())->method('getUser')->will($this->returnValue(null));
         $oList->expects($this->once())->method('selectString');
         $oList->expects($this->once())->method('rewind');
@@ -679,7 +679,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -712,7 +712,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -740,7 +740,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -789,7 +789,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -837,7 +837,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -879,7 +879,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -921,7 +921,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -977,7 +977,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $_oBasketItem2;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -1023,7 +1023,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -1063,7 +1063,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));

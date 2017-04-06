@@ -42,9 +42,9 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         $this->stubExceptionToNotWriteToLog();
 
         /** @var oxOnlineLicenseCheckRequest $oRequest */
-        $oRequest = $this->getMock('oxOnlineLicenseCheckRequest', array(), array(), '', false);
+        $oRequest = $this->getMock(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class, array(), array(), '', false);
 
-        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->_getValidResponseXml()));
         /** @var oxCurl $oCurl */
 
@@ -70,7 +70,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
         $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder');
 
-        $oCurl = $this->getMock('oxCurl', array('execute', 'setParameters'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'setParameters'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->_getValidResponseXml()));
         $oCurl->expects($this->once())->method('setParameters')->with(array('xmlRequest' => 'formed_xml'));
         /** @var oxCurl $oCurl */
@@ -102,12 +102,12 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
     {
         $this->setExpectedException('oxException', $sMessage);
 
-        $oCurl = $this->getMock('oxCurl', array('execute', 'getStatusCode'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sResponseXml));
         $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder', array('build'));
+        $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, array('build'));
         $oEmailBuilder->expects($this->any())->method('build');
         /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
 
@@ -127,14 +127,14 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         $oExpectedResponse->code = 0;
         $oExpectedResponse->message = 'ACK';
 
-        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->_getValidResponseXml()));
         /** @var oxCurl $oCurl */
 
         $oSimpleXml = $this->getMock('oxSimpleXml');
         /** @var oxSimpleXml $oSimpleXml */
 
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder', array('build'));
+        $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, array('build'));
         $oEmailBuilder->expects($this->any())->method('build');
         /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
 
@@ -148,15 +148,15 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
     {
         $this->stubExceptionToNotWriteToLog();
 
-        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->throwException(new Exception()));
         /** @var oxCurl $oCurl */
 
-        $oEmail = $this->getMock('oxEmail', array('send'));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('send'));
         $oEmail->expects($this->any())->method('send');
         /** @var oxEmail $oEmail */
 
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder', array('build'));
+        $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, array('build'));
         $oEmailBuilder->expects($this->any())->method('build')->will($this->returnValue($oEmail));
         /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
 

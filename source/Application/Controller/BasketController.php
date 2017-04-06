@@ -309,7 +309,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     public function getWrappingList()
     {
         if ($this->_oWrappings === null) {
-            $this->_oWrappings = new oxlist();
+            $this->_oWrappings = new \OxidEsales\Eshop\Core\Model\ListModel();
 
             // load wrapping papers
             if ($this->getViewConfig()->getShowGiftWrapping()) {
@@ -328,7 +328,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     public function getCardList()
     {
         if ($this->_oCards === null) {
-            $this->_oCards = new oxlist();
+            $this->_oCards = new \OxidEsales\Eshop\Core\Model\ListModel();
 
             // load gift cards
             if ($this->getViewConfig()->getShowGiftWrapping()) {

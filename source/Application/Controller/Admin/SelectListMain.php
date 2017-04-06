@@ -155,7 +155,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $this->aFieldArray = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oAttr->oxselectlist__oxvaldesc->getRawValue());
         }
         // build value
-        $oAttr->oxselectlist__oxvaldesc = new oxField("", \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oAttr->oxselectlist__oxvaldesc = new \OxidEsales\Eshop\Core\Field("", \OxidEsales\Eshop\Core\Field::T_RAW);
         foreach ($this->aFieldArray as $oField) {
             $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . $oField->name, \OxidEsales\Eshop\Core\Field::T_RAW);
             if (isset($oField->price) && $oField->price) {

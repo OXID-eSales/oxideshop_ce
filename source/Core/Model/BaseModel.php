@@ -544,7 +544,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         $idFieldName = $this->getCoreTableName() . '__oxid';
-        $this->$idFieldName = new oxField($this->_sOXID, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->$idFieldName = new \OxidEsales\Eshop\Core\Field($this->_sOXID, \OxidEsales\Eshop\Core\Field::T_RAW);
 
         return $this->_sOXID;
     }
@@ -1189,7 +1189,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         $field = false;
 
         if (isset($type)) {
-            $field = new oxField();
+            $field = new \OxidEsales\Eshop\Core\Field();
             $field->fldtype = $type;
             //T2008-01-29
             //can't clone as the fields are objects and are not fully cloned
@@ -1198,7 +1198,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         if (isset($length)) {
             if (!$field) {
-                $field = new oxField();
+                $field = new \OxidEsales\Eshop\Core\Field();
             }
             $field->fldmax_length = $length;
             $this->_blIsSimplyClonable = false;
@@ -1259,7 +1259,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         if (isset($this->$longFieldName) && is_object($this->$longFieldName)) {
             $this->$longFieldName->setValue($fieldValue, $dataType);
         } else {
-            $this->$longFieldName = new oxField($fieldValue, $dataType);
+            $this->$longFieldName = new \OxidEsales\Eshop\Core\Field($fieldValue, $dataType);
         }
     }
 
@@ -1398,7 +1398,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         $coreTableName = $this->getCoreTableName();
 
         $idKey = \OxidEsales\Eshop\Core\Registry::getUtils()->getArrFldName($coreTableName . '.oxid');
-        $this->$idKey = new oxField($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->$idKey = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $updateQuery = "update {$coreTableName} set " . $this->_getUpdateFields() .
@@ -1441,13 +1441,13 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         $idKey = $myUtils->getArrFldName($this->getCoreTableName() . '.oxid');
-        $this->$idKey = new oxField($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->$idKey = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
         $insertSql = "Insert into {$this->getCoreTableName()} set ";
 
         $shopIdField = $myUtils->getArrFldName($this->getCoreTableName() . '.oxshopid');
 
         if (isset($this->$shopIdField) && !$this->$shopIdField->value) {
-            $this->$shopIdField = new oxField($myConfig->getShopId(), \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->$shopIdField = new \OxidEsales\Eshop\Core\Field($myConfig->getShopId(), \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         $insertSql .= $this->_getUpdateFields($this->getUseSkipSaveFields());

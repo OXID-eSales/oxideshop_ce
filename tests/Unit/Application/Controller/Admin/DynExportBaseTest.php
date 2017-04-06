@@ -166,7 +166,7 @@ class DynExportBaseTest extends \OxidTestCase
         $oDb->execute("CREATE TABLE `{$sTableName}` (`oxid` TINYINT( 1 ) NOT NULL) ENGINE = InnoDB");
         $this->assertEquals(0, $oDb->getOne("select count(*) from {$sTableName}"));
 
-        $oView = $this->getMock("DynExportBase", array("_getHeapTableName"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController::class, array("_getHeapTableName"));
         $oView->expects($this->once())->method('_getHeapTableName')->will($this->returnValue($sTableName));
         $oView->stop(999);
 
@@ -380,7 +380,7 @@ class DynExportBaseTest extends \OxidTestCase
      */
     public function testGetDeepestCategoryPath()
     {
-        $oView = $this->getMock("DynExportBase", array("_findDeepestCatPath"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController::class, array("_findDeepestCatPath"));
         $oView->expects($this->once())->method('_findDeepestCatPath')->with($this->isInstanceOf('OxidEsales\EshopCommunity\Application\Model\Article'));
         $oView->getDeepestCategoryPath(oxNew('oxarticle'));
     }
@@ -420,7 +420,7 @@ class DynExportBaseTest extends \OxidTestCase
     public function testGetOneArticle()
     {
         $blContinue = null;
-        $oView = $this->getMock("DynExportBase", array("_initArticle", "_getHeapTableName", "_setCampaignDetailLink"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController::class, array("_initArticle", "_getHeapTableName", "_setCampaignDetailLink"));
         $oView->expects($this->once())->method('_initArticle')->with($this->equalTo("oxarticles"), $this->equalTo(0))->will($this->returnValue(oxNew('oxarticle')));
         $oView->expects($this->once())->method('_getHeapTableName')->will($this->returnValue("oxarticles"));
         $oView->expects($this->once())->method('_setCampaignDetailLink')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'))->will($this->returnValue(oxNew('oxarticle')));
@@ -661,7 +661,7 @@ class DynExportBaseTest extends \OxidTestCase
     public function testFindDeepestCatPathNoCatIdsFound()
     {
         // defining parameters
-        $oArticle = $this->getMock("oxArticle", array("getCategoryIds"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getCategoryIds"));
         $oArticle->expects($this->once())->method('getCategoryIds')->will($this->returnValue(array()));
 
         $oView = oxNew('DynExportBase');
@@ -676,7 +676,7 @@ class DynExportBaseTest extends \OxidTestCase
     public function testFindDeepestCatPath()
     {
         // defining parameters
-        $oArticle = $this->getMock("oxArticle", array("getCategoryIds"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getCategoryIds"));
         $oArticle->expects($this->once())->method('getCategoryIds')->will($this->returnValue(array("cat1", "cat2", "cat3")));
 
         $aCache["cat1"] = new stdClass();
@@ -694,7 +694,7 @@ class DynExportBaseTest extends \OxidTestCase
         $aCache["cat3"]->oxtitle = "cat3";
         $aCache["cat3"]->oxparentid = "cat2";
 
-        $oView = $this->getMock("DynExportBase", array("_loadRootCats"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController::class, array("_loadRootCats"));
         $oView->expects($this->once())->method('_loadRootCats')->will($this->returnValue($aCache));
         $this->assertEquals("cat1/cat2/cat3", $oView->UNITfindDeepestCatPath($oArticle));
     }
@@ -766,11 +766,11 @@ class DynExportBaseTest extends \OxidTestCase
         $this->setRequestParameter("sExportCampaign", "testCampaign");
         $this->setRequestParameter("blAppendCatToCampaign", 1);
 
-        $oArticle = $this->getMock("oxarticle", array("appendLink"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("appendLink"));
         $oArticle->expects($this->at(0))->method('appendLink')->with($this->equalTo("campaign=testCampaign"));
         $oArticle->expects($this->at(1))->method('appendLink')->with($this->equalTo("/testCat"));
 
-        $oView = $this->getMock("DynExportBase", array("getCategoryString"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController::class, array("getCategoryString"));
         $oView->expects($this->once())->method('getCategoryString')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'))->will($this->returnValue("testCat"));
         $oView->UNITsetCampaignDetailLink($oArticle);
     }

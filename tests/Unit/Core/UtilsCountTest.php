@@ -139,7 +139,7 @@ class UtilsCountTest extends \OxidTestCase
     public function testGetPriceCatArticleCountCacheRefreshTest()
     {
         $sCatId = 'xxx';
-        $oUtilsCount = $this->getMock('oxUtilsCount', array('_getUserViewId', '_getCatCache', 'setPriceCatArticleCount'));
+        $oUtilsCount = $this->getMock(\OxidEsales\Eshop\Core\UtilsCount::class, array('_getUserViewId', '_getCatCache', 'setPriceCatArticleCount'));
 
         $oUtilsCount->expects($this->once())->method('_getUserViewId')->will($this->returnValue('aaa'));
         $oUtilsCount->expects($this->once())->method('_getCatCache')->will($this->returnValue(array('bbb')));
@@ -171,7 +171,7 @@ class UtilsCountTest extends \OxidTestCase
     public function testGetVendorArticleCountCacheRefreshTest()
     {
         $sVendorId = 'xxx';
-        $oUtilsCount = $this->getMock('oxUtilsCount', array('_getUserViewId', '_getVendorCache', 'setVendorArticleCount'));
+        $oUtilsCount = $this->getMock(\OxidEsales\Eshop\Core\UtilsCount::class, array('_getUserViewId', '_getVendorCache', 'setVendorArticleCount'));
 
         $oUtilsCount->expects($this->once())->method('_getUserViewId')->will($this->returnValue('aaa'));
         $oUtilsCount->expects($this->once())->method('_getVendorCache')->will($this->returnValue(array('bbb')));
@@ -203,7 +203,7 @@ class UtilsCountTest extends \OxidTestCase
     public function testGetManufacturerArticleCountCacheRefreshTest()
     {
         $sManufacturerId = 'xxx';
-        $oUtilsCount = $this->getMock('oxUtilsCount', array('_getUserViewId', '_getManufacturerCache', 'setManufacturerArticleCount'));
+        $oUtilsCount = $this->getMock(\OxidEsales\Eshop\Core\UtilsCount::class, array('_getUserViewId', '_getManufacturerCache', 'setManufacturerArticleCount'));
 
         $oUtilsCount->expects($this->once())->method('_getUserViewId')->will($this->returnValue('aaa'));
         $oUtilsCount->expects($this->once())->method('_getManufacturerCache')->will($this->returnValue(array('bbb')));
@@ -384,7 +384,7 @@ class UtilsCountTest extends \OxidTestCase
     {
         $this->getConfig()->setGlobalParameter('aLocalCatCache', 'xxx');
 
-        $oUtilsCount = $this->getMock('oxUtilsCount', array('_getCatCache', '_setCatCache'));
+        $oUtilsCount = $this->getMock(\OxidEsales\Eshop\Core\UtilsCount::class, array('_getCatCache', '_setCatCache'));
         $oUtilsCount->expects($this->never())->method('_getCatCache');
         $oUtilsCount->expects($this->never())->method('_setCatCache');
 
@@ -400,7 +400,7 @@ class UtilsCountTest extends \OxidTestCase
         $aRes = array('bbb' => '2', 'ccc' => '3');
         $iCatId = 'aaa';
 
-        $oUtilsCount = $this->getMock('oxUtilsCount', array('_getCatCache', '_setCatCache'));
+        $oUtilsCount = $this->getMock(\OxidEsales\Eshop\Core\UtilsCount::class, array('_getCatCache', '_setCatCache'));
         $oUtilsCount->expects($this->once())->method('_getCatCache')->will($this->returnValue($aCache));
         $oUtilsCount->expects($this->once())->method('_setCatCache')->with($this->equalTo($aRes));
 
@@ -412,7 +412,7 @@ class UtilsCountTest extends \OxidTestCase
      */
     public function testResetPriceCatArticleCountNoDataSetNoReset()
     {
-        $oUtilsCount = $this->getMock('oxUtilsCount', array('_getCatCache', '_setCatCache'));
+        $oUtilsCount = $this->getMock(\OxidEsales\Eshop\Core\UtilsCount::class, array('_getCatCache', '_setCatCache'));
         $oUtilsCount->expects($this->once())->method('_getCatCache')->will($this->returnValue(false));
         $oUtilsCount->expects($this->never())->method('_setCatCache');
 
@@ -425,7 +425,7 @@ class UtilsCountTest extends \OxidTestCase
         $aCache = array_flip(array_keys($this->categories));
         $aCache = array_merge($aCache, $aRes);
 
-        $oUtilsCount = $this->getMock('oxUtilsCount', array('_getCatCache', '_setCatCache'));
+        $oUtilsCount = $this->getMock(\OxidEsales\Eshop\Core\UtilsCount::class, array('_getCatCache', '_setCatCache'));
         $oUtilsCount->expects($this->once())->method('_getCatCache')->will($this->returnValue($aCache));
         $oUtilsCount->expects($this->once())->method('_setCatCache')->with($this->equalTo($aRes));
 
@@ -586,7 +586,7 @@ class UtilsCountTest extends \OxidTestCase
 
     public function testZeroArtManufaturerCache()
     {
-        $myUtilsTest = $this->getMock('oxUtilsCount', array('_setManufacturerCache'));
+        $myUtilsTest = $this->getMock(\OxidEsales\Eshop\Core\UtilsCount::class, array('_setManufacturerCache'));
         $myUtilsTest->expects($this->once())->method('_setManufacturerCache')->with(
             $this->equalTo(
                 array(

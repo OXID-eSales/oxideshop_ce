@@ -191,9 +191,9 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
                     }
 
                     $objectToCategory->setId(md5($oxId . $sAdd . $shopId));
-                    $objectToCategory->oxobject2category__oxobjectid = new oxField($oxId);
-                    $objectToCategory->oxobject2category__oxcatnid = new oxField($sAdd);
-                    $objectToCategory->oxobject2category__oxtime = new oxField(time());
+                    $objectToCategory->oxobject2category__oxobjectid = new \OxidEsales\Eshop\Core\Field($oxId);
+                    $objectToCategory->oxobject2category__oxcatnid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                    $objectToCategory->oxobject2category__oxtime = new \OxidEsales\Eshop\Core\Field(time());
 
                     $objectToCategory->save();
                 }

@@ -46,7 +46,7 @@ class ThemeConfigTest extends \OxidTestCase
     public function testGetModuleForConfigVars()
     {
         $sThemeName = 'testtheme';
-        $oTheme_Config = $this->getMock('Theme_Config', array('getEditObjectId'));
+        $oTheme_Config = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ThemeConfiguration::class, array('getEditObjectId'));
         $oTheme_Config->expects($this->any())->method('getEditObjectId')->will($this->returnValue($sThemeName));
         $this->assertEquals('theme:' . $sThemeName, $oTheme_Config->UNITgetModuleForConfigVars());
     }
@@ -67,7 +67,7 @@ class ThemeConfigTest extends \OxidTestCase
         $aParams = array($sName => $sValue);
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
-        $oConfig = $this->getMock('oxConfig', array('getShopId', 'getRequestParameter', 'saveShopConfVar', '_loadVarsFromDb'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopId', 'getRequestParameter', 'saveShopConfVar', '_loadVarsFromDb'));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue($iShopId));
         $oConfig->expects($this->any())->method('getRequestParameter')->will($this->returnValue($aParams));
         $oConfig->expects($this->any())->method('_loadVarsFromDb')->will($this->returnValue(true));

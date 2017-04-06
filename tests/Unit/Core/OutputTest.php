@@ -149,7 +149,7 @@ class OutputTest extends \OxidTestCase
 
     public function testSetCharsetSetOutputFormatSendHeaders()
     {
-        $utils = $this->getMock('oxUtils', array('setHeader'));
+        $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('setHeader'));
         $utils->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: text/html; charset=asd'));
         oxTestModules::cleanUp();
         oxTestModules::addModuleObject('oxUtils', $utils);
@@ -158,7 +158,7 @@ class OutputTest extends \OxidTestCase
         $oOutput->sendHeaders();
 
 
-        $utils = $this->getMock('oxUtils', array('setHeader'));
+        $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('setHeader'));
         $utils->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: application/json; charset=asdd'));
         oxTestModules::cleanUp();
         oxTestModules::addModuleObject('oxUtils', $utils);
@@ -168,7 +168,7 @@ class OutputTest extends \OxidTestCase
         $oOutput->sendHeaders();
 
 
-        $utils = $this->getMock('oxUtils', array('setHeader'));
+        $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('setHeader'));
         $utils->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: text/html; charset=asdd'));
         oxTestModules::cleanUp();
         oxTestModules::addModuleObject('oxUtils', $utils);

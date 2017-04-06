@@ -128,7 +128,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
         $sXml .= '</olcRequest>'."\n";
 
         /** @var oxCurl $oCurl */
-        $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute', 'getStatusCode'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('setParameters', 'execute', 'getStatusCode'));
         $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
         $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
@@ -220,7 +220,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
         $sXml .= '</olcRequest>'."\n";
 
         /** @var Curl $oCurl */
-        $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute','getStatusCode'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('setParameters', 'execute','getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
         $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
         $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));

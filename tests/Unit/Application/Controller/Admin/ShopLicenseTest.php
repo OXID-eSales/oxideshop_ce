@@ -62,11 +62,11 @@ class ShopLicenseTest extends \OxidTestCase
      */
     public function testRenderDemoShop()
     {
-        $oConfig = $this->getMock("oxconfig", array("isDemoShop"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("isDemoShop"));
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
 
         // testing..
-        $oView = $this->getMock("Shop_License", array("getConfig"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopLicense::class, array("getConfig"), array(), '', false);
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         try {
             $oView->render();
@@ -120,9 +120,9 @@ class ShopLicenseTest extends \OxidTestCase
 
         $this->getSession()->setVariable("malladmin", true);
 
-        $oConfig = $this->getMock("oxconfig", array("isDemoShop", "getConfigParam", "setConfigParam", "saveShopConfVar", "getBaseShopId"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("isDemoShop", "getConfigParam", "setConfigParam", "saveShopConfVar", "getBaseShopId"));
         $oConfig->expects($this->any())->method('isDemoShop')->will($this->returnValue(false));
-        $oView = $this->getMock("Shop_License", array("getConfig"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopLicense::class, array("getConfig"), array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->assertTrue($oSubj->UNITcanUpdate());
@@ -137,9 +137,9 @@ class ShopLicenseTest extends \OxidTestCase
 
         $this->getSession()->setVariable("malladmin", false);
 
-        $oConfig = $this->getMock("oxconfig", array("isDemoShop", "getConfigParam", "setConfigParam", "saveShopConfVar", "getBaseShopId"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("isDemoShop", "getConfigParam", "setConfigParam", "saveShopConfVar", "getBaseShopId"));
         $oConfig->expects($this->any())->method('isDemoShop')->will($this->returnValue(false));
-        $oView = $this->getMock("Shop_License", array("getConfig"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopLicense::class, array("getConfig"), array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->assertFalse($oSubj->UNITcanUpdate());
@@ -154,9 +154,9 @@ class ShopLicenseTest extends \OxidTestCase
 
         $this->getSession()->setVariable("malladmin", true);
 
-        $oConfig = $this->getMock("oxconfig", array("isDemoShop"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("isDemoShop"));
         $oConfig->expects($this->any())->method('isDemoShop')->will($this->returnValue(true));
-        $oView = $this->getMock("Shop_License", array("getConfig"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopLicense::class, array("getConfig"), array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->assertFalse($oView->UNITcanUpdate());

@@ -96,7 +96,7 @@ class ShopTest extends \OxidTestCase
     public function testMakeViewQuery($sTable, $sLang, $aMockedFunctionReturns, $sQuery)
     {
         /** @var oxShop|PHPUnit_Framework_MockObject_MockObject $oShop */
-        $oShop = $this->getMock('oxShop', array_keys($aMockedFunctionReturns));
+        $oShop = $this->getMock(\OxidEsales\Eshop\Application\Model\Shop::class, array_keys($aMockedFunctionReturns));
         foreach ($aMockedFunctionReturns as $sFunction => $sReturnValue) {
             $oShop->expects($this->any())->method($sFunction)->will($this->returnValue($sReturnValue));
         }

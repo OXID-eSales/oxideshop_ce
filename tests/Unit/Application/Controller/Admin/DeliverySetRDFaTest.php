@@ -122,7 +122,7 @@ class DeliverySetRDFaTest extends \OxidTestCase
         $aAssignedRDFaDeliveries = array('DeliveryModeOwnFleet');
         $aExpResp = array();
 
-        $oView = $this->getMock('DeliverySet_RDFa', array('getAssignedRDFaDeliveries'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetRdfa::class, array('getAssignedRDFaDeliveries'));
         $oView->expects($this->once())->method('getAssignedRDFaDeliveries')->will($this->returnValue($aAssignedRDFaDeliveries));
         $aCurrResp = $oView->getAllRDFaDeliveries();
 

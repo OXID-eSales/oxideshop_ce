@@ -163,7 +163,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
             $iStockCount = $this->_getArtStock($dAddAmount, $blAllowNegativeStock);
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-            $oArticle->oxarticles__oxstock = new oxField($iStockCount);
+            $oArticle->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field($iStockCount);
             $oDb->execute('update oxarticles set oxarticles.oxstock = ' . $oDb->quote($iStockCount) . ' where oxarticles.oxid = ' . $oDb->quote($this->oxorderarticles__oxartid->value));
             $oArticle->onChange(ACTION_UPDATE_STOCK);
         }
@@ -227,7 +227,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         $this->_aPersParam = $aParams;
 
         // serializing persisten info stored while ordering
-        $this->oxorderarticles__oxpersparam = new oxField(serialize($aParams), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxorderarticles__oxpersparam = new \OxidEsales\Eshop\Core\Field(serialize($aParams), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -294,7 +294,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sQ = "select oxparentid from " . $oArticle->getViewName() . " where oxid=" . $oDb->quote($this->getProductId());
-        $this->oxarticles__oxparentid = new oxField($oDb->getOne($sQ));
+        $this->oxarticles__oxparentid = new \OxidEsales\Eshop\Core\Field($oDb->getOne($sQ));
 
         return $this->oxarticles__oxparentid->value;
     }
@@ -587,7 +587,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
                 $this->updateArticleStock($iStockChange * -1, $this->getConfig()->getConfigParam('blAllowNegativeStock'));
 
                 // updating self
-                $this->oxorderarticles__oxamount = new oxField($iNewAmount, \OxidEsales\Eshop\Core\Field::T_RAW);
+                $this->oxorderarticles__oxamount = new \OxidEsales\Eshop\Core\Field($iNewAmount, \OxidEsales\Eshop\Core\Field::T_RAW);
                 $this->save();
             }
         }
@@ -611,7 +611,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     {
         if ($this->oxorderarticles__oxstorno->value == 0) {
             $myConfig = $this->getConfig();
-            $this->oxorderarticles__oxstorno = new oxField(1);
+            $this->oxorderarticles__oxstorno = new \OxidEsales\Eshop\Core\Field(1);
             if ($this->save()) {
                 $this->updateArticleStock($this->oxorderarticles__oxamount->value, $myConfig->getConfigParam('blAllowNegativeStock'));
             }
@@ -776,7 +776,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     {
         $iInsertTime = time();
         $now = date('Y-m-d H:i:s', $iInsertTime);
-        $this->oxorderarticles__oxtimestamp = new oxField($now);
+        $this->oxorderarticles__oxtimestamp = new \OxidEsales\Eshop\Core\Field($now);
 
         return parent::_insert();
     }

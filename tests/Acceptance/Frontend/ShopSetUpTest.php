@@ -1459,7 +1459,7 @@ SCRIPT;
         $packagePaths = $this->getDemodataPackageImitationPaths();
 
         mkdir ($packagePaths['package'], 0777, true);
-        file_put_contents($packagePaths['composer'], "");
+        mkdir ($packagePaths['source'], 0777, true);
         file_put_contents($packagePaths['demodata'], "");
     }
 

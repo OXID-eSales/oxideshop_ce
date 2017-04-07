@@ -46,7 +46,7 @@ class CompanyVatInCountryChecker extends \OxidEsales\Eshop\Core\CompanyVatInChec
     /**
      * Country setter
      *
-     * @param \OxidEsales\Eshop\Application\Controller\Admin\CountryController $country
+     * @param \OxidEsales\Eshop\Application\Model\Country $country
      */
     public function setCountry(\OxidEsales\Eshop\Application\Model\Country $country)
     {

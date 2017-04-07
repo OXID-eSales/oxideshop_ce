@@ -461,19 +461,19 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Order checking, processing and saving method.
      * Before saving performed checking if order is still not executed (checks in
      * database oxorder table for order with know ID), if yes - returns error code 3,
-     * if not - loads payment data, assigns all info from basket to new oxorder object
+     * if not - loads payment data, assigns all info from basket to new Order object
      * and saves full order with error status. Then executes payment. On failure -
      * deletes order and returns error code 2. On success - saves order (\OxidEsales\Eshop\Application\Model\Order::save()),
      * removes article from wishlist (\OxidEsales\Eshop\Application\Model\Order::_updateWishlist()), updates voucher data
      * (\OxidEsales\Eshop\Application\Model\Order::_markVouchers()). Finally sends order confirmation email to customer
-     * (oxemail::SendOrderEMailToUser()) and shop owner (oxemail::SendOrderEMailToOwner()).
+     * (\OxidEsales\Eshop\Core\Email::SendOrderEMailToUser()) and shop owner (\OxidEsales\Eshop\Core\Email::SendOrderEMailToOwner()).
      * If this is order recalculation, skipping payment execution, marking vouchers as used
      * and sending order by email to shop owner and user
      * Mailing status (1 if OK, 0 on error) is returned.
      *
-     * @param \OxidEsales\Eshop\Application\Controller\BasketController $oBasket              Shopping basket object
-     * @param object                                                    $oUser                Current user object
-     * @param bool                                                      $blRecalculatingOrder Order recalculation
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket              Basket object
+     * @param object                                     $oUser                Current User object
+     * @param bool                                       $blRecalculatingOrder Order recalculation
      *
      * @throws Exception
      *
@@ -644,7 +644,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Additionally stores general discount and wrapping. Sets order status to "error"
      * and creates oxOrderArticle objects and assigns to them basket articles.
      *
-     * @param \OxidEsales\Eshop\Application\Controller\BasketController $oBasket Shopping basket object
+     * @param \OxidEsales\EshopCommunity\Application\Model\Basket $oBasket Shopping basket object
      */
     protected function _loadFromBasket(Basket $oBasket)
     {
@@ -796,7 +796,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Assigns wrapping VAT and card price + card message info
      *
-     * @param \OxidEsales\Eshop\Application\Controller\BasketController $oBasket basket object
+     * @param \OxidEsales\EshopCommunity\Application\Model\Basket $oBasket basket object
      */
     protected function _setWrapping(Basket $oBasket)
     {
@@ -822,7 +822,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Creates oxorderarticle objects and assigns to them basket articles.
+     * Creates OrderArticle objects and assigns to them basket articles.
      * Updates quantity of sold articles (\OxidEsales\Eshop\Application\Model\Article::updateSoldAmount()).
      *
      * @param array $aArticleList article list
@@ -922,8 +922,8 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * and finally executes it (oxPaymentGateway::executePayment()). On failure -
      * deletes order and returns * error code 2.
      *
-     * @param \OxidEsales\Eshop\Application\Controller\BasketController $oBasket      basket object
-     * @param object                                                    $oUserpayment user payment object
+     * @param \OxidEsales\EshopCommunity\Application\Model\Basket $oBasket      basket object
+     * @param object                                              $oUserpayment user payment object
      *
      * @return  integer 2 or an error code
      */

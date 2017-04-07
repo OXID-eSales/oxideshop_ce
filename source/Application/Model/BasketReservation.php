@@ -40,7 +40,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     /**
      * Reservations list
      *
-     * @var oxuserbasket
+     * @var \OxidEsales\EshopCommunity\Application\Model\UserBasket
      */
     protected $_oReservations = null;
 
@@ -69,11 +69,11 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * load reservation or create new reservation oxuserbasket
+     * load reservation or create new reservation user basket
      *
-     * @param string $sBasketId basket id for this userbasket
+     * @param string $sBasketId basket id for this user basket
      *
-     * @return oxuserbasket
+     * @return \OxidEsales\EshopCommunity\Application\Model\UserBasket
      */
     protected function _loadReservations($sBasketId)
     {
@@ -94,7 +94,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     /**
      * get reservations collection
      *
-     * @return oxUserBasket
+     * @return \OxidEsales\EshopCommunity\Application\Model\UserBasket
      */
     public function getReservations()
     {
@@ -158,7 +158,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     /**
      * compute difference of reserved amounts vs basket items
      *
-     * @param \OxidEsales\Eshop\Application\Controller\BasketController $oBasket basket object
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket object
      *
      * @return array
      */

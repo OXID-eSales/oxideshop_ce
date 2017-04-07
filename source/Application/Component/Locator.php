@@ -75,7 +75,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      * Executes locator method according locator type
      *
      * @param \OxidEsales\Eshop\Application\Model\Article                 $oCurrArticle   current article
-     * @param \OxidEsales\Eshop\Application\Controller\FrontendController $oLocatorTarget oxubase object
+     * @param \OxidEsales\Eshop\Application\Controller\FrontendController $oLocatorTarget FrontendController object
      */
     public function setLocatorData($oCurrArticle, $oLocatorTarget)
     {
@@ -136,7 +136,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets details locator data for articles that came from vendor list.
      *
-     * @param \OxidEsales\Eshop\Application\Controller\FrontendController $oLocatorTarget oxUBase object
+     * @param \OxidEsales\Eshop\Application\Controller\FrontendController $oLocatorTarget FrontendController object
      * @param \OxidEsales\Eshop\Application\Model\Article                 $oCurrArticle   current article
      */
     protected function _setVendorLocatorData($oLocatorTarget, $oCurrArticle)
@@ -182,7 +182,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets details locator data for articles that came from Manufacturer list.
      *
-     * @param \OxidEsales\Eshop\Application\Controller\FrontendController $oLocatorTarget oxubase object
+     * @param \OxidEsales\Eshop\Application\Controller\FrontendController $oLocatorTarget FrontendController object
      * @param \OxidEsales\Eshop\Application\Model\Article                 $oCurrArticle   current article
      */
     protected function _setManufacturerLocatorData($oLocatorTarget, $oCurrArticle)
@@ -238,7 +238,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets details locator data for articles that came from search list.
      *
-     * @param \OxidEsales\Eshop\Application\Controller\FrontendController $oLocatorTarget oxubase object
+     * @param \OxidEsales\Eshop\Application\Controller\FrontendController $oLocatorTarget FrontendController object
      * @param \OxidEsales\Eshop\Application\Model\Article                 $oCurrArticle   current article
      */
     protected function _setSearchLocatorData($oLocatorTarget, $oCurrArticle)
@@ -307,7 +307,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      * Template variables:
      * <b>sSearchTitle</b>, <b>searchparamforhtml</b>
      *
-     * @param \OxidEsales\Eshop\Application\Controller\FrontendController $oLocatorTarget oxubase object
+     * @param \OxidEsales\Eshop\Application\Controller\FrontendController $oLocatorTarget FrontendController object
      * @param \OxidEsales\Eshop\Application\Model\Article                 $oCurrArticle   current article
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
@@ -458,7 +458,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Application\Model\Article                 $oArticle       current Article
      * @param object                                                      $oIdList        articles list containing only fake article objects !!!
-     * @param \OxidEsales\Eshop\Application\Controller\FrontendController $oLocatorTarget oxubase object
+     * @param \OxidEsales\Eshop\Application\Controller\FrontendController $oLocatorTarget FrontendController object
      *
      * @return integer
      */

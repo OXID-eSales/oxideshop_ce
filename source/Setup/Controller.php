@@ -36,7 +36,7 @@ use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
  */
 class Controller extends Core
 {
-    /** @var View */
+    /** @var \OxidEsales\EshopCommunity\Setup\View */
     private $view = null;
 
     /**
@@ -522,7 +522,7 @@ class Controller extends Core
     /**
      * Returns View object
      *
-     * @return View
+     * @return \OxidEsales\EshopCommunity\Setup\View
      */
     public function getView()
     {
@@ -530,7 +530,7 @@ class Controller extends Core
     }
 
     /**
-     * @param Setup $setup
+     * @param \OxidEsales\EshopCommunity\Setup\Setup $setup
      */
     protected function onDirsWriteSetStep($setup)
     {
@@ -540,7 +540,7 @@ class Controller extends Core
     /**
      * Check if database can be safely overwritten.
      *
-     * @param Database $database database instance used to connect to DB
+     * @param \OxidEsales\EshopCommunity\Setup\Database $database database instance used to connect to DB
      *
      * @return bool
      */
@@ -558,9 +558,9 @@ class Controller extends Core
     /**
      * Show warning-question if database with same name already exists.
      *
-     * @param string                                                            $databaseName name of database to check if exist
-     * @param View                                                              $view         to set parameters for template
-     * @param \OxidEsales\Eshop\Application\Controller\Admin\LanguageController $language     to translate text
+     * @param string                                    $databaseName name of database to check if exist
+     * @param \OxidEsales\EshopCommunity\Setup\View     $view         to set parameters for template
+     * @param \OxidEsales\EshopCommunity\Setup\Language $language     to translate text
      */
     private function formMessageIfDBCanBeOverwritten($databaseName, $view, $language)
     {
@@ -570,8 +570,8 @@ class Controller extends Core
     /**
      * Show warning-question if MySQL version does meet minimal requirements, but is neither recommended nor supported.
      *
-     * @param View                                                              $view     to set parameters for template
-     * @param \OxidEsales\Eshop\Application\Controller\Admin\LanguageController $language to translate text
+     * @param \OxidEsales\EshopCommunity\Setup\View     $view     to set parameters for template
+     * @param \OxidEsales\EshopCommunity\Setup\Language $language to translate text
      */
     private function formMessageIfMySqyVersionIsNotRecommended($view, $language)
     {
@@ -581,10 +581,10 @@ class Controller extends Core
     /**
      * Show a message and a link to continue installation process, not regarding errors and warnings
      *
-     * @param View                                                              $view      to set parameters for template
-     * @param \OxidEsales\Eshop\Application\Controller\Admin\LanguageController $language  to translate text
-     * @param string                                                            $sessionId
-     * @param string                                                            $setupStep where to redirect if chose to rewrite database
+     * @param \OxidEsales\EshopCommunity\Setup\View     $view      to set parameters for template
+     * @param \OxidEsales\EshopCommunity\Setup\Language $language  to translate text
+     * @param string                                    $sessionId
+     * @param string                                    $setupStep where to redirect if chose to rewrite database
      */
     private function formMessageInstallAnyway($view, $language, $sessionId, $setupStep)
     {
@@ -594,11 +594,11 @@ class Controller extends Core
     /**
      * Show a message and a link to continue installation process, not regarding errors and warnings
      *
-     * @param View                                                              $view           to set parameters for template
-     * @param \OxidEsales\Eshop\Application\Controller\Admin\LanguageController $language       to translate text
-     * @param string                                                            $sessionId
-     * @param string                                                            $setupStep      where to redirect if chose to rewrite database
-     * @param bool                                                              $databaseExists Database already exists
+     * @param \OxidEsales\EshopCommunity\Setup\View     $view           to set parameters for template
+     * @param \OxidEsales\EshopCommunity\Setup\Language $language       to translate text
+     * @param string                                    $sessionId
+     * @param string                                    $setupStep      where to redirect if chose to rewrite database
+     * @param bool                                      $databaseExists Database already exists
      */
     private function formMessageIgnoreDbVersionNotRecommended($view, $language, $sessionId, $setupStep, $databaseExists)
     {
@@ -608,22 +608,22 @@ class Controller extends Core
     }
 
     /**
-     * Installs demodata or initial, dependent on parameter
+     * Installs demo data or initial, dependent on parameter
      *
-     * @param Database $database
-     * @param int      $demodataRequired
+     * @param \OxidEsales\EshopCommunity\Setup\Database $database
+     * @param int                                       $demodataRequired
      */
     private function installShopData($database, $demodataRequired = 0)
     {
         $baseSqlDir = $this->getUtilitiesInstance()->getSqlDirectory(EditionSelector::COMMUNITY);
 
-        // If demodata files are provided.
+        // If demo data files are provided.
         if ($demodataRequired && $this->getUtilitiesInstance()->isDemodataPrepared()) {
             $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
 
             // Install demo data.
             $database->queryFile($this->getUtilitiesInstance()->getActiveEditionDemodataPackageSqlFilePath());
-            // Copy demodata files.
+            // Copy demo data files.
             $this->getUtilitiesInstance()->executeExternalDemodataAssetsInstallCommand();
         } else {
             $database->queryFile("$baseSqlDir/initial_data.sql");
@@ -769,6 +769,7 @@ class Controller extends Core
 
     /**
      * @param string $commandOutput
+     *
      * @return string
      */
     private function convertCommandOutputToHtmlOutput($commandOutput)
@@ -784,11 +785,10 @@ class Controller extends Core
     /**
      * Ensure the database is available
      *
-     * @throws SetupControllerExitException
-     */
-    /**
-     * @param Database $database
-     * @param string   $dbName
+     * @throws \OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException
+     *
+     * @param \OxidEsales\EshopCommunity\Setup\Database $database
+     * @param string                                    $dbName
      *
      * @throws SetupControllerExitException
      */

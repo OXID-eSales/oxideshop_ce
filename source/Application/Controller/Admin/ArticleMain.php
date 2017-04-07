@@ -741,9 +741,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * Customize article data for rendering.
      * Intended to be used by modules.
      *
-     * @param \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $article
+     * @param \OxidEsales\Eshop\Application\Model\Article $article
      *
-     * @return \OxidEsales\Eshop\Application\Controller\Admin\ArticleController
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     protected function customizeArticleInformation($article)
     {
@@ -754,10 +754,10 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * Save non standard article information if needed.
      * Intended to be used by modules.
      *
-     * @param \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $article
-     * @param array                                                            $parameters
+     * @param \OxidEsales\Eshop\Application\Model\Article $article
+     * @param array                                       $parameters
      *
-     * @return \OxidEsales\Eshop\Application\Controller\Admin\ArticleController
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     protected function saveAdditionalArticleData($article, $parameters)
     {

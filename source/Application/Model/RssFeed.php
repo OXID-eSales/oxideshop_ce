@@ -490,7 +490,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    public function getCategoryArticlesTitle(Category $oCat)
+    public function getCategoryArticlesTitle(\OxidEsales\Eshop\Application\Model\Category $oCat)
     {
         $oLang = Registry::getLang();
         $iLang = $oLang->getBaseLanguage();
@@ -530,7 +530,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    public function getCategoryArticlesUrl(Category $oCat)
+    public function getCategoryArticlesUrl(\OxidEsales\Eshop\Application\Model\Category $oCat)
     {
         $oLang = Registry::getLang();
 
@@ -549,7 +549,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return void
      */
-    public function loadCategoryArticles(Category $oCat)
+    public function loadCategoryArticles(\OxidEsales\Eshop\Application\Model\Category $oCat)
     {
         $sId = $oCat->getId();
         if (($this->_aChannel = $this->_loadFromCache(self::RSS_CATARTS . $sId))) {
@@ -748,7 +748,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    public function getRecommListsTitle(Article $oArticle)
+    public function getRecommListsTitle(\OxidEsales\Eshop\Application\Model\Article $oArticle)
     {
         $oLang = Registry::getLang();
         $iLang = $oLang->getBaseLanguage();
@@ -765,7 +765,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    public function getRecommListsUrl(Article $oArticle)
+    public function getRecommListsUrl(\OxidEsales\Eshop\Application\Model\Article $oArticle)
     {
         $oLang = Registry::getLang();
         $iLang = $oLang->getBaseLanguage();
@@ -811,7 +811,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    public function loadRecommLists(Article $oArticle)
+    public function loadRecommLists(\OxidEsales\Eshop\Application\Model\Article $oArticle)
     {
         if (($this->_aChannel = $this->_loadFromCache(self::RSS_ARTRECOMMLISTS . $oArticle->getId()))) {
             return;

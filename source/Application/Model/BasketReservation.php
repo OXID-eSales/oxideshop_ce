@@ -207,7 +207,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket object
      */
-    public function reserveBasket(Basket $oBasket)
+    public function reserveBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
         if (!$this->isAdmin()) {
             $this->_reserveArticles($this->_basketDifference($oBasket));

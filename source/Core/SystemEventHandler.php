@@ -61,7 +61,7 @@ class SystemEventHandler
      *
      * @param \OxidEsales\Eshop\Core\OnlineLicenseCheck $oOnlineLicenseCheck
      */
-    public function setOnlineLicenseCheck(OnlineLicenseCheck $oOnlineLicenseCheck)
+    public function setOnlineLicenseCheck(\OxidEsales\Eshop\Core\OnlineLicenseCheck $oOnlineLicenseCheck)
     {
         $this->_oOnlineLicenseCheck = $oOnlineLicenseCheck;
     }

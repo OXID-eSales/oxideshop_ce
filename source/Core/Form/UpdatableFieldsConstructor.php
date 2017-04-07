@@ -42,8 +42,8 @@ class UpdatableFieldsConstructor
         $helper = oxNew(FieldNameHelper::class);
         $allowedFields = $helper->getFullFieldNames($updatableFields->getTableName(), $updatableFields->getUpdatableFields());
 
-        $updatableFields = oxNew(FormFields::class, $allowedFields);
+        $updatableFields = oxNew(\OxidEsales\Eshop\Core\Form\FormFields::class, $allowedFields);
 
-        return oxNew(FormFieldsCleaner::class, $updatableFields);
+        return oxNew(\OxidEsales\Eshop\Core\Form\FormFieldsCleaner::class, $updatableFields);
     }
 }

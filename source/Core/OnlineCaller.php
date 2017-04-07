@@ -29,7 +29,7 @@ use oxSimpleXml;
 use oxOnlineRequest;
 use oxRegistry;
 use oxException;
-use Exception;
+use \Exception;
 
 /**
  * Class oxOnlineCaller makes call to given URL which is taken from child classes and sends request parameter.
@@ -131,9 +131,9 @@ abstract class OnlineCaller
     /**
      * Depending on the type of exception, first cast the exception and then write it to log.
      *
-     * @param Exception $oEx
+     * @param \Exception $oEx
      */
-    protected function _castExceptionAndWriteToLog(Exception $oEx)
+    protected function _castExceptionAndWriteToLog(\Exception $oEx)
     {
         if (!($oEx instanceof \OxidEsales\Eshop\Core\Exception\StandardException)) {
             $oOxException = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);

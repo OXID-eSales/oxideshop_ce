@@ -146,7 +146,7 @@ class DatabaseProvider
      *
      * @param ConfigFile $configFile The file config.inc.php wrapped in an object
      */
-    public function setConfigFile(ConfigFile $configFile)
+    public function setConfigFile(\OxidEsales\Eshop\Core\ConfigFile $configFile)
     {
         $this->configFile = $configFile;
     }
@@ -255,7 +255,7 @@ class DatabaseProvider
      *
      * @throws DatabaseNotConfiguredException
      */
-    protected function validateConfigFile(ConfigFile $configFile)
+    protected function validateConfigFile(\OxidEsales\Eshop\Core\ConfigFile $configFile)
     {
         $isDatabaseConfigured = $this->isDatabaseConfigured($configFile);
 

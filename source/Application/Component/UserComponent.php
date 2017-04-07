@@ -24,7 +24,7 @@ namespace OxidEsales\EshopCommunity\Application\Component;
 
 use oxDb;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Form\UpdatableFieldsConstructor;
+use OxidEsales\Eshop\Core\Form\UpdatableFieldsConstructor;
 use oxRegistry;
 use oxUser;
 use Exception;

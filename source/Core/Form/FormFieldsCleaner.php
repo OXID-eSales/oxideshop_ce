@@ -33,7 +33,7 @@ class FormFieldsCleaner
     /**
      * @param FormFields $updatableFields White-list.
      */
-    public function __construct(FormFields $updatableFields)
+    public function __construct(\OxidEsales\Eshop\Core\Form\FormFields $updatableFields)
     {
         $this->updatableFields = $updatableFields;
     }

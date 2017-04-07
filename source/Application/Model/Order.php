@@ -479,7 +479,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return integer
      */
-    public function finalizeOrder(Basket $oBasket, $oUser, $blRecalculatingOrder = false)
+    public function finalizeOrder(\OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
         \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
         try {
@@ -646,7 +646,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param \OxidEsales\EshopCommunity\Application\Model\Basket $oBasket Shopping basket object
      */
-    protected function _loadFromBasket(Basket $oBasket)
+    protected function _loadFromBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
         $myConfig = $this->getConfig();
 
@@ -798,7 +798,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param \OxidEsales\EshopCommunity\Application\Model\Basket $oBasket basket object
      */
-    protected function _setWrapping(Basket $oBasket)
+    protected function _setWrapping(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
         $myConfig = $this->getConfig();
 
@@ -927,7 +927,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return  integer 2 or an error code
      */
-    protected function _executePayment(Basket $oBasket, $oUserpayment)
+    protected function _executePayment(\OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUserpayment)
     {
         $oPayTransaction = $this->_getGateway();
         $oPayTransaction->setPaymentParams($oUserpayment);

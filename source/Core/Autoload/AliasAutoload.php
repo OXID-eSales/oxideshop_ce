@@ -34,21 +34,12 @@ class AliasAutoload
      * Array map with virtual namespace class name as key, bc class name as value.
      * @var array
      */
-    private $backwardsCompatibilityClassMap = [];
+    private $backwardsCompatibilityClassMap = null;
 
     /**
      *
      */
     private $virtualNameSpaceClassMap = null;
-
-    /**
-     * AliasAutoload constructor.
-     */
-    public function __construct()
-    {
-        $classMap = include_once __DIR__ . DIRECTORY_SEPARATOR . 'BackwardsCompatibilityClassMap.php';
-        $this->backwardsCompatibilityClassMap = array_map('strtolower', $classMap);
-    }
 
     /**
      * Autoload method.
@@ -202,6 +193,11 @@ class AliasAutoload
      */
     private function getBackwardsCompatibilityClassMap()
     {
+        if (is_null($this->backwardsCompatibilityClassMap)) {
+            $classMap = include_once __DIR__ . DIRECTORY_SEPARATOR . 'BackwardsCompatibilityClassMap.php';
+            $this->backwardsCompatibilityClassMap = array_map('strtolower', $classMap);
+        }
+
         return $this->backwardsCompatibilityClassMap;
     }
 

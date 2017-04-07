@@ -96,16 +96,8 @@ class ServersManagerTest extends \OxidTestCase
         $oServerList = oxNew('oxServersManager');
         $oServerList->saveServer($oServer);
 
-        $aExpectedServerData = array(
-            'serverNameHash1' => array(
-                'id'                => 'serverNameHash1',
-                'timestamp'         => 'timestamp',
-                'ip'                => '127.0.0.1',
-                'lastFrontendUsage' => 'frontendUsageTimestamp',
-                'lastAdminUsage'    => 'adminUsageTimestamp',
-                'isValid'           => true
-            ));
-        $this->assertEquals($aExpectedServerData, $oServerList->getServersData());
+        $applicationServerList = $oServerList->getServersData();
+        $this->assertEquals($oServer, $applicationServerList['serverNameHash1']);
     }
 
     public function testUpdatingServer()
@@ -136,20 +128,8 @@ class ServersManagerTest extends \OxidTestCase
         $oServerList = oxNew('oxServersManager');
         $oServerList->saveServer($oServer);
 
-        $aExpectedServerData = array(
-            'serverNameHash1' => array(),
-            'serverNameHash2' => array(
-                'id'                => 'serverNameHash2',
-                'timestamp'         => 'timestampUpdated',
-                'ip'                => '127.0.0.255',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage'    => 'adminUsageTimestampUpdated',
-                'isValid'           => true
-            ),
-            'serverNameHash3' => array(),
-        );
-
-        $this->assertEquals($aExpectedServerData, $oServerList->getServersData());
+        $applicationServerList = $oServerList->getServersData();
+        $this->assertEquals($oServer, $applicationServerList['serverNameHash2']);
     }
 
     public function testUpdatingEmptyServer()
@@ -167,17 +147,8 @@ class ServersManagerTest extends \OxidTestCase
         $oServerList = oxNew('oxServersManager');
         $oServerList->saveServer($oServer);
 
-        $aExpectedServerData = array(
-            'serverNameHash1' => array(
-                'id'                => 'serverNameHash1',
-                'timestamp'         => 'timestampUpdated',
-                'ip'                => '127.0.0.1',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage'    => 'adminUsageTimestampUpdated',
-                'isValid'           => false
-            ),
-        );
-        $this->assertEquals($aExpectedServerData, $oServerList->getServersData());
+        $applicationServerList = $oServerList->getServersData();
+        $this->assertEquals($oServer, $applicationServerList['serverNameHash1']);
     }
 
     public function testGetServerNodes()

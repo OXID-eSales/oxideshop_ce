@@ -29,64 +29,92 @@ class ApplicationServerTest extends \OxidTestCase
 
     public function testSetGetId()
     {
-        $oServerNode = oxNew('oxApplicationServer');
-        $oServerNode->setId('ThisIsServerId');
-        $this->assertSame('ThisIsServerId', $oServerNode->getId());
+        $serverNode = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $serverNode->setId('ThisIsServerId');
+        $this->assertSame('ThisIsServerId', $serverNode->getId());
     }
 
     public function testSetGetIp()
     {
-        $oServerNode = oxNew('oxApplicationServer');
-        $oServerNode->setIp('11.11.11.11');
-        $this->assertSame('11.11.11.11', $oServerNode->getIp());
+        $serverNode = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $serverNode->setIp('11.11.11.11');
+        $this->assertSame('11.11.11.11', $serverNode->getIp());
     }
 
     public function testSetGetTimeStamp()
     {
-        $oServerNode = oxNew('oxApplicationServer');
-        $oServerNode->setTimestamp(123456789);
-        $this->assertSame(123456789, $oServerNode->getTimestamp());
+        $serverNode = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $serverNode->setTimestamp(123456789);
+        $this->assertSame(123456789, $serverNode->getTimestamp());
     }
 
     public function testSetGetLastFrontendUsage()
     {
-        $oServerNode = oxNew('oxApplicationServer');
-        $oServerNode->setLastFrontendUsage(123456789);
-        $this->assertSame(123456789, $oServerNode->getLastFrontendUsage());
+        $serverNode = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $serverNode->setLastFrontendUsage(123456789);
+        $this->assertSame(123456789, $serverNode->getLastFrontendUsage());
     }
 
     public function testSetGetLastAdminUsage()
     {
-        $oServerNode = oxNew('oxApplicationServer');
-        $oServerNode->setLastAdminUsage(123456789);
-        $this->assertSame(123456789, $oServerNode->getLastAdminUsage());
+        $serverNode = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $serverNode->setLastAdminUsage(123456789);
+        $this->assertSame(123456789, $serverNode->getLastAdminUsage());
     }
 
     public function testServerValidityOnCreation()
     {
-        $oServerNode = oxNew('oxApplicationServer');
-        $this->assertFalse($oServerNode->isValid());
+        $serverNode = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $this->assertFalse($serverNode->isValid());
     }
 
     public function testServerValidityOnSetFalse()
     {
-        $oServerNode = oxNew('oxApplicationServer');
-        $oServerNode->setIsValid(false);
-        $this->assertFalse($oServerNode->isValid());
+        $serverNode = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $serverNode->setIsValid(false);
+        $this->assertFalse($serverNode->isValid());
     }
 
     public function testServerValidityOnSetTrue()
     {
-        $oServerNode = oxNew('oxApplicationServer');
-        $oServerNode->setIsValid(true);
-        $this->assertTrue($oServerNode->isValid());
+        $serverNode = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $serverNode->setIsValid(true);
+        $this->assertTrue($serverNode->isValid());
     }
 
     public function testServerValidityOnSetDefault()
     {
-        $oServerNode = oxNew('oxApplicationServer');
-        $oServerNode->setIsValid();
-        $this->assertTrue($oServerNode->isValid());
+        $serverNode = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $serverNode->setIsValid();
+        $this->assertTrue($serverNode->isValid());
+    }
+
+    /**
+     * @dataProvider dataProviderTestMultiModuleInheritanceTestPhpInheritance
+     *
+     * @param int  $currentTime    The current timestamp.
+     * @param int  $serverTime     The server timestamp.
+     * @param bool $expectedResult Expected result
+     */
+    public function testServerIsInUse($currentTime, $serverTime, $expectedResult)
+    {
+        $serverNode = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $serverNode->setTimestamp($serverTime);
+        $this->assertSame($expectedResult, $serverNode->isInUse($currentTime));
+    }
+
+    /**
+     * Data provider for the test method testGetApplicationServerList.
+     */
+    public function getServerIsInUseDataProvider()
+    {
+        $currentTime = 1400000000;
+        return array(
+            array(null, $currentTime - (25 * 3600), true),
+            array(1, $currentTime - (25 * 3600), true),
+            array($currentTime, $currentTime - (25 * 3600), true),
+            array($currentTime, $currentTime - (11 * 3600), false)
+        );
     }
 
 }

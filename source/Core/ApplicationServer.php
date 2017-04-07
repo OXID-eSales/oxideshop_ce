@@ -32,6 +32,10 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class ApplicationServer
 {
+    /**
+     * Time in seconds, server node information life time.
+     */
+    const NODE_AVAILABILITY_CHECK_PERIOD = 86400;
 
     /**
      * @var string
@@ -188,5 +192,18 @@ class ApplicationServer
     public function isValid()
     {
         return $this->_blIsValid;
+    }
+
+    /**
+     * Check if application server was in use during 24h period.
+     *
+     * @param int $currentTimestamp The current timestamp.
+     *
+     * @return bool
+     */
+    public function isInUse($currentTimestamp)
+    {
+        $timestamp = $this->getTimestamp();
+        return (bool) ($timestamp < $currentTimestamp - self::NODE_AVAILABILITY_CHECK_PERIOD);
     }
 }

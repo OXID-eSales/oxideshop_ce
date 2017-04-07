@@ -22,7 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxServersManager;
 use oxServerChecker;
 use oxUtilsServer;
 use oxUtilsDate;

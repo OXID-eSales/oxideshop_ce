@@ -24,7 +24,6 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use oxOnlineLicenseCheckCaller;
 use oxUserCounter;
-use oxServersManager;
 use oxRegistry;
 use oxOnlineLicenseCheck;
 use stdClass;

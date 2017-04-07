@@ -22,9 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-use oxApplicationServer;
-
 /**
  * Checks if server node is valid, information is not outdated.
  *

@@ -27,7 +27,8 @@ use OxidEsales\Eshop\Application\Model\User;
 
 /**
  * Class typeHintTestBasket.
- * Type hint in method finalizeOrder is for BC class, the type hint in parent is for VNS class.
+ * Type hint in method finalizeOrder is for the backwards compatibility class, the type hint in parent is for the virtual
+ * namespaced class.
  *
  * @package OxidEsales\EshopCommunity\Tests\Unit\Core\Autoload
  */
@@ -37,10 +38,12 @@ class TypeHintTestOrder extends \OxidEsales\Eshop\Application\Model\Order
      * @param oxBasket $basket
      * @param User     $user
      * @param bool     $recalculatingOrder
+     *
+     * @return integer
      */
     public function finalizeOrder(oxBasket $basket, $user, $recalculatingOrder = false)
     {
-        parent::finalizeOrder($basket, $user, $recalculatingOrder);
+        return parent::finalizeOrder($basket, $user, $recalculatingOrder);
     }
 }
 
@@ -52,38 +55,55 @@ class TypeHintTestOrder extends \OxidEsales\Eshop\Application\Model\Order
 class TypeHintTest extends UnitTestCase
 {
     /**
-     * Test type hints with BC aliases.
+     * Test type hints with backwards compatibility aliases.
      */
-    public function testTypeHintAliasingVNS()
+    public function testTypeHintAliasingVirtualNamespace()
     {
-        $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-        $user->load('oxdefaultadmin');
         $basket = oxNew(\OxidEsales\Eshop\Application\Model\Basket::class);
-        $order = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\Autoload\TypeHintTestOrder::class);
-        $order->finalizeOrder($basket, $user);
+
+        $this->createOrder()->finalizeOrder($basket, $this->loadDefaultAdminUser());
     }
 
     /**
-     * Test type hints with BC aliases.
+     * Test type hints with backwards compatibility aliases.
      */
-    public function testTypeHintAliasingBC()
+    public function testTypeHintAliasingBackwardsCompatibilityWithOxNew()
     {
-        $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-        $user->load('oxdefaultadmin');
         $basket = oxNew('oxBasket');
-        $order = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\Autoload\TypeHintTestOrder::class);
-        $order->finalizeOrder($basket, $user);
+
+        $this->createOrder()->finalizeOrder($basket, $this->loadDefaultAdminUser());
     }
 
     /**
-     * Test type hints with BC aliases.
+     * Test type hints with backwards compatibility aliases.
      */
-    public function testTypeHintAliasingBCnew()
+    public function testTypeHintAliasingBackwardsCompatibilityWithNew()
+    {
+        $basket = new \oxBasket;
+
+        $this->createOrder()->finalizeOrder($basket, $this->loadDefaultAdminUser());
+    }
+
+    /**
+     * Load the default admin user.
+     *
+     * @return \OxidEsales\Eshop\Application\Model\User The default admin user.
+     */
+    protected function loadDefaultAdminUser()
     {
         $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $user->load('oxdefaultadmin');
-        $basket = new \oxBasket;
-        $order = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\Autoload\TypeHintTestOrder::class);
-        $order->finalizeOrder($basket, $user);
+
+        return $user;
+    }
+
+    /**
+     * Create the example module order object.
+     *
+     * @return \OxidEsales\EshopCommunity\Tests\Unit\Core\Autoload\TypeHintTestOrder
+     */
+    protected function createOrder()
+    {
+        return oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\Autoload\TypeHintTestOrder::class);
     }
 }

@@ -69,7 +69,7 @@ class Output extends \OxidEsales\Eshop\Core\Base
      */
     public function __construct()
     {
-        $this->setIsSearchEngine(oxRegistry::getUtils()->isSearchEngine());
+        $this->setIsSearchEngine(\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine());
     }
 
     /**
@@ -216,11 +216,11 @@ class Output extends \OxidEsales\Eshop\Core\Base
     {
         switch ($this->_sOutputFormat) {
             case self::OUTPUT_FORMAT_JSON:
-                oxRegistry::getUtils()->setHeader("Content-Type: application/json; charset=" . $this->_sCharset);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader("Content-Type: application/json; charset=" . $this->_sCharset);
                 break;
             case self::OUTPUT_FORMAT_HTML:
             default:
-                oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . $this->_sCharset);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader("Content-Type: text/html; charset=" . $this->_sCharset);
                 break;
         }
     }

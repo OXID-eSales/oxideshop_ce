@@ -160,7 +160,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
     protected function fetchIsImageDeletable($sPicName, $sTable, $sField)
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = oxDb::getMaster();
+        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
 
         $query = "select count(*) from $sTable where $sField = " . $masterDb->quote($sPicName) . " group by $sField ";
 
@@ -186,7 +186,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         if (isset($oObject->{$sPic}) &&
             ($_FILES['myfile']['size'][$sPicType . '@' . $sPic] > 0 || $aParams[$sPic] != $oObject->{$sPic}->value)
         ) {
-            $sImgDir = $sAbsDynImageDir . oxRegistry::get("oxUtilsFile")->getImageDirByType($sPicType);
+            $sImgDir = $sAbsDynImageDir . \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->getImageDirByType($sPicType);
             return $this->safePictureDelete($oObject->{$sPic}->value, $sImgDir, $sPicTable, $sPicField);
         }
 

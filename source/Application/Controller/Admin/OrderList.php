@@ -64,7 +64,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         parent::render();
 
         $folders = $this->getConfig()->getConfigParam('aOrderfolder');
-        $folder = oxRegistry::getConfig()->getRequestParameter("folder");
+        $folder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("folder");
         // first display new orders
         if (!$folder && is_array($folders)) {
             $names = array_keys($folders);
@@ -72,8 +72,8 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         }
 
         $search = array('oxorderarticles' => 'ARTID', 'oxpayments' => 'PAYMENT');
-        $searchQuery = oxRegistry::getConfig()->getRequestParameter("addsearch");
-        $searchField = oxRegistry::getConfig()->getRequestParameter("addsearchfld");
+        $searchQuery = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("addsearch");
+        $searchField = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("addsearchfld");
 
         $this->_aViewData["folder"] = $folder ? $folder : -1;
         $this->_aViewData["addsearchfld"] = $searchField ? $searchField : -1;
@@ -100,7 +100,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      */
     public function cancelOrder()
     {
-        $order = oxNew("oxOrder");
+        $order = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($order->load($this->getEditObjectId())) {
             $order->cancelOrder();
         }
@@ -135,11 +135,11 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      */
     protected function _prepareWhereQuery($whereQuery, $fullQuery)
     {
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $query = parent::_prepareWhereQuery($whereQuery, $fullQuery);
         $config = $this->getConfig();
         $folders = $config->getConfigParam('aOrderfolder');
-        $folder = oxRegistry::getConfig()->getRequestParameter('folder');
+        $folder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folder');
         // Searching for empty oxfolder fields
         if ($folder && $folder != '-1') {
             $query .= " and ( oxorder.oxfolder = " . $database->quote($folder) . " )";
@@ -161,11 +161,11 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
     protected function _buildSelectString($listObject = null)
     {
         $query = parent::_buildSelectString($listObject);
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $searchQuery = oxRegistry::getConfig()->getRequestParameter('addsearch');
+        $searchQuery = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('addsearch');
         $searchQuery = trim($searchQuery);
-        $searchField = oxRegistry::getConfig()->getRequestParameter('addsearchfld');
+        $searchField = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('addsearchfld');
 
         if ($searchQuery) {
             switch ($searchField) {

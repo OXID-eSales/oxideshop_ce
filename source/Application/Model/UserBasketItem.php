@@ -100,13 +100,13 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if (!$this->oxuserbasketitems__oxartid->value) {
             //this exception may not be caught, anyhow this is a critical exception
-            $oEx = oxNew('oxArticleException');
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ArticleException::class);
             $oEx->setMessage('EXCEPTION_ARTICLE_NOPRODUCTID');
             throw $oEx;
         }
 
         if ($this->_oArticle === null) {
-            $this->_oArticle = oxNew('oxArticle');
+            $this->_oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
             // performance
             /* removed due to #4178
@@ -176,7 +176,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function setSelList($aSelList)
     {
-        $this->oxuserbasketitems__oxsellist = new oxField(serialize($aSelList), oxField::T_RAW);
+        $this->oxuserbasketitems__oxsellist = new oxField(serialize($aSelList), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -200,7 +200,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function setPersParams($sPersParams)
     {
-        $this->oxuserbasketitems__oxpersparam = new oxField(serialize($sPersParams), oxField::T_RAW);
+        $this->oxuserbasketitems__oxpersparam = new oxField(serialize($sPersParams), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -212,12 +212,12 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = oxField::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         if ('oxsellist' === strtolower($sFieldName) || 'oxuserbasketitems__oxsellist' === strtolower($sFieldName)
             || 'oxpersparam' === strtolower($sFieldName) || 'oxuserbasketitems__oxpersparam' === strtolower($sFieldName)
         ) {
-            $iDataType = oxField::T_RAW;
+            $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;
         }
 
         return parent::_setFieldData($sFieldName, $sValue, $iDataType);

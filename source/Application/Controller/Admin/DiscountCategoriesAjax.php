@@ -62,7 +62,7 @@ class DiscountCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     protected function _getQuery()
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oConfig = $this->getConfig();
         $sId = $oConfig->getRequestParameter('oxid');
         $sSynchId = $oConfig->getRequestParameter('synchoxid');
@@ -106,11 +106,11 @@ class DiscountCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
 
         if ($config->getRequestParameter('all')) {
             $query = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($query);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($query);
         } elseif (is_array($categoryIds)) {
-            $chosenCategories = implode(", ", oxDb::getDb()->quoteArray($categoryIds));
+            $chosenCategories = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($categoryIds));
             $query = "delete from oxobject2discount where oxobject2discount.oxid in (" . $chosenCategories . ") ";
-            oxDb::getDb()->Execute($query);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($query);
         }
     }
 
@@ -142,7 +142,7 @@ class DiscountCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     protected function addCategoryToDiscount($discountId, $categoryId)
     {
-        $object2Discount = oxNew("oxBase");
+        $object2Discount = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $object2Discount->init('oxobject2discount');
         $object2Discount->oxobject2discount__oxdiscountid = new oxField($discountId);
         $object2Discount->oxobject2discount__oxobjectid = new oxField($categoryId);

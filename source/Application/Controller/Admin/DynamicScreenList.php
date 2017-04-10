@@ -44,7 +44,7 @@ class DynamicScreenList extends \OxidEsales\Eshop\Application\Controller\Admin\D
     public function render()
     {
         parent::render();
-        $this->_aViewData['menu'] = basename(oxRegistry::getConfig()->getRequestParameter("menu"));
+        $this->_aViewData['menu'] = basename(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("menu"));
 
         return "dynscreen_list.tpl";
     }

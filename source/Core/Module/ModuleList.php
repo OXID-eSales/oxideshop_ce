@@ -82,7 +82,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModulesWithExtendedClass()
     {
-        return $this->parseModuleChains(oxRegistry::getConfig()->getConfigParam('aModules'));
+        return $this->parseModuleChains(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModules'));
     }
 
     /**
@@ -406,7 +406,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModule()
     {
-        return oxNew('oxModule');
+        return oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
     }
 
     /**
@@ -514,7 +514,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
             return;
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $aConfigIds = $sDelExtIds = array();
         foreach ($aDeletedExtIds as $sDeletedExtId) {
@@ -545,7 +545,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModulesFromDir($sModulesDir, $sVendorDir = null)
     {
-        $sModulesDir = oxRegistry::get('oxUtilsFile')->normalizeDir($sModulesDir);
+        $sModulesDir = \OxidEsales\Eshop\Core\Registry::get('oxUtilsFile')->normalizeDir($sModulesDir);
 
         foreach (glob($sModulesDir . '*') as $sModuleDirPath) {
             $sModuleDirPath .= (is_dir($sModuleDirPath)) ? '/' : '';
@@ -577,9 +577,9 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
                         if (!$this->_extendsClasses($sModuleDirName)) {
                             // if not - marking it as disabled by default
 
-                            /** @var oxModuleCache $oModuleCache */
+                            /** @var \OxidEsales\Eshop\Core\Module\ModuleCache $oModuleCache */
                             $oModuleCache = oxNew('oxModuleCache', $oModule);
-                            /** @var oxModuleInstaller $oModuleInstaller */
+                            /** @var \OxidEsales\Eshop\Core\Module\ModuleInstaller $oModuleInstaller */
                             $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
 
                             $oModuleInstaller->deactivate($oModule);
@@ -603,7 +603,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModuleValidatorFactory()
     {
-        return oxNew('oxModuleValidatorFactory');
+        return oxNew(\OxidEsales\Eshop\Core\Module\ModuleValidatorFactory::class);
     }
 
     /**

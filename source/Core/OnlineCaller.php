@@ -51,17 +51,17 @@ abstract class OnlineCaller
     const CURL_CONNECT_TIMEOUT = 3;
 
     /**
-     * @var oxCurl
+     * @var \OxidEsales\Eshop\Core\Curl
      */
     private $_oCurl;
 
     /**
-     * @var oxOnlineServerEmailBuilder
+     * @var \OxidEsales\Eshop\Core\OnlineServerEmailBuilder
      */
     private $_oEmailBuilder;
 
     /**
-     * @var oxSimpleXml
+     * @var \OxidEsales\Eshop\Core\SimpleXml
      */
     private $_oSimpleXml;
 
@@ -82,9 +82,9 @@ abstract class OnlineCaller
     /**
      * Sets dependencies.
      *
-     * @param oxCurl                     $oCurl         Sends request to OXID servers.
-     * @param oxOnlineServerEmailBuilder $oEmailBuilder Forms email when OXID servers are unreachable.
-     * @param oxSimpleXml                $oSimpleXml    Forms XML from Request for sending to OXID servers.
+     * @param \OxidEsales\Eshop\Core\Curl                     $oCurl         Sends request to OXID servers.
+     * @param \OxidEsales\Eshop\Core\OnlineServerEmailBuilder $oEmailBuilder Forms email when OXID servers are unreachable.
+     * @param \OxidEsales\Eshop\Core\SimpleXml                $oSimpleXml    Forms XML from Request for sending to OXID servers.
      */
     public function __construct(\OxidEsales\Eshop\Core\Curl $oCurl, \OxidEsales\Eshop\Core\OnlineServerEmailBuilder $oEmailBuilder, \OxidEsales\Eshop\Core\SimpleXml $oSimpleXml)
     {
@@ -96,20 +96,20 @@ abstract class OnlineCaller
     /**
      * Makes curl call with given parameters to given url.
      *
-     * @param oxOnlineRequest $oRequest Information set in Request object will be sent to OXID servers.
+     * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest Information set in Request object will be sent to OXID servers.
      *
      * @return null|string In XML format.
      */
     public function call(\OxidEsales\Eshop\Core\OnlineRequest $oRequest)
     {
         $sOutputXml = null;
-        $iFailedCallsCount = oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount');
+        $iFailedCallsCount = \OxidEsales\Eshop\Core\Registry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount');
         try {
             $sXml = $this->_formXMLRequest($oRequest);
             $sOutputXml = $this->_executeCurlCall($this->_getServiceUrl(), $sXml);
             $statusCode = $this->_getCurl()->getStatusCode();
             if ($statusCode != 200) {
-                /** @var oxException $oException */
+                /** @var \OxidEsales\Eshop\Core\Exception\StandardException $oException */
                 $oException = new StandardException();
                 throw $oException;
             }
@@ -136,7 +136,7 @@ abstract class OnlineCaller
     protected function _castExceptionAndWriteToLog(Exception $oEx)
     {
         if (!($oEx instanceof \OxidEsales\Eshop\Core\Exception\StandardException)) {
-            $oOxException = oxNew("oxException");
+            $oOxException = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
             $oOxException->setMessage($oEx->getMessage());
             $oOxException->debugOut();
         } else {
@@ -147,7 +147,7 @@ abstract class OnlineCaller
     /**
      * Forms email.
      *
-     * @param oxOnlineRequest $oRequest Request object from which email should be formed.
+     * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest Request object from which email should be formed.
      *
      * @return string
      */
@@ -159,7 +159,7 @@ abstract class OnlineCaller
     /**
      * Forms XML request.
      *
-     * @param oxOnlineRequest $oRequest Request object from which server request should be formed.
+     * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest Request object from which server request should be formed.
      *
      * @return string
      */
@@ -171,7 +171,7 @@ abstract class OnlineCaller
     /**
      * Gets simple XML.
      *
-     * @return oxSimpleXml
+     * @return \OxidEsales\Eshop\Core\SimpleXml
      */
     protected function _getSimpleXml()
     {
@@ -191,7 +191,7 @@ abstract class OnlineCaller
     /**
      * Gets email builder.
      *
-     * @return oxOnlineServerEmailBuilder
+     * @return \OxidEsales\Eshop\Core\OnlineServerEmailBuilder
      */
     protected function _getEmailBuilder()
     {
@@ -213,7 +213,7 @@ abstract class OnlineCaller
         $oCurl->setUrl($sUrl);
         $oCurl->setParameters(array('xmlRequest' => $sXml));
         $oCurl->setOption(
-            oxCurl::EXECUTION_TIMEOUT_OPTION,
+            \OxidEsales\Eshop\Core\Curl::EXECUTION_TIMEOUT_OPTION,
             static::CURL_EXECUTION_TIMEOUT
         );
 
@@ -239,7 +239,7 @@ abstract class OnlineCaller
     private function _resetFailedCallsCount($iFailedOnlineCallsCount)
     {
         if ($iFailedOnlineCallsCount > 0) {
-            oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 0);
+            \OxidEsales\Eshop\Core\Registry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 0);
         }
     }
 
@@ -250,6 +250,6 @@ abstract class OnlineCaller
      */
     private function _increaseFailedCallsCount($iFailedOnlineCallsCount)
     {
-        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', ++$iFailedOnlineCallsCount);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', ++$iFailedOnlineCallsCount);
     }
 }

@@ -63,7 +63,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
     /**
      * List of users which were found according to search condition
      *
-     * @var oxlist
+     * @var \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected $_oWishListUsers = false;
 
@@ -85,16 +85,16 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
         if ($this->_oWishUser === null) {
             $this->_oWishUser = false;
 
-            $sWishIdParameter = oxRegistry::getConfig()->getRequestParameter('wishid');
-            $sUserId = $sWishIdParameter ? $sWishIdParameter : oxRegistry::getSession()->getVariable('wishid');
+            $sWishIdParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('wishid');
+            $sUserId = $sWishIdParameter ? $sWishIdParameter : \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('wishid');
             if ($sUserId) {
-                $oUser = oxNew('oxuser');
+                $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
                 if ($oUser->load($sUserId)) {
                     // passing wishlist information
                     $this->_oWishUser = $oUser;
 
                     // store this one to session
-                    oxRegistry::getSession()->setVariable('wishid', $sUserId);
+                    \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('wishid', $sUserId);
                 }
             }
         }
@@ -136,9 +136,9 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
      */
     public function searchForWishList()
     {
-        if ($sSearch = oxRegistry::getConfig()->getRequestParameter('search')) {
+        if ($sSearch = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('search')) {
             // search for baskets
-            $oUserList = oxNew('oxuserlist');
+            $oUserList = oxNew(\OxidEsales\Eshop\Application\Model\UserList::class);
             $oUserList->loadWishlistUsers($sSearch);
             if ($oUserList->count()) {
                 $this->_oWishListUsers = $oUserList;
@@ -151,7 +151,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
      * Returns a list of users which were found according to search condition.
      * If no users were found - false is returned
      *
-     * @return oxlist | bool
+     * @return \OxidEsales\Eshop\Core\Model\ListModel | bool
      */
     public function getWishListUsers()
     {
@@ -178,8 +178,8 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
         $aPaths = array();
         $aPath = array();
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('PUBLIC_GIFT_REGISTRIES', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PUBLIC_GIFT_REGISTRIES', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -193,7 +193,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
      */
     public function getTitle()
     {
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         if ($oUser = $this->getWishUser()) {
             $sTranslatedString = $oLang->translateString('GIFT_REGISTRY_OF_3', $oLang->getBaseLanguage(), false);
             $sFirstnameField = 'oxuser__oxfname';

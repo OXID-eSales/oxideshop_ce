@@ -44,7 +44,7 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
 
         parent::render();
 
-        $oAuthUser = oxNew('oxuser');
+        $oAuthUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oAuthUser->loadAdminUser();
         $blisMallAdmin = $oAuthUser->oxuser__oxrights->value == "malladmin";
 
@@ -52,7 +52,7 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
             $aClassVars = get_object_vars($myConfig);
             $aSystemInfo = array();
             $aSystemInfo['pkg.info'] = $myConfig->getPackageInfo();
-            $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+            $oSmarty = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getSmarty();
             while (list($name, $value) = each($aClassVars)) {
                 if (gettype($value) == "object") {
                     continue;
@@ -77,9 +77,9 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
 
             phpinfo();
 
-            oxRegistry::getUtils()->showMessageAndExit("");
+            \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("");
         } else {
-            return oxRegistry::getUtils()->showMessageAndExit("Access denied !");
+            return \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("Access denied !");
         }
     }
 

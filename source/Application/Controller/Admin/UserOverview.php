@@ -41,7 +41,7 @@ class UserOverview extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oUser = oxNew("oxuser");
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->load($soxId);
             $this->_aViewData["edit"] = $oUser;
         }

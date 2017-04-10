@@ -45,11 +45,11 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         parent::render();
 
-        $article = oxNew("oxArticle");
+        $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $this->_aViewData["edit"] = $article;
 
         $articleId = $this->getEditObjectId();
-        $reviewId = oxRegistry::getConfig()->getRequestParameter('rev_oxid');
+        $reviewId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('rev_oxid');
         if (isset($articleId) && $articleId != "-1") {
             // load object
             $article->load($articleId);
@@ -70,11 +70,11 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $this->_aViewData["editlanguage"] = $this->_iEditLang;
 
             if (isset($reviewId)) {
-                $reviewForEditing = oxNew("oxReview");
+                $reviewForEditing = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
                 $reviewForEditing->load($reviewId);
                 $this->_aViewData["editreview"] = $reviewForEditing;
 
-                $user = oxNew("oxuser");
+                $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
                 $user->load($reviewForEditing->oxreviews__oxuserid->value);
                 $this->_aViewData["user"] = $user;
             }
@@ -88,13 +88,13 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     /**
      * returns reviews list for article
      *
-     * @param oxArticle $article Article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $article Article object
      *
      * @return oxList
      */
     protected function _getReviewList($article)
     {
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $query = "select oxreviews.* from oxreviews
                      where oxreviews.OXOBJECTID = " . $database->quote($article->oxarticles__oxid->value) . "
                      and oxreviews.oxtype = 'oxarticle'";
@@ -108,12 +108,12 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             }
         }
 
-        //$sSelect .= "and oxreviews.oxtext".oxRegistry::getLang()->getLanguageTag($this->_iEditLang)." != ''";
+        //$sSelect .= "and oxreviews.oxtext".\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag($this->_iEditLang)." != ''";
         $query .= "and oxreviews.oxlang = '" . $this->_iEditLang . "'";
         $query .= "and oxreviews.oxtext != '' ";
 
         // all reviews
-        $reviewList = oxNew("oxlist");
+        $reviewList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $reviewList->init("oxreview");
         $reviewList->selectString($query);
 
@@ -127,14 +127,14 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         parent::save();
 
-        $parameters = oxRegistry::getConfig()->getRequestParameter("editval");
+        $parameters = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
         // checkbox handling
         if ($this->getConfig()->getConfigParam('blGBModerate') && !isset($parameters['oxreviews__oxactive'])) {
             $parameters['oxreviews__oxactive'] = 0;
         }
 
-        $review = oxNew("oxreview");
-        $review->load(oxRegistry::getConfig()->getRequestParameter("rev_oxid"));
+        $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
+        $review->load(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("rev_oxid"));
         $review->assign($parameters);
         $review->save();
     }
@@ -146,20 +146,20 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         $this->resetContentCache();
 
-        $reviewId = oxRegistry::getConfig()->getRequestParameter("rev_oxid");
-        $review = oxNew("oxreview");
+        $reviewId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("rev_oxid");
+        $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
         $review->load($reviewId);
         $review->delete();
 
         // recalculating article average rating
-        $rating = oxNew("oxRating");
+        $rating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
         $articleId = $this->getEditObjectId();
 
-        $article = oxNew('oxArticle');
+        $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $article->load($articleId);
 
         //switch database connection to master for the following read/write access.
-        oxDB::getMaster();
+        \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
         $article->setRatingAverage($rating->getRatingAverage($articleId, 'oxarticle'));
         $article->setRatingCount($rating->getRatingCount($articleId, 'oxarticle'));
         $article->save();

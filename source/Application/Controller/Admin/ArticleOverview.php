@@ -46,7 +46,7 @@ class ArticleOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         parent::render();
 
-        $this->_aViewData['edit'] = $oArticle = oxNew('oxArticle');
+        $this->_aViewData['edit'] = $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
@@ -101,7 +101,7 @@ class ArticleOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     protected function getDatabase()
     {
-        return oxDb::getDb();
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
     }
 
     /**
@@ -150,14 +150,14 @@ class ArticleOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     /**
      * Loads language for article object.
      *
-     * @param oxArticle $article
-     * @param string    $oxId
+     * @param \OxidEsales\Eshop\Application\Model\Article $article
+     * @param string                                      $oxId
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     protected function updateArticle($article, $oxId)
     {
-        $article->loadInLang(oxRegistry::getConfig()->getRequestParameter("editlanguage"), $oxId);
+        $article->loadInLang(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editlanguage"), $oxId);
 
         return $article;
     }

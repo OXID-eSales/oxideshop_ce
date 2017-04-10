@@ -74,7 +74,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     public function getFields($tableName)
     {
         $fields = array();
-        $rawFields = oxDb::getDb()->MetaColumns($tableName);
+        $rawFields = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->MetaColumns($tableName);
         if (is_array($rawFields)) {
             foreach ($rawFields as $field) {
                 $fields[$field->name] = "{$tableName}.{$field->name}";
@@ -93,7 +93,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function tableExists($tableName)
     {
-        $db = oxDb::getDb();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $tables = $db->getAll("show tables like " . $db->quote($tableName));
 
         return count($tables) > 0;
@@ -134,7 +134,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
         $result = [];
 
         if ($this->tableExists($tableName)) {
-            $result = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll("SHOW INDEX FROM $tableName");
+            $result = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll("SHOW INDEX FROM $tableName");
         }
 
         return $result;
@@ -193,7 +193,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     public function getAllTables()
     {
         if (empty($this->_aTables)) {
-            $tables = oxDb::getDb()->getAll("show tables");
+            $tables = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getAll("show tables");
 
             foreach ($tables as $tableInfo) {
                 if ($this->validateTableName($tableInfo[0])) {
@@ -215,7 +215,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     public function getAllMultiTables($table)
     {
         $mLTables = array();
-        foreach (array_keys(oxRegistry::getLang()->getLanguageIds()) as $langId) {
+        foreach (array_keys(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageIds()) as $langId) {
             $langTableName = getLangTableName($table, $langId);
             if ($table != $langTableName && !in_array($langTableName, $mLTables)) {
                 $mLTables[] = $langTableName;
@@ -238,7 +238,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     {
         $tableSet = getLangTableName($table, $lang);
 
-        $res = oxDb::getDb()->getAll("show create table {$table}");
+        $res = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getAll("show create table {$table}");
 
         return "CREATE TABLE `{$tableSet}` (" .
                 "`OXID` char(32) NOT NULL, " .
@@ -262,7 +262,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
         if (!$tableSet) {
             $tableSet = $table;
         }
-        $res = oxDb::getDb()->getAll("show create table {$table}");
+        $res = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getAll("show create table {$table}");
         $tableSql = $res[0][1];
 
         // removing comments;
@@ -295,7 +295,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function getAddFieldIndexSql($table, $field, $newField, $tableSet = null)
     {
-        $res = oxDb::getDb()->getAll("show create table {$table}");
+        $res = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getAll("show create table {$table}");
 
         $tableSql = $res[0][1];
 
@@ -540,7 +540,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function executeSql($queries)
     {
-        $db = oxDb::getDb();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         if (is_array($queries) && !empty($queries)) {
             foreach ($queries as $query) {
@@ -563,10 +563,10 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     {
         set_time_limit(0);
 
-        $db = oxDb::getDb();
-        $config = oxRegistry::getConfig();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $configFile = oxRegistry::get('oxConfigFile');
+        $configFile = \OxidEsales\Eshop\Core\Registry::get('oxConfigFile');
         $originalSkipViewUsageStatus = $configFile->getVar('blSkipViewUsage');
         $config->setConfigParam('blSkipViewUsage', 1);
 
@@ -579,7 +579,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
         $success = true;
         foreach ($shops as $shopValues) {
             $shopId = $shopValues[0];
-            $shop = oxNew('oxShop');
+            $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             $shop->load($shopId);
             $shop->setMultiShopTables($tables);
             $mallInherit = array();

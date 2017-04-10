@@ -45,9 +45,9 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $myConfig = $this->getConfig();
         parent::render();
 
-        $oOrder = oxNew("oxOrder");
+        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         $oCur = $myConfig->getActShopCurrencyObject();
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
@@ -84,7 +84,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
     /**
      * Returns user payment used for current order. In case current order was executed using
-     * credit card and user payment info is not stored in db (if oxConfig::blStoreCreditCardInfo = false),
+     * credit card and user payment info is not stored in db (if \OxidEsales\Eshop\Core\Config::blStoreCreditCardInfo = false),
      * just for preview user payment is set from oxPayment
      *
      * @param object $oOrder Order object
@@ -94,10 +94,10 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     protected function _getPaymentType($oOrder)
     {
         if (!($oUserPayment = $oOrder->getPaymentType()) && $oOrder->oxorder__oxpaymenttype->value) {
-            $oPayment = oxNew("oxPayment");
+            $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
             if ($oPayment->load($oOrder->oxorder__oxpaymenttype->value)) {
                 // in case due to security reasons payment info was not kept in db
-                $oUserPayment = oxNew("oxUserPayment");
+                $oUserPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
                 $oUserPayment->oxpayments__oxdesc = new oxField($oPayment->oxpayments__oxdesc->value);
             }
         }
@@ -125,9 +125,9 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      */
     public function sendorder()
     {
-        $oOrder = oxNew("oxorder");
+        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($oOrder->load($this->getEditObjectId())) {
-            $oOrder->oxorder__oxsenddate = new oxField(date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime()));
+            $oOrder->oxorder__oxsenddate = new oxField(date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
             $oOrder->save();
 
             // #1071C
@@ -139,9 +139,9 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
                 }
             }
 
-            if (($blMail = oxRegistry::getConfig()->getRequestParameter("sendmail"))) {
+            if (($blMail = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sendmail"))) {
                 // send eMail
-                $oEmail = oxNew("oxemail");
+                $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
                 $oEmail->sendSendedNowMail($oOrder);
             }
         }
@@ -152,7 +152,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      */
     public function resetorder()
     {
-        $oOrder = oxNew("oxorder");
+        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($oOrder->load($this->getEditObjectId())) {
             $oOrder->oxorder__oxsenddate = new oxField("0000-00-00 00:00:00");
             $oOrder->save();
@@ -166,7 +166,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      */
     public function canResetShippingDate()
     {
-        $oOrder = oxNew("oxorder");
+        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         $blCan = false;
         if ($oOrder->load($this->getEditObjectId())) {
             $blCan = $oOrder->oxorder__oxstorno->value == "0" &&

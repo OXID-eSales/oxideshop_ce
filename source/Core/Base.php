@@ -37,14 +37,14 @@ class Base
     /**
      * oxconfig instance
      *
-     * @var oxconfig
+     * @var \OxidEsales\Eshop\Core\Config
      */
     protected static $_oConfig = null;
 
     /**
      * oxsession instance
      *
-     * @var oxsession
+     * @var \OxidEsales\Eshop\Core\Session
      */
     protected static $_oSession = null;
 
@@ -58,7 +58,7 @@ class Base
     /**
      * oxuser object
      *
-     * @var oxuser
+     * @var \OxidEsales\Eshop\Application\Model\User
      */
     protected static $_oActUser = null;
 
@@ -106,7 +106,7 @@ class Base
     /**
      * oxConfig instance getter
      *
-     * @return oxConfig
+     * @return \OxidEsales\Eshop\Core\Config
      */
     public function getConfig()
     {
@@ -120,7 +120,7 @@ class Base
     /**
      * oxConfig instance setter
      *
-     * @param oxConfig $config config object
+     * @param \OxidEsales\Eshop\Core\Config $config config object
      */
     public function setConfig($config)
     {
@@ -130,12 +130,12 @@ class Base
     /**
      * oxSession instance getter
      *
-     * @return oxsession
+     * @return \OxidEsales\Eshop\Core\Session
      */
     public function getSession()
     {
         if (self::$_oSession == null) {
-            self::$_oSession = oxRegistry::getSession();
+            self::$_oSession = \OxidEsales\Eshop\Core\Registry::getSession();
         }
 
         return self::$_oSession;
@@ -144,7 +144,7 @@ class Base
     /**
      * oxSession instance setter
      *
-     * @param oxsession $session session object
+     * @param \OxidEsales\Eshop\Core\Session $session session object
      */
     public function setSession($session)
     {
@@ -154,13 +154,13 @@ class Base
     /**
      * Active user getter
      *
-     * @return oxUser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getUser()
     {
         if (self::$_oActUser === null) {
             self::$_oActUser = false;
-            $user = oxNew('oxuser');
+            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             if ($user->loadActiveUser()) {
                 self::$_oActUser = $user;
             }
@@ -172,7 +172,7 @@ class Base
     /**
      * Active oxuser object setter
      *
-     * @param oxuser $user user object
+     * @param \OxidEsales\Eshop\Application\Model\User $user user object
      */
     public function setUser($user)
     {

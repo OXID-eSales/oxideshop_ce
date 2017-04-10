@@ -35,17 +35,17 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      * If third parameter is false, skips master image delete, only
      * all generated images will be deleted.
      *
-     * @param oxArticle $oObject               article object
-     * @param int       $iIndex                master picture index
-     * @param bool      $blDeleteMasterPicture delete master picture, default is true
+     * @param \OxidEsales\Eshop\Application\Model\Article $oObject               article object
+     * @param int                                         $iIndex                master picture index
+     * @param bool                                        $blDeleteMasterPicture delete master picture, default is true
      *
      * @return null
      */
     public function deleteArticleMasterPicture($oObject, $iIndex, $blDeleteMasterPicture = true)
     {
         $myConfig = $this->getConfig();
-        $myUtilsPic = oxRegistry::get("oxUtilsPic");
-        $oUtilsFile = oxRegistry::get("oxUtilsFile");
+        $myUtilsPic = \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic");
+        $oUtilsFile = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile");
         $blGeneratedImagesOnly = !$blDeleteMasterPicture;
 
         $sAbsDynImageDir = $myConfig->getPictureDir(false);
@@ -98,42 +98,42 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     /**
      * Deletes custom main icon, which name is specified in oxicon field.
      *
-     * @param oxArticle $oObject article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oObject article object
      */
     public function deleteMainIcon($oObject)
     {
         if (($sMainIcon = $oObject->oxarticles__oxicon->value)) {
-            $sPath = $this->getConfig()->getPictureDir(false) . oxRegistry::get("oxUtilsFile")->getImageDirByType("ICO");
-            oxRegistry::get("oxUtilsPic")->safePictureDelete($sMainIcon, $sPath, "oxarticles", "oxicon");
+            $sPath = $this->getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->getImageDirByType("ICO");
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic")->safePictureDelete($sMainIcon, $sPath, "oxarticles", "oxicon");
         }
     }
 
     /**
      * Deletes custom thumbnail, which name is specified in oxthumb field.
      *
-     * @param oxArticle $oObject article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oObject article object
      */
     public function deleteThumbnail($oObject)
     {
         if (($sThumb = $oObject->oxarticles__oxthumb->value)) {
             // deleting article main icon and thumb picture
-            $sPath = $this->getConfig()->getPictureDir(false) . oxRegistry::get("oxUtilsFile")->getImageDirByType("TH");
-            oxRegistry::get("oxUtilsPic")->safePictureDelete($sThumb, $sPath, "oxarticles", "oxthumb");
+            $sPath = $this->getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->getImageDirByType("TH");
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic")->safePictureDelete($sThumb, $sPath, "oxarticles", "oxthumb");
         }
     }
 
     /**
      * Deletes custom zoom picture, which name is specified in oxzoom field.
      *
-     * @param oxArticle $oObject article object
-     * @param int       $iIndex  zoom picture index
+     * @param \OxidEsales\Eshop\Application\Model\Article $oObject article object
+     * @param int                                         $iIndex  zoom picture index
      *
      * @return null
      */
     public function deleteZoomPicture($oObject, $iIndex)
     {
         // checking if oxzoom field exists
-        $oDbHandler = oxNew("oxDbMetaDataHandler");
+        $oDbHandler = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
         $iZoomPicCount = (int) $this->getConfig()->getConfigParam('iZoomPicCount');
 
         if ($iIndex > $iZoomPicCount || !$oDbHandler->fieldExists("oxzoom" . $iIndex, "oxarticles")) {
@@ -149,8 +149,8 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
 
         if ($sZoomPicName && $sZoomPicName != "nopic.jpg") {
             // deleting zoom picture
-            $sPath = $this->getConfig()->getPictureDir(false) . oxRegistry::get("oxUtilsFile")->getImageDirByType("Z" . $iIndex);
-            oxRegistry::get("oxUtilsPic")->safePictureDelete($sZoomPicName, $sPath, "oxarticles", $sFieldToCheck);
+            $sPath = $this->getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->getImageDirByType("Z" . $iIndex);
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic")->safePictureDelete($sZoomPicName, $sPath, "oxarticles", $sFieldToCheck);
         }
     }
 

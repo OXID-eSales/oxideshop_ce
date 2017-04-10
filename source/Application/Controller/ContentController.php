@@ -129,7 +129,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getViewId()
     {
         if (!isset($this->_sViewId)) {
-            $this->_sViewId = parent::getViewId() . '|' . oxRegistry::getConfig()->getRequestParameter('oxcid');
+            $this->_sViewId = parent::getViewId() . '|' . \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxcid');
         }
 
         return $this->_sViewId;
@@ -148,7 +148,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
         $oContent = $this->getContent();
         if ($oContent && !$this->_canShowContent($oContent->oxcontents__oxloadid->value)) {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=account');
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=account');
         }
 
         $sTpl = false;
@@ -251,7 +251,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function showPlainTemplate()
     {
-        $blPlain = (bool) oxRegistry::getConfig()->getRequestParameter('plain');
+        $blPlain = (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('plain');
         if ($blPlain === false) {
             $oUser = $this->getUser();
             if ($this->isEnabledPrivateSales() &&
@@ -271,7 +271,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     protected function _getSeoObjectId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('oxcid');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxcid');
     }
 
     /**
@@ -283,11 +283,11 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getContentId()
     {
         if ($this->_sContentId === null) {
-            $sContentId = oxRegistry::getConfig()->getRequestParameter('oxcid');
-            $sLoadId = oxRegistry::getConfig()->getRequestParameter('oxloadid');
+            $sContentId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxcid');
+            $sLoadId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxloadid');
 
             $this->_sContentId = false;
-            $oContent = oxNew('oxContent');
+            $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
             $blRes = false;
 
             if ($sLoadId) {
@@ -346,7 +346,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected function _getTplName()
     {
         // assign template name
-        $sTplName = oxRegistry::getConfig()->getRequestParameter('tpl');
+        $sTplName = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('tpl');
 
         if ($sTplName) {
             // security fix so that you cant access files from outside template dir
@@ -457,7 +457,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getNotMappedToRDFaPayments()
     {
-        $oPayments = oxNew("oxPaymentList");
+        $oPayments = oxNew(\OxidEsales\Eshop\Application\Model\PaymentList::class);
         $oPayments->loadNonRDFaPaymentList();
 
         return $oPayments;
@@ -472,7 +472,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getNotMappedToRDFaDeliverySets()
     {
-        $oDelSets = oxNew("oxDeliverySetList");
+        $oDelSets = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySetList::class);
         $oDelSets->loadNonRDFaDeliverySetList();
 
         return $oDelSets;
@@ -489,7 +489,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $oDeliveryChargeSpecs = $this->getDeliveryList();
         foreach ($oDeliveryChargeSpecs as $oDeliveryChargeSpec) {
             if ($oDeliveryChargeSpec->oxdelivery__oxaddsumtype->value == "abs") {
-                $oDelSets = oxNew("oxdeliverysetlist");
+                $oDelSets = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySetList::class);
                 $oDelSets->loadRDFaDeliverySetList($oDeliveryChargeSpec->getId());
                 $oDeliveryChargeSpec->deliverysetmethods = $oDelSets;
                 $aDeliveryChargeSpecs[] = $oDeliveryChargeSpec;
@@ -507,7 +507,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getDeliveryList()
     {
         if ($this->_oDelList === null) {
-            $this->_oDelList = oxNew('oxDeliveryList');
+            $this->_oDelList = oxNew(\OxidEsales\Eshop\Application\Model\DeliveryList::class);
             $this->_oDelList->getList();
         }
 
@@ -532,7 +532,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getRdfaPriceValidity()
     {
         $iDays = $this->getConfig()->getConfigParam('iRDFaPriceValidity');
-        $iFrom = oxRegistry::get("oxUtilsDate")->getTime();
+        $iFrom = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
         $iThrough = $iFrom + ($iDays * 24 * 60 * 60);
         $oPriceValidity = array();
         $oPriceValidity['validfrom'] = date('Y-m-d\TH:i:s', $iFrom) . "Z";
@@ -548,8 +548,8 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getParsedContent()
     {
-        /** @var oxUtilsView $oUtilsView */
-        $oUtilsView = oxRegistry::get("oxUtilsView");
+        /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
+        $oUtilsView = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView");
         return $oUtilsView->parseThroughSmarty($this->getContent()->oxcontents__oxcontent->value, $this->getContent()->getId(), null, true);
     }
 
@@ -562,8 +562,8 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $url = '';
         if ($content = $this->getContent()) {
-            $utils = oxRegistry::get("oxUtilsUrl");
-            if (oxRegistry::getUtils()->seoIsActive()) {
+            $utils = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl");
+            if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
                 $url = $utils->prepareCanonicalUrl($content->getBaseSeoLink($content->getLanguage()));
             } else {
                 $url = $utils->prepareCanonicalUrl($content->getBaseStdLink($content->getLanguage()));

@@ -62,7 +62,7 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
         $oConfig = $this->getConfig();
         // active AJAX component
         $sGroupTable = $this->_getViewName('oxgroups');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sId = $oConfig->getRequestParameter('oxid');
         $sSynchId = $oConfig->getRequestParameter('synchoxid');
 
@@ -95,11 +95,11 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
         $groupIds = $this->_getActionIds('oxobject2discount.oxid');
         if ($config->getRequestParameter('all')) {
             $query = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($query);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($query);
         } elseif ($groupIds && is_array($groupIds)) {
-            $groupIdsQuoted = implode(", ", oxDb::getDb()->quoteArray($groupIds));
+            $groupIdsQuoted = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($groupIds));
             $query = "delete from oxobject2discount where oxobject2discount.oxid in (" . $groupIdsQuoted . ") ";
-            oxDb::getDb()->Execute($query);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($query);
         }
     }
 
@@ -118,7 +118,7 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
         }
         if ($discountId && $discountId != self::NEW_DISCOUNT_ID && is_array($groupIds)) {
             foreach ($groupIds as $groupId) {
-                $object2Discount = oxNew("oxBase");
+                $object2Discount = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $object2Discount->init('oxobject2discount');
                 $object2Discount->oxobject2discount__oxdiscountid = new oxField($discountId);
                 $object2Discount->oxobject2discount__oxobjectid = new oxField($groupId);

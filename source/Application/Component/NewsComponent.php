@@ -72,7 +72,7 @@ class NewsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $iNewsToLoad = $myConfig->getConfigParam('sCntOfNewsLoaded');
         $iNewsToLoad = $iNewsToLoad ? $iNewsToLoad : 1;
 
-        $oActNews = oxNew('oxnewslist');
+        $oActNews = oxNew(\OxidEsales\Eshop\Application\Model\NewsList::class);
         $oActNews->loadNews(0, $iNewsToLoad);
 
         return $oActNews;

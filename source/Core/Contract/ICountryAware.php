@@ -31,14 +31,14 @@ interface ICountryAware
     /**
      * Country setter
      *
-     * @param oxCountry $oCountry
+     * @param \OxidEsales\Eshop\Application\Model\Country $oCountry
      */
     public function setCountry(\OxidEsales\Eshop\Application\Model\Country $oCountry);
 
     /**
      * Country getter
      *
-     * @return oxCountry
+     * @return \OxidEsales\Eshop\Application\Model\Country
      */
     public function getCountry();
 }

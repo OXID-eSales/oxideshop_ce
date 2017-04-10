@@ -57,7 +57,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Active vendor object
      *
-     * @var oxvendor
+     * @var \OxidEsales\Eshop\Application\Model\Vendor
      */
     protected $_oClickedVendor = null;
 
@@ -117,7 +117,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
 
 
         //Create fake vendor root category
-        $this->_oRoot = oxNew("oxVendor");
+        $this->_oRoot = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
         $this->_oRoot->load('root');
 
         //category fields
@@ -142,7 +142,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Root vendor list node (which usually is a manually prefilled object) getter
      *
-     * @return oxvendor
+     * @return \OxidEsales\Eshop\Application\Model\Vendor
      */
     public function getRootCat()
     {
@@ -178,7 +178,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Sets active (open) vendor object
      *
-     * @param oxvendor $oVendor active vendor
+     * @param \OxidEsales\Eshop\Application\Model\Vendor $oVendor active vendor
      */
     public function setClickVendor($oVendor)
     {
@@ -188,7 +188,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * returns active (open) vendor object
      *
-     * @return oxvendor
+     * @return \OxidEsales\Eshop\Application\Model\Vendor
      */
     public function getClickVendor()
     {
@@ -201,8 +201,8 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _seoSetVendorData()
     {
         // only when SEO id on and in front end
-        if (oxRegistry::getUtils()->seoIsActive() && !$this->isAdmin()) {
-            $oEncoder = oxRegistry::get("oxSeoEncoderVendor");
+        if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {
+            $oEncoder = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderVendor");
 
             // preparing root vendor category
             if ($this->_oRoot) {

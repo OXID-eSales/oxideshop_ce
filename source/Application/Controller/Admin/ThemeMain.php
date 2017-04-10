@@ -45,7 +45,7 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     {
         $soxId = $this->getEditObjectId();
 
-        $oTheme = oxNew('oxTheme');
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
 
         if (!$soxId) {
             $soxId = $oTheme->getActiveThemeId();
@@ -54,13 +54,13 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         if ($oTheme->load($soxId)) {
             $this->_aViewData["oTheme"] = $oTheme;
         } else {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
         }
 
         parent::render();
 
         if ($this->themeInConfigFile()) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE');
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE');
         }
 
         return 'theme_main.tpl';
@@ -88,10 +88,10 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     public function setTheme()
     {
         $sTheme = $this->getEditObjectId();
-        /** @var oxTheme $oTheme */
-        $oTheme = oxNew('oxtheme');
+        /** @var \OxidEsales\Eshop\Core\Theme $oTheme */
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         if (!$oTheme->load($sTheme)) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
 
             return;
         }
@@ -99,7 +99,7 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
             $oTheme->activate();
             $this->resetContentCache();
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
             $oEx->debugOut();
         }
     }

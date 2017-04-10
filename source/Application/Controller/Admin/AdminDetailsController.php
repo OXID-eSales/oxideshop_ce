@@ -55,7 +55,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
             $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
         } else {
             $languageId = $this->getDocumentationLanguageId();
-            $oShop = $this->_getEditShop(oxRegistry::getSession()->getVariable('actshop'));
+            $oShop = $this->_getEditShop(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('actshop'));
             $sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $languageId . '/admin';
         }
 
@@ -71,7 +71,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     protected function getDocumentationLanguageId()
     {
-        $language = oxRegistry::getLang();
+        $language = \OxidEsales\Eshop\Core\Registry::getLang();
         $languageAbbr = $language->getLanguageAbbr($language->getTplLanguage());
 
         return $languageAbbr === "de" ? 0 : 1;
@@ -80,8 +80,8 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
     /**
      * Returns string which must be edited by editor.
      *
-     * @param oxbase $oObject object whifh field will be used for editing
-     * @param string $sField  name of editable field
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $oObject object whifh field will be used for editing
+     * @param string                                 $sField  name of editable field
      *
      * @return string
      */
@@ -96,7 +96,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
             }
 
             $sEditObjectValue = $this->_processEditValue($sEditObjectValue);
-            $oObject->$sField = new oxField($sEditObjectValue, oxField::T_RAW);
+            $oObject->$sField = new oxField($sEditObjectValue, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         return $sEditObjectValue;
@@ -205,7 +205,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
     {
         // caching category tree, to load it once, not many times
         if (!isset($this->oCatTree) || $blForceNonCache) {
-            $this->oCatTree = oxNew('oxCategoryList');
+            $this->oCatTree = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
             $this->oCatTree->setShopID($iTreeShopId);
 
             // setting language
@@ -223,7 +223,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         }
 
         // add first fake category for not assigned articles
-        $oRoot = oxNew('oxCategory');
+        $oRoot = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $oRoot->oxcategories__oxtitle = new oxField('--');
 
         $oCatTree->assign(array_merge(array('' => $oRoot), $oCatTree->getArray()));
@@ -279,8 +279,8 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function changeFolder()
     {
-        $sFolder = oxRegistry::getConfig()->getRequestParameter('setfolder');
-        $sFolderClass = oxRegistry::getConfig()->getRequestParameter('folderclass');
+        $sFolder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('setfolder');
+        $sFolderClass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folderclass');
 
         if ($sFolderClass == 'oxcontent' && $sFolder == 'CMSFOLDER_NONE') {
             $sFolder = '';

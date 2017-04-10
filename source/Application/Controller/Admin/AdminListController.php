@@ -141,7 +141,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     public function getListSorting()
     {
         if ($this->_aCurrSorting === null) {
-            $this->_aCurrSorting = oxRegistry::getConfig()->getRequestParameter('sort');
+            $this->_aCurrSorting = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sort');
 
             if (!$this->_aCurrSorting && $this->_sDefSortField && ($baseObject = $this->getItemListBaseObject())) {
                 $this->_aCurrSorting[$baseObject->getCoreTableName()] = array($this->_sDefSortField => "asc");
@@ -159,7 +159,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     public function getListFilter()
     {
         if ($this->_aListFilter === null) {
-            $this->_aListFilter = oxRegistry::getConfig()->getRequestParameter("where");
+            $this->_aListFilter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("where");
         }
 
         return $this->_aListFilter;
@@ -174,7 +174,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     {
         if (!$this->_iViewListSize) {
             $config = $this->getConfig();
-            if ($profile = oxRegistry::getSession()->getVariable('profile')) {
+            if ($profile = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('profile')) {
                 if (isset($profile[1])) {
                     $config->setConfigParam('iAdminListSize', (int)$profile[1]);
                 }
@@ -208,7 +208,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     protected function _getUserDefListSize()
     {
         if (!$this->_iViewListSize) {
-            if (!($viewListSize = (int)oxRegistry::getConfig()->getRequestParameter('viewListSize'))) {
+            if (!($viewListSize = (int)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('viewListSize'))) {
                 $viewListSize = $this->_iDefViewListSize;
             }
             $this->_iViewListSize = $viewListSize;
@@ -278,10 +278,10 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         // con of list items which fits current search conditions
-        $this->_iListSize = oxDb::getMaster()->getOne($sql);
+        $this->_iListSize = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sql);
 
         // set it into session that other frames know about size of DB
-        oxRegistry::getSession()->setVariable('iArtCnt', $this->_iListSize);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('iArtCnt', $this->_iListSize);
     }
 
     /**
@@ -293,7 +293,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     {
         $adminListSize = $this->_getViewListSize();
 
-        $jumpToPage = $page ? ((int)$page) : ((int)((int)oxRegistry::getConfig()->getRequestParameter('lstrt')) / $adminListSize);
+        $jumpToPage = $page ? ((int)$page) : ((int)((int)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('lstrt')) / $adminListSize);
         $jumpToPage = ($page && $jumpToPage) ? ($jumpToPage - 1) : $jumpToPage;
 
         $jumpToPage = $jumpToPage * $adminListSize;
@@ -324,9 +324,9 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
             $addSeparator = false;
 
             $listItem = $this->getItemListBaseObject();
-            $languageId = $listItem->isMultilang() ? $listItem->getLanguage() : oxRegistry::getLang()->getBaseLanguage();
+            $languageId = $listItem->isMultilang() ? $listItem->getLanguage() : \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
 
-            $descending = oxRegistry::getConfig()->getRequestParameter('adminorder');
+            $descending = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('adminorder');
             $descending = $descending !== null ? (bool)$descending : $this->_blDesc;
 
             foreach ($sortFields as $table => $fieldData) {
@@ -335,7 +335,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
                     $field = $table . $column;
 
                     //add table name to column name if no table name found attached to column name
-                    $query .= ((($addSeparator) ? ', ' : '')) . oxDb::getDb()->quoteIdentifier($field);
+                    $query .= ((($addSeparator) ? ', ' : '')) . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteIdentifier($field);
 
                     //V oxActive field search always DESC
                     if ($descending || $column == "oxactive" || strcasecmp($sortDirectory, 'desc') == 0) {
@@ -394,10 +394,10 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     {
         if ($isSearchValue) {
             //is search string, using LIKE
-            $query = " like " . oxDb::getDb()->quote('%' . $value . '%') . " ";
+            $query = " like " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote('%' . $value . '%') . " ";
         } else {
             //not search string, values must be equal
-            $query = " = " . oxDb::getDb()->quote($value) . " ";
+            $query = " = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($value) . " ";
         }
 
         return $query;
@@ -428,7 +428,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     protected function _prepareWhereQuery($whereQuery, $fullQuery)
     {
         if (count($whereQuery)) {
-            $myUtilsString = oxRegistry::get("oxUtilsString");
+            $myUtilsString = \OxidEsales\Eshop\Core\Registry::get("oxUtilsString");
             while (list($identifierName, $fieldValue) = each($whereQuery)) {
                 $fieldValue = trim($fieldValue);
 
@@ -452,7 +452,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
                             $queryBoolAction .= '(';
                         }
 
-                        $quotedIdentifierName = oxDb::getDb()->quoteIdentifier($identifierName);
+                        $quotedIdentifierName = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteIdentifier($identifierName);
                         $fullQuery .= " {$queryBoolAction} {$quotedIdentifierName} ";
 
                         //for search in same field for different values using AND
@@ -501,7 +501,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
             $filter = $this->getListFilter();
             if (is_array($filter)) {
                 $listItem = $this->getItemListBaseObject();
-                $languageId = $listItem->isMultilang() ? $listItem->getLanguage() : oxRegistry::getLang()->getBaseLanguage();
+                $languageId = $listItem->isMultilang() ? $listItem->getLanguage() : \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
                 $localDateFormat = $this->getConfig()->getConfigParam('sLocalDateFormat');
 
                 foreach ($filter as $table => $filterData) {
@@ -544,7 +544,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
         $convertedObject->setValue($value);
         if ($fieldType == "datetime") {
             if (strlen($value) == 10 || strlen($value) == 22 || (strlen($value) == 19 && !stripos($value, "m"))) {
-                oxRegistry::get("oxUtilsDate")->convertDBDateTime($convertedObject, true);
+                \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->convertDBDateTime($convertedObject, true);
             } else {
                 if (strlen($value) > 10) {
                     return $this->_convertTime($value);
@@ -554,7 +554,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
             }
         } elseif ($fieldType == "date") {
             if (strlen($value) == 10) {
-                oxRegistry::get("oxUtilsDate")->convertDBDate($convertedObject, true);
+                \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->convertDBDate($convertedObject, true);
             } else {
                 return $this->_convertDate($value);
             }
@@ -613,7 +613,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
         $date = substr($fullDate, 0, 10);
         $convertedObject = new oxField();
         $convertedObject->setValue($date);
-        oxRegistry::get("oxUtilsDate")->convertDBDate($convertedObject, true);
+        \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->convertDBDate($convertedObject, true);
         $stringModifier = getStr();
 
         // looking for time field
@@ -701,7 +701,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
                 $position = $this->_iOverPos;
                 $this->_iOverPos = null;
             } else {
-                $position = oxRegistry::getConfig()->getRequestParameter('lstrt');
+                $position = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('lstrt');
             }
 
             if (!$position) {
@@ -744,7 +744,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
                 $activeTab = $this->_iDefEdit;
             } else {
                 // active tab
-                $activeTab = oxRegistry::getConfig()->getRequestParameter('actedit');
+                $activeTab = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('actedit');
                 $activeTab = $activeTab ? $activeTab : $this->_iDefEdit;
             }
 
@@ -778,14 +778,14 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
 
             $listObject = $this->_oList->getBaseObject();
 
-            oxRegistry::getSession()->setVariable('tabelle', $this->_sListClass);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('tabelle', $this->_sListClass);
             $this->_aViewData['listTable'] = getViewName($listObject->getCoreTableName());
             $this->getConfig()->setGlobalParameter('ListCoreTable', $listObject->getCoreTableName());
 
             if ($listObject->isMultilang()) {
                 // is the object multilingual?
-                /** @var oxI18n $listObject */
-                $listObject->setLanguage(oxRegistry::getLang()->getBaseLanguage());
+                /** @var \OxidEsales\Eshop\Core\Model\MultiLanguageModel $listObject */
+                $listObject->setLanguage(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
 
                 if (isset($this->_blEmployMultilanguage)) {
                     $listObject->setEnableMultilang($this->_blEmployMultilanguage);
@@ -801,7 +801,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
             $this->_calcListItemsCount($query);
 
             // setting current list position (page)
-            $this->_setCurrentListPosition(oxRegistry::getConfig()->getRequestParameter('jumppage'));
+            $this->_setCurrentListPosition(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('jumppage'));
 
             // setting addition params for list: current list size
             $this->_oList->setSqlLimit($this->_iCurrListPos, $this->_getViewListSize());

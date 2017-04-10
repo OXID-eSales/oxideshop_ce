@@ -33,7 +33,7 @@ interface IModuleValidator
     /**
      * Validates module information.
      *
-     * @param oxModule $oModule object to validate metadata.
+     * @param \OxidEsales\Eshop\Core\Module\Module $oModule object to validate metadata.
      *
      * @return bool
      */

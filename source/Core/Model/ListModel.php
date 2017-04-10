@@ -384,7 +384,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
     {
         $this->clear();
 
-        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         if ($this->_aSqlLimit[0] || $this->_aSqlLimit[1]) {
             $rs = $oDb->selectLimit($sql, $this->_aSqlLimit[1], max(0, $this->_aSqlLimit[0]), $parameters);
         } else {
@@ -499,7 +499,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      * It is if you want to execute any functionality on every list ELEMENT after it is fully loaded (assigned).
      *
      * @param BaseModel $oListObject List object (the one derived from BaseModel)
-     * @param array     $aDbFields   An array holding db field values (normally the result of oxDb::Execute())
+     * @param array     $aDbFields   An array holding db field values (normally the result of \OxidEsales\Eshop\Core\DatabaseProvider::Execute())
      */
     protected function _assignElement($oListObject, $aDbFields)
     {

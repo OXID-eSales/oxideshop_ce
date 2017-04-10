@@ -90,7 +90,7 @@ class NewsList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function getCount()
     {
         $myConfig = $this->getConfig();
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sNewsViewName = getViewName('oxnews');
         $oBaseObject = $this->getBaseObject();
@@ -118,7 +118,7 @@ class NewsList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * News list user setter
      *
-     * @param oxuser $oUser user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      */
     public function setUser($oUser)
     {
@@ -128,7 +128,7 @@ class NewsList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * News list user getter
      *
-     * @return oxuser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getUser()
     {

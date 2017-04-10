@@ -48,7 +48,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oAction = oxNew("oxActions");
+            $oAction = oxNew(\OxidEsales\Eshop\Application\Model\Actions::class);
             $oAction->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oAction->getAvailableInLangs();
@@ -60,7 +60,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $this->_aViewData["edit"] = $oAction;
 
             // remove already created languages
-            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
 
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
@@ -74,11 +74,11 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             }
         }
 
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
             // generating category tree for select list
             $this->_createCategoryTree("artcattree", $soxId);
 
-            $oActionsMainAjax = oxNew('actions_main_ajax');
+            $oActionsMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMainAjax::class);
             $this->_aViewData['oxajax'] = $oActionsMainAjax->getColumns();
 
             return "popups/actions_main.tpl";
@@ -87,7 +87,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
         if (($oPromotion = $this->getViewDataElement("edit"))) {
             if (($oPromotion->oxactions__oxtype->value == 2) || ($oPromotion->oxactions__oxtype->value == 3)) {
-                if ($iAoc = oxRegistry::getConfig()->getRequestParameter("oxpromotionaoc")) {
+                if ($iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxpromotionaoc")) {
                     $sPopup = false;
                     switch ($iAoc) {
                         case 'article':
@@ -138,9 +138,9 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oPromotion = oxNew("oxActions");
+        $oPromotion = oxNew(\OxidEsales\Eshop\Application\Model\Actions::class);
         if ($soxId != "-1") {
             $oPromotion->load($soxId);
         } else {
@@ -154,7 +154,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $oPromotion->setLanguage(0);
         $oPromotion->assign($aParams);
         $oPromotion->setLanguage($this->_iEditLang);
-        $oPromotion = oxRegistry::get("oxUtilsFile")->processFiles($oPromotion);
+        $oPromotion = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oPromotion);
         $oPromotion->save();
 
         // set oxid if inserted

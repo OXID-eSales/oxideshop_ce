@@ -52,7 +52,7 @@ class ServiceMenu extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
      */
     public function getCompareItemsCnt()
     {
-        $oCompare = oxNew("compare");
+        $oCompare = oxNew(\OxidEsales\Eshop\Application\Controller\CompareController::class);
         return $oCompare->getCompareItemsCnt();
     }
 
@@ -65,7 +65,7 @@ class ServiceMenu extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
      */
     public function getCompareItems($blJson = false)
     {
-        $oCompare = oxNew("compare");
+        $oCompare = oxNew(\OxidEsales\Eshop\Application\Controller\CompareController::class);
         $aCompareItems = $oCompare->getCompareItems();
 
         if ($blJson) {

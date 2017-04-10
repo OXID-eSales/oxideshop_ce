@@ -130,7 +130,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets MD subvariants
      *
-     * @param oxMdVariant[] $aSubvariants Subvariants
+     * @param \OxidEsales\Eshop\Application\Model\MdVariant[] $aSubvariants Subvariants
      */
     public function setMdSubvariants($aSubvariants)
     {
@@ -150,7 +150,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns first MD subvariant from subvariant set or null in case variant has no subvariants.
      *
-     * @return OxMdVariant
+     * @return \OxidEsales\Eshop\Application\Model\MdVariant
      */
     public function getFirstMdSubvariant()
     {
@@ -167,7 +167,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sName Subvariant name
      *
-     * @return OxMdVariant
+     * @return \OxidEsales\Eshop\Application\Model\MdVariant
      */
     public function getMdSubvariantByName($sName)
     {
@@ -178,7 +178,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        $oNewSubvariant = oxNew("oxMdVariant");
+        $oNewSubvariant = oxNew(\OxidEsales\Eshop\Application\Model\MdVariant::class);
         $oNewSubvariant->setName($sName);
         $oNewSubvariant->setId(md5($sName . $this->getId()));
         $oNewSubvariant->setParentId($this->getId());
@@ -297,11 +297,11 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
         $sFromPrefix = '';
 
         if (!$this->_isFixedPrice()) {
-            $sFromPrefix = oxRegistry::getLang()->translateString('PRICE_FROM') . ' ';
+            $sFromPrefix = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PRICE_FROM') . ' ';
         }
 
         $dMinPrice = $this->getMinDPrice();
-        $sFMinPrice = oxRegistry::getLang()->formatCurrency($dMinPrice);
+        $sFMinPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($dMinPrice);
         $sCurrency = ' ' . $this->getConfig()->getActShopCurrencyObject()->sign;
         $this->_sFPrice = $sFromPrefix . $sFMinPrice . $sCurrency;
 
@@ -376,7 +376,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     /**
      * Adds one subvariant to subvariant set
      *
-     * @param OxMdVariant $oSubvariant Subvariant
+     * @param \OxidEsales\Eshop\Application\Model\MdVariant $oSubvariant Subvariant
      */
     protected function _addMdSubvariant($oSubvariant)
     {

@@ -38,7 +38,7 @@ class ThemeList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      */
     public function render()
     {
-        $oTheme = oxNew('oxtheme');
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
 
         parent::render();
 

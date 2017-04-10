@@ -37,7 +37,7 @@ class UserCounter
      */
     public function getAdminCount()
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sQuery = "SELECT COUNT(1) FROM oxuser WHERE oxrights != 'user'";
 
@@ -51,7 +51,7 @@ class UserCounter
      */
     public function getActiveAdminCount()
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sQuery = "SELECT COUNT(1) FROM oxuser WHERE oxrights != 'user' AND oxactive = 1 ";
 

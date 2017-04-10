@@ -36,7 +36,7 @@ class PasswordHasher
     /**
      * Gets hasher.
      *
-     * @return oxHasher
+     * @return \OxidEsales\Eshop\Core\Hasher
      */
     protected function _getHasher()
     {
@@ -46,7 +46,7 @@ class PasswordHasher
     /**
      * Sets dependencies.
      *
-     * @param oxHasher $oHasher hasher.
+     * @param \OxidEsales\Eshop\Core\Hasher $oHasher hasher.
      */
     public function __construct($oHasher)
     {

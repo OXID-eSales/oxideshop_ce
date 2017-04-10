@@ -46,10 +46,10 @@ class DiscountUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        $sSelGroup = oxRegistry::getConfig()->getRequestParameter("selgroup");
+        $sSelGroup = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("selgroup");
 
         // all usergroups
-        $oGroups = oxNew('oxlist');
+        $oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oGroups->init('oxgroups');
         $oGroups->selectString("select * from " . getViewName("oxgroups", $this->_iEditLang));
 
@@ -69,7 +69,7 @@ class DiscountUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $this->_aViewData["allgroups2"] = $aNewList;
 
         if (isset($soxId) && $soxId != "-1") {
-            $oDiscount = oxNew("oxdiscount");
+            $oDiscount = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
             $oDiscount->load($soxId);
 
             if ($oDiscount->isDerived()) {
@@ -77,14 +77,14 @@ class DiscountUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             }
         }
 
-        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
         if ($iAoc == 1) {
-            $oDiscountGroupsAjax = oxNew('discount_groups_ajax');
+            $oDiscountGroupsAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountGroupsAjax::class);
             $this->_aViewData['oxajax'] = $oDiscountGroupsAjax->getColumns();
 
             return "popups/discount_groups.tpl";
         } elseif ($iAoc == 2) {
-            $oDiscountUsersAjax = oxNew('discount_users_ajax');
+            $oDiscountUsersAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountUsersAjax::class);
             $this->_aViewData['oxajax'] = $oDiscountUsersAjax->getColumns();
 
             return "popups/discount_users.tpl";

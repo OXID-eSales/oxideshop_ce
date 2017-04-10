@@ -107,7 +107,7 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _insert()
     {
         // set oxinsert value
-        $this->oxpricealarm__oxinsert = new oxField(date('Y-m-d', oxRegistry::get("oxUtilsDate")->getTime()));
+        $this->oxpricealarm__oxinsert = new oxField(date('Y-m-d', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
 
         return parent::_insert();
     }
@@ -121,7 +121,7 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($this->_oArticle == null) {
             $this->_oArticle = false;
-            $oArticle = oxNew("oxArticle");
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if ($oArticle->load($this->oxpricealarm__oxartid->value)) {
                 $this->_oArticle = $oArticle;
             }
@@ -140,7 +140,7 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($this->_fPrice == null) {
             $this->_fPrice = false;
             if ($dArtPrice = $this->getPrice()) {
-                $myLang = oxRegistry::getLang();
+                $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
                 $oThisCurr = $this->getPriceAlarmCurrency();
                 $this->_fPrice = $myLang->formatCurrency($dArtPrice, $oThisCurr);
             }
@@ -159,7 +159,7 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($this->_dPrice == null) {
             $this->_dPrice = false;
             if ($oArticle = $this->getArticle()) {
-                $myUtils = oxRegistry::getUtils();
+                $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
                 $oThisCurr = $this->getPriceAlarmCurrency();
 
                 // #889C - Netto prices in Admin
@@ -186,7 +186,7 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
             if ($oArticle = $this->getArticle()) {
                 $this->_sTitle = $oArticle->oxarticles__oxtitle->value;
                 if ($oArticle->oxarticles__oxparentid->value && !$oArticle->oxarticles__oxtitle->value) {
-                    $oParent = oxNew("oxArticle");
+                    $oParent = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                     $oParent->load($oArticle->oxarticles__oxparentid->value);
                     $this->_sTitle = $oParent->oxarticles__oxtitle->value . " " . $oArticle->oxarticles__oxvarselect->value;
                 }
@@ -231,7 +231,7 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($this->_fProposedPrice == null) {
             $this->_fProposedPrice = false;
             if ($oThisCurr = $this->getPriceAlarmCurrency()) {
-                $myLang = oxRegistry::getLang();
+                $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
                 $this->_fProposedPrice = $myLang->formatCurrency($this->oxpricealarm__oxprice->value, $oThisCurr);
             }
         }

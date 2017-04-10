@@ -58,10 +58,10 @@ class Links extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = oxField::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         if ('oxurldesc' === strtolower($sFieldName) || 'oxlinks__oxurldesc' === strtolower($sFieldName)) {
-            $iDataType = oxField::T_RAW;
+            $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;
         }
 
         return parent::_setFieldData($sFieldName, $sValue, $iDataType);

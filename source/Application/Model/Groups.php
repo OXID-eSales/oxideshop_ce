@@ -66,7 +66,7 @@ class Groups extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         parent::delete($sOXID);
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // deleting related data records
         $sDelete = 'delete from oxobject2group where oxobject2group.oxgroupsid = ' . $oDb->quote($sOXID);

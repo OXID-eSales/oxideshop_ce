@@ -66,7 +66,7 @@ class Remark extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($blRet = parent::load($oxID)) {
             // convert date's to international format
-            $this->oxremark__oxcreate = new oxField(oxRegistry::get("oxUtilsDate")->formatDBDate($this->oxremark__oxcreate->value), oxField::T_RAW);
+            $this->oxremark__oxcreate = new oxField(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($this->oxremark__oxcreate->value), \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         return $blRet;
@@ -80,9 +80,9 @@ class Remark extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _insert()
     {
         // set oxcreate
-        $sNow = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
-        $this->oxremark__oxcreate = new oxField($sNow, oxField::T_RAW);
-        $this->oxremark__oxheader = new oxField($sNow, oxField::T_RAW);
+        $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
+        $this->oxremark__oxcreate = new oxField($sNow, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxremark__oxheader = new oxField($sNow, \OxidEsales\Eshop\Core\Field::T_RAW);
 
         return parent::_insert();
     }

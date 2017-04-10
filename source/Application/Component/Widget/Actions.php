@@ -51,7 +51,7 @@ class Actions extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContr
     {
         $actionId = $this->getViewParameter('action');
         if ($actionId && $this->_getLoadActionsParam()) {
-            $artList = oxNew('oxarticlelist');
+            $artList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             $artList->loadActionArticles($actionId);
             if ($artList->count()) {
                 return $artList;
@@ -79,7 +79,7 @@ class Actions extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContr
     public function getActionName()
     {
         $actionId = $this->getViewParameter('action');
-        $action   = oxNew('oxactions');
+        $action   = oxNew(\OxidEsales\Eshop\Application\Model\Actions::class);
         if ($action->load($actionId)) {
             return $action->oxactions__oxtitle->value;
         }

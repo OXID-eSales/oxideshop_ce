@@ -55,7 +55,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $article = oxNew('oxArticle');
+        $this->_aViewData['edit'] = $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         $oxId = $this->getEditObjectId();
 
@@ -83,7 +83,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
             // variant handling
             if ($article->oxarticles__oxparentid->value) {
-                $parentArticle = oxNew('oxArticle');
+                $parentArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 $parentArticle->load($article->oxarticles__oxparentid->value);
                 $this->_aViewData["parentarticle"] = $parentArticle;
                 $this->_aViewData["oxparentid"] = $article->oxarticles__oxparentid->value;
@@ -94,12 +94,12 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         $iAoc = $this->getConfig()->getRequestParameter("aoc");
         if ($iAoc == 1) {
-            $oArticleExtendAjax = oxNew('article_extend_ajax');
+            $oArticleExtendAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtendAjax::class);
             $this->_aViewData['oxajax'] = $oArticleExtendAjax->getColumns();
 
             return "popups/article_extend.tpl";
         } elseif ($iAoc == 2) {
-            $oArticleBundleAjax = oxNew('article_bundle_ajax');
+            $oArticleBundleAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleBundleAjax::class);
             $this->_aViewData['oxajax'] = $oArticleBundleAjax->getColumns();
 
             return "popups/article_bundle.tpl";
@@ -125,16 +125,16 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         if (is_array($aMyFile['name']) && reset($aMyFile['name']) || $aMediaFile['name']) {
             $myConfig = $this->getConfig();
             if ($myConfig->isDemoShop()) {
-                $oEx = oxNew("oxExceptionToDisplay");
+                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('ARTICLE_EXTEND_UPLOADISDISABLED');
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
 
                 return;
             }
         }
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
         // checkbox handling
         if (!isset($aParams['oxarticles__oxissearch'])) {
             $aParams['oxarticles__oxissearch'] = 0;
@@ -150,7 +150,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         // default values
         $aParams = $this->addDefaultValues($aParams);
 
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->loadInLang($this->_iEditLang, $soxId);
         $sTPriceField = 'oxarticles__oxtprice';
         $sPriceField = 'oxarticles__oxprice';
@@ -162,7 +162,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $oArticle->setLanguage(0);
         $oArticle->assign($aParams);
         $oArticle->setLanguage($this->_iEditLang);
-        $oArticle = oxRegistry::get("oxUtilsFile")->processFiles($oArticle);
+        $oArticle = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oArticle);
         $oArticle->save();
 
         //saving media file
@@ -171,36 +171,36 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         if (($sMediaUrl && $sMediaUrl != 'http://') || $aMediaFile['name'] || $sMediaDesc) {
             if (!$sMediaDesc) {
-                return oxRegistry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_NODESCRIPTIONADDED');
+                return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_NODESCRIPTIONADDED');
             }
 
             if ((!$sMediaUrl || $sMediaUrl == 'http://') && !$aMediaFile['name']) {
-                return oxRegistry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_NOMEDIAADDED');
+                return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_NOMEDIAADDED');
             }
 
-            $oMediaUrl = oxNew("oxMediaUrl");
+            $oMediaUrl = oxNew(\OxidEsales\Eshop\Application\Model\MediaUrl::class);
             $oMediaUrl->setLanguage($this->_iEditLang);
-            $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
+            $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, \OxidEsales\Eshop\Core\Field::T_RAW);
 
             //handle uploaded file
             if ($aMediaFile['name']) {
                 try {
-                    $sMediaUrl = oxRegistry::get("oxUtilsFile")->processFile('mediaFile', 'out/media/');
-                    $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(1, oxField::T_RAW);
+                    $sMediaUrl = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFile('mediaFile', 'out/media/');
+                    $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(1, \OxidEsales\Eshop\Core\Field::T_RAW);
                 } catch (Exception $e) {
-                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay($e->getMessage());
+                    return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($e->getMessage());
                 }
             }
 
             //save media url
-            $oMediaUrl->oxmediaurls__oxobjectid = new oxField($soxId, oxField::T_RAW);
-            $oMediaUrl->oxmediaurls__oxurl = new oxField($sMediaUrl, oxField::T_RAW);
-            $oMediaUrl->oxmediaurls__oxdesc = new oxField($sMediaDesc, oxField::T_RAW);
+            $oMediaUrl->oxmediaurls__oxobjectid = new oxField($soxId, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oMediaUrl->oxmediaurls__oxurl = new oxField($sMediaUrl, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oMediaUrl->oxmediaurls__oxdesc = new oxField($sMediaDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
             $oMediaUrl->save();
         }
 
         // renew price update time
-        oxNew("oxArticleList")->renewPriceUpdateTime();
+        oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class)->renewPriceUpdateTime();
     }
 
     /**
@@ -211,7 +211,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $soxId = $this->getEditObjectId();
         $sMediaId = $this->getConfig()->getRequestParameter("mediaid");
         if ($sMediaId && $soxId) {
-            $oMediaUrl = oxNew("oxMediaUrl");
+            $oMediaUrl = oxNew(\OxidEsales\Eshop\Application\Model\MediaUrl::class);
             $oMediaUrl->load($sMediaId);
             $oMediaUrl->delete();
         }
@@ -240,7 +240,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $aMediaUrls = $this->getConfig()->getRequestParameter('aMediaUrls');
         if (is_array($aMediaUrls)) {
             foreach ($aMediaUrls as $sMediaId => $aMediaParams) {
-                $oMedia = oxNew("oxMediaUrl");
+                $oMedia = oxNew(\OxidEsales\Eshop\Application\Model\MediaUrl::class);
                 if ($oMedia->load($sMediaId)) {
                     $oMedia->setLanguage(0);
                     $oMedia->assign($aMediaParams);
@@ -259,7 +259,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     public function getUnitsArray()
     {
         if ($this->_aUnitsArray === null) {
-            $this->_aUnitsArray = oxRegistry::getLang()->getSimilarByKey("_UNIT_", $this->_iEditLang, false);
+            $this->_aUnitsArray = \OxidEsales\Eshop\Core\Registry::getLang()->getSimilarByKey("_UNIT_", $this->_iEditLang, false);
         }
 
         return $this->_aUnitsArray;
@@ -280,11 +280,11 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     /**
      * Adds data to _aViewData for later use in templates.
      *
-     * @param oxArticle $article
+     * @param \OxidEsales\Eshop\Application\Model\Article $article
      */
     protected function prepareBundledArticlesDataForView($article)
     {
-        $database = oxDb::getDB();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDB();
         $config = $this->getConfig();
 
         $articleTable = getViewName('oxarticles', $this->_iEditLang);

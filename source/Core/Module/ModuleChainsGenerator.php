@@ -396,7 +396,7 @@ class ModuleChainsGenerator
                  * The business logic does allow to throw an exception here, but just at least the disabling of the
                  * module must be logged
                  */
-                $module = oxNew("oxModule");
+                $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
                 $moduleId = $module->getIdByPath($moduleClass);
                 $message = sprintf('Module class %s not found. Module ID %s disabled', $moduleClass, $moduleId);
                 $exception = new \OxidEsales\Eshop\Core\Exception\SystemComponentException($message);
@@ -421,7 +421,7 @@ class ModuleChainsGenerator
      */
     public function disableModule($modulePath)
     {
-        $module = oxNew("oxModule");
+        $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
         $moduleId = $module->getIdByPath($modulePath);
         $module->load($moduleId);
 

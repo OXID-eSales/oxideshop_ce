@@ -94,7 +94,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             return false;
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oDb->execute('delete from oxobject2discount where oxobject2discount.oxdiscountid = ' . $oDb->quote($sOXID));
 
         return parent::delete($sOXID);
@@ -119,12 +119,12 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         if (is_null($oxsort)) {
             $shopId = $this->oxdiscount__oxshopid->value;
             $newSort = $this->getNextOxsort($shopId);
-            $this->oxdiscount__oxsort = new \oxField($newSort, \oxField::T_RAW);
+            $this->oxdiscount__oxsort = new \oxField($newSort, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         // Validate oxsort before saving
         if (!is_numeric($this->oxdiscount__oxsort->value)) {
-            $exception = oxNew('oxInputException');
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage('DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
 
             throw $exception;
@@ -134,7 +134,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             $saveStatus = parent::save();
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
             if ($exception->getCode() == \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database::DUPLICATE_KEY_ERROR_CODE && false !== strpos($exception->getMessage(), 'UNIQ_OXSORT')) {
-                $exception = oxNew('oxInputException');
+                $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
                 $exception->setMessage('DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
             }
 
@@ -151,7 +151,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function isGlobalDiscount()
     {
         if (is_null($this->_blIsForArticleOrForCategory)) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sDiscountIdQuoted = $oDb->quote($this->oxdiscount__oxid->value);
 
             $sQuery = "select 1
@@ -167,7 +167,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Checks if discount applies for article
      *
-     * @param oxArticle $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      *
      * @return bool
      */
@@ -219,7 +219,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             return false;
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // check if this article is assigned
         $sQ = "select 1 from oxobject2discount where oxdiscountid = " . $oDb->quote($this->oxdiscount__oxid->value) . " and oxtype = 'oxarticles' ";
@@ -235,7 +235,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Tests if total amount or price (price priority) of articles that can be applied to current discount fits to discount configuration
      *
-     * @param oxbasket $oBasket basket
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket
      *
      * @return bool
      */
@@ -319,7 +319,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         }
 
         // oxobject2discount configuration check
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = 'select 1 from oxobject2discount where oxdiscountid = ' . $oDb->quote($this->oxdiscount__oxid->value) . ' and oxtype in ("oxarticles", "oxcategories" ) ';
 
         return !((bool) $oDb->getOne($sQ));
@@ -338,7 +338,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             return false;
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "select 1 from oxobject2discount where oxdiscountid=" . $oDb->quote($this->getId());
         $sQ .= $this->_getProductCheckQuery($oArticle);
         if (!($blOk = (bool) $oDb->getOne($sQ))) {
@@ -468,7 +468,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getArticleIds()
     {
-        return oxDb::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '" . $this->getId() . "' and oxtype = 'oxarticles'");
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '" . $this->getId() . "' and oxtype = 'oxarticles'");
     }
 
     /**
@@ -478,7 +478,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getCategoryIds()
     {
-        return oxDb::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '" . $this->getId() . "' and oxtype = 'oxcategories'");
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '" . $this->getId() . "' and oxtype = 'oxcategories'");
     }
 
     /**
@@ -491,7 +491,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getNextOxsort($shopId)
     {
         $query = "SELECT MAX(`oxsort`)+10 FROM `oxdiscount` WHERE `oxshopid` = ?";
-        $nextSort = oxDb::getDb()->getOne($query, [$shopId]);
+        $nextSort = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query, [$shopId]);
 
         return (int) $nextSort;
     }
@@ -512,9 +512,9 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             return false;
         }
 
-        $sCatIds = "(" . implode(",", oxDb::getDb()->quoteArray($aCatIds)) . ")";
+        $sCatIds = "(" . implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aCatIds)) . ")";
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         // getOne appends limit 1, so this one should be fast enough
         $sQ = "select oxobjectid from oxobject2discount where oxdiscountid = " . $oDb->quote($this->oxdiscount__oxid->value) . " and oxobjectid in $sCatIds and oxtype = 'oxcategories'";
 
@@ -525,13 +525,13 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Returns part of query for discount check. If product is variant - query contains both id check e.g.
      * "and (oxobjectid = '...' or oxobjectid = '...')
      *
-     * @param oxarticle $oProduct product used for discount check
+     * @param \OxidEsales\Eshop\Application\Model\Article $oProduct product used for discount check
      *
      * @return string
      */
     protected function _getProductCheckQuery($oProduct)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         // check if this article is assigned
         if (($sParentId = $oProduct->getParentId())) {
             $sArticleId = " and ( oxobjectid = " . $oDb->quote($oProduct->getProductId()) . " or oxobjectid = " . $oDb->quote($sParentId) . " )";
@@ -545,13 +545,13 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Checks whether this article is assigned to discount
      *
-     * @param oxArticle $oArticle
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle
      *
      * @return bool
      */
     protected function _isArticleAssigned($oArticle)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDiscountIdQuoted = $oDb->quote($this->oxdiscount__oxid->value);
 
         $sQ = "select 1
@@ -575,10 +575,10 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             return false;
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDiscountIdQuoted = $oDb->quote($this->oxdiscount__oxid->value);
 
-        $sCategoryIds = "(" . implode(",", oxDb::getDb()->quoteArray($aCategoryIds)) . ")";
+        $sCategoryIds = "(" . implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aCategoryIds)) . ")";
         $sQ = "select 1
                 from oxobject2discount
                 where oxdiscountid = {$sDiscountIdQuoted} and oxobjectid in {$sCategoryIds} and oxtype = 'oxcategories'";

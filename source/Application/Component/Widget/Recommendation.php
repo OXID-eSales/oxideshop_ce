@@ -56,7 +56,7 @@ class Recommendation extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     {
         $aArticleIds = $this->getViewParameter("aArticleIds");
 
-        $oRecommList = oxNew('oxrecommlist');
+        $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
 
         return $oRecommList->getRecommListsByIds($aArticleIds);
     }
@@ -68,6 +68,6 @@ class Recommendation extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      */
     public function getRecommList()
     {
-        return oxNew('recommlist');
+        return oxNew(\OxidEsales\Eshop\Application\Controller\RecommListController::class);
     }
 }

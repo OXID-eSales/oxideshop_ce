@@ -123,7 +123,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $this->_aChannel['language'] = $aLangIds[$oLang->getBaseLanguage()];
         $this->_aChannel['copyright'] = $oShop->oxshops__oxname->value;
         $this->_aChannel['selflink'] = '';
-        if (oxNew('oxMailValidator')->isValidEmail($oShop->oxshops__oxinfoemail->value)) {
+        if (oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($oShop->oxshops__oxinfoemail->value)) {
             $this->_aChannel['managingEditor'] = $oShop->oxshops__oxinfoemail->value;
             if ($oShop->oxshops__oxfname) {
                 $this->_aChannel['managingEditor'] .= " ({$oShop->oxshops__oxfname} {$oShop->oxshops__oxlname})";
@@ -222,7 +222,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     /**
      * _getArticleItems create channel items from article list
      *
-     * @param oxArticleList $oList article list
+     * @param \OxidEsales\Eshop\Application\Model\ArticleList $oList article list
      *
      * @access protected
      * @return array
@@ -414,7 +414,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             return;
         }
 
-        $oArtList = oxNew('oxArticleList');
+        $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->loadTop5Articles($this->getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = Registry::getLang();
@@ -467,7 +467,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         if (($this->_aChannel = $this->_loadFromCache(self::RSS_NEWARTS))) {
             return;
         }
-        $oArtList = oxNew('oxArticleList');
+        $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->loadNewestArticles($this->getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = Registry::getLang();
@@ -484,7 +484,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     /**
      * get title for 'Category Articles' rss feed
      *
-     * @param oxCategory $oCat category object
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat category object
      *
      * @access public
      *
@@ -502,7 +502,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns string built from category titles
      *
-     * @param oxCategory $oCat category object
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat category object
      *
      * @return string
      */
@@ -524,7 +524,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     /**
      * getCategoryArticlesUrl get url for 'Category Articles' rss feed
      *
-     * @param oxCategory $oCat category object
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat category object
      *
      * @access public
      *
@@ -543,7 +543,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     /**
      * loadCategoryArticles loads 'Category Articles' rss data
      *
-     * @param oxCategory $oCat category object
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat category object
      *
      * @access public
      *
@@ -556,7 +556,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             return;
         }
 
-        $oArtList = oxNew('oxArticleList');
+        $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->setCustomSorting('oc.oxtime desc');
         $oArtList->loadCategoryArticles($oCat->getId(), null, $this->getConfig()->getConfigParam('iRssItemsCount'));
 
@@ -725,7 +725,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('iNrofCatArticles', $oConfig->getConfigParam('iRssItemsCount'));
 
-        $oArtList = oxNew('oxsearch')->getSearchArticles($sSearch, $sCatId, $sVendorId, $sManufacturerId, oxNew('oxArticle')->getViewName() . '.oxtimestamp desc');
+        $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\Search::class)->getSearchArticles($sSearch, $sCatId, $sVendorId, $sManufacturerId, oxNew(\OxidEsales\Eshop\Application\Model\Article::class)->getViewName() . '.oxtimestamp desc');
 
         $this->_loadData(
             // dont use cache for search
@@ -742,7 +742,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     /**
      * get title for 'Recommendation lists' rss feed
      *
-     * @param oxArticle $oArticle load lists for this article
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle load lists for this article
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -759,7 +759,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     /**
      * get url for 'Recommendation lists' rss feed
      *
-     * @param oxArticle $oArticle load lists for this article
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle load lists for this article
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -779,7 +779,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     /**
      * make rss data array from given oxlist
      *
-     * @param oxList $oList recommlist object
+     * @param \OxidEsales\Eshop\Core\Model\ListModel $oList recommlist object
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -805,7 +805,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     /**
      * loads 'Recommendation lists' rss data
      *
-     * @param oxArticle $oArticle load lists for this article
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle load lists for this article
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -820,9 +820,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('iNrofCrossellArticles', $oConfig->getConfigParam('iRssItemsCount'));
 
-        $oList = oxNew('oxrecommlist')->getRecommListsByIds(array($oArticle->getId()));
+        $oList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class)->getRecommListsByIds(array($oArticle->getId()));
         if ($oList == null) {
-            $oList = oxNew('oxlist');
+            $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         }
 
         $oLang = Registry::getLang();
@@ -839,7 +839,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     /**
      * get title for 'Recommendation list articles' rss feed
      *
-     * @param oxRecommList $oRecommList recomm list to load articles from
+     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $oRecommList recomm list to load articles from
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -856,7 +856,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     /**
      * get url for 'Recommendation lists' rss feed
      *
-     * @param oxRecommList $oRecommList recomm list to load articles from
+     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $oRecommList recomm list to load articles from
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -878,7 +878,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
-     * @param oxRecommList $oRecommList recomm list to load articles from
+     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $oRecommList recomm list to load articles from
      *
      * @return null
      */
@@ -888,7 +888,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             return;
         }
 
-        $oList = oxNew('oxArticleList');
+        $oList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oList->loadRecommArticles($oRecommList->getId(), ' order by oxobject2list.oxtimestamp desc limit ' . $this->getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = Registry::getLang();
@@ -942,7 +942,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             return;
         }
 
-        $oArtList = oxNew('oxArticleList');
+        $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->loadActionArticles('OXBARGAIN', $this->getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = Registry::getLang();

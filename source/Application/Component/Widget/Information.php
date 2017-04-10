@@ -74,7 +74,7 @@ class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
     protected function _getContentList()
     {
         if (!$this->_oContentList) {
-            $this->_oContentList = oxNew("oxContentList");
+            $this->_oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);
         }
 
         return $this->_oContentList;

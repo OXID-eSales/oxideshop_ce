@@ -65,7 +65,7 @@ class OrderDownloads extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     {
         $soxId = $this->getEditObjectId();
         if ($this->_oEditObject === null && isset($soxId) && $soxId != "-1") {
-            $this->_oEditObject = oxNew("oxOrderFileList");
+            $this->_oEditObject = oxNew(\OxidEsales\Eshop\Application\Model\OrderFileList::class);
             $this->_oEditObject->loadOrderFiles($soxId);
         }
 
@@ -77,8 +77,8 @@ class OrderDownloads extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     public function resetDownloadLink()
     {
-        $sOrderFileId = oxRegistry::getConfig()->getRequestParameter('oxorderfileid');
-        $oOrderFile = oxNew("oxorderfile");
+        $sOrderFileId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxorderfileid');
+        $oOrderFile = oxNew(\OxidEsales\Eshop\Application\Model\OrderFile::class);
         if ($oOrderFile->load($sOrderFileId)) {
             $oOrderFile->reset();
             $oOrderFile->save();

@@ -46,7 +46,7 @@ class DeliverySetPayment extends \OxidEsales\Eshop\Application\Controller\Admin\
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $odeliveryset = oxNew("oxdeliveryset");
+            $odeliveryset = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySet::class);
             $odeliveryset->setLanguage($this->_iEditLang);
             $odeliveryset->load($soxId);
 
@@ -66,14 +66,14 @@ class DeliverySetPayment extends \OxidEsales\Eshop\Application\Controller\Admin\
             }
         }
 
-        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
         if ($iAoc == 1) {
-            $oDeliverysetPaymentAjax = oxNew('deliveryset_payment_ajax');
+            $oDeliverysetPaymentAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetPaymentAjax::class);
             $this->_aViewData['oxajax'] = $oDeliverysetPaymentAjax->getColumns();
 
             return "popups/deliveryset_payment.tpl";
         } elseif ($iAoc == 2) {
-            $oDeliverysetCountryAjax = oxNew('deliveryset_country_ajax');
+            $oDeliverysetCountryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetCountryAjax::class);
             $this->_aViewData['oxajax'] = $oDeliverysetCountryAjax->getColumns();
 
             return "popups/deliveryset_country.tpl";

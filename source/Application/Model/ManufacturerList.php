@@ -57,7 +57,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Active manufacturer object
      *
-     * @var oxmanufacturer
+     * @var \OxidEsales\Eshop\Application\Model\Manufacturer
      */
     protected $_oClickedManufacturer = null;
 
@@ -116,7 +116,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
 
 
         //Create fake manufacturer root category
-        $this->_oRoot = oxNew("oxManufacturer");
+        $this->_oRoot = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
         $this->_oRoot->load("root");
 
         //category fields
@@ -141,7 +141,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Root manufacturer list node (which usually is a manually prefilled object) getter
      *
-     * @return oxmanufacturer
+     * @return \OxidEsales\Eshop\Application\Model\Manufacturer
      */
     public function getRootCat()
     {
@@ -177,7 +177,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Sets active (open) manufacturer object
      *
-     * @param oxmanufacturer $oManufacturer active manufacturer
+     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer active manufacturer
      */
     public function setClickManufacturer($oManufacturer)
     {
@@ -187,7 +187,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * returns active (open) manufacturer object
      *
-     * @return oxmanufacturer
+     * @return \OxidEsales\Eshop\Application\Model\Manufacturer
      */
     public function getClickManufacturer()
     {
@@ -200,8 +200,8 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _seoSetManufacturerData()
     {
         // only when SEO id on and in front end
-        if (oxRegistry::getUtils()->seoIsActive() && !$this->isAdmin()) {
-            $oEncoder = oxRegistry::get("oxSeoEncoderManufacturer");
+        if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {
+            $oEncoder = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoderManufacturer");
 
             // preparing root manufacturer category
             if ($this->_oRoot) {

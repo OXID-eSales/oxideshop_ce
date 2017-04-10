@@ -63,18 +63,18 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
      */
     public function save()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
-        $aRDFaDeliveries = (array) oxRegistry::getConfig()->getRequestParameter("ardfadeliveries");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aRDFaDeliveries = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("ardfadeliveries");
 
         // Delete old mappings
-        $oDb = oxDb::getDb();
-        $sOxIdParameter = oxRegistry::getConfig()->getRequestParameter("oxid");
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $sOxIdParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid");
         $sSql = "DELETE FROM oxobject2delivery WHERE oxdeliveryid = '{$sOxIdParameter}' AND OXTYPE = 'rdfadeliveryset'";
         $oDb->execute($sSql);
 
         // Save new mappings
         foreach ($aRDFaDeliveries as $sDelivery) {
-            $oMapping = oxNew("oxBase");
+            $oMapping = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
             $oMapping->init("oxobject2delivery");
             $oMapping->assign($aParams);
             $oMapping->oxobject2delivery__oxobjectid = new oxField($sDelivery);
@@ -109,9 +109,9 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
      */
     public function getAssignedRDFaDeliveries()
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $aRDFaDeliveries = array();
-        $sSelect = 'select oxobjectid from oxobject2delivery where oxdeliveryid=' . $oDb->quote(oxRegistry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfadeliveryset" ';
+        $sSelect = 'select oxobjectid from oxobject2delivery where oxdeliveryid=' . $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfadeliveryset" ';
         $rs = $oDb->select($sSelect);
         if ($rs && $rs->count()) {
             while (!$rs->EOF) {

@@ -29,7 +29,7 @@ if (!function_exists("getGdVersion")) {
      */
     function getGdVersion()
     {
-        return oxRegistry::getConfig()->getConfigParam('iUseGDVersion');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iUseGDVersion');
     }
 }
 

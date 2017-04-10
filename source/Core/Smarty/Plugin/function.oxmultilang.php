@@ -38,8 +38,8 @@ function smarty_function_oxmultilang( $params, &$smarty )
 {
     startProfile("smarty_function_oxmultilang");
 
-    $oLang = oxRegistry::getLang();
-    $oConfig = oxRegistry::getConfig();
+    $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+    $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
     $oShop = $oConfig->getActiveShop();
     $blAdmin = $oLang->isAdmin();
 

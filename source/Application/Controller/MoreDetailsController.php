@@ -93,7 +93,7 @@ class MoreDetailsController extends \OxidEsales\Eshop\Application\Controller\Art
             $aPicGallery = $this->getProduct()->getPictureGallery();
 
             if ($aPicGallery['ZoomPic']) {
-                $sActPicId = oxRegistry::getConfig()->getRequestParameter('actpicid');
+                $sActPicId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('actpicid');
                 $this->_sActPicId = $sActPicId ? $sActPicId : 1;
             }
         }
@@ -131,8 +131,8 @@ class MoreDetailsController extends \OxidEsales\Eshop\Application\Controller\Art
     public function getProduct()
     {
         if ($this->_oProduct === null) {
-            $oArticle = oxNew('oxArticle');
-            $oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'));
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+            $oArticle->load(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid'));
             $this->_oProduct = $oArticle;
         }
 

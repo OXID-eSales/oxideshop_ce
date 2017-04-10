@@ -41,12 +41,12 @@ class ToolsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     public function render()
     {
         if ($this->getConfig()->isDemoShop()) {
-            oxRegistry::getUtils()->showMessageAndExit("Access denied !");
+            \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("Access denied !");
         }
 
         parent::render();
 
-        $oAuthUser = oxNew('oxuser');
+        $oAuthUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oAuthUser->loadAdminUser();
         $this->_aViewData["blIsMallAdmin"] = $oAuthUser->oxuser__oxrights->value == "malladmin";
 

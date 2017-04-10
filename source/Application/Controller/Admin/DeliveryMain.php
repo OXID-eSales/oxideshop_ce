@@ -47,7 +47,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         parent::render();
 
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $iLang = $oLang->getTplLanguage();
 
         // remove itm from list
@@ -59,7 +59,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oDelivery = oxNew("oxdelivery");
+            $oDelivery = oxNew(\OxidEsales\Eshop\Application\Model\Delivery::class);
             $oDelivery->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oDelivery->getAvailableInLangs();
@@ -97,8 +97,8 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         $this->_aViewData["deltypes"] = $aDelTypes;
 
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oDeliveryMainAjax = oxNew('delivery_main_ajax');
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+            $oDeliveryMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryMainAjax::class);
             $this->_aViewData['oxajax'] = $oDeliveryMainAjax->getColumns();
 
             return "popups/delivery_main.tpl";
@@ -117,9 +117,9 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oDelivery = oxNew("oxdelivery");
+        $oDelivery = oxNew(\OxidEsales\Eshop\Application\Model\Delivery::class);
 
         if ($soxId != "-1") {
             $oDelivery->loadInLang($this->_iEditLang, $soxId);
@@ -152,7 +152,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oDelivery->setLanguage(0);
         $oDelivery->assign($aParams);
         $oDelivery->setLanguage($this->_iEditLang);
-        $oDelivery = oxRegistry::get("oxUtilsFile")->processFiles($oDelivery);
+        $oDelivery = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oDelivery);
         $oDelivery->save();
 
         // set oxid if inserted
@@ -167,9 +167,9 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oDelivery = oxNew("oxdelivery");
+        $oDelivery = oxNew(\OxidEsales\Eshop\Application\Model\Delivery::class);
 
         if ($soxId != "-1") {
             $oDelivery->loadInLang($this->_iEditLang, $soxId);
@@ -193,7 +193,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oDelivery->setLanguage(0);
         $oDelivery->assign($aParams);
         $oDelivery->setLanguage($this->_iEditLang);
-        $oDelivery = oxRegistry::get("oxUtilsFile")->processFiles($oDelivery);
+        $oDelivery = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oDelivery);
         $oDelivery->save();
 
         // set oxid if inserted
@@ -207,7 +207,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     public function getDeliveryTypes()
     {
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $iLang = $oLang->getTplLanguage();
 
         $aDelTypes = array();

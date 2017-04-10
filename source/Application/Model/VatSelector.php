@@ -49,8 +49,8 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
     /**
      * get VAT for user, can NOT be null
      *
-     * @param User $oUser        given  user object
-     * @param bool $blCacheReset reset cache
+     * @param \OxidEsales\Eshop\Application\Controller\UserController $oUser        given  user object
+     * @param bool                                                    $blCacheReset reset cache
      *
      * @throws oxObjectException if wrong country
      * @return double | false
@@ -72,9 +72,9 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
         $sCountryId = $this->_getVatCountry($oUser);
 
         if ($sCountryId) {
-            $oCountry = oxNew('oxcountry');
+            $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
             if (!$oCountry->load($sCountryId)) {
-                throw oxNew("oxObjectException");
+                throw oxNew(\OxidEsales\Eshop\Core\Exception\ObjectException::class);
             }
             if ($oCountry->isForeignCountry()) {
                 $ret = $this->_getForeignCountryUserVat($oUser, $oCountry);
@@ -89,8 +89,8 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
     /**
      * get vat for user of a foreign country
      *
-     * @param User    $oUser    given user object
-     * @param Country $oCountry given country object
+     * @param \OxidEsales\Eshop\Application\Controller\UserController          $oUser    given user object
+     * @param \OxidEsales\Eshop\Application\Controller\Admin\CountryController $oCountry given country object
      *
      * @return mixed
      */
@@ -110,13 +110,13 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
     /**
      * return Vat value for oxcategory type assignment only
      *
-     * @param Article $oArticle given article
+     * @param \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $oArticle given article
      *
      * @return float | false
      */
     protected function _getVatForArticleCategory(Article $oArticle)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sCatT = getViewName('oxcategories');
 
         if ($this->_blCatVatSet === null) {
@@ -150,7 +150,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
     /**
      * get VAT for given article, can NOT be null
      *
-     * @param Article $oArticle given article
+     * @param \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $oArticle given article
      *
      * @return double
      */
@@ -177,11 +177,11 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Currently returns vats percent that can be applied for basket
-     * item ( executes oxVatSelector::getArticleVat()). Can be used to override
-     * basket price calculation behaviour (oxarticle::getBasketPrice())
+     * item ( executes \OxidEsales\Eshop\Application\Model\VatSelector::getArticleVat()). Can be used to override
+     * basket price calculation behaviour (\OxidEsales\Eshop\Application\Model\Article::getBasketPrice())
      *
-     * @param Article $oArticle article object
-     * @param Basket  $oBasket  oxbasket object
+     * @param \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Controller\BasketController        $oBasket  oxbasket object
      *
      * @return double
      */
@@ -193,7 +193,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
     /**
      * get article user vat
      *
-     * @param Article $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $oArticle article object
      *
      * @return double | false
      */
@@ -211,7 +211,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      * Returns country id which VAT should be applied to.
      * Depending on configuration option either user billing country or shipping country (if available) is returned.
      *
-     * @param User $oUser user object
+     * @param \OxidEsales\Eshop\Application\Controller\UserController $oUser user object
      *
      * @return string
      */

@@ -43,7 +43,7 @@ class UserArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $soxId = $this->getEditObjectId();
         if ($soxId && $soxId != '-1') {
             // load object
-            $oArticlelist = oxNew('oxorderarticlelist');
+            $oArticlelist = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticleList::class);
             $oArticlelist->loadOrderArticlesForUser($soxId);
 
             $this->_aViewData['oArticlelist'] = $oArticlelist;

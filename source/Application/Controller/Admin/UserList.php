@@ -68,7 +68,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
     public function render()
     {
         foreach ($this->getItemList() as $itemId => $user) {
-            /** @var oxUser $user */
+            /** @var \OxidEsales\Eshop\Application\Model\User $user */
             if ($user->inGroup("oxidblacklist") || $user->inGroup("oxidblocked")) {
                 $user->blacklist = "1";
             }
@@ -122,7 +122,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
             $values = explode(' ', $name);
             $query .= ' and (';
             $queryBoolAction = '';
-            $utilsString = oxRegistry::get("oxUtilsString");
+            $utilsString = \OxidEsales\Eshop\Core\Registry::get("oxUtilsString");
 
             foreach ($nameWhere as $fieldName => $fieldValue) {
                 //for each search field using AND action

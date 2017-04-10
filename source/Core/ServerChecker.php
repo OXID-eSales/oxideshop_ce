@@ -53,13 +53,13 @@ class ServerChecker
      */
     public function __construct()
     {
-        $this->_iCurrentTime = oxRegistry::get("oxUtilsDate")->getTime();
+        $this->_iCurrentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
     }
 
     /**
      * Checks if server node is valid.
      *
-     * @param oxApplicationServer $oServer
+     * @param \OxidEsales\Eshop\Core\ApplicationServer $oServer
      *
      * @return bool
      */
@@ -71,7 +71,7 @@ class ServerChecker
     /**
      * Check is server information out dated.
      *
-     * @param oxApplicationServer $oServer
+     * @param \OxidEsales\Eshop\Core\ApplicationServer $oServer
      *
      * @return bool
      */

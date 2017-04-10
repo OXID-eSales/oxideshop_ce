@@ -372,7 +372,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         // TODO: refactor shop bootstrap and parse url params as soon as possible
         if (isSearchEngineUrl()) {
-            oxNew('oxSeoDecoder')->processSeoCall();
+            oxNew(\OxidEsales\Eshop\Core\SeoDecoder::class)->processSeoCall();
         }
     }
 
@@ -433,7 +433,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $this->_loadVarsFromFile();
 
             //application initialization
-            $this->_oStart = oxNew('oxStart');
+            $this->_oStart = oxNew(\OxidEsales\Eshop\Application\Controller\OxidStartController::class);
             $this->_oStart->appInit();
         } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
             $this->_handleDbConnectionException($exception);
@@ -551,7 +551,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected function _loadVarsFromDb($shopID, $onlyVars = null, $module = '')
     {
-        $db = oxDb::getDb();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $moduleSql = $module ? " oxmodule LIKE " . $db->quote($module . "%") : " oxmodule='' ";
         $onlyVarsSql = $this->_getConfigParamsSelectSnippet($onlyVars);
@@ -1848,7 +1848,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $this->setConfigParam($varName, $varVal);
         }
 
-        $db = oxDb::getDb();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $shopIdQuoted = $db->quote($shopId);
         $moduleQuoted = $db->quote($module);
         $varNameQuoted = $db->quote($varName);
@@ -1887,7 +1887,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
         $query = "select oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue from oxconfig where oxshopid = '{$shopId}' and oxmodule = '{$module}' and oxvarname = " . $db->quote($varName);
         $rs = $db->select($query);
@@ -1943,7 +1943,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $productive = $this->getConfigParam('blProductive');
         if (!isset($productive)) {
             $query = 'select oxproductive from oxshops where oxid = "' . $this->getShopId() . '"';
-            $productive = ( bool ) oxDb::getDb()->getOne($query);
+            $productive = ( bool ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query);
             $this->setConfigParam('blProductive', $productive);
         }
 
@@ -1973,7 +1973,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             return $this->_oActShop;
         }
 
-        $this->_oActShop = oxNew('oxShop');
+        $this->_oActShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         $this->_oActShop->load($this->getShopId());
 
         return $this->_oActShop;
@@ -1990,7 +1990,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $actView = end($this->_aActiveViews);
         }
         if (!isset($actView) || $actView == null) {
-            $actView = oxNew('oxubase');
+            $actView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
             $this->_aActiveViews[] = $actView;
         }
 
@@ -2171,7 +2171,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopIds()
     {
-        return oxDb::getDb()->getCol("SELECT `oxid` FROM `oxshops`");
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("SELECT `oxid` FROM `oxshops`");
     }
 
     /**
@@ -2226,7 +2226,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Redirect to start page and display the error
      *
-     * @param oxException $ex message to show on exit
+     * @param \OxidEsales\Eshop\Core\Exception\StandardException $ex message to show on exit
      */
     protected function _handleCookieException($ex)
     {

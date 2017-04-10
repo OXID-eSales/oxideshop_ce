@@ -47,7 +47,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     {
         parent::render();
 
-        $oModuleList = oxNew("oxModuleList");
+        $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
 
         $extendClass = $this->getConfig()->getModulesWithExtendedClass();
         $sanitizedExtendClass = [];
@@ -59,7 +59,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $this->_aViewData["aDisabledModules"] = $oModuleList->getDisabledModuleClasses();
 
         // checking if there are any deleted extensions
-        if (oxRegistry::getSession()->getVariable("blSkipDeletedExtChecking") == false) {
+        if (\OxidEsales\Eshop\Core\Registry::getSession()->getVariable("blSkipDeletedExtChecking") == false) {
             $aDeletedExt = $oModuleList->getDeletedExtensions();
         }
 
@@ -75,7 +75,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     public function save()
     {
-        $aModule = oxRegistry::getConfig()->getRequestParameter("aModules");
+        $aModule = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aModules");
 
         $aModules = [];
         if ($tmp = json_decode($aModule, true)) {
@@ -83,7 +83,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
                 $sanitizedKey = str_replace(self::BACKSLASH_REPLACEMENT, "\\", $key);
                 $aModules[$sanitizedKey] = $value;
             }
-            $oModuleInstaller = oxNew('oxModuleInstaller');
+            $oModuleInstaller = oxNew(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class);
             $aModules = $oModuleInstaller->buildModuleChains($aModules);
         }
 
@@ -98,13 +98,13 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     public function remove()
     {
         //if user selected not to update modules, skipping all updates
-        if (oxRegistry::getConfig()->getRequestParameter("noButton")) {
-            oxRegistry::getSession()->setVariable("blSkipDeletedExtChecking", true);
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("noButton")) {
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("blSkipDeletedExtChecking", true);
 
             return;
         }
 
-        $oModuleList = oxNew("oxModuleList");
+        $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         $oModuleList->cleanup();
     }
 }

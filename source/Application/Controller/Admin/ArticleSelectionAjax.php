@@ -61,17 +61,17 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     {
         $sSLViewName = $this->_getViewName('oxselectlist');
         $sArtViewName = $this->_getViewName('oxarticles');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sArtId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchArtId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         $sOxid = ($sArtId) ? $sArtId : $sSynchArtId;
         $sQ = "select oxparentid from {$sArtViewName} where oxid = " . $oDb->quote($sOxid) . " and oxparentid != '' ";
         $sQ .= "and (select count(oxobjectid) from oxobject2selectlist " .
                "where oxobjectid = " . $oDb->quote($sOxid) . ") = 0";
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $sParentId = oxDb::getMaster()->getOne($sQ);
+        $sParentId = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ);
 
         // all selectlists article is in
         $sQAdd = " from oxobject2selectlist left join {$sSLViewName} " .
@@ -95,17 +95,17 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     public function removeSel()
     {
         $aChosenArt = $this->_getActionIds('oxobject2selectlist.oxid');
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", oxDb::getDb()->quoteArray($aChosenArt));
+            $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxobject2selectlist " .
                   "where oxobject2selectlist.oxid in (" . $sChosenArticles . ") ";
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
 
-        $articleId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $articleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $this->onArticleSelectionListChange($articleId);
     }
 
@@ -117,20 +117,20 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     public function addSel()
     {
         $aAddSel = $this->_getActionIds('oxselectlist.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sSLViewName = $this->_getViewName('oxselectlist');
             $aAddSel = $this->_getAll($this->_addFilter("select $sSLViewName.oxid " . $this->_getQuery()));
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddSel)) {
-            oxDb::getDb()->startTransaction();
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
             try {
-                $database = oxDb::getDb();
+                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
                 foreach ($aAddSel as $sAdd) {
-                    $oNew = oxNew("oxBase");
+                    $oNew = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                     $oNew->init("oxobject2selectlist");
                     $sObjectIdField = 'oxobject2selectlist__oxobjectid';
                     $sSelectetionIdField = 'oxobject2selectlist__oxselnid';
@@ -143,10 +143,10 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
                     $oNew->save();
                 }
             } catch (Exception $exception) {
-                oxDb::getDb()->rollbackTransaction();
+                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
                 throw $exception;
             }
-            oxDb::getDb()->commitTransaction();
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
 
             $this->onArticleSelectionListChange($soxId);
         }

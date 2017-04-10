@@ -152,7 +152,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      */
     protected function _addDynLinks($dom)
     {
-        $myUtilsFile = oxRegistry::get("oxUtilsFile");
+        $myUtilsFile = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile");
 
         $url = 'index.php?'; // session parameters will be included later (after cache processor)
 
@@ -475,7 +475,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
     protected function _getMenuFiles()
     {
         $myConfig = $this->getConfig();
-        $myOxUtlis = oxRegistry::getUtils();
+        $myOxUtlis = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector()));
         $fullAdminDir = $editionPathSelector->getViewsDirectory() . 'admin' . DIRECTORY_SEPARATOR;
@@ -497,7 +497,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
 
         // including module menu files
         $path = getShopBasePath();
-        $modulelist = oxNew('oxmodulelist');
+        $modulelist = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         $activeModuleInfo = $modulelist->getActiveModuleInfo();
         if (is_array($activeModuleInfo)) {
             foreach ($activeModuleInfo as $modulePath) {
@@ -524,7 +524,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
                 $remoteDynUrl = $this->_getDynMenuUrl($dynLang, $loadDynContents);
 
                 // loading remote file from server only once
-                $loadRemote = oxRegistry::getSession()->getVariable("loadedremotexml");
+                $loadRemote = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("loadedremotexml");
 
                 // very basic check if its valid xml file
                 if ((!isset($loadRemote) || $loadRemote) && ($dynPath = $myOxUtlis->getRemoteCachePath($remoteDynUrl, $localDynPath))) {
@@ -532,7 +532,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
                 }
 
                 // caching last load state
-                oxRegistry::getSession()->setVariable("loadedremotexml", $dynPath ? true : false);
+                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("loadedremotexml", $dynPath ? true : false);
             }
         }
 
@@ -598,7 +598,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
     protected function _getInitialDom()
     {
         if ($this->_oInitialDom === null) {
-            $myOxUtlis = oxRegistry::getUtils();
+            $myOxUtlis = \OxidEsales\Eshop\Core\Registry::getUtils();
 
             if (is_array($filesToLoad = $this->_getMenuFiles())) {
                 // now checking if xml files are newer than cached file
@@ -782,7 +782,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             $url = trim($myConfig->getConfigParam('sShopURL'), '/') . '/admin';
         }
 
-        return oxRegistry::get("oxUtilsUrl")->processUrl("{$url}/index.php", false);
+        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl("{$url}/index.php", false);
     }
 
     /**
@@ -844,7 +844,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
 
             return $fullAdminDir . "/dynscreen_local.xml";
         }
-        $adminView = oxNew('oxadminview');
+        $adminView = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class);
         $this->_sDynIncludeUrl = $adminView->getServiceUrl($lang);
 
         return $this->_sDynIncludeUrl . "menue/dynscreen.xml";
@@ -860,7 +860,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
     protected function _getDynMenuLang()
     {
         $myConfig = $this->getConfig();
-        $lang = oxRegistry::getLang();
+        $lang = \OxidEsales\Eshop\Core\Registry::getLang();
 
         $dynLang = $myConfig->getConfigParam('iDynInterfaceLanguage');
         $dynLang = isset($dynLang) ? $dynLang : ($lang->getTplLanguage());

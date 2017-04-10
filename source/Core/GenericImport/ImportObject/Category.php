@@ -38,9 +38,9 @@ class Category extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportO
     /**
      * Issued before saving an object. can modify aData for saving.
      *
-     * @param oxBase $shopObject        Shop object.
-     * @param array  $data              Data to prepare.
-     * @param bool   $allowCustomShopId If allow custom shop id.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject        Shop object.
+     * @param array                                  $data              Data to prepare.
+     * @param bool                                   $allowCustomShopId If allow custom shop id.
      *
      * @return array
      */

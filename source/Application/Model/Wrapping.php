@@ -104,7 +104,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getWrappingPrice($dAmount = 1)
     {
         if ($this->_oPrice === null) {
-            $this->_oPrice = oxNew('oxprice');
+            $this->_oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
 
             if (!$this->_blWrappingVatOnTop) {
                 $this->_oPrice->setBruttoPriceMode();
@@ -130,10 +130,10 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getWrappingList($sWrapType)
     {
         // load wrapping
-        $oEntries = oxNew('oxlist');
+        $oEntries = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oEntries->init('oxwrapping');
         $sWrappingViewName = getViewName('oxwrapping');
-        $sSelect = "select * from $sWrappingViewName where $sWrappingViewName.oxactive = '1' and $sWrappingViewName.oxtype = " . oxDb::getDb()->quote($sWrapType);
+        $sSelect = "select * from $sWrappingViewName where $sWrappingViewName.oxactive = '1' and $sWrappingViewName.oxtype = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sWrapType);
         $oEntries->selectString($sSelect);
 
         return $oEntries;
@@ -149,7 +149,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getWrappingCount($sWrapType)
     {
         $sWrappingViewName = getViewName('oxwrapping');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "select count(*) from $sWrappingViewName where $sWrappingViewName.oxactive = '1' and $sWrappingViewName.oxtype = " . $oDb->quote($sWrapType);
 
         return (int) $oDb->getOne($sQ);
@@ -182,7 +182,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $dPrice = $this->getPrice();
 
-        return oxRegistry::getLang()->formatCurrency($dPrice, $this->getConfig()->getActShopCurrencyObject());
+        return \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($dPrice, $this->getConfig()->getActShopCurrencyObject());
     }
 
     /**

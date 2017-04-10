@@ -36,7 +36,7 @@
  */
 function smarty_insert_oxid_newbasketitem($params, &$smarty)
 {
-    $myConfig  = oxRegistry::getConfig();
+    $myConfig  = \OxidEsales\Eshop\Core\Registry::getConfig();
 
     $aTypes = array('0' => 'none','1' => 'message', '2' =>'popup', '3' =>'basket');
     $iType  = $myConfig->getConfigParam( 'iNewBasketItemMessage' );
@@ -53,7 +53,7 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
     $blRender = $params['ajax'] && ($iType == 2);
 
     //fetching article data
-    $oNewItem = oxRegistry::getSession()->getVariable( '_newitem' );
+    $oNewItem = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable( '_newitem' );
 
     if ( $oNewItem ) {
         // loading article object here because on some system passing article by session couses problems
@@ -64,7 +64,7 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
         $smarty->assign( '_newitem', $oNewItem );
 
         // deleting article object data
-        oxRegistry::getSession()->deleteVariable( '_newitem' );
+        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable( '_newitem' );
 
         $blRender = true;
     }

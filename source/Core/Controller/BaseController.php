@@ -179,12 +179,12 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     /**
      * oxViewConfig instance
      *
-     * @var oxViewConfig
+     * @var \OxidEsales\Eshop\Core\ViewConfig
      */
     protected $_oViewConf = null;
 
     /**
-     * Initiates all components stored, executes oxView::addGlobalParams.
+     * Initiates all components stored, executes \OxidEsales\Eshop\Core\Controller\BaseController::addGlobalParams.
      */
     public function init()
     {
@@ -264,9 +264,9 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      * <b>version</b>,
      * <b>urlsign</b>
      *
-     * @param oxShop $oShop current shop object
+     * @param \OxidEsales\Eshop\Application\Model\Shop $oShop current shop object
      *
-     * @return oxViewConfig $oShop current shop object
+     * @return \OxidEsales\Eshop\Core\ViewConfig $oShop current shop object
      */
     public function addGlobalParams($oShop = null)
     {
@@ -322,7 +322,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     public function getViewConfig()
     {
         if ($this->_oViewConf === null) {
-            $this->_oViewConf = oxNew('oxViewConfig');
+            $this->_oViewConf = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
         }
 
         return $this->_oViewConf;
@@ -551,8 +551,8 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             } else {
                 // was not executed on any level ?
                 if (!$this->_blIsComponent) {
-                    /** @var oxSystemComponentException $oEx */
-                    $oEx = oxNew('oxSystemComponentException');
+                    /** @var \OxidEsales\Eshop\Core\Exception\SystemComponentException $oEx */
+                    $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
                     $oEx->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND'. ' ' . $sFunction);
                     $oEx->setComponent($sFunction);
                     throw $oEx;
@@ -584,7 +584,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             // looking for function name
             $params = explode('/', $params[0]);
             $className = $params[0];
-            $realClassName = oxRegistry::getUtilsObject()->getClassName($className);
+            $realClassName = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->getClassName($className);
 
             if (false === class_exists($realClassName)) {
                 //If redirect tries to use a not existing class throw an exception.
@@ -605,16 +605,16 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
 
             $url = "{$url}index.php?{$header}";
 
-            $url = oxRegistry::get("oxUtilsUrl")->processUrl($url);
+            $url = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl($url);
 
-            if (oxRegistry::getUtils()->seoIsActive() && $seoUrl = oxRegistry::get("oxSeoEncoder")->getStaticUrl($url)) {
+            if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && $seoUrl = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->getStaticUrl($url)) {
                 $url = $seoUrl;
             }
 
             $this->onExecuteNewAction();
 
             //#M341 do not add redirect parameter
-            oxRegistry::getUtils()->redirect($url, (bool) $myConfig->getRequestParameter('redirected'), 302);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($url, (bool) $myConfig->getRequestParameter('redirected'), 302);
         }
     }
 
@@ -632,7 +632,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getAdditionalParams()
     {
-        return oxRegistry::get("oxUtilsUrl")->processUrl('', false);
+        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl('', false);
     }
 
     /**
@@ -643,7 +643,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     public function getCharSet()
     {
         if ($this->_sCharSet == null) {
-            $this->_sCharSet = oxRegistry::getLang()->translateString('charset');
+            $this->_sCharSet = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('charset');
         }
 
         return $this->_sCharSet;
@@ -793,7 +793,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      * not set by component - will create category object and will try to
      * load by id passed by request
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category
      */
     public function getActCategory()
     {
@@ -802,7 +802,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
         // and we still need some object to mount navigation info
         if ($this->_oClickCat === null) {
             $this->_oClickCat = false;
-            $oCategory = oxNew('oxCategory');
+            $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if ($oCategory->load($this->getCategoryId())) {
                 $this->_oClickCat = $oCategory;
             }
@@ -814,7 +814,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     /**
      * Active category setter
      *
-     * @param oxCategory $oCategory active category
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCategory active category
      */
     public function setActCategory($oCategory)
     {

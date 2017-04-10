@@ -151,7 +151,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getDescription()
     {
-        $iLang = oxRegistry::getLang()->getTplLanguage();
+        $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage();
 
         return $this->getInfo("description", $iLang);
     }
@@ -163,7 +163,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getTitle()
     {
-        $iLang = oxRegistry::getLang()->getTplLanguage();
+        $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage();
 
         return $this->getInfo("title", $iLang);
     }
@@ -300,7 +300,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
             if ($iLang !== null && is_array($this->_aModule[$sName])) {
                 $sValue = null;
 
-                $sLang = oxRegistry::getLang()->getLanguageAbbr($iLang);
+                $sLang = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageAbbr($iLang);
 
                 if (!empty($this->_aModule[$sName])) {
                     if (!empty($this->_aModule[$sName][$sLang])) {
@@ -464,7 +464,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         $sShopId = $this->getConfig()->getShopId();
 
-        return oxDb::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = '$sModuleId' AND oxshopid = '$sShopId'");
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = '$sModuleId' AND oxshopid = '$sShopId'");
     }
 
     /**
@@ -583,7 +583,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         foreach ($rawExtensions as $classToBePatched => $moduleClass) {
             if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($classToBePatched)) {
-                $bcMap = oxRegistry::getBackwardsCompatibilityClassMap();
+                $bcMap = \OxidEsales\Eshop\Core\Registry::getBackwardsCompatibilityClassMap();
                 $classToBePatched = $bcMap[strtolower($classToBePatched)] ?: $classToBePatched;
             }
             $extensions[$classToBePatched] = $moduleClass;

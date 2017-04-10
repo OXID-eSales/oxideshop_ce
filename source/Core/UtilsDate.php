@@ -83,9 +83,9 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
 
         // choosing format..
         if ($sTime) {
-            $sFormat = $blForceEnglishRet ? 'Y-m-d H:i:s' : oxRegistry::getLang()->translateString('fullDateFormat');
+            $sFormat = $blForceEnglishRet ? 'Y-m-d H:i:s' : \OxidEsales\Eshop\Core\Registry::getLang()->translateString('fullDateFormat');
         } else {
-            $sFormat = $blForceEnglishRet ? 'Y-m-d' : oxRegistry::getLang()->translateString('simpleDateFormat');
+            $sFormat = $blForceEnglishRet ? 'Y-m-d' : \OxidEsales\Eshop\Core\Registry::getLang()->translateString('simpleDateFormat');
         }
 
         if (count($aDate) != 3) {
@@ -341,7 +341,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
     {
         // defining time format
         // checking for default values
-        $sLocalTimeFormat = oxRegistry::getConfig()->getConfigParam('sLocalTimeFormat');
+        $sLocalTimeFormat = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sLocalTimeFormat');
         if (!$sLocalTimeFormat || $blToTimeStamp) {
             $sLocalTimeFormat = "ISO";
         }
@@ -360,7 +360,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
     {
         // defining time format
         // checking for default values
-        $sLocalDateFormat = oxRegistry::getConfig()->getConfigParam('sLocalDateFormat');
+        $sLocalDateFormat = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sLocalDateFormat');
         if (!$sLocalDateFormat || $blToTimeStamp) {
             $sLocalDateFormat = "ISO";
         }

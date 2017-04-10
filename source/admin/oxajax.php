@@ -36,7 +36,7 @@ if ($blAjaxCall) {
     // Setting error reporting mode
     error_reporting(E_ALL ^ E_NOTICE);
 
-    $myConfig = oxRegistry::getConfig();
+    $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
     // Includes Utility module.
     $sUtilModule = $myConfig->getConfigParam('sUtilModule');
@@ -47,12 +47,12 @@ if ($blAjaxCall) {
     $myConfig->setConfigParam('blAdmin', true);
 
     // authorization
-    if (!(oxRegistry::getSession()->checkSessionChallenge() && count(oxRegistry::get("oxUtilsServer")->getOxCookie()) && oxRegistry::getUtils()->checkAccessRights())) {
+    if (!(\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge() && count(\OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->getOxCookie()) && \OxidEsales\Eshop\Core\Registry::getUtils()->checkAccessRights())) {
         header("location:index.php");
-        oxRegistry::getUtils()->showMessageAndExit("");
+        \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("");
     }
 
-    if ($sContainer = oxRegistry::getConfig()->getRequestParameter('container')) {
+    if ($sContainer = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('container')) {
         $sContainer = trim(strtolower(basename($sContainer)));
 
         try {
@@ -65,7 +65,7 @@ if ($blAjaxCall) {
         }
 
         $oAjaxComponent->setName($sContainer);
-        $oAjaxComponent->processRequest(oxRegistry::getConfig()->getRequestParameter('fnc'));
+        $oAjaxComponent->processRequest(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc'));
     }
 
     $myConfig->pageClose();

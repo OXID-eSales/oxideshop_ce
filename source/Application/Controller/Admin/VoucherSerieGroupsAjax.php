@@ -58,8 +58,8 @@ class VoucherSerieGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Ad
     {
         // looking for table/view
         $sGroupTable = $this->_getViewName('oxgroups');
-        $oDb = oxDb::getDb();
-        $oConfig = oxRegistry::getConfig();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sVoucherId = $oConfig->getRequestParameter('oxid');
         $sSynchVoucherId = $oConfig->getRequestParameter('synchoxid');
 
@@ -85,12 +85,12 @@ class VoucherSerieGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Ad
     public function removeGroupFromVoucher()
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2group.oxid');
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2group.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aRemoveGroups)) . ") ";
-            oxDb::getDb()->Execute($sQ);
+            $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -99,7 +99,7 @@ class VoucherSerieGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function addGroupToVoucher()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $aChosenCat = $this->_getActionIds('oxgroups.oxid');
         $soxId = $oConfig->getRequestParameter('synchoxid');
 
@@ -109,7 +109,7 @@ class VoucherSerieGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Ad
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenCat)) {
             foreach ($aChosenCat as $sChosenCat) {
-                $oNewGroup = oxNew("oxobject2group");
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Application\Model\Object2Group::class);
                 $oNewGroup->oxobject2group__oxobjectid = new oxField($soxId);
                 $oNewGroup->oxobject2group__oxgroupsid = new oxField($sChosenCat);
                 $oNewGroup->save();

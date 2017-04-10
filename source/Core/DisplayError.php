@@ -46,7 +46,7 @@ class DisplayError implements \OxidEsales\Eshop\Core\Contract\IDisplayError
      */
     public function getOxMessage()
     {
-        $translatedMessage = oxRegistry::getLang()->translateString($this->_sMessage);
+        $translatedMessage = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->_sMessage);
         if (!empty($this->_aFormatParameters)) {
             $translatedMessage = vsprintf($translatedMessage, $this->_aFormatParameters);
         }

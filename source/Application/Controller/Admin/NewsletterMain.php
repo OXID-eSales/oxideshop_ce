@@ -46,7 +46,7 @@ class NewsletterMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oNewsletter = oxNew("oxnewsletter");
+            $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
             $oNewsletter->load($soxId);
             $this->_aViewData["edit"] = $oNewsletter;
         }
@@ -70,13 +70,13 @@ class NewsletterMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $myConfig = $this->getConfig();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
         // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $sShopID = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("actshop");
         $aParams['oxnewsletter__oxshopid'] = $sShopID;
 
-        $oNewsletter = oxNew("oxnewsletter");
+        $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
         if ($soxId != "-1") {
             $oNewsletter->load($soxId);
         } else {

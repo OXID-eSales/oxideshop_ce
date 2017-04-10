@@ -89,7 +89,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getLanguage()
     {
         if ($this->_iLanguage === null) {
-            $this->_iLanguage = oxRegistry::getLang()->getBaseLanguage();
+            $this->_iLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
 
         return $this->_iLanguage;
@@ -197,7 +197,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getAvailableInLangs()
     {
-        $languages = oxRegistry::getLang()->getLanguageNames();
+        $languages = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames();
 
         $objFields = $this->_getTableFields(
             getViewName($this->_sCoreTable, -1, -1),
@@ -227,7 +227,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // select from non-multilanguage core view (all ml tables joined to one)
-        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $query = "select * from " . getViewName($this->_sCoreTable, -1, -1) . " where oxid = " . $db->quote($this->getId());
         $rs = $db->getAll($query);
 
@@ -490,7 +490,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
         // if current object is managed by SEO and SEO is ON
         if ($ret && $this->_blIsSeoObject && $this->getUpdateSeo() && $this->isAdmin()) {
             // marks all object db entries as expired
-            oxRegistry::get("oxSeoEncoder")->markAsExpired($this->getId(), null, 1, $this->getLanguage());
+            \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->markAsExpired($this->getId(), null, 1, $this->getLanguage());
         }
 
         return $ret;
@@ -507,7 +507,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $coreTableName = $coreTableName ? $coreTableName : $this->getCoreTableName();
 
-        return oxNew('oxDbMetaDataHandler')->getAllMultiTables($coreTableName);
+        return oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class)->getAllMultiTables($coreTableName);
     }
 
     /**
@@ -557,7 +557,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param bool $returnSimple Set $returnSimple to true when you need simple array (meta data array is returned otherwise)
      *
-     * @see oxBase::_getTableFields()
+     * @see \OxidEsales\Eshop\Core\Model\BaseModel::_getTableFields()
      *
      * @return array
      */
@@ -623,7 +623,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $deleted = parent::delete($oxid);
         if ($deleted) {
-            $db = oxDb::getDb();
+            $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $oxid = $db->quote($oxid);
 
             //delete the record

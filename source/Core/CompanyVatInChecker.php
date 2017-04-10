@@ -61,7 +61,7 @@ abstract class CompanyVatInChecker
     /**
      * Validates company VAT identification number
      *
-     * @param oxCompanyVatIn $vatIn
+     * @param \OxidEsales\Eshop\Application\Model\CompanyVatIn $vatIn
      *
      * @return mixed
      */

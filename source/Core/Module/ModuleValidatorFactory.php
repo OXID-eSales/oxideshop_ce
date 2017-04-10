@@ -39,6 +39,6 @@ class ModuleValidatorFactory
      */
     public function getModuleMetadataValidator()
     {
-        return oxNew('oxModuleMetadataValidator');
+        return oxNew(\OxidEsales\Eshop\Core\Module\ModuleMetadataValidator::class);
     }
 }

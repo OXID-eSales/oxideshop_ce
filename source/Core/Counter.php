@@ -43,7 +43,7 @@ class Counter
      */
     public function getNext($ident)
     {
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         /** Current counter retrieval needs to be encapsulated in transaction */
         $database->startTransaction();
@@ -79,7 +79,7 @@ class Counter
      */
     public function update($ident, $count)
     {
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         /** Current counter retrieval needs to be encapsulated in transaction */
         $database->startTransaction();

@@ -64,7 +64,7 @@ class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
         parent::render();
 
         // passing display type back to view
-        $this->_aViewData["displaytype"] = oxRegistry::getConfig()->getRequestParameter("displaytype");
+        $this->_aViewData["displaytype"] = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("displaytype");
 
         return $this->_sThisTemplate;
     }
@@ -80,12 +80,12 @@ class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     protected function _prepareWhereQuery($aWhere, $sqlFull)
     {
         $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
-        $sDisplayType = (int) oxRegistry::getConfig()->getRequestParameter('displaytype');
+        $sDisplayType = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('displaytype');
         $sTable = getViewName("oxactions");
 
         // searching for empty oxfolder fields
         if ($sDisplayType) {
-            $sNow = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
+            $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
 
             switch ($sDisplayType) {
                 case 1: // active

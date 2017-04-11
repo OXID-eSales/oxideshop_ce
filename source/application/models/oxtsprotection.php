@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -27,6 +27,8 @@
  */
 class oxTsProtection extends oxSuperCfg
 {
+    /** @var bool If TRusted shops check is running in a test mode - against trusted shop test website. */
+    private $blTsTestMode = false;
 
     /**
      * TS protection product Ids
@@ -177,7 +179,6 @@ class oxTsProtection extends oxSuperCfg
         }
 
         return null;
-
     }
 
     /**
@@ -192,6 +193,8 @@ class oxTsProtection extends oxSuperCfg
     {
         if ($iTrustedShopId) {
             if ($blTsTestMode == "true") {
+                $this->blTsTestMode = $blTsTestMode;
+
                 $sSoapUrl = 'https://qa.trustedshops.de/ts/services/TsProtection?wsdl';
             } else {
                 $sSoapUrl = 'https://www.trustedshops.de/ts/services/TsProtection?wsdl';
@@ -204,7 +207,6 @@ class oxTsProtection extends oxSuperCfg
         }
 
         return null;
-
     }
 
     /**
@@ -218,8 +220,13 @@ class oxTsProtection extends oxSuperCfg
      */
     public function executeSoap($sSoapUrl, $sFunction, $sValues)
     {
+        $soapParameters = null;
+        if ($this->blTsTestMode) {
+            $soapParameters = $this->setNotCheckSSL();
+        }
+
         try {
-            $oSoap = new SoapClient($sSoapUrl);
+            $oSoap = new SoapClient($sSoapUrl, $soapParameters);
             $aResults = $oSoap->{$sFunction}($sValues);
             if (isset($aResults)) {
                 return $aResults;
@@ -293,5 +300,27 @@ class oxTsProtection extends oxSuperCfg
         }
 
         return $sTsCurrId;
+    }
+
+    /**
+     * Trusted Shop test page does not have a valid SSL certificate.
+     * This allow to skip the issue when running tests.
+     *
+     * @return array
+     */
+    private function setNotCheckSSL()
+    {
+        $context = stream_context_create(
+            [
+                'ssl' => [
+                    // set some SSL/TLS specific options
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                ]
+            ]
+        );
+
+        return ['stream_context' => $context];
     }
 }

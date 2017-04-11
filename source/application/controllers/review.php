@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -45,7 +45,7 @@ class Review extends Details
 
     /**
      * Active recommendations list
-     * 
+     *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @var object
@@ -56,7 +56,7 @@ class Review extends Details
      * Active recommlist's items
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @var object
      */
     protected $_oActiveRecommItems = null;
@@ -93,7 +93,7 @@ class Review extends Details
      * Recommlist
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @var object
      */
     protected $_oRecommList = null;
@@ -331,7 +331,7 @@ class Review extends Details
      * Template variable getter. Returns active recommlist
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     * 
+     *
      * @return oxRecommList
      */
     public function getActiveRecommList()
@@ -397,7 +397,7 @@ class Review extends Details
      * Template variable getter. Returns recommlists
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @return object
      */
     public function getRecommList()
@@ -417,7 +417,7 @@ class Review extends Details
      * Template variable getter. Returns active recommlist's items
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @return object
      */
     public function getActiveRecommItems()
@@ -470,7 +470,7 @@ class Review extends Details
             if ($this->getActiveRecommList()) {
                 $this->_oPageNavigation = $this->generatePageNavigation();
             }
-            // END deprecated   
+            // END deprecated
         }
 
         return $this->_oPageNavigation;

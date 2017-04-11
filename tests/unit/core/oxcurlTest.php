@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -89,9 +89,9 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     public function testGetQuery_setParameterNotUtf_getQueryFromParameters()
     {
         $oCurl = new oxCurl();
-        $oCurl->setParameters(array('param1' => 'Jäger', 'param2' => 'values2'));
+        $oCurl->setParameters(array('param1' => 'Jï¿½ger', 'param2' => 'values2'));
 
-        $aPramsUtf = array('param1' => 'Jäger', 'param2' => 'values2');
+        $aPramsUtf = array('param1' => 'Jï¿½ger', 'param2' => 'values2');
 
         $this->assertEquals(http_build_query($aPramsUtf), $oCurl->getQuery());
     }

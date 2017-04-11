@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -280,7 +280,7 @@ class oxViewConfig extends oxSuperCfg
      * Returns active recommendation id parameter
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @return string
      */
     public function getActRecommendationId()
@@ -880,7 +880,7 @@ class oxViewConfig extends oxSuperCfg
      * Returns config param "bl_showListmania" value
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @return bool
      */
     public function getShowListmania()

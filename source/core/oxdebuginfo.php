@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -155,7 +155,7 @@ class oxDebugInfo
 
     /**
      * db debug info formatter
-     * 
+     *
      * @deprecated since v5.3.0 (2016-06-07). The SQL logging feature is deprecated. This feature will be removed.
      *
      * @return string

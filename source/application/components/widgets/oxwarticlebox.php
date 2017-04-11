@@ -17,7 +17,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -202,7 +202,7 @@ class oxwArticleBox extends oxWidget
      * Returns recommendation id
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @return string
      */
     public function getRecommId()

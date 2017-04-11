@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -33,10 +33,10 @@ class Unit_Core_oxCountryListTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $aCountryTitle = array("oxCountryListTest_ä",
+        $aCountryTitle = array("oxCountryListTest_ï¿½",
                                "oxCountryListTest_1",
                                "oxCountryListTest_a",
-                               "oxCountryListTest_ö",
+                               "oxCountryListTest_ï¿½",
                                "oxCountryListTest_b");
 
         $this->aList = array();
@@ -52,7 +52,7 @@ class Unit_Core_oxCountryListTest extends OxidTestCase
         $oCountry = new oxcountry();
         $oCountry->setId('_testCountryId5');
         $oCountry->oxcountry__oxorder = new oxField('0', oxField::T_RAW);
-        $oCountry->oxcountry__oxtitle = new oxField("oxCountryListTest_ä", oxField::T_RAW);
+        $oCountry->oxcountry__oxtitle = new oxField("oxCountryListTest_ï¿½", oxField::T_RAW);
         $oCountry->save();
         $this->aList[] = $oCountry;
     }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -120,7 +120,7 @@ class Account extends oxUBase
      * Show tags cloud
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
+     *
      * @var bool
      */
     protected $_blShowTagCloud = false;

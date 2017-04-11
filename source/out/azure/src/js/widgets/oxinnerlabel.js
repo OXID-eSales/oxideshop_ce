@@ -15,7 +15,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 ( function( $ ) {
@@ -59,7 +59,7 @@
                 setTimeout(function(){ self._reload( self.element, label ); }, 100);
             });
        },
-       
+
        _reload : function( input, label ){
            var pos = input.position();
            label.css( { "left": (pos.left) + "px", "top":(pos.top) + "px" } );

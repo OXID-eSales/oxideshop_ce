@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -1008,8 +1008,8 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testMakeOutputProcessing()
     {
-        $this->_oEmail->setBody('testbody 55 ¤'); //with euro sign
-        $this->_oEmail->setAltBody('testaltbody 55 ¤'); //with euro sign
+        $this->_oEmail->setBody('testbody 55 ï¿½'); //with euro sign
+        $this->_oEmail->setAltBody('testaltbody 55 ï¿½'); //with euro sign
         $this->_oEmail->UNITmakeOutputProcessing();
 
         $this->assertEquals('testbody 55 &euro;', $this->_oEmail->getBody());

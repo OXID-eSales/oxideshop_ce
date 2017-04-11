@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -916,7 +916,7 @@ class oxSession extends oxSuperCfg
 
     /**
      * Checking if this sid is old
-     * 
+     *
      * @deprecated since v5.3.0 (2016-05-24); Implement your own session handler with a module.
      *
      * @return bool

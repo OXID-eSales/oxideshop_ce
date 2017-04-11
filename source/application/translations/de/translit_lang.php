@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -25,13 +25,13 @@
  * @var array SEO replacement list
  */
 $aSeoReplaceChars = array(
-    'ä' => 'ae',
-    'ö' => 'oe',
-    'ü' => 'ue',
-    'Ä' => 'Ae',
-    'Ö' => 'Oe',
-    'Ü' => 'Ue',
-    'ß' => 'ss',
+    'ï¿½' => 'ae',
+    'ï¿½' => 'oe',
+    'ï¿½' => 'ue',
+    'ï¿½' => 'Ae',
+    'ï¿½' => 'Oe',
+    'ï¿½' => 'Ue',
+    'ï¿½' => 'ss',
 );
 
 $aLang = array(

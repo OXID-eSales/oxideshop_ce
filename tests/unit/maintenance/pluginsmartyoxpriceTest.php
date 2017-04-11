@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -78,7 +78,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
 
         $this->assertEquals('1#992,45 €', smarty_function_oxprice($aParams, $oSmarty));
     }
-    
+
     /**
      * Helper method to set the given currencies.
      *
@@ -133,7 +133,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
         $aParams['price'] = $fPrice;
         $aParams['currency'] = $oCurrency;
 
-        // we utf8 decode here to make the test more robust against shop settings 
+        // we utf8 decode here to make the test more robust against shop settings
         $this->assertEquals(utf8_decode($sExpectedOutput), utf8_decode(smarty_function_oxprice($aParams, $oSmarty)));
     }
 
@@ -175,7 +175,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
         $aParams['price'] = $fPrice;
         $aParams['currency'] = $oCurrency;
 
-        // we utf8 decode here to make the test more robust against shop settings 
+        // we utf8 decode here to make the test more robust against shop settings
         $this->assertEquals(utf8_decode($sExpectedOutput), utf8_decode(smarty_function_oxprice($aParams, $oSmarty)));
     }
 

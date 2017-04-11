@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -275,7 +275,7 @@ class Article_Seo extends Object_Seo
      * Returns active tag, used for seo url getter
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *             
+     *
      * @return string | null
      */
     public function getTag()
@@ -374,7 +374,7 @@ class Article_Seo extends Object_Seo
         } else {
             return $this->_getType();
         }
-        // END deprecated 
+        // END deprecated
     }
 
     /**
@@ -402,7 +402,7 @@ class Article_Seo extends Object_Seo
         } else {
             return $this->getActCatId();
         }
-        // END deprecated 
+        // END deprecated
     }
 
     /**
@@ -453,7 +453,7 @@ class Article_Seo extends Object_Seo
      * @param string $iLang     preferred language id [default is NULL]
      * @param string $sTag      preferred tag [default is NULL]
      *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.                          
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
      *
      * @return string
      */

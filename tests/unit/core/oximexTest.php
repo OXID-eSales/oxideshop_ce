@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -55,11 +55,11 @@ class Unit_Core_oxImexTest extends OxidTestCase
             . '"Warengruppe";"Warengr.-Kurzbez.";"Warengr.-Steuersatz";"Warengr.-Konto Inland";'
             . '"Warengr.-Konto Ausland";"Warengr.-Konto EG";"Preis 1";"Preis 2";"Preis 3";'
             . '"Preis I/1";"Preis I/2";"Preis I/3";"Preis II/1";"Preis II/2";"Preis II/3";"Preis III/1";'
-            . '"Preis III/2";"Preis III/3";"B/N";"Lagerartikel";"EK 1";"Währung EK1";"EK 2";'
-            . '"Währung EK2";"Staffelmenge 1";"Staffelmenge 2";"Staffelmenge 3";"Lieferantennummer 1";'
+            . '"Preis III/2";"Preis III/3";"B/N";"Lagerartikel";"EK 1";"Wï¿½hrung EK1";"EK 2";'
+            . '"Wï¿½hrung EK2";"Staffelmenge 1";"Staffelmenge 2";"Staffelmenge 3";"Lieferantennummer 1";'
             . '"Lieferantennummer 2";"Bestellmenge Lf.1";"Bestellmenge Lf.2";"Bestellnr. Lf.1";'
             . '"Bestellnr. Lf.2";"Lieferzeit Lf.1";"Lieferzeit Lf.2";"Lagerbestand";"Mindestbestand";'
-            . '"Lagerort";"Bestellte Menge";"Stückliste";"Internet";"Text"', $aContents[0]
+            . '"Lagerort";"Bestellte Menge";"Stï¿½ckliste";"Internet";"Text"', $aContents[0]
         );
         $blFound = false;
         foreach ($aContents as $content) {
@@ -67,7 +67,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
                 $this->assertEquals(
                     '2000;Wanduhr ROBOT ;Stueck;0;2000;1,000;;;;;;;29.00;;;;;;;;;;;;;;0.00;;;;;;;;;'
                     . ';;;;;;2;;;;;1; Wanduhr im coolen ROBOTER Look! Durchmesser: 40 cm Material: Glas '
-                    . 'Bezugshinweis: bei Interesse können Sie dieses Produkt bei www.desaster.com erwerben.;', $content
+                    . 'Bezugshinweis: bei Interesse kï¿½nnen Sie dieses Produkt bei www.desaster.com erwerben.;', $content
                 );
                 $blFound = true;
                 break;
@@ -85,11 +85,11 @@ class Unit_Core_oxImexTest extends OxidTestCase
     public function testInterForm()
     {
         $oImex = new oxImex();
-        $this->assertEquals("abra!@#ü &amp; $%^*''_'cadabra' ", $oImex->InterForm("abra<br />!@#&uuml; & $%^*()_\"cadabra'\r\n "));
+        $this->assertEquals("abra!@#ï¿½ &amp; $%^*''_'cadabra' ", $oImex->InterForm("abra<br />!@#&uuml; & $%^*()_\"cadabra'\r\n "));
         $this->assertEquals("abra&amp;cadabra", $oImex->InterForm("abra&cadabra"));
         $o = new stdClass;
         $o->fldtype = "text";
-        $this->assertEquals("abra<br />!@#ü &amp; $%^*''_'cadabra' \t", $oImex->InterForm("abra<br />!@#&uuml; & $%^*()_\"cadabra'\r\n \t", $o));
+        $this->assertEquals("abra<br />!@#ï¿½ &amp; $%^*''_'cadabra' \t", $oImex->InterForm("abra<br />!@#&uuml; & $%^*()_\"cadabra'\r\n \t", $o));
     }
 
     public function testInternPrice()
@@ -170,7 +170,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
         $oImex = new oxImex();
         $sResult = str_replace(array("\r", "   "), '', $oImex->exportLexwareOrders(9991, 9991));
         $this->assertEquals(
-            "<?xml version=\"1.0\" encoding=\"ISO-8859-15\"?>\n<Bestellliste>\n<Bestellung zurückgestellt=\"Nein\" bearbeitet=\"Nein\" übertragen=\"Nein\">\n"
+            "<?xml version=\"1.0\" encoding=\"ISO-8859-15\"?>\n<Bestellliste>\n<Bestellung zurï¿½ckgestellt=\"Nein\" bearbeitet=\"Nein\" ï¿½bertragen=\"Nein\">\n"
             . "<Bestellnummer>9991</Bestellnummer>\n<Rechnungsnummer>15</Rechnungsnummer>\n<Standardwaehrung>978</Standardwaehrung>\n<Bestelldatum>\n<Datum>21.02.2007</Datum>\n<Zeit>00:00:00</Zeit>\n</Bestelldatum>\n<Kunde>\n<Kundennummer></Kundennummer>\n"
             . "<Firmenname>billcomp</Firmenname>\n<Anrede>Herr</Anrede>\n<Vorname>billfname</Vorname>\n<Name>billlname</Name>\n<Strasse>billstreet billstnr</Strasse>\n"
             . "<PLZ>billzip</PLZ>\n<Ort>billcity</Ort>\n<Bundesland></Bundesland>\n<Land>Deutschland</Land>\n<Email>billemail</Email>\n<Telefon>billfon</Telefon>\n<Telefon2></Telefon2>\n"
@@ -246,7 +246,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
         $oImex = new oxImex();
         $sResult = str_replace(array("\r", "   "), '', $oImex->exportLexwareOrders(9991, 9991));
         $this->assertEquals(
-            "<?xml version=\"1.0\" encoding=\"ISO-8859-15\"?>\n<Bestellliste>\n<Bestellung zurückgestellt=\"Nein\" bearbeitet=\"Nein\" übertragen=\"Nein\">\n"
+            "<?xml version=\"1.0\" encoding=\"ISO-8859-15\"?>\n<Bestellliste>\n<Bestellung zurï¿½ckgestellt=\"Nein\" bearbeitet=\"Nein\" ï¿½bertragen=\"Nein\">\n"
             . "<Bestellnummer>9991</Bestellnummer>\n<Rechnungsnummer>15</Rechnungsnummer>\n<Standardwaehrung>978</Standardwaehrung>\n<Bestelldatum>\n<Datum>21.02.2007</Datum>\n<Zeit>00:00:00</Zeit>\n</Bestelldatum>\n<Kunde>\n<Kundennummer></Kundennummer>\n"
             . "<Firmenname>billcomp</Firmenname>\n<Anrede>Herr</Anrede>\n<Vorname>billfname</Vorname>\n<Name>billlname</Name>\n<Strasse>billstreet billstnr</Strasse>\n"
             . "<PLZ>billzip</PLZ>\n<Ort>billcity</Ort>\n<Bundesland></Bundesland>\n<Land>Deutschland</Land>\n<Email>billemail</Email>\n<Telefon>billfon</Telefon>\n<Telefon2></Telefon2>\n"
@@ -295,8 +295,8 @@ class Unit_Core_oxImexTest extends OxidTestCase
 
         $oImex = $this->getMock('oxImex', array('_getCharset', '_convertStr'));
         $oImex->expects($this->any())->method('_getCharset')->will($this->returnValue('UTF-8'));
-        $oImex->expects($this->at(1))->method('_convertStr')->with($this->equalTo("zur\xfcckgestellt")); // \xfc = ü
-        $oImex->expects($this->at(2))->method('_convertStr')->with($this->equalTo("\xfcbertragen")); // \xfc = ü
+        $oImex->expects($this->at(1))->method('_convertStr')->with($this->equalTo("zur\xfcckgestellt")); // \xfc = ï¿½
+        $oImex->expects($this->at(2))->method('_convertStr')->with($this->equalTo("\xfcbertragen")); // \xfc = ï¿½
 
         $sResult = $oImex->exportLexwareOrders(9991, 9991);
     }

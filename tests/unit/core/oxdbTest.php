@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -391,11 +391,11 @@ class Unit_Core_oxdbTest extends OxidTestCase
         $oDb->expects($this->once())->method('_notifyConnectionErrors')->with($this->equalTo('odb'));
         $oDb->_onConnectionError('odb');
     }
-    
+
     public function testAdodbLiteResultSetCount() {
 
         $expectedCount = 2;
-        
+
         $sQuery = "SELECT oxid from oxarticles LIMIT 0, $expectedCount";
         $oDb = oxNew("oxDb");
         $oDbInst = $oDb->getDb();
@@ -403,9 +403,9 @@ class Unit_Core_oxdbTest extends OxidTestCase
         /** Test 1 **/ // commiting transaction
         $oDbInst->startTransaction();
         $resultSet = $oDbInst->select($sQuery);
-        
+
         $actualCount = $resultSet->count();
-        
+
         $this->assertEquals($expectedCount, $actualCount);
 
     }

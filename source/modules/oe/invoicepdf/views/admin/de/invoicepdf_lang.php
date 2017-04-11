@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -43,11 +43,11 @@ $aLang = array(
     'TOTAL_PLUS_PROPORTIONAL_VAT'           => 'plus MwSt. (anteilig berechnet)',
     'ORDER_OVERVIEW_PDF_BRUTTO'             => '(brutto)',
     'WRAPPING_COSTS'                        => 'Geschenkverpackung',
-    'GIFTCARD_COSTS'                        => 'Grußkarte',
+    'GIFTCARD_COSTS'                        => 'Gruï¿½karte',
     'ORDER_OVERVIEW_PDF_PAYMENTIMPACT'      => 'Aufschlag Zahlungsart',
-    'ORDER_OVERVIEW_PDF_TSPROTECTION'       => 'Trusted Shops Käuferschutz',
+    'ORDER_OVERVIEW_PDF_TSPROTECTION'       => 'Trusted Shops Kï¿½uferschutz',
     'ORDER_OVERVIEW_PDF_ALLSUM'             => 'Gesamtsumme (brutto)',
-    'ORDER_OVERVIEW_PDF_SELPAYMENT'         => 'Ihre gewählte Zahlungsweise: ',
+    'ORDER_OVERVIEW_PDF_SELPAYMENT'         => 'Ihre gewï¿½hlte Zahlungsweise: ',
     'ORDER_OVERVIEW_PDF_PAYUPTO'            => 'Zahlbar bis zum ',
     'ORDER_OVERVIEW_PDF_PHONE'              => 'fon: ',
     'ORDER_OVERVIEW_PDF_FAX'                => 'fax: ',
@@ -70,6 +70,6 @@ $aLang = array(
     'ORDER_OVERVIEW_PDF_ORDERSFROM'         => 'Ihre Bestellung vom ',
     'ORDER_OVERVIEW_PDF_ORDERSAT'           => ' bei ',
     'ORDER_OVERVIEW_PDF_VAT'                => 'USt. %',
-    'ORDER_OVERVIEW_PDF_GREETINGS'          => 'Herzlichen Dank für Ihre Bestellung! Bitte empfehlen Sie uns weiter.',
+    'ORDER_OVERVIEW_PDF_GREETINGS'          => 'Herzlichen Dank fï¿½r Ihre Bestellung! Bitte empfehlen Sie uns weiter.',
     'ORDER_OVERVIEW_PDF_DELIVNOTE'          => 'Lieferschein Nr.',
 );

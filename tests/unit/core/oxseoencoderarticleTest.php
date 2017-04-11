@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -201,7 +201,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
     {
         $oArticle = new oxArticle();
         $oArticle->setId("testArticleId");
-        $oArticle->oxarticles__oxtitle = new oxField("'DIN lang 1/3 A4 / A6' ? 'EIN Fach' ? '1/3 A4 Prospektständer BIO'", oxField::T_RAW);
+        $oArticle->oxarticles__oxtitle = new oxField("'DIN lang 1/3 A4 / A6' ? 'EIN Fach' ? '1/3 A4 Prospektstï¿½nder BIO'", oxField::T_RAW);
 
         $sUrl = oxRegistry::getConfig()->getConfigParam("sShopURL") . "DIN-lang-1-3-A4-A6-EIN-Fach-1-3-A4-Prospektstaender-BIO.html";
         $this->assertEquals($sUrl, $oArticle->getLink());
@@ -681,7 +681,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = $this->getMock('oxArticle', array('getCategory'));
         $oArticle = new oxArticle();
         $oArticle->setId('_testArtId');
-        $oArticle->oxarticles__oxtitle = new oxField('äöüÄÖÜß');
+        $oArticle->oxarticles__oxtitle = new oxField('ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
         $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sShopURL") . "oxid.html", $oArticle->getLink());
     }

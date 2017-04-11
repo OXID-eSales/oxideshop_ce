@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -469,7 +469,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
      */
     public function testPrepareWhereQueryWithGermanUmlauts()
     {
-        $aWhere['oxtitle'] = 'das %testvalueäö% asd';
+        $aWhere['oxtitle'] = 'das %testvalueï¿½ï¿½% asd';
         $aWhere['oxid'] = 'testid';
 
         oxRegistry::getLang()->setBaseLanguage(1);
@@ -481,7 +481,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $sResultSql = strtolower(trim($sResultSql));
         $sResultSql = preg_replace("/\s+/", " ", $sResultSql);
 
-        $sSql = "and ( oxtitle = 'das' and ( oxtitle = '%testvalueäö%' or oxtitle = '%testvalue&auml;&ouml;%' ) and oxtitle = 'asd' ) and ( oxid = 'testid' )";
+        $sSql = "and ( oxtitle = 'das' and ( oxtitle = '%testvalueï¿½ï¿½%' or oxtitle = '%testvalue&auml;&ouml;%' ) and oxtitle = 'asd' ) and ( oxid = 'testid' )";
 
         $this->assertEquals($sSql, $sResultSql);
     }

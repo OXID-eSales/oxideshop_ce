@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -35,7 +35,7 @@ class oxSeoEncoderRecomm extends oxSeoEncoder
      * @param int          $iLang   language
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @return string
      */
     public function getRecommUri($oRecomm, $iLang = null)
@@ -68,7 +68,7 @@ class oxSeoEncoderRecomm extends oxSeoEncoder
      * @param int          $iLang   language
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @return string
      */
     public function getRecommUrl($oRecomm, $iLang = null)

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -31,7 +31,7 @@ require_once "lang.php";
     <style type="text/css">
        body, p, td, tr, ol, ul, input, textarea {font:11px/130% Trebuchet MS, Tahoma, Verdana, Arial, Helvetica, sans-serif;}
     </style>
-</head>    
+</head>
 
 <body>
      <p>
@@ -40,5 +40,5 @@ require_once "lang.php";
      ?>
      </p>
 </body>
-    
+
 </html>

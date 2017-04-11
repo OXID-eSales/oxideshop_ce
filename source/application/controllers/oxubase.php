@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -120,7 +120,7 @@ class oxUBase extends oxView
      * Active recommendation's list
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @var object
      */
     protected $_oActiveRecommList = null;
@@ -1699,7 +1699,7 @@ class oxUBase extends oxView
      * Should be overridden if need.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @return array
      */
     public function getSimilarRecommListIds()
@@ -1904,7 +1904,7 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns search string
-     * 
+     *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      */
     public function getRecommSearch()
@@ -1922,7 +1922,7 @@ class oxUBase extends oxView
      * Template variable getter. Returns active recommendation lists
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *             
+     *
      * @return oxRecommList
      */
     public function getActiveRecommList()

@@ -311,16 +311,16 @@ class oxTsProtection extends oxSuperCfg
     private function setNotCheckSSL()
     {
         $context = stream_context_create(
-            [
-                'ssl' => [
+            array(
+                'ssl' => array(
                     // set some SSL/TLS specific options
                     'verify_peer' => false,
                     'verify_peer_name' => false,
                     'allow_self_signed' => true
-                ]
-            ]
+                )
+            )
         );
 
-        return ['stream_context' => $context];
+        return array('stream_context' => $context);
     }
 }

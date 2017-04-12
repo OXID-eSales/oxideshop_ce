@@ -31,7 +31,7 @@ use oxUtils;
 use stdClass;
 
 /**
- * Test case for OxReg
+ * Test case for \OxidEsales\Eshop\Core\Registry
  */
 class RegistryTest extends \OxidTestCase
 {
@@ -41,7 +41,7 @@ class RegistryTest extends \OxidTestCase
      */
     public function testEditionSpecificObjectIsCreatedCorrect()
     {
-        $utilsObject = \OxidEsales\Eshop\Core\Registry::get('oxUtilsObject');
+        $utilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
 
         $edition = $this->getConfig()->getEdition();
         $expectedClass = 'OxidEsales\EshopCommunity\Core\UtilsObject';
@@ -138,23 +138,23 @@ class RegistryTest extends \OxidTestCase
     public function testGetKeys()
     {
         Registry::set("testKey", "testVal");
-        $this->assertTrue(in_array(strtolower("testKey"), Registry::getKeys()));
-        oxRegistry::set("testKey", null);
+        $this->assertTrue(in_array("testKey", Registry::getKeys()));
+        \OxidEsales\Eshop\Core\Registry::set("testKey", null);
     }
 
     public function testUnset()
     {
-        oxRegistry::set("testKey", "testVal");
-        $this->assertTrue(in_array(strtolower("testKey"), Registry::getKeys()));
-        oxRegistry::set("testKey", null);
-        $this->assertFalse(in_array(strtolower("testKey"), Registry::getKeys()));
+        \OxidEsales\Eshop\Core\Registry::set("testKey", "testVal");
+        $this->assertTrue(in_array("testKey", Registry::getKeys()));
+        \OxidEsales\Eshop\Core\Registry::set("testKey", null);
+        $this->assertFalse(in_array("testKey", Registry::getKeys()));
     }
 
     public function testInstanceExists()
     {
-        oxRegistry::set("testKey", "testVal");
+        \OxidEsales\Eshop\Core\Registry::set("testKey", "testVal");
         $this->assertTrue(Registry::instanceExists('testKey'));
-        oxRegistry::set("testKey", null);
+        \OxidEsales\Eshop\Core\Registry::set("testKey", null);
         $this->assertFalse(Registry::instanceExists('testKey'));
     }
 
@@ -258,7 +258,7 @@ class RegistryTest extends \OxidTestCase
     {
         $bcClassName = 'oxArticle';
         $virtualClassName = \OxidEsales\Eshop\Application\Model\Article::class;
-        $this->assertEquals(strtolower($virtualClassName), Registry::getStorageKey($bcClassName));
+        $this->assertEquals($virtualClassName, Registry::getStorageKey($bcClassName));
     }
 
     /**
@@ -268,7 +268,7 @@ class RegistryTest extends \OxidTestCase
     {
         $bcClassName = 'oxConfigFile';
         $virtualClassName = \OxidEsales\Eshop\Core\ConfigFile::class;
-        $this->assertEquals(strtolower($virtualClassName), Registry::getStorageKey($bcClassName));
+        $this->assertEquals($virtualClassName, Registry::getStorageKey($bcClassName));
     }
 
     /**
@@ -277,7 +277,7 @@ class RegistryTest extends \OxidTestCase
     public function testGetStorageKeyNamespaceClass()
     {
         $virtualClassName = \OxidEsales\Eshop\Application\Model\Article::class;
-        $this->assertEquals(strtolower($virtualClassName), Registry::getStorageKey($virtualClassName));
+        $this->assertEquals($virtualClassName, Registry::getStorageKey($virtualClassName));
     }
 
     /**
@@ -286,9 +286,8 @@ class RegistryTest extends \OxidTestCase
     public function testRegistryKeys()
     {
         $storageKeys = Registry::getKeys();
-        $this->assertTrue(in_array('oxidesales\eshop\core\utilsobject', $storageKeys));
-        $this->assertTrue(in_array('oxidesales\eshop\core\configfile', $storageKeys));
-        $this->assertTrue(in_array('oxidesales\eshop\core\configfile', $storageKeys));
+        $this->assertTrue(in_array('OxidEsales\Eshop\Core\UtilsObject', $storageKeys));
+        $this->assertTrue(in_array('OxidEsales\Eshop\Core\ConfigFile', $storageKeys));
     }
 
     /**
@@ -450,51 +449,11 @@ class RegistryTest extends \OxidTestCase
         $this->assertTrue(Registry::getUtilsObject() === Registry::get('oxUtilsObject'));
     }
 
-
-    /**
-     * @dataProvider dataProviderTestRegistryGettersReturnIdenticalObjects
-     *
-     * @param $method
-     */
-    public function testRegistryGettersReturnIdenticalObjects($method)
-    {
-        $object_1 = Registry::$method();
-        $object_2 = Registry::$method();
-
-        $this->assertTrue(($object_1 === $object_2), '2 consecutive calls to Registry::' . $method . '() will return identical objects');
-    }
-
-    /**
-     * @return array
-     */
-    public function dataProviderTestRegistryGettersReturnIdenticalObjects()
-    {
-        return [
-            ['getInputValidator'],
-            ['getPictureHandler'],
-            ['getSeoDecoder'],
-            ['getSeoEncoder'],
-            ['getUtilsCount'],
-            ['getUtilsDate'],
-            ['getUtilsFile'],
-            ['getUtilsPic'],
-            ['getUtilsServer'],
-            ['getUtilsString'],
-            ['getUtilsUrl'],
-            ['getUtilsView'],
-            ['getUtilsXml'],
-            ['getConfig'],
-            ['getSession'],
-            ['getLang'],
-            ['getUtils'],
-            ['getUtilsObject'],
-        ];
-    }
-
     /**
      * @dataProvider dataProviderTestRegistryGettersReturnProperInstances
      *
      * @param $method
+     * @param $instance
      */
     public function testRegistryGettersReturnProperInstances($method, $instance)
     {
@@ -527,6 +486,46 @@ class RegistryTest extends \OxidTestCase
             ['getLang', \OxidEsales\Eshop\Core\Language::class],
             ['getUtils', \OxidEsales\Eshop\Core\Utils::class],
             ['getUtilsObject', \OxidEsales\Eshop\Core\UtilsObject::class],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderTestRegistryGettersReturnIdenticalObjects
+     *
+     * @param $method
+     */
+    public function testRegistryGettersReturnIdenticalObjects($method)
+    {
+        $object_1 = Registry::$method();
+        $object_2 = Registry::$method();
+
+        $this->assertTrue(($object_1 === $object_2), '2 consecutive calls to Registry::' . $method . '() will return and identical object');
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestRegistryGettersReturnIdenticalObjects()
+    {
+        return [
+            ['getInputValidator'],
+            ['getPictureHandler'],
+            ['getSeoDecoder'],
+            ['getSeoEncoder'],
+            ['getUtilsCount'],
+            ['getUtilsDate'],
+            ['getUtilsFile'],
+            ['getUtilsPic'],
+            ['getUtilsServer'],
+            ['getUtilsString'],
+            ['getUtilsUrl'],
+            ['getUtilsView'],
+            ['getUtilsXml'],
+            ['getConfig'],
+            ['getSession'],
+            ['getLang'],
+            ['getUtils'],
+            ['getUtilsObject'],
         ];
     }
 }

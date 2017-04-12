@@ -21,11 +21,6 @@
  */
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxConfig;
-use oxLang;
-use oxSession;
-use oxUtils;
-
 /**
  * Object registry design pattern implementation. Stores the instances of objects
  */
@@ -54,9 +49,15 @@ class Registry
     protected static $virtualNameSpaceClassMap = null;
 
     /**
-     * Instance getter. Return existing instance or initializes the new one
+     * Instance getter. Return an existing or new instance for a given class name.
+     * Consider using the getter methods over the generic Registry::get() method.
+     * In order to avoid issues with different shop editions, the given class name must be from the virtual namespace.
      *
-     * @param string $className Class name
+     * For reasons of backwards compatibility old class names like 'oxconfig' are still supported and equivalent
+     * to the corresponding class ame from the virtual namespace, as they store and retrieve the same instances.
+     * But be aware, that support for old class names will be dropped in the future.
+     *
+     * @param string $className Class name from the virtual namespace
      *
      * @static
      *
@@ -65,10 +66,8 @@ class Registry
     public static function get($className)
     {
         $key = self::getStorageKey($className);
-        if (!isset(self::$instances[$key])) {
-            self::$instances[$key] = self::createObject($key, $className);
-        }
-        return self::$instances[$key];
+
+        return self::getObject($key);
     }
 
     /**
@@ -97,55 +96,55 @@ class Registry
     }
 
     /**
-     * Returns oxConfig instance
+     * Return an instance of \OxidEsales\Eshop\Core\Config
      *
      * @static
      *
-     * @return oxConfig
+     * @return \OxidEsales\Eshop\Core\Config
      */
     public static function getConfig()
     {
-        return self::get("oxConfig");
+        return self::getObject(\OxidEsales\Eshop\Core\Config::class);
     }
 
     /**
-     * Returns oxSession instance
+     * Returns an instance of \OxidEsales\Eshop\Core\Session
      *
      * @static
      *
-     * @return oxSession
+     * @return \OxidEsales\Eshop\Core\Session
      */
     public static function getSession()
     {
-        return self::get("oxSession");
+        return self::getObject(\OxidEsales\Eshop\Core\Session::class);
     }
 
     /**
-     * Returns oxLang instance
+     * Returns an instance of \OxidEsales\Eshop\Core\Language
      *
      * @static
      *
-     * @return oxLang
+     * @return \OxidEsales\Eshop\Core\Language
      */
     public static function getLang()
     {
-        return self::get("oxLang");
+        return self::getObject(\OxidEsales\Eshop\Core\Language::class);
     }
 
     /**
-     * Returns oxUtils instance
+     * Returns an instance of \OxidEsales\Eshop\Core\Utils
      *
      * @static
      *
-     * @return oxUtils
+     * @return \OxidEsales\Eshop\Core\Utils
      */
     public static function getUtils()
     {
-        return self::get("oxUtils");
+        return self::getObject(\OxidEsales\Eshop\Core\Utils::class);
     }
 
     /**
-     * Returns UtilsObject instance
+     * Returns an instance of OxidEsales\Eshop\Core\UtilsObject
      *
      * @static
      *
@@ -153,11 +152,167 @@ class Registry
      */
     public static function getUtilsObject()
     {
-        return self::get('oxUtilsObject');
+        return self::getObject(\OxidEsales\Eshop\Core\UtilsObject::class);
     }
 
     /**
-     * Returns ControllerClassNameProvider instance
+     * Return an instance of \OxidEsales\Eshop\Core\InputValidator
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\InputValidator
+     */
+    public static function getInputValidator()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\InputValidator::class);
+    }
+
+    /**
+     * Return an instance of \OxidEsales\Eshop\Core\PictureHandler
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\PictureHandler
+     */
+    public static function getPictureHandler()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\PictureHandler::class);
+    }
+
+    /**
+     * Return an instance of \OxidEsales\Eshop\Core\SeoEncoder
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\SeoEncoder
+     */
+    public static function getSeoEncoder()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\SeoEncoder::class);
+    }
+
+    /**
+     * Return an instance of \OxidEsales\Eshop\Core\SeoDecoder
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\SeoDecoder
+     */
+    public static function getSeoDecoder()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\SeoDecoder::class);
+    }
+
+    /**
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsCount
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\UtilsCount
+     */
+    public static function getUtilsCount()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\UtilsCount::class);
+    }
+
+    /**
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsDate
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\UtilsDate
+     */
+    public static function getUtilsDate()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\UtilsDate::class);
+    }
+
+    /**
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsFile
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\UtilsFile
+     */
+    public static function getUtilsFile()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\UtilsFile::class);
+    }
+
+    /**
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsPic
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\UtilsPic
+     */
+    public static function getUtilsPic()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\UtilsPic::class);
+    }
+
+    /**
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsServer
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\UtilsServer
+     */
+    public static function getUtilsServer()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\UtilsServer::class);
+    }
+
+    /**
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsString
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\UtilsString
+     */
+    public static function getUtilsString()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\UtilsString::class);
+    }
+
+    /**
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsUrl
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\UtilsUrl
+     */
+    public static function getUtilsUrl()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\UtilsUrl::class);
+    }
+
+    /**
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsXml
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\UtilsXml
+     */
+    public static function getUtilsXml()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\UtilsXml::class);
+    }
+
+    /**
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsView
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\UtilsView
+     */
+    public static function getUtilsView()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\UtilsView::class);
+    }
+
+    /**
+     * Return an instance of \OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver
      *
      * @static
      *
@@ -165,11 +320,11 @@ class Registry
      */
     public static function getControllerClassNameResolver()
     {
-        return self::get(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class);
+        return self::getObject(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class);
     }
 
     /**
-     * Return set instances.
+     * Return all class instances, which are currently set in the registry
      *
      * @return array
      */
@@ -179,7 +334,7 @@ class Registry
     }
 
     /**
-     * Checks if instance with given key is set.
+     * Check if an instance of a given class is set in the registry
      *
      * @param string $className
      *
@@ -208,6 +363,8 @@ class Registry
     }
 
     /**
+     * Return the VirtualNameSpaceClassMap for the current edition of OXID eShop
+     *
      * @return array
      */
     public static function getVirtualNameSpaceClassMap()
@@ -221,44 +378,60 @@ class Registry
     }
 
     /**
-     * Figure out which key to use for instance cache.
+     * Translate a given old class name like 'oxconfig' into a storage key as known by the Registry.
+     * If a new class name is used, the method just returns it as it is.
      *
-     * @param string $className
+     * @param string $className Class name to be converted.
      *
      * @return string
      */
     public static function getStorageKey($className)
     {
-        $key = strtolower($className);
+        $key = $className;
         if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($className)) {
             $bcMap = self::getBackwardsCompatibilityClassMap();
-            $virtualKey = isset($bcMap[$key]) ? $bcMap[$key] : $key;
+            $virtualKey = isset($bcMap[strtolower($key)]) ? $bcMap[strtolower($key)] : $key;
             $key = $virtualKey;
         }
 
-        return strtolower($key);
+        return $key;
     }
 
     /**
-     * Special case handling: The recommended way to get an instance of OxUtilsObject is to use Registry::getUtilsObject
-     * IMPORTANT: the utilsobject is not delivered from Registry::instances this way, so Registry::set
-     *           will have no effect on which UtilsObject is delivered.
-     *           Also Registry::instanceExists will always return false for UtilsObject.
+     * Special case handling: The recommended way to get an instance of UtilsObject is to use Registry::getUtilsObject
+     * IMPORTANT: UtilsObject is not delivered from Registry::instances this way, so Registry::set
+     *            will have no effect on which UtilsObject is delivered.
+     *            Also Registry::instanceExists will always return false for UtilsObject.
      * This does only affect BC class name and virtual namespace, not the edition own classes atm.
      *
-     * @param string $key       Class key used for instance caching.
      * @param string $className Class name.
      *
      * @return object
      */
-    protected static function createObject($key, $className)
+    protected static function createObject($className)
     {
-        if (('oxutilsobject' == $key) || (strtolower(\OxidEsales\Eshop\Core\UtilsObject::class) == $key)) {
+        if (('oxutilsobject' === strtolower($className)) || \OxidEsales\Eshop\Core\UtilsObject::class === $className) {
             $object = \OxidEsales\Eshop\Core\UtilsObject::getInstance();
         } else {
             $object = oxNew($className);
         }
 
         return $object;
+    }
+
+    /**
+     * Return a well known object from the registry
+     *
+     * @param string $className A class name in the virtual namespace
+     *
+     * @return mixed
+     */
+    protected static function getObject($className)
+    {
+        if (!isset(self::$instances[$className])) {
+            self::$instances[$className] = self::createObject($className);
+        }
+
+        return self::$instances[$className];
     }
 }

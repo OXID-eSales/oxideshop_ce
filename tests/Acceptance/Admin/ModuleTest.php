@@ -283,10 +283,8 @@ class ModuleTest extends ModuleBaseTest
         $this->assertTextPresent("About Us + info6");
 
         // vendor file name is change from myinfo6 to myinfo6test
-        $aModules = array('content' => 'oxid/test6/view/myinfo6test');
-        Registry::getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
+        $this->updateInformationAboutShopExtension('oxid/test6/view/myinfo6', 'oxid/test6/view/myinfo6test');
 
-        $this->clearCache();
         $this->openShop();
         $this->open(shopURL."en/About-Us/");
         $this->assertTextNotPresent(strtoupper("About Us + info6"));
@@ -301,7 +299,7 @@ class ModuleTest extends ModuleBaseTest
         $this->frame("edit");
         $this->assertTextPresent("Invalid modules were detected");
         $this->assertTextPresent("Do you want to delete all registered module information and saved configurations");
-        $this->assertTextPresent("content => oxid/test6/view/myinfo6test");
+        $this->assertTextPresent("OxidEsales\\Eshop\\Application\\Controller\\ContentController => oxid/test6/view/myinfo6test");
         $this->clickAndWaitFrame("yesButton");
         $this->openListItem("link=Test module #6 (in vendor dir)");
         $this->assertElementNotPresent("//form[@id='myedit']//input[@value='Deactivate']");
@@ -320,6 +318,7 @@ class ModuleTest extends ModuleBaseTest
         //file name is reset to the original
         $aModules = array('content' => 'oxid/test6/view/myinfo6');
         Registry::getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
+
         $this->loginAdmin("Extensions", "Modules");
         $this->clickAndWait("link=Test module #6 (in vendor dir)");
         $this->frame("edit");
@@ -358,9 +357,8 @@ class ModuleTest extends ModuleBaseTest
         $this->assertTextPresent("About Us + info6");
 
         //vendor dir name is changed from test6 to test6test
-        $aModules = array('content' => 'oxid/test6test/view/myinfo6');
-        Registry::getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
-        $this->clearCache();
+        $this->updateInformationAboutShopExtension('oxid/test6/view/myinfo6', 'oxid/test6test/view/myinfo6');
+
         $this->openShop();
         $this->open(shopURL."en/About-Us/");
         $this->assertTextNotPresent("About Us + info6");
@@ -404,5 +402,25 @@ class ModuleTest extends ModuleBaseTest
         $this->selectMenu("Extensions", "Modules");
         $this->frame("edit");
         $this->assertTextPresent("oxid/test6/view/myinfo6");
+    }
+
+    /**
+     * Change module id in chain to imitate that module was updated in file system.
+     *
+     * @param string $existingExtensionInformation
+     * @param string $newExtensionInformation
+     */
+    private function updateInformationAboutShopExtension($existingExtensionInformation, $newExtensionInformation)
+    {
+        Registry::set('oxConfig', null);
+        $activeModules = Registry::getConfig()->getConfigParam("aModules");
+        foreach ($activeModules as $shopClassName => $moduleClassName) {
+            if (strpos($moduleClassName, $existingExtensionInformation) !== false) {
+                $updatedModuleClassName = str_replace($existingExtensionInformation, $newExtensionInformation, $moduleClassName);
+                $activeModules[$shopClassName] = $updatedModuleClassName;
+            }
+        }
+        Registry::getConfig()->saveShopConfVar("aarr", "aModules", $activeModules);
+        $this->clearCache();
     }
 }

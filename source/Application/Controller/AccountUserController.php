@@ -86,7 +86,7 @@ class AccountUserController extends \OxidEsales\Eshop\Application\Controller\Acc
         $sSelfLink = $this->getViewConfig()->getSelfLink();
 
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=account');
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('BILLING_SHIPPING_SETTINGS', $iBaseLanguage, false);

@@ -78,7 +78,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             // disabling uploading pictures if this is demo shop
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('ARTICLE_PICTURES_UPLOADISDISABLED');
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false);
 
             return;
         }
@@ -88,13 +88,13 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         if ($oArticle->load($this->getEditObjectId())) {
             $oArticle->assign(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval"));
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oArticle);
+            \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oArticle);
 
             // Show that no new image added
-            if (\OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->getNewFilesCounter() == 0) {
+            if (\OxidEsales\Eshop\Core\Registry::getUtilsFile()->getNewFilesCounter() == 0) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('NO_PICTURES_CHANGES');
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false);
             }
 
             $oArticle->save();
@@ -116,7 +116,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             // disabling uploading pictures if this is demo shop
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('ARTICLE_PICTURES_UPLOADISDISABLED');
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false);
 
             return;
         }
@@ -156,7 +156,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         if ($this->canResetMasterPicture($oArticle, $iIndex)) {
             if (!$oArticle->isDerived()) {
-                $oPicHandler = \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler");
+                $oPicHandler = \OxidEsales\Eshop\Core\Registry::getPictureHandler();
                 $oPicHandler->deleteArticleMasterPicture($oArticle, $iIndex, $blDeleteMaster);
             }
 
@@ -185,7 +185,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         if ($this->canDeleteMainIcon($oArticle)) {
             if (!$oArticle->isDerived()) {
-                $oPicHandler = \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler");
+                $oPicHandler = \OxidEsales\Eshop\Core\Registry::getPictureHandler();
                 $oPicHandler->deleteMainIcon($oArticle);
             }
 
@@ -203,7 +203,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         if ($this->canDeleteThumbnail($oArticle)) {
             if (!$oArticle->isDerived()) {
-                $oPicHandler = \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler");
+                $oPicHandler = \OxidEsales\Eshop\Core\Registry::getPictureHandler();
                 $oPicHandler->deleteThumbnail($oArticle);
             }
 

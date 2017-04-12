@@ -127,7 +127,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             if ($myConfig->isDemoShop()) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('ARTICLE_EXTEND_UPLOADISDISABLED');
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false);
 
                 return;
             }
@@ -162,7 +162,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $oArticle->setLanguage(0);
         $oArticle->assign($aParams);
         $oArticle->setLanguage($this->_iEditLang);
-        $oArticle = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oArticle);
+        $oArticle = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oArticle);
         $oArticle->save();
 
         //saving media file
@@ -171,11 +171,11 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         if (($sMediaUrl && $sMediaUrl != 'http://') || $aMediaFile['name'] || $sMediaDesc) {
             if (!$sMediaDesc) {
-                return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_NODESCRIPTIONADDED');
+                return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_NODESCRIPTIONADDED');
             }
 
             if ((!$sMediaUrl || $sMediaUrl == 'http://') && !$aMediaFile['name']) {
-                return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_NOMEDIAADDED');
+                return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_NOMEDIAADDED');
             }
 
             $oMediaUrl = oxNew(\OxidEsales\Eshop\Application\Model\MediaUrl::class);
@@ -185,10 +185,10 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             //handle uploaded file
             if ($aMediaFile['name']) {
                 try {
-                    $sMediaUrl = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFile('mediaFile', 'out/media/');
+                    $sMediaUrl = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFile('mediaFile', 'out/media/');
                     $oMediaUrl->oxmediaurls__oxisuploaded = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
                 } catch (Exception $e) {
-                    return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($e->getMessage());
+                    return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($e->getMessage());
                 }
             }
 

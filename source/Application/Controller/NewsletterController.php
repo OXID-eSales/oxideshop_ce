@@ -112,12 +112,12 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
         $this->_aRegParams = $aParams;
 
         if (!$aParams['oxuser__oxusername']) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
 
             return;
         } elseif (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams['oxuser__oxusername'])) {
             // #1052C - eMail validation added
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('MESSAGE_INVALID_EMAIL');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('MESSAGE_INVALID_EMAIL');
 
             return;
         }
@@ -133,7 +133,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
         if (!$oUser->exists()) {
             // and subscribe is off - error, on - create
             if (!$blSubscribe) {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('NEWSLETTER_EMAIL_NOT_EXIST');
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('NEWSLETTER_EMAIL_NOT_EXIST');
 
                 return;
             } else {
@@ -165,7 +165,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
                     $this->_iNewsletterStatus = 2;
                 }
             } else {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('MESSAGE_NOT_ABLE_TO_SEND_EMAIL');
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('MESSAGE_NOT_ABLE_TO_SEND_EMAIL');
             }
         } elseif (!$blSubscribe && $blUserLoaded) {
             // unsubscribing user

@@ -194,7 +194,7 @@ class ServersManager
         $aServersData = $this->_getServersData();
 
         foreach ($aServersData as $sServerId => $aServerData) {
-            if ($aServerData['timestamp'] < \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime() - self::NODE_AVAILABILITY_CHECK_PERIOD) {
+            if ($aServerData['timestamp'] < \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - self::NODE_AVAILABILITY_CHECK_PERIOD) {
                 $oServer = $this->getServer($sServerId);
                 $oServer->setIsValid(false);
                 $this->saveServer($oServer);
@@ -210,7 +210,7 @@ class ServersManager
         $aServersData = $this->_getServersData();
 
         foreach ($aServersData as $sServerId => $aServerData) {
-            if ($aServerData['timestamp'] < \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime() - self::INACTIVE_NODE_STORAGE_PERIOD) {
+            if ($aServerData['timestamp'] < \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - self::INACTIVE_NODE_STORAGE_PERIOD) {
                 $this->deleteServer($sServerId);
             }
         }

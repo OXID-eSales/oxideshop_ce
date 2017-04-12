@@ -140,7 +140,7 @@ class UtilsPicTest extends \OxidTestCase
             $this->fail($sMsg);
         }
         //actual test
-        if (!(oxRegistry::get("oxUtilsPic")->resizeImage($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight, $this->getConfig()->getConfigParam('iUseGDVersion'), false))) {
+        if (!(\OxidEsales\Eshop\Core\Registry::getUtilsPic()->resizeImage($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight, $this->getConfig()->getConfigParam('iUseGDVersion'), false))) {
             $this->fail("Failed to call resizeImage()");
         }
 

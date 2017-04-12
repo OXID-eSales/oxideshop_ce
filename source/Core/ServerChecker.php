@@ -53,7 +53,7 @@ class ServerChecker
      */
     public function __construct()
     {
-        $this->_iCurrentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $this->_iCurrentTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
     }
 
     /**

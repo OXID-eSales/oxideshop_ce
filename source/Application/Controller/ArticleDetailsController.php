@@ -856,7 +856,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
                 $article = $this->_getParentProduct($article->oxarticles__oxparentid->value);
             }
 
-            $utilsUrl = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl");
+            $utilsUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
             if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
                 $url = $utilsUrl->prepareCanonicalUrl($article->getBaseSeoLink($article->getLanguage(), true));
             } else {
@@ -1052,7 +1052,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         if ($configVariableName) {
             $validity = array();
             $days = $this->getConfig()->getConfigParam($configVariableName);
-            $from = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+            $from = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
 
             $through = $from + ($days * 24 * 60 * 60);
             $validity["from"] = date('Y-m-d\TH:i:s', $from) . "Z";

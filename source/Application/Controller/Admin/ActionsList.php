@@ -85,7 +85,7 @@ class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
 
         // searching for empty oxfolder fields
         if ($sDisplayType) {
-            $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
+            $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
 
             switch ($sDisplayType) {
                 case 1: // active

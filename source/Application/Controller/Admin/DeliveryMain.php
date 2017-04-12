@@ -152,7 +152,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oDelivery->setLanguage(0);
         $oDelivery->assign($aParams);
         $oDelivery->setLanguage($this->_iEditLang);
-        $oDelivery = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oDelivery);
+        $oDelivery = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oDelivery);
         $oDelivery->save();
 
         // set oxid if inserted
@@ -193,7 +193,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oDelivery->setLanguage(0);
         $oDelivery->assign($aParams);
         $oDelivery->setLanguage($this->_iEditLang);
-        $oDelivery = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oDelivery);
+        $oDelivery = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oDelivery);
         $oDelivery->save();
 
         // set oxid if inserted

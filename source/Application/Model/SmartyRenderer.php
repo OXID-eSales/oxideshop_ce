@@ -42,7 +42,7 @@ class SmartyRenderer
      */
     public function renderTemplate($sTemplateName, $aViewData = array())
     {
-        $oSmarty = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getSmarty();
+        $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
 
         foreach ($aViewData as $key => $value) {
             $oSmarty->assign($key, $value);

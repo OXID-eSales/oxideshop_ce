@@ -639,7 +639,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // convert date's to international format
         if (isset($this->oxuser__oxcreate->value)) {
-            $this->oxuser__oxcreate->setValue(Registry::get(UtilsDate::class)->formatDBDate($this->oxuser__oxcreate->value));
+            $this->oxuser__oxcreate->setValue(Registry::getUtilsDate()->formatDBDate($this->oxuser__oxcreate->value));
         }
 
         // change newsSubcription user id
@@ -1064,7 +1064,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function checkValues($sLogin, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)
     {
         /** @var \OxidEsales\Eshop\Core\InputValidator $oInputValidator */
-        $oInputValidator = Registry::get('oxInputValidator');
+        $oInputValidator = Registry::getInputValidator();
 
         // 1. checking user name
         $sLogin = $oInputValidator->checkLogin($this, $sLogin, $aInvAddress);
@@ -1091,7 +1091,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // throwing first validation error
-        if ($oError = Registry::get("oxInputValidator")->getFirstValidationError()) {
+        if ($oError = Registry::getInputValidator()->getFirstValidationError()) {
             throw $oError;
         }
     }
@@ -1324,7 +1324,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function login($sUser, $sPassword, $blCookie = false)
     {
-        if ($this->isAdmin() && !count(Registry::get("oxUtilsServer")->getOxCookie())) {
+        if ($this->isAdmin() && !count(Registry::getUtilsServer()->getOxCookie())) {
             /** @var \OxidEsales\Eshop\Core\Exception\CookieException $oEx */
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\CookieException::class);
             $oEx->setMessage('ERROR_MESSAGE_COOKIE_NOCOOKIE');
@@ -1356,7 +1356,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
             // cookie must be set ?
             if ($blCookie && $oConfig->getConfigParam('blShowRememberMe')) {
-                Registry::get("oxUtilsServer")->setUserCookie($this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $oConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value);
+                Registry::getUtilsServer()->setUserCookie($this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $oConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value);
             }
 
             return true;
@@ -1383,7 +1383,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         // Registry::getSession()->deleteVariable( 'deladrid' );
 
         // delete cookie
-        Registry::get("oxUtilsServer")->deleteUserCookie($this->getConfig()->getShopID());
+        Registry::getUtilsServer()->deleteUserCookie($this->getConfig()->getShopID());
 
         // unsetting global user
         $this->setUser(null);
@@ -1463,7 +1463,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sUserID = null;
         $oConfig = $this->getConfig();
         $sShopID = $oConfig->getShopId();
-        if (($sSet = Registry::get("oxUtilsServer")->getUserCookie($sShopID))) {
+        if (($sSet = Registry::getUtilsServer()->getUserCookie($sShopID))) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $aData = explode('@@@', $sSet);
             $sUser = $aData[0];
@@ -1484,7 +1484,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
             // if cookie info is not valid, remove it.
             if (!$sUserID) {
-                Registry::get('oxUtilsServer')->deleteUserCookie($sShopID);
+                Registry::getUtilsServer()->deleteUserCookie($sShopID);
             }
         }
 
@@ -1826,7 +1826,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $utilsObject = $this->getUtilsObjectInstance();
         $sUpKey = $blReset ? '' : $utilsObject->generateUId();
-        $iUpTime = $blReset ? 0 : Registry::get(UtilsDate::class)->getTime() + $this->getUpdateLinkTerm();
+        $iUpTime = $blReset ? 0 : Registry::getUtilsDate()->getTime() + $this->getUpdateLinkTerm();
 
         // generating key
         $this->oxuser__oxupdatekey = new \OxidEsales\Eshop\Core\Field($sUpKey, Field::T_RAW);
@@ -2089,7 +2089,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         if ($sUserId && is_array($aRecEmail) && count($aRecEmail) > 0) {
             //iserting statistics about invitation
-            $sDate = Registry::get(UtilsDate::class)->formatDBDate(date("Y-m-d"), true);
+            $sDate = Registry::getUtilsDate()->formatDBDate(date("Y-m-d"), true);
             $aRecEmail = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRecEmail);
             foreach ($aRecEmail as $sRecEmail) {
                 $sSql = "INSERT INTO oxinvitations SET oxuserid = " . $oDb->quote($sUserId) . ", oxemail = $sRecEmail,  oxdate='$sDate', oxpending = '1', oxaccepted = '0', oxtype = '1' ";

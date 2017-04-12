@@ -101,7 +101,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         if ($soxId != "-1") {
             $oWrapping->loadInLang($this->_iEditLang, $soxId);
             // #1173M - not all pic are deleted, after article is removed
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic")->overwritePic($oWrapping, 'oxwrapping', 'oxpic', 'WP', '0', $aParams, $this->getConfig()->getPictureDir(false));
+            \OxidEsales\Eshop\Core\Registry::getUtilsPic()->overwritePic($oWrapping, 'oxwrapping', 'oxpic', 'WP', '0', $aParams, $this->getConfig()->getPictureDir(false));
         } else {
             $aParams['oxwrapping__oxid'] = null;
             //$aParams = $oWrapping->ConvertNameArray2Idx( $aParams);
@@ -116,7 +116,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oWrapping->assign($aParams);
         $oWrapping->setLanguage($this->_iEditLang);
 
-        $oWrapping = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oWrapping);
+        $oWrapping = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oWrapping);
         $oWrapping->save();
 
         // set oxid if inserted
@@ -156,7 +156,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oWrapping->assign($aParams);
         $oWrapping->setLanguage($this->_iEditLang);
 
-        $oWrapping = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oWrapping);
+        $oWrapping = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oWrapping);
         $oWrapping->save();
 
         // set oxid if inserted

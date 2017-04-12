@@ -240,11 +240,11 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
                 return $this->_getNextStep($iSuccess);
             } catch (\OxidEsales\Eshop\Core\Exception\OutOfStockException $oEx) {
                 $oEx->setDestination('basket');
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'basket');
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'basket');
             } catch (\OxidEsales\Eshop\Core\Exception\NoArticleException $oEx) {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             } catch (\OxidEsales\Eshop\Core\Exception\ArticleInputException $oEx) {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             }
         }
     }

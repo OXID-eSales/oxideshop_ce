@@ -214,7 +214,7 @@ class VendorListTest extends \OxidTestCase
         $oVendorList->setActVendor($oVendor);
         $oArtList = $oVendorList->getArticleList();
 
-        $this->assertEquals(oxRegistry::get("oxUtilsCount")->getVendorArticleCount($sVendorId), $oArtList->count());
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsCount()->getVendorArticleCount($sVendorId), $oArtList->count());
     }
 
     public function testGetPageNavigation()

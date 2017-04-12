@@ -62,7 +62,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
 
         $oConfig->saveShopConfVar('arr', 'aSerials', array('license_key'));
         $oConfig->saveShopConfVar('arr', 'sClusterId', array('generated_unique_cluster_id'));
-        $iValidNodeTime =  oxRegistry::get("oxUtilsDate")->getTime();
+        $iValidNodeTime =  \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $oConfig->saveShopConfVar(
             'arr',
             'aServersData',
@@ -152,7 +152,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
 
         $oConfig->setConfigParam('aSerials', array('license_key'));
         $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
-        $iValidNodeTime =  oxRegistry::get("oxUtilsDate")->getTime();
+        $iValidNodeTime =  \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $oConfig->setConfigParam(
             'aServersData',
             array(

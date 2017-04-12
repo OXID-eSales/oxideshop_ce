@@ -116,7 +116,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     {
         $oShop = $this->getConfig()->getActiveShop();
         $this->_aChannel['title'] = $oShop->oxshops__oxname->value;
-        $this->_aChannel['link'] = Registry::get("oxUtilsUrl")->prepareUrlForNoSession($this->getConfig()->getShopUrl());
+        $this->_aChannel['link'] = Registry::getUtilsUrl()->prepareUrlForNoSession($this->getConfig()->getShopUrl());
         $this->_aChannel['description'] = '';
         $oLang = Registry::getLang();
         $aLangIds = $oLang->getLanguageIds();
@@ -229,7 +229,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getArticleItems(\OxidEsales\Eshop\Application\Model\ArticleList $oList)
     {
-        $myUtilsUrl = Registry::get("oxUtilsUrl");
+        $myUtilsUrl = Registry::getUtilsUrl();
         $aItems = array();
         $oLang = Registry::getLang();
         $oStr = getStr();
@@ -295,11 +295,11 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $sUrl .= $sUri . '&amp;lang=' . $iLang;
 
         if (Registry::getUtils()->seoIsActive()) {
-            $oEncoder = Registry::get("oxSeoEncoder");
+            $oEncoder = Registry::getSeoEncoder();
             $sUrl = $oEncoder->getDynamicUrl($sUrl, "rss/{$sTitle}/", $iLang);
         }
 
-        return Registry::get("oxUtilsUrl")->prepareUrlForNoSession($sUrl);
+        return Registry::getUtilsUrl()->prepareUrlForNoSession($sUrl);
     }
 
     /**
@@ -370,7 +370,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             $this->_aChannel['lastBuildDate'] = $this->_getLastBuildDate($sTag, $this->_aChannel);
             $this->_saveToCache($sTag, $this->_aChannel);
         } else {
-            $this->_aChannel['lastBuildDate'] = date('D, d M Y H:i:s O', Registry::get("oxUtilsDate")->getTime());
+            $this->_aChannel['lastBuildDate'] = date('D, d M Y H:i:s O', Registry::getUtilsDate()->getTime());
         }
     }
 
@@ -787,7 +787,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getRecommListItems($oList)
     {
-        $myUtilsUrl = Registry::get("oxUtilsUrl");
+        $myUtilsUrl = Registry::getUtilsUrl();
         $aItems = array();
         foreach ($oList as $oRecommList) {
             $oItem = new stdClass();

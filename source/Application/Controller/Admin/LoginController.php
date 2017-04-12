@@ -109,8 +109,8 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     public function checklogin()
     {
-        $myUtilsServer = \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer");
-        $myUtilsView = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView");
+        $myUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
+        $myUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
 
         $sUser = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('user', true);
         $sPass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pwd', true);
@@ -210,7 +210,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     protected function _getAvailableLanguages()
     {
-        $sDefLang = \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->getOxCookie('oxidadminlanguage');
+        $sDefLang = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxidadminlanguage');
         $sDefLang = $sDefLang ? $sDefLang : $this->_getBrowserLanguage();
 
         $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getAdminTplLanguageArray();

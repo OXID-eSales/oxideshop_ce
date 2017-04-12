@@ -455,7 +455,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                 if (UPLOAD_ERR_OK !== $iError && UPLOAD_ERR_NO_FILE !== $iError) {
                     $sErrorsDescription = $this->translateError($iError);
                     $oEx->setMessage($sErrorsDescription);
-                    \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+                    \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false);
                 }
 
                 // checking file type and building final file name

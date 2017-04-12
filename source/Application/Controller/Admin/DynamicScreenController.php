@@ -68,7 +68,7 @@ class DynamicScreenController extends \OxidEsales\Eshop\Application\Controller\A
         if (!getStr()->preg_match("/^http(s)?:\/\//", $sEditUrl)) {
             //internal link, adding path
             /** @var \OxidEsales\Eshop\Core\UtilsUrl $oUtilsUrl */
-            $oUtilsUrl = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl");
+            $oUtilsUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
             $sSelfLinkParameter = $this->getViewConfig()->getViewConfigParam('selflink');
             $sEditUrl = $oUtilsUrl->appendParamSeparator($sSelfLinkParameter) . $sEditUrl;
         }

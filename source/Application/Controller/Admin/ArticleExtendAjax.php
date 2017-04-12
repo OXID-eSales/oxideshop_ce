@@ -257,7 +257,7 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         //echo "\n$sQ\n";
 
         // #0003366: invalidate article SEO for all shops
-        \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->markAsExpired($oxId, null, 1, null, "oxtype='oxarticle'");
+        \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->markAsExpired($oxId, null, 1, null, "oxtype='oxarticle'");
         $this->resetContentCache();
     }
 

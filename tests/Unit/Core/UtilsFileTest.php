@@ -37,7 +37,7 @@ class UtilsFileTest extends \OxidTestCase
 
         foreach ($aTmpDirectories as $sDirectory) {
             if (is_dir(realpath($sDirectory))) {
-                oxRegistry::get('oxUtilsFile')->deleteDir($sDirectory);
+                \OxidEsales\Eshop\Core\Registry::getUtilsFile()->deleteDir($sDirectory);
             }
         }
     }
@@ -176,7 +176,7 @@ class UtilsFileTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(false));
 
         /** @var oxUtilsFile|PHPUnit_Framework_MockObject_MockObject $oUtilsFile */
-        $oUtilsFile = oxRegistry::get("oxUtilsFile");
+        $oUtilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
         $oUtilsFile->setConfig($oConfig);
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{throw new oxFileException("this is ok");}');
         $oUtilsFile->processFiles();
@@ -190,7 +190,7 @@ class UtilsFileTest extends \OxidTestCase
         //$oConfig->expects( $this->once() )->method('hasModule')->with( $this->equalTo( 'demoshop' ) )->will( $this->returnValue( true ) );
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isDemoShop'));
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
-        $oUF = oxRegistry::get("oxUtilsFile");
+        $oUF = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
         $oUF->setConfig($oConfig);
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{throw new Exception("this is ok");}');
         try {
@@ -221,7 +221,7 @@ class UtilsFileTest extends \OxidTestCase
         //test with textfile
         if ($this->_prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText)) {
 
-            oxRegistry::get("oxUtilsFile")->copyDir($sSourceDir, $sTargetDir);
+            \OxidEsales\Eshop\Core\Registry::getUtilsFile()->copyDir($sSourceDir, $sTargetDir);
             $this->assertEquals(is_file($sSourceFilePathText), is_file($sTargetFilePathText));
             $this->_cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText, $sTargetFilePathText);
         }
@@ -229,7 +229,7 @@ class UtilsFileTest extends \OxidTestCase
         //test with nopic.jpg
         if ($this->_prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopic)) {
 
-            oxRegistry::get("oxUtilsFile")->copyDir($sSourceDir, $sTargetDir);
+            \OxidEsales\Eshop\Core\Registry::getUtilsFile()->copyDir($sSourceDir, $sTargetDir);
             $this->assertEquals(is_file($sSourceFilePathnopic), is_file($sTargetFilePathnopic));
             $this->_cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopic, $sTargetFilePathnopic);
         }
@@ -237,7 +237,7 @@ class UtilsFileTest extends \OxidTestCase
         //test with nopic_ico.jpg
         if ($this->_prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopicIco)) {
 
-            oxRegistry::get("oxUtilsFile")->copyDir($sSourceDir, $sTargetDir);
+            \OxidEsales\Eshop\Core\Registry::getUtilsFile()->copyDir($sSourceDir, $sTargetDir);
             $this->assertEquals(is_file($sSourceFilePathnopicIco), is_file($sTargetFilePathnopicIco));
             $this->_cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopicIco, $sTargetFilePathnopicIco);
         }
@@ -246,7 +246,7 @@ class UtilsFileTest extends \OxidTestCase
         if ($this->_prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText)) {
             $this->_prepareCopyDir($sSourceDeeperDir, $sTargetDeeperDir, $sSourceFilePathCVS);
 
-            oxRegistry::get("oxUtilsFile")->copyDir($sSourceDir, $sTargetDir);
+            \OxidEsales\Eshop\Core\Registry::getUtilsFile()->copyDir($sSourceDir, $sTargetDir);
             $this->assertEquals(is_file($sSourceFilePathCVS), is_file($sTargetFilePathCVS));
             $this->_cleanupCopyDir($sSourceDeeperDir, $sTargetDeeperDir, $sSourceFilePathCVS, $sTargetFilePathCVS);
             $this->_cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText, $sTargetFilePathText);
@@ -289,13 +289,13 @@ class UtilsFileTest extends \OxidTestCase
         $aFiles['tmp_name'] = 'testfile';
 
         $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\StandardException');
-        oxRegistry::get("oxUtilsFile")->handleUploadedFile($aFiles, '/out/media/');
+        \OxidEsales\Eshop\Core\Registry::getUtilsFile()->handleUploadedFile($aFiles, '/out/media/');
     }
 
     public function testProcessFileEmpty()
     {
         $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\StandardException', 'EXCEPTION_NOFILE');
-        oxRegistry::get("oxUtilsFile")->processFile(null, '/out/media/');
+        \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFile(null, '/out/media/');
     }
 
     public function testProcessFileWrongChar1()
@@ -305,14 +305,14 @@ class UtilsFileTest extends \OxidTestCase
         $_FILES['fileItem']['tmp_name'] = 'testfile';
 
         $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\StandardException', 'EXCEPTION_FILENAMEINVALIDCHARS');
-        oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
+        \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFile('fileItem', '/out/media/');
     }
 
     public function testProcessFileWrongChar2()
     {
         $_FILES['fileItem']['name'] = 'TEST.te.stfile_0__.jpg';
         $_FILES['fileItem']['tmp_name'] = 'testfile';
-        oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
+        \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFile('fileItem', '/out/media/');
     }
 
     public function testProcessFileWrongFileType()
@@ -321,7 +321,7 @@ class UtilsFileTest extends \OxidTestCase
         $_FILES['fileItem']['tmp_name'] = 'testfile';
 
         $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\StandardException');
-        oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
+        \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFile('fileItem', '/out/media/');
     }
 
     public function testProcessFileTooBigFile()
@@ -331,19 +331,19 @@ class UtilsFileTest extends \OxidTestCase
         $_FILES['fileItem']['error'] = 1;
 
         $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\StandardException');
-        oxRegistry::get("oxUtilsFile")->processFile('fileItem', '/out/media/');
+        \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFile('fileItem', '/out/media/');
     }
 
     public function testNormalizeDir()
     {
         $sFullDir = "/test/good/dir/";
-        $this->assertEquals($sFullDir, oxRegistry::get("oxUtilsFile")->normalizeDir($sFullDir));
+        $this->assertEquals($sFullDir, \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir($sFullDir));
 
         $sHalfDir = "/test/good/dir";
-        $this->assertEquals($sFullDir, oxRegistry::get("oxUtilsFile")->normalizeDir($sHalfDir));
+        $this->assertEquals($sFullDir, \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir($sHalfDir));
 
-        $this->assertEquals('', oxRegistry::get("oxUtilsFile")->normalizeDir(''));
-        $this->assertEquals(null, oxRegistry::get("oxUtilsFile")->normalizeDir(null));
+        $this->assertEquals('', \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir(''));
+        $this->assertEquals(null, \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir(null));
     }
 
 
@@ -422,7 +422,7 @@ class UtilsFileTest extends \OxidTestCase
     protected function _cleanupDeleteDir($hFileHandle, $sDir, $sFileName, $sSubDir)
     {
         if (($hFileHandle != null) && (fclose($hFileHandle))) {
-            $blDeleted = oxRegistry::get("oxUtilsFile")->deleteDir($sDir); //actual test
+            $blDeleted = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->deleteDir($sDir); //actual test
             $this->assertNotEquals($blDeleted, is_dir($sDir));
         } else {
             // cleanup the created dirs/subdirs/file

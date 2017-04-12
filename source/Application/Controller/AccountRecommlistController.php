@@ -259,7 +259,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
                 $this->setActiveRecommList($this->_blSavedEntry ? $oRecommList : false);
             } catch (\OxidEsales\Eshop\Core\Exception\ObjectException $oEx) {
                 //add to display at specific position
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'user');
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'user');
             }
         }
     }
@@ -353,7 +353,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=account');
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('LISTMANIA', $iBaseLanguage, false);

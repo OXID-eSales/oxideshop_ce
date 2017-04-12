@@ -176,7 +176,7 @@ class ActionsTest extends \OxidTestCase
     public function testGetTimeLeft()
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
-        $this->_oPromo->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() + 10));
+        $this->_oPromo->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + 10));
         $this->assertEquals(10, $this->_oPromo->getTimeLeft());
     }
 
@@ -189,7 +189,7 @@ class ActionsTest extends \OxidTestCase
     public function testGetTimeUntilStart()
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
-        $this->_oPromo->oxactions__oxactivefrom = new oxField(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() + 10));
+        $this->_oPromo->oxactions__oxactivefrom = new oxField(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + 10));
         $this->assertEquals(10, $this->_oPromo->getTimeUntilStart());
     }
 
@@ -215,7 +215,7 @@ class ActionsTest extends \OxidTestCase
         $this->assertEquals('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactivefrom->value);
 
         $this->_oPromo->start();
-        $iNow = strtotime(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
+        $iNow = strtotime(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
 
         $this->assertEquals(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactivefrom->value);
         $this->assertEquals('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactiveto->value);
@@ -227,7 +227,7 @@ class ActionsTest extends \OxidTestCase
         $this->assertEquals('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactiveto->value);
 
 
-        $this->_oPromo->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() + 10));
+        $this->_oPromo->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + 10));
         $sTo = $this->_oPromo->oxactions__oxactiveto->value;
         $this->_oPromo->save();
         $id = $this->_oPromo->getId();
@@ -252,7 +252,7 @@ class ActionsTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $this->_oPromo->stop();
-        $iNow = strtotime(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
+        $iNow = strtotime(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
 
         $this->assertEquals(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactiveto->value);
 
@@ -272,7 +272,7 @@ class ActionsTest extends \OxidTestCase
     public function testIsTestRunning()
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
-        $iNow = strtotime(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
+        $iNow = strtotime(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
         $this->_oPromo->oxactions__oxactivefrom = new oxField(date('Y-m-d H:i:s', $iNow - 10));
         $this->_oPromo->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', $iNow + 10));
         $this->assertTrue($this->_oPromo->isRunning());

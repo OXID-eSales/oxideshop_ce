@@ -54,8 +54,8 @@ class VoucherSerieExportTest extends \OxidTestCase
         $myConfig = $this->getConfig();
 
         $myConfig->setConfigParam("sAdminSSLURL", "sAdminSSLURL");
-        oxRegistry::get("oxUtilsUrl")->setAdminMode(true);
-        $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl('sAdminSSLURL/index.php');
+        \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->setAdminMode(true);
+        $sUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl('sAdminSSLURL/index.php');
 
         // ssl
         $oView = oxNew('VoucherSerie_Export');
@@ -63,7 +63,7 @@ class VoucherSerieExportTest extends \OxidTestCase
 
         $myConfig->setConfigParam("sAdminSSLURL", null);
         $sUrl = $myConfig->getConfigParam('sShopURL') . $myConfig->getConfigParam('sAdminDir');
-        $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl($sUrl . '/index.php');
+        $sUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sUrl . '/index.php');
 
         // non ssl
         $oView = oxNew('VoucherSerie_Export');

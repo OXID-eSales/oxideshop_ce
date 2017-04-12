@@ -118,7 +118,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
 
             // saving static url changes
             if (is_array($aStaticUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl'))) {
-                $this->_sActSeoObject = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->encodeStaticUrls($this->_processUrls($aStaticUrl), $oShop->getId(), $this->_iEditLang);
+                $this->_sActSeoObject = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->encodeStaticUrls($this->_processUrls($aStaticUrl), $oShop->getId(), $this->_iEditLang);
             }
         }
     }

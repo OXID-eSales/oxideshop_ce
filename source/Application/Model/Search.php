@@ -254,7 +254,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
         $sSearchSep = $myConfig->getConfigParam('blSearchUseAND') ? 'and ' : 'or ';
         $aSearch = explode(' ', $sSearchString);
         $sSearch = ' and ( ';
-        $myUtilsString = \OxidEsales\Eshop\Core\Registry::get("oxUtilsString");
+        $myUtilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 
         foreach ($aSearch as $sSearchString) {

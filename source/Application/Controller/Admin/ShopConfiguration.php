@@ -152,7 +152,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                             $error = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
                             $error->setFormatParameters(htmlspecialchars($sValueToValidate));
                             $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
-                            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($error);
+                            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($error);
                             continue;
                         }
                         $myConfig->saveShopConfVar(

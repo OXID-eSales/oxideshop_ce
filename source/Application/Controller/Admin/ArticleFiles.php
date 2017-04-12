@@ -59,7 +59,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         parent::render();
 
         if (!$this->getConfig()->getConfigParam('blEnableDownloads')) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_DISABLED_DOWNLOADABLE_PRODUCTS');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_DISABLED_DOWNLOADABLE_PRODUCTS');
         }
         $oArticle = $this->getArticle();
         // variant handling
@@ -97,7 +97,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
                 if ($oArticleFile->isUnderDownloadFolder()) {
                     $oArticleFile->save();
                 } else {
-                    \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_NOFILE');
+                    \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_NOFILE');
                 }
             }
         }
@@ -135,7 +135,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         if ($myConfig->isDemoShop()) {
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('ARTICLE_EXTEND_UPLOADISDISABLED');
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false);
 
             return;
         }
@@ -151,7 +151,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oArticleFile->assign($aParams);
 
         if (!$aNewFile['name'] && !$oArticleFile->oxfiles__oxfilename->value) {
-            return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_NOFILE');
+            return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_NOFILE');
         }
 
         if ($aNewFile['name']) {
@@ -159,12 +159,12 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             try {
                 $oArticleFile->processFile('newArticleFile');
             } catch (Exception $e) {
-                return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($e->getMessage());
+                return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($e->getMessage());
             }
         }
 
         if (!$oArticleFile->isUnderDownloadFolder()) {
-            return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_NOFILE');
+            return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_NOFILE');
         }
 
         //save media url
@@ -184,7 +184,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         if ($myConfig->isDemoShop()) {
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('ARTICLE_EXTEND_UPLOADISDISABLED');
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false);
 
             return;
         }
@@ -194,7 +194,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
         $oArticleFile->load($sArticleFileId);
         if ($oArticleFile->hasValidDownloads()) {
-            return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_DELETING_VALID_FILE');
+            return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_DELETING_VALID_FILE');
         }
         if ($oArticleFile->oxfiles__oxartid->value == $sArticleId) {
             $oArticleFile->delete();

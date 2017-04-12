@@ -98,7 +98,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         if ($aArticlesIds = $this->getSession()->getVariable('aHistoryArticles')) {
             return $aArticlesIds;
-        } elseif ($sArticlesIds = \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->getOxCookie('aHistoryArticles')) {
+        } elseif ($sArticlesIds = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('aHistoryArticles')) {
             return explode('|', $sArticlesIds);
         }
     }
@@ -113,9 +113,9 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         if ($this->getSession()->getId()) {
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('aHistoryArticles', $aArticlesIds);
             // clean cookie, if session started
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->setOxCookie('aHistoryArticles', '');
+            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('aHistoryArticles', '');
         } else {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->setOxCookie('aHistoryArticles', implode('|', $aArticlesIds));
+            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('aHistoryArticles', implode('|', $aArticlesIds));
         }
     }
 
@@ -444,7 +444,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         // this select is FAST so no need to hazzle here with getNrOfArticles()
-        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount")->getCatArticleCount($sCatId);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getCatArticleCount($sCatId);
     }
 
     /**
@@ -591,7 +591,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             return $this->count();
         }
 
-        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount")->getPriceCatArticleCount($oCategory->getId(), $dPriceFrom, $dPriceTo);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getPriceCatArticleCount($oCategory->getId(), $dPriceFrom, $dPriceTo);
     }
 
     /**
@@ -630,7 +630,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sSelect = $this->_getVendorSelect($sVendorId);
         $this->selectString($sSelect);
 
-        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount")->getVendorArticleCount($sVendorId);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getVendorArticleCount($sVendorId);
     }
 
     /**
@@ -647,7 +647,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sSelect = $this->_getManufacturerSelect($sManufacturerId);
         $this->selectString($sSelect);
 
-        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount")->getManufacturerArticleCount($sManufacturerId);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getManufacturerArticleCount($sManufacturerId);
     }
 
     /**
@@ -764,7 +764,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $iTimeToUpdate = $this->fetchNextUpdateTime();
 
         // next day?
-        $iCurrUpdateTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $iCurrUpdateTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $iNextUpdateTime = $iCurrUpdateTime + 3600 * 24;
 
         // renew next update time
@@ -797,7 +797,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
             $database->startTransaction();
             try {
-                $sCurrUpdateTime = date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
+                $sCurrUpdateTime = date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
 
                 // Collect article id's for later recalculation.
                 $sQ = "SELECT `oxid` FROM `oxarticles`
@@ -1028,7 +1028,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $aSearchCols = $myConfig->getConfigParam('aSearchCols');
         $oBaseObject = $this->getBaseObject();
-        $myUtilsString = \OxidEsales\Eshop\Core\Registry::get("oxUtilsString");
+        $myUtilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
         foreach ($aSearch as $sSearchString) {
             if (!strlen($sSearchString)) {
                 continue;
@@ -1153,7 +1153,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         // crontab is off?
         if (!$oConfig->getConfigParam("blUseCron")) {
             $iTimeToUpdate = $oConfig->getConfigParam("iTimeToUpdatePrices");
-            if (!$iTimeToUpdate || $iTimeToUpdate <= \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()) {
+            if (!$iTimeToUpdate || $iTimeToUpdate <= \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()) {
                 $blCan = true;
             }
         }

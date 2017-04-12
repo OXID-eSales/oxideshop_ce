@@ -109,11 +109,11 @@ class ConfigTest extends \OxidTestCase
 
         $sDir = $this->getConfig()->getConfigParam('sShopDir') . "/out/2";
         if (is_dir(realpath($sDir))) {
-            oxRegistry::get("oxUtilsFile")->deleteDir($sDir);
+            \OxidEsales\Eshop\Core\Registry::getUtilsFile()->deleteDir($sDir);
         }
         $sDir = $this->getConfig()->getConfigParam('sShopDir') . "/out/en/tpl";
         if (is_dir(realpath($sDir))) {
-            oxRegistry::get("oxUtilsFile")->deleteDir($sDir);
+            \OxidEsales\Eshop\Core\Registry::getUtilsFile()->deleteDir($sDir);
         }
 
         $this->cleanUpTable('oxconfig');

@@ -153,7 +153,7 @@ class UserbasketTest extends \OxidTestCase
         $iTime = 999991;
 
         oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
-        oxRegistry::get("oxUtilsDate")->UNITSetTime($iTime);
+        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->UNITSetTime($iTime);
 
         $oBasket = oxNew('oxUserBasket');
         $oBasket->setId("_testUserBasketId");

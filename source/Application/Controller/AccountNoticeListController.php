@@ -169,7 +169,7 @@ class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controll
 
         $iBaseLanguage = $oLang->getBaseLanguage();
         $aPath['title'] = $oLang->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . "cl=account");
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . "cl=account");
         $aPaths[] = $aPath;
 
         $aPath['title'] = $oLang->translateString('MY_WISH_LIST', $iBaseLanguage, false);

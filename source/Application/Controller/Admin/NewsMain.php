@@ -109,7 +109,7 @@ class NewsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $oConvObject->fldmax_length = 0;
         $oConvObject->fldtype = "date";
         $oConvObject->value = $aParams['oxnews__oxdate'];
-        $aParams['oxnews__oxdate'] = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->convertDBDate($oConvObject, true);
+        $aParams['oxnews__oxdate'] = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($oConvObject, true);
 
         $oNews = oxNew(\OxidEsales\Eshop\Application\Model\News::class);
 
@@ -160,7 +160,7 @@ class NewsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $oConvObject->fldmax_length = 0;
         $oConvObject->fldtype = "date";
         $oConvObject->value = $aParams['oxnews__oxdate'];
-        $aParams['oxnews__oxdate'] = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->convertDBDate($oConvObject, true);
+        $aParams['oxnews__oxdate'] = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($oConvObject, true);
 
         $oNews = oxNew(\OxidEsales\Eshop\Application\Model\News::class);
 

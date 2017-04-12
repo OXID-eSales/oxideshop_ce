@@ -70,11 +70,11 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                     $iCount += count($aDbVariables['vars'][$sType]);
                 }
             } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
                 $oEx->debugOut();
             }
         } else {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
         }
 
         $this->_aViewData["oModule"] = $oModule;

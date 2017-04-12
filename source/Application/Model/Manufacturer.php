@@ -144,7 +144,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
 
         // manufacturer article count is stored in cache
         if ($this->_blShowArticleCnt && !$this->isAdmin()) {
-            $this->_iNrOfArticles = \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount")->getManufacturerArticleCount($this->getId());
+            $this->_iNrOfArticles = \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getManufacturerArticleCount($this->getId());
         }
 
         $this->oxmanufacturers__oxnrofarticles = new \OxidEsales\Eshop\Core\Field($this->_iNrOfArticles, \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -258,7 +258,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
             $iLang = $this->getLanguage();
         }
 
-        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
     }
 
     /**
@@ -365,7 +365,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
                 $sSize = $oConfig->getConfigParam('sIconsize');
             }
 
-            return \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler")->getPicUrl("manufacturer/icon/", $sIcon, $sSize);
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("manufacturer/icon/", $sIcon, $sSize);
         }
     }
 

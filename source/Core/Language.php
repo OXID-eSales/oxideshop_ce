@@ -203,7 +203,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             // getting language from browser
             if (is_null($this->_iBaseLanguageId) && !$blAdmin && !\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
                 // getting from cookie
-                $this->_iBaseLanguageId = \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->getOxCookie('language');
+                $this->_iBaseLanguageId = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('language');
 
                 // getting from browser
                 if (is_null($this->_iBaseLanguageId)) {
@@ -220,7 +220,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             // validating language
             $this->_iBaseLanguageId = $this->validateLanguage($this->_iBaseLanguageId);
 
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->setOxCookie('language', $this->_iBaseLanguageId);
+            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('language', $this->_iBaseLanguageId);
         }
 
         return $this->_iBaseLanguageId;

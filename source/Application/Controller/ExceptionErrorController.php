@@ -50,10 +50,10 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
         $aErrors = $this->_getErrors();
 
         if (is_array($aErrors) && count($aErrors)) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->passAllErrorsToView($aViewData, $aErrors);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($aViewData, $aErrors);
         }
 
-        $oSmarty = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getSmarty();
+        $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
         $oSmarty->assign_by_ref("Errors", $aViewData["Errors"]);
 
         // resetting errors from session

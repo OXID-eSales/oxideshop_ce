@@ -293,14 +293,14 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         $blRet = false;
 
         if ($this->oxcategories__oxright->value == ($this->oxcategories__oxleft->value + 1)) {
-            $myUtilsPic = \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic");
+            $myUtilsPic = \OxidEsales\Eshop\Core\Registry::getUtilsPic();
             $sDir = $myConfig->getPictureDir(false);
 
             // only delete empty categories
             // #1173M - not all pic are deleted, after article is removed
-            $myUtilsPic->safePictureDelete($this->oxcategories__oxthumb->value, $sDir . \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->getImageDirByType('TC'), 'oxcategories', 'oxthumb');
-            $myUtilsPic->safePictureDelete($this->oxcategories__oxicon->value, $sDir . \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->getImageDirByType('CICO'), 'oxcategories', 'oxicon');
-            $myUtilsPic->safePictureDelete($this->oxcategories__oxpromoicon->value, $sDir . \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->getImageDirByType('PICO'), 'oxcategories', 'oxpromoicon');
+            $myUtilsPic->safePictureDelete($this->oxcategories__oxthumb->value, $sDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType('TC'), 'oxcategories', 'oxthumb');
+            $myUtilsPic->safePictureDelete($this->oxcategories__oxicon->value, $sDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType('CICO'), 'oxcategories', 'oxicon');
+            $myUtilsPic->safePictureDelete($this->oxcategories__oxpromoicon->value, $sDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType('PICO'), 'oxcategories', 'oxpromoicon');
 
             $sAdd = " and oxshopid = '" . $this->getShopId() . "' ";
 
@@ -455,9 +455,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             )
         ) {
             if ($this->isPriceCategory()) {
-                $this->_iNrOfArticles = \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount")->getPriceCatArticleCount($this->getId(), $this->oxcategories__oxpricefrom->value, $this->oxcategories__oxpriceto->value);
+                $this->_iNrOfArticles = \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getPriceCatArticleCount($this->getId(), $this->oxcategories__oxpricefrom->value, $this->oxcategories__oxpriceto->value);
             } else {
-                $this->_iNrOfArticles = \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount")->getCatArticleCount($this->getId());
+                $this->_iNrOfArticles = \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getCatArticleCount($this->getId());
             }
         }
 
@@ -643,7 +643,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function getStdLink($iLang = null, $aParams = array())
     {
         if (isset($this->oxcategories__oxextlink) && $this->oxcategories__oxextlink->value) {
-            return \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl($this->oxcategories__oxextlink->value, true);
+            return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($this->oxcategories__oxextlink->value, true);
         }
 
         if ($iLang === null) {
@@ -654,7 +654,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             $this->_aStdUrls[$iLang] = $this->getBaseStdLink($iLang);
         }
 
-        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl($this->_aStdUrls[$iLang], true, $aParams, $iLang);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($this->_aStdUrls[$iLang], true, $aParams, $iLang);
     }
 
     /**
@@ -1027,7 +1027,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
                 $sSize = $oConfig->getConfigParam('sIconsize');
             }
 
-            return \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler")->getPicUrl("category/icon/", $sIcon, $sSize);
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("category/icon/", $sIcon, $sSize);
         }
     }
 
@@ -1041,7 +1041,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         if (($sIcon = $this->oxcategories__oxthumb->value)) {
             $sSize = $this->getConfig()->getConfigParam('sCatThumbnailsize');
 
-            return \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler")->getPicUrl("category/thumb/", $sIcon, $sSize);
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("category/thumb/", $sIcon, $sSize);
         }
     }
 
@@ -1055,7 +1055,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         if (($sIcon = $this->oxcategories__oxpromoicon->value)) {
             $sSize = $this->getConfig()->getConfigParam('sCatPromotionsize');
 
-            return \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler")->getPicUrl("category/promo_icon/", $sIcon, $sSize);
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("category/promo_icon/", $sIcon, $sSize);
         }
     }
 
@@ -1110,7 +1110,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     {
         if (isset($this->oxcategories__oxlongdesc) && $this->oxcategories__oxlongdesc instanceof \OxidEsales\Eshop\Core\Field) {
             /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
-            $oUtilsView = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView");
+            $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
             return $oUtilsView->parseThroughSmarty($this->oxcategories__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
         }
     }

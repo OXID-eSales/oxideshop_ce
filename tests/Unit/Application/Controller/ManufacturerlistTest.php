@@ -326,7 +326,7 @@ class ManufacturerlistTest extends \OxidTestCase
         $oManufacturerList->setNonPublicVar("_oActManufacturer", $oManufacturer);
         $oArtList = $oManufacturerList->getArticleList();
 
-        $this->assertEquals(oxRegistry::get("oxUtilsCount")->getManufacturerArticleCount($sManufacturerId), count($oArtList));
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsCount()->getManufacturerArticleCount($sManufacturerId), count($oArtList));
     }
 
     /**

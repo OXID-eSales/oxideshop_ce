@@ -122,7 +122,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
             $values = explode(' ', $name);
             $query .= ' and (';
             $queryBoolAction = '';
-            $utilsString = \OxidEsales\Eshop\Core\Registry::get("oxUtilsString");
+            $utilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
 
             foreach ($nameWhere as $fieldName => $fieldValue) {
                 //for each search field using AND action

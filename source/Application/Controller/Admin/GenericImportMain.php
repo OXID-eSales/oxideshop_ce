@@ -263,7 +263,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
             if (!$this->_getUploadedCsvFilePath()) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('GENIMPORT_ERRORUPLOADINGFILE');
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'genimport');
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'genimport');
 
                 return 1;
             }
@@ -282,7 +282,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
             if ($blIsEmpty) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('GENIMPORT_ERRORASSIGNINGFIELDS');
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'genimport');
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'genimport');
 
                 return 2;
             }
@@ -328,7 +328,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
             if (!$aValue ['r']) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage($aValue ['m']);
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'genimport');
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'genimport');
             }
         }
     }
@@ -375,6 +375,6 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
         $error = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
         $error->setFormatParameters(htmlspecialchars($invalidData));
         $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
-        \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($error);
+        \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($error);
     }
 }

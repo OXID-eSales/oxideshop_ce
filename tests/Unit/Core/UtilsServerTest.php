@@ -190,24 +190,24 @@ class UtilsServerTest extends \OxidTestCase
     {
         $sName = "someName";
         $sValue = "someValue";
-        $this->assertNull(oxRegistry::get("oxUtilsServer")->setOxCookie($sName, $sValue));
+        $this->assertNull(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie($sName, $sValue));
     }
 
     public function testGetCookie()
     {
         // $sName = null
-        /*  $aCookie = oxRegistry::get("oxUtilsServer")->getOxCookie();
+        /*  $aCookie = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie();
   var_dump($_COOKIE);
   var_dump($aCookie);
           $this->assertTrue((isset($aCookie) && ($aCookie[0] == null)));
-          $this->assertNull(oxRegistry::get("oxUtilsServer")->getOxCookie('test'));*/
+          $this->assertNull(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('test'));*/
 
         $aC = $_COOKIE;
         $e = null;
         try {
 
             $_COOKIE['test'] = "asd'\"\000aa";
-            $this->assertEquals("asd&#039;&quot;aa", oxRegistry::get("oxUtilsServer")->getOxCookie('test'));
+            $this->assertEquals("asd&#039;&quot;aa", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('test'));
         } catch (Exception $e) {
         }
 
@@ -227,17 +227,17 @@ class UtilsServerTest extends \OxidTestCase
         unset($_SERVER["HTTP_X_FORWARDED_FOR"]);
         unset($_SERVER["HTTP_CLIENT_IP"]);
         if (isset($_SERVER["REMOTE_ADDR"])) {
-            $this->assertNull(oxRegistry::get("oxUtilsServer")->getRemoteAddress());
+            $this->assertNull(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress());
         } else {
             $_SERVER["REMOTE_ADDR"] = $sIP;
-            $this->assertEquals(oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $sIP);
+            $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
         }
 
         $_SERVER["HTTP_X_FORWARDED_FOR"] = $sIP;
-        $this->assertEquals(oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $sIP);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
         unset($_SERVER["HTTP_X_FORWARDED_FOR"]);
         $_SERVER["HTTP_CLIENT_IP"] = $sIP;
-        $this->assertEquals(oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $sIP);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
         unset($_SERVER["HTTP_CLIENT_IP"]);
     }
 
@@ -247,7 +247,7 @@ class UtilsServerTest extends \OxidTestCase
         $sProxy = '127.5.4.4';
         // in test mode, there are no remote adresses, thus null
         $_SERVER["HTTP_X_FORWARDED_FOR"] = $sIP . ',' . $sProxy;
-        $this->assertEquals(oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $sIP);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
         unset($_SERVER["HTTP_X_FORWARDED_FOR"]);
     }
 
@@ -257,8 +257,8 @@ class UtilsServerTest extends \OxidTestCase
         $sValue = time();
 
         $_SERVER[$sName] = $sValue;;
-        $this->assertEquals($sValue, oxRegistry::get("oxUtilsServer")->getServerVar($sName));
-        $this->assertEquals($_SERVER, oxRegistry::get("oxUtilsServer")->getServerVar());
+        $this->assertEquals($sValue, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar($sName));
+        $this->assertEquals($_SERVER, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar());
     }
 
     /**

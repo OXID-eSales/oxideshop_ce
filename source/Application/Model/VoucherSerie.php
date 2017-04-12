@@ -171,7 +171,7 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
         $iActive = 1;
         $iInactive = 0;
 
-        $oUtilsDate = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate");
+        $oUtilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
         //current object datetime
         $sBeginDate = $this->oxvoucherseries__oxbegindate->value;
         $sEndDate = $this->oxvoucherseries__oxenddate->value;

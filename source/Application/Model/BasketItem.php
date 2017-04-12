@@ -372,7 +372,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     {
         try {
             //validating amount
-            $dAmount = \OxidEsales\Eshop\Core\Registry::get("oxInputValidator")->validateBasketAmount($dAmount);
+            $dAmount = \OxidEsales\Eshop\Core\Registry::getInputValidator()->validateBasketAmount($dAmount);
         } catch (\OxidEsales\Eshop\Core\Exception\ArticleInputException $oEx) {
             $oEx->setArticleNr($this->getProductId());
             $oEx->setProductId($this->getProductId());
@@ -614,7 +614,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     public function getLink()
     {
         if ($this->_sLink === null || $this->getLanguageId() != \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage()) {
-            $this->_sLink = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->cleanUrl($this->getArticle()->getLink(), array('force_sid'));
+            $this->_sLink = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->cleanUrl($this->getArticle()->getLink(), array('force_sid'));
         }
 
         return $this->getSession()->processUrl($this->_sLink);
@@ -746,7 +746,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         $this->_blSsl = $oConfig->isSsl();
 
         // removing force_sid from the link (in case it'll change)
-        $this->_sLink = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->cleanUrl($oArticle->getLink(), array('force_sid'));
+        $this->_sLink = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->cleanUrl($oArticle->getLink(), array('force_sid'));
 
         // shop Ids
         $this->_sShopId = $oConfig->getShopId();
@@ -1022,9 +1022,9 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
             try {
                 $this->_setArticle($this->getProductId());
             } catch (\OxidEsales\Eshop\Core\Exception\NoArticleException $oEx) {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             } catch (\OxidEsales\Eshop\Core\Exception\ArticleInputException $oEx) {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             }
         }
     }

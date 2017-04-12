@@ -71,7 +71,7 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
         $blContinue = false;
         if ($oArticle = $this->getOneArticle($iCnt, $blContinue)) {
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-            $oSmarty = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getSmarty();
+            $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
             $oSmarty->assign("sCustomHeader", \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sExportCustomHeader"));
             $oSmarty->assign_by_ref("linenr", $iCnt);
             $oSmarty->assign_by_ref("article", $oArticle);

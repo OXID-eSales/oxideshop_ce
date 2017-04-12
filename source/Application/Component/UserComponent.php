@@ -218,11 +218,11 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             $this->setLoginStatus(USER_LOGIN_SUCCESS);
         } catch (\OxidEsales\Eshop\Core\Exception\UserException $oEx) {
             // for login component send excpetion text to a custom component (if defined)
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, '', false);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, '', false);
 
             return 'user';
         } catch (\OxidEsales\Eshop\Core\Exception\CookieException $oEx) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
 
             return 'user';
         }
@@ -418,7 +418,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $oConfig = $this->getConfig();
 
         if ($blActiveLogin && !$oConfig->getRequestParameter('ord_agb') && $oConfig->getConfigParam('blConfirmAGB')) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('READ_AND_CONFIRM_TERMS', false, true);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('READ_AND_CONFIRM_TERMS', false, true);
 
             return false;
         }
@@ -491,22 +491,22 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             $oUser->logout();
             $database->commitTransaction();
         } catch (\OxidEsales\Eshop\Core\Exception\UserException $exception) {
-            Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
+            Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
             return false;
         } catch (\OxidEsales\Eshop\Core\Exception\InputException $exception) {
-            Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
+            Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
             return false;
         } catch (\OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $exception) {
-            Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
+            Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
             return false;
         } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $exception) {
-            Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
+            Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
             return false;
@@ -678,17 +678,17 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         } catch (\OxidEsales\Eshop\Core\Exception\UserException $oEx) { // errors in input
             // marking error code
             //TODO
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
 
             return;
         } catch (\OxidEsales\Eshop\Core\Exception\InputException $oEx) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'input_not_all_fields');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'input_not_all_fields');
 
             return;
         } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $oEx) {
             //connection to external resource broken, change message and pass to the view
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
 
             return;
         }

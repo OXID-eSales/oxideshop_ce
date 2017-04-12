@@ -212,8 +212,8 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         $oViewConf = $this->getViewConfig();
-        $oViewConf->setViewConfigParam('selflink', \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl($sURL . 'index.php?editlanguage=' . $this->_iEditLang, false));
-        $oViewConf->setViewConfigParam('ajaxlink', str_replace('&amp;', '&', \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl($sURL . 'oxajax.php?editlanguage=' . $this->_iEditLang, false)));
+        $oViewConf->setViewConfigParam('selflink', \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sURL . 'index.php?editlanguage=' . $this->_iEditLang, false));
+        $oViewConf->setViewConfigParam('ajaxlink', str_replace('&amp;', '&', \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sURL . 'oxajax.php?editlanguage=' . $this->_iEditLang, false)));
         $oViewConf->setViewConfigParam('sServiceUrl', $this->getServiceUrl());
         $oViewConf->setViewConfigParam('blLoadDynContents', $myConfig->getConfigParam('blLoadDynContents'));
         $oViewConf->setViewConfigParam('sShopCountry', $myConfig->getConfigParam('sShopCountry'));
@@ -327,7 +327,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function _addNavigationHistory($sNode)
     {
-        $myUtilsServer = \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer");
+        $myUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
 
         // store navigation history
         $aHistory = explode('|', $myUtilsServer->getOxCookie('oxidadminhistory'));
@@ -461,7 +461,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function resetCounter($sCounterType, $sValue = null)
     {
         $blDeleteCacheOnLogout = $this->getConfig()->getConfigParam('blClearCacheOnLogout');
-        $myUtilsCount = \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount");
+        $myUtilsCount = \OxidEsales\Eshop\Core\Registry::getUtilsCount();
 
         if (!$blDeleteCacheOnLogout) {
             switch ($sCounterType) {
@@ -550,7 +550,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
         return ( bool ) (
             $this->getSession()->checkSessionChallenge()
-            && count(\OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->getOxCookie())
+            && count(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie())
             && \OxidEsales\Eshop\Core\Registry::getUtils()->checkAccessRights()
         );
     }
@@ -599,7 +599,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function resetSeoData($sShopId)
     {
         $aTypes = array('oxarticle', 'oxcategory', 'oxvendor', 'oxcontent', 'dynamic', 'oxmanufacturer');
-        $oEncoder = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder");
+        $oEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
         foreach ($aTypes as $sType) {
             $oEncoder->markAsExpired(null, $sShopId, 1, null, "oxtype = '{$sType}'");
         }

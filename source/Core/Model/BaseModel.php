@@ -843,11 +843,11 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             foreach ($this->_aFieldNames as $name => $value) {
                 $longName = $this->_getFieldLongName($name);
                 if (isset($this->$longName->fldtype) && $this->$longName->fldtype == 'datetime') {
-                    \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate')->convertDBDateTime($this->$longName, true);
+                    \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDateTime($this->$longName, true);
                 } elseif (isset($this->$longName->fldtype) && $this->$longName->fldtype == 'timestamp') {
-                    \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate')->convertDBTimestamp($this->$longName, true);
+                    \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBTimestamp($this->$longName, true);
                 } elseif (isset($this->$longName->fldtype) && $this->$longName->fldtype == 'date') {
-                    \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate')->convertDBDate($this->$longName, true);
+                    \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($this->$longName, true);
                 }
             }
         }
@@ -1562,7 +1562,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     protected function addSqlActiveRangeSnippet($query, $tableName)
     {
-        $dateObj = \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate');
+        $dateObj = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
         $secondsToRoundForQueryCache = $this->getSecondsToRoundForQueryCache();
         $databaseFormattedDate = $dateObj->getRoundedRequestDateDBFormatted($secondsToRoundForQueryCache);
         $query = $query ? " $query or " : '';

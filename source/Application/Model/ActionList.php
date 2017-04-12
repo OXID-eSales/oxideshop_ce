@@ -47,7 +47,7 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function loadFinishedByCount($iCount)
     {
         $sViewName = $this->getBaseObject()->getViewName();
-        $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
+        $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "select * from {$sViewName} where oxtype=2 and oxactive=1 and oxshopid='" . $this->getConfig()->getShopId() . "' and oxactiveto>0 and oxactiveto < " . $oDb->quote($sDate) . "
@@ -65,8 +65,8 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function loadFinishedByTimespan($iTimespan)
     {
         $sViewName = $this->getBaseObject()->getViewName();
-        $sDateTo = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
-        $sDateFrom = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime() - $iTimespan);
+        $sDateTo = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
+        $sDateFrom = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - $iTimespan);
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "select * from {$sViewName} where oxtype=2 and oxactive=1 and oxshopid='" . $this->getConfig()->getShopId() . "' and oxactiveto < " . $oDb->quote($sDateTo) . " and oxactiveto > " . $oDb->quote($sDateFrom) . "
                " . $this->_getUserGroupFilter() . "
@@ -80,7 +80,7 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function loadCurrent()
     {
         $sViewName = $this->getBaseObject()->getViewName();
-        $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
+        $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "select * from {$sViewName} where oxtype=2 and oxactive=1 and oxshopid='" . $this->getConfig()->getShopId() . "' and (oxactiveto > " . $oDb->quote($sDate) . " or oxactiveto=0) and oxactivefrom != 0 and oxactivefrom < " . $oDb->quote($sDate) . "
                " . $this->_getUserGroupFilter() . "
@@ -96,7 +96,7 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function loadFutureByCount($iCount)
     {
         $sViewName = $this->getBaseObject()->getViewName();
-        $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
+        $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "select * from {$sViewName} where oxtype=2 and oxactive=1 and oxshopid='" . $this->getConfig()->getShopId() . "' and (oxactiveto > " . $oDb->quote($sDate) . " or oxactiveto=0) and oxactivefrom > " . $oDb->quote($sDate) . "
                " . $this->_getUserGroupFilter() . "
@@ -112,8 +112,8 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function loadFutureByTimespan($iTimespan)
     {
         $sViewName = $this->getBaseObject()->getViewName();
-        $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
-        $sDateTo = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime() + $iTimespan);
+        $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
+        $sDateTo = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + $iTimespan);
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "select * from {$sViewName} where oxtype=2 and oxactive=1 and oxshopid='" . $this->getConfig()->getShopId() . "' and (oxactiveto > " . $oDb->quote($sDate) . " or oxactiveto=0) and oxactivefrom > " . $oDb->quote($sDate) . " and oxactivefrom < " . $oDb->quote($sDateTo) . "
                " . $this->_getUserGroupFilter() . "

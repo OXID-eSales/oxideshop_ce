@@ -532,7 +532,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getRdfaPriceValidity()
     {
         $iDays = $this->getConfig()->getConfigParam('iRDFaPriceValidity');
-        $iFrom = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $iFrom = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $iThrough = $iFrom + ($iDays * 24 * 60 * 60);
         $oPriceValidity = array();
         $oPriceValidity['validfrom'] = date('Y-m-d\TH:i:s', $iFrom) . "Z";
@@ -549,7 +549,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getParsedContent()
     {
         /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
-        $oUtilsView = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView");
+        $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
         return $oUtilsView->parseThroughSmarty($this->getContent()->oxcontents__oxcontent->value, $this->getContent()->getId(), null, true);
     }
 
@@ -562,7 +562,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $url = '';
         if ($content = $this->getContent()) {
-            $utils = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl");
+            $utils = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
             if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
                 $url = $utils->prepareCanonicalUrl($content->getBaseSeoLink($content->getLanguage()));
             } else {

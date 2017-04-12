@@ -605,9 +605,9 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
 
             $url = "{$url}index.php?{$header}";
 
-            $url = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl($url);
+            $url = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($url);
 
-            if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && $seoUrl = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->getStaticUrl($url)) {
+            if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && $seoUrl = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($url)) {
                 $url = $seoUrl;
             }
 
@@ -632,7 +632,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getAdditionalParams()
     {
-        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl('', false);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl('', false);
     }
 
     /**

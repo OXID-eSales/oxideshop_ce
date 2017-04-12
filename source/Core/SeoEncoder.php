@@ -255,7 +255,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         if ($sSeoUrl) {
             $sFullUrl = ($blSsl ? $this->getConfig()->getSslShopUrl($iLang) : $this->getConfig()->getShopUrl($iLang, false)) . $sSeoUrl;
 
-            return \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processSeoUrl($sFullUrl);
+            return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processSeoUrl($sFullUrl);
         }
 
         return false;

@@ -786,7 +786,7 @@ class UtilsTest extends \OxidTestCase
     {
         $config = $this->getConfig();
         $utils = oxRegistry::getUtils();
-        $smarty = oxRegistry::get("oxUtilsView")->getSmarty(true);
+        $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);
         $tmpDir = $config->getConfigParam('sCompileDir') . "/smarty/";
 
         $templates = array('message/success.tpl', 'message/notice.tpl', 'message/errors.tpl',);
@@ -813,7 +813,7 @@ class UtilsTest extends \OxidTestCase
         $myConfig = $this->getConfig();
 
         $oUtils = oxRegistry::getUtils();
-        $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty(true);
+        $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);
         $sTmpDir = $myConfig->getConfigParam('sCompileDir');
 
         $aFiles = array('langcache_1_a', 'langcache_1_b', 'langcache_1_c');
@@ -1168,7 +1168,7 @@ class UtilsTest extends \OxidTestCase
     public function testGetPreviewId()
     {
 
-        $sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie('admin_sid');
+        $sAdminSid = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('admin_sid');
         $sCompare = md5($sAdminSid . "testID" . "testPass" . "tesrRights");
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("getId"));
@@ -1192,7 +1192,7 @@ class UtilsTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtilsView', 'getTemplateOutput', '{$this->getTemplateOutputCall[] = $aA; return "msg_".count($this->getTemplateOutputCall);}');
 
         oxRegistry::getUtils()->handlePageNotFoundError();
-        $this->assertEquals(1, count(oxRegistry::get("oxUtilsView")->getTemplateOutputCall));
+        $this->assertEquals(1, count(\OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutputCall));
         $this->assertEquals(1, count(oxRegistry::getUtils()->showMessageAndExitCall));
         $this->assertEquals('msg_1', oxRegistry::getUtils()->showMessageAndExitCall[0][0]);
         $expectedHeaders = array(
@@ -1212,7 +1212,7 @@ class UtilsTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtilsView', 'getTemplateOutput', '{$this->getTemplateOutputCall[] = $aA; return "msg_".count($this->getTemplateOutputCall);}');
 
         oxRegistry::getUtils()->handlePageNotFoundError('url aa');
-        $this->assertEquals(1, count(oxRegistry::get('oxUtilsView')->getTemplateOutputCall));
+        $this->assertEquals(1, count(\OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutputCall));
         $this->assertEquals(1, count(oxRegistry::getUtils()->showMessageAndExitCall));
         $this->assertEquals('msg_1', oxRegistry::getUtils()->showMessageAndExitCall[0][0]);
         $expectedHeaders = array(
@@ -1234,7 +1234,7 @@ class UtilsTest extends \OxidTestCase
         oxTestModules::addFunction('oxUBase', 'render', '{throw new Exception();}');
 
         oxRegistry::getUtils()->handlePageNotFoundError('url aa');
-        $this->assertEquals(0, count(oxRegistry::get('oxUtilsView')->getTemplateOutputCall));
+        $this->assertEquals(0, count(\OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutputCall));
         $this->assertEquals(1, count(oxRegistry::getUtils()->showMessageAndExitCall));
         $this->assertEquals('Page not found.', oxRegistry::getUtils()->showMessageAndExitCall[0][0]);
         $expectedHeaders = array(

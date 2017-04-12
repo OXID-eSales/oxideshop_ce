@@ -120,7 +120,7 @@ class OrderDownloadsTest extends \OxidTestCase
                                     oxdownloadexpirationtime="12", oxvaliduntil="2011-10-20 12:12:00", oxdownloadcount="2", oxfirstdownload="2011-10-10", oxlastdownload="2011-10-20"'
         );
 
-        $sNow = oxRegistry::get("oxUtilsDate")->getTime();
+        $sNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $sDate = date('Y-m-d H:i:s', $sNow);
 
         $oView = oxNew('Order_Downloads');

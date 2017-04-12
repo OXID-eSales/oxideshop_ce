@@ -463,7 +463,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function _render($view)
     {
         // get Smarty is important here as it sets template directory correct
-        $smarty = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getSmarty();
+        $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
 
         // render it
         $templateName = $view->render();
@@ -478,7 +478,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $templateName = "message/exception.tpl";
 
             if ($this->_isDebugMode()) {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($ex);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($ex);
             }
             $ex->debugOut();
         }
@@ -491,7 +491,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         //add all exceptions to display
         $errors = $this->_getErrors($view->getClassName());
         if (is_array($errors) && count($errors)) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->passAllErrorsToView($viewData, $errors);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($viewData, $errors);
         }
 
         foreach (array_keys($viewData) as $viewName) {
@@ -577,7 +577,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             if (file_exists($config->getConfigParam('sShopDir') . '/Setup/index.php')) {
                 $tpl = 'message/err_setup.tpl';
                 $activeView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
-                $smarty = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getSmarty();
+                $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
                 $smarty->assign('oView', $activeView);
                 $smarty->assign('oViewConf', $activeView->getViewConfig());
                 \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit($smarty->fetch($tpl));
@@ -727,7 +727,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $exception->debugOut();
 
         if ($this->_isDebugMode()) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($exception);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
             $this->_process('exceptionError', 'displayExceptionError');
         } else {
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
@@ -755,7 +755,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function _handleCookieException($exception)
     {
         if ($this->_isDebugMode()) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($exception);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
         }
         \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
     }
@@ -806,7 +806,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $this->logException($exception);
 
         if ($this->_isDebugMode()) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($exception);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
             $this->_process('exceptionError', 'displayExceptionError');
         }
     }

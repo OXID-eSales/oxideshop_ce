@@ -154,7 +154,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $oPromotion->setLanguage(0);
         $oPromotion->assign($aParams);
         $oPromotion->setLanguage($this->_iEditLang);
-        $oPromotion = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oPromotion);
+        $oPromotion = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oPromotion);
         $oPromotion->save();
 
         // set oxid if inserted

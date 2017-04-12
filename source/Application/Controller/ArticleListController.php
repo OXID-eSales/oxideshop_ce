@@ -1033,7 +1033,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     public function getCanonicalUrl()
     {
         if (($category = $this->getActiveCategory())) {
-            $utilsUrl = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl");
+            $utilsUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
             if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
                 $url = $utilsUrl->prepareCanonicalUrl(
                     $category->getBaseSeoLink($category->getLanguage(), $this->getActPage())

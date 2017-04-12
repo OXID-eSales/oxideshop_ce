@@ -72,7 +72,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         // convert date's to international format
         if ($this->oxnews__oxdate) {
-            $this->oxnews__oxdate->setValue(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($this->oxnews__oxdate->value));
+            $this->oxnews__oxdate->setValue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxnews__oxdate->value));
         }
     }
 
@@ -146,7 +146,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     protected function _update()
     {
-        $this->oxnews__oxdate->setValue(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($this->oxnews__oxdate->value, true));
+        $this->oxnews__oxdate->setValue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxnews__oxdate->value, true));
 
         parent::_update();
     }
@@ -158,11 +158,11 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     protected function _insert()
     {
-        if (!$this->oxnews__oxdate || \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->isEmptyDate($this->oxnews__oxdate->value)) {
+        if (!$this->oxnews__oxdate || \OxidEsales\Eshop\Core\Registry::getUtilsDate()->isEmptyDate($this->oxnews__oxdate->value)) {
             // if date field is empty, assigning current date
             $this->oxnews__oxdate = new \OxidEsales\Eshop\Core\Field(date('Y-m-d'));
         } else {
-            $this->oxnews__oxdate = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($this->oxnews__oxdate->value, true));
+            $this->oxnews__oxdate = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxnews__oxdate->value, true));
         }
 
         return parent::_insert();
@@ -196,7 +196,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getLongDesc()
     {
         /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
-        $oUtilsView = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView");
+        $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
         return $oUtilsView->parseThroughSmarty($this->oxnews__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
     }
 }

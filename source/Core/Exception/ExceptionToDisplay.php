@@ -195,7 +195,7 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
      */
     public function __toString()
     {
-        $sRes = $this->getErrorClassType() . " (time: " . date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()) . "): " . $this->getOxMessage() . " \n Stack Trace: " . $this->getStackTrace() . "\n";
+        $sRes = $this->getErrorClassType() . " (time: " . date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()) . "): " . $this->getOxMessage() . " \n Stack Trace: " . $this->getStackTrace() . "\n";
         foreach ($this->_aValues as $key => $value) {
             $sRes .= $key . " => " . $value . "\n";
         }

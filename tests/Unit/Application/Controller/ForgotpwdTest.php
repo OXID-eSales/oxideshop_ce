@@ -217,7 +217,7 @@ class ForgotpwdTest extends \OxidTestCase
      */
     public function testUpdatePassword_passwordSpecChars()
     {
-        $oRealInputValidator = oxRegistry::get('oxInputValidator');
+        $oRealInputValidator = \OxidEsales\Eshop\Core\Registry::getInputValidator();
 
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
         $this->setRequestParameter('password_new', $sPass);

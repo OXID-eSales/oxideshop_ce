@@ -133,7 +133,7 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\Frontend
         $oParams = (object) $aParams;
         $this->setInviteData((object) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval'));
 
-        $oUtilsView = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView");
+        $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
 
         // filled not all fields ?
         foreach ($this->_aReqFields as $sFieldName) {
@@ -193,7 +193,7 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\Frontend
             //saving statistics for sent emails
             $oUser->updateInvitationStatistics($aParams["rec_email"]);
         } else {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
         }
     }
 

@@ -456,7 +456,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function getCurrentUrl()
     {
-        $oUtilsServer = \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer");
+        $oUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
 
         $aServerParams["HTTPS"] = $oUtilsServer->getServerVar("HTTPS");
         $aServerParams["HTTP_X_FORWARDED_PROTO"] = $oUtilsServer->getServerVar("HTTP_X_FORWARDED_PROTO");

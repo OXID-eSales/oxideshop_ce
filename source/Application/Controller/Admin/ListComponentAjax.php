@@ -594,7 +594,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         $sShopId = $this->getConfig()->getShopId();
         foreach ($aArtIds as $sArtId) {
             /** @var \OxidEsales\Eshop\Core\SeoEncoder $oSeoEncoder */
-            \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->markAsExpired($sArtId, $sShopId, 1, null, "oxtype='oxarticle'");
+            \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->markAsExpired($sArtId, $sShopId, 1, null, "oxtype='oxarticle'");
         }
     }
 
@@ -624,7 +624,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         $blDeleteCacheOnLogout = $this->getConfig()->getConfigParam('blClearCacheOnLogout');
 
         if (!$blDeleteCacheOnLogout) {
-            $myUtilsCount = \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount");
+            $myUtilsCount = \OxidEsales\Eshop\Core\Registry::getUtilsCount();
             switch ($sCounterType) {
                 case 'priceCatArticle':
                     $myUtilsCount->resetPriceCatArticleCount($sValue);

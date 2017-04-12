@@ -98,8 +98,8 @@ class SeoEncoderTest extends \OxidTestCase
 
         parent::setUp();
 
-        oxRegistry::get("oxSeoEncoder")->setPrefix('oxid');
-        oxRegistry::get("oxSeoEncoder")->setSeparator();
+        \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->setPrefix('oxid');
+        \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->setSeparator();
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
         //echo $this->getName()."\n";
     }
@@ -240,7 +240,7 @@ class SeoEncoderTest extends \OxidTestCase
     public function testGetContentLink0001664()
     {
         $iLang = 0;
-        oxRegistry::get("oxSeoEncoder")->setPrefix("_");
+        \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->setPrefix("_");
 
         $oContent = oxNew('oxContent');
         $oContent->setId("_testContent");
@@ -287,7 +287,7 @@ class SeoEncoderTest extends \OxidTestCase
 
         $oArticle->getLink();
 
-        $oEncoder = oxRegistry::get("oxSeoEncoder");
+        $oEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
 
         // 1. Categorie "Geschenke" SEO URL "blafusel/" and Fixed URL = On
         $oEncoder->markAsExpired($sOxid, $iShopId, 1, $iLang);
@@ -339,7 +339,7 @@ class SeoEncoderTest extends \OxidTestCase
 
         $oCategory->getLink();
 
-        $oEncoder = oxRegistry::get("oxSeoEncoder");
+        $oEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
 
         // 1. Categorie "Geschenke" SEO URL "blafusel/" and Fixed URL = On
         $oEncoder->markAsExpired($sOxid, $iShopId, 1, $iLang);
@@ -642,7 +642,7 @@ class SeoEncoderTest extends \OxidTestCase
         $oArticle->save();
 
         // saving its meta data
-        $oEncoder = oxRegistry::get("oxSeoEncoder");
+        $oEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
         $oEncoder->addSeoEntry(
             $oArticle->getId(), $oArticle->getShopId(), $oArticle->getLanguage(), 'http://stdlink',
             $oArticle->getLink(), 'oxarticle', 0, 'oxseo oxkeywords', 'oxseo oxdescription', ''

@@ -164,7 +164,7 @@ class UtilsViewTest extends \OxidTestCase
     {
         $aView = array();
         $aErrors[1][2] = serialize("foo");
-        oxRegistry::get("oxUtilsView")->passAllErrorsToView($aView, $aErrors);
+        \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($aView, $aErrors);
         $this->assertEquals($aView['Errors'][1][2], "foo");
     }
 
@@ -459,14 +459,14 @@ class UtilsViewTest extends \OxidTestCase
 
     public function testParseThroughSmartyInDiffLang()
     {
-        $smarty = oxRegistry::get("oxUtilsView")->getSmarty();
+        $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
         $smarty->compile_check = false;
         $lang = oxRegistry::getLang()->getTplLanguage();
 
         oxRegistry::getLang()->setTplLanguage(0);
-        $text1 = oxRegistry::get("oxUtilsView")->parseThroughSmarty('aaa', 'aaa');
+        $text1 = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty('aaa', 'aaa');
         oxRegistry::getLang()->setTplLanguage(1);
-        $text2 = oxRegistry::get("oxUtilsView")->parseThroughSmarty('bbb', 'aaa');
+        $text2 = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty('bbb', 'aaa');
 
         $smarty->compile_check = true;
         oxRegistry::getLang()->setTplLanguage($lang);

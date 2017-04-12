@@ -61,7 +61,7 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
                 $this->_aViewData["sModuleName"] = basename($oModule->getInfo("title", $iLang));
                 $this->_aViewData["sModuleId"] = str_replace("/", "_", $oModule->getModulePath());
             } else {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
             }
         }
 
@@ -78,7 +78,7 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
     public function activateModule()
     {
         if ($this->getConfig()->isDemoShop()) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
 
             return;
         }
@@ -87,7 +87,7 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */
         $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
         if (!$oModule->load($sModule)) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
 
             return;
         }
@@ -101,7 +101,7 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
                 $this->_aViewData["updatenav"] = "1";
             }
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             $oEx->debugOut();
         }
     }
@@ -114,7 +114,7 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
     public function deactivateModule()
     {
         if ($this->getConfig()->isDemoShop()) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
 
             return;
         }
@@ -123,7 +123,7 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */
         $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
         if (!$oModule->load($sModule)) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
 
             return;
         }
@@ -137,7 +137,7 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
                 $this->_aViewData["updatenav"] = "1";
             }
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             $oEx->debugOut();
         }
     }

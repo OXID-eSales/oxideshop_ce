@@ -112,7 +112,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
 
         // vendor article count is stored in cache
         if ($this->_blShowArticleCnt && !$this->isAdmin()) {
-            $this->_iNrOfArticles = \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount")->getVendorArticleCount($this->getId());
+            $this->_iNrOfArticles = \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getVendorArticleCount($this->getId());
         }
 
         $this->oxvendor__oxnrofarticles = new \OxidEsales\Eshop\Core\Field($this->_iNrOfArticles, \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -226,7 +226,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
             $iLang = $this->getLanguage();
         }
 
-        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
     }
 
     /**
@@ -334,7 +334,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
                 $sSize = $oConfig->getConfigParam('sIconsize');
             }
 
-            return \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler")->getPicUrl("vendor/icon/", $sIcon, $sSize);
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("vendor/icon/", $sIcon, $sSize);
         }
     }
 

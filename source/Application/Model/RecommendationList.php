@@ -492,7 +492,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
 
-        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
     }
 
     /**

@@ -44,8 +44,8 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     public function deleteArticleMasterPicture($oObject, $iIndex, $blDeleteMasterPicture = true)
     {
         $myConfig = $this->getConfig();
-        $myUtilsPic = \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic");
-        $oUtilsFile = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile");
+        $myUtilsPic = \OxidEsales\Eshop\Core\Registry::getUtilsPic();
+        $oUtilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
         $blGeneratedImagesOnly = !$blDeleteMasterPicture;
 
         $sAbsDynImageDir = $myConfig->getPictureDir(false);
@@ -103,8 +103,8 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     public function deleteMainIcon($oObject)
     {
         if (($sMainIcon = $oObject->oxarticles__oxicon->value)) {
-            $sPath = $this->getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->getImageDirByType("ICO");
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic")->safePictureDelete($sMainIcon, $sPath, "oxarticles", "oxicon");
+            $sPath = $this->getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType("ICO");
+            \OxidEsales\Eshop\Core\Registry::getUtilsPic()->safePictureDelete($sMainIcon, $sPath, "oxarticles", "oxicon");
         }
     }
 
@@ -117,8 +117,8 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     {
         if (($sThumb = $oObject->oxarticles__oxthumb->value)) {
             // deleting article main icon and thumb picture
-            $sPath = $this->getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->getImageDirByType("TH");
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic")->safePictureDelete($sThumb, $sPath, "oxarticles", "oxthumb");
+            $sPath = $this->getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType("TH");
+            \OxidEsales\Eshop\Core\Registry::getUtilsPic()->safePictureDelete($sThumb, $sPath, "oxarticles", "oxthumb");
         }
     }
 
@@ -149,8 +149,8 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
 
         if ($sZoomPicName && $sZoomPicName != "nopic.jpg") {
             // deleting zoom picture
-            $sPath = $this->getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->getImageDirByType("Z" . $iIndex);
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic")->safePictureDelete($sZoomPicName, $sPath, "oxarticles", $sFieldToCheck);
+            $sPath = $this->getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType("Z" . $iIndex);
+            \OxidEsales\Eshop\Core\Registry::getUtilsPic()->safePictureDelete($sZoomPicName, $sPath, "oxarticles", $sFieldToCheck);
         }
     }
 

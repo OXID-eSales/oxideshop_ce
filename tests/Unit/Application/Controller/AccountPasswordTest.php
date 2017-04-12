@@ -257,7 +257,7 @@ class AccountPasswordTest extends \OxidTestCase
      */
     public function testLogin_setPasswordWithSpecChars()
     {
-        $oRealInputValidator = oxRegistry::get('oxInputValidator');
+        $oRealInputValidator = \OxidEsales\Eshop\Core\Registry::getInputValidator();
 
         $this->setExpectedException('oxException', 'ChangePass user test');
 

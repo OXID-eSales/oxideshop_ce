@@ -1137,7 +1137,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Loads object data from DB (object data ID must be passed to method).
      * Converts dates (\OxidEsales\Eshop\Application\Model\Article::oxarticles__oxinsert)
-     * to international format (oxUtils.php \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate(...)).
+     * to international format (oxUtils.php \OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate(...)).
      * Returns true if article was loaded successfully.
      *
      * @param string $sOXID Article object ID
@@ -2487,7 +2487,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             } else {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ArticleInputException::class);
                 $oEx->setMessage('ERROR_MESSAGE_ARTICLE_ARTICLE_NOT_BUYABLE');
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
 
                 return false;
             }
@@ -2535,7 +2535,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getLongDesc()
     {
-        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->parseThroughSmarty($this->getLongDescription()->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty($this->getLongDescription()->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
     }
 
     /**
@@ -2744,7 +2744,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $this->_aStdUrls[$iLang] = $this->getBaseStdLink($iLang);
         }
 
-        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl($this->_aStdUrls[$iLang], true, $aParams, $iLang);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($this->_aStdUrls[$iLang], true, $aParams, $iLang);
     }
 
     /**
@@ -2871,7 +2871,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getDeliveryDate()
     {
         if ($this->oxarticles__oxdelivery->value != '0000-00-00') {
-            return \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($this->oxarticles__oxdelivery->value);
+            return \OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxarticles__oxdelivery->value);
         }
 
         return false;
@@ -2994,7 +2994,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
             $sSize = $this->getConfig()->getConfigParam('aDetailImageSizes');
 
-            return \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler")
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()
                 ->getProductPicUrl("product/{$iIndex}/", $sImgName, $sSize, 'oxpic' . $iIndex);
         }
     }
@@ -3023,7 +3023,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         $sSize = $this->getConfig()->getConfigParam('sIconsize');
 
-        $sIconUrl = \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler")->getProductPicUrl($sDirname, $sImgName, $sSize, $iIndex);
+        $sIconUrl = \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getProductPicUrl($sDirname, $sImgName, $sSize, $iIndex);
 
         return $sIconUrl;
     }
@@ -3048,7 +3048,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         $sSize = $this->getConfig()->getConfigParam('sThumbnailsize');
 
-        return \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler")->getProductPicUrl($sDirname, $sImgName, $sSize, 0, $bSsl);
+        return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getProductPicUrl($sDirname, $sImgName, $sSize, 0, $bSsl);
     }
 
     /**
@@ -3065,7 +3065,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $sImgName = basename($this->{"oxarticles__oxpic" . $iIndex}->value);
             $sSize = $this->getConfig()->getConfigParam("sZoomImageSize");
 
-            return \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler")->getProductPicUrl(
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getProductPicUrl(
                 "product/{$iIndex}/",
                 $sImgName,
                 $sSize,
@@ -4428,7 +4428,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected function _insert()
     {
         // set oxinsert
-        $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
+        $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
         $this->oxarticles__oxinsert = new \OxidEsales\Eshop\Core\Field($sNow);
         if (!is_object($this->oxarticles__oxsubclass) || $this->oxarticles__oxsubclass->value == '') {
             $this->oxarticles__oxsubclass = new \OxidEsales\Eshop\Core\Field('oxarticle');
@@ -4538,9 +4538,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _deletePics()
     {
-        $myUtilsPic = \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic");
+        $myUtilsPic = \OxidEsales\Eshop\Core\Registry::getUtilsPic();
         $myConfig = $this->getConfig();
-        $oPictureHandler = \OxidEsales\Eshop\Core\Registry::get("oxPictureHandler");
+        $oPictureHandler = \OxidEsales\Eshop\Core\Registry::getPictureHandler();
 
         //deleting custom main icon
         $oPictureHandler->deleteMainIcon($this);
@@ -4566,7 +4566,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _onChangeResetCounts($sOxid, $sVendorId = null, $sManufacturerId = null)
     {
-        $myUtilsCount = \OxidEsales\Eshop\Core\Registry::get("oxUtilsCount");
+        $myUtilsCount = \OxidEsales\Eshop\Core\Registry::getUtilsCount();
 
         if ($sVendorId) {
             $myUtilsCount->resetVendorArticleCount($sVendorId);

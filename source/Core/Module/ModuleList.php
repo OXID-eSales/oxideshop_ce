@@ -545,7 +545,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModulesFromDir($sModulesDir, $sVendorDir = null)
     {
-        $sModulesDir = \OxidEsales\Eshop\Core\Registry::get('oxUtilsFile')->normalizeDir($sModulesDir);
+        $sModulesDir = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir($sModulesDir);
 
         foreach (glob($sModulesDir . '*') as $sModuleDirPath) {
             $sModuleDirPath .= (is_dir($sModuleDirPath)) ? '/' : '';

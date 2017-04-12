@@ -91,18 +91,18 @@ class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller
         $sConfPass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('password_new_confirm', true);
 
         /** @var \OxidEsales\Eshop\Core\InputValidator $oInputValidator */
-        $oInputValidator = \OxidEsales\Eshop\Core\Registry::get('oxInputValidator');
+        $oInputValidator = \OxidEsales\Eshop\Core\Registry::getInputValidator();
         if (($oExcp = $oInputValidator->checkPassword($oUser, $sNewPass, $sConfPass, true))) {
             switch ($oExcp->getMessage()) {
                 case 'ERROR_MESSAGE_INPUT_EMPTYPASS':
                 case 'ERROR_MESSAGE_PASSWORD_TOO_SHORT':
-                    return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(
+                    return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(
                         'ERROR_MESSAGE_PASSWORD_TOO_SHORT',
                         false,
                         true
                     );
                 default:
-                    return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(
+                    return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(
                         'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH',
                         false,
                         true
@@ -112,7 +112,7 @@ class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller
 
         if (!$sOldPass || !$oUser->isSamePassword($sOldPass)) {
             /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
-            $oUtilsView = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView");
+            $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
 
             return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_CURRENT_PASSWORD_INVALID', false, true);
         }
@@ -122,7 +122,7 @@ class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller
         if ($oUser->save()) {
             $this->_blPasswordChanged = true;
             // deleting user autologin cookies.
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->deleteUserCookie($this->getConfig()->getShopId());
+            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->deleteUserCookie($this->getConfig()->getShopId());
         }
     }
 
@@ -147,7 +147,7 @@ class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller
         $aPath = array();
 
         /** @var \OxidEsales\Eshop\Core\SeoEncoder $oSeoEncoder */
-        $oSeoEncoder = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder");
+        $oSeoEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $iBaseLanguage = $oLang->getBaseLanguage();
         $aPath['title'] = $oLang->translateString('MY_ACCOUNT', $iBaseLanguage, false);

@@ -87,7 +87,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($blRet = parent::load($oxId)) {
             // convert date's to international format
-            $this->oxreviews__oxcreate->setValue(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($this->oxreviews__oxcreate->value));
+            $this->oxreviews__oxcreate->setValue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxreviews__oxcreate->value));
         }
 
         return $blRet;
@@ -101,7 +101,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _insert()
     {
         // set oxcreate
-        $this->oxreviews__oxcreate = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
+        $this->oxreviews__oxcreate = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
 
         return parent::_insert();
     }

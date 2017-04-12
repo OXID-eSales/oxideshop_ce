@@ -120,7 +120,7 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         $oManufacturer->setLanguage(0);
         $oManufacturer->assign($aParams);
         $oManufacturer->setLanguage($this->_iEditLang);
-        $oManufacturer = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oManufacturer);
+        $oManufacturer = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oManufacturer);
         $oManufacturer->save();
 
         // set oxid if inserted
@@ -158,7 +158,7 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         $oManufacturer->setLanguage(0);
         $oManufacturer->assign($aParams);
         $oManufacturer->setLanguage($this->_iEditLang);
-        $oManufacturer = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oManufacturer);
+        $oManufacturer = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oManufacturer);
         $oManufacturer->save();
 
         // set oxid if inserted

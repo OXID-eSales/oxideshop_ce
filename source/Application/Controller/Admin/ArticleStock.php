@@ -124,7 +124,7 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         //tells to article to save in different language
         $oArticle->setLanguage($this->_iEditLang);
-        $oArticle = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oArticle);
+        $oArticle = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oArticle);
 
         $oArticle->resetRemindStatus();
 

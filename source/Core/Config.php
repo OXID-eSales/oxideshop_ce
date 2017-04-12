@@ -476,7 +476,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         include getShopBasePath() . '/config.inc.php';
 
         //adding trailing slashes
-        $fileUtils = Registry::get("oxUtilsFile");
+        $fileUtils = Registry::getUtilsFile();
         $this->sShopDir = $fileUtils->normalizeDir($this->sShopDir);
         $this->sCompileDir = $fileUtils->normalizeDir($this->sCompileDir);
         $this->sShopURL = $fileUtils->normalizeDir($this->sShopURL);
@@ -817,7 +817,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected function _checkSsl()
     {
-        $myUtilsServer = Registry::get("oxUtilsServer");
+        $myUtilsServer = Registry::getUtilsServer();
         $serverVars = $myUtilsServer->getServerVar();
         $httpsServerVar = $myUtilsServer->getServerVar('HTTPS');
 
@@ -876,7 +876,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     public function isCurrentUrl($url)
     {
         /** @var UtilsServer $utilsServer */
-        $utilsServer = Registry::get("oxUtilsServer");
+        $utilsServer = Registry::getUtilsServer();
         return $utilsServer->isCurrentUrl($url);
     }
 
@@ -1013,7 +1013,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $url = $this->getShopURL($lang);
         }
 
-        return Registry::get("oxUtilsUrl")->processUrl($url . 'index.php', false);
+        return Registry::getUtilsUrl()->processUrl($url . 'index.php', false);
     }
 
     /**
@@ -1026,7 +1026,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopHomeUrl($lang = null, $admin = null)
     {
-        return Registry::get("oxUtilsUrl")->processUrl($this->getShopUrl($lang, $admin) . 'index.php', false);
+        return Registry::getUtilsUrl()->processUrl($this->getShopUrl($lang, $admin) . 'index.php', false);
     }
 
     /**
@@ -1040,7 +1040,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getWidgetUrl($languageId = null, $inAdmin = null, $urlParameters = array())
     {
-        $utilsUrl = Registry::get('oxUtilsUrl');
+        $utilsUrl = Registry::getUtilsUrl();
         $widgetUrl = $this->isSsl() ? $this->getSslShopUrl($languageId) : $this->getShopUrl($languageId, $inAdmin);
         $widgetUrl = $utilsUrl->processUrl($widgetUrl . 'widget.php', false);
 
@@ -1063,7 +1063,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopSecureHomeUrl()
     {
-        return Registry::get("oxUtilsUrl")->processUrl($this->getSslShopUrl() . 'index.php', false);
+        return Registry::getUtilsUrl()->processUrl($this->getSslShopUrl() . 'index.php', false);
     }
 
     /**
@@ -1462,7 +1462,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getPictureUrl($file, $admin = false, $ssl = null, $lang = null, $shopId = null, $defPic = "master/nopic.jpg")
     {
-        if ($altUrl = Registry::get("oxPictureHandler")->getAltImageUrl('', $file, $ssl)) {
+        if ($altUrl = Registry::getPictureHandler()->getAltImageUrl('', $file, $ssl)) {
             return $altUrl;
         }
 
@@ -2236,7 +2236,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $this->getSession()->start();
 
         // redirect to start page and display the error
-        Registry::get("oxUtilsView")->addErrorToDisplay($ex);
+        Registry::getUtilsView()->addErrorToDisplay($ex);
         Registry::getUtils()->redirect($this->getShopHomeUrl() . 'cl=start', true, 302);
     }
 

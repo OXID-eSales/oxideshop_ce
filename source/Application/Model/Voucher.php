@@ -124,7 +124,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->oxvouchers__oxorderid->setValue($sOrderId);
             $this->oxvouchers__oxuserid->setValue($sUserId);
             $this->oxvouchers__oxdiscount->setValue($dDiscount);
-            $this->oxvouchers__oxdateused->setValue(date("Y-m-d", \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
+            $this->oxvouchers__oxdateused->setValue(date("Y-m-d", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
             $this->save();
         }
     }

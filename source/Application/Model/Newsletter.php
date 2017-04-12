@@ -215,7 +215,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $aInput[] = array($this->getId() . 'html', $this->oxnewsletter__oxtemplate->value);
         $aInput[] = array($this->getId() . 'plain', $this->oxnewsletter__oxplaintemplate->value);
-        $aRes = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->parseThroughSmarty($aInput, null, $oView, true);
+        $aRes = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty($aInput, null, $oView, true);
 
         $this->_sHtmlText = $aRes[0];
         $this->_sPlainText = $aRes[1];

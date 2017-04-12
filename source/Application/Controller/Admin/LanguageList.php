@@ -67,7 +67,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
         if ($iBaseId == 0) {
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('LANGUAGE_DELETINGMAINLANG_WARNING');
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
 
             return;
         }
@@ -194,7 +194,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
                 //show warning
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('LANGUAGE_ERROR_RESETING_MULTILANG_FIELDS');
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             }
         }
     }

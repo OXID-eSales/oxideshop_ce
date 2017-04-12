@@ -52,7 +52,7 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
             $aClassVars = get_object_vars($myConfig);
             $aSystemInfo = array();
             $aSystemInfo['pkg.info'] = $myConfig->getPackageInfo();
-            $oSmarty = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getSmarty();
+            $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
             while (list($name, $value) = each($aClassVars)) {
                 if (gettype($value) == "object") {
                     continue;

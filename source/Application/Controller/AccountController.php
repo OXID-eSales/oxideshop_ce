@@ -222,7 +222,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
             }
 
             /** @var \OxidEsales\Eshop\Core\UtilsUrl $utilsUrl */
-            $utilsUrl = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl");
+            $utilsUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
             return \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($utilsUrl->processUrl($redirectUrl), true, 302);
         }
     }

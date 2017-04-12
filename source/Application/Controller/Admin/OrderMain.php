@@ -68,7 +68,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
             if ($oOrder->$sOxPaidField->value != "0000-00-00 00:00:00") {
                 $oOrder->blIsPaid = true;
                 /** @var \OxidEsales\Eshop\Core\UtilsDate $oUtilsDate */
-                $oUtilsDate = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate");
+                $oUtilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
                 $oOrder->$sOxPaidField = new \OxidEsales\Eshop\Core\Field($oUtilsDate->formatDBDate($oOrder->$sOxPaidField->value));
             }
 
@@ -94,7 +94,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
             $this->_aViewData["aVouchers"] = $oOrder->getVoucherNrList();
         }
 
-        $this->_aViewData["sNowValue"] = date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
+        $this->_aViewData["sNowValue"] = date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
 
         return "order_main.tpl";
     }
@@ -178,7 +178,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($oOrder->load($soxId)) {
             // #632A
-            $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field(date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
+            $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field(date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
             $oOrder->save();
 
             // #1071C

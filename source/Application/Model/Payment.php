@@ -445,7 +445,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             return true;
         }
 
-        $mxValidationResult = \OxidEsales\Eshop\Core\Registry::get("oxInputValidator")->validatePaymentInputData($this->oxpayments__oxid->value, $aDynValue);
+        $mxValidationResult = \OxidEsales\Eshop\Core\Registry::getInputValidator()->validatePaymentInputData($this->oxpayments__oxid->value, $aDynValue);
 
         if (is_integer($mxValidationResult)) {
             $this->_iPaymentError = $mxValidationResult;

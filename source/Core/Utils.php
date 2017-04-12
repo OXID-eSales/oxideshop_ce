@@ -279,7 +279,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         // checking for available profiles list
         if (is_array($aInterfaceProfiles)) {
             //checking for previous profiles
-            $sPrevProfile = \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->getOxCookie('oxidadminprofile');
+            $sPrevProfile = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxidadminprofile');
             if (isset($sPrevProfile)) {
                 $aPrevProfile = @explode("@", trim($sPrevProfile));
             }
@@ -494,7 +494,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $aMeta = $this->getCacheMeta($sKey);
         if ($iTtl) {
             $aCacheData['ttl'] = $iTtl;
-            $aCacheData['timestamp'] = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+            $aCacheData['timestamp'] = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         }
         $this->_aFileCacheContents[$sKey] = $aCacheData;
 
@@ -532,7 +532,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
                 $iTimestamp = $sRes['timestamp'];
                 $iTtl = $sRes['ttl'];
 
-                $iTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+                $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
                 if ($iTime > $iTimestamp + $iTtl) {
                     return null;
                 }
@@ -727,7 +727,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function resetTemplateCache($aTemplates)
     {
-        $sSmartyDir = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getSmartyDir();
+        $sSmartyDir = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmartyDir();
         //$aFiles = glob( $this->getCacheFilePath( null, true ) . '*' );
         $aFiles = glob($sSmartyDir . '*');
 
@@ -844,7 +844,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $blCan = null;
         if (($sPrevId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('preview')) &&
-            ($sAdminSid = \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->getOxCookie('admin_sid'))
+            ($sAdminSid = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('admin_sid'))
         ) {
             $sTable = getViewName('oxuser');
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -862,7 +862,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function getPreviewId()
     {
-        $sAdminSid = \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->getOxCookie('admin_sid');
+        $sAdminSid = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('admin_sid');
         if (($oUser = $this->getUser())) {
             return md5($sAdminSid . $oUser->getId() . $oUser->oxuser__oxpassword->value . $oUser->oxuser__oxrights->value);
         }
@@ -1467,7 +1467,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             $oView->render();
             $oView->setClassName('oxUBase');
             $oView->addTplParam('sUrl', $sUrl);
-            if ($sRet = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getTemplateOutput('message/err_404.tpl', $oView)) {
+            if ($sRet = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutput('message/err_404.tpl', $oView)) {
                 $sReturn = $sRet;
             }
         } catch (Exception $e) {

@@ -750,10 +750,10 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                 $this->_addBundlesToBasket($aArtBundles);
             } catch (\OxidEsales\Eshop\Core\Exception\NoArticleException $oEx) {
                 $this->removeItem($key);
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             } catch (\OxidEsales\Eshop\Core\Exception\ArticleInputException $oEx) {
                 $this->removeItem($key);
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             }
         }
 
@@ -1127,7 +1127,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                         unset($this->_aVouchers[$sVoucherId]);
 
                         // storing voucher error info
-                        \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
+                        \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
                     }
                 }
             }
@@ -1582,7 +1582,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             $this->_aVouchers[$oVoucher->oxvouchers__oxid->value] = $oVoucher->getSimpleVoucher();
         } catch (\OxidEsales\Eshop\Core\Exception\VoucherException $oEx) {
             // problems adding voucher
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
         }
 
         $this->onUpdate();
@@ -1867,12 +1867,12 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                     }
                 }
             } catch (\OxidEsales\Eshop\Core\Exception\NoArticleException $oEx) {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
                 $this->removeItem($sItemKey);
                 $this->calculateBasket(true);
                 continue;
             } catch (\OxidEsales\Eshop\Core\Exception\ArticleInputException $oEx) {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
                 $this->removeItem($sItemKey);
                 $this->calculateBasket(true);
                 continue;

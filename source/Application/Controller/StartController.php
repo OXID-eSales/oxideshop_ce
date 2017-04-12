@@ -358,7 +358,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     public function getCanonicalUrl()
     {
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oViewConf = $this->getViewConfig())) {
-            return \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->prepareCanonicalUrl($oViewConf->getHomeLink());
+            return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->prepareCanonicalUrl($oViewConf->getHomeLink());
         }
     }
 

@@ -428,7 +428,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     protected function _prepareWhereQuery($whereQuery, $fullQuery)
     {
         if (count($whereQuery)) {
-            $myUtilsString = \OxidEsales\Eshop\Core\Registry::get("oxUtilsString");
+            $myUtilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
             while (list($identifierName, $fieldValue) = each($whereQuery)) {
                 $fieldValue = trim($fieldValue);
 
@@ -544,7 +544,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
         $convertedObject->setValue($value);
         if ($fieldType == "datetime") {
             if (strlen($value) == 10 || strlen($value) == 22 || (strlen($value) == 19 && !stripos($value, "m"))) {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->convertDBDateTime($convertedObject, true);
+                \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDateTime($convertedObject, true);
             } else {
                 if (strlen($value) > 10) {
                     return $this->_convertTime($value);
@@ -554,7 +554,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
             }
         } elseif ($fieldType == "date") {
             if (strlen($value) == 10) {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->convertDBDate($convertedObject, true);
+                \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($convertedObject, true);
             } else {
                 return $this->_convertDate($value);
             }
@@ -613,7 +613,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
         $date = substr($fullDate, 0, 10);
         $convertedObject = new \OxidEsales\Eshop\Core\Field();
         $convertedObject->setValue($date);
-        \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->convertDBDate($convertedObject, true);
+        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($convertedObject, true);
         $stringModifier = getStr();
 
         // looking for time field

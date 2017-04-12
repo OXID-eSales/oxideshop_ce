@@ -88,7 +88,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
         // checking email address
         if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams['oxuser__oxusername'])) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOVALIDEMAIL');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOVALIDEMAIL');
 
             return false;
         }
@@ -96,7 +96,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $sSubject = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('c_subject');
         if (!$aParams['oxuser__oxfname'] || !$aParams['oxuser__oxlname'] || !$aParams['oxuser__oxusername'] || !$sSubject) {
             // even if there is no exception, use this as a default display method
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOTALLFIELDS');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOTALLFIELDS');
 
             return false;
         }
@@ -112,7 +112,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
         if ($oEmail->sendContactMail($aParams['oxuser__oxusername'], $sSubject, $sMessage)) {
             $this->_blContactSendStatus = 1;
         } else {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
         }
     }
 

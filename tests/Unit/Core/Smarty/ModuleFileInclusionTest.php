@@ -53,7 +53,7 @@ class ModuleFileInclusionTest extends \OxidTestCase
             )
         ));
 
-        oxRegistry::get('oxUtilsObject')->setModuleVar('aModules', array('oxarticle' => 'testmoduleinclusion'));
+        \OxidEsales\Eshop\Core\Registry::getUtilsObject()->setModuleVar('aModules', array('oxarticle' => 'testmoduleinclusion'));
 
         $oTestMod = oxNew('testModuleInclusion');
         $this->assertEquals("Hi!", $oTestMod->sayHi());

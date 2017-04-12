@@ -71,7 +71,7 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
         $myConfig = $this->getConfig();
 
         if ($iRatingLogsTimeout = $myConfig->getConfigParam('iRatingLogsTimeout')) {
-            $sExpDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime() - $iRatingLogsTimeout * 24 * 60 * 60);
+            $sExpDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - $iRatingLogsTimeout * 24 * 60 * 60);
             $oDb->execute("delete from oxratings where oxtimestamp < '$sExpDate'");
         }
         $sSelect = "select oxid from oxratings where oxuserid = " . $oDb->quote($sUserId) . " and oxtype=" . $oDb->quote($sType) . " and oxobjectid = " . $oDb->quote($sObjectId);

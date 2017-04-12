@@ -59,12 +59,12 @@ function smarty_function_oxgetseourl( $params, &$smarty )
         }
     } elseif ( $sUrl && \OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() ) {
         // if SEO is on ..
-        $oEncoder = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder");
+        $oEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
         if ( ( $sStaticUrl = $oEncoder->getStaticUrl( $sUrl ) ) ) {
             $sUrl = $sStaticUrl;
         } else {
             // in case language parameter is not added to url
-            $sUrl = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl( $sUrl );
+            $sUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl( $sUrl );
         }
     }
 

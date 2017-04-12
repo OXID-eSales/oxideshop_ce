@@ -47,7 +47,7 @@ if ($blAjaxCall) {
     $myConfig->setConfigParam('blAdmin', true);
 
     // authorization
-    if (!(\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge() && count(\OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->getOxCookie()) && \OxidEsales\Eshop\Core\Registry::getUtils()->checkAccessRights())) {
+    if (!(\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge() && count(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie()) && \OxidEsales\Eshop\Core\Registry::getUtils()->checkAccessRights())) {
         header("location:index.php");
         \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("");
     }

@@ -367,7 +367,7 @@ class Email extends \PHPMailer
     protected function _getSmarty()
     {
         if ($this->_oSmarty === null) {
-            $this->_oSmarty = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getSmarty();
+            $this->_oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
         }
 
         //setting default view
@@ -964,7 +964,7 @@ class Email extends \PHPMailer
 
         //setting recommended user id
         if ($myConfig->getActiveView()->isActive('Invitations') && $activeUser = $shop->getUser()) {
-            $articleUrl = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->appendParamSeparator($articleUrl);
+            $articleUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendParamSeparator($articleUrl);
             $articleUrl .= "su=" . $activeUser->getId();
         }
 
@@ -1006,21 +1006,21 @@ class Email extends \PHPMailer
         $this->setSMTP();
 
         // create messages
-        $smarty = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getSmarty();
+        $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
         $this->setUser($params);
 
         $homeUrl = $this->getViewConfig()->getHomeLink();
 
         //setting recommended user id
         if ($myConfig->getActiveView()->isActive('Invitations') && $activeUser = $shop->getUser()) {
-            $homeUrl = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->appendParamSeparator($homeUrl);
+            $homeUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendParamSeparator($homeUrl);
             $homeUrl .= "su=" . $activeUser->getId();
         }
 
         if (is_array($params->rec_email) && count($params->rec_email) > 0) {
             foreach ($params->rec_email as $email) {
                 if (!empty($email)) {
-                    $registerUrl = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->appendParamSeparator($homeUrl);
+                    $registerUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendParamSeparator($homeUrl);
                     //setting recipient user email
                     $registerUrl .= "re=" . md5($email);
                     $this->setViewData("sHomeUrl", $registerUrl);
@@ -1208,7 +1208,7 @@ class Email extends \PHPMailer
 
         //attaching files
         $attashSucc = true;
-        $attPath = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->normalizeDir($attPath);
+        $attPath = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir($attPath);
         foreach ($attFiles as $num => $attFile) {
             $fullPath = $attPath . $attFile;
             if (@is_readable($fullPath) && @is_file($fullPath)) {
@@ -1453,7 +1453,7 @@ class Email extends \PHPMailer
     {
         $body = $this->getBody();
         if (preg_match_all('/<\s*img\s+[^>]*?src[\s]*=[\s]*[\'"]?([^[\'">]]+|.*?)?[\'">]/i', $body, $matches, PREG_SET_ORDER)) {
-            $fileUtils = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile");
+            $fileUtils = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
             $reSetBody = false;
 
             // preparing imput

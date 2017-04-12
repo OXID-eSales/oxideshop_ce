@@ -415,7 +415,7 @@ class RssfeedTest extends \OxidTestCase
         $oRss = $this->getMock(\OxidEsales\Eshop\Application\Model\RssFeed::class, array('getConfig'));
         $oRss->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
 
-        oxRegistry::get("oxSeoEncoder")->setConfig($oCfg);
+        \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->setConfig($oCfg);
 
         $this->assertEquals('http://homeurl/?cl=rss&amp;fnc=topshop&amp;lang=1 - SEO - rss/asd/extra', $oRss->UNITprepareUrl('cl=rss&amp;fnc=topshop', 'asd'));
     }

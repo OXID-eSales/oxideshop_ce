@@ -152,7 +152,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      */
     protected function _addDynLinks($dom)
     {
-        $myUtilsFile = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile");
+        $myUtilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
 
         $url = 'index.php?'; // session parameters will be included later (after cache processor)
 
@@ -782,7 +782,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             $url = trim($myConfig->getConfigParam('sShopURL'), '/') . '/admin';
         }
 
-        return \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl("{$url}/index.php", false);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl("{$url}/index.php", false);
     }
 
     /**

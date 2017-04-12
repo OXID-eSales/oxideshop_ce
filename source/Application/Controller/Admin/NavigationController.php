@@ -48,7 +48,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
     public function render()
     {
         parent::render();
-        $myUtilsServer = \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer");
+        $myUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
 
         $sItem = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("item");
         $sItem = $sItem ? basename($sItem) : false;
@@ -245,7 +245,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
     {
         $edition = $this->getConfig()->getEdition();
         $query = 'http://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';
-        if ($version = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->readRemoteFileAsString($query)) {
+        if ($version = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->readRemoteFileAsString($query)) {
             // current version is older ..
             if (version_compare($this->getConfig()->getVersion(), $version) == '-1') {
                 return sprintf(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_NEWVERSIONAVAILABLE'), $version);

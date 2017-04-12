@@ -1201,7 +1201,7 @@ class BasketitemTest extends \OxidTestCase
     {
         $articleId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2275-01' : '8a142c4100e0b2f57.59530204';
 
-        $newArticleId = oxRegistry::get('oxUtilsObject')->generateUId();
+        $newArticleId = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUId();
 
         $article = oxNew('oxArticle');
         $article->disableLazyLoading();

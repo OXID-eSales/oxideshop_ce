@@ -119,7 +119,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         $oVendor->setLanguage(0);
         $oVendor->assign($aParams);
         $oVendor->setLanguage($this->_iEditLang);
-        $oVendor = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oVendor);
+        $oVendor = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oVendor);
         $oVendor->save();
 
         // set oxid if inserted
@@ -156,7 +156,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         $oVendor->setLanguage(0);
         $oVendor->assign($aParams);
         $oVendor->setLanguage($this->_iEditLang);
-        $oVendor = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oVendor);
+        $oVendor = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oVendor);
         $oVendor->save();
 
         // set oxid if inserted

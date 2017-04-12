@@ -56,7 +56,7 @@ class ExceptionErrorTest extends \OxidTestCase
 
         $oErr->displayExceptionError();
 
-        $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+        $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
         $aTplVars = $oSmarty->get_template_vars("Errors");
         $oViewEx = $aTplVars["default"]["aaa"];
 

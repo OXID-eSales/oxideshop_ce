@@ -428,7 +428,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      */
     public function prepareCSV($sInput)
     {
-        $sInput = \OxidEsales\Eshop\Core\Registry::get("oxUtilsString")->prepareCSVField($sInput);
+        $sInput = \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField($sInput);
 
         return str_replace(array("&nbsp;", "&euro;", "|"), array(" ", "", ""), $sInput);
     }

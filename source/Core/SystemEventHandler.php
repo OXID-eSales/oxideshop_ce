@@ -16,26 +16,13 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
 namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
-use oxRegistry;
-use oxCurl;
-use oxOnlineServerEmailBuilder;
-use oxSimpleXml;
-use oxOnlineLicenseCheckCaller;
-use oxOnlineModuleVersionNotifierCaller;
-use oxOnlineModuleVersionNotifier;
-use oxModuleList;
-use oxUtilsDate;
-use oxServersManager;
-use oxServerChecker;
-use oxUtilsServer;
-use oxServerProcessor;
 
 /**
  * Contains system event handler methods
@@ -47,12 +34,12 @@ class SystemEventHandler
 {
 
     /**
-     * @Var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier
+     * @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier
      */
     private $_oOnlineModuleVersionNotifier = null;
 
     /**
-     * @Var OnlineLicenseCheck
+     * @var \OxidEsales\Eshop\Core\OnlineLicenseCheck
      */
     private $_oOnlineLicenseCheck = null;
 
@@ -124,7 +111,7 @@ class SystemEventHandler
             /** @var \OxidEsales\Eshop\Core\Curl $oCurl */
             $oCurl = oxNew(\OxidEsales\Eshop\Core\Curl::class);
 
-            /** @var  oxOnlineServerEmailBuilder $oMailBuilder */
+            /** @var \OxidEsales\Eshop\Core\OnlineServerEmailBuilder $oMailBuilder */
             $oMailBuilder = oxNew(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class);
 
             /** @var \OxidEsales\Eshop\Core\SimpleXml $oSimpleXml */
@@ -227,7 +214,7 @@ class SystemEventHandler
         $sHourToCheck = $this->_getCheckTime();
 
         /** @var \OxidEsales\Eshop\Core\UtilsDate $oUtilsDate */
-        $oUtilsDate = \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate');
+        $oUtilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
         $iNextCheckTime = $oUtilsDate->formTime('tomorrow', $sHourToCheck);
 
         $this->_getConfig()->saveSystemConfigParameter('str', 'sOnlineLicenseNextCheckTime', $iNextCheckTime);
@@ -262,7 +249,7 @@ class SystemEventHandler
     private function _getCurrentTime()
     {
         /** @var \OxidEsales\Eshop\Core\UtilsDate $oUtilsDate */
-        $oUtilsDate = \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate');
+        $oUtilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
 
         return $oUtilsDate->getTime();
     }
@@ -277,7 +264,7 @@ class SystemEventHandler
     /**
      * Return oxConfig from registry.
      *
-     * @return oxConfig
+     * @return \OxidEsales\Eshop\Core\Config
      */
     protected function _getConfig()
     {
@@ -301,7 +288,7 @@ class SystemEventHandler
         $oUtilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
         /** @var \OxidEsales\Eshop\Core\UtilsDate $oUtilsDate */
-        $oUtilsDate = \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate');
+        $oUtilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
 
         /** @var \OxidEsales\Eshop\Core\ServerProcessor $oProcessor */
 

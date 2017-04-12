@@ -342,7 +342,7 @@ class OnlineLicenseCheck
      */
     protected function _logSuccess()
     {
-        $iTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $sBaseShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getBaseShopId();
         \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar("str", \OxidEsales\Eshop\Core\OnlineLicenseCheck::CONFIG_VAR_NAME, $iTime, $sBaseShop);
     }

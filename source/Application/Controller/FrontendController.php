@@ -469,7 +469,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         // non admin, request is not empty and was not processed by seo engine
         if (!isSearchEngineUrl() && $utils->seoIsActive() && ($requestUrl = getRequestUrl())) {
             // fetching standard url and looking for it in seo table
-            if ($this->_canRedirect() && ($redirectUrl = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->fetchSeoUrl($requestUrl))) {
+            if ($this->_canRedirect() && ($redirectUrl = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->fetchSeoUrl($requestUrl))) {
                 $utils->redirect($this->getConfig()->getCurrentShopUrl() . $redirectUrl, false, 301);
             } elseif (VIEW_INDEXSTATE_INDEX == $this->noIndex()) {
                 // forcing to set no index/follow meta
@@ -843,7 +843,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $this->_aRssLinks = array();
         }
 
-        $url = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->prepareUrlForNoSession($url);
+        $url = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->prepareUrlForNoSession($url);
 
         if ($key === null) {
             $this->_aRssLinks[] = array('title' => $title, 'link' => $url);
@@ -1016,7 +1016,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $shopId = $this->getConfig()->getShopId();
 
         if ($seoObjectId && \OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() &&
-            ($keywords = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->getMetaData($seoObjectId, $dataType, $shopId, $baseLanguageId))
+            ($keywords = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getMetaData($seoObjectId, $dataType, $shopId, $baseLanguageId))
         ) {
             return $keywords;
         }
@@ -1272,7 +1272,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $meta = str_replace(' ,', ',', $meta);
             $pattern = array("/,[\s\+\-\*]*,/", "/\s+,/");
             $meta = $stringModifier->preg_replace($pattern, ',', $meta);
-            $meta = \OxidEsales\Eshop\Core\Registry::get("oxUtilsString")->minimizeTruncateString($meta, $length);
+            $meta = \OxidEsales\Eshop\Core\Registry::getUtilsString()->minimizeTruncateString($meta, $length);
             $meta = $stringModifier->htmlspecialchars($meta);
 
             return trim($meta);
@@ -1546,7 +1546,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             if ($displayObj = $this->_getSubject($languageId)) {
                 $url = $displayObj->getLink($languageId);
             } else {
-                $encoder = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder");
+                $encoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
                 $constructedUrl = $config->getShopHomeUrl($languageId) . $this->_getSeoRequestParams();
                 $url = $encoder->getStaticUrl($constructedUrl, $languageId);
             }
@@ -1554,7 +1554,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
         if (!$url) {
             $constructedUrl = $config->getShopCurrentURL($languageId) . $this->_getRequestParams();
-            $url = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl($constructedUrl, true, null, $languageId);
+            $url = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($constructedUrl, true, null, $languageId);
         }
 
         return $url;
@@ -2700,7 +2700,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function getFieldValidationErrors()
     {
-        return \OxidEsales\Eshop\Core\Registry::get("oxInputValidator")->getFieldValidationErrors();
+        return \OxidEsales\Eshop\Core\Registry::getInputValidator()->getFieldValidationErrors();
     }
 
     /**

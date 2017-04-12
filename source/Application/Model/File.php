@@ -398,7 +398,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($this->_blHasValidDownloads == null) {
             $this->_blHasValidDownloads = false;
-            $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
+            $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
             $sFileId = $this->getId();
 
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

@@ -186,7 +186,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         if (isset($oObject->{$sPic}) &&
             ($_FILES['myfile']['size'][$sPicType . '@' . $sPic] > 0 || $aParams[$sPic] != $oObject->{$sPic}->value)
         ) {
-            $sImgDir = $sAbsDynImageDir . \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->getImageDirByType($sPicType);
+            $sImgDir = $sAbsDynImageDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType($sPicType);
             return $this->safePictureDelete($oObject->{$sPic}->value, $sImgDir, $sPicTable, $sPicField);
         }
 

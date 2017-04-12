@@ -122,7 +122,7 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $oAttr->setLanguage(0);
         $oAttr->assign($aParams);
         $oAttr->setLanguage($this->_iEditLang);
-        $oAttr = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oAttr);
+        $oAttr = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oAttr);
         $oAttr->save();
 
         $this->setEditObjectId($oAttr->getId());

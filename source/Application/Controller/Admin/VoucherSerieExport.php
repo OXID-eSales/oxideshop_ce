@@ -88,7 +88,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
             $sUrl = $myConfig->getConfigParam('sAdminSSLURL');
         }
 
-        $sUrl = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->processUrl($sUrl . '/index.php');
+        $sUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sUrl . '/index.php');
 
         return $sUrl . '&amp;cl=' . $this->sClassDo . '&amp;fnc=download';
     }

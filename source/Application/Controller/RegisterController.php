@@ -146,7 +146,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
             return 'register?confirmstate=1';
         } else {
             // confirmation failed
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('REGISTER_ERRLINKEXPIRED', false, true);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('REGISTER_ERRLINKEXPIRED', false, true);
 
             // redirecting to confirmation page
             return 'account';

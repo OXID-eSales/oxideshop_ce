@@ -52,7 +52,7 @@ class ModuleSimilarClassTest extends \OxidTestCase
         ));
 
         $extensions = array('oxbasketitem' => 'testmodulesimilarnameitem', 'oxbasket' => 'testmodulesimilarname');
-        oxRegistry::get('oxUtilsObject')->setModuleVar('aModules', $extensions);
+        \OxidEsales\Eshop\Core\Registry::getUtilsObject()->setModuleVar('aModules', $extensions);
 
         $oTestMod = oxNew('oxBasket');
         $this->assertEquals("Hi!", $oTestMod->sayHi());
@@ -85,7 +85,7 @@ class ModuleSimilarClassTest extends \OxidTestCase
         $this->setExpectedException(\PHPUnit_Framework_Error_Warning::class);
 
         $extensions = array('oxbasketitem' => 'testmodulesimilar', 'oxbasket' => 'testmodulesimilarname');
-        oxRegistry::get('oxUtilsObject')->setModuleVar('aModules', $extensions);
+        \OxidEsales\Eshop\Core\Registry::getUtilsObject()->setModuleVar('aModules', $extensions);
 
         oxNew('testmodulesimilar');
     }

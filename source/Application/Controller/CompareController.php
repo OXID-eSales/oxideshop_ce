@@ -454,7 +454,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $aPath = array();
 
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
         $aPaths[] = $aPath;
 
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PRODUCT_COMPARISON', \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);

@@ -225,7 +225,7 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
 
         $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval', true);
         if (is_array($aParams)) {
-            $oUtilsView = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView");
+            $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
             $oParams = ( object ) $aParams;
             $this->setEnteredData(( object ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval'));
 
@@ -359,7 +359,7 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
         $sSelfLink = $this->getViewConfig()->getSelfLink();
 
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=account');
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_GIFT_REGISTRY', $iBaseLanguage, false);

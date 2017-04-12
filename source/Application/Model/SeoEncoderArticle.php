@@ -102,7 +102,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
                 $this->_saveToDb(
                     'oxarticle',
                     $oArticle->getId(),
-                    \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->appendUrl(
+                    \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl(
                         $oArticle->getBaseStdLink($iLang),
                         $aStdParams
                     ),
@@ -176,7 +176,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
         $this->_saveToDb(
             'oxarticle',
             $oArticle->getId(),
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->appendUrl(
+            \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl(
                 $oArticle->getBaseStdLink($iLang),
                 array('cnid' => $sCatId)
             ),
@@ -405,7 +405,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
                 $this->_saveToDb(
                     'oxarticle',
                     $oArticle->getId(),
-                    \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->appendUrl(
+                    \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl(
                         $oArticle->getBaseStdLink($iLang),
                         $aStdParams
                     ),
@@ -482,7 +482,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
                 $this->_saveToDb(
                     'oxarticle',
                     $oArticle->getId(),
-                    \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->appendUrl(
+                    \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl(
                         $oArticle->getBaseStdLink($iLang),
                         $aStdParams
                     ),

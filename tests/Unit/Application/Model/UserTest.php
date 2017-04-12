@@ -309,7 +309,7 @@ class UserTest extends \OxidTestCase
      */
     public function testSetCreditPointsForRegistrant()
     {
-        $sDate = oxRegistry::get("oxUtilsDate")->formatDBDate(date("Y-m-d"), true);
+        $sDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate(date("Y-m-d"), true);
         $oDb = $this->getDb();
         $sSql = "INSERT INTO oxinvitations SET oxuserid = 'oxdefaultadmin', oxemail = 'oxemail',  oxdate='$sDate', oxpending = '1', oxaccepted = '0', oxtype = '1' ";
         $oDb->execute($sSql);
@@ -1312,7 +1312,7 @@ class UserTest extends \OxidTestCase
         $oUser->load($sUserId);
 
         $sCreate = $oDb->getOne('select oxcreate from oxuser where oxid="' . $oUser->getId() . '" ');
-        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formatDBDate($sCreate), $oUser->oxuser__oxcreate->value);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($sCreate), $oUser->oxuser__oxcreate->value);
     }
 
 
@@ -2140,7 +2140,7 @@ class UserTest extends \OxidTestCase
         $sSql = "update oxuser set OXPASSWORD = '{$sTemporaryPassword}'  where OXID='oxdefaultadmin'";
         $this->addToDatabase($sSql, 'oxuser');
         $sVal = oxADMIN_LOGIN . '@@@' . crypt($sTemporaryPassword, $sPassSalt);
-        oxRegistry::get("oxUtilsServer")->setOxCookie('oxid_' . $sShopId, $sVal);
+        \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('oxid_' . $sShopId, $sVal);
 
         $oActUser->loadActiveUser();
         $testUser->logout();
@@ -2160,7 +2160,7 @@ class UserTest extends \OxidTestCase
         oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper2::class, 'oxUtilsServer');
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
-        oxRegistry::get("oxUtilsServer")->delOxCookie();
+        \OxidEsales\Eshop\Core\Registry::getUtilsServer()->delOxCookie();
         try {
             //should throw no cookie support exception
             $oUser->login(1, oxADMIN_PASSWD);
@@ -2629,19 +2629,19 @@ class UserTest extends \OxidTestCase
         $oUser->setPassword('testPassword');
         $oUser->save();
 
-        oxRegistry::get("oxUtilsServer")->setUserCookie(
+        \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setUserCookie(
             $oUser->oxuser__oxusername->value,
             $oUser->oxuser__oxpassword->value, null, 31536000, $oUser->oxuser__oxpasssalt->value
         );
 
-        $sCookie = oxRegistry::get("oxUtilsServer")->getUserCookie();
+        $sCookie = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getUserCookie();
 
         $testUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
         $this->assertTrue($testUser->loadActiveUser());
 
-        $this->assertEquals($sCookie, oxRegistry::get("oxUtilsServer")->getUserCookie());
+        $this->assertEquals($sCookie, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getUserCookie());
     }
 
     /**
@@ -2652,14 +2652,14 @@ class UserTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam("blShowRememberMe", true);
 
-        oxRegistry::get("oxUtilsServer")->setUserCookie('RandomUserId', 'RandomPassword');
+        \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setUserCookie('RandomUserId', 'RandomPassword');
 
         $testUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
         $this->assertFalse($testUser->loadActiveUser());
 
-        $this->assertNull(oxRegistry::get("oxUtilsServer")->getUserCookie());
+        $this->assertNull(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getUserCookie());
     }
 
     public function testGetWishListId()

@@ -499,7 +499,7 @@ class RegistryTest extends \OxidTestCase
         $object_1 = Registry::$method();
         $object_2 = Registry::$method();
 
-        $this->assertTrue(($object_1 === $object_2), '2 consecutive calls to Registry::' . $method . '() will return and identical object');
+        $this->assertTrue(($object_1 === $object_2), '2 consecutive calls to Registry::' . $method . '() will return identical objects');
     }
 
     /**

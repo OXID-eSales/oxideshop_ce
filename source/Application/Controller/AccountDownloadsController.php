@@ -62,7 +62,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
 
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         /** @var \OxidEsales\Eshop\Core\SeoEncoder $oSeoEncoder */
-        $oSeoEncoder = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder");
+        $oSeoEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
         $aPath['link'] = $oSeoEncoder->getStaticUrl($this->getViewConfig()->getSelfLink() . "cl=account");
         $aPaths[] = $aPath;

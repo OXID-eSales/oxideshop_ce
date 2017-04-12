@@ -114,7 +114,7 @@ class oxSystemEventHandlerTest extends \oxUnitTestCase
     public function testOnShopStartDoNotSendShopInformationIfSearchEngine()
     {
         /** @var oxUtils $oUtils */
-        $oUtils = oxRegistry::get('oxUtils');
+        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         $oUtils->setSearchEngine(true);
 
         $oSystemEventHandler = oxNew('oxSystemEventHandler');

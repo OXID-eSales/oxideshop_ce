@@ -74,7 +74,7 @@ class DownloadController extends \OxidEsales\Eshop\Application\Controller\Fronte
         if ($sError) {
             $oEx = new \OxidEsales\Eshop\Core\Exception\ExceptionToDisplay();
             $oEx->setMessage($sError);
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false);
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl() . 'index.php?cl=account_downloads');
         }
     }

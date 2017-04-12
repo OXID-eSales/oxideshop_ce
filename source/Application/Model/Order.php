@@ -290,7 +290,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         parent::assign($dbRecord);
 
-        $oUtilsDate = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate");
+        $oUtilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
 
         // convert date's to international format
         $this->oxorder__oxorderdate = new \OxidEsales\Eshop\Core\Field($oUtilsDate->formatDBDate($this->oxorder__oxorderdate->value));
@@ -652,7 +652,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // store IP Address - default must be FALSE as it is illegal to store
         if ($myConfig->getConfigParam('blStoreIPs') && $this->oxorder__oxip->value === null) {
-            $this->oxorder__oxip = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->getRemoteAddress(), \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxorder__oxip = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         //setting view mode
@@ -1124,7 +1124,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _updateOrderDate()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
+        $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
         $sQ = 'update oxorder set oxorderdate=' . $oDb->quote($sDate) . ' where oxid=' . $oDb->quote($this->getId());
         $this->oxorder__oxorderdate = new \OxidEsales\Eshop\Core\Field($sDate, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oDb->execute($sQ);
@@ -1250,7 +1250,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _insert()
     {
         $myConfig = $this->getConfig();
-        $oUtilsDate = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate");
+        $oUtilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
 
         //V #M525 orderdate must be the same as it was
         if (!$this->oxorder__oxorderdate->value) {
@@ -1308,7 +1308,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _update()
     {
         $this->_aSkipSaveFields = array('oxtimestamp', 'oxorderdate');
-        $this->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($this->oxorder__oxsenddate->value, true));
+        $this->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxorder__oxsenddate->value, true));
 
         return parent::_update();
     }

@@ -89,7 +89,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
         }
         if ($iSuccess !== true) {
             $sError = ($iSuccess === false) ? 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID' : 'MESSAGE_NOT_ABLE_TO_SEND_EMAIL';
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($sError, false, true);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($sError, false, true);
             $this->_sForgotEmail = false;
         }
     }
@@ -108,9 +108,9 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
 
         /** @var \OxidEsales\Eshop\Core\InputValidator $oInputValidator */
-        $oInputValidator = \OxidEsales\Eshop\Core\Registry::get('oxInputValidator');
+        $oInputValidator = \OxidEsales\Eshop\Core\Registry::getInputValidator();
         if (($oExcp = $oInputValidator->checkPassword($oUser, $sNewPass, $sConfPass, true))) {
-            return \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oExcp->getMessage(), false, true);
+            return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oExcp->getMessage(), false, true);
         }
 
         // passwords are fine - updating and loggin user in
@@ -130,7 +130,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
             return 'forgotpwd?success=1';
         } else {
             // expired reminder
-            $oUtilsView = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView");
+            $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
 
             return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_PASSWORD_LINK_EXPIRED', false, true);
         }

@@ -342,7 +342,7 @@ class ShopControlTest extends \OxidTestCase
         oxTestModules::addModuleObject("oxUtilsView", $oUtilsView);
 
         $oControl->UNITrender($oView);
-        oxRegistry::get("oxUtilsView")->passAllErrorsToView($aViewData, $oControl->UNITgetErrors('oxubase'));
+        \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($aViewData, $oControl->UNITgetErrors('oxubase'));
         $this->assertTrue($aViewData["Errors"]["default"][0] instanceof ExceptionToDisplay);
     }
 

@@ -595,7 +595,7 @@ class SessionTest extends \OxidTestCase
         $this->assertEquals($this->oSession->getId(), 'testSid1');
 
         //set cookie
-        oxRegistry::get("oxUtilsServer")->setOxCookie('sid', 'testSid2');
+        \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('sid', 'testSid2');
         $this->getConfig()->setConfigParam('blSessionUseCookies', true);
         $this->oSession->start();
         $this->assertEquals($this->oSession->getId(), 'testSid2');
@@ -607,7 +607,7 @@ class SessionTest extends \OxidTestCase
 
         //reset params
         $this->setRequestParameter('sid', null);
-        oxRegistry::get("oxUtilsServer")->setOxCookie('sid', null);
+        \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('sid', null);
         $this->oSession->setVar('force_sid', null);
     }
 
@@ -736,13 +736,13 @@ class SessionTest extends \OxidTestCase
         $myConfig = $this->getConfig();
         oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class, 'oxUtilsServer');
         $this->assertFalse($this->oSession->UNITcheckCookies(null, null));
-        $this->assertEquals("oxid", oxRegistry::get("oxUtilsServer")->getOxCookie('sid_key'));
+        $this->assertEquals("oxid", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('sid_key'));
         $this->assertFalse($this->oSession->UNITcheckCookies("oxid", null));
         $aSessCookSet = $this->oSession->getVar("sessioncookieisset");
         $this->assertEquals("ox_true", $aSessCookSet[$myConfig->getCurrentShopURL()]);
         $this->assertFalse($this->oSession->UNITcheckCookies("oxid", $aSessCookSet));
         $this->assertTrue($this->oSession->UNITcheckCookies(null, $aSessCookSet));
-        $this->assertEquals("oxid", oxRegistry::get("oxUtilsServer")->getOxCookie('sid_key'));
+        $this->assertEquals("oxid", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('sid_key'));
 
         $this->getConfig()->setConfigParam('blSessionUseCookies', 1);
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array('_checkCookies'));
@@ -936,7 +936,7 @@ class SessionTest extends \OxidTestCase
 
         $this->assertEquals($oSession->getId(), 'testSid');
         $this->assertTrue($oSession->isNewSession());
-        $this->assertEquals(oxRegistry::get("oxUtilsServer")->getOxCookie($oSession->getName()), 'testSid');
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($oSession->getName()), 'testSid');
 
         //reset session
         $oSession->InitNewSession();
@@ -965,7 +965,7 @@ class SessionTest extends \OxidTestCase
         //..but still eveything is set
         $this->assertEquals($oSession->getId(), 'testSid');
         $this->assertTrue($oSession->isNewSession());
-        $this->assertEquals(oxRegistry::get("oxUtilsServer")->getOxCookie($this->oSession->getName()), 'testSid');
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($this->oSession->getName()), 'testSid');
 
         //reset session
         $oSession->InitNewSession();
@@ -994,7 +994,7 @@ class SessionTest extends \OxidTestCase
         $this->assertTrue($oSession->isNewSession());
 
         //have no cookie as search engine
-        $this->assertEquals(oxRegistry::get("oxUtilsServer")->getOxCookie($oSession->getName()), null);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($oSession->getName()), null);
 
         //reset session
         $oSession->initNewSession();

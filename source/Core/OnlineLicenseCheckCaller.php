@@ -91,7 +91,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
     protected function _formResponse($sRawResponse)
     {
         /** @var \OxidEsales\Eshop\Core\UtilsXml $oUtilsXml */
-        $oUtilsXml = \OxidEsales\Eshop\Core\Registry::get("oxUtilsXml");
+        $oUtilsXml = \OxidEsales\Eshop\Core\Registry::getUtilsXml();
         if (empty($sRawResponse) || !($oDomDoc = $oUtilsXml->loadXml($sRawResponse))) {
             throw new \OxidEsales\Eshop\Core\Exception\StandardException('OLC_ERROR_RESPONSE_NOT_VALID');
         }

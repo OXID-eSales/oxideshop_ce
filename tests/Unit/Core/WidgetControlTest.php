@@ -71,7 +71,7 @@ class WidgetControlTest extends \OxidTestCase
         $oControl->UNITrunLast();
 
         $this->assertEquals(array("testView1"), $oConfig->getActiveViewsList());
-        $this->assertEquals("testView1", oxRegistry::get("oxUtilsView")->getSmarty()->get_template_vars("oView"));
+        $this->assertEquals("testView1", \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty()->get_template_vars("oView"));
     }
 
     /**

@@ -39,7 +39,7 @@ function smarty_prefilter_oxblock($sSource, &$oSmartyCompiler)
     }
     $blDebugTemplateBlocks = (bool)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blDebugTemplateBlocks');
 
-    $aBlocks = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getTemplateBlocks($oSmartyCompiler->_current_file);
+    $aBlocks = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateBlocks($oSmartyCompiler->_current_file);
 
     $iLimit = 500;
 

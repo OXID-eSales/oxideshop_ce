@@ -1326,7 +1326,7 @@ class VoucherTest extends \OxidTestCase
     public function testMarkAsUsedExistingMarking()
     {
         oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
-        oxRegistry::get("oxUtilsDate")->UNITSetTime(0);
+        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->UNITSetTime(0);
 
         $sVoucherSerie = current($this->_aSerieOxid);
         $oSerie = oxNew('oxvoucherserie');

@@ -54,13 +54,13 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         if ($oTheme->load($soxId)) {
             $this->_aViewData["oTheme"] = $oTheme;
         } else {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
         }
 
         parent::render();
 
         if ($this->themeInConfigFile()) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE');
         }
 
         return 'theme_main.tpl';
@@ -91,7 +91,7 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         /** @var \OxidEsales\Eshop\Core\Theme $oTheme */
         $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         if (!$oTheme->load($sTheme)) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
 
             return;
         }
@@ -99,7 +99,7 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
             $oTheme->activate();
             $this->resetContentCache();
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             $oEx->debugOut();
         }
     }

@@ -539,11 +539,11 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             if (!$errorDestination && $this->getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
                 $errorDestination = 'popup';
             }
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
         } catch (\OxidEsales\Eshop\Core\Exception\ArticleInputException $exception) {
             //add to display at specific position
             $exception->setDestination($errorDestination);
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
         } catch (\OxidEsales\Eshop\Core\Exception\NoArticleException $exception) {
             //ignored, best solution F ?
         }

@@ -124,7 +124,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
                 // formatting view
                 if (!$this->getConfig()->getConfigParam('blSkipFormatConversion')) {
                     if ($sFieldName == "oxorderarticles__oxinsert") {
-                        \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->convertDBDate($this->$sFieldName, true);
+                        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($this->$sFieldName, true);
                     }
                 }
             }

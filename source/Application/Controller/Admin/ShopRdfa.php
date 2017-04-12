@@ -103,10 +103,10 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
             if (substr($aHeaders[2], -4) === "True") {
                 $this->_aViewData["submitMessage"] = 'SHOP_RDFA_SUBMITED_SUCCESSFULLY';
             } else {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(substr($aHeaders[3], strpos($aHeaders[3], ":") + 2));
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(substr($aHeaders[3], strpos($aHeaders[3], ":") + 2));
             }
         } else {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay('SHOP_RDFA_MESSAGE_NOURL');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('SHOP_RDFA_MESSAGE_NOURL');
         }
     }
 

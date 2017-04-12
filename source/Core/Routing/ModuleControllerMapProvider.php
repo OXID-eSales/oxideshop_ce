@@ -46,7 +46,7 @@ class ModuleControllerMapProvider implements ControllerMapProviderInterface
     public function getControllerMap()
     {
         $controllerMap = [];
-        $moduleControllersByModuleId = Registry::get('oxUtilsObject')->getModuleVar(ClassProviderStorage::STORAGE_KEY);
+        $moduleControllersByModuleId = Registry::getUtilsObject()->getModuleVar(ClassProviderStorage::STORAGE_KEY);
 
         if (is_array($moduleControllersByModuleId)) {
             $controllerMap = $this->flattenControllersMap($moduleControllersByModuleId);

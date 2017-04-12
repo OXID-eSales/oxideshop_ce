@@ -67,11 +67,11 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
                 }
             } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
                 $oEx->debugOut();
             }
         } else {
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
         }
 
         return 'theme_config.tpl';

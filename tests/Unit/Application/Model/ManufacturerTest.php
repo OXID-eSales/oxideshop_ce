@@ -290,7 +290,7 @@ class ManufacturerTest extends \OxidTestCase
         $oManufacturer->setNonPublicVar("_blShowArticleCnt", true);
         $oManufacturer->load($sManufacturerId);
 
-        $this->assertEquals(oxRegistry::get("oxUtilsCount")->getManufacturerArticleCount($sManufacturerId), $oManufacturer->getNrOfArticles());
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsCount()->getManufacturerArticleCount($sManufacturerId), $oManufacturer->getNrOfArticles());
     }
 
     public function testGetNrOfArticlesDonotShow()

@@ -107,7 +107,7 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $oCountry->setLanguage(0);
         $oCountry->assign($aParams);
         $oCountry->setLanguage($this->_iEditLang);
-        $oCountry = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oCountry);
+        $oCountry = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oCountry);
         $oCountry->save();
 
         // set oxid if inserted

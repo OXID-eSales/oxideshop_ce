@@ -128,7 +128,7 @@ class NewsTest extends \OxidTestCase
         $oTestNews->loadInLang(1, $this->_oNews->getId());
         $this->assertEquals($oTestNews->oxnews__oxshortdesc->value, 'Test_news_1');
         $sQ = "select oxdate from oxnews where oxid='" . $this->_oNews->getId() . "'";
-        $this->assertEquals($oTestNews->oxnews__oxdate->value, oxRegistry::get("oxUtilsDate")->formatDBDate($oDB->GetOne($sQ)));
+        $this->assertEquals($oTestNews->oxnews__oxdate->value, \OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($oDB->GetOne($sQ)));
     }
 
     /**

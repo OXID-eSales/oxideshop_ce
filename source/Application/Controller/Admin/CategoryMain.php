@@ -219,7 +219,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $oEx->setMessage('CATEGORY_PICTURES_UPLOADISDISABLED');
 
             /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
-            $oUtilsView = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView");
+            $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
 
             $oUtilsView->addErrorToDisplay($oEx, false);
 
@@ -274,9 +274,9 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         if ($sImgType !== false) {
             /** @var \OxidEsales\Eshop\Core\UtilsPic $myUtilsPic */
-            $myUtilsPic = \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic");
+            $myUtilsPic = \OxidEsales\Eshop\Core\Registry::getUtilsPic();
             /** @var \OxidEsales\Eshop\Core\UtilsFile $oUtilsFile */
-            $oUtilsFile = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile");
+            $oUtilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
 
             $sDir = $myConfig->getPictureDir(false);
             $myUtilsPic->safePictureDelete($item->$sItemKey->value, $sDir . $oUtilsFile->getImageDirByType($sImgType), 'oxcategories', $field);
@@ -346,7 +346,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $category->loadInLang($this->_iEditLang, $categoryId);
 
         /** @var \OxidEsales\Eshop\Core\UtilsPic $utilsPic */
-        $utilsPic = \OxidEsales\Eshop\Core\Registry::get("oxUtilsPic");
+        $utilsPic = \OxidEsales\Eshop\Core\Registry::getUtilsPic();
 
         // #1173M - not all pic are deleted, after article is removed
         $utilsPic->overwritePic($category, 'oxcategories', 'oxthumb', 'TC', '0', $params, $config->getPictureDir(false));
@@ -367,7 +367,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $category->assign($params);
         $category->setLanguage($this->_iEditLang);
 
-        $utilsFile = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile");
+        $utilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
 
         return $utilsFile->processFiles($category);
     }

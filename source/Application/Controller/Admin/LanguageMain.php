@@ -130,7 +130,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             if ((int) $this->_aLangData['params'][$sOxId]['baseId'] == 0) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('LANGUAGE_ABBRCHANGEMAINLANG_WARNING');
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
                 $aParams['abbr'] = $sOxId;
             } else {
                 $this->_updateAbbervation($sOxId, $aParams['abbr']);
@@ -190,7 +190,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             if ($blViewError) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('LANGUAGE_ERRORGENERATEVIEWS');
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             }
         }
     }
@@ -373,7 +373,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         if (empty($sDir)) {
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('LANGUAGE_NOTRANSLATIONS_WARNING');
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
         }
     }
 
@@ -417,7 +417,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             echo $oEx->getMessage();
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('LANGUAGE_ERROR_ADDING_MULTILANG_FIELDS');
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
 
             return;
         }
@@ -518,7 +518,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     {
         $exception = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
         $exception->setMessage($message);
-        \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($exception);
+        \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
     }
 
     /**
@@ -542,7 +542,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
                 $error = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
                 $error->setFormatParameters(htmlspecialchars($mLanguageDataParameters));
                 $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
-                \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($error);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($error);
             }
         }
 

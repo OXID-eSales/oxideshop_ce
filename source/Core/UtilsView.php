@@ -371,7 +371,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $smarty->cache_dir = $smartyDir;
         $smarty->template_dir = $this->getTemplateDirs();
         $smarty->compile_id = $this->getTemplateCompileId();
-        $smarty->default_template_handler_func = array(\OxidEsales\Eshop\Core\Registry::get("oxUtilsView"), '_smartyDefaultTemplateHandler');
+        $smarty->default_template_handler_func = array(\OxidEsales\Eshop\Core\Registry::getUtilsView(), '_smartyDefaultTemplateHandler');
 
         $coreDirectory = $config->getConfigParam('sCoreDir');
         array_unshift($smarty->plugins_dir, $coreDirectory . 'Smarty/Plugin');

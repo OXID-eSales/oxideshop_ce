@@ -97,7 +97,7 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $oParams = (object) $aParams;
         $this->setSuggestData((object) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval'));
 
-        $oUtilsView = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView");
+        $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
 
         // filled not all fields ?
         foreach ($this->_aReqFields as $sFieldName) {

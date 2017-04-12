@@ -154,7 +154,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oDiscount->setLanguage(0);
         $oDiscount->assign($aParams);
         $oDiscount->setLanguage($this->_iEditLang);
-        $oDiscount = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oDiscount);
+        $oDiscount = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oDiscount);
         try {
             $oDiscount->save();
         } catch (\oxInputException $exception) {
@@ -167,7 +167,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
                 $newException->setMessageArgs($messageArgument);
             }
 
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->addErrorToDisplay($newException);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($newException);
 
             return;
         }
@@ -208,7 +208,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oAttr->setLanguage(0);
         $oAttr->assign($aParams);
         $oAttr->setLanguage($this->_iEditLang);
-        $oAttr = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oAttr);
+        $oAttr = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oAttr);
         $oAttr->save();
 
         // set oxid if inserted

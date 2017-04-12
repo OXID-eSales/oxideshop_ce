@@ -206,7 +206,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $oArticle->assign($aParams);
         $oArticle->setArticleLongDesc($this->_processLongDesc($aParams['oxarticles__oxlongdesc']));
         $oArticle->setLanguage($this->_iEditLang);
-        $oArticle = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oArticle);
+        $oArticle = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oArticle);
         $oArticle->save();
 
         // set oxid if inserted
@@ -309,7 +309,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             }
 
             // setting oxinsert/oxtimestamp
-            $iNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
+            $iNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
             $oArticle->oxarticles__oxinsert = new \OxidEsales\Eshop\Core\Field($iNow);
 
             // mantis#0001590: OXRATING and OXRATINGCNT not set to 0 when copying article

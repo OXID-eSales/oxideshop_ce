@@ -349,7 +349,7 @@ class VendorTest extends \OxidTestCase
         $vendor->load($this->testVendorId);
 
         $actualArticleCount = $vendor->getNrOfArticles();
-        $expectedArticleCount = oxRegistry::get("oxUtilsCount")->getVendorArticleCount($this->testVendorId);
+        $expectedArticleCount = \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getVendorArticleCount($this->testVendorId);
 
         $article->delete();
 

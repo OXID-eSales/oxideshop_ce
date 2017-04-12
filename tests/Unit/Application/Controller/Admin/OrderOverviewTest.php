@@ -158,7 +158,7 @@ class OrderOverviewTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $soxId);
         $this->assertFalse($oView->canResetShippingDate());
 
-        $oOrder->oxorder__oxsenddate = new oxField(date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime()));
+        $oOrder->oxorder__oxsenddate = new oxField(date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
         $oOrder->save();
 
         $this->assertTrue($oView->canResetShippingDate());

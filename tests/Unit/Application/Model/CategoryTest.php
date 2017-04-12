@@ -314,7 +314,7 @@ class CategoryTest extends \OxidTestCase
         $sCat = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
 
         $oObj->load($sCat);
-        oxRegistry::get("oxUtilsCount")->resetCatArticleCount($oObj->getId());
+        \OxidEsales\Eshop\Core\Registry::getUtilsCount()->resetCatArticleCount($oObj->getId());
 
         $expectedArticlesCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 32;
         $this->assertEquals($expectedArticlesCount, $oObj->getNrOfArticles());
@@ -330,7 +330,7 @@ class CategoryTest extends \OxidTestCase
         $this->_oCategory->save();
         $this->reload(); // call assign
 
-        oxRegistry::get("oxUtilsCount")->resetCatArticleCount($this->_oCategory->getId());
+        \OxidEsales\Eshop\Core\Registry::getUtilsCount()->resetCatArticleCount($this->_oCategory->getId());
 
         $expectedArticlesCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 34 : 24;
         $this->assertEquals($expectedArticlesCount, $this->_oCategory->getNrOfArticles());
@@ -769,7 +769,7 @@ class CategoryTest extends \OxidTestCase
         $articlesCountExpected = $this->getTestConfig()->getShopEdition() == 'EE' ? 8 : 6;
 
         $oCategory->load($categoryId);
-        oxRegistry::get("oxUtilsCount")->resetCatArticleCount($oCategory->getId());
+        \OxidEsales\Eshop\Core\Registry::getUtilsCount()->resetCatArticleCount($oCategory->getId());
         $this->assertEquals($articlesCountExpected, $oCategory->getNrOfArticles());
     }
 

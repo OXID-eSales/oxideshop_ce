@@ -70,7 +70,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->oxorderfiles__oxfirstdownload = new \OxidEsales\Eshop\Core\Field('0000-00-00 00:00:00');
             $this->oxorderfiles__oxlastdownload = new \OxidEsales\Eshop\Core\Field('0000-00-00 00:00:00');
             $iExpirationTime = $this->oxorderfiles__oxlinkexpirationtime->value * 3600;
-            $sNow = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+            $sNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
             $sDate = date('Y-m-d H:i:s', $sNow + $iExpirationTime);
             $this->oxorderfiles__oxvaliduntil = new \OxidEsales\Eshop\Core\Field($sDate);
             $this->oxorderfiles__oxresetcount = new \OxidEsales\Eshop\Core\Field($this->oxorderfiles__oxresetcount->value + 1);
@@ -118,7 +118,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function setFile($sFileName, $sFileId, $iMaxDownloadCounts, $iExpirationTime, $iExpirationDownloadTime)
     {
-        $sNow = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $sNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $sDate = date('Y-m-d G:i', $sNow + $iExpirationTime * 3600);
 
         $this->oxorderfiles__oxfileid = new \OxidEsales\Eshop\Core\Field($sFileId);
@@ -178,7 +178,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
             if (!$this->oxorderfiles__oxlinkexpirationtime->value && !$this->oxorderfiles__oxdownloadxpirationtime->value) {
                 return true;
             } else {
-                $sNow = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+                $sNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
                 $iTimestamp = strtotime($this->oxorderfiles__oxvaliduntil->value);
                 if (!$iTimestamp || ($iTimestamp > $sNow)) {
                     return true;
@@ -237,7 +237,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $this->oxorderfiles__oxdownloadcount = new \OxidEsales\Eshop\Core\Field(1);
 
                 $iExpirationTime = $this->oxorderfiles__oxdownloadexpirationtime->value * 3600;
-                $iTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+                $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
                 $this->oxorderfiles__oxvaliduntil = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', $iTime + $iExpirationTime));
 
                 $this->oxorderfiles__oxfirstdownload = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', $iTime));
@@ -245,7 +245,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
             } else {
                 $this->oxorderfiles__oxdownloadcount = new \OxidEsales\Eshop\Core\Field($this->oxorderfiles__oxdownloadcount->value + 1);
 
-                $iTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+                $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
                 $this->oxorderfiles__oxlastdownload = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', $iTime));
             }
             $this->save();

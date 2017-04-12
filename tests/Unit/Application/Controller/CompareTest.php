@@ -287,7 +287,7 @@ class CompareTest extends \OxidTestCase
         $aResult = array();
 
         $aCatPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', 0, false);
-        $aCatPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($oCompare->getViewConfig()->getSelfLink() . 'cl=account');
+        $aCatPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($oCompare->getViewConfig()->getSelfLink() . 'cl=account');
 
         $aResult[] = $aCatPath;
 

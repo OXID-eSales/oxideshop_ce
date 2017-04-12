@@ -780,7 +780,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder->recalculateOrder(); // $oOrderArticles );
 
-        $this->assertEquals(date('Y-m-d h', $sOrderDate), date('Y-m-d h', oxRegistry::get("oxUtilsDate")->formatDBDate($oOrder->oxorder__oxorderdate->value)));
+        $this->assertEquals(date('Y-m-d h', $sOrderDate), date('Y-m-d h', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($oOrder->oxorder__oxorderdate->value)));
         $this->assertEquals($sOrderFolder, $oOrder->oxorder__oxfolder->value);
         $this->assertEquals($sOrderIp, $oOrder->oxorder__oxip->value);
         $this->assertEquals($sOrderRemark, $oOrder->oxorder__oxremark->value);
@@ -1772,7 +1772,7 @@ class OrderTest extends \OxidTestCase
         $this->_insertTestOrder();
 
         oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
-        oxRegistry::get("oxUtilsDate")->UNITSetTime(100);
+        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->UNITSetTime(100);
 
         $sQ = "select oxorderdate from oxorder where oxid='_testOrderId' ";
         $sDate = oxDb::getDb()->getOne($sQ);
@@ -1848,7 +1848,7 @@ class OrderTest extends \OxidTestCase
         $this->assertEquals("19", $oOrder->oxorder__oxdelvat->value);
         $this->assertEquals("_testShippingId", $oOrder->oxorder__oxdeltype->value);
         $this->assertEquals("testValue", $oOrder->oxorder__oxremark->value);
-        $this->assertEquals(oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $oOrder->oxorder__oxip->value);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $oOrder->oxorder__oxip->value);
 
         $oCur = $myConfig->getActShopCurrencyObject();
         $this->assertEquals($oCur->name, $oOrder->oxorder__oxcurrency->value);

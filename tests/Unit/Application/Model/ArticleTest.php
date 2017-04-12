@@ -368,7 +368,7 @@ class ArticleTest extends \OxidTestCase
         /** @var oxUtilsDate $oUtils */
         oxRegistry::set('oxUtilsDate', $oUtilsDate);
 
-        $sDate = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getRequestTime());
+        $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getRequestTime());
 
         $oArticle = oxNew('oxArticle');
         $sTable = $oArticle->getViewName();
@@ -393,7 +393,7 @@ class ArticleTest extends \OxidTestCase
         /** @var oxUtilsDate $oUtils */
         oxRegistry::set('oxUtilsDate', $oUtilsDate);
 
-        $sDate = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getRequestTime());
+        $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getRequestTime());
 
         $oArticle = oxNew('oxArticle');
         $sTable = $oArticle->getViewName();
@@ -616,7 +616,7 @@ class ArticleTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blUseStock", 0);
         $this->getConfig()->setConfigParam("blVariantParentBuyable", 0);
 
-        $iCurrTime = oxRegistry::get("oxUtilsDate")->getTime();
+        $iCurrTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
 
         // regular active product by time range
         $oArticle->oxarticles__oxactive = new oxField(0);

@@ -121,7 +121,7 @@ class DeliverySetMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $oDelSet->setLanguage(0);
         $oDelSet->assign($aParams);
         $oDelSet->setLanguage($this->_iEditLang);
-        $oDelSet = \OxidEsales\Eshop\Core\Registry::get("oxUtilsFile")->processFiles($oDelSet);
+        $oDelSet = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oDelSet);
         $oDelSet->save();
 
         // set oxid if inserted

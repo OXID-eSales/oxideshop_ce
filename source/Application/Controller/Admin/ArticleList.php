@@ -70,11 +70,11 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
                 // formatting view
                 if (!$myConfig->getConfigParam('blSkipFormatConversion')) {
                     if ($oArticle->$sFieldName->fldtype == "datetime") {
-                        \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->convertDBDateTime($oArticle->$sFieldName);
+                        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDateTime($oArticle->$sFieldName);
                     } elseif ($oArticle->$sFieldName->fldtype == "timestamp") {
-                        \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->convertDBTimestamp($oArticle->$sFieldName);
+                        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBTimestamp($oArticle->$sFieldName);
                     } elseif ($oArticle->$sFieldName->fldtype == "date") {
-                        \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->convertDBDate($oArticle->$sFieldName);
+                        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($oArticle->$sFieldName);
                     }
                 }
 

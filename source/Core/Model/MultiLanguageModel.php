@@ -490,7 +490,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
         // if current object is managed by SEO and SEO is ON
         if ($ret && $this->_blIsSeoObject && $this->getUpdateSeo() && $this->isAdmin()) {
             // marks all object db entries as expired
-            \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->markAsExpired($this->getId(), null, 1, $this->getLanguage());
+            \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->markAsExpired($this->getId(), null, 1, $this->getLanguage());
         }
 
         return $ret;

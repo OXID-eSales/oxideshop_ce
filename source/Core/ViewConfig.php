@@ -95,10 +95,10 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
             $blAddStartCl = $this->isStartClassRequired();
             if ($blAddStartCl) {
                 $baseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-                $sValue = \OxidEsales\Eshop\Core\Registry::get("oxSeoEncoder")->getStaticUrl($this->getSelfLink() . 'cl=start', $baseLanguage);
-                $sValue = \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->appendUrl(
+                $sValue = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($this->getSelfLink() . 'cl=start', $baseLanguage);
+                $sValue = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl(
                     $sValue,
-                    \OxidEsales\Eshop\Core\Registry::get("oxUtilsUrl")->getBaseAddUrlParams()
+                    \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->getBaseAddUrlParams()
                 );
                 $sValue = getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $sValue);
             }
@@ -737,7 +737,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getRemoteAddress()
     {
         if (($sValue = $this->getViewConfigParam('ip')) === null) {
-            $sValue = \OxidEsales\Eshop\Core\Registry::get("oxUtilsServer")->getRemoteAddress();
+            $sValue = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress();
             $this->setViewConfigParam('ip', $sValue);
         }
 
@@ -1137,7 +1137,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getPasswordLength()
     {
-        return \OxidEsales\Eshop\Core\Registry::get('oxInputValidator')->getPasswordLength();
+        return \OxidEsales\Eshop\Core\Registry::getInputValidator()->getPasswordLength();
     }
 
     /**

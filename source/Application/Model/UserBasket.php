@@ -88,7 +88,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->oxuserbaskets__oxpublic = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
-        $iTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $this->oxuserbaskets__oxupdate = new \OxidEsales\Eshop\Core\Field($iTime);
 
         return parent::_insert();
@@ -101,7 +101,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function setIsNewBasket()
     {
         $this->_blNewBasket = true;
-        $iTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $this->oxuserbaskets__oxupdate = new \OxidEsales\Eshop\Core\Field($iTime);
     }
 
@@ -318,7 +318,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
 
             //update timestamp
-            $this->oxuserbaskets__oxupdate = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
+            $this->oxuserbaskets__oxupdate = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
             $this->save();
 
             return $dAmount;

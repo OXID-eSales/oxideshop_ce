@@ -84,7 +84,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     {
         parent::render();
 
-        $oSmarty = \OxidEsales\Eshop\Core\Registry::get("oxUtilsView")->getSmarty();
+        $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
 
         // #2873: In demoshop for RSS we set php_handling to SMARTY_PHP_PASSTHRU
         // as SMARTY_PHP_REMOVE removes not only php tags, but also xml

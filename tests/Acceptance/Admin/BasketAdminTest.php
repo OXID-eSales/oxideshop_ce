@@ -33,7 +33,6 @@ class BasketAdminTest extends AdminTestCase
      * testing option 'Product can be customized' from Administer products -> Extend tab
      *
      * @group main
-     * @group quarantine
      */
     public function testFrontendPersParamSaveBasket()
     {
@@ -60,7 +59,7 @@ class BasketAdminTest extends AdminTestCase
         //checking in Admin
         $this->loginAdmin("Administer Orders", "Orders");
         $this->openListItem("link=12");
-        $this->assertTextPresent("Label: test label šÄßüл 1");
+        $this->waitForText("Label: test label šÄßüл 1");
 
         $firstArticle  = ['2 *', '1000', 'Test product 0 [EN]', '', '90,00 EUR'];
         $secondArticle = ['2 *', '1000', 'Test product 0 [EN]', '', '90,00 EUR'];
@@ -90,18 +89,12 @@ class BasketAdminTest extends AdminTestCase
         $this->assertEquals("Label: test label šÄßüл 1", $this->getText("//tr[@id='art.{$counter}']/td[5]"));
         $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[7]"));
         $this->assertEquals("90,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[8]"));
+
         $this->type("//tr[@id='art.{$counter}']/td[1]/input", "3");
         $this->clickAndWait("//input[@value='Update']");
-
-        //Looks like sometimes orderUpdate does not succeed. In that case try again.
-        if (3 != $this->getValue("//tr[@id='art.{$counter}']/td[1]/input")) {
-            $this->type("//tr[@id='art.{$counter}']/td[1]/input", "3");
-            $this->clickAndWait("//input[@value='Update']");
-        }
-
+        $this->waitForElementText("135,00 EUR", "//tr[@id='art.{$counter}']/td[8]");
         $this->assertEquals("Label: test label šÄßüл 1", $this->getText("//tr[@id='art.{$counter}']/td[5]"));
         $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[7]"));
-        $this->assertEquals("135,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[8]"));
 
         //After recalculation fix sum total should be:
         $this->assertTextPresent('426,00');

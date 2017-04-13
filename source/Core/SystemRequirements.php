@@ -504,6 +504,9 @@ class SystemRequirements
      */
     protected function _checkModRewrite($aHostInfo)
     {
+        if (getenv('MOD_REWRITE_ON') !== false) {
+            return 2;
+        }
         $sHostname = ($aHostInfo['ssl'] ? 'ssl://' : '') . $aHostInfo['host'];
         if ($rFp = @fsockopen($sHostname, $aHostInfo['port'], $iErrNo, $sErrStr, 10)) {
             $sReq = "POST {$aHostInfo['dir']}oxseo.php?mod_rewrite_module_is=off HTTP/1.1\r\n";

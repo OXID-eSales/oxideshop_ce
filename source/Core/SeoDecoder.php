@@ -204,7 +204,8 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        $sPath = $sPath ? $sPath : str_replace('oxseo.php', '', $_SERVER['SCRIPT_NAME']);
+        #$sPath = $sPath ? $sPath : str_replace('oxseo.php', '', $_SERVER['SCRIPT_NAME']);
+        $sPath = $sPath ? $sPath : preg_replace('/(oxseo.php|app.php|app_dev.php)/', '', $_SERVER['SCRIPT_NAME']);
         if (($sParams = $this->_getParams($sRequest, $sPath))) {
             // in case SEO url is actual
             if (is_array($aGet = $this->decodeUrl($sParams))) {

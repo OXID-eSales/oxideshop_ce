@@ -177,15 +177,28 @@ class Utilities extends Core
             $sFilepath = $_SERVER['SCRIPT_FILENAME'];
         }
 
-        $aParams['sShopDir'] = str_replace("\\", "/", $this->_extractPath(preg_split("/\\\|\//", $sFilepath)));
+        if (preg_match('/app(_dev)?.php$/', $sFilepath)) {
+            $aParams['sShopDir'] = OX_BASE_PATH;
+        } else {
+            $aParams['sShopDir'] = str_replace("\\", "/", $this->_extractPath(preg_split("/\\\|\//", $sFilepath)));
+        }
         $aParams['sCompileDir'] = $aParams['sShopDir'] . "tmp/";
 
-        // try referer
-        $sFilepath = @$_SERVER['HTTP_REFERER'];
-        if (!isset($sFilepath) || !$sFilepath) {
-            $sFilepath = "http://" . @$_SERVER['HTTP_HOST'] . @$_SERVER['SCRIPT_NAME'];
+        if (preg_match('/app(_dev)?.php$/', $sFilepath)) {
+            $url = @$_SERVER['REQUEST_SCHEME'] . '://' . @$_SERVER['HTTP_HOST'];
+            if (@$_SERVER['SERVER_PORT'] != '80') { // TODO: Also for https port
+                $url .= ':' . @$_SERVER['SERVER_PORT'];
+            }
+            $url .= @$_SERVER['BASE'];
+            $aParams['sShopURL'] = $url;
+        } else {
+            // try referer
+            $sFilepath = @$_SERVER['HTTP_REFERER'];
+            if (!isset($sFilepath) || !$sFilepath) {
+                $sFilepath = "http://" . @$_SERVER['HTTP_HOST'] . @$_SERVER['SCRIPT_NAME'];
+            }
+            $aParams['sShopURL'] = ltrim($this->_extractPath(explode("/", $sFilepath)), "/");
         }
-        $aParams['sShopURL'] = ltrim($this->_extractPath(explode("/", $sFilepath)), "/");
 
         return $aParams;
     }

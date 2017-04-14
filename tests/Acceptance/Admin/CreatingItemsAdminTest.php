@@ -2237,15 +2237,18 @@ class CreatingItemsAdminTest extends AdminTestCase
     {
         $this->loginAdmin("Customer Info", "News");
         $this->changeAdminListLanguage("Deutsch");
+
         $this->clickAndWait("link=Title");
         $this->openListItem("link=1 [DE] Test news šÄßüл");
-        $this->assertEquals("1 [DE] Test news šÄßüл", $this->getValue("editval[oxnews__oxshortdesc]"));
+        $this->waitForElementText("1 [DE] Test news šÄßüл", "editval[oxnews__oxshortdesc]");
         $this->assertEquals("Deutsch", $this->getSelectedLabel("test_editlanguage"));
+
         $this->frame("list");
         $this->changeAdminListLanguage('English');
         $this->frame("edit");
-        $this->assertEquals("[last] [EN] Test news šÄßüл", $this->getValue("editval[oxnews__oxshortdesc]"));
+        $this->waitForElementText("[last] [EN] Test news šÄßüл", "editval[oxnews__oxshortdesc]");
         $this->assertEquals("English", $this->getSelectedLabel("test_editlanguage"));
+
         $this->clickCreateNewItem();
         $this->assertEquals("off", $this->getValue("editval[oxnews__oxactive]"));
         $this->check("editval[oxnews__oxactive]");
@@ -2275,12 +2278,14 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("2008-05-01 00:00:00", $this->getValue("editval[oxnews__oxactiveto]"));
         $this->assertEquals("2008-04-22", $this->getValue("editval[oxnews__oxdate]"));
         $this->assertEquals("create_delete news [DE]", $this->getValue("editval[oxnews__oxshortdesc]"));
+
         $this->selectAndWait("test_editlanguage", "label=English");
+        $this->waitForElementText("create_delete news [EN]_šÄßüл", "editval[oxnews__oxshortdesc]");
         $this->assertEquals("on", $this->getValue("editval[oxnews__oxactive]"));
         $this->assertEquals("2008-01-01 00:11:11", $this->getValue("editval[oxnews__oxactivefrom]"));
         $this->assertEquals("2008-05-01 00:00:00", $this->getValue("editval[oxnews__oxactiveto]"));
         $this->assertEquals("2008-04-22", $this->getValue("editval[oxnews__oxdate]"));
-        $this->assertEquals("create_delete news [EN]_šÄßüл", $this->getValue("editval[oxnews__oxshortdesc]"));
+
         $this->openTab("Text");
         $this->assertEquals("English", $this->getSelectedLabel("newslang"));
         $this->assertEquals("", $this->getEditorValue("oxnews__oxlongdesc"));

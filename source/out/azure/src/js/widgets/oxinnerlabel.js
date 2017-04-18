@@ -41,16 +41,16 @@
             });
 
             input.blur(function() {
-                if ( $.trim(input.val()) == ''){
+                if ( input.val().trim() == ''){
                     label.show();
                 }
             });
 
-            if ($.trim(input.val()) != '') {
+            if (input.val().trim() != '') {
                 label.hide();
             }
             input.delay(500).queue(function(){
-                if ($.trim(input.val()) != '') {
+                if (input.val().trim() != '') {
                     label.hide();
                 }
             });

@@ -406,7 +406,7 @@ class SeoDecoderTest extends \OxidTestCase
         $encoder->expects($this->once())->method('_decodeOldUrl')->with($this->equalTo($parameters))->will($this->returnValue($decodedOldUrlPart));
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('redirect'));
         $utils->expects($this->once())->method('redirect')->with($this->equalTo($redirectOldUrl), $this->equalTo(false), $this->equalTo(301));
-        oxRegistry::set('oxUtils', $utils);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
         //call simulates decoding of a changed url
         $encoder->processSeoCall();
     }
@@ -430,7 +430,7 @@ class SeoDecoderTest extends \OxidTestCase
         $encoder->expects($this->once())->method('_decodeSimpleUrl')->with($this->equalTo($parameters))->will($this->returnValue($decodedSimpleUrlPart));
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('redirect'));
         $utils->expects($this->once())->method('redirect')->with($this->equalTo($redirectSimpleUrl), $this->equalTo(false), $this->equalTo(301));
-        oxRegistry::set('oxUtils', $utils);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
         //call simulates decoding of an old style (simple) url
         $encoder->processSeoCall();
     }

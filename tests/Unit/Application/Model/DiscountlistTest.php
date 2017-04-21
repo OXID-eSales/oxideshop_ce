@@ -197,7 +197,7 @@ class DiscountlistTest extends \OxidTestCase
         $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
         /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
         $sUserTable = getViewName('oxuser');
         $sGroupTable = getViewName('oxgroups');

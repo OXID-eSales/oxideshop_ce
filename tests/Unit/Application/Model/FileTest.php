@@ -87,7 +87,7 @@ class FileTest extends \OxidTestCase
         $utils = $this->getMock('oxUtils');
         $utils->expects($this->any())->method('setHeader')->will($this->returnValue(true));
         $utils->expects($this->any())->method('showMessageAndExit')->will($this->returnValue(true));
-        oxRegistry::set('oxUtils', $utils);
+        \OxidEsales\Eshop\Core\Registry::set(oxUtils::class, $utils);
 
         $fileName = '../../../config.inc.php';
 
@@ -105,7 +105,7 @@ class FileTest extends \OxidTestCase
         $utils = $this->getMock('oxUtils');
         $utils->expects($this->any())->method('setHeader')->will($this->returnValue(true));
         $utils->expects($this->any())->method('showMessageAndExit')->will($this->returnValue(true));
-        oxRegistry::set('oxUtils', $utils);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
         $fileName = 'some_not_existing_file';
 

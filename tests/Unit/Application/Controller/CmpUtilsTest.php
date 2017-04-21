@@ -99,7 +99,7 @@ class CmpUtilsTest extends \OxidTestCase
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var oxcmp_utils|PHPUnit_Framework_MockObject_MockObject $oCmp */
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, array("_toList"));
@@ -117,7 +117,7 @@ class CmpUtilsTest extends \OxidTestCase
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->exactly(2))->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         $this->getConfig()->setConfigParam("bl_showWishlist", false);
 

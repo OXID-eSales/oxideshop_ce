@@ -341,7 +341,7 @@ class CmpUserTest extends \OxidTestCase
 
         $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array("addErrorToDisplay"));
         $oUtilsView->expects($this->once())->method('addErrorToDisplay')->with($this->equalTo('READ_AND_CONFIRM_TERMS'), $this->equalTo(false), $this->equalTo(true));
-        oxRegistry::set('oxUtilsView', $oUtilsView);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsView::class, $oUtilsView);
 
         $oParent = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("isEnabledPrivateSales"));
         $oParent->expects($this->once())->method('isEnabledPrivateSales')->will($this->returnValue(true));

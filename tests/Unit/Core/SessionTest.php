@@ -1090,7 +1090,7 @@ class SessionTest extends \OxidTestCase
 
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('isSearchEngine'));
         $utils->expects($this->any())->method('isSearchEngine')->will($this->returnValue(true));
-        oxRegistry::set('oxUtils', $utils);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
         /** @var testSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array('_getCookieSid', 'isAdmin'));
@@ -1113,7 +1113,7 @@ class SessionTest extends \OxidTestCase
 
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('isSearchEngine'));
         $utils->expects($this->any())->method('isSearchEngine')->will($this->returnValue(true));
-        oxRegistry::set('oxUtils', $utils);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array('_getCookieSid', 'isAdmin'));
         $oSession->expects($this->any())->method('_getCookieSid')->will($this->returnValue('admin_sid'));

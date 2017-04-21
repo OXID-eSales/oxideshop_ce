@@ -808,7 +808,7 @@ class SearchTest extends UnitTestCase
         $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
         /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
         $sSearchDate = date('Y-m-d H:i:s', $iCurrTime);
         $sArticleTable = $sTable = $this->tableViewNameGenerator->getViewName('oxarticles');

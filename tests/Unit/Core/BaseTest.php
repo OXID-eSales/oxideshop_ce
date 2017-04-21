@@ -2186,7 +2186,7 @@ class BaseTest extends \OxidTestCase
         $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
         /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
         $aFields = array('oxactive' => 1, 'oxactivefrom' => 1, 'oxactiveto' => 1);
         $sDate = date('Y-m-d H:i:s', $iCurrTime);

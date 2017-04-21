@@ -279,7 +279,7 @@ class UtilsUrlTest extends \OxidTestCase
         $oSession->setId('SID');
 
         $oUtils = oxNew('oxUtilsUrl');
-        oxRegistry::set('oxSession', $oSession);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
         $sShopUrl = $this->getConfig()->getShopUrl();
 
         $this->assertEquals("$sShopUrl/anyUrl?force_sid=SID", $oUtils->processUrl("$sShopUrl/anyUrl"));
@@ -296,7 +296,7 @@ class UtilsUrlTest extends \OxidTestCase
         $this->setLanguage(1);
 
         $oUtils = oxNew('oxUtilsUrl');
-        oxRegistry::set('oxSession', $oSession);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         $this->assertEquals("anyUrl?lang=1&amp;force_sid=SID", $oUtils->processUrl("anyUrl"));
     }
@@ -567,7 +567,7 @@ class UtilsUrlTest extends \OxidTestCase
     {
         $oConfig = $this->getMock('oxConfig');
         $oConfig->expects($this->any())->method('getShopUrl')->will($this->returnValue($url));
-        oxRegistry::set('oxConfig', $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $oUtils = oxNew('oxUtilsUrl');
         $this->assertSame($host, $oUtils->getActiveShopHost());
@@ -611,7 +611,7 @@ class UtilsUrlTest extends \OxidTestCase
     {
         $oConfig = $this->getMock('oxConfig');
         $oConfig->expects($this->any())->method('getShopUrl')->will($this->returnValue($url));
-        oxRegistry::set('oxConfig', $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $utilsUrl = oxNew('oxUtilsUrl');
 

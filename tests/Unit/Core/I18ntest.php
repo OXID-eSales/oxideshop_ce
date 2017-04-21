@@ -464,8 +464,7 @@ class I18ntest extends \OxidTestCase
 
         $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
-        /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
         $oI18n = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('getViewName'));
         $oI18n->expects($this->once())->method('getViewName')->with($this->equalTo(null))->will($this->returnValue('oxi18n'));
@@ -493,7 +492,7 @@ class I18ntest extends \OxidTestCase
         $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
         /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
         $sTable = 'oxi18n';
 

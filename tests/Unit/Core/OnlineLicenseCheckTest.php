@@ -59,7 +59,7 @@ class OnlineLicenseCheckTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
 
         /** @var oxConfig $oConfig */
-        oxRegistry::set('oxConfig', $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $oRequest = oxNew('oxOnlineLicenseCheckRequest');
         $oRequest->revision = $this->getConfig()->getRevision();
@@ -179,7 +179,7 @@ class OnlineLicenseCheckTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getMandateCount'));
         $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
         /** @var oxConfig $oConfig */
-        oxRegistry::set('oxConfig', $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $oRequest = oxNew('oxOnlineLicenseCheckRequest');
         $oRequest->edition = $this->getConfig()->getEdition();
@@ -229,7 +229,7 @@ class OnlineLicenseCheckTest extends \OxidTestCase
         /** @var oxConfig $oConfig */
         $oConfig->setConfigParam('aServersData', array());
         $this->setConfigParam('aServersData', array());
-        oxRegistry::set('oxConfig', $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $oRequest = oxNew('oxOnlineLicenseCheckRequest');
         $oRequest->edition = $this->getConfig()->getEdition();

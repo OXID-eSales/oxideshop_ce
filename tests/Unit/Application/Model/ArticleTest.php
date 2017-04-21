@@ -365,8 +365,7 @@ class ArticleTest extends \OxidTestCase
 
         $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue(0));
-        /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
         $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getRequestTime());
 
@@ -390,8 +389,7 @@ class ArticleTest extends \OxidTestCase
 
         $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue(0));
-        /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
         $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getRequestTime());
 
@@ -2178,7 +2176,7 @@ class ArticleTest extends \OxidTestCase
         $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
         /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
         $this->getConfig()->setConfigParam('blUseStock', false);
         $oArticle = $this->_createArticle('_testArt');

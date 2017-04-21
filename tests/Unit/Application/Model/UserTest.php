@@ -1901,7 +1901,7 @@ class UserTest extends \OxidTestCase
         $oInputValidator->expects($this->once())->method('checkRequiredFields');
         $oInputValidator->expects($this->once())->method('checkCountries');
         $oInputValidator->expects($this->once())->method('checkVatId');
-        oxRegistry::set('oxInputValidator', $oInputValidator);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\InputValidator::class, $oInputValidator);
 
         $oUser = oxNew('oxUser');
         $oUser->checkValues("X", "X", "X", array(), array());
@@ -1911,7 +1911,7 @@ class UserTest extends \OxidTestCase
     {
         $oInputValidator = $this->getMock('oxInputValidator');
         $oInputValidator->expects($this->once())->method("checkVatId")->will($this->throwException(new oxInputException()));
-        oxRegistry::set('oxInputValidator', $oInputValidator);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\InputValidator::class, $oInputValidator);
 
         $oUser = oxNew('oxUser');
         try {

@@ -1458,7 +1458,7 @@ class UBaseTest extends \OxidTestCase
 
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('redirect'));
         $utils->expects($this->never())->method('redirect');
-        oxRegistry::set('oxUtils', $utils);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isProductiveMode'));
@@ -1486,7 +1486,7 @@ class UBaseTest extends \OxidTestCase
 
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('redirect'));
         $utils->expects($this->never())->method('redirect');
-        oxRegistry::set('oxUtils', $utils);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isProductiveMode'));

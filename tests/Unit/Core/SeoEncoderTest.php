@@ -1808,7 +1808,7 @@ class SeoEncoderTest extends \OxidTestCase
             ->expects($this->any())
             ->method('getLanguageIds')
             ->will($this->returnValue(array($baseId => 'en_US')));
-        oxRegistry::set('oxLang', $oLang);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
 
         $sUrl = "Angebote/Transportcontainer-THE-BARREL.html";
         $oEncoder = oxNew('oxSeoEncoder');

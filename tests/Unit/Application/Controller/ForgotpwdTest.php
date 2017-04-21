@@ -228,12 +228,12 @@ class ForgotpwdTest extends \OxidTestCase
 
         $oInputValidator = $this->getMock('oxInputValidator');
         $oInputValidator->expects($this->once())->method('checkPassword')->with($this->equalTo($oUser), $this->equalTo($sPass), $this->equalTo($sPass), $this->equalTo(true))->will($this->returnValue(new oxException()));
-        oxRegistry::set('oxInputValidator', $oInputValidator);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\InputValidator::class, $oInputValidator);
 
         $oView = oxNew('ForgotPwd');
         $oView->updatePassword();
 
-        oxRegistry::set('oxInputValidator', $oRealInputValidator);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\InputValidator::class, $oRealInputValidator);
     }
 
     /**

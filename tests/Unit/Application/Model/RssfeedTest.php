@@ -925,7 +925,7 @@ class RssfeedTest extends \OxidTestCase
     {
         $oLang = oxRegistry::getLang();
         $oLang->setBaseLanguage(1);
-        oxRegistry::set('oxLang', $oLang);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
 
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', false);
@@ -950,7 +950,7 @@ class RssfeedTest extends \OxidTestCase
     {
         $oLang = oxRegistry::getLang();
         $oLang->setBaseLanguage(1);
-        oxRegistry::set('oxLang', $oLang);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
 
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', true);
@@ -1075,7 +1075,7 @@ class RssfeedTest extends \OxidTestCase
     {
         $oLang = oxRegistry::getLang();
         $oLang->setBaseLanguage(1);
-        oxRegistry::set('oxLang', $oLang);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
 
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', false);
@@ -1101,7 +1101,7 @@ class RssfeedTest extends \OxidTestCase
     {
         $oLang = oxRegistry::getLang();
         $oLang->setBaseLanguage(1);
-        oxRegistry::set('oxLang', $oLang);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
 
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', true);

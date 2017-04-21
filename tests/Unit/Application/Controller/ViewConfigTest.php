@@ -122,7 +122,7 @@ class ViewConfigTest extends \OxidTestCase
             ->method('detectLanguageByBrowser')
             ->will($this->returnValue($iDefaultBrowserLanguage));
 
-        oxRegistry::set('oxLang', $oLang);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
 
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
@@ -2305,7 +2305,7 @@ class ViewConfigTest extends \OxidTestCase
 
         $session->expects($this->once())->method('isSessionStarted')->will($this->returnValue($isSessionStarted));
         $session->expects($this->exactly($callTimes))->method('getSessionChallengeToken')->will($this->returnValue($token));
-        oxRegistry::set('oxSession', $session);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         /** @var oxViewConfig $viewConfig */
         $viewConfig = oxNew('oxViewConfig');

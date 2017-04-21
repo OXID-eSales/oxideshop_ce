@@ -56,7 +56,7 @@ class SmartyModifierColonTest extends \OxidTestCase
         $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("translateString"));
         $oLang->expects($this->any())->method("translateString")->with($this->equalTo('COLON'))->will($this->returnValue($sTranslation));
 
-        oxRegistry::set('oxLang', $oLang);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
 
         $this->assertEquals($sResult, smarty_modifier_colon('Name'));
     }

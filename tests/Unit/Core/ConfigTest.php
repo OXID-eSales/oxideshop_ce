@@ -2456,14 +2456,14 @@ class ConfigTest extends \OxidTestCase
         /** @var oxUtilsServer|PHPUnit_Framework_MockObject_MockObject $oUtilsServer */
         $oUtilsServer = $this->getMock('oxUtilsServer');
         $oUtilsServer->expects($this->any())->method('isCurrentUrl')->will($this->returnValue(true));
-        oxRegistry::set('oxUtilsServer', $oUtilsServer);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsServer::class, $oUtilsServer);
 
         $this->assertTrue($this->getConfig()->isCurrentUrl($sURLToCheck));
 
         /** @var oxUtilsServer|PHPUnit_Framework_MockObject_MockObject $oUtilsServer */
         $oUtilsServer = $this->getMock('oxUtilsServer');
         $oUtilsServer->expects($this->any())->method('isCurrentUrl')->will($this->returnValue(false));
-        oxRegistry::set('oxUtilsServer', $oUtilsServer);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsServer::class, $oUtilsServer);
 
         $this->assertFalse($this->getConfig()->isCurrentUrl($sURLToCheck));
     }
@@ -2580,7 +2580,7 @@ class ConfigTest extends \OxidTestCase
             ->method('processUrl')
             ->with($this->identicalTo($this->shopUrl . $entryPoint, false))
             ->will($this->returnValue($this->shopUrl . $entryPoint . '?'));
-        oxRegistry::set('oxUtilsUrl', $utilsUrl);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsUrl::class, $utilsUrl);
     }
 
     /**

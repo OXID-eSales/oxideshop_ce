@@ -34,6 +34,8 @@ class ModuleWithNoMetadataTest extends \OxidTestCase
      */
     public function testGetDisabledModules()
     {
+        $this->getConfig()->setConfigParam("aDisabledModules", []);
+
         $sShopDir = realpath(dirname(__FILE__)) . '/TestData/';
 
         oxRegistry::getConfig()->setConfigParam('sShopDir', $sShopDir);

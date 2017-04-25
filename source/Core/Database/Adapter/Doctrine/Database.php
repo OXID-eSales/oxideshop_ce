@@ -927,9 +927,12 @@ class Database implements DatabaseInterface
                 /** @var $pdoException PDOException */
                 $pdoException = $exception->getPrevious();
 
-                $code = $this->convertErrorCode($pdoException->errorInfo[1]);
-                $message = $pdoException->errorInfo[2];
-
+                if ($pdoException->errorInfo[1]) {
+                    $code = $this->convertErrorCode($pdoException->errorInfo[1]);
+                }
+                if ($pdoException->errorInfo[2]) {
+                    $message = $pdoException->errorInfo[2];
+                }
                 $exceptionClass = DatabaseErrorException::class;
 
                 break;
@@ -939,7 +942,7 @@ class Database implements DatabaseInterface
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately in some cases we can access PDOException and recover the original SQL error code and message.
                  */
-                if (isset($exception->errorInfo[1])) {
+                if ($exception->errorInfo[1]) {
                     $code = $this->convertErrorCode($exception->errorInfo[1]);
                 }
                 if ($exception->errorInfo[2]) {

@@ -1302,12 +1302,8 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        if ($oWrappingPrices->getCount()) {
-            $oWrappingCost = oxNew(\OxidEsales\Eshop\Core\Price::class);
-            $oWrappingCost = $oWrappingPrices->calculateToPrice();
-        }
 
-        return $oWrappingCost;
+        return $oWrappingPrices->calculateToPrice();
     }
 
     /**

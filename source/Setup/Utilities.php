@@ -528,7 +528,7 @@ class Utilities extends Core
      */
     private function getVendorBinaryDirectory()
     {
-        return implode(DIRECTORY_SEPARATOR, [$this->getVendorDirectory(), self::COMPOSER_VENDOR_BIN_DIRECTORY]);
+        return $this->getVendorDirectory() . self::COMPOSER_VENDOR_BIN_DIRECTORY;
     }
 
     /**
@@ -629,14 +629,10 @@ class Utilities extends Core
     {
         $editionSelector = new EditionSelector();
 
-        return implode(
-            DIRECTORY_SEPARATOR,
-            [
-                $this->getUtilitiesInstance()->getVendorDirectory(),
-                EditionRootPathProvider::EDITIONS_DIRECTORY,
-                sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($editionSelector->getEdition())),
-            ]
-        );
+        return $this->getUtilitiesInstance()->getVendorDirectory()
+            . EditionRootPathProvider::EDITIONS_DIRECTORY
+            . DIRECTORY_SEPARATOR
+            . sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($editionSelector->getEdition()));
     }
 
     /**

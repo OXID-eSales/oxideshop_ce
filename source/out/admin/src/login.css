@@ -10,7 +10,7 @@ div.admin-login-box {
     border: 1px #FFFFFF solid;
     border-radius: 5px;
     width: 332px;
-    padding: 14px 14px 14px;
+    padding: 14px;
     position: absolute;
     top: 50%;
     margin-top: -122px;
@@ -88,7 +88,7 @@ div.errorbox {
     font-size: 16px;
     color: #fff;
     background-color: #f77704;
-    padding: 8px 0 8px 0;
+    padding: 8px 0;
     text-align: center;
     border-bottom: 1px solid #d36706;
 }

@@ -22,10 +22,12 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Core\Contract\HasherInterface;
+
 /**
  * Encrypt string with sha512 algorithm.
  */
-class Sha512Hasher extends \OxidEsales\Eshop\Core\Hasher
+class Sha512Hasher implements HasherInterface
 {
 
     /** Algorithm name. */
@@ -34,12 +36,12 @@ class Sha512Hasher extends \OxidEsales\Eshop\Core\Hasher
     /**
      * Encrypt string.
      *
-     * @param string $sString
+     * @param string $string
      *
      * @return string
      */
-    public function hash($sString)
+    public function hash($string)
     {
-        return hash(self::HASHING_ALGORITHM_SHA512, $sString);
+        return hash(self::HASHING_ALGORITHM_SHA512, $string);
     }
 }

@@ -34,12 +34,12 @@ class Sha512Hasher extends \OxidEsales\Eshop\Core\Hasher
     /**
      * Encrypt string.
      *
-     * @param string $sString
+     * @param string $string
      *
      * @return string
      */
-    public function hash($sString)
+    public function hash($string)
     {
-        return hash(self::HASHING_ALGORITHM_SHA512, $sString);
+        return hash(self::HASHING_ALGORITHM_SHA512, $string);
     }
 }

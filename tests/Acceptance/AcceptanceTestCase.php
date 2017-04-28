@@ -22,6 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance;
 
+use \OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use OxidEsales\TestingLibrary\TestSqlPathProvider;
 
@@ -67,5 +68,21 @@ abstract class AcceptanceTestCase extends \OxidEsales\TestingLibrary\AcceptanceT
                 $this->importSql($sTestSuitePath . '/demodata_EE_mall.sql');
             }
         }
+        $this->resetConfig();
+    }
+
+    /**
+     * Reset config to have newest information from database.
+     * SQL files might contain configuration changes.
+     * Base object has static cache for Config object.
+     * Config object has cache for database configuration.
+     *
+     */
+    private function resetConfig()
+    {
+        $config = Registry::getConfig();
+        $config->reinitialize();
+        /** Reset static variable in oxSuperCfg class, which is base class for every class. */
+        $config->setConfig($config);
     }
 }

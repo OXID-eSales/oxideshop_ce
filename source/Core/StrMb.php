@@ -172,6 +172,7 @@ class StrMb
         return htmlentities($sString, $iQuotStyle, $this->_sEncoding);
     }
 
+    // @codingStandardsIgnoreStart
     /**
      * PHP html_entity_decode() function wrapper
      *
@@ -279,6 +280,7 @@ class StrMb
     {
         return preg_match_all($sPattern . 'u', $sSubject, $aMatches, $iFlags, $iOffset);
     }
+    // @codingStandardsIgnoreEnd
 
     /**
      * PHP ucfirst() function wrapper
@@ -397,6 +399,7 @@ class StrMb
         return json_encode($data);
     }
 
+    // @codingStandardsIgnoreStart
     /**
      * PHP strip_tags() function wrapper.
      *
@@ -414,6 +417,7 @@ class StrMb
 
         return strip_tags($sString, $sAllowableTags);
     }
+    // @codingStandardsIgnoreEnd
 
     /**
      * Compares two strings. Case sensitive.

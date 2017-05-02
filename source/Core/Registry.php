@@ -54,7 +54,7 @@ class Registry
      * In order to avoid issues with different shop editions, the given class name must be from the virtual namespace.
      *
      * For reasons of backwards compatibility old class names like 'oxconfig' are still supported and equivalent
-     * to the corresponding class ame from the virtual namespace, as they store and retrieve the same instances.
+     * to the corresponding class name from the virtual namespace, as they store and retrieve the same instances.
      * But be aware, that support for old class names will be dropped in the future.
      *
      * @param string $className Class name from the virtual namespace

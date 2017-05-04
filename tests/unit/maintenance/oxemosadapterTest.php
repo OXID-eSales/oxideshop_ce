@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -56,10 +56,10 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oProduct->expects($this->once())->method('getManufacturer')->will($this->returnValue(false));
         $oProduct->expects($this->once())->method('getId')->will($this->returnValue(1));
         $oProduct->oxarticles__oxartnum = new oxField('123');
-        $oProduct->oxarticles__oxtitle = new oxField('oxï¿½title');
-        $oProduct->oxarticles__oxvarselect = new oxField('oxï¿½varselect');
+        $oProduct->oxarticles__oxtitle = new oxField('oxütitle');
+        $oProduct->oxarticles__oxvarselect = new oxField('oxüvarselect');
 
-        $sContent = "SHOP/oxï¿½title";
+        $sContent = "SHOP/oxütitle";
         $sCharset = oxRegistry::getLang()->translateString('charset');
         $sResult = iconv($sCharset, 'UTF-8', $sContent);
 
@@ -78,10 +78,10 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
     public function testPrepareProductTitle()
     {
         $oProduct = new oxStdClass;
-        $oProduct->oxarticles__oxtitle = new oxField('oxï¿½title');
-        $oProduct->oxarticles__oxvarselect = new oxField('oxï¿½varselect');
+        $oProduct->oxarticles__oxtitle = new oxField('oxütitle');
+        $oProduct->oxarticles__oxvarselect = new oxField('oxüvarselect');
 
-        $sContent = "oxï¿½title oxï¿½varselect";
+        $sContent = "oxütitle oxüvarselect";
         $sCharset = oxRegistry::getLang()->translateString('charset');
         $sConverted = iconv($sCharset, 'UTF-8', $sContent);
 
@@ -106,7 +106,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oEmosAdapter = $this->getMock('oxEmosAdapter', array('getConfig'));
         $oEmosAdapter->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $sContent = "Zurï¿½ck zum Shop";
+        $sContent = "Zurück zum Shop";
         $sCharset = oxRegistry::getLang()->translateString('charset');
 
         $sConverted = iconv($sCharset, 'UTF-8', $sContent);
@@ -167,9 +167,9 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
     public function testGetEmosCatPath()
     {
-        $aCat1 = array('title' => '1ï¿½', 'link' => 'http://one');
-        $aCat2 = array('title' => '2ï¿½', 'link' => 'http://two');
-        $aCat3 = array('title' => '3ï¿½', 'link' => 'http://three');
+        $aCat1 = array('title' => '1ü', 'link' => 'http://one');
+        $aCat2 = array('title' => '2ü', 'link' => 'http://two');
+        $aCat3 = array('title' => '3ü', 'link' => 'http://three');
 
         $oActiveView = $this->getMock('oxview', array('getBreadCrumb'));
         $oActiveView->expects($this->once())->method('getBreadCrumb')->will($this->returnValue(array($aCat1, $aCat2, $aCat3)));
@@ -181,7 +181,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oEmosCode = $this->getMock('oxEmosAdapter', array('getConfig'));
         $oEmosCode->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $sContent = "1ï¿½/2ï¿½/3ï¿½";
+        $sContent = "1ü/2ü/3ü";
         $sCharset = oxRegistry::getLang()->translateString('charset');
 
         $sConverted = iconv($sCharset, 'UTF-8', $sContent);

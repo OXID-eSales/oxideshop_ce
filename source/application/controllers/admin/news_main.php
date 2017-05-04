@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
 
@@ -25,7 +25,7 @@
  * Admin article main news manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Customer Info -> News -> Main.
- *
+ * 
  * @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
  */
 class News_Main extends oxAdminDetails

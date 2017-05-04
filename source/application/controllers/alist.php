@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
 
@@ -117,7 +117,7 @@ class aList extends oxUBase
      * Recomendation list
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *
+     *             
      * @var object
      */
     protected $_oRecommList = null;
@@ -147,7 +147,7 @@ class aList extends oxUBase
 
     /**
      * Array of id to form recommendation list.
-     *
+     * 
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @var array
@@ -832,7 +832,7 @@ class aList extends oxUBase
      * Return array of id to form recommend list.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *
+     *             
      * @return array
      */
     public function getSimilarRecommListIds()

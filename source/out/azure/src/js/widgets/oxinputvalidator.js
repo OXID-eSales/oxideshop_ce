@@ -15,7 +15,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
 ( function( $ ) {
@@ -134,7 +134,7 @@
                         oDay   = $( oInput ).parent().children( '.oxDay' );
                         oMonth = $( oInput ).parent().children( '.oxMonth' );
                         oYear  = $( oInput ).parent().children( '.oxYear' );
-
+                        
                         if ( !( oDay.val() && oMonth.val() && oYear.val() ) && !( !oDay.val() && !oMonth.val() && !oYear.val() ) ) {
                             return oOptions.errorMessageNotEmpty;
                         } else if ( oDay.val() && oMonth.val() && oYear.val() ) {
@@ -145,7 +145,7 @@
                                 return oOptions.errorMessageIncorrectDate;
                             } else {
                                 iMonthDays = new Date((new Date(oYear.val(), oMonth.val(), 1))-1).getDate();
-
+                                
                                 if ( oDay.val() <= 0 || oYear.val() <= 0 || oDay.val() > iMonthDays ) {
                                     return oOptions.errorMessageIncorrectDate;
                                 }

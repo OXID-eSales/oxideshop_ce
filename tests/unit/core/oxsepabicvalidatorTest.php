@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -99,9 +99,9 @@ class Unit_Core_oxSepaBICValidatorTest extends OxidTestCase
             array("ASP_AT2L"),
             array("ASPK*T2L"),
             array("ASPKA-2L"),
-            array("AAAï¿½CCXX"),
-            array("AAAACï¿½XX"),
-            array("AAAACCXï¿½"),
+            array("AAAßCCXX"),
+            array("AAAACßXX"),
+            array("AAAACCXö"),
             // Fix for bug entry 0005564: oxSepaValidator::isValidBIC($sBIC) only verifies substring of BIC
             array("123COBADEHD055ABC"),
         );

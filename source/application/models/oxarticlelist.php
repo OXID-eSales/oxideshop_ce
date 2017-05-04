@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -446,8 +446,8 @@ class oxArticleList extends oxList
      *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
-     *
-     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *                                
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.                               
      */
     public function loadRecommArticles($sRecommId, $sArticlesFilter = null)
     {
@@ -460,8 +460,8 @@ class oxArticleList extends oxList
      *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
-     *
-     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *                                
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.                               
      */
     public function loadRecommArticleIds($sRecommId, $sArticlesFilter)
     {
@@ -659,7 +659,7 @@ class oxArticleList extends oxList
      * @param string $sTag  Searched tag
      * @param int    $iLang Active language
      *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.                      
      *
      * @return int
      */

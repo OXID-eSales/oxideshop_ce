@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -363,14 +363,14 @@ class Unit_Core_oxLangTest extends OxidTestCase
         file_put_contents(
             $sFilePath . "/baselang$sFilePrefix.txt", '<?php
             $aSeoReplaceChars = array(
-                "ï¿½" => "ae",
-                "ï¿½" => "oe",
-                "ï¿½" => "ss",
+                "ä" => "ae",
+                "ö" => "oe",
+                "ß" => "ss",
                 "x" => "z",
             );
             $aLang = array(
                 "charset" => "ISO-8859-15",
-                "TESTKEY" => "bï¿½seVï¿½l"
+                "TESTKEY" => "bäseVäl"
             );'
         );
 
@@ -378,7 +378,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
             $sFilePath . "/testlang$sFilePrefix.txt", '<?php
             $aLang = array(
                 "charset" => "ISO-8859-15",
-                "TESTKEY" => "testVï¿½l"
+                "TESTKEY" => "testVäl"
             );'
         );
 
@@ -387,12 +387,12 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $aResult = array(
             "charset" => "UTF-8",
             '_aSeoReplaceChars' => array(
-                iconv('ISO-8859-15', 'UTF-8', "ï¿½") => "ae",
-                iconv('ISO-8859-15', 'UTF-8', "ï¿½") => "oe",
-                iconv('ISO-8859-15', 'UTF-8', "ï¿½") => "ss",
+                iconv('ISO-8859-15', 'UTF-8', "ä") => "ae",
+                iconv('ISO-8859-15', 'UTF-8', "ö") => "oe",
+                iconv('ISO-8859-15', 'UTF-8', "ß") => "ss",
                 "x"                                => "z",
             ),
-            "TESTKEY" => iconv('ISO-8859-15', 'UTF-8', "testVï¿½l")
+            "TESTKEY" => iconv('ISO-8859-15', 'UTF-8', "testVäl")
         );
 
         $oConfig = $this->getMock("oxConfig", array("isUtf"));
@@ -414,7 +414,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
     {
         $this->setConfigParam('iUtfMode', true);
 
-        $aLang['ACCOUNT_MAIN_BACKTOSHOP'] = "Zurï¿½ck zum Shop";
+        $aLang['ACCOUNT_MAIN_BACKTOSHOP'] = "Zurück zum Shop";
         $aRecoded['ACCOUNT_MAIN_BACKTOSHOP'] = iconv('ISO-8859-15', 'UTF-8', $aLang['ACCOUNT_MAIN_BACKTOSHOP']);
 
         $oLang = new oxLang();
@@ -430,7 +430,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $sVersionPrefix = 'ee';
         $sVersionPrefix = 'pe';
 
-        $sVal = "Zurï¿½ck zum Shop";
+        $sVal = "Zurück zum Shop";
         $myConfig = oxRegistry::getConfig();
         $sCacheName = "langcache_1_1_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . '_default';
 
@@ -476,7 +476,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $this->assertEquals('blafoowashere123', $oLang->translateString("blafoowashere123"));
         $this->assertEquals('', $oLang->translateString(""));
-        $this->assertEquals('\/ï¿½[]~ï¿½#-', $oLang->translateString("\/ï¿½[]~ï¿½#-"));
+        $this->assertEquals('\/ß[]~ä#-', $oLang->translateString("\/ß[]~ä#-"));
     }
 
     // in non amdin mode
@@ -488,7 +488,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $this->assertEquals('blafoowashere123', $oLang->translateString("blafoowashere123"));
         $this->assertEquals('', $oLang->translateString(""));
-        $this->assertEquals('\/ï¿½[]~ï¿½#-', $oLang->translateString("\/ï¿½[]~ï¿½#-"));
+        $this->assertEquals('\/ß[]~ä#-', $oLang->translateString("\/ß[]~ä#-"));
     }
 
     public function testFormatCurrency()

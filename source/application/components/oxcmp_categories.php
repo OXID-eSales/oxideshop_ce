@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
 
@@ -150,7 +150,7 @@ class oxcmp_categories extends oxView
             }
         }
         // END deprecated
-
+        
         return $sActCat;
     }
 
@@ -232,9 +232,9 @@ class oxcmp_categories extends oxView
      * @param string    $sActManufacturer active manufacturer id
      * @param string    $sActTag          active tag
      * @param string    $sActVendor       active vendor
-     *
+     *                                    
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module. So the parameter sActTag will be removed.
-     *
+     *                                    
      * @return string $sActCat
      */
     protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActTag, $sActVendor)

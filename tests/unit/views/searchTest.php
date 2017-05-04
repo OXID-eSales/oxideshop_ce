@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -124,16 +124,16 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $oSearch = $this->getProxyClass('search');
         $oSearch->setNonPublicVar("_blSearchClass", true);
-        modConfig::setRequestParameter('searchparam', 'ï¿½  a');
+        modConfig::setRequestParameter('searchparam', 'ü  a');
 
-        $this->assertEquals('ï¿½  a', $oSearch->getSearchParamForHtml());
+        $this->assertEquals('ü  a', $oSearch->getSearchParamForHtml());
     }
 
     public function testGetSearchParam()
     {
         $oSearch = $this->getProxyClass('search');
         $oSearch->setNonPublicVar("_blSearchClass", true);
-        modConfig::setRequestParameter('searchparam', 'ï¿½  a');
+        modConfig::setRequestParameter('searchparam', 'ü  a');
 
         $this->assertEquals('%FC%20%20a', $oSearch->getSearchParam());
     }

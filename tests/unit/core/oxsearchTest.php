@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -601,16 +601,16 @@ class Unit_Core_oxsearchTest extends OxidTestCase
                  oxobject2category.oxcatnid='$sIDCat' and oxobject2category.oxobjectid=$sArticleTable.oxid and
                  " . $oArticle->getSqlActiveSnippet() . "  and $sArticleTable.oxparentid = ''
                  and $sArticleTable.oxissearch = 1  and $sArticleTable.oxvendorid = '$sIDVend' and $sArticleTable.oxmanufacturerid = '$sIDMan'
-                 and ( (  $sArticleTable.oxtitle like '%ï¿½%' or $sArticleTable.oxtitle like '%&uuml;%' or
-                 $sArticleTable.oxshortdesc like '%ï¿½%' or $sArticleTable.oxshortdesc like '%&uuml;%' or
-                 $sArticleTable.oxsearchkeys like '%ï¿½%' or $sArticleTable.oxsearchkeys like '%&uuml;%' or
-                 $sArticleTable.oxartnum like '%ï¿½%' or $sArticleTable.oxartnum like '%&uuml;%' )
+                 and ( (  $sArticleTable.oxtitle like '%ü%' or $sArticleTable.oxtitle like '%&uuml;%' or
+                 $sArticleTable.oxshortdesc like '%ü%' or $sArticleTable.oxshortdesc like '%&uuml;%' or
+                 $sArticleTable.oxsearchkeys like '%ü%' or $sArticleTable.oxsearchkeys like '%&uuml;%' or
+                 $sArticleTable.oxartnum like '%ü%' or $sArticleTable.oxartnum like '%&uuml;%' )
                  or ( $sArticleTable.oxtitle like '%a%' or $sArticleTable.oxshortdesc like '%a%' or $sArticleTable.oxsearchkeys
                  like '%a%' or $sArticleTable.oxartnum like '%a%' ) )
                  order by $sArticleTable.oxtitle";
 
         $oSearch = new oxsearch();
-        $sQ = $oSearch->UNITgetSearchSelect('ï¿½ a', $sIDCat, $sIDVend, $sIDMan, "$sArticleTable.oxtitle");
+        $sQ = $oSearch->UNITgetSearchSelect('ü a', $sIDCat, $sIDVend, $sIDMan, "$sArticleTable.oxtitle");
 
         //cleaning spaces, tabs and so on...
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");

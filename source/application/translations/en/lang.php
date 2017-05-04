@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
 
@@ -706,8 +706,8 @@ $aLang = array(
 '_UNIT_CM'                                                    => 'cm',
 '_UNIT_MM'                                                    => 'mm',
 '_UNIT_M'                                                     => 'm',
-'_UNIT_M2'                                                    => 'mï¿½',
-'_UNIT_M3'                                                    => 'mï¿½',
+'_UNIT_M2'                                                    => 'm²',
+'_UNIT_M3'                                                    => 'm³',
 '_UNIT_PIECE'                                                 => 'piece',
 '_UNIT_ITEM'                                                  => 'item',
 'DOWNLOADS_EMPTY'                                             => 'You have not ordered any files yet.',

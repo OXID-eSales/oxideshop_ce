@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -569,7 +569,7 @@ class oxOrder extends oxBase
         // deleting remark info only when order is finished
         oxRegistry::getSession()->deleteVariable('ordrem');
         oxRegistry::getSession()->deleteVariable('stsprotection');
-
+        
         //#4005: Order creation time is not updated when order processing is complete
         if (!$blRecalculatingOrder) {
             $this->_updateOrderDate();

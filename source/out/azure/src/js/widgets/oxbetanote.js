@@ -15,7 +15,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
 ( function ( $ ) {
@@ -35,29 +35,29 @@
          * @return integer
          */
         _create: function() {
-
+            
             var self = this;
             $(self.options.closeButton, self.element).click(
                 function(){
                     self.element.fadeOut('slow').remove();
                     $.cookie(self.options.cookieName,1,{path: '/'});
-
+                    
                     if(  $('#cookieNote:visible') ) {
                         $('#cookieNote').animate({ "top": "-=40px" }, 500);
                     }
-
+                    
                     return false;
                 }
             );
-
+            
             if( !$.cookie("hideBetaNote") ) {
                 $('#betaNote').show();
-            }
-
+            } 
+            
             if(  $('#cookieNote:visible') ) {
                 $('#cookieNote').css('top', '40px');
             }
-
+            
         }
     };
 

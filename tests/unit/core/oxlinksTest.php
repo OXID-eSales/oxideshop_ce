@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -68,8 +68,8 @@ class Unit_Core_oxlinksTest extends OxidTestCase
     {
         $oLink = oxNew("oxlinks", getViewName('oxlinks'));
         $oLink->load($this->_oxLinks->getId());
-        $oLink->oxlinks__oxurldesc = new oxField('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"ï¿½ï¿½ï¿½ï¿½', oxField::T_RAW);
+        $oLink->oxlinks__oxurldesc = new oxField('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"äüßö', oxField::T_RAW);
         $this->_oxLinks->Save();
-        $this->assertEquals('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"ï¿½ï¿½ï¿½ï¿½', $oLink->oxlinks__oxurldesc->value);
+        $this->assertEquals('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"äüßö', $oLink->oxlinks__oxurldesc->value);
     }
 }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
 
@@ -343,7 +343,7 @@ class oxRssFeed extends oxSuperCfg
      * @param string $sTargetUrl url of page rss represents
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
+     *             
      * @access protected
      */
     protected function _loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl = null)
@@ -740,7 +740,7 @@ class oxRssFeed extends oxSuperCfg
      * @param oxArticle $oArticle load lists for this article
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *
+     *             
      * @return string
      */
     public function getRecommListsTitle(oxArticle $oArticle)
@@ -755,8 +755,8 @@ class oxRssFeed extends oxSuperCfg
      * get url for 'Recommendation lists' rss feed
      *
      * @param oxArticle $oArticle load lists for this article
-     *
-     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *                            
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.                           
      *
      * @return string
      */
@@ -803,7 +803,7 @@ class oxRssFeed extends oxSuperCfg
      * @param oxArticle $oArticle load lists for this article
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *
+     *             
      * @return null
      */
     public function loadRecommLists(oxArticle $oArticle)
@@ -872,9 +872,9 @@ class oxRssFeed extends oxSuperCfg
      * loads 'Recommendation lists' rss data
      *
      * @param oxRecommList $oRecommList recomm list to load articles from
-     *
+     *                                  
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *
+     *             
      * @return null
      */
     public function loadRecommListArticles(oxRecommList $oRecommList)

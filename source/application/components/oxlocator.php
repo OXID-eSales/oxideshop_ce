@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -303,7 +303,7 @@ class oxLocator extends oxSuperCfg
      * @param oxubase   $oLocatorTarget oxubase object
      * @param oxarticle $oCurrArticle   current article
      *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
+     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.                                  
      */
     protected function _setTagLocatorData($oLocatorTarget, $oCurrArticle)
     {
@@ -364,8 +364,8 @@ class oxLocator extends oxSuperCfg
      *
      * @param oxubase   $oLocatorTarget oxubase object
      * @param oxarticle $oCurrArticle   current article
-     *
-     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+     *                                  
+     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.                                 
      */
     protected function _setRecommlistLocatorData($oLocatorTarget, $oCurrArticle)
     {

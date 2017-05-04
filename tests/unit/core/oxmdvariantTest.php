@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -362,11 +362,11 @@ class Unit_Core_oxmdvariantTest extends OxidTestCase
      */
     public function testGetFPrice()
     {
-        $this->assertEquals('ab 1,00 ï¿½', $this->_oSubj->getFPrice());
-        $this->assertEquals('ab 1,00 ï¿½', $this->_oSubj->getMdSubvariantByName("Red")->getFPrice());
-        $this->assertEquals('ab 1,00 ï¿½', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getFPrice());
-        $this->assertEquals('1,00 ï¿½', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Silk")->getFPrice());
-        $this->assertEquals('2,00 ï¿½', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Wool")->getFPrice());
+        $this->assertEquals('ab 1,00 ¤', $this->_oSubj->getFPrice());
+        $this->assertEquals('ab 1,00 ¤', $this->_oSubj->getMdSubvariantByName("Red")->getFPrice());
+        $this->assertEquals('ab 1,00 ¤', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getFPrice());
+        $this->assertEquals('1,00 ¤', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Silk")->getFPrice());
+        $this->assertEquals('2,00 ¤', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Wool")->getFPrice());
     }
 
     /**

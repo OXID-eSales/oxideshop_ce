@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
 
@@ -24,7 +24,7 @@
  * Handles adding article to recommendation list process.
  * Due to possibility of external modules we recommned to extend the vews from oxUBase view.
  * However expreimentally we extend RecommAdd from Details view here.
- *
+ * 
  * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
 class RecommAdd extends Details

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
 
@@ -65,7 +65,7 @@ class oxwArticleDetails extends oxWidget
      * If tags can be changed
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
+     *             
      * @var bool
      */
     protected $_blCanEditTags = null;
@@ -222,7 +222,7 @@ class oxwArticleDetails extends oxWidget
      * Array of id to form recommendation list.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *
+     *             
      * @var array
      */
     protected $_aSimilarRecommListIds = null;
@@ -319,7 +319,7 @@ class oxwArticleDetails extends oxWidget
      * Checks if rating functionality is on and allowed to user
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
+     *             
      * @return bool
      */
     public function canChangeTags()
@@ -362,7 +362,7 @@ class oxwArticleDetails extends oxWidget
      * Returns tag cloud manager class
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
+     *             
      * @return oxTagCloud
      */
     public function getTagCloudManager()
@@ -383,7 +383,7 @@ class oxwArticleDetails extends oxWidget
      * product exists.
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
+     *             
      * @return bool
      */
     public function isEditableTags()
@@ -730,7 +730,7 @@ class oxwArticleDetails extends oxWidget
      * Return array of id to form recommend list.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *
+     *             
      * @return array
      */
     public function getSimilarRecommListIds()
@@ -1074,7 +1074,7 @@ class oxwArticleDetails extends oxWidget
      * Returns tag separator
      *
      * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
+     *             
      * @return string
      */
     public function getTagSeparator()

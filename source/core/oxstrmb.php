@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -339,8 +339,8 @@ class oxStrMb
 
     /**
      * Recodes and returns passed input:
-     * if $blToHtmlEntities == true  ï¿½ -> &auml;
-     * if $blToHtmlEntities == false &auml; -> ï¿½
+     * if $blToHtmlEntities == true  ä -> &auml;
+     * if $blToHtmlEntities == false &auml; -> ä
      *
      * @param string $sInput           text to recode
      * @param bool   $blToHtmlEntities recode direction

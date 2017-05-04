@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -43,7 +43,7 @@ class Unit_Admin_StatisticMainTest extends OxidTestCase
         $aReportFiles = array(
             array('filename' => 'report_canceled_orders.php', 'name' => 'Bestellabbrueche'),
             array('filename' => 'report_conversion_rate.php', 'name' => 'Conversion Rate'),
-            array('filename' => 'report_searchstrings.php', 'name' => 'Suchwï¿½rter'),
+            array('filename' => 'report_searchstrings.php', 'name' => 'Suchwörter'),
             array('filename' => 'report_top_clicked_categories.php', 'name' => 'Top geklickte Kategorien'),
             array('filename' => 'report_top_viewed_products.php', 'name' => 'Top angesehene Artikel'),
             array('filename' => 'report_user_per_group.php', 'name' => 'Kunden nach Benutzergruppen'),

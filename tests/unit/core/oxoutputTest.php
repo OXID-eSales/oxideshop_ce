@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -92,7 +92,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         $oOutput = oxNew('oxOutput');
         oxRegistry::getConfig()->setConfigParam('blSkipEuroReplace', false);
         modConfig::getInstance()->setConfigParam('iUtfMode', 0);
-        $this->assertEquals('&euro;someting', $oOutput->process('ï¿½someting', 'something'));
+        $this->assertEquals('&euro;someting', $oOutput->process('¤someting', 'something'));
     }
 
     /**
@@ -103,7 +103,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         $oOutput = oxNew('oxOutput');
         oxRegistry::getConfig()->setConfigParam('blSkipEuroReplace', false);
         modConfig::getInstance()->setConfigParam('iUtfMode', 1);
-        $this->assertEquals('ï¿½someting', $oOutput->process('ï¿½someting', 'something'));
+        $this->assertEquals('¤someting', $oOutput->process('¤someting', 'something'));
     }
 
     /**
@@ -115,7 +115,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         oxRegistry::getConfig()->setConfigParam('blSkipEuroReplace', true);
         oxRegistry::getConfig()->setConfigParam('iUtfMode', 0);
 
-        $this->assertEquals('ï¿½someting', $oOutput->process('ï¿½someting', 'something'));
+        $this->assertEquals('¤someting', $oOutput->process('¤someting', 'something'));
     }
 
     public function testAddVersionTags()

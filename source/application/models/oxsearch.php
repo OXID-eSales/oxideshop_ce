@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
 
@@ -280,7 +280,7 @@ class oxSearch extends oxSuperCfg
                 if ($blSep2) {
                     $sSearch .= ' or ';
                 }
-
+                
                 // @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
                 // as long description now is on different table table must differ
                 if ($sField == 'oxlongdesc' || $sField == 'oxtags') {
@@ -289,7 +289,7 @@ class oxSearch extends oxSuperCfg
                     $sSearchField = "{$sArticleTable}.{$sField}";
                 }
                 // END deprecated
-
+                
                 $sSearch .= " {$sSearchField} like " . $oDb->quote("%$sSearchString%");
 
                 // special chars ?

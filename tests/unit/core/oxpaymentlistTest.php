@@ -27,7 +27,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
     protected $_oDefPaymentList = null;
 
     /**
-     * Returns Unique Id with underscore as prefix
+     * Returns Unique Id with underscore as prefix.
      *
      * @return string;
      */
@@ -213,7 +213,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
     }
 
     /**
-     * Testing if payment list will be build even some data is wrong
+     * Testing if payment list will be build even some data is wrong.
      */
     public function testGetPaymentListWithSomeWrongData()
     {
@@ -607,7 +607,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
     }
 
     /**
-     * Testing SQL getter
+     * Testing SQL getter.
      */
     // no user passed
     public function testGetFilterSelectNoUser()
@@ -633,7 +633,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
     }
 
     /**
-     * Testing SQL getter when  no user passed
+     * Testing SQL getter when  no user passed.
      */
     public function testGetFilterSelectAdminUser()
     {
@@ -667,7 +667,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
     }
 
     /**
-     * Testing country id getter
+     * Testing country id getter.
      */
     // testing home country setter and getter
     public function testSetHomeCountryAndGetCountryId()
@@ -697,7 +697,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
     }
 
     /**
-     * Testing payment list getter
+     * Testing payment list getter.
      */
     // no valid delivery set - no payment in list
     public function testGetPaymentListNoValidDelSet()

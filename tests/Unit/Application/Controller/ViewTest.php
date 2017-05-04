@@ -45,6 +45,28 @@ class modOxView extends oxView
     }
 }
 
+class ViewTestFirstModuleController extends \OxidEsales\Eshop\Core\Controller\BaseController
+{
+    public function doSomething()
+    {
+        return 'viewtestsecondmodulecontroller?fnc=doSomethingElse&someParameter=1';
+    }
+
+    protected function onExecuteNewAction()
+    {
+        throw new \Exception('Bail out before redirect, all is well.');
+    }
+}
+
+class ViewTestSecondModuleController extends \OxidEsales\Eshop\Core\Controller\BaseController
+{
+    public function doSomethingElse()
+    {
+    }
+}
+
+
+
 class ViewTest extends \OxidTestCase
 {
 
@@ -708,5 +730,61 @@ class ViewTest extends \OxidTestCase
         $oView->expects($this->any())->method("getSession")->will($this->returnValue($oSession));
 
         $this->assertNull($oView->getSidForWidget());
+    }
+
+    /**
+     * Verify that also module metadata v2 controller ids are handled correctly.
+     * Test case that controller id does not match any class.
+     */
+    public function testExecuteFunctionForUnmatchedModuleController()
+    {
+        $toBeExecuted = 'viewtestmodulecontroller?fnc=doSomethingElse&someParameter=1';
+
+        $view = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\modOxView::class, array('doSomething'));
+        $view->expects($this->once())->method('doSomething')->will($this->returnValue($toBeExecuted));
+
+        try {
+            $view->executeFunction('doSomething');
+        } catch (\OxidEsales\Eshop\Core\Exception\SystemComponentException $exception) {
+            $this->assertEquals('ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND viewtestmodulecontroller', $exception->getMessage());
+            return;
+        }
+
+        $this->fail('No exception thrown by executeFunction');
+    }
+
+    /**
+     * Verify that also module metadata v2 controller ids are handled correctly.
+     * Test case that controller id does match a module controller class.
+     */
+    public function testExecuteFunctionForModuleController()
+    {
+        \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::resetModuleVariables();
+        $controllers = ['viewtestmodule' =>
+                            ['viewtestsecondmodulecontroller' => \OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\ViewTestSecondModuleController::class]
+                       ];
+        $storageKey = \OxidEsales\Eshop\Core\Routing\Module\ClassProviderStorage::STORAGE_KEY;
+        $this->getModuleVariableLocator()->setModuleVariable($storageKey, $controllers);
+
+        $this->assertEmpty(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ViewTestModuleControllerResult'));
+        $view = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\ViewTestFirstModuleController::class);
+
+        $this->setExpectedException(\Exception::class, 'Bail out before redirect, all is well.');
+        $view->executeFunction('doSomething');
+    }
+
+    /**
+     * Test helper, easiest way be able to use ModuleVariableLocator::setModuleVariable() without using the
+     * deprecated method UtilsObject::setModuleVar().
+     *
+     * @return object \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator
+     */
+    private function getModuleVariableLocator()
+    {
+        $cache = $this->getMock(\OxidEsales\Eshop\Core\FileCache::class);
+        $shopIdCalculator = $this->getMock(\OxidEsales\Eshop\Core\ShopIdCalculator::class, array('getShopId'), array(), '', false);
+        $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue($this->getShopId()));
+
+        return oxNew(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, $cache, $shopIdCalculator);
     }
 }

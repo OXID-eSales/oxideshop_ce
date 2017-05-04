@@ -22,13 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\Controller;
 
-use oxCategory;
 use OxidEsales\EshopCommunity\Core\ShopVersion;
-use oxRegistry;
-use oxShop;
-use oxSystemComponentException;
-use oxView;
-use oxViewConfig;
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global
@@ -60,7 +54,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     /**
      * If this is a component we will have our parent view here.
      *
-     * @var oxView
+     * @var \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected $_oParent = null;
 
@@ -177,7 +171,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     protected $_blIsCallForCache = false;
 
     /**
-     * oxViewConfig instance
+     * \OxidEsales\Eshop\Core\ViewConfig instance
      *
      * @var \OxidEsales\Eshop\Core\ViewConfig
      */
@@ -317,7 +311,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns view config object
      *
-     * @return \oxViewConfig
+     * @return \OxidEsales\Eshop\Core\ViewConfig
      */
     public function getViewConfig()
     {
@@ -535,7 +529,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sFunction name of function to execute
      *
-     * @throws oxSystemComponentException system component exception
+     * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException system component exception
      */
     public function executeFunction($sFunction)
     {
@@ -568,7 +562,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sNewAction new action params
      *
-     * @throws oxSystemComponentException system component exception
+     * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException system component exception
      */
     protected function _executeNewAction($sNewAction)
     {
@@ -584,7 +578,8 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             // looking for function name
             $params = explode('/', $params[0]);
             $className = $params[0];
-            $realClassName = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->getClassName($className);
+            $resolvedClassName = \OxidEsales\Eshop\Core\Registry::getControllerClassNameResolver()->getClassNameById($className);
+            $realClassName = $resolvedClassName ? \OxidEsales\Eshop\Core\Registry::getUtilsObject()->getClassName($resolvedClassName) : \OxidEsales\Eshop\Core\Registry::getUtilsObject()->getClassName($className);
 
             if (false === class_exists($realClassName)) {
                 //If redirect tries to use a not existing class throw an exception.

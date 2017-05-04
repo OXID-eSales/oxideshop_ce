@@ -326,7 +326,7 @@ class Unit_Views_paymentTest extends OxidTestCase
         $sQ = "INSERT INTO `oxorder`
                    (`OXID`, `OXSHOPID`, `OXUSERID`, `OXORDERDATE`, `OXORDERNR`, `OXBILLCOMPANY`, `OXBILLEMAIL`, `OXBILLFNAME`, `OXBILLLNAME`, `OXBILLSTREET`, `OXBILLSTREETNR`, `OXBILLADDINFO`, `OXBILLUSTID`, `OXBILLCITY`, `OXBILLCOUNTRYID`, `OXBILLSTATEID`, `OXBILLZIP`, `OXBILLFON`, `OXBILLFAX`, `OXBILLSAL`, `OXDELCOMPANY`, `OXDELFNAME`, `OXDELLNAME`, `OXDELSTREET`, `OXDELSTREETNR`, `OXDELADDINFO`, `OXDELCITY`, `OXDELCOUNTRYID`, `OXDELSTATEID`, `OXDELZIP`, `OXDELFON`, `OXDELFAX`, `OXDELSAL`, `OXPAYMENTID`, `OXPAYMENTTYPE`, `OXTOTALNETSUM`, `OXTOTALBRUTSUM`, `OXTOTALORDERSUM`, `OXARTVAT1`, `OXARTVATPRICE1`, `OXARTVAT2`, `OXARTVATPRICE2`, `OXDELCOST`, `OXDELVAT`, `OXPAYCOST`, `OXPAYVAT`, `OXWRAPCOST`, `OXWRAPVAT`, `OXCARDID`, `OXCARDTEXT`, `OXDISCOUNT`, `OXEXPORT`, `OXBILLNR`, `OXTRACKCODE`, `OXSENDDATE`, `OXREMARK`, `OXVOUCHERDISCOUNT`, `OXCURRENCY`, `OXCURRATE`, `OXFOLDER`, `OXTRANSID`, `OXPAYID`, `OXXID`, `OXPAID`, `OXSTORNO`, `OXIP`, `OXTRANSSTATUS`, `OXLANG`, `OXINVOICENR`, `OXDELTYPE`)
                VALUES
-                   (?, ?, ?, ?, ?, '', 'info@oxid-esales.com', 'Marc', 'Muster', 'Hauptstr.', '13', '', '', 'Freiburg', 'a7c40f631fc920687.20179984', 'BW', '79098', '', '', 'MR', '', '', '', '', '', '', '', '', '', '', '', '', '', ?, 'oxiddebitnote', 1639.15, 2108.39, 1950.59, 19, 311.44, 0, 0, 0, 19, 0, 0, 0, 0, '', '', 157.8, 0, '', '', '0000-00-00 00:00:00', 'Hier kï¿½nnen Sie uns noch etwas mitteilen.', 0, 'EUR', 1, 'ORDERFOLDER_NEW', '', '', '', '0000-00-00 00:00:00', 0, '', 'OK', 0, 0, 'oxidstandard')";
+                   (?, ?, ?, ?, ?, '', 'info@oxid-esales.com', 'Marc', 'Muster', 'Hauptstr.', '13', '', '', 'Freiburg', 'a7c40f631fc920687.20179984', 'BW', '79098', '', '', 'MR', '', '', '', '', '', '', '', '', '', '', '', '', '', ?, 'oxiddebitnote', 1639.15, 2108.39, 1950.59, 19, 311.44, 0, 0, 0, 19, 0, 0, 0, 0, '', '', 157.8, 0, '', '', '0000-00-00 00:00:00', 'Hier können Sie uns noch etwas mitteilen.', 0, 'EUR', 1, 'ORDERFOLDER_NEW', '', '', '', '0000-00-00 00:00:00', 0, '', 'OK', 0, 0, 'oxidstandard')";
 
         $sShopId = oxRegistry::getConfig()->GetBaseShopId();
         foreach ($aUserPaymentId as $iCnt => $sUserPaymentId) {
@@ -503,11 +503,11 @@ class Unit_Views_paymentTest extends OxidTestCase
         $sTVal = "testVal";
 
         $aDynData = array("testKey"  => $sTVal,
-                          "kknumber" => $sTNumber,
-                          "kkname"   => $sTName,
-                          "kkmonth"  => $sTMonth,
-                          "kkyear"   => $sTYear,
-                          "kkpruef"  => $sTProof
+            "kknumber" => $sTNumber,
+            "kkname"   => $sTName,
+            "kkmonth"  => $sTMonth,
+            "kkyear"   => $sTYear,
+            "kkpruef"  => $sTProof
         );
 
         modConfig::getInstance()->setRequestParameter("dynvalue", $aDynData);
@@ -557,11 +557,11 @@ class Unit_Views_paymentTest extends OxidTestCase
         $sTVal = "testVal";
 
         $aDynData = array("testKey"  => $sTVal,
-                          "kknumber" => $sTNumber,
-                          "kkname"   => $sTName,
-                          "kkmonth"  => $sTMonth,
-                          "kkyear"   => $sTYear,
-                          "kkpruef"  => $sTProof
+            "kknumber" => $sTNumber,
+            "kkname"   => $sTName,
+            "kkmonth"  => $sTMonth,
+            "kkyear"   => $sTYear,
+            "kkpruef"  => $sTProof
         );
 
         modConfig::getInstance()->setRequestParameter("dynvalue", $aDynData);
@@ -816,11 +816,11 @@ class Unit_Views_paymentTest extends OxidTestCase
         $sTType = "tstType";
 
         $aDynData = array("kktype"   => $sTType,
-                          "kknumber" => $sTNumber,
-                          "kkname"   => $sTName,
-                          "kkmonth"  => $sTMonth,
-                          "kkyear"   => $sTYear,
-                          "kkpruef"  => $sTProof
+            "kknumber" => $sTNumber,
+            "kkname"   => $sTName,
+            "kkmonth"  => $sTMonth,
+            "kkyear"   => $sTYear,
+            "kkpruef"  => $sTProof
         );
 
         $this->setSessionParam("dynvalue", $aDynData);
@@ -908,11 +908,11 @@ class Unit_Views_paymentTest extends OxidTestCase
         $sTTtype = "vis";
 
         $aDynData = array("kktype"   => $sTTtype,
-                          "kknumber" => $sTNumber,
-                          "kkname"   => $sTName,
-                          "kkmonth"  => $sTMonth,
-                          "kkyear"   => $sTYear,
-                          "kkpruef"  => $sTProof
+            "kknumber" => $sTNumber,
+            "kkname"   => $sTName,
+            "kkmonth"  => $sTMonth,
+            "kkyear"   => $sTYear,
+            "kkpruef"  => $sTProof
         );
 
         $this->setSessionParam("dynvalue", $aDynData);

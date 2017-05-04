@@ -53,9 +53,9 @@ if (!class_exists("report_top_viewed_products")) {
             $sTimeTo = $oDb->quote(date("Y-m-d H:i:s", strtotime($oSmarty->_tpl_vars['time_to'])));
 
             $sSQL = "select count(*) as nrof, oxarticles.oxtitle from oxlogs, oxarticles " .
-                    "where oxlogs.oxclass = 'details' and oxlogs.oxanid = oxarticles.oxid  " .
-                    "and oxlogs.oxtime >= $sTimeFrom and oxlogs.oxtime <= $sTimeTo group by oxlogs.oxanid " .
-                    "order by nrof desc limit 0, 25";
+                "where oxlogs.oxclass = 'details' and oxlogs.oxanid = oxarticles.oxid  " .
+                "and oxlogs.oxtime >= $sTimeFrom and oxlogs.oxtime <= $sTimeTo group by oxlogs.oxanid " .
+                "order by nrof desc limit 0, 25";
             $rs = $oDb->execute($sSQL);
             if ($rs != false && $rs->recordCount() > 0) {
                 while (!$rs->EOF) {
@@ -173,7 +173,7 @@ if (!class_exists("report_top_viewed_products")) {
 
 
             // Set title and subtitle
-            $graph->title->set("Suchwï¿½rter");
+            $graph->title->set("Suchwörter");
 
             // Use built in font
             $graph->title->setFont(FF_FONT1, FS_BOLD);

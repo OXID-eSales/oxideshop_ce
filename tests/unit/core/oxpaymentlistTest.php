@@ -295,32 +295,32 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
      *
      * DELIVERIES:
      * + all standard deliveries + customizations:
-     *     - Versandkosten fï¿½r Standard: Versandkostenfrei ab 80, - Germany only
-     *     - Versandkosten fï¿½r Standard: 3,90 Euro innerhalb Deutschland - Germany only
-     *     - Versandkosten fï¿½r Standard: 6,90 Rest EU - excluding Germany
-     *     - Versandkosten fï¿½r Beispiel Set1: UPS 48 Std.: 9,90. - all countries
-     *     - Versandkosten fï¿½r Beispiel Set2: UPS 24 Std. Express: 12,90. - all countries
+     *     - Versandkosten für Standard: Versandkostenfrei ab 80, - Germany only
+     *     - Versandkosten für Standard: 3,90 Euro innerhalb Deutschland - Germany only
+     *     - Versandkosten für Standard: 6,90 Rest EU - excluding Germany
+     *     - Versandkosten für Beispiel Set1: UPS 48 Std.: 9,90. - all countries
+     *     - Versandkosten für Beispiel Set2: UPS 24 Std. Express: 12,90. - all countries
      *
      * DELIVERY SETS:
      * + only custom;
      * + UPS Standard (CH):
      *     - sorting: 0;
      *     - countries: Schweiz only;
-     *     - deliveries: Versandkosten fï¿½r Beispiel Set1: UPS 48 Std.: 9,90.-;
+     *     - deliveries: Versandkosten für Beispiel Set1: UPS 48 Std.: 9,90.-;
      *     - payments: Nachnahme (COD), Rechnung, Vorauskasse 2% Skonto;
      *     - user groups/users assigned: none;
      *     - OXID = 1b842e732a23255b1.91207750
      * + deutschland_test:
      *     - sorting: 0
      *     - countries: Germany only;
-     *     - deliveries: Versandkosten fï¿½r Beispiel Set2: UPS 24 Std. Express: 12,90.-;
+     *     - deliveries: Versandkosten für Beispiel Set2: UPS 24 Std. Express: 12,90.-;
      *     - payments: all available;
      *     - user groups/users assigned: none;
      *     - OXID = 1b842e732a23255b1.91207751
      * + UPS Standard (Inland):
      *     - sorting: 1;
      *     - countries: Germany only;
-     *     - deliveries: Versandkosten fï¿½r Standard: 3,90 Euro innerhalb Deutschland, Versandkosten fï¿½r Standard: Versandkostenfrei ab 80,-;
+     *     - deliveries: Versandkosten für Standard: 3,90 Euro innerhalb Deutschland, Versandkosten für Standard: Versandkostenfrei ab 80,-;
      *     - payments: Nachnahme, Rechnung, Vorauskasse 2% Skonto;
      *     - user groups/users assigned: none;
      *     - OXID = oxidstandard
@@ -397,7 +397,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
 
         // DELIVERIES:
 
-        // Versandkosten fï¿½r Standard: Versandkostenfrei ab 80, - Germany only
+        // Versandkosten für Standard: Versandkostenfrei ab 80, - Germany only
         $oDb->execute("delete from oxobject2delivery where oxdeliveryid='1b842e734b62a4775.45738618'");
 
         $oObjectToDelivery = new oxBase();
@@ -408,7 +408,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObjectToDelivery->oxobject2delivery__oxtype = new oxField("oxcountry");
         $oObjectToDelivery->save();
 
-        // Versandkosten fï¿½r Standard: 3,90 Euro innerhalb Deutschland - Germany only
+        // Versandkosten für Standard: 3,90 Euro innerhalb Deutschland - Germany only
         $oDb->execute("delete from oxobject2delivery where oxdeliveryid='1b842e73470578914.54719298'");
 
         $oObjectToDelivery = new oxBase();
@@ -419,7 +419,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObjectToDelivery->oxobject2delivery__oxtype = new oxField("oxcountry");
         $oObjectToDelivery->save();
 
-        // Versandkosten fï¿½r Standard: 6,90 Rest EU - excluding Germany
+        // Versandkosten für Standard: 6,90 Rest EU - excluding Germany
         $oDb->execute("delete from oxobject2delivery where oxdeliveryid='1b842e7352422a708.01472527'");
 
         $oObjectToDelivery = new oxBase();
@@ -430,7 +430,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObjectToDelivery->oxobject2delivery__oxtype = new oxField("oxcountry");
         $oObjectToDelivery->save();
 
-        // Versandkosten fï¿½r Beispiel Set1: UPS 48 Std.: 9,90. - all countries
+        // Versandkosten für Beispiel Set1: UPS 48 Std.: 9,90. - all countries
         $oDb->execute("delete from oxobject2delivery where oxdeliveryid='1b842e738970d31e3.71258327'");
 
         $oObjectToDelivery = new oxBase();
@@ -449,7 +449,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObjectToDelivery->oxobject2delivery__oxtype = new oxField("oxcountry");
         $oObjectToDelivery->save();
 
-        // Versandkosten fï¿½r Beispiel Set2: UPS 24 Std. Express: 12,90. - all countries
+        // Versandkosten für Beispiel Set2: UPS 24 Std. Express: 12,90. - all countries
         $oDb->execute("delete from oxobject2delivery where oxdeliveryid='1b842e738970d31e3.71258328'");
 
         $oObjectToDelivery = new oxBase();
@@ -499,7 +499,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObject->oxobject2payment__oxtype = new oxField("oxdelset");
         $oObject->save();
 
-        // - deliveries: Versandkosten fï¿½r Beispiel Set2: UPS 24 Std. Express: 12,90.-;
+        // - deliveries: Versandkosten für Beispiel Set2: UPS 24 Std. Express: 12,90.-;
         $oDel2delset = new oxBase();
         $oDel2delset->init('oxdel2delset');
         $oDel2delset->setId($this->_getUId());
@@ -544,7 +544,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObject->oxobject2payment__oxtype = new oxField("oxdelset");
         $oObject->save();
 
-        // - deliveries: Versandkosten fï¿½r Beispiel Set2: UPS 24 Std. Express: 12,90.-;
+        // - deliveries: Versandkosten für Beispiel Set2: UPS 24 Std. Express: 12,90.-;
         $oDel2delset = new oxBase();
         $oDel2delset->init('oxdel2delset');
         $oDel2delset->setId($this->_getUId());
@@ -580,7 +580,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObject->oxobject2payment__oxtype = new oxField("oxdelset");
         $oObject->save();
 
-        // - deliveries: Versandkosten fï¿½r Standard: Versandkostenfrei ab 80,-;
+        // - deliveries: Versandkosten für Standard: Versandkostenfrei ab 80,-;
         $oDel2delset = new oxBase();
         $oDel2delset->init('oxdel2delset');
         $oDel2delset->setId($this->_getUId());

@@ -53,7 +53,7 @@ if (!class_exists("report_searchstrings")) {
             $sTimeTo = $oDb->quote(date("Y-m-d H:i:s", strtotime($oSmarty->_tpl_vars['time_to'])));
 
             $sSQL = "select count(*) as nrof, oxparameter from oxlogs where oxclass = 'search' and " .
-                    "oxtime >= $sTimeFrom and oxtime <= $sTimeTo group by oxparameter order by nrof desc";
+                "oxtime >= $sTimeFrom and oxtime <= $sTimeTo group by oxparameter order by nrof desc";
             $rs = $oDb->execute($sSQL);
             if ($rs != false && $rs->recordCount() > 0) {
                 while (!$rs->EOF) {
@@ -166,7 +166,7 @@ if (!class_exists("report_searchstrings")) {
             $graph->xaxis->setTickLabels($aDataY);
 
             // Set title and subtitle
-            $graph->title->set("Suchwï¿½rter");
+            $graph->title->set("Suchwörter");
 
             // Use built in font
             $graph->title->setFont(FF_FONT1, FS_BOLD);

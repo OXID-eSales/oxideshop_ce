@@ -146,6 +146,7 @@ $aLang = array(
     'GENERAL_ARTICLE_OXREMINDAMOUNT'    => 'Low stock threshold',
     'GENERAL_ARTICLE_OXAMITEMID'        => 'oxamitemid',
     'GENERAL_ARTICLE_OXAMTASKID'        => 'oxamtaskid',
+    'GENERAL_ARTICLE_OXVARMAXPRICE'     => 'Maximum price of all variants',
     'GENERAL_ARTICLE_OXVENDORID'        => 'Vendor ID',
     'GENERAL_ARTICLE_OXMANUFACTURERID'  => 'Manufacturer ID',
     'GENERAL_ARTICLE_OXVARCOUNT'        => 'Variant count',

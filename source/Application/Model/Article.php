@@ -488,6 +488,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $this->$sParam = $mValue;
             }
         }
+        
+        // move this and the following dependencies to the constructor and do not use getters inside of methods
+        $this->config = $this->getConfig();
+        
         parent::__construct();
         $this->init('oxarticles');
     }
@@ -607,18 +611,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getStockCheckQuery($blForceCoreTable = null)
     {
-        $myConfig = $this->getConfig();
         $sTable = $this->getViewName($blForceCoreTable);
 
         $sQ = "";
 
         //do not check for variants
-        if ($myConfig->getConfigParam('blUseStock')) {
+        if ($this->config->getConfigParam('blUseStock')) {
             $sQ = " and ( $sTable.oxstockflag != 2 or ( $sTable.oxstock + $sTable.oxvarstock ) > 0  ) ";
             //V #M513: When Parent article is not purchasable, it's visibility should be displayed in shop only if any of Variants is available.
-            if (!$myConfig->getConfigParam('blVariantParentBuyable')) {
+            if (!$this->config->getConfigParam('blVariantParentBuyable')) {
                 $activeCheck = 'art.oxactive = 1';
-                if ($myConfig->getConfigParam('blUseTimeCheck')) {
+                if ($this->config->getConfigParam('blUseTimeCheck')) {
                     $activeCheck = $this->addSqlActiveRangeSnippet($activeCheck, 'art');
                 }
                 $sQ = " $sQ and IF( $sTable.oxvarcount = 0, 1, ( select 1 from $sTable as art where art.oxparentid=$sTable.oxid and $activeCheck and ( art.oxstockflag != 2 or art.oxstock > 0 ) limit 1 ) ) ";
@@ -645,7 +648,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $sQ = " and $sTable.oxparentid = '" . $this->getId() . "' ";
 
         //checking if variant is active and stock status
-        if ($this->getConfig()->getConfigParam('blUseStock')) {
+        if ($this->config->getConfigParam('blUseStock')) {
             $sQ .= " and ( $sTable.oxstock > 0 or ( $sTable.oxstock <= 0 and $sTable.oxstockflag != 2 ";
             if ($blRemoveNotOrderables) {
                 $sQ .= " and $sTable.oxstockflag != 3 ";

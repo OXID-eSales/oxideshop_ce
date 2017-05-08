@@ -142,6 +142,7 @@ $aLang = array(
     'GENERAL_ARTICLE_OXREMINDAMOUNT'    => 'Zuwenig Lagerbestand Mindestmenge',
     'GENERAL_ARTICLE_OXAMITEMID'        => 'oxamitemid',
     'GENERAL_ARTICLE_OXAMTASKID'        => 'oxamtaskid',
+    'GENERAL_ARTICLE_OXVARMAXPRICE'     => 'Höchster Variantenpreis',
     'GENERAL_ARTICLE_OXVENDORID'        => 'Lieferant ID',
     'GENERAL_ARTICLE_OXMANUFACTURERID'  => 'Hersteller ID',
     'GENERAL_ARTICLE_OXVARCOUNT'        => 'Varianten Anzahl',

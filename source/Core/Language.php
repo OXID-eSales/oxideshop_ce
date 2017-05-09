@@ -433,6 +433,13 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     public function translateString($sStringToTranslate, $iLang = null, $blAdminMode = null)
     {
+        /**
+         * Extract this code into dedicated service, which could be replaced by the third party component, like:
+         * - TranslationServiceProvider (https://silex.sensiolabs.org/doc/2.0/providers/translation.html)
+         * - Translator (http://symfony.com/doc/current/translation.html)
+         * - etc.
+         */
+        
         $this->setIsTranslated();
         // checking if in cache exist
         $aLang = $this->_getLangTranslationArray($iLang, $blAdminMode);

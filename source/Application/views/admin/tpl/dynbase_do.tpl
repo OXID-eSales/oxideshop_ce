@@ -20,7 +20,7 @@
         [{/if}]
     [{/if}]
 [{else}]
-  [{oxmultilang ident="GENEXPORT_EXPRUNNING"}] [{oxmultilang ident="GENEXPORT_EXPORTEDITEMS"}] [{$iExpItems|default:0}]
+  [{oxmultilang ident="GENEXPORT_EXPRUNNING"}] [{oxmultilang ident="GENEXPORT_EXPORTEDITEMS"}]: [{$iExpItems|default:0}]
 [{/if}]
 
 [{include file="bottomitem.tpl"}]

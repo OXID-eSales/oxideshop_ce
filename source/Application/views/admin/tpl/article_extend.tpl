@@ -95,9 +95,9 @@ function processUnitInput( oSelect, sInputId )
                   [{oxmultilang ident="ARTICLE_EXTEND_MASS"}]
                 </td>
                 <td class="edittext">
-                  [{oxmultilang ident="ARTICLE_EXTEND_LENGTH"}]&nbsp;<input type="text" class="editinput" size="3" maxlength="[{$edit->oxarticles__oxlength->fldmax_length}]" name="editval[oxarticles__oxlength]" value="[{$edit->oxarticles__oxlength->value}]" [{$readonly}]>[{oxmultilang ident="ARTICLE_EXTEND_DIMENSIONS_UNIT"}]
-                  [{oxmultilang ident="ARTICLE_EXTEND_WIDTH"}]&nbsp;<input type="text" class="editinput" size="3" maxlength="[{$edit->oxarticles__oxwidth->fldmax_length}]" name="editval[oxarticles__oxwidth]" value="[{$edit->oxarticles__oxwidth->value}]" [{$readonly}]>[{oxmultilang ident="ARTICLE_EXTEND_DIMENSIONS_UNIT"}]
-                  [{oxmultilang ident="ARTICLE_EXTEND_HEIGHT"}]&nbsp;<input type="text" class="editinput" size="3" maxlength="[{$edit->oxarticles__oxheight->fldmax_length}]" name="editval[oxarticles__oxheight]" value="[{$edit->oxarticles__oxheight->value}]" [{$readonly}]>[{oxmultilang ident="ARTICLE_EXTEND_DIMENSIONS_UNIT"}]
+                  [{oxmultilang ident="ARTICLE_EXTEND_LENGTH"}]:&nbsp;<input type="text" class="editinput" size="3" maxlength="[{$edit->oxarticles__oxlength->fldmax_length}]" name="editval[oxarticles__oxlength]" value="[{$edit->oxarticles__oxlength->value}]" [{$readonly}]>[{oxmultilang ident="ARTICLE_EXTEND_DIMENSIONS_UNIT"}]
+                  [{oxmultilang ident="ARTICLE_EXTEND_WIDTH"}]:&nbsp;<input type="text" class="editinput" size="3" maxlength="[{$edit->oxarticles__oxwidth->fldmax_length}]" name="editval[oxarticles__oxwidth]" value="[{$edit->oxarticles__oxwidth->value}]" [{$readonly}]>[{oxmultilang ident="ARTICLE_EXTEND_DIMENSIONS_UNIT"}]
+                  [{oxmultilang ident="ARTICLE_EXTEND_HEIGHT"}]:&nbsp;<input type="text" class="editinput" size="3" maxlength="[{$edit->oxarticles__oxheight->fldmax_length}]" name="editval[oxarticles__oxheight]" value="[{$edit->oxarticles__oxheight->value}]" [{$readonly}]>[{oxmultilang ident="ARTICLE_EXTEND_DIMENSIONS_UNIT"}]
                   [{oxinputhelp ident="HELP_ARTICLE_EXTEND_MASS"}]
                 </td>
               </tr>
@@ -356,21 +356,21 @@ function processUnitInput( oSelect, sInputId )
             <table cellspacing="0" cellpadding="0" border="0">
                 <tr>
                     [{oxhasrights object=$edit field='oxupdateprice' readonly=$readonly}]
-                        <td>[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICE"}] ([{$oActCur->sign}]):&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdateprice->fldmax_length}]" name="editval[oxarticles__oxupdateprice]" value="[{$edit->oxarticles__oxupdateprice->value}]"></td>
+                        <td>[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICE"}]: ([{$oActCur->sign}]):&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdateprice->fldmax_length}]" name="editval[oxarticles__oxupdateprice]" value="[{$edit->oxarticles__oxupdateprice->value}]"></td>
                     [{/oxhasrights}]
                     [{oxhasrights object=$edit field='oxupdatepricea' readonly=$readonly}]
-                        <td>&nbsp;[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICEA"}]&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdatepricea->fldmax_length}]" name="editval[oxarticles__oxupdatepricea]" value="[{$edit->oxarticles__oxupdatepricea->value}]"></td>
+                        <td>&nbsp;[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICEA"}]:&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdatepricea->fldmax_length}]" name="editval[oxarticles__oxupdatepricea]" value="[{$edit->oxarticles__oxupdatepricea->value}]"></td>
                     [{/oxhasrights}]
                     [{oxhasrights object=$edit field='oxupdatepriceb' readonly=$readonly}]
-                        <td>&nbsp;[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICEB"}]&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdatepriceb->fldmax_length}]" name="editval[oxarticles__oxupdatepriceb]" value="[{$edit->oxarticles__oxupdatepriceb->value}]"></td>
+                        <td>&nbsp;[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICEB"}]:&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdatepriceb->fldmax_length}]" name="editval[oxarticles__oxupdatepriceb]" value="[{$edit->oxarticles__oxupdatepriceb->value}]"></td>
                     [{/oxhasrights}]
                     [{oxhasrights object=$edit field='oxupdatepricec' readonly=$readonly}]
-                        <td>&nbsp;[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICEC"}]&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdatepricec->fldmax_length}]" name="editval[oxarticles__oxupdatepricec]" value="[{$edit->oxarticles__oxupdatepricec->value}]"></td>
+                        <td>&nbsp;[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICEC"}]:&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdatepricec->fldmax_length}]" name="editval[oxarticles__oxupdatepricec]" value="[{$edit->oxarticles__oxupdatepricec->value}]"></td>
                     [{/oxhasrights}]
                 </tr>
                 [{oxhasrights object=$edit field='oxupdatepricetime' readonly=$readonly}]
                 <tr>
-                    <td>[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICETIME"}]&nbsp;</td>
+                    <td>[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICETIME"}]:&nbsp;</td>
                     <td colspan="7">
                         <input type="text" class="editinput" size="20" maxlength="20" name="editval[oxarticles__oxupdatepricetime]" value="[{$edit->oxarticles__oxupdatepricetime->value|oxformdate}]">
                     </td>

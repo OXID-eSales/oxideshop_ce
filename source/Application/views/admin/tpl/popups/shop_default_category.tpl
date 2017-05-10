@@ -95,7 +95,7 @@
         </tr>
         <tr>
             <td valign="top" class="edittext" id="_defcat" [{if !$defcat}] style="visibility:hidden" [{/if}]>
-              <b>[{oxmultilang ident="SHOP_CONFIG_ASSIGNEDDEFAULTCAT"}]</b>
+              <b>[{oxmultilang ident="SHOP_CONFIG_ASSIGNEDDEFAULTCAT"}]:</b>
               <b id="defcat_title">[{$defcat->oxcategories__oxtitle->value}]</b>
             </td>
         </tr>

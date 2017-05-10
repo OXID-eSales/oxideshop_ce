@@ -124,7 +124,7 @@
             <div class="hidden" id="version_checker_comment">
             <p>[{oxmultilang ident="OXDIAG_INTROINFORMATION"}]</p>
             <p>[{oxmultilang ident="OXDIAG_INTROINFORMATION_NO_PERSONAL_INFO"}]</p>
-            <p>[{oxmultilang ident="OXDIAG_INTROINFORMATION_DATA_TRANSMITTED"}]</p>
+            <p>[{oxmultilang ident="OXDIAG_INTROINFORMATION_DATA_TRANSMITTED"}]:</p>
             <ul>
                 <li>[{oxmultilang ident="OXDIAG_INTROINFORMATION_FILENAME_TO_BE_CHECKED"}]</li>
                 <li>[{oxmultilang ident="OXDIAG_INTROINFORMATION_MD5_CHECKSUM"}]</li>

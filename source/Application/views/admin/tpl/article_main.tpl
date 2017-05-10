@@ -229,9 +229,9 @@ window.onload = function ()
                     [{oxmultilang ident="ARTICLE_MAIN_ALDPRICE"}] ([{$oActCur->sign}])
                     </td>
                     <td class="edittext" nowrap>
-                        [{oxmultilang ident="ARTICLE_MAIN_PRICEA"}] <input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxpricea->fldmax_length}]" name="editval[oxarticles__oxpricea]" value="[{$edit->oxarticles__oxpricea->value}]" [{$readonly}]>
-                        [{oxmultilang ident="ARTICLE_MAIN_PRICEB"}] <input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxpriceb->fldmax_length}]" name="editval[oxarticles__oxpriceb]" value="[{$edit->oxarticles__oxpriceb->value}]" [{$readonly}]>
-                        [{oxmultilang ident="ARTICLE_MAIN_PRICEC"}] <input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxpricec->fldmax_length}]" name="editval[oxarticles__oxpricec]" value="[{$edit->oxarticles__oxpricec->value}]" [{$readonly}]>
+                        [{oxmultilang ident="ARTICLE_MAIN_PRICEA"}]: <input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxpricea->fldmax_length}]" name="editval[oxarticles__oxpricea]" value="[{$edit->oxarticles__oxpricea->value}]" [{$readonly}]>
+                        [{oxmultilang ident="ARTICLE_MAIN_PRICEB"}]: <input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxpriceb->fldmax_length}]" name="editval[oxarticles__oxpriceb]" value="[{$edit->oxarticles__oxpriceb->value}]" [{$readonly}]>
+                        [{oxmultilang ident="ARTICLE_MAIN_PRICEC"}]: <input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxpricec->fldmax_length}]" name="editval[oxarticles__oxpricec]" value="[{$edit->oxarticles__oxpricec->value}]" [{$readonly}]>
                         [{oxinputhelp ident="HELP_ARTICLE_MAIN_ALDPRICE"}]
                     </td>
                   </tr>
@@ -258,7 +258,7 @@ window.onload = function ()
               [{if $oxid == -1}]
                 <tr>
                   <td class="edittext">
-                [{oxmultilang ident="ARTICLE_MAIN_INCATEGORY"}]
+                [{oxmultilang ident="ARTICLE_MAIN_INCATEGORY"}]:
                 </td>
                 <td class="edittext">
                 <select name="art_category" class="editinput" onChange="Javascript:top.oxid.admin.changeLstrt()" [{$readonly}]>

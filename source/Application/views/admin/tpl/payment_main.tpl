@@ -70,7 +70,7 @@
             [{/if}]
             <tr>
                 <td class="edittext" valign="top">
-                [{oxmultilang ident="PAYMENT_MAIN_ADDSUMRULES"}]
+                [{oxmultilang ident="PAYMENT_MAIN_ADDSUMRULES"}]:
                 </td>
                 <td class="edittext">
                   <table cellspacing="0" cellpadding="0" border="0">

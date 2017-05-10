@@ -33,7 +33,7 @@ If you want to install OXID eShop including example data like products, categori
 
 ### IDE code completion
 
-You can easily enable code completion in your IDE by installing [this script](https://github.com/OXID-eSales/eshop-ide-helper>) and generating it as described.
+You can easily enable code completion in your IDE by installing [this script](https://github.com/OXID-eSales/eshop-ide-helper) and generating it as described.
 
 ### Useful links
 

@@ -109,7 +109,7 @@
         </tr>
         <tr>
             <td valign="top" class="edittext" id="_bundle" [{if !$bundle_artnum}] style="visibility:hidden" [{/if}]>
-              <b>[{oxmultilang ident="ARTICLE_BUNDLE_ASSIGNEDARTICLE"}]</b>
+              <b>[{oxmultilang ident="ARTICLE_BUNDLE_ASSIGNEDARTICLE"}]:</b>
               <b id="bundle_artnum">[{$bundle_artnum}]</b> <b id="bundle_title">[{$bundle_title}]</b>
             </td>
         </tr>

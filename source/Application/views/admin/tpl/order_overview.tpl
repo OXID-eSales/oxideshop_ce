@@ -30,7 +30,7 @@
                 [{$edit->oxorder__oxbillcountry->value}]<br>
                 [{if $edit->oxorder__oxbillcompany->value && $edit->oxorder__oxbillustid->value}]
                     <br>
-                    [{oxmultilang ident="ORDER_OVERVIEW_VATID"}]
+                    [{oxmultilang ident="ORDER_OVERVIEW_VATID"}]:
                     [{$edit->oxorder__oxbillustid->value}]<br>
                     [{include file="include/message_vat_check_failed.tpl"}]
                 [{/if}]

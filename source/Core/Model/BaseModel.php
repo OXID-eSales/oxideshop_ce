@@ -1406,7 +1406,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         $this->beforeUpdate();
 
-        return (bool) $this->executeDatabaseQuery($updateQuery);
+        $result = $this->executeDatabaseQuery($updateQuery);
+
+        return is_numeric($result);
     }
 
     /**

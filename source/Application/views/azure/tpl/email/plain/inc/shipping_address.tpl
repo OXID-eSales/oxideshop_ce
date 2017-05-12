@@ -1,7 +1,0 @@
-[{$order->oxorder__oxdelcompany->getRawValue()}]
-[{$order->oxorder__oxdelsal->value|oxmultilangsal}] [{$order->oxorder__oxdelfname->getRawValue()}] [{$order->oxorder__oxdellname->getRawValue()}]
-[{$order->oxorder__oxdeladdinfo->getRawValue()}]
-[{$order->oxorder__oxdelstreet->getRawValue()}] [{$order->oxorder__oxdelstreetnr->value}]
-[{$order->oxorder__oxdelstateid->getRawValue()}]
-[{$order->oxorder__oxdelzip->value}] [{$order->oxorder__oxdelcity->getRawValue()}]
-[{$order->oxorder__oxdelcountry->getRawValue()}]

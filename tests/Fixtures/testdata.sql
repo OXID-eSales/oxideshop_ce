@@ -3756,4 +3756,25 @@ INSERT INTO `oxactions` (`OXID`, `OXSHOPID`, `OXSORT`, `OXTYPE`, `OXTITLE`, `OXT
 
 UPDATE `oxactions` SET OXACTIVE = '1' WHERE OXID='oxstart';
 
-
+INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`) VALUES
+('1ec4235c2aee774aa45d772875437919', 1, 'theme:azure', 'sIconsize', 'str', 0x8064a213b1),
+('1563fba1bee774aec57c192086494217', 1, 'theme:azure', 'sThumbnailsize', 'str', 0x079a3a49ca3630),
+('12642dfaa1dee77487d0644506753921', 1, 'theme:azure', 'aDetailImageSizes', 'aarr', 0x4dba326a73d2cdcb471b9533d7800b4b898873f7ae9dc29ed9e0e4f6bc678f00ea1438810efd6c1fe338a39dc20247d3a63beec4852106b7a1dd7cb1451f56975c3fd6159579cd2cab97104f17ae6c45a38a41e9a5bc59ceee828bfd6883e282aef2e55d00fb7ee9abb79b63c74cb7ba3fa76665f6a9294d8bf365bf7d3d0d56faf2355df145b02498b144bc6b0ab9fc9f74d2e1dd0ac7a4989184f58b7e2c58400bb4b92c9468f3d8ca7170cde789d6c1282016056e51005091e19803a859992a5549080378f64fff88ce4c1cbdf4afd32943b63877831b221ca302652eabe106a93f9f4d1ed363f2f33c1e29716b95b8541d2f79ec8a7a1d821a46270a1bb5f32622a06655b85a31d7ee2f52dbf963fd4426a6047b0e2bc4896143076e8dbc7dd8a7448ba2a5233ec8d166b611c288134420559cc4a6f4eec2835336d4f71df0ac899e314365a321d1d774bdb9),
+('12642dfaa1dee77488b1b22948593071', 1, 'theme:azure', 'sZoomImageSize', 'str', 0x170a3340d372be),
+('1ec42a395d0595ee7741091898848798', 1, 'theme:azure', 'sCatIconsize', 'str', 0x070de94ac9b636),
+('1563fba1bee774aec599d56894094456', 1, 'theme:azure', 'sCatThumbnailsize', 'str', 0x77e7ed4ecd3137),
+('1ec42a395d0595ee7741091898848987', 1, 'theme:azure', 'sCatPromotionsize', 'str', 0xb06fb441c2bd94),
+('1ec42a395d0595ee7741091898848789', 1, 'theme:azure', 'sManufacturerIconsize', 'str', 0x07c4b144c7b838),
+('18a9473894d473f6ed28f04e80d929fc', 1, 'theme:azure', 'bl_showCompareList', 'bool', 0x07),
+('18acb2f595da54b5f865e54aa5cdb967', 1, 'theme:azure', 'bl_showListmania', 'bool', 0x07),
+('18a12329124850cd8f63cda6e8e7b4e1', 1, 'theme:azure', 'bl_showWishlist', 'bool', 0x07),
+('18a23429124850cd8f63cda6e8e7b4e1', 1, 'theme:azure', 'bl_showVouchers', 'bool', 0x07),
+('18a34529124850cd8f63cda6e8e7b4e1', 1, 'theme:azure', 'bl_showGiftWrapping', 'bool', 0x07),
+('15342e4cab0ee774acb3905838384984', 1, 'theme:azure', 'blShowBirthdayFields', 'bool', 0x07),
+('11296159b7641d31b93423972af6150b', 1, 'theme:azure', 'iTopNaviCatCount', 'str', 0xfb),
+('1ec42a395d0595ee7741091898848989', 1, 'theme:azure', 'sDefaultListDisplayType', 'select', 0x83cd10b7f09064ed),
+('1ec42a395d0595ee7741091898848992', 1, 'theme:azure', 'sStartPageListDisplayType', 'select', 0x83cd10b7f09064ed),
+('1ec42a395d0595ee7741091898848990', 1, 'theme:azure', 'blShowListDisplayType', 'bool', 0x07),
+('1ec42a395d0595ee7741091898848474', 1, 'theme:azure', 'iNewBasketItemMessage', 'select', 0x07),
+('1545423fe8ce213a0435345552230295', 1, 'theme:azure', 'aNrofCatArticles', 'arr', 0x4dbace2972e14bf2cbd3a9a4113b83ad1c8f7b704f710ba39fd1ecd29b438b41809712e316c6f4fdc92741f7876cc6fca127d78994e604dcc99519),
+('1ec42a395d0595ee7741091898848991', 1, 'theme:azure', 'aNrofCatArticlesInGrid', 'arr', 0x4dbace2972e14bf2cbd3a9a4113b83c51e8d79724d7309a19dd3ee6153448c46879015e411c1f3fa250245f38368c2f8a523d58c91546b92cdf6);

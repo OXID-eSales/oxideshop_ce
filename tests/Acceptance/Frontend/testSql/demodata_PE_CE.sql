@@ -395,26 +395,37 @@ UPDATE `oxconfig` SET `OXVARVALUE` = 0x7900fdf51e WHERE `OXVARNAME` = 'blCheckTe
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blDisableNavBars';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blAllowUnevenAmounts';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x07         WHERE `OXVARNAME` = 'blConfirmAGB';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0xb0         WHERE `OXVARNAME` = 'iTopNaviCatCount' AND `OXMODULE` = 'theme:azure';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dba222b70e349f0c9d1aba6133981af1e8d79724d7309a19dd3eed099418943829510e114c4f6ffcb2543f5856ec4fea325d58b96e406decb977395c57d7cc79eec7f9f8dd6e30e2f68d198bd9d079dbe8b4f WHERE `OXVARNAME` = 'aNrofCatArticles';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dbace29724a51b6af7d09aac117301142e91c3c5b7eed9a850f85c1e3d58739aa9ea92523f05320a95060d60d57fbb027bad88efdaa0b928ebcd6aacf58084d31dd6ed5e718b833f1079b3805d28203f284492955c82cea3405879ea7588ec610ccde56acede495 WHERE `OXVARNAME` = 'aInterfaceProfiles';
 DELETE FROM `oxconfig` WHERE `OXVARNAME`='blBasketExcludeEnabled';
-REPLACE INTO `oxconfig` (`OXID`, `OXSHOPID`,   `OXVARNAME`,                     `OXVARTYPE`, `OXVARVALUE`) VALUES
-                       ('fb54', 1, 'perf_LoadFullVariantsInLists',  'bool',       0x7900fdf51e),
-                       ('fh90', 1, 'bl_perfLoadSelectListsInAList', 'bool',       0x93ea1218),
-                       ('a910', 1, 'blLoadSelectBoxAlways',         'bool',       0x93ea1218),
-                       ('4742', 1, 'blPerfNoBasketSaving',          'bool',       0x93ea1218),
-                       ('d084', 1, 'iMinOrderPrice',                'str',        0xfba4),
-                       ('33bd', 1, 'blOverrideZeroABCPrices',       'bool',       0x93ea1218),
-                       ('3c9f', 1, 'blShowOrderButtonOnTop',        'bool',       0x93ea1218),
-                       ('24d5', 1, 'bl_rssBargain',                 'bool',       0x07),
-                       ('2bf5', 1, 'bl_rssRecommLists',             'bool',       0x07),
-                       ('64i5', 1, 'bl_rssRecommListArts',          'bool',       0x07),
-                       ('c5iu', 1, 'blVariantParentBuyable',        'bool',       ''),
-                       ('czzz', 1, 'blShowVariantReviews',          'bool',       ''),
-                       ('a6ba', 1, 'blOrderDisWithoutReg',          'bool',       ''),
-                       ('a85z', 1, 'blShowVATForWrapping',          'bool',       ''),
-                       ('asdf', 1, 'blBasketExcludeEnabled',        'str',        '');
+REPLACE INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`,   `OXVARNAME`,                     `OXVARTYPE`, `OXVARVALUE`) VALUES
+                       ('fb54', 1, '', 'perf_LoadFullVariantsInLists',  'bool',       0x7900fdf51e),
+                       ('fh90', 1, '', 'bl_perfLoadSelectListsInAList', 'bool',       0x93ea1218),
+                       ('a910', 1, '', 'blLoadSelectBoxAlways',         'bool',       0x93ea1218),
+                       ('4742', 1, '', 'blPerfNoBasketSaving',          'bool',       0x93ea1218),
+                       ('d084', 1, '', 'iMinOrderPrice',                'str',        0xfba4),
+                       ('33bd', 1, '', 'blOverrideZeroABCPrices',       'bool',       0x93ea1218),
+                       ('3c9f', 1, '', 'blShowOrderButtonOnTop',        'bool',       0x93ea1218),
+                       ('24d5', 1, '', 'bl_rssBargain',                 'bool',       0x07),
+                       ('2bf5', 1, '', 'bl_rssRecommLists',             'bool',       0x07),
+                       ('64i5', 1, '', 'bl_rssRecommListArts',          'bool',       0x07),
+                       ('c5iu', 1, '', 'blVariantParentBuyable',        'bool',       ''),
+                       ('czzz', 1, '', 'blShowVariantReviews',          'bool',       ''),
+                       ('a6ba', 1, '', 'blOrderDisWithoutReg',          'bool',       ''),
+                       ('a85z', 1, '', 'blShowVATForWrapping',          'bool',       ''),
+                       ('asdf', 1, '', 'blBasketExcludeEnabled',        'str',        ''),
+                       ('1ec42a395d0595ee7741091898848987', 1, 'theme:azure', 'sCatPromotionsize', 'str', 0xb06fb441c2bd94),
+                       ('18a9473894d473f6ed28f04e80d929fc', 1, 'theme:azure', 'bl_showCompareList', 'bool', 0x07),
+                       ('18acb2f595da54b5f865e54aa5cdb967', 1, 'theme:azure', 'bl_showListmania', 'bool', 0x07),
+                       ('18a12329124850cd8f63cda6e8e7b4e1', 1, 'theme:azure', 'bl_showWishlist', 'bool', 0x07),
+                       ('18a23429124850cd8f63cda6e8e7b4e1', 1, 'theme:azure', 'bl_showVouchers', 'bool', 0x07),
+                       ('18a34529124850cd8f63cda6e8e7b4e1', 1, 'theme:azure', 'bl_showGiftWrapping', 'bool', 0x07),
+                       ('15342e4cab0ee774acb3905838384984', 1, 'theme:azure', 'blShowBirthdayFields', 'bool', 0x07),
+                       ('11296159b7641d31b93423972af6150b', 1, 'theme:azure', 'iTopNaviCatCount', 'str', 0xb0),
+                       ('1ec42a395d0595ee7741091898848989', 1, 'theme:azure', 'sDefaultListDisplayType', 'select', 0x83cd10b7f09064ed),
+                       ('1ec42a395d0595ee7741091898848992', 1, 'theme:azure', 'sStartPageListDisplayType', 'select', 0x83cd10b7f09064ed),
+                       ('1ec42a395d0595ee7741091898848990', 1, 'theme:azure', 'blShowListDisplayType', 'bool', 0x07),
+                       ('1545423fe8ce213a0435345552230295', 1, 'theme:azure', 'aNrofCatArticles', 'arr', 0x4dba222b70e349f0c9d1aba6133981af1e8d79724d7309a19dd3eed099418943829510e114c4f6ffcb2543f5856ec4fea325d58b96e406decb977395c57d7cc79eec7f9f8dd6e30e2f68d198bd9d079dbe8b4f),
+                       ('1ec42a395d0595ee7741091898848991', 1, 'theme:azure', 'aNrofCatArticlesInGrid', 'arr', 0x4dbace2972e14bf2cbd3a9a4113b83c51e8d79724d7309a19dd3ee6153448c46879015e411c1f3fa250245f38368c2f8a523d58c91546b92cdf6);
 
 #review demodata
 REPLACE INTO `oxreviews` (`OXID`,       `OXACTIVE`, `OXOBJECTID`, `OXTYPE`,    `OXTEXT`,                           `OXUSERID`, `OXCREATE`,           `OXLANG`, `OXRATING`) VALUES

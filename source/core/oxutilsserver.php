@@ -403,9 +403,9 @@ class oxUtilsServer extends oxSuperCfg
      */
     public function isCurrentUrl($sURL)
     {
-        // Missing protocol, cannot proceed, assuming true.
+        // Missing protocol, cannot proceed, assuming false.
         if (!$sURL || (strpos($sURL, "http") !== 0)) {
-            return true;
+            return false;
         }
 
         $sServerHost = $this->getServerVar('HTTP_HOST');
@@ -443,7 +443,7 @@ class oxUtilsServer extends oxSuperCfg
         $sCurrentHost = str_replace('/', '', $sCurrentHost);
         $sURL = str_replace('/', '', $sURL);
 
-        if ($sURL && $sCurrentHost && strpos($sURL, $sCurrentHost) !== false) {
+        if ($sURL && $sCurrentHost && strpos($sURL, $sServerHost) !== false) {
             //bug fix #0002991
             if ($sUrlHost == $sRealHost) {
                 return true;

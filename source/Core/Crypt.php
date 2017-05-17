@@ -20,30 +20,26 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunity\Core;
+namespace OxidEsales\Eshop\Core;
 
 /**
- * Class oxDecryptor
+ * Class Crypt
  */
-class Decryptor extends Crypt
+abstract class Crypt
 {
     /**
-     * Decrypts string with given key.
+     * Forms key for use in encoding.
      *
-     * @param string $string string
-     * @param string $key    key
+     * @param string $key
+     * @param string $string
      *
      * @return string
      */
-    public function decrypt($string, $key)
+    protected function _formKey($key, $string)
     {
-        $key = $this->_formKey($key, $string);
+        $key = '_' . $key;
+        $keyLength = (strlen($string) / strlen($key)) + 5;
 
-        $string = substr($string, 3);
-        $string = str_replace('!', '=', $string);
-        $string = base64_decode($string);
-        $string = $string ^ $key;
-
-        return substr($string, 2, -2);
+        return str_repeat($key, $keyLength);
     }
 }

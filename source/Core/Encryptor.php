@@ -25,9 +25,8 @@ namespace OxidEsales\EshopCommunity\Core;
 /**
  * Class oxEncryptor
  */
-class Encryptor
+class Encryptor extends Crypt
 {
-
     /**
      * Encrypts string with given key.
      *
@@ -47,21 +46,5 @@ class Encryptor
         $string = str_replace("=", "!", $string);
 
         return "ox_$string";
-    }
-
-    /**
-     * Forms key for use in encoding.
-     *
-     * @param string $key
-     * @param string $string
-     *
-     * @return string
-     */
-    protected function _formKey($key, $string)
-    {
-        $key = '_' . $key;
-        $keyLength = (strlen($string) / strlen($key)) + 5;
-
-        return str_repeat($key, $keyLength);
     }
 }

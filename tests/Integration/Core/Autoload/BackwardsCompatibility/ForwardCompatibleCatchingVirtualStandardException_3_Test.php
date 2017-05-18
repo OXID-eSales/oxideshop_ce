@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Autoload\BackwardsCompatibility;
 
-class ForwardCompatibleCatchingVirtualStandardException_3_Test extends \PHPUnit_Framework_TestCase
+class ForwardCompatibleCatchingUnifiedNamespaceStandardException_3_Test extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -30,17 +30,17 @@ class ForwardCompatibleCatchingVirtualStandardException_3_Test extends \PHPUnit_
      *
      * @throws \Exception $exception
      */
-    public function testForwardCompatibleCatchingVirtualStandardException()
+    public function testForwardCompatibleCatchingUnifiedNamespaceStandardException()
     {
         $exception = oxNew(\oxException::class);
         try {
             throw $exception;
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
             /** If the exception has been caught, the test has passed */
-            $this->assertTrue(true, 'The given exception (oxNew(\oxException::class)) was caught');
+            $this->assertTrue(true, 'The given exception (oxNew(\oxException::class)) was caught as \OxidEsales\Eshop\Core\Exception\StandardException');
         } catch (\Exception $exception) {
             /** If the exception has not been caught before, the test has failed */
-            $this->fail( 'The given exception (oxNew(\oxException::class)) was not caught');
+            $this->fail( 'The given exception (oxNew(\oxException::class)) was not caught as \OxidEsales\Eshop\Core\Exception\StandardException');
         }
     }
 }

@@ -27,8 +27,9 @@ use OxidEsales\Eshop\Application\Model\User;
 
 /**
  * Class typeHintTestBasket.
- * Type hint in method finalizeOrder is for the backwards compatibility class, the type hint in parent is for the virtual
- * namespaced class.
+ *
+ * Type hint in method finalizeOrder is for the backwards compatibility class, the type hint in parent is for the Unified
+ * Namespaced class.
  *
  * @package OxidEsales\EshopCommunity\Tests\Unit\Core\Autoload
  */
@@ -57,7 +58,7 @@ class TypeHintTest extends UnitTestCase
     /**
      * Test type hints with backwards compatibility aliases.
      */
-    public function testTypeHintAliasingVirtualNamespace()
+    public function testTypeHintAliasingUnifiedNamespace()
     {
         $basket = oxNew(\OxidEsales\Eshop\Application\Model\Basket::class);
 

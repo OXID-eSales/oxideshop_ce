@@ -7,7 +7,7 @@
  * @link          www.johndoe.com
  * @copyright (C) John Doe 20162016
  */
-use virtualnamespace_module1\Model\TestContent;
+use unifiednamespace_module1\Model\TestContent;
 
 /**
  * Metadata version
@@ -18,7 +18,7 @@ $sMetadataVersion = '1.2';
  * Module information - the commented things are not working atm or will not be implemented
  */
 $aModule = array(
-    'id'          => 'virtualnamespace_module3',
+    'id'          => 'unifiednamespace_module3',
     'title'       => array(
         'de' => 'OXID eSales example module3',
         'en' => 'OXID eSales example module3',
@@ -32,10 +32,7 @@ $aModule = array(
     'url'         => 'www.johndoe.com',
     'email'       => 'john@doe.com',
     'extend'      => array(
-        TestContent::class => 'virtualnamespace_module3/Model/Test3Content',
-        // TestContent::class => 'virtualnamespace_module3/Model/Test3NamespacedContent',
-        // 'Test2Content' => 'virtualnamespace_module3/Model/Test3Content',
-        // 'Test2Content' => 'virtualnamespace_module3/Model/Test3NamespacedContent',
+        'Test1Content' => 'unifiednamespace_module3/Model/Test3Content',
     ),
     'templates'   => array(),
     'blocks'      => array(),

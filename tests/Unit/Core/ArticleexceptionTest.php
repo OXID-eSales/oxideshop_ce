@@ -24,7 +24,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 /**
  * Testing oxArticleException class.
  */
-class ArticleexceptionTest extends \OxidTestCase
+class ArticleexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
     /**
@@ -77,12 +77,10 @@ class ArticleexceptionTest extends \OxidTestCase
 
     /**
      * Test set type.
-     *
-     * @return null
      */
     public function testType()
     {
-        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\ArticleException', get_class($this->_oTestObject));
+        $this->assertEquals('OxidEsales\Eshop\Core\Exception\ArticleException', get_class($this->_oTestObject));
     }
 
     /**

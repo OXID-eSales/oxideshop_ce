@@ -81,6 +81,7 @@ class ModuleRemoveTest extends BaseModuleTestCase
         $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules); //install modules in shop 1
 
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsObject::class, null);
         $oEnvironment->setShopId(2);
         $_POST['shp'] = 2;
         $oEnvironment->activateModules($aInstallModules);  //activate modules in shop 2

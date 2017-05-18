@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter;
 
 use oxDb;
-use OxidEsales\EshopCommunity\Core\ConfigFile;
+use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\EshopCommunity\Core\Registry;

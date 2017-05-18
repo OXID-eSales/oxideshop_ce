@@ -99,14 +99,6 @@ class ModuleMetadataValidatorTest extends \OxidTestCase
                                                             ],
                                                         'expected' => ['\OxidEsales\EshopCommunity\Tests\SomeVendor\SomeNamespace\Article' => '\MyVendor\MyModule1\MyArticleClass']
             ],
-            'case_mismatch' => ['metadata_extend' =>
-                                          ['oxidEsales\eshop\application\model\article' => '\MyVendor\MyModule1\MyArticleClass',
-                                           'OxidEsales\Eshop\Application\Model\Order' => '\MyVendor\MyModule1\MyOrderClass',
-                                           'OxidEsales\Eshop\Application\Model\user' => '\MyVendor\MyModule1\MyUserClass'
-                                          ],
-                                      'expected' => ['oxidEsales\eshop\application\model\article' => '\MyVendor\MyModule1\MyArticleClass',
-                                                     'OxidEsales\Eshop\Application\Model\user' => '\MyVendor\MyModule1\MyUserClass']
-            ],
             'edition_instead_of_vns' => ['metadata_extend' =>
                                                    [\OxidEsales\Eshop\Application\Model\Article::class => '\MyVendor\MyModule1\MyArticleClass',
                                                     \OxidEsales\EshopCommunity\Application\Model\Order::class => '\MyVendor\MyModule1\MyOrderClass',
@@ -145,14 +137,6 @@ class ModuleMetadataValidatorTest extends \OxidTestCase
     public function dataProviderCheckModuleExtensionsForIncorrectNamespaceClasses()
     {
         $data = [
-            'case_mismatch' => ['metadata_extend' =>
-                                    ['oxidEsales\eshop\application\model\article' => '\MyVendor\MyModule1\MyArticleClass',
-                                     'OxidEsales\Eshop\Application\Model\Order' => '\MyVendor\MyModule1\MyOrderClass',
-                                     'OxidEsales\Eshop\Application\Model\user' => '\MyVendor\MyModule1\MyUserClass'
-                                    ],
-                                'expected' => 'oxidEsales\eshop\application\model\article => \MyVendor\MyModule1\MyArticleClass, ' .
-                                              'OxidEsales\Eshop\Application\Model\user => \MyVendor\MyModule1\MyUserClass',
-            ],
             'edition_instead_of_vns' => ['metadata_extend' =>
                                              [\OxidEsales\Eshop\Application\Model\Article::class => '\MyVendor\MyModule1\MyArticleClass',
                                               \OxidEsales\EshopCommunity\Application\Model\Order::class => '\MyVendor\MyModule1\MyOrderClass',

@@ -38,7 +38,7 @@ class BackwardsCompatibleClassNameProvider
      */
     public function __construct($classMap)
     {
-        $this->classMap = array_flip($classMap);
+        $this->classMap = $classMap;
     }
 
     /**

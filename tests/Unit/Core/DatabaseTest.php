@@ -22,21 +22,18 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxDb;
-use OxidEsales\EshopCommunity\Core\ConfigFile;
-use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database;
-use OxidEsales\EshopCommunity\Core\DatabaseProvider;
-use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use ReflectionClass;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
-use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 
 /**
  * Class DbTest
  *
  * @group   database-adapter
- * @covers  OxidEsales\Eshop\Core\DatabaseProvider
+ * @covers  \OxidEsales\Eshop\Core\DatabaseProvider
  * @package Unit\Core
  */
 class DatabaseTest extends UnitTestCase
@@ -46,7 +43,7 @@ class DatabaseTest extends UnitTestCase
      */
     protected function tearDown()
     {
-        $configFile = new ConfigFile(OX_BASE_PATH . 'config.inc.php');
+        $configFile = new \OxidEsales\Eshop\Core\ConfigFile(OX_BASE_PATH . 'config.inc.php');
         Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);
 
         $this->cleanUpTable('oxarticles');
@@ -149,10 +146,10 @@ class DatabaseTest extends UnitTestCase
      */
 
     /**
-     * @return ConfigFile
+     * @return \OxidEsales\Eshop\Core\ConfigFile
      */
     protected function getBlankConfigFile()
     {
-        return new ConfigFile($this->createFile('config.inc.php', '<?php '));
+        return new \OxidEsales\Eshop\Core\ConfigFile($this->createFile('config.inc.php', '<?php '));
     }
 }

@@ -31,22 +31,24 @@ class ForwardsCompatibleInstanceOfNewClassRealClassName_1_Test extends \OxidEsal
     public function testForwardsCompatibleInstanceOfNewClassRealClassName()
     {
         if ('CE' !== $this->getConfig()->getEdition()) {
-            $this->markTestSkipped(
-                'This test will fail on Travis and CI as it MUST run in an own PHP process, which is not possible.'
-            );
+            // $this->markTestSkipped(
+            //    'This test will fail on Travis and CI as it MUST run in an own PHP process, which is not possible.'
+            //);
         }
 
         $realClassName = \OxidEsales\EshopCommunity\Application\Model\Article::class;
-        $virtualClassName = \OxidEsales\Eshop\Application\Model\Article::class;
+        $unifiedNamespaceClassName = \OxidEsales\Eshop\Application\Model\Article::class;
         $backwardsCompatibleClassAlias = \oxArticle::class;
-        $message = 'Backwards compatible class name - absolute namespace with ::class constant';
-        
+
         $object = new $realClassName();
 
-        $this->assertInstanceOf($backwardsCompatibleClassAlias, $object, $message);
+        $message = 'An object created with new \OxidEsales\EshopCommunity\Application\Model\Article() is not an instance of "\oxArticle::class"';
+        $this->assertNotInstanceOf($backwardsCompatibleClassAlias, $object, $message);
 
+        $message = 'An object created with new \OxidEsales\EshopCommunity\Application\Model\Article() is an instance of \OxidEsales\EshopCommunity\Application\Model\Article::class';
         $this->assertInstanceOf($realClassName, $object, $message);
 
-        $this->assertInstanceOf($virtualClassName, $object, $message);
+        $message = 'An object created with new \OxidEsales\EshopCommunity\Application\Model\Article() is not an instance of \OxidEsales\Eshop\Application\Model\Article::class';
+        $this->assertNotInstanceOf($unifiedNamespaceClassName, $object, $message);
     }
 }

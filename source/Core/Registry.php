@@ -35,7 +35,7 @@ class Registry
     protected static $instances = array();
 
     /**
-     * Hold BC class to virtual namespace class map
+     * Hold BC class to Unified Namespace class map
      *
      * @var null| array
      */
@@ -44,6 +44,9 @@ class Registry
     /**
      * Hold virtual namespace to class map
      *
+     * @deprecated since v6.0.0-rc.2 (2017-06-01); Virtual namespaces were replaced by concrete classes, called
+     *                                             unified namespace classes
+     *
      * @var null| array
      */
     protected static $virtualNameSpaceClassMap = null;
@@ -51,13 +54,13 @@ class Registry
     /**
      * Instance getter. Return an existing or new instance for a given class name.
      * Consider using the getter methods over the generic Registry::get() method.
-     * In order to avoid issues with different shop editions, the given class name must be from the virtual namespace.
+     * In order to avoid issues with different shop editions, the given class name must be from the Unified Namespace.
      *
      * For reasons of backwards compatibility old class names like 'oxconfig' are still supported and equivalent
-     * to the corresponding class name from the virtual namespace, as they store and retrieve the same instances.
+     * to the corresponding class name from the Unified Namespace, as they store and retrieve the same instances.
      * But be aware, that support for old class names will be dropped in the future.
      *
-     * @param string $className Class name from the virtual namespace
+     * @param string $className The class name from the Unified Namespace.
      *
      * @static
      *
@@ -356,7 +359,7 @@ class Registry
     {
         if (is_null(self::$backwardsCompatibilityClassMap)) {
             $classMap = include CORE_AUTOLOADER_PATH . 'BackwardsCompatibilityClassMap.php';
-            self::$backwardsCompatibilityClassMap = array_flip(array_map('strtolower', $classMap));
+            self::$backwardsCompatibilityClassMap = $classMap;
         }
 
         return self::$backwardsCompatibilityClassMap;
@@ -364,6 +367,9 @@ class Registry
 
     /**
      * Return the VirtualNameSpaceClassMap for the current edition of OXID eShop
+     *
+     * @deprecated since v6.0.0-rc.2 (2017-06-01); Virtual namespaces were replaced by concrete classes, called
+     *                                             unified namespace classes
      *
      * @return array
      */
@@ -388,10 +394,10 @@ class Registry
     public static function getStorageKey($className)
     {
         $key = $className;
+
         if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($className)) {
             $bcMap = self::getBackwardsCompatibilityClassMap();
-            $virtualKey = isset($bcMap[strtolower($key)]) ? $bcMap[strtolower($key)] : strtolower($key);
-            $key = $virtualKey;
+            $key = isset($bcMap[strtolower($key)]) ? $bcMap[strtolower($key)] : strtolower($key);
         }
 
         return $key;
@@ -402,7 +408,7 @@ class Registry
      * IMPORTANT: UtilsObject is not delivered from Registry::instances this way, so Registry::set
      *            will have no effect on which UtilsObject is delivered.
      *            Also Registry::instanceExists will always return false for UtilsObject.
-     * This does only affect BC class name and virtual namespace, not the edition own classes atm.
+     * This does only affect BC class name and unified namespace class names, not the edition own classes atm.
      *
      * @param string $className Class name.
      *
@@ -413,7 +419,7 @@ class Registry
         if (('oxutilsobject' === strtolower($className)) || \OxidEsales\Eshop\Core\UtilsObject::class === $className) {
             $object = \OxidEsales\Eshop\Core\UtilsObject::getInstance();
         } else {
-            $object = oxNew($className);
+            $object = \oxNew($className);
         }
 
         return $object;
@@ -422,7 +428,7 @@ class Registry
     /**
      * Return a well known object from the registry
      *
-     * @param string $className A class name in the virtual namespace
+     * @param string $className A unified namespace class name
      *
      * @return mixed
      */

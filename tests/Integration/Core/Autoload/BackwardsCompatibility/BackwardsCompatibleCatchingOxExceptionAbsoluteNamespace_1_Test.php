@@ -34,19 +34,19 @@ class BackwardsCompatibleCatchingOxExceptionAbsoluteNamespace_1_Test extends \PH
      */
     public function testBackwardsCompatibleCatchingOxExceptionAbsoluteNamespace()
     {
-        $this->markTestSkipped(
-            'This test will fail on Travis and CI as it MUST run in an own PHP process, which is not possible.'
-        );
+        // $this->markTestSkipped(
+        //     'This test will fail on Travis and CI as it MUST run in an own PHP process, which is not possible.'
+        // );
 
         $exception = oxNew(\OxidEsales\EshopCommunity\Core\Exception\StandardException::class);
         try {
             throw $exception;
         } catch (\oxException $exception) {
             /** If the exception got caught, the test has failed */
-            $this->fail('The given exception (oxNew(\OxidEsales\EshopCommunity\Core\Exception\StandardException::class)) was caught');
+            $this->fail('The given exception (oxNew(\OxidEsales\EshopCommunity\Core\Exception\StandardException::class)) was caught as \oxException');
         } catch (\Exception $exception) {
             /** If the exception got not caught before, the test has passed */
-            $this->assertTrue(true, 'The given exception (oxNew(\OxidEsales\EshopCommunity\Core\Exception\StandardException::class)) was not caught');
+            $this->assertTrue(true, 'The given exception (oxNew(\OxidEsales\EshopCommunity\Core\Exception\StandardException::class)) was not caught as \oxException');
         }
     }
 }

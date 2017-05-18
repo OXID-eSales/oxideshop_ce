@@ -22,9 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use oxDb;
-use oxRegistry;
-
 /**
  * Module class.
  *
@@ -186,7 +183,8 @@ class Module extends \OxidEsales\Eshop\Core\Base
     public function getExtensions()
     {
         $rawExtensions = isset($this->_aModule['extend']) ? $this->_aModule['extend'] : array();
-        return $this->getVirtualShopClassExtensionsForBc($rawExtensions);
+
+        return $this->getUnifiedShopClassExtensionsForBc($rawExtensions);
     }
 
     /**
@@ -568,16 +566,14 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * @deprecated since v6.0.0 (2017-03-14); Needed to ensure backwards compatibility.
-     *
-     * Translate module metadata information about patched shop classes
-     * into virtual namespace. There might still be BC class names used in module metadata.php.
+     * Translate module metadata information about the patched shop classes
+     * into Unified Namespace. There might still be BC class names used in module metadata.php.
      *
      * @param array $rawExtensions Extension information from module metadata.php.
      *
      * @return array
      */
-    protected function getVirtualShopClassExtensionsForBc($rawExtensions)
+    protected function getUnifiedShopClassExtensionsForBc($rawExtensions)
     {
         $extensions = [];
 

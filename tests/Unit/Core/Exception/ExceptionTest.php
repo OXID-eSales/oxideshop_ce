@@ -16,62 +16,60 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
 
-use OxidEsales\Eshop\Core\Exception\StandardException;
-
-class ExceptionTest extends \OxidTestCase
+class ExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
     // 1. testing constructor works .. ok, its a pseudo test ;-)
     public function testConstruct()
     {
-        $oTestObject = oxNew('oxException');
-        $this->assertInstanceOf(\OxidEsales\Eshop\Core\Exception\StandardException::class, $oTestObject);
+        $testObject = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\Exception\StandardException::class, $testObject);
     }
 
     // 2. testing constructor with message.
     public function testConstructWithMessage()
     {
-        $sMsg = 'Erik was here..';
-        $oTestObject = oxNew('oxException', $sMsg);
-        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
-        $this->assertTrue($oTestObject->getMessage() === $sMsg);
+        $messsage = 'Erik was here..';
+        $testObject = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $messsage);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\StandardException::class, get_class($testObject));
+        $this->assertTrue($testObject->getMessage() === $messsage);
     }
 
     public function testSetGetLogFileName()
     {
-        $oTestObject = oxNew('oxException');
-        $oTestObject->setLogFileName('TEST.log');
-        $this->assertEquals('TEST.log', $oTestObject->getLogFileName());
+        $testObject = oxNew('oxException');
+        $testObject->setLogFileName('TEST.log');
+        $this->assertEquals('TEST.log', $testObject->getLogFileName());
     }
 
     // Test log file output
     public function testDebugOut()
     {
-        $sMsg = 'Erik was here..';
-        $sFileName = 'oxexceptionsTest_test_debugOut.txt';
-        $oTestObject = oxNew('oxException', $sMsg);
-        $oTestObject->setLogFileName($sFileName);
-        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
+        $message = 'Erik was here..';
+        $fileName = 'oxexceptionsTest_test_debugOut.txt';
+        $testObject = oxNew('oxException', $message);
+        $testObject->setLogFileName($fileName);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\StandardException::class, get_class($testObject));
 
         try {
-            $oTestObject->debugOut(1); // actuall test
+            $testObject->debugOut(1); // actuall test
         } catch (Exception $e) {
             // Lets try to delete an eventual left over file
-            unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+            unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $fileName);
             $this->fail();
 
             return;
         }
-        $sFile = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
-        unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+        $file = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $fileName);
+        unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $fileName);
         // we check on class name and message - rest is not checked yet
-        $this->assertContains($sMsg, $sFile);
-        $this->assertContains('oxException', $sFile);
+        $this->assertContains($message, $file);
+        $this->assertContains('oxException', $file);
     }
 
     /**
@@ -80,11 +78,11 @@ class ExceptionTest extends \OxidTestCase
      */
     public function testDebugOutNoDebug()
     {
-        $sMsg = 'Erik was here..';
+        $message = 'Erik was here..';
         $sFileName = 'oxexceptionsTest_test_debugOut.txt';
-        $oTestObject = oxNew('oxException', $sMsg);
+        $oTestObject = oxNew('oxException', $message);
         $oTestObject->setLogFileName($sFileName);
-        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
+        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\StandardException::class, get_class($oTestObject));
 
         try {
             $oTestObject->debugOut(0); // actuall test
@@ -98,54 +96,54 @@ class ExceptionTest extends \OxidTestCase
         $sFile = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
         unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
         // we check on class name and message - rest is not checked yet
-        $this->assertContains($sMsg, $sFile);
+        $this->assertContains($message, $sFile);
         $this->assertContains('oxException', $sFile);
     }
 
     // Test set & get message
     public function testSetMessage()
     {
-        $sMsg = 'Erik was here..';
-        $oTestObject = oxNew('oxException');
-        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
-        $oTestObject->setMessage($sMsg);
-        $this->assertTrue($oTestObject->getMessage() === $sMsg);
+        $message = 'Erik was here..';
+        $testObject = oxNew('oxException');
+        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\StandardException::class, get_class($testObject));
+        $testObject->setMessage($message);
+        $this->assertTrue($testObject->getMessage() === $message);
     }
 
     public function testSetIsRenderer()
     {
-        $oTestObject = oxNew('oxException');
-        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
-        $oTestObject->setRenderer();
-        $this->assertTrue($oTestObject->isRenderer());
+        $testObject = oxNew('oxException');
+        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\StandardException::class, get_class($testObject));
+        $testObject->setRenderer();
+        $this->assertTrue($testObject->isRenderer());
     }
 
     public function testSetIsNotCaught()
     {
-        $oTestObject = oxNew('oxException');
-        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
-        $oTestObject->setNotCaught();
-        $this->assertTrue($oTestObject->isNotCaught());
+        $testObject = oxNew('oxException');
+        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\StandardException::class, get_class($testObject));
+        $testObject->setNotCaught();
+        $this->assertTrue($testObject->isNotCaught());
     }
 
     // We check on class name and message only - rest is not checked yet
     public function testGetString()
     {
-        $sMsg = 'Erik was here..';
-        $oTestObject = oxNew('oxException', $sMsg);
-        $this->assertEquals('OxidEsales\EshopCommunity\Core\Exception\StandardException', get_class($oTestObject));
-        $oTestObject->setRenderer();
-        $oTestObject->setNotCaught();
-        $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
-        $this->assertContains($sMsg, $sStringOut);
+        $message = 'Erik was here..';
+        $testObject = oxNew('oxException', $message);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\StandardException::class, get_class($testObject));
+        $testObject->setRenderer();
+        $testObject->setNotCaught();
+        $sStringOut = $testObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
+        $this->assertContains($message, $sStringOut);
         $this->assertContains('oxException', $sStringOut);
     }
 
     public function testGetValues()
     {
-        $oTestObject = oxNew('oxException');
-        $aRes = $oTestObject->getValues();
-        $this->assertEquals(0, count($aRes));
+        $testObject = oxNew('oxException');
+        $result = $testObject->getValues();
+        $this->assertEquals(0, count($result));
     }
 
     /**

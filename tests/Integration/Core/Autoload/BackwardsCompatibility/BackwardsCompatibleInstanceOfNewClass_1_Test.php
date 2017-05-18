@@ -31,16 +31,18 @@ class BackwardsCompatibleInstanceOfNewClass_1_Test extends \PHPUnit_Framework_Te
     public function testBackwardsCompatibleInstanceOfNewClass()
     {
         $realClassName = \OxidEsales\EshopCommunity\Application\Model\Article::class;
-        $virtualClassName = \OxidEsales\Eshop\Application\Model\Article::class;
+        $unifiedNamespaceClassName = \OxidEsales\Eshop\Application\Model\Article::class;
         $backwardsCompatibleClassAlias = \oxArticle::class;
-        $message = 'Backwards compatible class name - absolute namespace with ::class constant';
-        
+
         $object = new $backwardsCompatibleClassAlias();
 
+        $message = 'An object created with new \oxArticle() is an instance of "\oxArticle::class"';
         $this->assertInstanceOf($backwardsCompatibleClassAlias, $object, $message);
 
+        $message = 'An object created with new \oxArticle() is an instance of \OxidEsales\EshopCommunity\Application\Model\Article::class';
         $this->assertInstanceOf($realClassName, $object, $message);
 
-        $this->assertInstanceOf($virtualClassName, $object, $message);
+        $message = 'An object created with new \oxArticle() is an instance of \OxidEsales\Eshop\Application\Model\Article::class';
+        $this->assertInstanceOf($unifiedNamespaceClassName, $object, $message);
     }
 }

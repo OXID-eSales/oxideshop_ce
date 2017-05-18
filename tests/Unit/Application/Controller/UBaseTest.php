@@ -375,14 +375,14 @@ class UBaseTest extends \OxidTestCase
      */
     public function testInitComponents()
     {
-        $oView = $this->getProxyClass('oxubase');
-        $oView->setNonPublicVar('_aComponentNames', array("oxcmp_lang" => false));
-        $oView->init();
+        $view = $this->getProxyClass('oxubase');
+        $view->setNonPublicVar('_aComponentNames', array("oxcmp_lang" => false));
+        $view->init();
 
-        $aComponents = $oView->getComponents();
+        $aComponents = $view->getComponents();
         $this->assertEquals(1, count($aComponents));
-        $this->assertEquals('oxidesales\eshopcommunity\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
-        $this->assertEquals(strtolower(get_class($oView)), $aComponents["oxcmp_lang"]->getParent()->getThisAction());
+        $this->assertEquals('oxidesales\eshop\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
+        $this->assertEquals(strtolower(get_class($view)), $aComponents["oxcmp_lang"]->getParent()->getThisAction());
     }
 
     /*
@@ -390,15 +390,15 @@ class UBaseTest extends \OxidTestCase
      */
     public function testInitUserDefinedComponents()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("_getComponentNames"));
-        $oView->expects($this->once())->method('_getComponentNames')->will($this->returnValue(array("oxcmp_cur" => false, "oxcmp_lang" => false)));
-        $oView->init();
+        $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("_getComponentNames"));
+        $view->expects($this->once())->method('_getComponentNames')->will($this->returnValue(array("oxcmp_cur" => false, "oxcmp_lang" => false)));
+        $view->init();
 
-        $aComponents = $oView->getComponents();
+        $aComponents = $view->getComponents();
         $this->assertEquals(2, count($aComponents));
-        $this->assertEquals('oxidesales\eshopcommunity\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
-        $this->assertEquals('oxidesales\eshopcommunity\application\component\currencycomponent', $aComponents["oxcmp_cur"]->getThisAction());
-        $this->assertEquals(strtolower(get_class($oView)), $aComponents["oxcmp_lang"]->getParent()->getThisAction());
+        $this->assertEquals('oxidesales\eshop\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
+        $this->assertEquals('oxidesales\eshop\application\component\currencycomponent', $aComponents["oxcmp_cur"]->getThisAction());
+        $this->assertEquals(strtolower(get_class($view)), $aComponents["oxcmp_lang"]->getParent()->getThisAction());
     }
 
     /*

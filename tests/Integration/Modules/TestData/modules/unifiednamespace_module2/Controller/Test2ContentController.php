@@ -20,12 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace virtualnamespace_module1\Model;
-
 /**
  * CMS - loads pages and displays it
  */
-class TestContent
+class Test2ContentController extends Test2ContentController_parent
 {
     /**
      * Template variable getter. Returns tag title
@@ -34,6 +32,9 @@ class TestContent
      */
     public function getTitle()
     {
-        return "- Module_1_Model";
+        $contentTitle = parent::getTitle();
+        $contentTitle = $contentTitle . " - Module_2_Controller";// . $content->getTitle();
+
+        return $contentTitle;
     }
 }

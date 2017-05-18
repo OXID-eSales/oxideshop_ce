@@ -22,13 +22,13 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Autoload\BackwardsCompatibility;
 
-class ForwardCompatibleTypeHintWithVirtualNamespace_1_Test extends \PHPUnit_Framework_TestCase
+class ForwardCompatibleTypeHintWithUnifiedNamespaceNamespace_1_Test extends \PHPUnit_Framework_TestCase
 {
 
     /**
      * Test the backwards compatibility with camel cased type hints
      */
-    public function testForwardCompatibleTypeHintWithVirtualNamespace()
+    public function testForwardCompatibleTypeHintWithUnifiedNamespaceNamespace()
     {
         $object = oxNew(\oxArticle::class);
         /**

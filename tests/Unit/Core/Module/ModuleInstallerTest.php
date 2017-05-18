@@ -410,7 +410,8 @@ class ModuleInstallerTest extends \OxidTestCase
 
     /**
      * \OxidEsales\Eshop\Core\Module\ModuleInstaller::activate() in case of mixed (bc and namespace) module chain.
-     * Resulting aModule config variable must all patch the same virtual namespace shop class.
+     *
+     * Resulting aModule config variable must all patch the same Unified Namespace shop class.
      */
     public function testActivateMixedChain()
     {
@@ -552,14 +553,6 @@ class ModuleInstallerTest extends \OxidTestCase
     public function dataProviderTestValidateMetadataExtendSectionError()
     {
         $data = [
-            'case_mismatch' => ['metadata_extend' =>
-                                    ['oxidEsales\eshop\application\model\article' => '\MyVendor\MyModule1\MyArticleClass',
-                                     'OxidEsales\Eshop\Application\Model\Order' => '\MyVendor\MyModule1\MyOrderClass',
-                                     'OxidEsales\Eshop\Application\Model\user' => '\MyVendor\MyModule1\MyUserClass'
-                                    ],
-                                'expected' => ['oxidEsales\eshop\application\model\article' => '\MyVendor\MyModule1\MyArticleClass',
-                                               'OxidEsales\Eshop\Application\Model\user' => '\MyVendor\MyModule1\MyUserClass']
-            ],
             'edition_instead_of_vns' => ['metadata_extend' =>
                                              [\OxidEsales\Eshop\Application\Model\Article::class => '\MyVendor\MyModule1\MyArticleClass',
                                               \OxidEsales\EshopCommunity\Application\Model\Order::class => '\MyVendor\MyModule1\MyOrderClass',

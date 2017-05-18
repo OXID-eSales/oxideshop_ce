@@ -51,7 +51,7 @@ class ModuleMetadataValidator implements \OxidEsales\Eshop\Core\Contract\IModule
 
     /**
      * Check module metadata for incorrect namespace shop classes.
-     * Class might be misspelled or not found n virtual namespace.
+     * Class might be misspelled or not found in Unified Namespace.
      *
      * @param \OxidEsales\Eshop\Core\Module\Module $module
      *
@@ -69,7 +69,7 @@ class ModuleMetadataValidator implements \OxidEsales\Eshop\Core\Contract\IModule
     /**
      * Getter for possible incorrect extension info in metadata.php.
      * If the module patches a namespace class it must either belong to the shop
-     * virtual namespace or to another module.
+     * Unified Namespace or to another module.
      *
      * @param \OxidEsales\Eshop\Core\Module\Module $module
      *
@@ -79,13 +79,11 @@ class ModuleMetadataValidator implements \OxidEsales\Eshop\Core\Contract\IModule
     {
         $incorrect = [];
         $rawExtensions = $module->getExtensions();
-        $virtualNamespaceClassMapProvider = Registry::get(\OxidEsales\Eshop\Core\Autoload\VirtualNameSpaceClassMapProvider::class);
-        $map = $virtualNamespaceClassMapProvider->getClassMap();
 
         foreach ($rawExtensions as $classToBePatched => $moduleClass) {
             if (NamespaceInformationProvider::isNamespacedClass($classToBePatched)
                  && (NamespaceInformationProvider::classBelongsToShopEditionNamespace($classToBePatched)
-                      || (NamespaceInformationProvider::classBelongsToShopVirtualNamespace($classToBePatched) && !isset($map[$classToBePatched]))
+                      || (NamespaceInformationProvider::classBelongsToShopUnifiedNamespace($classToBePatched) && !class_exists($classToBePatched))
                     )
                 ) {
                 $incorrect[$classToBePatched] = $moduleClass;

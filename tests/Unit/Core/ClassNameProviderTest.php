@@ -43,9 +43,9 @@ class ClassNameProviderTest extends UnitTestCase
     public function testReturnsClassNameFromClassAlias($classAlias, $className)
     {
         $map = [
-            'OxidEsales\EshopEnterprise\Core\DbMetaDataHandler'      => 'oxdbmetadatahandler',
-            'OxidEsales\EshopEnterprise\Core\Module\ModuleCache'     => 'oxmodulecache',
-            'OxidEsales\EshopEnterprise\Core\Module\ModuleInstaller' => 'oxmoduleinstaller',
+            'oxdbmetadatahandler' => 'OxidEsales\EshopEnterprise\Core\DbMetaDataHandler',
+            'oxmodulecache' => 'OxidEsales\EshopEnterprise\Core\Module\ModuleCache',
+            'oxmoduleinstaller' => 'OxidEsales\EshopEnterprise\Core\Module\ModuleInstaller',
         ];
 
         $utilsObject = new BackwardsCompatibleClassNameProvider($map);
@@ -72,9 +72,9 @@ class ClassNameProviderTest extends UnitTestCase
     public function testReturnsClassNameAliasFromClassName($className, $classAliasName)
     {
         $map = array(
-            'OxidEsales\EshopEnterprise\Core\DbMetaDataHandler'      => 'oxdbmetadatahandler',
-            'OxidEsales\EshopEnterprise\Core\Module\ModuleCache'     => 'oxmodulecache',
-            'OxidEsales\EshopEnterprise\Core\Module\ModuleInstaller' => 'oxmoduleinstaller',
+            'oxdbmetadatahandler' => 'OxidEsales\EshopEnterprise\Core\DbMetaDataHandler',
+            'oxmodulecache' => 'OxidEsales\EshopEnterprise\Core\Module\ModuleCache',
+            'oxmoduleinstaller' => 'OxidEsales\EshopEnterprise\Core\Module\ModuleInstaller'
         );
 
         $utilsObject = new BackwardsCompatibleClassNameProvider($map);

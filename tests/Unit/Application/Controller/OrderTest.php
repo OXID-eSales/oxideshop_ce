@@ -21,7 +21,6 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
-use oxBasket;
 use OxidEsales\EshopCommunity\Application\Model\Payment;
 use oxOutOfStockException;
 use \oxUtils;
@@ -33,7 +32,6 @@ use \oxException;
 use \oxField;
 use \oxRegistry;
 use \oxTestModules;
-use OxidEsales\EshopCommunity\Application\Model\Basket;
 
 /**
  * Test oxUtils module.
@@ -88,7 +86,7 @@ class OrderHelper extends oxOrder
      *
      * @return boolean
      */
-    public function finalizeOrder(Basket $oBasket, $oUser, $blRecalculatingOrder = false)
+    public function finalizeOrder(\OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
         return 1;
     }
@@ -322,7 +320,7 @@ class OrderTest extends \OxidTestCase
         //basket name in session will be "basket"
         $oConfig->setConfigParam('blMallSharedBasket', 1);
 
-        $oBasket = oxNew('oxBasket');
+        $oBasket = oxNew(\OxidEsales\Eshop\Application\Model\Basket::class);
         $mySession->setBasket($oBasket);
         //$this->getSession()->setVariable( 'basket', $oBasket );
         $this->getSession()->setVariable('usr', 'oxdefaultadmin');
@@ -350,7 +348,7 @@ class OrderTest extends \OxidTestCase
         //basket name in session will be "basket"
         $oConfig->setConfigParam('blMallSharedBasket', 1);
 
-        $oBasket = $this->getProxyClass("oxBasket");
+        $oBasket = $this->getProxyClass(\OxidEsales\Eshop\Application\Model\Basket::class);
         $oBasket->setNonPublicVar('_iProductsCnt', 5);
         $oBasket->setPayment(null);
         $mySession->setBasket($oBasket);
@@ -493,7 +491,7 @@ class OrderTest extends \OxidTestCase
         $this->getSession()->setVariable('usr', '_testUserId');
 
         //setting basket info
-        $oBasket = $this->getProxyClass('oxBasket');
+        $oBasket = $this->getProxyClass(\OxidEsales\Eshop\Application\Model\Basket::class);
 
         $oPrice = $this->getPriceForOrderExecute();
 
@@ -596,7 +594,7 @@ class OrderTest extends \OxidTestCase
         oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\OrderHelper::class, 'oxorder');
 
         //setting basket info
-        $oBasket = $this->getProxyClass('oxBasket');
+        $oBasket = $this->getProxyClass(\OxidEsales\Eshop\Application\Model\Basket::class);
 
         $oPrice = $this->getPriceForOrderExecute();
 
@@ -678,7 +676,7 @@ class OrderTest extends \OxidTestCase
     {
         $mySession = oxRegistry::getSession();
 
-        $oBasket = oxNew('oxBasket');
+        $oBasket = oxNew(\OxidEsales\Eshop\Application\Model\Basket::class);
         $this->getConfig()->setConfigParam('blMallSharedBasket', 1);
         //$this->getSession()->setVariable( 'basket', $oBasket );
         $mySession->setBasket($oBasket);
@@ -701,7 +699,7 @@ class OrderTest extends \OxidTestCase
         $oConfig->setConfigParam('blMallSharedBasket', 1);
         $oConfig->setConfigParam('iMinOrderPrice', false);
 
-        $oBasket = oxNew('oxBasket');
+        $oBasket = oxNew(\OxidEsales\Eshop\Application\Model\Basket::class);
         $oBasket->setPayment('oxidcashondel');
 
         $mySession->setBasket($oBasket);
@@ -715,7 +713,7 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test if method for validating payment uses basket price
-     * getted from oxBasket::getPriceForPayment()
+     * getted from \OxidEsales\Eshop\Application\Model\Basket::getPriceForPayment()
      *
      * @return null
      */
@@ -820,7 +818,7 @@ class OrderTest extends \OxidTestCase
     {
         //basket name in session will be "basket"
         $this->getConfig()->setConfigParam('blMallSharedBasket', 1);
-        $oBasket = oxNew('oxBasket');
+        $oBasket = oxNew(\OxidEsales\Eshop\Application\Model\Basket::class);
         $oBasket->setPayment('oxidcashondel');
 
         $mySession = oxRegistry::getSession();

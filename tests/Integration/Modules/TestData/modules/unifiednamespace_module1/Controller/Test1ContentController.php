@@ -16,10 +16,27 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_virtual;
+/**
+ * CMS - loads pages and displays it
+ */
+class Test1ContentController extends Test1ContentController_parent
+{
+    /**
+     * Template variable getter. Returns tag title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        $contentTitle = parent::getTitle();
 
-class MyClass extends \OxidEsales\Eshop\Application\Model\Article {}
+        $content = oxNew('Test1Content');
+        $contentTitle = $contentTitle . " - Module_1_Controller " . $content->getTitle();
+
+        return $contentTitle;
+    }
+}

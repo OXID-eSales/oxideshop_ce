@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Autoload\BackwardsCompatibility;
 
-class ForwardCompatibleCatchingVirtualStandardException_7_Test extends \PHPUnit_Framework_TestCase
+class ForwardCompatibleCatchingUnifiedNamespaceStandardException_7_Test extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -30,21 +30,21 @@ class ForwardCompatibleCatchingVirtualStandardException_7_Test extends \PHPUnit_
      *
      * @throws \Exception $exception
      */
-    public function testForwardCompatibleCatchingVirtualStandardException()
+    public function testForwardCompatibleCatchingUnifiedNamespaceStandardException()
     {
-        $this->markTestSkipped(
-            'This test will fail on Travis and CI as it MUST run in an own PHP process, which is not possible.'
-        );
+        // $this->markTestSkipped(
+        //    'This test will fail on Travis and CI as it MUST run in an own PHP process, which is not possible.'
+        // );
 
         $exception = new \OxidEsales\EshopCommunity\Core\Exception\StandardException();
         try {
             throw $exception;
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
             /** If the exception has been caught, the test has failed */
-            $this->fail('The given exception (new \OxidEsales\Eshop\Core\Exception\StandardException()) was caught');
+            $this->fail('The given exception (new \OxidEsales\Eshop\Core\Exception\StandardException()) was caught as \OxidEsales\Eshop\Core\Exception\StandardException');
         } catch (\Exception $exception) {
             /** If the exception has not been caught before, the test has failed */
-            $this->assertTrue(true, 'The given exception (new \OxidEsales\Eshop\Core\Exception\StandardException()) was not caught');
+            $this->assertTrue(true, 'The given exception (new \OxidEsales\Eshop\Core\Exception\StandardException()) was not caught as \OxidEsales\Eshop\Core\Exception\StandardException');
         }
     }
 }

@@ -16,32 +16,22 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
-
-//namespace test\module3\Controller;
-
-//use test\module3\Model\TestContent;
+/**
+ * Metadata version
+ */
+$sMetadataVersion = '2.0';
 
 /**
- * CMS - loads pages and displays it
+ * Module information
  */
-class Test3ContentController extends Test3ContentController_parent
-{
-    /**
-     * Template variable getter. Returns tag title
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        $contentTitle = parent::getTitle();
-
-        // The commented things are not working atm or will not be implemented.
-        // $content = new TestContent();
-        $contentTitle = $contentTitle . "Mod3";// . $content->getTitle();
-
-        return $contentTitle;
-    }
-}
+$aModule = array(
+    'id'           => 'own_namespace_extending_unified_namespace',
+    'title'        => 'Test case 1.10: a namespaced module class inherits from the unified shop namespace',
+    'description'  => 'Both module class and shop class use the namespaces, but the shop class is from the unified shop namespace.',
+    'thumbnail'    => 'picture.png',
+    'version'      => '1.0',
+    'author'       => 'OXID eSales AG',
+);

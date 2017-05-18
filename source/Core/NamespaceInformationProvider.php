@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 /**
- * Class NamespaceInformationProvider
+ * Class EditionSelector
  *
  * @package OxidEsales\EshopCommunity\Core
  *
@@ -37,18 +37,29 @@ class NamespaceInformationProvider
      *
      * @var array
      */
-    private static $shopEditionNamespaces = [
+    protected static $shopEditionNamespaces = [
         'CE' => 'OxidEsales\\EshopCommunity\\',
         'PE' => 'OxidEsales\\EshopProfessional\\',
         'EE' => 'OxidEsales\\EshopEnterprise\\'
     ];
 
     /**
-     * OXID eShop virtual namespace.
+     * Array contains names of the official OXID eShop edition namespaces for tests.
+     *
+     * @var array
+     */
+    protected static $shopEditionTestNamespaces = [
+        'CE' => 'OxidEsales\\EshopCommunity\\Tests\\',
+        'PE' => 'OxidEsales\\EshopProfessional\\Tests\\',
+        'EE' => 'OxidEsales\\EshopEnterprise\\Tests\\'
+    ];
+
+    /**
+     * OXID eShop unified namespace.
      *
      * @var string
      */
-    private static $virtualNamespace = 'OxidEsales\\Eshop\\';
+    protected static $unifiedNamespace = 'OxidEsales\\Eshop\\';
 
     /**
      * Getter for array with official OXID eShop Edition namespaces.
@@ -61,13 +72,13 @@ class NamespaceInformationProvider
     }
 
     /**
-     * Getter for official OXID eShop virtual namespace.
+     * Getter for official OXID eShop Unified Namespace.
      *
      * @return string
      */
-    public static function getVirtualNamespace()
+    public static function getUnifiedNamespace()
     {
-        return static::$virtualNamespace;
+        return static::$unifiedNamespace;
     }
 
 
@@ -100,13 +111,13 @@ class NamespaceInformationProvider
      *
      * @return bool
      */
-    public static function classBelongsToShopVirtualNamespace($className)
+    public static function classBelongsToShopUnifiedNamespace($className)
     {
         $lcClassName = strtolower(ltrim($className, '\\'));
-        $virtualNamespace = static::getVirtualNamespace();
-        $belongsToVirtualNamespace = (false !== strpos($lcClassName, strtolower($virtualNamespace)));
+        $unifiedNamespace = static::getUnifiedNamespace();
+        $belongsToUnifiedNamespace = (false !== strpos($lcClassName, strtolower($unifiedNamespace)));
 
-        return $belongsToVirtualNamespace;
+        return $belongsToUnifiedNamespace;
     }
 
     /**

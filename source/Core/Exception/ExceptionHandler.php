@@ -76,7 +76,9 @@ class ExceptionHandler
             }
         }
 
-        throw new SystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . __CLASS__ . ")" . PHP_EOL);
+        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException(
+            "Function '$sMethod' does not exist or is not accessible! (" . __CLASS__ . ")" . PHP_EOL
+        );
     }
 
     /**

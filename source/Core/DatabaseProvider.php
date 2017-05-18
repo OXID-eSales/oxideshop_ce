@@ -342,7 +342,7 @@ class DatabaseProvider
      *
      * @return bool
      */
-    protected function isDatabaseConfigured(\OxidEsales\EshopCommunity\Core\ConfigFile $config)
+    protected function isDatabaseConfigured(\OxidEsales\Eshop\Core\ConfigFile $config)
     {
         $isValid = true;
 

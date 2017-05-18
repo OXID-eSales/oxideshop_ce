@@ -23,7 +23,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_ns\MyClass as namespaced_from_ns;
-use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_virtual\MyClass as namespaced_from_virtual;
+use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\own_namespace_extending_unified_namespace\MyClass as own_namespace_extending_unified_namespace;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance24\MyClass as ModuleInheritance24MyClass;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance27\MyClass as ModuleInheritance27MyClass;
 
@@ -38,11 +38,11 @@ use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modu
  *
  * 1. Simple extending shop classes in modules
  * +-------------------------------+--------------------+-------------------------+---------------------------------+
- * |        extends via PHP        | plain module class | namespaced module class | virtual namespaced module class |
+ * |        extends via PHP        | plain module class | namespaced module class | unified namespaced module class |
  * +-------------------------------+--------------------+-------------------------+---------------------------------+
  * | Plain shop class              |                1.1 |                     1.6 | not planned                     |
  * | Namespaced shop class         |                1.2 |                     1.7 | not planned                     |
- * | Virtual namespaced shop class |                1.5 |                    1.10 | not planned                     |
+ * | unified namespaced shop class |                1.5 |                    1.10 | not planned                     |
  * +-------------------------------+--------------------+-------------------------+---------------------------------+
  *
  *
@@ -75,7 +75,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modu
  * +-------------------------------+--------------------+-------------------------+
  * | Plain shop class              | 3.1                | 3.4                     |
  * | Namespaced shop class         | 3.2                | 3.5                     |
- * | Virtual namespaced shop class | 3.3                | 3.6                     |
+ * | unified namespaced shop class | 3.3                | 3.6                     |
  * +-------------------------------+--------------------+-------------------------+
  *
  *
@@ -177,13 +177,13 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
                 'shopClassNames'   => [\OxidEsales\EshopCommunity\Application\Model\Article::class]
             ],
             'case_1_10' => [
-                // Test case 1.10 namespaced module extends eShop virtual class
-                'moduleToActivate' => ['Vendor1/namespaced_from_virtual'],
-                'moduleClassName'  => namespaced_from_virtual::class,
+                // Test case 1.10 namespaced module extends eShop unified namespace class
+                'moduleToActivate' => ['Vendor1/own_namespace_extending_unified_namespace'],
+                'moduleClassName'  => own_namespace_extending_unified_namespace::class,
                 'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class]
             ],
             'case_3_6' => [
-                // Test case 3.6 namespaced module class chain extends virtual OXID eShop class
+                // Test case 3.6 namespaced module class chain extends unified namespace OXID eShop class
                 'moduleToActivate' => ['Vendor1/ModuleChainExtension36'],
                 'moduleClassName'  => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension36\MyClass36::class,
                 'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class],

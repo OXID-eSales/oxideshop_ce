@@ -21,15 +21,13 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-use oxArticleInputException;
 use \oxUserException;
 use \oxCompanyVatInCountryChecker;
 use \oxOnlineVatIdCheck;
-
 use \oxutils;
 use \oxCompanyVatInValidator;
 use \oxuser;
-use \oxField;
+use \OxidEsales\Eshop\Core\Field;
 use \oxRegistry;
 
 class Unit_oxInputValidatorTest_oxutils extends oxutils
@@ -44,7 +42,7 @@ class Unit_oxInputValidatorTest_oxutils extends oxutils
 /**
  * Test input validation class (oxInputValidator)
  */
-class InputValidatorTest extends \OxidTestCase
+class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
     private $_oValidator = null;
@@ -89,38 +87,28 @@ class InputValidatorTest extends \OxidTestCase
         $this->assertEquals($this->_oValidator->validateBasketAmount('1.6'), 1.6);
     }
 
+    public function providerNotAllowedArticleAmounts()
+    {
+        return [
+            [-1],
+            ['Alpha'], //FS#1758
+            ['0.000,0']
+        ];
+    }
+
     /**
      * Test case for oxinputvalidator::validateBasketAmount()
      * tests unallowed input
      *
-     * @return null
+     * @dataProvider providerNotAllowedArticleAmounts
+     *
+     * @param string $notAllowedAmount
      */
-    public function testValidateBasketAmountBadInput()
+    public function testValidateBasketAmountBadInput($notAllowedAmount)
     {
-        $iStat = 0;
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', false);
-        try {
-            $this->_oValidator->validateBasketAmount(-1);
-        } catch (oxArticleInputException $e) {
-            $iStat++;
-        }
-
-        //FS#1758
-        try {
-            $this->_oValidator->validateBasketAmount('Alpha');
-        } catch (oxArticleInputException $e) {
-            $iStat++;
-        }
-
-        try {
-            $this->_oValidator->validateBasketAmount('0.000,0');
-        } catch (oxArticleInputException $e) {
-            $iStat++;
-        }
-
-        if ($iStat != 3) {
-            $this->fail('Bad input passed');
-        }
+        $this->setExpectedException(\OxidEsales\Eshop\Core\Exception\ArticleInputException::class);
+        $this->_oValidator->validateBasketAmount($notAllowedAmount);
     }
 
     /**
@@ -725,10 +713,9 @@ class InputValidatorTest extends \OxidTestCase
     }
 
     /**
-     * Test case for oxInputValidator::checkLogin()
      * 1. testing if method detects duplicate records
      *
-     * @return null
+     * @covers \OxidEsales\Eshop\Core\InputValidator::checkLogin()
      */
     public function testCheckLoginUserWithPassDuplicateLogin()
     {
@@ -737,7 +724,7 @@ class InputValidatorTest extends \OxidTestCase
         $oUser->setId("testlalaa_");
 
         $oUser->expects($this->once())->method('checkIfEmailExists')->will($this->returnValue(true));
-        $oUser->oxuser__oxusername = new oxField("testuser");
+        $oUser->oxuser__oxusername = new Field("testuser");
 
         $aInvAdress['oxuser__oxusername'] = $oUser->oxuser__oxusername->value;
 
@@ -758,18 +745,17 @@ class InputValidatorTest extends \OxidTestCase
     }
 
     /**
-     * Test case for oxInputValidator::checkLogin()
      * 2. if user tries to change login password must be entered ...
      *
-     * @return null
+     * @covers \OxidEsales\Eshop\Core\InputValidator::checkLogin()
      */
     public function testCheckLoginNewLoginNoPass()
     {
         $oUser = oxNew('oxuser');
         $oUser->setId("testlalaa_");
 
-        $oUser->oxuser__oxpassword = new oxField('b@b.b', oxField::T_RAW);
-        $oUser->oxuser__oxusername = new oxField('b@b.b', oxField::T_RAW);
+        $oUser->oxuser__oxpassword = new Field('b@b.b', Field::T_RAW);
+        $oUser->oxuser__oxusername = new Field('b@b.b', Field::T_RAW);
 
         $aInvAdress['oxuser__oxusername'] = 'a@a.a';
         $aInvAdress['oxuser__oxpassword'] = '';
@@ -788,33 +774,35 @@ class InputValidatorTest extends \OxidTestCase
     }
 
     /**
-     * Test case for oxInputValidator::checkLogin()
      * 3. if user tries to change login CORRECT password must be entered ...
      *
-     * @return null
+     * @covers \OxidEsales\Eshop\Core\InputValidator::checkLogin()
+     *
      */
     public function testCheckLoginNewLoginWrongPass()
     {
-        $oUser = oxNew('oxuser');
-        $oUser->setId("testlalaa_");
+        $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+        $user->setId("testlalaa_");
 
-        $oUser->oxuser__oxpassword = new oxField('a@a.a', oxField::T_RAW);
-        $oUser->oxuser__oxusername = new oxField('b@b.b', oxField::T_RAW);
+        $user->oxuser__oxpassword = new Field('a@a.a', Field::T_RAW);
+        $user->oxuser__oxusername = new Field('b@b.b', Field::T_RAW);
 
-        $aInvAdress['oxuser__oxusername'] = 'a@a.a';
-        $aInvAdress['oxuser__oxpassword'] = 'b@b.b';
+        $invoiceAdress['oxuser__oxusername'] = 'a@a.a';
+        $invoiceAdress['oxuser__oxpassword'] = 'b@b.b';
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $oValidator->expects($this->once())->method('_addValidationError')
+        $validator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
+        $validator->expects($this->once())->method('_addValidationError')
             ->with(
                 $this->equalTo('oxuser__oxpassword'),
                 $this->logicalAnd(
-                    $this->isInstanceOf('oxUserException'),
-                    $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'))
+                    $this->isInstanceOf(\OxidEsales\Eshop\Core\Exception\UserException::class),
+                    $this->attributeEqualTo(
+                        'message',
+                        \OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'))
                 )
             );
 
-        $oValidator->checkLogin($oUser, '', $aInvAdress);
+        $validator->checkLogin($user, '', $invoiceAdress);
     }
 
     /**

@@ -740,7 +740,7 @@ $aLang = array(
     // In MODULE_METADATA_PROBLEMATIC_DATA_IN_EXTEND ad links to offical equivalents of
     // http://oxid-eshop-developer-documentation.readthedocs.io/en/latest/modules/metadata/version20.html
     // and http://oxid-eshop-developer-documentation.readthedocs.io/en/latest/modules/using_namespaces_in_modules.html
-    'MODULE_METADATA_PROBLEMATIC_DATA_IN_EXTEND'     => 'Invalid metadata in extend section. The following extended shop classes are either mistyped or don\'t belong to the virtual name space: <br> %s',
+    'MODULE_METADATA_PROBLEMATIC_DATA_IN_EXTEND'     => 'Invalid metadata in extend section. The following extended shop classes are either mistyped or don\'t belong to the Unified Namespace: <br> %s',
     'LANGUAGE_ERRORGENERATEVIEWS'                    => "Please don't forget to update the database views under Service->Tools",
     'LANGUAGE_ACTIVE'                                => 'Active in frontend',
     'LANGUAGE_LIST_MENUITEM'                         => 'Master Settings',

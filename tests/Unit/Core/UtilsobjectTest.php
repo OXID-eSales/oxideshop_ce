@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
@@ -78,7 +78,7 @@ class oxModuleUtilsObject extends \oxUtilsObject
     }
 }
 
-class UtilsobjectTest extends \OxidTestCase
+class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
     /**
@@ -120,22 +120,7 @@ class UtilsobjectTest extends \OxidTestCase
     public function testEditionSpecificObjectIsCreatedCorrect()
     {
         $utilsObject = \OxidEsales\Eshop\Core\UtilsObject::getInstance();
-
-        $edition = $this->getConfig()->getEdition();
-        $expectedClass = 'OxidEsales\EshopCommunity\Core\UtilsObject';
-
-        switch ($edition) {
-            case 'CE':
-                $expectedClass = 'OxidEsales\EshopCommunity\Core\UtilsObject';
-                break;
-            case 'PE':
-                $expectedClass = 'OxidEsales\EshopProfessional\Core\UtilsObject';
-                break;
-            case 'EE':
-                $expectedClass = 'OxidEsales\EshopEnterprise\Core\UtilsObject';
-                break;
-        }
-
+        $expectedClass = \OxidEsales\Eshop\Core\UtilsObject::class;
         $this->assertEquals($expectedClass, get_class($utilsObject));
     }
 

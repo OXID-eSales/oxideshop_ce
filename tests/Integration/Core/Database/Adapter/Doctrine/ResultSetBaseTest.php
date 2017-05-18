@@ -49,7 +49,7 @@ abstract class ResultSetBaseTest extends DatabaseInterfaceImplementationBaseTest
     /**
      * @var string The result set class class
      */
-    const RESULT_SET_CLASS = 'OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\ResultSet';
+    const RESULT_SET_CLASS = 'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet';
 
     /**
      * @return string The name of the database exception class

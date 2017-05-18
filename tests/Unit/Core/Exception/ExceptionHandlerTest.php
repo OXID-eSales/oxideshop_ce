@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
@@ -27,16 +27,16 @@ use OxidEsales\Eshop\Core\Exception\StandardException;
 use oxSystemComponentException;
 use \oxTestModules;
 
-class ExceptionHandlerTest extends \OxidTestCase
+class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
-    protected $_sMsg = 'TEST_EXCEPTION';
+    protected $message = 'TEST_EXCEPTION';
 
     public function testCallUnExistingMethod()
     {
-        $this->setExpectedException('oxSystemComponentException');
-        $oExcpHandler = oxNew('oxexceptionhandler');
-        $oExcpHandler->__test__();
+        $this->setExpectedException( \OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
+        $exceptionHandler = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionHandler::class);
+        $exceptionHandler->__NotExistingFunction__();
     }
 
     public function testSetGetFileName()
@@ -79,14 +79,14 @@ class ExceptionHandlerTest extends \OxidTestCase
         $logFileContent = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName);
         unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName); // delete file first as assert may return out this function
         /** Test if the exception message is found in the lof file */
-        $this->assertContains($this->_sMsg, $logFileContent);
+        $this->assertContains($this->message, $logFileContent);
     }
 
     public function dataProviderExceptions()
     {
         return [
-            [ new StandardException($this->_sMsg) ],
-            [ new \Exception($this->_sMsg) ],
+            [ new StandardException($this->message) ],
+            [ new \Exception($this->message) ],
         ];
     }
 

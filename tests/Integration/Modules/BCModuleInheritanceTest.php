@@ -34,11 +34,11 @@ use OxidEsales\Eshop\Core\Registry;
  *
  * 1. Simple extending shop classes in modules
  * +-------------------------------+--------------------+-------------------------+---------------------------------+
- * |        extends via PHP        | plain module class | namespaced module class | virtual namespaced module class |
+ * |        extends via PHP        | plain module class | namespaced module class | unified namespaced module class |
  * +-------------------------------+--------------------+-------------------------+---------------------------------+
  * | Plain shop class              |                1.1 |                     1.6 | not planned                     |
  * | Namespaced shop class         |                1.2 |                     1.7 | not planned                     |
- * | Virtual namespaced shop class |                1.5 |                    1.10 | not planned                     |
+ * | unified namespaced shop class |                1.5 |                    1.10 | not planned                     |
  * +-------------------------------+--------------------+-------------------------+---------------------------------+
  *
  *
@@ -71,7 +71,7 @@ use OxidEsales\Eshop\Core\Registry;
  * +-------------------------------+--------------------+-------------------------+
  * | Plain shop class              | 3.1                | 3.4                     |
  * | Namespaced shop class         | 3.2                | 3.5                     |
- * | Virtual namespaced shop class | 3.3                | 3.6                     |
+ * | Unified namespaced shop class | 3.3                | 3.6                     |
  * +-------------------------------+--------------------+-------------------------+
  *
  *
@@ -167,7 +167,7 @@ class BCModuleInheritanceTest extends BaseModuleInheritanceTestCase
                 'shopClassNames'    => ['OxidEsales\EshopCommunity\Application\Model\Article']
             ],
             'case_1_5' => [
-                //Test case 1.5 plain module extends eShop virtual class
+                //Test case 1.5 plain module extends eShop unified namespace class
                 'moduleToActivate' => ['bc_module_inheritance_1_5'],
                 'moduleClassName'  => 'vendor_1_module_5_myclass',
                 'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class]
@@ -179,7 +179,7 @@ class BCModuleInheritanceTest extends BaseModuleInheritanceTestCase
                 'shopClassNames'   => ['oxArticle']
             ],
             'case_3_3' => [
-                //Test case 3.3 plain module chain extends virtual OXID eShop class
+                //Test case 3.3 plain module chain extends unified namespace OXID eShop class
                 'moduleToActivate' => ['module_chain_extension_3_3'],
                 'moduleClassName'  => 'vendor_1_module_3_3_myclass',
                 'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class]

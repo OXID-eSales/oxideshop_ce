@@ -678,7 +678,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Validate module metadata extend section.
-     * Only virtual namespace shop classes are free to patch.
+     * Only Unified Namespace shop classes are free to patch.
      *
      * @param \OxidEsales\Eshop\Core\Module\Module $module
      *

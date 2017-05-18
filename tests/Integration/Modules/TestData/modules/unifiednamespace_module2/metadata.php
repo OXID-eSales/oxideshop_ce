@@ -17,7 +17,7 @@ $sMetadataVersion = '1.2';
  * Module information
  */
 $aModule = array(
-    'id'          => 'virtualnamespace_module2',
+    'id'          => 'unifiednamespace_module2',
     'title'       => array(
         'de' => 'OXID eSales example module2',
         'en' => 'OXID eSales example module2',
@@ -31,10 +31,10 @@ $aModule = array(
     'url'         => 'www.johndoe.com',
     'email'       => 'john@doe.com',
     'extend'      => array(
-        'content' => 'virtualnamespace_module2/Controller/Test2ContentController',
+        'content' => 'unifiednamespace_module2/Controller/Test2ContentController',
     ),
     'files'       => array(
-        'Test2Content'          => 'virtualnamespace_module2/Model/Test2Content.php',
+        'Test2Content'          => 'unifiednamespace_module2/Model/Test2Content.php',
     ),
     'templates'   => array(),
     'blocks'      => array(),

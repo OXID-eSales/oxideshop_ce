@@ -16,24 +16,10 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
-namespace virtualnamespace_module3\Model;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\own_namespace_extending_unified_namespace;
 
-/**
- * CMS - loads pages and displays it
- */
-class Test3NamespacedContent
-{
-    /**
-     * Template variable getter. Returns tag title
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return " Module3";
-    }
-}
+class MyClass extends \OxidEsales\Eshop\Application\Model\Article {}

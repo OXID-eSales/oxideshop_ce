@@ -37,10 +37,10 @@ class BackwardsCompatibleCatchingOxExceptionAbsoluteNamespace_4_Test extends \PH
             throw $exception;
         } catch (\oxException $exception) {
             /** If the exception got caught, the test has passed */
-            $this->assertTrue(true, 'The given exception (oxNew(\'oxexception\')) was caught');
+            $this->assertTrue(true, 'The given exception (oxNew(\'oxexception\')) was caught as \oxException');
         } catch (\Exception $exception) {
             /** If the exception got not caught before, the test has failed */
-            $this->fail('The given exception (oxNew(\'oxexception\')) was not caught');
+            $this->fail('The given exception (oxNew(\'oxexception\')) was not caught as \oxException');
         }
     }
 }

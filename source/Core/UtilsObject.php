@@ -280,7 +280,7 @@ class UtilsObject
         $class = $classNameProvider->getClassName($classAlias);
         /**
          * Backwards compatibility for ox... classes,
-         * when a class is instance build upon the virtual namespace
+         * when a class is instance build upon the unified namespace
          */
         if ($class == $classAlias) {
             $classAlias = $classNameProvider->getClassAliasName($class);

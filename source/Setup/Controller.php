@@ -26,7 +26,7 @@ use Exception;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\Eshop\Core\SystemRequirements;
-use OxidEsales\EshopCommunity\Core\ConfigFile;
+use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
 use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
 use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;

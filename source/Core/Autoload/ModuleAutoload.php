@@ -71,9 +71,18 @@ class ModuleAutoload
      * checks module extensions.
      *
      * @param string $class Class name.
+     *
+     * @return bool
      */
     public static function autoload($class)
     {
+        /**
+         * Classes from unified namespace canot be loaded by this auto loader.
+         * Do not try to load them in order to avoid strange errors in edge cases.
+         */
+        if (false !== strpos($class, 'OxidEsales\Eshop\\')) {
+            return false;
+        }
         $instance = static::getInstance();
 
         $class = strtolower(basename($class));
@@ -154,5 +163,3 @@ class ModuleAutoload
         }
     }
 }
-
-spl_autoload_register([\OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload::class, 'autoload']);

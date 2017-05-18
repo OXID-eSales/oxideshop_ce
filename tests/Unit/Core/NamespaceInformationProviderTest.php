@@ -24,7 +24,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
- * Test \OxidEsales\Eshop\Core\NamespaceInformationProvider.
+ * Test \OxidEsales\Eshop\Core\EditionSelector.
  * Class NamespaceInformationProviderTest
  *
  * @package OxidEsales\EshopCommunity\Tests\Unit\Core
@@ -43,11 +43,11 @@ class NamespaceInformationProviderTest extends UnitTestCase
     }
 
     /**
-     * Test getter for virtual namespaces.
+     * Test getter for Unified Namespace.
      */
-    public function testGetVirtualNamespace()
+    public function testGetUnifiedNamespace()
     {
-        $this->assertEquals('OxidEsales\Eshop\\', \OxidEsales\Eshop\Core\NamespaceInformationProvider::getVirtualNamespace());
+        $this->assertEquals('OxidEsales\Eshop\\', \OxidEsales\Eshop\Core\NamespaceInformationProvider::getUnifiedNamespace());
     }
 
     /**
@@ -60,16 +60,16 @@ class NamespaceInformationProviderTest extends UnitTestCase
     }
 
     /**
-     * Test method classBelongsToShopVirtualNamespace.
+     * Test method classBelongsToShopUnifiedNamespace.
      */
-    public function testClassBelongsToShopVirtualNamespace()
+    public function testClassBelongsToShopUnifiedNamespace()
     {
-        $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopVirtualNamespace('oxArticle'));
-        $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopVirtualNamespace('oxarticle'));
-        $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopVirtualNamespace(\OxidEsales\EshopCommunity\Application\Model\Article::class));
-        $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopVirtualNamespace('OxidEsales\EshopCommunity\Application\Model\Article'));
-        $this->assertTrue(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopVirtualNamespace('OxidEsales\Eshop\Application\Model\Article'));
-        $this->assertTrue(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopVirtualNamespace(\OxidEsales\Eshop\Application\Model\Article::class));
+        $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopUnifiedNamespace('oxArticle'));
+        $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopUnifiedNamespace('oxarticle'));
+        $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopUnifiedNamespace(\OxidEsales\EshopCommunity\Application\Model\Article::class));
+        $this->assertFalse(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopUnifiedNamespace('OxidEsales\EshopCommunity\Application\Model\Article'));
+        $this->assertTrue(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopUnifiedNamespace('OxidEsales\Eshop\Application\Model\Article'));
+        $this->assertTrue(\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopUnifiedNamespace(\OxidEsales\Eshop\Application\Model\Article::class));
     }
 
     /**

@@ -33,22 +33,6 @@ use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database;
  */
 class ResultSetTest extends ResultSetBaseTest
 {
-
-    /**
-     * @var string The name of the class, including the complete namespace.
-     */
-    const CLASS_NAME_WITH_PATH = 'OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\ResultSet';
-
-    /**
-     * @var string The database exception class to be thrown
-     */
-    const DATABASE_EXCEPTION_CLASS = 'OxidEsales\EshopCommunity\Core\Exception\DatabaseException';
-
-    /**
-     * @var string The result set class class
-     */
-    const RESULT_SET_CLASS = 'OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\ResultSet';
-
     /**
      * Create the database object under test.
      *

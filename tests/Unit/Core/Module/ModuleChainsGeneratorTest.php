@@ -22,7 +22,6 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
-use OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator;
 use oxTestModules;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
@@ -30,7 +29,7 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
  * @group module
  * @package Unit\Core
  */
-class ModuleChainsGeneratorTest extends \OxidTestCase
+class ModuleChainsGeneratorTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
     public function testGetActiveModuleChain()
@@ -113,7 +112,7 @@ class ModuleChainsGeneratorTest extends \OxidTestCase
     {
         /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
         $moduleVariablesLocatorMock = $this->getMock(
-            \OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator::class,
+            \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class,
             ['getModuleVariable'],
             [],
             '',

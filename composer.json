@@ -18,7 +18,7 @@
         "oxid-esales/eshop-edition-facts": "^v1.0.0",
         "doctrine/dbal": "v2.5.12",
         "oxid-esales/oxideshop-demodata-installer": "^v1.1.0",
-        "oxid-esales/oxideshop-composer-plugin": "^v1.0.0"
+        "oxid-esales/oxideshop-composer-plugin": "^v2.0.0"
     },
     "require-dev": {
         "oxid-esales/testing-library": "dev-master",
@@ -58,6 +58,14 @@
         "oe:views:regenerate": "oe-eshop-db_views_regenerate"
     },
     "extra": {
+        "oxideshop": {
+            "blacklist-filter": [
+                "Application/Component/**/*",
+                "Application/Controller/**/*",
+                "Application/Model/**/*",
+                "Core/**/*"
+            ]
+        },
         "incenteev-parameters": {
             "file": "test_config.yml",
             "dist-file": "vendor/oxid-esales/testing-library/test_config.yml.dist",

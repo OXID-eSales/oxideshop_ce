@@ -36,6 +36,8 @@ $aLang = array(
     'fullDateFormat'   => 'Y-m-d H:i:s',
     'simpleDateFormat' => 'Y-m-d',
 
+    'COLON'                             => ':',
+    'ELLIPSIS'                          => '...',
     'GENERAL_ACTIVE'                    => 'Active',
     'GENERAL_ALWAYS_ACTIVE'             => 'Always active',
     'GENERAL_ACTIVFROMTILL'             => 'Active for a period',

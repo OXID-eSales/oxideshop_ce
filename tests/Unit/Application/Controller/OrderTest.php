@@ -22,6 +22,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use oxBasket;
+use OxidEsales\EshopCommunity\Application\Model\Payment;
 use oxOutOfStockException;
 use \oxUtils;
 use \oxUtilsObject;
@@ -372,7 +373,7 @@ class OrderTest extends \OxidTestCase
      */
     public function testRender()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper::class, 'oxpayment');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper::class, Payment::class, true);
 
         $config = $this->getConfig();
         $session = oxRegistry::getSession();

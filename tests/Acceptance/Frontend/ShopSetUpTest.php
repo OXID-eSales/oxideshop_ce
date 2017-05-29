@@ -49,7 +49,7 @@ class ShopSetUpTest extends FrontendTestCase
     const EN_LANGUAGE_SQL_FILENAME = 'en.sql';
     const HTACCESS_FILENAME = '.htaccess';
     const PACKAGE_INDICATOR_FILENAME = 'pkg.info';
-    const DB_MIGRATE_SCRIPT_FILENAME = 'oe-eshop-doctrine_migration';
+    const DB_MIGRATE_SCRIPT_FILENAME = 'oe-eshop-db_migrate';
     const DB_VIEWS_REGENERATE_SCRIPT_FILENAME = 'oe-eshop-db_views_generate';
 
     const SETUP_DIRECTORY = 'Setup';
@@ -752,7 +752,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->waitForText("Error while executing command");
         $this->assertTextPresent(self::DB_MIGRATE_SCRIPT_FILENAME);
         $this->assertTextPresent("Return code: '1'");
-        $this->assertTextPresent("Script \"oe-eshop-doctrine_migration migrations:migrate\" was not found");
+        $this->assertTextPresent("Script \"oe-eshop-db_migrate\" was not found");
 
         $this->showDatabaseMigrationExecutableFile();
     }

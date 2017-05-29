@@ -48,7 +48,7 @@ class Utilities extends Core
 
     const ESHOP_FACTS_BINARY_FILENAME = 'oe-eshop-facts';
     const DATABASE_VIEW_REGENERATION_BINARY_FILENAME = 'oe-eshop-db_views_regenerate';
-    const DATABASE_MIGRATION_BINARY_FILENAME = 'oe-eshop-doctrine_migration migrations:migrate';
+    const DATABASE_MIGRATION_BINARY_FILENAME = 'oe-eshop-db_migrate';
     const DEMODATA_ASSETS_INSTALL_BINARY_FILENAME = 'oe-eshop-demodata_install';
 
     /**
@@ -470,10 +470,7 @@ class Utilities extends Core
      */
     public function executeExternalDatabaseMigrationCommand()
     {
-        $migrateCommand = implode(DIRECTORY_SEPARATOR,
-            [$this->getVendorBinaryDirectory(), self::DATABASE_MIGRATION_BINARY_FILENAME]
-        );
-        $this->executeShellCommand($migrateCommand);
+        $this->executeShellCommandViaEshopFactsBinary(self::DATABASE_MIGRATION_BINARY_FILENAME);
     }
 
     /**

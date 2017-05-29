@@ -50,7 +50,7 @@ class ShopSetUpTest extends FrontendTestCase
     const HTACCESS_FILENAME = '.htaccess';
     const PACKAGE_INDICATOR_FILENAME = 'pkg.info';
     const DB_MIGRATE_SCRIPT_FILENAME = 'oe-eshop-db_migrate';
-    const DB_VIEWS_REGENERATE_SCRIPT_FILENAME = 'oe-eshop-db_views_generate';
+    const DB_VIEWS_REGENERATE_SCRIPT_FILENAME = 'oe-eshop-db_views_regenerate';
 
     const SETUP_DIRECTORY = 'Setup';
     const SOURCE_DIRECTORY = 'source';

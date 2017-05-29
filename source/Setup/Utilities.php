@@ -459,10 +459,7 @@ class Utilities extends Core
      */
     public function executeExternalRegenerateViewsCommand()
     {
-        $migrateCommand = implode(DIRECTORY_SEPARATOR,
-            [$this->getVendorBinaryDirectory(), self::DATABASE_VIEW_REGENERATION_BINARY_FILENAME]
-        );
-        $this->executeShellCommand($migrateCommand);
+        $this->executeShellCommandViaEshopFactsBinary(self::DATABASE_VIEW_REGENERATION_BINARY_FILENAME);
     }
 
     /**

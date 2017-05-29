@@ -47,7 +47,7 @@ class Utilities extends Core
     const LICENSE_TEXT_FILENAME = "lizenz.txt";
 
     const ESHOP_FACTS_BINARY_FILENAME = 'oe-eshop-facts';
-    const DATABASE_VIEW_REGENERATION_BINARY_FILENAME = 'oe-eshop-db_views_regenerate';
+    const DATABASE_VIEW_REGENERATION_BINARY_FILENAME = 'oe-eshop-db_views_generate';
     const DATABASE_MIGRATION_BINARY_FILENAME = 'oe-eshop-db_migrate';
     const DEMODATA_ASSETS_INSTALL_BINARY_FILENAME = 'oe-eshop-demodata_install';
 
@@ -459,7 +459,10 @@ class Utilities extends Core
      */
     public function executeExternalRegenerateViewsCommand()
     {
-        $this->executeShellCommandViaEshopFactsBinary(self::DATABASE_VIEW_REGENERATION_BINARY_FILENAME);
+        $migrateCommand = implode(DIRECTORY_SEPARATOR,
+            [$this->getVendorBinaryDirectory(), self::DATABASE_VIEW_REGENERATION_BINARY_FILENAME]
+        );
+        $this->executeShellCommand($migrateCommand);
     }
 
     /**

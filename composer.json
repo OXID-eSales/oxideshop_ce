@@ -14,10 +14,10 @@
         "smarty/smarty": "^v2.6.30",
         "oxid-esales/flow-theme": "dev-master || ^2.2.0",
         "oxid-esales/eshop-db-migration-wrapper": "^v1.0.0",
-        "oxid-esales/eshop-db-views-regenerator": "^v1.0.0",
         "doctrine/dbal": "v2.5.12",
         "oxid-esales/eshop-demodata-installer": "^v1.0.0",
-        "oxid-esales/oxideshop-composer-plugin": "^v1.0.0"
+        "oxid-esales/oxideshop-composer-plugin": "^v1.0.0",
+        "oxid-esales/oxideshop-db-views-generator": "^v1.0.0"
     },
     "require-dev": {
         "oxid-esales/testing-library": "dev-master",
@@ -54,7 +54,7 @@
         ],
         "oe:migration:run": "oe-eshop-facts oe-eshop-db_migrate",
         "oe:migration:new": "oe-eshop-facts oe-eshop-db_generate_migration",
-        "oe:views:regenerate": "oe-eshop-facts oe-eshop-db_views_regenerate"
+        "oe:views:regenerate": "./vendor/bin/oe-eshop-db_views_regenerate"
     },
     "extra": {
         "incenteev-parameters": {

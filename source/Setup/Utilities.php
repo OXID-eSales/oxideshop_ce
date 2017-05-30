@@ -30,6 +30,7 @@ use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
+use OxidEsales\DoctrineMigrations\Migrations;
 
 /**
  * Setup utilities class
@@ -48,7 +49,7 @@ class Utilities extends Core
 
     const ESHOP_FACTS_BINARY_FILENAME = 'oe-eshop-facts';
     const DATABASE_VIEW_REGENERATION_BINARY_FILENAME = 'oe-eshop-db_views_generate';
-    const DATABASE_MIGRATION_BINARY_FILENAME = 'oe-eshop-doctrine_migration migrations:migrate';
+    const DATABASE_MIGRATION_BINARY_FILENAME = 'oe-eshop-doctrine_migration';
     const DEMODATA_ASSETS_INSTALL_BINARY_FILENAME = 'oe-eshop-demodata_install';
 
     /**
@@ -462,6 +463,7 @@ class Utilities extends Core
         $migrateCommand = implode(DIRECTORY_SEPARATOR,
             [$this->getVendorBinaryDirectory(), self::DATABASE_VIEW_REGENERATION_BINARY_FILENAME]
         );
+        $migrateCommand = '"' . $migrateCommand . '"';
         $this->executeShellCommand($migrateCommand);
     }
 
@@ -473,6 +475,7 @@ class Utilities extends Core
         $migrateCommand = implode(DIRECTORY_SEPARATOR,
             [$this->getVendorBinaryDirectory(), self::DATABASE_MIGRATION_BINARY_FILENAME]
         );
+        $migrateCommand = '"' . $migrateCommand . '"' . ' ' . Migrations::MIGRATE_COMMAND;
         $this->executeShellCommand($migrateCommand);
     }
 

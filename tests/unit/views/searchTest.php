@@ -303,4 +303,20 @@ class Unit_Views_searchTest extends OxidTestCase
 
         $this->assertEquals('6 ' . oxRegistry::getLang()->translateString('HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false) . ' "searchStr"', $oView->getTitle());
     }
+
+    /**
+     * test for bug #5995
+     *
+     * @return null
+     */
+    public function testIsEmptySearchWithSpace()
+    {
+        oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
+
+        $oSearch = $this->getProxyClass('search');
+        modConfig::setRequestParameter('searchparam', ' ');
+        $oSearch->init();
+
+        $this->assertTrue($oSearch->isEmptySearch());
+    }
 }

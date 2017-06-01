@@ -421,8 +421,21 @@ class Price
      *
      * @param double $dValue discount value
      * @param string $sType  discount type: abs or %
+     *
+     * @deprecated Use Price::addDiscount instead
      */
     public function setDiscount($dValue, $sType)
+    {
+        $this->addDiscount($dValue, $sType);
+    }
+
+    /**
+     * Adds discount to price
+     *
+     * @param double $dValue discount value
+     * @param string $sType  discount type: abs or %
+     */
+    public function addDiscount($dValue, $sType)
     {
         $this->_aDiscounts[] = array('value' => $dValue, 'type' => $sType);
     }
@@ -454,13 +467,20 @@ class Price
         $aDiscounts = $this->getDiscounts();
 
         if ($aDiscounts) {
+            $sumOfCalculatedDiscounts = 0;
+
             foreach ($aDiscounts as $aDiscount) {
                 if ($aDiscount['type'] == 'abs') {
-                    $dPrice = $dPrice - $aDiscount['value'];
+                    //$dPrice = $dPrice - $aDiscount['value'];
+                    $sumOfCalculatedDiscounts += $aDiscount['value'];
                 } else {
-                    $dPrice = $dPrice * (100 - $aDiscount['value']) / 100;
+                    //$sumOfCalculatedDiscounts += $dPrice * (100 - $aDiscount['value']) / 100;
+                    $sumOfCalculatedDiscounts += $dPrice - ($dPrice * (100 - $aDiscount['value']) / 100);
                 }
             }
+
+            $dPrice -= $sumOfCalculatedDiscounts;
+
             if ($dPrice < 0) {
                 $this->setPrice(0);
             } else {

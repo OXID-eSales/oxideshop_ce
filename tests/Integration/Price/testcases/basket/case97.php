@@ -117,26 +117,26 @@ $aData = array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
         'articles' => array (
              111 => array ( '0,50', '0,50' ),
-             1112 => array ( '4,97', '4,97' ),
+             1112 => array ( '5,02', '5,02' ),
              1113 => array ( '0,90', '0,90' ),
-             1114 => array ( '990,99', '990,99' ),
+             1114 => array ( '1.001,00', '1.001,00' ),
         ),
         // Expectations of other totals
         'totals' => array (
             // Total BRUTTO
-            'totalBrutto' => '1.186,86',
+            'totalBrutto' => '1.198,83',
             // Total NETTO
-            'totalNetto'  => '997,36',
+            'totalNetto'  => '1.007,42',
             // Total VAT amount: vat% => total cost
             'vats' => array (
-                19 => '189,50',
+                19 => '191,41',
             ),
 
             // Total delivery amounts
             'delivery' => array(
-                'brutto' => '652,77',
-                'netto' => '548,55',
-                'vat' => '104,22'
+                'brutto' => '659,36',
+                'netto' => '554,08',
+                'vat' => '105,28'
             ),
             // Total payment amounts
             'payment' => array(
@@ -145,7 +145,7 @@ $aData = array(
                 'vat' => '0,10'
             ),
             // GRAND TOTAL
-            'grandTotal'  => '1.840,28'
+            'grandTotal'  => '1.858,84'
         ),
     ),
     // Test case options

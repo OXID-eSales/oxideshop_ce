@@ -24,8 +24,16 @@ namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\oxid
 
 use OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\oxid\namespace1\Models\Content;
 
+/**
+ * Class ModuleController
+ *
+ * @package OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\oxid\namespace1\Controllers
+ */
 class ModuleController
 {
+    /**
+     *
+     */
     public function showContent()
     {
         echo (new Content())->testContent();

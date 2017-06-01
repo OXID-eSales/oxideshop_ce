@@ -70,8 +70,6 @@ if (!function_exists('error_404_handler')) {
      * error_404_handler handler for 404 (page not found) error
      *
      * @param string $sUrl url wich was given, can be not specified in some cases
-     *
-     * @return void
      */
     function error_404_handler($sUrl = '')
     {

@@ -37,7 +37,7 @@ class test_module_controller_routing_MyModuleController extends \OxidEsales\Esho
     /**
      * Message from request
      */
-     protected $message = '';
+    protected $message = '';
 
     /**
      * Rendering method.

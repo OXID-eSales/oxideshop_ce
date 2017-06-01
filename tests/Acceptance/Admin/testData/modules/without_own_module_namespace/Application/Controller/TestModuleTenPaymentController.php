@@ -20,8 +20,11 @@
  * @version   OXID eShop CE
  */
 
-class TestModuleTenPaymentController extends TestModuleTenPaymentController_parent {
-
+class TestModuleTenPaymentController extends TestModuleTenPaymentController_parent
+{
+    /**
+     * @return mixed The template name.
+     */
     public function render()
     {
         $template = parent::render();

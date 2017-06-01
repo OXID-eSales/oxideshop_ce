@@ -52,8 +52,8 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
      * Returns part of SEO url excluding path
      *
      * @param \OxidEsales\Eshop\Application\Model\Vendor $vendor           Vendor object
-     * @param int      $languageId       Language id
-     * @param bool     $shouldRegenerate If TRUE - forces seo url regeneration
+     * @param int                                        $languageId       Language id
+     * @param bool                                       $shouldRegenerate If TRUE - forces seo url regeneration
      *
      * @return string
      */

@@ -38,5 +38,4 @@ $aModule = array(
     'blocks'    => array(
         array("template"=>"widget/sidebar/partners.tpl", "block"=>"partner_logos", "file"=>"oepaypalpartnerbox.tpl"),
     ),
-
 );

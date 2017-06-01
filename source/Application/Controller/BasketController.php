@@ -395,7 +395,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * Sets basket wrapping
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
-     * @param array    $aWrapping
+     * @param array                                      $aWrapping
      */
     protected function _setWrappingInfo($oBasket, $aWrapping)
     {

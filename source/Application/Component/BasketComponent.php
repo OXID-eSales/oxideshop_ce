@@ -76,6 +76,12 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function init()
     {
+        /**
+         * Think about implementing components following middleware concept from PSR (https://github.com/php-fig/fig-standards/blob/master/proposed/http-middleware/middleware.md)
+         * - this will enable easier integration of new components;
+         * - will make devs like more fancy and beautiful! :-D
+         */
+        
         $oConfig = $this->getConfig();
         if ($oConfig->getConfigParam('blPsBasketReservationEnabled')) {
             if ($oReservations = $this->getSession()->getBasketReservations()) {

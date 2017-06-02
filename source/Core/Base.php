@@ -100,7 +100,11 @@ class Base
      * @return null
      */
     public function __construct()
-    {
+    {                
+        // - introduce at least some dummy event dispatcher, which later cane be injected as a dependency
+        // - follow the idea of http://symfony.com/doc/current/components/event_dispatcher.html
+        // - implement interface based on the symfony dispatcher 
+        $this->eventDispatcher = new SomeEventDispatcher();
     }
 
     /**

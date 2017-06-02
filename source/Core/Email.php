@@ -35,7 +35,7 @@ use Exception;
  * Collects mailing configuration, other parameters, performs mailing functions
  * (newsletters, ordering, registration emails, etc.).
  */
-class Email extends \PHPMailer
+class Email
 {
     /**
      * Default Smtp server port
@@ -297,13 +297,18 @@ class Email extends \PHPMailer
     protected $_oConfig = null;
 
     /**
+     * @var \PHPMailer
+     */
+    private $mailer;
+    
+    /**
      * Class constructor.
      */
     public function __construct()
     {
-        //enabling exception handling in phpMailer class
-        parent::__construct(true);
-
+        // prepare for mailer injection
+        $this->mailer = \PHPMailer(); // woule be even better to implement a wrapper class on top!
+        
         $myConfig = $this->getConfig();
 
         $this->_setMailerPluginDir();
@@ -331,6 +336,11 @@ class Email extends \PHPMailer
      */
     public function __call($method, $args)
     {
+        // to ensure BC
+        if (method_exists($this, $method)) {
+            return call_user_func_array(array(& $this, $method), $args);
+        }       
+        
         if (defined('OXID_PHP_UNIT')) {
             if (substr($method, 0, 4) == "UNIT") {
                 $method = str_replace("UNIT", "_", $method);

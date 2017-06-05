@@ -69,6 +69,8 @@ abstract class AcceptanceTestCase extends \OxidEsales\TestingLibrary\AcceptanceT
             }
         }
         $this->resetConfig();
+
+        $this->activateTheme('azure');
     }
 
     /**

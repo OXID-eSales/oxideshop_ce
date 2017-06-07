@@ -384,7 +384,6 @@ REPLACE INTO `oxobject2discount` (`OXID`,                        `OXDISCOUNTID`,
 
 #updating oxconfig settings
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x07a1       WHERE `OXVARNAME` = 'dDefaultVAT';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0xde         WHERE `OXVARNAME` = 'iNewBasketItemMessage';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'bl_perfUseSelectlistPrice';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x7900fdf51e WHERE `OXVARNAME` = 'bl_perfShowActionCatArticleCnt';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blOtherCountryOrder';

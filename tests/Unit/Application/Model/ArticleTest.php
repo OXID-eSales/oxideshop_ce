@@ -398,7 +398,7 @@ class ArticleTest extends \OxidTestCase
 
         $sTimeCheckQ = " or ( art.oxactivefrom < '$sDate' and art.oxactiveto > '$sDate' )";
         $sQ = " and ( $sTable.oxstockflag != 2 or ( $sTable.oxstock + $sTable.oxvarstock ) > 0  ) ";
-        $sQ = " $sQ and IF( $sTable.oxvarcount = 0, 1, ( select 1 from $sTable as art where art.oxparentid=$sTable.oxid and ( art.oxactive = 1 $sTimeCheckQ ) and ( art.oxstockflag != 2 or art.oxstock > 0 ) limit 1 ) ) ";
+        $sQ = " $sQ and IF( $sTable.oxvarcount = 0, 1, $sTable.oxvarstock ) ";
 
         $this->assertEquals(str_replace(array(" ", "\n", "\t", "\r"), "", $sQ), str_replace(array(" ", "\n", "\t", "\r"), "", $oArticle->getStockCheckQuery()));
     }
@@ -2157,7 +2157,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle->setAdminMode(true);
         $sInsert = "";
         if (!$this->getConfig()->getConfigParam('blVariantParentBuyable')) {
-            $sInsert = " and IF( $sTable.oxvarcount = 0, 1, ( select 1 from $sTable as art where art.oxparentid=$sTable.oxid and  art.oxactive = 1  and ( art.oxstockflag != 2 or art.oxstock > 0 ) limit 1 ) ) ";
+            $sInsert = " and IF( $sTable.oxvarcount = 0, 1, $sTable.oxvarstock) ";
         }
         $sExpSelect = "(  $sTable.oxactive = 1  and $sTable.oxhidden = 0  and ( $sTable.oxstockflag != 2 or ( $sTable.oxstock + $sTable.oxvarstock ) > 0  ) $sInsert ) ";
         $sSelect = $oArticle->getSqlActiveSnippet();

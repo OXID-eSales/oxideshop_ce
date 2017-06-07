@@ -621,7 +621,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 if ($myConfig->getConfigParam('blUseTimeCheck')) {
                     $activeCheck = $this->addSqlActiveRangeSnippet($activeCheck, 'art');
                 }
-                $sQ = " $sQ and IF( $sTable.oxvarcount = 0, 1, ( select 1 from $sTable as art where art.oxparentid=$sTable.oxid and $activeCheck and ( art.oxstockflag != 2 or art.oxstock > 0 ) limit 1 ) ) ";
+                $sQ = " $sQ and IF( $sTable.oxvarcount = 0, 1, $sTable.oxvarstock) ";
             }
         }
 

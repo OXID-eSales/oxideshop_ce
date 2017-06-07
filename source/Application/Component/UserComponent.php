@@ -576,8 +576,14 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             } else {
                 return 'register?success=1&newslettererror=4';
             }
-        } else {
-            // problems with registration ...
+        } else { // problems with registration ...
+            //restore form values for password fields
+            $this->getParent()->addTplParam('lgn_pwd',$this->getConfig()->getRequestParameter('lgn_pwd'));
+            $this->getParent()->addTplParam('lgn_pwd2',$this->getConfig()->getRequestParameter('lgn_pwd2'));
+            //address meight be fetched from request by the register controller via smarty code from the template
+            //anyway the following line makes it at least possible to extract some logic from there.
+            $this->getParent()->addTplParam('invadr',$this->getConfig()->getRequestParameter('invadr'));
+            
             $this->logout();
         }
     }

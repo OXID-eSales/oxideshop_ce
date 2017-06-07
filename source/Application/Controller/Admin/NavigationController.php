@@ -149,6 +149,12 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         \OxidEsales\Eshop\Core\Registry::getUtils()->redirect('index.php', true, 302);
     }
 
+    public function shopfront()
+    {
+        $redirect = $this->getConfig()->getShopConfVar('sMallShopURL',$this->getSession()->getVariable('shp'));
+        oxRegistry::getUtils()->redirect($redirect);
+    }
+    
     /**
      * Caches external url file locally, adds <base> tag with original url to load images and other links correcly
      */

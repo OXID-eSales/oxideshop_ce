@@ -408,6 +408,7 @@ class UtilsServerTest extends \OxidTestCase
             ['/modules/oe/test_module/module_index.php', 'http://oxideshop.dev/module_index.php', true],
             ['/modules/test_module/module_index.php', 'http://oxideshop.dev/module_index.php', true],
             ['/shop1/modules/test_module/module_index.php', 'http://oxideshop.dev/shop1/module_index.php', true],
+            ['/core/utils/verificationimg.php', 'http://oxideshop.dev/core/utils/verificationimg.php', true],
             ['/shop1/index.php', 'http://oxideshop.dev/shop2/index.php', false],
             ['/shop1/modules/test_module/module_index.php', 'http://oxideshop.dev/shop2/module_index.php', false],
         ];

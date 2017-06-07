@@ -44,6 +44,8 @@ class EmailAzureTplTest extends \OxidTestCase
     {
         parent::setUp();
 
+        $this->getConfig()->setConfigParam('sTheme', 'azure');
+
         // reload smarty
         \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);
 

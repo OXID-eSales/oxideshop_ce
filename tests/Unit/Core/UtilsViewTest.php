@@ -21,12 +21,22 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\Theme;
 use \stdClass;
 use \oxRegistry;
 use \oxTestModules;
 
 class UtilsViewTest extends \OxidTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        $theme = oxNew(Theme::class);
+        $theme->load('azure');
+        $theme->activate();
+    }
+
     /**
      * oxUtilsView::getTemplateDirs() test case
      *

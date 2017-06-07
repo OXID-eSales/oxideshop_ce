@@ -45,6 +45,8 @@ class CategoryTreeTest extends \OxidTestCase
      */
     public function testRenderDifferentTemplate()
     {
+        $this->getConfig()->setConfigParam('sTheme', 'azure');
+
         $oCategoryTree = oxNew('oxwCategoryTree');
         $oCategoryTree->setViewParameters(array("sWidgetType" => "header"));
         $this->assertEquals('widget/header/categorylist.tpl', $oCategoryTree->render());

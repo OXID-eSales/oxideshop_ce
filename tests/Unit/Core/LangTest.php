@@ -21,6 +21,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\Theme;
 use oxLang;
 use \stdClass;
 use \oxDb;
@@ -31,9 +32,7 @@ class LangTest extends \OxidTestCase
 {
 
     /**
-     * Initialize the fixture.
-     *
-     * @return null
+     * @inheritdoc
      */
     protected function setUp()
     {
@@ -41,6 +40,10 @@ class LangTest extends \OxidTestCase
 
         // cleanup
         oxRegistry::getUtils()->oxResetFileCache();
+
+        $theme = oxNew(Theme::class);
+        $theme->load('azure');
+        $theme->activate();
     }
 
     /**

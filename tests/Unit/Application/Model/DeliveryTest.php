@@ -610,7 +610,7 @@ class DeliveryTest extends \OxidTestCase
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p', oxField::T_RAW);
 
-        $this->assertEquals(0, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertEquals(512, $oDelivery->getDeliveryAmount($this->_oBasketItem));
         $this->assertTrue($oDelivery->getblFreeShipping());
 
         // non free shipping
@@ -635,7 +635,7 @@ class DeliveryTest extends \OxidTestCase
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p');
 
-        $this->assertEquals(0, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertEquals(512, $oDelivery->getDeliveryAmount($this->_oBasketItem));
         $this->assertTrue($oDelivery->getblFreeShipping());
 
         // non free shiping

@@ -47,7 +47,6 @@ class Utilities extends Core
     const DEMODATA_SQL_FILENAME = 'demodata.sql';
     const LICENSE_TEXT_FILENAME = "lizenz.txt";
 
-    const ESHOP_FACTS_BINARY_FILENAME = 'oe-eshop-facts';
     const DATABASE_VIEW_REGENERATION_BINARY_FILENAME = 'oe-eshop-db_views_generate';
     const DATABASE_MIGRATION_BINARY_FILENAME = 'oe-eshop-doctrine_migration';
     const DEMODATA_ASSETS_INSTALL_BINARY_FILENAME = 'oe-eshop-demodata_install';
@@ -484,18 +483,11 @@ class Utilities extends Core
      */
     public function executeExternalDemodataAssetsInstallCommand()
     {
-        $this->executeShellCommandViaEshopFactsBinary(self::DEMODATA_ASSETS_INSTALL_BINARY_FILENAME);
-    }
-
-    /**
-     * Executes a given command via the eShop facts helper binary file.
-     *
-     * @param string $command Command to execute.
-     */
-    private function executeShellCommandViaEshopFactsBinary($command)
-    {
-        $eshopFactsPathToBinary = $this->getFullPathToEshopFacts();
-        $this->executeShellCommand("$eshopFactsPathToBinary $command");
+        $installDemoDataCommand = implode(DIRECTORY_SEPARATOR,
+            [$this->getVendorBinaryDirectory(), self::DEMODATA_ASSETS_INSTALL_BINARY_FILENAME]
+        );
+        $installDemoDataCommand = '"' . $installDemoDataCommand . '"';
+        $this->executeShellCommand($installDemoDataCommand);
     }
 
     /**
@@ -538,16 +530,6 @@ class Utilities extends Core
     private function getVendorBinaryDirectory()
     {
         return $this->getVendorDirectory() . self::COMPOSER_VENDOR_BIN_DIRECTORY;
-    }
-
-    /**
-     * Return full path to eShop facts binary file.
-     *
-     * @return string
-     */
-    private function getFullPathToEshopFacts()
-    {
-        return implode(DIRECTORY_SEPARATOR, [$this->getVendorBinaryDirectory(), self::ESHOP_FACTS_BINARY_FILENAME]);
     }
 
     /**

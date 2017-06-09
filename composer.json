@@ -17,7 +17,7 @@
         "oxid-esales/oxideshop-db-views-generator": "^v1.1.0",
         "oxid-esales/eshop-edition-facts": "^v1.0.0",
         "doctrine/dbal": "v2.5.12",
-        "oxid-esales/eshop-demodata-installer": "^v1.0.0",
+        "oxid-esales/oxideshop-demodata-installer": "^v1.1.0",
         "oxid-esales/oxideshop-composer-plugin": "^v1.0.0"
     },
     "require-dev": {

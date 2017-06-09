@@ -30,7 +30,7 @@ use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
-use OxidEsales\DoctrineMigrations\Migrations;
+use OxidEsales\DoctrineMigrationWrapper\Migrations;
 
 /**
  * Setup utilities class

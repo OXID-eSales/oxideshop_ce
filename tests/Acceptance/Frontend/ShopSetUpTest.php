@@ -716,7 +716,6 @@ class ShopSetUpTest extends FrontendTestCase
         $this->waitForText("Error while executing command");
         $this->assertTextPresent(self::DB_MIGRATE_SCRIPT_FILENAME);
         $this->assertTextPresent("Return code: '1'");
-        $this->assertTextPresent("up to 20170101 from 0");
         $this->assertTextPresent("INVALID_SQL_SYNTAX");
 
         $this->deleteInvalidMigration();

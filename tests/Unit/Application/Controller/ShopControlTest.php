@@ -354,6 +354,8 @@ class ShopControlTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community/Professional edition only.');
         }
+        $this->getConfig()->setConfigParam('sTheme', 'azure');
+
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
         oxTestModules::addFunction('oxUtils', 'setHeader', '{}');
 
@@ -393,6 +395,8 @@ class ShopControlTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community/Professional edition only.');
         }
+        $this->getConfig()->setConfigParam('sTheme', 'azure');
+
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
         oxTestModules::addFunction('oxUtils', 'setHeader', '{}');
 
@@ -436,6 +440,8 @@ class ShopControlTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community/Professional edition only.');
         }
+        $this->getConfig()->setConfigParam('sTheme', 'azure');
+
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
         oxTestModules::addFunction('oxUtils', 'setHeader', '{}');
 

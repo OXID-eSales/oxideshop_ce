@@ -909,11 +909,11 @@ class CategoryTest extends \OxidTestCase
 
         // old path
         $oCategory->oxcategories__oxthumb = new oxField($sExistingPic);
-        $this->assertEquals($oCategory->getPictureUrl() . 'generated/category/thumb/748_150_75/' . $sExistingPic, $oCategory->getThumbUrl());
+        $this->assertEquals($oCategory->getPictureUrl() . 'generated/category/thumb/555_200_75/' . $sExistingPic, $oCategory->getThumbUrl());
 
         // new path
         $sUrl = $this->getConfig()->getOutUrl() . basename($this->getConfig()->getPicturePath(""));
-        $sUrl .= "/generated/category/thumb/748_150_75/sportswear_1_tc.jpg";
+        $sUrl .= "/generated/category/thumb/555_200_75/sportswear_1_tc.jpg";
 
         $oCategory->oxcategories__oxthumb = new oxField("sportswear_1_tc.jpg");
         $this->assertEquals($sUrl, $oCategory->getThumbUrl());

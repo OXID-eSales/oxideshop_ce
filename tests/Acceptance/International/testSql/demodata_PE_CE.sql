@@ -1,8 +1,5 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
-# Activate Azure theme
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x4db70f6d1a WHERE `OXVARNAME` = 'sTheme';
-
 #set country, username, password for default user
 UPDATE oxuser
   SET
@@ -356,21 +353,7 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`,   `OXVARNAME`,          
                        ('fb547ac17e4a5ba72.64297620', 1, '', 'bl_perfLoadSelectListsInAList', 'bool',       0x93ea1218),
                        ('2b456gjk7156737a6edc6814c5', 1, '', 'bl_rssBargain',                 'bool',       0x07),
                        ('2bpte85227eb159aedc68164c5', 1, '', 'bl_rssRecommLists',             'bool',       0x07),
-                       ('2b7lojk77123rtdskdj68164c5', 1, '', 'bl_rssRecommListArts',          'bool',       0x07),
-                       ('1ec42a395d0595ee7741091898848987', 1, 'theme:azure', 'sCatPromotionsize', 'str', 0xb06fb441c2bd94),
-                       ('18a9473894d473f6ed28f04e80d929fc', 1, 'theme:azure', 'bl_showCompareList', 'bool', 0x07),
-                       ('18acb2f595da54b5f865e54aa5cdb967', 1, 'theme:azure', 'bl_showListmania', 'bool', 0x07),
-                       ('18a12329124850cd8f63cda6e8e7b4e1', 1, 'theme:azure', 'bl_showWishlist', 'bool', 0x07),
-                       ('18a23429124850cd8f63cda6e8e7b4e1', 1, 'theme:azure', 'bl_showVouchers', 'bool', 0x07),
-                       ('18a34529124850cd8f63cda6e8e7b4e1', 1, 'theme:azure', 'bl_showGiftWrapping', 'bool', 0x07),
-                       ('15342e4cab0ee774acb3905838384984', 1, 'theme:azure', 'blShowBirthdayFields', 'bool', 0x07),
-                       ('11296159b7641d31b93423972af6150b', 1, 'theme:azure', 'iTopNaviCatCount', 'str', 0xb0),
-                       ('1ec42a395d0595ee7741091898848989', 1, 'theme:azure', 'sDefaultListDisplayType', 'select', 0x83cd10b7f09064ed),
-                       ('1ec42a395d0595ee7741091898848992', 1, 'theme:azure', 'sStartPageListDisplayType', 'select', 0x83cd10b7f09064ed),
-                       ('1ec42a395d0595ee7741091898848990', 1, 'theme:azure', 'blShowListDisplayType', 'bool', 0x07),
-                       ('1545423fe8ce213a0435345552230295', 1, 'theme:azure', 'aNrofCatArticles', 'arr', 0x4dba222b70e349f0c9d1aba6133981af1e8d79724d7309a19dd3eed099418943829510e114c4f6ffcb2543f5856ec4fea325d58b96e406decb977395c57d7cc79eec7f9f8dd6e30e2f68d198bd9d079dbe8b4f),
-                       ('1ec42a395d0595ee7741091898848991', 1, 'theme:azure', 'aNrofCatArticlesInGrid', 'arr', 0x4dbace2972e14bf2cbd3a9a4113b83c51e8d79724d7309a19dd3ee6153448c46879015e411c1f3fa250245f38368c2f8a523d58c91546b92cdf6)
-                    ;
+                       ('2b7lojk77123rtdskdj68164c5', 1, '', 'bl_rssRecommListArts',          'bool',       0x07);
 
 #azure theme config
 DELETE FROM `oxconfig` WHERE `OXMODULE` = 'theme:azure' AND `OXVARNAME` = 'iTopNaviCatCount';

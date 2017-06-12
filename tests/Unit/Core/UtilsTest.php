@@ -785,6 +785,8 @@ class UtilsTest extends \OxidTestCase
     public function testResetTemplateCache()
     {
         $config = $this->getConfig();
+        $config->setConfigParam('sTheme', 'azure');
+
         $utils = oxRegistry::getUtils();
         $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);
         $tmpDir = $config->getConfigParam('sCompileDir') . "/smarty/";

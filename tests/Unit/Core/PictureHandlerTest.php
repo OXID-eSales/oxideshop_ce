@@ -667,7 +667,7 @@ class PictureHandlerTest extends \OxidTestCase
     {
         $oConfig = $this->getConfig();
         $sSize = $oConfig->getConfigParam('aDetailImageSizes');
-        $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/380_340_75/30-360-back_p1_z_f_th_665.jpg';
+        $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/250_200_75/30-360-back_p1_z_f_th_665.jpg';
 
         $oPicHandler = oxNew('oxPictureHandler');
         $this->assertEquals($sPath, $oPicHandler->getProductPicUrl("product/1/", "30-360-back_p1_z_f_th_665.jpg", $sSize, "oxpic1"));
@@ -682,7 +682,7 @@ class PictureHandlerTest extends \OxidTestCase
     {
         $oConfig = $this->getConfig();
         $sSize = $oConfig->getConfigParam('aDetailImageSizes');
-        $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/380_340_75/nopic.jpg';
+        $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/250_200_75/nopic.jpg';
 
         $oPicHandler = oxNew('oxPictureHandler');
         $this->assertEquals($sPath, $oPicHandler->getProductPicUrl("product/1/", false, $sSize, "oxpic1"));

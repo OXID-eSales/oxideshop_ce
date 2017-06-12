@@ -44,6 +44,8 @@ class EmailTest extends \OxidTestCase
     {
         parent::setUp();
 
+        $this->getConfig()->setConfigParam('sTheme', 'azure');
+
         $this->_oEmail = oxNew("oxEmail");
 
         $this->cleanUpTable('oxuser');

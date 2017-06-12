@@ -133,7 +133,21 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('8563fba1baec599d5.89404456', 1, '', 'sCatThumbnailsize', 'str', 0x5d43334072bf3f),
 ('6ec4235c2aaa45d77.87437919', 1, '', 'sIconsize', 'str', 0x5d09ae6470),
 ('62642dfaa1d88b1b2.94593071', 1, '', 'sZoomImageSize', 'str', 0xfb42b1443b3e38),
-('62642dfaa1d87d064.50653921', 1, '', 'aDetailImageSizes', 'aarr', 0x4dba326a73d2cdcb471b9533d7800b4b898873f7ae9dc29edf3ce8fab64f8609e31d318807f46516ea31aa94cb0b4edaaf32e7cb502403b480dd7cb1451f56975c3fd6159579cd2cab97104f17ae6a99af864bc1acb550c7e78b82f4618aeb8ba7fbec5409f277e0a2b84e66c24f96ba3fa76665f6a9294d8bf365bf7d3d0d56faf2355df799bc2892994db56203b0f5967ddbe8d403cead91988dfc82772557950eb1ba0d9468f3d8ca7170cde789d6c1282016056e51005091e7440fa453b1235c40010a71ff46f681c74515b4fda6da204abf3178561e271f8202652eabe106a93f9f4d1ed363f2f33c1e29716b95be88112373c48373148b134f2e0312bcfa2f2ba96f5cb15338dee7265d0efc66fe6526a6047b0e2bc4896143076e8dbc7dd8a7448ba2a5233814dd6abc39cb811a4d295c95cdaffde7cb8a5a3fddfe14f9a580973e9660a622f0d774bdb9);
+('62642dfaa1d87d064.50653921', 1, '', 'aDetailImageSizes', 'aarr', 0x4dba326a73d2cdcb471b9533d7800b4b898873f7ae9dc29edf3ce8fab64f8609e31d318807f46516ea31aa94cb0b4edaaf32e7cb502403b480dd7cb1451f56975c3fd6159579cd2cab97104f17ae6a99af864bc1acb550c7e78b82f4618aeb8ba7fbec5409f277e0a2b84e66c24f96ba3fa76665f6a9294d8bf365bf7d3d0d56faf2355df799bc2892994db56203b0f5967ddbe8d403cead91988dfc82772557950eb1ba0d9468f3d8ca7170cde789d6c1282016056e51005091e7440fa453b1235c40010a71ff46f681c74515b4fda6da204abf3178561e271f8202652eabe106a93f9f4d1ed363f2f33c1e29716b95be88112373c48373148b134f2e0312bcfa2f2ba96f5cb15338dee7265d0efc66fe6526a6047b0e2bc4896143076e8dbc7dd8a7448ba2a5233814dd6abc39cb811a4d295c95cdaffde7cb8a5a3fddfe14f9a580973e9660a622f0d774bdb9),
+('18a9473894d473f6ed28f04e80d929fa', 1, '', 'bl_showCompareList', 'bool', 0x07),
+('18a34529124850cd8f63cda6e8e7b4ea', 1, '', 'bl_showGiftWrapping', 'bool', 0x07),
+('18acb2f595da54b5f865e54aa5cdb96a', 1, '', 'bl_showListmania', 'bool', 0x07),
+('18a23429124850cd8f63cda6e8e7b4ea', 1, '', 'bl_showVouchers', 'bool', 0x07),
+('18a12329124850cd8f63cda6e8e7b4ea', 1, '', 'bl_showWishlist', 'bool', 0x07),
+('15342e4cab0ee774acb390583838498a', 1, '', 'blShowBirthdayFields', 'bool', 0x07),
+('1ec42a395d0595ee774109189884899x', 1, '', 'blShowListDisplayType', 'bool', 0x07),
+('1ec42a395d0595ee774109189884898x', 1, '', 'sCatPromotionsize', 'str', 0xb06fb441c2bd94),
+('1ec42a395d0595ee774109189884847a', 1, '', 'iNewBasketItemMessage', 'select', 0x07),
+('11296159b7641d31b93423972af6150a', 1, '', 'iTopNaviCatCount', 'str', 0xfb),
+('1ec42a395d0595ee774109189884879a', 1, '', 'sCatIconsize', 'str', 0x070de94ac9b636),
+('1ec42a395d0595ee774109189884898a', 1, '', 'sDefaultListDisplayType', 'select', 0x83cd10b7f09064ed),
+('1545423fe8ce213a043534555223029a', 1, '', 'aNrofCatArticles', 'arr', 0x4dbace2972e14bf2cbd3a9a4113b83ad1c8f7b704f710ba39fd1ecd29b438b41809712e316c6f4fdc92741f7876cc6fca127d78994e604dcc99519),
+('1ec42a395d0595ee774109189884899a', 1, '', 'aNrofCatArticlesInGrid', 'arr', 0x4dbace2972e14bf2cbd3a9a4113b83c51e8d79724d7309a19dd3ee6153448c46879015e411c1f3fa250245f38368c2f8a523d58c91546b92cdf6);
 
 INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`) VALUES
 ('0bf20625433b3919eefe3ebb043776d3', 1, 'theme:flow', 'sEmailLogo', 'str', 0x942748b21dc5aa40be4dbb4b05b4),

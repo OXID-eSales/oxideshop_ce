@@ -252,7 +252,7 @@ class Utilities extends Core
     /**
      * Updates default htaccess file with user defined params
      *
-     * @param array $aParams various setup parameters
+     * @param array  $aParams    various setup parameters
      * @param string $sSubFolder in case you need to update non default, but e.g. admin file, you must add its folder
      *
      * @throws Exception when .htaccess file is not accessible/readable.
@@ -459,11 +459,8 @@ class Utilities extends Core
      */
     public function executeExternalRegenerateViewsCommand()
     {
-        $migrateCommand = implode(DIRECTORY_SEPARATOR,
-            [$this->getVendorBinaryDirectory(), self::DATABASE_VIEW_REGENERATION_BINARY_FILENAME]
-        );
-        $migrateCommand = '"' . $migrateCommand . '"';
-        $this->executeShellCommand($migrateCommand);
+        $regenerateViewsCommand = $this->formCommandToVendor(self::DATABASE_VIEW_REGENERATION_BINARY_FILENAME);
+        $this->executeShellCommand($regenerateViewsCommand);
     }
 
     /**
@@ -471,11 +468,8 @@ class Utilities extends Core
      */
     public function executeExternalDatabaseMigrationCommand()
     {
-        $migrateCommand = implode(DIRECTORY_SEPARATOR,
-            [$this->getVendorBinaryDirectory(), self::DATABASE_MIGRATION_BINARY_FILENAME]
-        );
-        $migrateCommand = '"' . $migrateCommand . '"' . ' ' . Migrations::MIGRATE_COMMAND;
-        $this->executeShellCommand($migrateCommand);
+        $databaseMigrateCommand = $this->formCommandToVendor(self::DATABASE_MIGRATION_BINARY_FILENAME) . ' ' . Migrations::MIGRATE_COMMAND;
+        $this->executeShellCommand($databaseMigrateCommand);
     }
 
     /**
@@ -483,10 +477,7 @@ class Utilities extends Core
      */
     public function executeExternalDemodataAssetsInstallCommand()
     {
-        $installDemoDataCommand = implode(DIRECTORY_SEPARATOR,
-            [$this->getVendorBinaryDirectory(), self::DEMODATA_ASSETS_INSTALL_BINARY_FILENAME]
-        );
-        $installDemoDataCommand = '"' . $installDemoDataCommand . '"';
+        $installDemoDataCommand = $this->formCommandToVendor(self::DEMODATA_ASSETS_INSTALL_BINARY_FILENAME);
         $this->executeShellCommand($installDemoDataCommand);
     }
 
@@ -655,5 +646,23 @@ class Utilities extends Core
     public static function stripAnsiControlCodes($outputWithAnsiControlCodes)
     {
         return preg_replace('/\x1b(\[|\(|\))[;?0-9]*[0-9A-Za-z]/', "", $outputWithAnsiControlCodes);
+    }
+
+    /**
+     * Form command to script file in Vendor directory.
+     *
+     * @param string $command
+     *
+     * @return string
+     */
+    private function formCommandToVendor($command)
+    {
+        $migrateCommand = implode(
+            DIRECTORY_SEPARATOR,
+            [$this->getVendorBinaryDirectory(), $command]
+        );
+        $migrateCommand = '"' . $migrateCommand . '"';
+
+        return $migrateCommand;
     }
 }

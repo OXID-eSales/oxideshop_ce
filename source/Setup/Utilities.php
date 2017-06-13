@@ -24,8 +24,6 @@ namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
 
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
@@ -138,7 +136,7 @@ class Utilities extends Core
     /**
      * Extracts install path
      *
-     * @param string $aPath path info array
+     * @param array $aPath path info array
      *
      * @return string
      */
@@ -254,8 +252,10 @@ class Utilities extends Core
     /**
      * Updates default htaccess file with user defined params
      *
-     * @param array  $aParams    various setup parameters
+     * @param array $aParams various setup parameters
      * @param string $sSubFolder in case you need to update non default, but e.g. admin file, you must add its folder
+     *
+     * @throws Exception when .htaccess file is not accessible/readable.
      */
     public function updateHtaccessFile($aParams, $sSubFolder = "")
     {

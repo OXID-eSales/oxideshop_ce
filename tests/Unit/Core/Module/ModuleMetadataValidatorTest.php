@@ -32,36 +32,35 @@ class ModuleMetadataValidatorTest extends \OxidTestCase
 
     public function testValidateModuleWithoutMetadataFile()
     {
-        $sPathToMetadata = '';
-        $oModuleStub = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getMetadataPath'));
-        $oModuleStub->expects($this->any())
+        $PathToMetadata = '';
+        $moduleStub = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getMetadataPath'));
+        $moduleStub->expects($this->any())
             ->method('getMetadataPath')
-            ->will($this->returnValue($sPathToMetadata));
+            ->will($this->returnValue($PathToMetadata));
 
-        /** @var oxModule $oModule */
-        $oModule = $oModuleStub;
+        /** @var \OxidEsales\Eshop\Core\Module\Module $moduleStub */
+        $module = $moduleStub;
 
-        $oMetadataValidator = oxNew('oxModuleMetadataValidator');
-        $this->assertFalse($oMetadataValidator->validate($oModule));
+        $metadataValidator = oxNew('oxModuleMetadataValidator');
+        $this->assertFalse($metadataValidator->validate($module));
     }
 
     public function testValidateModuleWithValidMetadataFile()
     {
-        $sMetadataFileName = 'metadata.php';
-        $sMetadataContent = '<?php ';
+        $metadataFileName = 'metadata.php';
+        $metadataContent = '<?php ';
 
-        $sPathToMetadata = $this->createFile($sMetadataFileName, $sMetadataContent);
+        $pathToMetadata = $this->createFile($metadataFileName, $metadataContent);
 
-        $oModuleStub = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getMetadataPath'));
-        $oModuleStub->expects($this->any())
+        $moduleStub = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getMetadataPath'));
+        $moduleStub->expects($this->any())
             ->method('getMetadataPath')
-            ->will($this->returnValue($sPathToMetadata));
+            ->will($this->returnValue($pathToMetadata));
 
-        /** @var oxModule $oModule */
-        $oModule = $oModuleStub;
+        $module = $moduleStub;
 
         $oMetadataValidator = oxNew('oxModuleMetadataValidator');
-        $this->assertTrue($oMetadataValidator->validate($oModule));
+        $this->assertTrue($oMetadataValidator->validate($module));
     }
 
     /**
@@ -98,7 +97,7 @@ class ModuleMetadataValidatorTest extends \OxidTestCase
                                                              '\somevendor\SomeOtherNamespace\Order' => '\MyVendor\MyModule1\MyOrderClass',
                                                              'oxUser' => '\MyVendor\MyModule1\MyUserClass'
                                                             ],
-                                                        'expected' => []
+                                                        'expected' => ['\OxidEsales\EshopCommunity\Tests\SomeVendor\SomeNamespace\Article' => '\MyVendor\MyModule1\MyArticleClass']
             ],
             'case_mismatch' => ['metadata_extend' =>
                                           ['oxidEsales\eshop\application\model\article' => '\MyVendor\MyModule1\MyArticleClass',
@@ -124,7 +123,7 @@ class ModuleMetadataValidatorTest extends \OxidTestCase
     /**
      * Test metadata extend section validation.
      *
-     * @param array $metadata
+     * @param array $metadataExtend
      * @param array $expected
      *
      * @dataProvider dataProviderTestValidateExtendSection

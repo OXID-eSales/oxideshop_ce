@@ -100,9 +100,9 @@ class BCModuleInheritanceTest extends BaseModuleInheritanceTestCase
      * @param string $moduleClassName  The module class we want to instantiate.
      * @param array  $shopClassNames   The shop classes from which the module class should inherit.
      */
-    public function testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames)
+    public function moduleInheritanceByPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames)
     {
-        parent::testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
+        parent::moduleInheritanceByPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
     }
 
     /**
@@ -125,7 +125,7 @@ class BCModuleInheritanceTest extends BaseModuleInheritanceTestCase
         $message = sprintf(Registry::getLang()->translateString('MODULE_METADATA_PROBLEMATIC_DATA_IN_EXTEND', null, true), $expectedException);
         $this->setExpectedException(\OxidEsales\EshopCommunity\Core\Exception\ModuleValidationException::class, $message);
 
-        parent::testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
+        parent::moduleInheritanceByPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
     }
 
     /**
@@ -143,11 +143,11 @@ class BCModuleInheritanceTest extends BaseModuleInheritanceTestCase
      */
     public function testMultiModuleInheritanceTestPhpInheritance($modulesToActivate, $moduleClassName, $shopClassNames)
     {
-        parent::testModuleInheritanceTestPhpInheritance($modulesToActivate, $moduleClassName, $shopClassNames);
+        parent::moduleInheritanceByPhpInheritance($modulesToActivate, $moduleClassName, $shopClassNames);
     }
 
     /**
-     * DataProvider for the testModuleInheritanceTestPhpInheritance method.
+     * Please have a look at the comment of this class for the different test cases.
      *
      * @return array The different test cases we execute.
      */
@@ -188,7 +188,7 @@ class BCModuleInheritanceTest extends BaseModuleInheritanceTestCase
     }
 
     /**
-     * DataProvider for the testModuleInheritanceTestPhpInheritance method.
+     * Please have a look at the comment of this class for the different test cases.
      *
      * @return array The different test cases we execute.
      */
@@ -206,7 +206,7 @@ class BCModuleInheritanceTest extends BaseModuleInheritanceTestCase
     }
 
     /**
-     * DataProvider for the testMultiModuleInheritanceTestPhpInheritance method.
+     * Please have a look at the comment of this class for the different test cases.
      *
      * @return array The different test cases we execute.
      */

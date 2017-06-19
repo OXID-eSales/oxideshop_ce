@@ -84,7 +84,6 @@ class ModuleMetadataValidator implements \OxidEsales\Eshop\Core\Contract\IModule
 
         foreach ($rawExtensions as $classToBePatched => $moduleClass) {
             if (NamespaceInformationProvider::isNamespacedClass($classToBePatched)
-                 && !NamespaceInformationProvider::classBelongsToShopEditionTestNamespace($classToBePatched)
                  && (NamespaceInformationProvider::classBelongsToShopEditionNamespace($classToBePatched)
                       || (NamespaceInformationProvider::classBelongsToShopVirtualNamespace($classToBePatched) && !isset($map[$classToBePatched]))
                     )

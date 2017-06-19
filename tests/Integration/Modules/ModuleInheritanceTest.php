@@ -21,9 +21,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
-use OxidEsales\EshopCommunity\Core\FileCache;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleInheritance16\MyClass;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_ns\MyClass as namespaced_from_ns;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_virtual\MyClass as namespaced_from_virtual;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance24\MyClass as ModuleInheritance24MyClass;
@@ -111,9 +109,9 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
      * @param string $moduleClassName  The module class we want to instantiate.
      * @param array  $shopClassNames   The shop class from which the module class should inherit.
      */
-    public function testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames)
+    public function moduleInheritanceByPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames)
     {
-         parent::testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
+         parent::moduleInheritanceByPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
     }
 
     /**
@@ -137,7 +135,7 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
         $message = sprintf(Registry::getLang()->translateString('MODULE_METADATA_PROBLEMATIC_DATA_IN_EXTEND', null, true), $expectedException);
         $this->setExpectedException(\OxidEsales\EshopCommunity\Core\Exception\ModuleValidationException::class, $message);
 
-        parent::testModuleInheritanceTestPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
+        parent::moduleInheritanceByPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
     }
 
     /**
@@ -155,11 +153,11 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
      */
     public function testMultiModuleInheritanceTestPhpInheritance($modulesToActivate, $moduleClassName, $shopClassNames)
     {
-        parent::testModuleInheritanceTestPhpInheritance($modulesToActivate, $moduleClassName, $shopClassNames);
+        parent::moduleInheritanceByPhpInheritanceWithTestNamespaceModules($modulesToActivate, $moduleClassName, $shopClassNames);
     }
 
     /**
-     * DataProvider for the testModuleInheritanceTestPhpInheritance method.
+     * Please have a look at the comment of this class for the different test cases.
      *
      * @return array The different test cases we execute.
      */
@@ -194,7 +192,7 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
     }
 
     /**
-     * DataProvider for the testModuleInheritanceTestPhpInheritance method.
+     * Please have a look at the comment of this class for the different test cases.
      *
      * @return array The different test cases we execute.
      */
@@ -213,7 +211,7 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
     }
 
     /**
-     * DataProvider for the testMultiModuleInheritanceTestPhpInheritance method.
+     * Please have a look at the comment of this class for the different test cases.
      *
      * @return array The different test cases we execute.
      */
@@ -288,9 +286,7 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
     }
 
     /**
-     * Test cases 3.4 and 3.6.
-     * Test, that the chain is build correct, after we ordered the module extensions via OXID
-     * Eshop Admin -> Extensions -> Modules -> Save
+     * Please have a look at the comment of this class for the different test cases.
      *
      * @param array $storedModuleChain The module chain we want to store over the admin controller.
      *
@@ -346,7 +342,7 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
     }
 
     /**
-     * Data provider for the method testChainAfterAdminControllerSave.
+     * Please have a look at the comment of this class for the different test cases.
      *
      * @return array The test cases for the method testChainAfterAdminControllerSave.
      */

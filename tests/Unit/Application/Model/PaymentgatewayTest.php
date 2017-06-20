@@ -21,13 +21,13 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use \OxidEsales\Eshop\Application\Model\Order;
 use \oxpaymentgateway;
 use \oxField;
 use \oxDb;
 
 class mod_oxpaymentgateway extends oxpaymentgateway
 {
-
     public function getPaymentInfo()
     {
         return $this->_oPaymentInfo;
@@ -47,7 +47,6 @@ class mod_oxpaymentgateway extends oxpaymentgateway
 
 class PaymentGatewayTest extends \OxidTestCase
 {
-
     /**
      * Tear down the fixture.
      *
@@ -76,7 +75,7 @@ class PaymentGatewayTest extends \OxidTestCase
 
     public function testExecuteNotActivePayment()
     {
-        $oOrder = oxNew('oxOrder');
+        $oOrder = oxNew(Order::class);
         $oPaymentGateway = oxNew('oxPaymentGateway');
         $blResult = $oPaymentGateway->executePayment(2, $oOrder);
 
@@ -85,7 +84,7 @@ class PaymentGatewayTest extends \OxidTestCase
 
     public function testExecutePaymentWithoutPaymentInfo()
     {
-        $oOrder = oxNew('oxOrder');
+        $oOrder = oxNew(Order::class);
         $oPaymentGateway = new mod_oxpaymentgateway();
         $oPaymentGateway->setActive();
         $blResult = $oPaymentGateway->executePayment(2, $oOrder);
@@ -94,7 +93,7 @@ class PaymentGatewayTest extends \OxidTestCase
 
     public function testExecutePayment()
     {
-        $oOrder = oxNew('oxOrder');
+        $oOrder = oxNew(Order::class);
         $oUserpayment = oxNew("oxuserpayment");
         $oUserpayment->oxuserpayments__oxuserid = new oxField("test", oxField::T_RAW);
         $oUserpayment->oxuserpayments__oxpaymentsid = new oxField("test", oxField::T_RAW);
@@ -109,7 +108,7 @@ class PaymentGatewayTest extends \OxidTestCase
 
     public function testExecutePaymentWithEmptyPaymentId()
     {
-        $oOrder = oxNew('oxOrder');
+        $oOrder = oxNew(Order::class);
         $oUserpayment = oxNew("oxuserpayment");
         $oUserpayment->oxuserpayments__oxuserid = new oxField("test", oxField::T_RAW);
         $oUserpayment->oxuserpayments__oxpaymentsid = new oxField("oxempty", oxField::T_RAW);

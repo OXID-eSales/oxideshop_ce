@@ -1919,93 +1919,45 @@ class ViewConfigTest extends \OxidTestCase
     /**
      * oxViewconfig::getNavUrlParams() test case
      *
-     * @return null
-     */
-    public function testGetNavUrlParamsEmptyNavigationParams()
-    {
-        $aTest = array();
-        $sTest = "";
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getNavigationParams"));
-        $oView->expects($this->once())->method("getNavigationParams")->will($this->returnValue($aTest));
-
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getActiveView"));
-        $oConfig->expects($this->once())->method("getActiveView")->will($this->returnValue($oView));
-
-        $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getConfig", "setViewConfigParam"));
-        $oViewConf->expects($this->once())->method("getConfig")->will($this->returnValue($oConfig));
-        $oViewConf->expects($this->once())->method("setViewConfigParam")->with($this->equalTo("navurlparams"), $this->equalTo($sTest));
-
-        $this->assertEquals($sTest, $oViewConf->getNavUrlParams());
-    }
-
-    /**
-     * oxViewconfig::getNavUrlParams() test case
+     * @dataProvider providerGetNavUrlParamsNavigation
      *
      * @return null
      */
-    public function testGetNavUrlParamsOneNavigationParam()
+    public function testGetNavUrlParamsNavigation($paramsArray, $paramsString)
     {
-        $aTest = array("testKey" => "testValue");
-        $sTest = "&amp;testKey=testValue";
-
         $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getNavigationParams"));
-        $oView->expects($this->once())->method("getNavigationParams")->will($this->returnValue($aTest));
+        $oView->expects($this->atLeastOnce())->method("getNavigationParams")->will($this->returnValue($paramsArray));
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getActiveView"));
-        $oConfig->expects($this->once())->method("getActiveView")->will($this->returnValue($oView));
+        $oConfig->expects($this->atLeastOnce())->method("getActiveView")->will($this->returnValue($oView));
 
         $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getConfig", "setViewConfigParam"));
-        $oViewConf->expects($this->once())->method("getConfig")->will($this->returnValue($oConfig));
-        $oViewConf->expects($this->once())->method("setViewConfigParam")->with($this->equalTo("navurlparams"), $this->equalTo($sTest));
+        $oViewConf->expects($this->atLeastOnce())->method("getConfig")->will($this->returnValue($oConfig));
+        $oViewConf->expects($this->atLeastOnce())->method("setViewConfigParam")->with($this->equalTo("navurlparams"), $this->equalTo($paramsString));
 
-        $this->assertEquals($sTest, $oViewConf->getNavUrlParams());
+        $this->assertEquals($paramsString, $oViewConf->getNavUrlParams());
     }
 
-    /**
-     * oxViewconfig::getNavUrlParams() test case
-     *
-     * @return null
-     */
-    public function testGetNavUrlParamsTwoNavigationParams()
+    public function providerGetNavUrlParamsNavigation()
     {
-        $aTest = array("testKey1" => "testValue1", "testKey2" => "testValue2");
-        $sTest = "&amp;testKey1=testValue1&amp;testKey2=testValue2";
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getNavigationParams"));
-        $oView->expects($this->once())->method("getNavigationParams")->will($this->returnValue($aTest));
-
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getActiveView"));
-        $oConfig->expects($this->once())->method("getActiveView")->will($this->returnValue($oView));
-
-        $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getConfig", "setViewConfigParam"));
-        $oViewConf->expects($this->once())->method("getConfig")->will($this->returnValue($oConfig));
-        $oViewConf->expects($this->once())->method("setViewConfigParam")->with($this->equalTo("navurlparams"), $this->equalTo($sTest));
-
-        $this->assertEquals($sTest, $oViewConf->getNavUrlParams());
-    }
-
-    /**
-     * oxViewconfig::getNavUrlParams() test case
-     *
-     * @return null
-     */
-    public function testGetNavUrlParamsTwoNavigationParamsOneWithoutValue()
-    {
-        $aTest = array("testKey1" => "testValue1", "testKey2" => null);
-        $sTest = "&amp;testKey1=testValue1";
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getNavigationParams"));
-        $oView->expects($this->once())->method("getNavigationParams")->will($this->returnValue($aTest));
-
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getActiveView"));
-        $oConfig->expects($this->once())->method("getActiveView")->will($this->returnValue($oView));
-
-        $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getConfig", "setViewConfigParam"));
-        $oViewConf->expects($this->once())->method("getConfig")->will($this->returnValue($oConfig));
-        $oViewConf->expects($this->once())->method("setViewConfigParam")->with($this->equalTo("navurlparams"), $this->equalTo($sTest));
-
-        $this->assertEquals($sTest, $oViewConf->getNavUrlParams());
+        return [
+            'empty_params' => [
+                [],
+                ''
+            ],
+            'one_param' => [
+                ["testKey" => "testValue"],
+                "&amp;testKey=testValue"
+            ],
+            'two_params' => [
+                ["testKey1" => "testValue1", "testKey2" => "testValue2"],
+                "&amp;testKey1=testValue1&amp;testKey2=testValue2"
+            ],
+            'two_params_one_empty' => [
+                ["testKey1" => "testValue1", "testKey2" => null],
+                "&amp;testKey1=testValue1"
+            ]
+        ];
     }
 
     /**
@@ -2025,97 +1977,46 @@ class ViewConfigTest extends \OxidTestCase
     /**
      * oxViewconfig::getNavFormParams() test case
      *
-     * @return null
-     */
-    public function testGetNavFormParamsEmptyNavigationParams()
-    {
-        $aTest = array();
-        $sTest = "";
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getNavigationParams"));
-        $oView->expects($this->once())->method("getNavigationParams")->will($this->returnValue($aTest));
-
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getActiveView"));
-        $oConfig->expects($this->once())->method("getActiveView")->will($this->returnValue($oView));
-
-        $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getConfig", "setViewConfigParam"));
-        $oViewConf->expects($this->once())->method("getConfig")->will($this->returnValue($oConfig));
-        $oViewConf->expects($this->once())->method("setViewConfigParam")->with($this->equalTo("navformparams"), $this->equalTo($sTest));
-
-        $this->assertEquals($sTest, $oViewConf->getNavFormParams());
-    }
-
-    /**
-     * oxViewconfig::getNavFormParams() test case
+     * @dataProvider providerGetNavFormParams
      *
      * @return null
      */
-    public function testGetNavFormParamsOneNavigationParam()
+    public function testGetNavFormParams($paramsArray, $paramsFormControls)
     {
-        $aTest = array("testKey" => "testVal");
-        $sTest = '<input type="hidden" name="testKey" value="testVal" />
-';
-
         $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getNavigationParams"));
-        $oView->expects($this->once())->method("getNavigationParams")->will($this->returnValue($aTest));
+        $oView->expects($this->atLeastOnce())->method("getNavigationParams")->will($this->returnValue($paramsArray));
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getActiveView"));
-        $oConfig->expects($this->once())->method("getActiveView")->will($this->returnValue($oView));
+        $oConfig->expects($this->atLeastOnce())->method("getActiveView")->will($this->returnValue($oView));
 
         $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getConfig", "setViewConfigParam"));
-        $oViewConf->expects($this->once())->method("getConfig")->will($this->returnValue($oConfig));
-        $oViewConf->expects($this->once())->method("setViewConfigParam")->with($this->equalTo("navformparams"), $this->equalTo($sTest));
+        $oViewConf->expects($this->atLeastOnce())->method("getConfig")->will($this->returnValue($oConfig));
+        $oViewConf->expects($this->atLeastOnce())->method("setViewConfigParam")->with($this->equalTo("navformparams"), $this->equalTo($paramsFormControls));
 
-        $this->assertEquals($sTest, $oViewConf->getNavFormParams());
+        $this->assertEquals($paramsFormControls, $oViewConf->getNavFormParams());
     }
 
-    /**
-     * oxViewconfig::getNavFormParams() test case
-     *
-     * @return null
-     */
-    public function testGetNavFormParamsTwoNavigationParams()
+    public function providerGetNavFormParams()
     {
-        $aTest = array("testKey1" => "testVal1", "testKey2" => "testVal2");
-        $sTest = '<input type="hidden" name="testKey1" value="testVal1" />
-<input type="hidden" name="testKey2" value="testVal2" />
-';
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getNavigationParams"));
-        $oView->expects($this->once())->method("getNavigationParams")->will($this->returnValue($aTest));
-
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getActiveView"));
-        $oConfig->expects($this->once())->method("getActiveView")->will($this->returnValue($oView));
-
-        $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getConfig", "setViewConfigParam"));
-        $oViewConf->expects($this->once())->method("getConfig")->will($this->returnValue($oConfig));
-        $oViewConf->expects($this->once())->method("setViewConfigParam")->with($this->equalTo("navformparams"), $this->equalTo($sTest));
-
-        $this->assertEquals($sTest, $oViewConf->getNavFormParams());
-    }
-
-    /**
-     * oxViewconfig::getNavFormParams() test case
-     *
-     * @return null
-     */
-    public function testGetNavFormParamsTwoNavigationParamsOneWithoutValue()
-    {
-        $aTest = array("testKey1" => "testVal1", "testKey2" => null);
-        $sTest = '<input type="hidden" name="testKey1" value="testVal1" />
-';
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getNavigationParams"));
-        $oView->expects($this->once())->method("getNavigationParams")->will($this->returnValue($aTest));
-
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getActiveView"));
-        $oConfig->expects($this->once())->method("getActiveView")->will($this->returnValue($oView));
-
-        $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getConfig", "setViewConfigParam"));
-        $oViewConf->expects($this->once())->method("getConfig")->will($this->returnValue($oConfig));
-        $oViewConf->expects($this->once())->method("setViewConfigParam")->with($this->equalTo("navformparams"), $this->equalTo($sTest));
-
-        $this->assertEquals($sTest, $oViewConf->getNavFormParams());
+        return [
+            'empty_params' => [
+                [],
+                ''
+            ],
+            'one_param' => [
+                ["testKey" => "testVal"],
+                '<input type="hidden" name="testKey" value="testVal" />'.PHP_EOL
+            ],
+            'two_params' => [
+                ["testKey1" => "testVal1", "testKey2" => "testVal2"],
+                '<input type="hidden" name="testKey1" value="testVal1" />'.PHP_EOL
+                .'<input type="hidden" name="testKey2" value="testVal2" />'.PHP_EOL
+            ],
+            'two_params_one_empty' => [
+                ["testKey1" => "testVal1", "testKey2" => null],
+                '<input type="hidden" name="testKey1" value="testVal1" />'.PHP_EOL
+            ]
+        ];
     }
 
     /**

@@ -288,6 +288,7 @@ class PaymentTest extends \OxidTestCase
 
     public function testGetDynValueSetInSession()
     {
+        $this->setSessionParam('usr', 'oxdefaultadmin');
         $this->setSessionParam('dynvalue', 'test');
         $this->setRequestParameter('dynvalue', 'test2');
 
@@ -297,6 +298,7 @@ class PaymentTest extends \OxidTestCase
 
     public function testGetDynValueNotSetInSession()
     {
+        $this->setSessionParam('usr', 'oxdefaultadmin');
         $this->setSessionParam('dynvalue', null);
         $this->setRequestParameter('dynvalue', 'test2');
 

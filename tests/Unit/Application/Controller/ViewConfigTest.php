@@ -1941,19 +1941,19 @@ class ViewConfigTest extends \OxidTestCase
     public function providerGetNavUrlParamsNavigation()
     {
         return [
-            'empty_params' => [
+            'empty params' => [
                 [],
                 ''
             ],
-            'one_param' => [
+            'one param' => [
                 ["testKey" => "testValue"],
                 "&amp;testKey=testValue"
             ],
-            'two_params' => [
+            'two params' => [
                 ["testKey1" => "testValue1", "testKey2" => "testValue2"],
                 "&amp;testKey1=testValue1&amp;testKey2=testValue2"
             ],
-            'two_params_one_empty' => [
+            'two params one empty' => [
                 ["testKey1" => "testValue1", "testKey2" => null],
                 "&amp;testKey1=testValue1"
             ]
@@ -1999,20 +1999,20 @@ class ViewConfigTest extends \OxidTestCase
     public function providerGetNavFormParams()
     {
         return [
-            'empty_params' => [
+            'empty params' => [
                 [],
                 ''
             ],
-            'one_param' => [
+            'one param' => [
                 ["testKey" => "testVal"],
                 '<input type="hidden" name="testKey" value="testVal" />'.PHP_EOL
             ],
-            'two_params' => [
+            'two params' => [
                 ["testKey1" => "testVal1", "testKey2" => "testVal2"],
                 '<input type="hidden" name="testKey1" value="testVal1" />'.PHP_EOL
                 .'<input type="hidden" name="testKey2" value="testVal2" />'.PHP_EOL
             ],
-            'two_params_one_empty' => [
+            'two params one empty' => [
                 ["testKey1" => "testVal1", "testKey2" => null],
                 '<input type="hidden" name="testKey1" value="testVal1" />'.PHP_EOL
             ]

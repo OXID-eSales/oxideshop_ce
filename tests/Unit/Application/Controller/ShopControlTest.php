@@ -689,15 +689,19 @@ class ShopControlTest extends \OxidTestCase
     }
 
     /**
+     * Get name of active template for controller.
+     * Run render() method as it might change the name.
+     *
      * @param $controllerClassName
-     * @return mixed
+     *
+     * @return string
      */
     private function getTemplateName($controllerClassName)
     {
         $control = oxNew($controllerClassName);
         $control->render();
-        $expectedTemplate = $control->getTemplateName();
-        return $expectedTemplate;
+
+        return $control->getTemplateName();
     }
 
 }

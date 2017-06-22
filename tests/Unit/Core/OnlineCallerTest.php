@@ -26,6 +26,7 @@ use \Exception;
 use \oxOnlineCaller;
 use \oxOnlineRequest;
 use \oxTestModules;
+use \OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
 
 /**
  * Class Unit_Core_oxoOnlineCallerTest
@@ -74,7 +75,7 @@ class OnlineCallerTest extends \OxidTestCase
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('send'));
         // Email send function must be called.
         $oEmail->expects($this->once())->method('send')->will($this->returnValue(true));
-        $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, array('build'));
+        $oEmailBuilder = $this->getMock(OnlineServerEmailBuilder::class, array('build'));
         $oEmailBuilder->expects($this->any())->method('build')->will($this->returnValue($oEmail));
 
         $oCaller = $this->getMockForAbstractClass(
@@ -169,15 +170,17 @@ class OnlineCallerTest extends \OxidTestCase
     }
 
     /**
-     * @return oxOnlineServerEmailBuilder
+     * @return OnlineServerEmailBuilder
      */
     private function _getMockedEmailBuilder()
     {
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('send'));
-        $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, array('build'));
-        $oEmailBuilder->expects($this->any())->method('build')->will($this->returnValue($oEmail));
+        $emailMock = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('send'));
 
-        return $oEmailBuilder;
+        $emailBuilderMock = $this->getMock(OnlineServerEmailBuilder::class, array('build'));
+        $emailBuilderMock->expects($this->any())->method('build')->will($this->returnValue($emailMock));
+
+        /** @var OnlineServerEmailBuilder $emailBuilderMock */
+        return $emailBuilderMock;
     }
 
     /**

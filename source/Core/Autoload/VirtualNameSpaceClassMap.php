@@ -462,6 +462,7 @@ class VirtualNameSpaceClassMap
             'OxidEsales\Eshop\Core\Edition\EditionRootPathProvider' => \OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider::class,
             'OxidEsales\Eshop\Core\Edition\EditionSelector' => \OxidEsales\EshopCommunity\Core\Edition\EditionSelector::class,
             'OxidEsales\Eshop\Core\Email' => \OxidEsales\EshopCommunity\Core\Email::class,
+            'OxidEsales\Eshop\Core\EmailBuilder' => \OxidEsales\EshopCommunity\Core\EmailBuilder::class,
             'OxidEsales\Eshop\Core\Encryptor' => \OxidEsales\EshopCommunity\Core\Encryptor::class,
             'OxidEsales\Eshop\Core\Exception\ArticleException' => \OxidEsales\EshopCommunity\Core\Exception\ArticleException::class,
             'OxidEsales\Eshop\Core\Exception\ArticleInputException' => \OxidEsales\EshopCommunity\Core\Exception\ArticleInputException::class,

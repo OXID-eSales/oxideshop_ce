@@ -22,13 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxCurl;
 use OxidEsales\EshopCommunity\Core\Exception\StandardException;
-use oxOnlineServerEmailBuilder;
-use oxSimpleXml;
-use oxOnlineRequest;
-use oxRegistry;
-use oxException;
 use \Exception;
 
 /**

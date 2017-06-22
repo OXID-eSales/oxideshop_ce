@@ -23,6 +23,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
 use oxCurl;
 use OxidEsales\Eshop\Core\Curl;
+use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
 use oxOnlineLicenseCheck;
 use oxOnlineLicenseCheckCaller;
 use oxRegistry;
@@ -30,7 +31,7 @@ use oxRegistry;
 /**
  * Class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest
  *
- * @covers oxOnlineServerEmailBuilder
+ * @covers OnlineServerEmailBuilder
  * @covers oxOnlineCaller
  * @covers oxSimpleXml
  * @covers oxOnlineLicenseCheckCaller
@@ -133,7 +134,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
         $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
 
-        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
         $oSimpleXml = oxNew('oxSimpleXml');
         $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
 
@@ -225,7 +226,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
         $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
         $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
 
-        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
 
         $oSimpleXml = oxNew('oxSimpleXml');
         $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);

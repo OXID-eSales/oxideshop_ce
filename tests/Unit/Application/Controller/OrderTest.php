@@ -530,7 +530,57 @@ class OrderTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testExecuteWithWrongStock()
+    public function testExecuteWithWrongStockTrowsException()
+    {
+        oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{throw $aA[0];}');
+
+        $oConfig = $this->getConfig();
+
+        //basket name in session will be "basket"
+        $oConfig->setConfigParam('blMallSharedBasket', 1);
+
+        //order rules checking
+        $oConfig->setConfigParam('blConfirmAGB', 0);
+        $oConfig->setConfigParam('blConfirmCustInfo', 0);
+
+        $oPrice = oxNew('oxPrice');
+        $oPrice->setPrice(100, 19);
+
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("checkForStock"));
+        $oProduct->expects($this->any())->method("checkForStock")->will($this->returnValue($oProduct));
+
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array("getArticle", "getAmount"));
+        $oBasketItem->expects($this->any())->method("getArticle")->will($this->returnValue($oProduct));
+        $oBasketItem->expects($this->any())->method("getAmount")->will($this->returnValue(999));
+
+        //setting basket info
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getShippingId", "getPaymentId", "getProductsCount", "getContents"));
+        $oBasket->expects($this->any())->method("getProductsCount")->will($this->returnValue(1));
+        $oBasket->expects($this->any())->method("getContents")->will($this->returnValue(array('xxx' => $oBasketItem)));
+
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("getBasket", 'checkSessionChallenge'));
+        $oSession->expects($this->any())->method("getBasket")->will($this->returnValue($oBasket));
+        $oSession->expects($this->any())->method("checkSessionChallenge")->will($this->returnValue(true));
+
+        $oUser = oxNew('oxUser');
+        $oUser->load('_testUserId');
+
+        //on order success must return next step value
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('_getNextStep', "getSession", "getUser", "getPayment"));
+        $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
+        $oOrder->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+        $oOrder->expects($this->any())->method('getPayment')->will($this->returnValue(true));
+
+        $this->setExpectedException('oxOutOfStockException');
+        $this->assertNull($oOrder->execute());
+    }
+
+    /**
+     * Testing execute() when order validating stock fails
+     *
+     * @return null
+     */
+    public function testExecuteWithWrongStockCallsMethodsInRightOrder()
     {
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{throw $aA[0];}');
 

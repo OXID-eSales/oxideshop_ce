@@ -100,7 +100,14 @@ class PaymentTest extends \OxidTestCase
                         'oxidpricea',
                         'oxidpricec');
 
-        $this->assertEquals($aArray, $oPayment->getGroups()->arrayKeys());
+        $this->assertEquals(
+                            $aArray,
+                            $oPayment->getGroups()->arrayKeys(),
+                            "Groups are not as expected.",
+                            0.0,
+                            10,
+                            true
+        );
     }
 
     /**

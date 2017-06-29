@@ -22,9 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxField;
-
 /**
  * Admin selectlist list manager.
  *
@@ -80,7 +77,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
     /**
      * Returns string which must be edited by editor.
      *
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $oObject object whifh field will be used for editing
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $oObject object used for editing
      * @param string                                 $sField  name of editable field
      *
      * @return string
@@ -125,43 +122,59 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
     /**
      * Returns textarea filled with text to edit.
      *
-     * @param int    $iWidth  editor width
-     * @param int    $iHeight editor height
-     * @param object $oObject object passed to editor
-     * @param string $sField  object field which content is passed to editor
+     * @param int                                    $width  editor width
+     * @param int                                    $height editor height
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $object object passed to editor
+     * @param string                                 $field  object field which content is passed to editor
+     *
+     * @deprecated since v6.0 (2017-06-29); Please use TextEditorHandler::renderPlainTextEditor() method.
      *
      * @return string
      */
-    protected function _getPlainEditor($iWidth, $iHeight, $oObject, $sField)
+    protected function _getPlainEditor($width, $height, $object, $field)
     {
-        $sEditObjectValue = $this->_getEditValue($oObject, $sField);
+        $objectValue = $this->_getEditValue($object, $field);
 
-        if (strpos($iWidth, '%') === false) {
-            $iWidth .= 'px';
-        }
-        if (strpos($iHeight, '%') === false) {
-            $iHeight .= 'px';
-        }
+        $textEditor = oxNew(\OxidEsales\Eshop\Application\Controller\TextEditorHandler::class);
 
-        return "<textarea id='editor_{$sField}' style='width:{$iWidth}; height:{$iHeight};'>{$sEditObjectValue}</textarea>";
+        return $textEditor->renderPlainTextEditor($width, $height, $objectValue, $field);
     }
 
     /**
      * Generates Text editor html code.
      *
-     * @param int    $iWidth      editor width
-     * @param int    $iHeight     editor height
-     * @param object $oObject     object passed to editor
-     * @param string $sField      object field which content is passed to editor
-     * @param string $sStylesheet stylesheet to use in editor
+     * @param int                                    $width      editor width
+     * @param int                                    $height     editor height
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $object     object passed to editor
+     * @param string                                 $field      object field which content is passed to editor
+     * @param string                                 $stylesheet stylesheet to use in editor
+     *
+     * @deprecated since v6.0 (2017-06-29); Please use generateTextEditor() method.
      *
      * @return string Editor output
      */
-    protected function _generateTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet = null)
+    protected function _generateTextEditor($width, $height, $object, $field, $stylesheet = null)
     {
-        $sEditorHtml = $this->_getPlainEditor($iWidth, $iHeight, $oObject, $sField);
+        return $this->generateTextEditor($width, $height, $object, $field, $stylesheet);
+    }
 
-        return $sEditorHtml;
+    /**
+     * Generates Text editor html code.
+     *
+     * @param int                                    $width      editor width
+     * @param int                                    $height     editor height
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $object     object passed to editor
+     * @param string                                 $field      object field which content is passed to editor
+     * @param string                                 $stylesheet stylesheet to use in editor
+     *
+     * @return string Editor output
+     */
+    protected function generateTextEditor($width, $height, $object, $field, $stylesheet = null)
+    {
+        $objectValue = $this->_getEditValue($object, $field);
+        $textEditor = oxNew(\OxidEsales\Eshop\Application\Controller\TextEditorHandler::class);
+        $textEditor->setStyleSheet($stylesheet);
+        return $textEditor->renderTextEditor($width, $height, $objectValue, $field);
     }
 
     /**

@@ -321,6 +321,7 @@ class VirtualNameSpaceClassMap
             'OxidEsales\Eshop\Application\Controller\StartController' => \OxidEsales\EshopCommunity\Application\Controller\StartController::class,
             'OxidEsales\Eshop\Application\Controller\SuggestController' => \OxidEsales\EshopCommunity\Application\Controller\SuggestController::class,
             'OxidEsales\Eshop\Application\Controller\TemplateController' => \OxidEsales\EshopCommunity\Application\Controller\TemplateController::class,
+            'OxidEsales\Eshop\Application\Controller\TextEditorHandler' => \OxidEsales\EshopCommunity\Application\Controller\TextEditorHandler::class,
             'OxidEsales\Eshop\Application\Controller\ThankYouController' => \OxidEsales\EshopCommunity\Application\Controller\ThankYouController::class,
             'OxidEsales\Eshop\Application\Controller\UserController' => \OxidEsales\EshopCommunity\Application\Controller\UserController::class,
             'OxidEsales\Eshop\Application\Controller\VendorListController' => \OxidEsales\EshopCommunity\Application\Controller\VendorListController::class,

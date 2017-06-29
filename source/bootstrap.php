@@ -85,8 +85,6 @@ register_shutdown_function(function () {
             header("Connection: close");
             echo $displayMessage;
         }
-
-        exit(1);
     }
 });
 

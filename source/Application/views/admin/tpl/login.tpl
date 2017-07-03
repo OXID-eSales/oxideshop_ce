@@ -14,15 +14,15 @@
 
 <div class="admin-login-box">
 
-<form action="[{$oViewConf->getSelfLink()}]" target="_top" method="post" name="login" id="login">
-    <p>
-        <img src="[{$oViewConf->getImageUrl()}]loginlogo.png" alt="" class="logo">
+    <div id="shopLogo"><img src="[{$oViewConf->getImageUrl('logo_dark.svg')}]" /></div>
+
+    <form action="[{$oViewConf->getSelfLink()}]" target="_top" method="post" name="login" id="login">
 
         [{block name="admin_login_form"}]
             [{$oViewConf->getHiddenSid()}]
 
             <input type="hidden" name="fnc" value="checklogin">
-            <input type="hidden" name="cl" value="login"><br>
+            <input type="hidden" name="cl" value="login">
 
             [{if $Errors.default|@count}]
                 [{include file="inc_error.tpl" Errorlist=$Errors.default}]
@@ -52,8 +52,7 @@
         [{/block}]
 
         <input type="submit" value="[{oxmultilang ident="LOGIN_START"}]" class="btn"><br>
-    </p>
-</form>
+    </form>
 </div>
 
 <script type="text/javascript">if (window != window.top) top.location.href = document.location.href;</script>

@@ -195,14 +195,7 @@ class ExceptionHandler
             return;
         }
 
-        $displayMessage = '';
-        if (file_exists(OX_OFFLINE_FILE) && is_readable(OX_OFFLINE_FILE)) {
-            $displayMessage = file_get_contents(OX_OFFLINE_FILE);
-        };
-
-        header("HTTP/1.1 500 Internal Server Error");
-        header("Connection: close");
-        echo $displayMessage;
+        \oxTriggerOfflinePageDisplay();
 
         return;
     }

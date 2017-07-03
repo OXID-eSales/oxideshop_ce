@@ -1,155 +1,284 @@
 body {
-    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-    background: #ffffff;
+    font: 13px "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #fff;
     color: #6a6c6f;
-    font-size: 13px;
 }
 
 h1, h2, h3 {
-    color: #6a6c6f;
+    color: #6a6c6f
 }
 
 a.rc {
-    color: #34495e;
+    color: #34495e
 }
 
 .main span.new {
-    color: lightgray;
+    color: lightgray
+}
+
+/* Navigation */
+#nav body {
+    height: auto;
+    background: #333;
+    padding-bottom: 30px;
+    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#nav h2 img {
+    width: 12px;
+    height: 12px;
+    margin-right: 5px
+}
+
+#nav h2 a {
+    color: inherit;
+    text-decoration: none
+}
+
+#nav ul {
+    padding: 0 0 10px
+}
+
+#nav ul li > a.rc {
+    color: rgba(255, 255, 255, 0.8) !important;
+    text-decoration: none;
+    cursor: pointer
+}
+
+#nav ul li > a.rc b {
+    font-weight: 400 !important;
+    text-transform: none;
+    padding: 10px 20px !important
+}
+
+#nav ul li > a.rc:hover {
+    color: #fff !important
+}
+
+#nav ul li.act .rc, #nav ul li.act .rc b {
+    background: none
+}
+
+#nav ul li.exp {
+    background: rgba(0, 0, 0, .3)
+}
+
+#nav ul li.exp > a.rc {
+    color: #fff !important
+}
+
+#nav ul li.exp ul {
+    padding: 0 0 10px;
+    margin: 0
+}
+
+#nav ul li.exp ul li.act > .rc, #nav ul li.exp ul li:hover > .rc {
+    background: rgba(0, 0, 0, .3)
+}
+
+#nav ul li.exp ul li.act > .rc b, #nav ul li.exp ul li:hover > .rc b {
+    background: none
+}
+
+#nav .extra ul {
+    padding: 0
+}
+
+#nav .extra ul li a.rc b {
+    color: #fff
+}
+
+#nav .extra ul a.ed {
+    top: 0;
+    right: 20px;
+    bottom: 0;
+    height: 12px;
+    margin: auto;
+    color: rgba(255, 255, 255, 0.5)
 }
 
 #nav ul a.rc b {
-    background-image: none;
     text-transform: uppercase;
     padding: 15px 0 15px 15px;
+    background: transparent;
 }
 
 #nav ul li ul a.rc b {
-    text-transform: none;
+    text-transform: none
 }
 
 #nav ul li.exp ul li a.rc {
     color: #6a6c6f;
-    background-image: none;
-    padding: 0;
+    padding: 0
 }
 
 #nav ul li.exp ul li a.rc b {
-    padding: 5px 0 5px 15px;
+    padding: 10px 20px 10px 40px !important;
 }
 
-#nav ul li.exp ul li  {
+#nav ul li.exp ul li {
     padding: 0;
     border-bottom: none;
+    border-left: 0
 }
 
 #nav .exp a {
-    color: #e30613;
+    color: #e30613
 }
 
 #nav li.exp ul {
-    margin-bottom: 10px;
+    margin-bottom: 10px
 }
 
 #nav ul li {
     padding: 0;
-    border-bottom: 1px solid #e4e5e7;
+    margin: 0;
+    border: 0;
+    border-left: 3px solid transparent
 }
 
 #nav td.main {
     padding: 0;
-    vertical-align: top;
+    vertical-align: top
 }
 
 #nav {
-    border-right: 1px solid #e4e5e7;
+    border: 0
 }
 
 #nav h2 {
-    border-bottom: 1px solid #e4e5e7;
-    font-size: 14px;
-    /*text-align: center;*/
     margin: 0;
-    padding: 15px 0 15px 15px;
     color: #34495e;
-    display: none;
+    position: relative;
+    padding: 15px 20px 15px 23px;
+    color: rgba(255, 255, 255, 0.5);
+    border: 0;
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase
 }
+
 #search {
     padding: 10px 0 10px 15px;
-    border-bottom: 1px solid #e4e5e7;
+    border: 0
 }
 
-#nav td.extra{vertical-align:bottom; padding: 0;}
-
-.extra ul li.exp a.rc b {
-    color: #e30613;
+#nav td.extra {
+    vertical-align: bottom;
+    padding: 0
 }
 
-.extra ul{
-    border-bottom:none;
+.extra ul {
+    border-bottom: none;
     border-top: none;
-    padding: 0;
+    padding: 0
 }
-.extra ul li {
-    border-top: 1px solid #e4e5e7;
-    border-bottom: none !important;
-}
-.extra ul li ul li {
-    border-top: none !important;
-    border-bottom: none !important;
-}
-.extra ul li a.rc b{ color:#34495e}
-.extra ul ul {border-top:none;padding:0;}
-.extra ul ul li a.rc b, .extra ul li.exp ul li a.rc b{ color:#6a6c6f}
-.extra ul li.exp ul li.act a.rc b{ color:#ffffff}
-.extra a.ed{position:absolute;top:2px;right:0;font-size: 9px;}
 
-#top {
-    background: #ffffff;
+.extra ul li {
+    border-top: none !important;
+    border-bottom: none !important
 }
+
+.extra ul li a.rc b {
+    color: #34495e
+}
+
+.extra ul ul {
+    border-top: none;
+    padding: 0
+}
+
+.extra ul ul li a.rc b, .extra ul li.exp ul li a.rc b {
+    color: #6a6c6f
+}
+
+.extra ul li.exp ul li.act a.rc b {
+    color: #fff
+}
+
+.extra a.ed {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    font-size: 9px
+}
+
+/* Topbar */
+#top {
+    background: #fff
+}
+
 #top body {
     margin: 0;
-    padding: 0;
-    content:"";
-    clear:both;
-    display:block;
-    /*background-color: #f3f3f3;
-    background-image: linear-gradient(to bottom, #f3f3f3, #e2e2e2);*/
-    background: #ffffff url("bg/facelift/top_bg_facelift.gif") repeat-x scroll left bottom;
-    height: 57px;
+    content: "";
+    clear: both;
+    display: block;
+    background: #fff;
+    height: 54px;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    line-height: 32px
 }
+
 #top ul {
-    display: table;
+    display: block;
+    float: left
 }
+
 #top ul li {
     display: block;
     position: relative;
-    float: left;
+    float: left
 }
-#top ul li:hover, #top ul li.act:hover {
-    background: lightgray;
-}
+
 #top ul li.sep {
-    border: none;
+    border: none
 }
+
 #top ul li a {
-    padding: 20px 10px;
-    text-transform: uppercase;
+    padding: 0;
+    text-transform: none
 }
+
 #top ul li a:hover {
-    text-decoration: none;
+    text-decoration: none
 }
-.version, .act .rc, .act .rc b {
-    /*background: none !important;
-    color: inherit !important;*/
-}
+
 #top .version {
-    background-image: none;
+    position: static;
+    float: right;
+    background: transparent !important;
+    padding: 0;
+    width: auto;
+    height: auto;
+    text-transform: none;
+    letter-spacing: 0;
 }
+
 #top ul li.act, #homelink, #homelink b, #homelink a {
     background: none;
-    color: inherit;
+    color: inherit
 }
-.version {
-    height: 29px;
-    background-image: url(bg/facelift/version_bg_facelift.png) !important;
+
+#top ul li:hover {
+    background: none
 }
+
+#shopLogo {
+    text-align: center;
+    box-sizing: border-box;
+    height: 54px;
+    width: 100%;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, .3);
+    line-height: 50px
+}
+
+#shopLogo img {
+    width: 100%
+}
+

@@ -44,6 +44,7 @@
     </script>
 </head>
 <body>
+    <div id="shopLogo"><img src="[{$oViewConf->getImageUrl('logo.svg')}]" /></div>
     <table>
     <tr><td class="main">
     [{include file="navigation_shopselect.tpl"}]

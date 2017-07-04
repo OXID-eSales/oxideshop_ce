@@ -131,6 +131,8 @@ class CmpBasketTest extends \OxidTestCase
 
     public function testChangeBasketTakesParamsFromArgsGetItemsNull()
     {
+        $this->prepareSessionChallengeToken();
+
         $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('_getItems', 'getSession'));
         $o->expects($this->once())->method('_getItems')
             ->with(
@@ -147,6 +149,8 @@ class CmpBasketTest extends \OxidTestCase
 
     public function testChangeBasketTakesParamsFromArgs()
     {
+        $this->prepareSessionChallengeToken();
+
         $aProducts = array(
             'sProductId' => array(
                 'am'           => 10,
@@ -186,6 +190,8 @@ class CmpBasketTest extends \OxidTestCase
 
     public function testChangeBasketTakesParamsFromRequestArtByBindex()
     {
+        $this->prepareSessionChallengeToken();
+
         $oArt = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getProductId'));
         $oArt->expects($this->once())->method('getProductId')->will($this->returnValue('b:artid'));
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
@@ -213,6 +219,8 @@ class CmpBasketTest extends \OxidTestCase
 
     public function testChangeBasketTakesParamsFromRequestArtByAid()
     {
+        $this->prepareSessionChallengeToken();
+
         $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('_getItems', 'getSession'));
         $o->expects($this->once())->method('_getItems')
             ->with(
@@ -853,5 +861,10 @@ class CmpBasketTest extends \OxidTestCase
         $oCB->expects($this->any())->method('getParent')->will($this->returnValue($oP));
 
         $this->assertNull($oCB->executeuserchoice());
+    }
+
+    private function prepareSessionChallengeToken()
+    {
+        $this->setRequestParameter('stoken', \OxidEsales\Eshop\Core\Registry::getSession()->getSessionChallengeToken());
     }
 }

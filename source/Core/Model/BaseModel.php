@@ -1295,7 +1295,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         $metaData = $this->_getAllFields();
         foreach ($metaData as $metaInfo) {
             if (strcasecmp($metaInfo->name, $fieldName) == 0) {
-                return $metaInfo->default_value;
+                return property_exists($metaInfo, 'default_value') ? $metaInfo->default_value : null;
             }
         }
 
@@ -1449,8 +1449,14 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         $shopIdField = $myUtils->getArrFldName($this->getCoreTableName() . '.oxshopid');
 
-        if (isset($this->$shopIdField) && !$this->$shopIdField->value) {
-            $this->$shopIdField = new \OxidEsales\Eshop\Core\Field($myConfig->getShopId(), \OxidEsales\Eshop\Core\Field::T_RAW);
+        if (isset($this->$shopIdField)
+            && (!$this->$shopIdField instanceof \OxidEsales\Eshop\Core\Field
+                || !$this->$shopIdField->value)
+        ) {
+            $this->$shopIdField = new \OxidEsales\Eshop\Core\Field(
+                $myConfig->getShopId(),
+                \OxidEsales\Eshop\Core\Field::T_RAW
+            );
         }
 
         $insertSql .= $this->_getUpdateFields($this->getUseSkipSaveFields());

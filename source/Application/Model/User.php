@@ -511,17 +511,20 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function save()
     {
-        $myConfig = Registry::getConfig();
-
         $blAddRemark = false;
-        if ($this->oxuser__oxpassword->value && $this->oxuser__oxregister->value < 1) {
+        if ($this->oxuser__oxpassword->value
+            && (!$this->oxuser__oxregister instanceof \OxidEsales\Eshop\Core\Field || $this->oxuser__oxregister->value < 1)
+        ) {
             $blAddRemark = true;
             //save oxregister value
             $this->oxuser__oxregister = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s'), \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         // setting user rights
-        $this->oxuser__oxrights = new \OxidEsales\Eshop\Core\Field($this->_getUserRights(), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxuser__oxrights = new \OxidEsales\Eshop\Core\Field(
+            $this->_getUserRights(),
+            \OxidEsales\Eshop\Core\Field::T_RAW
+        );
 
         // processing birth date which came from output as array
         if (is_array($this->oxuser__oxbirthdate->value)) {
@@ -1565,7 +1568,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _getUserRights()
     {
         // previously user had no rights defined
-        if (!$this->oxuser__oxrights->value) {
+        if (!$this->oxuser__oxrights instanceof \OxidEsales\Eshop\Core\Field || !$this->oxuser__oxrights->value) {
             return 'user';
         }
 

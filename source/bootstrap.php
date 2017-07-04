@@ -119,6 +119,7 @@ if ($configMissing || !is_readable(VENDOR_PATH . 'autoload.php')) {
 $bootstrapConfigFileReader = new \BootstrapConfigFileReader();
 if ($bootstrapConfigFileReader->isDebugMode()) {
     ini_set('display_errors', 'On');
+    error_reporting(E_ALL ^ E_DEPRECATED);
 }
 
 /**

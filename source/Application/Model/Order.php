@@ -1253,14 +1253,24 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oUtilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
 
         //V #M525 orderdate must be the same as it was
-        if (!$this->oxorder__oxorderdate->value) {
+        if (!$this->oxorder__oxorderdate || !$this->oxorder__oxorderdate->value) {
             $this->oxorder__oxorderdate = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', $oUtilsDate->getTime()), \OxidEsales\Eshop\Core\Field::T_RAW);
         } else {
-            $this->oxorder__oxorderdate = new \OxidEsales\Eshop\Core\Field($oUtilsDate->formatDBDate($this->oxorder__oxorderdate->value, true));
+            $this->oxorder__oxorderdate = new \OxidEsales\Eshop\Core\Field(
+                $oUtilsDate->formatDBDate(
+                    $this->oxorder__oxorderdate ? $this->oxorder__oxorderdate->value : null,
+                    true
+                )
+            );
         }
 
         $this->oxorder__oxshopid = new \OxidEsales\Eshop\Core\Field($myConfig->getShopId(), \OxidEsales\Eshop\Core\Field::T_RAW);
-        $this->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field($oUtilsDate->formatDBDate($this->oxorder__oxsenddate->value, true));
+        $this->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field(
+            $oUtilsDate->formatDBDate(
+                $this->oxorder__oxsenddate ? $this->oxorder__oxsenddate->value : null,
+                true
+            )
+        );
 
         $blInsert = parent::_insert();
 

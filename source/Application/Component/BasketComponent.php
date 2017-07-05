@@ -177,7 +177,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return mixed
      */
-    public function changebasket(
+    public function changeBasket(
         $sProductId = null,
         $dAmount = null,
         $aSel = null,

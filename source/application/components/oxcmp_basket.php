@@ -181,6 +181,10 @@ class oxcmp_basket extends oxView
         $aPersParam = null,
         $blOverride = true
     ) {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         // adding to basket is not allowed ?
         if (oxRegistry::getUtils()->isSearchEngine()) {
             return;

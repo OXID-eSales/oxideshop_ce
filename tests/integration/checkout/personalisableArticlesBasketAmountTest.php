@@ -71,6 +71,7 @@ class Integration_checkout_personalisableArticlesBasketAmountTest extends OxidTe
         $products[$this->getItemKey('first')]['am'] = 2;
         $products[$this->getItemKey('fourth')]['am'] = 3;
         modConfig::setRequestParameter('aproducts', $products);
+        $this->prepareSessionChallengeToken();
 
         $basketComponent = oxNew('oxcmp_basket');
         $basketComponent->changebasket();
@@ -95,6 +96,7 @@ class Integration_checkout_personalisableArticlesBasketAmountTest extends OxidTe
         $products[$this->getItemKey('third')]['persparam'] = $this->getPersistentParameters('first');
         $products[$this->getItemKey('fourth')]['persparam'] = $this->getPersistentParameters('first');
         modConfig::setRequestParameter('aproducts', $products);
+        $this->prepareSessionChallengeToken();
 
         $basketComponent = oxNew('oxcmp_basket');
         $basketComponent->changebasket();
@@ -119,6 +121,7 @@ class Integration_checkout_personalisableArticlesBasketAmountTest extends OxidTe
         $products[$this->getItemKey('third')]['persparam'] = $this->getPersistentParameters('second');
         $products[$this->getItemKey('fourth')]['persparam'] = $this->getPersistentParameters('second');
         modConfig::setRequestParameter('aproducts', $products);
+        $this->prepareSessionChallengeToken();
 
         $basketComponent = oxNew('oxcmp_basket');
         $basketComponent->changebasket();
@@ -143,6 +146,7 @@ class Integration_checkout_personalisableArticlesBasketAmountTest extends OxidTe
         $products[$this->getItemKey('third')]['persparam'] = $this->getPersistentParameters('fourth');
         $products[$this->getItemKey('fourth')]['persparam'] = $this->getPersistentParameters('fourth');
         modConfig::setRequestParameter('aproducts', $products);
+        $this->prepareSessionChallengeToken();
 
         $basketComponent = oxNew('oxcmp_basket');
         $basketComponent->changebasket();
@@ -294,5 +298,10 @@ class Integration_checkout_personalisableArticlesBasketAmountTest extends OxidTe
         $persistent = $this->getPersistent();
         $values = array_values($persistent[$article]);
         return $values[0];
+    }
+
+    private function prepareSessionChallengeToken()
+    {
+        $this->setRequestParam('stoken', oxRegistry::getSession()->getSessionChallengeToken());
     }
 }

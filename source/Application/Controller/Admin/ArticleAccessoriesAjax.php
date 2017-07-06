@@ -56,6 +56,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
                                  'container2' => array(
                                      array('oxartnum', 'oxarticles', 1, 0, 0),
                                      array('oxtitle', 'oxarticles', 1, 1, 0),
+                                     array('oxsort', 'oxaccessoire2article', 1, 1, 0),
                                      array('oxean', 'oxarticles', 1, 0, 0),
                                      array('oxmpn', 'oxarticles', 0, 0, 0),
                                      array('oxprice', 'oxarticles', 0, 0, 0),
@@ -170,4 +171,24 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
     protected function onArticleAccessoryRelationChange($article)
     {
     }
+
+    /**
+     * Saving sorting position of Accessoires
+     */
+     public function saveAccessoiresPosition()
+     {
+         $this->resetContentCache();
+
+         $soxId      = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("acc_oxid");
+         $iSortValue = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("acc_oxsort");
+         $iSortValue = intval($iSortValue);
+
+         if (isset($soxId) && ("" != $soxId)) {
+             $oA2A = oxNew("oxbase");
+             $oA2A->init("oxaccessoire2article");
+             $oA2A->load($soxId);
+             $oA2A->oxaccessoire2article__oxsort->setValue($iSortValue);
+             $oA2A->save();
+         }
+     }
 }

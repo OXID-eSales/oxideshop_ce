@@ -26,9 +26,15 @@ use oxRegistry;
 use oxField;
 use stdClass;
 
-DEFINE("ERR_SUCCESS", 1);
-DEFINE("ERR_REQUIREDMISSING", -1);
-DEFINE("ERR_POSOUTOFBOUNDS", -2);
+if (!defined('ERR_SUCCESS')) {
+    DEFINE("ERR_SUCCESS", 1);
+}
+if (!defined('ERR_REQUIREDMISSING')) {
+    DEFINE("ERR_REQUIREDMISSING", -1);
+}
+if (!defined('ERR_POSOUTOFBOUNDS')) {
+    DEFINE("ERR_POSOUTOFBOUNDS", -2);
+}
 
 /**
  * Admin article main selectlist manager.

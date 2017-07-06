@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -125,6 +125,8 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testChangeBasketTakesParamsFromArgsGetItemsNull()
     {
+        $this->prepareSessionChallengeToken();
+
         $o = $this->getMock('oxcmp_basket', array('_getItems', 'getSession'));
         $o->expects($this->once())->method('_getItems')
             ->with(
@@ -141,6 +143,8 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testChangeBasketTakesParamsFromArgs()
     {
+        $this->prepareSessionChallengeToken();
+
         $aProducts = array(
             'sProductId' => array(
                 'am'           => 10,
@@ -180,6 +184,8 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testChangeBasketTakesParamsFromRequestArtByBindex()
     {
+        $this->prepareSessionChallengeToken();
+
         $oArt = $this->getMock('oxArticle', array('getProductId'));
         $oArt->expects($this->once())->method('getProductId')->will($this->returnValue('b:artid'));
         $oBasket = $this->getMock('oxBasket', array('getContents'));
@@ -207,6 +213,8 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testChangeBasketTakesParamsFromRequestArtByAid()
     {
+        $this->prepareSessionChallengeToken();
+
         $o = $this->getMock('oxcmp_basket', array('_getItems', 'getSession'));
         $o->expects($this->once())->method('_getItems')
             ->with(
@@ -852,6 +860,11 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
         $oCB->expects($this->any())->method('getParent')->will($this->returnValue($oP));
 
         $this->assertNull($oCB->executeuserchoice());
+    }
+
+    private function prepareSessionChallengeToken()
+    {
+        $this->setRequestParam('stoken', oxRegistry::getSession()->getSessionChallengeToken());
     }
 
 }

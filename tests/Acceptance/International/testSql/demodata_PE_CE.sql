@@ -1,8 +1,5 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
-# Activate Azure theme
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x4db70f6d1a WHERE `OXVARNAME` = 'sTheme';
-
 #set country, username, password for default user
 UPDATE oxuser
   SET
@@ -346,17 +343,17 @@ UPDATE `oxconfig` SET `OXVARVALUE` = ''           WHERE `OXVARNAME` = 'sShopCoun
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dba222b70e349f0c9d1aba6133981af1e8d79724d7309a19dd3eed099418943829510e114c4f6ffcb2543f5856ec4fea325d58b96e406decb977395c57d7cc79eec7f9f8dd6e30e2f68d198bd9d079dbe8b4f WHERE `OXVARNAME` = 'aNrofCatArticles';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dbace29724a51b6af7d09aac117301142e91c3c5b7eed9a850f85c1e3d58739aa9ea92523f05320a95060d60d57fbb027bad88efdaa0b928ebcd6aacf58084d31dd6ed5e718b833f1079b3805d28203f284492955c82cea3405879ea7588ec610ccde56acede495 WHERE `OXVARNAME` = 'aInterfaceProfiles';
 
-INSERT INTO `oxconfig` (`OXID`,                       `OXSHOPID`,   `OXVARNAME`,                     `OXVARTYPE`, `OXVARVALUE`) VALUES
-                       ('fb547ac17e4a10201.92066345', 1, 'perf_LoadFullVariantsInLists',  'bool',       0x7900fdf51e),
-                       ('35796d0bdbbda3bb54fcd0fb84', 1, 'iMinOrderPrice',                'str',        0xfba4),
-                       ('fb547ac17e4a910c8.33968384', 1, 'blLoadSelectBoxAlways',         'bool',       0x93ea1218),
-                       ('fb547ac17e4a97dd3.93417742', 1, 'blPerfNoBasketSaving',          'bool',       0x93ea1218),
-                       ('33bd5512d7d7366681eb850502', 1, 'blOverrideZeroABCPrices',       'bool',       0x93ea1218),
-                       ('34d266d01313cf456a4a1d2c9f', 1, 'blShowOrderButtonOnTop',        'bool',       0x93ea1218),
-                       ('fb547ac17e4a5ba72.64297620', 1, 'bl_perfLoadSelectListsInAList', 'bool',       0x93ea1218),
-                       ('2b456gjk7156737a6edc6814c5', 1, 'bl_rssBargain',                 'bool',       0x07),
-                       ('2bpte85227eb159aedc68164c5', 1, 'bl_rssRecommLists',             'bool',       0x07),
-                       ('2b7lojk77123rtdskdj68164c5', 1, 'bl_rssRecommListArts',          'bool',       0x07);
+INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`,   `OXVARNAME`,                     `OXVARTYPE`, `OXVARVALUE`) VALUES
+                       ('fb547ac17e4a10201.92066345', 1, '', 'perf_LoadFullVariantsInLists',  'bool',       0x7900fdf51e),
+                       ('35796d0bdbbda3bb54fcd0fb84', 1, '', 'iMinOrderPrice',                'str',        0xfba4),
+                       ('fb547ac17e4a910c8.33968384', 1, '', 'blLoadSelectBoxAlways',         'bool',       0x93ea1218),
+                       ('fb547ac17e4a97dd3.93417742', 1, '', 'blPerfNoBasketSaving',          'bool',       0x93ea1218),
+                       ('33bd5512d7d7366681eb850502', 1, '', 'blOverrideZeroABCPrices',       'bool',       0x93ea1218),
+                       ('34d266d01313cf456a4a1d2c9f', 1, '', 'blShowOrderButtonOnTop',        'bool',       0x93ea1218),
+                       ('fb547ac17e4a5ba72.64297620', 1, '', 'bl_perfLoadSelectListsInAList', 'bool',       0x93ea1218),
+                       ('2b456gjk7156737a6edc6814c5', 1, '', 'bl_rssBargain',                 'bool',       0x07),
+                       ('2bpte85227eb159aedc68164c5', 1, '', 'bl_rssRecommLists',             'bool',       0x07),
+                       ('2b7lojk77123rtdskdj68164c5', 1, '', 'bl_rssRecommListArts',          'bool',       0x07);
 
 #azure theme config
 DELETE FROM `oxconfig` WHERE `OXMODULE` = 'theme:azure' AND `OXVARNAME` = 'iTopNaviCatCount';

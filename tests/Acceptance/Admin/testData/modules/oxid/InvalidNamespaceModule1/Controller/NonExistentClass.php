@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2017
  * @version       OXID eShop CE
  */
-/*
+/**
  * As class name and file name do not match, this class will not be loaded by any PSR-4 autoloader and it is as it does
  * not exist.
  * (E.g. do not think just checking for the existance o a fine is enough)

@@ -39,6 +39,8 @@ class ThemeMainTest extends \OxidTestCase
      */
     public function testRender()
     {
+        $this->getConfig()->setConfigParam('sTheme', 'azure');
+
         // testing..
         $oView = oxNew('Theme_Main');
         $this->assertEquals('theme_main.tpl', $oView->render());

@@ -24,6 +24,11 @@ namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\Vend
 
 use OxidEsales\Eshop\Core\Registry;
 
+/**
+ * Class MyModuleController
+ *
+ * @package OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\Vendor1\WithNamespaceAndMetadataV2\Application\Controller
+ */
 class MyModuleController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
@@ -66,7 +71,7 @@ class MyModuleController extends \OxidEsales\Eshop\Application\Controller\Fronte
      */
     public function getMessage()
     {
-        $this->message = (string) Registry::getConfig()->getRequestParameter('mymodule_message') . ' ' . $this->getConfig()->getShopId();;
+        $this->message = (string) Registry::getConfig()->getRequestParameter('mymodule_message') . ' ' . $this->getConfig()->getShopId();
 
         return $this->message;
     }

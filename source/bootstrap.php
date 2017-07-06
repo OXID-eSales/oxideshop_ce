@@ -54,52 +54,71 @@ if (!is_dir(OX_BASE_PATH . 'Core')) {
  * As this is the last resort no further errors must happen.
  */
 register_shutdown_function(function () {
-    $handledErrorTypes = [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_RECOVERABLE_ERROR, E_USER_ERROR, E_USER_DEPRECATED];
+    $handledErrorTypes = [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_RECOVERABLE_ERROR, E_USER_ERROR, E_USER_DEPRECATED];
 
     $error = error_get_last();
     if (in_array($error['type'], $handledErrorTypes)) {
         $errorType = array_flip(array_slice(get_defined_constants(true)['Core'], 0, 16, true))[$error['type']];
 
-        $time = microtime(true);
-        $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
-        $date = new \DateTime(date('Y-m-d H:i:s.' . $micro, $time));
-        $timestamp = $date->format('D M H:i:s.u Y');
-
         /** report the error */
-        $logMessage = "[$timestamp] [uncaught error] [type $errorType] [file {$error['file']}] [line {$error['line']}] [code ] [message {$error['message']}]". PHP_EOL;
-        file_put_contents(OX_LOG_FILE, $logMessage, FILE_APPEND);
+        $logMessage = "[uncaught error] [type $errorType] [file {$error['file']}] [line {$error['line']}] [code ] [message {$error['message']}]";
+        writeToLog($logMessage);
 
-        // Do not display an error message, if this file is included during a CLI command
-        if ('cli' !== strtolower(php_sapi_name())) {
-            /**
-             * Render an error message.
-             * If offline.html exists its content is displayed.
-             * Like this the error message is overridable within that file.
-             */
-            $displayMessage = '';
-            if (file_exists(OX_OFFLINE_FILE) && is_readable(OX_OFFLINE_FILE)) {
-                $displayMessage = file_get_contents(OX_OFFLINE_FILE);
-            };
-
-            header("HTTP/1.1 500 Internal Server Error");
-            header("Connection: close");
-            echo $displayMessage;
+        $bootstrapConfigFileReader = new \BootstrapConfigFileReader();
+        if (!$bootstrapConfigFileReader->isDebugMode()) {
+            \oxTriggerOfflinePageDisplay();
         }
-
-        exit(1);
     }
 });
 
 /**
- * First of all ensure, that the shop config file is available.
+ * Helper for loading and getting the config file contents
  */
-if (!is_readable(OX_BASE_PATH . "config.inc.php")) {
-    $message = sprintf(
-        "Config file '%s' could not be found! Please use '%s.dist' to make a copy.",
-        OX_BASE_PATH . "config.inc.php",
-        OX_BASE_PATH . "config.inc.php"
-    );
+class BootstrapConfigFileReader
+{
+    /**
+     * BootstrapConfigFileReader constructor.
+     */
+    public function __construct()
+    {
+        include OX_BASE_PATH . "config.inc.php";
+    }
+
+    /**
+     * Check if debug mode is On.
+     *
+     * @return bool
+     */
+    public function isDebugMode()
+    {
+        return (bool)$this->iDebug;
+    }
+}
+
+/**
+ * Ensure shop config and autoload files are available.
+ */
+$configMissing = !is_readable(OX_BASE_PATH . "config.inc.php");
+if ($configMissing || !is_readable(VENDOR_PATH . 'autoload.php')) {
+    if ($configMissing) {
+        $message = sprintf(
+            "Error: Config file '%s' could not be found! Please use '%s.dist' to make a copy.",
+            OX_BASE_PATH . "config.inc.php",
+            OX_BASE_PATH . "config.inc.php"
+        );
+    } else {
+        $message = "Error: Autoload file missing. Make sure you have run the 'composer install' command.";
+    }
+
     trigger_error($message, E_USER_ERROR);
+}
+
+/**
+ * Turn on display errors for debug mode
+ */
+$bootstrapConfigFileReader = new \BootstrapConfigFileReader();
+if ($bootstrapConfigFileReader->isDebugMode()) {
+    ini_set('display_errors', 'On');
 }
 
 /**
@@ -174,3 +193,39 @@ ini_set('session.name', 'sid');
 ini_set('session.use_cookies', 0);
 ini_set('session.use_trans_sid', 0);
 ini_set('url_rewriter.tags', '');
+
+/**
+ * Bulletproof offline page loader
+ */
+function oxTriggerOfflinePageDisplay()
+{
+    // Do not display an error message, if this file is included during a CLI command
+    if ('cli' !== strtolower(php_sapi_name())) {
+        header("HTTP/1.1 500 Internal Server Error");
+        header("Connection: close");
+
+        /**
+         * Render an error message.
+         * If offline.php exists its content is displayed.
+         * Like this the error message is overridable within that file.
+         */
+        if (file_exists(OX_OFFLINE_FILE) && is_readable(OX_OFFLINE_FILE)) {
+            echo file_get_contents(OX_OFFLINE_FILE);
+        };
+    }
+}
+
+/**
+ * @param string $message
+ */
+function writeToLog($message)
+{
+    $time = microtime(true);
+    $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
+    $date = new \DateTime(date('Y-m-d H:i:s.' . $micro, $time));
+    $timestamp = $date->format('D M H:i:s.u Y');
+
+    $message = "[$timestamp] " . $message . PHP_EOL;
+
+    file_put_contents(OX_LOG_FILE, $message, FILE_APPEND);
+}

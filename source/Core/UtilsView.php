@@ -79,6 +79,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     public function getSmarty($blReload = false)
     {
         if (!self::$_oSmarty || $blReload) {
+            $this->_aTemplateDir = [];
             self::$_oSmarty = new Smarty();
             $this->_fillCommonSmartyProperties(self::$_oSmarty);
             $this->_smartyCompileCheck(self::$_oSmarty);

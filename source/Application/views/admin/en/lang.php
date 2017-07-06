@@ -1738,10 +1738,13 @@ $aLang = array(
     // Shop licensing problems
     'SHOP_LICENSE_ERROR_GRACE_EXPIRED'            => 'The license key of your OXID eShop finally expired. Please contact the Technical Support.',
     'SHOP_LICENSE_ERROR_GRACE_WILL_EXPIRE'        => 'The license key of your OXID eShop is expired. OXID eShop will go offline within 24 hours. Please enter a valid license key or contact the Technical Support!',
+    'SHOP_LICENSE_ERROR_GRACE_RESET'              => 'A re-check resulted that the license key of your OXID eShop is now valid. That\'s why the hidden countdown of seven days was cancelled .',
     'SHOP_LICENSE_ERROR_shop_unlicensed'          => 'A problem with the license key of your OXID eShop occurred. That\'s why a hidden countdown of 7 days was started. After this period OXID eShop will go offline. Please enter the valid license key once again or contact the technical support!',
     'SHOP_LICENSE_ERROR_serial_expired'           => 'The license key of your OXID eShop expired. That\'s why a hidden countdown of 7 days was started. After this period OXID eShop will go offline. Please enter a valid license key or contact the technical support!',
     'SHOP_LICENSE_ERROR_incorrect_mandate_amount' => 'The number of the licensed sub-shops exceeded. That\'s why a hidden countdown of 7 days was started. After this period OXID eShop will go offline. Please enter a valid license key or contact the technical support!',
     'SHOP_LICENSE_ERROR_INFORMATION'              => 'OXID eShop license information',
+
+    'SHOP_EMAIL_ORIGIN_MESSAGE'                   => 'This e-mail was sent from shop %s.',
 
     'SHOP_OPTIONS_GROUP_GLOBAL'                    => 'Global',
     'SHOP_OPTIONS_GROUP_SEARCH'                    => 'Search',

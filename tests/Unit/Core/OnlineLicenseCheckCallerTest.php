@@ -21,6 +21,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
 use \oxOnlineLicenseCheckCaller;
 use \Exception;
 use \oxSimpleXml;
@@ -52,8 +53,8 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         $oSimpleXml->expects($this->atLeastOnce())->method('objectToXml')->with($oRequest, 'olcRequest');
         /** @var oxSimpleXml $oSimpleXml */
 
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder');
+        /** @var OnlineServerEmailBuilder $oEmailBuilder */
+        $oEmailBuilder = $this->getMock(OnlineServerEmailBuilder::class);
 
         $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
         $oOnlineLicenseCaller->doRequest($oRequest);
@@ -67,8 +68,8 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         $oSimpleXml->expects($this->any())->method('objectToXml')->will($this->returnValue('formed_xml'));
         /** @var oxSimpleXml $oSimpleXml */
 
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder');
+        /** @var OnlineServerEmailBuilder $oEmailBuilder */
+        $oEmailBuilder = $this->getMock(OnlineServerEmailBuilder::class);
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'setParameters'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->_getValidResponseXml()));
@@ -109,7 +110,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
         $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, array('build'));
         $oEmailBuilder->expects($this->any())->method('build');
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
+        /** @var OnlineServerEmailBuilder $oEmailBuilder */
 
         $oSimpleXml = $this->getMock('oxSimpleXml');
         /** @var oxSimpleXml $oSimpleXml */
@@ -136,7 +137,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
         $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, array('build'));
         $oEmailBuilder->expects($this->any())->method('build');
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
+        /** @var OnlineServerEmailBuilder $oEmailBuilder */
 
         $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
         $oRequest = oxNew('oxOnlineLicenseCheckRequest');
@@ -158,7 +159,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
         $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, array('build'));
         $oEmailBuilder->expects($this->any())->method('build')->will($this->returnValue($oEmail));
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
+        /** @var OnlineServerEmailBuilder $oEmailBuilder */
 
         $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
         $oRequest = oxNew('oxOnlineLicenseCheckRequest');

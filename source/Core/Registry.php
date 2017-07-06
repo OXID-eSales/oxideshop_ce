@@ -390,7 +390,7 @@ class Registry
         $key = $className;
         if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($className)) {
             $bcMap = self::getBackwardsCompatibilityClassMap();
-            $virtualKey = isset($bcMap[strtolower($key)]) ? $bcMap[strtolower($key)] : $key;
+            $virtualKey = isset($bcMap[strtolower($key)]) ? $bcMap[strtolower($key)] : strtolower($key);
             $key = $virtualKey;
         }
 

@@ -138,16 +138,17 @@ class RegistryTest extends \OxidTestCase
     public function testGetKeys()
     {
         Registry::set("testKey", "testVal");
-        $this->assertTrue(in_array("testKey", Registry::getKeys()));
+        $this->assertTrue(in_array("testkey", Registry::getKeys()));
         \OxidEsales\Eshop\Core\Registry::set("testKey", null);
     }
 
     public function testUnset()
     {
         \OxidEsales\Eshop\Core\Registry::set("testKey", "testVal");
-        $this->assertTrue(in_array("testKey", Registry::getKeys()));
+        $this->assertTrue(in_array("testkey", Registry::getKeys()));
         \OxidEsales\Eshop\Core\Registry::set("testKey", null);
         $this->assertFalse(in_array("testKey", Registry::getKeys()));
+        $this->assertFalse(in_array("testkey", Registry::getKeys()));
     }
 
     public function testInstanceExists()

@@ -36,7 +36,7 @@ $aModule = array(
     'version'      => '1.0.0',
     'author'       => 'OXID eSales AG',
     'extend'      => array(
-       # \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTenPrice'
+       // \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTenPrice'
        'oxprice' => 'without_own_module_namespace/Application/Model/TestModuleTenPrice'
 
     ),

@@ -21,15 +21,12 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
-use oxModule;
-use oxRegistry;
-
 /**
  * Base class for module integration tests.
  *
  * @group module
  */
-abstract class BaseModuleTestCase extends \OxidTestCase
+abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
     /**
@@ -38,94 +35,94 @@ abstract class BaseModuleTestCase extends \OxidTestCase
     protected function setUp() {
         parent::setUp();
 
-        $oEnvironment = new Environment();
-        $oEnvironment->clean();
+        $environment = new Environment();
+        $environment->clean();
     }
 
     /**
      * Activates module.
      *
-     * @param oxModule $oModule
-     * @param string   $sModuleId
+     * @param \OxidEsales\Eshop\Core\Module\Module $module
+     * @param string   $moduleId
      */
-    protected function activateModule($oModule, $sModuleId = null)
+    protected function activateModule($module, $moduleId = null)
     {
-        if ($sModuleId) {
-            $oModule->load($sModuleId);
+        if ($moduleId) {
+            $module->load($moduleId);
         }
-        $oModuleCache = oxNew('oxModuleCache', $oModule);
-        $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
+        $moduleCache = oxNew(\OxidEsales\Eshop\Core\Module\ModuleCache::class, $module);
+        $moduleInstaller = oxNew(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class, $moduleCache);
 
-        $oModuleInstaller->activate($oModule);
+        $moduleInstaller->activate($module);
     }
 
     /**
      * Deactivates module.
      *
-     * @param oxModule $oModule
-     * @param string   $sModuleId
+     * @param \OxidEsales\Eshop\Core\Module\Module $module
+     * @param string   $moduleId
      */
-    protected function deactivateModule($oModule, $sModuleId = null)
+    protected function deactivateModule($module, $moduleId = null)
     {
-        if ($sModuleId) {
-            $oModule->load($sModuleId);
+        if ($moduleId) {
+            $module->load($moduleId);
         }
-        $oModuleCache = oxNew('oxModuleCache', $oModule);
-        $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
+        $moduleCache = oxNew(\OxidEsales\Eshop\Core\Module\ModuleCache::class, $module);
+        $moduleInstaller = oxNew(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class, $moduleCache);
 
-        $oModuleInstaller->deactivate($oModule);
+        $moduleInstaller->deactivate($module);
     }
 
     /**
      * Runs all asserts
      *
-     * @param array $aExpectedResult
+     * @param array $expectedResult
      */
-    protected function runAsserts($aExpectedResult)
+    protected function runAsserts($expectedResult)
     {
-        $oConfig = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $oValidator = new Validator($oConfig);
+        $validator = new Validator($config);
 
-        if (isset($aExpectedResult['blocks'])) {
-            $this->assertTrue($oValidator->checkBlocks($aExpectedResult['blocks']), 'Blocks do not match expectations');
+        if (isset($expectedResult['blocks'])) {
+            $this->assertTrue($validator->checkBlocks($expectedResult['blocks']), 'Blocks do not match expectations');
         }
 
-        if (isset($aExpectedResult['extend'])) {
-            $this->assertTrue($oValidator->checkExtensions($aExpectedResult['extend']), 'Extensions do not match expectations');
+        if (isset($expectedResult['extend'])) {
+            $this->assertTrue($validator->checkExtensions($expectedResult['extend']), 'Extensions do not match expectations');
         }
 
-        if (isset($aExpectedResult['files'])) {
-            $this->assertTrue($oValidator->checkFiles($aExpectedResult['files']), 'Files do not match expectations');
+        if (isset($expectedResult['files'])) {
+            $this->assertTrue($validator->checkFiles($expectedResult['files']), 'Files do not match expectations');
         }
 
-        if (isset($aExpectedResult['controllers'])) {
-            $this->assertTrue($oValidator->checkControllers($aExpectedResult['controllers']), 'Controllers do not match expectations');
+        if (isset($expectedResult['controllers'])) {
+            $this->assertTrue($validator->checkControllers($expectedResult['controllers']), 'Controllers do not match expectations');
         }
 
-        if (isset($aExpectedResult['events'])) {
-            $this->assertTrue($oValidator->checkEvents($aExpectedResult['events']), 'Events do not match expectations');
+        if (isset($expectedResult['events'])) {
+            $this->assertTrue($validator->checkEvents($expectedResult['events']), 'Events do not match expectations');
         }
 
-        if (isset($aExpectedResult['settings'])) {
-            $this->assertTrue($oValidator->checkConfigAmount($aExpectedResult['settings']), 'Configs do not match expectations');
+        if (isset($expectedResult['settings'])) {
+            $this->assertTrue($validator->checkConfigAmount($expectedResult['settings']), 'Configs do not match expectations');
         }
 
-        if (isset($aExpectedResult['versions'])) {
-            $this->assertTrue($oValidator->checkVersions($aExpectedResult['versions']), 'Versions do not match expectations');
+        if (isset($expectedResult['versions'])) {
+            $this->assertTrue($validator->checkVersions($expectedResult['versions']), 'Versions do not match expectations');
         }
 
-        if (isset($aExpectedResult['templates'])) {
-            $this->assertTrue($oValidator->checkTemplates($aExpectedResult['templates']), 'Templates do not match expectations');
+        if (isset($expectedResult['templates'])) {
+            $this->assertTrue($validator->checkTemplates($expectedResult['templates']), 'Templates do not match expectations');
         }
 
-        if (isset($aExpectedResult['disabledModules'])) {
-            $this->assertTrue($oValidator->checkDisabledModules($aExpectedResult['disabledModules']), 'Disabled modules do not match expectations');
+        if (isset($expectedResult['disabledModules'])) {
+            $this->assertTrue($validator->checkDisabledModules($expectedResult['disabledModules']), 'Disabled modules do not match expectations');
         }
 
-        if (isset($aExpectedResult['settings_values'])) {
+        if (isset($expectedResult['settings_values'])) {
             $this->assertTrue(
-                $oValidator->checkConfigValues($aExpectedResult['settings_values']),
+                $validator->checkConfigValues($expectedResult['settings_values']),
                 'Config values does not match expectations'
             );
         }

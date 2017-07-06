@@ -785,6 +785,8 @@ class UtilsTest extends \OxidTestCase
     public function testResetTemplateCache()
     {
         $config = $this->getConfig();
+        $config->setConfigParam('sTheme', 'azure');
+
         $utils = oxRegistry::getUtils();
         $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);
         $tmpDir = $config->getConfigParam('sCompileDir') . "/smarty/";
@@ -988,8 +990,7 @@ class UtilsTest extends \OxidTestCase
     public function testShowOfflinePage()
     {
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('setHeader','showMessageAndExit'));
-        $utils->expects($this->once())->method('setHeader')->with($this->stringContains('HTTP/1.1 5'));
-        $utils->expects($this->once())->method('showMessageAndExit')->with($this->stringContains('<meta name="robots" content="noindex, nofollow">'));
+        $utils->expects($this->once())->method('showMessageAndExit');
 
         $utils->showOfflinePage();
     }

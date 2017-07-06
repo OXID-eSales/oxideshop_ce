@@ -24,12 +24,11 @@ namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
 
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
+use OxidEsales\DoctrineMigrationWrapper\Migrations;
 
 /**
  * Setup utilities class
@@ -46,9 +45,8 @@ class Utilities extends Core
     const DEMODATA_SQL_FILENAME = 'demodata.sql';
     const LICENSE_TEXT_FILENAME = "lizenz.txt";
 
-    const ESHOP_FACTS_BINARY_FILENAME = 'oe-eshop-facts';
-    const DATABASE_VIEW_REGENERATION_BINARY_FILENAME = 'oe-eshop-db_views_regenerate';
-    const DATABASE_MIGRATION_BINARY_FILENAME = 'oe-eshop-db_migrate';
+    const DATABASE_VIEW_REGENERATION_BINARY_FILENAME = 'oe-eshop-db_views_generate';
+    const DATABASE_MIGRATION_BINARY_FILENAME = 'oe-eshop-doctrine_migration';
     const DEMODATA_ASSETS_INSTALL_BINARY_FILENAME = 'oe-eshop-demodata_install';
 
     /**
@@ -138,7 +136,7 @@ class Utilities extends Core
     /**
      * Extracts install path
      *
-     * @param string $aPath path info array
+     * @param array $aPath path info array
      *
      * @return string
      */
@@ -256,6 +254,8 @@ class Utilities extends Core
      *
      * @param array  $aParams    various setup parameters
      * @param string $sSubFolder in case you need to update non default, but e.g. admin file, you must add its folder
+     *
+     * @throws Exception when .htaccess file is not accessible/readable.
      */
     public function updateHtaccessFile($aParams, $sSubFolder = "")
     {
@@ -459,7 +459,8 @@ class Utilities extends Core
      */
     public function executeExternalRegenerateViewsCommand()
     {
-        $this->executeShellCommandViaEshopFactsBinary(self::DATABASE_VIEW_REGENERATION_BINARY_FILENAME);
+        $regenerateViewsCommand = $this->formCommandToVendor(self::DATABASE_VIEW_REGENERATION_BINARY_FILENAME);
+        $this->executeShellCommand($regenerateViewsCommand);
     }
 
     /**
@@ -467,7 +468,8 @@ class Utilities extends Core
      */
     public function executeExternalDatabaseMigrationCommand()
     {
-        $this->executeShellCommandViaEshopFactsBinary(self::DATABASE_MIGRATION_BINARY_FILENAME);
+        $databaseMigrateCommand = $this->formCommandToVendor(self::DATABASE_MIGRATION_BINARY_FILENAME) . ' ' . Migrations::MIGRATE_COMMAND;
+        $this->executeShellCommand($databaseMigrateCommand);
     }
 
     /**
@@ -475,18 +477,8 @@ class Utilities extends Core
      */
     public function executeExternalDemodataAssetsInstallCommand()
     {
-        $this->executeShellCommandViaEshopFactsBinary(self::DEMODATA_ASSETS_INSTALL_BINARY_FILENAME);
-    }
-
-    /**
-     * Executes a given command via the eShop facts helper binary file.
-     *
-     * @param string $command Command to execute.
-     */
-    private function executeShellCommandViaEshopFactsBinary($command)
-    {
-        $eshopFactsPathToBinary = $this->getFullPathToEshopFacts();
-        $this->executeShellCommand("$eshopFactsPathToBinary $command");
+        $installDemoDataCommand = $this->formCommandToVendor(self::DEMODATA_ASSETS_INSTALL_BINARY_FILENAME);
+        $this->executeShellCommand($installDemoDataCommand);
     }
 
     /**
@@ -529,16 +521,6 @@ class Utilities extends Core
     private function getVendorBinaryDirectory()
     {
         return $this->getVendorDirectory() . self::COMPOSER_VENDOR_BIN_DIRECTORY;
-    }
-
-    /**
-     * Return full path to eShop facts binary file.
-     *
-     * @return string
-     */
-    private function getFullPathToEshopFacts()
-    {
-        return implode(DIRECTORY_SEPARATOR, [$this->getVendorBinaryDirectory(), self::ESHOP_FACTS_BINARY_FILENAME]);
     }
 
     /**
@@ -664,5 +646,23 @@ class Utilities extends Core
     public static function stripAnsiControlCodes($outputWithAnsiControlCodes)
     {
         return preg_replace('/\x1b(\[|\(|\))[;?0-9]*[0-9A-Za-z]/', "", $outputWithAnsiControlCodes);
+    }
+
+    /**
+     * Form command to script file in Vendor directory.
+     *
+     * @param string $command
+     *
+     * @return string
+     */
+    private function formCommandToVendor($command)
+    {
+        $migrateCommand = implode(
+            DIRECTORY_SEPARATOR,
+            [$this->getVendorBinaryDirectory(), $command]
+        );
+        $migrateCommand = '"' . $migrateCommand . '"';
+
+        return $migrateCommand;
     }
 }

@@ -1052,10 +1052,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function showOfflinePage()
     {
-        $this->setHeader("HTTP/1.1 500 Internal Server Error");
-        $offlineMessageFile = $this->getConfig()->getConfigParam('sShopDir') . 'offline.html';
-        $offline = file_get_contents($offlineMessageFile);
-        $this->showMessageAndExit($offline);
+        \oxTriggerOfflinePageDisplay();
+        $this->showMessageAndExit('');
     }
 
     /**

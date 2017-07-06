@@ -329,7 +329,7 @@ class StrRegular
      * Special chars are: \n \r \t x95 xa0 ;
      *
      * @param string $sStr      string to cleanup
-     * @param object $sCleanChr which character should be used as a replacement (default is empty space)
+     * @param mixed  $sCleanChr which character should be used as a replacement (default is empty space)
      *
      * @return string
      */

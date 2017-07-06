@@ -1732,10 +1732,13 @@ $aLang = array(
     // Shop licensing problems
     'SHOP_LICENSE_ERROR_GRACE_EXPIRED'            => 'Der Lizenzschlüssel Ihres OXID eShop ist endgültig abgelaufen. Bitte kontaktieren Sie den Technischen Support.',
     'SHOP_LICENSE_ERROR_GRACE_WILL_EXPIRE'        => 'Der Lizenzschlüssel Ihres OXID eShop ist abgelaufen. Dieser OXID eShop wird innerhalb der nächsten 24 Stunden offline gehen. Bitte geben Sie einen gültigen Lizenzschlüssel ein oder wenden Sie sich an den technischen Support.',
+    'SHOP_LICENSE_ERROR_GRACE_RESET'              => 'Die erneute Prüfung ergab, dass der Lizenzschlüssel Ihres OXID eShop nun gültig ist. Der stille Countdown von sieben Tagen wurde aus diesem Grund beendet.',
     'SHOP_LICENSE_ERROR_shop_unlicensed'          => 'Es ist ein Problem mit dem Lizenzschlüssel Ihres OXID eShop aufgetreten. Aus diesem Grund wurde ein stiller Countdown von 7 Tagen gestartet. Nach Ablauf der Frist wird der OXID eShop offline gehen. Bitte geben Sie den gültigen Lizenzschlüssel erneut ein oder kontaktieren Sie den Technischen Support!',
     'SHOP_LICENSE_ERROR_serial_expired'           => 'Der Lizenzschlüssel Ihres OXID eShop ist abgelaufen. Aus diesem Grund wurde ein stiller Countdown von 7 Tagen gestartet. Nach Ablauf der Frist wird der OXID eShop offline gehen. Bitte geben Sie einen gültigen Lizenzschlüssel ein oder kontaktieren Sie den Technischen Support!',
     'SHOP_LICENSE_ERROR_incorrect_mandate_amount' => 'Die Anzahl der lizensierten Subshops wurde überschritten. Aus diesem Grund wurde ein stiller Countdown von 7 Tagen gestartet. Nach Ablauf der Frist wird der OXID eShop offline gehen. Bitte geben Sie einen gültigen Lizenzschlüssel ein oder kontaktieren Sie den Technischen Support!',
     'SHOP_LICENSE_ERROR_INFORMATION'              => 'OXID eShop Lizenzinformation',
+
+    'SHOP_EMAIL_ORIGIN_MESSAGE'                   => 'Diese E-Mail wurde vom Shop %s versandt.',
 
     'SHOP_OPTIONS_GROUP_GLOBAL'                    => 'Global',
     'SHOP_OPTIONS_GROUP_SEARCH'                    => 'Suche',

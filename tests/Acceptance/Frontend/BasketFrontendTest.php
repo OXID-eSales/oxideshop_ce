@@ -53,7 +53,7 @@ class BasketFrontendTest extends FrontendTestCase
         //adding few more products to basket
         $this->addToBasket("1000");
         $this->addToBasket("1001");
-        $this->assertEquals("3", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("3", "//div[@id='miniBasket']/span");
 
         $this->click("//div[@id='miniBasket']/img");
         $this->waitForItemAppear("basketFlyout");

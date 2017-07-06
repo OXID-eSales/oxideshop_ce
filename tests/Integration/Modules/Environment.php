@@ -15,19 +15,24 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
+ * @link          http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * @version       OXID eShop CE
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use Exception;
-use oxDb;
-use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Registry;
 
+/**
+ * Class Environment
+ *
+ * @package OxidEsales\EshopCommunity\Tests\Integration\Modules
+ */
 class Environment
 {
+
     /**
      * Shop Id in which will be prepared environment.
      *
@@ -48,6 +53,11 @@ class Environment
      * @var string
      */
     protected $fixtureDirectory = 'TestData';
+
+    /**
+     * @var \PHPUnit_Framework_TestCase
+     */
+    protected $phpUnit;
 
     /**
      *
@@ -80,6 +90,18 @@ class Environment
     }
 
     /**
+     * In the shop the modules get validated e.g. if they extend an edition namespace.
+     * If you use this method, a mock prevents the validation of modules. This method has to be called
+     * before the method prepare()
+     *
+     * @param \PHPUnit_Framework_TestCase
+     */
+    public function doNotValidateModules(\PHPUnit_Framework_TestCase $phpUnit)
+    {
+        $this->phpUnit = $phpUnit;
+    }
+
+    /**
      * Loads and activates modules by given IDs.
      *
      * @param null $modules
@@ -88,6 +110,17 @@ class Environment
      */
     public function prepare($modules = null)
     {
+        $modules = $this->refreshAvailableModules($modules);
+        $this->activateModules($modules);
+    }
+
+    /**
+     * @param array $modules
+     *
+     * @return array
+     */
+    private function refreshAvailableModules($modules = null)
+    {
         $this->clean();
         $this->setShopConfigParameters();
 
@@ -95,7 +128,7 @@ class Environment
             $modules = $this->getAllModules();
         }
 
-        $this->activateModules($modules);
+        return $modules;
     }
 
     /**
@@ -113,7 +146,7 @@ class Environment
         $config->setConfigParam('aModuleEvents', null);
         $config->setConfigParam('aModuleControllers', null);
 
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $database->execute("DELETE FROM `oxconfig` WHERE `oxmodule` LIKE 'module:%' OR `oxvarname` LIKE '%Module%'");
         $database->execute('TRUNCATE `oxconfigdisplay`');
         $database->execute('TRUNCATE `oxtplblocks`');
@@ -166,6 +199,7 @@ class Environment
         }
     }
 
+
     /**
      * Deactivate a module, given by its ID.
      *
@@ -195,7 +229,7 @@ class Environment
      */
     protected function getPathToTestDataDirectory()
     {
-        return realpath($this->path) . '/' . $this->fixtureDirectory  . '/';
+        return realpath($this->path) . '/' . $this->fixtureDirectory . '/';
     }
 
     /**
@@ -205,9 +239,9 @@ class Environment
      */
     protected function getAllModules()
     {
-        $aModules = array_diff(scandir($this->getPathToTestDataDirectory() . 'modules'), array('..', '.'));
+        $modules = array_diff(scandir($this->getPathToTestDataDirectory() . 'modules'), array('..', '.'));
 
-        return $aModules;
+        return $modules;
     }
 
     /**
@@ -232,13 +266,13 @@ class Environment
      */
     protected function _getConfigValueFromDB($sVarName)
     {
-        $oDb = oxDb::getDb();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQuery = "SELECT " . Registry::getConfig()->getDecodeValueQuery() . "
                    FROM `oxconfig`
                    WHERE `OXVARNAME` = '{$sVarName}'
                    AND `OXSHOPID` = {$this->getShopId()}";
 
-        $sResult = $oDb->getOne($sQuery);
+        $sResult = $db->getOne($sQuery);
         $aExtensionsToCheck = $sResult ? unserialize($sResult) : array();
 
         return $aExtensionsToCheck;
@@ -247,15 +281,22 @@ class Environment
     /**
      * Get the module installer with a given module set in the module cache.
      *
-     * @param \OxidEsales\Eshop\Application\Controller\Admin\ModuleController $module
+     * @param \OxidEsales\Eshop\Core\Module\Module $module
      *
-     * @return object
+     * @return \OxidEsales\Eshop\Core\Module\ModuleInstaller|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getModuleInstaller($module)
     {
         $moduleCache = oxNew(\OxidEsales\Eshop\Core\Module\ModuleCache::class, $module);
-        $moduleInstaller = oxNew(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class, $moduleCache);
 
-        return $moduleInstaller;
+        if (isset($this->phpUnit)) {
+            return $this->phpUnit->getMock(
+                \OxidEsales\Eshop\Core\Module\ModuleInstaller::class,
+                ['validateMetadataExtendSection'],
+                [$moduleCache]
+            );
+        }
+
+        return oxNew(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class, $moduleCache);
     }
 }

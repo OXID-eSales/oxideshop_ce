@@ -22,6 +22,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
 use \oxCurl;
+use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
 use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
 use \oxModule;
 use \oxOnlineModuleVersionNotifier;
@@ -78,7 +79,7 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
         $oOnlineModuleVersionNotifierCaller = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
 
         $oModule1 = oxNew('oxModule');

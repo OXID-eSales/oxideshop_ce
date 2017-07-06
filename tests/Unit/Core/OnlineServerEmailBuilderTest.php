@@ -21,10 +21,11 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
 use \oxRegistry;
 
 /**
- * Class Unit_Core_oxOnlineServerEmailBuilderTest
+ * Class Unit_Core_OnlineServerEmailBuilderTest
  */
 class OnlineServerEmailBuilderTest extends \OxidTestCase
 {
@@ -32,7 +33,7 @@ class OnlineServerEmailBuilderTest extends \OxidTestCase
     public function testBuildIfParametersWereSetCorrectly()
     {
         $sBody = '_testXML';
-        $oExpirationEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oExpirationEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
         $oExpirationEmail = $oExpirationEmailBuilder->build($sBody);
         $aRecipient = $oExpirationEmail->getRecipient();
 

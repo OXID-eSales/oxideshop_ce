@@ -57,7 +57,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * In case languages are not the same - reloads article object in different language
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article to check language
-     * @param int       $iLang    user defined language id
+     * @param int                                         $iLang    user defined language id
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
@@ -79,7 +79,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
-     * @param int       $iLang    language id
+     * @param int                                         $iLang    language id
      *
      * @return string
      */

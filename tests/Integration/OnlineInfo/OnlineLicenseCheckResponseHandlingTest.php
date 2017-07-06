@@ -22,6 +22,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
 use \oxCurl;
+use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
 use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
 use \oxRegistry;
 use \oxSystemComponentException;
@@ -30,7 +31,7 @@ use \oxTestModules;
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
  *
- * @covers oxOnlineServerEmailBuilder
+ * @covers OnlineServerEmailBuilder
  * @covers oxOnlineCaller
  * @covers oxSimpleXml
  * @covers oxOnlineLicenseCheckCaller
@@ -57,7 +58,7 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sXml));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
 
         $oSimpleXml = oxNew('oxSimpleXml');
         $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oCurl, $oEmailBuilder, $oSimpleXml);
@@ -93,7 +94,7 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sXml));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
         $oSimpleXml = oxNew('oxSimpleXml');
         $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oCurl, $oEmailBuilder, $oSimpleXml);
 
@@ -121,7 +122,7 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sXml));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
         $oSimpleXml = oxNew('oxSimpleXml');
         $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oCurl, $oEmailBuilder, $oSimpleXml);
 

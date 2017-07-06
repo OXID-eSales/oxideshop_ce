@@ -699,7 +699,7 @@ class BasketitemTest extends \OxidTestCase
      */
     public function testGetIconUrl()
     {
-        $sIconUrl = $this->getConfig()->getConfigParam("sShopURL") . "out/pictures/generated/product/1/87_87_75/nopic.jpg";
+        $sIconUrl = $this->getConfig()->getConfigParam("sShopURL") . "out/pictures/generated/product/1/56_42_75/nopic.jpg";
 
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxpic1 = new oxField('testicon.jpg');

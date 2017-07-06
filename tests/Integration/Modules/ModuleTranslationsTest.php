@@ -66,6 +66,9 @@ class ModuleTranslationsTest extends BaseModuleTestCase
         $oEnvironment = new Environment();
         $oEnvironment->prepare($activatedModule);
 
+        // reset translations object
+        Registry::set(\OxidEsales\Eshop\Core\Language::class, null);
+
         $translatedGerman = Registry::getLang()->translateString('BIRTHDATE', 0);
         $translatedEnglish = Registry::getLang()->translateString('BIRTHDATE', 1);
 

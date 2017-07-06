@@ -45,6 +45,15 @@ abstract class AcceptanceTestCase extends \OxidEsales\TestingLibrary\AcceptanceT
     }
 
     /**
+     * @inheritdoc
+     */
+    public function setUpTestsSuite($testSuitePath)
+    {
+        $this->activateTheme('azure');
+        parent::setUpTestsSuite($testSuitePath);
+    }
+
+    /**
      * Adds tests sql data to database.
      *
      * @param string $sTestSuitePath

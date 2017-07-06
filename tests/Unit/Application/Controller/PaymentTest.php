@@ -288,6 +288,7 @@ class PaymentTest extends \OxidTestCase
 
     public function testGetDynValueSetInSession()
     {
+        $this->setSessionParam('usr', 'oxdefaultadmin');
         $this->setSessionParam('dynvalue', 'test');
         $this->setRequestParameter('dynvalue', 'test2');
 
@@ -297,6 +298,7 @@ class PaymentTest extends \OxidTestCase
 
     public function testGetDynValueNotSetInSession()
     {
+        $this->setSessionParam('usr', 'oxdefaultadmin');
         $this->setSessionParam('dynvalue', null);
         $this->setRequestParameter('dynvalue', 'test2');
 
@@ -864,8 +866,6 @@ class PaymentTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        oxAddClassModule('modOxPayment_payment', 'oxPayment');
-
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPriceForPayment'));
         $oBasket->expects($this->any())->method('getPriceForPayment')->will($this->returnValue(100));
         $oBasket->setShipping('currentShipping');
@@ -911,8 +911,6 @@ class PaymentTest extends \OxidTestCase
     {
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
-
-        oxAddClassModule('modOxPayment_payment', 'oxPayment');
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPriceForPayment'));
         $oBasket->expects($this->any())->method('getPriceForPayment')->will($this->returnValue(100));

@@ -40,9 +40,18 @@ class Email extends \PHPMailer
     /**
      * Default Smtp server port
      *
+     * @deprecated use $smtpPort instead
+     *
      * @var int
      */
     public $SMTP_PORT = 25;
+
+    /**
+     * Default Smtp server port
+     *
+     * @var int
+     */
+    public $smtpPort = 25;
 
     /**
      * Password reminder mail template
@@ -502,13 +511,14 @@ class Email extends \PHPMailer
     {
         $isSmtp = false;
         if ($smtpHost) {
-            $smtpPort = $this->SMTP_PORT;
             $match = array();
+            $smtpPort = isset($this->SMTP_PORT)
+                ? $this->SMTP_PORT
+                : $this->smtpPort;
             if (getStr()->preg_match('@^(.*?)(:([0-9]+))?$@i', $smtpHost, $match)) {
                 $smtpHost = $match[1];
-                $smtpPort = (int) $match[3];
-                if (!$smtpPort) {
-                    $smtpPort = $this->SMTP_PORT;
+                if ((int) $match[3] !== 0) {
+                    $smtpPort = (int) $match[3];
                 }
             }
             if ($isSmtp = (bool) ($rHandle = @fsockopen($smtpHost, $smtpPort, $errNo, $errStr, 30))) {

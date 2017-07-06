@@ -83,7 +83,8 @@ class VendorTest extends \OxidTestCase
 
         $this->insertTestVendor();
 
-        return parent::setUp();
+        parent::setUp();
+//        $this->getConfig()->setConfigParam('sTheme', 'azure');
     }
 
     /**
@@ -237,7 +238,7 @@ class VendorTest extends \OxidTestCase
         $vendor->loadInLang(1, $this->testVendorId);
 
         /** Expect title also in lang 1, as getLink() is called without parameters*/
-        $part = ('azure' == $this->getConfig()->getConfigParam('sTheme')) ? 'en/By-distributor/' : 'en/By-Distributor/';
+        $part = 'en/By-distributor/';
         $expectedUrl = $this->getConfig()->getShopUrl() . $part . str_replace(' ', '-', $this->testVendorTitle_1) . '/';
         $actualUrl = $vendor->getLink();
 
@@ -292,7 +293,7 @@ class VendorTest extends \OxidTestCase
         $vendor->load($this->testVendorId);
 
         /** Expect title not in lang 0, but in lang 1, as getLink() is called with parameter 1*/
-        $part = ('azure' == $this->getConfig()->getConfigParam('sTheme')) ? 'en/By-distributor/' : 'en/By-Distributor/';
+        $part = 'en/By-distributor/';
         $expectedUrl = $this->getConfig()->getShopUrl() . $part . str_replace(' ', '-', $this->testVendorTitle_1) . '/';
         $actualUrl = $vendor->getLink(1);
 

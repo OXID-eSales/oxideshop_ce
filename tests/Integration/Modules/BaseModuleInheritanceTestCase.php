@@ -62,14 +62,39 @@ abstract class BaseModuleInheritanceTestCase extends BaseModuleTestCase
      * @param string $moduleClassName   The module class we want to instantiate.
      * @param array $shopClassNames     The shop classes from which the module class should inherit.
      */
-    public function testModuleInheritanceTestPhpInheritance($modulesToActivate, $moduleClassName, $shopClassNames)
+    public function moduleInheritanceByPhpInheritance($modulesToActivate, $moduleClassName, $shopClassNames)
     {
         $this->environment->prepare($modulesToActivate);
+        $this->assertClassInheritance($moduleClassName, $shopClassNames);
+    }
 
+    /**
+     * This test covers PHP inheritance between module classes.
+     * Its more or less the same like the method moduleInheritanceByPhpInheritance but it uses inheritance
+     * between multiple modules. As the namespace of the test-modules is \OxidEsales\EshopCommunity\Tests and
+     * extending edition namespaces is not allowed, we have to deactivate validation for these modules.
+     *
+     * @param array  $modulesToActivate The modules we want to activate.
+     * @param string $moduleClassName   The module class we want to instantiate.
+     * @param array $shopClassNames     The shop classes from which the module class should inherit.
+     */
+    public function moduleInheritanceByPhpInheritanceWithTestNamespaceModules($modulesToActivate, $moduleClassName, $shopClassNames)
+    {
+        $this->environment->doNotValidateModules($this);
+        $this->environment->prepare($modulesToActivate);
+        $this->assertClassInheritance($moduleClassName, $shopClassNames);
+    }
+
+    /**
+     * @param string $moduleClassName
+     * @param array $shopClassNames
+     */
+    protected function assertClassInheritance($moduleClassName, $shopClassNames)
+    {
         $model = oxNew($moduleClassName);
 
         foreach ($shopClassNames as $shopClassName) {
-            $this->assertTrue(is_subclass_of($model, $shopClassName), 'Expected, that object of type "' . get_class($model). '" is subclass of "' . $shopClassName . '"!');
+            $this->assertTrue(is_subclass_of($model, $shopClassName), 'Expected, that object of type "' . get_class($model) . '" is subclass of "' . $shopClassName . '"!');
         }
     }
 

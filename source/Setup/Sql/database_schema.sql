@@ -1502,7 +1502,7 @@ CREATE TABLE `oxstates` (
   `OXTITLE_2` char(128) NOT NULL default '',
   `OXTITLE_3` char(128) NOT NULL default '',
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
-  PRIMARY KEY  (`OXID`),
+  PRIMARY KEY  (`OXID`, `OXCOUNTRYID`),
   KEY(`OXCOUNTRYID`)
 ) ENGINE = InnoDB COMMENT 'US States list';
 

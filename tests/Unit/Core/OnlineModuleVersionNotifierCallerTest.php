@@ -21,6 +21,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
 use \oxOnlineModuleVersionNotifierCaller;
 use \oxSimpleXml;
 use \stdClass;
@@ -40,8 +41,8 @@ class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
 
         /** @var oxCurl $oCurl */
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder');
+        /** @var OnlineServerEmailBuilder $oEmailBuilder */
+        $oEmailBuilder = $this->getMock(OnlineServerEmailBuilder::class);
         $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
         $oNotifier->call($this->_getRequest());
 
@@ -59,8 +60,8 @@ class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
         $oCurl->expects($this->once())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $this->_getExpectedXml())));
         /** @var oxCurl $oCurl */
 
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder');
+        /** @var OnlineServerEmailBuilder $oEmailBuilder */
+        $oEmailBuilder = $this->getMock(OnlineServerEmailBuilder::class);
 
         $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
         $oNotifier->doRequest($this->_getRequest());

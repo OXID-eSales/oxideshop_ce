@@ -13,19 +13,21 @@
         "phpmailer/phpmailer": "^v5.2.22",
         "smarty/smarty": "^v2.6.30",
         "oxid-esales/flow-theme": "dev-master || ^2.2.0",
-        "oxid-esales/eshop-db-migration-wrapper": "^v1.0.0",
-        "oxid-esales/eshop-db-views-regenerator": "^v1.0.0",
+        "oxid-esales/oxideshop-doctrine-migration-wrapper": "^v2.0.0",
+        "oxid-esales/oxideshop-db-views-generator": "^v1.1.0",
+        "oxid-esales/eshop-edition-facts": "^v1.0.0",
         "doctrine/dbal": "v2.5.12",
-        "oxid-esales/eshop-demodata-installer": "^v1.0.0",
-        "oxid-esales/oxideshop-composer-plugin": "^v1.0.0"
+        "oxid-esales/oxideshop-demodata-installer": "^v1.1.0",
+        "oxid-esales/oxideshop-composer-plugin": "^v2.0.0"
     },
     "require-dev": {
         "oxid-esales/testing-library": "dev-master",
-        "oxid-esales/coding-standards": "^v3.0.1",
+        "oxid-esales/coding-standards": "^v3.0.2",
         "oxid-esales/coding-standards-wrapper": "dev-master",
         "incenteev/composer-parameter-handler": "~v2.0",
         "oxid-esales/oxideshop-ide-helper": "^2.0",
-        "oxid-esales/eshop-virtual-namespace-generator": "^2.0"
+        "oxid-esales/eshop-virtual-namespace-generator": "^2.0",
+        "oxid-esales/azure-theme": "dev-b-1.4"
     },
     "autoload": {
         "psr-4": {
@@ -51,11 +53,19 @@
         "oe:ide-helper:generate": [
             "if [ -f ./vendor/bin/oe-eshop-ide_helper ]; then oe-eshop-ide_helper; fi"
         ],
-        "oe:migration:run": "oe-eshop-facts oe-eshop-db_migrate",
-        "oe:migration:new": "oe-eshop-facts oe-eshop-db_generate_migration",
-        "oe:views:regenerate": "oe-eshop-facts oe-eshop-db_views_regenerate"
+        "oe:migration:run": "oe-eshop-doctrine_migration migrations:migrate",
+        "oe:migration:new": "oe-eshop-doctrine_migration migrations:generate",
+        "oe:views:regenerate": "oe-eshop-db_views_regenerate"
     },
     "extra": {
+        "oxideshop": {
+            "blacklist-filter": [
+                "Application/Component/**/*",
+                "Application/Controller/**/*",
+                "Application/Model/**/*",
+                "Core/**/*"
+            ]
+        },
         "incenteev-parameters": {
             "file": "test_config.yml",
             "dist-file": "vendor/oxid-esales/testing-library/test_config.yml.dist",

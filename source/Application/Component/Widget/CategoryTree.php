@@ -22,6 +22,7 @@
  */
 
 namespace  OxidEsales\EshopCommunity\Application\Component\Widget;
+
 use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Registry;
 

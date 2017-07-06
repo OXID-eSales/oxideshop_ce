@@ -340,7 +340,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     /**
      * Add extension to module
      *
-     * @param OxidEsales\Eshop\Core\Module\Module $module
+     * @param \OxidEsales\Eshop\Core\Module\Module $module
      */
     protected function _addExtensions(\OxidEsales\Eshop\Core\Module\Module $module)
     {
@@ -686,7 +686,15 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function validateMetadataExtendSection(\OxidEsales\Eshop\Core\Module\Module $module)
     {
-        $validator = oxNew(\OxidEsales\Eshop\Core\Module\ModuleMetadataValidator::class);
+        $validator = $this->getModuleMetadataValidator();
         $validator->checkModuleExtensionsForIncorrectNamespaceClasses($module);
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Core\Module\ModuleMetadataValidator
+     */
+    protected function getModuleMetadataValidator()
+    {
+        return oxNew(\OxidEsales\Eshop\Core\Module\ModuleMetadataValidator::class);
     }
 }

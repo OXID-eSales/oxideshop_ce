@@ -44,17 +44,6 @@ class NamespaceInformationProvider
     ];
 
     /**
-     * Array contains names of the official OXID eShop edition namespaces for tests.
-     *
-     * @var array
-     */
-    private static $shopEditionTestNamespaces = [
-        'CE' => 'OxidEsales\\EshopCommunity\\Tests\\',
-        'PE' => 'OxidEsales\\EshopProfessional\\Tests\\',
-        'EE' => 'OxidEsales\\EshopEnterprise\\Tests\\'
-    ];
-
-    /**
      * OXID eShop virtual namespace.
      *
      * @var string
@@ -69,16 +58,6 @@ class NamespaceInformationProvider
     public static function getShopEditionNamespaces()
     {
         return static::$shopEditionNamespaces;
-    }
-
-    /**
-     * Getter for array with official OXID eShop Edition test namespaces.
-     *
-     * @return array
-     */
-    public static function getShopEditionTestNamespaces()
-    {
-        return static::$shopEditionTestNamespaces;
     }
 
     /**
@@ -112,18 +91,6 @@ class NamespaceInformationProvider
     public static function classBelongsToShopEditionNamespace($className)
     {
         return static::classBelongsToNamespace($className, static::getShopEditionNamespaces());
-    }
-
-    /**
-     * Check if given class belongs to a shop edition test namespace.
-     *
-     * @param string $className
-     *
-     * @return bool
-     */
-    public static function classBelongsToShopEditionTestNamespace($className)
-    {
-        return static::classBelongsToNamespace($className, static::getShopEditionTestNamespaces());
     }
 
     /**

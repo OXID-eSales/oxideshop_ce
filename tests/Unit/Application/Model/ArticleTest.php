@@ -220,7 +220,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testForBugReport1782()
     {
-        $sIconUrl = $this->getConfig()->getConfigParam("sShopURL") . "out/pictures/generated/product/1/87_87_75/nopic.jpg";
+        $sIconUrl = $this->getConfig()->getConfigParam("sShopURL") . "out/pictures/generated/product/1/56_42_75/nopic.jpg";
         $this->assertEquals($sIconUrl, $this->_createArticle('_testArt')->getIconUrl());
     }
 
@@ -927,7 +927,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle = oxNew('oxArticle');
         $aGallery = $oArticle->getPictureGallery();
 
-        $sUrl = $this->getConfig()->getPictureUrl("") . 'generated/product/1/380_340_75/nopic.jpg';
+        $sUrl = $this->getConfig()->getPictureUrl("") . 'generated/product/1/250_200_75/nopic.jpg';
         $this->assertEquals($sUrl, $aGallery['ActPic']);
     }
 
@@ -3929,7 +3929,7 @@ class ArticleTest extends \OxidTestCase
 
         $aPicGallery = $oArticle->getPictureGallery();
 
-        $sActPic = $sRawPath . 'generated/product/1/380_340_75/' . preg_replace('#^1/#', '', $oArticle->oxarticles__oxpic1->value);
+        $sActPic = $sRawPath . 'generated/product/1/250_200_75/' . preg_replace('#^1/#', '', $oArticle->oxarticles__oxpic1->value);
         $this->assertEquals($sActPic, $aPicGallery['ActPic']);
         $aPicGallery = $oArticle->getPictureGallery();
 
@@ -5739,7 +5739,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle->oxarticles__oxpic1 = new oxField("cabrinha_caliber_2011.jpg");
 
         $sUrl = $this->getConfig()->getOutUrl() . basename($this->getConfig()->getPicturePath(""));
-        $sUrl .= "/generated/product/1/380_340_75/cabrinha_caliber_2011.jpg";
+        $sUrl .= "/generated/product/1/250_200_75/cabrinha_caliber_2011.jpg";
 
         $this->assertEquals($sUrl, $oArticle->getPictureUrl(1));
     }
@@ -5778,7 +5778,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle->expects($this->never())->method('_getIconName');
 
         $sUrl = $this->getConfig()->getOutUrl() . basename($this->getConfig()->getPicturePath(""));
-        $sUrl .= "/generated/product/1/87_87_75/30-360-back_p1_z_f_th_665.jpg";
+        $sUrl .= "/generated/product/1/56_42_75/30-360-back_p1_z_f_th_665.jpg";
 
         $this->assertEquals($sUrl, $oArticle->getIconUrl(1));
     }
@@ -5796,7 +5796,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle->expects($this->any())->method('_assignPictureValues')->will($this->returnValue(null));
 
         $sUrl = $this->getConfig()->getOutUrl() . basename($this->getConfig()->getPicturePath(""));
-        $sUrl .= "/generated/product/thumb/185_150_75/detail1_z3_ico_th.jpg";
+        $sUrl .= "/generated/product/thumb/100_100_75/detail1_z3_ico_th.jpg";
 
         $this->assertEquals($sUrl, $oArticle->getThumbnailUrl());
     }
@@ -5814,7 +5814,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle->expects($this->any())->method('_isFieldEmpty')->will($this->returnValue(false));
 
         $sUrl = $this->getConfig()->getOutUrl() . basename($this->getConfig()->getPicturePath(""));
-        $sUrl .= "/generated/product/1/665_665_75/30-360-back_p1_z_f_th_665.jpg";
+        $sUrl .= "/generated/product/1/450_450_75/30-360-back_p1_z_f_th_665.jpg";
 
         $this->assertEquals($sUrl, $oArticle->getZoomPictureUrl(1));
     }

@@ -22,6 +22,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxubase;
@@ -87,6 +88,10 @@ class ConfigTest extends \OxidTestCase
 
         // copying
         $this->_iCurr = $this->getSession()->getVariable('currency');
+
+        $theme = oxNew(Theme::class);
+        $theme->load('azure');
+        $theme->activate();
     }
 
     /**
@@ -2209,6 +2214,7 @@ class ConfigTest extends \OxidTestCase
     {
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
+        $oConfig->setConfigParam('sTheme', 'azure');
 
         $sMainURL = $oConfig->getConfigParam('sShopURL');
         $sMallURL = 'http://www.example.com/';

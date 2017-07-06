@@ -177,13 +177,17 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return mixed
      */
-    public function changebasket(
+    public function changeBasket(
         $sProductId = null,
         $dAmount = null,
         $aSel = null,
         $aPersParam = null,
         $blOverride = true
     ) {
+        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         // adding to basket is not allowed ?
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
             return;

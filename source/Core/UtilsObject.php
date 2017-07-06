@@ -249,7 +249,7 @@ class UtilsObject
         }
 
         $object = new $realClassName(...$arguments);
-        if ($shouldUseCache && $object instanceof \OxidEsales\Eshop\Core\Model\BaseModel) {
+        if (isset($cacheKey) && $shouldUseCache && $object instanceof \OxidEsales\Eshop\Core\Model\BaseModel) {
             static::$_aInstanceCache[$cacheKey] = clone $object;
         }
 

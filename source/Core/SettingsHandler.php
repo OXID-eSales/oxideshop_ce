@@ -100,13 +100,16 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
                 $group = $setting["group"];
 
                 $constraints = "";
-                if ($setting["constraints"]) {
+                if (isset($setting["constraints"]) && $setting["constraints"]) {
                     $constraints = $setting["constraints"];
-                } elseif ($setting["constrains"]) {
+                } elseif (isset($setting["constrains"]) && $setting["constrains"]) {
                     $constraints = $setting["constrains"];
                 }
 
-                $position = $setting["position"] ? $setting["position"] : 1;
+                $position = 1;
+                if (isset($setting["position"])) {
+                    $position = $setting["position"];
+                }
 
                 $config->saveShopConfVar($type, $name, $value, $shopId, $module);
 

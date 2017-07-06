@@ -30,43 +30,70 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 
 class BasketComponentTest extends UnitTestCase
 {
-    public function testChecksSessionChallengeWhileChangingBasket()
+    public function testChangingBasketWhenSessionChallengeValidationNotPassed()
     {
-        $this->setUtilitiesStubForSearchEngineAndCheckIfItIsCalled(false);
-        $this->setSessionMockForSessionChallenge(false);
+        $this->actAsSearchEngine(false);
+        $this->sessionTokenIsCorrect(false);
+        $this->initiateBasketChange();
 
-        /** @var \OxidEsales\Eshop\Application\Component\BasketComponent $basketComponent */
-        $basketComponent = oxNew(BasketComponent::class);
-        $basketComponent->changeBasket();
+        $this->assertFalse($this->isBasketChanged());
     }
 
-    public function testCheckWithSearchEngineWhileChangingBasket()
+    public function testChangingBasketWhenSessionChallengeValidationPassed()
     {
-        $this->setUtilitiesStubForSearchEngineAndCheckIfItIsCalled(true);
-        $this->setSessionMockForSessionChallenge(true);
+        $this->actAsSearchEngine(false);
+        $this->sessionTokenIsCorrect(true);
+        $this->initiateBasketChange();
 
-        /** @var \OxidEsales\Eshop\Application\Component\BasketComponent $basketComponent */
-        $basketComponent = oxNew(BasketComponent::class);
-        $basketComponent->changeBasket();
+        $this->assertTrue($this->isBasketChanged());
     }
 
-    private function setUtilitiesStubForSearchEngineAndCheckIfItIsCalled($isSearchEngineMethodShouldBeCalled)
+    public function testChangingBasketWhenIsSearchEngine()
+    {
+        $this->actAsSearchEngine(true);
+        $this->sessionTokenIsCorrect(true);
+        $this->initiateBasketChange();
+
+        $this->assertFalse($this->isBasketChanged());
+    }
+
+    public function testChangingBasketWhenIsNotSearchEngine()
+    {
+        $this->actAsSearchEngine(false);
+        $this->sessionTokenIsCorrect(true);
+        $this->initiateBasketChange();
+
+        $this->assertTrue($this->isBasketChanged());
+    }
+
+    private function actAsSearchEngine($isSearchEngine)
     {
         $utilities = $this->getMockBuilder(Utils::class)
             ->setMethods(['isSearchEngine'])->getMock();
-        if ($isSearchEngineMethodShouldBeCalled) {
-            $utilities->expects($this->atLeastOnce())->method('isSearchEngine');
-        } else {
-            $utilities->expects($this->never())->method('isSearchEngine');
-        }
+        $utilities->method('isSearchEngine')->willReturn($isSearchEngine);
         Registry::set(Utils::class, $utilities);
     }
 
-    private function setSessionMockForSessionChallenge($sessionChallengeValidationResult)
+    private function sessionTokenIsCorrect($isCorrect)
     {
         $session = $this->getMockBuilder(Session::class)
             ->setMethods(['checkSessionChallenge'])->getMock();
-        $session->method('checkSessionChallenge')->willReturn($sessionChallengeValidationResult);
+        $session->method('checkSessionChallenge')->willReturn($isCorrect);
         Registry::set(Session::class, $session);
+    }
+
+    private function initiateBasketChange()
+    {
+        /** @var \OxidEsales\Eshop\Application\Component\BasketComponent $basketComponent */
+        $basketComponent = oxNew(BasketComponent::class);
+        $basketComponent->changeBasket(1000, 2);
+    }
+
+    /**
+     * @return bool
+     */
+    private function isBasketChanged()
+    {
+        return isset($_SESSION['aLastcall']['changebasket'][1000]);
     }
 }

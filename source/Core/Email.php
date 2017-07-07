@@ -517,7 +517,7 @@ class Email extends \PHPMailer
                 : $this->smtpPort;
             if (getStr()->preg_match('@^(.*?)(:([0-9]+))?$@i', $smtpHost, $match)) {
                 $smtpHost = $match[1];
-                if ((int) $match[3] !== 0) {
+                if (isset($match[3]) && (int) $match[3] !== 0) {
                     $smtpPort = (int) $match[3];
                 }
             }

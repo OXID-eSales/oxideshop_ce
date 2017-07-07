@@ -3447,6 +3447,11 @@ class SearchAndSortingAdminTest extends AdminTestCase
         if ($testConfig->getShopEdition() === 'EE' && $testConfig->isSubShop()) {
             #User demodata for subshop
             $aUserParams = array("oxshopid" => $testConfig->getShopId());
+
+            // First need to update USER dependency to newsletter.
+            // It is impossible to change User Shop ID without changing Shop ID for newsletter subscription.
+            oxDb::getDb(oxDb::FETCH_MODE_NUM)->execute("UPDATE oxnewssubscribed SET oxshopid = '{$testConfig->getShopId()}'");
+
             $aUsers = oxDb::getDb(oxDb::FETCH_MODE_NUM)->getAll('SELECT OXID FROM oxuser');
             foreach ($aUsers as $aUser) {
                 $this->callShopSC("oxUser", "save", $aUser[0], $aUserParams);

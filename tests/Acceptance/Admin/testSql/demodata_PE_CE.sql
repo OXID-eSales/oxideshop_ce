@@ -171,7 +171,25 @@ REPLACE INTO `oxnewssubscribed` (`OXID`,                       `OXSHOPID`,   `OX
                                ('aad47a859fa2fd5d2.73169490', 1, 'testuser',  'Mr',    'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:43:38'),
                                ('aad47a85b24b7fbc4.83843468', 1, 'testusera', 'Mrs',   'UserAName', 'UserASurname', 'example0a@oxid-esales.dev',    0,          '2008-02-05 14:48:36'),
                                ('aad47a862e176ec58.80688736', 1, 'testuserb', 'Mr',    'UserBName', 'UserBSurname', 'example0b@oxid-esales.dev',    0,          '2008-02-05 15:21:37'),
-                               ('aad47a86412506061.78359483', 1, 'testuserc', 'Mrs',   'UserCName', 'UserCSurname', 'example0c@oxid-esales.dev',    0,          '2008-02-05 15:26:42');
+                               ('aad47a86412506061.78359483', 1, 'testuserc', 'Mrs',   'UserCName', 'UserCSurname', 'example0c@oxid-esales.dev',    0,          '2008-02-05 15:26:42'),
+                               ('15947a85ab4658ce7.11111111', 1, 'testuser1',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+                               ('15947a85ab4658ce7.22222222', 1, 'testuser2',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.33333333', 1, 'testuser3',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.44444444', 1, 'testuser3',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.55555555', 1, 'testuser5',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.66666666', 1, 'testuser6',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.77777777', 1, 'testuser7',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.88888888', 1, 'testuser8',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.99999999', 1, 'testuser9',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.11111110', 1, 'testuser10', 'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44');
 
 #Users demodata
 REPLACE INTO `oxuser` (`OXID`,     `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`,   `OXUSERNAME`,         `OXPASSWORD`,                       `OXPASSSALT`,        `OXCUSTNR`, `OXUSTID`, `OXCOMPANY`,          `OXFNAME`,        `OXLNAME`,           `OXSTREET`,        `OXSTREETNR`, `OXADDINFO`,                   `OXCITY`,            `OXCOUNTRYID`,                `OXZIP`, `OXFON`,        `OXFAX`,       `OXSAL`, `OXBONI`, `OXCREATE`,            `OXREGISTER`,          `OXPRIVFON`,   `OXMOBFON`,    `OXBIRTHDATE`) VALUES

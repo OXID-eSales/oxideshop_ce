@@ -69,13 +69,18 @@ class ModuleExtensionsCleaner
     protected function filterExtensionsByModuleId($modules, $moduleId)
     {
         $modulePaths = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModulePaths');
-        $path = $modulePaths[$moduleId];
+
+        $path = '';
+        if (isset($modulePaths[$moduleId])) {
+            $path = $modulePaths[$moduleId];
+        }
+
         // TODO: This condition should be removed. Need to check integration tests.
         if (!$path) {
             $path = $moduleId . "/";
         }
 
-        $filteredModules = array();
+        $filteredModules = [];
         foreach ($modules as $class => $extend) {
             foreach ($extend as $extendPath) {
                 if (strpos($extendPath, $path) === 0) {

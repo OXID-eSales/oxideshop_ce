@@ -224,7 +224,7 @@ function writeToLog($message)
     $time = microtime(true);
     $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
     $date = new \DateTime(date('Y-m-d H:i:s.' . $micro, $time));
-    $timestamp = $date->format('D M H:i:s.u Y');
+    $timestamp = $date->format('d M H:i:s.u Y');
 
     $message = "[$timestamp] " . $message . PHP_EOL;
 

@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - In case there is a need to use azure theme, install it via command: `composer require oxid-esales/azure-theme:^1.4.1`.
 
 ### Fixed
+- Date formatting in EXCEPTION_LOG.txt: textual representation of the day was replaced by numerical representation (01 to 31)
 - iUtfMode in config.inc.php: backwards compatibility restored. This setting was removed, but it is introduced again, as some modules still might use it.
 - BaseModel::_update(): backwards compatibility restored. Returns always true on success or throws an exception. 
 - Removed duplicate directory separators in vendor directory calculation methods, [Pull Request 557](https://github.com/OXID-eSales/oxideshop_ce/pull/557)

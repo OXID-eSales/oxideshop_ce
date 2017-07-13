@@ -81,7 +81,7 @@ class PersonalisableArticlesBasketAmountTest extends \OxidTestCase
 
         $basket = oxRegistry::getSession()->getBasket();
 
-        $this->assertSame(7, (int) $basket->getBasketSummary()->iArticleCount);
+        $this->assertSame(7, $this->getAmountInBasket());
         $this->assertSame(4, count($basket->getBasketArticles()));
     }
 
@@ -106,7 +106,7 @@ class PersonalisableArticlesBasketAmountTest extends \OxidTestCase
 
         $basket = oxRegistry::getSession()->getBasket();
 
-        $this->assertSame(4, (int) $basket->getBasketSummary()->iArticleCount);
+        $this->assertSame(4, $this->getAmountInBasket());
         $this->assertSame(1, count($basket->getBasketArticles()));
     }
 
@@ -131,7 +131,7 @@ class PersonalisableArticlesBasketAmountTest extends \OxidTestCase
 
         $basket = oxRegistry::getSession()->getBasket();
 
-        $this->assertSame(4, (int) $basket->getBasketSummary()->iArticleCount);
+        $this->assertSame(4, $this->getAmountInBasket());
         $this->assertSame(1, count($basket->getBasketArticles()));
     }
 
@@ -156,7 +156,7 @@ class PersonalisableArticlesBasketAmountTest extends \OxidTestCase
 
         $basket = oxRegistry::getSession()->getBasket();
 
-        $this->assertSame(4, (int) $basket->getBasketSummary()->iArticleCount);
+        $this->assertSame(4, $this->getAmountInBasket());
         $this->assertSame(1, count($basket->getBasketArticles()));
     }
 
@@ -303,8 +303,30 @@ class PersonalisableArticlesBasketAmountTest extends \OxidTestCase
         return $values[0];
     }
 
+    /**
+     * Test helper.
+     */
     private function prepareSessionChallengeToken()
     {
         $this->setRequestParameter('stoken', \OxidEsales\Eshop\Core\Registry::getSession()->getSessionChallengeToken());
+    }
+
+    /**
+     * NOTE: Do not use Basket::getBasketSummary() as this method adds up on every call.
+     *
+     * Test helper to get amount of test artile in basket.
+     *
+     * @return integer
+     */
+    private function getAmountInBasket()
+    {
+        $return = 0;
+        $basket = \OxidEsales\Eshop\Core\Registry::getSession()->getBasket();
+        $basketContents = $basket->getContents();
+
+        foreach ($basketContents as $basketItem) {
+            $return += $basketItem->getAmount();
+        }
+        return (int) $return;
     }
 }

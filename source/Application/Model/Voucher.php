@@ -470,7 +470,10 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oVoucher = new stdClass();
         $oVoucher->sVoucherId = $this->getId();
-        $oVoucher->sVoucherNr = $this->oxvouchers__oxvouchernr->value;
+        $oVoucher->sVoucherNr = null;
+        if ($this->oxvouchers__oxvouchernr) {
+            $oVoucher->sVoucherNr = $this->oxvouchers__oxvouchernr->value;
+        }
 
         // R. set in oxBasket : $oVoucher->fVoucherdiscount = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency( $this->oxvouchers__oxdiscount->value );
 

@@ -700,9 +700,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     /**
      * Builds and returns SQL query string.
      *
-     * @param mixed $whereCondition SQL select WHERE conditions array (default false)
+     * @param null|array $whereCondition SQL select WHERE conditions array (default false)
      *
-     * @return array
+     * @return string
      */
     public function buildSelectString($whereCondition = null)
     {

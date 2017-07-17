@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
+- ddoe/wysiwyg-editor-module was added as requirement of OXID eShop Community Edition in composer.json
 - Grace period reset email is sent on grace period reset.
 
 ### Changed

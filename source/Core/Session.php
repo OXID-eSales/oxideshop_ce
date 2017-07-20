@@ -25,6 +25,10 @@ namespace OxidEsales\EshopCommunity\Core;
 use oxRegistry;
 use oxBasket;
 
+use \OxidEsales\Eshop\Application\Model\Basket;
+use \OxidEsales\Eshop\Application\Model\BasketItem;
+use \OxidEsales\Eshop\Application\Model\User;
+
 /**
  * Session manager.
  * Performs session managing function, such as variables deletion,
@@ -532,26 +536,95 @@ class Session extends \OxidEsales\Eshop\Core\Base
     public function getBasket()
     {
         if ($this->_oBasket === null) {
-            $sBasket = $this->getVariable($this->_getBasketName());
+            $serializedBasket = $this->getVariable($this->_getBasketName());
 
             //init oxbasketitem class first
             //#1746
-            oxNew(\OxidEsales\Eshop\Application\Model\BasketItem::class);
+            oxNew(BasketItem::class);
 
             // init oxbasket through oxNew and not oxAutoload, Mantis-Bug #0004262
-            $oEmptyBasket = oxNew(\OxidEsales\Eshop\Application\Model\Basket::class);
+            $emptyBasket = oxNew(Basket::class);
 
-            $oBasket = ($sBasket && ($oBasket = unserialize($sBasket))) ? $oBasket : null;
+            $basket =
+                $this->isSerializedBasketValid($serializedBasket) &&
+                ($unserializedBasket = unserialize($serializedBasket)) &&
+                $this->isUnserializedBasketValid($unserializedBasket, $emptyBasket) ?
+                    $unserializedBasket : $emptyBasket;
 
-            if (!$oBasket || (get_class($oBasket) !== get_class($oEmptyBasket))) {
-                $oBasket = $oEmptyBasket;
-            }
-
-            $this->_validateBasket($oBasket);
-            $this->setBasket($oBasket);
+            $this->_validateBasket($basket);
+            $this->setBasket($basket);
         }
 
         return $this->_oBasket;
+    }
+
+    /**
+     * True if given serialized object is constructed with compatible classes.
+     *
+     * @param string $serializedBasket
+     * @return bool
+     */
+    private function isSerializedBasketValid($serializedBasket)
+    {
+        $basketClass = get_class(oxNew(Basket::class));
+        $basketItemClass = get_class(oxNew(BasketItem::class));
+        $priceClass = get_class(oxNew(\OxidEsales\Eshop\Core\Price::class));
+        $priceListClass = get_class(oxNew(\OxidEsales\Eshop\Core\PriceList::class));
+        $userClass = get_class(oxNew(User::class));
+
+        return $serializedBasket &&
+            $this->isClassInSerializedObject($serializedBasket, $basketClass) &&
+            $this->isClassInSerializedObject($serializedBasket, $basketItemClass) &&
+            $this->isClassOrNullInSerializedObjectAfterField($serializedBasket, "oPrice", $priceClass) &&
+            $this->isClassOrNullInSerializedObjectAfterField($serializedBasket, "oProductsPriceList", $priceListClass) &&
+            $this->isClassOrNullInSerializedObjectAfterField($serializedBasket, "oUser", $userClass);
+    }
+
+    /**
+     * True if given class is found within serialized object.
+     *
+     * @param string $serializedObject
+     * @param string $className
+     *
+     * @return bool
+     */
+    private function isClassInSerializedObject($serializedObject, $className)
+    {
+        $quotedClassName = sprintf('"%s"', $className);
+
+        return strpos($serializedObject, $quotedClassName) !== false;
+    }
+
+    /**
+     * True if given class or null value is found after given field in serialized object.
+     *
+     * @param string $serializedObject
+     * @param string $fieldName
+     * @param string $className
+     *
+     * @return bool
+     */
+    private function isClassOrNullInSerializedObjectAfterField($serializedObject, $fieldName, $className)
+    {
+        $fieldAndClassPattern = '/'. preg_quote($fieldName, '/') . '";((?P<null>N);|O:\d+:"(?P<class>[\w\\\\]+)":)/';
+        $matchFound = preg_match($fieldAndClassPattern, $serializedObject, $matches) === 1;
+
+        return $matchFound && ($matches['class'] === $className || $matches['null'] === 'N');
+    }
+
+    /**
+     * True if both basket objects have been constructed from same class.
+     *
+     * Shop cannot function properly if provided with different basket class.
+     *
+     * @param \OxidEsales\Eshop\Application\Model\Basket $basket
+     * @param \OxidEsales\Eshop\Application\Model\Basket $emptyBasket
+     *
+     * @return bool
+     */
+    private function isUnserializedBasketValid($basket, $emptyBasket)
+    {
+        return $basket && (get_class($basket) === get_class($emptyBasket));
     }
 
     /**

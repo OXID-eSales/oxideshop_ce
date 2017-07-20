@@ -38,16 +38,6 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
     private $testUserId = null;
 
     /**
-     * Store original shop configuration values.
-     * @var mixed
-     */
-    private $originalAllowNegativeStock = null;
-    private $originalUseStock = null;
-    private $originalReservationTimeout = null;
-    private $originalReservationEnabled = null;
-    private $originalSessionChallenge = null;
-
-    /**
      * Fixture setUp.
      */
     protected function setUp()
@@ -56,19 +46,13 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
 
         $this->insertArticle();
         $this->insertUser();
-
-        $this->originalSessionChallenge = oxRegistry::getSession()->getVariable('sess_challenge');
-
-        //prepare config for private sales basket reservation
-        $this->originalAllowNegativeStock = $this->getConfig()->getConfigParam('blAllowNegativeStock');
-        $this->originalUseStock = $this->getConfig()->getConfigParam('blUseStock');
-        $this->originalReservationTimeout = $this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
-        $this->originalReservationEnabled = $this->getConfig()->getConfigParam('blPsBasketReservationEnabled');
-
         $this->getConfig()->setConfigParam('blAllowNegativeStock', false);
         $this->getConfig()->setConfigParam('blUseStock', true);
         $this->getConfig()->setConfigParam('iPsBasketReservationTimeout', 1200);
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
+        $this->getConfig()->setConfigParam('iNewBasketItemMessage', 0);
+
+        $_POST = array();
     }
 
     /*
@@ -76,11 +60,7 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
     */
     protected function tearDown()
     {
-        //restore config
-        $this->getConfig()->setConfigParam('blAllowNegativeStock', $this->originalAllowNegativeStock);
-        $this->getConfig()->setConfigParam('blUseStock', $this->originalUseStock);
-        $this->getConfig()->setConfigParam('iPsBasketReservationTimeout', $this->originalReservationTimeout);
-        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', $this->originalReservationEnabled);
+        $_POST = array();
 
         $this->cleanUpTable('oxarticles');
         $this->cleanUpTable('oxorder');
@@ -90,10 +70,6 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
         $this->cleanUpTable('oxuserbaskets');
         $this->cleanUpTable('oxuserbasketitems');
         $this->cleanUpTable('oxobject2delivery');
-
-        oxRegistry::getSession()->delBasket();
-        oxRegistry::getSession()->deleteVariable('_newitem');
-        oxRegistry::getSession()->setVariable('sess_challenge', $this->originalSessionChallenge);
 
         parent::tearDown();
     }
@@ -106,21 +82,16 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
         $stock = 60;
         $buyAmount = 20;
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
+        $this->getConfig()->setConfigParam('iNewBasketItemMessage', 1);
 
         $this->setStock($stock);
-        $this->assertEquals($stock, $this->getStock());
-
         $basket = $this->fillBasket($buyAmount);
-
-        //only one different article but 20 items in basket
-        $this->assertEquals(1, $basket->getProductsCount());
-        $this->assertEquals($buyAmount, $basket->getItemsCount());
+        $this->assertNewItemMarker($buyAmount);
+        $this->checkContents($basket, $buyAmount);
 
         //without basket reservation there is no stock change when articles are
         //but into basket
         $this->assertEquals($stock, $this->getStock());
-
-        $this->checkContents($basket, $buyAmount);
 
         //NOTE: take care when calling getBasketSummary,
         // oxBasket::_blUpdateNeeded is set to false when afterUpdate is called.
@@ -133,7 +104,6 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
         $basket->onUpdate(); //starts adding up after next call to oxBasket::calculateBasket
         $this->assertEquals(20, $basket->getBasketSummary()->aArticles[$this->testArticleId]);
         $this->assertEquals(20, $basket->getBasketSummary()->aArticles[$this->testArticleId]);
-
     }
 
     /**
@@ -149,9 +119,7 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
 
         //not orderable if out of stock
         $this->setStockFlag(3);
-
         $this->setStock($stock);
-        $this->assertEquals($stock, $this->getStock());
 
         $basket = oxRegistry::getSession()->getBasket();
         $this->assertEquals(0, $basket->getBasketSummary()->iArticleCount);
@@ -178,12 +146,11 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
         $buyAmount = 20;
 
         $this->setStock($stock);
-        $this->assertEquals($stock, $this->getStock());
-
         $basket = $this->fillBasket($buyAmount);
+        $this->checkContents($basket, $buyAmount);
 
         //article stock is reduced in database due to reservation
-        $this->assertEquals($stock-$buyAmount, $this->getStock());
+        $this->assertEquals($stock - $buyAmount, $this->getStock());
 
         $this->checkContents($basket, $buyAmount);
     }
@@ -195,13 +162,14 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
      */
     public function testPlaceOrderWithBasketTimeout()
     {
+        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
+
         $stock     = 60;
         $buyAmount = 20;
 
         $this->setStock($stock);
-        $this->assertEquals($stock, $this->getStock());
-
         $basket = $this->fillBasket($buyAmount);
+        $this->checkContents($basket, $buyAmount);
         $basket->setPayment('oxidinvoice');
 
         // stock reduced in db caused by reservation
@@ -248,7 +216,6 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
         $orderBasket->calculateBasket(true);
 
         $this->assertEquals($stock-$buyAmount, $this->getStock());
-
     }
 
     /**
@@ -317,6 +284,8 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
         $article->load($this->testArticleId);
         $article->oxarticles__oxstock = new oxField($stock, oxField::T_RAW);
         $article->save();
+
+        $this->assertEquals($stock, $this->getStock());
     }
 
     /**
@@ -331,10 +300,29 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
     }
 
     /**
+     * Check if 'new item marker' has been set in basket.
+     *
+     * @param integer $buyAmount Expected amount of products put to basket
+     */
+    private function assertNewItemMarker($buyAmount)
+    {
+        //newItem is an stdClass
+        $newItem = oxRegistry::getSession()->getVariable('_newitem');
+        $this->assertEquals($this->testArticleId, $newItem->sId);
+        $this->assertEquals($buyAmount, $newItem->dAmount);
+    }
+
+    /**
+     * Tets helper to chekc basket contents.
+     *
      * @param oxBasket $basket
      */
     private function checkContents(oxBasket $basket, $expectedAmount)
     {
+        //only one different article but buyAmount items in basket
+        $this->assertEquals(1, $basket->getProductsCount());
+        $this->assertEquals($expectedAmount, $basket->getItemsCount());
+
         $basketArticles = $basket->getBasketArticles();
         $keys = array_keys($basketArticles);
         $this->assertTrue(is_array($basketArticles));
@@ -405,7 +393,7 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
     private function fillBasket($buyAmount)
     {
         $basket = oxRegistry::getSession()->getBasket();
-        $this->assertEquals(0, $basket->getBasketSummary()->iArticleCount);
+        $this->assertEquals(0, $this->getAmountInBasket());
 
         $this->setSessionParam('basketReservationToken', null);
         $this->assertNull(oxRegistry::getSession()->getVariable('_newitem'));
@@ -415,14 +403,31 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
         $redirectUrl = $basketComponent->tobasket($this->testArticleId, $buyAmount);
         $this->assertEquals('start?', $redirectUrl);
 
-        //newItem is an stdClass
-        $newItem = oxRegistry::getSession()->getVariable('_newitem');
-        $this->assertEquals($this->testArticleId, $newItem->sId);
-        $this->assertEquals($buyAmount, $newItem->dAmount);
-
         $basket = $this->getSession()->getBasket();
         $basket->calculateBasket(true); //calls oxBasket::afterUpdate
 
         return $basket;
     }
+
+
+    /**
+     * NOTE: Do not use Basket::getBasketSummary() as this method adds up on every call.
+     *
+     * Test helper to get amount of test artile in basket.
+     *
+     * @return integer
+     */
+    private function getAmountInBasket()
+    {
+        $return = 0;
+        $basket = oxRegistry::getSession()->getBasket();
+        $basketContents = $basket->getContents();
+        $basketItemId = $basket->getItemKey($this->testArticleId);
+
+        if (is_a($basketContents[$basketItemId],'oxBasketItem')) {
+            $return = $basketContents[$basketItemId]->getAmount();
+        }
+        return $return;
+    }
+
 }

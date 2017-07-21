@@ -147,7 +147,22 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         // adding articles
         if ($aProducts = $this->_getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
             $this->_setLastCallFnc('tobasket');
-            $oBasketItem = $this->_addItems($aProducts);
+
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $database->startTransaction();
+            try {
+                $oBasketItem = $this->_addItems($aProducts);
+                //reserve active basket
+                if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+                    $basket = \OxidEsales\Eshop\Core\Registry::getSession()->getBasket();
+                    \OxidEsales\Eshop\Core\Registry::getSession()->getBasketReservations()->reserveBasket($basket);
+                }
+            } catch (\Exception $exception) {
+                $database->rollbackTransaction();
+                unset($oBasketItem);
+                throw $exception;
+            }
+            $database->commitTransaction();
 
             // new basket item marker
             if ($oBasketItem && $myConfig->getConfigParam('iNewBasketItemMessage') != 0) {
@@ -219,9 +234,22 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             // information that last call was changebasket
             $oBasket = $this->getSession()->getBasket();
             $oBasket->onUpdate();
-
             $this->_setLastCallFnc('changebasket');
-            $oBasketItem = $this->_addItems($aProducts);
+
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $database->startTransaction();
+            try {
+                $oBasketItem = $this->_addItems($aProducts);
+                // reserve active basket
+                if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+                    \OxidEsales\Eshop\Core\Registry::getSession()->getBasketReservations()->reserveBasket($oBasket);
+                }
+            } catch (\Exception $exception) {
+                $database->rollbackTransaction();
+                unset($oBasketItem);
+                throw $exception;
+            }
+            $database->commitTransaction();
         }
     }
 

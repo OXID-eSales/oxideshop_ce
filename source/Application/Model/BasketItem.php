@@ -395,7 +395,11 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         // checking for stock
         if ($this->getStockCheckStatus() == true) {
             $dArtStockAmount = $this->getSession()->getBasket()->getArtStockInBasket($oArticle->getId(), $sItemKey);
-            $iOnStock = $oArticle->checkForStock($this->_dAmount, $dArtStockAmount);
+            $selectForUpdate = false;
+            if ($this->getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+                $selectForUpdate = true;
+            }
+            $iOnStock = $oArticle->checkForStock($this->_dAmount, $dArtStockAmount, $selectForUpdate);
             if ($iOnStock !== true) {
                 if ($iOnStock === false) {
                     // no stock !

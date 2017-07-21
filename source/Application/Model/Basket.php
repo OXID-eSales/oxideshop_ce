@@ -1419,11 +1419,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         //  3. generate bundle items
         $this->_addBundles();
 
-        // reserve active basket
-        if ($this->getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
-            $this->getSession()->getBasketReservations()->reserveBasket($this);
-        }
-
         //  4. calculating item prices
         $this->_calcItemsPrice();
 

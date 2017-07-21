@@ -21,78 +21,81 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
-use oxServerChecker;
-use oxServerProcessor;
-use oxServersManager;
 use oxUtilsDate;
 use oxUtilsServer;
 
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
  *
- * @covers oxServerProcessor
+ * @covers \OxidEsales\Eshop\Core\Service\ApplicationServerService
  * @covers oxApplicationServer
- * @covers oxServerChecker
- * @covers oxServersManager
  */
-class FrontendServersInformationStoringTest extends \OxidTestCase
+class FrontendServersInformationStoringTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-
     /** @var string server id. */
-    private $_sServerId = '7da43ed884a1zd1d6035d4c1d630fc4e';
+    private $serverId = '7da43ed884a1zd1d6035d4c1d630fc4e';
 
     /**
      * @return array
      */
     public function providerFrontendServerFirstAccess()
     {
-        $sServerId = $this->_sServerId;
-        $sServerIp = '192.168.0.5';
-        $sCurrentTime = time();
-        $aExpectedFrontendServersData = array(
-            'id'                => $sServerId,
-            'timestamp'         => $sCurrentTime,
-            'ip'                => $sServerIp,
-            'lastFrontendUsage' => $sCurrentTime,
+        $serverId = $this->serverId;
+        $serverIp = '192.168.0.5';
+        $currentTime = time();
+        $expectedFrontendServersData = array(
+            'id'                => $serverId,
+            'timestamp'         => $currentTime,
+            'ip'                => $serverIp,
+            'lastFrontendUsage' => $currentTime,
             'lastAdminUsage'    => '',
-            'isValid'           => true,
+            'isValid'           => null,
         );
-        $aExpectedAdminServersData = array(
-            'id'                => $sServerId,
-            'timestamp'         => $sCurrentTime,
-            'ip'                => $sServerIp,
+        $expectedAdminServersData = array(
+            'id'                => $serverId,
+            'timestamp'         => $currentTime,
+            'ip'                => $serverIp,
             'lastFrontendUsage' => '',
-            'lastAdminUsage'    => $sCurrentTime,
-            'isValid'           => true,
+            'lastAdminUsage'    => $currentTime,
+            'isValid'           => null,
         );
 
         return array(
-            array(false, $aExpectedFrontendServersData),
-            array(true, $aExpectedAdminServersData),
+            array(false, $expectedFrontendServersData),
+            array(true, $expectedAdminServersData),
         );
     }
 
     /**
-     * @param bool  $blIsAdmin
-     * @param array $aExpectedServersData
+     * @param bool  $isAdmin
+     * @param array $expectedServersData
      *
      * @dataProvider providerFrontendServerFirstAccess
      */
-    public function testFrontendServerFirstAccess($blIsAdmin, $aExpectedServersData)
+    public function testFrontendServerFirstAccess($isAdmin, $expectedServersData)
     {
-        $sServerId = $this->_sServerId;
-        $sServerIp = $aExpectedServersData['ip'];
-        $this->setAdminMode($blIsAdmin);
-        $oUtilsDate = $this->_createDateMock($aExpectedServersData);
-        $oUtilsServer = $this->_createServerMock($sServerId, $sServerIp);
+        $serverId = $this->serverId;
+        $serverIp = $expectedServersData['ip'];
+        $utilsDate = $this->_createDateMock($expectedServersData);
+        $utilsServer = $this->_createServerMock($serverId, $serverIp);
 
-        $this->getConfig()->saveSystemConfigParameter('arr', 'aServersData_'.$sServerId, null);
+        $this->getConfig()->saveSystemConfigParameter('arr', 'aServersData_'.$serverId, null);
 
-        $oServerProcessor = new oxServerProcessor(new oxServersManager(), new oxServerChecker(), $oUtilsServer, $oUtilsDate);
-        $oServerProcessor->process();
-        $aServersData = $this->getConfig()->getSystemConfigParameter('aServersData_'.$sServerId);
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
+        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
 
-        $this->assertEquals($aExpectedServersData, $aServersData);
+        /** @var \OxidEsales\Eshop\Core\Service\ApplicationServerService $oApplicationServerService */
+        $oApplicationServerService = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
+            $appServerDao,
+            $utilsServer,
+            $utilsDate->getTime()
+        );
+
+        $oApplicationServerService->updateAppServerInformation($isAdmin);
+        $aServersData = $this->getConfig()->getSystemConfigParameter('aServersData_'.$serverId);
+
+        $this->assertEquals($expectedServersData, $aServersData);
     }
 
     /**

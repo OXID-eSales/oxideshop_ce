@@ -47,7 +47,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertEquals(2, count($appServers));
 
         foreach ($appServers as $appServer) {
-            $this->assertInstanceOf('\OxidEsales\Eshop\Core\ApplicationServer', $appServer);
+            $this->assertInstanceOf('\OxidEsales\Eshop\Core\DataObject\ApplicationServer', $appServer);
         }
     }
 
@@ -70,7 +70,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
         $appServer = $appServerDao->findById('serverNameHash1');
 
-        $expectedServer = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $expectedServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $expectedServer->setId('serverNameHash1');
         $expectedServer->setTimestamp('timestamp');
         $expectedServer->setIp('127.0.0.1');
@@ -90,7 +90,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
         $appServer = $appServerDao->findById('serverNameHash3');
 
-        $expectedServer = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $expectedServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $expectedServer->setId('serverNameHash3');
         $expectedServer->setTimestamp(null);
         $expectedServer->setIp(null);
@@ -140,7 +140,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $databaseProvider = oxNew(DatabaseProvider::class);
         $config = Registry::getConfig();
 
-        $expectedServer = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $expectedServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $expectedServer->setId('serverNameHash1');
         $expectedServer->setTimestamp('timestamp');
         $expectedServer->setIp('127.0.0.1');
@@ -164,7 +164,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $databaseProvider = oxNew(DatabaseProvider::class);
         $config = Registry::getConfig();
 
-        $updateServer = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $updateServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $updateServer->setId('serverNameHash3');
         $updateServer->setTimestamp('timestamp');
         $updateServer->setIp('127.0.0.1');
@@ -177,7 +177,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $this->assertEquals(0, $result);
 
-        $expectedServer = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $expectedServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $expectedServer->setId('serverNameHash1');
         $expectedServer->setTimestamp('timestamp');
         $expectedServer->setIp('127.0.0.1');
@@ -199,7 +199,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $this->assertEquals(0, count($appServers));
 
-        $expectedServer = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $expectedServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $expectedServer->setId('serverNameHash1');
         $expectedServer->setTimestamp('timestamp');
         $expectedServer->setIp('127.0.0.1');
@@ -226,7 +226,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $this->assertEquals(2, count($appServers));
 
-        $expectedServer = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $expectedServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $expectedServer->setId('serverNameHash1');
         $expectedServer->setTimestamp('timestamp');
         $expectedServer->setIp('127.0.0.1');

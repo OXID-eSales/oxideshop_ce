@@ -217,11 +217,11 @@ class oxSystemEventHandlerTest extends \oxUnitTestCase
     {
         $onlineLicenseCheck = $this->getMock(\OxidEsales\Eshop\Core\OnlineLicenseCheck::class, [], [], '', false);
 
-        $oProcessor = $this->getMock(\OxidEsales\Eshop\Core\ServerProcessor::class, array(), array(), '', false);
-        $oProcessor->expects($this->once())->method('process');
+        $applicationServerService = $this->getMock(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, array(), array(), '', false);
+        $applicationServerService->expects($this->once())->method('updateAppServerInformation');
 
-        $oSystemEventHandler = $this->getMock(\OxidEsales\Eshop\Core\SystemEventHandler::class, array('_getServerProcessor', 'pageStart'));
-        $oSystemEventHandler->expects($this->any())->method('_getServerProcessor')->will($this->returnValue($oProcessor));
+        $oSystemEventHandler = $this->getMock(\OxidEsales\Eshop\Core\SystemEventHandler::class, array('getAppServerService', 'pageStart'));
+        $oSystemEventHandler->expects($this->any())->method('getAppServerService')->will($this->returnValue($applicationServerService));
         $oSystemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
         $oSystemEventHandler->onShopStart();

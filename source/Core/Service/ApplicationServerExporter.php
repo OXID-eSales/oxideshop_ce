@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Core\Service;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ApplicationServerFacade
+class ApplicationServerExporter
 {
     /**
      * @var \OxidEsales\Eshop\Core\Service\ApplicationServerService
@@ -36,7 +36,7 @@ class ApplicationServerFacade
     private $appServerService;
 
     /**
-     * ApplicationServerFacade constructor.
+     * ApplicationServerExporter constructor.
      *
      * @param \OxidEsales\Eshop\Core\Service\ApplicationServerService $appServerService The service class of application server.
      */
@@ -50,8 +50,10 @@ class ApplicationServerFacade
      *
      * @return array
      */
-    public function getApplicationServerList()
+    public function export()
     {
+        $this->appServerService->cleanupAppServers();
+
         $activeServerCollection = [];
 
         $activeServers = $this->getActiveApplicationServerList();
@@ -80,7 +82,7 @@ class ApplicationServerFacade
     }
 
     /**
-     * Checks if object is an instance of \OxidEsales\Eshop\Core\ApplicationServer.
+     * Checks if object is an instance of \OxidEsales\Eshop\Core\DataObject\ApplicationServer.
      *
      * @param object $server Object to check
      *
@@ -88,6 +90,6 @@ class ApplicationServerFacade
      */
     private function validateServerListItem($server)
     {
-        return ($server instanceof \OxidEsales\Eshop\Core\ApplicationServer);
+        return ($server instanceof \OxidEsales\Eshop\Core\DataObject\ApplicationServer);
     }
 }

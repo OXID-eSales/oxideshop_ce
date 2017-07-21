@@ -550,7 +550,6 @@ return [
     'oxsepaibanvalidator'                 => 'OxidEsales\\Eshop\\Core\\SepaIBANValidator',
     'oxsepavalidator'                     => 'OxidEsales\\Eshop\\Core\\SepaValidator',
     'oxserial'                            => 'OxidEsales\\Eshop\\Core\\Serial',
-    'oxserverchecker'                     => 'OxidEsales\\Eshop\\Core\\ServerChecker',
     'oxserverprocessor'                   => 'OxidEsales\\Eshop\\Core\\ServerProcessor',
     'oxserversmanager'                    => 'OxidEsales\\Eshop\\Core\\ServersManager',
     'oxsession'                           => 'OxidEsales\\Eshop\\Core\\Session',

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunity\Core;
+namespace OxidEsales\EshopCommunity\Core\DataObject;
 
 /**
  * Class used as entity for server node information.
@@ -33,9 +33,19 @@ namespace OxidEsales\EshopCommunity\Core;
 class ApplicationServer
 {
     /**
-     * Time in seconds, server node information life time.
+     * Time in seconds, active server information life time.
      */
-    const NODE_AVAILABILITY_CHECK_PERIOD = 86400;
+    const SERVER_INFORMATION_TIME_LIFE = 86400;
+
+    /**
+     * Time in seconds, how long inactive server information will be stored.
+     */
+    const INACTIVE_SERVER_STORAGE_PERIOD = 259200;
+
+    /**
+     * Time in seconds, how often server information must be updated.
+     */
+    const SERVER_INFO_UPDATE_PERIOD = 86400;
 
     /**
      * @var string
@@ -203,7 +213,58 @@ class ApplicationServer
      */
     public function isInUse($currentTimestamp)
     {
+        return !$this->hasLifetimeExpired($currentTimestamp, self::SERVER_INFORMATION_TIME_LIFE);
+    }
+
+    /**
+     * Check if application server availability check period is over.
+     *
+     * @param int $currentTimestamp The current timestamp.
+     *
+     * @return bool
+     */
+    public function needToDelete($currentTimestamp)
+    {
+        return $this->hasLifetimeExpired($currentTimestamp, self::INACTIVE_SERVER_STORAGE_PERIOD);
+    }
+
+    /**
+     * Check if application server information must be updated.
+     *
+     * @param int $currentTimestamp The current timestamp.
+     *
+     * @return bool
+     */
+    public function needToUpdate($currentTimestamp)
+    {
+        return ($this->hasLifetimeExpired($currentTimestamp, self::SERVER_INFO_UPDATE_PERIOD)
+            || !$this->isServerTimeValid($currentTimestamp));
+    }
+
+    /**
+     * Method checks if server time was not rolled back.
+     *
+     * @param int $currentTimestamp The current timestamp.
+     *
+     * @return bool
+     */
+    private function isServerTimeValid($currentTimestamp)
+    {
         $timestamp = $this->getTimestamp();
-        return (bool) ($timestamp < $currentTimestamp - self::NODE_AVAILABILITY_CHECK_PERIOD);
+        return ($currentTimestamp - $timestamp) >= 0;
+    }
+
+    /**
+     * Compare if the application server lifetime has exceeded given period.
+     *
+     * @param int $currentTimestamp The current timestamp.
+     * @param int $periodTimestamp  The timestamp of period to check.
+     *
+     * @return bool
+     */
+    private function hasLifetimeExpired($currentTimestamp, $periodTimestamp)
+    {
+        $timestamp = $this->getTimestamp();
+        return (bool) ($currentTimestamp - $timestamp >= $periodTimestamp);
     }
 }

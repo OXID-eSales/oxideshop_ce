@@ -35,22 +35,12 @@ use oxUtilsObject;
 class ServersManager
 {
     /**
-     * Time in seconds, server node information life time.
-     */
-    const NODE_AVAILABILITY_CHECK_PERIOD = 86400;
-
-    /**
-     * Time in seconds, server node information life time.
-     */
-    const INACTIVE_NODE_STORAGE_PERIOD = 259200;
-
-    /**
      * @var \OxidEsales\Eshop\Core\Service\ApplicationServerService
      */
     private $appServerService;
 
     /**
-     * @var \OxidEsales\Eshop\Core\Service\ApplicationServerFacade
+     * @var \OxidEsales\Eshop\Core\Service\ApplicationServerExporter
      */
     private $appServerFacade;
 
@@ -62,7 +52,9 @@ class ServersManager
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
         $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
-        $this->appServerService = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao);
+        /** @var \OxidEsales\Eshop\Core\UtilsServer $utilsServer */
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
+        $this->appServerService = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime());
     }
 
     /**
@@ -70,7 +62,7 @@ class ServersManager
      *
      * @param string $serverId
      *
-     * @return \OxidEsales\Eshop\Core\ApplicationServer
+     * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer
      */
     public function getServer($serverId)
     {
@@ -80,7 +72,7 @@ class ServersManager
     /**
      * Saves given server information to config.
      *
-     * @param \OxidEsales\Eshop\Core\ApplicationServer $oServer
+     * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $oServer
      */
     public function saveServer($oServer)
     {
@@ -94,22 +86,8 @@ class ServersManager
      */
     public function getServers()
     {
-        $appServerList = $this->getServersData();
-        $appServerList = $this->markInActiveServers($appServerList);
-        $appServerList = $this->deleteInActiveServers($appServerList);
-
-        $activeServerList = array();
-        /** @var \OxidEsales\Eshop\Core\ApplicationServer $server */
-        foreach ($appServerList as $server) {
-            if ($server->isValid()) {
-                $activeServerList[] = $server;
-            }
-        }
-
-        $this->appServerService->setActiveAppServerList($activeServerList);
-
-        $appServerFacade = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerFacade::class, $this->appServerService);
-        return $appServerFacade->getApplicationServerList();
+        $appServerFacade = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, $this->appServerService);
+        return $appServerFacade->export();
     }
 
     /**
@@ -120,69 +98,6 @@ class ServersManager
     public function deleteServer($sServerId)
     {
         $this->appServerService->deleteAppServerById($sServerId);
-    }
-
-    /**
-     * Mark servers as inactive if they are not used anymore.
-     *
-     * @param array $appServerList Information of all servers data
-     *
-     * @return array $appServerList Information of all servers data
-     */
-    public function markInActiveServers($appServerList)
-    {
-        /** @var \OxidEsales\Eshop\Core\ApplicationServer $oServer */
-        foreach ($appServerList as $oServer) {
-            if ($this->needToCheckApplicationServerAvailability($oServer->getTimestamp())) {
-                $oServer->setIsValid(false);
-                $this->saveServer($oServer);
-                $appServerList[$oServer->getId()] = $oServer;
-            }
-        }
-        return $appServerList;
-    }
-
-    /**
-     * Check if application server availability check period is over.
-     *
-     * @param int $timestamp A timestamp when last time server was checked.
-     *
-     * @return bool
-     */
-    protected function needToCheckApplicationServerAvailability($timestamp)
-    {
-        return (bool) ($timestamp < \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime() - self::NODE_AVAILABILITY_CHECK_PERIOD);
-    }
-
-    /**
-     * Removes information about old and not used servers.
-     *
-     * @param array $appServerList Information of all servers data
-     *
-     * @return array $appServerList Information of all servers data
-     */
-    public function deleteInActiveServers($appServerList)
-    {
-        /** @var ApplicationServer $oServer */
-        foreach ($appServerList as $oServer) {
-            if ($this->needToDeleteInactiveApplicationServer($oServer->getTimestamp())) {
-                $this->deleteServer($oServer->getId());
-                unset($appServerList[$oServer->getId()]);
-            }
-        }
-        return $appServerList;
-    }
-
-    /**
-     * Check if application server availability check period is over.
-     *
-     * @param int $timestamp A timestamp when last time server was checked.
-     *
-     * @return bool
-     */
-    protected function needToDeleteInactiveApplicationServer($timestamp)
-    {
-        return (bool) ($timestamp < \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime() - self::INACTIVE_NODE_STORAGE_PERIOD);
     }
 
     /**

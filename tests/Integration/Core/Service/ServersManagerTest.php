@@ -151,12 +151,12 @@ class ServersManagerTest extends \OxidTestCase
         $this->assertEquals($oServer, $applicationServerList['serverNameHash1']);
     }
 
-    public function testGetServerNodes()
+    public function testGetServerNodesIfOneIsNotActive()
     {
         $iCurrentTime = 1400000000;
         $this->setTime($iCurrentTime);
 
-        $this->_storeInitialServersData($iCurrentTime, $iCurrentTime);
+        $this->_storeInitialServersData($iCurrentTime - (25 * 3600), $iCurrentTime - (11 * 3600));
 
         $aServers = array(
             array(
@@ -170,6 +170,18 @@ class ServersManagerTest extends \OxidTestCase
         $oManager = oxNew('oxServersManager');
 
         $this->assertEquals($aServers, $oManager->getServers());
+    }
+
+    public function testGetServerNodesIfAllAreActive()
+    {
+        $iCurrentTime = 1400000000;
+        $this->setTime($iCurrentTime);
+
+        $this->_storeInitialServersData($iCurrentTime - (11 * 3600), $iCurrentTime - (15 * 3600));
+
+        $oManager = oxNew('oxServersManager');
+
+        $this->assertSame(2, count($oManager->getServers()));
     }
 
     public function testDeleteServer()
@@ -188,30 +200,6 @@ class ServersManagerTest extends \OxidTestCase
 
         $this->assertNull($aServersData2['serverNameHash1']);
         $this->assertNotNull($aServersData2['serverNameHash2']);
-    }
-
-    public function testMarkInactive()
-    {
-        $iCurrentTime = 1400000000;
-        $this->setTime($iCurrentTime);
-
-        $this->_storeInitialServersData($iCurrentTime - (11 * 3600), $iCurrentTime - (25 * 3600), true);
-
-        $oManager = oxNew('oxServersManager');
-
-        $this->assertSame(1, count($oManager->getServers()));
-    }
-
-    public function testMarkInactiveNothingToMark()
-    {
-        $iCurrentTime = 1400000000;
-        $this->setTime($iCurrentTime);
-
-        $this->_storeInitialServersData($iCurrentTime - (11 * 3600), $iCurrentTime - (15 * 3600), true, true);
-
-        $oManager = oxNew('oxServersManager');
-
-        $this->assertSame(2, count($oManager->getServers()));
     }
 
     public function testDeleteInactive()

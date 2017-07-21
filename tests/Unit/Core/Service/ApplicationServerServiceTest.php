@@ -32,8 +32,10 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
     public function testLoadAppServerList()
     {
         $appServerDao = $this->getApplicationServerDaoMock("findAll", array('foundAppServer'));
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
-        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,$appServerDao);
+        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
 
         $this->assertEquals(array('foundAppServer'), $service->loadAppServerList());
     }
@@ -43,8 +45,10 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
         $id = 'testId';
 
         $appServerDao = $this->getApplicationServerDaoMock("delete", $id);
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
-        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,$appServerDao);
+        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
 
         $this->assertEquals($id, $service->deleteAppServerById($id));
     }
@@ -54,8 +58,10 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
         $id = 'testId';
 
         $appServerDao = $this->getApplicationServerDaoMock("findById", $id);
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
-        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,$appServerDao);
+        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
 
         $this->assertEquals($id, $service->loadAppServer($id));
     }
@@ -71,11 +77,14 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
             array($databaseProvider, $config));
         $appServerDao->expects($this->once())->method('findById')->will($this->returnValue($id));
         $appServerDao->expects($this->once())->method('update')->will($this->returnValue($id));
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
-        $server = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+
+        $server = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $server->setId('testId');
 
-        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,$appServerDao);
+        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
 
         $this->assertEquals($id, $service->saveAppServer($server));
     }
@@ -91,45 +100,50 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
             array($databaseProvider, $config));
         $appServerDao->expects($this->once())->method('findById')->will($this->returnValue(false));
         $appServerDao->expects($this->once())->method('insert')->will($this->returnValue($id));
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
-        $server = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+
+        $server = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $server->setId('testId');
 
-        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,$appServerDao);
+        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
 
         $this->assertEquals($id, $service->saveAppServer($server));
     }
 
     public function testLoadActiveAppServerListIfServerIsValid()
     {
-        $server = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $server = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $server->setId('serverNameHash1');
-        $server->setTimestamp('timestamp');
+        $server->setTimestamp($currentTime - (11 * 3600));
         $server->setIp('127.0.0.1');
         $server->setLastFrontendUsage('frontendUsageTimestamp');
         $server->setLastAdminUsage('adminUsageTimestamp');
-        $server->setIsValid();
 
         $appServerDao = $this->getApplicationServerDaoMock("findAll", array($server));
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
-        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao);
+        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
 
         $this->assertEquals(array($server), $service->loadActiveAppServerList());
     }
 
     public function testLoadActiveAppServerListIfServerIsNotValid()
     {
-        $server = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $server = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $server->setId('serverNameHash1');
-        $server->setTimestamp('timestamp');
+        $server->setTimestamp($currentTime - (25 * 3600));
         $server->setIp('127.0.0.1');
         $server->setLastFrontendUsage('frontendUsageTimestamp');
         $server->setLastAdminUsage('adminUsageTimestamp');
-        $server->setIsValid(false);
 
         $appServerDao = $this->getApplicationServerDaoMock("findAll", array($server));
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
-        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao);
+        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
 
         $this->assertEquals(array(), $service->loadActiveAppServerList());
     }
@@ -137,109 +151,76 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
     public function testLoadActiveAppServerListIfNoServersFound()
     {
         $appServerDao = $this->getApplicationServerDaoMock("findAll", array());
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
-        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao);
+        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
 
         $this->assertEquals(array(), $service->loadActiveAppServerList());
     }
 
+    public function testCleanupNotActiveAppServers()
+    {
+        $config = Registry::getConfig();
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $appServer = array(
+            'id'                => 'serverNameHash1',
+            'timestamp'         => ($currentTime - (73 * 3600)),
+            'ip'                => '127.0.0.1',
+            'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
+            'lastAdminUsage'    => 'adminUsageTimestampUpdated'
+        );
+        $config->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', $appServer);
 
-    /* public function testGetActiveAppServerListMarkingNotValidNodes()
-     {
-         $iCurrentTime = 1400000000;
-         $this->setTime($iCurrentTime);
+        $databaseProvider = oxNew(DatabaseProvider::class);
+        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
-         $server = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
-         $server->setId('serverNameHash1');
-         $server->setTimestamp($iCurrentTime - (11 * 3600));
-         $server->setIp('127.0.0.1');
-         $server->setLastFrontendUsage('frontendUsageTimestamp');
-         $server->setLastAdminUsage('adminUsageTimestamp');
-         $server->setIsValid();
+        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
+        $service->cleanupAppServers();
 
-         $server2 = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
-         $server2->setId('serverNameHash2');
-         $server2->setTimestamp($iCurrentTime - (25 * 3600));
-         $server2->setIp('127.0.0.1');
-         $server2->setLastFrontendUsage('frontendUsageTimestamp');
-         $server2->setLastAdminUsage('adminUsageTimestamp');
-         $server2->setIsValid();
+        $this->assertEquals(0, count($service->loadAppServerList()));
+    }
 
-         $config = Registry::getConfig();
-         $service = $this->getMock(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
-             array("loadAppServerList"),
-             array($config));
-         $service->expects($this->any())->method('loadAppServerList')->will($this->returnValue(array($server, $server2)));
+    public function testCleanupNotActiveAppServersNothingToDo()
+    {
+        $config = Registry::getConfig();
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $appServer = array(
+            'id'                => 'serverNameHash1',
+            'timestamp'         => ($currentTime - (11 * 3600)),
+            'ip'                => '127.0.0.1',
+            'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
+            'lastAdminUsage'    => 'adminUsageTimestampUpdated'
+        );
+        $config->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', $appServer);
 
-         $appServerList = $service->getActiveAppServerList();
-         $this->assertEquals(1, count($appServerList));
-     }
+        $databaseProvider = oxNew(DatabaseProvider::class);
+        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
-     public function testGetActiveAppServerList()
-     {
-         $iCurrentTime = 1400000000;
-         $this->setTime($iCurrentTime);
+        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
+        $service->cleanupAppServers();
 
-         $server = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
-         $server->setId('serverNameHash1');
-         $server->setTimestamp($iCurrentTime - (11 * 3600));
-         $server->setIp('127.0.0.1');
-         $server->setLastFrontendUsage('frontendUsageTimestamp');
-         $server->setLastAdminUsage('adminUsageTimestamp');
-         $server->setIsValid();
+        $this->assertEquals(1, count($service->loadAppServerList()));
+    }
 
-         $server2 = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
-         $server2->setId('serverNameHash2');
-         $server2->setTimestamp($iCurrentTime - (11 * 3600));
-         $server2->setIp('127.0.0.1');
-         $server2->setLastFrontendUsage('frontendUsageTimestamp');
-         $server2->setLastAdminUsage('adminUsageTimestamp');
-         $server2->setIsValid();
+    public function testCleanupNotActiveAppServersNoServersFound()
+    {
+        $config = Registry::getConfig();
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+        $config->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', null);
 
-         $config = Registry::getConfig();
-         $service = $this->getMock(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
-             array("loadAppServerList"),
-             array($config));
-         $service->expects($this->any())->method('loadAppServerList')->will($this->returnValue(array($server, $server2)));
+        $databaseProvider = oxNew(DatabaseProvider::class);
+        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
-         $appServerList = $service->getActiveAppServerList();
-         $this->assertEquals(2, count($appServerList));
-     }
+        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
+        $service->cleanupAppServers();
 
-     public function testGetActiveAppServerListDeletingNotValidNodes()
-     {
-         $iCurrentTime = 1400000000;
-         $this->setTime($iCurrentTime);
+        $this->assertEquals(0, count($service->loadAppServerList()));
+    }
 
-         $appServerDao = $this->getApplicationServerDaoMock("delete", true);
-
-         $server = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
-         $server->setId('serverNameHash1');
-         $server->setTimestamp($iCurrentTime - (11 * 3600));
-         $server->setIp('127.0.0.1');
-         $server->setLastFrontendUsage('frontendUsageTimestamp');
-         $server->setLastAdminUsage('adminUsageTimestamp');
-         $server->setIsValid();
-
-         $server2 = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
-         $server2->setId('serverNameHash2');
-         $server2->setTimestamp($iCurrentTime - (73 * 3600));
-         $server2->setIp('127.0.0.1');
-         $server2->setLastFrontendUsage('frontendUsageTimestamp');
-         $server2->setLastAdminUsage('adminUsageTimestamp');
-         $server2->setIsValid(false);
-
-         $config = Registry::getConfig();
-         $service = $this->getMock(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
-             array("loadAppServerList","getAppServerDao"),
-             array($config));
-         $service->expects($this->any())->method('loadAppServerList')->will($this->returnValue(array($server, $server2)));
-         $service->expects($this->any())->method('getAppServerDao')->will($this->returnValue($appServerDao));
-
-         $appServerList = $service->getActiveAppServerList();
-         $this->assertEquals(1, count($appServerList));
-     }
- */
     private function getApplicationServerDaoMock($methodToMock, $expectedReturnValue)
     {
         $databaseProvider = oxNew(DatabaseProvider::class);

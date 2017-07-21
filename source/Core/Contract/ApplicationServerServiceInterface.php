@@ -33,7 +33,7 @@ interface ApplicationServerServiceInterface
     /**
      * Returns all servers information array from configuration.
      *
-     * @return \OxidEsales\Eshop\Core\ApplicationServer[]
+     * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer[]
      */
     public function loadAppServerList();
 
@@ -42,7 +42,7 @@ interface ApplicationServerServiceInterface
      *
      * @param string $id The id of the application server to load.
      *
-     * @return \OxidEsales\Eshop\Core\ApplicationServer
+     * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer
      */
     public function loadAppServer($id);
 
@@ -56,9 +56,16 @@ interface ApplicationServerServiceInterface
     /**
      * Saves application server data.
      *
-     * @param \OxidEsales\Eshop\Core\ApplicationServer $appServer
+     * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer
      *
      * @return int
      */
     public function saveAppServer($appServer);
+
+    /**
+     * Renews application server information if it is outdated or if it does not exist.
+     *
+     * @param bool $adminMode The status of admin mode
+     */
+    public function updateAppServerInformation($adminMode = false);
 }

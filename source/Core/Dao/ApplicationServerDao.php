@@ -109,7 +109,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Contract\BaseDaoInt
      *
      * @param string $id An id of the entity to find.
      *
-     * @return \OxidEsales\Eshop\Core\ApplicationServer
+     * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer
      */
     public function findById($id)
     {
@@ -127,7 +127,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Contract\BaseDaoInt
     /**
      * Updates the given entity.
      *
-     * @param \OxidEsales\Eshop\Core\ApplicationServer $appServer
+     * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer
      *
      * @return int The number of affected rows.
      */
@@ -148,7 +148,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Contract\BaseDaoInt
     /**
      * Insert new application server entity.
      *
-     * @param \OxidEsales\Eshop\Core\ApplicationServer $appServer
+     * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer
      *
      * @return int The number of affected rows.
      */
@@ -239,12 +239,12 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Contract\BaseDaoInt
      * @param string $sServerId
      * @param array  $aData
      *
-     * @return \OxidEsales\Eshop\Core\ApplicationServer
+     * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer
      */
     protected function createServer($sServerId, $aData = array())
     {
-        /** @var \OxidEsales\Eshop\Core\ApplicationServer $appServer */
-        $appServer = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
+        /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer */
+        $appServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
 
         $appServer->setId($sServerId);
         $appServer->setTimestamp($this->getServerParameter($aData, 'timestamp'));
@@ -272,7 +272,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Contract\BaseDaoInt
     /**
      * Convert ApplicationServer object into simple array for saving into database oxconfig table.
      *
-     * @param \OxidEsales\Eshop\Core\ApplicationServer $appServer An application server object.
+     * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer An application server object.
      *
      * @return array
      */

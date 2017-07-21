@@ -1936,10 +1936,35 @@ return [
         'isAbstract'       => false,
         'isInterface'      => false
     ],
-    'OxidEsales\Eshop\Core\ApplicationServer'                                    => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\ApplicationServer::class,
+    'OxidEsales\Eshop\Core\DataObject\ApplicationServer'                                    => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\DataObject\ApplicationServer::class,
         'isAbstract'       => false,
         'isInterface'      => false
+    ],
+    'OxidEsales\Eshop\Core\Dao\ApplicationServerDao'                                    => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\Dao\ApplicationServerDao::class,
+        'isAbstract'       => false,
+        'isInterface'      => false
+    ],
+    'OxidEsales\Eshop\Core\Contract\BaseDaoInterface'                                    => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\BaseDaoInterface::class,
+        'isAbstract'       => false,
+        'isInterface'      => true
+    ],
+    'OxidEsales\Eshop\Core\Service\ApplicationServerExporter'                                    => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\Service\ApplicationServerExporter::class,
+        'isAbstract'       => false,
+        'isInterface'      => false
+    ],
+    'OxidEsales\Eshop\Core\Service\ApplicationServerService'                                    => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\Service\ApplicationServerService::class,
+        'isAbstract'       => false,
+        'isInterface'      => false
+    ],
+    'OxidEsales\Eshop\Core\Contract\ApplicationServerServiceInterface'                                    => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\ApplicationServerServiceInterface::class,
+        'isAbstract'       => false,
+        'isInterface'      => true
     ],
     'OxidEsales\Eshop\Core\Autoload\BackwardsCompatibilityAutoload'              => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload::class,
@@ -2623,16 +2648,6 @@ return [
     ],
     'OxidEsales\Eshop\Core\SepaValidator'                                        => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\SepaValidator::class,
-        'isAbstract'       => false,
-        'isInterface'      => false
-    ],
-    'OxidEsales\Eshop\Core\ServerChecker'                                        => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\ServerChecker::class,
-        'isAbstract'       => false,
-        'isInterface'      => false
-    ],
-    'OxidEsales\Eshop\Core\ServerProcessor'                                      => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\ServerProcessor::class,
         'isAbstract'       => false,
         'isInterface'      => false
     ],

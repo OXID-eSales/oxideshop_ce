@@ -2091,15 +2091,20 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     {
         $this->beforeUpdate();
 
-        $iStockCount = $this->oxarticles__oxstock->value - $dAmount;
+        $oDb = oxDb::getDb();
+        $sQuery = 'select oxstock from oxarticles where oxid = ' . $oDb->quote($this->getId()) . ' FOR UPDATE ';
+        $actualStock = $oDb->getOne($sQuery);
+
+        $iStockCount = $actualStock - $dAmount;
         if (!$blAllowNegativeStock && ($iStockCount < 0)) {
             $dAmount += $iStockCount;
             $iStockCount = 0;
         }
         $this->oxarticles__oxstock = new oxField($iStockCount);
 
-        $oDb = oxDb::getDb();
-        $oDb->execute('update oxarticles set oxarticles.oxstock = ' . $oDb->quote($iStockCount) . ' where oxarticles.oxid = ' . $oDb->quote($this->getId()));
+        $sQuery = 'update oxarticles set oxarticles.oxstock = ' . $oDb->quote($iStockCount) .
+                  ' where oxarticles.oxid = ' . $oDb->quote($this->getId());
+        $oDb->execute($sQuery);
         $this->onChange(ACTION_UPDATE_STOCK);
 
         return $dAmount;
@@ -2348,10 +2353,11 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param double $dAmount         buyable amount
      * @param double $dArtStockAmount stock amount
+     * @param bool   $selectForUpdate Set true to select for update
      *
      * @return mixed
      */
-    public function checkForStock($dAmount, $dArtStockAmount = 0)
+    public function checkForStock($dAmount, $dArtStockAmount = 0, $selectForUpdate = false)
     {
         $myConfig = $this->getConfig();
         if (!$myConfig->getConfigParam('blUseStock')) {
@@ -2361,6 +2367,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         // fetching DB info as its up-to-date
         $sQ = 'select oxstock, oxstockflag from oxarticles where oxid = ' . $oDb->quote($this->getId());
+        $sQ .= $selectForUpdate ? ' FOR UPDATE ' : '';
         $rs = $oDb->select($sQ);
 
         $iOnStock = 0;
@@ -2369,9 +2376,18 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $iOnStock = $rs->fields['oxstock'] - $dArtStockAmount;
             $iStockFlag = $rs->fields['oxstockflag'];
 
-            // foreign stock is also always considered as on stock
-            if ($iStockFlag == 1 || $iStockFlag == 4) {
-                return true;
+            //When using stockflag 1 and 4 with basket reservations enabled but disallowing
+            //negative stock values we would allow to reserve more items than are initially available
+            //by keeping the stock level not lower than zero. When discarding reservations
+            //stock level might differ from original value.
+            if (!$myConfig->getConfigParam('blPsBasketReservationEnabled')
+                || ($myConfig->getConfigParam('blPsBasketReservationEnabled')
+                    && $myConfig->getConfigParam('blAllowNegativeStock'))
+            ) {
+                // foreign stock is also always considered as on stock
+                if ($iStockFlag == 1 || $iStockFlag == 4) {
+                    return true;
+                }
             }
             if (!$myConfig->getConfigParam('blAllowUnevenAmounts')) {
                 $iOnStock = floor($iOnStock);

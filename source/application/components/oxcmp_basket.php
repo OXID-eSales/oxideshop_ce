@@ -143,7 +143,22 @@ class oxcmp_basket extends oxView
         if ($aProducts = $this->_getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
 
             $this->_setLastCallFnc('tobasket');
-            $oBasketItem = $this->_addItems($aProducts);
+
+            $database = oxDb::getDb();
+            $database->startTransaction();
+            try {
+                $oBasketItem = $this->_addItems($aProducts);
+                //reserve active basket
+                if (oxRegistry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+                    $basket = oxRegistry::getSession()->getBasket();
+                    oxRegistry::getSession()->getBasketReservations()->reserveBasket($basket);
+                }
+            } catch (\Exception $exception) {
+                $database->rollbackTransaction();
+                unset($oBasketItem);
+                throw $exception;
+            }
+            $database->commitTransaction();
 
             // new basket item marker
             if ($oBasketItem && $myConfig->getConfigParam('iNewBasketItemMessage') != 0) {
@@ -219,7 +234,21 @@ class oxcmp_basket extends oxView
             $oBasket->onUpdate();
 
             $this->_setLastCallFnc('changebasket');
-            $oBasketItem = $this->_addItems($aProducts);
+
+            $database = oxDb::getDb();
+            $database->startTransaction();
+            try {
+                $oBasketItem = $this->_addItems($aProducts);
+                // reserve active basket
+                if (oxRegistry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+                    oxRegistry::getSession()->getBasketReservations()->reserveBasket($oBasket);
+                }
+            } catch (\Exception $exception) {
+                $database->rollbackTransaction();
+                unset($oBasketItem);
+                throw $exception;
+            }
+            $database->commitTransaction();
         }
 
     }

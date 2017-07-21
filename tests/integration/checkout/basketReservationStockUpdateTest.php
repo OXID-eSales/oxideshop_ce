@@ -239,7 +239,8 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
             'buy_amount' => 40,
             'stock_flag' => 3,
             'allow_negative_stock' => false,
-            'basket_amount' => 40);
+            'basket_amount' => 40,
+            'display_warning_cnt' => 0);
 
         //Tampering with stock when basket reservations enabled
         $data['do_reservations'] = array('enableReservation' => true,
@@ -248,7 +249,8 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
             'buy_amount' => 40,
             'stock_flag' => 3,
             'allow_negative_stock' => false,
-            'basket_amount' => 40);
+            'basket_amount' => 40,
+            'display_warning_cnt' => 0);
 
         //No tampering with stock without basket reservations enabled, order last item in stock
         $data['no_reservations_low_stock'] = array('enableReservation' => false,
@@ -257,7 +259,8 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
             'buy_amount' => 1,
             'stock_flag' => 3,
             'allow_negative_stock' => false,
-            'basket_amount' => 1);
+            'basket_amount' => 1,
+            'display_warning_cnt' => 0);
 
         //Tampering with stock when basket reservations enabled, order last item in stock
         $data['do_reservations_low_stock'] = array('enableReservation' => true,
@@ -266,7 +269,8 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
             'buy_amount' => 1,
             'stock_flag' => 3,
             'allow_negative_stock' => false,
-            'basket_amount' => 1);
+            'basket_amount' => 1,
+            'display_warning_cnt' => 0);
 
         //No basket reservations enabled, try to buy more than available, stockflag is 3.
         //This will get the one available article put to basket.
@@ -276,7 +280,8 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
             'buy_amount' => 10,
             'stock_flag' => 3,
             'allow_negative_stock' => false,
-            'basket_amount' => 1);
+            'basket_amount' => 1,
+            'display_warning_cnt' => 1);
 
         //Basket reservations enabled, try to buy more than available, stockflag is 3
         $data['do_reservations_low_stock_order_more'] = array('enableReservation' => true,
@@ -285,31 +290,33 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
             'buy_amount' => 10,
             'stock_flag' => 3,
             'allow_negative_stock' => false,
-            'basket_amount' => 1);
+            'basket_amount' => 1,
+            'display_warning_cnt' => 1);
 
         //NOTE: in case the requested Article count exceeds the available, we end up with to be displayed
         //error information in oxRegistry::getSession()->getVariable('Errors'));
 
-        //Use default stock flag, disallow negative stock. You can put more articles in basket than are in stock.
+        //Use default stock flag (1), no reservations, disallow negative stock.
+        //You can put more articles in basket than are in stock.
         $data['no_res_low_stock_order_more_stockflag_default'] = array('enableReservation' => false,
             'stock' => 1,
             'expected_stock_after_tobasket' => 1,
             'buy_amount' => 10,
             'stock_flag' => 1,
             'allow_negative_stock' => false,
-            'basket_amount' => 10);
+            'basket_amount' => 10,
+            'display_warning_cnt' => 0);
 
-        //Use default stock flag, disallow negative stock. You can put more articles in basket than are in stock.
-        //Problem is, that here reservations can also reserve more than the available amount but with
-        //disallowing negative stock the stock amount is changed to zero but when removing the reserved articles
-        //from basket we incorrectly end up with a higher than the original stock.
+        //Use default stock flag, disallow negative stock. You cannot put more articles in basket than are in stock
+        //when reservations are enabled.
         $data['do_res_low_stock_order_more_stockflag_default'] = array('enableReservation' => true,
             'stock' => 1,
             'expected_stock_after_tobasket' => 0,
             'buy_amount' => 10,
             'stock_flag' => 1,
             'allow_negative_stock' => false,
-            'basket_amount' => 10);
+            'basket_amount' => 1,
+            'display_warning_cnt' => 1);
 
         //Same as data set 'do_res_low_stock_order_more_stockflag_default' but with allowing
         //negative stock values. Basket reservations keep stock as would be expected.
@@ -319,13 +326,12 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
             'buy_amount' => 10,
             'stock_flag' => 1,
             'allow_negative_stock' => true,
-            'basket_amount' => 10);
-
+            'basket_amount' => 10,
+            'display_warning_cnt' => 0);
         return $data;
     }
 
     /**
-     * Mode is no basket reservation.
      * Test case to put articles into basket and remove again.
      * Check the stock levels before and after, they must be the same.
      *
@@ -339,9 +345,11 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
      * @param bool    $allowNegativeStock         Allow negative stock yes/no
      * @param integer $basketAmount               Amount that ended up in basket, might be less thann buyamount related
      *                                            to configured out of stock behaviour.
+     * @param integer $displayWarningCnt          Number ov eventual display warning due to low stock
      */
-    public function testPutArticlesToBasketAndRemove($enableReservation, $stock,
-                                                     $expectedStockAfterToBasket, $buyAmount, $stockFlag, $allowNegativeStock, $basketAmount)
+    public function testPutArticlesToBasketAndRemove($enableReservation, $stock, $expectedStockAfterToBasket,
+                                                     $buyAmount, $stockFlag, $allowNegativeStock, $basketAmount,
+                                                     $displayWarningCnt)
     {
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', $enableReservation);
         $this->getConfig()->setConfigParam('blAllowNegativeStock', $allowNegativeStock);
@@ -352,6 +360,10 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
         $basket = $this->fillBasket($buyAmount);
         $this->checkContents($basket, $basketAmount);
 
+        //Check for expected messages
+        $messages = oxRegistry::getSession()->getVariable('Errors');
+        $this->assertEquals($displayWarningCnt, count($messages['default']));
+
         $this->assertEquals($expectedStockAfterToBasket, $this->getStock());
 
         //Check stock when items were removed from basket, must be back to original value
@@ -360,37 +372,27 @@ class Integration_Checkout_BasketReservationStockUpdateTest extends OxidTestCase
     }
 
     /**
-     * Test the case that the item was sold out wile it was put in the basket.
-     * Simulates high load scenario.
+     * Verify that item was reserved immediately when put into basket.
+     *
      */
-    public function testArticleSoldOutWhilePuttingIntoBasket()
+    public function testArticleReservedWhenPutIntoBasket()
     {
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
         $this->getConfig()->setConfigParam('blAllowNegativeStock', false);
         $this->setStock(1);
         $this->setStockFlag(3);
 
-        //item was put into basket but amount in stock is not yet changed at this time
+        //One item in basket and we have a reservation now and amount in stock was changed
         $this->addOneItemToBasket();
-        $this->assertEquals(1, $this->getStock());
-        $this->assertEquals(0, (oxRegistry::getSession()->getBasketReservations()->getReservedAmount($this->testArticleId)));
-
-        //In a high load scenario, at this point article might be sold out
-        $this->setStock(0);
-
-        //Basket is recalculated after item was added to basket.
-        //This is done while rendering so we might have a redirect in between.
-        //ATM reservation is done only while basket is recalculated.
-        $basket = $this->getSession()->getBasket();
-        $basket->calculateBasket(true);
-
-        //One item in basket and we have a reservation now.
-        $basket->onUpdate();
+        $this->assertEquals(0, $this->getStock());
+        $this->assertEquals(1, (oxRegistry::getSession()->getBasketReservations()->getReservedAmount($this->testArticleId)));
         $this->assertEquals(1, $this->getAmountInBasket());
         $this->assertEquals(1, (oxRegistry::getSession()->getBasketReservations()->getReservedAmount($this->testArticleId)));
-        $this->assertEquals(0, $this->getStock());
 
-        $this->markTestIncomplete('We should not be able to reserve an already sold out item.');
+        //As the only item in stock is reserved, should not be possible to add this item to basket anymore.
+        $this->addOneItemToBasket(1); //we stick with the one already in basket
+        //and get info that item stock does not allow adding any more to basket
+        $this->assertNotEmpty(oxRegistry::getSession()->getVariable('Errors'));
     }
 
     /**

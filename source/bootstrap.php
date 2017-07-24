@@ -56,6 +56,7 @@ if (!is_dir(OX_BASE_PATH . 'Core')) {
 register_shutdown_function(
     function () {
         $handledErrorTypes = [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_RECOVERABLE_ERROR, E_USER_ERROR, E_USER_DEPRECATED];
+        $sessionResetErrorTypes = [E_ERROR];
 
         $error = error_get_last();
         if (in_array($error['type'], $handledErrorTypes)) {
@@ -76,6 +77,11 @@ register_shutdown_function(
             $bootstrapConfigFileReader = new \BootstrapConfigFileReader();
             if (!$bootstrapConfigFileReader->isDebugMode()) {
                 \oxTriggerOfflinePageDisplay();
+            }
+
+            if (in_array($error['type'], $sessionResetErrorTypes)) {
+                setcookie('sid', null, null, '/');
+                setcookie('admin_sid', null, null, '/');
             }
         }
     }

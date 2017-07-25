@@ -288,17 +288,12 @@ class OnlineLicenseCheckTest extends \OxidTestCase
      */
     private function getApplicationServerExporterMock($appServerList)
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
-        /** @var \OxidEsales\Eshop\Core\UtilsServer $utilsServer */
-        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
-        $service = $this->getMock(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
-            array(),
-            array($appServerDao, $utilsServer, \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
+        $appServer = $this->getMockBuilder('\OxidEsales\Eshop\Core\Service\ApplicationServerServiceInterface')->getMock();
 
-        $exporter = $this->getMock(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, array('exportAppServerList'), array($service), '', false);
-        $exporter->expects($this->once())->method('exportAppServerList')->will($this->returnValue($appServerList));
+        $exporter = $this->getMockBuilder('\OxidEsales\Eshop\Core\Service\ApplicationServerExporter')
+            ->setConstructorArgs([$appServer])
+            ->getMock();
+        $exporter->expects($this->once())->method('exportAppServerList')->willReturn($appServerList);
 
         return $exporter;
     }

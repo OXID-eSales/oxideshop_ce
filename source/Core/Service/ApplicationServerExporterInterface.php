@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunity\Core\Contract;
+namespace OxidEsales\EshopCommunity\Core\Service;
 
 /**
  * Prepare application servers information for export.

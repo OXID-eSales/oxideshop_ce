@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Core\Service;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ApplicationServerExporter implements \OxidEsales\Eshop\Core\Contract\ApplicationServerExporterInterface
+class ApplicationServerExporter implements \OxidEsales\Eshop\Core\Service\ApplicationServerExporterInterface
 {
     /**
      * @var \OxidEsales\Eshop\Core\Service\ApplicationServerService

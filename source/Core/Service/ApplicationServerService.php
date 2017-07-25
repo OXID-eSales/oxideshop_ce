@@ -23,15 +23,17 @@
 namespace OxidEsales\EshopCommunity\Core\Service;
 
 /**
- * Manages application servers information.
+ * Manages application server information.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ApplicationServerService implements \OxidEsales\Eshop\Core\Contract\ApplicationServerServiceInterface
+class ApplicationServerService implements \OxidEsales\Eshop\Core\Service\ApplicationServerServiceInterface
 {
     /**
-     * @var \OxidEsales\Eshop\Core\Dao\ApplicationServerDao The Dao object for application server.
+     * The Dao object for application server.
+     *
+     * @var \OxidEsales\Eshop\Core\Dao\BaseDaoInterface
      */
     private $appServerDao;
 
@@ -43,6 +45,8 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Contract\Applic
     private $currentTime = 0;
 
     /**
+     * Server data manipulation class
+     *
      * @var \OxidEsales\Eshop\Core\UtilsServer
      */
     private $utilsServer;
@@ -50,11 +54,11 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Contract\Applic
     /**
      * ApplicationServerService constructor.
      *
-     * @param \OxidEsales\Eshop\Core\Dao\ApplicationServerDao $appServerDao The Dao object of application server.
-     * @param \OxidEsales\Eshop\Core\UtilsServer              $utilsServer
-     * @param int                                             $currentTime  The current time - timestamp.
+     * @param \OxidEsales\Eshop\Core\Dao\BaseDaoInterface $appServerDao The Dao object of application server.
+     * @param \OxidEsales\Eshop\Core\UtilsServer          $utilsServer
+     * @param int                                         $currentTime  The current time - timestamp.
      */
-    public function __construct($appServerDao, $utilsServer, $currentTime)
+    public function __construct(\OxidEsales\Eshop\Core\Dao\BaseDaoInterface $appServerDao, $utilsServer, $currentTime)
     {
         $this->appServerDao = $appServerDao;
         $this->utilsServer = $utilsServer;
@@ -86,7 +90,7 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Contract\Applic
     /**
      * Removes server node information.
      *
-     * @param string $serverId
+     * @param string $serverId The Id of the application server to delete.
      *
      * @return bool
      */
@@ -175,7 +179,7 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Contract\Applic
      * Updates application server with the newest information.
      *
      * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer The application server to update.
-     * @param bool                                     $adminMode The status of admin mode
+     * @param bool                                                $adminMode The status of admin mode
      */
     private function updateAppServerData($appServer, $adminMode)
     {

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunity\Core\Contract;
+namespace OxidEsales\EshopCommunity\Core\Dao;
 
 /**
  * Data access object interface.
@@ -51,7 +51,7 @@ interface BaseDaoInterface
      *
      * @param string $id An id of the entity to find.
      *
-     * @return object
+     * @return mixed
      */
     public function findById($id);
 

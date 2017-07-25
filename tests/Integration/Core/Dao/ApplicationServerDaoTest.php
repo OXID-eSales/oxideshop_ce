@@ -19,29 +19,24 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
-
-use \OxidEsales\Eshop\Core\Registry;
-use \OxidEsales\Eshop\Core\DatabaseProvider;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Dao;
 
 /**
- * @covers \OxidEsales\Eshop\Core\Dao\ApplicationServerDao
+ * @covers \OxidEsales\EshopCommunity\Core\Dao\ApplicationServerDao
  */
 class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
     public function setUp()
     {
         parent::setUp();
-        DatabaseProvider::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
+        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
     }
 
     public function testFindAll()
     {
         $this->storeInitialServersData();
 
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $config = Registry::getConfig();
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $appServerDao = $this->getApplicationServerDaoObject();
         $appServers = $appServerDao->findAll();
 
         $this->assertEquals(2, count($appServers));
@@ -53,9 +48,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function testFindAllNoneExists()
     {
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $config = Registry::getConfig();
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $appServerDao = $this->getApplicationServerDaoObject();
         $appServers = $appServerDao->findAll();
 
         $this->assertEquals(0, count($appServers));
@@ -65,9 +58,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         $this->storeInitialServersData();
 
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $config = Registry::getConfig();
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $appServerDao = $this->getApplicationServerDaoObject();
         $appServer = $appServerDao->findById('serverNameHash1');
 
         $expectedServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
@@ -85,9 +76,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         $this->storeInitialServersData();
 
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $config = Registry::getConfig();
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $appServerDao = $this->getApplicationServerDaoObject();
         $appServer = $appServerDao->findById('serverNameHash3');
 
         $expectedServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
@@ -105,9 +94,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         $this->storeInitialServersData();
 
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $config = Registry::getConfig();
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $appServerDao = $this->getApplicationServerDaoObject();
         $result = $appServerDao->delete('serverNameHash1');
         $this->assertEquals(1, $result);
 
@@ -123,9 +110,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         $this->storeInitialServersData();
 
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $config = Registry::getConfig();
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $appServerDao = $this->getApplicationServerDaoObject();
         $result = $appServerDao->delete('serverNameHash3');
         $this->assertEquals(0, $result);
 
@@ -137,9 +122,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         $this->storeInitialServersData();
 
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $config = Registry::getConfig();
-
         $expectedServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $expectedServer->setId('serverNameHash1');
         $expectedServer->setTimestamp('timestamp');
@@ -148,7 +130,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setLastAdminUsage('updatedAdminUsageTimestamp');
         $expectedServer->setIsValid();
 
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $appServerDao = $this->getApplicationServerDaoObject();
         $result = $appServerDao->update($expectedServer);
 
         $this->assertEquals(1, $result);
@@ -161,9 +143,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         $this->storeInitialServersData();
 
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $config = Registry::getConfig();
-
         $updateServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $updateServer->setId('serverNameHash3');
         $updateServer->setTimestamp('timestamp');
@@ -172,7 +151,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $updateServer->setLastAdminUsage('updatedAdminUsageTimestamp');
         $updateServer->setIsValid();
 
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $appServerDao = $this->getApplicationServerDaoObject();
         $result = $appServerDao->update($updateServer);
 
         $this->assertEquals(0, $result);
@@ -191,10 +170,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function testInsertNew()
     {
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $config = Registry::getConfig();
-
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $appServerDao = $this->getApplicationServerDaoObject();
         $appServers = $appServerDao->findAll();
 
         $this->assertEquals(0, count($appServers));
@@ -218,10 +194,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         $this->storeInitialServersData();
 
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $config = Registry::getConfig();
-
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $appServerDao = $this->getApplicationServerDaoObject();
         $appServers = $appServerDao->findAll();
 
         $this->assertEquals(2, count($appServers));
@@ -234,7 +207,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setLastAdminUsage('adminUsageTimestamp');
         $expectedServer->setIsValid();
 
-        $result = $appServerDao->insert($expectedServer);
+        $appServerDao->insert($expectedServer);
 
         $appServers = $appServerDao->findAll();
         $this->assertEquals(2, count($appServers));
@@ -258,8 +231,15 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
             'lastAdminUsage'    => 'adminUsageTimestamp',
             'isValid'           => true
         );
-        Registry::getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', $aStoredData1);
-        Registry::getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash2', $aStoredData2);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', $aStoredData1);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash2', $aStoredData2);
     }
 
+    private function getApplicationServerDaoObject()
+    {
+        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+
+        return oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+    }
 }

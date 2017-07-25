@@ -40,9 +40,9 @@ class ApplicationServerExporterTest extends \OxidEsales\TestingLibrary\UnitTestC
     {
 
         $service = $this->getApplicationServerServiceMock($activeServers);
-        $facade = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, $service);
+        $exporter = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, $service);
 
-        $appServers = $facade->exportAppServerList();
+        $appServers = $exporter->exportAppServerList();
 
         $this->assertCount($count, $appServers);
 
@@ -90,16 +90,9 @@ class ApplicationServerExporterTest extends \OxidEsales\TestingLibrary\UnitTestC
      */
     private function getApplicationServerServiceMock($appServerList)
     {
-        $config = Registry::getConfig();
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
-        /** @var \OxidEsales\Eshop\Core\UtilsServer $utilsServer */
-        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
-        $service = $this->getMock(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
-            array("loadActiveAppServerList"),
-            array($appServerDao, $utilsServer, \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
-        $service->expects($this->any())->method('loadActiveAppServerList')->will($this->returnValue($appServerList));
+        $appServer = $this->getMockBuilder('\OxidEsales\Eshop\Core\Service\ApplicationServerServiceInterface')->getMock();
+        $appServer->expects($this->any())->method('loadActiveAppServerList')->will($this->returnValue($appServerList));
 
-        return $service;
+        return $appServer;
     }
 }

@@ -22,15 +22,13 @@
 
 namespace OxidEsales\EshopCommunity\Core\Dao;
 
-use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-
 /**
  * Application server data access manager.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ApplicationServerDao implements \OxidEsales\Eshop\Core\Contract\BaseDaoInterface
+class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterface
 {
     /**
      * The name of config option for saving servers data information.
@@ -38,7 +36,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Contract\BaseDaoInt
     const CONFIG_NAME_FOR_SERVER_INFO = 'aServersData_';
 
     /**
-     * @var DatabaseInterface Database connection
+     * @var \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface Database connection
      */
     private $database;
 

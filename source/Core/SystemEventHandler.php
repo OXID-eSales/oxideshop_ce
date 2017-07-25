@@ -93,20 +93,11 @@ class SystemEventHandler
     /**
      * ApplicationServerExporter dependency setter
      *
-     * @return \OxidEsales\Eshop\Core\Service\ApplicationServerExporter
+     * @return \OxidEsales\Eshop\Core\Service\ApplicationServerExporterInterface
      */
     public function getApplicationServerExporter()
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
-        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
-        $appServerService = oxNew(
-            \OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
-            $appServerDao,
-            $utilsServer,
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()
-        );
+        $appServerService = $this->getAppServerService();
         return oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, $appServerService);
     }
 
@@ -306,15 +297,13 @@ class SystemEventHandler
     /**
      * Gets application server service.
      *
-     * @return \OxidEsales\Eshop\Core\Contract\ApplicationServerServiceInterface
+     * @return \OxidEsales\Eshop\Core\Service\ApplicationServerServiceInterface
      */
     protected function getAppServerService()
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
         $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
-
-        /** @var \OxidEsales\Eshop\Core\UtilsServer $utilsServer */
         $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
         $appServerService = oxNew(

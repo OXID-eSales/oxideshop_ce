@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Core\Service;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ApplicationServerExporter
+class ApplicationServerExporter implements \OxidEsales\Eshop\Core\Contract\ApplicationServerExporterInterface
 {
     /**
      * @var \OxidEsales\Eshop\Core\Service\ApplicationServerService
@@ -50,35 +50,20 @@ class ApplicationServerExporter
      *
      * @return array
      */
-    public function export()
+    public function exportAppServerList()
     {
         $this->appServerService->cleanupAppServers();
 
         $activeServerCollection = [];
 
-        $activeServers = $this->getActiveApplicationServerList();
+        $activeServers = (array) $this->appServerService->loadActiveAppServerList();
         foreach ($activeServers as $server) {
             if ($this->validateServerListItem($server)) {
-                $activeServerCollection[] = array(
-                    'id' => $server->getId(),
-                    'ip' => $server->getIp(),
-                    'lastFrontendUsage' => $server->getLastFrontendUsage(),
-                    'lastAdminUsage' => $server->getLastAdminUsage()
-                );
+                $activeServerCollection[] = $this->convertToArray($server);
             }
         }
 
         return $activeServerCollection;
-    }
-
-    /**
-     * Return application server service object.
-     *
-     * @return array
-     */
-    protected function getActiveApplicationServerList()
-    {
-        return (array) $this->appServerService->loadActiveAppServerList();
     }
 
     /**
@@ -91,5 +76,24 @@ class ApplicationServerExporter
     private function validateServerListItem($server)
     {
         return ($server instanceof \OxidEsales\Eshop\Core\DataObject\ApplicationServer);
+    }
+
+    /**
+     * Converts ApplicationServer object into array for export.
+     *
+     * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $server
+     *
+     * @return array
+     */
+    private function convertToArray($server)
+    {
+        $activeServer = [
+            'id' => $server->getId(),
+            'ip' => $server->getIp(),
+            'lastFrontendUsage' => $server->getLastFrontendUsage(),
+            'lastAdminUsage' => $server->getLastAdminUsage()
+
+        ];
+        return $activeServer;
     }
 }

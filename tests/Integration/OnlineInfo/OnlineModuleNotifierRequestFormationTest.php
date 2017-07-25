@@ -37,7 +37,7 @@ use \oxTestModules;
  *
  * @covers oxServerProcessor
  * @covers oxApplicationServer
- * @covers oxServersManager
+ * @covers \OxidEsales\Eshop\Core\Service\ApplicationServerService
  */
 class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
 {

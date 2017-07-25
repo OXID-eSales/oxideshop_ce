@@ -42,7 +42,7 @@ class ApplicationServerExporterTest extends \OxidEsales\TestingLibrary\UnitTestC
         $service = $this->getApplicationServerServiceMock($activeServers);
         $facade = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, $service);
 
-        $appServers = $facade->export();
+        $appServers = $facade->exportAppServerList();
 
         $this->assertCount($count, $appServers);
 

@@ -76,18 +76,38 @@ class SystemEventHandler
             /** @var \OxidEsales\Eshop\Core\UserCounter $oUserCounter */
             $oUserCounter = oxNew(\OxidEsales\Eshop\Core\UserCounter::class);
 
-            /** @var \OxidEsales\Eshop\Core\ServersManager $oServerManager */
-            $oServerManager = oxNew(\OxidEsales\Eshop\Core\ServersManager::class);
+            /** @var \OxidEsales\Eshop\Core\Service\ApplicationServerExporter $appServerExporter */
+            $appServerExporter = $this->getApplicationServerExporter();
 
             /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheck $oOLC */
             $oOLC = oxNew("oxOnlineLicenseCheck", $oLicenseCaller);
-            $oOLC->setServersManager($oServerManager);
+            $oOLC->setAppServerExporter($appServerExporter);
             $oOLC->setUserCounter($oUserCounter);
 
             $this->setOnlineLicenseCheck($oOLC);
         }
 
         return $this->_oOnlineLicenseCheck;
+    }
+
+    /**
+     * ApplicationServerExporter dependency setter
+     *
+     * @return \OxidEsales\Eshop\Core\Service\ApplicationServerExporter
+     */
+    public function getApplicationServerExporter()
+    {
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
+        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
+        $appServerService = oxNew(
+            \OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
+            $appServerDao,
+            $utilsServer,
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()
+        );
+        return oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, $appServerService);
     }
 
     /**

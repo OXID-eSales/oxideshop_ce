@@ -551,7 +551,6 @@ return [
     'oxsepavalidator'                     => 'OxidEsales\\Eshop\\Core\\SepaValidator',
     'oxserial'                            => 'OxidEsales\\Eshop\\Core\\Serial',
     'oxserverprocessor'                   => 'OxidEsales\\Eshop\\Core\\ServerProcessor',
-    'oxserversmanager'                    => 'OxidEsales\\Eshop\\Core\\ServersManager',
     'oxsession'                           => 'OxidEsales\\Eshop\\Core\\Session',
     'oxsha512hasher'                      => 'OxidEsales\\Eshop\\Core\\Sha512Hasher',
     'oxshopcontrol'                       => 'OxidEsales\\Eshop\\Core\\ShopControl',

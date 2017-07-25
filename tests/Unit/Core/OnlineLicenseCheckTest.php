@@ -80,12 +80,10 @@ class OnlineLicenseCheckTest extends \OxidTestCase
         $oUserCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($iActiveAdminUsers));
         /** @var oxUserCounter $oUserCounter */
 
-        $oServersManager = $this->getMock(\OxidEsales\Eshop\Core\ServersManager::class, array('getServers'), array(), '', false);
-        $oServersManager->expects($this->once())->method('getServers')->will($this->returnValue($aServers));
-        /** @var oxServersManager $oServersManager */
+        $appServerExporter = $this->getApplicationServerExporterMock($aServers);
 
         $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
-        $oLicenseCheck->setServersManager($oServersManager);
+        $oLicenseCheck->setAppServerExporter($appServerExporter);
         $oLicenseCheck->setUserCounter($oUserCounter);
 
         $oLicenseCheck->validate('validSerial');
@@ -206,13 +204,10 @@ class OnlineLicenseCheckTest extends \OxidTestCase
         $oUserCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($iActiveAdminUsers));
         /** @var oxUserCounter $oUserCounter */
 
-        $oServersManager = $this->getMock(\OxidEsales\Eshop\Core\ServersManager::class, array('getServers'), array(), '', false);
-        $oServersManager->expects($this->once())->method('getServers')->will($this->returnValue($aServers));
-        /** @var oxServersManager $oServersManager */
-
+        $appServerExporter = $this->getApplicationServerExporterMock($aServers);
 
         $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
-        $oLicenseCheck->setServersManager($oServersManager);
+        $oLicenseCheck->setAppServerExporter($appServerExporter);
         $oLicenseCheck->setUserCounter($oUserCounter);
         $oLicenseCheck->validateShopSerials();
     }
@@ -284,5 +279,27 @@ class OnlineLicenseCheckTest extends \OxidTestCase
         $oLicenseCheck->validate('validSerial');
 
         $this->assertEquals(10, $this->getConfig()->getConfigParam('iOlcSuccess'));
+    }
+
+    /**
+     * @param array $appServerList An array of application servers to return.
+     *
+     * @return \OxidEsales\Eshop\Core\Service\ApplicationServerExporter
+     */
+    private function getApplicationServerExporterMock($appServerList)
+    {
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
+        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        /** @var \OxidEsales\Eshop\Core\UtilsServer $utilsServer */
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
+        $service = $this->getMock(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
+            array(),
+            array($appServerDao, $utilsServer, \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()));
+
+        $exporter = $this->getMock(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, array('exportAppServerList'), array($service), '', false);
+        $exporter->expects($this->once())->method('exportAppServerList')->will($this->returnValue($appServerList));
+
+        return $exporter;
     }
 }

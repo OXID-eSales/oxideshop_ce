@@ -137,10 +137,10 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
         $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
 
         $oUserCounter = oxNew('oxUserCounter');
-        $oServersManager = oxNew('oxServersManager');
+        $appServerExporter = $this->getApplicationServerExporter();
         $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller);
         $oLicenseCheck->setUserCounter($oUserCounter);
-        $oLicenseCheck->setServersManager($oServersManager);
+        $oLicenseCheck->setAppServerExporter($appServerExporter);
 
         $oLicenseCheck->validateShopSerials();
     }
@@ -226,11 +226,32 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
         $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
 
         $oUserCounter = oxNew('oxUserCounter');
-        $oServersManager = oxNew('oxServersManager');
+        $appServerExporter = $this->getApplicationServerExporter();
         $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller);
         $oLicenseCheck->setUserCounter($oUserCounter);
-        $oLicenseCheck->setServersManager($oServersManager);
+        $oLicenseCheck->setAppServerExporter($appServerExporter);
 
         $oLicenseCheck->validateNewSerial('new_serial');
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Core\Service\ApplicationServerExporter
+     */
+    private function getApplicationServerExporter()
+    {
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
+        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
+        $service = oxNew(
+            \OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
+            $appServerDao,
+            $utilsServer,
+            \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()
+        );
+
+        $exporter = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, $service);
+
+        return $exporter;
     }
 }

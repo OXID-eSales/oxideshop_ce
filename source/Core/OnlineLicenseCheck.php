@@ -87,27 +87,27 @@ class OnlineLicenseCheck
     /** @var \OxidEsales\Eshop\Core\UserCounter */
     protected $_oUserCounter = null;
 
-    /** @var \OxidEsales\Eshop\Core\ServersManager */
-    protected $_oServersManager = null;
+    /** @var \OxidEsales\Eshop\Core\Service\ApplicationServerExporter */
+    protected $appServerExporter = null;
 
     /**
      * Sets servers manager.
      *
-     * @param \OxidEsales\Eshop\Core\ServersManager $oServersManager
+     * @param \OxidEsales\Eshop\Core\Service\ApplicationServerExporter $appServerExporter
      */
-    public function setServersManager($oServersManager)
+    public function setAppServerExporter($appServerExporter)
     {
-        $this->_oServersManager = $oServersManager;
+        $this->appServerExporter = $appServerExporter;
     }
 
     /**
      * Gets servers manager.
      *
-     * @return \OxidEsales\Eshop\Core\ServersManager
+     * @return \OxidEsales\Eshop\Core\Service\ApplicationServerExporter
      */
-    public function getServersManager()
+    public function getAppServerExporter()
     {
-        return $this->_oServersManager;
+        return $this->appServerExporter;
     }
 
     /**
@@ -293,8 +293,8 @@ class OnlineLicenseCheck
 
         $oRequest->productSpecificInformation = new stdClass();
 
-        if (!is_null($this->getServersManager())) {
-            $aServers = $this->getServersManager()->getServers();
+        if (!is_null($this->getAppServerExporter())) {
+            $aServers = $this->getAppServerExporter()->exportAppServerList();
             $oRequest->productSpecificInformation->servers = array('server' => $aServers);
         }
 

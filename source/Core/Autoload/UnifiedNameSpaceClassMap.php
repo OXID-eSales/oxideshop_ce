@@ -1956,6 +1956,11 @@ return [
         'isAbstract'       => false,
         'isInterface'      => false
     ],
+    'OxidEsales\Eshop\Core\Contract\ApplicationServerExporterInterface'                                    => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\ApplicationServerExporterInterface::class,
+        'isAbstract'       => false,
+        'isInterface'      => true
+    ],
     'OxidEsales\Eshop\Core\Service\ApplicationServerService'                                    => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Service\ApplicationServerService::class,
         'isAbstract'       => false,
@@ -2648,11 +2653,6 @@ return [
     ],
     'OxidEsales\Eshop\Core\SepaValidator'                                        => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\SepaValidator::class,
-        'isAbstract'       => false,
-        'isInterface'      => false
-    ],
-    'OxidEsales\Eshop\Core\ServersManager'                                       => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\ServersManager::class,
         'isAbstract'       => false,
         'isInterface'      => false
     ],

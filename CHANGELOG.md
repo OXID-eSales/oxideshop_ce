@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - ddoe/wysiwyg-editor-module was added as requirement of OXID eShop Community Edition in composer.json
 - Grace period reset email is sent on grace period reset.
+- User and admin sessions are detached on E_ERROR type errors (in register_shutdown_function).
 
 ### Changed
 - language constant `HELP_SHOP_CONFIG_SETORDELETECURRENCY`, [Pull Request 547](https://github.com/OXID-eSales/oxideshop_ce/pull/547)

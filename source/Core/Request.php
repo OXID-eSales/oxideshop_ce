@@ -62,7 +62,7 @@ class Request
         // TODO: remove this after special chars concept implementation
         $isAdmin = Registry::getConfig()->isAdmin() && Registry::getSession()->getVariable("blIsAdmin");
         if ($value !== null && !$isAdmin) {
-            $this->checkParamSpecialChars($value);
+            $value = $this->checkParamSpecialChars($value);
         }
 
         return $value;
@@ -112,7 +112,7 @@ class Request
      *
      * @return mixed
      */
-    public function checkParamSpecialChars(& $sValue, $aRaw = null)
+    public function checkParamSpecialChars($sValue, $aRaw = null)
     {
         if (is_object($sValue)) {
             return $sValue;
@@ -123,8 +123,8 @@ class Request
             foreach ($sValue as $sKey => $sVal) {
                 $sValidKey = $sKey;
                 if (!$aRaw || !in_array($sKey, $aRaw)) {
-                    $this->checkParamSpecialChars($sValidKey);
-                    $this->checkParamSpecialChars($sVal);
+                    $sValidKey = $this->checkParamSpecialChars($sValidKey);
+                    $sVal = $this->checkParamSpecialChars($sVal);
                     if ($sValidKey != $sKey) {
                         unset($sValue[$sKey]);
                     }

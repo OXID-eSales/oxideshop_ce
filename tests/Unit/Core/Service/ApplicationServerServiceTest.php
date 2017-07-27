@@ -31,7 +31,7 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
 {
     public function testLoadAppServerList()
     {
-        $appServerDao = $this->getApplicationServerDaoMock("findAll", array('foundAppServer'));
+        $appServerDao = $this->getApplicationServerDaoMock("findAll", ['foundAppServer']);
 
         $service = $this->getApplicationServerService($appServerDao);
 
@@ -63,17 +63,14 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
     public function testSaveAppServerIfExists()
     {
         $id = 'testId';
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $config = Registry::getConfig();
-        $appServerDao = $this->getMock(
-            \OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class,
-            array("findById", "update"),
-            array($databaseProvider, $config));
+
+        $appServerDao = $this->getMockBuilder(\OxidEsales\Eshop\Core\Dao\BaseDaoInterface::class)
+            ->getMock();
         $appServerDao->expects($this->once())->method('findById')->will($this->returnValue($id));
         $appServerDao->expects($this->once())->method('update')->will($this->returnValue($id));
 
         $server = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
-        $server->setId('testId');
+        $server->setId($id);
 
         $service = $this->getApplicationServerService($appServerDao);
 
@@ -83,17 +80,14 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
     public function testSaveAppServerNewElement()
     {
         $id = 'testId';
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $config = Registry::getConfig();
-        $appServerDao = $this->getMock(
-            \OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class,
-            array("findById", "insert"),
-            array($databaseProvider, $config));
+
+        $appServerDao = $this->getMockBuilder(\OxidEsales\Eshop\Core\Dao\BaseDaoInterface::class)
+            ->getMock();
         $appServerDao->expects($this->once())->method('findById')->will($this->returnValue(false));
         $appServerDao->expects($this->once())->method('insert')->will($this->returnValue($id));
 
         $server = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
-        $server->setId('testId');
+        $server->setId($id);
 
         $service = $this->getApplicationServerService($appServerDao);
 
@@ -103,6 +97,7 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
     public function testLoadActiveAppServerListIfServerIsValid()
     {
         $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+
         $server = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $server->setId('serverNameHash1');
         $server->setTimestamp($currentTime - (11 * 3600));
@@ -110,16 +105,17 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
         $server->setLastFrontendUsage('frontendUsageTimestamp');
         $server->setLastAdminUsage('adminUsageTimestamp');
 
-        $appServerDao = $this->getApplicationServerDaoMock("findAll", array($server));
+        $appServerDao = $this->getApplicationServerDaoMock("findAll", [$server]);
 
         $service = $this->getApplicationServerService($appServerDao);
 
-        $this->assertEquals(array($server), $service->loadActiveAppServerList());
+        $this->assertEquals([$server], $service->loadActiveAppServerList());
     }
 
     public function testLoadActiveAppServerListIfServerIsNotValid()
     {
         $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+
         $server = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $server->setId('serverNameHash1');
         $server->setTimestamp($currentTime - (25 * 3600));
@@ -127,26 +123,27 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
         $server->setLastFrontendUsage('frontendUsageTimestamp');
         $server->setLastAdminUsage('adminUsageTimestamp');
 
-        $appServerDao = $this->getApplicationServerDaoMock("findAll", array($server));
+        $appServerDao = $this->getApplicationServerDaoMock("findAll", [$server]);
 
         $service = $this->getApplicationServerService($appServerDao);
 
-        $this->assertEquals(array(), $service->loadActiveAppServerList());
+        $this->assertEquals([], $service->loadActiveAppServerList());
     }
 
     public function testLoadActiveAppServerListIfNoServersFound()
     {
-        $appServerDao = $this->getApplicationServerDaoMock("findAll", array());
+        $appServerDao = $this->getApplicationServerDaoMock("findAll", []);
 
         $service = $this->getApplicationServerService($appServerDao);
 
-        $this->assertEquals(array(), $service->loadActiveAppServerList());
+        $this->assertEquals([], $service->loadActiveAppServerList());
     }
 
     public function testCleanupNotActiveAppServers()
     {
-        $config = Registry::getConfig();
+        $config = $this->getConfig();
         $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+
         $appServer = array(
             'id'                => 'serverNameHash1',
             'timestamp'         => ($currentTime - (73 * 3600)),
@@ -156,7 +153,7 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
         );
         $config->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', $appServer);
 
-        $databaseProvider = oxNew(DatabaseProvider::class);
+        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
         $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
         $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
@@ -168,7 +165,7 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
 
     public function testCleanupNotActiveAppServersNothingToDo()
     {
-        $config = Registry::getConfig();
+        $config = $this->getConfig();
         $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
         $appServer = array(
             'id'                => 'serverNameHash1',
@@ -179,7 +176,7 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
         );
         $config->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', $appServer);
 
-        $databaseProvider = oxNew(DatabaseProvider::class);
+        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
         $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
         $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
@@ -191,10 +188,10 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
 
     public function testCleanupNotActiveAppServersNoServersFound()
     {
-        $config = Registry::getConfig();
+        $config = $this->getConfig();
         $config->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', null);
 
-        $databaseProvider = oxNew(DatabaseProvider::class);
+        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
         $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
 
         $service = $this->getApplicationServerService($appServerDao);
@@ -205,12 +202,8 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
 
     private function getApplicationServerDaoMock($methodToMock, $expectedReturnValue)
     {
-        $databaseProvider = oxNew(DatabaseProvider::class);
-        $config = Registry::getConfig();
-        $appServerDao = $this->getMock(
-            \OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class,
-            array($methodToMock),
-            array($databaseProvider, $config));
+        $appServerDao = $this->getMockBuilder(\OxidEsales\Eshop\Core\Dao\BaseDaoInterface::class)
+            ->getMock();
         $appServerDao->expects($this->once())->method($methodToMock)->will($this->returnValue($expectedReturnValue));
 
         return $appServerDao;

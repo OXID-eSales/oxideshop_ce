@@ -179,7 +179,7 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Service\Applica
      * Updates application server with the newest information.
      *
      * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer The application server to update.
-     * @param bool                                                $adminMode The status of admin mode
+     * @param bool                                                $adminMode The status of admin mode.
      */
     private function updateAppServerData($appServer, $adminMode)
     {

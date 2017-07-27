@@ -74,9 +74,7 @@ class ApplicationServerExporterTest extends \OxidEsales\TestingLibrary\UnitTestC
         );
 
         return [
-            [null, 0, null],
-            [1, 0, null],
-            [0, 0, null],
+            [false, 0, null],
             [[], 0, null],
             [$activeServers, 1, $expectedServerCollection],
             [$activeServers2, 2, $expectedServerCollection],

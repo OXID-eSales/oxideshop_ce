@@ -101,6 +101,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $appServers = $appServerDao->findAll();
         $this->assertEquals(1, count($appServers));
 
+        /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer */
         $appServer = $appServers['serverNameHash2'];
 
         $this->assertEquals('serverNameHash2', $appServer->getId());
@@ -215,7 +216,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     private function storeInitialServersData()
     {
-        $aStoredData1 = array(
+        $storedData1 = array(
             'id'                => 'serverNameHash1',
             'timestamp'         => 'timestamp',
             'ip'                => '127.0.0.1',
@@ -223,7 +224,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
             'lastAdminUsage'    => 'adminUsageTimestamp',
             'isValid'           => true
         );
-        $aStoredData2 = array(
+        $storedData2 = array(
             'id'                => 'serverNameHash2',
             'timestamp'         => 'timestamp',
             'ip'                => '127.0.0.2',
@@ -231,14 +232,14 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
             'lastAdminUsage'    => 'adminUsageTimestamp',
             'isValid'           => true
         );
-        \OxidEsales\Eshop\Core\Registry::getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', $aStoredData1);
-        \OxidEsales\Eshop\Core\Registry::getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash2', $aStoredData2);
+        $this->getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', $storedData1);
+        $this->getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash2', $storedData2);
     }
 
     private function getApplicationServerDaoObject()
     {
         $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = $this->getConfig();
 
         return oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
     }

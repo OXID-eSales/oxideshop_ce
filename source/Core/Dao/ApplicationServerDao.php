@@ -60,7 +60,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
     /**
      * Finds all application servers.
      *
-     * @return array()
+     * @return array
      */
     public function findAll()
     {
@@ -80,7 +80,6 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
             }
         }
         return $appServerList;
-
     }
 
     /**
@@ -156,7 +155,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
                values(?, ?, '', ?, ?, ENCODE( ?, ?) )";
 
         $parameter = array(
-            \OxidEsales\Eshop\Core\UtilsObject::getInstance()->generateUID(),
+            \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID(),
             $this->config->getBaseShopId(),
             self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
             'arr',
@@ -170,7 +169,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
     /**
      * Returns all application server entities from database.
      *
-     * @param string $id         An id of the entity to find.
+     * @param string $id An id of the entity to find.
      *
      * @return string
      */
@@ -184,7 +183,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
             $this->config->getBaseShopId()
         );
 
-        return $this->database->getOne($query, $parameter, false);
+        return $this->database->getOne($query, $parameter);
     }
 
     /**
@@ -208,48 +207,48 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
     /**
      * Parses config option name to get the server id.
      *
-     * @param string $sVarName The name of the config option.
+     * @param string $varName The name of the config option.
      *
      * @return string The id of server.
      */
-    private function getServerIdFromConfig($sVarName)
+    private function getServerIdFromConfig($varName)
     {
-        $iConstNameLength = strlen(self::CONFIG_NAME_FOR_SERVER_INFO);
-        $sId = substr($sVarName, $iConstNameLength);
-        return $sId;
+        $constNameLength = strlen(self::CONFIG_NAME_FOR_SERVER_INFO);
+        $id = substr($varName, $constNameLength);
+        return $id;
     }
 
     /**
      * Unserializes config option value.
      *
-     * @param string $sVarValue The serialized value of the config option.
+     * @param string $varValue The serialized value of the config option.
      *
      * @return string The information of server.
      */
-    private function getValueFromConfig($sVarValue)
+    private function getValueFromConfig($varValue)
     {
-        return (array) unserialize($sVarValue);
+        return (array) unserialize($varValue);
     }
 
     /**
      * Creates ApplicationServer from given server id and data.
      *
-     * @param string $sServerId
-     * @param array  $aData
+     * @param string $serverId The id of server.
+     * @param array  $data     The array of server data.
      *
      * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer
      */
-    protected function createServer($sServerId, $aData = array())
+    protected function createServer($serverId, $data = [])
     {
         /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer */
         $appServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
 
-        $appServer->setId($sServerId);
-        $appServer->setTimestamp($this->getServerParameter($aData, 'timestamp'));
-        $appServer->setIp($this->getServerParameter($aData, 'ip'));
-        $appServer->setLastFrontendUsage($this->getServerParameter($aData, 'lastFrontendUsage'));
-        $appServer->setLastAdminUsage($this->getServerParameter($aData, 'lastAdminUsage'));
-        $appServer->setIsValid($this->getServerParameter($aData, 'isValid'));
+        $appServer->setId($serverId);
+        $appServer->setTimestamp($this->getServerParameter($data, 'timestamp'));
+        $appServer->setIp($this->getServerParameter($data, 'ip'));
+        $appServer->setLastFrontendUsage($this->getServerParameter($data, 'lastFrontendUsage'));
+        $appServer->setLastAdminUsage($this->getServerParameter($data, 'lastAdminUsage'));
+        $appServer->setIsValid($this->getServerParameter($data, 'isValid'));
 
         return $appServer;
     }
@@ -257,14 +256,14 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
     /**
      * Gets server parameter.
      *
-     * @param array  $aData Data
-     * @param string $sName Name
+     * @param array  $data The array of server data.
+     * @param string $name The name of searched parameter.
      *
      * @return mixed
      */
-    private function getServerParameter($aData, $sName)
+    private function getServerParameter($data, $name)
     {
-        return array_key_exists($sName, $aData) ? $aData[$sName] : null;
+        return array_key_exists($name, $data) ? $data[$name] : null;
     }
 
     /**
@@ -276,7 +275,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
      */
     private function convertAppServerToConfigOption($appServer)
     {
-        $aServerData = array(
+        $serverData = array(
             'id'                => $appServer->getId(),
             'timestamp'         => $appServer->getTimestamp(),
             'ip'                => $appServer->getIp(),
@@ -285,7 +284,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
             'isValid'           => $appServer->isValid()
         );
 
-        return serialize($aServerData);
+        return serialize($serverData);
     }
 
 }

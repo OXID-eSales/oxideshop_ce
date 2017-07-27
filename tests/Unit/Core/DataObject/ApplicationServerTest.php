@@ -19,12 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\DataObject;
 
 /**
- * @covers oxApplicationServer
+ * @covers \OxidEsales\Eshop\Core\DataObject\ApplicationServer
  */
-class ApplicationServerTest extends \OxidTestCase
+class ApplicationServerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
     public function testSetGetId()

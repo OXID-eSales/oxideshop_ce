@@ -21,18 +21,17 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
-use oxUtilsDate;
-use oxUtilsServer;
-
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
  *
  * @covers \OxidEsales\Eshop\Core\Service\ApplicationServerService
- * @covers oxApplicationServer
+ * @covers \OxidEsales\Eshop\Core\DataObject\ApplicationServer
  */
 class FrontendServersInformationStoringTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    /** @var string server id. */
+    /**
+     * @var string server id.
+     */
     private $serverId = '7da43ed884a1zd1d6035d4c1d630fc4e';
 
     /**
@@ -76,53 +75,57 @@ class FrontendServersInformationStoringTest extends \OxidEsales\TestingLibrary\U
     {
         $serverId = $this->serverId;
         $serverIp = $expectedServersData['ip'];
-        $utilsDate = $this->_createDateMock($expectedServersData);
-        $utilsServer = $this->_createServerMock($serverId, $serverIp);
+        $utilsDate = $this->createDateMock($expectedServersData);
+        $utilsServer = $this->createServerMock($serverId, $serverIp);
 
-        $this->getConfig()->saveSystemConfigParameter('arr', 'aServersData_'.$serverId, null);
+        $config = $this->getConfig();
+        $config->saveSystemConfigParameter('arr', 'aServersData_'.$serverId, null);
 
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
         $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
 
-        /** @var \OxidEsales\Eshop\Core\Service\ApplicationServerService $oApplicationServerService */
-        $oApplicationServerService = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
+        /** @var \OxidEsales\Eshop\Core\Service\ApplicationServerService $applicationServerService */
+        $applicationServerService = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
             $appServerDao,
             $utilsServer,
             $utilsDate->getTime()
         );
 
-        $oApplicationServerService->updateAppServerInformation($isAdmin);
-        $aServersData = $this->getConfig()->getSystemConfigParameter('aServersData_'.$serverId);
+        $applicationServerService->updateAppServerInformation($isAdmin);
+        $serversData = $this->getConfig()->getSystemConfigParameter('aServersData_'.$serverId);
 
-        $this->assertEquals($expectedServersData, $aServersData);
+        $this->assertEquals($expectedServersData, $serversData);
     }
 
     /**
-     * @param $aExpectedServersData
+     * @param $expectedServersData
      *
-     * @return oxUtilsDate
+     * @return \OxidEsales\Eshop\Core\UtilsDate
      */
-    private function _createDateMock($aExpectedServersData)
+    private function createDateMock($expectedServersData)
     {
-        $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getTime'));
-        $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($aExpectedServersData['timestamp']));
+        $utilsDate = $this->getMockBuilder(\OxidEsales\Eshop\Core\UtilsDate::class)
+            ->setMethods(['getTime'])
+            ->getMock();
+        $utilsDate->expects($this->any())->method('getTime')->will($this->returnValue($expectedServersData['timestamp']));
 
-        return $oUtilsDate;
+        return $utilsDate;
     }
 
     /**
-     * @param $sServerId
-     * @param $sServerIp
+     * @param $serverId
+     * @param $serverIp
      *
-     * @return oxUtilsServer
+     * @return \OxidEsales\Eshop\Core\UtilsServer
      */
-    private function _createServerMock($sServerId, $sServerIp)
+    private function createServerMock($serverId, $serverIp)
     {
-        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array('getServerNodeId', 'getServerIp'));
-        $oUtilsServer->expects($this->any())->method('getServerNodeId')->will($this->returnValue($sServerId));
-        $oUtilsServer->expects($this->any())->method('getServerIp')->will($this->returnValue($sServerIp));
+        $utilsServer = $this->getMockBuilder(\OxidEsales\Eshop\Core\UtilsServer::class)
+            ->setMethods(['getServerNodeId', 'getServerIp'])
+            ->getMock();
+        $utilsServer->expects($this->any())->method('getServerNodeId')->will($this->returnValue($serverId));
+        $utilsServer->expects($this->any())->method('getServerIp')->will($this->returnValue($serverIp));
 
-        return $oUtilsServer;
+        return $utilsServer;
     }
 }

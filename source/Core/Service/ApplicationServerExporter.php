@@ -31,22 +31,24 @@ namespace OxidEsales\EshopCommunity\Core\Service;
 class ApplicationServerExporter implements \OxidEsales\Eshop\Core\Service\ApplicationServerExporterInterface
 {
     /**
-     * @var \OxidEsales\Eshop\Core\Service\ApplicationServerService
+     * The service class of application server.
+     *
+     * @var \OxidEsales\Eshop\Core\Service\ApplicationServerServiceInterface
      */
     private $appServerService;
 
     /**
      * ApplicationServerExporter constructor.
      *
-     * @param \OxidEsales\Eshop\Core\Service\ApplicationServerService $appServerService The service class of application server.
+     * @param \OxidEsales\Eshop\Core\Service\ApplicationServerServiceInterface $appServerService
      */
-    public function __construct($appServerService)
+    public function __construct(\OxidEsales\Eshop\Core\Service\ApplicationServerServiceInterface $appServerService)
     {
         $this->appServerService = $appServerService;
     }
 
     /**
-     * Return active server nodes.
+     * Return an array of active application servers.
      *
      * @return array
      */
@@ -56,26 +58,14 @@ class ApplicationServerExporter implements \OxidEsales\Eshop\Core\Service\Applic
 
         $activeServerCollection = [];
 
-        $activeServers = (array) $this->appServerService->loadActiveAppServerList();
-        foreach ($activeServers as $server) {
-            if ($this->validateServerListItem($server)) {
+        $activeServers = $this->appServerService->loadActiveAppServerList();
+        if (is_array($activeServers) && !empty($activeServers)) {
+            foreach ($activeServers as $server) {
                 $activeServerCollection[] = $this->convertToArray($server);
             }
         }
 
         return $activeServerCollection;
-    }
-
-    /**
-     * Checks if object is an instance of \OxidEsales\Eshop\Core\DataObject\ApplicationServer.
-     *
-     * @param object $server Object to check
-     *
-     * @return bool
-     */
-    private function validateServerListItem($server)
-    {
-        return ($server instanceof \OxidEsales\Eshop\Core\DataObject\ApplicationServer);
     }
 
     /**
@@ -92,7 +82,6 @@ class ApplicationServerExporter implements \OxidEsales\Eshop\Core\Service\Applic
             'ip' => $server->getIp(),
             'lastFrontendUsage' => $server->getLastFrontendUsage(),
             'lastAdminUsage' => $server->getLastAdminUsage()
-
         ];
         return $activeServer;
     }

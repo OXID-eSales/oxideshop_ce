@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -50,31 +50,31 @@ class ApplicationServer
     /**
      * @var string
      */
-    private $_sId;
+    private $id;
 
     /**
      * @var string
      */
-    private $_sIp;
+    private $ip;
 
     /**
      * @var int
      */
-    private $_iTimestamp;
-
-    /**
-     * Flag which stores timestamp.
-     *
-     * @var int
-     */
-    private $_iLastFrontendUsage;
+    private $timestamp;
 
     /**
      * Flag which stores timestamp.
      *
      * @var int
      */
-    private $_iLastAdminUsage;
+    private $lastFrontendUsage;
+
+    /**
+     * Flag which stores timestamp.
+     *
+     * @var int
+     */
+    private $lastAdminUsage;
 
 
     /**
@@ -82,16 +82,16 @@ class ApplicationServer
      *
      * @var bool
      */
-    private $_blIsValid = false;
+    private $isValid = false;
 
     /**
      * Sets id.
      *
-     * @param string $sId
+     * @param string $id
      */
-    public function setId($sId)
+    public function setId($id)
     {
-        $this->_sId = $sId;
+        $this->id = $id;
     }
 
     /**
@@ -101,7 +101,7 @@ class ApplicationServer
      */
     public function getId()
     {
-        return $this->_sId;
+        return $this->id;
     }
 
     /**
@@ -111,7 +111,7 @@ class ApplicationServer
      */
     public function setIp($ip)
     {
-        $this->_sIp = $ip;
+        $this->ip = $ip;
     }
 
     /**
@@ -121,7 +121,7 @@ class ApplicationServer
      */
     public function getIp()
     {
-        return $this->_sIp;
+        return $this->ip;
     }
 
     /**
@@ -131,7 +131,7 @@ class ApplicationServer
      */
     public function setTimestamp($timestamp)
     {
-        $this->_iTimestamp = $timestamp;
+        $this->timestamp = $timestamp;
     }
 
     /**
@@ -141,7 +141,7 @@ class ApplicationServer
      */
     public function getTimestamp()
     {
-        return $this->_iTimestamp;
+        return $this->timestamp;
     }
 
     /**
@@ -151,7 +151,7 @@ class ApplicationServer
      */
     public function setLastAdminUsage($lastAdminUsage)
     {
-        $this->_iLastAdminUsage = $lastAdminUsage;
+        $this->lastAdminUsage = $lastAdminUsage;
     }
 
     /**
@@ -161,7 +161,7 @@ class ApplicationServer
      */
     public function getLastAdminUsage()
     {
-        return $this->_iLastAdminUsage;
+        return $this->lastAdminUsage;
     }
 
     /**
@@ -171,7 +171,7 @@ class ApplicationServer
      */
     public function setLastFrontendUsage($lastFrontendUsage)
     {
-        $this->_iLastFrontendUsage = $lastFrontendUsage;
+        $this->lastFrontendUsage = $lastFrontendUsage;
     }
 
     /**
@@ -181,7 +181,7 @@ class ApplicationServer
      */
     public function getLastFrontendUsage()
     {
-        return $this->_iLastFrontendUsage;
+        return $this->lastFrontendUsage;
     }
 
     /**
@@ -191,7 +191,7 @@ class ApplicationServer
      */
     public function setIsValid($valid = true)
     {
-        $this->_blIsValid = $valid;
+        $this->isValid = $valid;
     }
 
     /**
@@ -201,7 +201,7 @@ class ApplicationServer
      */
     public function isValid()
     {
-        return $this->_blIsValid;
+        return $this->isValid;
     }
 
     /**

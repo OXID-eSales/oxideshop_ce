@@ -61,7 +61,6 @@ class ApplicationServerExporterTest extends \OxidEsales\TestingLibrary\UnitTestC
         $server->setIp('127.0.0.1');
         $server->setLastFrontendUsage('frontendUsageTimestamp');
         $server->setLastAdminUsage('adminUsageTimestamp');
-        $server->setIsValid();
 
         $activeServers = array($server);
         $activeServers2 = array($server, $server);

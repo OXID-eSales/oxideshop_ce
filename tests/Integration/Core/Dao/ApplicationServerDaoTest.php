@@ -67,7 +67,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setIp('127.0.0.1');
         $expectedServer->setLastFrontendUsage('frontendUsageTimestamp');
         $expectedServer->setLastAdminUsage('adminUsageTimestamp');
-        $expectedServer->setIsValid();
 
         $this->assertEquals($expectedServer, $appServer);
     }
@@ -85,7 +84,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setIp(null);
         $expectedServer->setLastFrontendUsage(null);
         $expectedServer->setLastAdminUsage(null);
-        $expectedServer->setIsValid(false);
 
         $this->assertEquals($expectedServer, $appServer);
     }
@@ -129,7 +127,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setIp('127.0.0.1');
         $expectedServer->setLastFrontendUsage('updatedFrontendUsageTimestamp');
         $expectedServer->setLastAdminUsage('updatedAdminUsageTimestamp');
-        $expectedServer->setIsValid();
 
         $appServerDao = $this->getApplicationServerDaoObject();
         $result = $appServerDao->update($expectedServer);
@@ -150,7 +147,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $updateServer->setIp('127.0.0.1');
         $updateServer->setLastFrontendUsage('updatedFrontendUsageTimestamp');
         $updateServer->setLastAdminUsage('updatedAdminUsageTimestamp');
-        $updateServer->setIsValid();
 
         $appServerDao = $this->getApplicationServerDaoObject();
         $result = $appServerDao->update($updateServer);
@@ -163,7 +159,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setIp('127.0.0.1');
         $expectedServer->setLastFrontendUsage('frontendUsageTimestamp');
         $expectedServer->setLastAdminUsage('adminUsageTimestamp');
-        $expectedServer->setIsValid();
 
         $appServer = $appServerDao->findById('serverNameHash1');
         $this->assertEquals($expectedServer, $appServer);
@@ -182,7 +177,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setIp('127.0.0.1');
         $expectedServer->setLastFrontendUsage('frontendUsageTimestamp');
         $expectedServer->setLastAdminUsage('adminUsageTimestamp');
-        $expectedServer->setIsValid();
 
         $result = $appServerDao->insert($expectedServer);
         $this->assertEquals(1, $result);
@@ -206,7 +200,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setIp('127.0.0.1');
         $expectedServer->setLastFrontendUsage('frontendUsageTimestamp');
         $expectedServer->setLastAdminUsage('adminUsageTimestamp');
-        $expectedServer->setIsValid();
 
         $appServerDao->insert($expectedServer);
 

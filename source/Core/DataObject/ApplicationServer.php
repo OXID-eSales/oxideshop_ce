@@ -76,14 +76,6 @@ class ApplicationServer
      */
     private $lastAdminUsage;
 
-
-    /**
-     * Flag - server is used or not
-     *
-     * @var bool
-     */
-    private $isValid = false;
-
     /**
      * Sets id.
      *
@@ -182,26 +174,6 @@ class ApplicationServer
     public function getLastFrontendUsage()
     {
         return $this->lastFrontendUsage;
-    }
-
-    /**
-     * Sets whether is valid.
-     *
-     * @param bool $valid Flag to set if application server is valid
-     */
-    public function setIsValid($valid = true)
-    {
-        $this->isValid = $valid;
-    }
-
-    /**
-     * Checks if valid.
-     *
-     * @return bool
-     */
-    public function isValid()
-    {
-        return $this->isValid;
     }
 
     /**

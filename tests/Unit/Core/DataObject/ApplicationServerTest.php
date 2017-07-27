@@ -62,33 +62,6 @@ class ApplicationServerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertSame(123456789, $serverNode->getLastAdminUsage());
     }
 
-    public function testServerValidityOnCreation()
-    {
-        $serverNode = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
-        $this->assertFalse($serverNode->isValid());
-    }
-
-    public function testServerValidityOnSetFalse()
-    {
-        $serverNode = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
-        $serverNode->setIsValid(false);
-        $this->assertFalse($serverNode->isValid());
-    }
-
-    public function testServerValidityOnSetTrue()
-    {
-        $serverNode = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
-        $serverNode->setIsValid(true);
-        $this->assertTrue($serverNode->isValid());
-    }
-
-    public function testServerValidityOnSetDefault()
-    {
-        $serverNode = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
-        $serverNode->setIsValid();
-        $this->assertTrue($serverNode->isValid());
-    }
-
     /**
      * @dataProvider dataProviderServerIsInUse
      *

@@ -248,7 +248,6 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
         $appServer->setIp($this->getServerParameter($data, 'ip'));
         $appServer->setLastFrontendUsage($this->getServerParameter($data, 'lastFrontendUsage'));
         $appServer->setLastAdminUsage($this->getServerParameter($data, 'lastAdminUsage'));
-        $appServer->setIsValid($this->getServerParameter($data, 'isValid'));
 
         return $appServer;
     }
@@ -280,8 +279,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
             'timestamp'         => $appServer->getTimestamp(),
             'ip'                => $appServer->getIp(),
             'lastFrontendUsage' => $appServer->getLastFrontendUsage(),
-            'lastAdminUsage'    => $appServer->getLastAdminUsage(),
-            'isValid'           => $appServer->isValid()
+            'lastAdminUsage'    => $appServer->getLastAdminUsage()
         );
 
         return serialize($serverData);

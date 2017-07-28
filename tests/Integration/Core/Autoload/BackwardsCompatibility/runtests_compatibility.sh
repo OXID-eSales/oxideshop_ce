@@ -4,5 +4,5 @@ BASEDIR="$(dirname $(dirname $(dirname $(dirname $(dirname "${SCRIPTDIR}")))))/"
 VENDORDIR="${BASEDIR}vendor/"
 TESTDIR="${BASEDIR}tests/"
 for file in "${TESTDIR}Integration/Core/Autoload/BackwardsCompatibility/"*Test.php; do
-  "${VENDORDIR}bin/runtests"  --tap "${file}"
+  "${VENDORDIR}bin/runtests" --tap "${file}"
 done

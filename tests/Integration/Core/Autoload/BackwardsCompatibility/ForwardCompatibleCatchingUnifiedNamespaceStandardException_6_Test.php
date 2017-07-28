@@ -32,6 +32,7 @@ class ForwardCompatibleCatchingUnifiedNamespaceStandardException_6_Test extends 
      */
     public function testForwardCompatibleCatchingUnifiedNamespaceStandardException()
     {
+        /** @var \OxidEsales\Eshop\Core\Exception\StandardException $exception */
         $exception = new \oxException();
         try {
             throw $exception;

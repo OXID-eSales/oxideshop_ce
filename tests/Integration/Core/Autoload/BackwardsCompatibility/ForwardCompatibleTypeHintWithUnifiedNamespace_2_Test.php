@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Autoload\BackwardsCompatibility;
 
-class ForwardCompatibleTypeHintWithUnifiedNamespaceNamespace_4_Test extends \PHPUnit_Framework_TestCase
+class ForwardCompatibleTypeHintWithUnifiedNamespace_2_Test extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -30,7 +30,7 @@ class ForwardCompatibleTypeHintWithUnifiedNamespaceNamespace_4_Test extends \PHP
      */
     public function testForwardCompatibleTypeHintWithUnifiedNamespaceNamespace()
     {
-        $object = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+        $object = oxNew('oxarticle');
         /**
          * @param \OxidEsales\Eshop\Application\Model\Article $object
          */

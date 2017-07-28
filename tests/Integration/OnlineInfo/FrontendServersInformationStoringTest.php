@@ -29,103 +29,171 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
  */
 class FrontendServersInformationStoringTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    /**
-     * @var string server id.
-     */
-    private $serverId = '7da43ed884a1zd1d6035d4c1d630fc4e';
-
-    /**
-     * @return array
-     */
-    public function providerFrontendServerFirstAccess()
+    protected function setUp()
     {
-        $serverId = $this->serverId;
-        $serverIp = '192.168.0.5';
-        $currentTime = time();
-        $expectedFrontendServersData = array(
-            'id'                => $serverId,
-            'timestamp'         => $currentTime,
-            'ip'                => $serverIp,
-            'lastFrontendUsage' => $currentTime,
-            'lastAdminUsage'    => '',
-            'isValid'           => null,
-        );
-        $expectedAdminServersData = array(
-            'id'                => $serverId,
-            'timestamp'         => $currentTime,
-            'ip'                => $serverIp,
-            'lastFrontendUsage' => '',
-            'lastAdminUsage'    => $currentTime,
-            'isValid'           => null,
-        );
-
-        return array(
-            array(false, $expectedFrontendServersData),
-            array(true, $expectedAdminServersData),
-        );
+        parent::setUp();
+        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
     }
 
     /**
-     * @param bool  $isAdmin
-     * @param array $expectedServersData
-     *
-     * @dataProvider providerFrontendServerFirstAccess
+     * Add first new application server in frontend.
      */
-    public function testFrontendServerFirstAccess($isAdmin, $expectedServersData)
+    public function testUpdateAppServerInformationNewAppServer()
     {
-        $serverId = $this->serverId;
-        $serverIp = $expectedServersData['ip'];
-        $utilsDate = $this->createDateMock($expectedServersData);
-        $utilsServer = $this->createServerMock($serverId, $serverIp);
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
 
+        $service = $this->getApplicationServerServiceObject($currentTime);
+        $service->updateAppServerInformation(false);
+
+        /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[] $appServers */
+        $appServers = $service->loadAppServerList();
+
+        $this->assertEquals(1, count($appServers));
+        $this->assertEquals('serverNameHash1', $appServers['serverNameHash1']->getId());
+    }
+
+    /**
+     * There is one up to date application server, so no data to update.
+     */
+    public function testUpdateAppServerInformationAppServerExists()
+    {
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+
+        $this->storeAppServer1Information(($currentTime - (11 * 3600)));
+
+        $service = $this->getApplicationServerServiceObject($currentTime);
+        $service->updateAppServerInformation(false);
+
+        /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[] $appServers */
+        $appServers = $service->loadAppServerList();
+
+        $this->assertEquals(1, count($appServers));
+        $this->assertEquals('adminUsageTimestampUpdated', $appServers['serverNameHash1']->getLastAdminUsage());
+    }
+
+    /**
+     * There is one not active application server, the information of this server must be updated.
+     */
+    public function testUpdateAppServerInformationUpdateAppServerData()
+    {
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+
+        $this->storeAppServer1Information(($currentTime - (25 * 3600)));
+
+        $service = $this->getApplicationServerServiceObject($currentTime);
+        $appServers = $service->loadActiveAppServerList();
+
+        $this->assertEquals(0, count($appServers));
+
+        $service->updateAppServerInformation(false);
+
+        /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[] $appServers */
+        $appServers = $service->loadActiveAppServerList();
+
+        $this->assertEquals(1, count($appServers));
+        $this->assertNotNull($appServers['serverNameHash1']->getLastFrontendUsage());
+    }
+
+    /**
+     * Add second new application server in frontend.
+     */
+    public function testUpdateAppServerInformationAddAppServer()
+    {
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+
+        $this->storeAppServer2Information($currentTime);
+
+        $service = $this->getApplicationServerServiceObject($currentTime);
+        $service->updateAppServerInformation(false);
+
+        /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[] $appServers */
+        $appServers = $service->loadAppServerList();
+
+        $this->assertEquals(2, count($appServers));
+        $this->assertEquals('serverNameHash1', $appServers['serverNameHash1']->getId());
+        $this->assertEquals('serverNameHash2', $appServers['serverNameHash2']->getId());
+    }
+
+    /**
+     * Add second new application server in frontend, when one server is not active anymore.
+     */
+    public function testUpdateAppServerInformationIfOneIsNotActiveAppServer()
+    {
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+
+        $this->storeAppServer2Information(($currentTime - (25 * 3600)));
+
+        $service = $this->getApplicationServerServiceObject($currentTime);
+        $service->updateAppServerInformation(false);
+
+        /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[] $appServers */
+        $appServers = $service->loadActiveAppServerList();
+
+        $this->assertEquals(1, count($appServers));
+        $this->assertEquals('serverNameHash1', $appServers['serverNameHash1']->getId());
+    }
+
+    /**
+     * Add second new application server in admin, when the other is out dated and must be deleted.
+     */
+    public function testUpdateAppServerInformationIfOneIsOutdatedAppServer()
+    {
+        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
+
+        $this->storeAppServer2Information(($currentTime - (75 * 3600)));
+
+        $service = $this->getApplicationServerServiceObject($currentTime);
+        $service->updateAppServerInformation(true);
+
+        /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[] $appServers */
+        $appServers = $service->loadAppServerList();
+
+        $this->assertEquals(1, count($appServers));
+        $this->assertEquals('serverNameHash1', $appServers['serverNameHash1']->getId());
+    }
+
+    private function getApplicationServerServiceObject($currentTime)
+    {
         $config = $this->getConfig();
-        $config->saveSystemConfigParameter('arr', 'aServersData_'.$serverId, null);
-
         $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
         $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
-
-        /** @var \OxidEsales\Eshop\Core\Service\ApplicationServerService $applicationServerService */
-        $applicationServerService = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
-            $appServerDao,
-            $utilsServer,
-            $utilsDate->getTime()
-        );
-
-        $applicationServerService->updateAppServerInformation($isAdmin);
-        $serversData = $this->getConfig()->getSystemConfigParameter('aServersData_'.$serverId);
-
-        $this->assertEquals($expectedServersData, $serversData);
-    }
-
-    /**
-     * @param $expectedServersData
-     *
-     * @return \OxidEsales\Eshop\Core\UtilsDate
-     */
-    private function createDateMock($expectedServersData)
-    {
-        $utilsDate = $this->getMockBuilder(\OxidEsales\Eshop\Core\UtilsDate::class)
-            ->setMethods(['getTime'])
-            ->getMock();
-        $utilsDate->expects($this->any())->method('getTime')->will($this->returnValue($expectedServersData['timestamp']));
-
-        return $utilsDate;
-    }
-
-    /**
-     * @param $serverId
-     * @param $serverIp
-     *
-     * @return \OxidEsales\Eshop\Core\UtilsServer
-     */
-    private function createServerMock($serverId, $serverIp)
-    {
         $utilsServer = $this->getMockBuilder(\OxidEsales\Eshop\Core\UtilsServer::class)
             ->setMethods(['getServerNodeId', 'getServerIp'])
             ->getMock();
-        $utilsServer->expects($this->any())->method('getServerNodeId')->will($this->returnValue($serverId));
-        $utilsServer->expects($this->any())->method('getServerIp')->will($this->returnValue($serverIp));
+        $utilsServer->expects($this->any())->method('getServerNodeId')->will($this->returnValue('serverNameHash1'));
+        $utilsServer->expects($this->any())->method('getServerIp')->will($this->returnValue('127.0.0.1'));
 
-        return $utilsServer;
+        return oxNew(
+            \OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
+            $appServerDao,
+            $utilsServer,
+            $currentTime
+        );
+    }
+
+    private function storeAppServer1Information($timestamp)
+    {
+        $config = $this->getConfig();
+        $appServer = array(
+            'id'                => 'serverNameHash1',
+            'timestamp'         => $timestamp,
+            'ip'                => '127.0.0.1',
+            'lastFrontendUsage' => '',
+            'lastAdminUsage'    => 'adminUsageTimestampUpdated'
+        );
+        $config->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', $appServer);
+    }
+
+    private function storeAppServer2Information($timestamp)
+    {
+        $config = $this->getConfig();
+        $appServer = array(
+            'id'                => 'serverNameHash2',
+            'timestamp'         => $timestamp,
+            'ip'                => '127.0.0.1',
+            'lastFrontendUsage' => '',
+            'lastAdminUsage'    => 'adminUsageTimestampUpdated'
+        );
+        $config->saveSystemConfigParameter('arr', 'aServersData_serverNameHash2', $appServer);
     }
 }

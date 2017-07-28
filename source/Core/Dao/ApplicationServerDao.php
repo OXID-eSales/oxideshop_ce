@@ -28,17 +28,12 @@ namespace OxidEsales\EshopCommunity\Core\Dao;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterface
+class ApplicationServerDao extends BaseDao
 {
     /**
      * The name of config option for saving servers data information.
      */
     const CONFIG_NAME_FOR_SERVER_INFO = 'aServersData_';
-
-    /**
-     * @var \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface Database connection
-     */
-    private $database;
 
     /**
      * @var \OxidEsales\Eshop\Core\Config Main shop configuration class.
@@ -53,7 +48,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
      */
     public function __construct($databaseProvider, $config)
     {
-        $this->database = $databaseProvider->getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        parent::__construct($databaseProvider);
         $this->config = $config;
     }
 
@@ -72,11 +67,11 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
             $result = $resultList->getFields();
             $serverId = $this->getServerIdFromConfig($result['oxvarname']);
             $information = $this->getValueFromConfig($result['oxvarvalue']);
-            $appServerList[$serverId] = $this->createServer($serverId, $information);
+            $appServerList[$serverId] = $this->createServer($information);
             while ($result = $resultList->fetchRow()) {
                 $serverId = $this->getServerIdFromConfig($result['oxvarname']);
                 $information = $this->getValueFromConfig($result['oxvarvalue']);
-                $appServerList[$serverId] = $this->createServer($serverId, $information);
+                $appServerList[$serverId] = $this->createServer($information);
             }
         }
         return $appServerList;
@@ -98,27 +93,27 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
             $this->config->getBaseShopId()
         );
 
-        return $this->database->execute($query, $parameter);
+        return $this->getAssociativeDb()->execute($query, $parameter);
     }
 
     /**
-     * Finds an application server by given id.
+     * Finds an application server by given id, null if none is found.
      *
      * @param string $id An id of the entity to find.
      *
-     * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer
+     * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer|null
      */
     public function findById($id)
     {
-        $appServerData = [];
-
         $serverData = $this->selectDataById($id);
 
         if ($serverData != false) {
-            $appServerData = (array)unserialize($serverData);
+            $appServerProperties = (array)unserialize($serverData);
+        } else {
+            return null;
         }
 
-        return $this->createServer($id, $appServerData);
+        return $this->createServer($appServerProperties);
     }
 
     /**
@@ -139,7 +134,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
             $this->config->getBaseShopId()
         );
 
-        return $this->database->execute($query, $parameter);
+        return $this->getAssociativeDb()->execute($query, $parameter);
     }
 
     /**
@@ -163,7 +158,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
             $this->config->getConfigParam('sConfigKey')
         );
 
-        return $this->database->execute($query, $parameter);
+        return $this->getAssociativeDb()->execute($query, $parameter);
     }
 
     /**
@@ -176,14 +171,14 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
     private function selectDataById($id)
     {
         $query = "SELECT " . $this->config->getDecodeValueQuery() .
-            " as oxvarvalue FROM oxconfig WHERE oxvarname = ? AND oxshopid = ?";
+            " as oxvarvalue FROM oxconfig WHERE oxvarname = ? AND oxshopid = ? FOR UPDATE";
 
         $parameter = array(
             self::CONFIG_NAME_FOR_SERVER_INFO.$id,
             $this->config->getBaseShopId()
         );
 
-        return $this->database->getOne($query, $parameter);
+        return $this->getAssociativeDb()->getOne($query, $parameter);
     }
 
     /**
@@ -201,7 +196,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
             $this->config->getBaseShopId()
         );
 
-        return $this->database->select($query, $parameter);
+        return $this->getAssociativeDb()->select($query, $parameter);
     }
 
     /**
@@ -223,7 +218,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
      *
      * @param string $varValue The serialized value of the config option.
      *
-     * @return string The information of server.
+     * @return array The information of server.
      */
     private function getValueFromConfig($varValue)
     {
@@ -233,17 +228,16 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterfac
     /**
      * Creates ApplicationServer from given server id and data.
      *
-     * @param string $serverId The id of server.
-     * @param array  $data     The array of server data.
+     * @param array $data The array of server data.
      *
      * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer
      */
-    protected function createServer($serverId, $data = [])
+    protected function createServer($data)
     {
         /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer */
         $appServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
 
-        $appServer->setId($serverId);
+        $appServer->setId($this->getServerParameter($data, 'id'));
         $appServer->setTimestamp($this->getServerParameter($data, 'timestamp'));
         $appServer->setIp($this->getServerParameter($data, 'ip'));
         $appServer->setLastFrontendUsage($this->getServerParameter($data, 'lastFrontendUsage'));

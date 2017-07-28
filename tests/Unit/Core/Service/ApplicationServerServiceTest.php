@@ -21,14 +21,18 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-use \OxidEsales\Eshop\Core\Registry;
-use \OxidEsales\Eshop\Core\DatabaseProvider;
-
 /**
  * @covers \OxidEsales\Eshop\Core\Service\ApplicationServerService
  */
 class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+
+        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
+    }
+
     public function testLoadAppServerList()
     {
         $appServerDao = $this->getApplicationServerDaoMock("findAll", ['foundAppServer']);
@@ -60,6 +64,18 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
         $this->assertEquals($id, $service->loadAppServer($id));
     }
 
+    public function testLoadAppServerDoesNotExists()
+    {
+        $this->setExpectedException(\OxidEsales\Eshop\Core\Exception\NoResultException::class);
+        $id = 'testId';
+
+        $appServerDao = $this->getApplicationServerDaoMock("findById", null);
+
+        $service = $this->getApplicationServerService($appServerDao);
+
+        $service->loadAppServer($id);
+    }
+
     public function testSaveAppServerIfExists()
     {
         $id = 'testId';
@@ -83,7 +99,7 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
 
         $appServerDao = $this->getMockBuilder(\OxidEsales\Eshop\Core\Dao\BaseDaoInterface::class)
             ->getMock();
-        $appServerDao->expects($this->once())->method('findById')->will($this->returnValue(false));
+        $appServerDao->expects($this->once())->method('findById')->will($this->returnValue(null));
         $appServerDao->expects($this->once())->method('insert')->will($this->returnValue($id));
 
         $server = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
@@ -102,14 +118,13 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
         $server->setId('serverNameHash1');
         $server->setTimestamp($currentTime - (11 * 3600));
         $server->setIp('127.0.0.1');
-        $server->setLastFrontendUsage('frontendUsageTimestamp');
         $server->setLastAdminUsage('adminUsageTimestamp');
 
         $appServerDao = $this->getApplicationServerDaoMock("findAll", [$server]);
 
         $service = $this->getApplicationServerService($appServerDao);
 
-        $this->assertEquals([$server], $service->loadActiveAppServerList());
+        $this->assertEquals(['serverNameHash1' => $server], $service->loadActiveAppServerList());
     }
 
     public function testLoadActiveAppServerListIfServerIsNotValid()
@@ -120,7 +135,6 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
         $server->setId('serverNameHash1');
         $server->setTimestamp($currentTime - (25 * 3600));
         $server->setIp('127.0.0.1');
-        $server->setLastFrontendUsage('frontendUsageTimestamp');
         $server->setLastAdminUsage('adminUsageTimestamp');
 
         $appServerDao = $this->getApplicationServerDaoMock("findAll", [$server]);
@@ -139,65 +153,25 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
         $this->assertEquals([], $service->loadActiveAppServerList());
     }
 
-    public function testCleanupNotActiveAppServers()
+    public function testUpdateAppServerInformationNewAppServer()
     {
-        $config = $this->getConfig();
+        $id = 'testId';
+
+        $appServerDao = $this->getMockBuilder(\OxidEsales\Eshop\Core\Dao\BaseDaoInterface::class)
+            ->getMock();
+        $appServerDao->expects($this->once())->method('findById')->will($this->returnValue(null));
+        $appServerDao->expects($this->once())->method('findAll')->will($this->returnValue([]));
+        $appServerDao->expects($this->once())->method('insert')->will($this->returnValue($id));
+
+        $utilsServer = $this->getMockBuilder(\OxidEsales\Eshop\Core\UtilsServer::class)
+            ->setMethods(['getServerNodeId', 'getServerIp'])
+            ->getMock();
+        $utilsServer->expects($this->any())->method('getServerNodeId')->will($this->returnValue('serverNameHash2'));
+        $utilsServer->expects($this->any())->method('getServerIp')->will($this->returnValue('127.0.0.1'));
+
         $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
-
-        $appServer = array(
-            'id'                => 'serverNameHash1',
-            'timestamp'         => ($currentTime - (73 * 3600)),
-            'ip'                => '127.0.0.1',
-            'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-            'lastAdminUsage'    => 'adminUsageTimestampUpdated'
-        );
-        $config->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', $appServer);
-
-        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
-        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
-
         $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
-        $service->cleanupAppServers();
-
-        $this->assertEquals(0, count($service->loadAppServerList()));
-    }
-
-    public function testCleanupNotActiveAppServersNothingToDo()
-    {
-        $config = $this->getConfig();
-        $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
-        $appServer = array(
-            'id'                => 'serverNameHash1',
-            'timestamp'         => ($currentTime - (11 * 3600)),
-            'ip'                => '127.0.0.1',
-            'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-            'lastAdminUsage'    => 'adminUsageTimestampUpdated'
-        );
-        $config->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', $appServer);
-
-        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
-        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
-
-        $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
-        $service->cleanupAppServers();
-
-        $this->assertEquals(1, count($service->loadAppServerList()));
-    }
-
-    public function testCleanupNotActiveAppServersNoServersFound()
-    {
-        $config = $this->getConfig();
-        $config->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', null);
-
-        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
-
-        $service = $this->getApplicationServerService($appServerDao);
-        $service->cleanupAppServers();
-
-        $this->assertEquals(0, count($service->loadAppServerList()));
+        $service->updateAppServerInformation();
     }
 
     private function getApplicationServerDaoMock($methodToMock, $expectedReturnValue)

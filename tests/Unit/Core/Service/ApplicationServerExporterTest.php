@@ -60,7 +60,6 @@ class ApplicationServerExporterTest extends \OxidEsales\TestingLibrary\UnitTestC
         $server->setTimestamp('createdTimestamp');
         $server->setIp('127.0.0.1');
         $server->setLastFrontendUsage('frontendUsageTimestamp');
-        $server->setLastAdminUsage('adminUsageTimestamp');
 
         $activeServers = array($server);
         $activeServers2 = array($server, $server);
@@ -69,7 +68,7 @@ class ApplicationServerExporterTest extends \OxidEsales\TestingLibrary\UnitTestC
             'id'                => 'serverNameHash1',
             'ip'                => '127.0.0.1',
             'lastFrontendUsage' => 'frontendUsageTimestamp',
-            'lastAdminUsage'    => 'adminUsageTimestamp'
+            'lastAdminUsage'    => ''
         );
 
         return [

@@ -51,7 +51,7 @@ interface BaseDaoInterface
      *
      * @param string $id An id of the entity to find.
      *
-     * @return mixed
+     * @return object|null The entity instance or NULL if the entity can not be found.
      */
     public function findById($id);
 
@@ -72,4 +72,20 @@ interface BaseDaoInterface
      * @return int The number of affected rows.
      */
     public function insert($object);
+
+    /**
+     * Start a database transaction.
+     */
+    public function startTransaction();
+
+    /**
+     * Commit a database transaction.
+     */
+    public function commitTransaction();
+
+    /**
+     * RollBack a database transaction.
+     */
+    public function rollbackTransaction();
+
 }

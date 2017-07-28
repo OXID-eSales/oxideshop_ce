@@ -64,8 +64,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
             'timestamp' => $validNodeTime,
             'ip' => '127.0.0.1',
             'lastFrontendUsage' => $validNodeTime,
-            'lastAdminUsage' => $validNodeTime,
-            'isValid' => true,
+            'lastAdminUsage' => $validNodeTime
         ));
 
         // imitating package revision file

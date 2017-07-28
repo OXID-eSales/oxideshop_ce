@@ -214,7 +214,7 @@ class ApplicationServer
     }
 
     /**
-     * Method checks if server time was not rolled back.
+     * Method checks if the hardware time was not rolled back.
      *
      * @param int $currentTimestamp The current timestamp.
      *

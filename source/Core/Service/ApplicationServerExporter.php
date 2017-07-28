@@ -54,8 +54,6 @@ class ApplicationServerExporter implements \OxidEsales\Eshop\Core\Service\Applic
      */
     public function exportAppServerList()
     {
-        $this->appServerService->cleanupAppServers();
-
         $activeServerCollection = [];
 
         $activeServers = $this->appServerService->loadActiveAppServerList();

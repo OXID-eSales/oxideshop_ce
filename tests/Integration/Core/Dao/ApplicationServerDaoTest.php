@@ -66,7 +66,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setTimestamp('timestamp');
         $expectedServer->setIp('127.0.0.1');
         $expectedServer->setLastFrontendUsage('frontendUsageTimestamp');
-        $expectedServer->setLastAdminUsage('adminUsageTimestamp');
 
         $this->assertEquals($expectedServer, $appServer);
     }
@@ -78,14 +77,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $appServerDao = $this->getApplicationServerDaoObject();
         $appServer = $appServerDao->findById('serverNameHash3');
 
-        $expectedServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
-        $expectedServer->setId('serverNameHash3');
-        $expectedServer->setTimestamp(null);
-        $expectedServer->setIp(null);
-        $expectedServer->setLastFrontendUsage(null);
-        $expectedServer->setLastAdminUsage(null);
-
-        $this->assertEquals($expectedServer, $appServer);
+        $this->assertNull($appServer);
     }
 
     public function testDeleteExisting()
@@ -126,7 +118,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setTimestamp('timestamp');
         $expectedServer->setIp('127.0.0.1');
         $expectedServer->setLastFrontendUsage('updatedFrontendUsageTimestamp');
-        $expectedServer->setLastAdminUsage('updatedAdminUsageTimestamp');
 
         $appServerDao = $this->getApplicationServerDaoObject();
         $result = $appServerDao->update($expectedServer);
@@ -145,7 +136,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $updateServer->setId('serverNameHash3');
         $updateServer->setTimestamp('timestamp');
         $updateServer->setIp('127.0.0.1');
-        $updateServer->setLastFrontendUsage('updatedFrontendUsageTimestamp');
         $updateServer->setLastAdminUsage('updatedAdminUsageTimestamp');
 
         $appServerDao = $this->getApplicationServerDaoObject();
@@ -158,7 +148,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setTimestamp('timestamp');
         $expectedServer->setIp('127.0.0.1');
         $expectedServer->setLastFrontendUsage('frontendUsageTimestamp');
-        $expectedServer->setLastAdminUsage('adminUsageTimestamp');
 
         $appServer = $appServerDao->findById('serverNameHash1');
         $this->assertEquals($expectedServer, $appServer);
@@ -176,7 +165,6 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setTimestamp('timestamp');
         $expectedServer->setIp('127.0.0.1');
         $expectedServer->setLastFrontendUsage('frontendUsageTimestamp');
-        $expectedServer->setLastAdminUsage('adminUsageTimestamp');
 
         $result = $appServerDao->insert($expectedServer);
         $this->assertEquals(1, $result);
@@ -214,16 +202,14 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
             'timestamp'         => 'timestamp',
             'ip'                => '127.0.0.1',
             'lastFrontendUsage' => 'frontendUsageTimestamp',
-            'lastAdminUsage'    => 'adminUsageTimestamp',
-            'isValid'           => true
+            'lastAdminUsage'    => ''
         );
         $storedData2 = array(
             'id'                => 'serverNameHash2',
             'timestamp'         => 'timestamp',
             'ip'                => '127.0.0.2',
-            'lastFrontendUsage' => 'frontendUsageTimestamp',
-            'lastAdminUsage'    => 'adminUsageTimestamp',
-            'isValid'           => true
+            'lastFrontendUsage' => '',
+            'lastAdminUsage'    => 'adminUsageTimestamp'
         );
         $this->getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash1', $storedData1);
         $this->getConfig()->saveSystemConfigParameter('arr', 'aServersData_serverNameHash2', $storedData2);
